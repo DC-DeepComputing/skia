@@ -488,6 +488,7 @@ void SkParticleEffect::update(double now) {
 void SkParticleEffect::draw(SkCanvas* canvas) {
     if (this->isAlive() && fParams->fDrawable) {
         SkPaint paint;
+        paint.setColor(SK_ColorWHITE);
         fParams->fDrawable->draw(canvas, fParticles, fCount, paint);
     }
 }
