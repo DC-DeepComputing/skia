@@ -181,10 +181,44 @@ private:
     sk_sp<SkImage> fImage;
 };
 
+class SkLineDrawable : public SkParticleDrawable {
+public:
+    SkLineDrawable() {}
+
+    REFLECTED(SkLineDrawable, SkParticleDrawable)
+
+    void draw(SkCanvas* canvas, const SkParticles& particles, int count) override {
+        float* pos[] = {
+            particles.fData[SkParticles::kPositionX].get(),
+            particles.fData[SkParticles::kPositionY].get(),
+        };
+        float* dir[] = {
+            particles.fData[SkParticles::kHeadingX].get(),
+            particles.fData[SkParticles::kHeadingY].get(),
+        };
+        float* scale = particles.fData[SkParticles::kScale].get();
+
+        SkAutoTMalloc<SkPoint> pts(2 * count);
+        for (int i = 0; i < count; ++i) {
+            pts[2 * i + 0] = SkPoint::Make(pos[0][i], pos[1][i]);
+            pts[2 * i + 1] = SkPoint::Make(pos[0][i] - dir[0][i] * scale[i],
+                                           pos[1][i] - dir[1][i] * scale[i]);
+        }
+        SkPaint paint;
+        paint.setColor(SK_ColorWHITE);
+        canvas->drawPoints(SkCanvas::kLines_PointMode, count, pts, paint);
+    }
+
+    void prepare(const skresources::ResourceProvider*) override {}
+
+    void visitFields(SkFieldVisitor* v) override {}
+};
+
 void SkParticleDrawable::RegisterDrawableTypes() {
     REGISTER_REFLECTED(SkParticleDrawable);
     REGISTER_REFLECTED(SkCircleDrawable);
     REGISTER_REFLECTED(SkImageDrawable);
+    REGISTER_REFLECTED(SkLineDrawable);
 }
 
 sk_sp<SkParticleDrawable> SkParticleDrawable::MakeCircle(int radius) {
