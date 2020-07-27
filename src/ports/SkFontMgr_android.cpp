@@ -34,6 +34,12 @@ using namespace skia_private;
 
 class SkData;
 
+#ifdef SK_BUILD_FOR_ANDROID
+#include "include/ports/SkFontMgr_android_ndk.h"
+#include "include/ports/SkFontMgr_multi.h"
+#endif
+
+
 namespace {
 
 class SkTypeface_Android : public SkTypeface_FreeType {
@@ -110,7 +116,7 @@ public:
             return nullptr;
         }
         return sk_make_sp<SkTypeface_AndroidSystem>(fPathName,
-                                                    fFile,
+                                                    fFile,  //TODO: whoops
                                                     fIndex,
                                                     data->getAxis(),
                                                     data->getAxisCount(),
@@ -522,5 +528,33 @@ sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* cust
                  custom->fFontsXml,
                  custom->fFallbackFontsXml);
     }
+
+#if defined(SK_BUILD_FOR_ANDROID) && 0 // TODO: Use SK_FONTMGR_ANDROID_NDK_ENABLED when finished testing
+    // If there are no custom fonts, just use the NDK for system fonts if available.
+    if (!custom || (!custom->fFontsXml && !custom->fFallbackFontsXml)) {
+        sk_sp<SkFontMgr> ndkFontMgr = SkFontMgr_New_Android_NDK(custom ? custom->fIsolated : false, scanner);
+        if (ndkFontMgr) {
+            return ndkFontMgr;
+        }
+
+    // If only custom fonts are to be used, just do that.
+    } else if (custom->fSystemFontUse == SkFontMgr_Android_CustomFonts::kOnlyCustom) {
+        return sk_make_sp<SkFontMgr_Android>(custom, std::move(scanner));
+
+    // There are both custom and system fonts. Use the NDK for system fonts if available.
+    } else {
+        sk_sp<SkFontMgr> ndkFontMgr = SkFontMgr_New_Android_NDK(custom->fIsolated, scanner);
+        if (ndkFontMgr) {
+            SkFontMgr_Android_CustomFonts onlyCustom = *custom;
+            onlyCustom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+            sk_sp<SkFontMgr> customFontMgr = sk_make_sp<SkFontMgr_Android>(&onlyCustom, std::move(scanner));
+            if (custom->fSystemFontUse == SkFontMgr_Android_CustomFonts::kPreferCustom) {
+                return SkFontMgr_New_Multi({std::move(customFontMgr), std::move(ndkFontMgr)});
+            } else {
+                return SkFontMgr_New_Multi({std::move(ndkFontMgr), std::move(customFontMgr)});
+            }
+        }
+    }
+#endif
     return sk_make_sp<SkFontMgr_Android>(custom, std::move(scanner));
 }
