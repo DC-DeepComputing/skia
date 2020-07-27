@@ -31,6 +31,8 @@
 
 class SkData;
 
+namespace {
+
 class SkTypeface_Android : public SkTypeface_FreeType {
 public:
     SkTypeface_Android(const SkFontStyle& style,
@@ -103,7 +105,7 @@ public:
             return nullptr;
         }
         return sk_make_sp<SkTypeface_AndroidSystem>(fPathName,
-                                                    fFile,
+                                                    fFile,  //TODO: whoops
                                                     fIndex,
                                                     data->getAxis(),
                                                     data->getAxisCount(),
@@ -558,6 +560,8 @@ static char const * const gSystemFontUseStrings[] = {
     "OnlyCustom", "PreferCustom", "PreferSystem"
 };
 #endif
+
+}  // namespace
 
 sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom) {
     if (custom) {
