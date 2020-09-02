@@ -82,7 +82,7 @@ public:
 
 struct DWriteStyle {
     explicit DWriteStyle(const SkFontStyle& pattern) {
-        fWeight = (DWRITE_FONT_WEIGHT)pattern.weight();
+        fWeight = (DWRITE_FONT_WEIGHT)SkScalarRoundToInt(pattern.weight());
         fWidth = (DWRITE_FONT_STRETCH)pattern.width();
         switch (pattern.slant()) {
             case SkFontStyle::kUpright_Slant: fSlant = DWRITE_FONT_STYLE_NORMAL ; break;
