@@ -210,6 +210,11 @@ void SkRasterPipeline::append_load(SkColorType ct, const SkRasterPipeline_Memory
         case kBGRA_8888_SkColorType:         this->append(load_8888, ctx);
                                              this->append(swap_rb);
                                              break;
+
+        case kSRGBA_8888_SkColorType:
+            this->append(load_8888, ctx);
+            this->append_transfer_function(*skcms_sRGB_TransferFunction());
+            break;
     }
 }
 
@@ -256,6 +261,11 @@ void SkRasterPipeline::append_load_dst(SkColorType ct, const SkRasterPipeline_Me
         case kBGRA_8888_SkColorType:          this->append(load_8888_dst, ctx);
                                               this->append(swap_rb_dst);
                                               break;
+
+        case kSRGBA_8888_SkColorType:
+            this->append(load_8888_dst, ctx);
+            this->append_transfer_function(*skcms_sRGB_TransferFunction());
+            break;
     }
 }
 
@@ -302,6 +312,11 @@ void SkRasterPipeline::append_store(SkColorType ct, const SkRasterPipeline_Memor
         case kBGRA_8888_SkColorType:          this->append(swap_rb);
                                               this->append(store_8888, ctx);
                                               break;
+
+        case kSRGBA_8888_SkColorType:
+            this->append_transfer_function(*skcms_sRGB_Inverse_TransferFunction());
+            this->append(store_8888, ctx);
+            break;
     }
 }
 
