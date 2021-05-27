@@ -510,6 +510,142 @@ private:
     PathOpSubmitter fPathDrawing;
 };
 
+// -- DrawableOpSubmitter --------------------------------------------------------------------------
+// Shared code for submitting GPU ops for drawing glyphs as drawables.
+class DrawableOpSubmitter {
+    struct DrawableAndPosition;
+public:
+    DrawableOpSubmitter(bool isAntiAliased,
+                        SkScalar strikeToSourceScale,
+                        SkSpan<DrawableAndPosition> drawables,
+                        std::unique_ptr<DrawableAndPosition[],
+                                        GrSubRunAllocator::ArrayDestroyer> drawableData);
+
+    DrawableOpSubmitter(DrawableOpSubmitter&& that);
+
+    static DrawableOpSubmitter Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                    bool isAntiAliased,
+                                    SkScalar strikeToSourceScale,
+                                    GrSubRunAllocator* alloc);
+
+    void submitOps(SkCanvas*,
+                   const GrClip* clip,
+                   const SkMatrixProvider& viewMatrix,
+                   SkPoint drawOrigin,
+                   const SkPaint& paint,
+                   skgpu::v1::SurfaceDrawContext* sdc) const;
+
+private:
+    struct DrawableAndPosition {
+        sk_sp<SkDrawable> fDrawable;
+        SkPoint fPosition;
+    };
+    const bool fIsAntiAliased;
+    const SkScalar fStrikeToSourceScale;
+    const SkSpan<const DrawableAndPosition> fDrawables;
+    std::unique_ptr<DrawableAndPosition[], GrSubRunAllocator::ArrayDestroyer> fDrawableData;
+};
+
+DrawableOpSubmitter::DrawableOpSubmitter(
+        bool isAntiAliased,
+        SkScalar strikeToSourceScale,
+        SkSpan<DrawableAndPosition> drawables,
+        std::unique_ptr<DrawableAndPosition[], GrSubRunAllocator::ArrayDestroyer> drawableData)
+            : fIsAntiAliased{isAntiAliased}
+            , fStrikeToSourceScale{strikeToSourceScale}
+            , fDrawables{drawables}
+            , fDrawableData{std::move(drawableData)} {
+    SkASSERT(!fDrawables.empty());
+}
+
+DrawableOpSubmitter::DrawableOpSubmitter(DrawableOpSubmitter&& that)
+    : fIsAntiAliased{that.fIsAntiAliased}
+    , fStrikeToSourceScale{that.fStrikeToSourceScale}
+    , fDrawables{that.fDrawables}
+    , fDrawableData{std::move(that.fDrawableData)} {}
+
+DrawableOpSubmitter DrawableOpSubmitter::Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                              bool isAntiAliased,
+                                              SkScalar strikeToSourceScale,
+                                              GrSubRunAllocator* alloc) {
+    auto drawableData = alloc->makeUniqueArray<DrawableAndPosition>(
+            drawables.size(),
+            [&](int i){
+                auto [variant, pos] = drawables[i];
+                return DrawableAndPosition{sk_ref_sp(variant.drawable()), pos};
+            });
+    SkSpan<DrawableAndPosition> pictures{drawableData.get(), drawables.size()};
+
+    return DrawableOpSubmitter{isAntiAliased, strikeToSourceScale, pictures, std::move(drawableData)};
+}
+
+void DrawableOpSubmitter::submitOps(SkCanvas* canvas,
+                                    const GrClip* clip,
+                                    const SkMatrixProvider& viewMatrix,
+                                    SkPoint drawOrigin,
+                                    const SkPaint& paint,
+                                    skgpu::v1::SurfaceDrawContext* sdc) const {
+    // Calculate the matrix that maps the path glyphs from their size in the strike to
+    // the graphics source space.
+    SkMatrix strikeToSource = SkMatrix::Scale(fStrikeToSourceScale, fStrikeToSourceScale);
+    strikeToSource.postTranslate(drawOrigin.x(), drawOrigin.y());
+
+    // Transform the path to device because the deviceMatrix must be unchanged to
+    // draw effect, filter or shader paths.
+    for (const auto& pathPos : fDrawables) {
+        const sk_sp<SkDrawable>& drawable = pathPos.fDrawable;
+        const SkPoint pos = pathPos.fPosition;
+        // Transform the glyph to source space.
+        SkMatrix pathMatrix = strikeToSource;
+        pathMatrix.postTranslate(pos.x(), pos.y());
+
+        SkAutoCanvasRestore acr(canvas, false);
+        SkRect drawableBounds = drawable->getBounds();
+        pathMatrix.mapRect(&drawableBounds);
+        canvas->saveLayer(&drawableBounds, &paint);
+        // TODO: discuss lifetime, esp with GPU backend.
+        drawable->draw(canvas, &pathMatrix);//canvas->drawDrawable(drawable, &pathMatrix);
+    }
+}
+
+template <typename SubRun>
+GrSubRunOwner make_drawable_sub_run(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                   bool isAntiAliased,
+                                   SkScalar strikeToSourceScale,
+                                   GrSubRunAllocator* alloc) {
+    return alloc->makeUnique<SubRun>(
+            DrawableOpSubmitter::Make(drawables, isAntiAliased, strikeToSourceScale, alloc));
+}
+
+// -- DrawableSubRunSlug ---------------------------------------------------------------------------
+class DrawableSubRunSlug : public GrSubRun {
+public:
+    DrawableSubRunSlug(DrawableOpSubmitter&& drawingDrawing) : fDrawingDrawing(std::move(drawingDrawing)) {}
+
+    void draw(SkCanvas* canvas,
+              const GrClip* clip,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint& paint,
+              skgpu::v1::SurfaceDrawContext* sdc) const override {
+        fDrawingDrawing.submitOps(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
+    }
+
+private:
+    DrawableOpSubmitter fDrawingDrawing;
+};
+
+// -- DrawableSubRun -------------------------------------------------------------------------------
+class DrawableSubRun final : public DrawableSubRunSlug, public GrBlobSubRun {
+public:
+    using DrawableSubRunSlug::DrawableSubRunSlug;
+    const GrBlobSubRun* blobCast() const override { return this; }
+    bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
+        return true;
+    }
+    const GrAtlasSubRun* testingOnly_atlasSubRun() const override { return nullptr; }
+};
+
 // -- GlyphVector ----------------------------------------------------------------------------------
 // GlyphVector provides a way to delay the lookup of GrGlyphs until the code is running on the
 // GPU in single threaded mode. The GlyphVector is created in a multi-threaded environment, but
@@ -1825,6 +1961,13 @@ void GrTextBlob::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawab
             drawables, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
 }
 
+void GrTextBlob::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                        const SkFont& runFont,
+                                        SkScalar strikeToSourceScale) {
+    fSubRunList.append(make_drawable_sub_run<DrawableSubRun>(
+            drawables, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
+}
+
 void GrTextBlob::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                    sk_sp<SkStrike>&& strike,
                                    SkScalar strikeToSourceScale,
@@ -2534,6 +2677,17 @@ void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPo
     pathDrawing.submitOps(fCanvas, fClip, fViewMatrix, fGlyphRunList.origin(), fPaint, fSDC);
 }
 
+void GrSubRunNoCachePainter::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                                    const SkFont& runFont,
+                                                    SkScalar strikeToSourceScale) {
+    DrawableOpSubmitter drawableDrawing =
+            DrawableOpSubmitter::Make(drawables,
+                                      has_some_antialiasing(runFont),
+                                      strikeToSourceScale,
+                                      fAlloc);
+
+    drawableDrawing.submitOps(fCanvas, fClip, fViewMatrix, fGlyphRunList.origin(), fPaint, fSDC);
+}
 void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                                sk_sp<SkStrike>&& strike,
                                                SkScalar strikeToSourceScale,
@@ -2589,6 +2743,9 @@ public:
             const SkZip<SkGlyphVariant, SkPoint>& drawables, sk_sp<SkStrike>&& strike,
             SkScalar strikeToSourceScale) override;
     void processSourcePaths(
+            const SkZip<SkGlyphVariant, SkPoint>& drawables, const SkFont& runFont,
+            SkScalar strikeToSourceScale) override;
+    void processSourceDrawables(
             const SkZip<SkGlyphVariant, SkPoint>& drawables, const SkFont& runFont,
             SkScalar strikeToSourceScale) override;
     void processSourceSDFT(
@@ -3070,6 +3227,14 @@ void Slug::processSourcePaths(const SkZip<SkGlyphVariant,
                               const SkFont& runFont,
                               SkScalar strikeToSourceScale) {
     fSubRuns.append(PathSubRun::Make(
+            drawables, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
+}
+
+void Slug::processSourceDrawables(const SkZip<SkGlyphVariant,
+                                  SkPoint>& drawables,
+                                  const SkFont& runFont,
+                                  SkScalar strikeToSourceScale) {
+    fSubRuns.append(make_drawable_sub_run<DrawableSubRunSlug>(
             drawables, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
 }
 
