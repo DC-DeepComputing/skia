@@ -106,7 +106,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
             auto strike = strikeSpec.findOrCreateStrike();
 
             fDrawable.startSource(fRejects.source());
-            strike->prepareForPathDrawing(&fDrawable, &fRejects);
+            strike->prepareForPictureDrawing(&fDrawable, &fRejects);
             fRejects.flipRejectsToSource();
 
             // The paint we draw paths with must have the same anti-aliasing state as the runFont
@@ -114,8 +114,17 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
             SkPaint pathPaint = paint;
             pathPaint.setAntiAlias(runFont.hasSomeAntiAliasing());
 
-            bitmapDevice->paintPaths(
+            bitmapDevice->paintDrawables(
                     &fDrawable, strikeToSourceScale, drawOrigin, pathPaint);
+
+            if (!fRejects.source().empty()) {
+                fDrawable.startSource(fRejects.source());
+                strike->prepareForPathDrawing(&fDrawable, &fRejects);
+                fRejects.flipRejectsToSource();
+
+                bitmapDevice->paintPaths(
+                        &fDrawable, strikeToSourceScale, drawOrigin, pathPaint);
+            }
         }
         if (!fRejects.source().empty() && !deviceMatrix.hasPerspective()) {
             SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
@@ -306,6 +315,34 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
     // maxDimensionInSourceSpace is used to calculate the factor from strike space to source
     // space.
     SkScalar maxDimensionInSourceSpace = 0.0;
+    if (!fRejects.source().empty()) {
+        // Drawable case - handle big things with that have a drawable.
+        auto [strikeSpec, strikeToSourceScale] = SkStrikeSpec::MakePath(
+                runFont, runPaint, fDeviceProps, fScalerContextFlags);
+
+        #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
+            msg.appendf("  Drawable case:\n%s", strikeSpec.dump().c_str());
+        #endif
+
+        if (!SkScalarNearlyZero(strikeToSourceScale)) {
+            SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(fStrikeCache);
+
+            fDrawable.startSource(fRejects.source());
+            #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
+                msg.appendf("    glyphs:(x,y):\n      %s\n", fDrawable.dumpInput().c_str());
+            #endif
+            strike->prepareForPictureDrawing(&fDrawable, &fRejects);
+            fRejects.flipRejectsToSource();
+            maxDimensionInSourceSpace =
+                    fRejects.rejectedMaxDimension() * strikeToSourceScale;
+
+            if (process && !fDrawable.drawableIsEmpty()) {
+                // processSourcePaths must be called even if there are no glyphs to make sure
+                // runs are set correctly.
+                process->processSourceDrawables(fDrawable.drawable(), runFont, strikeToSourceScale);
+            }
+        }
+    }
     if (!fRejects.source().empty()) {
         // Path case - handle big things without color and that have a path.
         auto [strikeSpec, strikeToSourceScale] =

@@ -263,6 +263,9 @@ private:
     void processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkFont& runFont,
                             SkScalar strikeToSourceScale) override;
+    void processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                const SkFont& runFont,
+                                SkScalar strikeToSourceScale) override;
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            sk_sp<SkStrike>&& strike,
                            SkScalar strikeToSourceScale,
@@ -316,6 +319,9 @@ public:
     void processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkFont& runFont,
                             SkScalar strikeToSourceScale) override;
+    void processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                const SkFont& runFont,
+                                SkScalar strikeToSourceScale) override;
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            sk_sp<SkStrike>&& strike,
                            SkScalar strikeToSourceScale,
