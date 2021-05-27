@@ -18,6 +18,7 @@
 #include "src/core/SkMathPriv.h"
 
 class SkArenaAlloc;
+class SkDrawable;
 class SkScalerContext;
 
 // A combination of SkGlyphID and sub-pixel position information.
@@ -300,6 +301,11 @@ public:
     // path was previously set.
     const SkPath* path() const;
 
+    bool setDrawable(SkArenaAlloc* alloc, SkScalerContext* scalerContext);
+    bool setDrawable(SkArenaAlloc* alloc, sk_sp<SkDrawable> drawable);
+    bool setDrawableHasBeenCalled() const { return fDrawableData != nullptr; }
+    const SkDrawable* drawable() const;
+
     // Format
     bool isColor() const { return fMaskFormat == SkMask::kARGB32_Format; }
     SkMask::Format maskFormat() const { return fMaskFormat; }
@@ -373,10 +379,19 @@ private:
         bool       fHasPath{false};
     };
 
+    struct DrawableData {
+        Intercept* fIntercept{nullptr};
+        sk_sp<SkDrawable> fDrawable;
+        bool fHasDrawable{false};
+    };
+
     size_t allocImage(SkArenaAlloc* alloc);
 
     // path == nullptr indicates that there is no path.
     void installPath(SkArenaAlloc* alloc, const SkPath* path);
+
+    // drawable == nullptr indicates that there is no path.
+    void installDrawable(SkArenaAlloc* alloc, sk_sp<SkDrawable> drawable);
 
     // The width and height of the glyph mask.
     uint16_t  fWidth  = 0,
@@ -393,6 +408,7 @@ private:
     // else if fPathData is not null, then a path has been requested. The fPath field of fPathData
     // may still be null after the request meaning that there is no path for this glyph.
     PathData* fPathData = nullptr;
+    DrawableData* fDrawableData = nullptr;
 
     // The advance for this glyph.
     float     fAdvanceX = 0,

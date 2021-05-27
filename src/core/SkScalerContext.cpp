@@ -8,6 +8,7 @@
 #include "include/core/SkPaint.h"
 #include "src/core/SkScalerContext.h"
 
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPathEffect.h"
@@ -690,6 +691,11 @@ bool SkScalerContext::getPath(SkPackedGlyphID glyphID, SkPath* path) {
     // TODO: return hairline so user knows to stroke.
     // Most users get the fill path without path effect and then draw that, so don't need this.
     return this->internalGetPath(glyphID, path, nullptr);
+}
+
+sk_sp<SkDrawable> SkScalerContext::getDrawable(SkPackedGlyphID glyphID) {
+    // The TODO
+    return nullptr;
 }
 
 void SkScalerContext::getFontMetrics(SkFontMetrics* fm) {
