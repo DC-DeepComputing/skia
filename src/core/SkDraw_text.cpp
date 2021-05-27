@@ -109,7 +109,6 @@ void SkDraw::drawGlyphRunList(SkCanvas* canvas,
                               SkGlyphRunListPainter* glyphPainter,
                               const SkGlyphRunList& glyphRunList,
                               const SkPaint& paint) const {
-
     SkDEBUGCODE(this->validate();)
 
     if (fRC->isEmpty()) {
