@@ -295,6 +295,7 @@ public:
     SkGlyph     makeGlyph(SkPackedGlyphID, SkArenaAlloc*);
     void        getImage(const SkGlyph&);
     void        getPath(SkGlyph&, SkArenaAlloc*);
+    sk_sp<SkDrawable> getDrawable(SkPackedGlyphID);
     void        getFontMetrics(SkFontMetrics*);
 
     /** Return the size in bytes of the associated gamma lookup table

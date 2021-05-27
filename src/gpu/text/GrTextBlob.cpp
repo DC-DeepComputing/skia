@@ -305,6 +305,138 @@ GrAtlasSubRun* PathSubRun::testingOnly_atlasSubRun() {
     return nullptr;
 };
 
+// -- DrawableGlyph --------------------------------------------------------------------------------
+// The encoding of a specific drawable at a specific source location.
+struct DrawableGlyph {
+    DrawableGlyph(sk_sp<SkDrawable> drawable, SkPoint origin)
+        : fDrawable(std::move(drawable))
+        , fOrigin(origin) {}
+    sk_sp<SkDrawable> fDrawable;
+    SkPoint fOrigin;
+};
+
+// -- DrawableSubRun -------------------------------------------------------------------------------
+class DrawableSubRun final : public GrSubRun {
+public:
+    DrawableSubRun(bool isAntiAliased,
+                   SkScalar strikeToSourceScale,
+                   SkSpan<DrawableGlyph> drawables,
+                   std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> drawableData);
+
+    void draw(const GrClip* clip,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint& paint,
+              skgpu::v1::SurfaceDrawContext* sdc) const override;
+
+    bool canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const override;
+
+    GrAtlasSubRun* testingOnly_atlasSubRun() override;
+
+    static GrSubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                              bool isAntiAliased,
+                              SkScalar strikeToSourceScale,
+                              GrSubRunAllocator* alloc);
+
+private:
+    const bool fIsAntiAliased;
+    const SkScalar fStrikeToSourceScale;
+    const SkSpan<const DrawableGlyph> fDrawables;
+    const std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> fDrawableData;
+};
+
+DrawableSubRun::DrawableSubRun(bool isAntiAliased,
+                               SkScalar strikeToSourceScale,
+                               SkSpan<DrawableGlyph> drawables,
+                               std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> drawableData)
+    : fIsAntiAliased{isAntiAliased}
+    , fStrikeToSourceScale{strikeToSourceScale}
+    , fDrawables{drawables}
+    , fDrawableData{std::move(drawableData)} {}
+
+void DrawableSubRun::draw(const GrClip* clip,
+                      const SkMatrixProvider& viewMatrix,
+                      SkPoint drawOrigin,
+                      const SkPaint& paint,
+                      skgpu::v1::SurfaceDrawContext* sdc) const {
+    SkASSERT(!fDrawables.empty());
+    SkPaint runPaint{paint};
+    runPaint.setAntiAlias(fIsAntiAliased);
+    // If there are shaders, blurs or styles, the path must be scaled into source
+    // space independently of the CTM. This allows the CTM to be correct for the
+    // different effects.
+    GrStyle style(runPaint);
+
+    bool needsExactCTM = runPaint.getShader()
+                         || style.applies()
+                         || runPaint.getMaskFilter();
+
+    // Calculate the matrix that maps the path glyphs from their size in the strike to
+    // the graphics source space.
+    SkMatrix strikeToSource = SkMatrix::Scale(fStrikeToSourceScale, fStrikeToSourceScale);
+    strikeToSource.postTranslate(drawOrigin.x(), drawOrigin.y());
+    if (!needsExactCTM) {
+        for (const auto& drawablePos : fDrawables) {
+            const SkDrawable& drawable = *drawablePos.fDrawable;
+            const SkPoint pos = drawablePos.fOrigin;  // Transform the glyph to source space.
+            SkMatrix pathMatrix = strikeToSource;
+            pathMatrix.postTranslate(pos.x(), pos.y());
+            SkPreConcatMatrixProvider strikeToDevice(viewMatrix, pathMatrix);
+
+            (void) drawable;
+            /* TODO:
+            GrStyledShape shape(path, paint);
+            GrBlurUtils::drawShapeWithMaskFilter(sdc->recordingContext(), sdc, clip, runPaint,
+                                                 strikeToDevice, shape);
+            */
+        }
+    } else {
+        // Transform the path to device because the deviceMatrix must be unchanged to
+        // draw effect, filter or shader paths.
+        for (const auto& drawablePos : fDrawables) {
+            const SkDrawable& drawable = *drawablePos.fDrawable;
+            const SkPoint pos = drawablePos.fOrigin;
+            // Transform the glyph to source space.
+            SkMatrix pathMatrix = strikeToSource;
+            pathMatrix.postTranslate(pos.x(), pos.y());
+
+            (void) drawable;
+            /* TODO:
+            SkPath deviceOutline;
+            path.transform(pathMatrix, &deviceOutline);
+            deviceOutline.setIsVolatile(true);
+            GrStyledShape shape(deviceOutline, paint);
+            GrBlurUtils::drawShapeWithMaskFilter(sdc->recordingContext(), sdc, clip, runPaint,
+                                                 viewMatrix, shape);
+            */
+        }
+    }
+}
+
+bool DrawableSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
+    return true;
+}
+
+GrSubRunOwner DrawableSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                               bool isAntiAliased,
+                               SkScalar strikeToSourceScale,
+                               GrSubRunAllocator* alloc) {
+    auto pictureData = alloc->makeUniqueArray<DrawableGlyph>(
+            drawables.size(),
+            [&](int i){
+                auto [variant, pos] = drawables[i];
+                return DrawableGlyph{sk_ref_sp(variant.drawable()), pos};
+            });
+    SkSpan<DrawableGlyph> pictures{pictureData.get(), drawables.size()};
+
+    return alloc->makeUnique<DrawableSubRun>(
+            isAntiAliased, strikeToSourceScale, pictures, std::move(pictureData));
+}
+
+GrAtlasSubRun* DrawableSubRun::testingOnly_atlasSubRun() {
+    return nullptr;
+};
+
 // -- GlyphVector ----------------------------------------------------------------------------------
 // GlyphVector provides a way to delay the lookup of GrGlyphs until the code is running on the
 // GPU in single threaded mode. The GlyphVector is created in a multi-threaded environment, but
@@ -1666,6 +1798,15 @@ void GrTextBlob::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawab
                                         &fAlloc));
 }
 
+void GrTextBlob::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                        const SkFont& runFont,
+                                        SkScalar strikeToSourceScale) {
+    fSubRunList.append(DrawableSubRun::Make(drawables,
+                                            has_some_antialiasing(runFont),
+                                            strikeToSourceScale,
+                                            &fAlloc));
+}
+
 void GrTextBlob::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                    sk_sp<SkStrike>&& strike,
                                    SkScalar strikeToSourceScale,
@@ -2476,6 +2617,11 @@ void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPo
     }
 }
 
+void GrSubRunNoCachePainter::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                                    const SkFont& runFont,
+                                                    SkScalar strikeToSourceScale) {
+    //TODO:
+}
 void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                                sk_sp<SkStrike>&& strike,
                                                SkScalar strikeToSourceScale,
@@ -2576,6 +2722,9 @@ public:
             const SkZip<SkGlyphVariant, SkPoint>& drawables, sk_sp<SkStrike>&& strike,
             SkScalar strikeToSourceScale) override;
     void processSourcePaths(
+            const SkZip<SkGlyphVariant, SkPoint>& drawables, const SkFont& runFont,
+            SkScalar strikeToSourceScale) override;
+    void processSourceDrawables(
             const SkZip<SkGlyphVariant, SkPoint>& drawables, const SkFont& runFont,
             SkScalar strikeToSourceScale) override;
     void processSourceSDFT(
@@ -3163,6 +3312,128 @@ void Slug::processSourcePaths(const SkZip<SkGlyphVariant,
                                          has_some_antialiasing(runFont),
                                          strikeToSourceScale,
                                          &fAlloc));
+}
+
+// -- DrawableSubRunSlug ---------------------------------------------------------------------------
+class DrawableSubRunSlug final : public SlugSubRun {
+public:
+    DrawableSubRunSlug(bool isAntiAliased,
+                       SkScalar strikeToSourceScale,
+                       SkSpan<DrawableGlyph> paths,
+                       std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> drawableData);
+
+    void draw(const GrClip* clip,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint& paint,
+              skgpu::v1::SurfaceDrawContext* sdc) const override;
+
+    static SlugSubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                bool isAntiAliased,
+                                SkScalar strikeToSourceScale,
+                                GrSubRunAllocator* alloc);
+
+private:
+
+    const bool fIsAntiAliased;
+    const SkScalar fStrikeToSourceScale;
+    const SkSpan<const DrawableGlyph> fDrawables;
+    const std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> fDrawableData;
+};
+
+DrawableSubRunSlug::DrawableSubRunSlug(
+    bool isAntiAliased,
+    SkScalar strikeToSourceScale,
+    SkSpan<DrawableGlyph> drawables,
+    std::unique_ptr<DrawableGlyph[], GrSubRunAllocator::ArrayDestroyer> drawableData)
+        : fIsAntiAliased{isAntiAliased}
+        , fStrikeToSourceScale{strikeToSourceScale}
+        , fDrawables{drawables}
+        , fDrawableData{std::move(drawableData)} {}
+
+void DrawableSubRunSlug::draw(const GrClip* clip,
+                              const SkMatrixProvider& viewMatrix,
+                              SkPoint drawOrigin,
+                              const SkPaint& paint,
+                              skgpu::v1::SurfaceDrawContext* sdc) const {
+    SkASSERT(!fDrawables.empty());
+    SkPaint runPaint{paint};
+    runPaint.setAntiAlias(fIsAntiAliased);
+    // If there are shaders, blurs or styles, the path must be scaled into source
+    // space independently of the CTM. This allows the CTM to be correct for the
+    // different effects.
+    GrStyle style(runPaint);
+
+    bool needsExactCTM = runPaint.getShader()
+                         || style.applies()
+                         || runPaint.getMaskFilter();
+
+    // Calculate the matrix that maps the path glyphs from their size in the strike to
+    // the graphics source space.
+    SkMatrix strikeToSource = SkMatrix::Scale(fStrikeToSourceScale, fStrikeToSourceScale);
+    strikeToSource.postTranslate(drawOrigin.x(), drawOrigin.y());
+    if (!needsExactCTM) {
+        for (const auto& drawblePos : fDrawables) {
+            const sk_sp<SkDrawable>& drawable = drawblePos.fDrawable;
+            const SkPoint pos = drawblePos.fOrigin;  // Transform the glyph to source space.
+            SkMatrix pathMatrix = strikeToSource;
+            pathMatrix.postTranslate(pos.x(), pos.y());
+            SkPreConcatMatrixProvider strikeToDevice(viewMatrix, pathMatrix);
+
+            (void)drawable;
+            /** TODO
+            GrStyledShape shape(drawable, paint);
+            GrBlurUtils::drawShapeWithMaskFilter(
+                    sdc->recordingContext(), sdc, clip, runPaint, strikeToDevice, shape);
+            */
+        }
+    } else {
+        // Transform the path to device because the deviceMatrix must be unchanged to
+        // draw effect, filter or shader paths.
+        for (const auto& drawblePos : fDrawables) {
+            const sk_sp<SkDrawable>& drawable = drawblePos.fDrawable;
+            const SkPoint pos = drawblePos.fOrigin;
+            // Transform the glyph to source space.
+            SkMatrix pathMatrix = strikeToSource;
+            pathMatrix.postTranslate(pos.x(), pos.y());
+
+            (void)drawable;
+            /** TODO
+            SkPath deviceOutline;
+            path.transform(pathMatrix, &deviceOutline);
+            deviceOutline.setIsVolatile(true);
+            GrStyledShape shape(deviceOutline, paint);
+            GrBlurUtils::drawShapeWithMaskFilter(sdc->recordingContext(), sdc, clip, runPaint,
+                                                 viewMatrix, shape);
+            */
+        }
+    }
+}
+
+SlugSubRunOwner DrawableSubRunSlug::Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
+                                         bool isAntiAliased,
+                                         SkScalar strikeToSourceScale,
+                                         GrSubRunAllocator* alloc) {
+    auto drawableData = alloc->makeUniqueArray<DrawableGlyph>(
+            drawables.size(),
+            [&](int i){
+                auto [variant, pos] = drawables[i];
+                return DrawableGlyph{sk_ref_sp(variant.drawable()), pos};
+            });
+    SkSpan<DrawableGlyph> paths{drawableData.get(), drawables.size()};
+
+    return alloc->makeUnique<DrawableSubRunSlug>(
+            isAntiAliased, strikeToSourceScale, paths, std::move(drawableData));
+}
+
+void Slug::processSourceDrawables(const SkZip<SkGlyphVariant,
+                                  SkPoint>& drawables,
+                                  const SkFont& runFont,
+                                  SkScalar strikeToSourceScale) {
+    fSubRuns.append(DrawableSubRunSlug::Make(drawables,
+                                             has_some_antialiasing(runFont),
+                                             strikeToSourceScale,
+                                             &fAlloc));
 }
 
 // -- SDFTSubRunSlug -------------------------------------------------------------------------------

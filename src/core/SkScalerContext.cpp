@@ -8,6 +8,7 @@
 #include "include/core/SkPaint.h"
 #include "src/core/SkScalerContext.h"
 
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPathEffect.h"
@@ -693,6 +694,11 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
 
 void SkScalerContext::getPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
     this->internalGetPath(glyph, alloc);
+}
+
+sk_sp<SkDrawable> SkScalerContext::getDrawable(SkPackedGlyphID glyphID) {
+    // The TODO
+    return nullptr;
 }
 
 void SkScalerContext::getFontMetrics(SkFontMetrics* fm) {

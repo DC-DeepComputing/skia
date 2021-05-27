@@ -927,6 +927,14 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
     this->drawDevPath(*devPathPtr, *paint, drawCoverage, customBlitter, doFill);
 }
 
+void SkDraw::drawDrawable(const SkDrawable&,
+                          const SkPaint&,
+                          const SkMatrix* preMatrix,
+                          bool drawCoverage,
+                          SkBlitter* customBlitter) const {
+    //TODO:
+}
+
 static bool clipped_out(const SkMatrix& m, const SkRasterClip& c,
                         const SkRect& srcR) {
     SkRect  dstR;

@@ -16,6 +16,8 @@
 
 class SkStrikeForGPU;
 struct SkGlyphPositionRoundingSpec;
+class SkPath;
+class SkDrawable;
 
 // SkSourceGlyphBuffer is the source of glyphs between the different stages of character drawing.
 // It starts with the glyphs and positions from the SkGlyphRun as the first source. When glyphs
@@ -110,6 +112,11 @@ public:
         SkDEBUGCODE(fTag = kPath);
         return *this;
     }
+    SkGlyphVariant& operator= (const SkDrawable* drawable) {
+        fV.drawable = drawable;
+        SkDEBUGCODE(fTag = kDrawable);
+        return *this;
+    }
 
     SkGlyph* glyph() const {
         SkASSERT(fTag == kGlyph);
@@ -119,19 +126,25 @@ public:
         SkASSERT(fTag == kPath);
         return fV.path;
     }
+    const SkDrawable* drawable() const {
+        SkASSERT(fTag == kDrawable);
+        return fV.drawable;
+    }
     SkPackedGlyphID packedID() const {
         SkASSERT(fTag == kPackedID);
         return fV.packedID;
     }
 
-    operator SkPackedGlyphID() const { return this->packedID(); }
-    operator SkGlyph*()        const { return this->glyph();    }
-    operator const SkPath*()   const { return this->path();     }
+    operator SkPackedGlyphID()  const { return this->packedID(); }
+    operator SkGlyph*()         const { return this->glyph();    }
+    operator const SkPath*()    const { return this->path();     }
+    operator const SkDrawable*()const { return this->drawable(); }
 
 private:
     union {
         SkGlyph* glyph;
         const SkPath* path;
+        const SkDrawable* drawable;
         SkPackedGlyphID packedID;
     } fV;
 
@@ -140,7 +153,8 @@ private:
         kEmpty,
         kPackedID,
         kGlyph,
-        kPath
+        kPath,
+        kDrawable,
     } fTag{kEmpty};
 #endif
 };
@@ -190,8 +204,7 @@ public:
         return SkZip<SkGlyphVariant, SkPoint>{fInputSize, fMultiBuffer.get(), fPositions};
     }
 
-    // Store the glyph in the next drawable slot, using the position information located at index
-    // from.
+    // Store glyph in the next drawable slot, using the position information located at index from.
     void push_back(SkGlyph* glyph, size_t from) {
         SkASSERT(fPhase == kProcess);
         SkASSERT(fDrawableSize <= from);
@@ -200,13 +213,21 @@ public:
         fDrawableSize++;
     }
 
-    // Store the path in the next drawable slot, using the position information located at index
-    // from.
+    // Store path in the next drawable slot, using the position information located at index from.
     void push_back(const SkPath* path, size_t from) {
         SkASSERT(fPhase == kProcess);
         SkASSERT(fDrawableSize <= from);
         fPositions[fDrawableSize] = fPositions[from];
         fMultiBuffer[fDrawableSize] = path;
+        fDrawableSize++;
+    }
+
+    // Store pic in the next drawable slot, using the position information located at index from.
+    void push_back(const SkDrawable* picture, size_t from) {
+        SkASSERT(fPhase == kProcess);
+        SkASSERT(fDrawableSize <= from);
+        fPositions[fDrawableSize] = fPositions[from];
+        fMultiBuffer[fDrawableSize] = picture;
         fDrawableSize++;
     }
 
