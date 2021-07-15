@@ -842,7 +842,7 @@ static void push_codec_srcs(Path path) {
         {
             push_image_gen_src(path, ImageGenSrc::kPlatform_Mode, alphaType, false);
         }
-#elif defined(SK_ENABLE_NDK_IMAGES)
+#elif defined(SK_ENABLE_NDK_IMAGES) && __ANDROID_API__ >= 30
         push_image_gen_src(path, ImageGenSrc::kPlatform_Mode, alphaType, false);
 #endif
     }

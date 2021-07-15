@@ -7,11 +7,70 @@
 
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
+#include "include/private/SkOnce.h"
 #include "src/images/SkImageEncoderPriv.h"
 #include "src/ports/SkNDKConversions.h"
 
+#include <dlfcn.h>
+
+namespace {
+// Calling AndroidBitmap_compress directly requires setting __ANDROID_API__ to
+// 30 or higher, which would then require a client to use separate builds for
+// devices with different __ANDROID_API__ levels. Instead, use dlsym to retrieve
+// the desired symbol and gracefully fail if it is missing.
+
+// AndroidBitmap_CompressWriteFunc cannot be used directly here, since we are
+// not defining __ANDROID_API__. Redeclare it with the same signature.
+typedef bool (*CompressWriteFunc)(void* userContext, const void* data, size_t size);
+
+using AndroidBitmap_compress_type = int(*) (const AndroidBitmapInfo* info, int32_t dataspace,
+                                            const void* pixels, int32_t format, int32_t quality,
+                                            void* userContext, CompressWriteFunc fn);
+// A function pointer to AndroidBitmap_compress. It would be clearer to call this
+// "AndroidBitmap_compress", but that would be ambiguous with the actual function declared in
+// <android/bitmap.h>. It could be called from within this anonymous namespace, but not by
+// SkEncodeImageWithNDK, which must be callable from elsewhere.
+AndroidBitmap_compress_type ndk_encode;
+
+struct HandleCloser {
+    void operator() (void* handle) const {
+        if (handle) dlclose(handle);
+    }
+};
+
+using Handle = std::unique_ptr<void, HandleCloser>;
+
+bool init() {
+    static bool initialized = false;
+    static SkOnce initFunction;
+    initFunction([]{
+        const char* libName = "libjnigraphics.so";
+        Handle handle_ (dlopen(libName, RTLD_NOW | RTLD_LOCAL));
+        if (!handle_) {
+            SkDebugf("Failed to open %s\n", libName);
+            return;
+        }
+        ndk_encode = (AndroidBitmap_compress_type)dlsym(handle_.get(), "AndroidBitmap_compress");
+        if (!ndk_encode) {
+            SkDebugf("Failed to find AndroidBitmap_compress!\n");
+            return;
+        }
+
+        // Release the handle without calling dlclose so we can continue to call
+        // ndk_encode without calling dlopen/dlsym again.
+        handle_.release();
+        initialized = true;
+    });
+    return initialized;
+}
+} // Anonymous namespace
+
 bool SkEncodeImageWithNDK(SkWStream* stream, const SkPixmap& pmap, SkEncodedImageFormat format,
                           int quality) {
+    if (!init()) {
+        return false;
+    }
+
     // If any of these values is invalid (e.g. set to zero), the info will be rejected by
     // AndroidBitmap_compress.
     AndroidBitmapInfo info {
@@ -64,7 +123,7 @@ bool SkEncodeImageWithNDK(SkWStream* stream, const SkPixmap& pmap, SkEncodedImag
         return reinterpret_cast<SkWStream*>(userContext)->write(data, size);
     };
 
-    return ANDROID_BITMAP_RESULT_SUCCESS == AndroidBitmap_compress(&info,
+    return ANDROID_BITMAP_RESULT_SUCCESS == ndk_encode(&info,
             SkNDKConversions::toDataSpace(pmap.colorSpace()), pmap.addr(), androidFormat, quality,
             reinterpret_cast<void*>(stream), write_to_stream);
 }

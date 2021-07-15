@@ -949,7 +949,7 @@ Result ImageGenSrc::draw(GrDirectContext*, SkCanvas* canvas) const {
             gen = SkImageGeneratorCG::MakeFromEncodedCG(encoded);
 #elif defined(SK_BUILD_FOR_WIN)
             gen = SkImageGeneratorWIC::MakeFromEncodedWIC(encoded);
-#elif defined(SK_ENABLE_NDK_IMAGES)
+#elif defined(SK_ENABLE_NDK_IMAGES) && __ANDROID_API__ >= 30
             gen = SkImageGeneratorNDK::MakeFromEncodedNDK(encoded);
 #endif
             if (!gen) {
