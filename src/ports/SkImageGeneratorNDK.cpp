@@ -8,16 +8,119 @@
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/ports/SkImageGeneratorNDK.h"
+#include "include/private/SkOnce.h"
 #include "src/ports/SkNDKConversions.h"
 
 #include <android/bitmap.h>
 #include <android/data_space.h>
 #include <android/imagedecoder.h>
 
+#include <dlfcn.h>
+
 namespace {
+
+// Calling NDK decoding APIs directly requires setting __ANDROID_API__ to 30 or
+// higher, which would then require a client to use separate builds for devices
+// with different __ANDROID_API__ levels. Instead, use dlsym to retrieve the
+// desired symbols and gracefully fail if they are missing. Each type is named
+// as <actual method name>_type so a macro can be used to declare and retrieve
+// the symbol.
+using AImageDecoder_createFromBuffer_type = int (*)(const void* buffer, size_t length,
+                                                    AImageDecoder** outDecoder);
+using AImageDecoder_delete_type = void (*)(AImageDecoder* decoder);
+using AImageDecoder_setAndroidBitmapFormat_type = int (*)(AImageDecoder* decoder, int32_t format);
+using AImageDecoder_setUnpremultipliedRequired_type = int (*)(AImageDecoder* decoder,
+                                                              bool unpremultipliedRequired);
+using AImageDecoder_setDataSpace_type = int (*)(AImageDecoder* decoder, int32_t dataspace);
+using AImageDecoder_setTargetSize_type = int (*)(AImageDecoder* decoder, int32_t width,
+                                                 int32_t height);
+using AImageDecoder_computeSampledSize_type = int (*)(const AImageDecoder* decoder, int sampleSize,
+                                                      int32_t* width, int32_t* height);
+using AImageDecoder_getHeaderInfo_type = const AImageDecoderHeaderInfo* (*) (const AImageDecoder*);
+using AImageDecoderHeaderInfo_getMimeType_type = const char* (*)(const AImageDecoderHeaderInfo*);
+using AImageDecoderHeaderInfo_getWidth_type = int32_t (*)(const AImageDecoderHeaderInfo*);
+using AImageDecoderHeaderInfo_getHeight_type = int32_t (*)(const AImageDecoderHeaderInfo*);
+using AImageDecoderHeaderInfo_getAndroidBitmapFormat_type = int32_t (*)
+        (const AImageDecoderHeaderInfo*);
+using AImageDecoderHeaderInfo_getAlphaFlags_type = int (*)(const AImageDecoderHeaderInfo*);
+using AImageDecoderHeaderInfo_getDataSpace_type = int32_t (*)(const AImageDecoderHeaderInfo*);
+using AImageDecoder_decodeImage_type = int (*)(AImageDecoder* decoder, void* pixels, size_t stride,
+                                               size_t size);
+
+#define DECLARE_FUNC(name) \
+    name##_type name;
+
+DECLARE_FUNC(AImageDecoder_createFromBuffer)
+DECLARE_FUNC(AImageDecoder_delete)
+DECLARE_FUNC(AImageDecoder_setAndroidBitmapFormat)
+DECLARE_FUNC(AImageDecoder_setUnpremultipliedRequired)
+DECLARE_FUNC(AImageDecoder_setDataSpace)
+DECLARE_FUNC(AImageDecoder_setTargetSize)
+DECLARE_FUNC(AImageDecoder_computeSampledSize)
+DECLARE_FUNC(AImageDecoder_getHeaderInfo)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getMimeType)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getWidth)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getHeight)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getAndroidBitmapFormat)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getAlphaFlags)
+DECLARE_FUNC(AImageDecoderHeaderInfo_getDataSpace)
+DECLARE_FUNC(AImageDecoder_decodeImage)
+#undef DECLARE_FUNC
+
+struct HandleCloser {
+    void operator() (void* handle) const {
+        if (handle) dlclose(handle);
+    }
+};
+
+using Handle = std::unique_ptr<void, HandleCloser>;
+
+bool init() {
+    static bool initialized = false;
+    static SkOnce initFunctions;
+    initFunctions([]{
+        const char* libName = "libjnigraphics.so";
+        Handle handle_(dlopen(libName, RTLD_NOW | RTLD_LOCAL));
+        if (!handle_) {
+            SkDebugf("Failed to open %s\n", libName);
+            return;
+        }
+
+#define INIT_FUNC(name)                                         \
+        name = (name##_type) dlsym(handle_.get(), #name);       \
+        if (!name) {                                            \
+            SkDebugf("Failed to find function %s!\n", #name);   \
+            return;                                             \
+        }
+
+        INIT_FUNC(AImageDecoder_createFromBuffer)
+        INIT_FUNC(AImageDecoder_delete)
+        INIT_FUNC(AImageDecoder_setAndroidBitmapFormat)
+        INIT_FUNC(AImageDecoder_setUnpremultipliedRequired)
+        INIT_FUNC(AImageDecoder_setDataSpace)
+        INIT_FUNC(AImageDecoder_setTargetSize)
+        INIT_FUNC(AImageDecoder_computeSampledSize)
+        INIT_FUNC(AImageDecoder_getHeaderInfo)
+        INIT_FUNC(AImageDecoderHeaderInfo_getMimeType)
+        INIT_FUNC(AImageDecoderHeaderInfo_getWidth)
+        INIT_FUNC(AImageDecoderHeaderInfo_getHeight)
+        INIT_FUNC(AImageDecoderHeaderInfo_getAndroidBitmapFormat)
+        INIT_FUNC(AImageDecoderHeaderInfo_getAlphaFlags)
+        INIT_FUNC(AImageDecoderHeaderInfo_getDataSpace)
+        INIT_FUNC(AImageDecoder_decodeImage)
+#undef INIT_FUNC
+
+        // Release the handle without calling dlclose so we can continue to call
+        // these functions without calling dlopen/dlsym again.
+        handle_.release();
+        initialized = true;
+    });
+    return initialized;
+}
+
 class ImageGeneratorNDK : public SkImageGenerator {
 public:
-    ImageGeneratorNDK(const SkImageInfo&, sk_sp<SkData>, AImageDecoder*);
+    static std::unique_ptr<SkImageGenerator> MakeFromEncoded(sk_sp<SkData> data);
     ~ImageGeneratorNDK() override;
 
 protected:
@@ -36,21 +139,21 @@ private:
     // to recreate the AImageDecoder.
     bool           fPreviouslySetADataSpace;
 
+    ImageGeneratorNDK(const SkImageInfo&, sk_sp<SkData>, AImageDecoder*);
+
     using INHERITED = SkImageGenerator;
 };
 
-} // anonymous namespace
-
-static bool ok(int result) {
+bool ok(int result) {
     return result == ANDROID_IMAGE_DECODER_SUCCESS;
 }
 
-static bool set_android_bitmap_format(AImageDecoder* decoder, SkColorType colorType) {
+bool set_android_bitmap_format(AImageDecoder* decoder, SkColorType colorType) {
     auto format = SkNDKConversions::toAndroidBitmapFormat(colorType);
     return ok(AImageDecoder_setAndroidBitmapFormat(decoder, format));
 }
 
-static SkColorType colorType(AImageDecoder* decoder, const AImageDecoderHeaderInfo* headerInfo) {
+SkColorType colorType(AImageDecoder* decoder, const AImageDecoderHeaderInfo* headerInfo) {
     // AImageDecoder never defaults to gray, but allows setting it if the image is 8 bit gray.
     if (set_android_bitmap_format(decoder, kGray_8_SkColorType)) {
         return kGray_8_SkColorType;
@@ -61,7 +164,7 @@ static SkColorType colorType(AImageDecoder* decoder, const AImageDecoderHeaderIn
     return SkNDKConversions::toColorType(format);
 }
 
-static sk_sp<SkColorSpace> get_default_colorSpace(const AImageDecoderHeaderInfo* headerInfo) {
+sk_sp<SkColorSpace> get_default_colorSpace(const AImageDecoderHeaderInfo* headerInfo) {
     auto dataSpace = static_cast<ADataSpace>(AImageDecoderHeaderInfo_getDataSpace(headerInfo));
     if (auto cs = SkNDKConversions::toColorSpace(dataSpace)) {
         return cs;
@@ -70,7 +173,9 @@ static sk_sp<SkColorSpace> get_default_colorSpace(const AImageDecoderHeaderInfo*
     return SkColorSpace::MakeSRGB();
 }
 
-std::unique_ptr<SkImageGenerator> SkImageGeneratorNDK::MakeFromEncodedNDK(sk_sp<SkData> data) {
+std::unique_ptr<SkImageGenerator> ImageGeneratorNDK::MakeFromEncoded(sk_sp<SkData> data) {
+    if (!init()) return nullptr;
+
     if (!data) return nullptr;
 
     AImageDecoder* rawDecoder;
@@ -106,7 +211,7 @@ ImageGeneratorNDK::~ImageGeneratorNDK() {
     AImageDecoder_delete(fDecoder);
 }
 
-static bool set_target_size(AImageDecoder* decoder, const SkISize& size, const SkISize targetSize) {
+bool set_target_size(AImageDecoder* decoder, const SkISize& size, const SkISize targetSize) {
     if (size != targetSize) {
         // AImageDecoder will scale to arbitrary sizes. Only support a size if it's supported by the
         // underlying library.
@@ -219,4 +324,10 @@ bool ImageGeneratorNDK::onGetPixels(const SkImageInfo& info, void* pixels, size_
 
 sk_sp<SkData> ImageGeneratorNDK::onRefEncodedData() {
     return fData;
+}
+
+} // anonymous namespace
+
+std::unique_ptr<SkImageGenerator> SkImageGeneratorNDK::MakeFromEncodedNDK(sk_sp<SkData> data) {
+    return ImageGeneratorNDK::MakeFromEncoded(std::move(data));
 }

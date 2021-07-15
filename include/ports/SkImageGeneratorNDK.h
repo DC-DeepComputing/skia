@@ -20,7 +20,8 @@ namespace SkImageGeneratorNDK {
 /**
  *  Create a generator that uses the Android NDK's APIs for decoding images.
  *
- *  Only supported on devices where __ANDROID_API__ >= 30.
+ *  Only supported on devices where __ANDROID_API__ >= 30; otherwise, this
+ *  returns nullptr.
  *
  *  As with SkCodec, the SkColorSpace passed to getPixels() determines the
  *  type of color space transformations to apply. A null SkColorSpace means to

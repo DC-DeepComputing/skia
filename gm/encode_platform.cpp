@@ -25,7 +25,7 @@
 #include "tools/Resources.h"
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS) || defined(SK_BUILD_FOR_WIN) \
- || defined(SK_ENABLE_NDK_IMAGES)
+ || (defined(SK_ENABLE_NDK_IMAGES) && __ANDROID_API__ >= 30)
 #include "src/images/SkImageEncoderPriv.h"
 #endif
 
@@ -70,7 +70,7 @@ static sk_sp<SkData> encode_data(SkEncodedImageFormat type, const SkBitmap& bitm
         return SkEncodeImageWithCG(&buf, src, type) ? buf.detachAsData() : nullptr;
     #elif defined(SK_BUILD_FOR_WIN)
         return SkEncodeImageWithWIC(&buf, src, type, quality) ? buf.detachAsData() : nullptr;
-    #elif defined(SK_ENABLE_NDK_IMAGES)
+    #elif defined(SK_ENABLE_NDK_IMAGES) && __ANDROID_API__ >= 30
         return SkEncodeImageWithNDK(&buf, src, type, quality) ? buf.detachAsData() : nullptr;
     #else
         switch (type) {
