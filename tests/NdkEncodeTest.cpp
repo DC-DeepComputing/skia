@@ -52,7 +52,12 @@ DEF_TEST(NdkEncode, r) {
         for (const auto& rec : gRecs) {
             auto encoded = encode_ndk(bm.pixmap(), rec.format, rec.quality);
             if (!encoded) {
+                // Silently fail on devices older than Android 11, which do not have the
+                // necessary APIs. Report an error if __ANDROID_API__ is set to Android
+                // 11 or higher, when the APIs should be available.
+#if __ANDROID_API__ >= 30
                 ERRORF(r, "Failed to encode %s to %s\n", ToolUtils::colortype_name(ct), rec.name);
+#endif
                 continue;
             }
             auto gen = SkImageGenerator::MakeFromEncoded(std::move(encoded));
@@ -285,7 +290,15 @@ DEF_TEST(NdkEncode_ColorSpace, r) {
 
             for (const auto& rec : gRecs) {
                 auto encoded = encode_ndk(bm.pixmap(), rec.format, rec.quality);
-                REPORTER_ASSERT(r, encoded);
+                if (!encoded) {
+                    // Silently fail on devices older than Android 11, which do not have the
+                    // necessary APIs. Report an error if __ANDROID_API__ is set to Android
+                    // 11 or higher, when the APIs should be available.
+#if __ANDROID_API__ >= 30
+                    ERRORF(r, "Failed to use NDK to encode pixmap with %s", colorSpace.name);
+#endif
+                    continue;
+                }
                 auto gen = SkImageGenerator::MakeFromEncoded(std::move(encoded));
                 REPORTER_ASSERT(r, gen);
 

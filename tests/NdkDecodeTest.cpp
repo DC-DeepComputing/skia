@@ -21,7 +21,13 @@ static std::unique_ptr<SkImageGenerator> make_generator(const char* path, skiate
         if (gen) {
             return gen;
         }
+
+        // Silently fail on devices older than Android 11, which do not have the
+        // necessary APIs. Report an error if __ANDROID_API__ is set to Android
+        // 11 or higher, when the APIs should be available.
+#if __ANDROID_API__ >= 30
         ERRORF(r, "Failed to create NDK generator from %s\n", path);
+#endif
     } else {
         // Silently fail so developers can skip using --resources
     }
@@ -94,7 +100,12 @@ DEF_TEST(NdkDecode_reportedColorSpace, r) {
             auto data = SkEncodeBitmap(bm, format, 80);
             auto gen = SkImageGeneratorNDK::MakeFromEncodedNDK(std::move(data));
             if (!gen) {
+                // Silently fail on devices older than Android 11, which do not have the
+                // necessary APIs. Report an error if __ANDROID_API__ is set to Android
+                // 11 or higher, when the APIs should be available.
+#if __ANDROID_API__ >= 30
                 ERRORF(r, "Failed to encode!");
+#endif
                 return;
             }
 
