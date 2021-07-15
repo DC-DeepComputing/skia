@@ -1027,7 +1027,6 @@ optional("ndk_images") {
     "src/ports/SkImageGeneratorNDK.cpp",
     "src/ports/SkNDKConversions.cpp",
   ]
-  libs = [ "jnigraphics" ]
 }
 
 optional("pdf") {
