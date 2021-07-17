@@ -257,6 +257,7 @@ static void fill_triangle_3(const VertState& state, SkBlitter* blitter, const Sk
         }
     }
 }
+
 static void fill_triangle(const VertState& state, SkBlitter* blitter, const SkRasterClip& rc,
                           const SkPoint dev2[], const SkPoint3 dev3[]) {
     if (dev3) {
@@ -426,6 +427,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
     }
 
     {
+        SkShader* shader = paint.getShader();
         // No colors are changing and no texture coordinates are changing, so no updates between
         // triangles are needed. Use SkVM to blit the triangles.
         if (!colors) {
@@ -434,6 +436,26 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
                         fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
                     while (vertProc(&state)) {
                         fill_triangle(state, blitter, *fRC, dev2, dev3);
+                    }
+                    return;
+                }
+            } else {
+                auto texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
+                SkPaint shaderPaint{paint};
+                shaderPaint.setShader(sk_ref_sp(texCoordShader));
+                if (auto blitter = SkVMBlitter::Make(
+                        fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                    auto updater = [&](skvm::Uniforms* uniforms) {
+                        SkMatrix localM;
+                        if (texture_to_matrix(state, positions, texCoords, &localM)) {
+                            return texCoordShader->update(SkMatrix::Concat(ctm, localM), uniforms);
+                        }
+                        return false;
+                    };
+                    while (vertProc(&state)) {
+                        if (blitter->updateUniforms(updater)) {
+                            fill_triangle(state, blitter, *fRC, dev2, dev3);
+                        }
                     }
                     return;
                 }

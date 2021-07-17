@@ -518,6 +518,7 @@ namespace skvm {
         Ptr ptr;
         int offset;
     };
+
     struct Uniforms {
         Ptr              base;
         std::vector<int> buf;
