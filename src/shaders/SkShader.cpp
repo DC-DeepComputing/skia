@@ -135,6 +135,93 @@ sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
     return nullptr;
 }
 
+class SkTexCoordShader : public SkUpdatableShader {
+public:
+    explicit SkTexCoordShader(const SkShaderBase& shader) : fShader{shader} {}
+
+    skvm::Color onProgram(skvm::Builder* b,
+                          skvm::Coord device, skvm::Coord local, skvm::Color color,
+                          const SkMatrixProvider& matrices, const SkMatrix* localM,
+                          const SkColorInfo& dst,
+                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        skvm::Coord newLocal = this->applyMatrix(b, matrices.localToDevice(), local, uniforms);
+        SkSimpleMatrixProvider matrixProvider{SkMatrix::I()};
+        return fShader.program(
+                b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+    }
+
+    skvm::Coord applyMatrix(
+            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+            skvm::Uniforms* uniforms) const {
+
+        // Capture the uniforms coming in.
+        if (fUniforms == nullptr) {
+            fUniforms = uniforms;
+        } else {
+            SkASSERT(fUniforms == uniforms);
+        }
+
+        for (auto& u : fMatrix) {
+            u = uniforms->pushF(0);
+        }
+
+        skvm::F32 x = local.x,
+                  y = local.y;
+
+        auto dot = [&,x,y](int row) {
+            return b->mad(x, b->uniformF(fMatrix[3*row+0]),
+                          b->mad(y, b->uniformF(fMatrix[3*row+1]),
+                                 b->uniformF(fMatrix[3*row+2])));
+        };
+
+        x = dot(0);
+        y = dot(1);
+        if (matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective()) {
+            x = x * (1.0f / dot(2));
+            y = y * (1.0f / dot(2));
+        }
+
+        return {x, y};
+    }
+
+    bool update(const SkMatrix& ctm, const SkMatrix* localM) const override {
+        SkMatrix matrix;
+        if (this->computeTotalInverse(ctm, localM, &matrix)) {
+            for (int i = 0; i < 9; ++i) {
+                fUniforms->setF(fMatrix[i], matrix[i]);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    bool onAppendStages(const SkStageRec& rec) const override {
+        // TODO
+        return false;
+    }
+
+private:
+    // For serialization.  This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return nullptr; }
+
+    const SkShaderBase& fShader;
+    mutable skvm::Uniforms* fUniforms{nullptr};
+    mutable skvm::Uniform fMatrix[9];
+};
+
+SkUpdatableShader* SkShaderBase::updatableShader(SkArenaAlloc* alloc) const {
+    if (auto updatable = this->onUpdatableShader(alloc)) {
+        return updatable;
+    }
+
+    return alloc->make<SkTexCoordShader>(*as_SB(this));
+}
+
+SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
+    return nullptr;
+}
+
 sk_sp<SkShader> SkShaders::Empty() { return sk_make_sp<SkEmptyShader>(); }
 sk_sp<SkShader> SkShaders::Color(SkColor color) { return sk_make_sp<SkColorShader>(color); }
 

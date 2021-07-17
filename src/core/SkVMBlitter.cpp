@@ -613,7 +613,6 @@ namespace {
             : fDevice(device)
             , fSprite(sprite ? *sprite : SkPixmap{})
             , fSpriteOffset(spriteOffset)
-            , fUniforms(skvm::Ptr{0}, kBlitterUniformsCount)
             , fParams(effective_params(device, sprite, paint, matrices, std::move(clip)))
             , fKey(cache_key(fParams, &fUniforms, &fAlloc, ok))
         {}
@@ -639,8 +638,8 @@ namespace {
         SkPixmap        fDevice;
         const SkPixmap  fSprite;                  // See isSprite().
         const SkIPoint  fSpriteOffset;
-        skvm::Uniforms  fUniforms;                // Most data is copied directly into fUniforms,
-        SkArenaAlloc    fAlloc{2*sizeof(void*)};  // but a few effects need to ref large content.
+        skvm::Uniforms  fUniforms{skvm::Ptr{0}, kBlitterUniformsCount}; // Most data is in fUniforms,
+        SkArenaAlloc    fAlloc{2*sizeof(void*)};     // but a few effects need to ref large content.
         const Params    fParams;
         const Key       fKey;
         skvm::Program   fBlitH,
@@ -663,16 +662,12 @@ namespace {
                     return p;
                 }
             }
-            // We don't really _need_ to rebuild fUniforms here.
-            // It's just more natural to have effects unconditionally emit them,
-            // and more natural to rebuild fUniforms than to emit them into a temporary buffer.
-            // fUniforms should reuse the exact same memory, so this is very cheap.
-            SkDEBUGCODE(size_t prev = fUniforms.buf.size();)
-            fUniforms.buf.resize(kBlitterUniformsCount);
+
+            fUniforms.resize(kBlitterUniformsCount);
             skvm::Builder builder;
             build_program(&builder, fParams.withCoverage(coverage), &fUniforms, &fAlloc);
-            SkASSERTF(fUniforms.buf.size() == prev,
-                      "%zu, prev was %zu", fUniforms.buf.size(), prev);
+            SkASSERTF(fUniforms.buf.size() == fUniforms.end,
+                      "%zu, prev was %zu", fUniforms.buf.size(), fUniforms.end);
 
             skvm::Program program = builder.done(debug_name(key).c_str());
             if (false) {
