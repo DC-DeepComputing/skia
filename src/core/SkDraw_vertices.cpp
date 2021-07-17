@@ -255,6 +255,7 @@ static void fill_triangle_3(const VertState& state, SkBlitter* blitter, const Sk
         }
     }
 }
+
 static void fill_triangle(const VertState& state, SkBlitter* blitter, const SkRasterClip& rc,
                           const SkPoint dev2[], const SkPoint3 dev3[]) {
     if (dev3) {
@@ -308,13 +309,34 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
     VertState::Proc vertProc = state.chooseProc(info.mode());
     // No colors are changing and no texture coordinates are changing, so no updates between
     // triangles are needed. Use SkVM to blit the triangles.
-    if (!colors && (!texCoords || texCoords == positions)) {
-        if (auto blitter = SkVMBlitter::Make(
-                fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
-            while (vertProc(&state)) {
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
+    SkMatrix ctm = fMatrixProvider->localToDevice();
+    if (!colors) {
+        if (!texCoords || texCoords == positions) {
+            if (auto blitter = SkVMBlitter::Make(
+                    fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                while (vertProc(&state)) {
+                    fill_triangle(state, blitter, *fRC, dev2, dev3);
+                }
+                return;
             }
-            return;
+        } else {
+            auto texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
+            SkPaint shaderPaint{paint};
+            shaderPaint.setShader(sk_ref_sp(texCoordShader));
+            if (auto blitter = SkVMBlitter::Make(
+                    fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                while (vertProc(&state)) {
+                    SkMatrix localM;
+                    auto updater = [&](skvm::Uniforms* uniforms) {
+                        return texCoordShader->update(ctm, &localM, uniforms);
+                    };
+                    if (texture_to_matrix(state, positions, texCoords, &localM) &&
+                            blitter->updateUniforms(updater)) {
+                        fill_triangle(state, blitter, *fRC, dev2, dev3);
+                    }
+                }
+                return;
+            }
         }
     }
 
@@ -326,7 +348,6 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
 
         To be safe, we just make that determination here, and pass it into the tricolorshader.
      */
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     const bool usePerspective = ctm.hasPerspective();
 
     SkTriColorShader* triShader = nullptr;
