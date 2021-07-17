@@ -736,11 +736,102 @@ SkStageUpdater* SkImageShader::onAppendUpdatableStages(const SkStageRec& rec) co
     return this->doStages(rec, updater) ? updater : nullptr;
 }
 
-skvm::Color SkImageShader::onProgram(skvm::Builder* p,
+class SkImageShader::TexCoordShader : public SkUpdatableShader {
+public:
+    TexCoordShader(const SkImageShader& shader, skvm::Uniforms* uniforms)
+            : fShader{shader}
+            , fUniforms{uniforms} {}
+
+    skvm::Color onProgram(skvm::Builder* b,
+                          skvm::Coord device, skvm::Coord local, skvm::Color color,
+                          const SkMatrixProvider& matrices, const SkMatrix* localM,
+                          const SkColorInfo& dst,
+                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        return fShader.makeProgram(
+                b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
+    }
+
+    skvm::Coord applyMatrix(
+            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+            skvm::Uniforms* uniforms) const {
+
+        // The Uniforms that is passed in to make the blitter is the shared uniforms; all
+        // others are place holder Uniforms for jitting the various blitting routines.
+        SkMatrix m = SkMatrix::I();
+        if (uniforms == fUniforms) {
+            for (int i = 0; i < 9; ++i) {
+                fMatrix[i] = uniforms->pushF(m[i]);
+            }
+        } else {
+            for (int i = 0; i < 9; ++i) {
+                uniforms->pushF(m[i]);
+            }
+        }
+
+        skvm::F32 x = local.x,
+                  y = local.y;
+
+        auto dot = [&,x,y](int row) {
+            return b->mad(x, b->uniformF(fMatrix[3*row+0]),
+                          b->mad(y, b->uniformF(fMatrix[3*row+1]),
+                                 b->uniformF(fMatrix[3*row+2])));
+        };
+
+        x = dot(0);
+        y = dot(1);
+        if (matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective()) {
+            x = x * (1.0f / dot(2));
+            y = y * (1.0f / dot(2));
+        }
+
+        return {x, y};
+    }
+
+    bool update(const SkMatrix& ctm, const SkMatrix* localM) const override {
+        SkMatrix matrix;
+        if (this->computeTotalInverse(ctm, localM, &matrix)) {
+            for (int i = 0; i < 9; ++i) {
+                fUniforms->setF(fMatrix[i], matrix[i]);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    bool onAppendStages(const SkStageRec& rec) const override {
+        // TODO
+        return false;
+    }
+
+private:
+    // For serialization.  This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return nullptr; }
+
+    const SkImageShader& fShader;
+    skvm::Uniforms* const fUniforms;
+    mutable skvm::Uniform fMatrix[9];
+};
+
+SkUpdatableShader* SkImageShader::onUpdatableShader(
+        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    return alloc->make<TexCoordShader>(*this, uniforms);
+}
+
+skvm::Color SkImageShader::onProgram(skvm::Builder* b,
                                      skvm::Coord device, skvm::Coord origLocal, skvm::Color paint,
                                      const SkMatrixProvider& matrices, const SkMatrix* localM,
                                      const SkColorInfo& dst,
                                      skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    return this->makeProgram(
+            b, device, origLocal, paint, matrices, localM, dst, uniforms, nullptr, alloc);
+}
+
+skvm::Color SkImageShader::makeProgram(
+        skvm::Builder* p, skvm::Coord device, skvm::Coord origLocal, skvm::Color paint,
+        const SkMatrixProvider& matrices, const SkMatrix* localM, const SkColorInfo& dst,
+        skvm::Uniforms* uniforms, const TexCoordShader* coordShader, SkArenaAlloc* alloc) const {
+
     SkMatrix baseInv;
     if (!this->computeTotalInverse(matrices.localToDevice(), localM, &baseInv)) {
         return {};
@@ -770,7 +861,12 @@ skvm::Color SkImageShader::onProgram(skvm::Builder* p,
         lower = &lowerPixmap;
     }
 
-    skvm::Coord upperLocal = SkShaderBase::ApplyMatrix(p, upperInv, origLocal, uniforms);
+    skvm::Coord upperLocal;
+    if (coordShader != nullptr) {
+        upperLocal = coordShader->applyMatrix(p, upperInv, origLocal, uniforms);
+    } else {
+        upperLocal = SkShaderBase::ApplyMatrix(p, upperInv, origLocal, uniforms);
+    }
 
     // We can exploit image opacity to skip work unpacking alpha channels.
     const bool input_is_opaque = SkAlphaTypeIsOpaque(upper.alphaType())
