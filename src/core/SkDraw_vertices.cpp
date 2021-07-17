@@ -23,6 +23,8 @@
 #include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
 
+extern bool gUseSkVMBlitter;
+
 struct Matrix43 {
     float fMat[12];    // column major
 
@@ -255,6 +257,7 @@ static void fill_triangle_3(const VertState& state, SkBlitter* blitter, const Sk
         }
     }
 }
+
 static void fill_triangle(const VertState& state, SkBlitter* blitter, const SkRasterClip& rc,
                           const SkPoint dev2[], const SkPoint3 dev3[]) {
     if (dev3) {
@@ -306,126 +309,155 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
 
     VertState       state(vertexCount, indices, indexCount);
     VertState::Proc vertProc = state.chooseProc(info.mode());
-    // No colors are changing and no texture coordinates are changing, so no updates between
-    // triangles are needed. Use SkVM to blit the triangles.
-    if (!colors && (!texCoords || texCoords == positions)) {
-        if (auto blitter = SkVMBlitter::Make(
-                fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
-            while (vertProc(&state)) {
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
+    SkMatrix ctm = fMatrixProvider->localToDevice();
+    if (!gUseSkVMBlitter) {
+        // We need to know if we have perspective or not, so we can know what stage(s) we will need,
+        // and how to prep our "uniforms" before each triangle in the tricolorshader.
+        //
+        // We could just check the matrix on each triangle to decide, but we have to be sure to
+        // always make the same decision, since we create 1 or 2 stages only once for the entire
+        // patch.
+        //
+        // To be safe, we just make that determination here, and pass it into the tricolorshader.
+        const bool usePerspective = ctm.hasPerspective();
+
+        SkTriColorShader* triShader = nullptr;
+        SkPMColor4f*  dstColors = nullptr;
+
+        if (colors) {
+            dstColors = convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc);
+            triShader = outerAlloc->make<SkTriColorShader>(compute_is_opaque(colors, vertexCount),
+                                                          usePerspective);
+            if (shader) {
+                shader = outerAlloc->make<SkShader_Blend>(blendMode,
+                                                          sk_ref_sp(triShader), sk_ref_sp(shader));
+            } else {
+                shader = triShader;
+            }
+        }
+
+        SkPaint shaderPaint(paint);
+        shaderPaint.setShader(sk_ref_sp(shader));
+
+        if (!texCoords) {    // only tricolor shader
+            if (auto blitter = SkCreateRasterPipelineBlitter(
+                    fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                while (vertProc(&state)) {
+                    if (triShader &&
+                        !triShader->update(ctmInverse, positions, dstColors,
+                                           state.f0, state.f1, state.f2)) {
+                        continue;
+                    }
+                    fill_triangle(state, blitter, *fRC, dev2, dev3);
+                }
             }
             return;
         }
-    }
 
-    /*  We need to know if we have perspective or not, so we can know what stage(s) we will need,
-        and how to prep our "uniforms" before each triangle in the tricolorshader.
+        SkRasterPipeline pipeline(outerAlloc);
+        SkStageRec rec = {
+                &pipeline,
+                outerAlloc,
+                fDst.colorType(),
+                fDst.colorSpace(),
+                shaderPaint,
+                nullptr,
+                *fMatrixProvider
+        };
+        if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
+            bool isOpaque = shader->isOpaque();
+            if (triShader) {
+                isOpaque = false;   // unless we want to walk all the colors, and see if they are
+                                    // all opaque (and the blend mode will keep them that way
+            }
 
-        We could just check the matrix on each triangle to decide, but we have to be sure to always
-        make the same decision, since we create 1 or 2 stages only once for the entire patch.
-
-        To be safe, we just make that determination here, and pass it into the tricolorshader.
-     */
-    SkMatrix ctm = fMatrixProvider->localToDevice();
-    const bool usePerspective = ctm.hasPerspective();
-
-    SkTriColorShader* triShader = nullptr;
-    SkPMColor4f*  dstColors = nullptr;
-
-    if (colors) {
-        dstColors = convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc);
-        triShader = outerAlloc->make<SkTriColorShader>(compute_is_opaque(colors, vertexCount),
-                                                      usePerspective);
-        if (shader) {
-            shader = outerAlloc->make<SkShader_Blend>(blendMode,
-                                                      sk_ref_sp(triShader), sk_ref_sp(shader));
-        } else {
-            shader = triShader;
-        }
-    }
-
-    SkPaint shaderPaint(paint);
-    shaderPaint.setShader(sk_ref_sp(shader));
-
-    if (!texCoords) {    // only tricolor shader
-        if (auto blitter = SkCreateRasterPipelineBlitter(
-                fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
-            while (vertProc(&state)) {
-                if (triShader &&
-                    !triShader->update(ctmInverse, positions, dstColors,
-                                       state.f0, state.f1, state.f2)) {
-                    continue;
+            // Positions as texCoords? The local matrix is always identity, so update once
+            if (texCoords == positions) {
+                SkMatrix localM;
+                if (!updater->update(ctm, &localM)) {
+                    return;
                 }
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
             }
-        }
-        return;
-    }
 
-    SkRasterPipeline pipeline(outerAlloc);
-    SkStageRec rec = {
-            &pipeline,
-            outerAlloc,
-            fDst.colorType(),
-            fDst.colorSpace(),
-            shaderPaint,
-            nullptr,
-            *fMatrixProvider
-    };
-    if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
-        bool isOpaque = shader->isOpaque();
-        if (triShader) {
-            isOpaque = false;   // unless we want to walk all the colors, and see if they are
-                                // all opaque (and the blend mode will keep them that way
-        }
+            if (auto blitter = SkCreateRasterPipelineBlitter(
+                    fDst, shaderPaint, pipeline, isOpaque, outerAlloc, fRC->clipShader())) {
+                while (vertProc(&state)) {
+                    if (triShader && !triShader->update(ctmInverse, positions, dstColors,
+                                                        state.f0, state.f1, state.f2)) {
+                        continue;
+                    }
 
-        // Positions as texCoords? The local matrix is always identity, so update once
-        if (texCoords == positions) {
-            SkMatrix localM;
-            if (!updater->update(ctm, &localM)) {
-                return;
+                    SkMatrix localM;
+                    if ((texCoords == positions) ||
+                        (texture_to_matrix(state, positions, texCoords, &localM) &&
+                         updater->update(ctm, &localM))) {
+                        fill_triangle(state, blitter, *fRC, dev2, dev3);
+                    }
+                }
             }
-        }
-
-        if (auto blitter = SkCreateRasterPipelineBlitter(
-                fDst, shaderPaint, pipeline, isOpaque, outerAlloc, fRC->clipShader())) {
+            return;
+        } else {
+            // must rebuild pipeline for each triangle, to pass in the computed ctm
             while (vertProc(&state)) {
                 if (triShader && !triShader->update(ctmInverse, positions, dstColors,
                                                     state.f0, state.f1, state.f2)) {
                     continue;
                 }
 
-                SkMatrix localM;
-                if ((texCoords == positions) ||
-                    (texture_to_matrix(state, positions, texCoords, &localM) &&
-                     updater->update(ctm, &localM))) {
+                SkSTArenaAlloc<2048> innerAlloc;
+
+                const SkMatrixProvider* matrixProvider = fMatrixProvider;
+                SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
+                if (texCoords && (texCoords != positions)) {
+                    SkMatrix localM;
+                    if (!texture_to_matrix(state, positions, texCoords, &localM)) {
+                        continue;
+                    }
+                    matrixProvider = preConcatMatrixProvider.init(*matrixProvider, localM);
+                }
+
+                // TODO: we should make it so that if this fails, then it falls through to SkVM
+                //  drawing.
+                if (auto blitter = SkCreateRasterPipelineBlitter(
+                        fDst, shaderPaint, *matrixProvider, &innerAlloc, this->fRC->clipShader())) {
                     fill_triangle(state, blitter, *fRC, dev2, dev3);
                 }
             }
+            return;
         }
-    } else {
-        // must rebuild pipeline for each triangle, to pass in the computed ctm
-        while (vertProc(&state)) {
-            if (triShader && !triShader->update(ctmInverse, positions, dstColors,
-                                                state.f0, state.f1, state.f2)) {
-                continue;
-            }
+    }
 
-            SkSTArenaAlloc<2048> innerAlloc;
-
-            const SkMatrixProvider* matrixProvider = fMatrixProvider;
-            SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
-            if (texCoords && (texCoords != positions)) {
-                SkMatrix localM;
-                if (!texture_to_matrix(state, positions, texCoords, &localM)) {
-                    continue;
+    {
+        SkShader* shader = paint.getShader();
+        // No colors are changing and no texture coordinates are changing, so no updates between
+        // triangles are needed. Use SkVM to blit the triangles.
+        if (!colors) {
+            if (!texCoords || texCoords == positions) {
+                if (auto blitter = SkVMBlitter::Make(
+                        fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                    while (vertProc(&state)) {
+                        fill_triangle(state, blitter, *fRC, dev2, dev3);
+                    }
+                    return;
                 }
-                matrixProvider = preConcatMatrixProvider.init(*matrixProvider, localM);
-            }
-
-            if (auto blitter = SkCreateRasterPipelineBlitter(
-                    fDst, shaderPaint, *matrixProvider, &innerAlloc, this->fRC->clipShader())) {
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
+            } else {
+                auto texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
+                SkPaint shaderPaint{paint};
+                shaderPaint.setShader(sk_ref_sp(texCoordShader));
+                if (auto blitter = SkVMBlitter::Make(
+                        fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
+                    while (vertProc(&state)) {
+                        SkMatrix localM;
+                        auto updater = [&](skvm::Uniforms* uniforms) {
+                            return texCoordShader->update(ctm, &localM, uniforms);
+                        };
+                        if (texture_to_matrix(state, positions, texCoords, &localM) &&
+                            blitter->updateUniforms(updater)) {
+                            fill_triangle(state, blitter, *fRC, dev2, dev3);
+                        }
+                    }
+                    return;
+                }
             }
         }
     }

@@ -556,8 +556,7 @@ SkVMBlitter::SkVMBlitter(const SkPixmap& device,
                          bool* ok)
         : fDevice(device), fSprite(sprite ? *sprite : SkPixmap{})
         , fSpriteOffset(spriteOffset)
-        , fUniforms(skvm::Ptr{0}
-        , kBlitterUniformsCount)
+        , fUniforms(skvm::Ptr{0}, kBlitterUniformsCount)
         , fParams(EffectiveParams(device, sprite, paint, matrices, std::move(clip)))
         , fKey(CacheKey(fParams, &fUniforms, &fAlloc, ok)) {}
 
@@ -618,14 +617,12 @@ skvm::Program SkVMBlitter::buildProgram(Coverage coverage) {
             return p;
         }
     }
-    // We don't really _need_ to rebuild fUniforms here.
-    // It's just more natural to have effects unconditionally emit them,
-    // and more natural to rebuild fUniforms than to emit them into a temporary buffer.
-    // fUniforms should reuse the exact same memory, so this is very cheap.
     SkDEBUGCODE(size_t prev = fUniforms.buf.size();)
-    fUniforms.buf.resize(kBlitterUniformsCount);
+    fUniforms.resize(kBlitterUniformsCount);
     skvm::Builder builder;
     BuildProgram(&builder, fParams.withCoverage(coverage), &fUniforms, &fAlloc);
+    SkASSERTF(fUniforms.buf.size() == fUniforms.end,
+              "%zu, prev was %zu", fUniforms.buf.size(), fUniforms.end);
     SkASSERTF(fUniforms.buf.size() == prev,
               "%zu, prev was %zu", fUniforms.buf.size(), prev);
 
