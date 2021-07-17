@@ -518,15 +518,36 @@ namespace skvm {
         Ptr ptr;
         int offset;
     };
+
     struct Uniforms {
         Ptr              base;
         std::vector<int> buf;
+        size_t           end{0};
 
-        Uniforms(Ptr ptr, int init) : base(ptr), buf(init) {}
+        Uniforms(Ptr ptr, int init) : base(ptr), buf(init), end(init) {}
+
+        void resize(int n) {
+            end = n;
+        }
 
         Uniform push(int val) {
-            buf.push_back(val);
-            return {base, (int)( sizeof(int)*(buf.size() - 1) )};
+            if (end == buf.size()) {
+                buf.push_back(val);
+            }
+            end++;
+            return {base, (int)( sizeof(int)*(end - 1) )};
+        }
+
+        Uniform allocateUniform() {
+            return push(0);
+        }
+
+        void setF(Uniform uniform, float val) {
+            size_t index = SkTo<size_t>(uniform.offset) / sizeof(int);
+            SkASSERT(index < buf.size());
+            int bits;
+            memcpy(&bits, &val, sizeof(int));
+            buf[index] = bits;
         }
 
         Uniform pushF(float val) {
@@ -540,9 +561,12 @@ namespace skvm {
             int ints[sizeof(ptr) / sizeof(int)];
             memcpy(ints, &ptr, sizeof(ptr));
             for (int bits : ints) {
-                buf.push_back(bits);
+                if (end == buf.size()) {
+                    buf.push_back(bits);
+                }
+                end++;
             }
-            return {base, (int)( sizeof(int)*(buf.size() - SK_ARRAY_COUNT(ints)) )};
+            return {base, (int)( sizeof(int)*(end - SK_ARRAY_COUNT(ints)) )};
         }
 
         Uniform pushArray(int32_t a[]) {
