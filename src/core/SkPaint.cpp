@@ -51,7 +51,6 @@ SkPaint::SkPaint()
                  (unsigned)SkPaint::kDefault_Cap,   // fCapType
                  (unsigned)SkPaint::kDefault_Join,  // fJoinType
                  (unsigned)SkPaint::kFill_Style,    // fStyle
-                 (unsigned)kNone_SkFilterQuality,   // fFilterQuality
                  0}                                 // fPadding
 {
     static_assert(sizeof(fBitfields) == sizeof(fBitfieldsUInt), "");
