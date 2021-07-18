@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bded188e_15555fee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-18T20:53:35Z",
+      "side": 1,
+      "message": "I think the current implementation is wrong for perspective. If you look at the output from this, then the bottom right is doing it the slow obviously correct way. But the next to the last column does not match that. I think the code divides by 1/w twice, but I have not found it yet.",
+      "revId": "595b5076b304710abb0e8026359231089186a07a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
