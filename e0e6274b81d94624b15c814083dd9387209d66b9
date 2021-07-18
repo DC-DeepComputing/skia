@@ -16,6 +16,46 @@
       "message": "I switched to using a small shader which does the inverse localM for the triangle. It is much simpler code, but perspective seems to introduce some changes.",
       "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbdb54e_368b2aac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-18T18:17:34Z",
+      "side": 1,
+      "message": "I do like this simpler pattern. I don\u0027t see anything obviously wrong that would lead to the perspective issues, but the GMs do look like they\u0027re shifting a bit. Wonder if making a GM with a more dramatic perspective transform would show more error?",
+      "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827298a7_f32676d0",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-18T18:17:34Z",
+      "side": 1,
+      "message": "I think this is fine. It\u0027s the same idiom used by runtime-shader, when sampling a child shader - evaluate the new local coords, then overwrite the provider so that children see the remaining matrix as the identity. I don\u0027t think our current architecture has a better option - this is the only thing that prevents children from accidentally baking in this node\u0027s local matrix.",
+      "range": {
+        "startLine": 308,
+        "startChar": 8,
+        "endLine": 308,
+        "endChar": 89
+      },
+      "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
