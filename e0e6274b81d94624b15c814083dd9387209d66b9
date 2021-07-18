@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a06e4b20_40d2d8f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-18T20:15:45Z",
+      "side": 1,
+      "message": "It looks like the Raster Pipeline version is using the _mm_rcp_ps (approximate reciprocal) instructions while mine uses _mm_div_ps which is an exact divide.",
+      "parentUuid": "bbbdb54e_368b2aac",
+      "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "827298a7_f32676d0",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-07-18T18:17:34Z",
       "side": 1,
       "message": "I think this is fine. It\u0027s the same idiom used by runtime-shader, when sampling a child shader - evaluate the new local coords, then overwrite the provider so that children see the remaining matrix as the identity. I don\u0027t think our current architecture has a better option - this is the only thing that prevents children from accidentally baking in this node\u0027s local matrix.",
+      "range": {
+        "startLine": 308,
+        "startChar": 8,
+        "endLine": 308,
+        "endChar": 89
+      },
+      "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef4ac38_cdefcda4",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-18T20:15:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "827298a7_f32676d0",
       "range": {
         "startLine": 308,
         "startChar": 8,
