@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "655e3539_3c1b1415",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-18T20:57:23Z",
+      "side": 1,
+      "message": "I\u0027m actually wrong here. It does used divide to calculate 1/w.",
+      "parentUuid": "a06e4b20_40d2d8f5",
+      "revId": "e0e6274b81d94624b15c814083dd9387209d66b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "827298a7_f32676d0",
