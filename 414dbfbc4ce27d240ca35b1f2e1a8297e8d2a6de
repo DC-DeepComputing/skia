@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31483e6f_f508e753",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-19T16:15:21Z",
+      "side": 1,
+      "message": "John and Heather - this is an important bugfix that we need in m93, especially since are enabling DMSAA canvas on Mac in m93",
+      "revId": "414dbfbc4ce27d240ca35b1f2e1a8297e8d2a6de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
