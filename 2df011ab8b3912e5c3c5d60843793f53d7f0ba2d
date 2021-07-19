@@ -68,6 +68,24 @@
       "parentUuid": "e3a27ff1_d0a72211",
       "revId": "2df011ab8b3912e5c3c5d60843793f53d7f0ba2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98b38db1_141110f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-19T14:24:33Z",
+      "side": 1,
+      "message": "But I think this is true with the original Raster Pipeline code. The updater takes the original CTM, and the triangle derived localM, and uses those for the inverse bypassing the mipmap code.",
+      "parentUuid": "7b5506d6_0ebd32e4",
+      "revId": "2df011ab8b3912e5c3c5d60843793f53d7f0ba2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
