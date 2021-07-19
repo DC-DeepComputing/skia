@@ -16,6 +16,24 @@
       "message": "works for me, but I defer to a \u0027real\u0027 gpu reviewer",
       "revId": "6565ae4b0fd94c2dc9ae4d994ab8e4d4849c664f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "490a526b_aa8295e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:11:00Z",
+      "side": 1,
+      "message": "SGTM, I think Brian\u0027s been in meetings so we can get to this tomorrow.",
+      "parentUuid": "6173115e_537f40bf",
+      "revId": "6565ae4b0fd94c2dc9ae4d994ab8e4d4849c664f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
