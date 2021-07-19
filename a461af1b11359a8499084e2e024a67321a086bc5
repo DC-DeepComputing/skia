@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d41c51_9ae8fe83",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-19T16:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "740a74eb_8de2fdad",
+      "revId": "a461af1b11359a8499084e2e024a67321a086bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00c58709_2d86c658",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99e9349a_f0eb153b",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-19T16:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00c58709_2d86c658",
+      "revId": "a461af1b11359a8499084e2e024a67321a086bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a26adea_4e008d47",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-07-19T14:34:56Z",
       "side": 1,
       "message": "And remove this (since the old and bad is going away and this can never become true).",
+      "revId": "a461af1b11359a8499084e2e024a67321a086bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76e1f8b4_bb625a78",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-19T16:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a26adea_4e008d47",
       "revId": "a461af1b11359a8499084e2e024a67321a086bc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
