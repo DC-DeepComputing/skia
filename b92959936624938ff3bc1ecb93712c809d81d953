@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b110c02b_b237a24e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T16:41:53Z",
+      "side": 1,
+      "message": "Reviewers: reed@ since the feature was his suggestion, brianosman@ for runtime effect nitty-gritty",
+      "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71b0b2cd_db9077ee",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T16:41:53Z",
+      "side": 1,
+      "message": "Brian--I\u0027m injecting an extra child to account for the `dstFP` being passed in to blenders. It seems like pass-through is always correct (since we synthesize the sample call and never set a coordinate). What does the child name/type control? Does it matter what I set here?",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 0
+      },
+      "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
