@@ -87,6 +87,30 @@
       },
       "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a82ad2a_ebb3da60",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T18:05:32Z",
+      "side": 1,
+      "message": "Yeah, they will, which is what makes this a little awkward. It would be nice if this were entirely an implementation detail. So, changing my mind a bit...\n\nLooking at the code again, maybe we make GrSkSLFP aware of the dest color, so it\u0027s another \"special\" child (remember the index, etc.) That will avoid mixing the idea of these FPs (that happen to be how we populate the colors in the SkSL\u0027s main signature) with actual children (which could be added separately, and which clients will actually want to inspect).\n\nWe don\u0027t necessarily need to add dstFP to the factory signature used by runtime FPs, just MakeWithData, and then  have something like ::setDestinationInput() patterned after ::setInput().",
+      "parentUuid": "497d916b_d9b79b69",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 0
+      },
+      "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
