@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20eb9a45_03de51a4",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Heh, oops. Fixed.",
+      "parentUuid": "aee6aff4_5f625b44",
+      "range": {
+        "startLine": 21,
+        "startChar": 38,
+        "endLine": 21,
+        "endChar": 69
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "505ec0a3_330df52a",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-15T19:41:40Z",
       "side": 1,
       "message": "Can this ever be null? Would that mean a null Compiler was passed in during construction?",
+      "range": {
+        "startLine": 201,
+        "startChar": 4,
+        "endLine": 201,
+        "endChar": 23
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85e329da_77e1dd88",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "At one point speculative parsing temporarily set the error reporter to null, but you are correct that it never happens anymore. Fixed.",
+      "parentUuid": "505ec0a3_330df52a",
       "range": {
         "startLine": 201,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e8c3c39_7ddbc437",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8216fbb4_467c5d79",
+      "range": {
+        "startLine": 354,
+        "startChar": 8,
+        "endLine": 354,
+        "endChar": 18
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c92156dd_343eca32",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-07-15T20:02:13Z",
       "side": 1,
       "message": "I notice this function no longer works correctly if the parser is pointing at a TK_CONST. Callers now check for TK_CONST and just call varDeclarations() directly if they see it.\n\nUnfortunately, this change makes the name \"varDeclarationsOrExpressionStatement\" kind of untrue. It works for expression-statements and for a SUBSET of var-declarations, but varDeclarations() can now handle some decls that varDeclarationsOrExpressionStatement() will not handle.\n\nThis seems brittle. Based on the function\u0027s name it should really be able to support everything that `varDeclarations()` can support.\n\nWe could assert that the next token isn\u0027t a TK_CONST and add a comment saying the caller needs to handle that case, but is that better than just actually handling it here? And if we actually handle TK_CONST here, that\u0027s just bringing it back to how it was in the original Parser...\n\nI\u0027m open to other ideas as well.",
+      "range": {
+        "startLine": 361,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 4
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aea2a45_4936f3c5",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "This wasn\u0027t a deliberate change; you added a fix for this issue to SkSLParser (https://skia-review.googlesource.com/c/skia/+/398227) after I started work on DSLParser. I\u0027ve copied it over.",
+      "parentUuid": "c92156dd_343eca32",
       "range": {
         "startLine": 361,
         "startChar": 0,
@@ -127,6 +223,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "997b3b09_98c51091",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94a6e949_b3562690",
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "389c9c0c_9604f24a",
@@ -140,6 +254,30 @@
       "writtenOn": "2021-07-15T20:33:26Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 1173,
+        "startChar": 62,
+        "endLine": 1173,
+        "endChar": 75
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d355a711_1a688c76",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 1173,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "389c9c0c_9604f24a",
       "range": {
         "startLine": 1173,
         "startChar": 62,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15864853_75606c54",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 1257,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Unfortunately not, since there\u0027s no ^^ operator in C++.",
+      "parentUuid": "e9104732_fc701373",
+      "range": {
+        "startLine": 1248,
+        "startChar": 0,
+        "endLine": 1257,
+        "endChar": 5
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55959f28_1e000bdb",
@@ -186,6 +348,30 @@
       "writtenOn": "2021-07-15T19:41:40Z",
       "side": 1,
       "message": "nit: double blank line",
+      "range": {
+        "startLine": 1696,
+        "startChar": 0,
+        "endLine": 1696,
+        "endChar": 0
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12311b13_5cea8d1b",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 1696,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55959f28_1e000bdb",
       "range": {
         "startLine": 1696,
         "startChar": 0,
@@ -219,6 +405,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ac80ab1_226ef656",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Sorry, meant to uncomment that before uploading this.",
+      "parentUuid": "e3b48142_eb7972ae",
+      "range": {
+        "startLine": 253,
+        "startChar": 4,
+        "endLine": 253,
+        "endChar": 9
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf999c40_179b70ed",
@@ -232,6 +442,30 @@
       "writtenOn": "2021-07-15T19:41:40Z",
       "side": 1,
       "message": "This looks like a nice uncomplicated new setting, let\u0027s land it on its own. No need to tangle it up in a 2300-line CL. Also, probably worth adding a test to SkSLDSLTest.cpp that it works.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1573d4_7e569b38",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 49
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf999c40_179b70ed",
       "range": {
         "startLine": 77,
         "startChar": 0,
@@ -265,6 +499,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a48f8b_92f41a3a",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22d3ee13_e3cc4ddf",
+      "range": {
+        "startLine": 61,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 9
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae929ba5_fb743bf6",
@@ -278,6 +536,30 @@
       "writtenOn": "2021-07-15T19:41:40Z",
       "side": 1,
       "message": "isEmpty",
+      "range": {
+        "startLine": 154,
+        "startChar": 23,
+        "endLine": 154,
+        "endChar": 36
+      },
+      "revId": "a3f8f7f8e5d95aed8e7a7b3fac486721f0aeca84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b999d9ec_9842590c",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T13:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae929ba5_fb743bf6",
       "range": {
         "startLine": 154,
         "startChar": 23,
