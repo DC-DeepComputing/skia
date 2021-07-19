@@ -341,6 +341,9 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         if (startLine == end) {
             textIncludingNewlines.end = parent->text().size();
             text.end = parent->text().size();
+        } else {
+            // In case of a force wrapping we don't have a break cluster
+            text.end = std::max(text.end, textExcludingSpaces.end);
         }
         ClusterRange clusters(fEndLine.startCluster() - start, fEndLine.endCluster() - start + 1);
         ClusterRange clustersWithGhosts(fEndLine.startCluster() - start, startLine - start);
