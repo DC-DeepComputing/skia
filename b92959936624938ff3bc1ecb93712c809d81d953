@@ -39,6 +39,30 @@
       },
       "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad864ada_a580d320",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T16:56:54Z",
+      "side": 1,
+      "message": "Yup, PassThrough is correct - we\u0027re always going to sample at the original coordinates. Technically, this child is more like a shader (it is spatially varying), so I would change that - although it doesn\u0027t matter, because that field isn\u0027t relevant for runtime blenders (yet).\n\nThe entire Child structure is primarily for clients - it\u0027s reflected meta-data about an effect, so they know how many children are expected, what they\u0027re called, etc. (This is how things like runtime-shader-builder\u0027s set-by-name work). In this case, it\u0027s entirely internal, but given the plumbing today, it does need *some* name. The alternative would be to have the GrSkSLFP take yet another dedicated FP in the constructor (like the inputPF), but that seems cumbersome, too.\n\nMaybe just change the name to something special (and defined by a constant somewhere: \"$dest_color\")?",
+      "parentUuid": "71b0b2cd_db9077ee",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 0
+      },
+      "revId": "b92959936624938ff3bc1ecb93712c809d81d953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
