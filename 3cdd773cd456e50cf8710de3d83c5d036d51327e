@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfaa8bdf_9f97eada",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-19T18:47:59Z",
+      "side": 1,
+      "message": "I decided to update this CL instead of the big CL. I have added a SkUpdatableShader* updatableShader() method to SkShaderBase. I think this provides both wrapping shader that don\u0027t care about updating, and allows a shader to specialize if needed.",
+      "revId": "3cdd773cd456e50cf8710de3d83c5d036d51327e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
