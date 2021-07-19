@@ -21,8 +21,8 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrThreadSafeCache.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/ProxyUtils.h"
@@ -37,13 +37,12 @@ static SkImageInfo default_ii(int wh) {
     return SkImageInfo::Make(wh, wh, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 }
 
-static std::unique_ptr<GrSurfaceDrawContext> new_RTC(GrRecordingContext* rContext, int wh) {
-    return GrSurfaceDrawContext::Make(rContext,
-                                      GrColorType::kRGBA_8888,
-                                      nullptr,
+static std::unique_ptr<skgpu::SurfaceFillContext_Base> new_SFC(GrRecordingContext* rContext, int wh) {
+    GrImageInfo info(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr, wh, wh);
+
+    return skgpu::SurfaceFillContext_Base::Make(rContext,
+                                      info,
                                       SkBackingFit::kExact,
-                                      {wh, wh},
-                                      SkSurfaceProps(),
                                       1,
                                       GrMipMapped::kNo,
                                       GrProtected::kNo,
@@ -642,17 +641,17 @@ bool TestHelper::FillInViewOnGpu(GrDirectContext* dContext, int wh, Stats* stats
                                  const GrSurfaceProxyView& lazyView,
                                  sk_sp<GrThreadSafeCache::Trampoline> trampoline) {
 
-    std::unique_ptr<GrSurfaceDrawContext> rtc = new_RTC(dContext, wh);
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> sfc = new_SFC(dContext, wh);
 
     GrPaint paint;
     paint.setColor4f({0.0f, 0.0f, 1.0f, 1.0f});
 
-    rtc->clear(SkPMColor4f{1.0f, 1.0f, 1.0f, 1.0f});
-    rtc->drawRect(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(),
+    sfc->clear(SkPMColor4f{1.0f, 1.0f, 1.0f, 1.0f});
+    sfc->drawRect(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(),
                   { 10, 10, wh-10.0f, wh-10.0f }, &GrStyle::SimpleFill());
 
     ++stats->fNumHWCreations;
-    auto view = rtc->readSurfaceView();
+    auto view = sfc->readSurfaceView();
 
     SkASSERT(view.swizzle() == lazyView.swizzle());
     SkASSERT(view.origin() == lazyView.origin());
@@ -752,6 +751,8 @@ static void test_1(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap2());
 }
 
+#if SK_GPU_V1
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View, reporter, ctxInfo) {
     test_1(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
@@ -759,6 +760,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View, reporter, ctxInfo) {
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1Verts, reporter, ctxInfo) {
     test_1(ctxInfo.directContext(), reporter, &TestHelper::addVertAccess, &TestHelper::checkVert);
 }
+
+#endif
 
 // Case 2: ensure that, if the direct context version wins, its result is reused by the
 //         DDL recorders
