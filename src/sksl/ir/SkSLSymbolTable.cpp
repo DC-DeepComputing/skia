@@ -127,8 +127,12 @@ const Type* SymbolTable::addArrayDimension(const Type* type, int arraySize) {
         String arrayName = (arraySize != Type::kUnsizedArray)
                                    ? String::printf("%s[%d]", baseName.c_str(), arraySize)
                                    : String::printf("%s[]", baseName.c_str());
-        type = this->takeOwnershipOfSymbol(Type::MakeArrayType(std::move(arrayName),
-                                                               *type, arraySize));
+        SymbolTable* owner = this;
+        while (owner->fParent && !owner->fBuiltin) {
+            owner = owner->fParent.get();
+        }
+        const char* nameChars = owner->takeOwnershipOfString(arrayName)->c_str();
+        type = this->takeOwnershipOfSymbol(Type::MakeArrayType(nameChars, *type, arraySize));
     }
     return type;
 }
