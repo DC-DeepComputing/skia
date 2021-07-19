@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e9732ed_87199ff0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/429818",
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06a6a7f2_100f3b1d",
@@ -31,6 +48,30 @@
       "writtenOn": "2021-07-19T12:09:06Z",
       "side": 1,
       "message": "nit: specify python3",
+      "range": {
+        "startLine": 1,
+        "startChar": 15,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2505c45_af16de48",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06a6a7f2_100f3b1d",
       "range": {
         "startLine": 1,
         "startChar": 15,
@@ -64,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82992b9d_442ec84b",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6b42770_547a0ae2",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5da05fd2_64428a44",
@@ -77,6 +142,30 @@
       "writtenOn": "2021-07-19T12:09:06Z",
       "side": 1,
       "message": "ubernit: add_path \n\nhttps://google.github.io/styleguide/pyguide.html#316-naming",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 11
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f89605_9632ab15",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5da05fd2_64428a44",
       "range": {
         "startLine": 37,
         "startChar": 4,
@@ -110,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f5b8a9d_bb9815f5",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a64db0a1_aa04c8cb",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "115c2bb7_a53393ac",
@@ -123,6 +236,30 @@
       "writtenOn": "2021-07-19T12:09:06Z",
       "side": 1,
       "message": "nit: prefer single quotes and keep it consistent.\n\nhttps://google.github.io/styleguide/jsguide.html#features-strings-use-single-quotes",
+      "range": {
+        "startLine": 53,
+        "startChar": 31,
+        "endLine": 53,
+        "endChar": 32
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "002d6e50_4e06f1d4",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "115c2bb7_a53393ac",
       "range": {
         "startLine": 53,
         "startChar": 31,
@@ -156,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da86e23f_b0c3e6e5",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f6a08c4_6c82b902",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 19
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b2f41a9_166106a4",
@@ -169,6 +330,30 @@
       "writtenOn": "2021-07-19T12:09:06Z",
       "side": 1,
       "message": "suggestion: If there could be multiple and unknown iterations of ../, maybe use a while loop instead of a hardcoded amount?",
+      "range": {
+        "startLine": 79,
+        "startChar": 38,
+        "endLine": 79,
+        "endChar": 41
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "493bd1e7_e13c4a5e",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "I think it\u0027s unlikely (at least in Skia) - pretty sure we all build to \u0027out/Something\u0027, but easy enough to do.",
+      "parentUuid": "0b2f41a9_166106a4",
       "range": {
         "startLine": 79,
         "startChar": 38,
@@ -202,6 +387,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20758cd7_530f55b0",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f44beba6_6e54acd2",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 20
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44efa798_f343d15f",
@@ -225,6 +434,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "594e5037_709d5a0a",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "I ended up switching all the python quotes to double-quotes, because of the number of embedded JS single-quotes.",
+      "parentUuid": "44efa798_f343d15f",
+      "range": {
+        "startLine": 87,
+        "startChar": 18,
+        "endLine": 87,
+        "endChar": 19
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c1bbe61_d40cb91d",
@@ -238,6 +471,30 @@
       "writtenOn": "2021-07-19T12:09:06Z",
       "side": 1,
       "message": "backticks and string template literals are the preferred way to handle multi-line strings and templating.\n\nhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals\n\nIt should be legal to embed backticks in a Python multi-line string, right?",
+      "range": {
+        "startLine": 116,
+        "startChar": 27,
+        "endLine": 116,
+        "endChar": 28
+      },
+      "revId": "060dd70d2ced2280751110da3907c37f900a8a51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee69009_495f2821",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T13:52:15Z",
+      "side": 1,
+      "message": "Yup, that worked fine. (I had no idea about JS\u0027 multi-line or template stuff. Much easier to read).",
+      "parentUuid": "1c1bbe61_d40cb91d",
       "range": {
         "startLine": 116,
         "startChar": 27,
