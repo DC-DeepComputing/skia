@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b6445a_8f3ed952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-19T19:19:03Z",
+      "side": 1,
+      "message": "Is this testable as is, or would we need other plumbing first?",
+      "revId": "7d4a4a05ca9029e4ca0d37ae28d15442f1b3b1b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
