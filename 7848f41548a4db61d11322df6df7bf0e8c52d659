@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c75eef_66bfdc35",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-19T16:37:36Z",
+      "side": 1,
+      "message": "nit: not really necessary",
+      "range": {
+        "startLine": 338,
+        "startChar": 4,
+        "endLine": 338,
+        "endChar": 10
+      },
+      "revId": "7848f41548a4db61d11322df6df7bf0e8c52d659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
