@@ -557,8 +557,9 @@ SkBaseDevice* SkCanvas::topDevice() const {
     return fMCRec->fDevice;
 }
 
-GrSurfaceDrawContext* SkCanvas::topDeviceSurfaceDrawContext() {
-    return this->topDevice()->surfaceDrawContext();
+skgpu::BaseDevice* SkCanvas::topGpuDevice() {
+    SkASSERT(fMCRec->fDevice);
+    return fMCRec->fDevice->asGpuDevice();
 }
 
 GrRenderTargetProxy* SkCanvas::topDeviceTargetProxy() {
