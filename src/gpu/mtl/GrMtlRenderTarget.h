@@ -13,6 +13,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/mtl/GrMtlAttachment.h"
+#include "src/gpu/mtl/GrMtlFramebuffer.h"
 
 #import <Metal/Metal.h>
 
@@ -53,6 +54,8 @@ public:
 
     GrBackendFormat backendFormat() const override;
 
+    const GrMtlFramebuffer* getFramebuffer();
+
 protected:
     GrMtlRenderTarget(GrMtlGpu* gpu,
                       SkISize,
@@ -80,6 +83,10 @@ private:
                       Wrapped);
 
     bool completeStencilAttachment(GrAttachment* stencil, bool useMSAASurface) override;
+
+    // For now we only cache one type of framebuffer
+    sk_sp<const GrMtlFramebuffer> fCachedFramebuffer;
+
 
     using INHERITED = GrRenderTarget;
 };

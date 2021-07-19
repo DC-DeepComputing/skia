@@ -214,7 +214,17 @@ GrOpsRenderPass* GrMtlGpu::onGetOpsRenderPass(
             const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo,
             const SkTArray<GrSurfaceProxy*, true>& sampledProxies,
             GrXferBarrierFlags renderPassXferBarriers) {
-    return new GrMtlOpsRenderPass(this, renderTarget, origin, colorInfo, stencilInfo);
+    // For the given render target and requested render pass features we need to find a compatible
+    // framebuffer to use.
+    GrMtlRenderTarget* mtlRT = static_cast<GrMtlRenderTarget*>(renderTarget);
+    // TODO: Make use of render pass features. For now we add everything.
+    sk_sp<GrMtlFramebuffer> framebuffer = sk_ref_sp(mtlRT->getFramebuffer());
+    if (!framebuffer) {
+        return nullptr;
+    }
+
+    return new GrMtlOpsRenderPass(this, renderTarget, std::move(framebuffer), origin, colorInfo,
+                                  stencilInfo);
 }
 
 GrMtlCommandBuffer* GrMtlGpu::commandBuffer() {

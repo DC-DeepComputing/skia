@@ -9,6 +9,7 @@
 
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
+#include "src/gpu/mtl/GrMtlFramebuffer.h"
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
@@ -102,6 +103,16 @@ GrBackendRenderTarget GrMtlRenderTarget::getBackendRenderTarget() const {
 
 GrBackendFormat GrMtlRenderTarget::backendFormat() const {
     return GrBackendFormat::MakeMtl(fColorAttachment->mtlFormat());
+}
+
+const GrMtlFramebuffer* GrMtlRenderTarget::getFramebuffer() {
+    if (fCachedFramebuffer) {
+        return fCachedFramebuffer.get();
+    }
+
+    fCachedFramebuffer =
+            GrMtlFramebuffer::Make(fColorAttachment.get(), fResolveAttachment.get(), nullptr);
+    return fCachedFramebuffer.get();
 }
 
 GrMtlGpu* GrMtlRenderTarget::getMtlGpu() const {
