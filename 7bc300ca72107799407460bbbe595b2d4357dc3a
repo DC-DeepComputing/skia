@@ -112,6 +112,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00425215_d06afe18",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:50:37Z",
+      "side": 1,
+      "message": "The DSL parser eliminates all the geometry layout tokens from today\u0027s Parser. I know we don\u0027t fully support geometry yet, but is there any reason not to put the layout tokens in now? Doesn\u0027t seem to be any reason to delay adding them in, unless other parts of DSL blow up in their presence.",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 603,
+        "endChar": 15
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58b97b3d_7c58b56a",
         "filename": "src/sksl/SkSLDSLParser.cpp",
         "patchSetId": 52
