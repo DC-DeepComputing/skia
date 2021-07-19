@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84648d2_0177c349",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-19T20:50:43Z",
+      "side": 1,
+      "message": "I suggest we suppress now, so the tree isn\u0027t confusing.\n\nDo you have code checked-in that generates that skp? I wonder if we can change the test to generates its SKP locally, rather than rely on a checked-in one..?",
+      "revId": "88666f027944bf8e1516ab5d26fcb8305fc4409a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
