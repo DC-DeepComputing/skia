@@ -33,6 +33,24 @@
       "message": "Looks okay. It would be nice to cut down on the repetition, somehow. (We\u0027ve got the same injection of helper functions in three different processors, etc...)",
       "revId": "871b9f4643d6312a3b784640f7b202a859a7cc3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15eb6e0f_2e1f5bd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-19T16:03:10Z",
+      "side": 1,
+      "message": "I agree with you, and I\u0027ve started the refactoring work here: https://skia-review.googlesource.com/c/skia/+/429956\n\nThis CL needs to be cherry-picked into m93, however, so I think we better land as is and then follow up with the refactoring to do this cleanup.",
+      "parentUuid": "96a680f7_8cb7417f",
+      "revId": "871b9f4643d6312a3b784640f7b202a859a7cc3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
