@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0a21255_6ffeb088",
+        "filename": "include/core/SkFontMgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-19T14:29:14Z",
+      "side": 0,
+      "message": "I made this non-pure virtual a while back and I don\u0027t think anything outside Skia implements it, but might want to run the Canary bots just in case.",
+      "revId": "11a20bbbf4d5273729d5d4e3db194f56c6d8ba9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb7c804a_4999e3c7",
         "filename": "src/ports/SkFontMgr_win_dw.cpp",
         "patchSetId": 2
