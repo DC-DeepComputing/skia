@@ -135,6 +135,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c19bd4e_25da8c1b",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:09:46Z",
+      "side": 1,
+      "message": "Most code paths return nullopt if the finishing-semicolon expectation fails, but a few don\u0027t. (Here, InterfaceBlock, and structVarDeclarations.) Should we aim for consistency? I\u0027m not sure it matters either way (other than perhaps getting different errors reported).",
+      "range": {
+        "startLine": 1042,
+        "startChar": 4,
+        "endLine": 1042,
+        "endChar": 51
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46e7a48d_bfc25899",
         "filename": "src/sksl/SkSLDSLParser.h",
         "patchSetId": 52
