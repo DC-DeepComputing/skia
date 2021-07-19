@@ -16,6 +16,24 @@
       "message": "Is this testable as is, or would we need other plumbing first?",
       "revId": "7d4a4a05ca9029e4ca0d37ae28d15442f1b3b1b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a9d168b_03453489",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T19:23:03Z",
+      "side": 1,
+      "message": "I\u0027ve been using the arithmode_blender slide and the Force Runtime Blends options in Viewer to test it, and it\u0027s seemed to shake out everything pretty well.",
+      "parentUuid": "92b6445a_8f3ed952",
+      "revId": "7d4a4a05ca9029e4ca0d37ae28d15442f1b3b1b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
