@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ec76f90_38db6385",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 52
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:58:46Z",
+      "side": 1,
+      "message": "I\u0027d like Brian to give this a read-through as well, but I don\u0027t see anything here that makes me think we couldn\u0027t land this. I\u0027d love to split out more little things to shrink it down if we can, but I think we\u0027ve taken out all the obvious ones already. Soft LGTM pending Brian\u0027s +1.",
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12beef0e_f41a4c38",
