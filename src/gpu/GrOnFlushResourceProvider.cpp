@@ -18,33 +18,6 @@
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrTextureResolveRenderTask.h"
 
-std::unique_ptr<GrSurfaceDrawContext> GrOnFlushResourceProvider::makeSurfaceDrawContext(
-        sk_sp<GrSurfaceProxy> proxy, GrSurfaceOrigin origin, GrColorType colorType,
-        sk_sp<SkColorSpace> colorSpace, const SkSurfaceProps& props) {
-    // Since this is at flush time and these won't be allocated for us by the GrResourceAllocator
-    // we have to manually ensure it is allocated here.
-    if (!this->instatiateProxy(proxy.get())) {
-        return nullptr;
-    }
-
-    auto context = fDrawingMgr->getContext();
-
-    if (!proxy->asRenderTargetProxy()) {
-        return nullptr;
-    }
-
-    auto sdc = GrSurfaceDrawContext::Make(context, colorType, std::move(proxy),
-                                          std::move(colorSpace), origin, props, true);
-
-    if (!sdc) {
-        return nullptr;
-    }
-
-    sdc->discard();
-
-    return sdc;
-}
-
 void GrOnFlushResourceProvider::addTextureResolveTask(sk_sp<GrTextureProxy> textureProxy,
                                                       GrSurfaceProxy::ResolveFlags resolveFlags) {
     // Since we are bypassing normal DAG operation, we need to ensure the textureProxy's last render

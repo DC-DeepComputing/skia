@@ -61,11 +61,6 @@ public:
 
     explicit GrOnFlushResourceProvider(GrDrawingManager* drawingMgr) : fDrawingMgr(drawingMgr) {}
 
-    std::unique_ptr<GrSurfaceDrawContext> makeSurfaceDrawContext(sk_sp<GrSurfaceProxy>,
-                                                                 GrSurfaceOrigin, GrColorType,
-                                                                 sk_sp<SkColorSpace>,
-                                                                 const SkSurfaceProps&);
-
     void addTextureResolveTask(sk_sp<GrTextureProxy>, GrSurfaceProxy::ResolveFlags);
 
     // Proxy unique key management. See GrProxyProvider.h.
