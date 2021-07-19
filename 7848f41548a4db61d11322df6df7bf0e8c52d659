@@ -22,6 +22,30 @@
       },
       "revId": "7848f41548a4db61d11322df6df7bf0e8c52d659",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ddb593c_b452f273",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T16:57:24Z",
+      "side": 1,
+      "message": "Oops, got carried away with the copy/pasting.",
+      "parentUuid": "58c75eef_66bfdc35",
+      "range": {
+        "startLine": 338,
+        "startChar": 4,
+        "endLine": 338,
+        "endChar": 10
+      },
+      "revId": "7848f41548a4db61d11322df6df7bf0e8c52d659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
