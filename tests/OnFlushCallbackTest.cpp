@@ -18,11 +18,11 @@
 #include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrQuad.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/TestUtils.h"
 
 namespace {
@@ -389,7 +389,7 @@ public:
         //    9 refs from the 9 AtlasedRectOps
         // The backing GrSurface should have only 1 though bc there is only one proxy
         CheckSingleThreadedProxyRefs(fReporter, fAtlasView.proxy(), 10, 1);
-        auto rtc = resourceProvider->makeSurfaceDrawContext(
+        auto rtc = resourceProvider->makeSurfaceDrawContext1(
                 fAtlasView.refProxy(), fAtlasView.origin(), GrColorType::kRGBA_8888, nullptr,
                 SkSurfaceProps());
 
@@ -467,7 +467,7 @@ static GrSurfaceProxyView make_upstream_image(GrRecordingContext* rContext,
                                               int start,
                                               GrSurfaceProxyView atlasView,
                                               SkAlphaType atlasAlphaType) {
-    auto rtc = GrSurfaceDrawContext::Make(
+    auto rtc = skgpu::v1::SurfaceDrawContext::Make(
             rContext, GrColorType::kRGBA_8888, nullptr,
             SkBackingFit::kApprox, {3 * kDrawnTileSize, kDrawnTileSize}, SkSurfaceProps());
 
