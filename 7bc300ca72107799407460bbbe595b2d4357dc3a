@@ -16,6 +16,190 @@
       "message": "I\u0027m gonna do a last read-through and then hopefully put a +1 on this guy.",
       "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12beef0e_f41a4c38",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "nit: delete commented out old-Parser logic",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 91
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5a40078_c9690962",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "nit: unnecessary `else` after `return`",
+      "range": {
+        "startLine": 284,
+        "startChar": 6,
+        "endLine": 284,
+        "endChar": 12
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b4c2b36_28fa49ba",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "Can\u0027t we pass the SkTArray directly now, instead of using a loop?",
+      "range": {
+        "startLine": 298,
+        "startChar": 12,
+        "endLine": 300,
+        "endChar": 13
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f361893_87c427f8",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "Still active: It looks like we fail immediately if any call to parameter() returns an unpopulated optional.\n\nIt seems like we only need `parameterPointers` and could avoid the existence of the `parameters` array entirely.\n\nThis was marked Done before but it\u0027s back.",
+      "range": {
+        "startLine": 318,
+        "startChar": 12,
+        "endLine": 320,
+        "endChar": 13
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58b97b3d_7c58b56a",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "This is an empty statement, right? Can this just be `dsl::Statement()`?",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 679,
+        "endChar": 29
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46e7a48d_bfc25899",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "Why is this in the header? You can put a private template method in the CPP, especially since it shouldn\u0027t be referenced by any other translation units.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 60
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f00b32_79fb2cf4",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "We should assert that we aren\u0027t double-rewinding or double-accepting in accept() and rewind(), since that would break us (leaving the error reporter null forever). \n\n    SkASSERTF(fErrorReporter, \"Checkpoint was already accepted/rewound\");\n\n\nCuriosity: why do we do it this way instead of using `setErrorCount` to roll back speculative error reports? I\u0027m not sure why the old way wasn\u0027t sufficient.",
+      "range": {
+        "startLine": 348,
+        "startChar": 7,
+        "endLine": 354,
+        "endChar": 28
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c29c7b3b_73bdb935",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T20:42:23Z",
+      "side": 1,
+      "message": "The Checkpoint might potentially be accepted even if an error occurred:\n\n    Checkpoint x; /* error occurs */; x.accept();\n\n\nIt seems as if this is just dropping the errors, on (I guess) the assumption that we would only accept a result with no errors. The original intent of the SkSLParser\u0027s Checkpoint class was that you could always accept or rewind the result, whether or not the result was an error. I\u0027m not sure if we actually use that flexibility today, but I\u0027d be disappointed to lose the option.",
+      "range": {
+        "startLine": 360,
+        "startChar": 1,
+        "endLine": 362,
+        "endChar": 9
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
