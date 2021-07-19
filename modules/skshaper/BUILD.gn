@@ -22,6 +22,15 @@ if (skia_enable_skshaper) {
     }
   }
 
+  component("skicu_builtin") {
+    check_includes = false
+    deps = [
+      "../..:skia",
+      "//third_party/icu",
+    ]
+    sources = skia_shaper_icu_sources
+  }
+
   component("skshaper") {
     check_includes = false
     public_configs = [ ":public_config" ]
@@ -46,11 +55,10 @@ if (skia_enable_skshaper) {
       }
     }
     if (skia_use_icu && skia_use_harfbuzz) {
-      sources += skia_shaper_icu_sources
       sources += skia_shaper_harfbuzz_sources
       deps += [
+        ":skicu_builtin",
         "//third_party/harfbuzz",
-        "//third_party/icu",
       ]
     }
     configs += [
