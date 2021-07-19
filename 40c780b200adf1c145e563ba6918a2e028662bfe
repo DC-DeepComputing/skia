@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aacdeab_07fc2f52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 51
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "This is coming together really well! I\u0027m mostly just trying to peel apart ancillary stuff into smaller CLs now, to minimize the blast radius caused by roll-back/roll-forward in case the initial landing doesn\u0027t stick. :) ",
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6daca03_5e5d8c28",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Just to confirm: this is just temporary, and we expect this to go away once the DSLParser is landed and stable, right?\n\n(Trying to weigh whether we need to consider SkUserConfig here, but I\u0027m thinking we don\u0027t need to.)",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a80fca9e_4b0c37db",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "We ought to be able to land \"multi-Declare variables\" and the associated tests in a stand alone CL.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 78
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4de1e747_a1a397b1",
+        "filename": "include/sksl/DSLExpression.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Could be landed in a stand-alone CL?",
+      "range": {
+        "startLine": 187,
+        "startChar": 22,
+        "endLine": 187,
+        "endChar": 32
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78eaf86d_8d980a9a",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Curious--how were we getting \"error: error: \"?\nFeels like we shouldn\u0027t have to do this, but I\u0027m sure there\u0027s an interesting explanation.",
+      "range": {
+        "startLine": 1009,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6faa15a8_0b24cb31",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Probably fine, but just to be sure: is it correct to mark the variable declared if Declaration() returns null (presumably the declaration was invalid somehow)?",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 153,
+        "endChar": 29
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d2eb710_cb489b25",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Why is this necessary here, but not in StaticIf, and not in For/While/Switch/etc?",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54e5732f_c6848e55",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Improved array-type enforcement should probably land as a standalone CL",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3565c8d_69ab105d",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T14:16:56Z",
+      "side": 1,
+      "message": "Interesting! I can see how this matters to the Parser (`int[10]` is a type) but probably only when the Parser is involved, right? If I\u0027m hand-writing DSL, is there a way to write a sensible DSL program that hits this path? (Can DSL create TypeReferences at all?)\n\nIdeally it seems like this should happen in the Parser, not here, since hand-written DSL can\u0027t make use of it. Would that be difficult?",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
