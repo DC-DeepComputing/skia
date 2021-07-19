@@ -274,6 +274,8 @@ private:
 
     std::unique_ptr<SkFilterColorProgram> fFilterColorProgram;
 
+    static constexpr char kDestColorChildName[] = "$destColor";
+
     uint32_t fFlags;  // Flags
 };
 
