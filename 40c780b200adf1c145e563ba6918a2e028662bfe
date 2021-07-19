@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddf41296_7d01345f",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Yes, definitely going away.",
+      "parentUuid": "f6daca03_5e5d8c28",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a80fca9e_4b0c37db",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-19T14:16:56Z",
       "side": 1,
       "message": "We ought to be able to land \"multi-Declare variables\" and the associated tests in a stand alone CL.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 78
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25cdea06_c73a4471",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a80fca9e_4b0c37db",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed007a0_0aba0522",
+        "filename": "include/sksl/DSLExpression.h",
+        "patchSetId": 51
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4de1e747_a1a397b1",
+      "range": {
+        "startLine": 187,
+        "startChar": 22,
+        "endLine": 187,
+        "endChar": 32
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78eaf86d_8d980a9a",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-07-19T14:16:56Z",
       "side": 1,
       "message": "Curious--how were we getting \"error: error: \"?\nFeels like we shouldn\u0027t have to do this, but I\u0027m sure there\u0027s an interesting explanation.",
+      "range": {
+        "startLine": 1009,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09c61058_9ca80047",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "It\u0027s happening in DSLParserErrorHandler, which takes messages that already have an \"error: \" prefix and feeds them into an ErrorReporter.\n\nThis could definitely stand to be reexamined, but for right now it was the simplest way to address this.",
+      "parentUuid": "78eaf86d_8d980a9a",
       "range": {
         "startLine": 1009,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b0de475_8d34b9b0",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Yes, the main point of marking it declared is keeping it from failing an assert on destruction.",
+      "parentUuid": "6faa15a8_0b24cb31",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 153,
+        "endChar": 29
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d2eb710_cb489b25",
@@ -146,6 +266,30 @@
       "writtenOn": "2021-07-19T14:16:56Z",
       "side": 1,
       "message": "Why is this necessary here, but not in StaticIf, and not in For/While/Switch/etc?",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0ae3305_1493c390",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Leftover artifact from early development, removed.",
+      "parentUuid": "8d2eb710_cb489b25",
       "range": {
         "startLine": 376,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd2eadc4_e05b2d25",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54e5732f_c6848e55",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3565c8d_69ab105d",
@@ -192,6 +360,30 @@
       "writtenOn": "2021-07-19T14:16:56Z",
       "side": 1,
       "message": "Interesting! I can see how this matters to the Parser (`int[10]` is a type) but probably only when the Parser is involved, right? If I\u0027m hand-writing DSL, is there a way to write a sensible DSL program that hits this path? (Can DSL create TypeReferences at all?)\n\nIdeally it seems like this should happen in the Parser, not here, since hand-written DSL can\u0027t make use of it. Would that be difficult?",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cde54732_5d771726",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-19T19:42:15Z",
+      "side": 1,
+      "message": "It wouldn\u0027t be straightforward. Since there\u0027s currently no API to determine what sort of expression a DSLExpression contains (i.e. \"Is this a TypeReference?\"), we\u0027d either have to add such an API or have DSLParser carry around some additional sidecar data to let it keep track of that.\n\nAnd since this functionality will be required both by our DSLParser and by any similar parser written on top of the DSL, I don\u0027t think I see the benefit of pulling this feature out of the core and making clients have to worry about it.",
+      "parentUuid": "c3565c8d_69ab105d",
       "range": {
         "startLine": 180,
         "startChar": 0,
