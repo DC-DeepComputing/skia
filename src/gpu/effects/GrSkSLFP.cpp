@@ -194,14 +194,15 @@ public:
             args.fFragBuilder->codeAppendf("float2 %s = %s;\n", coords, args.fSampleCoord);
         }
 
-        // For blend effects, we need to copy the dest-color to a local variable as well.
+        // For runtime blends, the destination color is stored as a child FP.
+        // Invoke that FP here and store it in a local variable.
         const char* destColor = "half4(1)";
         SkString destColorVarName;
-        if (fp.willReadDstColor()) {
+        if (fp.fEffect->allowBlender()) {
             destColorVarName = args.fFragBuilder->newTmpVarName("destColor");
             destColor = destColorVarName.c_str();
-            args.fFragBuilder->codeAppendf(
-                    "half4 %s = %s;\n", destColor, args.fFragBuilder->dstColor());
+            SkString childFP = this->invokeChild(/*childIndex=*/0, args);
+            args.fFragBuilder->codeAppendf("half4 %s = %s;", destColor, childFP.c_str());
         }
 
         FPCallbacks callbacks(this,
@@ -289,10 +290,6 @@ GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags opt
     if (fEffect->usesSampleCoords()) {
         this->setUsesSampleCoordsDirectly();
     }
-
-    if (fEffect->allowBlender()) {
-        this->setWillReadDstColor();
-    }
 }
 
 GrSkSLFP::GrSkSLFP(const GrSkSLFP& other)
@@ -308,10 +305,6 @@ GrSkSLFP::GrSkSLFP(const GrSkSLFP& other)
 
     if (fEffect->usesSampleCoords()) {
         this->setUsesSampleCoordsDirectly();
-    }
-
-    if (fEffect->allowBlender()) {
-        this->setWillReadDstColor();
     }
 
     this->cloneAndRegisterAllChildProcessors(other);

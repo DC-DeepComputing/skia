@@ -274,6 +274,20 @@ SkRuntimeEffect::Result SkRuntimeEffect::Make(std::unique_ptr<SkSL::Program> pro
         }
     }
 
+    // Most FPs take a single passed-in `inputFP` as their input.
+    // Runtime blenders are unique, as they have an additional passed-in fragment processor
+    // representing the destination color. Internally these are managed as an additional child FP,
+    // which is implicitly sampled at the start of the function; it's sampled without coordinates
+    // and with an input color of white.
+    if (kind == SkSL::ProgramKind::kRuntimeBlender) {
+        Child c;
+        c.name  = "runtime_blend_dest_color";
+        c.type  = SkRuntimeEffect::Child::Type::kColorFilter;
+        c.index = children.size();
+        children.push_back(c);
+        sampleUsages.push_back(SkSL::SampleUsage::PassThrough());
+    }
+
     // If the sample coords are never written to, then we will have converted sample calls that use
     // them unmodified into "passthrough" sampling. If all references to the sample coords were of
     // that form, then we don't actually "use" sample coords. We unset the flag to prevent creating
@@ -1064,13 +1078,16 @@ public:
 
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
-            std::unique_ptr<GrFragmentProcessor> inputFP, const GrFPArgs& args) const override {
+            std::unique_ptr<GrFragmentProcessor> srcFP,
+            std::unique_ptr<GrFragmentProcessor> dstFP,
+            const GrFPArgs& args) const override {
         sk_sp<SkData> uniforms = get_xformed_uniforms(fEffect.get(), fUniforms,
                                                       args.fDstColorInfo->colorSpace());
         SkASSERT(uniforms);
 
-        return GrSkSLFP::MakeWithData(fEffect, "runtime_blender", std::move(inputFP),
-                                      std::move(uniforms), /*childFPs=*/{});
+        SkSpan<std::unique_ptr<GrFragmentProcessor>> childFPs{&dstFP, /*size=*/1};
+        return GrSkSLFP::MakeWithData(fEffect, "runtime_blender", std::move(srcFP),
+                                      std::move(uniforms), childFPs);
     }
 #endif
 
@@ -1279,7 +1296,7 @@ sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<SkData> uniforms) const {
     if (!uniforms) {
         uniforms = SkData::MakeEmpty();
     }
-    if (uniforms->size() != this->uniformSize() || !fChildren.empty()) {
+    if (uniforms->size() != this->uniformSize() || fChildren.size() != 1) {
         return nullptr;
     }
     return sk_sp<SkBlender>(new SkRuntimeBlender(sk_ref_sp(this), std::move(uniforms)));
