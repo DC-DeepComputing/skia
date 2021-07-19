@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a843e0c1_3a28884a",
+        "filename": "tools/bloaty_treemap.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-07-19T13:54:36Z",
+      "side": 1,
+      "message": "nit: single quotes for js",
+      "range": {
+        "startLine": 108,
+        "startChar": 84,
+        "endLine": 108,
+        "endChar": 85
+      },
+      "revId": "cc7b85e7383813feea756bfb7527d2723d3a5fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
