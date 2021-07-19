@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb7c804a_4999e3c7",
+        "filename": "src/ports/SkFontMgr_win_dw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-19T14:27:38Z",
+      "side": 0,
+      "message": "This was the only place this was used, the Windows compiler is just complaining that apply_fontdata_variation isn\u0027t also being removed (is no longer called). Its defined right above this funnction.",
+      "range": {
+        "startLine": 1124,
+        "startChar": 16,
+        "endLine": 1124,
+        "endChar": 40
+      },
+      "revId": "11a20bbbf4d5273729d5d4e3db194f56c6d8ba9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
