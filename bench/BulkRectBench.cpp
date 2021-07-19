@@ -133,7 +133,7 @@ protected:
         auto context = canvas->recordingContext();
         SkASSERT(context);
 
-        GrSurfaceDrawContext::QuadSetEntry batch[kRectCount];
+        GrQuadSetEntry batch[kRectCount];
         for (int i = 0; i < kRectCount; ++i) {
             batch[i].fRect = fRects[i];
             batch[i].fColor = fColors[i].premul();

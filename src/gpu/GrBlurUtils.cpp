@@ -588,21 +588,21 @@ void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* context,
 
 #else // SK_GPU_V1
 
-void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* context,
-                                          GrSurfaceDrawContext* surfaceDrawContext,
-                                          const GrClip* clip,
-                                          const GrStyledShape& shape,
-                                          GrPaint&& paint,
+void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext*,
+                                          skgpu::v1::SurfaceDrawContext*,
+                                          const GrClip*,
+                                          const GrStyledShape&,
+                                          GrPaint&&,
                                           const SkMatrix& viewMatrix,
-                                          const SkMaskFilter* mf) {
+                                          const SkMaskFilter*) {
 }
 
-void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* context,
-                                          GrSurfaceDrawContext* surfaceDrawContext,
-                                          const GrClip* clip,
-                                          const SkPaint& paint,
-                                          const SkMatrixProvider& matrixProvider,
-                                          const GrStyledShape& shape) {
+void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext*,
+                                          skgpu::v1::SurfaceDrawContext*,
+                                          const GrClip*,
+                                          const SkPaint&,
+                                          const SkMatrixProvider&,
+                                          const GrStyledShape&) {
 }
 
 #endif // SK_GPU_V1

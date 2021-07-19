@@ -222,12 +222,12 @@ std::unique_ptr<GrSurfaceFillContext> GrSurfaceFillContext::MakeFromBackendTextu
 // GrOpsTask to be picked up and added to by GrSurfaceFillContext lower in the call
 // stack. When this occurs with a closed GrOpsTask, a new one will be allocated
 // when the GrSurfaceFillContext attempts to use it (via getOpsTask).
-GrSurfaceFillContext::GrSurfaceFillContext(GrRecordingContext* context,
+GrSurfaceFillContext::GrSurfaceFillContext(GrRecordingContext* rContext,
                                            GrSurfaceProxyView readView,
                                            GrSurfaceProxyView writeView,
                                            const GrColorInfo& colorInfo,
                                            bool flushTimeOpsTask)
-        : GrSurfaceContext(context, std::move(readView), std::move(colorInfo))
+        : GrSurfaceFillContext_Base(rContext, std::move(readView), std::move(writeView), std::move(colorInfo))
         , fWriteView(std::move(writeView))
         , fFlushTimeOpsTask(flushTimeOpsTask) {
     fOpsTask = sk_ref_sp(context->priv().drawingManager()->getLastOpsTask(this->asSurfaceProxy()));
@@ -313,6 +313,11 @@ GrOpsTask* GrSurfaceFillContext::getOpsTask() {
     SkASSERT(!fOpsTask->isClosed());
     return fOpsTask.get();
 }
+
+sk_sp<GrRenderTask> GrSurfaceFillContext::refRenderTask() {
+    return sk_ref_sp(this->getOpsTask());
+}
+
 
 GrOpsTask* GrSurfaceFillContext::replaceOpsTask() {
     sk_sp<GrOpsTask> newOpsTask = this->drawingManager()->newOpsTask(
