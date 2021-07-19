@@ -158,6 +158,167 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bd3c07c_8761ddd0",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 1149,
+        "startChar": 76,
+        "endLine": 1149,
+        "endChar": 84
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c46f64e8_84e4bc25",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "Random idea... does this work?\n\n\n    #define FUNC_RIGHT(fn, nextExprFn)                                         \\\n    do {                                                                       \\\n        this-\u003enextToken();                                                     \\\n        if (!depth.increase()) {                                               \\\n            return skstd::nullopt;                                             \\\n        }                                                                      \\\n        skstd::optional\u003cDSLWrapper\u003cDSLExpression\u003e\u003e right \u003d this-\u003enextExprFn(); \\\n        if (!right) {                                                          \\\n            return skstd::nullopt;                                             \\\n        }                                                                      \\\n        result \u003d {{fn(std::move(**result), std::move(**right))}};              \\\n    } while (false)\n\n    #define OPERATOR_RIGHT(op, nextExprFn) FUNC_RIGHT(operator op, nextExprFn)\n\n\nAnd then later, you could use\n    \n    FUNC_RIGHT(LogicalXor, logicalAndExpression)\n\nIf it doesn\u0027t work, don\u0027t sweat it. But it seems like it ought to?\n\nFurther--it seems like it might even be possible to implement FUNC_RIGHT in terms of a template instead of a macro, but that can be an experiment for another day. The syntax of specifying the operator you want is probably finicky.",
+      "range": {
+        "startLine": 1145,
+        "startChar": 0,
+        "endLine": 1157,
+        "endChar": 0
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02054388_8bd234c8",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "Are these 6 cases in a row all identical except for the prefix? Seems worthy of a macro. (#undef at the end of the function)",
+      "range": {
+        "startLine": 1395,
+        "startChar": 21,
+        "endLine": 1395,
+        "endChar": 22
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843c26a6_0a5958aa",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1498,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "For \u003e4, can we report \"too many components in swizzle mask\" to match today\u0027s behavior?\n\nFor \u003d\u003d0, \"invalid swizzle\" is fine, I don\u0027t know how we got here without an identifier anyway :) Seems like it\u0027s probably an impossible case. Maybe we should move the \u003d\u003d0 case to the very top of the function, before `base.field(swizzleMask)` because that would be impossible too.",
+      "range": {
+        "startLine": 1498,
+        "startChar": 29,
+        "endLine": 1498,
+        "endChar": 44
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bcdd192_bb4746e7",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1523,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "Can we report \"invalid swizzle component \u0027%c\u0027\" to match the current behavior in SkSLSwizzle.cpp?",
+      "range": {
+        "startLine": 1523,
+        "startChar": 36,
+        "endLine": 1523,
+        "endChar": 53
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f09c5c5_2cd6a062",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 1573,
+        "startChar": 24,
+        "endLine": 1573,
+        "endChar": 25
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516e7a09_29a656ab",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-19T21:44:37Z",
+      "side": 1,
+      "message": "Not important for landing this CL at all, but my first time really reviewing this, so: why is whitespace a concern? If we got TK_FLOAT_LITERAL and the first character is a dot, won\u0027t the next character definitely be a digit? Seems to be a guarantee based on http://screen/69n8GFsonA2fVpN",
+      "range": {
+        "startLine": 1578,
+        "startChar": 0,
+        "endLine": 1580,
+        "endChar": 0
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46e7a48d_bfc25899",
         "filename": "src/sksl/SkSLDSLParser.h",
         "patchSetId": 52
