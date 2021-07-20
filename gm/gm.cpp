@@ -144,7 +144,7 @@ DrawResult SimpleGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
 
 SkISize SimpleGpuGM::onISize() { return fSize; }
 SkString SimpleGpuGM::onShortName() { return fName; }
-DrawResult SimpleGpuGM::onDraw(GrRecordingContext* rContext, GrSurfaceDrawContext* sdc,
+DrawResult SimpleGpuGM::onDraw1(GrRecordingContext* rContext, skgpu::SurfaceContext* sdc,
                                SkCanvas* canvas, SkString* errorMsg) {
     return fDrawProc(rContext, sdc, canvas, errorMsg);
 }
@@ -189,20 +189,23 @@ void GM::drawSizeBounds(SkCanvas* canvas, SkColor color) {
 // need to explicitly declare this, or we get some weird infinite loop llist
 template GMRegistry* GMRegistry::gHead;
 
-DrawResult GpuGM::onDraw(GrRecordingContext* rContext, GrSurfaceDrawContext* sdc, SkCanvas* canvas,
+DrawResult GpuGM::onDraw1(GrRecordingContext* rContext,
+                         skgpu::SurfaceContext* sc,
+                         SkCanvas* canvas,
                          SkString* errorMsg) {
-    this->onDraw(rContext, sdc, canvas);
+    this->onDraw1(rContext, sc, canvas);
     return DrawResult::kOk;
 }
-void GpuGM::onDraw(GrRecordingContext*, GrSurfaceDrawContext*, SkCanvas*) {
+void GpuGM::onDraw1(GrRecordingContext*, skgpu::SurfaceContext*, SkCanvas*) {
     SK_ABORT("Not implemented.");
 }
 
 DrawResult GpuGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
 
     auto ctx = canvas->recordingContext();
-    GrSurfaceDrawContext* sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
-    if (!ctx || !sdc) {
+    skgpu::BaseDevice* d = SkCanvasPriv::TopGpuDevice(canvas);
+    skgpu::SurfaceContext* sc = nullptr;
+    if (!ctx || !sc) {
         *errorMsg = kErrorMsg_DrawSkippedGpuOnly;
         return DrawResult::kSkip;
     }
@@ -210,7 +213,7 @@ DrawResult GpuGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
         *errorMsg = "GrContext abandoned.";
         return DrawResult::kSkip;
     }
-    return this->onDraw(ctx, sdc, canvas, errorMsg);
+    return this->onDraw1(ctx, sc, canvas, errorMsg);
 }
 
 template <typename Fn>

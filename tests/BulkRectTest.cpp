@@ -11,13 +11,13 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/ops/GrFillRectOp.h"
 #include "src/gpu/ops/GrTextureOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 
-static std::unique_ptr<GrSurfaceDrawContext> new_RTC(GrRecordingContext* rContext) {
-    return GrSurfaceDrawContext::Make(
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> new_RTC(GrRecordingContext* rContext) {
+    return skgpu::v1::SurfaceDrawContext::Make(
             rContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact, {128, 128},
             SkSurfaceProps());
 }
@@ -56,7 +56,7 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
         return;
     }
 
-    std::unique_ptr<GrSurfaceDrawContext> rtc = new_RTC(dContext);
+    std::unique_ptr<skgpu::v1::SurfaceDrawContext> sdc = new_RTC(dContext);
 
     auto quads = new GrQuadSetEntry[requestedTotNumQuads];
 

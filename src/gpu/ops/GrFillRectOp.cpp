@@ -25,6 +25,7 @@
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrQuadPerEdgeAA.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 namespace {
 
@@ -517,7 +518,7 @@ GrOp::Owner GrFillRectOp::MakeOp(GrRecordingContext* context,
     return op;
 }
 
-void GrFillRectOp::AddFillRectOps(GrSurfaceDrawContext* rtc,
+void GrFillRectOp::AddFillRectOps(skgpu::v1::SurfaceDrawContext* sdc,
                                   const GrClip* clip,
                                   GrRecordingContext* context,
                                   GrPaint&& paint,
@@ -539,7 +540,7 @@ void GrFillRectOp::AddFillRectOps(GrSurfaceDrawContext* rtc,
         offset += numConsumed;
         numLeft -= numConsumed;
 
-        rtc->addDrawOp(clip, std::move(op));
+        sdc->addDrawOp(clip, std::move(op));
     }
 
     SkASSERT(offset == cnt);

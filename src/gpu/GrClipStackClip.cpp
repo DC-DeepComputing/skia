@@ -103,7 +103,8 @@ bool GrClipStackClip::UseSWOnlyPath(GrRecordingContext* context,
 // sort out what kind of clip mask needs to be created: alpha, stencil,
 // scissor, or entirely software
 GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
-                                      GrSurfaceDrawContext* surfaceDrawContext, GrDrawOp*,
+                                      skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
+                                      GrDrawOp*,
                                       GrAAType aa, GrAppliedClip* out, SkRect* bounds) const {
     SkASSERT(surfaceDrawContext->width() == fDeviceSize.fWidth &&
              surfaceDrawContext->height() == fDeviceSize.fHeight);
