@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb4f7e86_c8949b86",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T19:43:17Z",
+      "side": 1,
+      "message": "tiny nit: Not sure why these functions got blank lines between them but the ones below had the blank lines removed. Seems like it would have been more consistent to leave the functions below alone, or to pair up each of the two MakeForXxxxxx functions together.",
+      "revId": "2ed6e12298bf9c025dea23ebbca02b19267a2c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
