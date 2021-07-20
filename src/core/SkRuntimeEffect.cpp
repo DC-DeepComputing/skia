@@ -163,14 +163,6 @@ SkRuntimeEffect::Result SkRuntimeEffect::Make(SkString sksl, const Options& opti
 }
 
 SkRuntimeEffect::Result SkRuntimeEffect::Make(std::unique_ptr<SkSL::Program> program,
-                                              SkSL::ProgramKind kind) {
-    // This factory is used for all DSL runtime effects, which don't have anything stored in the
-    // program's source. Populate it so that we can compute fHash, and serialize these effects.
-    program->fSource = std::make_unique<SkSL::String>(program->description());
-    return Make(std::move(program), Options{}, kind);
-}
-
-SkRuntimeEffect::Result SkRuntimeEffect::Make(std::unique_ptr<SkSL::Program> program,
                                               const Options& options,
                                               SkSL::ProgramKind kind) {
     SkSL::SharedCompiler compiler;
@@ -198,6 +190,12 @@ SkRuntimeEffect::Result SkRuntimeEffect::Make(std::unique_ptr<SkSL::Program> pro
 
     if (sampleCoordsUsage.fRead || sampleCoordsUsage.fWrite) {
         flags |= kUsesSampleCoords_Flag;
+    }
+
+    // TODO(skia:12202): When we can layer modules, implement this restriction by moving the
+    // declaration of sk_FragCoord to a private module.
+    if (!options.allowFragCoord && SkSL::Analysis::ReferencesFragCoords(*program)) {
+        RETURN_FAILURE("unknown identifier 'sk_FragCoord'");
     }
 
     // Color filters and blends are not allowed to depend on position (local or device) in any way.
@@ -314,22 +312,41 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(SkString sksl, const Opt
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(std::unique_ptr<SkSL::Program> program) {
-    auto result = Make(std::move(program), SkSL::ProgramKind::kRuntimeColorFilter);
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(std::unique_ptr<SkSL::Program> program,
+                                                            const Options& options) {
+    program->fSource = std::make_unique<SkSL::String>(program->description());
+    auto result = Make(std::move(program), options, SkSL::ProgramKind::kRuntimeColorFilter);
     SkASSERT(!result.effect || result.effect->allowColorFilter());
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(std::unique_ptr<SkSL::Program> program) {
-    auto result = Make(std::move(program), SkSL::ProgramKind::kRuntimeShader);
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(std::unique_ptr<SkSL::Program> program,
+                                                       const Options& options) {
+    program->fSource = std::make_unique<SkSL::String>(program->description());
+    auto result = Make(std::move(program), options, SkSL::ProgramKind::kRuntimeShader);
     SkASSERT(!result.effect || result.effect->allowShader());
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(std::unique_ptr<SkSL::Program> program) {
-    auto result = Make(std::move(program), SkSL::ProgramKind::kRuntimeBlender);
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(std::unique_ptr<SkSL::Program> program,
+                                                        const Options& options) {
+    program->fSource = std::make_unique<SkSL::String>(program->description());
+    auto result = Make(std::move(program), options, SkSL::ProgramKind::kRuntimeBlender);
     SkASSERT(!result.effect || result.effect->allowBlender());
     return result;
+}
+
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(
+        std::unique_ptr<SkSL::Program> program) {
+    return MakeForColorFilter(std::move(program), Options{});
+}
+
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(std::unique_ptr<SkSL::Program> program) {
+    return MakeForShader(std::move(program), Options{});
+}
+
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(std::unique_ptr<SkSL::Program> program) {
+    return MakeForBlender(std::move(program), Options{});
 }
 
 sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(SkRuntimeEffect::Result (*make)(SkString sksl),
@@ -418,12 +435,14 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
     // be accounted for in `fHash`. If you've added a new field to Options and caused the static-
     // assert below to trigger, please incorporate your field into `fHash` and update KnownOptions
     // to match the layout of Options.
-    struct KnownOptions { bool a, b; };
+    struct KnownOptions { bool forceNoInline, enforceES2Restrictions, allowFragCoord; };
     static_assert(sizeof(Options) == sizeof(KnownOptions));
     fHash = SkOpts::hash_fn(&options.forceNoInline,
                       sizeof(options.forceNoInline), fHash);
     fHash = SkOpts::hash_fn(&options.enforceES2Restrictions,
                       sizeof(options.enforceES2Restrictions), fHash);
+    fHash = SkOpts::hash_fn(&options.allowFragCoord,
+                      sizeof(options.allowFragCoord), fHash);
 
     fFilterColorProgram = SkFilterColorProgram::Make(this);
 }

@@ -104,6 +104,11 @@ public:
         // still largely ES3-unaware and can still fail or crash if post-ES2 features are used.
         // This is only intended for use by tests and certain internally created effects.
         bool enforceES2Restrictions = true;
+
+        // Similarly: Public SkSL does not allow access to sk_FragCoord. The semantics of that
+        // variable are confusing, and expose clients to implementation details of saveLayer and
+        // image filters.
+        bool allowFragCoord = false;
     };
 
     // If the effect is compiled successfully, `effect` will be non-null.
@@ -146,10 +151,15 @@ public:
         return MakeForBlender(std::move(sksl), Options{});
     }
 
+    // DSL entry points
+    static Result MakeForColorFilter(std::unique_ptr<SkSL::Program> program, const Options&);
+
+    static Result MakeForShader(std::unique_ptr<SkSL::Program> program, const Options&);
+
+    static Result MakeForBlender(std::unique_ptr<SkSL::Program> program, const Options&);
+
     static Result MakeForColorFilter(std::unique_ptr<SkSL::Program> program);
-
     static Result MakeForShader(std::unique_ptr<SkSL::Program> program);
-
     static Result MakeForBlender(std::unique_ptr<SkSL::Program> program);
 
     // Object that allows passing either an SkShader or SkColorFilter as a child
@@ -236,8 +246,6 @@ private:
                     std::vector<Child>&& children,
                     std::vector<SkSL::SampleUsage>&& sampleUsages,
                     uint32_t flags);
-
-    static Result Make(std::unique_ptr<SkSL::Program> program, SkSL::ProgramKind kind);
 
     static Result Make(SkString sksl, const Options& options, SkSL::ProgramKind kind);
 
