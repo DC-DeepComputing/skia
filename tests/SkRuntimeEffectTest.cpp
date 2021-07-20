@@ -212,11 +212,44 @@ DEF_TEST(SkRuntimeEffectForBlender, r) {
     test_invalid("half4 main(half4 s, half4 d) { return sk_FragCoord.xy01; }",
                  "unknown identifier");
 
-    // Child shaders are currently unsupported in blends
-    test_invalid("uniform shader sh; half4 main(half4 s, half4 d) { return s; }",
-                 "'shader' is not allowed in runtime blend");
-    test_invalid("uniform shader sh; half4 main(half4 s, half4 d) { return sample(sh, s.rg); }",
-                 "unknown identifier 'sample'");
+    // Sampling a child shader requires that we pass explicit coords
+    test_valid("uniform shader child;"
+               "half4 main(half4 s, half4 d) { return sample(child, s.rg); }");
+    // Trying to pass a color as well. (Works internally with FPs, but not in runtime effects).
+    test_invalid("uniform shader child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, s.rg, d); }",
+                 "no match for sample(shader, half2, half4)");
+
+    // Shader with just a color
+    test_invalid("uniform shader child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, s); }",
+                 "no match for sample(shader, half4)");
+    // Coords and color in a different order
+    test_invalid("uniform shader child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, s, d.rg); }",
+                 "no match for sample(shader, half4, half2)");
+
+    // Older variants that are no longer allowed
+    test_invalid("uniform shader child;"
+                 "half4 main(half4 s, half4 d) { return sample(child); }",
+                 "no match for sample(shader)");
+    test_invalid("uniform shader child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, float3x3(1)); }",
+                 "no match for sample(shader, float3x3)");
+
+    // Sampling a colorFilter requires a color. No other signatures are valid.
+    test_valid("uniform colorFilter child;"
+               "half4 main(half4 s, half4 d) { return sample(child, d); }");
+
+    test_invalid("uniform colorFilter child;"
+                 "half4 main(half4 s, half4 d) { return sample(child); }",
+                 "sample(colorFilter)");
+    test_invalid("uniform colorFilter child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, d.rg); }",
+                 "sample(colorFilter, half2)");
+    test_invalid("uniform colorFilter child;"
+                 "half4 main(half4 s, half4 d) { return sample(child, d.rg, s); }",
+                 "sample(colorFilter, half2, half4)");
 }
 
 DEF_TEST(SkRuntimeEffectForShader, r) {
