@@ -2318,8 +2318,19 @@ void GrGLGpu::resolveRenderFBOs(GrGLRenderTarget* rt, const SkIRect& resolveRect
         if (caps.msFBOType() == GrGLCaps::kES_Apple_MSFBOType ||
             (caps.blitFramebufferSupportFlags() & GrGLCaps::kNoMSAADst_BlitFramebufferFlag)) {
             // Blitting from single to multisample is not supported. Make a draw instead.
-            this->copySurfaceAsDraw(rt, true/*drawToMultisampleFBO*/, rt, resolveRect,
-                                    resolveRect.topLeft());
+            //
+            // Respect the "kResolveMustBeFull" flag, even though we have the ability to make a
+            // partial draw. We do this because when the caller resolves back to the single-sample
+            // FBO, we will have no other choice than to do a full size resolve, so the entire MSAA
+            // attachment will need to have valid content.
+            SkIRect drawRect = (caps.blitFramebufferSupportFlags() &
+                                GrGLCaps::kResolveMustBeFull_BlitFrambufferFlag)
+                    // Technically we could get away with only drawing the proxy bounds here. If
+                    // ANGLE ES2 becomes a long term user of DMSAA we should consider this.
+                    ? SkIRect::MakeSize(rt->dimensions())
+                    : resolveRect;
+            this->copySurfaceAsDraw(rt, true/*drawToMultisampleFBO*/, rt, drawRect,
+                                    drawRect.topLeft());
             return;
         }
         this->bindFramebuffer(GR_GL_READ_FRAMEBUFFER, rt->singleSampleFBOID());
