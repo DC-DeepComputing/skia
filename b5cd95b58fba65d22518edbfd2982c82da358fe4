@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86408f9b_da3d0f3a",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-20T17:51:15Z",
+      "side": 0,
+      "message": "Adding the options plumbing here would have conflicted with the other Make (that this calls). So I took the opportunity to give these all better names. Hopefully it clarifies the flow a bit.",
+      "range": {
+        "startLine": 240,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 87
+      },
+      "revId": "b5cd95b58fba65d22518edbfd2982c82da358fe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
