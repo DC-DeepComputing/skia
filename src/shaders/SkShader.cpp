@@ -135,16 +135,24 @@ sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
     return nullptr;
 }
 
-namespace {
-class TexCoordShader : public SkUpdatableShader {
+class SkTexCoordShader : public SkUpdatableShader {
 public:
-    explicit TexCoordShader(const SkShaderBase& shader) : fShader{shader} {}
+    explicit SkTexCoordShader(const SkShaderBase& shader) : fShader{shader} {}
 
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        skvm::Coord newLocal = this->applyMatrix(b, matrices.localToDevice(), local, uniforms);
+        SkSimpleMatrixProvider matrixProvider{SkMatrix::I()};
+        return fShader.program(
+                b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+    }
+
+    skvm::Coord applyMatrix(
+            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+            skvm::Uniforms* uniforms) const {
 
         // Capture the uniforms coming in.
         if (fUniforms == nullptr) {
@@ -153,14 +161,12 @@ public:
             SkASSERT(fUniforms == uniforms);
         }
 
-        // The Uniforms that is passed in to make the blitter is the shared uniforms; all
-        // others are place holder Uniforms for jitting the various blitting routines.
-        for (int i = 0; i < 9; ++i) {
-            fMatrix[i] = uniforms->pushF(0);
+        for (auto& u : fMatrix) {
+            u = uniforms->pushF(0);
         }
 
         skvm::F32 x = local.x,
-                y = local.y;
+                  y = local.y;
 
         auto dot = [&,x,y](int row) {
             return b->mad(x, b->uniformF(fMatrix[3*row+0]),
@@ -170,17 +176,12 @@ public:
 
         x = dot(0);
         y = dot(1);
-        if (matrices.localToDevice().hasPerspective()
-            || fShader.getLocalMatrix().hasPerspective())
-        {
+        if (matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective()) {
             x = x * (1.0f / dot(2));
             y = y * (1.0f / dot(2));
         }
 
-        SkSimpleMatrixProvider matrixProvider{SkMatrix::I()};
-        skvm::Coord newLocal = {x, y};
-        return fShader.program(
-                b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+        return {x, y};
     }
 
     bool update(const SkMatrix& ctm, const SkMatrix* localM) const override {
@@ -208,14 +209,13 @@ private:
     mutable skvm::Uniforms* fUniforms{nullptr};
     mutable skvm::Uniform fMatrix[9];
 };
-}  // namespace
 
 SkUpdatableShader* SkShaderBase::updatableShader(SkArenaAlloc* alloc) const {
     if (auto updatable = this->onUpdatableShader(alloc)) {
         return updatable;
     }
 
-    return alloc->make<TexCoordShader>(*as_SB(this));
+    return alloc->make<SkTexCoordShader>(*as_SB(this));
 }
 
 SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {

@@ -23,6 +23,7 @@
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkEmptyShader.h"
+#include "src/shaders/SkTexCoordShader.h"
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
 #if 0
@@ -736,79 +737,23 @@ SkStageUpdater* SkImageShader::onAppendUpdatableStages(const SkStageRec& rec) co
     return this->doStages(rec, updater) ? updater : nullptr;
 }
 
-class SkImageShader::TexCoordShader : public SkUpdatableShader {
+class SkImageShader::TexCoordShader : public SkTexCoordShader {
 public:
-    explicit TexCoordShader(const SkImageShader& shader) : fShader{shader} {}
+    explicit TexCoordShader(const SkImageShader& shader)
+        : SkTexCoordShader{shader}
+        , fImageShader{shader} {}
 
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        return fShader.makeProgram(
+        return fImageShader.makeProgram(
                 b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
     }
 
-    skvm::Coord applyMatrix(
-            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
-            skvm::Uniforms* uniforms) const {
-
-        // Capture the uniforms coming in.
-        if (fUniforms == nullptr) {
-            fUniforms = uniforms;
-        } else {
-            SkASSERT(fUniforms == uniforms);
-        }
-
-        // The Uniforms that is passed in to make the blitter is the shared uniforms; all
-        // others are place holder Uniforms for jitting the various blitting routines.
-        for (int i = 0; i < 9; ++i) {
-            fMatrix[i] = uniforms->pushF(0);
-        }
-
-        skvm::F32 x = local.x,
-                  y = local.y;
-
-        auto dot = [&,x,y](int row) {
-            return b->mad(x, b->uniformF(fMatrix[3*row+0]),
-                          b->mad(y, b->uniformF(fMatrix[3*row+1]),
-                                 b->uniformF(fMatrix[3*row+2])));
-        };
-
-        x = dot(0);
-        y = dot(1);
-        if (matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective()) {
-            x = x * (1.0f / dot(2));
-            y = y * (1.0f / dot(2));
-        }
-
-        return {x, y};
-    }
-
-    bool update(const SkMatrix& ctm, const SkMatrix* localM) const override {
-        SkMatrix matrix;
-        if (this->computeTotalInverse(ctm, localM, &matrix)) {
-            for (int i = 0; i < 9; ++i) {
-                fUniforms->setF(fMatrix[i], matrix[i]);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    bool onAppendStages(const SkStageRec& rec) const override {
-        // TODO
-        return false;
-    }
-
 private:
-    // For serialization.  This will never be called.
-    Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
-
-    const SkImageShader& fShader;
-    mutable skvm::Uniforms* fUniforms{nullptr};
-    mutable skvm::Uniform fMatrix[9];
+    const SkImageShader& fImageShader;
 };
 
 SkUpdatableShader* SkImageShader::onUpdatableShader(SkArenaAlloc* alloc) const {
