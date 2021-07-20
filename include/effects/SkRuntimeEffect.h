@@ -178,14 +178,13 @@ public:
                              SkImageInfo resultInfo,
                              bool mipmapped) const;
 
-    sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms) const;
+    sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms,
+                                         SkSpan<ChildPtr> children = {}) const;
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms,
                                          sk_sp<SkColorFilter> children[],
                                          size_t childCount) const;
-    sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms,
-                                         SkSpan<ChildPtr> children) const;
 
-    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms) const;
+    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms, SkSpan<ChildPtr> children = {}) const;
 
     const std::string& source() const;
 
