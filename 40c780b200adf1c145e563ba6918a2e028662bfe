@@ -230,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "653e0dbb_fa232460",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "960320dc_ba214e0d",
+      "range": {
+        "startLine": 1009,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 5
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6faa15a8_0b24cb31",
@@ -455,6 +479,30 @@
       "writtenOn": "2021-07-20T17:03:10Z",
       "side": 1,
       "message": "Done at http://review.skia.org/430416",
+      "parentUuid": "f9a97755_d945752d",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "40c780b200adf1c145e563ba6918a2e028662bfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae78251_b90f8df9",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "The type() of a type literal is currently INVALID (it\u0027s the kind() we care about in this case). I suppose we could introduce a new type for type literals, but it still doesn\u0027t feel like a great solution to me.\n\nI like the idea of moving this into IndexExpression::Convert. Done.",
       "parentUuid": "f9a97755_d945752d",
       "range": {
         "startLine": 180,

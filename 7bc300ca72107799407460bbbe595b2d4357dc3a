@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b304e463_f049b186",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12beef0e_f41a4c38",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 91
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5a40078_c9690962",
@@ -88,6 +112,30 @@
       "writtenOn": "2021-07-19T20:42:23Z",
       "side": 1,
       "message": "nit: unnecessary `else` after `return`",
+      "range": {
+        "startLine": 284,
+        "startChar": 6,
+        "endLine": 284,
+        "endChar": 12
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d349f9ce_c7b3b9f3",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5a40078_c9690962",
       "range": {
         "startLine": 284,
         "startChar": 6,
@@ -121,6 +169,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c65f47ae_cc15bc3e",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b4c2b36_28fa49ba",
+      "range": {
+        "startLine": 298,
+        "startChar": 12,
+        "endLine": 300,
+        "endChar": 13
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f361893_87c427f8",
@@ -134,6 +206,30 @@
       "writtenOn": "2021-07-19T20:42:23Z",
       "side": 1,
       "message": "Still active: It looks like we fail immediately if any call to parameter() returns an unpopulated optional.\n\nIt seems like we only need `parameterPointers` and could avoid the existence of the `parameters` array entirely.\n\nThis was marked Done before but it\u0027s back.",
+      "range": {
+        "startLine": 318,
+        "startChar": 12,
+        "endLine": 320,
+        "endChar": 13
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2159bb28_05a94c8b",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Looks like I accidentally blew part of the fix away sometime during the endless stream of rebases and merges.\n\nJust to be clear, I believe failing immediately is the correct behavior; the issue was that we were still then passing around optionals even though we had established by that point that we had a value.\n\nThe earlier problems re. parameterPointers had to do with taking pointers into an array, then modifying the array which would potentially invalidate those pointers. I fixed that by delaying taking the pointers until the array is finished. Unfortunately we still need parameterPointers (since that\u0027s the type of array DSLFunction() expects), and I don\u0027t see a way to reasonably do it without still maintaining the original parameters array - where would we be storing the DSLParameters that we\u0027re taking pointers to, if not in an array?",
+      "parentUuid": "7f361893_87c427f8",
       "range": {
         "startLine": 318,
         "startChar": 12,
@@ -167,6 +263,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "199c2b5b_ecd71d82",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "The APIs to set them in DSLLayout don\u0027t exist yet.",
+      "parentUuid": "00425215_d06afe18",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 603,
+        "endChar": 15
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58b97b3d_7c58b56a",
@@ -180,6 +300,30 @@
       "writtenOn": "2021-07-19T20:42:23Z",
       "side": 1,
       "message": "This is an empty statement, right? Can this just be `dsl::Statement()`?",
+      "range": {
+        "startLine": 679,
+        "startChar": 19,
+        "endLine": 679,
+        "endChar": 29
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68ee01c2_e39810c0",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "dsl::Statement() creates an invalid statement, not an empty one.\n\nObviously we could add an API to create empty statements, but there isn\u0027t currently a means to do so and an empty block seemed close enough.",
+      "parentUuid": "58b97b3d_7c58b56a",
       "range": {
         "startLine": 679,
         "startChar": 19,
@@ -213,6 +357,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dba6f7a1_cf6c3f70",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c19bd4e_25da8c1b",
+      "range": {
+        "startLine": 1042,
+        "startChar": 4,
+        "endLine": 1042,
+        "endChar": 51
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bd3c07c_8761ddd0",
@@ -226,6 +394,30 @@
       "writtenOn": "2021-07-19T21:44:37Z",
       "side": 1,
       "message": "nit: indentation",
+      "range": {
+        "startLine": 1149,
+        "startChar": 76,
+        "endLine": 1149,
+        "endChar": 84
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26f46f1d_ebbdaae1",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bd3c07c_8761ddd0",
       "range": {
         "startLine": 1149,
         "startChar": 76,
@@ -283,6 +475,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a22617f_987a0ca3",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1157,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Unfortunately that breaks on \u0027\u003d\u0027 (you evidently can\u0027t assign by invoking operator\u003d()).\n\nI absolutely accept that this can be improved, but I\u0027m going to punt on it for this CL.",
+      "parentUuid": "6ecfa34f_bcb7e72b",
+      "range": {
+        "startLine": 1145,
+        "startChar": 0,
+        "endLine": 1157,
+        "endChar": 0
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02054388_8bd234c8",
@@ -330,6 +546,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a895a38_3682d794",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8006f68f_00f27ae5",
+      "range": {
+        "startLine": 1395,
+        "startChar": 21,
+        "endLine": 1395,
+        "endChar": 22
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "843c26a6_0a5958aa",
@@ -343,6 +583,30 @@
       "writtenOn": "2021-07-19T21:44:37Z",
       "side": 1,
       "message": "For \u003e4, can we report \"too many components in swizzle mask\" to match today\u0027s behavior?\n\nFor \u003d\u003d0, \"invalid swizzle\" is fine, I don\u0027t know how we got here without an identifier anyway :) Seems like it\u0027s probably an impossible case. Maybe we should move the \u003d\u003d0 case to the very top of the function, before `base.field(swizzleMask)` because that would be impossible too.",
+      "range": {
+        "startLine": 1498,
+        "startChar": 29,
+        "endLine": 1498,
+        "endChar": 44
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b41804_8e3d183d",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1498,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "843c26a6_0a5958aa",
       "range": {
         "startLine": 1498,
         "startChar": 29,
@@ -376,6 +640,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75f86bfc_151e057a",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1523,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bcdd192_bb4746e7",
+      "range": {
+        "startLine": 1523,
+        "startChar": 36,
+        "endLine": 1523,
+        "endChar": 53
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f09c5c5_2cd6a062",
@@ -389,6 +677,30 @@
       "writtenOn": "2021-07-19T21:44:37Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 1573,
+        "startChar": 24,
+        "endLine": 1573,
+        "endChar": 25
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d578469_071c2793",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f09c5c5_2cd6a062",
       "range": {
         "startLine": 1573,
         "startChar": 24,
@@ -469,6 +781,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0039a7c_ef38f121",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46e7a48d_bfc25899",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 60
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19f00b32_79fb2cf4",
@@ -482,6 +818,30 @@
       "writtenOn": "2021-07-19T20:42:23Z",
       "side": 1,
       "message": "We should assert that we aren\u0027t double-rewinding or double-accepting in accept() and rewind(), since that would break us (leaving the error reporter null forever). \n\n    SkASSERTF(fErrorReporter, \"Checkpoint was already accepted/rewound\");\n\n\nCuriosity: why do we do it this way instead of using `setErrorCount` to roll back speculative error reports? I\u0027m not sure why the old way wasn\u0027t sufficient.",
+      "range": {
+        "startLine": 348,
+        "startChar": 7,
+        "endLine": 354,
+        "endChar": 28
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d50553b8_bde9cef6",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done.\n\nAnd if we adopt the policy of \"never accept() in the face of errors\" (which I think is the right call, see below), then there\u0027s no reason to support setErrorCount in the first place. I intend to remove it altogether in a followup.",
+      "parentUuid": "19f00b32_79fb2cf4",
       "range": {
         "startLine": 348,
         "startChar": 7,
@@ -515,6 +875,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c5fdca_f7be58ae",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 52
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "The whole point of a speculative parse is to check whether a particular construct can be parsed without error and only accept it if so. If you run into errors, that means you should be backing out and trying the other path. I can\u0027t think of a situation in which we\u0027d speculatively parse something, run into errors, and still want to accept it.\n\nI\u0027ve added an assert that there were no errors to the accept() call, because I agree that we should defend against that. And of course I remain open to having my mind changed, if you know of a situation in which this behavior would make sense.",
+      "parentUuid": "c29c7b3b_73bdb935",
+      "range": {
+        "startLine": 360,
+        "startChar": 1,
+        "endLine": 362,
+        "endChar": 9
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd395e84_a2da69e2",
@@ -538,6 +922,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6351fa8f_fa8ab9e4",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd395e84_a2da69e2",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0eae24c9_37e6713c",
@@ -551,6 +959,30 @@
       "writtenOn": "2021-07-19T21:46:49Z",
       "side": 1,
       "message": "Can this move back up?",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 98
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81169030_2bb847c7",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-20T19:23:30Z",
+      "side": 1,
+      "message": "Sorry, meant to explain this - turns out that the earlier placement was erroneous. ReportErrors() is what takes compiler errors and turns them into DSL errors, so we need to hold off on this assert until after we\u0027ve gone through our various ReportErrors() (and since the whole point was to check that all errors have been properly reported, moving it above optimize(), which can report errors, was also not ideal).",
+      "parentUuid": "0eae24c9_37e6713c",
       "range": {
         "startLine": 86,
         "startChar": 0,
