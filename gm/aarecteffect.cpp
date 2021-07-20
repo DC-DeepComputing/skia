@@ -17,6 +17,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/private/GrTypesPriv.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkTLList.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrPaint.h"
@@ -44,9 +45,9 @@ protected:
 
     void onOnceBeforeDraw() override {}
 
-    void onDraw(GrRecordingContext* context,
-                GrSurfaceDrawContext* surfaceDrawContext,
-                SkCanvas* canvas) override {
+    void onDraw(GrRecordingContext* rContext, SkCanvas* canvas) override {
+        auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
+
         SkScalar y = 12.f;
         static constexpr SkScalar kDX = 12.f;
         static constexpr SkScalar kOutset = 5.f;
@@ -80,8 +81,8 @@ protected:
                 grPaint.setXPFactory(GrPorterDuffXPFactory::Get(SkBlendMode::kSrc));
                 grPaint.setCoverageFragmentProcessor(std::move(fp));
                 auto drawRect = rect.makeOutset(kOutset, kOutset);
-                auto op = sk_gpu_test::test_ops::MakeRect(context, std::move(grPaint), drawRect);
-                surfaceDrawContext->addDrawOp(std::move(op));
+                auto op = sk_gpu_test::test_ops::MakeRect(rContext, std::move(grPaint), drawRect);
+                sdc->addDrawOp(std::move(op));
 
                 x += SkScalarCeilToScalar(rect.width() + kDX);
             }

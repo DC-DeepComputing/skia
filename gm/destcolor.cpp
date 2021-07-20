@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkImageFilters.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrStyle.h"
@@ -68,8 +69,10 @@ private:
 
 }  // namespace
 
-DEF_SIMPLE_GPU_GM(destcolor, rContext, sdc, canvas, 640, 640) {
+DEF_SIMPLE_GPU_GM(destcolor, rContext, canvas, 640, 640) {
     SkRect bounds = SkRect::MakeIWH(512, 512);
+
+    auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
 
     // Draw the mandrill.
     SkPaint p;
