@@ -18,9 +18,9 @@
 #include "include/core/SkString.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
-#include "src/gpu/GrPaint.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrSamplerState.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrYUVATextureProxies.h"
 #include "src/gpu/SkGr.h"
@@ -112,10 +112,12 @@ protected:
 
     void onGpuTeardown() override { fProxies = {}; }
 
-    DrawResult onDraw(GrRecordingContext* context,
-                      GrSurfaceDrawContext* surfaceDrawContext,
+    DrawResult onDraw(GrRecordingContext* rContext,
                       SkCanvas* canvas,
                       SkString* errorMsg) override {
+        auto sfc = SkCanvasPriv::TopDeviceSurfaceFillContext(canvas);
+
+
         static const GrSamplerState::Filter kFilters[] = {GrSamplerState::Filter::kNearest,
                                                           GrSamplerState::Filter::kLinear};
         static const SkRect kColorRect = SkRect::MakeLTRB(2.f, 2.f, 6.f, 6.f);
@@ -142,14 +144,22 @@ protected:
                     samplerState.setWrapModeX(wm);
                     samplerState.setWrapModeY(wm);
                 }
-                const auto& caps = *context->priv().caps();
+                const auto& caps = *rContext->priv().caps();
                 std::unique_ptr<GrFragmentProcessor> fp =
                         GrYUVtoRGBEffect::Make(fProxies, samplerState, caps, SkMatrix::I(), subset);
                 if (fp) {
+#if 0
                     GrPaint grPaint;
                     grPaint.setColorFragmentProcessor(std::move(fp));
                     surfaceDrawContext->drawRect(
                             nullptr, std::move(grPaint), GrAA::kYes, ctm, rect);
+#else
+                    SkIRect r = { SkScalarRoundToInt(rect.fLeft),
+                                  SkScalarRoundToInt(rect.fTop),
+                                  SkScalarRoundToInt(rect.fLeft),
+                                  SkScalarRoundToInt(rect.fBottom) };
+                    sfc->fillRectWithFP(r, std::move(fp));
+#endif
                 }
                 x += rect.width() + kTestPad;
             }
