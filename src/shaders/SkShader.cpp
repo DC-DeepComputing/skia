@@ -138,9 +138,7 @@ sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
 namespace {
 class TexCoordShader : public SkUpdatableShader {
 public:
-    TexCoordShader(const SkShaderBase& shader, skvm::Uniforms* uniforms)
-            : fShader{shader}
-            , fUniforms{uniforms} {}
+    explicit TexCoordShader(const SkShaderBase& shader) : fShader{shader} {}
 
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
@@ -148,17 +146,17 @@ public:
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
 
+        // Capture the uniforms coming in.
+        if (fUniforms == nullptr) {
+            fUniforms = uniforms;
+        } else {
+            SkASSERT(fUniforms == uniforms);
+        }
+
         // The Uniforms that is passed in to make the blitter is the shared uniforms; all
         // others are place holder Uniforms for jitting the various blitting routines.
-        SkMatrix m = SkMatrix::I();
-        if (uniforms == fUniforms) {
-            for (int i = 0; i < 9; ++i) {
-                fMatrix[i] = uniforms->pushF(m[i]);
-            }
-        } else {
-            for (int i = 0; i < 9; ++i) {
-                uniforms->pushF(m[i]);
-            }
+        for (int i = 0; i < 9; ++i) {
+            fMatrix[i] = uniforms->pushF(0);
         }
 
         skvm::F32 x = local.x,
@@ -207,22 +205,20 @@ private:
     const char* getTypeName() const override { return nullptr; }
 
     const SkShaderBase& fShader;
-    skvm::Uniforms* const fUniforms;
+    mutable skvm::Uniforms* fUniforms{nullptr};
     mutable skvm::Uniform fMatrix[9];
 };
 }  // namespace
 
-SkUpdatableShader* SkShaderBase::updatableShader(
-        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
-    if (auto updatable = this->onUpdatableShader(uniforms, alloc)) {
+SkUpdatableShader* SkShaderBase::updatableShader(SkArenaAlloc* alloc) const {
+    if (auto updatable = this->onUpdatableShader(alloc)) {
         return updatable;
     }
 
-    return alloc->make<TexCoordShader>(*as_SB(this), uniforms);
+    return alloc->make<TexCoordShader>(*as_SB(this));
 }
 
-SkUpdatableShader* SkShaderBase::onUpdatableShader(
-        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
     return nullptr;
 }
 

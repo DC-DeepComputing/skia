@@ -609,14 +609,12 @@ namespace {
                 SkIPoint                spriteOffset,
                 const SkMatrixProvider& matrices,
                 sk_sp<SkShader>         clip,
-                skvm::Uniforms*         uniforms,
                 bool* ok)
             : fDevice(device)
             , fSprite(sprite ? *sprite : SkPixmap{})
             , fSpriteOffset(spriteOffset)
-            , fUniforms(uniforms ? uniforms : &fUniformsStorage)
             , fParams(effective_params(device, sprite, paint, matrices, std::move(clip)))
-            , fKey(cache_key(fParams, fUniforms, &fAlloc, ok))
+            , fKey(cache_key(fParams, &fUniforms, &fAlloc, ok))
         {}
 
         ~Blitter() override {
@@ -640,8 +638,7 @@ namespace {
         SkPixmap        fDevice;
         const SkPixmap  fSprite;                  // See isSprite().
         const SkIPoint  fSpriteOffset;
-        skvm::Uniforms  fUniformsStorage{SkVMBlitterUniforms()};
-        skvm::Uniforms* fUniforms{&fUniformsStorage}; // Most data is in fUniforms,
+        skvm::Uniforms  fUniforms{skvm::Ptr{0}, kBlitterUniformsCount}; // Most data is in fUniforms,
         SkArenaAlloc    fAlloc{2*sizeof(void*)};     // but a few effects need to ref large content.
         const Params    fParams;
         const Key       fKey;
@@ -666,21 +663,11 @@ namespace {
                 }
             }
 
-            // fUniforms was filled out by cache_hash in the ctor of Blitter. Every call to
-            // buildProgram through the different blitter methods (that is blitH, blitAntiH,
-            // etc.) must produce uniforms with the same slots. The updaters use fUniforms to
-            // pass information to the jitted code. Since the updaters are called before the
-            // first call to blitH, etc., then fUniforms must retain its data. Use a scratch
-            // uniforms instead of reusing fUniforms for build_program.
-            skvm::Uniforms uniforms{SkVMBlitterUniforms()};
-
-            // We know the size this must be so just expand out the memory. No need for multiple
-            // allocations.
-            uniforms.buf.reserve(fUniforms->buf.size());
+            fUniforms.resize(kBlitterUniformsCount);
             skvm::Builder builder;
-            build_program(&builder, fParams.withCoverage(coverage), &uniforms, &fAlloc);
-            SkASSERTF(fUniforms->buf.size() == uniforms.buf.size(),
-                      "%zu, prev was %zu", fUniforms->buf.size(), uniforms.buf.size());
+            build_program(&builder, fParams.withCoverage(coverage), &fUniforms, &fAlloc);
+            SkASSERTF(fUniforms.buf.size() == fUniforms.end,
+                      "%zu, prev was %zu", fUniforms.buf.size(), fUniforms.end);
 
             skvm::Program program = builder.done(debug_name(key).c_str());
             if (false) {
@@ -703,7 +690,7 @@ namespace {
 
         void updateUniforms(int right, int y) {
             BlitterUniforms uniforms{right, y};
-            memcpy(fUniforms->buf.data(), &uniforms, sizeof(BlitterUniforms));
+            memcpy(fUniforms.buf.data(), &uniforms, sizeof(BlitterUniforms));
         }
 
         const void* isSprite(int x, int y) const {
@@ -720,9 +707,9 @@ namespace {
             }
             this->updateUniforms(x+w, y);
             if (const void* sprite = this->isSprite(x,y)) {
-                fBlitH.eval(w, fUniforms->buf.data(), fDevice.addr(x,y), sprite);
+                fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
             } else {
-                fBlitH.eval(w, fUniforms->buf.data(), fDevice.addr(x,y));
+                fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
             }
         }
 
@@ -734,9 +721,9 @@ namespace {
                 this->updateUniforms(x+run, y);
                 const float covF = *cov * (1/255.0f);
                 if (const void* sprite = this->isSprite(x,y)) {
-                    fBlitAntiH.eval(run, fUniforms->buf.data(), fDevice.addr(x,y), sprite, &covF);
+                    fBlitAntiH.eval(run, fUniforms.buf.data(), fDevice.addr(x,y), sprite, &covF);
                 } else {
-                    fBlitAntiH.eval(run, fUniforms->buf.data(), fDevice.addr(x,y), &covF);
+                    fBlitAntiH.eval(run, fUniforms.buf.data(), fDevice.addr(x,y), &covF);
                 }
                 x    += run;
                 runs += run;
@@ -787,19 +774,19 @@ namespace {
                     if (program == &fBlitMask3D) {
                         size_t plane = mask.computeImageSize();
                         if (const void* sprite = this->isSprite(x,y)) {
-                            program->eval(w, fUniforms->buf.data(), dptr, sprite, mptr + 1*plane
+                            program->eval(w, fUniforms.buf.data(), dptr, sprite, mptr + 1*plane
                                                                                , mptr + 2*plane
                                                                                , mptr + 0*plane);
                         } else {
-                            program->eval(w, fUniforms->buf.data(), dptr, mptr + 1*plane
+                            program->eval(w, fUniforms.buf.data(), dptr, mptr + 1*plane
                                                                        , mptr + 2*plane
                                                                        , mptr + 0*plane);
                         }
                     } else {
                         if (const void* sprite = this->isSprite(x,y)) {
-                            program->eval(w, fUniforms->buf.data(), dptr, sprite, mptr);
+                            program->eval(w, fUniforms.buf.data(), dptr, sprite, mptr);
                         } else {
-                            program->eval(w, fUniforms->buf.data(), dptr, mptr);
+                            program->eval(w, fUniforms.buf.data(), dptr, mptr);
                         }
                     }
                 }
@@ -809,19 +796,14 @@ namespace {
 
 }  // namespace
 
-skvm::Uniforms SkVMBlitterUniforms() {
-    return skvm::Uniforms(skvm::Ptr{0}, kBlitterUniformsCount);
-}
-
 SkBlitter* SkCreateSkVMBlitter(const SkPixmap& device,
                                const SkPaint& paint,
                                const SkMatrixProvider& matrices,
                                SkArenaAlloc* alloc,
-                               sk_sp<SkShader> clip,
-                               skvm::Uniforms* uniforms) {
+                               sk_sp<SkShader> clip) {
     bool ok = true;
     auto blitter = alloc->make<Blitter>(device, paint, /*sprite=*/nullptr, SkIPoint{0,0},
-                                        matrices, std::move(clip), uniforms, &ok);
+                                        matrices, std::move(clip), &ok);
     return ok ? blitter : nullptr;
 }
 
@@ -837,7 +819,6 @@ SkBlitter* SkCreateSkVMSpriteBlitter(const SkPixmap& device,
     }
     bool ok = true;
     auto blitter = alloc->make<Blitter>(device, paint, &sprite, SkIPoint{left,top},
-                                        SkSimpleMatrixProvider{SkMatrix{}}, std::move(clip),
-                                        nullptr, &ok);
+                                        SkSimpleMatrixProvider{SkMatrix{}}, std::move(clip), &ok);
     return ok ? blitter : nullptr;
 }
