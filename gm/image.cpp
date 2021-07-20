@@ -306,8 +306,8 @@ DEF_GM( return new ScalePixelsGM; )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEF_SIMPLE_GPU_GM(new_texture_image, context, rtc, canvas, 280, 60) {
-    auto direct = context->asDirectContext();
+DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
+    auto direct = rContext->asDirectContext();
     if (!direct) {
         return;
     }
@@ -357,8 +357,8 @@ DEF_SIMPLE_GPU_GM(new_texture_image, context, rtc, canvas, 280, 60) {
                                             SkImage::BitDepth::kU8, srgbColorSpace);
         },
         // Create a texture image
-        [context, render_image]() -> sk_sp<SkImage> {
-            auto surface(SkSurface::MakeRenderTarget(context, SkBudgeted::kYes,
+        [rContext, render_image]() -> sk_sp<SkImage> {
+            auto surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
                                                      SkImageInfo::MakeS32(kSize, kSize,
                                                                           kPremul_SkAlphaType)));
             if (!surface) {

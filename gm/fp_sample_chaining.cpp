@@ -8,9 +8,9 @@
 #include "gm/gm.h"
 #include "include/core/SkFont.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
-#include "src/gpu/GrPaint.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -150,7 +150,9 @@ static std::unique_ptr<GrFragmentProcessor> wrap(std::unique_ptr<GrFragmentProce
     SkUNREACHABLE;
 }
 
-DEF_SIMPLE_GPU_GM(fp_sample_chaining, rContext, sdc, canvas, 232, 232) {
+DEF_SIMPLE_GPU_GM(fp_sample_chaining, rContext, canvas, 232, 232) {
+    auto sfc = SkCanvasPriv::TopDeviceSurfaceFillContext(canvas);
+
     SkBitmap bmp = make_test_bitmap();
 
     int x = 10, y = 10;
@@ -171,10 +173,14 @@ DEF_SIMPLE_GPU_GM(fp_sample_chaining, rContext, sdc, canvas, 232, 232) {
         for (EffectType effectType : effects) {
             fp = wrap(std::move(fp), effectType);
         }
+#if 0
         GrPaint paint;
         paint.setColorFragmentProcessor(std::move(fp));
         sdc->drawRect(nullptr, std::move(paint), GrAA::kNo, SkMatrix::Translate(x, y),
                       SkRect::MakeIWH(64, 64));
+#else
+        sfc->fillRectWithFP(SkIRect::MakeXYWH(x, y, 64, 64), std::move(fp));
+#endif
         nextCol();
     };
 
