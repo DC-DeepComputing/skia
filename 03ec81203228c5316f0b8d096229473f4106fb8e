@@ -39,6 +39,30 @@
       },
       "revId": "03ec81203228c5316f0b8d096229473f4106fb8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "904af1d5_312a5d96",
+        "filename": "src/gpu/gl/GrGLOpsRenderPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-20T17:38:18Z",
+      "side": 1,
+      "message": "Good suggestion. I like it better now. How about a member function?",
+      "parentUuid": "99145a1b_473a8367",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 36
+      },
+      "revId": "03ec81203228c5316f0b8d096229473f4106fb8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
