@@ -16,6 +16,24 @@
       "message": "Can we delete all of GrOnFlushResourceProvider?",
       "revId": "2dca2d6b1f0ede82d0be81f1366e2c5fad66e399",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6416c21_af6c5678",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-20T20:47:09Z",
+      "side": 1,
+      "message": "Unfortunately, the GrDynamicAtlas (used by the GrAtlasRenderTask) still uses the instatiateProxy entry point.",
+      "parentUuid": "3b1889da_47bb4ec6",
+      "revId": "2dca2d6b1f0ede82d0be81f1366e2c5fad66e399",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
