@@ -1421,23 +1421,12 @@ std::unique_ptr<Expression> IRGenerator::convertIndexExpression(const ASTNode& i
     if (!base) {
         return nullptr;
     }
-    if (base->is<TypeReference>()) {
-        // Convert an index expression starting with a type name: `int[12]`
-        if (iter == index.end()) {
-            this->errorReporter().error(index.fOffset, "array must have a size");
-            return nullptr;
-        }
-        const Type* type = &base->as<TypeReference>().value();
-        int arraySize = this->convertArraySize(*type, index.fOffset, *iter);
-        if (!arraySize) {
-            return nullptr;
-        }
-        type = fSymbolTable->addArrayDimension(type, arraySize);
-        return std::make_unique<TypeReference>(fContext, base->fOffset, type);
-    }
-
     if (iter == index.end()) {
-        this->errorReporter().error(base->fOffset, "missing index in '[]'");
+        if (base->is<TypeReference>()) {
+            this->errorReporter().error(index.fOffset, "array must have a size");
+        } else {
+            this->errorReporter().error(base->fOffset, "missing index in '[]'");
+        }
         return nullptr;
     }
     std::unique_ptr<Expression> converted = this->convertExpression(*(iter++));
