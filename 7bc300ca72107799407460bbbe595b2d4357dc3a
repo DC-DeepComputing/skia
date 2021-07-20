@@ -357,6 +357,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b017bf5f_6b906112",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T11:31:01Z",
+      "side": 1,
+      "message": "Oh, I get it now! \"0.000 r\" versus \"0.000r\". A good night\u0027s sleep makes all the difference 😅",
+      "parentUuid": "516e7a09_29a656ab",
+      "range": {
+        "startLine": 1578,
+        "startChar": 0,
+        "endLine": 1580,
+        "endChar": 0
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46e7a48d_bfc25899",
