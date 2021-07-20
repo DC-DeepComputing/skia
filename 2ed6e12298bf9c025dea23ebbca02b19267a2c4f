@@ -16,6 +16,24 @@
       "message": "tiny nit: Not sure why these functions got blank lines between them but the ones below had the blank lines removed. Seems like it would have been more consistent to leave the functions below alone, or to pair up each of the two MakeForXxxxxx functions together.",
       "revId": "2ed6e12298bf9c025dea23ebbca02b19267a2c4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f397f44c_d5112903",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-20T20:54:02Z",
+      "side": 1,
+      "message": "Yeah, I think this was a result of changing (and undoing changes) a couple times. In any case, I\u0027ve gone ahead and grouped them by name now (including the ones above).",
+      "parentUuid": "fb4f7e86_c8949b86",
+      "revId": "2ed6e12298bf9c025dea23ebbca02b19267a2c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
