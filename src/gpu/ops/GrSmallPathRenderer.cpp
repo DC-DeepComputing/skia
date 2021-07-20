@@ -21,7 +21,6 @@
 #include "src/gpu/GrDistanceFieldGenFromVector.h"
 #include "src/gpu/GrDrawOpTest.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrVertexWriter.h"
 #include "src/gpu/effects/GrBitmapTextGeoProc.h"
 #include "src/gpu/effects/GrDistanceFieldGeoProc.h"
@@ -31,6 +30,7 @@
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 #include "src/gpu/ops/GrSmallPathAtlasMgr.h"
 #include "src/gpu/ops/GrSmallPathShapeData.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 // mip levels
 static constexpr SkScalar kIdealMinMIP = 12;
@@ -705,7 +705,7 @@ bool GrSmallPathRenderer::onDrawPath(const DrawPathArgs& args) {
     GrOp::Owner op = SmallPathOp::Make(
             args.fContext, std::move(args.fPaint), *args.fShape, *args.fViewMatrix,
             args.fGammaCorrect, args.fUserStencilSettings);
-    args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
+    args.fSurfaceDrawContext->addDrawOp1(args.fClip, std::move(op));
 
     return true;
 }

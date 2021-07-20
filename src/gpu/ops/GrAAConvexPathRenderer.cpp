@@ -17,7 +17,6 @@
 #include "src/gpu/GrGeometryProcessor.h"
 #include "src/gpu/GrProcessor.h"
 #include "src/gpu/GrProgramInfo.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrVertexWriter.h"
 #include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/geometry/GrStyledShape.h"
@@ -30,6 +29,7 @@
 #include "src/gpu/ops/GrAAConvexPathRenderer.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 GrAAConvexPathRenderer::GrAAConvexPathRenderer() {
 }
@@ -932,7 +932,7 @@ bool GrAAConvexPathRenderer::onDrawPath(const DrawPathArgs& args) {
     GrOp::Owner op = AAConvexPathOp::Make(args.fContext, std::move(args.fPaint),
                                           *args.fViewMatrix,
                                           path, args.fUserStencilSettings);
-    args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
+    args.fSurfaceDrawContext->addDrawOp1(args.fClip, std::move(op));
     return true;
 }
 

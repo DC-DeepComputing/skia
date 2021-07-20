@@ -19,13 +19,13 @@
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 
@@ -336,7 +336,7 @@ SkPMColor4f texture_color(SkColor4f paintColor, float entryAlpha, GrColorType sr
 }
 
 // Assumes srcRect and dstRect have already been optimized to fit the proxy
-void draw_texture(GrSurfaceDrawContext* rtc,
+void draw_texture(SurfaceDrawContext* rtc,
                   const GrClip* clip,
                   const SkMatrix& ctm,
                   const SkPaint& paint,
@@ -878,7 +878,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                                             : GrSamplerState::Filter::kLinear;
     SkBlendMode mode = paint.getBlendMode_or(SkBlendMode::kSrcOver);
 
-    SkAutoTArray<GrSurfaceDrawContext::TextureSetEntry> textures(count);
+    SkAutoTArray<GrTextureSetEntry> textures(count);
     // We accumulate compatible proxies until we find an an incompatible one or reach the end and
     // issue the accumulated 'n' draws starting at 'base'. 'p' represents the number of proxy
     // switches that occur within the 'n' entries.

@@ -12,17 +12,20 @@
 #include "include/private/GrTypesPriv.h"
 #include "src/gpu/GrColor.h"
 #include "src/gpu/GrSamplerState.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/ops/GrOp.h"
+//#include "src/gpu/SurfaceContext.h"
 
+class GrClip;
 class GrColorSpaceXform;
 class GrDrawOp;
 class GrTextureProxy;
+struct GrTextureSetEntry;
 struct SkRect;
 class SkMatrix;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
 class GrTextureOp {
 public:
-
     /**
      * Controls whether saturate() is called after the texture is color-converted to ensure all
      * color values are in 0..1 range.
@@ -56,10 +59,10 @@ public:
     // Automatically falls back to using one GrFillRectOp per entry if dynamic states are not
     // supported, or if the blend mode is not src-over. 'cnt' is the size of the entry array.
     // 'proxyCnt' <= 'cnt' and represents the number of proxy switches within the array.
-    static void AddTextureSetOps(GrSurfaceDrawContext*,
+    static void AddTextureSetOps(skgpu::v1::SurfaceDrawContext*,
                                  const GrClip* clip,
                                  GrRecordingContext*,
-                                 GrSurfaceDrawContext::TextureSetEntry[],
+                                 GrTextureSetEntry[],
                                  int cnt,
                                  int proxyRunCnt,
                                  GrSamplerState::Filter,

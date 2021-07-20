@@ -15,6 +15,7 @@
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 
 static GrSurfaceProxyView blur(GrRecordingContext* ctx,

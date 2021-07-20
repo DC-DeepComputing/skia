@@ -38,7 +38,6 @@
 #include "src/gpu/GrSamplerState.h"
 #include "src/gpu/GrShaderCaps.h"
 #include "src/gpu/GrShaderVar.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -46,6 +45,7 @@
 #include "src/gpu/glsl/GrGLSLVarying.h"
 #include "src/gpu/ops/GrDrawOp.h"
 #include "src/gpu/ops/GrOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tools/gpu/ProxyUtils.h"
 
 #include <memory>

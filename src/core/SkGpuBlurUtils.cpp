@@ -15,6 +15,7 @@
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrGaussianConvolutionFragmentProcessor.h"
 #include "src/gpu/effects/GrMatrixConvolutionEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
@@ -63,7 +64,7 @@ static void fill_in_2D_gaussian_kernel(float* kernel, int width, int height,
  * Draws 'dstRect' into 'surfaceFillContext' evaluating a 1D Gaussian over 'srcView'. The src rect
  * is 'dstRect' offset by 'dstToSrcOffset'. 'mode' and 'bounds' are applied to the src coords.
  */
-static void convolve_gaussian_1d(GrSurfaceFillContext* sfc,
+static void convolve_gaussian_1d(skgpu::SurfaceFillContext_Base* sfc,
                                  GrSurfaceProxyView srcView,
                                  const SkIRect srcSubset,
                                  SkIVector dstToSrcOffset,
@@ -93,7 +94,8 @@ static void convolve_gaussian_1d(GrSurfaceFillContext* sfc,
     sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(conv));
 }
 
-static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian_2d(GrRecordingContext* context,
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> convolve_gaussian_2d(
+                                                                  GrRecordingContext* context,
                                                                   GrSurfaceProxyView srcView,
                                                                   GrColorType srcColorType,
                                                                   const SkIRect& srcBounds,
@@ -110,7 +112,7 @@ static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian_2d(GrRecordingCon
              !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaY));
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // GrSurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto surfaceDrawContext = GrSurfaceDrawContext::Make(
+    auto surfaceDrawContext = skgpu::v1::SurfaceDrawContext::Make(
             context, srcColorType, std::move(finalCS), dstFit, dstBounds.size(), SkSurfaceProps(),
             1, GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!surfaceDrawContext) {

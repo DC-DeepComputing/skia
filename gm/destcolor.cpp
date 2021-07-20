@@ -14,9 +14,10 @@
 #include "include/effects/SkImageFilters.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/GrPaint.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "tools/Resources.h"
@@ -68,7 +69,7 @@ private:
 
 }  // namespace
 
-DEF_SIMPLE_GPU_GM(destcolor, rContext, sdc, canvas, 640, 640) {
+DEF_SIMPLE_GPU_GM(destcolor, rContext, sc, canvas, 640, 640) {
     SkRect bounds = SkRect::MakeIWH(512, 512);
 
     // Draw the mandrill.
@@ -77,6 +78,7 @@ DEF_SIMPLE_GPU_GM(destcolor, rContext, sdc, canvas, 640, 640) {
                                            bounds, bounds, SkSamplingOptions()));
     canvas->drawPaint(p);
 
+#if 0
     // Now let's add our test FP on top. It reads back the original image and inverts it.
     GrPaint invertPaint;
     invertPaint.setColor4f(SK_PMColor4fWHITE);
@@ -84,4 +86,8 @@ DEF_SIMPLE_GPU_GM(destcolor, rContext, sdc, canvas, 640, 640) {
     invertPaint.setColorFragmentProcessor(DestColorTestFP::Make(GrFragmentProcessor::DestColor()));
     sdc->drawOval(/*clip*/ nullptr, std::move(invertPaint), GrAA::kYes, SkMatrix::I(),
                   SkRect::MakeLTRB(128, 128, 640, 640), GrStyle::SimpleFill());
+#else
+    sc->asFillContext()->fillRectWithFP(SkIRect::MakeLTRB(128, 128, 640, 640),
+                                        DestColorTestFP::Make(GrFragmentProcessor::DestColor()));
+#endif
 }

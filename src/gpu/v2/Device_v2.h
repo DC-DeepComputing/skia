@@ -77,7 +77,7 @@ public:
                                          ReadPixelsCallback,
                                          ReadPixelsContext) override;
 
-    GrSurfaceDrawContext* surfaceDrawContext() override { return nullptr; }
+    skgpu::BaseDevice* asGpuDevice() override { return this; }
 
 protected:
     void onSave() override;

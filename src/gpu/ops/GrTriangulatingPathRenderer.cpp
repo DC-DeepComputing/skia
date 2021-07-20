@@ -22,13 +22,13 @@
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrSimpleMesh.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrThreadSafeCache.h"
 #include "src/gpu/GrTriangulator.h"
 #include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/geometry/GrStyledShape.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #include <cstdio>
 
@@ -590,7 +590,7 @@ bool GrTriangulatingPathRenderer::onDrawPath(const DrawPathArgs& args) {
     GrOp::Owner op = TriangulatingPathOp::Make(
             args.fContext, std::move(args.fPaint), *args.fShape, *args.fViewMatrix,
             *args.fClipConservativeBounds, args.fAAType, args.fUserStencilSettings);
-    args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
+    args.fSurfaceDrawContext->addDrawOp1(args.fClip, std::move(op));
     return true;
 }
 

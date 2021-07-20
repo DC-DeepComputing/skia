@@ -47,8 +47,8 @@ public:
         canvas->androidFramework_replaceClip(rect);
     }
 
-    static GrSurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas* canvas) {
-        return canvas->topDeviceSurfaceDrawContext();
+    static skgpu::BaseDevice* TopGpuDevice(SkCanvas* canvas) {
+        return canvas->topGpuDevice();
     }
 
     static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas* canvas) {

@@ -19,11 +19,11 @@
 #include "src/gpu/GrStencilMaskHelper.h"
 #include "src/gpu/GrStencilSettings.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrUserStencilSettings.h"
 #include "src/gpu/effects/GrConvexPolyEffect.h"
 #include "src/gpu/effects/GrRRectEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/shaders/SkShaderBase.h"
 
 /**
@@ -708,7 +708,7 @@ void GrReducedClip::makeEmpty() {
 ////////////////////////////////////////////////////////////////////////////////
 // Create a 8-bit clip mask in alpha
 
-static bool stencil_element(GrSurfaceDrawContext* rtc,
+static bool stencil_element(skgpu::v1::SurfaceDrawContext* rtc,
                             const GrFixedClip& clip,
                             const GrUserStencilSettings* ss,
                             const SkMatrix& viewMatrix,

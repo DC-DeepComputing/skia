@@ -5,17 +5,17 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/SurfaceFillContext.h"
 
 #include "include/private/GrImageContext.h"
 #include "src/gpu/GrDstProxyView.h"
 #include "src/gpu/GrImageContextPriv.h"
 #include "src/gpu/GrProxyProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/ops/GrClearOp.h"
 #include "src/gpu/ops/GrFillRectOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #define ASSERT_SINGLE_OWNER        GR_ASSERT_SINGLE_OWNER(this->singleOwner())
 #define RETURN_IF_ABANDONED        if (fContext->abandoned()) { return; }
@@ -31,19 +31,19 @@ private:
     GrDrawingManager* fDrawingManager;
 };
 
-std::unique_ptr<GrSurfaceFillContext> GrSurfaceFillContext::Make(GrRecordingContext* context,
-                                                                 SkAlphaType alphaType,
-                                                                 sk_sp<SkColorSpace> colorSpace,
-                                                                 SkISize dimensions,
-                                                                 SkBackingFit fit,
-                                                                 const GrBackendFormat& format,
-                                                                 int sampleCount,
-                                                                 GrMipmapped mipmapped,
-                                                                 GrProtected isProtected,
-                                                                 GrSwizzle readSwizzle,
-                                                                 GrSwizzle writeSwizzle,
-                                                                 GrSurfaceOrigin origin,
-                                                                 SkBudgeted budgeted) {
+std::unique_ptr<SurfaceFillContext> SurfaceFillContext::Make(GrRecordingContext* context,
+                                                             SkAlphaType alphaType,
+                                                             sk_sp<SkColorSpace> colorSpace,
+                                                             SkISize dimensions,
+                                                             SkBackingFit fit,
+                                                             const GrBackendFormat& format,
+                                                             int sampleCount,
+                                                             GrMipmapped mipmapped,
+                                                             GrProtected isProtected,
+                                                             GrSwizzle readSwizzle,
+                                                             GrSwizzle writeSwizzle,
+                                                             GrSurfaceOrigin origin,
+                                                             SkBudgeted budgeted) {
     SkASSERT(context);
     SkASSERT(!dimensions.isEmpty());
     SkASSERT(sampleCount >= 1);
@@ -222,12 +222,12 @@ std::unique_ptr<GrSurfaceFillContext> GrSurfaceFillContext::MakeFromBackendTextu
 // GrOpsTask to be picked up and added to by GrSurfaceFillContext lower in the call
 // stack. When this occurs with a closed GrOpsTask, a new one will be allocated
 // when the GrSurfaceFillContext attempts to use it (via getOpsTask).
-GrSurfaceFillContext::GrSurfaceFillContext(GrRecordingContext* context,
+GrSurfaceFillContext::GrSurfaceFillContext(GrRecordingContext* rContext,
                                            GrSurfaceProxyView readView,
                                            GrSurfaceProxyView writeView,
                                            const GrColorInfo& colorInfo,
                                            bool flushTimeOpsTask)
-        : GrSurfaceContext(context, std::move(readView), std::move(colorInfo))
+        : GrSurfaceFillContext_Base(rContext, std::move(readView), std::move(writeView), std::move(colorInfo))
         , fWriteView(std::move(writeView))
         , fFlushTimeOpsTask(flushTimeOpsTask) {
     fOpsTask = sk_ref_sp(context->priv().drawingManager()->getLastOpsTask(this->asSurfaceProxy()));
@@ -313,6 +313,11 @@ GrOpsTask* GrSurfaceFillContext::getOpsTask() {
     SkASSERT(!fOpsTask->isClosed());
     return fOpsTask.get();
 }
+
+sk_sp<GrRenderTask> GrSurfaceFillContext::refRenderTask() {
+    return sk_ref_sp(this->getOpsTask());
+}
+
 
 GrOpsTask* GrSurfaceFillContext::replaceOpsTask() {
     sk_sp<GrOpsTask> newOpsTask = this->drawingManager()->newOpsTask(

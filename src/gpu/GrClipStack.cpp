@@ -359,7 +359,7 @@ static GrSurfaceProxyView render_sw_mask(GrRecordingContext* context, const SkIR
     }
 }
 
-static void render_stencil_mask(GrRecordingContext* context, GrSurfaceDrawContext* rtc,
+static void render_stencil_mask(GrRecordingContext* context, skgpu::v1::SurfaceDrawContext* rtc,
                                 uint32_t genID, const SkIRect& bounds,
                                 const GrClipStack::Element** elements, int count,
                                 GrAppliedClip* out) {
@@ -1239,7 +1239,8 @@ GrClip::PreClipResult GrClipStack::preApply(const SkRect& bounds, GrAA aa) const
     SkUNREACHABLE;
 }
 
-GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawContext* rtc,
+GrClip::Effect GrClipStack::apply(GrRecordingContext* context,
+                                  skgpu::v1::SurfaceDrawContext* sdc,
                                   GrDrawOp* op, GrAAType aa, GrAppliedClip* out,
                                   SkRect* bounds) const {
     // TODO: Once we no longer store SW masks, we don't need to sneak the provider in like this
