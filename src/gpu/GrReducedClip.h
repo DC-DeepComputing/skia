@@ -88,8 +88,8 @@ public:
      */
     bool maskRequiresAA() const { SkASSERT(!fMaskElements.isEmpty()); return fMaskRequiresAA; }
 
-    bool drawAlphaClipMask(GrSurfaceDrawContext*) const;
-    bool drawStencilClipMask(GrRecordingContext*, GrSurfaceDrawContext*) const;
+    bool drawAlphaClipMask(skgpu::v1::SurfaceDrawContext*) const;
+    bool drawStencilClipMask(GrRecordingContext*, skgpu::v1::SurfaceDrawContext*) const;
 
     int numAnalyticElements() const;
 

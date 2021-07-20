@@ -26,6 +26,7 @@
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
 #include "src/gpu/ops/GrDrawOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 GrPathRenderer::CanDrawPath
@@ -68,7 +69,7 @@ static bool get_unclipped_shape_dev_bounds(const GrStyledShape& shape, const SkM
 
 // Gets the shape bounds, the clip bounds, and the intersection (if any). Returns false if there
 // is no intersection.
-bool GrSoftwarePathRenderer::GetShapeAndClipBounds(GrSurfaceDrawContext* surfaceDrawContext,
+bool GrSoftwarePathRenderer::GetShapeAndClipBounds(skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
                                                    const GrClip* clip,
                                                    const GrStyledShape& shape,
                                                    const SkMatrix& matrix,

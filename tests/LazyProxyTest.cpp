@@ -16,7 +16,6 @@
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
 #include "src/gpu/GrTexture.h"
@@ -24,6 +23,7 @@
 #include "src/gpu/GrTextureProxyPriv.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/mock/GrMockGpu.h"
+#include "src/gpu/v1/SurfaceDrawContext.h"
 
 // This test verifies that lazy proxy callbacks get invoked during flush, after onFlush callbacks,
 // but before Ops are executed. It also ensures that lazy proxy callbacks are invoked both for
@@ -208,12 +208,12 @@ DEF_GPUTEST(LazyProxyTest, reporter, /* options */) {
     for (bool nullTexture : {false, true}) {
         LazyProxyTest test(reporter);
         ctx->priv().addOnFlushCallbackObject(&test);
-        auto rtc = GrSurfaceDrawContext::Make(ctx.get(), GrColorType::kRGBA_8888, nullptr,
-                                              SkBackingFit::kExact, {100, 100}, SkSurfaceProps());
+        auto rtc = skgpu::v1::SurfaceDrawContext::Make(ctx.get(), GrColorType::kRGBA_8888, nullptr,
+                                                       SkBackingFit::kExact, {100, 100}, SkSurfaceProps());
         REPORTER_ASSERT(reporter, rtc);
-        auto mockAtlas = GrSurfaceDrawContext::Make(ctx.get(), GrColorType::kAlpha_F16, nullptr,
-                                                    SkBackingFit::kExact, {10, 10},
-                                                    SkSurfaceProps());
+        auto mockAtlas = skgpu::v1::SurfaceDrawContext::Make(ctx.get(), GrColorType::kAlpha_F16, nullptr,
+                                                             SkBackingFit::kExact, {10, 10},
+                                                             SkSurfaceProps());
         REPORTER_ASSERT(reporter, mockAtlas);
         LazyProxyTest::Clip clip(&test, mockAtlas->asTextureProxy());
         rtc->addDrawOp(&clip,
