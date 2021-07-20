@@ -14,6 +14,8 @@ skia_shaper_primitive_sources = [
   "$_src/SkShaper_primitive.cpp",
 ]
 skia_shaper_icu_sources = [
+  "$_src/SkICU.h",
+  "$_src/SkICU_builtin.cpp",
   "$_src/SkUnicode.h",
   "$_src/SkUnicode_icu.cpp",
 ]
