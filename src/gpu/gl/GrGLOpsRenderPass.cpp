@@ -33,13 +33,26 @@ void GrGLOpsRenderPass::set(GrRenderTarget* rt, bool useMSAASurface, const SkIRe
 
 void GrGLOpsRenderPass::onBegin() {
     auto glRT = static_cast<GrGLRenderTarget*>(fRenderTarget);
-    if (fUseMultisampleFBO && fColorLoadAndStoreInfo.fLoadOp == GrLoadOp::kLoad &&
+    if (fUseMultisampleFBO &&
+        fColorLoadAndStoreInfo.fLoadOp == GrLoadOp::kLoad &&
         glRT->hasDynamicMSAAAttachment()) {
         // Blit the single sample fbo into the dmsaa attachment.
+        //
+        // If final the resolve must be full, then also draw the entire render target bounds
+        // into the MSAA attachment. We do this because we will have no other choice than to do
+        // a full size resolve at the end of the render pass, so the full DMSAA attachment needs
+        // to have valid content.
+        const SkIRect resolveBounds = fGpu->glCaps().framebufferResolvesMustBeFullSize()
+                ? SkIRect::MakeSize(fRenderTarget->dimensions())
+                : fContentBounds;
         auto nativeBounds = GrNativeRect::MakeRelativeTo(fOrigin, fRenderTarget->height(),
-                                                         fContentBounds);
-        fGpu->resolveRenderFBOs(glRT, nativeBounds.asSkIRect(),
-                                GrGLGpu::ResolveDirection::kSingleToMSAA);
+                                                         resolveBounds);
+        if (fGpu->glCaps().canResolveSingleToMSAA()) {
+            fGpu->resolveRenderFBOs(glRT, nativeBounds.asSkIRect(),
+                                    GrGLGpu::ResolveDirection::kSingleToMSAA);
+        } else {
+            fGpu->drawSingleIntoMSAAFBO(glRT, nativeBounds.asSkIRect());
+        }
     }
 
     fGpu->beginCommandBuffer(glRT, fUseMultisampleFBO, fContentBounds, fOrigin,
@@ -51,11 +64,15 @@ void GrGLOpsRenderPass::onEnd() {
     fGpu->endCommandBuffer(glRT, fUseMultisampleFBO, fColorLoadAndStoreInfo,
                            fStencilLoadAndStoreInfo);
 
-    if (fUseMultisampleFBO && fColorLoadAndStoreInfo.fStoreOp == GrStoreOp::kStore &&
+    if (fUseMultisampleFBO &&
+        fColorLoadAndStoreInfo.fStoreOp == GrStoreOp::kStore &&
         glRT->hasDynamicMSAAAttachment()) {
         // Blit the msaa attachment into the single sample fbo.
+        const SkIRect resolveBounds = fGpu->glCaps().framebufferResolvesMustBeFullSize()
+                ? SkIRect::MakeSize(fRenderTarget->dimensions())
+                : fContentBounds;
         auto nativeBounds = GrNativeRect::MakeRelativeTo(fOrigin, fRenderTarget->height(),
-                                                         fContentBounds);
+                                                         resolveBounds);
         fGpu->resolveRenderFBOs(glRT, nativeBounds.asSkIRect(),
                                 GrGLGpu::ResolveDirection::kMSAAToSingle,
                                 true /*invalidateReadBufferAfterBlit*/);
