@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f3674e_6f99c7d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-20T14:24:17Z",
+      "side": 1,
+      "message": "I\u0027m okay if you feel strongly this is where the code should go, but something feels a little off having the resolveFBO function knowing that it will be called later with the same attachments going the opposite way. And in that second call we\u0027ll be doing a full screen blit. Like I feel like that knowledge should more be up in GrGLOpsRenderPass and there we could pass in the resolve rect we want.",
+      "revId": "4468b66b4989838d32f40b30de78e0bf10f90755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
