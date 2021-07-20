@@ -46,6 +46,30 @@
       },
       "revId": "9812dce0e3306d5a8c5f977eb140e1ffc5e4b573",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb733731_3264df22",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T21:10:17Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s a little weird to have a struct that\u0027s half private like this. Maybe we should have a public options struct and a separate private one.",
+      "parentUuid": "1b39ce7c_81367bb7",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 5
+      },
+      "revId": "9812dce0e3306d5a8c5f977eb140e1ffc5e4b573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
