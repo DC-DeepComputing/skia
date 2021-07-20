@@ -279,6 +279,13 @@ public:
                kES_EXT_MsToTexture_MSFBOType == fMSFBOType;
     }
 
+    // Can we resolve a single-sample framebuffer into an MSAA framebuffer?
+    bool canResolveSingleToMSAA() const {
+        SkASSERT(fMSFBOType != kNone_MSFBOType);
+        return fMSFBOType != kES_Apple_MSFBOType &&
+               !(fBlitFramebufferFlags & GrGLCaps::kNoMSAADst_BlitFramebufferFlag);
+    }
+
     InvalidateFBType invalidateFBType() const { return fInvalidateFBType; }
 
     /// What type of buffer mapping is supported?

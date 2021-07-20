@@ -104,12 +104,23 @@ public:
     GrGLenum prepareToDraw(GrPrimitiveType primitiveType);
 
     enum class ResolveDirection : bool {
-        kSingleToMSAA,
+        kSingleToMSAA,  // GrGLCaps::canResolveSingleToMSAA() must be true.
         kMSAAToSingle
     };
 
+    // Resolves the render target's single sample FBO into the MSAA, or vice versa. If blitting
+    // single to MSAA, GrGLCaps::canResolveSingleToMSAA() must be true.
     void resolveRenderFBOs(GrGLRenderTarget*, const SkIRect& resolveRect, ResolveDirection,
                            bool invalidateReadBufferAfterBlit = false);
+
+    // For loading a dynamic MSAA framebuffer when GrGLCaps::canResolveSingleToMSAA() is false.
+    // NOTE: If kResolveMustBeFull_BlitFrambufferFlag is also set, the drawBounds should be equal to
+    // the proxy bounds. This is because the render pass will have to do a full size resolve back
+    // into the single sample FBO when rendering is complete.
+    void drawSingleIntoMSAAFBO(GrGLRenderTarget* rt, const SkIRect& drawBounds) {
+        this->copySurfaceAsDraw(rt, true/*drawToMultisampleFBO*/, rt, drawBounds,
+                                drawBounds.topLeft());
+    }
 
     // The GrGLOpsRenderPass does not buffer up draws before submitting them to the gpu.
     // Thus this is the implementation of the clear call for the corresponding passthrough function
