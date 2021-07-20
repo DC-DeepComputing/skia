@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a0590a2_ab61bf13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-20T15:37:53Z",
+      "side": 1,
+      "message": "PTAL. The GrMtlFramebuffer class is pretty minimal -- I\u0027m wondering if this should just be the GrFramebuffer base class and GrMtlFramebuffer, at least temporarily, would be a typedef or using def.",
+      "revId": "0c1ab0cf2fce4c157ed8c4ba135a32b0041f7617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
