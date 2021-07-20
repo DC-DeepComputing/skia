@@ -10,14 +10,9 @@
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTemplates.h"
+#include "modules/skshaper/src/SkICU.h"
 #include "modules/skshaper/src/SkUnicode.h"
 #include "src/utils/SkUTF.h"
-#include <unicode/ubidi.h>
-#include <unicode/ubrk.h>
-#include <unicode/uscript.h>
-#include <unicode/ustring.h>
-#include <unicode/utext.h>
-#include <unicode/utypes.h>
 #include <vector>
 #include <functional>
 
@@ -25,25 +20,30 @@
 #include "SkLoadICU.h"
 #endif
 
-// ubrk_clone added as draft in ICU69 and Android API 31 (first ICU NDK).
-// ubrk_safeClone deprecated in ICU69 and not exposed by Android.
-template<typename...> using void_t = void;
-template<typename T, typename = void>
-struct SkUbrkClone {
-    UBreakIterator* operator()(T bi, UErrorCode* status) {
-        return ubrk_safeClone(bi, nullptr, nullptr, status);
-    }
-};
-template<typename T>
-struct SkUbrkClone<T, void_t<decltype(ubrk_clone(std::declval<T>(), nullptr))>> {
-    UBreakIterator* operator()(T bi, UErrorCode* status) {
-        return ubrk_clone(bi, status);
-    }
-};
+static const SkICUFuncs& ICU() {
+    static const auto gICU = SkLoadICUFuncs();
 
-using SkUnicodeBidi = std::unique_ptr<UBiDi, SkFunctionWrapper<decltype(ubidi_close), ubidi_close>>;
-using ICUUText = std::unique_ptr<UText, SkFunctionWrapper<decltype(utext_close), utext_close>>;
-using ICUBreakIterator = std::unique_ptr<UBreakIterator, SkFunctionWrapper<decltype(ubrk_close), ubrk_close>>;
+    return gICU;
+}
+
+static void sk_ubidi_close_wrapper(UBiDi* bidi) {
+    ICU().f_ubidi_close(bidi);
+}
+
+static UText* sk_utext_close_wrapper(UText* ut) {
+    return ICU().f_utext_close(ut);
+}
+
+static void sk_ubrk_close_wrapper(UBreakIterator* bi) {
+    ICU().f_ubrk_close(bi);
+}
+
+using SkUnicodeBidi = std::unique_ptr<UBiDi, SkFunctionWrapper<decltype(ubidi_close),
+                                                               sk_ubidi_close_wrapper>>;
+using ICUUText = std::unique_ptr<UText, SkFunctionWrapper<decltype(utext_close),
+                                                          sk_utext_close_wrapper>>;
+using ICUBreakIterator = std::unique_ptr<UBreakIterator, SkFunctionWrapper<decltype(ubrk_close),
+                                                                           sk_ubrk_close_wrapper>>;
 
 /** Replaces invalid utf-8 sequences with REPLACEMENT CHARACTER U+FFFD. */
 static inline SkUnichar utf8_next(const char** ptr, const char* end) {
@@ -65,23 +65,24 @@ class SkBidiIterator_icu : public SkBidiIterator {
     SkUnicodeBidi fBidi;
 public:
     explicit SkBidiIterator_icu(SkUnicodeBidi bidi) : fBidi(std::move(bidi)) {}
-    Position getLength() override { return ubidi_getLength(fBidi.get()); }
-    Level getLevelAt(Position pos) override { return ubidi_getLevelAt(fBidi.get(), pos); }
+    Position getLength() override { return ICU().f_ubidi_getLength(fBidi.get()); }
+    Level getLevelAt(Position pos) override { return ICU().f_ubidi_getLevelAt(fBidi.get(), pos); }
 
     static std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t utf16[], int utf16Units, Direction dir) {
         UErrorCode status = U_ZERO_ERROR;
-        SkUnicodeBidi bidi(ubidi_openSized(utf16Units, 0, &status));
+        SkUnicodeBidi bidi(ICU().f_ubidi_openSized(utf16Units, 0, &status));
         if (U_FAILURE(status)) {
-            SkDEBUGF("Bidi error: %s", u_errorName(status));
+            SkDEBUGF("Bidi error: %s", ICU().f_u_errorName(status));
             return nullptr;
         }
         SkASSERT(bidi);
         uint8_t bidiLevel = (dir == SkBidiIterator::kLTR) ? UBIDI_LTR : UBIDI_RTL;
         // The required lifetime of utf16 isn't well documented.
         // It appears it isn't used after ubidi_setPara except through ubidi_getText.
-        ubidi_setPara(bidi.get(), (const UChar*)utf16, utf16Units, bidiLevel, nullptr, &status);
+        ICU().f_ubidi_setPara(bidi.get(), (const UChar*)utf16, utf16Units, bidiLevel, nullptr,
+                             &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Bidi error: %s", u_errorName(status));
+            SkDEBUGF("Bidi error: %s", ICU().f_u_errorName(status));
             return nullptr;
         }
         return std::unique_ptr<SkBidiIterator>(new SkBidiIterator_icu(std::move(bidi)));
@@ -145,7 +146,7 @@ public:
 
 void SkBidiIterator::ReorderVisual(const Level runLevels[], int levelsCount,
                                    int32_t logicalFromVisual[]) {
-    ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+    ICU().f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
 }
 
 class SkBreakIterator_icu : public SkBreakIterator {
@@ -155,30 +156,30 @@ class SkBreakIterator_icu : public SkBreakIterator {
     explicit SkBreakIterator_icu(ICUBreakIterator iter)
         : fBreakIterator(std::move(iter)), fLastResult(0) {}
     Position first() override
-      { return fLastResult = ubrk_first(fBreakIterator.get()); }
+      { return fLastResult = ICU().f_ubrk_first(fBreakIterator.get()); }
     Position current() override
-      { return fLastResult = ubrk_current(fBreakIterator.get()); }
+      { return fLastResult = ICU().f_ubrk_current(fBreakIterator.get()); }
     Position next() override
-      { return fLastResult = ubrk_next(fBreakIterator.get()); }
+      { return fLastResult = ICU().f_ubrk_next(fBreakIterator.get()); }
     Position preceding(Position offset) override
-        { return fLastResult = ubrk_preceding(fBreakIterator.get(), offset); }
+        { return fLastResult = ICU().f_ubrk_preceding(fBreakIterator.get(), offset); }
     Position following(Position offset) override
-        { return fLastResult = ubrk_following(fBreakIterator.get(), offset);}
-    Status status() override { return ubrk_getRuleStatus(fBreakIterator.get()); }
+        { return fLastResult = ICU().f_ubrk_following(fBreakIterator.get(), offset);}
+    Status status() override { return ICU().f_ubrk_getRuleStatus(fBreakIterator.get()); }
     bool isDone() override { return fLastResult == UBRK_DONE; }
 
     bool setText(const char utftext8[], int utf8Units) override {
         UErrorCode status = U_ZERO_ERROR;
-        ICUUText text(utext_openUTF8(nullptr, &utftext8[0], utf8Units, &status));
+        ICUUText text(ICU().f_utext_openUTF8(nullptr, &utftext8[0], utf8Units, &status));
 
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         SkASSERT(text);
-        ubrk_setUText(fBreakIterator.get(), text.get(), &status);
+        ICU().f_ubrk_setUText(fBreakIterator.get(), text.get(), &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         fLastResult = 0;
@@ -186,16 +187,18 @@ class SkBreakIterator_icu : public SkBreakIterator {
     }
     bool setText(const char16_t utftext16[], int utf16Units) override {
         UErrorCode status = U_ZERO_ERROR;
-        ICUUText text(utext_openUChars(nullptr, reinterpret_cast<const UChar*>(&utftext16[0]), utf16Units, &status));
+        ICUUText text(ICU().f_utext_openUChars(nullptr,
+                                               reinterpret_cast<const UChar*>(&utftext16[0]),
+                                               utf16Units, &status));
 
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         SkASSERT(text);
-        ubrk_setUText(fBreakIterator.get(), text.get(), &status);
+        ICU().f_ubrk_setUText(fBreakIterator.get(), text.get(), &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         fLastResult = 0;
@@ -220,9 +223,10 @@ class SkIcuBreakIteratorCache {
             SkAutoMutexExclusive lock(fBreakCacheMutex);
             cachedIterator = fBreakCache.find(type);
             if (!cachedIterator) {
-                ICUBreakIterator newIterator(ubrk_open(convertType(type), uloc_getDefault(), nullptr, 0, &status));
+                ICUBreakIterator newIterator(ICU().f_ubrk_open(convertType(type),
+                                             ICU().f_uloc_getDefault(), nullptr, 0, &status));
                 if (U_FAILURE(status)) {
-                    SkDEBUGF("Break error: %s", u_errorName(status));
+                    SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
                 } else {
                     cachedIterator = fBreakCache.set(type, std::move(newIterator));
                 }
@@ -230,9 +234,9 @@ class SkIcuBreakIteratorCache {
         }
         ICUBreakIterator iterator;
         if (cachedIterator) {
-            iterator.reset(SkUbrkClone<const UBreakIterator*>()(cachedIterator->get(), &status));
+            iterator.reset(ICU().f_ubrk_clone(cachedIterator->get(), &status));
             if (U_FAILURE(status)) {
-                SkDEBUGF("Break error: %s", u_errorName(status));
+                SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             }
         }
         return iterator;
@@ -243,7 +247,7 @@ class SkScriptIterator_icu : public SkScriptIterator {
  public:
    bool getScript(SkUnichar u, ScriptID* script) override {
         UErrorCode status = U_ZERO_ERROR;
-        UScriptCode scriptCode = uscript_getScript(u, &status);
+        UScriptCode scriptCode = ICU().f_uscript_getScript(u, &status);
         if (U_FAILURE (status)) {
             return false;
         }
@@ -273,18 +277,19 @@ class SkUnicode_icu : public SkUnicode {
 
         // Create bidi iterator
         UErrorCode status = U_ZERO_ERROR;
-        SkUnicodeBidi bidi(ubidi_openSized(utf16Units, 0, &status));
+        SkUnicodeBidi bidi(ICU().f_ubidi_openSized(utf16Units, 0, &status));
         if (U_FAILURE(status)) {
-            SkDEBUGF("Bidi error: %s", u_errorName(status));
+            SkDEBUGF("Bidi error: %s", ICU().f_u_errorName(status));
             return false;
         }
         SkASSERT(bidi);
         uint8_t bidiLevel = (dir == TextDirection::kLTR) ? UBIDI_LTR : UBIDI_RTL;
         // The required lifetime of utf16 isn't well documented.
         // It appears it isn't used after ubidi_setPara except through ubidi_getText.
-        ubidi_setPara(bidi.get(), (const UChar*)utf16.get(), utf16Units, bidiLevel, nullptr, &status);
+        ICU().f_ubidi_setPara(bidi.get(), (const UChar*)utf16.get(), utf16Units, bidiLevel, nullptr,
+                              &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Bidi error: %s", u_errorName(status));
+            SkDEBUGF("Bidi error: %s", ICU().f_u_errorName(status));
             return false;
         }
 
@@ -295,9 +300,9 @@ class SkUnicode_icu : public SkUnicode {
 
         Position pos8 = 0;
         Position pos16 = 0;
-        Position end16 = ubidi_getLength(bidi.get());
+        Position end16 = ICU().f_ubidi_getLength(bidi.get());
         while (pos16 < end16) {
-            auto level = ubidi_getLevelAt(bidi.get(), pos16);
+            auto level = ICU().f_ubidi_getLevelAt(bidi.get(), pos16);
             if (pos16 == 0) {
                 currentLevel = level;
             } else if (level != currentLevel) {
@@ -322,28 +327,28 @@ class SkUnicode_icu : public SkUnicode {
 
         ICUBreakIterator iterator = SkIcuBreakIteratorCache::get().makeBreakIterator(BreakType::kWords);
         if (!iterator) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         SkASSERT(iterator);
 
-        ICUUText utf16UText(utext_openUChars(nullptr, (UChar*)utf16, utf16Units, &status));
+        ICUUText utf16UText(ICU().f_utext_openUChars(nullptr, (UChar*)utf16, utf16Units, &status));
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
 
-        ubrk_setUText(iterator.get(), utf16UText.get(), &status);
+        ICU().f_ubrk_setUText(iterator.get(), utf16UText.get(), &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
 
         // Get the words
-        int32_t pos = ubrk_first(iterator.get());
+        int32_t pos = ICU().f_ubrk_first(iterator.get());
         while (pos != UBRK_DONE) {
             words->emplace_back(pos);
-            pos = ubrk_next(iterator.get());
+            pos = ICU().f_ubrk_next(iterator.get());
         }
 
         return true;
@@ -353,10 +358,10 @@ class SkUnicode_icu : public SkUnicode {
         (const char utf8[], int utf8Units, BreakType type, std::function<void(int, int)> setBreak) {
 
         UErrorCode status = U_ZERO_ERROR;
-        ICUUText text(utext_openUTF8(nullptr, &utf8[0], utf8Units, &status));
+        ICUUText text(ICU().f_utext_openUTF8(nullptr, &utf8[0], utf8Units, &status));
 
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
         SkASSERT(text);
@@ -366,20 +371,20 @@ class SkUnicode_icu : public SkUnicode {
             return false;
         }
 
-        ubrk_setUText(iterator.get(), text.get(), &status);
+        ICU().f_ubrk_setUText(iterator.get(), text.get(), &status);
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return false;
         }
 
         auto iter = iterator.get();
-        int32_t pos = ubrk_first(iter);
+        int32_t pos = ICU().f_ubrk_first(iter);
         while (pos != UBRK_DONE) {
             auto status = type == SkUnicode::BreakType::kLines
                               ? UBRK_LINE_SOFT
-                              : ubrk_getRuleStatus(iter);
+                              : ICU().f_ubrk_getRuleStatus(iter);
             setBreak(pos, status);
-            pos = ubrk_next(iter);
+            pos = ICU().f_ubrk_next(iter);
         }
 
         if (type == SkUnicode::BreakType::kLines) {
@@ -437,15 +442,16 @@ public:
     std::unique_ptr<SkBreakIterator> makeBreakIterator(const char locale[],
                                                        BreakType breakType) override {
         UErrorCode status = U_ZERO_ERROR;
-        ICUBreakIterator iterator(ubrk_open(convertType(breakType), locale, nullptr, 0, &status));
+        ICUBreakIterator iterator(ICU().f_ubrk_open(convertType(breakType), locale, nullptr, 0,
+                                                    &status));
         if (U_FAILURE(status)) {
-            SkDEBUGF("Break error: %s", u_errorName(status));
+            SkDEBUGF("Break error: %s", ICU().f_u_errorName(status));
             return nullptr;
         }
         return std::unique_ptr<SkBreakIterator>(new SkBreakIterator_icu(std::move(iterator)));
     }
     std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType breakType) override {
-        return makeBreakIterator(uloc_getDefault(), breakType);
+        return makeBreakIterator(ICU().f_uloc_getDefault(), breakType);
     }
     std::unique_ptr<SkScriptIterator> makeScriptIterator() override {
         return SkScriptIterator_icu::makeScriptIterator();
@@ -453,19 +459,19 @@ public:
 
     // TODO: Use ICU data file to detect controls and whitespaces
     bool isControl(SkUnichar utf8) override {
-        return u_iscntrl(utf8);
+        return ICU().f_u_iscntrl(utf8);
     }
 
     bool isWhitespace(SkUnichar utf8) override {
-        return u_isWhitespace(utf8);
+        return ICU().f_u_isWhitespace(utf8);
     }
 
     bool isSpace(SkUnichar utf8) override {
-        return u_isspace(utf8);
+        return ICU().f_u_isspace(utf8);
     }
 
     static bool isHardLineBreak(SkUnichar utf8) {
-        auto property = u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
+        auto property = ICU().f_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
@@ -520,7 +526,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        ICU().f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 };
 
