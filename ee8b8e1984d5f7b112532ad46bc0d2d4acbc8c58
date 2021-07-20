@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70df0716_615fed47",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-07-20T11:26:39Z",
+      "side": 1,
+      "message": "FYI: changing this to skip_gm is also an option for temporarily skipping a test.",
+      "range": {
+        "startLine": 866,
+        "startChar": 4,
+        "endLine": 866,
+        "endChar": 6
+      },
+      "revId": "ee8b8e1984d5f7b112532ad46bc0d2d4acbc8c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
