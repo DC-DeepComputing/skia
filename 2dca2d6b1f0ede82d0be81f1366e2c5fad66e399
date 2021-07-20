@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b1889da_47bb4ec6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-20T17:55:57Z",
+      "side": 1,
+      "message": "Can we delete all of GrOnFlushResourceProvider?",
+      "revId": "2dca2d6b1f0ede82d0be81f1366e2c5fad66e399",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
