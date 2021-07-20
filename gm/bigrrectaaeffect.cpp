@@ -18,6 +18,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/GrTypesPriv.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrPaint.h"
@@ -64,9 +65,10 @@ protected:
 
     SkISize onISize() override { return SkISize::Make(fWidth, fHeight); }
 
-    void onDraw(GrRecordingContext* context, GrSurfaceDrawContext* surfaceDrawContext,
-                SkCanvas* canvas) override {
+    void onDraw(GrRecordingContext* rContext, SkCanvas* canvas) override {
         SkPaint paint;
+
+        auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
 
         int y = kPad;
         int x = kPad;
@@ -87,7 +89,7 @@ protected:
 
                 SkRRect rrect = fRRect;
                 rrect.offset(SkIntToScalar(x + kGap), SkIntToScalar(y + kGap));
-                const auto& caps = *surfaceDrawContext->caps()->shaderCaps();
+                const auto& caps = *rContext->priv().caps()->shaderCaps();
                 auto [success, fp] = GrRRectEffect::Make(/*inputFP=*/nullptr, edgeType, rrect,
                                                          caps);
                 SkASSERT(success);
@@ -101,8 +103,8 @@ protected:
                     SkRect bounds = testBounds;
                     bounds.offset(SkIntToScalar(x), SkIntToScalar(y));
 
-                    surfaceDrawContext->addDrawOp(GrFillRectOp::MakeNonAARect(
-                            context, std::move(grPaint), SkMatrix::I(), bounds));
+                    sdc->addDrawOp(GrFillRectOp::MakeNonAARect(
+                            rContext, std::move(grPaint), SkMatrix::I(), bounds));
                 }
             canvas->restore();
             x = x + fTestOffsetX;

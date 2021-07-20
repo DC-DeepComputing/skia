@@ -16,6 +16,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/GrTypesPriv.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrBuffer.h"
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrDirectContextPriv.h"
@@ -255,15 +256,17 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Test.
 
-DEF_SIMPLE_GPU_GM_CAN_FAIL(fwidth_squircle, ctx, rtc, canvas, errorMsg, 200, 200) {
-    if (!ctx->priv().caps()->shaderCaps()->shaderDerivativeSupport()) {
+DEF_SIMPLE_GPU_GM_CAN_FAIL(fwidth_squircle, rContext, canvas, errorMsg, 200, 200) {
+    if (!rContext->priv().caps()->shaderCaps()->shaderDerivativeSupport()) {
         *errorMsg = "Shader derivatives not supported.";
         return DrawResult::kSkip;
     }
 
+    auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
+
     // Draw the test directly to the frame buffer.
     canvas->clear(SK_ColorWHITE);
-    rtc->addDrawOp(FwidthSquircleTestOp::Make(ctx, canvas->getTotalMatrix()));
+    sdc->addDrawOp(FwidthSquircleTestOp::Make(rContext, canvas->getTotalMatrix()));
     return skiagm::DrawResult::kOk;
 }
 
