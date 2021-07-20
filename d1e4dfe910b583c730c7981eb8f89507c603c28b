@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee92db22_4195a56c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-20T01:51:42Z",
+      "side": 1,
+      "message": "Hey Greg, I\u0027m hoping we can chat about this CL tomorrow. In an ideal world, this draw only needs to cover the proxy bounds, but the proxy bounds are unknown to the render pass.",
+      "revId": "d1e4dfe910b583c730c7981eb8f89507c603c28b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
