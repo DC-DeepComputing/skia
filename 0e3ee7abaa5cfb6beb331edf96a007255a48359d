@@ -293,6 +293,30 @@
       },
       "revId": "0e3ee7abaa5cfb6beb331edf96a007255a48359d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ea2bd8c_3d533feb",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T20:29:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "43fd2bd5_04e2a37c",
+      "range": {
+        "startLine": 245,
+        "startChar": 88,
+        "endLine": 247,
+        "endChar": 17
+      },
+      "revId": "0e3ee7abaa5cfb6beb331edf96a007255a48359d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
