@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d478ec_a9f8e9cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T11:34:54Z",
+      "side": 1,
+      "message": "The GPU side should be workable now. SkBlendModeBlenders don\u0027t yet support asFragmentProcessor, but I\u0027ll be working on support for that ASAP. In the interim, you can test this with a hand-rolled RuntimeBlender, or GetRuntimeBlendForBlendMode.",
+      "revId": "e4768736e3eb832ce0f81a3606098012f0866100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
