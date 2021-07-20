@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "580b6321_587f6f05",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-20T16:59:36Z",
+      "side": 1,
+      "message": "pikachu-surprise-face.gif\n\nCan we just pass in the symbol table instead? I guess this works, but I don\u0027t think we want the DSLWriter to become a \"Context 2.0\".",
+      "range": {
+        "startLine": 48,
+        "startChar": 16,
+        "endLine": 48,
+        "endChar": 45
+      },
+      "revId": "556578ee787b098cad1985ed231d20d81251571d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
