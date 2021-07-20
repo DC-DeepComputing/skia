@@ -213,10 +213,8 @@ public:
      */
     virtual sk_sp<SkShader> makeAsALocalMatrixShader(SkMatrix* localMatrix) const;
 
-    SkUpdatableShader* updatableShader(skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
-
-    virtual SkUpdatableShader* onUpdatableShader(
-            skvm::Uniforms* uniforms, SkArenaAlloc* alloc)const;
+    SkUpdatableShader* updatableShader(SkArenaAlloc* alloc) const;
+    virtual SkUpdatableShader* onUpdatableShader(SkArenaAlloc* alloc) const;
 
     SkStageUpdater* appendUpdatableStages(const SkStageRec& rec) const {
         return this->onAppendUpdatableStages(rec);

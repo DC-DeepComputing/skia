@@ -738,9 +738,7 @@ SkStageUpdater* SkImageShader::onAppendUpdatableStages(const SkStageRec& rec) co
 
 class SkImageShader::TexCoordShader : public SkUpdatableShader {
 public:
-    TexCoordShader(const SkImageShader& shader, skvm::Uniforms* uniforms)
-            : fShader{shader}
-            , fUniforms{uniforms} {}
+    explicit TexCoordShader(const SkImageShader& shader) : fShader{shader} {}
 
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
@@ -755,17 +753,17 @@ public:
             skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
             skvm::Uniforms* uniforms) const {
 
+        // Capture the uniforms coming in.
+        if (fUniforms == nullptr) {
+            fUniforms = uniforms;
+        } else {
+            SkASSERT(fUniforms == uniforms);
+        }
+
         // The Uniforms that is passed in to make the blitter is the shared uniforms; all
         // others are place holder Uniforms for jitting the various blitting routines.
-        SkMatrix m = SkMatrix::I();
-        if (uniforms == fUniforms) {
-            for (int i = 0; i < 9; ++i) {
-                fMatrix[i] = uniforms->pushF(m[i]);
-            }
-        } else {
-            for (int i = 0; i < 9; ++i) {
-                uniforms->pushF(m[i]);
-            }
+        for (int i = 0; i < 9; ++i) {
+            fMatrix[i] = uniforms->pushF(0);
         }
 
         skvm::F32 x = local.x,
@@ -809,13 +807,12 @@ private:
     const char* getTypeName() const override { return nullptr; }
 
     const SkImageShader& fShader;
-    skvm::Uniforms* const fUniforms;
+    mutable skvm::Uniforms* fUniforms{nullptr};
     mutable skvm::Uniform fMatrix[9];
 };
 
-SkUpdatableShader* SkImageShader::onUpdatableShader(
-        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
-    return alloc->make<TexCoordShader>(*this, uniforms);
+SkUpdatableShader* SkImageShader::onUpdatableShader(SkArenaAlloc* alloc) const {
+    return alloc->make<TexCoordShader>(*this);
 }
 
 skvm::Color SkImageShader::onProgram(skvm::Builder* b,

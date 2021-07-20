@@ -319,14 +319,13 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
                 return;
             }
         } else {
-            skvm::Uniforms uniforms = SkVMBlitterUniforms();
+            skvm::Uniforms uniforms;
 
-            auto texCoordShader = as_SB(shader)->updatableShader(&uniforms, outerAlloc);
+            auto texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
             SkPaint shaderPaint{paint};
             shaderPaint.setShader(sk_ref_sp(texCoordShader));
             if (auto blitter = SkCreateSkVMBlitter(
-                    fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader(),
-                    &uniforms)) {
+                    fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
                 while (vertProc(&state)) {
                     SkMatrix localM;
                     if (texture_to_matrix(state, positions, texCoords, &localM) &&

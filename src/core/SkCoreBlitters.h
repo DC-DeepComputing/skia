@@ -165,8 +165,6 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-skvm::Uniforms SkVMBlitterUniforms();
-
 SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&, const SkPaint&,
                                          const SkMatrixProvider& matrixProvider, SkArenaAlloc*,
                                          sk_sp<SkShader> clipShader);
@@ -180,8 +178,7 @@ SkBlitter* SkCreateSkVMBlitter(const SkPixmap& dst,
                                const SkPaint&,
                                const SkMatrixProvider&,
                                SkArenaAlloc*,
-                               sk_sp<SkShader> clipShader,
-                               skvm::Uniforms* uniforms = nullptr);
+                               sk_sp<SkShader> clipShader);
 
 SkBlitter* SkCreateSkVMSpriteBlitter(const SkPixmap& dst,
                                      const SkPaint&,
