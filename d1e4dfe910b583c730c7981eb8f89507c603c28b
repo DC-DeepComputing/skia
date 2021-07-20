@@ -16,6 +16,24 @@
       "message": "Hey Greg, I\u0027m hoping we can chat about this CL tomorrow. In an ideal world, this draw only needs to cover the proxy bounds, but the proxy bounds are unknown to the render pass.",
       "revId": "d1e4dfe910b583c730c7981eb8f89507c603c28b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ca0300_d6037bde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-20T03:26:19Z",
+      "side": 1,
+      "message": "Since this will need to be cherry-picked into m93, I think we better start with the simplest solution.",
+      "parentUuid": "ee92db22_4195a56c",
+      "revId": "d1e4dfe910b583c730c7981eb8f89507c603c28b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
