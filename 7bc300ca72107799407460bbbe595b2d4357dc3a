@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ca1b97_e8aa2ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 52
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-20T13:58:10Z",
+      "side": 1,
+      "message": "Agree with John\u0027s overall assessment - I think we can push ahead and then do some tinkering to clean things up, limit error-message diffs, play with code-size vs. repetition vs. template trickery, etc.",
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12beef0e_f41a4c38",
@@ -244,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ecfa34f_bcb7e72b",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1157,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-20T13:58:10Z",
+      "side": 1,
+      "message": "re: template - We had code like this in the VM generator (I think?) at some point, using std::plus, std::minus, etc... Agree w/John - macros are good for now, and we can see if there\u0027s a way to rewrite it later, if we\u0027re feeling ambitious.",
+      "parentUuid": "c46f64e8_84e4bc25",
+      "range": {
+        "startLine": 1145,
+        "startChar": 0,
+        "endLine": 1157,
+        "endChar": 0
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02054388_8bd234c8",
         "filename": "src/sksl/SkSLDSLParser.cpp",
         "patchSetId": 52
@@ -255,6 +296,30 @@
       "writtenOn": "2021-07-19T21:44:37Z",
       "side": 1,
       "message": "Are these 6 cases in a row all identical except for the prefix? Seems worthy of a macro. (#undef at the end of the function)",
+      "range": {
+        "startLine": 1395,
+        "startChar": 21,
+        "endLine": 1395,
+        "endChar": 22
+      },
+      "revId": "7bc300ca72107799407460bbbe595b2d4357dc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8006f68f_00f27ae5",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-20T13:58:10Z",
+      "side": 1,
+      "message": "Agreed. Alternately, a different kind of repetition:\n\ncase TK_PLUS:\ncase TK_MINUS:\n...\n  if (!depth.increase()) { return nullopt; }\n  this-\u003enextToken();\n  expr \u003d this-\u003eunaryExpression();\n  if (!expr) { return nullopt; }\n  switch (this-\u003epeek().fKind) {\n    case TK_PLUS: return {{+std::move(**expr)}};\n    ...\n  }\n  \nThat repeats the cases in the nested switch, but makes it clear to the compiler that we only want one copy of the setup chunk, and is still fewer net lines of code, too.",
+      "parentUuid": "02054388_8bd234c8",
       "range": {
         "startLine": 1395,
         "startChar": 21,
