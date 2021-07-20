@@ -86,18 +86,22 @@ struct SinkFlags {
 
 struct Src {
     virtual ~Src() {}
-    virtual Result SK_WARN_UNUSED_RESULT draw(GrDirectContext*, SkCanvas*) const = 0;
+    virtual Result SK_WARN_UNUSED_RESULT draw(GrDirectContext* context, SkCanvas* canvas) const = 0;
     virtual SkISize size() const = 0;
     virtual Name name() const = 0;
     virtual void modifyGrContextOptions(GrContextOptions* options) const {}
     virtual bool veto(SinkFlags) const { return false; }
 
     virtual int pageCount() const { return 1; }
-    virtual Result SK_WARN_UNUSED_RESULT draw(int, GrDirectContext* context,
+    virtual Result SK_WARN_UNUSED_RESULT draw(int page, GrDirectContext* context,
                                               SkCanvas* canvas) const {
+        (void)page;
         return this->draw(context, canvas);
     }
-    virtual SkISize size(int) const { return this->size(); }
+    virtual SkISize size(int page) const {
+        (void)page;
+        return this->size();
+    }
     // Force Tasks using this Src to run on the main thread?
     virtual bool serial() const { return false; }
 
