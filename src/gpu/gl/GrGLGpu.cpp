@@ -2315,13 +2315,7 @@ void GrGLGpu::resolveRenderFBOs(GrGLRenderTarget* rt, const SkIRect& resolveRect
         this->bindFramebuffer(GR_GL_DRAW_FRAMEBUFFER, rt->singleSampleFBOID());
     } else {
         SkASSERT(resolveDirection == ResolveDirection::kSingleToMSAA);
-        if (caps.msFBOType() == GrGLCaps::kES_Apple_MSFBOType ||
-            (caps.blitFramebufferSupportFlags() & GrGLCaps::kNoMSAADst_BlitFramebufferFlag)) {
-            // Blitting from single to multisample is not supported. Make a draw instead.
-            this->copySurfaceAsDraw(rt, true/*drawToMultisampleFBO*/, rt, resolveRect,
-                                    resolveRect.topLeft());
-            return;
-        }
+        SkASSERT(this->glCaps().canResolveSingleToMSAA());
         this->bindFramebuffer(GR_GL_READ_FRAMEBUFFER, rt->singleSampleFBOID());
         this->bindFramebuffer(GR_GL_DRAW_FRAMEBUFFER, rt->multisampleFBOID());
     }
