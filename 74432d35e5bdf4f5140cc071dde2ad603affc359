@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2930568_4466d411",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-07-21T20:09:49Z",
+      "side": 1,
+      "message": "Do we need this OWNERS file? AFAICT it is the only OWNERS file in Skia.\nMotivation for removing it is that it is causing issues in the Android roller: https://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/15349070?tab\u003dcomments\nbecause Android looks for OWNER approvals now.",
+      "revId": "74432d35e5bdf4f5140cc071dde2ad603affc359",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
