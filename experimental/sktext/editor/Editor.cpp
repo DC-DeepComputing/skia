@@ -3,14 +3,7 @@
 #include "experimental/sktext/src/Paint.h"
 
 namespace skia {
-namespace text {
-
-const TextDirection TEXT_DIRECTION = TextDirection::kLtr;
-const TextAlign TEXT_ALIGN = TextAlign::kLeft;
-const SkColor DEFAULT_FOREGROUND = SK_ColorBLACK;
-const SkScalar DEFAULT_CURSOR_WIDTH = 2;
-const SkColor DEFAULT_CURSOR_COLOR = SK_ColorGRAY;
-const SkColor DEFAULT_SELECTION_COLOR = SK_ColorCYAN;
+namespace editor {
 
 std::unique_ptr<Cursor> Cursor::Make() { return std::make_unique<Cursor>(); }
 
@@ -83,18 +76,16 @@ std::unique_ptr<Editor> Editor::Make(std::u16string text, SkSize size, SkSpan<Bl
     return std::unique_ptr<Editor>(new Editor(text, size, fontBlocks));
 }
 
-Editor::Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks) {
+Editor::Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks)
+        : fParagraph(text, size, fontBlocks, TEXT_DIRECTION, TEXT_ALIGN)
+        , fStatus(size.fWidth) {
+
     fParent = nullptr;
-    fText = std::move(text);
     fCursor = Cursor::Make();
     fMouse = std::make_unique<Mouse>();
     fSelection = std::make_unique<Selection>(DEFAULT_SELECTION_COLOR);
-    fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-    fShapedText = fUnicodeText->shape(fontBlocks, TEXT_DIRECTION);
-    fWrappedText = fShapedText->wrap(size.width(), size.height(), fUnicodeText->getUnicode());
-    fFormattedText = fWrappedText->format(TEXT_ALIGN, TEXT_DIRECTION);
 
-    auto endOfText = fFormattedText->indexToAdjustedGraphemePosition(fText.size());
+    auto endOfText = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(fParagraph.fText.size());
     auto rect = std::get<3>(endOfText);
     fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop),
                    SkSize::Make(std::max(DEFAULT_CURSOR_WIDTH, rect.width()), rect.height()));
@@ -102,19 +93,13 @@ Editor::Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks) {
 
 void Editor::updateText(std::u16string text) {
     // TODO: Update text styles
-    sk_sp<TrivialFontChain> fontChain = sk_make_sp<TrivialFontChain>("Roboto", 40);
-    Block block(fText.size(), fontChain);
-    auto fontBlocks = SkSpan<Block>(&block, 1);
-
+    SkASSERT(fParagraph.fBlocks.size() == 1);
+    fParagraph.fBlocks[0].charCount = fParagraph.fText.size();
     // TODO: update all objects rather than recreate them
-    fText = std::move(text);
-    fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-    fShapedText = fUnicodeText->shape(fontBlocks, TEXT_DIRECTION);
-    fWrappedText = fShapedText->wrap(fWidth, fHeight, fUnicodeText->getUnicode());
-    fFormattedText = fWrappedText->format(TEXT_ALIGN, TEXT_DIRECTION);
+    fParagraph.update(text);
 
     // Update the cursor
-    auto endOfText = fFormattedText->indexToAdjustedGraphemePosition(fText.size());
+    auto endOfText = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(fParagraph.fText.size());
     auto rect = std::get<3>(endOfText);
     fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop),
                    SkSize::Make(std::max(DEFAULT_CURSOR_WIDTH, rect.width()), rect.height()));
@@ -127,7 +112,7 @@ void Editor::updateText(std::u16string text) {
 
 bool Editor::moveCursor(skui::Key key) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto textIndex = fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+    auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
 
     if (key == skui::Key::kLeft) {
         if (textIndex == 0) {
@@ -136,7 +121,7 @@ bool Editor::moveCursor(skui::Key key) {
             --textIndex;
         }
     } else if (key == skui::Key::kRight) {
-        if (textIndex >= fText.size()) {
+        if (textIndex >= fParagraph.fText.size()) {
             return false;
         } else {
             ++textIndex;
@@ -144,27 +129,27 @@ bool Editor::moveCursor(skui::Key key) {
     } else if (key == skui::Key::kHome) {
         textIndex = 0;
     } else if (key == skui::Key::kEnd) {
-        textIndex = fText.size();
+        textIndex = fParagraph.fText.size();
     } else if (key == skui::Key::kUp) {
-        auto currentPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+        auto currentPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
         auto line = std::get<0>(currentPosition);
-        auto lineIndex = fFormattedText->lineIndex(line);
+        auto lineIndex = fParagraph.fFormattedText->lineIndex(line);
         if (lineIndex == 0) {
             return false;
         }
         cursorPosition.offset(0, - line->getMetrics().height());
-        textIndex = fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+        textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
     } else if (key == skui::Key::kDown) {
-        auto currentPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+        auto currentPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
         auto line = std::get<0>(currentPosition);
-        auto lineIndex = fFormattedText->lineIndex(line);
-        if (lineIndex == fFormattedText->countLines()) {
+        auto lineIndex = fParagraph.fFormattedText->lineIndex(line);
+        if (lineIndex == fParagraph.fFormattedText->countLines()) {
             return false;
         }
         cursorPosition.offset(0, line->getMetrics().height());
-        textIndex = fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+        textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
     }
-    auto nextPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+    auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
     auto rect = std::get<3>(nextPosition);
     fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop), SkSize::Make(rect.width(), rect.height()));
     this->invalidate();
@@ -198,7 +183,7 @@ bool Editor::onChar(SkUnichar c, skui::ModifierKey modi) {
     modi &= ~skui::ModifierKey::kFirstPress;
     if (!Any(modi & (skui::ModifierKey::kControl | skui::ModifierKey::kOption |
                      skui::ModifierKey::kCommand))) {
-        if (((unsigned)c < 0x7F && (unsigned)c >= 0x20) || c == '\n') {
+        if (((unsigned)c < 0x7F && (unsigned)c >= 0x20) || c == 0x000A) {
             insertCodepoint(c);
             return true;
         }
@@ -213,22 +198,22 @@ bool Editor::onChar(SkUnichar c, skui::ModifierKey modi) {
 
 bool Editor::deleteGrapheme(skui::Key key) {
     auto cursorPosition = fCursor->getCenterPosition();
-    TextIndex startIndex = fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+    TextIndex startIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
     TextIndex endIndex = startIndex;
     if (key == skui::Key::kBack) {
         --startIndex;
-        fShapedText->adjustLeft(&startIndex);
+        fParagraph.fShapedText->adjustLeft(&startIndex);
     } else {
         ++endIndex;
-        fShapedText->adjustRight(&endIndex);
+        fParagraph.fShapedText->adjustRight(&endIndex);
     }
 
     std::u16string text;
-    text.append(fText.substr(0, startIndex));
-    text.append(fText.substr(endIndex, std::u16string::npos));
+    text.append(fParagraph.fText.substr(0, startIndex));
+    text.append(fParagraph.fText.substr(endIndex, std::u16string::npos));
     updateText(text);
 
-    auto position = fFormattedText->indexToAdjustedGraphemePosition(startIndex);
+    auto position = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(startIndex);
     SkRect cursorRect = std::get<3>(position);
     fCursor->place(SkPoint::Make(cursorRect.fLeft, cursorRect.fTop), SkSize::Make(cursorRect.width(), cursorRect.height()));
 
@@ -239,15 +224,15 @@ bool Editor::deleteGrapheme(skui::Key key) {
 
 bool Editor::insertCodepoint(SkUnichar unichar) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto textIndex = fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+    auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
 
     std::u16string text;
-    text.append(fText.substr(0, textIndex));
-    text.append(1, (unsigned)unichar);
-    text.append(fText.substr(textIndex, std::u16string::npos));
+    text.append(fParagraph.fText.substr(0, textIndex));
+    text.append(2, (unsigned)unichar);
+    text.append(fParagraph.fText.substr(textIndex, std::u16string::npos));
     updateText(text);
 
-    auto nextPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+    auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
     SkRect cursorRect = std::get<3>(nextPosition);
     fCursor->place(SkPoint::Make(cursorRect.fLeft, cursorRect.fTop), SkSize::Make(cursorRect.width(), cursorRect.height()));
 
@@ -284,7 +269,7 @@ bool Editor::onKey(skui::Key key, skui::InputState state, skui::ModifierKey modi
                 this->deleteGrapheme(key);
                 return true;
             case skui::Key::kOK:
-                return this->onChar('\n', modifiers);
+                return this->onChar(0x000A, modifiers);
             default:
                 break;
         }
@@ -298,16 +283,16 @@ bool Editor::onMouse(int x, int y, skui::InputState state, skui::ModifierKey mod
     if (skui::InputState::kDown == state) {
         SkRect cursorRect;
         if (fMouse->isDoubleClick(SkPoint::Make(x, y))) {
-            auto textIndex = fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
-            auto nextPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+            auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
+            auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
             cursorRect = std::get<3>(nextPosition);
             fSelection->select(TextRange(textIndex, textIndex + 1), cursorRect);
             cursorRect.fLeft = cursorRect.fRight - DEFAULT_CURSOR_WIDTH;
         } else {
             fMouse->down();
             fSelection->clear();
-            auto textIndex = fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
-            auto nextPosition = fFormattedText->indexToAdjustedGraphemePosition(textIndex);
+            auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
+            auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
             cursorRect = std::get<3>(nextPosition);
         }
 
@@ -340,7 +325,7 @@ void Editor::onGlyphRun(SkFont font,
 void Editor::paint(SkCanvas* canvas, SkPoint xy) {
     fCanvas = canvas;
     fXY = xy;
-    this->fFormattedText->visit(this);
+    this->fParagraph.fFormattedText->visit(this);
 
     fSelection->paint(canvas, xy);
     fCursor->paint(canvas, xy);
@@ -352,8 +337,7 @@ std::unique_ptr<Editor> Editor::MakeDemo(SkScalar width) {
                             "wet hole full of worms and oozy smells. This was a hobbit-hole and "
                             "that means good food, a warm hearth, and all the comforts of home.";
 
-    sk_sp<TrivialFontChain> fontChain = sk_make_sp<TrivialFontChain>("Roboto", 40);
-    Block block(text0.size(), fontChain);
+    static Block block(text0.size(), sk_make_sp<TrivialFontChain>("Roboto", 40));
     return Editor::Make(text0, SkSize::Make(width, SK_ScalarInfinity), SkSpan<Block>(&block, 1));
 }
 } // namespace text
