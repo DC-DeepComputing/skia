@@ -4196,6 +4196,11 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fMSFBOType = kNone_MSFBOType;
     }
 
+    // http:/crbug.com/1222095
+    if (ctxInfo.vendor() == GrGLVendor::kImagination) {
+        fMSFBOType = kNone_MSFBOType;
+    }
+
     // ANGLE doesn't support do-while loops.
     if (ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown) {
         shaderCaps->fCanUseDoLoops = false;
