@@ -11,6 +11,9 @@
 #include "include/core/SkImage.h"
 #include "include/private/GrTypesPriv.h"
 
+class GrRenderTargetProxy;
+class GrSurfaceDrawContext;
+class GrSurfaceFillContext;
 class GrSurfaceProxyView;
 
 // NOTE: when not defined, SkGpuDevice extends SkBaseDevice directly and manages its clip stack
@@ -48,9 +51,17 @@ public:
     }
 
     virtual GrSurfaceProxyView readSurfaceView() = 0;
-    GrRenderTargetProxy* targetProxy() override;
 
-    GrRecordingContext* recordingContext() const override { return fContext.get(); }
+    BaseDevice* asGpuDevice() override { return this; }
+
+#if SK_GPU_V1
+    // TODO: make this return a skgpu::v1:SurfaceDrawContext
+    virtual GrSurfaceDrawContext* surfaceDrawContext() { return nullptr; }
+#endif
+
+    virtual GrSurfaceFillContext* surfaceFillContext() = 0;
+    GrRenderTargetProxy* targetProxy();
+    GrRecordingContext* recordingContext() const { return fContext.get(); }
 
     virtual bool wait(int numSemaphores,
                       const GrBackendSemaphore* waitSemaphores,
