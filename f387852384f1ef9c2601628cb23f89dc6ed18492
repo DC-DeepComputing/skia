@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8748d218_176bf849",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T18:41:27Z",
+      "side": 1,
+      "message": "I think this is read for the next round. Focusing on the interaction of uniforms between the blitter and the shaders.",
+      "revId": "f387852384f1ef9c2601628cb23f89dc6ed18492",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
