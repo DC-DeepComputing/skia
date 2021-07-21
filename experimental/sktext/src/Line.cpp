@@ -5,7 +5,7 @@
 
 namespace skia {
 namespace text {
-Line::Line(const Stretch& stretch, const Stretch& spaces, SkSTArray<1, size_t, true> visualOrder)
+Line::Line(const Stretch& stretch, const Stretch& spaces, SkSTArray<1, size_t, true> visualOrder, SkScalar verticalOffset)
     : fTextStart(stretch.glyphStart())
     , fTextEnd(stretch.glyphEnd())
     , fWhitespacesEnd (spaces.glyphEnd())
@@ -13,7 +13,9 @@ Line::Line(const Stretch& stretch, const Stretch& spaces, SkSTArray<1, size_t, t
     , fWhitespaces(spaces.textRange())
     , fTextWidth(stretch.width())
     , fSpacesWidth(spaces.width())
-    , fRunsInVisualOrder(std::move(visualOrder)) {
+    , fRunsInVisualOrder(std::move(visualOrder))
+    , fHorizontalOffset(0.0f)
+    , fVerticalOffset(verticalOffset) {
 
     SkASSERT(stretch.isEmpty() ||
                     spaces.isEmpty() ||
