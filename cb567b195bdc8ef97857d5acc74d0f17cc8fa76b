@@ -34,6 +34,29 @@
       "parentUuid": "8fb9627e_b90f3a34",
       "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8276f90_dbbbdc28",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-21T15:03:37Z",
+      "side": 1,
+      "message": "Aha. You\u0027re passing fUniforms to cache_key before those two slots are reserved.",
+      "range": {
+        "startLine": 618,
+        "startChar": 39,
+        "endLine": 618,
+        "endChar": 48
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
