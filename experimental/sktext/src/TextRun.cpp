@@ -50,5 +50,6 @@ GlyphIndex TextRun::findGlyph(TextIndex textIndex) const {
     }
     return glyphIndex;
 }
+
 } // namespace text
 } // namespace skia
