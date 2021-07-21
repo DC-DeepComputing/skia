@@ -410,7 +410,7 @@ public:
         SkMatrix normalize = SkMatrix::Scale(1.0f / (kSize * kSize), 1.0f / kSize);
 
         // Now draw the image with an identity color cube - it should look like the original
-        SkRuntimeEffect::ChildPtr children[] = {fIdentityCube->makeShader(sampling, normalize)};
+        sk_sp<SkChildEffect> children[] = {fIdentityCube->makeShader(sampling, normalize)};
         paint.setColorFilter(fEffect->makeColorFilter(
                 SkData::MakeWithCopy(uniforms, sizeof(uniforms)), SkMakeSpan(children)));
         canvas->drawImage(fMandrill, 256, 0, sampling, &paint);
