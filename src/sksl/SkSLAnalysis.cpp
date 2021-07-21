@@ -619,6 +619,108 @@ bool Analysis::CallsSampleOutsideMain(const Program& program) {
     return visitor.visit(program);
 }
 
+bool Analysis::DetectStaticRecursion(SkSpan<std::unique_ptr<ProgramElement>> programElements,
+                                     ErrorReporter& errors) {
+    using Function = const FunctionDeclaration*;
+    using CallSet = std::unordered_set<Function>;
+    using CallGraph = std::unordered_map<Function, CallSet>;
+
+    class CallGraphVisitor : public ProgramVisitor {
+    public:
+        CallGraphVisitor(CallGraph* calls) : fCallGraph(calls), fCurrentFunctionCalls(nullptr) {}
+
+        bool visitExpression(const Expression& e) override {
+            if (e.is<FunctionCall>()) {
+                fCurrentFunctionCalls->insert(&e.as<FunctionCall>().function());
+            }
+            return INHERITED::visitExpression(e);
+        }
+
+        bool visitProgramElement(const ProgramElement& p) override {
+            if (p.is<FunctionDefinition>()) {
+                Function fn = &p.as<FunctionDefinition>().declaration();
+                SkASSERT(fCallGraph->count(fn) == 0);
+
+                SkASSERT(fCurrentFunctionCalls == nullptr);
+                CallSet currentFunctionCalls;
+                fCurrentFunctionCalls = &currentFunctionCalls;
+
+                INHERITED::visitProgramElement(p);
+
+                fCurrentFunctionCalls = nullptr;
+                fCallGraph->insert({fn, std::move(currentFunctionCalls)});
+            }
+            return false;
+        }
+
+        CallGraph* fCallGraph;
+        CallSet*   fCurrentFunctionCalls;
+
+        using INHERITED = ProgramVisitor;
+    };
+
+    CallGraph callGraph;
+    CallGraphVisitor visitor{&callGraph};
+    for (const auto& pe : programElements) {
+        visitor.visitProgramElement(*pe);
+    }
+
+    class CycleFinder {
+    public:
+        CycleFinder(CallGraph* calls) : fCallGraph(calls) {}
+
+        // Returns the start of the cycle, or nullptr if no cycle is detected
+        Function containsCycle() {
+            for (const auto& [caller, callees] : *fCallGraph) {
+                SkASSERT(fStack.empty());
+                if (Function cycleStart = this->dfsHelper(caller)) {
+                    return cycleStart;
+                }
+            }
+            return nullptr;
+        }
+
+        const String& cycleDescription() const { return fCycle; }
+
+    private:
+        Function dfsHelper(Function fn) {
+            SkASSERT(std::find(fStack.begin(), fStack.end(), fn) == fStack.end());
+            fStack.push_back(fn);
+
+            const CallSet& calls = (*fCallGraph)[fn];
+            for (auto calledFn : calls) {
+                auto it = std::find(fStack.begin(), fStack.end(), calledFn);
+                if (it != fStack.end()) {
+                    // Cycle detected
+                    fCycle = "\n\t" + fn->description();
+                    for (; it != fStack.end(); ++it) {
+                        fCycle += "\n\t" + (*it)->description();
+                    }
+                    return fn;
+                }
+                if (Function cycleStart = this->dfsHelper(calledFn)) {
+                    return cycleStart;
+                }
+            }
+
+            fStack.pop_back();
+            return nullptr;
+        }
+
+        CallGraph*            fCallGraph;
+        std::vector<Function> fStack;
+        String                fCycle;
+    };
+
+    CycleFinder cycleFinder{&callGraph};
+    if (Function cycleStart = cycleFinder.containsCycle()) {
+        errors.error(cycleStart->fOffset,
+                     "recursive function call cycle detected:" + cycleFinder.cycleDescription());
+        return true;
+    }
+    return false;
+}
+
 int Analysis::NodeCountUpToLimit(const FunctionDefinition& function, int limit) {
     return NodeCountVisitor{limit}.visit(*function.body());
 }
