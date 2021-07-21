@@ -15,9 +15,10 @@
 #include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/GrPaint.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "tools/Resources.h"
@@ -86,6 +87,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(destcolor, rContext, canvas, errorMsg, 640, 640) {
                                            bounds, bounds, SkSamplingOptions()));
     canvas->drawPaint(p);
 
+#if 0
     // Now let's add our test FP on top. It reads back the original image and inverts it.
     GrPaint invertPaint;
     invertPaint.setColor4f(SK_PMColor4fWHITE);
@@ -93,6 +95,10 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(destcolor, rContext, canvas, errorMsg, 640, 640) {
     invertPaint.setColorFragmentProcessor(DestColorTestFP::Make(GrFragmentProcessor::DestColor()));
     sdc->drawOval(/*clip*/ nullptr, std::move(invertPaint), GrAA::kYes, SkMatrix::I(),
                   SkRect::MakeLTRB(128, 128, 640, 640), GrStyle::SimpleFill());
+#else
+    sc->asFillContext()->fillRectWithFP(SkIRect::MakeLTRB(128, 128, 640, 640),
+                                        DestColorTestFP::Make(GrFragmentProcessor::DestColor()));
+#endif
 
     return DrawResult::kOk;
 }

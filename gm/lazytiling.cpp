@@ -18,9 +18,10 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrPaint.h"
 #include "src/gpu/GrProxyProvider.h"
+#include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 
 #include "tools/gpu/ProxyUtils.h"
@@ -139,7 +140,7 @@ static SkBitmap create_bitmap(SkIRect contentRect, SkISize fullSize, GrSurfaceOr
 }
 
 static void draw_texture(const GrCaps* caps,
-                         GrSurfaceDrawContext* sdc,
+                         skgpu::SurfaceFillContext_Base* sfc,
                          const GrSurfaceProxyView& src,
                          const SkIRect& srcRect,
                          const SkIRect& drawRect,
@@ -150,10 +151,15 @@ static void draw_texture(const GrCaps* caps,
 
     auto fp = GrTextureEffect::MakeSubset(src, kOpaque_SkAlphaType, mat,
                                           sampler, SkRect::Make(srcRect), *caps);
+
+#if 0
     GrPaint paint;
     paint.setColorFragmentProcessor(std::move(fp));
 
     sdc->drawRect(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(), SkRect::Make(drawRect));
+#else
+    sfc->fillRectWithFP(drawRect, std::move(fp));
+#endif
 }
 
 namespace skiagm {
@@ -222,7 +228,7 @@ protected:
                 SkMatrix texMatrix = SkMatrix::RectToRect(contentRect, SkRect::Make(fContentRect));
 
                 draw_texture(rContext->priv().caps(),
-                             sdc,
+                             sc->asFillContext(),
                              fView,
                              fContentRect,
                              cellRect,

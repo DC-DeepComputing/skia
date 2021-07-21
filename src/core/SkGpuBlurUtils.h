@@ -11,7 +11,7 @@
 #include "include/core/SkTypes.h"
 
 #if SK_SUPPORT_GPU
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/SurfaceContext.h"
 
 class GrRecordingContext;
 class GrTexture;
@@ -45,17 +45,17 @@ static constexpr float kMaxSigma = 4.f;
  * @param fit             backing fit for the returned render target context
  * @return                The surfaceDrawContext containing the blurred result.
  */
-std::unique_ptr<GrSurfaceDrawContext> GaussianBlur(GrRecordingContext* context,
-                                                   GrSurfaceProxyView srcView,
-                                                   GrColorType srcColorType,
-                                                   SkAlphaType srcAlphaType,
-                                                   sk_sp<SkColorSpace> colorSpace,
-                                                   SkIRect dstBounds,
-                                                   SkIRect srcBounds,
-                                                   float sigmaX,
-                                                   float sigmaY,
-                                                   SkTileMode mode,
-                                                   SkBackingFit fit = SkBackingFit::kApprox);
+std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(GrRecordingContext* context,
+                                                            GrSurfaceProxyView srcView,
+                                                            GrColorType srcColorType,
+                                                            SkAlphaType srcAlphaType,
+                                                            sk_sp<SkColorSpace> colorSpace,
+                                                            SkIRect dstBounds,
+                                                            SkIRect srcBounds,
+                                                            float sigmaX,
+                                                            float sigmaY,
+                                                            SkTileMode mode,
+                                                            SkBackingFit fit = SkBackingFit::kApprox);
 #endif
 
 static const int kBlurRRectMaxDivisions = 6;

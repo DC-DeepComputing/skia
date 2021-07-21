@@ -20,10 +20,10 @@
 #include "include/core/SkYUVAPixmaps.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrSamplerState.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrYUVATextureProxies.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrYUVtoRGBEffect.h"
 
 #include <memory>
@@ -154,6 +154,7 @@ protected:
                     GrPaint grPaint;
                     grPaint.setColorFragmentProcessor(std::move(fp));
                     sdc->drawRect(nullptr, std::move(grPaint), GrAA::kYes, ctm, rect);
+                            nullptr, std::move(grPaint), GrAA::kYes, ctm, rect);
                 }
                 x += rect.width() + kTestPad;
             }
