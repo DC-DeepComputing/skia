@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80480283_b3cabf52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-21T21:18:59Z",
+      "side": 1,
+      "message": "lgtm, but probably run the Chromium canary, just to be extra-super-safe about the makeImage change.",
+      "revId": "55119cb75aa64b6d28f4d6825b94ada3c70638c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
