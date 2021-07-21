@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000013584033",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/430857?revision\u003d1",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "94e2f242_4ba0e85f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-07-21T12:51:55Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027design spec\u0027 or \u0027special case\u0027; see https://source.android.com/setup/contribute/respectful-code for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 7,
+        "startChar": 16,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "06cca77da344daf2275df9d4a0704d968b266549",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
