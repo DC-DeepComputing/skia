@@ -2,10 +2,10 @@
 #ifndef Types_DEFINED
 #define Types_DEFINED
 
-#include "include/core/SkFont.h"
-#include "include/core/SkSize.h"
 #include <algorithm>
 #include <cstddef>
+#include "include/core/SkFont.h"
+#include "include/core/SkSize.h"
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTo.h"
 
@@ -27,8 +27,7 @@ enum class TextDirection {
 
 // This enum lists all possible ways to query output positioning
 enum class PositionType {
-    kGraphemeCluster,
-    kGrapheme,
+    kGraphemeCluster, // Both the edge of the glyph cluster and the text grapheme
     kGlyphCluster,
     kGlyph,
     kGlyphPart
@@ -174,7 +173,8 @@ struct Block {
         : type(BlockType::kFont)
         , charCount(count)
         , chain(fontChain) { }
-    ~Block(){ }
+    Block() : Block(0, nullptr) { }
+    ~Block() { }
     BlockType  type;
     uint32_t   charCount;
     union {
