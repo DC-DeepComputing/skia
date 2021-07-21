@@ -46,6 +46,30 @@
       },
       "revId": "82c149bfc33fc999087a9c04cf65ec341fcaaaec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1ef52e_6f83be89",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-21T18:50:49Z",
+      "side": 1,
+      "message": "Fair enough.  We can adjust if we have any confusion.",
+      "parentUuid": "064b163d_2a16f610",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 122
+      },
+      "revId": "82c149bfc33fc999087a9c04cf65ec341fcaaaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
