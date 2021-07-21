@@ -247,8 +247,11 @@ static GrFPResult clip_atlas_fp(GrRecordingContext* rContext,
         // Toggling fill type does not affect the path's "generationID" key.
         path.toggleInverseFillType();
     }
+    if (e.fAA != GrAA::kYes) {
+        return GrFPFailure(std::move(inputFP));
+    }
     return tessellator->makeAtlasClipFP(rContext, opBeingClipped, std::move(inputFP), scissorBounds,
-                                        e.fLocalToDevice, path, e.fAA);
+                                        e.fLocalToDevice, path);
 }
 
 static void draw_to_sw_mask(GrSWMaskHelper* helper, const GrClipStack::Element& e, bool clearMask) {
