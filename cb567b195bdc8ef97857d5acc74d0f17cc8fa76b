@@ -38,6 +38,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28b06091_985c5062",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T15:22:29Z",
+      "side": 1,
+      "message": "Remove.",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 35,
+        "endChar": 77
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d234df_fb7ad711",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T15:22:29Z",
+      "side": 1,
+      "message": "Make a method on Blitter",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 35
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fbadd2_41a7bfd7",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T15:22:29Z",
+      "side": 1,
+      "message": "p-\u003eUniform(fUniform_right)",
+      "range": {
+        "startLine": 115,
+        "startChar": 23,
+        "endLine": 115,
+        "endChar": 85
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04c4ea53_5989c188",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T15:22:29Z",
+      "side": 1,
+      "message": "p-Uniform(fUniform_y)",
+      "range": {
+        "startLine": 117,
+        "startChar": 23,
+        "endLine": 117,
+        "endChar": 81
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1439ead7_85bc413a",
         "filename": "src/core/SkVMBlitter.cpp",
         "patchSetId": 2
