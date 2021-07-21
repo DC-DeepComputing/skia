@@ -2198,6 +2198,8 @@ protected:
 
     // returns true if we should actually perform the saveBehind, or false if we should just save.
     virtual bool onDoSaveBehind(const SkRect*) { return true; }
+    // called after the clip has been reset to wide open + any clip restriction
+    virtual void onNotifyResetClip() {}
     virtual void willRestore() {}
     virtual void didRestore() {}
 
@@ -2430,11 +2432,11 @@ private:
     bool androidFramework_isClipAA() const;
 
     /**
-     * Reset the clip to be just the intersection with the global-space 'rect'. This operates within
-     * the save/restore stack of the canvas, so restore() will bring back any saved clip. However,
-     * since 'rect' is already in global space, it is not modified by the canvas matrix.
+     * Reset the clip to be wide-open (modulo any separately specified device clip restriction).
+     * This operate within the save/restore clip stack so it can be undone by restoring to an
+     * earlier save point.
      */
-    void androidFramework_replaceClip(const SkIRect& rect);
+    void androidFramework_resetClip();
 
     virtual SkPaintFilterCanvas* internal_private_asPaintFilterCanvas() const { return nullptr; }
 

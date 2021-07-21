@@ -43,8 +43,8 @@ public:
     }
 
     // Exposed for testing on non-Android framework builds
-    static void ReplaceClip(SkCanvas* canvas, const SkIRect& rect) {
-        canvas->androidFramework_replaceClip(rect);
+    static void ResetClip(SkCanvas* canvas) {
+        canvas->androidFramework_resetClip();
     }
 
     static GrSurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas* canvas) {
