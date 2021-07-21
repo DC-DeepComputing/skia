@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "161a9712_47a09e20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T19:19:51Z",
+      "side": 1,
+      "message": "once this rolls into Android, I have CLs ready for review that remove the deprecated clip ops and still pass all CTS tests.",
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e01efd6f_b8ba658c",
+        "filename": "include/android/SkAndroidFrameworkUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T19:19:51Z",
+      "side": 1,
+      "message": "This has not yet been used in AF, and just our GMs for testing. Now that I\u0027ve worked out the rough draft of the change in Android, ResetClip() that always makes the clip state entirely wide open or equal to the device clip restriction is minimally sufficient. \n\nIt also looks like in the short term that the device clip restriction will remain tracked within skia, so Android wont\u0027 need the function variant that passes in the specific rectangle. If we get to that point down the road, it\u0027s easy enough to expand this API.",
+      "range": {
+        "startLine": 47,
+        "startChar": 16,
+        "endLine": 47,
+        "endChar": 44
+      },
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b59a989f_173b74fe",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T19:19:51Z",
+      "side": 1,
+      "message": "I opted to model this more closely after onDoSaveBehind() where the base SkCanvas still has most of the logic in its non-virtual, vs. the core clipping/drawing commands where almost everything is in the onX virtuals.\n\nI don\u0027t feel too strongly about moving to just a virtual onResetClip() with the expectation that recording canvases have to call the super method in order to have the reset clip reflected in the base canvas state.",
+      "range": {
+        "startLine": 2201,
+        "startChar": 4,
+        "endLine": 2202,
+        "endChar": 39
+      },
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee117080_ef11e031",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T19:19:51Z",
+      "side": 1,
+      "message": "With the changes to complexclip4, and the similar changes made in an Android CL, that use both ResetClip and deviceClipRestriction together, it\u0027s necessary for Device_V1 to actually apply the restriction as an intersect.\n\nIn subsequent CLs as we start removing expanding clip ops, this logic can be consolidated into SkCanvas and removed from each device impl.",
+      "range": {
+        "startLine": 188,
+        "startChar": 8,
+        "endLine": 194,
+        "endChar": 5
+      },
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
