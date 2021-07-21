@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b0d029_bee25ea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T22:42:17Z",
+      "side": 1,
+      "message": "I think I should put off the uniforms indirection to a more focused CL. I think this is it.",
+      "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
