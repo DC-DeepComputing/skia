@@ -12,6 +12,7 @@
 #include "src/gpu/GrStencilSettings.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/mtl/GrMtlBuffer.h"
+#include "src/gpu/mtl/GrMtlPipeline.h"
 #include "src/gpu/mtl/GrMtlPipelineStateDataManager.h"
 
 #import <Metal/Metal.h>
@@ -19,6 +20,7 @@
 class GrMtlGpu;
 class GrMtlPipelineStateDataManager;
 class GrMtlRenderCommandEncoder;
+class GrMtlRenderPipeline;
 class GrMtlSampler;
 class GrMtlTexture;
 class GrPipeline;
@@ -34,7 +36,7 @@ public:
 
     GrMtlPipelineState(
             GrMtlGpu*,
-            id<MTLRenderPipelineState>,
+            sk_sp<GrMtlRenderPipeline> pipeline,
             MTLPixelFormat,
             const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
             const UniformInfoArray& uniforms,
@@ -44,7 +46,7 @@ public:
             std::unique_ptr<GrGLSLXferProcessor>,
             std::vector<std::unique_ptr<GrGLSLFragmentProcessor>> fpImpls);
 
-    id<MTLRenderPipelineState> mtlPipelineState() { return fPipelineState; }
+    const sk_sp<GrMtlRenderPipeline>& pipeline() const { return fPipeline; }
 
     void setData(const GrRenderTarget*, const GrProgramInfo&);
 
@@ -98,7 +100,7 @@ private:
     };
 
     GrMtlGpu* fGpu;
-    id<MTLRenderPipelineState> fPipelineState;
+    sk_sp<GrMtlRenderPipeline> fPipeline;
     MTLPixelFormat             fPixelFormat;
 
     RenderTargetState fRenderTargetState;
