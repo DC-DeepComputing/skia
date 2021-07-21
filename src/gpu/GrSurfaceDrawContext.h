@@ -714,5 +714,4 @@ private:
     SkGlyphRunListPainter fGlyphPainter;
     using INHERITED = GrSurfaceFillContext;
 };
-
 #endif

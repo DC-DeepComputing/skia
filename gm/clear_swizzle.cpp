@@ -8,8 +8,9 @@
 #include "gm/gm.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkColorData.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrSwizzle.h"
 
 // Size of each clear

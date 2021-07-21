@@ -8,15 +8,22 @@
 #ifndef SkGpuBlurUtils_DEFINED
 #define SkGpuBlurUtils_DEFINED
 
+#include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 
 #if SK_SUPPORT_GPU
-#include "src/gpu/GrSurfaceDrawContext.h"
-
 class GrRecordingContext;
+class GrSurfaceProxyView;
 class GrTexture;
 
+class SkBitmap;
+struct SkISize;
 struct SkRect;
+class SkRRect;
+
+#if SK_GPU_V1
+class GrSurfaceDrawContext;
+#endif
 
 namespace SkGpuBlurUtils {
 
@@ -67,14 +74,16 @@ static const int kBlurRRectMaxDivisions = 6;
 //   rectXs, rectYs - the x & y coordinates of the covering geometry lattice
 //   texXs, texYs - the texture coordinate at each point in rectXs & rectYs
 // It returns true if 'devRRect' is nine-patchable
-bool ComputeBlurredRRectParams(const SkRRect& srcRRect, const SkRRect& devRRect,
-                                SkScalar sigma, SkScalar xformedSigma,
-                                SkRRect* rrectToDraw,
-                                SkISize* widthHeight,
-                                SkScalar rectXs[kBlurRRectMaxDivisions],
-                                SkScalar rectYs[kBlurRRectMaxDivisions],
-                                SkScalar texXs[kBlurRRectMaxDivisions],
-                                SkScalar texYs[kBlurRRectMaxDivisions]);
+bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
+                               const SkRRect& devRRect,
+                               SkScalar sigma,
+                               SkScalar xformedSigma,
+                               SkRRect* rrectToDraw,
+                               SkISize* widthHeight,
+                               SkScalar rectXs[kBlurRRectMaxDivisions],
+                               SkScalar rectYs[kBlurRRectMaxDivisions],
+                               SkScalar texXs[kBlurRRectMaxDivisions],
+                               SkScalar texYs[kBlurRRectMaxDivisions]);
 
 int CreateIntegralTable(float sixSigma, SkBitmap* table);
 

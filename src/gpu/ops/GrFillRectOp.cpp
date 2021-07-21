@@ -517,7 +517,7 @@ GrOp::Owner GrFillRectOp::MakeOp(GrRecordingContext* context,
     return op;
 }
 
-void GrFillRectOp::AddFillRectOps(GrSurfaceDrawContext* rtc,
+void GrFillRectOp::AddFillRectOps(GrSurfaceDrawContext* sdc,
                                   const GrClip* clip,
                                   GrRecordingContext* context,
                                   GrPaint&& paint,
@@ -539,7 +539,7 @@ void GrFillRectOp::AddFillRectOps(GrSurfaceDrawContext* rtc,
         offset += numConsumed;
         numLeft -= numConsumed;
 
-        rtc->addDrawOp(clip, std::move(op));
+        sdc->addDrawOp(clip, std::move(op));
     }
 
     SkASSERT(offset == cnt);
