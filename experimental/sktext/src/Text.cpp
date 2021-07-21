@@ -40,18 +40,22 @@ std::unique_ptr<UnicodeText> Text::parse(SkSpan<uint16_t> utf16) {
             }
        });
 
-    // Get line breaks
-    unicodeText->fUnicode->forEachBreak((char16_t*)utf16.data(), utf16.size(), SkUnicode::BreakType::kLines,
-                           [&unicodeText](SkBreakIterator::Position pos, SkBreakIterator::Status status){
-                                unicodeText->fCodeUnitProperties[pos] |= (status == (SkBreakIterator::Status)SkUnicode::LineBreakType::kHardLineBreak
-                                                               ? CodeUnitFlags::kHardLineBreakBefore
-                                                               : CodeUnitFlags::kSoftLineBreakBefore);
-                            });
-
     // Get graphemes
     unicodeText->fUnicode->forEachBreak((char16_t*)utf16.data(), utf16.size(), SkUnicode::BreakType::kGraphemes,
                            [&unicodeText](SkBreakIterator::Position pos, SkBreakIterator::Status){
                                 unicodeText->fCodeUnitProperties[pos]|= CodeUnitFlags::kGraphemeStart;
+                            });
+
+    // Get line breaks
+    unicodeText->fUnicode->forEachBreak((char16_t*)utf16.data(), utf16.size(), SkUnicode::BreakType::kLines,
+                           [&unicodeText](SkBreakIterator::Position pos, SkBreakIterator::Status status) {
+                                if (status == (SkBreakIterator::Status)SkUnicode::LineBreakType::kHardLineBreak) {
+                                    // Hard line breaks clears off all the other flags
+                                    // TODO: Treat \n as a formatting mark and do not pass it to SkShaper
+                                    unicodeText->fCodeUnitProperties[pos] = CodeUnitFlags::kHardLineBreakBefore;
+                                } else {
+                                    unicodeText->fCodeUnitProperties[pos] |= CodeUnitFlags::kSoftLineBreakBefore;
+                                }
                             });
 
    return std::move(unicodeText);
@@ -80,6 +84,19 @@ std::unique_ptr<ShapedText> UnicodeText::shape(SkSpan<Block> blocks,
         shaper->shape(fText8.c_str(), fText8.size(),
                 fontIter, *bidiIter, *scriptIter, langIter,
                 std::numeric_limits<SkScalar>::max(), this);
+    }
+
+    if (fShapedText->fRuns.empty()) {
+        // We still need one empty run to keep the metrics
+        SkShaper::RunHandler::RunInfo emptyInfo {
+            this->createFont(blocks.front()),
+            0,
+            SkVector::Make(0.0f, 0.0f),
+            0,
+            Range(0, 0)
+        };
+        fShapedText->fRuns.emplace_back(emptyInfo);
+        fShapedText->fRuns.front().commit();
     }
 
     fShapedText->fGlyphUnitProperties.push_back_n(this->fCodeUnitProperties.size(), GlyphUnitFlags::kNoGlyphUnitFlag);
@@ -136,12 +153,12 @@ std::unique_ptr<WrappedText> ShapedText::wrap(SkScalar width, SkScalar heightCur
     Stretch line;
     Stretch spaces;
     Stretch clusters;
+    Stretch cluster;
 
     for (size_t runIndex = 0; runIndex < this->fRuns.size(); ++runIndex ) {
 
         auto& run = this->fRuns[runIndex];
         TextMetrics runMetrics(run.fFont);
-        Stretch cluster;
         if (!run.leftToRight()) {
             cluster.setTextRange({ run.fUtf16Range.fStart, run.fUtf16Range.fEnd});
         }
@@ -221,7 +238,12 @@ std::unique_ptr<WrappedText> ShapedText::wrap(SkScalar width, SkScalar heightCur
         line.moveTo(spaces);
         line.moveTo(clusters);
         spaces = clusters;
+    } else if (wrappedText->fLines.empty()) {
+        // Empty text; we still need a line to avoid checking for empty lines every time
+        line.moveTo(cluster);
+        spaces.moveTo(cluster);
     }
+
     wrappedText->addLine(line, spaces, unicode);
 
     wrappedText->fSize.fWidth = width;
@@ -249,7 +271,7 @@ void WrappedText::addLine(Stretch& stretch, Stretch& spaces, SkUnicode* unicode)
     for (auto index : logicalOrder) {
         visualOrder.push_back(firstRunIndex + index);
     }
-    this->fLines.emplace_back(stretch, spaces, std::move(visualOrder));
+    this->fLines.emplace_back(stretch, spaces, std::move(visualOrder), fSize.fHeight);
     fSize.fHeight += stretch.textMetrics().height();
 
     stretch.clean();
@@ -272,26 +294,27 @@ void FormattedText::visit(Visitor* visitor) const {
     SkPoint offset = SkPoint::Make(0 , 0);
     for (auto& line : this->fLines) {
         offset.fX = 0;
-        visitor->onBeginLine(line.fText, line.fTextMetrics.baseline());
-        for (auto& runIndex : line.fRunsInVisualOrder) {
+        visitor->onBeginLine(line.text(), line.baseline());
+        for (auto index = 0; index < line.runsNumber(); ++index) {
+            auto runIndex = line.visualRun(index);
             auto& run = this->fRuns[runIndex];
-            auto startGlyph = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
-            auto endGlyph = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : run.fGlyphs.size();
+            auto startGlyph = runIndex == line.glyphStart().runIndex() ? line.glyphStart().glyphIndex() : 0;
+            auto endGlyph = runIndex == line.glyphEnd().runIndex() ? line.glyphEnd().glyphIndex() : run.fGlyphs.size();
             TextRange textRange(run.fClusters[startGlyph], run.fClusters[endGlyph]);
             auto count = endGlyph - startGlyph;
             SkScalar runWidth = run.calculateWidth(Range<GlyphIndex>(startGlyph, endGlyph));
 
             // Update positions
             SkAutoSTMalloc<256, SkPoint> positions(count + 1);
-            SkPoint shift = SkPoint::Make(-run.fPositions[startGlyph].fX, line.fTextMetrics.baseline());
+            SkPoint shift = SkPoint::Make(-run.fPositions[startGlyph].fX, line.baseline());
             for (size_t i = startGlyph; i <= endGlyph; ++i) {
                 positions[i - startGlyph] = run.fPositions[i] + shift + offset;
             }
             offset.fX += runWidth;
             visitor->onGlyphRun(run.fFont, textRange, count, run.fGlyphs.data() + startGlyph, positions.data(), run.fOffsets.data() + startGlyph);
         }
-        visitor->onEndLine(line.fText, line.fTextMetrics.baseline());
-        offset.fY += line.fTextMetrics.height();
+        visitor->onEndLine(line.text(), line.baseline());
+        offset.fY += line.height();
     }
 }
 
@@ -308,8 +331,9 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
     SkPoint offset = SkPoint::Make(0 , 0);
     for (auto& line : this->fLines) {
         offset.fX = 0;
-        visitor->onBeginLine(line.fText, line.fTextMetrics.baseline());
-        for (auto& runIndex : line.fRunsInVisualOrder) {
+        visitor->onBeginLine(line.text(), line.baseline());
+        for (auto index = 0; index < line.runsNumber(); ++index) {
+            auto runIndex = line.visualRun(index);
             auto& run = this->fRuns[runIndex];
             // The run edges are good (aligned to GGC)
             // "ABCdef" -> "defCBA"
@@ -317,8 +341,8 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
             // "Cd": green
             // "ef": blue
             // green[d] blue[ef] green [C] red [BA]
-            auto startGlyph = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
-            auto endGlyph = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : run.fGlyphs.size();
+            auto startGlyph = runIndex == line.glyphStart().runIndex() ? line.glyphStart().glyphIndex() : 0;
+            auto endGlyph = runIndex == line.glyphEnd().runIndex() ? line.glyphEnd().glyphIndex() : run.fGlyphs.size();
 
             TextRange textRange(run.fClusters[startGlyph], run.fClusters[endGlyph]);
             GlyphRange glyphRange(startGlyph, endGlyph);
@@ -340,7 +364,7 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
 
                 // Update positions
                 SkAutoSTMalloc<256, SkPoint> positions(glyphRange.width() + 1);
-                SkPoint shift = SkPoint::Make(-run.fPositions[startGlyph].fX, line.fTextMetrics.baseline());
+                SkPoint shift = SkPoint::Make(-run.fPositions[startGlyph].fX, line.baseline());
                 for (size_t i = glyphRange.fStart; i <= glyphRange.fEnd; ++i) {
                     positions[i - glyphRange.fStart] = run.fPositions[i] + shift + offset;
                 }
@@ -356,32 +380,33 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
             }
             offset.fX += runWidth;
         }
-        visitor->onEndLine(line.fText, line.fTextMetrics.baseline());
-        offset.fY += line.fTextMetrics.height();
+        visitor->onEndLine(line.text(), line.baseline());
+        offset.fY += line.height();
     }
 }
 
 // TODO: The selection is not just a rectangle but a list of rectangles (for instance, over few lines or when we have ltr/rtl combo)
-std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> FormattedText::indexToAdjustedGraphemePosition(TextIndex textIndex) const {
+std::tuple<const Line*, const TextRun*, GlyphRange, SkRect> FormattedText::indexToAdjustedGraphemePosition(TextIndex textIndex) const {
 
     SkRect rect = SkRect::MakeEmpty();
     for (auto& line : fLines) {
         rect.fTop = rect.fBottom;
-        rect.fBottom += line.fTextMetrics.height();
-        if (!line.fText.contains(textIndex)) {
+        rect.fBottom += line.height();
+        if (!line.text().contains(textIndex)) {
             continue;
         }
 
-        for (auto runIndex : line.fRunsInVisualOrder) {
+        for (auto index = 0; index < line.runsNumber(); ++index) {
+            auto runIndex = line.visualRun(index);
             auto& run = fRuns[runIndex];
-            GlyphIndex start = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
-            GlyphIndex end = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : run.fGlyphs.size();
+            GlyphIndex start = runIndex == line.glyphStart().runIndex() ? line.glyphStart().glyphIndex() : 0;
+            GlyphIndex end = runIndex == line.glyphEnd().runIndex() ? line.glyphEnd().glyphIndex() : run.fGlyphs.size();
             TextRange textRange(run.fClusters[start], run.fClusters[end]);
             if (textRange.contains(textIndex)) {
                 auto glyphIndex = run.findGlyph(textIndex);
                 rect.fLeft += run.calculateWidth(start, glyphIndex);
                 rect.fRight += run.calculateWidth(start, glyphIndex + 1);
-                return std::make_tuple(&line, &run, glyphIndex, rect);
+                return std::make_tuple(&line, &run, GlyphRange(glyphIndex, glyphIndex + 1), rect);
             }
             rect.fLeft += run.calculateWidth(GlyphRange(start, end));
             rect.fRight = rect.fLeft;
@@ -392,13 +417,13 @@ std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> FormattedText::index
 
     // We are right from the end of the text;
     const auto lastLine = &fLines.back();
-    const auto lastRun = &fRuns[lastLine->fTextEnd.runIndex()];
+    const auto lastRun = &fRuns[lastLine->glyphEnd().runIndex()];
     rect.fLeft =
-    rect.fRight = lastLine->fTextWidth;
-    return std::make_tuple(lastLine, lastRun, lastRun->fGlyphs.size(), rect);
+    rect.fRight = lastLine->width();
+    return std::make_tuple(lastLine, lastRun, GlyphRange(lastRun->fGlyphs.size(), lastRun->fGlyphs.size()), rect);
 }
 
-TextIndex FormattedText::positionToAdjustedGraphemeIndex(SkPoint xy) const {
+TextRange FormattedText::positionToAdjustedGraphemeRange(SkPoint xy) const {
     if (xy.fX >= this->fSize.fWidth) {
         xy.fX = this->fSize.fWidth;
     }
@@ -409,17 +434,23 @@ TextIndex FormattedText::positionToAdjustedGraphemeIndex(SkPoint xy) const {
     SkScalar height = 0;
     for (auto& line : fLines) {
         if (height > xy.fY) {
-            break;
-        } else if (height + line.fTextMetrics.height() <= xy.fY) {
-            height += line.fTextMetrics.height();
+            // We looked through all the lines but didn't find anything;
+            // let's point to the end
+            const auto lastLine = &fLines.back();
+            const auto lastRun = &fRuns[lastLine->glyphEnd().runIndex()];
+            auto lastCluster = lastRun->fClusters[lastRun->size() - 1];
+            return TextRange(lastCluster, lastCluster);
+        } else if (height + line.height() <= xy.fY) {
+            height += line.height();
             continue;
         }
 
         SkScalar shift = 0;
-        for (auto runIndex : line.fRunsInVisualOrder) {
+        for (auto index = 0; index < line.runsNumber(); ++index) {
+            auto runIndex = line.visualRun(index);
             auto& run = fRuns[runIndex];
-            GlyphIndex start = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
-            GlyphIndex end = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : run.fGlyphs.size();
+            GlyphIndex start = runIndex == line.glyphStart().runIndex() ? line.glyphStart().glyphIndex() : 0;
+            GlyphIndex end = runIndex == line.glyphTrailingEnd().runIndex() ? line.glyphTrailingEnd().glyphIndex() : run.fGlyphs.size();
             auto runWidth = run.calculateWidth(GlyphRange(start, end));
             if (shift > xy.fX) {
                 break;
@@ -436,12 +467,286 @@ TextIndex FormattedText::positionToAdjustedGraphemeIndex(SkPoint xy) const {
                 }
                 found = i;
             }
-            return run.fClusters[found];
+            return TextRange(run.fClusters[found],found >= run.fClusters.size() - 1 ? run.fClusters[found] : run.fClusters[found + 1]);
         }
-        height += line.fTextMetrics.height();
+        height += line.height();
     }
-    return EMPTY_INDEX;
+
+    // There are no lines
+    return TextRange(0, 0);
 }
 
+Position FormattedText::adjustedPosition(PositionType positionType, SkPoint xy) const {
+
+    if (xy.fX >= this->fSize.fWidth) {
+        xy.fX = this->fSize.fWidth;
+    }
+    if (xy.fY >= this->fSize.fHeight) {
+        xy.fY = this->fSize.fHeight;
+    }
+
+    Position position(positionType);
+    for (auto& line : fLines) {
+        position.fBoundaries.fTop = position.fBoundaries.fBottom;
+        position.fBoundaries.fBottom = line.verticalOffset() + line.height();
+        if (position.fBoundaries.fTop > xy.fY) {
+            break;
+        } else if (position.fBoundaries.fBottom <= xy.fY) {
+            continue;
+        }
+
+        SkScalar shift = 0;
+        for (auto index = 0; index < line.runsNumber(); ++index) {
+            auto runIndex = line.visualRun(index);
+            auto& run = fRuns[runIndex];
+            GlyphIndex start = runIndex == line.glyphStart().runIndex() ? line.glyphStart().glyphIndex() : 0;
+            GlyphIndex end = runIndex == line.glyphTrailingEnd().runIndex() ? line.glyphTrailingEnd().glyphIndex() : run.fGlyphs.size();
+            auto runWidth = run.calculateWidth(GlyphRange(start, end));
+            if (shift > xy.fX) {
+                break;
+            } else if (shift + runWidth < xy.fX) {
+                shift += runWidth;
+                continue;
+            }
+            SkScalar startPos = run.fPositions[start].fX;
+            GlyphIndex found = start;
+            for (auto i = start; i <= end; ++i) {
+                auto currentPos = run.fPositions[i].fX - startPos;
+                if (currentPos > xy.fX) {
+                    break;
+                }
+                found = i;
+            }
+
+            auto found1 = found == end ? found : found + 1;
+            position.fBoundaries.fLeft += shift + run.calculateWidth(start, found);
+            position.fBoundaries.fRight += shift + run.calculateWidth(start, found1);
+            GlyphRange glyphRange(found, found1);
+            TextRange textRange(run.fClusters[found],run.fClusters[found1]);
+            return Position(positionType, lineIndex(&line), &run, textRange, glyphRange,
+                            position.fBoundaries);
+        }
+        auto lastLineIndex = fLines.size() - 1;
+        auto lastRun = this->visuallyLastRun(lastLineIndex);
+        auto lastGlyph = lastRun->size();
+        GlyphRange glyphRange(lastGlyph, lastGlyph);
+        TextRange textRange(lastRun->fClusters[lastGlyph], lastRun->fClusters[lastGlyph]);
+        position.fBoundaries.fLeft =
+        position.fBoundaries.fRight = shift;
+        return Position(positionType, lastLineIndex, lastRun, glyphRange, textRange, position.fBoundaries);
+    }
+
+    if (fRuns.empty()) {
+        auto emptyLine = fLines.front();
+        return Position(positionType, 0, nullptr, GlyphRange(), TextRange(), SkRect::MakeXYWH(0, 0, 0, emptyLine.height()));
+    }
+    auto lastLineIndex = fLines.size() - 1;
+    auto lastRun = this->visuallyLastRun(lastLineIndex);
+    auto lastGlyph = lastRun->size();
+    GlyphRange glyphRange(lastGlyph, lastGlyph);
+    TextRange textRange(lastRun->fClusters[lastGlyph], lastRun->fClusters[lastGlyph]);
+    auto lastLineHeight = position.fBoundaries.height();
+    position.fBoundaries.fTop = position.fBoundaries.fBottom;
+    position.fBoundaries.fBottom += lastLineHeight;
+    position.fBoundaries.fLeft =
+    position.fBoundaries.fRight = 0;
+    return Position(positionType, lastLineIndex, lastRun, glyphRange, textRange, position.fBoundaries);
+}
+
+// The range is guaranteed on the same line
+bool FormattedText::recalculateBoundaries(Position& position) const {
+
+    if (fRuns.empty()) {
+        position.fBoundaries = SkRect::MakeEmpty();
+        return true;
+    }
+
+    auto line = this->line(position.fLineIndex);
+    auto runIndex = this->runIndex(position.fRun);
+
+    GlyphIndex start = runIndex == line->glyphStart().runIndex() ? line->glyphStart().glyphIndex() : 0;
+    GlyphIndex end = runIndex == line->glyphTrailingEnd().runIndex() ? line->glyphTrailingEnd().glyphIndex() : position.fRun->fGlyphs.size();
+
+    SkASSERT (start <= position.fGlyphRange.fStart && end >= position.fGlyphRange.fEnd);
+    auto left = position.fRun->calculateWidth(start, position.fGlyphRange.fStart);
+    auto width = position.fRun->calculateWidth(position.fGlyphRange);
+    position.fBoundaries = SkRect::MakeXYWH(left, line->verticalOffset(), width, line->getMetrics().height());
+    return true;
+}
+
+const TextRun* FormattedText::visuallyPreviousRun(size_t lineIndex, const TextRun* run) const {
+    auto line = this->line(lineIndex);
+    auto runIndex = this->runIndex(run);
+    for (auto i = 0; i < line->runsNumber(); ++i) {
+        if (line->visualRun(i) == runIndex) {
+            if (i == 0) {
+                // Go to the previous line
+                if (lineIndex == 0) {
+                    // This is the first line
+                    return nullptr;
+                }
+                // Previous line, last visual run
+                line = this->line(--lineIndex);
+                i = line->runsNumber() - 1;
+            }
+            return &fRuns[line->visualRun(i)];
+        }
+    }
+    SkASSERT(false);
+    return nullptr;
+}
+
+const TextRun* FormattedText::visuallyNextRun(size_t lineIndex, const TextRun* run) const {
+    auto line = this->line(lineIndex);
+    auto runIndex = this->runIndex(run);
+    for (auto i = 0; i < line->runsNumber(); ++i) {
+        if (line->visualRun(i) == runIndex) {
+            if (i == line->runsNumber() - 1) {
+                // Go to the next line
+                if (lineIndex == fLines.size() - 1) {
+                    // This is the last line
+                    return nullptr;
+                }
+                // Next line, first visual run
+                line = this->line(++lineIndex);
+                i = 0;
+            }
+            return &fRuns[line->visualRun(i)];
+        }
+    }
+    SkASSERT(false);
+    return nullptr;
+}
+
+const TextRun* FormattedText::visuallyFirstRun(size_t lineIndex) const {
+    auto line = this->line(lineIndex);
+    return fRuns.empty() ? nullptr : &fRuns[line->visualRun(0)];
+}
+
+const TextRun* FormattedText::visuallyLastRun(size_t lineIndex) const {
+    auto line = this->line(lineIndex);
+    return &fRuns[line->visualRun(line->runsNumber() - 1)];
+}
+
+Position FormattedText::previousElement(Position element) const {
+
+    if (element.fGlyphRange.fStart == 0) {
+        if (this->isVisuallyFirst(element.fLineIndex, element.fRun)) {
+            element.fGlyphRange = GlyphRange { 0, 0};
+            return element;
+        }
+        // We need to go to the visually previous run
+        // (skipping all the empty runs if there are any)
+        element.fRun = this->visuallyPreviousRun(element.fLineIndex, element.fRun);
+        // Set the glyph range after the last glyph
+        element.fGlyphRange = GlyphRange { element.fRun->fGlyphs.size(), element.fRun->fGlyphs.size()};
+        if (element.fRun == nullptr) {
+            return element;
+        }
+    }
+
+    auto& clusters = element.fRun->fClusters;
+    element.fGlyphRange = GlyphRange(element.fGlyphRange.fStart, element.fGlyphRange.fStart);
+    element.fTextRange = TextRange(clusters[element.fGlyphRange.fStart],
+                                   clusters[element.fGlyphRange.fStart]);
+    while (element.fGlyphRange.fStart > 0) {
+        // Shift left visually
+        element.fTextRange.fStart = clusters[--element.fGlyphRange.fStart];
+        if (element.fPositionType == PositionType::kGraphemeCluster) {
+            if (this->hasProperty(element.fTextRange.fStart, GlyphUnitFlags::kGraphemeStart)) {
+                break;
+            }
+        }
+    }
+
+    // Update the line
+    auto line = this->line(element.fLineIndex);
+    if (line->glyphStart().runIndex() == this->runIndex(element.fRun) &&
+        line->glyphStart().glyphIndex() > element.fGlyphRange.fStart) {
+        --element.fLineIndex;
+    }
+
+    // Either way we found us a grapheme cluster (just make sure of it)
+    SkASSERT(this->hasProperty(element.fTextRange.fStart, GlyphUnitFlags::kGraphemeStart));
+    return element;
+}
+
+Position FormattedText::nextElement(Position element) const {
+
+    if (element.fGlyphRange.fEnd == element.fRun->size()) {
+        // We need to go to the visually next run
+        // (skipping all the empty runs if there are any)
+        if (this->isVisuallyLast(element.fLineIndex, element.fRun)) {
+            element.fGlyphRange = GlyphRange { element.fRun->size(), element.fRun->size() };
+            return element;
+        }
+        element.fRun = this->visuallyNextRun(element.fLineIndex, element.fRun);
+        // Set the glyph range after the last glyph
+        element.fGlyphRange = GlyphRange { 0, 0};
+        if (element.fRun == nullptr) {
+            return element;
+        }
+    }
+
+    auto& clusters = element.fRun->fClusters;
+    element.fGlyphRange = GlyphRange(element.fGlyphRange.fEnd, element.fGlyphRange.fEnd);
+    element.fTextRange = TextRange(clusters[element.fGlyphRange.fEnd],
+                                   clusters[element.fGlyphRange.fEnd]);
+    while (element.fGlyphRange.fEnd < element.fRun->size()) {
+        // Shift left visually
+        element.fTextRange.fEnd = clusters[++element.fGlyphRange.fEnd];
+        if (element.fPositionType == PositionType::kGraphemeCluster) {
+            if (this->hasProperty(element.fTextRange.fStart, GlyphUnitFlags::kGraphemeStart)) {
+                break;
+            }
+        }
+    }
+    // Update the line
+    auto line = this->line(element.fLineIndex);
+    if (line->glyphTrailingEnd().runIndex() == this->runIndex(element.fRun) &&
+        line->glyphTrailingEnd().glyphIndex() < element.fGlyphRange.fEnd) {
+        ++element.fLineIndex;
+    }
+
+    // Either way we found us a grapheme cluster (just make sure of it)
+    SkASSERT(this->hasProperty(element.fTextRange.fEnd, GlyphUnitFlags::kGraphemeStart));
+    return element;
+}
+
+Position FormattedText::firstElement(PositionType positionType) const {
+
+    Position beginningOfText(positionType);
+    // We need to go to the visually next run
+    // (skipping all the empty runs if there are any)
+    beginningOfText.fRun = this->visuallyFirstRun(0);
+    // Set the glyph range after the last glyph
+    beginningOfText.fGlyphRange = GlyphRange { 0, 0};
+    beginningOfText.fLineIndex = 0;
+
+    return beginningOfText;// this->nextElement(beginningOfText);
+}
+
+Position FormattedText::lastElement(PositionType positionType) const {
+
+    Position endOfText(positionType);
+    // We need to go to the visually next run
+    // (skipping all the empty runs if there are any)
+    endOfText.fRun = this->visuallyLastRun(fLines.size() - 1);
+    // Set the glyph range after the last glyph
+    endOfText.fGlyphRange = GlyphRange { endOfText.fRun->size(), endOfText.fRun->size() };
+    endOfText.fLineIndex = this->countLines() - 1;
+
+    return endOfText; // this->previousElement(endOfText);
+}
+
+bool FormattedText::isVisuallyFirst(size_t lineIndex, const TextRun* run) const {
+    auto firstLine = this->line(lineIndex);
+    return this->runIndex(run) == firstLine->visualRun(0);
+}
+
+bool FormattedText::isVisuallyLast(size_t lineIndex, const TextRun* run) const {
+    auto lastLine = this->line(lineIndex);
+    return this->runIndex(run) == lastLine->visualRun(lastLine->runsNumber() - 1);
+}
 } // namespace text
 } // namespace skia

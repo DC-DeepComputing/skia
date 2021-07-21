@@ -4,6 +4,7 @@
 #include <sstream>
 #include "experimental/sktext/include/Text.h"
 #include "experimental/sktext/include/Types.h"
+#include "experimental/sktext/src/Paint.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTime.h"
@@ -11,8 +12,9 @@
 #include "tools/sk_app/Window.h"
 #include "tools/skui/ModifierKey.h"
 
+using namespace skia::text;
 namespace skia {
-namespace text {
+namespace editor {
 
 class Cursor {
 public:
@@ -20,8 +22,19 @@ public:
     Cursor();
     virtual ~Cursor() = default;
     void place(SkPoint xy, SkSize size) {
+        if (size.width() < DEFAULT_CURSOR_WIDTH) {
+            size.fWidth = DEFAULT_CURSOR_WIDTH;
+        }
         fXY = xy;
         fSize = size;
+    }
+
+    void place(SkRect rect) {
+        if (rect.width() < DEFAULT_CURSOR_WIDTH) {
+            rect.fRight = rect.fLeft + DEFAULT_CURSOR_WIDTH;
+        }
+        fXY = SkPoint::Make(rect.fLeft, rect.fTop);
+        fSize = SkSize::Make(rect.width(), rect.height());
     }
 
     void blink() {
@@ -107,12 +120,14 @@ class Editor : public sk_app::Window::Layer, FormattedText::Visitor {
 public:
     static std::unique_ptr<Editor> Make(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
     static std::unique_ptr<Editor> MakeDemo(SkScalar width);
+
+    Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
+    virtual ~Editor() = default;
+
     void paint(SkCanvas* canvas, SkPoint point);
     void blink() { fCursor->blink(); }
     void onResize(int width, int height) override;
 private:
-
-    Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
 
     void updateText(std::u16string text);
 
@@ -136,21 +151,23 @@ private:
 
     bool moveCursor(skui::Key key);
     bool insertCodepoint(SkUnichar unichar);
-    bool deleteGrapheme(skui::Key key);
+    bool deleteElement(skui::Key key);
 
     std::unique_ptr<Cursor> fCursor;
     std::unique_ptr<Mouse> fMouse;
     std::unique_ptr<Selection> fSelection;
-    std::u16string fText;
-    std::unique_ptr<UnicodeText> fUnicodeText;
-    std::unique_ptr<ShapedText> fShapedText;
-    std::unique_ptr<WrappedText> fWrappedText;
-    sk_sp<FormattedText> fFormattedText;
+
+    SimpleText fParagraph;
+    SimpleText fStatus;
+
     SkCanvas* fCanvas;
     SkPoint fXY;
     sk_app::Window* fParent;
     int fWidth;
     int fHeight;
+
+    PositionType fDefaultPositionType;
+    bool fInsertMode;
     //std::vector<Style> fStyles;
 };
 } // namespace text
