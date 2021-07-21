@@ -619,6 +619,124 @@ bool Analysis::CallsSampleOutsideMain(const Program& program) {
     return visitor.visit(program);
 }
 
+bool Analysis::DetectStaticRecursion(SkSpan<std::unique_ptr<ProgramElement>> programElements,
+                                     ErrorReporter& errors) {
+    using Function = const FunctionDeclaration*;
+    using CallSet = std::unordered_set<Function>;
+    using CallGraph = std::unordered_map<Function, CallSet>;
+
+    class CallGraphVisitor : public ProgramVisitor {
+    public:
+        CallGraphVisitor(CallGraph* calls) : fCallGraph(calls), fCurrentFunctionCalls(nullptr) {}
+
+        bool visitExpression(const Expression& e) override {
+            if (e.is<FunctionCall>()) {
+                fCurrentFunctionCalls->insert(&e.as<FunctionCall>().function());
+            }
+            return INHERITED::visitExpression(e);
+        }
+
+        bool visitProgramElement(const ProgramElement& p) override {
+            if (p.is<FunctionDefinition>()) {
+                Function fn = &p.as<FunctionDefinition>().declaration();
+                SkASSERT(fCallGraph->count(fn) == 0);
+
+                SkASSERT(fCurrentFunctionCalls == nullptr);
+                CallSet currentFunctionCalls;
+                fCurrentFunctionCalls = &currentFunctionCalls;
+
+                INHERITED::visitProgramElement(p);
+
+                fCurrentFunctionCalls = nullptr;
+                fCallGraph->insert({fn, std::move(currentFunctionCalls)});
+            }
+            return false;
+        }
+
+        CallGraph* fCallGraph;
+        CallSet*   fCurrentFunctionCalls;
+
+        using INHERITED = ProgramVisitor;
+    };
+
+    CallGraph callGraph;
+    CallGraphVisitor visitor{&callGraph};
+    for (const auto& pe : programElements) {
+        visitor.visitProgramElement(*pe);
+    }
+
+    class CycleFinder {
+    public:
+        CycleFinder(CallGraph* calls) : fCallGraph(calls) {}
+
+        bool containsCycle() {
+            for (const auto& [caller, callees] : *fCallGraph) {
+                SkASSERT(fStack.empty());
+                if (this->dfsHelper(caller)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        const std::vector<Function>& cycle() const { return fStack; }
+
+    private:
+        bool dfsHelper(Function fn) {
+            SkASSERT(std::find(fStack.begin(), fStack.end(), fn) == fStack.end());
+            fStack.push_back(fn);
+
+            const CallSet& calls = (*fCallGraph)[fn];
+            for (auto calledFn : calls) {
+                auto it = std::find(fStack.begin(), fStack.end(), calledFn);
+                if (it != fStack.end()) {
+                    // Cycle detected. It includes the functions from 'it' to the end of fStack
+                    fStack.erase(fStack.begin(), it);
+                    return true;
+                }
+                if (this->dfsHelper(calledFn)) {
+                    return true;
+                }
+            }
+
+            fStack.pop_back();
+            return false;
+        }
+
+        CallGraph*            fCallGraph;
+        std::vector<Function> fStack;
+    };
+
+    CycleFinder cycleFinder{&callGraph};
+    if (cycleFinder.containsCycle()) {
+        // Get the description of each function participating in the cycle
+        std::vector<String> fnNames;
+        for (const auto fn : cycleFinder.cycle()) {
+            fnNames.push_back(fn->description());
+        }
+
+        // Find the lexicographically first function description, so we generate stable errors
+        std::vector<String>::iterator cycleStart = std::min_element(fnNames.begin(), fnNames.end());
+
+        // Construct a list of the functions participating in the cycle:
+        String cycleDescription = "\n\t" + (*cycleStart);
+        auto next = [&](std::vector<String>::iterator it) {
+            return ++it == fnNames.end() ? fnNames.begin() : it;
+        };
+        for (auto it = next(cycleStart); it != cycleStart; it = next(it)) {
+            cycleDescription += "\n\t" + (*it);
+        }
+        cycleDescription += "\n\t" + (*cycleStart);
+
+        // Go back to the original data to find the offset of cycleStart's declaration
+        Function cycleStartFn = cycleFinder.cycle()[cycleStart - fnNames.begin()];
+        errors.error(cycleStartFn->fOffset,
+                     "recursive function call cycle detected:" + cycleDescription);
+        return true;
+    }
+    return false;
+}
+
 int Analysis::NodeCountUpToLimit(const FunctionDefinition& function, int limit) {
     return NodeCountVisitor{limit}.visit(*function.body());
 }

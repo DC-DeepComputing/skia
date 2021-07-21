@@ -1,0 +1,7 @@
+### Compilation failed:
+
+error: 4: recursive function call cycle detected:
+	bool is_even(int n)
+	bool is_odd(int n)
+	bool is_even(int n)
+1 error
