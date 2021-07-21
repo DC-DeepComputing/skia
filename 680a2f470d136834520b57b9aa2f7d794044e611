@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45c12ecb_0cd847d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-21T16:22:09Z",
+      "side": 1,
+      "message": "open questions:\n\n- still need the magic in pushF() ?\n- what about passing in uniforms instead of remembering them?\n\nLooking for you roadmap ...",
+      "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3dc2ed0_9f05ff32",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-21T16:22:09Z",
+      "side": 1,
+      "message": "Seems like we can take const\u0026 for both args",
+      "range": {
+        "startLine": 269,
+        "startChar": 51,
+        "endLine": 269,
+        "endChar": 61
+      },
+      "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5fded42_c514e4a9",
+        "filename": "src/shaders/SkTexCoordShader.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-21T16:22:09Z",
+      "side": 1,
+      "message": "this might be a good place to document each part of this class. For future generations.. and for ours :)",
+      "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
