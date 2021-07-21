@@ -63,6 +63,8 @@ public:
         return kSkColorFilter_Type;
     }
 
+    EffectType effectType() const override final { return EffectType::kColorFilter; }
+
     static sk_sp<SkColorFilter> Deserialize(const void* data, size_t size,
                                           const SkDeserialProcs* procs = nullptr) {
         return sk_sp<SkColorFilter>(static_cast<SkColorFilter*>(
