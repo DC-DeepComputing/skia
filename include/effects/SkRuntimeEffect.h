@@ -182,7 +182,8 @@ public:
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms,
                                          SkSpan<sk_sp<SkChildEffect>> children) const;
 
-    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms) const;
+    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms,
+                                 SkSpan<sk_sp<SkChildEffect>> children = {}) const;
 
     const std::string& source() const;
 
