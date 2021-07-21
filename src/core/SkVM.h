@@ -543,6 +543,22 @@ namespace skvm {
             }
             return {base, (int)( sizeof(int)*(buf.size() - SK_ARRAY_COUNT(ints)) )};
         }
+
+        // Similar to push, as it creates a new Uniform slot, but the caller doesn't
+        // have any particular value in mind (yet).
+        Uniform alloc() { return this->push(0); }
+
+        void set(Uniform u, int bits) {
+            size_t index = u.offset / sizeof(int);
+            SkASSERT(index < buf.size());
+            buf[index] = bits;
+        }
+
+        void setF(Uniform u, float val) {
+            int bits;
+            memcpy(&bits, &val, sizeof(float));
+            this->set(u, bits);
+        }
     };
 
     struct PixelFormat {

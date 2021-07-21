@@ -613,10 +613,13 @@ namespace {
             : fDevice(device)
             , fSprite(sprite ? *sprite : SkPixmap{})
             , fSpriteOffset(spriteOffset)
-            , fUniforms(skvm::Ptr{0}, kBlitterUniformsCount)
+            , fUniforms(skvm::Ptr{0}, 0)
             , fParams(effective_params(device, sprite, paint, matrices, std::move(clip)))
             , fKey(cache_key(fParams, &fUniforms, &fAlloc, ok))
-        {}
+        {
+            fUniform_right = fUniforms.alloc();
+            fUniform_y     = fUniforms.alloc();
+        }
 
         ~Blitter() override {
             if (SkLRUCache<Key, skvm::Program>* cache = try_acquire_program_cache()) {
@@ -648,6 +651,9 @@ namespace {
                         fBlitMaskA8,
                         fBlitMask3D,
                         fBlitMaskLCD16;
+        // these uniforms are updated before each scanline
+        skvm::Uniform   fUniform_right,
+                        fUniform_y;
 
         skvm::Program buildProgram(Coverage coverage) {
             Key key = fKey.withCoverage(coverage);
@@ -668,7 +674,12 @@ namespace {
             // and more natural to rebuild fUniforms than to emit them into a temporary buffer.
             // fUniforms should reuse the exact same memory, so this is very cheap.
             SkDEBUGCODE(size_t prev = fUniforms.buf.size();)
-            fUniforms.buf.resize(kBlitterUniformsCount);
+            fUniforms.buf.resize(0);
+            // create space for these two, will be updated in updateUniforms()
+            fUniform_right = fUniforms.alloc();
+            fUniform_y     = fUniforms.alloc();
+            SkDebugf("build:  %p %d %d\n", this, fUniform_right.offset, fUniform_y.offset);
+
             skvm::Builder builder;
             build_program(&builder, fParams.withCoverage(coverage), &fUniforms, &fAlloc);
             SkASSERTF(fUniforms.buf.size() == prev,
@@ -694,8 +705,9 @@ namespace {
         }
 
         void updateUniforms(int right, int y) {
-            BlitterUniforms uniforms{right, y};
-            memcpy(fUniforms.buf.data(), &uniforms, sizeof(BlitterUniforms));
+            SkDebugf("update: %p %d %d\n", this, fUniform_right.offset, fUniform_y.offset);
+            fUniforms.set(fUniform_right, right);
+            fUniforms.set(fUniform_y, y);
         }
 
         const void* isSprite(int x, int y) const {
