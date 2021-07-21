@@ -4,6 +4,8 @@
 #include "experimental/sktext/include/Text.h"
 #include "experimental/sktext/include/Types.h"
 #include "include/core/SkCanvas.h"
+
+
 namespace skia {
 namespace text {
 
@@ -54,6 +56,7 @@ public:
                          SkColor foreground, SkColor background,
                          const SkString& fontFamily, SkScalar fontSize, SkFontStyle fontStyle,
                          SkSize reqSize, SkScalar x, SkScalar y);
+
 private:
     friend class Processor;
     void onBeginLine(TextRange, float baselineY) override;
