@@ -139,28 +139,29 @@ static EffectType child_type(const SkSL::Type& type) {
 }
 
 static bool verify_child_effects(const std::vector<SkRuntimeEffect::Child>& reflected,
-                                 SkSpan<SkRuntimeEffect::ChildPtr> effectPtrs) {
+                                 SkSpan<sk_sp<SkChildEffect>> effectPtrs) {
     // Verify that the number of passed-in child-effect pointers matches the SkSL code.
     if (reflected.size() != effectPtrs.size()) {
         return false;
     }
     // Verify that each child object's type matches its declared type in the SkSL.
     for (size_t i = 0; i < effectPtrs.size(); ++i) {
-        switch (reflected[i].type) {
-            case EffectType::kShader:
-                if (effectPtrs[i].colorFilter) {
-                    return false;
-                }
-                continue;
-            case EffectType::kColorFilter:
-                if (effectPtrs[i].shader) {
-                    return false;
-                }
-                continue;
+        const SkChildEffect* effect = effectPtrs[i].get();
+        if (effect && effect->effectType() != reflected[i].type) {
+            return false;
         }
-        SkDEBUGFAILF("unrecognized SkSL child type %d", (int)reflected[i].type);
     }
     return true;
+}
+
+static SkShaderBase* as_SB(const sk_sp<SkChildEffect>& effect) {
+    SkASSERT(!effect || effect->effectType() == EffectType::kShader);
+    return static_cast<SkShaderBase*>(effect.get());
+}
+
+static SkColorFilterBase* as_CFB(const sk_sp<SkChildEffect>& effect) {
+    SkASSERT(!effect || effect->effectType() == EffectType::kColorFilter);
+    return static_cast<SkColorFilterBase*>(effect.get());
 }
 
 // TODO: Many errors aren't caught until we process the generated Program here. Catching those
@@ -724,27 +725,34 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
                                  const char* name,
                                  sk_sp<SkData> uniforms,
                                  std::unique_ptr<GrFragmentProcessor> inputFP,
-                                 SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                                 SkSpan<const sk_sp<SkChildEffect>> children,
                                  const GrFPArgs& childArgs) {
     SkSTArray<8, std::unique_ptr<GrFragmentProcessor>> childFPs;
-    for (const auto& child : children) {
-        if (child.shader) {
-            auto childFP = as_SB(child.shader)->asFragmentProcessor(childArgs);
-            if (!childFP) {
-                return GrFPFailure(std::move(inputFP));
-            }
-            childFPs.push_back(std::move(childFP));
-        } else if (child.colorFilter) {
-            auto [success, childFP] = as_CFB(child.colorFilter)
-                                              ->asFragmentProcessor(/*inputFP=*/nullptr,
-                                                                    childArgs.fContext,
-                                                                    *childArgs.fDstColorInfo);
-            if (!success) {
-                return GrFPFailure(std::move(inputFP));
-            }
-            childFPs.push_back(std::move(childFP));
-        } else {
+    for (const sk_sp<SkChildEffect>& child : children) {
+        if (!child) {
             childFPs.push_back(nullptr);
+            continue;
+        }
+        switch (child->effectType()) {
+            case EffectType::kShader: {
+                auto childFP = as_SB(child)->asFragmentProcessor(childArgs);
+                if (!childFP) {
+                    return GrFPFailure(std::move(inputFP));
+                }
+                childFPs.push_back(std::move(childFP));
+                break;
+            }
+            case EffectType::kColorFilter: {
+                auto [success, childFP] = as_CFB(child)->asFragmentProcessor(
+                        /*inputFP=*/nullptr,
+                        childArgs.fContext,
+                        *childArgs.fDstColorInfo);
+                if (!success) {
+                    return GrFPFailure(std::move(inputFP));
+                }
+                childFPs.push_back(std::move(childFP));
+                break;
+            }
         }
     }
     auto fp = GrSkSLFP::MakeWithData(std::move(effect),
@@ -762,7 +770,7 @@ class SkRuntimeColorFilter : public SkColorFilterBase {
 public:
     SkRuntimeColorFilter(sk_sp<SkRuntimeEffect> effect,
                          sk_sp<SkData> uniforms,
-                         SkSpan<SkRuntimeEffect::ChildPtr> children)
+                         SkSpan<sk_sp<SkChildEffect>> children)
             : fEffect(std::move(effect))
             , fUniforms(std::move(uniforms))
             , fChildren(children.begin(), children.end()) {}
@@ -800,14 +808,19 @@ public:
         skvm::Coord zeroCoord = { p->splat(0.0f), p->splat(0.0f) };
 
         auto sampleChild = [&](int ix, skvm::Coord coord, skvm::Color color) {
-            if (fChildren[ix].shader) {
-                SkSimpleMatrixProvider mats{SkMatrix::I()};
-                return as_SB(fChildren[ix].shader)
-                        ->program(p, coord, coord, color, mats, nullptr, dst, uniforms, alloc);
-            } else if (fChildren[ix].colorFilter) {
-                return as_CFB(fChildren[ix].colorFilter)->program(p, color, dst, uniforms, alloc);
-            } else {
+            const auto& child = fChildren[ix];
+            if (!child) {
                 return color;
+            }
+            switch (child->effectType()) {
+                case EffectType::kShader: {
+                    SkSimpleMatrixProvider mats{SkMatrix::I()};
+                    return as_SB(child)->program(p, coord, coord, color, mats, /*localM=*/nullptr,
+                                                 dst, uniforms, alloc);
+                }
+                case EffectType::kColorFilter: {
+                    return as_CFB(child)->program(p, color, dst, uniforms, alloc);
+                }
             }
         };
 
@@ -839,11 +852,12 @@ public:
 
         auto evalChild = [&](int index, SkPMColor4f inColor) {
             const auto& child = fChildren[index];
-
-            // Guaranteed by initFilterColorInfo
-            SkASSERT(!child.shader);
-            return child.colorFilter ? as_CFB(child.colorFilter)->onFilterColor4f(inColor, dstCS)
-                                     : inColor;
+            if (!child) {
+                return inColor;
+            }
+            // The effect type is guaranteed by initFilterColorInfo
+            SkASSERT(child->effectType() == EffectType::kColorFilter);
+            return as_CFB(child)->onFilterColor4f(inColor, dstCS);
         };
 
         return program->eval(color, inputs->data(), evalChild);
@@ -859,8 +873,7 @@ public:
         buffer.writeDataAsByteArray(fUniforms.get());
         buffer.write32(fChildren.size());
         for (const auto& child : fChildren) {
-            buffer.writeFlattenable(child.shader ? (const SkFlattenable*)child.shader.get()
-                                                 : child.colorFilter.get());
+            buffer.writeFlattenable(child.get());
         }
     }
 
@@ -869,7 +882,7 @@ public:
 private:
     sk_sp<SkRuntimeEffect> fEffect;
     sk_sp<SkData> fUniforms;
-    std::vector<SkRuntimeEffect::ChildPtr> fChildren;
+    std::vector<sk_sp<SkChildEffect>> fChildren;
 };
 
 sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
@@ -887,7 +900,7 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
-    SkSTArray<4, SkRuntimeEffect::ChildPtr> children(childCount);
+    SkSTArray<4, sk_sp<SkChildEffect>> children(childCount);
     for (const auto& child : effect->children()) {
         if (child.type == EffectType::kShader) {
             children.emplace_back(buffer.readShader());
@@ -910,7 +923,7 @@ public:
     SkRTShader(sk_sp<SkRuntimeEffect> effect,
                sk_sp<SkData> uniforms,
                const SkMatrix* localMatrix,
-               SkSpan<SkRuntimeEffect::ChildPtr> children,
+               SkSpan<sk_sp<SkChildEffect>> children,
                bool isOpaque)
             : SkShaderBase(localMatrix)
             , fEffect(std::move(effect))
@@ -986,14 +999,19 @@ public:
         local = SkShaderBase::ApplyMatrix(p,inv,local,uniforms);
 
         auto sampleChild = [&](int ix, skvm::Coord coord, skvm::Color color) {
-            if (fChildren[ix].shader) {
-                SkOverrideDeviceMatrixProvider mats{matrices, SkMatrix::I()};
-                return as_SB(fChildren[ix].shader)
-                        ->program(p, device, coord, color, mats, nullptr, dst, uniforms, alloc);
-            } else if (fChildren[ix].colorFilter) {
-                return as_CFB(fChildren[ix].colorFilter)->program(p, color, dst, uniforms, alloc);
-            } else {
+            const auto& child = fChildren[ix];
+            if (!child) {
                 return color;
+            }
+            switch (child->effectType()) {
+                case EffectType::kShader: {
+                    SkOverrideDeviceMatrixProvider mats{matrices, SkMatrix::I()};
+                    return as_SB(child)->program(p, device, coord, color, mats, /*localM=*/nullptr,
+                                                 dst, uniforms, alloc);
+                }
+                case EffectType::kColorFilter: {
+                    return as_CFB(child)->program(p, color, dst, uniforms, alloc);
+                }
             }
         };
 
@@ -1027,8 +1045,7 @@ public:
         }
         buffer.write32(fChildren.size());
         for (const auto& child : fChildren) {
-            buffer.writeFlattenable(child.shader ? (const SkFlattenable*)child.shader.get()
-                                                 : child.colorFilter.get());
+            buffer.writeFlattenable(child.get());
         }
     }
 
@@ -1046,7 +1063,7 @@ private:
     bool fIsOpaque;
 
     sk_sp<SkData> fUniforms;
-    std::vector<SkRuntimeEffect::ChildPtr> fChildren;
+    std::vector<sk_sp<SkChildEffect>> fChildren;
 };
 
 sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
@@ -1072,7 +1089,7 @@ sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
-    SkSTArray<4, SkRuntimeEffect::ChildPtr> children(childCount);
+    SkSTArray<4, sk_sp<SkChildEffect>> children(childCount);
     for (const auto& child : effect->children()) {
         if (child.type == EffectType::kShader) {
             children.emplace_back(buffer.readShader());
@@ -1173,7 +1190,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<SkData> uniforms,
                                             size_t childCount,
                                             const SkMatrix* localMatrix,
                                             bool isOpaque) const {
-    SkSTArray<4, ChildPtr> children(childCount);
+    SkSTArray<4, sk_sp<SkChildEffect>> children(childCount);
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childShaders[i]);
     }
@@ -1181,7 +1198,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<SkData> uniforms,
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<SkData> uniforms,
-                                            SkSpan<ChildPtr> children,
+                                            SkSpan<sk_sp<SkChildEffect>> children,
                                             const SkMatrix* localMatrix,
                                             bool isOpaque) const {
     if (!this->allowShader()) {
@@ -1285,7 +1302,7 @@ sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* recordingContext,
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<SkData> uniforms,
                                                       sk_sp<SkColorFilter> childColorFilters[],
                                                       size_t childCount) const {
-    SkSTArray<4, ChildPtr> children(childCount);
+    SkSTArray<4, sk_sp<SkChildEffect>> children(childCount);
     for (size_t i = 0; i < childCount; ++i) {
         children.emplace_back(childColorFilters[i]);
     }
@@ -1293,7 +1310,7 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<SkData> uniforms,
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<SkData> uniforms,
-                                                      SkSpan<ChildPtr> children) const {
+                                                      SkSpan<sk_sp<SkChildEffect>> children) const {
     if (!this->allowColorFilter()) {
         return nullptr;
     }
