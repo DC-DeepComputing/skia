@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ece9e82_979713f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-21T22:10:18Z",
+      "side": 1,
+      "message": "I\u0027m not aware of whether the clip stack does or does not detect multisampleDisableSupport, but either way, the atlas used to check and fail on non-AA paths when multisampleDisableSupport was not present.",
+      "parentUuid": "48c00550_42c02507",
+      "revId": "0fcecab68390f038f5f0e25ade1a9c3e9b719078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "979b2325_64f4291a",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-07-21T19:28:54Z",
       "side": 1,
       "message": "We should check this first before trying to pull the shape into an SkPath and togglign fill type.",
+      "range": {
+        "startLine": 250,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 5
+      },
+      "revId": "0fcecab68390f038f5f0e25ade1a9c3e9b719078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a953530e_ce73d9f3",
+        "filename": "src/gpu/GrClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-21T22:10:18Z",
+      "side": 1,
+      "message": "Good point",
+      "parentUuid": "979b2325_64f4291a",
       "range": {
         "startLine": 250,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a46c51_854a2c73",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-21T22:10:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b366ef7_fb6e95ab",
+      "range": {
+        "startLine": 51,
+        "startChar": 70,
+        "endLine": 51,
+        "endChar": 82
+      },
+      "revId": "0fcecab68390f038f5f0e25ade1a9c3e9b719078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b0fc5df_36c40198",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-07-21T19:28:54Z",
       "side": 1,
       "message": "Is this grouping by inverse and non-inverse? or (reg + inv even-odd, reg + inv winding)?\n\nA switch or even just an if most likely will generate the exact same code but make it clearer how the path map is organized.",
+      "range": {
+        "startLine": 58,
+        "startChar": 15,
+        "endLine": 58,
+        "endChar": 46
+      },
+      "revId": "0fcecab68390f038f5f0e25ade1a9c3e9b719078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf649635_03e79f76",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-21T22:10:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b0fc5df_36c40198",
       "range": {
         "startLine": 58,
         "startChar": 15,

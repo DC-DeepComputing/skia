@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e2d4dc5_64c3f397",
+        "filename": "src/gpu/tessellate/GrTessellationPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-21T22:10:18Z",
+      "side": 0,
+      "message": "Ever since we turned off multisampleDisableSupport, this caused the atlas to quit drawing non-AA paths.",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 5
+      },
+      "revId": "b6a7319f211c3ed2e16a8000281ed65005627c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
