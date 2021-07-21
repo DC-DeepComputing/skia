@@ -340,8 +340,8 @@ func GenTasks(cfg *Config) {
 	relpathTargetDir := getThisDirName()
 	relpathBaseDir := getCallingDirName()
 
-	var jobs []string
-	LoadJson(filepath.Join(relpathBaseDir, "jobs.json"), &jobs)
+	var jobsToCQ map[string]*specs.CommitQueueJobConfig
+	LoadJson(filepath.Join(relpathBaseDir, "jobs.json"), &jobsToCQ)
 
 	if cfg == nil {
 		cfg = new(Config)
@@ -370,12 +370,17 @@ func GenTasks(cfg *Config) {
 		TasksCfgBuilder: b,
 		cfg:             cfg,
 		jobNameSchema:   schema,
-		jobs:            jobs,
+		jobsToCQ:        jobsToCQ,
 	}
-	for _, name := range jobs {
+	for name, cq := range jobsToCQ {
 		jb := newJobBuilder(builder, name)
 		jb.genTasksForJob()
 		jb.finish()
+
+		// Add the CQ spec if it is a CQ job.
+		if cq != nil {
+			b.MustAddCQJob(name, cq)
+		}
 	}
 
 	// Create CasSpecs.
@@ -539,7 +544,7 @@ type builder struct {
 	*specs.TasksCfgBuilder
 	cfg           *Config
 	jobNameSchema *JobNameSchema
-	jobs          []string
+	jobsToCQ      map[string]*specs.CommitQueueJobConfig
 }
 
 // marshalJson encodes the given data as JSON and fixes escaping of '<' which Go
@@ -1238,7 +1243,8 @@ func (b *jobBuilder) compile() string {
 
 	// All compile tasks are runnable as their own Job. Assert that the Job
 	// is listed in jobs.
-	if !In(name, b.jobs) {
+	// if !In(name, b.jobsToCQ) {
+	if _, ok := b.jobsToCQ[name]; !ok {
 		log.Fatalf("Job %q is missing from the jobs list! Derived from: %q", name, b.Name)
 	}
 
