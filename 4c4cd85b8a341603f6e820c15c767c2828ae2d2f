@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eebeaff_5208cf9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T18:58:14Z",
+      "side": 1,
+      "message": "The checks for SDC and then returning an error message are pretty repetitive across these GMs. One way I can think of to avoid that would be to have a GpuV1_GM that extends GpuGM and handles grabbing the SDC in its onDraw() and calling a new variant that still takes the SDC.  GpuV1_GM would be in the v1 sources so we could still keep SDC v1-only w/o quite as many per-gm modifications.\n\nBut since we have this ready to go and it\u0027s all just test code, I\u0027m fine with doing it this way too.",
+      "revId": "4c4cd85b8a341603f6e820c15c767c2828ae2d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfeeb5a8_295b4bfe",
+        "filename": "gm/fpcoordinateoverride.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T18:58:14Z",
+      "side": 1,
+      "message": "The SFC will always be defined in GPU GMs, right? That\u0027s why there\u0027s no need to check for failure like the SDCs?",
+      "range": {
+        "startLine": 78,
+        "startChar": 29,
+        "endLine": 78,
+        "endChar": 56
+      },
+      "revId": "4c4cd85b8a341603f6e820c15c767c2828ae2d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56477e88_6988132a",
+        "filename": "gm/texelsubset.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-21T18:58:14Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 101
+      },
+      "revId": "4c4cd85b8a341603f6e820c15c767c2828ae2d2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
