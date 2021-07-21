@@ -384,6 +384,11 @@ void SkRecorder::onClipRegion(const SkRegion& deviceRgn, SkClipOp op) {
     this->append<SkRecords::ClipRegion>(deviceRgn, op);
 }
 
+void SkRecorder::onNotifyResetClip() {
+    INHERITED(onNotifyResetClip);
+    this->append<SkRecords::ResetClip>();
+}
+
 sk_sp<SkSurface> SkRecorder::onNewSurface(const SkImageInfo&, const SkSurfaceProps&) {
     return nullptr;
 }

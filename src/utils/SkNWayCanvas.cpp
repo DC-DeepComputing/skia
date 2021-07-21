@@ -169,6 +169,14 @@ void SkNWayCanvas::onClipRegion(const SkRegion& deviceRgn, SkClipOp op) {
     this->INHERITED::onClipRegion(deviceRgn, op);
 }
 
+void SkNWayCanvas::onNotifyResetClip() {
+    Iter iter(fList);
+    while (iter.next()) {
+        SkCanvasPriv::ResetClip(iter.get());
+    }
+    this->INHERITED::onNotifyResetClip();
+}
+
 void SkNWayCanvas::onDrawPaint(const SkPaint& paint) {
     Iter iter(fList);
     while (iter.next()) {
