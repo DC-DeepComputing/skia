@@ -24,6 +24,7 @@
 #include "include/private/GrTypesPriv.h"
 #include "include/private/SkColorData.h"
 #include "include/utils/SkRandom.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/GrCaps.h"
@@ -225,8 +226,8 @@ protected:
         return SkISize::Make(kCellWidth, kNumConics*kCellHeight);
     }
 
-    void onDraw(GrRecordingContext* context, GrSurfaceDrawContext* surfaceDrawContext,
-                SkCanvas* canvas) override {
+    void onDraw(GrRecordingContext* rContext, SkCanvas* canvas) override {
+        auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
 
         const SkScalar w = kCellWidth, h = kCellHeight;
         const SkPMColor4f kOpaqueBlack = SkPMColor4f::FromBytes_RGBA(0xff000000);
@@ -294,9 +295,9 @@ protected:
 
                 canvas->drawRect(bounds, boundsPaint);
 
-                GrOp::Owner op = BezierConicTestOp::Make(context, bounds,
+                GrOp::Owner op = BezierConicTestOp::Make(rContext, bounds,
                                                          kOpaqueBlack, klm);
-                surfaceDrawContext->addDrawOp(std::move(op));
+                sdc->addDrawOp(std::move(op));
             }
         }
     }
@@ -425,8 +426,8 @@ protected:
         return SkISize::Make(kCellWidth, kNumQuads*kCellHeight);
     }
 
-    void onDraw(GrRecordingContext* context, GrSurfaceDrawContext* surfaceDrawContext,
-                SkCanvas* canvas) override {
+    void onDraw(GrRecordingContext* rContext, SkCanvas* canvas) override {
+        auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
 
         const SkScalar w = kCellWidth, h = kCellHeight;
         const SkPMColor4f kOpaqueBlack = SkPMColor4f::FromBytes_RGBA(0xff000000);
@@ -487,9 +488,9 @@ protected:
 
                 GrPathUtils::QuadUVMatrix DevToUV(pts);
 
-                GrOp::Owner op = BezierQuadTestOp::Make(context, bounds,
+                GrOp::Owner op = BezierQuadTestOp::Make(rContext, bounds,
                                                         kOpaqueBlack, DevToUV);
-                surfaceDrawContext->addDrawOp(std::move(op));
+                sdc->addDrawOp(std::move(op));
             }
         }
     }
