@@ -95,7 +95,8 @@ bool GrMtlOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo,
                 fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
     }
 
-    fActiveRenderCmdEncoder->setRenderPipelineState(fActivePipelineState->mtlPipelineState());
+    fActiveRenderCmdEncoder->setRenderPipelineState(
+            fActivePipelineState->pipeline()->mtlPipelineState());
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     if (!fDebugGroupActive) {
         fActiveRenderCmdEncoder->pushDebugGroup(@"bindAndDraw");
