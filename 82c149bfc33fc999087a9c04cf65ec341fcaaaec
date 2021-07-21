@@ -22,6 +22,30 @@
       },
       "revId": "82c149bfc33fc999087a9c04cf65ec341fcaaaec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "064b163d_2a16f610",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-07-21T18:41:33Z",
+      "side": 1,
+      "message": "\u003e Two things I notice as I read this file:\n\u003e 1. I think it\u0027d be easier to read if the jobs which have a CQ config get some line breaks.\n\nDone.\n\n\u003e 2. It\u0027s not easy to quickly list which jobs are on the CQ.  Maybe we could re-order the list so that the CQ jobs are grouped together?\n\nI did it this way because:\n* The diff here makes it much easier to validate that I didn\u0027t mess up the original list.\n* tasks.json should be the place where we look to see all jobs that are on the CQ. There is a nice separate section there.\n* I think it is better to have jobs.json be alphabetical. Having things ordered differently will make it hard to see which jobs we have, right now you can quickly scan it since its alphabetical. This is why I was trying to keep things on a single line to make the scanning easier, but it\u0027s not too bad after keeping CQ config with line breaks.",
+      "parentUuid": "4d977f09_15adf87d",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 122
+      },
+      "revId": "82c149bfc33fc999087a9c04cf65ec341fcaaaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
