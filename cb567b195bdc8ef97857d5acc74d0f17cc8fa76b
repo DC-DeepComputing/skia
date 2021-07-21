@@ -38,6 +38,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1439ead7_85bc413a",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T15:18:37Z",
+      "side": 1,
+      "message": ", fUniforms(...)\n, fUnifrom_right(fUniforms-\u003ealloc())\n, fUnifrom_y(fUnifroms-\u003ealloc)\n...\n, fKey(cache_key...))",
+      "range": {
+        "startLine": 616,
+        "startChar": 24,
+        "endLine": 616,
+        "endChar": 39
+      },
+      "revId": "cb567b195bdc8ef97857d5acc74d0f17cc8fa76b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8276f90_dbbbdc28",
         "filename": "src/core/SkVMBlitter.cpp",
         "patchSetId": 2
