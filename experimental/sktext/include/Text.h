@@ -1,10 +1,9 @@
 // Copyright 2021 Google LLC.
 #ifndef Processor_DEFINED
 #define Processor_DEFINED
-
-#include "experimental/sktext/src/Line.h"
 #include <string>
 #include "experimental/sktext/include/Types.h"
+#include "experimental/sktext/src/Line.h"
 #include "experimental/sktext/src/TextRun.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFontMgr.h"
@@ -144,16 +143,30 @@ class FormattedText : public SkRefCnt {
 public:
     SkSize  size() const { return fSize; }
 
-    std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> indexToAdjustedGraphemePosition(TextIndex textIndex) const;
-    TextIndex positionToAdjustedGraphemeIndex(SkPoint xy) const;
-    size_t lineIndex(const Line* line) const {
-        return line - fLines.data();
-    }
-    size_t countLines() const { return fLines.size(); }
+    Position adjustedPosition(PositionType positionType, SkPoint point) const;
 
-    // This one does not make sense; how would we get glyphRange in the first place?
-    // It has to point to the same run or we cannot even index it
-    std::vector<TextRange> adjustIndicesAndComputeTextRanges(GlyphRange glyphRange) const;
+    bool recalculateBoundaries(Position& position) const;
+
+    const TextRun* visuallyPreviousRun(size_t lineIndex, const TextRun* run) const;
+    const TextRun* visuallyNextRun(size_t lineIndex, const TextRun* run) const;
+    const TextRun* visuallyFirstRun(size_t lineIndex) const;
+    const TextRun* visuallyLastRun(size_t lineIndex) const;
+    bool isVisuallyFirst(size_t lineIndex, const TextRun* run) const;
+    bool isVisuallyLast(size_t lineIndex, const TextRun* run) const;
+
+    Position previousElement(Position element) const;
+    Position nextElement(Position current) const;
+    Position firstElement(PositionType positionType) const;
+    Position lastElement(PositionType positionType) const;
+
+    size_t lineIndex(const Line* line) const { return line - fLines.data(); }
+    size_t countLines() const { return fLines.size(); }
+    const Line* line(size_t lineIndex) const { return fLines.empty() ? nullptr : &fLines[lineIndex]; }
+    size_t runIndex(const TextRun* run) const { return run == nullptr ? EMPTY_INDEX : run - fRuns.data(); }
+
+    bool hasProperty(size_t index, GlyphUnitFlags flag) const {
+        return (fGlyphUnitProperties[index] & flag) == flag;
+    }
 
     class Visitor {
     public:
@@ -175,6 +188,9 @@ public:
     void visit(Visitor*, SkSpan<size_t> blocks) const;
 
 private:
+
+    void adjustTextRange(Position* position) const;
+
     friend class WrappedText;
     FormattedText() { }
     SkTArray<TextRun, false> fRuns;

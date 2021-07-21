@@ -4,6 +4,7 @@
 #include <sstream>
 #include "experimental/sktext/include/Text.h"
 #include "experimental/sktext/include/Types.h"
+#include "experimental/sktext/src/Paint.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTime.h"
@@ -12,7 +13,19 @@
 #include "tools/skui/ModifierKey.h"
 
 namespace skia {
-namespace text {
+namespace editor {
+
+using namespace skia::text;
+
+const TextDirection DEFAULT_TEXT_DIRECTION = TextDirection::kLtr;
+const TextAlign DEFAULT_TEXT_ALIGN = TextAlign::kLeft;
+const SkColor DEFAULT_FOREGROUND = SK_ColorBLACK;
+const SkScalar DEFAULT_CURSOR_WIDTH = 2;
+const SkColor DEFAULT_CURSOR_COLOR = SK_ColorGRAY;
+const SkColor DEFAULT_SELECTION_COLOR = SK_ColorCYAN;
+const SkScalar DEFAULT_STATUS_HEIGHT = 20;
+const SkPoint DEFAULT_TEXT_OFFSET = SkPoint::Make(0, 0);
+const SkPoint DEFAULT_STATUS_OFFSET = SkPoint::Make(0, 0);
 
 class Cursor {
 public:
@@ -20,8 +33,19 @@ public:
     Cursor();
     virtual ~Cursor() = default;
     void place(SkPoint xy, SkSize size) {
+        if (size.width() < DEFAULT_CURSOR_WIDTH) {
+            size.fWidth = DEFAULT_CURSOR_WIDTH;
+        }
         fXY = xy;
         fSize = size;
+    }
+
+    void place(SkRect rect) {
+        if (rect.width() < DEFAULT_CURSOR_WIDTH) {
+            rect.fRight = rect.fLeft + DEFAULT_CURSOR_WIDTH;
+        }
+        fXY = SkPoint::Make(rect.fLeft, rect.fTop);
+        fSize = SkSize::Make(rect.width(), rect.height());
     }
 
     void blink() {
@@ -103,16 +127,69 @@ struct Style {
     }
 };
 
+class DisplayText {
+public:
+    DisplayText(SkPoint offset, SkScalar width) {
+        fOffset = offset;
+        fSize = SkSize::Make(width, SK_ScalarInfinity);
+        fText = u"";
+        fBlocks = SkSpan<Block>(nullptr, 0);
+        fUnicodeText = nullptr;
+        fShapedText = nullptr;
+        fWrappedText = nullptr;
+        fFormattedText = nullptr;
+    }
+
+    DisplayText(std::u16string text, SkPoint offset, SkSize size, SkSpan<Block> fontBlocks, TextDirection textDirection, TextAlign textAlign) {
+        fOffset = offset;
+        fSize = size;
+        fBlocks = fontBlocks;
+        fText = std::move(text);
+        fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
+        fShapedText = fUnicodeText->shape(fontBlocks, DEFAULT_TEXT_DIRECTION);
+        fWrappedText = fShapedText->wrap(size.width(), size.height(), fUnicodeText->getUnicode());
+        fFormattedText = fWrappedText->format(DEFAULT_TEXT_ALIGN, DEFAULT_TEXT_DIRECTION);
+    }
+
+    bool update(std::u16string text) {
+        if (!this->fBlocks.empty()) {
+            SkASSERT(this->fBlocks.size() == 1);
+            this->fBlocks[0].charCount = text.size();
+        }
+        this->fText = std::move(text);
+        this->fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)this->fText.data(), this->fText.size()));
+        this->fShapedText = fUnicodeText->shape(this->fBlocks, DEFAULT_TEXT_DIRECTION);
+        this->fWrappedText = fShapedText->wrap(this->fSize.fWidth, this->fSize.fHeight, this->fUnicodeText->getUnicode());
+        this->fFormattedText = fWrappedText->format(DEFAULT_TEXT_ALIGN, DEFAULT_TEXT_DIRECTION);
+        return true;
+    }
+
+    std::u16string fText;
+    std::unique_ptr<UnicodeText> fUnicodeText;
+    std::unique_ptr<ShapedText> fShapedText;
+    std::unique_ptr<WrappedText> fWrappedText;
+    sk_sp<FormattedText> fFormattedText;
+    SkSize fSize;
+    SkPoint fOffset;
+    SkSpan<Block> fBlocks;
+};
+
+class EditText : DisplayText {
+
+};
+
 class Editor : public sk_app::Window::Layer, FormattedText::Visitor {
 public:
     static std::unique_ptr<Editor> Make(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
     static std::unique_ptr<Editor> MakeDemo(SkScalar width);
+
+    Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
+    ~Editor() override = default;
+
     void paint(SkCanvas* canvas, SkPoint point);
     void blink() { fCursor->blink(); }
     void onResize(int width, int height) override;
 private:
-
-    Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
 
     void updateText(std::u16string text);
 
@@ -136,23 +213,25 @@ private:
 
     bool moveCursor(skui::Key key);
     bool insertCodepoint(SkUnichar unichar);
-    bool deleteGrapheme(skui::Key key);
+    bool deleteElement(skui::Key key);
 
     std::unique_ptr<Cursor> fCursor;
     std::unique_ptr<Mouse> fMouse;
     std::unique_ptr<Selection> fSelection;
-    std::u16string fText;
-    std::unique_ptr<UnicodeText> fUnicodeText;
-    std::unique_ptr<ShapedText> fShapedText;
-    std::unique_ptr<WrappedText> fWrappedText;
-    sk_sp<FormattedText> fFormattedText;
+
+    DisplayText fParagraph;
+    DisplayText fStatus;
+
     SkCanvas* fCanvas;
     SkPoint fXY;
     sk_app::Window* fParent;
     int fWidth;
     int fHeight;
-    //std::vector<Style> fStyles;
+
+    PositionType fDefaultPositionType;
+    bool fInsertMode;
 };
+
 } // namespace text
 } // namespace skia
 #endif // Editor_DEFINED
