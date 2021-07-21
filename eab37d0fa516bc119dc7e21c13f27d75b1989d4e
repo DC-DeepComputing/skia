@@ -22,6 +22,30 @@
       },
       "revId": "eab37d0fa516bc119dc7e21c13f27d75b1989d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d2557a_8e69543c",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T18:39:33Z",
+      "side": 1,
+      "message": "Next CL.",
+      "parentUuid": "2e264a4d_7cd37d72",
+      "range": {
+        "startLine": 528,
+        "startChar": 13,
+        "endLine": 528,
+        "endChar": 17
+      },
+      "revId": "eab37d0fa516bc119dc7e21c13f27d75b1989d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

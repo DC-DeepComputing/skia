@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ddd2ef3_fcd6a59c",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T18:39:33Z",
+      "side": 1,
+      "message": "I did this way to follow SkStageUpdater, and the underlying call computeTotalInverse also takes an const SkMatrix*. I think the pattern is that localM is optional.",
+      "parentUuid": "f3dc2ed0_9f05ff32",
+      "range": {
+        "startLine": 269,
+        "startChar": 51,
+        "endLine": 269,
+        "endChar": 61
+      },
+      "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5fded42_c514e4a9",
@@ -71,6 +95,24 @@
       "writtenOn": "2021-07-21T16:22:09Z",
       "side": 1,
       "message": "this might be a good place to document each part of this class. For future generations.. and for ours :)",
+      "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85ae4d1_9f9f5929",
+        "filename": "src/shaders/SkTexCoordShader.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-21T18:39:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5fded42_c514e4a9",
       "revId": "680a2f470d136834520b57b9aa2f7d794044e611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
