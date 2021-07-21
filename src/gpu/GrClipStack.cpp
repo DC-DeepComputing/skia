@@ -26,6 +26,7 @@
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrQuadUtils.h"
 #include "src/gpu/tessellate/GrTessellationPathRenderer.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 namespace {
 
@@ -359,7 +360,7 @@ static GrSurfaceProxyView render_sw_mask(GrRecordingContext* context, const SkIR
     }
 }
 
-static void render_stencil_mask(GrRecordingContext* context, GrSurfaceDrawContext* rtc,
+static void render_stencil_mask(GrRecordingContext* context, skgpu::v1::SurfaceDrawContext* rtc,
                                 uint32_t genID, const SkIRect& bounds,
                                 const GrClipStack::Element** elements, int count,
                                 GrAppliedClip* out) {
@@ -1239,7 +1240,8 @@ GrClip::PreClipResult GrClipStack::preApply(const SkRect& bounds, GrAA aa) const
     SkUNREACHABLE;
 }
 
-GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawContext* rtc,
+GrClip::Effect GrClipStack::apply(GrRecordingContext* context,
+                                  skgpu::v1::SurfaceDrawContext* sdc,
                                   GrDrawOp* op, GrAAType aa, GrAppliedClip* out,
                                   SkRect* bounds) const {
     // TODO: Once we no longer store SW masks, we don't need to sneak the provider in like this
@@ -1329,7 +1331,7 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawCont
     int remainingAnalyticFPs = kMaxAnalyticFPs;
 
     // If window rectangles are supported, we can use them to exclude inner bounds of difference ops
-    int maxWindowRectangles = rtc->maxWindowRectangles();
+    int maxWindowRectangles = sdc->maxWindowRectangles();
     GrWindowRectangles windowRects;
 
     // Elements not represented as an analytic FP or skipped will be collected here and later
@@ -1374,7 +1376,7 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawCont
 
                 // First check if the op knows how to apply this clip internally.
                 SkASSERT(!e.shape().inverted());
-                auto result = op->clipToShape(rtc, e.op(), e.localToDevice(), e.shape(),
+                auto result = op->clipToShape(sdc, e.op(), e.localToDevice(), e.shape(),
                                               GrAA(e.aa() == GrAA::kYes || fForceAA));
                 if (result != GrDrawOp::ClipResult::kFail) {
                     if (result == GrDrawOp::ClipResult::kClippedOut) {
@@ -1450,10 +1452,10 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawCont
     // flattened into a single mask.
     if (!elementsForMask.empty()) {
         bool stencilUnavailable =
-                !rtc->asRenderTargetProxy()->canUseStencil(*context->priv().caps());
+                !sdc->asRenderTargetProxy()->canUseStencil(*context->priv().caps());
 
         bool hasSWMask = false;
-        if ((rtc->numSamples() <= 1 && !rtc->canUseDynamicMSAA() && maskRequiresAA) ||
+        if ((sdc->numSamples() <= 1 && !sdc->canUseDynamicMSAA() && maskRequiresAA) ||
             stencilUnavailable) {
             // Must use a texture mask to represent the combined clip elements since the stencil
             // cannot be used, or cannot handle smooth clips.
@@ -1469,7 +1471,7 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* context, GrSurfaceDrawCont
                 return Effect::kClippedOut;
             } else {
                 // Rasterize the remaining elements to the stencil buffer
-                render_stencil_mask(context, rtc, cs.genID(), scissorBounds,
+                render_stencil_mask(context, sdc, cs.genID(), scissorBounds,
                                     elementsForMask.begin(), elementsForMask.count(), out);
             }
         }

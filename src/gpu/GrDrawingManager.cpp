@@ -30,8 +30,6 @@
 #include "src/gpu/GrRenderTaskCluster.h"
 #include "src/gpu/GrResourceAllocator.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceContext.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
 #include "src/gpu/GrTTopoSort.h"
 #include "src/gpu/GrTexture.h"
@@ -42,6 +40,7 @@
 #include "src/gpu/GrTransferFromRenderTask.h"
 #include "src/gpu/GrWaitRenderTask.h"
 #include "src/gpu/GrWritePixelsRenderTask.h"
+#include "src/gpu/SurfaceContext.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/image/SkSurface_Gpu.h"
 

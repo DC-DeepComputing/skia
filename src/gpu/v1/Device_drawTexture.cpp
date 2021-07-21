@@ -20,13 +20,13 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 
@@ -337,7 +337,7 @@ SkPMColor4f texture_color(SkColor4f paintColor, float entryAlpha, GrColorType sr
 }
 
 // Assumes srcRect and dstRect have already been optimized to fit the proxy
-void draw_texture(GrSurfaceDrawContext* rtc,
+void draw_texture(skgpu::v1::SurfaceDrawContext* rtc,
                   const GrClip* clip,
                   const SkMatrix& ctm,
                   const SkPaint& paint,

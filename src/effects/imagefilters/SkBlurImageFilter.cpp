@@ -26,6 +26,7 @@
 #if SK_SUPPORT_GPU
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #endif
 
 namespace {
