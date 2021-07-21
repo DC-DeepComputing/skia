@@ -161,10 +161,9 @@ public:
 
     // Object that allows passing either an SkShader or SkColorFilter as a child
     struct ChildPtr {
-        ChildPtr(sk_sp<SkShader> s) : shader(std::move(s)) {}
-        ChildPtr(sk_sp<SkColorFilter> cf) : colorFilter(std::move(cf)) {}
-        sk_sp<SkShader> shader;
-        sk_sp<SkColorFilter> colorFilter;
+        ChildPtr(sk_sp<SkShader> s) : effect(std::move(s)) {}
+        ChildPtr(sk_sp<SkColorFilter> cf) : effect(std::move(cf)) {}
+        sk_sp<SkChildEffect> effect;
     };
 
     sk_sp<SkShader> makeShader(sk_sp<SkData> uniforms,
