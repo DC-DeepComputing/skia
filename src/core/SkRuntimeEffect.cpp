@@ -1219,7 +1219,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<SkData> uniforms,
 
 sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* recordingContext,
                                           sk_sp<SkData> uniforms,
-                                          sk_sp<SkShader> children[],
+                                          sk_sp<SkChildEffect> children[],
                                           size_t childCount,
                                           const SkMatrix* localMatrix,
                                           SkImageInfo resultInfo,
@@ -1245,7 +1245,8 @@ sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* recordingContext,
         GrFPArgs args(recordingContext, matrixProvider, &colorInfo);
         SkSTArray<8, std::unique_ptr<GrFragmentProcessor>> childFPs;
         for (size_t i = 0; i < childCount; ++i) {
-            if (!children[i]) {
+            // TODO: support for child effects other than SkShader
+            if (!children[i] || children[i]->effectType() != EffectType::kShader) {
                 return nullptr;
             }
             childFPs.push_back(as_SB(children[i])->asFragmentProcessor(args));
@@ -1287,7 +1288,8 @@ sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* recordingContext,
     }
     SkCanvas* canvas = surf->getCanvas();
     SkTLazy<SkCanvas> tempCanvas;
-    auto shader = this->makeShader(std::move(uniforms), children, childCount, localMatrix, false);
+    auto shader = this->makeShader(std::move(uniforms), SkMakeSpan(children, childCount),
+                                   localMatrix, false);
     if (!shader) {
         return nullptr;
     }
@@ -1372,8 +1374,7 @@ sk_sp<SkImage> SkRuntimeShaderBuilder::makeImage(GrRecordingContext* recordingCo
 
 sk_sp<SkShader> SkRuntimeShaderBuilder::makeShader(const SkMatrix* localMatrix, bool isOpaque) {
     return this->effect()->makeShader(this->uniforms(),
-                                      this->children(),
-                                      this->numChildren(),
+                                      SkMakeSpan(this->children(), this->numChildren()),
                                       localMatrix,
                                       isOpaque);
 }
