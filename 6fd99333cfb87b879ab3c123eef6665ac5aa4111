@@ -91,6 +91,29 @@
       },
       "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b4acdd_7a68612a",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:53:46Z",
+      "side": 1,
+      "message": "Maybe this should include the word \"potential\"?\n\nWe aren\u0027t smart enough to do the analysis to detect that some recursive-looking cases are actually safe (because the control flow makes reaching the cycle somehow impossible).",
+      "range": {
+        "startLine": 734,
+        "startChar": 22,
+        "endLine": 734,
+        "endChar": 31
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
