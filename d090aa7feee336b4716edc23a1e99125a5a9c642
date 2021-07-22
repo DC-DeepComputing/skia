@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d12fc7_4aa58f01",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T17:31:11Z",
+      "side": 0,
+      "message": "It seems the base debian10 image doesn\u0027t have clang and the build script currently really wants to build with clang (CXX\u003d/usr/local/bin/clang++). If there is a clang-debian10 that might work, or just installing clang as a package might work, though it\u0027s really old (looks like Debian10 came with Clang7, which is even older than the Clang8 in the google/clang-debian9). It looks like one can get to Clang11 with buster-backports, but I\u0027m not sure if that\u0027s how we want to get it.\n\nI always end up getting my clang from Chromium with https://source.chromium.org/chromium/chromium/src/+/main:tools/clang/scripts/update.py (directions for use at top of file).",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 33
+      },
+      "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
