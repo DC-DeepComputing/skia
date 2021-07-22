@@ -41,6 +41,7 @@ private:
     const char* getTypeName() const override { return nullptr; }
 
     const SkShaderBase& fShader;
-    mutable skvm::Uniform fMatrix[9];
+    mutable SkMatrix fMatrix;
+//    mutable skvm::Uniform fMatrix[9];
 };
 #endif  //SkTextCoordShader_DEFINED

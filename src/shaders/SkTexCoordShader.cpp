@@ -21,22 +21,23 @@ skvm::Color SkTexCoordShader::onProgram(skvm::Builder* b,
             b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
 }
 
-skvm::Coord SkTexCoordShader::applyMatrix(
-        skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
-        skvm::Uniforms* uniforms) const {
-
-    // Allocate uniforms.
-    for (auto& u : fMatrix) {
-        u = uniforms->allocateUniform();
+skvm::Coord SkTexCoordShader::applyMatrix(skvm::Builder* b,
+                                          const SkMatrix& matrix,
+                                          skvm::Coord local,
+                                          skvm::Uniforms* uniforms) const {
+    skvm::Uniform matrixPtr = uniforms->pushPtr(&fMatrix);
+    skvm::F32 matrixVals[9];
+    for (int i = 0; i < 9; ++i) {
+        matrixVals[i] = b->gatherF(matrixPtr, b->splat(i));
     }
 
     skvm::F32 x = local.x,
               y = local.y;
 
     auto dot = [&,x,y](int row) {
-        return b->mad(x, b->uniformF(fMatrix[3*row+0]),
-                      b->mad(y, b->uniformF(fMatrix[3*row+1]),
-                             b->uniformF(fMatrix[3*row+2])));
+        return b->mad(x, matrixVals[3*row+0],
+               b->mad(y, matrixVals[3*row+1],
+                         matrixVals[3*row+2]));
     };
 
     x = dot(0);
@@ -49,16 +50,8 @@ skvm::Coord SkTexCoordShader::applyMatrix(
     return {x, y};
 }
 
-bool SkTexCoordShader::update(
-        const SkMatrix& ctm, const SkMatrix* localM, skvm::Uniforms* u) const {
-    SkMatrix matrix;
-    if (this->computeTotalInverse(ctm, localM, &matrix)) {
-        for (int i = 0; i < 9; ++i) {
-            u->setF(fMatrix[i], matrix[i]);
-        }
-        return true;
-    }
-    return false;
+bool SkTexCoordShader::update(const SkMatrix& ctm, const SkMatrix* localM, skvm::Uniforms*) const {
+    return this->computeTotalInverse(ctm, localM, &fMatrix);
 }
 
 bool SkTexCoordShader::onAppendStages(const SkStageRec& rec) const {
