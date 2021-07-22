@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "418c99d0_b01f619b",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T13:26:32Z",
+      "side": 1,
+      "message": "It seems there\u0027s gotta be a way to query the lib version directly...  The only other approach I found seems even hackier: mmap the .so, memmem to find a known symbol name and extract its suffix.\n\n ¯\\_(ツ)_/¯",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 18
+      },
+      "revId": "9cdae04510c3b542fe7254508ef5c722928ae717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

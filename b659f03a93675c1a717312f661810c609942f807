@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43bf002b_a0b97836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T13:26:32Z",
+      "side": 1,
+      "message": "Tested on Linux, Android \u0026 MacOS.\n\nIf this sticks, we should totally add a couple of test bots.",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
