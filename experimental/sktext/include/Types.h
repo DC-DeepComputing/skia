@@ -27,8 +27,7 @@ enum class TextDirection {
 
 // This enum lists all possible ways to query output positioning
 enum class PositionType {
-    kGraphemeCluster,
-    kGrapheme,
+    kGraphemeCluster, // Both the edge of the glyph cluster and the text grapheme
     kGlyphCluster,
     kGlyph,
     kGlyphPart

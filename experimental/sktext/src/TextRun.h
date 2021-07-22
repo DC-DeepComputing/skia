@@ -25,6 +25,7 @@ class TextRun {
   bool leftToRight() const { return fBidiLevel % 2 == 0; }
   uint8_t bidiLevel() const { return fBidiLevel; }
   GlyphIndex findGlyph(TextIndex textIndex) const;
+  size_t size() const { return fGlyphs.size(); }
 
  private:
   friend class UnicodeText;

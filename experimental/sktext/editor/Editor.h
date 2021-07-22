@@ -16,22 +16,25 @@ using namespace skia::text;
 namespace skia {
 namespace editor {
 
-const TextDirection TEXT_DIRECTION = TextDirection::kLtr;
-const TextAlign TEXT_ALIGN = TextAlign::kLeft;
-const SkColor DEFAULT_FOREGROUND = SK_ColorBLACK;
-const SkScalar DEFAULT_CURSOR_WIDTH = 2;
-const SkColor DEFAULT_CURSOR_COLOR = SK_ColorGRAY;
-const SkColor DEFAULT_SELECTION_COLOR = SK_ColorCYAN;
-const SkScalar DEFAULT_STATUS_HEIGHT = 20;
-
 class Cursor {
 public:
     static std::unique_ptr<Cursor> Make();
     Cursor();
     virtual ~Cursor() = default;
     void place(SkPoint xy, SkSize size) {
+        if (size.width() < DEFAULT_CURSOR_WIDTH) {
+            size.fWidth = DEFAULT_CURSOR_WIDTH;
+        }
         fXY = xy;
         fSize = size;
+    }
+
+    void place(SkRect rect) {
+        if (rect.width() < DEFAULT_CURSOR_WIDTH) {
+            rect.fRight = rect.fLeft + DEFAULT_CURSOR_WIDTH;
+        }
+        fXY = SkPoint::Make(rect.fLeft, rect.fTop);
+        fSize = SkSize::Make(rect.width(), rect.height());
     }
 
     void blink() {
@@ -113,50 +116,6 @@ struct Style {
     }
 };
 
-class Text {
-public:
-    Text(SkScalar width) : fStatusBlock(this->fText.size(), sk_make_sp<TrivialFontChain>("Roboto", 40)) {
-
-        fText = u"";
-        fUnicodeText = nullptr; //std::move(skia::text::Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size())));
-        fShapedText = nullptr; //std::move(fUnicodeText->shape(SkSpan<Block>(&fStatusBlock, 1), TextDirection::kLtr));
-        fWrappedText = nullptr; //std::move(fShapedText->wrap(width, DEFAULT_STATUS_HEIGHT, fUnicodeText->getUnicode()));
-        fFormattedText = nullptr; //std::move(fWrappedText->format(TextAlign::kLeft, TextDirection::kLtr));
-    }
-
-    Text(std::u16string text, SkSize size, SkSpan<Block> fontBlocks, TextDirection textDirection, TextAlign textAlign)
-        : fStatusBlock() {
-        fSize = size;
-        fBlocks = fontBlocks;
-        fText = std::move(text);
-        fUnicodeText = std::move(skia::text::Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size())));
-        fShapedText = std::move(fUnicodeText->shape(fontBlocks, TEXT_DIRECTION));
-        fWrappedText = std::move(fShapedText->wrap(size.width(), size.height(), fUnicodeText->getUnicode()));
-        fFormattedText = std::move(fWrappedText->format(TEXT_ALIGN, TEXT_DIRECTION));
-    }
-
-    bool update(std::u16string text) {
-        SkASSERT(fStatusBlock.chain == nullptr);
-        this->fText = std::move(text);
-        this->fUnicodeText = skia::text::Text::parse(SkSpan<uint16_t>((uint16_t*)this->fText.data(), this->fText.size()));
-        this->fShapedText = fUnicodeText->shape(this->fBlocks, TEXT_DIRECTION);
-        this->fWrappedText = fShapedText->wrap(this->fSize.fWidth, this->fSize.fHeight, this->fUnicodeText->getUnicode());
-        this->fFormattedText = fWrappedText->format(TEXT_ALIGN, TEXT_DIRECTION);
-        return true;
-    }
-
-private:
-    friend class Editor;
-    std::u16string fText;
-    std::unique_ptr<UnicodeText> fUnicodeText;
-    std::unique_ptr<ShapedText> fShapedText;
-    std::unique_ptr<WrappedText> fWrappedText;
-    sk_sp<FormattedText> fFormattedText;
-    SkSize fSize;
-    SkSpan<Block> fBlocks;
-    Block fStatusBlock;
-};
-
 class Editor : public sk_app::Window::Layer, FormattedText::Visitor {
 public:
     static std::unique_ptr<Editor> Make(std::u16string text, SkSize size, SkSpan<Block> fontBlocks);
@@ -198,8 +157,8 @@ private:
     std::unique_ptr<Mouse> fMouse;
     std::unique_ptr<Selection> fSelection;
 
-    Text fParagraph;
-    Text fStatus;
+    SimpleText fParagraph;
+    SimpleText fStatus;
 
     SkCanvas* fCanvas;
     SkPoint fXY;
