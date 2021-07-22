@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "013af0ce_43247462",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T18:31:50Z",
+      "side": 1,
+      "message": "Now that we\u0027re casting the data pointer to int32_t, I don\u0027t think we need this memcpy? We can just say: \u0027data[index]\u0027 rather than \u0027bits\u0027 in the next line.",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 53
+      },
+      "revId": "5ceddb527855ecd42aaf3d7a93c55c7f943d80d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
