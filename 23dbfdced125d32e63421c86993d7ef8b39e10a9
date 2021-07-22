@@ -33,6 +33,24 @@
       "message": "Does this need to be managed by us on the command buffer? My gut says that would only be needed if it held refs to surfaces and/or buffers that we didn\u0027t put their own refs on the cb directly. We also don\u0027t track memory of these pipelinestates right? What are we gaining here?",
       "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2f4b39_26acf542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-22T19:40:20Z",
+      "side": 1,
+      "message": "Thinking about it more I guess we don\u0027t need to track them because they\u0027re cached in the ResourceProvider, but that goes for the VkPipelines in the Vulkan backend as well. Is there a reason we track them in Vulkan?",
+      "parentUuid": "566f84f7_0b46885d",
+      "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
