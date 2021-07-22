@@ -70,6 +70,30 @@
       },
       "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3b3576_1ce498a8",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-07-22T20:30:26Z",
+      "side": 0,
+      "message": "The easiest way is to install clang 11 via backports. It worked locally, so it should work in the tasks as well.",
+      "parentUuid": "807eabe9_d47567f9",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 33
+      },
+      "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
