@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db70d7ba_a964d76c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-07-22T13:52:03Z",
+      "side": 1,
+      "message": "CommandBuffer is green now. Thanks!",
+      "revId": "479ad3a3f6359279bfc0ae61b32698c066f49ba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
