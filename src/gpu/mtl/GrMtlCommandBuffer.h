@@ -13,6 +13,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GrTypes.h"
 #include "src/gpu/GrBuffer.h"
+#include "src/gpu/GrManagedResource.h"
+#include "src/gpu/GrRefCnt.h"
+#include "src/gpu/GrSurface.h"
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
@@ -27,6 +30,8 @@ class GrMtlCommandBuffer : public SkRefCnt {
 public:
     static sk_sp<GrMtlCommandBuffer> Make(id<MTLCommandQueue> queue);
     ~GrMtlCommandBuffer() override;
+
+    void releaseResources();
 
     bool commit(bool waitUntilCompleted);
     bool hasWork() { return fHasWork; }
@@ -44,8 +49,21 @@ public:
         [fCmdBuffer addCompletedHandler:block];
     }
 
+    void addResource(sk_sp<const GrManagedResource> resource) {
+        SkASSERT(resource);
+        fTrackedResources.push_back(std::move(resource));
+    }
+
+    void addResource(const GrManagedResource* resource) {
+        this->addResource(sk_ref_sp(resource));
+    }
+
     void addGrBuffer(sk_sp<const GrBuffer> buffer) {
-        fTrackedGrBuffers.push_back(std::move(buffer));
+        fTrackedGpuBuffers.push_back(std::move(buffer));
+    }
+
+    void addGrSurface(sk_sp<const GrSurface> surface) {
+        fTrackedGpuSurfaces.push_back(std::move(surface));
     }
 
     void encodeSignalEvent(id<MTLEvent>, uint64_t value) SK_API_AVAILABLE(macos(10.14), ios(12.0));
@@ -73,8 +91,6 @@ public:
     }
 
 private:
-    static const int kInitialTrackedResourcesCount = 32;
-
     GrMtlCommandBuffer(id<MTLCommandBuffer> cmdBuffer)
         : fCmdBuffer(cmdBuffer)
         , fActiveBlitCommandEncoder(nil)
@@ -84,6 +100,12 @@ private:
 
     void endAllEncoding();
 
+    static const int kInitialTrackedResourcesCount = 32;
+
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrManagedResource>> fTrackedResources;
+    SkSTArray<16, sk_sp<const GrBuffer>> fTrackedGpuBuffers;
+    SkSTArray<16, gr_cb<const GrSurface>> fTrackedGpuSurfaces;
+
     id<MTLCommandBuffer>        fCmdBuffer;
     id<MTLBlitCommandEncoder>   fActiveBlitCommandEncoder;
     std::unique_ptr<GrMtlRenderCommandEncoder> fActiveRenderCommandEncoder;
@@ -92,7 +114,6 @@ private:
 
     SkTArray<sk_sp<GrRefCntedCallback>> fFinishedCallbacks;
 
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>> fTrackedGrBuffers;
 };
 
 GR_NORETAIN_END
