@@ -63,8 +63,8 @@ public:
     static GrSurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
 #endif
     static GrSurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
-    static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas*);
 #endif // GR_TEST_UTILS
+    static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas*);
 
     // The experimental_DrawEdgeAAImageSet API accepts separate dstClips and preViewMatrices arrays,
     // where entries refer into them, but no explicit size is provided. Given a set of entries,
