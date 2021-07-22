@@ -94,6 +94,30 @@
       },
       "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f78737_704efd45",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T20:59:57Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "0f3b3576_1ce498a8",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 33
+      },
+      "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
