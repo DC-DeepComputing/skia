@@ -16,6 +16,24 @@
       "message": "SkSL is so fun!",
       "revId": "9e5e0575e56362006349712a3933f726ab3b06e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a87c92bd_511ec224",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T14:39:53Z",
+      "side": 1,
+      "message": "Yup. This looks great. And it seems like the next step would be allowing blenders as a new sampleable child type. (I think John was headed there already). Fun!",
+      "parentUuid": "e2fa2d53_69f296e6",
+      "revId": "9e5e0575e56362006349712a3933f726ab3b06e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
