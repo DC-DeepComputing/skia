@@ -16,6 +16,24 @@
       "message": "Looks good. I\u0027m torn between actually removing the color that\u0027s plumbed to sampleShader (so the callback just uses the color it already knows), and leaving it there. Probably fine as-is, it means it\u0027s much easier to put\n\n  half4 sample(shader, float2, half4)\n  \n... back if we ever decide we want it.",
       "revId": "e1fc7a7ee7bfa693591323093e76819f84a5b6dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "418ceb2d_22b2c5e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:16:30Z",
+      "side": 1,
+      "message": "How do we handle the null shader case if we omit the color?",
+      "parentUuid": "bc61bbf1_71c02b50",
+      "revId": "e1fc7a7ee7bfa693591323093e76819f84a5b6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
