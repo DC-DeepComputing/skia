@@ -46,6 +46,30 @@
       },
       "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "807eabe9_d47567f9",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T17:45:44Z",
+      "side": 0,
+      "message": "Of course I see other Debian10 builders are actually running with \n\ncc\u003d\"/mnt/pd0/s/w/ir/clang_linux/bin/clang\"\ncxx\u003d\"/mnt/pd0/s/w/ir/clang_linux/bin/clang++\"\n\nso controlling the compiler via gn args, which is what we\u0027re trying to replicate. So making sure this compiler (whatever it is) is present and updating the CC and CXX to point to it instead would also work.",
+      "parentUuid": "97743578_2b8d4d52",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 33
+      },
+      "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
