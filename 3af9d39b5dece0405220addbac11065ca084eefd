@@ -34,6 +34,24 @@
       "parentUuid": "d8b0d029_bee25ea0",
       "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b23dbf5_a98349bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T13:57:35Z",
+      "side": 1,
+      "message": "Yes. That was my intent. I consider this a signpost CL and intend this to be the case until I get tricolors done.",
+      "parentUuid": "a00862a7_f4686e79",
+      "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
