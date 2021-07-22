@@ -77,7 +77,7 @@ std::unique_ptr<Editor> Editor::Make(std::u16string text, SkSize size, SkSpan<Bl
 }
 
 Editor::Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks)
-        : fParagraph(text, size, fontBlocks, TEXT_DIRECTION, TEXT_ALIGN)
+        : fParagraph(text, size, fontBlocks, DEFAULT_TEXT_DIRECTION, DEFAULT_TEXT_ALIGN)
         , fStatus(size.fWidth) {
 
     fParent = nullptr;
@@ -85,10 +85,13 @@ Editor::Editor(std::u16string text, SkSize size, SkSpan<Block> fontBlocks)
     fMouse = std::make_unique<Mouse>();
     fSelection = std::make_unique<Selection>(DEFAULT_SELECTION_COLOR);
 
-    auto endOfText = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(fParagraph.fText.size());
-    auto rect = std::get<3>(endOfText);
-    fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop),
-                   SkSize::Make(std::max(DEFAULT_CURSOR_WIDTH, rect.width()), rect.height()));
+    // Place the cursor at the end of the output text
+    // (which is the end of the text for LTR and the beginning of the text for RTL
+    // or possibly something in the middle for a combination of LTR & RTL)
+    // In order to get that position we look for a position outside of the text
+    // and that will give us the last glyph on the line
+    auto rect = fParagraph.getBoundaries(PositionType::kGraphemeCluster, fParagraph.fText.size() + 1);
+    fCursor->place(rect);
 }
 
 void Editor::updateText(std::u16string text) {
@@ -98,11 +101,10 @@ void Editor::updateText(std::u16string text) {
     // TODO: update all objects rather than recreate them
     fParagraph.update(text);
 
-    // Update the cursor
-    auto endOfText = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(fParagraph.fText.size());
-    auto rect = std::get<3>(endOfText);
-    fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop),
-                   SkSize::Make(std::max(DEFAULT_CURSOR_WIDTH, rect.width()), rect.height()));
+    // Update the (shift it to point at the grapheme edge)
+    auto rect = fParagraph.getBoundaries(PositionType::kGraphemeCluster, fCursor->getCenterPosition());
+    fCursor->place(rect);
+
     // TODO: Update the mouse
     fMouse->clearTouchInfo();
 
@@ -110,48 +112,46 @@ void Editor::updateText(std::u16string text) {
     fSelection->clear();
 }
 
+// Moving the cursor by the output grapheme clusters (shifting to another line if necessary)
+// We don't want to move by the input text indexes because then we will have to take in account LTR/RTL
 bool Editor::moveCursor(skui::Key key) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
-
+    auto position = fParagraph.fFormattedText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
     if (key == skui::Key::kLeft) {
-        if (textIndex == 0) {
+        position = fParagraph.fFormattedText->previousElement(position);
+        if (position.fRun == nullptr) {
             return false;
-        } else {
-            --textIndex;
         }
     } else if (key == skui::Key::kRight) {
-        if (textIndex >= fParagraph.fText.size()) {
+        position = fParagraph.fFormattedText->nextElement(position);
+        if (position.fRun == nullptr) {
             return false;
-        } else {
-            ++textIndex;
         }
     } else if (key == skui::Key::kHome) {
-        textIndex = 0;
+        position = fParagraph.fFormattedText->firstElement(PositionType::kGraphemeCluster);
     } else if (key == skui::Key::kEnd) {
-        textIndex = fParagraph.fText.size();
+        position = fParagraph.fFormattedText->lastElement(PositionType::kGraphemeCluster);
     } else if (key == skui::Key::kUp) {
-        auto currentPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-        auto line = std::get<0>(currentPosition);
-        auto lineIndex = fParagraph.fFormattedText->lineIndex(line);
-        if (lineIndex == 0) {
+        // Move one line up (if possible)
+        if (position.fLineIndex == 0) {
             return false;
         }
+        auto line = fParagraph.fFormattedText->line(position.fLineIndex);
         cursorPosition.offset(0, - line->getMetrics().height());
-        textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+        position = fParagraph.fFormattedText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
     } else if (key == skui::Key::kDown) {
-        auto currentPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-        auto line = std::get<0>(currentPosition);
-        auto lineIndex = fParagraph.fFormattedText->lineIndex(line);
-        if (lineIndex == fParagraph.fFormattedText->countLines()) {
+        // Move one line down (if possible)
+        if (position.fLineIndex == 0) {
             return false;
         }
+        auto line = fParagraph.fFormattedText->line(position.fLineIndex);
         cursorPosition.offset(0, line->getMetrics().height());
-        textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
-    }
-    auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-    auto rect = std::get<3>(nextPosition);
-    fCursor->place(SkPoint::Make(rect.fLeft, rect.fTop), SkSize::Make(rect.width(), rect.height()));
+        position = fParagraph.fFormattedText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
+     }
+
+    // Place the cursor at the new position
+    fParagraph.fFormattedText->recalculateBoundaries(position);
+    fCursor->place(position.fBoundaries);
     this->invalidate();
 
     return true;
@@ -196,27 +196,26 @@ bool Editor::onChar(SkUnichar c, skui::ModifierKey modi) {
     return false;
 }
 
-bool Editor::deleteGrapheme(skui::Key key) {
+bool Editor::deleteElement(skui::Key key) {
     auto cursorPosition = fCursor->getCenterPosition();
-    TextIndex startIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
-    TextIndex endIndex = startIndex;
+    auto position = fParagraph.fFormattedText->adjustedPosition(fDefaultPositionType, cursorPosition);
+
+    // IMPORTANT: We assume that a single element (grapheme cluster) does not cross the run boundaries;
+    // It's not exactly true but we are going to enforce in by breaking the grapheme by the run boundaries
     if (key == skui::Key::kBack) {
-        --startIndex;
-        fParagraph.fShapedText->adjustLeft(&startIndex);
-    } else {
-        ++endIndex;
-        fParagraph.fShapedText->adjustRight(&endIndex);
+        // Move to the previous grapheme (could be another run)
+        position = fParagraph.fFormattedText->previousElement(position);
     }
 
+    // Remove the grapheme
     std::u16string text;
-    text.append(fParagraph.fText.substr(0, startIndex));
-    text.append(fParagraph.fText.substr(endIndex, std::u16string::npos));
+    text.append(fParagraph.fText.substr(0, position.fTextRange.fStart));
+    text.append(fParagraph.fText.substr(position.fTextRange.fEnd, std::u16string::npos));
     updateText(text);
 
-    auto position = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(startIndex);
-    SkRect cursorRect = std::get<3>(position);
-    fCursor->place(SkPoint::Make(cursorRect.fLeft, cursorRect.fTop), SkSize::Make(cursorRect.width(), cursorRect.height()));
-
+    // Find the grapheme the cursor points to
+    position = fParagraph.fFormattedText->adjustedPosition(fDefaultPositionType, cursorPosition);
+    fCursor->place(position.fBoundaries);
     this->invalidate();
 
     return true;
@@ -224,17 +223,17 @@ bool Editor::deleteGrapheme(skui::Key key) {
 
 bool Editor::insertCodepoint(SkUnichar unichar) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(cursorPosition);
+    auto position = fParagraph.fFormattedText->adjustedPosition(fDefaultPositionType, cursorPosition);
 
     std::u16string text;
-    text.append(fParagraph.fText.substr(0, textIndex));
+    text.append(fParagraph.fText.substr(0, position.fTextRange.fStart));
     text.append(2, (unsigned)unichar);
-    text.append(fParagraph.fText.substr(textIndex, std::u16string::npos));
+    text.append(fParagraph.fText.substr(position.fTextRange.fStart, std::u16string::npos));
     updateText(text);
 
-    auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-    SkRect cursorRect = std::get<3>(nextPosition);
-    fCursor->place(SkPoint::Make(cursorRect.fLeft, cursorRect.fTop), SkSize::Make(cursorRect.width(), cursorRect.height()));
+    // Find the grapheme the cursor points to
+    position = fParagraph.fFormattedText->adjustedPosition(fDefaultPositionType, cursorPosition);
+    fCursor->place(position.fBoundaries);
 
     this->invalidate();
 
@@ -266,7 +265,7 @@ bool Editor::onKey(skui::Key key, skui::InputState state, skui::ModifierKey modi
                 break;
             case skui::Key::kDelete:
             case skui::Key::kBack:
-                this->deleteGrapheme(key);
+                this->deleteElement(key);
                 return true;
             case skui::Key::kOK:
                 return this->onChar(0x000A, modifiers);
@@ -281,22 +280,16 @@ bool Editor::onMouse(int x, int y, skui::InputState state, skui::ModifierKey mod
 
     //bool shiftOrDrag = sknonstd::Any(modifiers & skui::ModifierKey::kShift) || (skui::InputState::kDown != state);
     if (skui::InputState::kDown == state) {
-        SkRect cursorRect;
+        auto position = fParagraph.fFormattedText->adjustedPosition(fDefaultPositionType, SkPoint::Make(x, y));
         if (fMouse->isDoubleClick(SkPoint::Make(x, y))) {
-            auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
-            auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-            cursorRect = std::get<3>(nextPosition);
-            fSelection->select(TextRange(textIndex, textIndex + 1), cursorRect);
-            cursorRect.fLeft = cursorRect.fRight - DEFAULT_CURSOR_WIDTH;
+            fSelection->select(position.fTextRange, position.fBoundaries);
+            position.fBoundaries.fLeft = position.fBoundaries.fRight - DEFAULT_CURSOR_WIDTH;
         } else {
             fMouse->down();
             fSelection->clear();
-            auto textIndex = fParagraph.fFormattedText->positionToAdjustedGraphemeIndex(SkPoint::Make(x, y));
-            auto nextPosition = fParagraph.fFormattedText->indexToAdjustedGraphemePosition(textIndex);
-            cursorRect = std::get<3>(nextPosition);
         }
 
-        fCursor->place(SkPoint::Make(cursorRect.fLeft, cursorRect.fTop), SkSize::Make(cursorRect.width(), cursorRect.height()));
+        fCursor->place(position.fBoundaries);
         this->invalidate();
         return true;
     }
