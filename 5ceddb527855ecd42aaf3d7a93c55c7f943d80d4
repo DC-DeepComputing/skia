@@ -22,6 +22,30 @@
       },
       "revId": "5ceddb527855ecd42aaf3d7a93c55c7f943d80d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e231ef4e_c3bfded4",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T18:38:57Z",
+      "side": 1,
+      "message": "I had assumed the memcpy was to make sure we aren\u0027t doing type-punning UB by reading out of the SkData using a cast? I don\u0027t know how this SkData was set up originally or how the ints got put into it. It\u0027s mostly a theoretical concern either way, since the codegen is going to be nearly identical (memcpy \u003d maybe an extra MOV onto the stack). I can change it to `data[index]` if you want.",
+      "parentUuid": "013af0ce_43247462",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 53
+      },
+      "revId": "5ceddb527855ecd42aaf3d7a93c55c7f943d80d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
