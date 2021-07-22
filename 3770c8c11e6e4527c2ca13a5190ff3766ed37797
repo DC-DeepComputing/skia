@@ -16,6 +16,23 @@
       "message": "Michael for content\nBrian for API",
       "revId": "3770c8c11e6e4527c2ca13a5190ff3766ed37797",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c5a7f7_4bc6a12d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T12:45:55Z",
+      "side": 1,
+      "message": "API lgtm",
+      "revId": "3770c8c11e6e4527c2ca13a5190ff3766ed37797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
