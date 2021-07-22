@@ -39,6 +39,30 @@
       },
       "revId": "1e67077c01124166bd7329dd8fbb388d69f3d94c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476ee286_d5dad922",
+        "filename": "src/gpu/mtl/GrMtlGpu.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-22T20:16:49Z",
+      "side": 1,
+      "message": "I was confused why it was needed here, and assuming it was necessary to add it to the command buffer because of what Vulkan was doing. Easily removed.",
+      "parentUuid": "4eb55fdf_0e3c855e",
+      "range": {
+        "startLine": 1150,
+        "startChar": 0,
+        "endLine": 1155,
+        "endChar": 91
+      },
+      "revId": "1e67077c01124166bd7329dd8fbb388d69f3d94c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
