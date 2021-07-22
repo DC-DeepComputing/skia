@@ -362,7 +362,7 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
 }
 
 // TODO: The selection is not just a rectangle but a list of rectangles (for instance, over few lines or when we have ltr/rtl combo)
-std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> FormattedText::indexToAdjustedGraphemePosition(TextIndex textIndex) const {
+std::tuple<const Line*, const TextRun*, GlyphRange, SkRect> FormattedText::indexToAdjustedGraphemePosition(TextIndex textIndex) const {
 
     SkRect rect = SkRect::MakeEmpty();
     for (auto& line : fLines) {
@@ -381,7 +381,7 @@ std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> FormattedText::index
                 auto glyphIndex = run.findGlyph(textIndex);
                 rect.fLeft += run.calculateWidth(start, glyphIndex);
                 rect.fRight += run.calculateWidth(start, glyphIndex + 1);
-                return std::make_tuple(&line, &run, glyphIndex, rect);
+                return std::make_tuple(&line, &run, GlyphRange(glyphIndex, glyphIndex + 1), rect);
             }
             rect.fLeft += run.calculateWidth(GlyphRange(start, end));
             rect.fRight = rect.fLeft;
@@ -395,10 +395,10 @@ std::tuple<const Line*, const TextRun*, GlyphIndex, SkRect> FormattedText::index
     const auto lastRun = &fRuns[lastLine->fTextEnd.runIndex()];
     rect.fLeft =
     rect.fRight = lastLine->fTextWidth;
-    return std::make_tuple(lastLine, lastRun, lastRun->fGlyphs.size(), rect);
+    return std::make_tuple(lastLine, lastRun, GlyphRange(lastRun->fGlyphs.size(), lastRun->fGlyphs.size()), rect);
 }
 
-TextIndex FormattedText::positionToAdjustedGraphemeIndex(SkPoint xy) const {
+TextRange FormattedText::positionToAdjustedGraphemeRange(SkPoint xy) const {
     if (xy.fX >= this->fSize.fWidth) {
         xy.fX = this->fSize.fWidth;
     }
@@ -436,11 +436,102 @@ TextIndex FormattedText::positionToAdjustedGraphemeIndex(SkPoint xy) const {
                 }
                 found = i;
             }
-            return run.fClusters[found];
+            return TextRange(run.fClusters[found],found == run.fClusters.size() ? run.fClusters[found] : run.fClusters[found + 1]);
         }
         height += line.fTextMetrics.height();
     }
-    return EMPTY_INDEX;
+    return EMPTY_RANGE;
+}
+
+std::tuple<const Line*, const TextRun*, GlyphRange, TextRange, SkRect> FormattedText::adjustedPosition(PositionType positionType, SkPoint xy) const {
+
+    if (xy.fX >= this->fSize.fWidth) {
+        xy.fX = this->fSize.fWidth;
+    }
+    if (xy.fY >= this->fSize.fHeight) {
+        xy.fY = this->fSize.fHeight;
+    }
+
+    SkRect rect = SkRect::MakeEmpty();
+    for (auto& line : fLines) {
+        rect.fTop = rect.fBottom;
+        if (rect.fBottom > xy.fY) {
+            break;
+        } else if (rect.fBottom + line.fTextMetrics.height() <= xy.fY) {
+            rect.fBottom += line.fTextMetrics.height();
+            continue;
+        }
+
+        SkScalar shift = 0;
+        for (auto runIndex : line.fRunsInVisualOrder) {
+            auto& run = fRuns[runIndex];
+            GlyphIndex start = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
+            GlyphIndex end = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : run.fGlyphs.size();
+            auto runWidth = run.calculateWidth(GlyphRange(start, end));
+            if (shift > xy.fX) {
+                break;
+            } else if (shift + runWidth < xy.fX) {
+                shift += runWidth;
+                continue;
+            }
+            SkScalar startPos = run.fPositions[start].fX;
+            GlyphIndex found = start;
+            for (auto i = start; i <= end; ++i) {
+                auto currentPos = run.fPositions[i].fX - startPos;
+                if (currentPos > xy.fX) {
+                    break;
+                }
+                found = i;
+            }
+            rect.fLeft += shift + run.calculateWidth(start, found);
+            rect.fRight += shift + run.calculateWidth(start, found + 1);
+            GlyphRange glyphRange(found, found + 1);
+            TextRange textRange(run.fClusters[found],run.fClusters[found + 1]);
+            return std::make_tuple(&line, &run, textRange, glyphRange, rect);
+        }
+        rect.fBottom += line.fTextMetrics.height();
+    }
+    return std::make_tuple(nullptr, nullptr, EMPTY_RANGE, EMPTY_RANGE, SkRect::MakeEmpty());
+}
+
+// The range is garanteed on the same line
+SkRect FormattedText::adjustedBoundaries(const TextRun* run, GlyphRange glyphRange) const {
+    SkScalar height = 0;
+    for (auto& line : fLines) {
+        for (auto runIndex : line.fRunsInVisualOrder) {
+            auto& current = fRuns[runIndex];
+            if (run == &current) {
+                GlyphIndex start = runIndex == line.fTextStart.runIndex() ? line.fTextStart.glyphIndex() : 0;
+                GlyphIndex end = runIndex == line.fTextEnd.runIndex() ? line.fTextEnd.glyphIndex() : current.fGlyphs.size();
+                if (start <= glyphRange.fStart && end >= glyphRange.fEnd) {
+                    auto left = run->calculateWidth(start, glyphRange.fStart);
+                    auto width = run->calculateWidth(glyphRange);
+                    return SkRect::MakeXYWH(left, height, width, line.getMetrics().height());
+                }
+            }
+        }
+        height= line.getMetrics().height();
+    }
+    return SkRect::MakeEmpty();
+}
+
+std::tuple<const TextRun*, GlyphRange, TextRange> FormattedText::previousGlyph(const TextRun* run, GlyphRange glyphRange) const {
+    // TODO: Implement
+    return std::make_tuple(run, glyphRange, EMPTY_RANGE);
+}
+
+std::tuple<const TextRun*, GlyphRange, TextRange> FormattedText::nextGlyph(const TextRun* run, GlyphRange glyphRange) const {
+    // TODO: Implement
+    return std::make_tuple(run, glyphRange, EMPTY_RANGE);
+}
+
+std::tuple<const TextRun*, GlyphRange, TextRange> FormattedText::firstGlyph() const {
+    // TODO: Implement
+    return std::make_tuple(&fRuns[0], EMPTY_RANGE, EMPTY_RANGE);
+}
+std::tuple<const TextRun*, GlyphRange, TextRange> FormattedText::lastGlyph() const {
+    // TODO: Implement
+    return std::make_tuple(&fRuns[0], EMPTY_RANGE, EMPTY_RANGE);
 }
 
 } // namespace text
