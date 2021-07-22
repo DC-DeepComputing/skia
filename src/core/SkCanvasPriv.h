@@ -27,6 +27,8 @@ private:
     int         fSaveCount;
 };
 
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+
 class SkCanvasPriv {
 public:
     // The lattice has pointers directly into the readbuffer
@@ -50,7 +52,7 @@ public:
         canvas->androidFramework_replaceClip(rect);
     }
 
-    static GrSurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
+    static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
     static GrSurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
     static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas*);
 

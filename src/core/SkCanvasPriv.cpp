@@ -119,7 +119,7 @@ bool SkCanvasPriv::ValidateMarker(const char* name) {
 }
 
 #if SK_SUPPORT_GPU
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 GrSurfaceDrawContext* SkCanvasPriv::TopDeviceSurfaceDrawContext(SkCanvas* canvas) {
     return canvas->topDeviceSurfaceDrawContext();

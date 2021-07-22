@@ -10,8 +10,8 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrSwizzle.h"
+#include "src/gpu/SurfaceFillContext.h"
 
 namespace skiagm {
 
@@ -24,24 +24,20 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(clear_swizzle, rContext, canvas, errorMsg, 6*kSize, 2
         return DrawResult::kSkip;
     }
 
-    auto sdc = SkCanvasPriv::TopDeviceSurfaceDrawContext(canvas);
-    if (!sdc) {
-        *errorMsg = GM::kErrorMsg_DrawSkippedGpuOnly;
-        return DrawResult::kSkip;
-    }
+    auto sfc = SkCanvasPriv::TopDeviceSurfaceFillContext(canvas);
 
     auto make_offscreen = [&](const SkISize dimensions) {
-        GrSwizzle readSwizzle  = GrSwizzle::Concat(sdc->readSwizzle(), GrSwizzle{"bgra"});
-        GrSwizzle writeSwizzle = GrSwizzle::Concat(sdc->readSwizzle(), GrSwizzle{"bgra"});
-        return GrSurfaceFillContext::Make(rContext,
+        GrSwizzle readSwizzle  = GrSwizzle::Concat(sc->readSwizzle(), GrSwizzle{"bgra"});
+        GrSwizzle writeSwizzle = GrSwizzle::Concat(sc->readSwizzle(), GrSwizzle{"bgra"});
+        return skgpu::SurfaceFillContext_Base::Make(rContext,
                                           kPremul_SkAlphaType,
-                                          sdc->colorInfo().refColorSpace(),
+                                          sfc->colorInfo().refColorSpace(),
                                           dimensions,
                                           SkBackingFit::kExact,
-                                          sdc->asSurfaceProxy()->backendFormat(),
+                                          sfc->asSurfaceProxy()->backendFormat(),
                                           /* sample count*/ 1,
                                           GrMipmapped::kNo,
-                                          sdc->asSurfaceProxy()->isProtected(),
+                                          sfc->asSurfaceProxy()->isProtected(),
                                           readSwizzle,
                                           writeSwizzle,
                                           kTopLeft_GrSurfaceOrigin,
@@ -60,7 +56,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(clear_swizzle, rContext, canvas, errorMsg, 6*kSize, 2
 
     // onscreen for reference
     for (const auto& c : clears) {
-        sdc->clear(c.rect, c.color);
+        sfc->clear(c.rect, c.color);
     }
 
     // partial clear offscreen
@@ -68,7 +64,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(clear_swizzle, rContext, canvas, errorMsg, 6*kSize, 2
     for (const auto& c : clears) {
         offscreen->clear(c.rect, c.color);
     }
-    sdc->blitTexture(offscreen->readSurfaceView(),
+    sfc->blitTexture(offscreen->readSurfaceView(),
                      SkIRect::MakeSize({2*kSize, 2*kSize}),
                      SkIPoint{2*kSize, 0});
 
@@ -76,7 +72,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(clear_swizzle, rContext, canvas, errorMsg, 6*kSize, 2
     for (const auto& c : clears) {
         offscreen = make_offscreen(c.rect.size());
         offscreen->clear(SkIRect::MakeSize(c.rect.size()), c.color);
-        sdc->blitTexture(offscreen->readSurfaceView(),
+        sfc->blitTexture(offscreen->readSurfaceView(),
                          SkIRect::MakeSize(offscreen->dimensions()),
                          c.rect.topLeft() + SkIPoint{4*kSize, 0});
     }
