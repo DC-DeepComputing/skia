@@ -16,6 +16,24 @@
       "message": "To clarify (if necessary)\n\nI propose the 1st CL uses the indirection (simplest, clearest).\n2nd CL optimizes the gatherF()\n3rd we rest and measure some more\n\nI will independently try to debug the RP perspective now...",
       "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a121f2d3_d763afc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T16:17:14Z",
+      "side": 1,
+      "message": "1) Land this CL\n2) Do the tri color CL to make sure that update Shader idea will work for vertices\n3) Make the indirection CL. It would be nice to have two use cases to flesh this out, and this will require a bunch of unit tests.\n6) Get Runtime Shaders working with all this to make sure it solve the problem we want to solve.\n4) Figure out perspective bug in RP.\n5) Do the atlas retrofit",
+      "parentUuid": "b2215b1d_e51d4003",
+      "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
