@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "566f84f7_0b46885d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-22T19:34:47Z",
+      "side": 1,
+      "message": "Does this need to be managed by us on the command buffer? My gut says that would only be needed if it held refs to surfaces and/or buffers that we didn\u0027t put their own refs on the cb directly. We also don\u0027t track memory of these pipelinestates right? What are we gaining here?",
+      "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
