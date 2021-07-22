@@ -1,0 +1,97 @@
+/*
+ * Copyright 2021 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+#ifndef SkICU_DEFINED
+#define SkICU_DEFINED
+
+#include <unicode/ubidi.h>
+#include <unicode/ubrk.h>
+#include <unicode/uscript.h>
+#include <unicode/ustring.h>
+#include <unicode/utext.h>
+#include <unicode/utypes.h>
+
+#include "include/private/SkTemplates.h"
+
+#define SKICU_EMIT_FUNCS              \
+    SKICU_FUNC(u_errorName)           \
+    SKICU_FUNC(u_getIntPropertyValue) \
+    SKICU_FUNC(u_iscntrl)             \
+    SKICU_FUNC(u_isspace)             \
+    SKICU_FUNC(u_isWhitespace)        \
+    SKICU_FUNC(ubidi_close)           \
+    SKICU_FUNC(ubidi_getLength)       \
+    SKICU_FUNC(ubidi_getLevelAt)      \
+    SKICU_FUNC(ubidi_openSized)       \
+    SKICU_FUNC(ubidi_reorderVisual)   \
+    SKICU_FUNC(ubidi_setPara)         \
+    SKICU_FUNC(ubrk_close)            \
+    SKICU_FUNC(ubrk_current)          \
+    SKICU_FUNC(ubrk_first)            \
+    SKICU_FUNC(ubrk_following)        \
+    SKICU_FUNC(ubrk_getRuleStatus)    \
+    SKICU_FUNC(ubrk_next)             \
+    SKICU_FUNC(ubrk_open)             \
+    SKICU_FUNC(ubrk_preceding)        \
+    SKICU_FUNC(ubrk_setText)          \
+    SKICU_FUNC(ubrk_setUText)         \
+    SKICU_FUNC(uloc_getDefault)       \
+    SKICU_FUNC(uscript_getScript)     \
+    SKICU_FUNC(utext_close)           \
+    SKICU_FUNC(utext_openUChars)      \
+    SKICU_FUNC(utext_openUTF8)        \
+
+#ifndef SK_USE_RUNTIME_ICU
+// With ICU linked in, sk_ funcs are just aliases (except sk_ubrk_clone, which handles API compat).
+
+#define SKICU_FUNC(funcname) static constexpr auto sk_##funcname = funcname;
+
+// ubrk_clone added as draft in ICU69 and Android API 31 (first ICU NDK).
+// ubrk_safeClone deprecated in ICU69 and not exposed by Android.
+static inline UBreakIterator* sk_ubrk_clone(const UBreakIterator* bi, UErrorCode* status) {
+#if U_ICU_VERSION_MAJOR_NUM >= 69
+    return ubrk_clone(bi, status);
+#else
+    return ubrk_safeClone(bi, nullptr, nullptr, status);
+#endif
+}
+
+#else // SK_USE_RUNTIME_ICU
+// When loading ICU dynamically, sk_ funcs dispatch through a symbol table singleton.
+
+#define SKICU_FUNC(funcname) decltype(funcname)* f_##funcname;
+struct SkICUFuncs {
+    SKICU_EMIT_FUNCS
+
+    // ubrk_clone added as draft in ICU69 and Android API 31 (first ICU NDK).
+    // ubrk_safeClone deprecated in ICU69 and not exposed by Android.
+    UBreakIterator* (*f_ubrk_clone_)(const UBreakIterator*, UErrorCode*);
+    UBreakIterator* (*f_ubrk_safeClone_)(const UBreakIterator*, void*, int32_t*, UErrorCode*);
+};
+#undef SKICU_FUNC
+
+const SkICUFuncs* SkRuntimeICU();
+
+#define SKICU_FUNC(funcname)                                                                \
+    template <typename... Args>                                                             \
+    auto sk_##funcname(Args&&... args) -> decltype(funcname(std::forward<Args>(args)...)) { \
+        return SkRuntimeICU()->f_##funcname(std::forward<Args>(args)...);                   \
+    }                                                                                       \
+
+static inline UBreakIterator* sk_ubrk_clone(const UBreakIterator* bi, UErrorCode* status) {
+    const auto* icu = SkRuntimeICU();
+    SkASSERT(icu->f_ubrk_clone_ || icu->f_ubrk_safeClone_);
+    return icu->f_ubrk_clone_
+        ? icu->f_ubrk_clone_(bi, status)
+        : icu->f_ubrk_safeClone_(bi, nullptr, nullptr, status);
+}
+
+#endif // SK_USE_RUNTIME_ICU
+
+SKICU_EMIT_FUNCS
+#undef SKICU_FUNC
+
+#endif // SkICU_DEFINED
