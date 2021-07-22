@@ -33,6 +33,23 @@
       "message": "API lgtm",
       "revId": "3770c8c11e6e4527c2ca13a5190ff3766ed37797",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1571d0_62cf71d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-22T16:34:39Z",
+      "side": 1,
+      "message": "lgtm, I like asGpuDevice on SkBaseDevice vs. several gpu-only functions",
+      "revId": "3770c8c11e6e4527c2ca13a5190ff3766ed37797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
