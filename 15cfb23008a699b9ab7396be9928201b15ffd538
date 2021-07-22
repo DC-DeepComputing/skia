@@ -51,6 +51,24 @@
       "parentUuid": "440845a1_3f9b0478",
       "revId": "15cfb23008a699b9ab7396be9928201b15ffd538",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41fcfe82_5fa8d524",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T21:04:00Z",
+      "side": 1,
+      "message": "Yeah, that had been my first thought as well. Done.",
+      "parentUuid": "4498df7c_2d47dacb",
+      "revId": "15cfb23008a699b9ab7396be9928201b15ffd538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
