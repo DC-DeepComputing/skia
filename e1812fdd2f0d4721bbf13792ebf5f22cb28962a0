@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb3d703_bf52e13a",
+        "filename": "infra/bots/assets/gcloud_linux/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-22T18:18:23Z",
+      "side": 1,
+      "message": "Why was this change necessary?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 68
+      },
+      "revId": "e1812fdd2f0d4721bbf13792ebf5f22cb28962a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
