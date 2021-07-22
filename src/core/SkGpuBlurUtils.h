@@ -11,9 +11,12 @@
 #include "include/core/SkTypes.h"
 
 #if SK_SUPPORT_GPU
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/GrTypesPriv.h"
 
 class GrRecordingContext;
+class GrSurfaceDrawContext;
+class GrSurfaceProxyView;
 class GrTexture;
 
 struct SkRect;
