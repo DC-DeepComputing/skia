@@ -60,16 +60,12 @@ DRAW_OP_TEST_EXTERN(SmallPathOp);
 DRAW_OP_TEST_EXTERN(TextureOp);
 DRAW_OP_TEST_EXTERN(TriangulatingPathOp);
 
-void GrDrawRandomOp(SkRandom* random, GrSurfaceDrawContext* surfaceDrawContext, GrPaint&& paint) {
-    auto context = surfaceDrawContext->recordingContext();
+void GrDrawRandomOp(SkRandom* random, GrSurfaceDrawContext* sdc, GrPaint&& paint) {
+    auto rContext = sdc->recordingContext();
     using MakeDrawOpFn = GrOp::Owner (GrPaint&&, SkRandom*,
                                       GrRecordingContext*, GrSurfaceDrawContext*, int numSamples);
-    static constexpr MakeDrawOpFn* gFactories[] = {
-            DRAW_OP_TEST_ENTRY(AAConvexPathOp),
-            DRAW_OP_TEST_ENTRY(AAFlatteningConvexPathOp),
-            DRAW_OP_TEST_ENTRY(AAHairlineOp),
+    static constexpr MakeDrawOpFn* gWorkWithMSAA[] = {
             DRAW_OP_TEST_ENTRY(AAStrokeRectOp),
-            DRAW_OP_TEST_ENTRY(CircleOp),
             DRAW_OP_TEST_ENTRY(DashOp),
             DRAW_OP_TEST_ENTRY(DefaultPathOp),
             DRAW_OP_TEST_ENTRY(DrawAtlasOp),
@@ -87,18 +83,34 @@ void GrDrawRandomOp(SkRandom* random, GrSurfaceDrawContext* surfaceDrawContext, 
             DRAW_OP_TEST_ENTRY(TextureOp),
             DRAW_OP_TEST_ENTRY(TriangulatingPathOp),
     };
+    static constexpr MakeDrawOpFn* gDontWorkWithMSAA[] = {
+            DRAW_OP_TEST_ENTRY(AAConvexPathOp),
+            DRAW_OP_TEST_ENTRY(AAFlatteningConvexPathOp),
+            DRAW_OP_TEST_ENTRY(AAHairlineOp),
+            DRAW_OP_TEST_ENTRY(CircleOp),
+    };
 
-    static constexpr size_t kTotal = SK_ARRAY_COUNT(gFactories);
-    uint32_t index = random->nextULessThan(static_cast<uint32_t>(kTotal));
-    auto op = gFactories[index](std::move(paint),
-                                random,
-                                context,
-                                surfaceDrawContext,
-                                surfaceDrawContext->numSamples());
+    MakeDrawOpFn* factoryFn;
+
+    if (sdc->numSamples() > 1) {
+        static constexpr size_t kTotal = SK_ARRAY_COUNT(gWorkWithMSAA);
+        uint32_t index = random->nextULessThan(static_cast<uint32_t>(kTotal));
+        factoryFn = gWorkWithMSAA[index];
+    } else {
+        static constexpr size_t kTotal = SK_ARRAY_COUNT(gDontWorkWithMSAA);
+        uint32_t index = random->nextULessThan(static_cast<uint32_t>(kTotal));
+        factoryFn = gDontWorkWithMSAA[index];
+    }
+
+    auto op = factoryFn(std::move(paint),
+                        random,
+                        rContext,
+                        sdc,
+                        sdc->numSamples());
 
     // Creating a GrAtlasTextOp my not produce an op if for example, it is totally outside the
     // render target context.
     if (op) {
-        surfaceDrawContext->addDrawOp(std::move(op));
+        sdc->addDrawOp(std::move(op));
     }
 }
