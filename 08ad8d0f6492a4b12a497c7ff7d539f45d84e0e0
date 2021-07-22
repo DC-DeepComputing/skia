@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "766a5bf9_73994896",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T17:14:13Z",
+      "side": 1,
+      "message": "I think this means there is no default `python` to run (like bin/fetch-gn which has `#!/usr/bin/env python`).",
+      "revId": "08ad8d0f6492a4b12a497c7ff7d539f45d84e0e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
