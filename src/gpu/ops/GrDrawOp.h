@@ -15,7 +15,7 @@
 #include "src/gpu/ops/GrOp.h"
 
 class GrAppliedClip;
-class GrSurfaceDrawContext;
+//class GrSurfaceDrawContext;
 class GrShape;
 
 /**

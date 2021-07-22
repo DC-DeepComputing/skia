@@ -24,6 +24,7 @@ class GrRecordingContext;
 class SkCanvas;
 class SkMetaData;
 struct GrContextOptions;
+namespace skgpu { class SurfaceContext; }
 
 #define DEF_GM(CODE)                                         \
     static skiagm::GMRegistry SK_MACRO_APPEND_COUNTER(REG_)( \

@@ -28,6 +28,7 @@
 #include "src/gpu/geometry/GrStyledShape.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 GrDefaultPathRenderer::GrDefaultPathRenderer() {
 }
@@ -591,7 +592,7 @@ private:
 
 }  // anonymous namespace
 
-bool GrDefaultPathRenderer::internalDrawPath(GrSurfaceDrawContext* surfaceDrawContext,
+bool GrDefaultPathRenderer::internalDrawPath(skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
                                              GrPaint&& paint,
                                              GrAAType aaType,
                                              const GrUserStencilSettings& userStencilSettings,
