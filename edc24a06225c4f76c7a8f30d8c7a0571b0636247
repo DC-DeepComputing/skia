@@ -16,6 +16,24 @@
       "message": "Apparently depot_tools wants an explicit python3? Or maybe it wants to download its own or something?",
       "revId": "edc24a06225c4f76c7a8f30d8c7a0571b0636247",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b69310c9_49ee60cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T16:58:07Z",
+      "side": 1,
+      "message": "Yep, depot_tools/gn is a bash script which wants to explicitly `exec python3`.",
+      "parentUuid": "527d1a63_ba412d0d",
+      "revId": "edc24a06225c4f76c7a8f30d8c7a0571b0636247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
