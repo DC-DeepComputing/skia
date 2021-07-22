@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecb1666b_c0522b23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T21:04:44Z",
+      "side": 1,
+      "message": "So late to the party...\n\nDumb question: is virtual void onResetClip() not sufficient (rather than a notifyer virtual)? (ala virtual onClipFoo(...))",
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e01efd6f_b8ba658c",
