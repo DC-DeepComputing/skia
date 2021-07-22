@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2215b1d_e51d4003",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T16:09:29Z",
+      "side": 1,
+      "message": "To clarify (if necessary)\n\nI propose the 1st CL uses the indirection (simplest, clearest).\n2nd CL optimizes the gatherF()\n3rd we rest and measure some more\n\nI will independently try to debug the RP perspective now...",
+      "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
