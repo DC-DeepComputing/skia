@@ -8,6 +8,7 @@
 #include "gm/gm.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrSurfaceDrawContext.h"
