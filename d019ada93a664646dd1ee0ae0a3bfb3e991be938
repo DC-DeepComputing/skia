@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c18d6017_b1c2d3db",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T22:24:51Z",
+      "side": 1,
+      "message": "Is it safe to assume that this is the only place where the callback will ever be invoked? If I can assume color is always \"\", I can remove it entirely from the callback signature.",
+      "range": {
+        "startLine": 172,
+        "startChar": 56,
+        "endLine": 172,
+        "endChar": 68
+      },
+      "revId": "d019ada93a664646dd1ee0ae0a3bfb3e991be938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
