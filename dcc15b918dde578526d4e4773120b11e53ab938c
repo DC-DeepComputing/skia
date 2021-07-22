@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dd8c6a9_5dd5a733",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T15:49:22Z",
+      "side": 1,
+      "message": "can we eliminate the large amount of reformatting in draw_verts (around the pipeline code)? Not a requirement, but makes it very hard to focus on the (few) lines of actual change.",
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bd79e3d_83eb2b76",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T15:49:22Z",
+      "side": 1,
+      "message": "ugh -- I know it was accidental, but this is a huge amount of re-formatting to have to parse through in the diff",
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e7d11b7_33f50748",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T15:49:22Z",
+      "side": 1,
+      "message": "can we move this out of the loop?",
+      "range": {
+        "startLine": 451,
+        "startChar": 29,
+        "endLine": 451,
+        "endChar": 36
+      },
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf2c7c4f_578513cf",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T15:49:22Z",
+      "side": 1,
+      "message": "does this mean we are not going to try the uniform indirection? I still find this tricky and undocumented.",
+      "range": {
+        "startLine": 528,
+        "startChar": 13,
+        "endLine": 528,
+        "endChar": 19
+      },
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
