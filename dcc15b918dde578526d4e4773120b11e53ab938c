@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7957edd4_f208d741",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T15:57:54Z",
+      "side": 1,
+      "message": "shifted back for comparison. I will generate a simple ws CL when this is done.",
+      "parentUuid": "6bd79e3d_83eb2b76",
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e7d11b7_33f50748",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2514a3d5_3b42fe94",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T15:57:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e7d11b7_33f50748",
+      "range": {
+        "startLine": 451,
+        "startChar": 29,
+        "endLine": 451,
+        "endChar": 36
+      },
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf2c7c4f_578513cf",
@@ -71,6 +113,30 @@
       "writtenOn": "2021-07-22T15:49:22Z",
       "side": 1,
       "message": "does this mean we are not going to try the uniform indirection? I still find this tricky and undocumented.",
+      "range": {
+        "startLine": 528,
+        "startChar": 13,
+        "endLine": 528,
+        "endChar": 19
+      },
+      "revId": "dcc15b918dde578526d4e4773120b11e53ab938c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66122744_c8c40d1a",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T15:57:54Z",
+      "side": 1,
+      "message": "My next cl is to try the indirection.",
+      "parentUuid": "bf2c7c4f_578513cf",
       "range": {
         "startLine": 528,
         "startChar": 13,
