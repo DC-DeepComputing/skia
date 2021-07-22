@@ -52,6 +52,24 @@
       "parentUuid": "a00862a7_f4686e79",
       "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25fcbece_5d916d29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T16:07:21Z",
+      "side": 1,
+      "message": "Awesome.\n\nSeems like with that approach we can skip (for now at least) even needing to pass uniforms to updater, which means we can not mod 3 files (SkVM.h, SkVMBlitter.*)\n\nI concede that we will want to explore a follow-up CL to optimize the gatherF into a faster/simpler form (that requires the 2nd parameter to be a single value), but that two-step seems justifiable given the tricky nature of this code and Brian/My tenuous understanding of it.",
+      "parentUuid": "6b23dbf5_a98349bd",
+      "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
