@@ -22,6 +22,30 @@
       },
       "revId": "e1812fdd2f0d4721bbf13792ebf5f22cb28962a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dc65df9_39952053",
+        "filename": "infra/bots/assets/gcloud_linux/create.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-07-22T18:19:40Z",
+      "side": 1,
+      "message": "I don\u0027t know, it came from the cherrypick of https://skia-review.googlesource.com/c/skia/+/416316",
+      "parentUuid": "3fb3d703_bf52e13a",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 68
+      },
+      "revId": "e1812fdd2f0d4721bbf13792ebf5f22cb28962a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
