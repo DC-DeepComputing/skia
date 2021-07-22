@@ -52,6 +52,24 @@
       "parentUuid": "a121f2d3_d763afc0",
       "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff95f5c3_f2eec4db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-22T17:13:11Z",
+      "side": 1,
+      "message": "\u003e I think it\u0027s riskier to land the mods to VMBlitter and VM.h if they don\u0027t prove necessary (and it appears that the indirection would not need these at all).\nThere are two sides to this risk. Currently, the system only functions in highp therefore it is being clobbered by RP. The first time we can do a highp to highp comparison is when the color shader is added. The fastest way we can build this currently is with the current uniforms. So, the highp to highp comparison should be done with the fastest system. The way I understand to do the indirection now would double the number of instructions for applyMatrix (the highest frequency of execution).",
+      "parentUuid": "e5c777f0_a6a39b57",
+      "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
