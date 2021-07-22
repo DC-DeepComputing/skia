@@ -310,3 +310,58 @@ DEF_SIMPLE_GM(vertices_perspective, canvas, 256, 256) {
     canvas->drawVertices(verts, paint);
     canvas->restore();
 }
+
+// Enable filtering (to get into raster-pipeline, and try perspective in either
+// CTM or localmatrix
+DEF_SIMPLE_GM(vertices_perspective2, canvas, 270*2, 210*2) {
+    auto img = ToolUtils::create_checkerboard_image(64, 64, SK_ColorBLUE, SK_ColorRED, 32);
+    SkPaint paint;
+    paint.setShader(img->makeShader(SkTileMode::kRepeat,
+                                    SkTileMode::kRepeat,
+                                    SkSamplingOptions(SkFilterMode::kLinear)));
+
+    SkRect r = SkRect::MakeWH(128, 128);
+
+    SkPoint pos[4];
+    r.toQuad(pos);
+    auto verts = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4, pos, pos, nullptr);
+
+    SkMatrix persp;
+    persp.setPerspY(SK_Scalar1 / 100);
+
+    canvas->translate(10, 10);
+    canvas->scale(2, 2);
+
+    canvas->save();
+    canvas->concat(persp);
+    canvas->drawRect(r, paint);
+    canvas->restore();
+
+    canvas->save();
+    canvas->translate(0, r.height());
+    canvas->concat(persp);
+    canvas->drawVertices(verts, paint);
+    canvas->restore();
+
+    paint.setShader(img->makeShader(SkTileMode::kRepeat,
+                                    SkTileMode::kRepeat,
+                                    SkSamplingOptions(SkFilterMode::kLinear),
+                                    &persp));
+
+    SkPoint pts[4];
+    r.toQuad(pts);
+    persp.mapPoints(pts, 4);
+    SkPath path = SkPath::Polygon(pts, 4, true);
+
+    verts = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4, pts, pts, nullptr);
+
+    canvas->save();
+    canvas->translate(r.width(), 0);
+    canvas->drawPath(path, paint);
+    canvas->restore();
+
+    canvas->save();
+    canvas->translate(r.width(), r.height());
+    canvas->drawVertices(verts, paint);
+    canvas->restore();
+}
