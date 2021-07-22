@@ -16,6 +16,24 @@
       "message": "I think I should put off the uniforms indirection to a more focused CL. I think this is it.",
       "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a00862a7_f4686e79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T13:44:41Z",
+      "side": 1,
+      "message": "I was doing a local experiment starting from here, and thought I broke something - turns out the structure means that if you run with \u0027--skvm\u0027 (to force the new code path), then anything with colors doesn\u0027t draw. Are we okay with that?",
+      "parentUuid": "d8b0d029_bee25ea0",
+      "revId": "3af9d39b5dece0405220addbac11065ca084eefd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
