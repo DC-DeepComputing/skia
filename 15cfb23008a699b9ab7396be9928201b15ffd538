@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeaae4a2_4762a25c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T19:16:03Z",
+      "side": 1,
+      "message": "5.5 years after my Google interview, I finally get to put those awesome graph algorithm skills to the test. 😂",
+      "revId": "15cfb23008a699b9ab7396be9928201b15ffd538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "440845a1_3f9b0478",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-22T19:16:03Z",
+      "side": 1,
+      "message": "I fully expected the specific error messages to change from run-to-run, because the starting function depends on the iteration order of unordered_map (and I\u0027m using pointers as the keys!). And yet, after a couple different builds, even unix -\u003e windows, I haven\u0027t seen the golden files change. Am I being overly nervous? This output can\u0027t possibly be stable, right?",
+      "revId": "15cfb23008a699b9ab7396be9928201b15ffd538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
