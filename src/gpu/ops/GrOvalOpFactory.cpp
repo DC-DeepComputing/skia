@@ -3441,6 +3441,10 @@ GrOp::Owner GrOvalOpFactory::MakeArcOp(GrRecordingContext* context,
 #if GR_TEST_UTILS
 
 GR_DRAW_OP_TEST_DEFINE(CircleOp) {
+    if (numSamples > 1) {
+        return nullptr;
+    }
+
     do {
         SkScalar rotate = random->nextSScalar1() * 360.f;
         SkScalar translateX = random->nextSScalar1() * 1000.f;
