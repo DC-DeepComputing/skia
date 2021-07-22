@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2a83c64_6b66ab06",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:51:04Z",
+      "side": 1,
+      "message": "Does this make the code easier to read for you? I could take it or leave it; my gut reaction is that it obscures the fact that we are dealing in pointers, but it\u0027s not a big deal. If it makes things tidier for you, it\u0027s OK with me.",
+      "range": {
+        "startLine": 624,
+        "startChar": 4,
+        "endLine": 624,
+        "endChar": 48
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "264ac172_99b798a0",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:51:04Z",
+      "side": 1,
+      "message": "Function",
+      "range": {
+        "startLine": 690,
+        "startChar": 17,
+        "endLine": 690,
+        "endChar": 21
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f08758c1_f08ea3fb",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:51:04Z",
+      "side": 1,
+      "message": "We can do this in less code:\n\n(a) http://go/std::rotate seems like a good candidate; linear time on paper, but this is almost certainly a very small vector\n(b)\n\n  int startIndex \u003d std::distance(fnNames.begin(), cycleStart);\n  for (int i\u003d0; i\u003c\u003dfnNames.size(); ++i) {  // note: \u003c\u003d comparison gets one extra\n    cycleDescription +\u003d \"\\n\\t\" + fnNames[(i + startIndex) % fnNames.size()];\n  }",
+      "range": {
+        "startLine": 721,
+        "startChar": 0,
+        "endLine": 729,
+        "endChar": 51
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a073cee4_e8e551c7",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-22T21:51:04Z",
+      "side": 1,
+      "message": "Prefer std::distance to get the delta between two iterators",
+      "range": {
+        "startLine": 732,
+        "startChar": 52,
+        "endLine": 732,
+        "endChar": 80
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
