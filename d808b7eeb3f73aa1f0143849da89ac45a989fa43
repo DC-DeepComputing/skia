@@ -34,6 +34,24 @@
       "parentUuid": "b2215b1d_e51d4003",
       "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5c777f0_a6a39b57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-22T16:43:34Z",
+      "side": 1,
+      "message": ":) we should probably chat then.\n\nI think its riskier to land the mods to VMBlitter and VM.h if they don\u0027t prove necessary (and it appears that the indirection would not need these at all).",
+      "parentUuid": "a121f2d3_d763afc0",
+      "revId": "d808b7eeb3f73aa1f0143849da89ac45a989fa43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
