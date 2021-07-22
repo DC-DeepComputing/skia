@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "1e67077c01124166bd7329dd8fbb388d69f3d94c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eb55fdf_0e3c855e",
+        "filename": "src/gpu/mtl/GrMtlGpu.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-22T19:50:25Z",
+      "side": 1,
+      "message": "why do this? I don\u0027t see why we need to track this mtlTexture on our command buffer. We won\u0027t delete the texture and their isn\u0027t any release proc installed on the texture itself. The client already has to wait for finishedCallback to know when it is safe to delete.\n\nI see that Vulkan also makes an attachment. Though in that case it needs the GrVkAttachment object for the copyImageFromBuffer call. But I even doubt there we are gaining anything from adding it to the command buffer. Here I\u0027m not seeing any reason to make the GrAttachment at all.",
+      "range": {
+        "startLine": 1150,
+        "startChar": 0,
+        "endLine": 1155,
+        "endChar": 91
+      },
+      "revId": "1e67077c01124166bd7329dd8fbb388d69f3d94c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
