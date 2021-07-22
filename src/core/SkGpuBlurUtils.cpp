@@ -18,6 +18,7 @@
 #include "src/gpu/effects/GrGaussianConvolutionFragmentProcessor.h"
 #include "src/gpu/effects/GrMatrixConvolutionEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #if SK_GPU_V1
 
@@ -63,7 +64,7 @@ static void fill_in_2D_gaussian_kernel(float* kernel, int width, int height,
  * Draws 'dstRect' into 'surfaceFillContext' evaluating a 1D Gaussian over 'srcView'. The src rect
  * is 'dstRect' offset by 'dstToSrcOffset'. 'mode' and 'bounds' are applied to the src coords.
  */
-static void convolve_gaussian_1d(GrSurfaceFillContext* sfc,
+static void convolve_gaussian_1d(skgpu::SurfaceFillContext_Base* sfc,
                                  GrSurfaceProxyView srcView,
                                  const SkIRect srcSubset,
                                  SkIVector dstToSrcOffset,
@@ -93,7 +94,8 @@ static void convolve_gaussian_1d(GrSurfaceFillContext* sfc,
     sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(conv));
 }
 
-static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian_2d(GrRecordingContext* context,
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> convolve_gaussian_2d(
+                                                                  GrRecordingContext* context,
                                                                   GrSurfaceProxyView srcView,
                                                                   GrColorType srcColorType,
                                                                   const SkIRect& srcBounds,
@@ -110,7 +112,7 @@ static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian_2d(GrRecordingCon
              !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaY));
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // GrSurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto surfaceDrawContext = GrSurfaceDrawContext::Make(
+    auto surfaceDrawContext = skgpu::v1::SurfaceDrawContext::Make(
             context, srcColorType, std::move(finalCS), dstFit, dstBounds.size(), SkSurfaceProps(),
             1, GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!surfaceDrawContext) {
@@ -144,7 +146,8 @@ static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian_2d(GrRecordingCon
     return surfaceDrawContext;
 }
 
-static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian(GrRecordingContext* context,
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> convolve_gaussian(
+                                                               GrRecordingContext* context,
                                                                GrSurfaceProxyView srcView,
                                                                GrColorType srcColorType,
                                                                SkAlphaType srcAlphaType,
@@ -164,7 +167,7 @@ static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian(GrRecordingContex
     //
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // GrSurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto dstSurfaceDrawContext = GrSurfaceDrawContext::Make(
+    auto dstSurfaceDrawContext = skgpu::v1::SurfaceDrawContext::Make(
             context, srcColorType, std::move(finalCS), fit, dstBounds.size(), SkSurfaceProps(), 1,
             GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!dstSurfaceDrawContext) {
@@ -296,8 +299,9 @@ static std::unique_ptr<GrSurfaceDrawContext> convolve_gaussian(GrRecordingContex
 
 // Expand the contents of 'src' to fit in 'dstSize'. At this point, we are expanding an intermediate
 // image, so there's no need to account for a proxy offset from the original input.
-static std::unique_ptr<GrSurfaceDrawContext> reexpand(GrRecordingContext* context,
-                                                      std::unique_ptr<GrSurfaceContext> src,
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> reexpand(
+                                                      GrRecordingContext* context,
+                                                      std::unique_ptr<skgpu::SurfaceContext> src,
                                                       const SkRect& srcBounds,
                                                       SkISize dstSize,
                                                       sk_sp<SkColorSpace> colorSpace,
@@ -314,7 +318,7 @@ static std::unique_ptr<GrSurfaceDrawContext> reexpand(GrRecordingContext* contex
 
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // GrSurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto dstSurfaceDrawContext = GrSurfaceDrawContext::Make(
+    auto dstSurfaceDrawContext = skgpu::v1::SurfaceDrawContext::Make(
             context, srcColorType, std::move(colorSpace), fit, dstSize, SkSurfaceProps(), 1,
             GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!dstSurfaceDrawContext) {
