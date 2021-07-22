@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6456e018_10059d58",
+        "filename": "tools/gpu/GrTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-22T20:29:24Z",
+      "side": 1,
+      "message": "Is this one non-MSAA only?",
+      "range": {
+        "startLine": 82,
+        "startChar": 31,
+        "endLine": 82,
+        "endChar": 42
+      },
+      "revId": "8b0d14b1ee838258cfaa98dca9c38f1629193ba0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6eb6a4c_0122b4f4",
+        "filename": "tools/gpu/GrTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-22T20:29:24Z",
+      "side": 1,
+      "message": "Do we want this to be something along the lines of:\n\n  kTotal \u003d SK_ARRAY_COUNT(gWorkWithMSAA) + SK_ARRAY_COUNT(gDontWorkWithMSAA);\n  index \u003d rand-\u003enextULessThan(kTotal);\n  fn \u003d index \u003e\u003d SK_ARRAY_COUNT(gWorkWithMSAA) ? gDontWorkWithMSAA(index - SK_ARRAY_COUNT(gWorkWithMSAA)) : gWorkWithMSAA[index];\n  \nAll the ops work with non-MSAA, so should we keep testing that?",
+      "range": {
+        "startLine": 100,
+        "startChar": 32,
+        "endLine": 100,
+        "endChar": 38
+      },
+      "revId": "8b0d14b1ee838258cfaa98dca9c38f1629193ba0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
