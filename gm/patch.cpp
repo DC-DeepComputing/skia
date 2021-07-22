@@ -18,6 +18,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkVertices.h"
 #include "include/effects/SkGradientShader.h"
 #include "src/utils/SkPatchUtils.h"
 #include "tools/Resources.h"
@@ -166,13 +167,18 @@ DEF_SIMPLE_GM(patch_image, canvas, 1500, 1100) {
     dopatch(canvas, colors, GetResourceAsImage("images/mandrill_128.png"), nullptr);
 }
 DEF_SIMPLE_GM(patch_image_persp, canvas, 1500, 1100) {
-    const SkColor colors[SkPatchUtils::kNumCorners] = {
-        SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorCYAN
-    };
-    SkMatrix localM;
-    localM.reset();
-    localM[6] = 0.00001f;    // force perspective
-    dopatch(canvas, colors, GetResourceAsImage("images/mandrill_128.png"), &localM);
+    SkMatrix localM = SkMatrix::I();
+    localM[6] = 0.001f;    // force perspective
+
+    SkPaint paint;
+    auto img = GetResourceAsImage("images/mandrill_128.png");
+    paint.setShader(img->makeShader(SkSamplingOptions(), localM));
+
+    SkPoint pos[4] = {{100, 100}, {300, 100}, {300, 300}, {100, 300}};
+    SkPoint tex[4] = {{0, 0}, {128, 0}, {128, 128}, {0, 128}};
+
+    auto vertices = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4, pos, tex, nullptr);
+    canvas->drawVertices(vertices, paint);
 }
 DEF_SIMPLE_GM(patch_alpha, canvas, 1500, 1100) {
     const SkColor colors[SkPatchUtils::kNumCorners] = {
