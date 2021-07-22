@@ -16,6 +16,63 @@
       "message": "Tested on Linux, Android \u0026 MacOS.\n\nIf this sticks, we should totally add a couple of test bots.",
       "revId": "b659f03a93675c1a717312f661810c609942f807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24c2a4d7_a5b71634",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T15:25:57Z",
+      "side": 1,
+      "message": ", and\n\nEats, shoots \u0026 leaves",
+      "range": {
+        "startLine": 57,
+        "startChar": 41,
+        "endLine": 57,
+        "endChar": 43
+      },
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460cebab_250a57cb",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T15:25:57Z",
+      "side": 1,
+      "message": "These hard coded paths are rather unfortunate. Can these at least be passed in or something?\n\nNote that icu is also available on newer versions of Windows, so this should also work with that. This would of course also require abstracting the function pointer discovery.\n\nI assume this mac path is the path to your brew installed libicu? You really shouldn\u0027t set brew up to install to /usr/local (even though they admonish you to do so).",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53daae12_90acd612",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T15:25:57Z",
+      "side": 1,
+      "message": "Be careful with these casts, since dlsym has incorrect type (is by definition undefined behavior in C for doing what it does) so there is special wording in POSIX requiring some very specific behavior. See https://skia.googlesource.com/skia/+/ac747ca18f46c90a867b154d6e46f6e4b5b6fe67/src/ports/SkFontHost_FreeType.cpp#145 for a summary.",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

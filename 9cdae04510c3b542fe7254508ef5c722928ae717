@@ -22,6 +22,30 @@
       },
       "revId": "9cdae04510c3b542fe7254508ef5c722928ae717",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "417cb531_f40e0aa4",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T15:25:57Z",
+      "side": 1,
+      "message": "And while this particular form of renaming is common, it isn\u0027t the only way. For example, in Chromium the rename uses `_chromium` in the rename. Much like it\u0027s better to take the path of the so or dynlib, it\u0027s probably best to have the user also specify any prefix and postfix.",
+      "parentUuid": "418c99d0_b01f619b",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 18
+      },
+      "revId": "9cdae04510c3b542fe7254508ef5c722928ae717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
