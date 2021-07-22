@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cbc773f_90d306c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T17:01:15Z",
+      "side": 1,
+      "message": "neat!",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9cf1275_f382bd4c",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T17:01:15Z",
+      "side": 1,
+      "message": "2021",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1316425_55e106f6",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T17:01:15Z",
+      "side": 1,
+      "message": "nit: group this with the other AK imports",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80ccea7e_9bf44e02",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T17:01:15Z",
+      "side": 1,
+      "message": "In order for this to be sticky, we\u0027ll probably have to track the time base locally -- otherwise the next onRenderFrame will reset it based on SurfaceRenderer\u0027s clock.\n\nCan be a follow-up.",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57607b64_eae488cc",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-22T17:01:15Z",
+      "side": 1,
+      "message": "Hmm, do we need to clean up the render threads here too?  Feels like we need SurfaceRenderer::release also, and override + call here.\n\nOr just leave out for now.",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
