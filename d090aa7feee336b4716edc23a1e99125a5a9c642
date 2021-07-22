@@ -22,6 +22,30 @@
       },
       "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97743578_2b8d4d52",
+        "filename": "docker/cmake-release/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-22T17:38:04Z",
+      "side": 0,
+      "message": "There does not appear to be a pre-existing clang-debian10 image. Might just want to try the Chromium one and update the CC and CXX exports in infra/cmake/build_skia.sh to match wherever it ends up.",
+      "parentUuid": "e8d12fc7_4aa58f01",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 33
+      },
+      "revId": "d090aa7feee336b4716edc23a1e99125a5a9c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
