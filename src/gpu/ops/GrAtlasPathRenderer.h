@@ -42,7 +42,7 @@ public:
     //
     // Returns 'inputFP' wrapped in GrFPFailure() if the path was too large, or if the current atlas
     // is full and already used by either opBeingClipped or inputFP. (Currently, "too large" means
-    // more than 128*128 total pixels, or larger than the atlas size in either dimension.)
+    // more than 256*256 total pixels, or larger than the atlas size in either dimension.)
     //
     // Also returns GrFPFailure() if the view matrix has perspective.
     GrFPResult makeAtlasClipEffect(GrRecordingContext*,
@@ -62,7 +62,8 @@ private:
     // either dimension, and they intersect the given clip bounds (which guarantees the device-space
     // pixel bounds can be represented as integers).
     bool pathFitsInAtlas(const SkRect& pathDevBounds,
-                         const SkIRect& clipConservativeBounds) const;
+                         const SkIRect& clipConservativeBounds,
+                         float atlasMaxPathHeight_pow2) const;
 
     // Returns true if the draw being set up already uses the given atlasProxy.
     using DrawRefsAtlasCallback = std::function<bool(const GrSurfaceProxy* atlasProxy)>;

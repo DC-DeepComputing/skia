@@ -31,8 +31,11 @@ constexpr static int kAtlasInitialSize = 512;
 // height, which lends very well to efficient pow2 atlas packing.
 constexpr static auto kAtlasAlgorithm = GrDynamicAtlas::RectanizerAlgorithm::kPow2;
 
-// Ensure every path in the atlas falls in or below the 128px high rectanizer band.
-constexpr static int kAtlasMaxPathHeight = 128;
+// Ensure every path in the atlas falls in or below the 256px high rectanizer band.
+constexpr static int kAtlasMaxPathHeight = 256;
+
+// MSAA paths are fast enough that we really only benefit from atlasing when they are very small.
+constexpr static int kAtlasMaxPathHeightWithMSAA = 128;
 
 bool GrAtlasPathRenderer::IsSupported(GrRecordingContext* rContext) {
     const GrCaps& caps = *rContext->priv().caps();
@@ -76,7 +79,8 @@ static bool intersects(float2 topLeft, float2 botRight, const SkIRect& irect) {
 }
 
 bool GrAtlasPathRenderer::pathFitsInAtlas(const SkRect& pathDevBounds,
-                                          const SkIRect& clipConservativeBounds) const {
+                                          const SkIRect& clipConservativeBounds,
+                                          float atlasMaxPathHeight_pow2) const {
     auto [topLeftFloor, botRightCeil] = round_out(pathDevBounds);
     float2 size = botRightCeil - topLeftFloor;
     return skvx::all(size > 0) &&  // Let somebody else handle empty paths.
@@ -86,10 +90,10 @@ bool GrAtlasPathRenderer::pathFitsInAtlas(const SkRect& pathDevBounds,
            // be represented exactly as ints (since the max render target size is nowhere near
            // INT_MAX).
            intersects(topLeftFloor, botRightCeil, clipConservativeBounds) &&
-           // Since we will transpose tall skinny paths, limiting to kAtlasMaxPathHeight^2 pixels
+           // Since we will transpose tall skinny paths, limiting to atlasMaxPathHeight^2 pixels
            // guarantees heightInAtlas <= kAtlasMaxPathHeight, while also allowing paths that are
            // very wide and short.
-           size[0] * size[1] <= kAtlasMaxPathHeight * kAtlasMaxPathHeight;
+           size[0] * size[1] <= atlasMaxPathHeight_pow2;
 }
 
 void GrAtlasPathRenderer::AtlasPathKey::set(const SkMatrix& m, const SkPath& path) {
@@ -221,8 +225,10 @@ GrPathRenderer::CanDrawPath GrAtlasPathRenderer::onCanDrawPath(const CanDrawPath
                        args.fAAType == GrAAType::kMSAA &&
                        !args.fShape->style().hasPathEffect() &&
                        !args.fViewMatrix->hasPerspective() &&
-                       this->pathFitsInAtlas(args.fViewMatrix->mapRect(args.fShape->bounds()),
-                                             *args.fClipConservativeBounds);
+                       this->pathFitsInAtlas(
+                               args.fViewMatrix->mapRect(args.fShape->bounds()),
+                               *args.fClipConservativeBounds,
+                               kAtlasMaxPathHeightWithMSAA * kAtlasMaxPathHeightWithMSAA);
     return canDrawPath ? CanDrawPath::kYes : CanDrawPath::kNo;
 }
 
@@ -231,7 +237,9 @@ bool GrAtlasPathRenderer::onDrawPath(const DrawPathArgs& args) {
     args.fShape->asPath(&path);
 
     const SkRect pathDevBounds = args.fViewMatrix->mapRect(args.fShape->bounds());
-    SkASSERT(this->pathFitsInAtlas(pathDevBounds, args.fClip->getConservativeBounds()));
+    SkASSERT(this->pathFitsInAtlas(pathDevBounds,
+                                   args.fClip->getConservativeBounds(),
+                                   kAtlasMaxPathHeightWithMSAA * kAtlasMaxPathHeightWithMSAA));
     SkASSERT(!pathDevBounds.isEmpty());  // pathFitsInAtlas() should have made sure of this.
 
     SkIRect devIBounds;
@@ -274,7 +282,10 @@ GrFPResult GrAtlasPathRenderer::makeAtlasClipEffect(GrRecordingContext* rContext
                                         : GrFPFailure(std::move(inputFP));
     }
 
-    if (!this->pathFitsInAtlas(pathDevBounds, drawBounds)) {
+    // TODO: 128 or 256 when we can fall back on msaa stencil??
+    if (!this->pathFitsInAtlas(pathDevBounds,
+                               drawBounds,
+                               kAtlasMaxPathHeight * kAtlasMaxPathHeight)) {
         // The path is too big.
         return GrFPFailure(std::move(inputFP));
     }
