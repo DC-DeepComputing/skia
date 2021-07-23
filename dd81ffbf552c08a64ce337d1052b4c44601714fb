@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ba63a2_9e9aa0d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-23T20:43:02Z",
+      "side": 1,
+      "message": "https://gold.skia.org/img/images/e96ae313f2bd0f6a82ccb622f8b1a48e.png from PS2\u0027s run (GM only) shows the incorrect behavior of the original GrTriangulator calculations.",
+      "revId": "dd81ffbf552c08a64ce337d1052b4c44601714fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
