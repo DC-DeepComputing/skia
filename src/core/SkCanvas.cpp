@@ -391,7 +391,7 @@ public:
 
     ~AutoLayerForImageFilter() {
         if (fTempLayerForImageFilter) {
-            fCanvas->internalRestore();
+            fCanvas->internalRestore(true);
         }
         SkASSERT(fCanvas->getSaveCount() == fSaveCount);
     }
@@ -521,10 +521,13 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 #endif
 
 SkCanvas::~SkCanvas() {
-    // free up the contents of our deque
-    this->restoreToCount(1);    // restore everything but the last
+    // free up the contents of our deque, but skip blitting any pending saveLayers
 
-    this->internalRestore();    // restore the last, since we're going away
+    int n = this->getSaveCount() - 1;
+    for (int i = 0; i < n; ++i) {
+        this->doRestore(false);
+    }
+    this->internalRestore(false);    // restore the last, since we're going away
 
     dec_canvas();
 }
@@ -649,6 +652,10 @@ void SkCanvas::doSave() {
 }
 
 void SkCanvas::restore() {
+    this->doRestore(true);
+}
+
+void SkCanvas::doRestore(bool blitLayer) {
     if (fMCRec->fDeferredSaveCount > 0) {
         SkASSERT(fSaveCount > 1);
         fSaveCount -= 1;
@@ -659,7 +666,7 @@ void SkCanvas::restore() {
             this->willRestore();
             SkASSERT(fSaveCount > 1);
             fSaveCount -= 1;
-            this->internalRestore();
+            this->internalRestore(blitLayer);
             this->didRestore();
         }
     }
@@ -1188,7 +1195,7 @@ void SkCanvas::internalSaveBehind(const SkRect* localBounds) {
     this->drawClippedToSaveBehind(paint);
 }
 
-void SkCanvas::internalRestore() {
+void SkCanvas::internalRestore(bool blitLayer) {
     SkASSERT(fMCStack.count() != 0);
 
     // now detach these from fMCRec so we can pop(). Gets freed after its drawn
@@ -1220,7 +1227,7 @@ void SkCanvas::internalRestore() {
 
     // Draw the layer's device contents into the now-current older device. We can't call public
     // draw functions since we don't want to record them.
-    if (layer && !layer->fDevice->isNoPixelsDevice()) {
+    if (blitLayer && layer && !layer->fDevice->isNoPixelsDevice()) {
         layer->fDevice->setImmutable();
 
         // Don't go through AutoLayerForImageFilter since device draws are so closely tied to
