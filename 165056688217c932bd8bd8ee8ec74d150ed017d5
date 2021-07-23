@@ -51,6 +51,24 @@
       "parentUuid": "5f1c47a4_a8e83dba",
       "revId": "165056688217c932bd8bd8ee8ec74d150ed017d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f7fb82_81c154e7",
+        "filename": "modules/skshaper/skshaper.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T22:25:37Z",
+      "side": 1,
+      "message": "Actually, now that I\u0027ve thought about it for a while, this SkICU thing should probably be part of the SkUnicode module (just that the SkUnicode module needs to be moved out of SkShaper module). The idea is that SkUnicode_icu.cpp should be the only thing that actually uses ICU (that\u0027s the point, to hide the implementation) so this new SkICU thing really belongs with it, though it might want to be named SkUnicode_icu.h, SkUnicode_icu_builtin.cpp, and SkUnicode_icu_runtime.cpp.\n\nThe issue I had in particular was that SkShaper was configuring the content of the SkUnicode build though setting the build macros and such. SkShaper shouldn\u0027t be doing that as it should simply be depending on and using SkUnicode.",
+      "parentUuid": "0d2d4030_2ce4c1a6",
+      "revId": "165056688217c932bd8bd8ee8ec74d150ed017d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
