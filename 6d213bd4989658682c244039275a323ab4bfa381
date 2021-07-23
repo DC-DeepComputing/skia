@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7888dbf0_6d53c338",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T18:03:11Z",
+      "side": 1,
+      "message": "Mike suggested we should always use a factory, even for the builtin config.  I like the idea -- then ICU loading can be fully externalized and we could set up different build targets/configs layered on top of of a core SkUnicode.  We could even allow clients to take over.\n\nUpdated to reflect the new approach.",
+      "revId": "6d213bd4989658682c244039275a323ab4bfa381",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

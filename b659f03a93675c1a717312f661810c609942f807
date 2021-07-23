@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8440605_420029bc",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T18:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24c2a4d7_a5b71634",
+      "range": {
+        "startLine": 57,
+        "startChar": 41,
+        "endLine": 57,
+        "endChar": 43
+      },
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "460cebab_250a57cb",
@@ -60,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a62390b_cd5041b8",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T18:03:11Z",
+      "side": 1,
+      "message": "\u003e These hard coded paths are rather unfortunate. Can these at least be passed in or something?\n\nDone.\n\n\u003e Note that icu is also available on newer versions of Windows, so this should also work with that. This would of course also require abstracting the function pointer discovery.\n\nAck.\n\n\u003e I assume this mac path is the path to your brew installed libicu? You really shouldn\u0027t set brew up to install to /usr/local (even though they admonish you to do so).\n\nYeah, I switched to the \"recommended\" location for the refreshed MBP, and now I need to chown/chmod every time I touch brew 😞",
+      "parentUuid": "460cebab_250a57cb",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53daae12_90acd612",
         "filename": "modules/skshaper/src/SkICU_runtime.cpp",
         "patchSetId": 7
@@ -71,6 +113,24 @@
       "writtenOn": "2021-07-22T15:25:57Z",
       "side": 1,
       "message": "Be careful with these casts, since dlsym has incorrect type (is by definition undefined behavior in C for doing what it does) so there is special wording in POSIX requiring some very specific behavior. See https://skia.googlesource.com/skia/+/ac747ca18f46c90a867b154d6e46f6e4b5b6fe67/src/ports/SkFontHost_FreeType.cpp#145 for a summary.",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a814f8_427efa8f",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T18:03:11Z",
+      "side": 1,
+      "message": "Ack, done.",
+      "parentUuid": "53daae12_90acd612",
       "revId": "b659f03a93675c1a717312f661810c609942f807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
