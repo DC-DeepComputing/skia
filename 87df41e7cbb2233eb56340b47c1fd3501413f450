@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0463412c_ad69cb4c",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T15:24:16Z",
+      "side": 1,
+      "message": "nit: This is most similar to gather32, so maybe document it the same way, just to call attention to that:\n\n  // Load i32/f32 with constant element-count index from *(ptr + byte-count offset)\n  \nOr even just document in comparison to gather32? \"Like gather32, but slightly faster, because index is constant, rather than varying\" ?",
+      "range": {
+        "startLine": 636,
+        "startChar": 10,
+        "endLine": 636,
+        "endChar": 65
+      },
+      "revId": "87df41e7cbb2233eb56340b47c1fd3501413f450",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
