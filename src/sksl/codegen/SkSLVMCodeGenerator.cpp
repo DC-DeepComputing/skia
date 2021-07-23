@@ -890,7 +890,7 @@ Value SkVMGenerator::writeIntrinsicCall(const FunctionCall& c) {
         if (child->type().typeKind() == Type::TypeKind::kShader) {
             SkASSERT(arg->type() == *fProgram.fContext->fTypes.fFloat2);
             skvm::Coord coord = {f32(argVal[0]), f32(argVal[1])};
-            color = fSampleShader(fp_it->second, coord, fInputColor);
+            color = fSampleShader(fp_it->second, coord);
         } else {
             SkASSERT(child->type().typeKind() == Type::TypeKind::kColorFilter);
             SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
@@ -1750,7 +1750,7 @@ bool testingOnly_ProgramToSkVMShader(const Program& program, skvm::Builder* buil
         children.push_back({uniforms.pushPtr(nullptr), builder->uniform32(uniforms.push(0))});
     }
 
-    auto sampleShader = [&](int i, skvm::Coord coord, skvm::Color) {
+    auto sampleShader = [&](int i, skvm::Coord coord) {
         skvm::PixelFormat pixelFormat = skvm::SkColorType_to_PixelFormat(kRGBA_F32_SkColorType);
         skvm::I32 index  = trunc(coord.x);
                   index += trunc(coord.y) * children[i].rowBytesAsPixels;
