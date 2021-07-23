@@ -33,6 +33,24 @@
       "message": "Comparing to my CL that does exhibit the bug, I think you might need tex-coords that are distinct from the positions?",
       "revId": "2fe18534b58e91a03b28a36ec847080c1192a609",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0720313_d4341bb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-23T13:19:37Z",
+      "side": 1,
+      "message": "Brian is right. If texCoords \u003d\u003d positions, then we use SkVM without updaters to draw. You need to force texCoords and positions to be different pointers. This will trigger the RP with the updater system to be used.",
+      "parentUuid": "0bc005a1_1e0d7011",
+      "revId": "2fe18534b58e91a03b28a36ec847080c1192a609",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
