@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "615a0ed5_e1ddd2d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-23T20:52:46Z",
+      "side": 1,
+      "message": "Ben, do you want to initiate a separate CL that moves SkUnicode elsewhere?",
+      "revId": "165056688217c932bd8bd8ee8ec74d150ed017d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f1c47a4_a8e83dba",
