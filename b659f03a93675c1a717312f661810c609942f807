@@ -102,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c315398_164f6934",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T20:06:39Z",
+      "side": 1,
+      "message": "Really I mean that they should be passed in as arguments. This particular module should be ignorant (even at build time) of any possible hard coded paths.",
+      "parentUuid": "5a62390b_cd5041b8",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53daae12_90acd612",
         "filename": "modules/skshaper/src/SkICU_runtime.cpp",
         "patchSetId": 7

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1c47a4_a8e83dba",
+        "filename": "modules/skshaper/skshaper.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T20:06:39Z",
+      "side": 1,
+      "message": "So this was already bad and this is more bad piled on top.\n\nFirst off, this SkUnicode stuff really needs to be a separate module, it shouldn\u0027t be in SkShaper at all. The entire point of SkUnicode was to be a separable interface which SkParagraph, SkText, SkShaper, etc could use.\n\nThe target name was already wrong, it should be skia_unicode_sources (not skia_shaper_icu_sources, there shouldn\u0027t be \u0027shaper\u0027 in this name at all) since the entire point of SkUnicode was to make it\u0027s users unaware of the actual implementation (which could be ICU but could be something else). So putting this SkICU.h in here with SkUnicode is really bad since it\u0027s totally defeating the point of the existence of SkUnicode.\n\nWhere this becomes really bad though is that it becomes possible to incorrectly define \"SK_RUNTIME_ICU_XXX\" in the skshaper component, which should be impossible. The skshaper component should not only be unaware of this, it shouldn\u0027t even be able to affect the build of SkICU at all.",
+      "revId": "165056688217c932bd8bd8ee8ec74d150ed017d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
