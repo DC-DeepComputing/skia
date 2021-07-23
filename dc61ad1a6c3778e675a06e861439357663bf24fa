@@ -22,6 +22,30 @@
       },
       "revId": "dc61ad1a6c3778e675a06e861439357663bf24fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9fea31e_0b4f831b",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2438,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-23T16:10:31Z",
+      "side": 1,
+      "message": "It\u0027s also called in SkCanvasPriv::ResetClip() for subclasses of SkCanvas that need to pass it along, and the skp debugger uses it (both to replay android skps that might have these emulated replace ops, and for how it handles playing back a subset of the op timeline).\n\nPreviously SkCanvasPriv::ResetClip() just also called androidFramework_resetClip(), but I didn\u0027t like it. I also wanted to emphasize that it was not for general SkCanvas usage.",
+      "parentUuid": "c4c426be_9693314b",
+      "range": {
+        "startLine": 2438,
+        "startChar": 9,
+        "endLine": 2438,
+        "endChar": 35
+      },
+      "revId": "dc61ad1a6c3778e675a06e861439357663bf24fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
