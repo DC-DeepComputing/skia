@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40847bb0_147ca60a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T19:40:01Z",
+      "side": 1,
+      "message": "LGTM with some minor tweaks.",
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e84a247_3090ed06",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Color.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T19:40:01Z",
+      "side": 1,
+      "message": "everything /\u003d 255.f;\n\n(float colors are normalized; wonder if this has something to do with the drawColor crash)",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 34
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416291d8_4f263400",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T19:40:01Z",
+      "side": 1,
+      "message": "// TODO: we need to adjust the super time base for this to stick (otherwise onRenderFrame will overwrite via seekTime).",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260fc86d_6515eb9e",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T19:40:01Z",
+      "side": 1,
+      "message": "remove logging",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 40
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
