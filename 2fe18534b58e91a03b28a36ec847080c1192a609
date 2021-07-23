@@ -16,6 +16,23 @@
       "message": "grrrr, doesn\u0027t seem to show the bug",
       "revId": "2fe18534b58e91a03b28a36ec847080c1192a609",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bc005a1_1e0d7011",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T00:08:44Z",
+      "side": 1,
+      "message": "Comparing to my CL that does exhibit the bug, I think you might need tex-coords that are distinct from the positions?",
+      "revId": "2fe18534b58e91a03b28a36ec847080c1192a609",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
