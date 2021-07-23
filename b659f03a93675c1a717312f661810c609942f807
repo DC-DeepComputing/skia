@@ -138,6 +138,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "56b38eab_cb4276d0",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T22:32:06Z",
+      "side": 1,
+      "message": "We have lots of precedent for the \"Make\" constructors to be implementation specific (like SkShaper::MakePrimitive, MakeCoreText, MakeShaperDrivenWrapper, etc) and take various parameters. This just requires the user to have the configuration macros (like SK_SHAPER_CORETEXT_AVAILABLE or SK_SHAPER_HARFBUZZ_AVAILABLE) so that they can compile the right calls and/or have the factory functions return nullptr at runtime if the particular backend isn\u0027t available (or both).\n\nFor the moment I\u0027m fine with just doing Android and hard coding it, but anything more would want a SkUnicode::MakeICU(....).",
+      "parentUuid": "71940ad4_ae201e69",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53daae12_90acd612",
         "filename": "modules/skshaper/src/SkICU_runtime.cpp",
         "patchSetId": 7
