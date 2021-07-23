@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c800cf6_b1e419ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-23T14:53:01Z",
+      "side": 1,
+      "message": "No real reason I suppose. I\u0027ll switch out to using just onResetClip() and have SkAndroidFrameworkUtils::ResetClip call that directly so SkCanvas only has the one function.",
+      "parentUuid": "ecb1666b_c0522b23",
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e01efd6f_b8ba658c",
