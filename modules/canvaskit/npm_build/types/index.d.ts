@@ -282,7 +282,7 @@ export interface CanvasKit {
      * context to send the calls to.
      * @param ctx
      */
-    setCurrentContext(ctx: WebGLContextHandle): void;
+    setCurrentContext(ctx: WebGLContextHandle): boolean;
 
     /**
      * Deletes the associated WebGLContext. Function not available on the CPU version.
@@ -1183,7 +1183,7 @@ export interface Canvas extends EmbindObject<Canvas> {
      * @param top
      * @param paint
      */
-    drawImage(img: Image, left: number, top: number, paint?: Paint): void;
+    drawImage(img: Image, left: number, top: number, paint: Paint | null): void;
 
     /**
      * Draws the given image with its top-left corner at (left, top) using the current clip,

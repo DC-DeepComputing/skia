@@ -109,8 +109,6 @@
           return CanvasKit.MakeSWCanvasSurface(newCanvas);
         }
         surface._context = ctx;
-        surface.grContext = grcontext;
-        surface.openGLversion = canvas.GLctxObject.version;
         return surface;
       };
       // Default to trying WebGL first.
@@ -139,7 +137,10 @@
         // the height and width (to cover <canvas>, ImageBitmap or ImageData).
         var height = h || src.naturalHeight || src.videoHeight || src.height;
         var width = w || src.naturalWidth || src.videoWidth || src.width;
-
+        // We want to be pointing at the context associated with this surface.
+        if (this._context) {
+          CanvasKit.setCurrentContext(this._context);
+        }
         var glCtx = GL.currentContext.GLctx;
         var newTex = glCtx.createTexture();
         glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
@@ -157,6 +158,21 @@
           'colorSpace': CanvasKit.ColorSpace.SRGB,
         };
         return this.makeImageFromTexture(newTex, info);
+      };
+
+      CanvasKit.MakeGrContext = function(ctx) {
+        // Make sure we are pointing at the right WebGL context.
+        if (!this.setCurrentContext(ctx)) {
+          return null;
+        }
+        // Create the GrContext using that context.
+        return this._MakeGrContext();
+      };
+      CanvasKit.currentContext = function () {
+        return GL.currentContext ? GL.currentContext.handle : 0;
+      };
+      CanvasKit.setCurrentContext = function(ctx) {
+        return GL.makeContextCurrent(ctx);
       };
     });
 }(Module)); // When this file is loaded in, the high level object is "Module";
