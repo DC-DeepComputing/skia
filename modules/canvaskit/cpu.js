@@ -73,6 +73,9 @@
     // For GPU builds, simply proxies to native code flush.  For CPU builds,
     // also updates the underlying HTML canvas, optionally with dirtyRect.
     CanvasKit.Surface.prototype.flush = function(dirtyRect) {
+      if (this._context) {
+        CanvasKit.setCurrentContext(this._context);
+      }
       this._flush();
       // Do we have an HTML canvas to write the pixels to?
       // We will not have a canvas if this a GPU build, for example.

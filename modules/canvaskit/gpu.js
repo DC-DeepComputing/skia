@@ -109,8 +109,6 @@
           return CanvasKit.MakeSWCanvasSurface(newCanvas);
         }
         surface._context = ctx;
-        surface.grContext = grcontext;
-        surface.openGLversion = canvas.GLctxObject.version;
         return surface;
       };
       // Default to trying WebGL first.
@@ -157,6 +155,21 @@
           'colorSpace': CanvasKit.ColorSpace.SRGB,
         };
         return this.makeImageFromTexture(newTex, info);
+      };
+
+      CanvasKit.MakeGrContext = function(ctx) {
+        // Make sure we are pointing at the right WebGL context.
+        if (!this.setCurrentContext(ctx)) {
+          return null;
+        }
+        // Create the GrContext using that context.
+        return this._MakeGrContext();
+      };
+      CanvasKit.currentContext = function () {
+        return GL.currentContext ? GL.currentContext.handle : 0;
+      };
+      CanvasKit.setCurrentContext = function(ctx) {
+        return GL.makeContextCurrent(ctx);
       };
     });
 }(Module)); // When this file is loaded in, the high level object is "Module";

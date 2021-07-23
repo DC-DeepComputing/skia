@@ -282,7 +282,7 @@ export interface CanvasKit {
      * context to send the calls to.
      * @param ctx
      */
-    setCurrentContext(ctx: WebGLContextHandle): void;
+    setCurrentContext(ctx: WebGLContextHandle): boolean;
 
     /**
      * Deletes the associated WebGLContext. Function not available on the CPU version.

@@ -65,8 +65,7 @@
 #include "include/gpu/gl/GrGLTypes.h"
 #include "src/gpu/gl/GrGLDefines.h"
 
-#include <GLES3/gl3.h>
-#include <emscripten/html5.h>
+#include "webgl/webgl1.h"
 #endif
 
 #ifndef SK_NO_FONTS
@@ -134,24 +133,21 @@ struct ColorSettings {
     ColorSettings(sk_sp<SkColorSpace> colorSpace) {
         if (colorSpace == nullptr || colorSpace->isSRGB()) {
             colorType = kRGBA_8888_SkColorType;
-            pixFormat = GL_RGBA8;
+            pixFormat = GR_GL_RGBA8;
         } else {
             colorType = kRGBA_F16_SkColorType;
-            pixFormat = GL_RGBA16F;
+            pixFormat = GR_GL_RGBA16F;
         }
     };
     SkColorType colorType;
     GrGLenum pixFormat;
 };
 
-sk_sp<GrDirectContext> MakeGrContext(EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
+sk_sp<GrDirectContext> MakeGrContext()
 {
-    EMSCRIPTEN_RESULT r = emscripten_webgl_make_context_current(context);
-    if (r < 0) {
-        printf("failed to make webgl context current %d\n", r);
-        return nullptr;
-    }
-    // setup interface
+    // We assume that any calls we make to GL for the remainder of this function will go to the
+    // desired WebGL Context.
+    // setup interface.
     auto interface = GrGLMakeNativeInterface();
     // setup context
     return GrDirectContext::MakeGL(interface);
@@ -161,10 +157,10 @@ sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int widt
                                        sk_sp<SkColorSpace> colorSpace) {
     // WebGL should already be clearing the color and stencil buffers, but do it again here to
     // ensure Skia receives them in the expected state.
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearColor(0, 0, 0, 0);
-    glClearStencil(0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    emscripten_glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    emscripten_glClearColor(0, 0, 0, 0);
+    emscripten_glClearStencil(0);
+    emscripten_glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     dContext->resetContext(kRenderTarget_GrGLBackendState | kMisc_GrGLBackendState);
 
     // The on-screen canvas is FBO 0. Wrap it in a Skia render target so Skia can render to it.
@@ -172,10 +168,10 @@ sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int widt
     info.fFBOID = 0;
 
     GrGLint sampleCnt;
-    glGetIntegerv(GL_SAMPLES, &sampleCnt);
+    emscripten_glGetIntegerv(GL_SAMPLES, &sampleCnt);
 
     GrGLint stencil;
-    glGetIntegerv(GL_STENCIL_BITS, &stencil);
+    emscripten_glGetIntegerv(GL_STENCIL_BITS, &stencil);
 
     const auto colorSettings = ColorSettings(colorSpace);
     info.fFormat = colorSettings.pixFormat;
@@ -719,9 +715,7 @@ void deleteJSTexture(SkImage::ReleaseContext rc) {
 
 EMSCRIPTEN_BINDINGS(Skia) {
 #ifdef SK_GL
-    function("currentContext", &emscripten_webgl_get_current_context);
-    function("setCurrentContext", &emscripten_webgl_make_context_current);
-    function("MakeGrContext", &MakeGrContext);
+    function("_MakeGrContext", &MakeGrContext);
     function("MakeOnScreenGLSurface", &MakeOnScreenGLSurface);
     function("MakeRenderTarget", select_overload<sk_sp<SkSurface>(sk_sp<GrDirectContext>, int, int)>(&MakeRenderTarget));
     function("MakeRenderTarget", select_overload<sk_sp<SkSurface>(sk_sp<GrDirectContext>, SimpleImageInfo)>(&MakeRenderTarget));
