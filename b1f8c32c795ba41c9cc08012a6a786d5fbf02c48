@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de80ed9d_2cbe7c0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-23T13:27:22Z",
+      "side": 1,
+      "message": "As a heads up. Here is a first attempt at the Uniform indirection. I\u0027m narrowing the specification to assume that the indirection is to an array of 32-bit things. This is only the x86 version. I\u0027m working out the ARM64 version now.",
+      "revId": "b1f8c32c795ba41c9cc08012a6a786d5fbf02c48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
