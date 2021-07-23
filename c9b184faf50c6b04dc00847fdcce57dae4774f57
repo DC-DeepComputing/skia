@@ -78,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7caff6e_8bc2f035",
+        "filename": "include/android/SkAndroidFrameworkUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-07-23T17:01:56Z",
+      "side": 1,
+      "message": "sgtm",
+      "parentUuid": "e01efd6f_b8ba658c",
+      "range": {
+        "startLine": 47,
+        "startChar": 16,
+        "endLine": 47,
+        "endChar": 44
+      },
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b59a989f_173b74fe",
         "filename": "include/core/SkCanvas.h",
         "patchSetId": 2
