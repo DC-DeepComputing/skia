@@ -14,9 +14,12 @@ skia_shaper_primitive_sources = [
   "$_src/SkShaper_primitive.cpp",
 ]
 skia_shaper_icu_sources = [
+  "$_src/SkICU.h",
   "$_src/SkUnicode.h",
   "$_src/SkUnicode_icu.cpp",
 ]
+skia_shaper_builtin_icu_sources = [ "$_src/SkICU_builtin.cpp" ]
+skia_shaper_runtime_icu_sources = [ "$_src/SkICU_runtime.cpp" ]
 skia_shaper_harfbuzz_sources = [ "$_src/SkShaper_harfbuzz.cpp" ]
 skia_shaper_coretext_sources = [ "$_src/SkShaper_coretext.cpp" ]
 
