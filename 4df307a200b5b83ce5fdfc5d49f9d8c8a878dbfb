@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dddca7e0_3af7fc05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-23T16:24:56Z",
+      "side": 1,
+      "message": "Rubber stamp LGTM",
+      "revId": "4df307a200b5b83ce5fdfc5d49f9d8c8a878dbfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f72b7a6_461e6829",
+        "filename": "bin/try.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-23T16:24:56Z",
+      "side": 1,
+      "message": "You could just delete this file, as it\u0027s been replaced by \"sk try\"",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "4df307a200b5b83ce5fdfc5d49f9d8c8a878dbfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
