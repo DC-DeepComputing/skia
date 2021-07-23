@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94803c21_0bc65d74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-23T14:45:18Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "029314f557a102f800c5b34e021e239c90b35cb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a30f1e21_603a4aad",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-23T14:45:18Z",
+      "side": 1,
+      "message": "Are both of these actually byte-offsets? Can we name them so, or add dox?",
+      "range": {
+        "startLine": 634,
+        "startChar": 35,
+        "endLine": 634,
+        "endChar": 41
+      },
+      "revId": "029314f557a102f800c5b34e021e239c90b35cb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
