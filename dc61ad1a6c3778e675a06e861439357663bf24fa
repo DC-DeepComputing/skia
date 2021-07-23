@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c426be_9693314b",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2438,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-23T16:02:30Z",
+      "side": 1,
+      "message": "curious: is this no longer android specific? Why the rename?",
+      "range": {
+        "startLine": 2438,
+        "startChar": 9,
+        "endLine": 2438,
+        "endChar": 35
+      },
+      "revId": "dc61ad1a6c3778e675a06e861439357663bf24fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
