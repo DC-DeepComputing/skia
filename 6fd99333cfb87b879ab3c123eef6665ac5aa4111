@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4772644_8f08d449",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T14:19:45Z",
+      "side": 1,
+      "message": "I found the repetition of const FunctionDeclaration distracting, but agreed about obscuring the pointers. I\u0027ve trimmed that from the using, and explicitly add \u0027*\u0027 elsewhere.",
+      "parentUuid": "d2a83c64_6b66ab06",
+      "range": {
+        "startLine": 624,
+        "startChar": 4,
+        "endLine": 624,
+        "endChar": 48
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "264ac172_99b798a0",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-22T21:51:04Z",
       "side": 1,
       "message": "Function",
+      "range": {
+        "startLine": 690,
+        "startChar": 17,
+        "endLine": 690,
+        "endChar": 21
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdfdf6f4_e31e54e7",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T14:19:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "264ac172_99b798a0",
       "range": {
         "startLine": 690,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f37ffb_73b7b0d8",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T14:19:45Z",
+      "side": 1,
+      "message": "Yeah, I think I started with indices, and anticipated something like (b), then got it into my head that I should write this all with iterators. But it\u0027s definitely cleaner using indices.",
+      "parentUuid": "f08758c1_f08ea3fb",
+      "range": {
+        "startLine": 721,
+        "startChar": 0,
+        "endLine": 729,
+        "endChar": 51
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a073cee4_e8e551c7",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77d5f51_0bc94415",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T14:19:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a073cee4_e8e551c7",
+      "range": {
+        "startLine": 732,
+        "startChar": 52,
+        "endLine": 732,
+        "endChar": 80
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60b4acdd_7a68612a",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-07-22T21:53:46Z",
       "side": 1,
       "message": "Maybe this should include the word \"potential\"?\n\nWe aren\u0027t smart enough to do the analysis to detect that some recursive-looking cases are actually safe (because the control flow makes reaching the cycle somehow impossible).",
+      "range": {
+        "startLine": 734,
+        "startChar": 22,
+        "endLine": 734,
+        "endChar": 31
+      },
+      "revId": "6fd99333cfb87b879ab3c123eef6665ac5aa4111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc83cc59_7e565bc8",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T14:19:45Z",
+      "side": 1,
+      "message": "Yeah, I didn\u0027t want it to sound like something that could/should be a warning. The ES2 wording is: \"Static and dynamic recursion is not allowed. Static recursion is present if the static function call graph of the program contains cycles.\"\n\nIn any case, I tweaked this slightly to state that it\u0027s only potentially recursive, but that\u0027s explicitly not allowed.",
+      "parentUuid": "60b4acdd_7a68612a",
       "range": {
         "startLine": 734,
         "startChar": 22,
