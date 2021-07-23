@@ -22,6 +22,30 @@
       },
       "revId": "d019ada93a664646dd1ee0ae0a3bfb3e991be938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "651b4c38_72f16c75",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-23T14:00:51Z",
+      "side": 1,
+      "message": "Removed at http://review.skia.org/431938",
+      "parentUuid": "c18d6017_b1c2d3db",
+      "range": {
+        "startLine": 172,
+        "startChar": 56,
+        "endLine": 172,
+        "endChar": 68
+      },
+      "revId": "d019ada93a664646dd1ee0ae0a3bfb3e991be938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
