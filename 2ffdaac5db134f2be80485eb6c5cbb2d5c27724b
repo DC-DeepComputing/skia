@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b33b16d_2e7820b1",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-07-23T16:53:50Z",
+      "side": 1,
+      "message": "setScaleTranslate is not identical to postScale - we want to translate first, then scale. IIUC setScaleTranslate only sets matrix components, I believe, but does not do the multiplications.",
+      "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
