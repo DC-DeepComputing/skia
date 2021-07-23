@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e9d174_c89c1229",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-23T18:15:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9cf1275_f382bd4c",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1316425_55e106f6",
@@ -54,6 +78,24 @@
       "writtenOn": "2021-07-22T17:01:15Z",
       "side": 1,
       "message": "nit: group this with the other AK imports",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a65cb30_a17a3009",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-23T18:15:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1316425_55e106f6",
       "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "574a8035_9d2fc087",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-23T18:15:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80ccea7e_9bf44e02",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57607b64_eae488cc",
@@ -88,6 +148,24 @@
       "writtenOn": "2021-07-22T17:01:15Z",
       "side": 1,
       "message": "Hmm, do we need to clean up the render threads here too?  Feels like we need SurfaceRenderer::release also, and override + call here.\n\nOr just leave out for now.",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "216fe97e_30f9465d",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-23T18:15:44Z",
+      "side": 1,
+      "message": "Addressed it now. Please check.",
+      "parentUuid": "57607b64_eae488cc",
       "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
