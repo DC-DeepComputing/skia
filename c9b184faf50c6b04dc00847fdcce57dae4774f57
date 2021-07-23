@@ -99,6 +99,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e481541_627bfba7",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-23T15:50:10Z",
+      "side": 1,
+      "message": "N/A switched over to an onResetClip() function instead. The base internal_private_resetClip() now just checks for the deferred save, matching the responsibility split between public and virtual functions for the rest of the clipping api in SkCanvas.",
+      "parentUuid": "b59a989f_173b74fe",
+      "range": {
+        "startLine": 2201,
+        "startChar": 4,
+        "endLine": 2202,
+        "endChar": 39
+      },
+      "revId": "c9b184faf50c6b04dc00847fdcce57dae4774f57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee117080_ef11e031",
