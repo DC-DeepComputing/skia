@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8104b8c1_93475fa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-23T19:15:51Z",
+      "side": 1,
+      "message": "Improved the handling of empty paths",
+      "revId": "8a625dacc7026183c7fa5ffa1d9bf787dbe741c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
