@@ -912,13 +912,23 @@ Vertex* GrTriangulator::makeSortedVertex(const SkPoint& p, uint8_t alpha, Vertex
     return v;
 }
 
-// If an edge's top and bottom points differ only by 1/2 machine epsilon in the primary
-// sort criterion, it may not be possible to split correctly, since there is no point which is
-// below the top and above the bottom. This function detects that case.
+// If an edge's top and bottom points do not have representable floating point numbers between
+// them on the sorting axis, any computed intersection point (done in higher precision) may result
+// in an unsorted vertex, in which case clamping between the top and bottom vertices will not
+// be correct. This function detects that case.
 static bool nearly_flat(const Comparator& c, Edge* edge) {
-    SkPoint diff = edge->fBottom->fPoint - edge->fTop->fPoint;
-    float primaryDiff = c.fDirection == Comparator::Direction::kHorizontal ? diff.fX : diff.fY;
-    return fabs(primaryDiff) <= std::numeric_limits<float>::epsilon() && primaryDiff != 0.0f;
+    if (c.fDirection == Comparator::Direction::kHorizontal) {
+        // Vertices were sorted on increasing X, and then decreasing Y. Since we only care about the
+        // primary axis (X), we consider the edge flat if the next representable x coordinate
+        // that would sort below the top vertex would also sort below the bottom vertex.
+        return std::nextafterf(edge->fTop->fPoint.fX, edge->fBottom->fPoint.fX)
+                >= edge->fBottom->fPoint.fX;
+    } else {
+        // The primary axis is Y, which first sorts on increasing Y then increasing X, so like
+        // above we only care about the Y coordinate of the top and bottom vertices.
+        return std::nextafterf(edge->fTop->fPoint.fY, edge->fBottom->fPoint.fY)
+                >= edge->fBottom->fPoint.fY;
+    }
 }
 
 static SkPoint clamp(SkPoint p, SkPoint min, SkPoint max, const Comparator& c) {
