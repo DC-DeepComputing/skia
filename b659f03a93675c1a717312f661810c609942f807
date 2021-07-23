@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71940ad4_ae201e69",
+        "filename": "modules/skshaper/src/SkICU_runtime.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-23T21:20:51Z",
+      "side": 1,
+      "message": "Arguments to SkUnicode::Make()?  The code upstream is backend-agnostic, they would have to be plumbed explicitly via some other means.\n\nSounds like a fine feature but completely useless for Android, where the ICU lib is known and grandfathered throughout various releases [1][2].\n\nI\u0027m fine with disabling (or ignoring) !Android, as that is the only focus at the moment.\n\n[1] https://source.android.com/devices/architecture/modular-system/runtime#icu-libraries\n[2] https://developer.android.com/about/versions/11/behavior-changes-all?hl\u003dfr#loading_icu_common_library_with_absolute_path",
+      "parentUuid": "0c315398_164f6934",
+      "revId": "b659f03a93675c1a717312f661810c609942f807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53daae12_90acd612",
         "filename": "modules/skshaper/src/SkICU_runtime.cpp",
         "patchSetId": 7
