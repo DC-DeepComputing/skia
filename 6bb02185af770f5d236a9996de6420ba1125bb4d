@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe9e2f6_9318a64c",
+        "filename": "src/gpu/ops/GrAtlasPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-23T14:49:07Z",
+      "side": 1,
+      "message": "We require the tessellation path renderer because the GrAtlasRenderTask uses the path stencil op from the tessellation code, right? In briefly looking, that appears to be the only dependency. Could we eventually/easily move to having the GrAtlasRenderTask use the path renderer chain and then GrAtlasPathRenderer is fully independent?\n\nIs the MSAA check here necessary? Presumably it\u0027s just related to the tessellation path renderer\u0027s supported check, and that should be encapsulated in that already?",
+      "range": {
+        "startLine": 42,
+        "startChar": 11,
+        "endLine": 42,
+        "endChar": 57
+      },
+      "revId": "6bb02185af770f5d236a9996de6420ba1125bb4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
