@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "628db83d_c0192e7d",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T00:10:51Z",
+      "side": 1,
+      "message": "eg, here we could return \u0027c\u0027 (which is what we\u0027re returning anyway, it\u0027s just taking a longer journey to get there). But like I said, it may not be worth that simplification, because the (internal) semantics still include a color here, so having it as part of the signature is reasonable.",
+      "range": {
+        "startLine": 818,
+        "startChar": 19,
+        "endLine": 818,
+        "endChar": 24
+      },
+      "revId": "f5560b24f21b7026ad9232ab8f6c08f1c72b7671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
