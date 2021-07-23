@@ -301,7 +301,7 @@ SkVMGenerator::SkVMGenerator(const Program& program,
             SkASSERT(fVariableMap.find(&var) == fVariableMap.end());
 
             // For most variables, fVariableMap stores an index into fSlots, but for children,
-            // fVariableMap stores the index to pass to fSample(Shader|ColorFilter)
+            // fVariableMap stores the index to pass to fSample(Shader|ColorFilter|Blender)
             if (var.type().isEffectChild()) {
                 fVariableMap[&var] = fpCount++;
                 continue;
@@ -871,8 +871,8 @@ Value SkVMGenerator::writeIntrinsicCall(const FunctionCall& c) {
     const size_t nargs = c.arguments().size();
 
     if (intrinsicKind == k_sample_IntrinsicKind) {
-        // Sample is very special, the first argument is a child (shader/colorFilter), which can't
-        // be evaluated
+        // Sample is very special. The first argument is a child (shader/colorFilter/blender),
+        // which is opaque and can't be evaluated.
         SkASSERT(nargs == 2);
         const Expression* child = c.arguments()[0].get();
         SkASSERT(child->type().isEffectChild());
