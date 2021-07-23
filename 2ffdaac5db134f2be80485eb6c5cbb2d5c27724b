@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dfc08d8_a80f79e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T19:40:53Z",
+      "side": 1,
+      "message": "The best bot to run to see gold results for this is Test-Android-Clang-GalaxyS6-GPU-MaliT760-arm64-Release-All-Android_NativeFonts.",
+      "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b33b16d_2e7820b1",
@@ -14,6 +31,24 @@
       "writtenOn": "2021-07-23T16:53:50Z",
       "side": 1,
       "message": "setScaleTranslate is not identical to postScale - we want to translate first, then scale. IIUC setScaleTranslate only sets matrix components, I believe, but does not do the multiplications.",
+      "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde9b56e_856f123a",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-23T19:40:53Z",
+      "side": 1,
+      "message": "Since SkMatrix starts off as identity, can this be\n\n    transform.setScale(sx, sy, dx, dy);\n\nThis is what postScale does, but without the copies and the math to do the post transform to the identity matrix.",
+      "parentUuid": "2b33b16d_2e7820b1",
       "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
