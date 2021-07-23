@@ -42,10 +42,11 @@ public:
     //
     // Returns 'inputFP' wrapped in GrFPFailure() if the path was too large, or if the current atlas
     // is full and already used by either opBeingClipped or inputFP. (Currently, "too large" means
-    // more than 128*128 total pixels, or larger than the atlas size in either dimension.)
+    // larger than fMaxAtlasSize in either dimension, more than 256^2 total pixels, or more than
+    // 128^2 total pixels if the surfaceDrawContext supports MSAA or DMSAA.)
     //
     // Also returns GrFPFailure() if the view matrix has perspective.
-    GrFPResult makeAtlasClipEffect(GrRecordingContext*,
+    GrFPResult makeAtlasClipEffect(const GrSurfaceDrawContext*,
                                    const GrOp* opBeingClipped,
                                    std::unique_ptr<GrFragmentProcessor> inputFP,
                                    const SkIRect& drawBounds,
@@ -56,9 +57,12 @@ private:
     // The atlas is not compatible with DDL. We can only use it on direct contexts.
     GrAtlasPathRenderer(GrDirectContext*);
 
-    // Returns true if the given device-space path bounds are no larger than 128*128 total pixels
-    // and no larger than the max atlas size in either dimension.
-    bool pathFitsInAtlas(const SkRect& pathDevBounds) const;
+    // Returns true if the given device-space path bounds are no larger than a pre-determined number
+    // of total pixels, and no larger than the max atlas size in either dimension.
+    //
+    // Currently, we only atlas paths with 128^2 pixels or fewer if the fallback AA type is kMSAA,
+    // or 256^2 pixels if the fallback AA type is kCoverage.
+    bool pathFitsInAtlas(const SkRect& pathDevBounds, GrAAType fallbackAAType) const;
 
     // Returns true if the draw being set up already uses the given atlasProxy.
     using DrawRefsAtlasCallback = std::function<bool(const GrSurfaceProxy* atlasProxy)>;
