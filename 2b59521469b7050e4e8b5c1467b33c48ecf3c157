@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7c5aa4_d9c1088f",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-07-23T14:03:29Z",
+      "side": 1,
+      "message": "Preview: http://shortn/_vdJ4ZBBegp",
+      "revId": "2b59521469b7050e4e8b5c1467b33c48ecf3c157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c162a235_6ce184d1",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-07-23T14:03:29Z",
+      "side": 1,
+      "message": "Preview: http://shortn/_UuwRdu5kBK",
+      "revId": "2b59521469b7050e4e8b5c1467b33c48ecf3c157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
