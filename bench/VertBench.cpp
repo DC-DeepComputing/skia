@@ -52,9 +52,11 @@ class VertBench : public Benchmark {
     }
 
     void onDelayedSetup() override {
-        auto img = GetResourceAsImage("images/mandrill_256.png");
-        if (img) {
-            fShader = img->makeShader(SkSamplingOptions());
+        if (fFlags & kTexture_VertFlag) {
+            auto img = GetResourceAsImage("images/mandrill_256.png");
+            if (img) {
+                fShader = img->makeShader(SkSamplingOptions());
+            }
         }
     }
 
