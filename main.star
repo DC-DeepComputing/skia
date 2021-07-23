@@ -500,9 +500,6 @@ luci.cq_group(
             builder = "skia:skia.primary/Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-ASAN",
         ),
         luci.cq_tryjob_verifier(
-            builder = "skia:skia.primary/Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_Vulkan",
-        ),
-        luci.cq_tryjob_verifier(
             builder = "skia:skia.primary/Test-Android-Clang-GalaxyS7_G930FD-GPU-MaliT880-arm64-Release-All-Android",
         ),
         luci.cq_tryjob_verifier(
