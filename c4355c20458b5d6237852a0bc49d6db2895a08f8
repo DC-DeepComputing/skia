@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea016d5_5069a3d0",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-23T18:21:09Z",
+      "side": 1,
+      "message": "If this could be non-null, then we need to remember it (pass it to append_matrix_stage, and retain it in the updater?).",
+      "range": {
+        "startLine": 437,
+        "startChar": 72,
+        "endLine": 437,
+        "endChar": 83
+      },
+      "revId": "c4355c20458b5d6237852a0bc49d6db2895a08f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
