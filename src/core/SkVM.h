@@ -544,6 +544,10 @@ namespace skvm {
             }
             return {base, (int)( sizeof(int)*(buf.size() - SK_ARRAY_COUNT(ints)) )};
         }
+
+        Uniform pushArray(int32_t a[]) {
+            return this->pushPtr(a);
+        }
     };
 
     struct PixelFormat {

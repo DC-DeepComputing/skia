@@ -17,6 +17,7 @@ static void test_jit_and_interpreter(const skvm::Builder& b, Fn&& test) {
     skvm::Program p = b.done();
     test(p);
     if (p.hasJIT()) {
+        SkDebugf("testing interpreter\n");
         test(b.done(/*debug_name=*/nullptr, /*allow_jit=*/false));
     }
 }
@@ -770,29 +771,31 @@ DEF_TEST(SkVM_NewOps, r) {
 }
 
 DEF_TEST(SKVM_array32, r) {
+
+    int i[] = {3, 7};
     skvm::Builder b;
+    skvm::Uniforms uniforms(b.uniform(), 0);
+    // Take up the first slot, so other uniforms are not at 0 offset.
+    uniforms.push(0);
+    skvm::Uniform array = uniforms.pushArray(i);
     {
         skvm::Ptr buf0     = b.varying<int32_t>(),
-                  buf1     = b.varying<int32_t>(),
-                  uniforms = b.uniform();
+                  buf1     = b.varying<int32_t>();
 
-        skvm::I32 x = b.array32(uniforms, 0, 0);
+        skvm::I32 x = b.array32(array.ptr, array.offset, 0);
         b.store32(buf0, x);
-        skvm::I32 y = b.array32(uniforms, 0, 4);
+        skvm::I32 y = b.array32(array.ptr, array.offset, 4);
         b.store32(buf1, y);
     }
 
-
     test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+        // reset the i[0] for the two tests.
+        i[0] = 3;
         const int K = 20;
-        int i[2] = {3, 7};
-        struct {
-            int* g;
-        } uniforms{i};
         int32_t buf0[K];
         int32_t buf1[K];
 
-        program.eval(K, buf0, buf1, &uniforms);
+        program.eval(K, uniforms.buf.data(), buf0, buf1);
         for (auto v : buf0) {
             REPORTER_ASSERT(r, v == 3);
         }
@@ -800,7 +803,7 @@ DEF_TEST(SKVM_array32, r) {
             REPORTER_ASSERT(r, v == 7);
         }
         i[0] = 4;
-        program.eval(K, buf0, buf1, &uniforms);
+        program.eval(K, uniforms.buf.data(), buf0, buf1);
         for (auto v : buf0) {
             REPORTER_ASSERT(r, v == 4);
         }
