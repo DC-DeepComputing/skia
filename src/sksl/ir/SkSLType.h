@@ -91,6 +91,7 @@ public:
         // Types that represent stages in the Skia pipeline
         kColorFilter,
         kShader,
+        kBlender,
     };
 
     enum class NumberKind : int8_t {
@@ -374,6 +375,7 @@ public:
      */
     size_t slotCount() const {
         switch (this->typeKind()) {
+            case Type::TypeKind::kBlender:
             case Type::TypeKind::kColorFilter:
             case Type::TypeKind::kGeneric:
             case Type::TypeKind::kOther:
