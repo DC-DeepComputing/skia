@@ -912,13 +912,21 @@ Vertex* GrTriangulator::makeSortedVertex(const SkPoint& p, uint8_t alpha, Vertex
     return v;
 }
 
-// If an edge's top and bottom points differ only by 1/2 machine epsilon in the primary
-// sort criterion, it may not be possible to split correctly, since there is no point which is
-// below the top and above the bottom. This function detects that case.
+// If an edge's top and bottom points are nearly equal on the primary sorting axis, then computed
+// intersection points may not be sort correctly with respect to the edge's vertices.
 static bool nearly_flat(const Comparator& c, Edge* edge) {
-    SkPoint diff = edge->fBottom->fPoint - edge->fTop->fPoint;
-    float primaryDiff = c.fDirection == Comparator::Direction::kHorizontal ? diff.fX : diff.fY;
-    return fabs(primaryDiff) <= std::numeric_limits<float>::epsilon() && primaryDiff != 0.0f;
+    // For either direction, the primary axis is sorted from top(low) to bottom(high) values, so if
+    // the next float from top towards bottom is greater than or equal to the edge's bottom coord,
+    // then there are no intervening floating point values for an intersection to lie on.
+    float top, bot;
+    if (c.fDirection == Comparator::Direction::kHorizontal) {
+        top = edge->fTop->fPoint.fX;
+        bot = edge->fBottom->fPoint.fX;
+    } else {
+        top = edge->fTop->fPoint.fY;
+        bot = edge->fBottom->fPoint.fY;
+    }
+    return std::nextafterf(top, bot) >= bot;
 }
 
 static SkPoint clamp(SkPoint p, SkPoint min, SkPoint max, const Comparator& c) {
@@ -968,15 +976,10 @@ bool GrTriangulator::checkForIntersection(Edge* left, Edge* right, EdgeList* act
         while (top && c.sweep_lt(p, top->fPoint)) {
             top = top->fPrev;
         }
-        bool leftFlat = nearly_flat(c, left);
-        bool rightFlat = nearly_flat(c, right);
-        if (leftFlat && rightFlat) {
-            return false;
-        }
-        if (!leftFlat) {
+        if (!nearly_flat(c, left)) {
             p = clamp(p, left->fTop->fPoint, left->fBottom->fPoint, c);
         }
-        if (!rightFlat) {
+        if (!nearly_flat(c, right)) {
             p = clamp(p, right->fTop->fPoint, right->fBottom->fPoint, c);
         }
         if (coincident(p, left->fTop->fPoint)) {
