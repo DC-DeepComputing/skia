@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f3716a9_5ee2d74c",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-24T01:20:09Z",
+      "side": 0,
+      "message": "With the change to nearly_flat only, the GM inverse_paths would crash during validate edges. It created a scenario where two edges intersected, but both were considered flat along the primary axis. I had originally added this check due to infinite recursion in some fuzzer bugs that would detect an intersection, add a vertex, and re-detect the same intersection effectively.\n\nNow that I think nearly_flat is actually taking magnitude into account, that workaround doesn\u0027t appear necessary and I confirmed that the two fuzzer testcases continue to pass.",
+      "range": {
+        "startLine": 971,
+        "startChar": 8,
+        "endLine": 975,
+        "endChar": 9
+      },
+      "revId": "747c32192285e5809cca407b56af0219dfc051e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
