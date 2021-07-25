@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cda394a_ea6799fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2021-07-25T17:21:09Z",
+      "side": 1,
+      "message": "Stephen PTAL!\n\nIs there a way to suppress some GMs? They are using some SPIRV instructions that aren\u0027t handled by Tint\u0027s SPIRV-Reader: runtime_intrinsics_matrix and runtime_intrinsics_trig.\n\nSee https://bugs.chromium.org/p/tint/issues/detail?id\u003d1044 and https://bugs.chromium.org/p/tint/issues/detail?id\u003d1045",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
