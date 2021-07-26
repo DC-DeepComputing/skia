@@ -37,7 +37,10 @@ public:
     // Configure the helper to update the stencil mask within the given rectangle, respecting the
     // set window rectangles. It will use the provided context and render target to draw into, both
     // of which must outlive the helper.
-    GrStencilMaskHelper(GrRecordingContext*, GrSurfaceDrawContext*);
+    GrStencilMaskHelper(GrRecordingContext* context, GrSurfaceDrawContext* sdc)
+            : fContext(context)
+            , fSDC(sdc)
+            , fClip(sdc->dimensions()) {}
 
     // Returns true if the stencil mask must be redrawn
     bool init(const SkIRect& maskBounds, uint32_t genID,

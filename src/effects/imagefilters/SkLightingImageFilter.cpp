@@ -22,7 +22,7 @@
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrPaint.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
@@ -454,7 +454,7 @@ private:
 };
 
 #if SK_SUPPORT_GPU
-void SkLightingImageFilterInternal::drawRect(GrSurfaceFillContext* sfc,
+void SkLightingImageFilterInternal::drawRect(GrSurfaceFillContext* surfaceFillContext,
                                              GrSurfaceProxyView srcView,
                                              const SkMatrix& matrix,
                                              const SkIRect& dstRect,
@@ -463,8 +463,8 @@ void SkLightingImageFilterInternal::drawRect(GrSurfaceFillContext* sfc,
                                              const SkIRect& bounds) const {
     SkIRect srcRect = dstRect.makeOffset(bounds.topLeft());
     auto fp = this->makeFragmentProcessor(std::move(srcView), matrix, srcBounds, boundaryMode,
-                                          *sfc->caps());
-    sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(fp));
+                                          *surfaceFillContext->caps());
+    surfaceFillContext->fillRectToRectWithFP(srcRect, dstRect, std::move(fp));
 }
 
 sk_sp<SkSpecialImage> SkLightingImageFilterInternal::filterImageGPU(
@@ -474,23 +474,23 @@ sk_sp<SkSpecialImage> SkLightingImageFilterInternal::filterImageGPU(
                                                    const SkMatrix& matrix) const {
     SkASSERT(ctx.gpuBacked());
 
-    auto rContext = ctx.getContext();
+    auto context = ctx.getContext();
 
-    GrSurfaceProxyView inputView = input->view(rContext);
+    GrSurfaceProxyView inputView = input->view(context);
     SkASSERT(inputView.asTextureProxy());
 
     GrImageInfo info(ctx.grColorType(),
                      kPremul_SkAlphaType,
                      ctx.refColorSpace(),
                      offsetBounds.size());
-    auto sfc = GrSurfaceFillContext::Make(rContext,
-                                          info,
-                                          SkBackingFit::kApprox,
-                                          1,
-                                          GrMipmapped::kNo,
-                                          inputView.proxy()->isProtected(),
-                                          kBottomLeft_GrSurfaceOrigin);
-    if (!sfc) {
+    auto surfaceFillContext = GrSurfaceFillContext::Make(context,
+                                                         info,
+                                                         SkBackingFit::kApprox,
+                                                         1,
+                                                         GrMipmapped::kNo,
+                                                         inputView.proxy()->isProtected(),
+                                                         kBottomLeft_GrSurfaceOrigin);
+    if (!surfaceFillContext) {
         return nullptr;
     }
 
@@ -508,32 +508,32 @@ sk_sp<SkSpecialImage> SkLightingImageFilterInternal::filterImageGPU(
     SkIRect bottomRight = SkIRect::MakeXYWH(dstRect.width() - 1, dstRect.height() - 1, 1, 1);
 
     const SkIRect* pSrcBounds = inputBounds.contains(offsetBounds) ? nullptr : &inputBounds;
-    this->drawRect(sfc.get(), inputView, matrix, topLeft,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, topLeft,
                    kTopLeft_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, top,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, top,
                    kTop_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, topRight,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, topRight,
                    kTopRight_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, left,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, left,
                    kLeft_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, interior,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, interior,
                    kInterior_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, right,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, right,
                    kRight_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, bottomLeft,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, bottomLeft,
                    kBottomLeft_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), inputView, matrix, bottom,
+    this->drawRect(surfaceFillContext.get(), inputView, matrix, bottom,
                    kBottom_BoundaryMode, pSrcBounds, offsetBounds);
-    this->drawRect(sfc.get(), std::move(inputView), matrix, bottomRight,
+    this->drawRect(surfaceFillContext.get(), std::move(inputView), matrix, bottomRight,
                    kBottomRight_BoundaryMode, pSrcBounds, offsetBounds);
 
     return SkSpecialImage::MakeDeferredFromGpu(
-            rContext,
+            context,
             SkIRect::MakeWH(offsetBounds.width(), offsetBounds.height()),
             kNeedNewImageUniqueID_SpecialImage,
-            sfc->readSurfaceView(),
-            sfc->colorInfo().colorType(),
-            sfc->colorInfo().refColorSpace(),
+            surfaceFillContext->readSurfaceView(),
+            surfaceFillContext->colorInfo().colorType(),
+            surfaceFillContext->colorInfo().refColorSpace(),
             ctx.surfaceProps());
 }
 #endif
