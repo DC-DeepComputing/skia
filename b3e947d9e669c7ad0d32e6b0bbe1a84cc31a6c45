@@ -16,6 +16,23 @@
       "message": "Sending this for an initial review, but I\u0027ll update this to contain a FreeType roll in Skia as well once the FT side changes have been merged.",
       "revId": "b3e947d9e669c7ad0d32e6b0bbe1a84cc31a6c45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40563a2e_d4b5933c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T15:55:57Z",
+      "side": 1,
+      "message": "lgtm so far.",
+      "revId": "b3e947d9e669c7ad0d32e6b0bbe1a84cc31a6c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
