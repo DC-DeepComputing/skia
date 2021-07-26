@@ -33,6 +33,47 @@
       "message": "I like the readability of this approach better than the other impl.",
       "revId": "78ce36692af32f4027143fd8a5da27db85c79159",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36e9ec2b_48296092",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-26T19:37:31Z",
+      "side": 1,
+      "message": "I don\u0027t feel strongly, but I like the other one better due to lack of member variable.",
+      "parentUuid": "8677fa27_bdc6b0ea",
+      "revId": "78ce36692af32f4027143fd8a5da27db85c79159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a14658c1_74a75778",
+        "filename": "tests/CanvasTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-26T19:37:31Z",
+      "side": 1,
+      "message": "Can be\n ERRORF(reporter, \"check_pixels failed\");",
+      "range": {
+        "startLine": 777,
+        "startChar": 20,
+        "endLine": 777,
+        "endChar": 70
+      },
+      "revId": "78ce36692af32f4027143fd8a5da27db85c79159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
