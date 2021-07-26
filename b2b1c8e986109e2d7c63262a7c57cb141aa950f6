@@ -50,6 +50,24 @@
       "message": "Brian, this Tint roll is failing on an SkSL test. We don\u0027t have a MatrixInverse implementation for this path yet. Would it be ok to suppress this test for now? Is there a way we could do it only for the Dawn path?",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7da896ff_bd8500f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-26T15:40:21Z",
+      "side": 1,
+      "message": "+brianosman and +johnstiles. It looks to me like the failures are actually in matrix equality and to-vector tests.\n\nFWIW we actually do use matrix inversion in an internal shader:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ops/GrDrawAtlasPathOp.cpp;l\u003d87?q\u003dGrDrawAtlasPathOp.cpp\u0026ss\u003dchromium",
+      "parentUuid": "665a4892_530f4077",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
