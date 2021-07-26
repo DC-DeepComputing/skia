@@ -122,6 +122,24 @@
       "parentUuid": "218739f3_0814a6b9",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e45f8b8e_fe3290b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T15:53:18Z",
+      "side": 1,
+      "message": "This SPIR-V is slightly different from what you will actually receive because it\u0027s compiled in a stand-alone way (no actual GPU is set up), but it should be accurate for the stuff that matters.\n\nMatrixToVectorCast: https://osscs.corp.google.com/skia/skia/+/main:tests/sksl/shared/MatrixToVectorCast.asm.frag\n\nMatrixEquality: https://osscs.corp.google.com/skia/skia/+/main:tests/sksl/shared/MatrixEquality.asm.frag",
+      "parentUuid": "8db1fd67_a15ec311",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
