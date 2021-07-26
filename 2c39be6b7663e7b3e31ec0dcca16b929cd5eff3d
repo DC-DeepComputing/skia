@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb6bf0a_117bcc66",
+        "filename": "tests/HashTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-26T18:38:15Z",
+      "side": 1,
+      "message": "REPORTER_ASSERT(r, memcmp(data1, data2, sizeof(data1)) !\u003d 0)",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 34
+      },
+      "revId": "2c39be6b7663e7b3e31ec0dcca16b929cd5eff3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
