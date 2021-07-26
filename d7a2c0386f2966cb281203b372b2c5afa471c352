@@ -46,6 +46,30 @@
       },
       "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "021d9602_5af3675d",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T15:59:36Z",
+      "side": 1,
+      "message": "Good catch, I did indeed mean to have an fParent in there.\n\nCrap, I\u0027m so used to ignoring Housekeeper failures I didn\u0027t even notice this failure wasn\u0027t the Presubmit bot. My bad, although it was unrelated to this - this problem resulted in too much string retention, rather than too little. There were instead two spots where I had failed to update some String allocations, resulting in them being dropped on the floor.",
+      "parentUuid": "891ddd00_9b635958",
+      "range": {
+        "startLine": 131,
+        "startChar": 33,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
