@@ -2391,7 +2391,8 @@ private:
 
     // shared by save() and saveLayer()
     void internalSave();
-    void internalRestore();
+    void doRestore(bool blitLayer);
+    void internalRestore(bool blitLayer);
 
     enum class DeviceCompatibleWithFilter : bool {
         // Check the src device's local-to-device matrix for compatibility with the filter, and if
