@@ -22,6 +22,30 @@
       },
       "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "891ddd00_9b635958",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T13:57:45Z",
+      "side": 1,
+      "message": "I\u0027m guessing that is why we are getting mojibake in CheckGeneratedFiles as well.\n\nhttp://screen/AWUMEkrPyCG5V5P",
+      "parentUuid": "56b9f4f6_70a1ac15",
+      "range": {
+        "startLine": 131,
+        "startChar": 33,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
