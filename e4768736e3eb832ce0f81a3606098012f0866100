@@ -34,6 +34,23 @@
       "parentUuid": "41d478ec_a9f8e9cf",
       "revId": "e4768736e3eb832ce0f81a3606098012f0866100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "594a5b4f_4914c28a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-26T15:39:33Z",
+      "side": 1,
+      "message": "Hurray that it now works on gpu.\n\nI\u0027ll whip up a gm for this.",
+      "revId": "e4768736e3eb832ce0f81a3606098012f0866100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
