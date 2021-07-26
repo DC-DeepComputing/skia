@@ -168,6 +168,24 @@
       "parentUuid": "57607b64_eae488cc",
       "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe258b96_e816916b",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-26T15:01:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "216fe97e_30f9465d",
+      "revId": "aece80fd145902c18d04e3d34bd6bc0806bc3366",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
