@@ -68,6 +68,24 @@
       "parentUuid": "665a4892_530f4077",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28593bbb_e0024572",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T15:45:16Z",
+      "side": 1,
+      "message": "If those tests were passing before the Dawn roll, then there\u0027s a chance that they\u0027ve uncovered a real regression in Dawn. Those tests aren\u0027t new. We have had issues with them in the past on Adreno, but AFAIK never on Quadro.",
+      "parentUuid": "7da896ff_bd8500f6",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
