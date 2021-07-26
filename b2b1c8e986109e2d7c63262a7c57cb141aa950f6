@@ -212,6 +212,24 @@
       "parentUuid": "2a471716_32880128",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ce4628e_4ba02c45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2021-07-26T16:33:11Z",
+      "side": 1,
+      "message": "Brian, John: thanks for the investigation!\n\nLooking into it a bit further, it looks like only those portions of MatrixToVectorCast relating to the uniform half2x2 are failing. If I comment out the lines from MatrixToVectorCast.sksl referring to testMatrix2x2, or convert that uniform to a local half2x2 constant, the test passes. So perhaps something is broken in half2x2 uniform upload.",
+      "parentUuid": "d2b175b7_4376f1e6",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
