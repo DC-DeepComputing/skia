@@ -161,6 +161,7 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachBlendMode(const skjson::ObjectVa
 AnimationBuilder::AnimationBuilder(sk_sp<ResourceProvider> rp, sk_sp<SkFontMgr> fontmgr,
                                    sk_sp<PropertyObserver> pobserver, sk_sp<Logger> logger,
                                    sk_sp<MarkerObserver> mobserver, sk_sp<PrecompInterceptor> pi,
+                                   sk_sp<ExpressionManager> expressionm,
                                    Animation::Builder::Stats* stats,
                                    const SkSize& comp_size, float duration, float framerate,
                                    uint32_t flags)
@@ -170,6 +171,7 @@ AnimationBuilder::AnimationBuilder(sk_sp<ResourceProvider> rp, sk_sp<SkFontMgr> 
     , fLogger(std::move(logger))
     , fMarkerObserver(std::move(mobserver))
     , fPrecompInterceptor(std::move(pi))
+    , fExpressionManager(std::move(expressionm))
     , fStats(stats)
     , fCompSize(comp_size)
     , fDuration(duration)
@@ -290,6 +292,23 @@ bool AnimationBuilder::dispatchTransformProperty(const sk_sp<TransformAdapter2D>
     return dispatched;
 }
 
+sk_sp<ScalarExpressionEvaluator>
+AnimationBuilder::createScalarExpressionEvaluator(
+    const SkString& expression) const {
+  if (fExpressionManager == nullptr) {
+    log(Logger::Level::kWarning, nullptr,
+        "Optional expression manager not supplied.");
+    return nullptr;
+  }
+  sk_sp<ScalarExpressionEvaluator> expression_evaluator =
+      fExpressionManager->GetScalarEvaluator(expression.c_str());
+  if (expression_evaluator == nullptr) {
+    log(Logger::Level::kWarning, nullptr,
+        "Optional expression manager did not create an evaluator.");
+  }
+  return expression_evaluator;
+}
+
 void AnimationBuilder::AutoPropertyTracker::updateContext(PropertyObserver* observer,
                                                           const skjson::ObjectValue& obj) {
 
@@ -332,6 +351,11 @@ Animation::Builder& Animation::Builder::setMarkerObserver(sk_sp<MarkerObserver> 
 
 Animation::Builder& Animation::Builder::setPrecompInterceptor(sk_sp<PrecompInterceptor> pi) {
     fPrecompInterceptor = std::move(pi);
+    return *this;
+}
+
+Animation::Builder& Animation::Builder::setExpressionManager(sk_sp<ExpressionManager> expressionm) {
+    fExpressionManager = std::move(expressionm);
     return *this;
 }
 
@@ -409,6 +433,7 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
                                        std::move(fLogger),
                                        std::move(fMarkerObserver),
                                        std::move(fPrecompInterceptor),
+                                       std::move(fExpressionManager),
                                        &fStats, size, duration, fps, fFlags);
     auto ainfo = builder.parse(json);
 

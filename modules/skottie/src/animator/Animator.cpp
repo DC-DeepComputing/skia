@@ -49,17 +49,14 @@ void AnimatablePropertyContainer::shrink_to_fit() {
 
 bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
                                            const skjson::ObjectValue* jprop,
-                                           KeyframeAnimatorBuilder& builder) {
+                                           DynamicAnimatorBuilder& builder) {
     if (!jprop) {
         return false;
     }
 
     const auto& jpropA = (*jprop)["a"];
     const auto& jpropK = (*jprop)["k"];
-
-    if (!(*jprop)["x"].is<skjson::NullValue>()) {
-        abuilder.log(Logger::Level::kWarning, nullptr, "Unsupported expression.");
-    }
+    const auto& jpropX = (*jprop)["x"];
 
     // Older Json versions don't have an "a" animation marker.
     // For those, we attempt to parse both ways.
@@ -77,10 +74,10 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
     }
 
     // Keyframed property.
-    sk_sp<KeyframeAnimator> animator;
+    sk_sp<DynamicAnimator> animator;
     const skjson::ArrayValue* jkfs = jpropK;
     if (jkfs && jkfs->size() > 0) {
-        animator = builder.make(abuilder, *jkfs);
+        animator = builder.make(abuilder, *jkfs, jpropX);
     }
 
     if (!animator) {
