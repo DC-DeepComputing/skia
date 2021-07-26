@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GrTypes.h"
 #include "src/gpu/GrBuffer.h"
+#include "src/gpu/GrManagedResource.h"
 #include "src/gpu/GrRefCnt.h"
 #include "src/gpu/GrSurface.h"
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
@@ -46,6 +47,15 @@ public:
 
     void addCompletedHandler(MTLCommandBufferHandler block) {
         [fCmdBuffer addCompletedHandler:block];
+    }
+
+    void addResource(sk_sp<const GrManagedResource> resource) {
+        SkASSERT(resource);
+        fTrackedResources.push_back(std::move(resource));
+    }
+
+    void addResource(const GrManagedResource* resource) {
+        this->addResource(sk_ref_sp(resource));
     }
 
     void addGrBuffer(sk_sp<const GrBuffer> buffer) {
@@ -92,6 +102,7 @@ private:
 
     static const int kInitialTrackedResourcesCount = 32;
 
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrManagedResource>> fTrackedResources;
     SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>> fTrackedGrBuffers;
     SkSTArray<16, gr_cb<const GrSurface>> fTrackedGrSurfaces;
 
