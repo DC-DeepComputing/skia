@@ -713,3 +713,47 @@ for (const variant of ['ttf', 'woff', 'woff2']) {
         perfKey: 'font_getGlyphIDs_' + variant,
     });
 }
+
+onlytests.push({
+    description: 'Have JS Callback',
+    setup: function(CanvasKit, ctx) {
+        let i = 0;
+        ctx.callback = {
+            "setContext": () => {
+                if (i === 10) {
+                    console.log("should not be called");
+                }
+            },
+        }
+    },
+    test: function(CanvasKit, ctx) {
+        for (let i = 0; i < 1000; i++) {
+            CanvasKit.measureWithJSCall(ctx.callback, 1000);
+        }
+
+    },
+    teardown: function(CanvasKit, ctx) {},
+    perfKey: 'js_callback',
+});
+
+onlytests.push({
+    description: 'No JS Callback',
+    setup: function(CanvasKit, ctx) {
+        let i = 0;
+        ctx.callback = {
+            "setContext": () => {
+                if (i === 10) {
+                    console.log("should not be called");
+                }
+            },
+        }
+    },
+    test: function(CanvasKit, ctx) {
+        for (let i = 0; i < 1000; i++) {
+            CanvasKit.measureWithoutJSCall(ctx.callback, 1000);
+        }
+
+    },
+    teardown: function(CanvasKit, ctx) {},
+    perfKey: 'no_js_callback',
+});

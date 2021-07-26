@@ -732,6 +732,28 @@ EMSCRIPTEN_BINDINGS(Skia) {
     function("setDecodeCacheLimitBytes", &SkResourceCache::SetTotalByteLimit);
     function("getDecodeCacheUsedBytes" , &SkResourceCache::GetTotalBytesUsed);
 
+    function("measureWithJSCall", optional_override([](JSObject callback,
+                                                  int num)->void {
+        int sum = 0;
+        for (int i = 0; i<num;i++) {
+            sum += i;
+        }
+        if (sum > 1) { // should always happen.
+            callback.call<void>("setContext");
+        }
+    }));
+
+    function("measureWithoutJSCall", optional_override([](JSObject callback,
+                                                  size_t num)->void {
+        int sum = 0;
+        for (int i = 0; i<num;i++) {
+            sum += i;
+        }
+        if (sum == 117) { // should never happen, but cannot be optimized out
+            callback.call<void>("setContext");
+        }
+    }));
+
     function("_computeTonalColors", &computeTonalColors);
     function("_decodeAnimatedImage", optional_override([](WASMPointerU8 iptr,
                                                   size_t length)->sk_sp<SkAnimatedImage> {
