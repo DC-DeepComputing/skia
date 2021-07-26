@@ -11,13 +11,13 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/ops/GrFillRectOp.h"
 #include "src/gpu/ops/GrTextureOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 
-static std::unique_ptr<GrSurfaceDrawContext> new_RTC(GrRecordingContext* rContext) {
-    return GrSurfaceDrawContext::Make(
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> new_RTC(GrRecordingContext* rContext) {
+    return skgpu::v1::SurfaceDrawContext::Make(
             rContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact, {128, 128},
             SkSurfaceProps());
 }
@@ -56,7 +56,7 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
         return;
     }
 
-    std::unique_ptr<GrSurfaceDrawContext> rtc = new_RTC(dContext);
+    std::unique_ptr<skgpu::v1::SurfaceDrawContext> sdc = new_RTC(dContext);
 
     auto quads = new GrQuadSetEntry[requestedTotNumQuads];
 
@@ -70,10 +70,10 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
     GrPaint paint;
     paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
 
-    GrFillRectOp::AddFillRectOps(rtc.get(), nullptr, dContext, std::move(paint), overallAA,
+    GrFillRectOp::AddFillRectOps(sdc.get(), nullptr, dContext, std::move(paint), overallAA,
                                  SkMatrix::I(), quads, requestedTotNumQuads);
 
-    GrOpsTask* opsTask = rtc->testingOnly_PeekLastOpsTask();
+    GrOpsTask* opsTask = sdc->testingOnly_PeekLastOpsTask();
     int actualNumOps = opsTask->numOpChains();
 
     int actualTotNumQuads = 0;
@@ -100,7 +100,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
                                     bool allUniqueProxies,
                                     int requestedTotNumQuads, int expectedNumOps) {
 
-    std::unique_ptr<GrSurfaceDrawContext> rtc = new_RTC(dContext);
+    std::unique_ptr<skgpu::v1::SurfaceDrawContext> rtc = new_RTC(dContext);
 
     GrSurfaceProxyView proxyViewA, proxyViewB;
 

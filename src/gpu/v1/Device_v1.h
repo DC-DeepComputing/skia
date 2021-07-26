@@ -14,8 +14,8 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "src/gpu/BaseDevice.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 class SkSpecialImage;
 class SkSurface;
@@ -104,9 +104,8 @@ public:
 
     ~Device() override {}
 
-    GrSurfaceDrawContext* surfaceDrawContext() override;
-    const GrSurfaceDrawContext* surfaceDrawContext() const;
-    GrSurfaceFillContext* surfaceFillContext() override;
+    SurfaceDrawContext* getV1SDC() override;
+    const SurfaceDrawContext* surfaceDrawContext() const;
 
     // set all pixels to 0
     void clearAll();
@@ -200,7 +199,7 @@ protected:
 #endif
 
 private:
-    std::unique_ptr<GrSurfaceDrawContext> fSurfaceDrawContext;
+    std::unique_ptr<SurfaceDrawContext> fSurfaceDrawContext;
 
     GR_CLIP_STACK fClip;
 

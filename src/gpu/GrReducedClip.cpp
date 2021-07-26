@@ -19,11 +19,11 @@
 #include "src/gpu/GrStencilMaskHelper.h"
 #include "src/gpu/GrStencilSettings.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrUserStencilSettings.h"
 #include "src/gpu/effects/GrConvexPolyEffect.h"
 #include "src/gpu/effects/GrRRectEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/shaders/SkShaderBase.h"
 
 /**
@@ -708,7 +708,7 @@ void GrReducedClip::makeEmpty() {
 ////////////////////////////////////////////////////////////////////////////////
 // Create a 8-bit clip mask in alpha
 
-static bool stencil_element(GrSurfaceDrawContext* rtc,
+static bool stencil_element(skgpu::v1::SurfaceDrawContext* rtc,
                             const GrFixedClip& clip,
                             const GrUserStencilSettings* ss,
                             const SkMatrix& viewMatrix,
@@ -741,7 +741,7 @@ static bool stencil_element(GrSurfaceDrawContext* rtc,
     return false;
 }
 
-static void draw_element(GrSurfaceDrawContext* rtc,
+static void draw_element(skgpu::v1::SurfaceDrawContext* rtc,
                          const GrClip& clip,  // TODO: can this just always be WideOpen?
                          GrPaint&& paint,
                          GrAA aa,
@@ -768,7 +768,7 @@ static void draw_element(GrSurfaceDrawContext* rtc,
     }
 }
 
-bool GrReducedClip::drawAlphaClipMask(GrSurfaceDrawContext* rtc) const {
+bool GrReducedClip::drawAlphaClipMask(skgpu::v1::SurfaceDrawContext* rtc) const {
     // The texture may be larger than necessary, this rect represents the part of the texture
     // we populate with a rasterization of the clip.
     GrFixedClip clip(rtc->dimensions(), SkIRect::MakeWH(fScissor.width(), fScissor.height()));
@@ -849,7 +849,7 @@ bool GrReducedClip::drawAlphaClipMask(GrSurfaceDrawContext* rtc) const {
 // Create a 1-bit clip mask in the stencil buffer.
 
 bool GrReducedClip::drawStencilClipMask(GrRecordingContext* context,
-                                        GrSurfaceDrawContext* surfaceDrawContext) const {
+                                        skgpu::v1::SurfaceDrawContext* surfaceDrawContext) const {
     GrStencilMaskHelper helper(context, surfaceDrawContext);
     if (!helper.init(fScissor, this->maskGenID(), fWindowRects, this->numAnalyticElements())) {
         // The stencil mask doesn't need updating

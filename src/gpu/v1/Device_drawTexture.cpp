@@ -20,13 +20,13 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 
@@ -337,7 +337,7 @@ SkPMColor4f texture_color(SkColor4f paintColor, float entryAlpha, GrColorType sr
 }
 
 // Assumes srcRect and dstRect have already been optimized to fit the proxy
-void draw_texture(GrSurfaceDrawContext* rtc,
+void draw_texture(skgpu::v1::SurfaceDrawContext* rtc,
                   const GrClip* clip,
                   const SkMatrix& ctm,
                   const SkPaint& paint,
@@ -410,8 +410,8 @@ void draw_texture(GrSurfaceDrawContext* rtc,
 }
 
 // Assumes srcRect and dstRect have already been optimized to fit the proxy.
-void draw_image(GrRecordingContext* context,
-                GrSurfaceDrawContext* rtc,
+void draw_image(GrRecordingContext* rContext,
+                skgpu::v1::SurfaceDrawContext* sdc,
                 const GrClip* clip,
                 const SkMatrixProvider& matrixProvider,
                 const SkPaint& paint,
@@ -431,13 +431,13 @@ void draw_image(GrRecordingContext* context,
         can_use_draw_texture(paint, sampling.useCubic, sampling.mipmap)) {
         // We've done enough checks above to allow us to pass ClampNearest() and not check for
         // scaling adjustments.
-        auto [view, ct] = image.asView(context, GrMipmapped::kNo);
+        auto [view, ct] = image.asView(rContext, GrMipmapped::kNo);
         if (!view) {
             return;
         }
         GrColorInfo info(image.imageInfo().colorInfo());
         info = info.makeColorType(ct);
-        draw_texture(rtc,
+        draw_texture(sdc,
                      clip,
                      ctm,
                      paint,
@@ -485,7 +485,7 @@ void draw_image(GrRecordingContext* context,
         !image.isYUVA()) {
         SkMatrix combinedMatrix;
         combinedMatrix.setConcat(ctm, srcToDst);
-        if (can_ignore_linear_filtering_subset(src, combinedMatrix, rtc->numSamples())) {
+        if (can_ignore_linear_filtering_subset(src, combinedMatrix, sdc->numSamples())) {
             restrictToSubset = false;
         }
     }
@@ -501,7 +501,7 @@ void draw_image(GrRecordingContext* context,
     const SkRect* subset = restrictToSubset       ? &src : nullptr;
     const SkRect* domain = coordsAllInsideSrcRect ? &src : nullptr;
     SkTileMode tileModes[] = {tm, tm};
-    std::unique_ptr<GrFragmentProcessor> fp = image.asFragmentProcessor(context,
+    std::unique_ptr<GrFragmentProcessor> fp = image.asFragmentProcessor(rContext,
                                                                         sampling,
                                                                         tileModes,
                                                                         textureMatrix,
@@ -509,7 +509,7 @@ void draw_image(GrRecordingContext* context,
                                                                         domain);
     fp = GrColorSpaceXformEffect::Make(std::move(fp),
                                        image.imageInfo().colorInfo(),
-                                       rtc->colorInfo());
+                                       sdc->colorInfo());
     if (image.isAlphaOnly()) {
         fp = GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kDstIn);
     } else {
@@ -517,8 +517,8 @@ void draw_image(GrRecordingContext* context,
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaintWithTexture(context,
-                                     rtc->colorInfo(),
+    if (!SkPaintToGrPaintWithTexture(rContext,
+                                     sdc->colorInfo(),
                                      paint,
                                      matrixProvider,
                                      std::move(fp),
@@ -537,10 +537,10 @@ void draw_image(GrRecordingContext* context,
                 GrMapRectPoints(dst, src, dstClip, srcClipPoints, 4);
                 srcClip = srcClipPoints;
             }
-            rtc->fillQuadWithEdgeAA(clip, std::move(grPaint), aa, aaFlags, ctm, dstClip, srcClip);
+            sdc->fillQuadWithEdgeAA(clip, std::move(grPaint), aa, aaFlags, ctm, dstClip, srcClip);
         } else {
             // Provide explicit texture coords when possible, otherwise rely on texture matrix
-            rtc->fillRectWithEdgeAA(clip, std::move(grPaint), aa, aaFlags, ctm, dst,
+            sdc->fillRectWithEdgeAA(clip, std::move(grPaint), aa, aaFlags, ctm, dst,
                                     canUseTextureCoordsAsLocalCoords ? &src : nullptr);
         }
     } else {
@@ -558,12 +558,12 @@ void draw_image(GrRecordingContext* context,
         }
 
         GrBlurUtils::drawShapeWithMaskFilter(
-                context, rtc, clip, shape, std::move(grPaint), ctm, mf);
+                rContext, sdc, clip, shape, std::move(grPaint), ctm, mf);
     }
 }
 
 void draw_tiled_bitmap(GrRecordingContext* context,
-                       GrSurfaceDrawContext* rtc,
+                       skgpu::v1::SurfaceDrawContext* rtc,
                        const GrClip* clip,
                        const SkBitmap& bitmap,
                        int tileSize,

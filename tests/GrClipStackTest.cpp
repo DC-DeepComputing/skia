@@ -20,7 +20,7 @@
 #include "src/core/SkRectPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrProxyProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 namespace {
 
@@ -1657,7 +1657,7 @@ DEF_TEST(GrClipStack_DiffRects, r) {
 
     SkSimpleMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(&options);
-    std::unique_ptr<GrSurfaceDrawContext> rtc = GrSurfaceDrawContext::Make(
+    std::unique_ptr<skgpu::v1::SurfaceDrawContext> rtc = skgpu::v1::SurfaceDrawContext::Make(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps());
 
