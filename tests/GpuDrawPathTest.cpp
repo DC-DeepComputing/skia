@@ -112,3 +112,20 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrDrawCollapsedPath, reporter, ctxInfo) {
     surface->getCanvas()->drawPath(path, paint);
     surface->flushAndSubmit();
 }
+
+DEF_GPUTEST_FOR_ALL_CONTEXTS(PathTest_CrBug1232834, reporter, ctxInfo) {
+    // This path used to assert in GrAAHairlinePathRenderer
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(), SkBudgeted::kNo, info));
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+
+    SkPath path;
+    path.moveTo(9.0072E15f, 60);
+    path.cubicTo(0, 3.40282e+38f, 0, 3.40282e+38f, 0, 0);
+
+    surface->getCanvas()->drawPath(path, paint);
+    surface->flushAndSubmit();
+}
