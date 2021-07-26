@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b9f4f6_70a1ac15",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T13:54:44Z",
+      "side": 1,
+      "message": "Unless I\u0027m misunderstanding, it looks like this will go into a builtin and then stop, instead of stopping one before a builtin. \n\nMaybe `!owner-\u003efParent-\u003efBuiltin` ?\n\n(Also, maybe we should break out the logic for \"topmost symbol table\" into a helper function? Seems like a good division of responsibility. Not really necessary, but feels like a good idea?)",
+      "range": {
+        "startLine": 131,
+        "startChar": 33,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
