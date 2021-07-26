@@ -18,15 +18,15 @@ struct DrawQuad;
 class GrClip;
 class GrColorSpaceXform;
 class GrDrawOp;
-class GrSurfaceDrawContext;
+//class GrSurfaceDrawContext;
 class GrTextureProxy;
 struct GrTextureSetEntry;
 struct SkRect;
 class SkMatrix;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
 class GrTextureOp {
 public:
-
     /**
      * Controls whether saturate() is called after the texture is color-converted to ensure all
      * color values are in 0..1 range.
@@ -60,7 +60,7 @@ public:
     // Automatically falls back to using one GrFillRectOp per entry if dynamic states are not
     // supported, or if the blend mode is not src-over. 'cnt' is the size of the entry array.
     // 'proxyCnt' <= 'cnt' and represents the number of proxy switches within the array.
-    static void AddTextureSetOps(GrSurfaceDrawContext*,
+    static void AddTextureSetOps(skgpu::v1::SurfaceDrawContext*,
                                  const GrClip* clip,
                                  GrRecordingContext*,
                                  GrTextureSetEntry[],

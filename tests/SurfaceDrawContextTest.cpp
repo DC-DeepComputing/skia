@@ -12,18 +12,18 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 static const int kSize = 64;
 
-static std::unique_ptr<GrSurfaceDrawContext> get_sdc(GrRecordingContext* rContext) {
-    return GrSurfaceDrawContext::Make(rContext, GrColorType::kRGBA_8888, nullptr,
-                                      SkBackingFit::kExact, {kSize, kSize}, SkSurfaceProps());
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> get_sdc(GrRecordingContext* rContext) {
+    return skgpu::v1::SurfaceDrawContext::Make(rContext, GrColorType::kRGBA_8888, nullptr,
+                                               SkBackingFit::kExact, {kSize, kSize}, SkSurfaceProps());
 }
 
 static void check_instantiation_status(skiatest::Reporter* reporter,
-                                       GrSurfaceDrawContext* sdCtx,
+                                       skgpu::v1::SurfaceDrawContext* sdCtx,
                                        bool wrappedExpectation) {
     REPORTER_ASSERT(reporter, sdCtx->asRenderTargetProxy()->isInstantiated() == wrappedExpectation);
 

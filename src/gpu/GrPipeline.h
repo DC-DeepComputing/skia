@@ -24,7 +24,7 @@ class GrAppliedHardClip;
 struct GrGLSLBuiltinUniformHandles;
 class GrGLSLProgramDataManager;
 class GrOp;
-class GrSurfaceDrawContext;
+//class GrSurfaceDrawContext;
 class GrTextureEffect;
 
 /**

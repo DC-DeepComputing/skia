@@ -12,7 +12,6 @@
 #include "src/gpu/GrClip.h"
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrVx.h"
 #include "src/gpu/effects/GrDisableColorXP.h"
 #include "src/gpu/geometry/GrStyledShape.h"
@@ -20,6 +19,19 @@
 #include "src/gpu/tessellate/GrPathStencilCoverOp.h"
 #include "src/gpu/tessellate/GrPathTessellateOp.h"
 #include "src/gpu/tessellate/GrStrokeTessellateOp.h"
+#include "src/gpu/tessellate/shaders/GrModulateAtlasCoverageFP.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
+
+constexpr static auto kAtlasAlpha8Type = GrColorType::kAlpha_8;
+constexpr static int kAtlasInitialSize = 512;
+
+// The atlas is only used for small-area paths, which means at least one dimension of every path is
+// guaranteed to be quite small. So if we transpose tall paths, then every path will have a small
+// height, which lends very well to efficient pow2 atlas packing.
+constexpr static auto kAtlasAlgorithm = GrDynamicAtlas::RectanizerAlgorithm::kPow2;
+
+// Ensure every path in the atlas falls in or below the 128px high rectanizer band.
+constexpr static int kAtlasMaxPathHeight = 128;
 
 bool GrTessellationPathRenderer::IsSupported(const GrCaps& caps) {
     return !caps.avoidStencilBuffers() &&
@@ -89,7 +101,7 @@ static GrOp::Owner make_non_convex_fill_op(GrRecordingContext* rContext,
 }
 
 bool GrTessellationPathRenderer::onDrawPath(const DrawPathArgs& args) {
-    GrSurfaceDrawContext* surfaceDrawContext = args.fSurfaceDrawContext;
+    skgpu::v1::SurfaceDrawContext* surfaceDrawContext = args.fSurfaceDrawContext;
 
     SkPath path;
     args.fShape->asPath(&path);
@@ -139,7 +151,7 @@ void GrTessellationPathRenderer::onStencilPath(const StencilPathArgs& args) {
     SkASSERT(args.fShape->style().isSimpleFill());  // See onGetStencilSupport().
     SkASSERT(!args.fShape->inverseFilled());  // See onGetStencilSupport().
 
-    GrSurfaceDrawContext* surfaceDrawContext = args.fSurfaceDrawContext;
+    auto surfaceDrawContext = args.fSurfaceDrawContext;
     GrAAType aaType = (GrAA::kYes == args.fDoStencilMSAA) ? GrAAType::kMSAA : GrAAType::kNone;
 
     SkRect pathDevBounds;
