@@ -522,6 +522,10 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 #endif
 
 SkCanvas::~SkCanvas() {
+    // signal to ourself that we in destructor. Can affect behavior like restoring
+    // unbalanced saveLayers.
+    fInsideDestructor = true;
+
     // free up the contents of our deque
     this->restoreToCount(1);    // restore everything but the last
 
@@ -1213,7 +1217,7 @@ void SkCanvas::internalRestore() {
 
     // Draw the layer's device contents into the now-current older device. We can't call public
     // draw functions since we don't want to record them.
-    if (layer && !layer->fDevice->isNoPixelsDevice()) {
+    if (!fInsideDestructor && layer && !layer->fDevice->isNoPixelsDevice()) {
         layer->fDevice->setImmutable();
 
         // Don't go through AutoLayerForImageFilter since device draws are so closely tied to
