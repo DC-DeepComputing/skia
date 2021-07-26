@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf66ec84_917809be",
+        "filename": "src/gpu/effects/GrRRectEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-26T18:36:56Z",
+      "side": 0,
+      "message": "This wasn\u0027t correct because the loop that sets squashedRadii above can be broken out of before we\u0027ve looked at all four radii of a 9-patch rrect.",
+      "range": {
+        "startLine": 799,
+        "startChar": 20,
+        "endLine": 799,
+        "endChar": 33
+      },
+      "revId": "d3b232e99b036093f9efc47e2d961ee748e9d973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
