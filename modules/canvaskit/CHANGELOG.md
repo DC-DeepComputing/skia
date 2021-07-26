@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - `Canvas.drawImageAtCurrentFrame()` has been removed.
  - FilterQuality enum removed -- pass FilterOptions | CubicResampler instead.
 
+### Removed
+ - `Surface.grContext` and `Surface.openGLversion` - these had been undocumented and are no longeer
+   exposed.
+
+### Changed
+ - Reduced overhead when switching between webgl contexts.
+ - `Surface.flush` will now automatically switch to the correct webgl context, clients do not
+   need to call `CanvasKit.setCurrentContext` before calling flush.
+ - `CanvasKit.setCurrentContext` returns a boolean if it was successful (i.e. the handle was valid)
+
+### Type Changes (index.d.ts)
+ - `Canvas.drawImage` is correctly documented as accepting a `Paint` or null.
+
 ## [0.28.1] - 2021-06-28
 
 ### Added

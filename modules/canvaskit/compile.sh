@@ -41,6 +41,7 @@ if [[ $@ == *debug* ]]; then
   EXTRA_CFLAGS="\"-DSK_DEBUG\","
   RELEASE_CONF="-O0 --js-opts 0 -s DEMANGLE_SUPPORT=1 -s ASSERTIONS=1 -s GL_ASSERTIONS=1 -g3 \
                 --source-map-base /node_modules/canvaskit/bin/ -DSK_DEBUG --pre-js $BASE_DIR/debug.js"
+  RELEASE_CONF+=" -s GL_DEBUG=1 "
   BUILD_DIR=${BUILD_DIR:="out/canvaskit_wasm_debug"}
 elif [[ $@ == *profiling* ]]; then
   echo "Building a build for profiling"

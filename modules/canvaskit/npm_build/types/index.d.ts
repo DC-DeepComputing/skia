@@ -280,9 +280,11 @@ export interface CanvasKit {
      * When a WebGL call is made on the C++ side, it is routed to the JS side to target a specific
      * WebGL context. WebGL calls are methods on a WebGL context, so CanvasKit needs to know which
      * context to send the calls to.
+     *
+     * It returns true if successful, fals if not (e.g. the handle was invalid).
      * @param ctx
      */
-    setCurrentContext(ctx: WebGLContextHandle): void;
+    setCurrentContext(ctx: WebGLContextHandle): boolean;
 
     /**
      * Deletes the associated WebGLContext. Function not available on the CPU version.
@@ -1183,7 +1185,7 @@ export interface Canvas extends EmbindObject<Canvas> {
      * @param top
      * @param paint
      */
-    drawImage(img: Image, left: number, top: number, paint?: Paint): void;
+    drawImage(img: Image, left: number, top: number, paint: Paint | null): void;
 
     /**
      * Draws the given image with its top-left corner at (left, top) using the current clip,

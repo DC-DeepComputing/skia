@@ -59,6 +59,7 @@ var CanvasKit = {
   Malloc: function() {},
   MallocGlyphIDs: function() {},
   Free: function() {},
+  _MakeGrContext: function() {},
   computeTonalColors: function() {},
   currentContext: function() {},
   deleteContext: function() {},
@@ -657,8 +658,6 @@ var CanvasKit = {
     makeSurface: function() {},
     sampleCnt: function() {},
     reportBackendTypeIsGPU: function() {},
-    grContext: {},
-    openGLversion: {},
 
     prototype: {
       makeImageFromTexture: function() {},
