@@ -280,11 +280,14 @@ func (b *taskBuilder) cipdPlatform() string {
 		return cipd.PlatformMacAmd64
 	} else if b.matchArch("Arm64") {
 		return cipd.PlatformLinuxArm64
+	} else if b.matchModel("GalaxyS20") {
+		return cipd.PlatformLinuxArm64
 	} else if b.matchOs("Android", "ChromeOS", "iOS") {
 		return cipd.PlatformLinuxArmv6l
 	} else {
 		return cipd.PlatformLinuxAmd64
 	}
+
 }
 
 // usesPython adds attributes to tasks which use python.

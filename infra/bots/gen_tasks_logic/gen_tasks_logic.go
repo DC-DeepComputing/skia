@@ -786,9 +786,9 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				"AndroidOne": {"sprout", "MOB30Q"},
 				// S6 dimensions are more general than we would like. See skbug.com/11337 for context.
 				"GalaxyS6":        {"universal7420", "NRD90M"},
-				"GalaxyS7_G930FD": {"herolte", "R16NW_G930FXXS2ERH6"}, // This is Oreo.
-				"GalaxyS9":        {"starlte", "QP1A.190711.020"},     // This is Android10.
-				"GalaxyS20":       {"exynos990", "QP1A.190711.020"},
+				"GalaxyS7_G930FD": {"herolte", "R16NW_G930FXXS2ERH6"},  // This is Oreo.
+				"GalaxyS9":        {"starlte", "QP1A.190711.020"},      // This is Android10.
+				"GalaxyS20":       {"exynos990-sw", "QP1A.190711.020"}, //Switchboard test device.
 				"Nexus5":          {"hammerhead", "M4B30Z_3437181"},
 				"Nexus5x":         {"bullhead", "OPR6.170623.023"},
 				"Nexus7":          {"grouper", "LMY47V_1836172"}, // 2012 Nexus 7
