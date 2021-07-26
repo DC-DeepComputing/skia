@@ -51,6 +51,24 @@
       "parentUuid": "2b33b16d_2e7820b1",
       "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24cf1b48_16c0474d",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-07-26T14:35:05Z",
+      "side": 1,
+      "message": "Done, thanks for the suggestion - now we\u0027ve hopefully arrived at the right SkMatrix method for the job :-)",
+      "parentUuid": "bde9b56e_856f123a",
+      "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
