@@ -85,6 +85,24 @@
       "message": "And modules/canvaskit/compile.sh will need to be updated to add (and enable) this new module.",
       "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1757f5d4_4ab9bbcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T18:47:29Z",
+      "side": 1,
+      "message": "In addition to adding (and moving around) the files in public.bzl, it looks like creating the new module will also require a G3 BUILD change to define it and add the proper dependencies. So will probably want to take the G3 canary CL, clone it into one\u0027s own workspace, edit until it works. Take the resulting public.bzl content and put it in this CL, and keep around the BUILD changes for a manual roll (by basing it off of the next autoroll, probably).",
+      "parentUuid": "8a29c8a6_7ddba721",
+      "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
