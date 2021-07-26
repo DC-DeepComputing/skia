@@ -70,6 +70,30 @@
       },
       "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "033e8d01_59d11f80",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T16:24:21Z",
+      "side": 1,
+      "message": "Well, mutating the builtin symbol tables results in lots of weird problems. Your Program\u0027s pool will go away when the Program dies, and then you have stale pointers inside the built-in symbol table that live on, and crash if you ever access them. If nothing else, they definitely crash once the symbol table is freed (when the compiler goes). So it\u0027s not harmless by any stretch.",
+      "parentUuid": "021d9602_5af3675d",
+      "range": {
+        "startLine": 131,
+        "startChar": 33,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
