@@ -20,11 +20,11 @@
 #include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLGeometryProcessor.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 /**
  * This is a GPU-backend specific test for dynamic pipeline state. It draws boxes using dynamic
@@ -187,7 +187,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest, reporter, ctxInfo
     auto dContext = ctxInfo.directContext();
     GrResourceProvider* rp = dContext->priv().resourceProvider();
 
-    auto rtc = GrSurfaceDrawContext::Make(
+    auto rtc = skgpu::v1::SurfaceDrawContext::Make(
             dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kScreenSize, kScreenSize}, SkSurfaceProps());
     if (!rtc) {

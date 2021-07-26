@@ -22,7 +22,7 @@
 class SkMatrix;
 class GrCaps;
 class GrProxyProvider;
-class GrSurfaceDrawContext;
+//class GrSurfaceDrawContext;
 class GrProcessorTestData;
 class GrTexture;
 class GrXPFactory;

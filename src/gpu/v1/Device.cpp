@@ -54,15 +54,15 @@
 
 namespace {
 
-SkImageInfo make_info(GrSurfaceDrawContext* context, bool opaque) {
-    SkColorType colorType = GrColorTypeToSkColorType(context->colorInfo().colorType());
-    return SkImageInfo::Make(context->width(), context->height(), colorType,
+SkImageInfo make_info(skgpu::v1::SurfaceDrawContext* sdc, bool opaque) {
+    SkColorType colorType = GrColorTypeToSkColorType(sdc->colorInfo().colorType());
+    return SkImageInfo::Make(sdc->width(), sdc->height(), colorType,
                              opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType,
-                             context->colorInfo().refColorSpace());
+                             sdc->colorInfo().refColorSpace());
 }
 
 #if !defined(SK_DISABLE_NEW_GR_CLIP_STACK)
-bool force_aa_clip(const GrSurfaceDrawContext* sdc) {
+bool force_aa_clip(const skgpu::v1::SurfaceDrawContext* sdc) {
     return (sdc->numSamples() > 1 && !sdc->caps()->multisampleDisableSupport()) ||
            sdc->alwaysAntialias();
 }
@@ -156,12 +156,12 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
                                GrSurfaceOrigin origin,
                                const SkSurfaceProps& surfaceProps,
                                InitContents init) {
-    auto sdc = GrSurfaceDrawContext::Make(rContext,
-                                          colorType,
-                                          std::move(proxy),
-                                          std::move(colorSpace),
-                                          origin,
-                                          surfaceProps);
+    auto sdc = SurfaceDrawContext::Make(rContext,
+                                        colorType,
+                                        std::move(proxy),
+                                        std::move(colorSpace),
+                                        origin,
+                                        surfaceProps);
 
     return Device::Make(std::move(sdc), nullptr, init);
 }

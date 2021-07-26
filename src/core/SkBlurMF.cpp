@@ -29,10 +29,11 @@
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrShaderCaps.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrThreadSafeCache.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceContext.h"
+#include "src/gpu/effects/GrMatrixEffect.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
@@ -40,6 +41,7 @@
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #endif
 
 class SkBlurMaskFilterImpl : public SkMaskFilterBase {
@@ -1073,17 +1075,17 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
 
-    std::unique_ptr<GrSurfaceDrawContext> rtc =
-            GrSurfaceDrawContext::MakeWithFallback(dContext,
-                                                   GrColorType::kAlpha_8,
-                                                   nullptr,
-                                                   SkBackingFit::kExact,
-                                                   dimensions,
-                                                   defaultSurfaceProps,
-                                                   1,
-                                                   GrMipmapped::kNo,
-                                                   GrProtected::kNo,
-                                                   kBlurredRRectMaskOrigin);
+    std::unique_ptr<skgpu::v1::SurfaceDrawContext> rtc =
+            skgpu::v1::SurfaceDrawContext::MakeWithFallback(dContext,
+                                                            GrColorType::kAlpha_8,
+                                                            nullptr,
+                                                            SkBackingFit::kExact,
+                                                            dimensions,
+                                                            defaultSurfaceProps,
+                                                            1,
+                                                            GrMipmapped::kNo,
+                                                            GrProtected::kNo,
+                                                            kBlurredRRectMaskOrigin);
     if (!rtc) {
         return false;
     }
@@ -1443,7 +1445,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkBlurMaskFilterImpl::directFilterMaskGPU(GrRecordingContext* context,
-                                               GrSurfaceDrawContext* surfaceDrawContext,
+                                               skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
                                                GrPaint&& paint,
                                                const GrClip* clip,
                                                const SkMatrix& viewMatrix,

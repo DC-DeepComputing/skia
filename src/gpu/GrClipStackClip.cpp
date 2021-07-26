@@ -27,6 +27,7 @@
 #include "src/gpu/effects/GrRRectEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 typedef SkClipStack::Element Element;
 typedef GrReducedClip::InitialState InitialState;
@@ -103,7 +104,8 @@ bool GrClipStackClip::UseSWOnlyPath(GrRecordingContext* context,
 // sort out what kind of clip mask needs to be created: alpha, stencil,
 // scissor, or entirely software
 GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
-                                      GrSurfaceDrawContext* surfaceDrawContext, GrDrawOp*,
+                                      skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
+                                      GrDrawOp*,
                                       GrAAType aa, GrAppliedClip* out, SkRect* bounds) const {
     SkASSERT(surfaceDrawContext->width() == fDeviceSize.fWidth &&
              surfaceDrawContext->height() == fDeviceSize.fHeight);
@@ -175,7 +177,7 @@ GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
 }
 
 bool GrClipStackClip::applyClipMask(GrRecordingContext* context,
-                                    GrSurfaceDrawContext* surfaceDrawContext,
+                                    skgpu::v1::SurfaceDrawContext* surfaceDrawContext,
                                     const GrReducedClip& reducedClip, GrAppliedClip* out) const {
 #ifdef SK_DEBUG
     SkASSERT(reducedClip.hasScissor());

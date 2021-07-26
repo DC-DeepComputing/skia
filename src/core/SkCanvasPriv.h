@@ -36,6 +36,8 @@ private:
     int         fSaveCount;
 };
 
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+
 class SkCanvasPriv {
 public:
     // The lattice has pointers directly into the readbuffer
@@ -61,7 +63,7 @@ public:
 
 #if GR_TEST_UTILS
 #if SK_GPU_V1
-    static GrSurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
+    static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
 #endif
     static GrSurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
 #endif // GR_TEST_UTILS

@@ -15,12 +15,12 @@
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/TestUtils.h"
 
 #include <atomic>
@@ -156,7 +156,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo) {
 
     for (bool makeClone : {false, true}) {
         for (int parentCnt = 0; parentCnt < 2; parentCnt++) {
-            auto surfaceDrawContext = GrSurfaceDrawContext::Make(
+            auto sdc = skgpu::v1::SurfaceDrawContext::Make(
                     context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {1, 1},
                     SkSurfaceProps());
             {
@@ -176,10 +176,10 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo) {
                         clone = fp->clone();
                     }
                     GrOp::Owner op = TestOp::Make(context, std::move(fp));
-                    surfaceDrawContext->addDrawOp(std::move(op));
+                    sdc->addDrawOp(std::move(op));
                     if (clone) {
                         op = TestOp::Make(context, std::move(clone));
-                        surfaceDrawContext->addDrawOp(std::move(op));
+                        sdc->addDrawOp(std::move(op));
                     }
                 }
 
@@ -229,7 +229,7 @@ static GrColor input_texel_color(int i, int j, SkScalar delta) {
 
 // The output buffer must be the same size as the render-target context.
 void render_fp(GrDirectContext* dContext,
-               GrSurfaceDrawContext* sdc,
+               skgpu::v1::SurfaceDrawContext* sdc,
                std::unique_ptr<GrFragmentProcessor> fp,
                GrColor* outBuffer) {
     sdc->fillWithFP(std::move(fp));
@@ -393,7 +393,7 @@ bool log_texture_view(GrDirectContext* dContext, GrSurfaceProxyView src, SkStrin
     SkImageInfo ii = SkImageInfo::Make(src.proxy()->dimensions(), kRGBA_8888_SkColorType,
                                        kLogAlphaType);
 
-    auto sContext = GrSurfaceContext::Make(dContext, std::move(src), ii.colorInfo());
+    auto sContext = skgpu::SurfaceContext::Make(dContext, std::move(src), ii.colorInfo());
     SkBitmap bm;
     SkAssertResult(bm.tryAllocPixels(ii));
     SkAssertResult(sContext->readPixels(dContext, bm.pixmap(), {0, 0}));
@@ -528,7 +528,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(ProcessorOptimizationValidationTest, repor
 
     // Make the destination context for the test.
     static constexpr int kRenderSize = 256;
-    auto rtc = GrSurfaceDrawContext::Make(
+    auto rtc = skgpu::v1::SurfaceDrawContext::Make(
             context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kRenderSize, kRenderSize}, SkSurfaceProps());
 
@@ -893,7 +893,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(ProcessorCloneTest, reporter, ctxInfo) {
 
     // Make the destination context for the test.
     static constexpr int kRenderSize = 1024;
-    auto rtc = GrSurfaceDrawContext::Make(
+    auto rtc = skgpu::v1::SurfaceDrawContext::Make(
             context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kRenderSize, kRenderSize}, SkSurfaceProps());
 

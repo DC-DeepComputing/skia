@@ -28,7 +28,7 @@ public:
             , fMatrixProvider(matrixProvider) {}
 
     SkIRect getConservativeBounds() const final;
-    Effect apply(GrRecordingContext*, GrSurfaceDrawContext*, GrDrawOp*, GrAAType aaType,
+    Effect apply(GrRecordingContext*, skgpu::v1::SurfaceDrawContext*, GrDrawOp*, GrAAType,
                  GrAppliedClip* out, SkRect* bounds) const final;
     PreClipResult preApply(const SkRect& drawBounds, GrAA aa) const final;
 
@@ -36,7 +36,7 @@ public:
     static const char kMaskTestTag[];
 
 private:
-    bool applyClipMask(GrRecordingContext*, GrSurfaceDrawContext*, const GrReducedClip&,
+    bool applyClipMask(GrRecordingContext*, skgpu::v1::SurfaceDrawContext*, const GrReducedClip&,
                        GrAppliedClip*) const;
 
     // Creates an alpha mask of the clip. The mask is a rasterization of elements through the
