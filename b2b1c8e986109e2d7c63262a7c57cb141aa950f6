@@ -140,6 +140,24 @@
       "parentUuid": "8db1fd67_a15ec311",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c30ffb_6f073365",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T16:06:24Z",
+      "side": 1,
+      "message": "(FWIW, it\u0027s probably worth mentioning that Skia went for a very long time without properly supporting either of these operations at all in SPIR-V, and in practice we got away with it. Comparing two matrices for equality is not very useful; casting mat2s to vec4s and back is more of a parlor trick than anything else. We support it because GLSL does. We allow users to submit arbitrary shaders, and so we want to be as GLSL-compatible as we can be. We have tests for it because our code generators have dedicated code to handle these operations. But I would 100% be willing to believe that outside of these particular Skia tests, none of Dawn\u0027s clients ever exercise these code paths.)",
+      "parentUuid": "e45f8b8e_fe3290b7",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
