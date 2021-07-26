@@ -22,12 +22,12 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrSWMaskHelper.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrRRectEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 typedef SkClipStack::Element Element;
 typedef GrReducedClip::InitialState InitialState;
@@ -103,11 +103,14 @@ bool GrClipStackClip::UseSWOnlyPath(GrRecordingContext* context,
 ////////////////////////////////////////////////////////////////////////////////
 // sort out what kind of clip mask needs to be created: alpha, stencil,
 // scissor, or entirely software
-GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
-                                      GrSurfaceDrawContext* surfaceDrawContext, GrDrawOp*,
-                                      GrAAType aa, GrAppliedClip* out, SkRect* bounds) const {
-    SkASSERT(surfaceDrawContext->width() == fDeviceSize.fWidth &&
-             surfaceDrawContext->height() == fDeviceSize.fHeight);
+GrClip::Effect GrClipStackClip::apply(GrRecordingContext* rContext,
+                                      skgpu::v1::SurfaceDrawContext* sdc,
+                                      GrDrawOp*,
+                                      GrAAType aa,
+                                      GrAppliedClip* out,
+                                      SkRect* bounds) const {
+    SkASSERT(sdc->width() == fDeviceSize.fWidth &&
+             sdc->height() == fDeviceSize.fHeight);
     SkRect devBounds = SkRect::MakeIWH(fDeviceSize.fWidth, fDeviceSize.fHeight);
     if (!devBounds.intersect(*bounds)) {
         return Effect::kClippedOut;
@@ -125,16 +128,16 @@ GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
     // when drawing rounded div borders.
     constexpr int kMaxAnalyticElements = 4;
 
-    int maxWindowRectangles = surfaceDrawContext->maxWindowRectangles();
+    int maxWindowRectangles = sdc->maxWindowRectangles();
     int maxAnalyticElements = kMaxAnalyticElements;
-    if (surfaceDrawContext->numSamples() > 1 || aa == GrAAType::kMSAA) {
+    if (sdc->numSamples() > 1 || aa == GrAAType::kMSAA) {
         // Disable analytic clips when we have MSAA. In MSAA we never conflate coverage and opacity.
         maxAnalyticElements = 0;
         // We disable MSAA when stencil isn't supported.
-        SkASSERT(surfaceDrawContext->asRenderTargetProxy()->canUseStencil(*context->priv().caps()));
+        SkASSERT(sdc->asRenderTargetProxy()->canUseStencil(*rContext->priv().caps()));
     }
 
-    GrReducedClip reducedClip(*fStack, devBounds, context->priv().caps(), maxWindowRectangles,
+    GrReducedClip reducedClip(*fStack, devBounds, rContext->priv().caps(), maxWindowRectangles,
                               maxAnalyticElements);
     if (InitialState::kAllOut == reducedClip.initialState() &&
         reducedClip.maskElements().isEmpty()) {
@@ -154,7 +157,7 @@ GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
     }
 
     if (!reducedClip.maskElements().isEmpty()) {
-        if (!this->applyClipMask(context, surfaceDrawContext, reducedClip, out)) {
+        if (!this->applyClipMask(rContext, sdc, reducedClip, out)) {
             return Effect::kClippedOut;
         }
         effect = Effect::kClipped;
@@ -162,8 +165,8 @@ GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
 
     // The opsTask ID must not be looked up until AFTER producing the clip mask (if any). That step
     // can cause a flush or otherwise change which opstask our draw is going into.
-    uint32_t opsTaskID = surfaceDrawContext->getOpsTask()->uniqueID();
-    auto [success, clipFPs] = reducedClip.finishAndDetachAnalyticElements(context, *fMatrixProvider,
+    uint32_t opsTaskID = sdc->getOpsTask()->uniqueID();
+    auto [success, clipFPs] = reducedClip.finishAndDetachAnalyticElements(rContext, *fMatrixProvider,
                                                                           opsTaskID);
     if (success) {
         out->addCoverageFP(std::move(clipFPs));
@@ -175,46 +178,46 @@ GrClip::Effect GrClipStackClip::apply(GrRecordingContext* context,
     return effect;
 }
 
-bool GrClipStackClip::applyClipMask(GrRecordingContext* context,
-                                    GrSurfaceDrawContext* surfaceDrawContext,
-                                    const GrReducedClip& reducedClip, GrAppliedClip* out) const {
+bool GrClipStackClip::applyClipMask(GrRecordingContext* rContext,
+                                    skgpu::v1::SurfaceDrawContext* sdc,
+                                    const GrReducedClip& reducedClip,
+                                    GrAppliedClip* out) const {
 #ifdef SK_DEBUG
     SkASSERT(reducedClip.hasScissor());
-    SkIRect rtIBounds = SkIRect::MakeWH(surfaceDrawContext->width(),
-                                        surfaceDrawContext->height());
+    SkIRect rtIBounds = SkIRect::MakeWH(sdc->width(), sdc->height());
     const SkIRect& scissor = reducedClip.scissor();
     SkASSERT(rtIBounds.contains(scissor)); // Mask shouldn't be larger than the RT.
 #endif
 
-    if ((surfaceDrawContext->numSamples() <= 1 && reducedClip.maskRequiresAA()) ||
-        !surfaceDrawContext->asRenderTargetProxy()->canUseStencil(*context->priv().caps())) {
+    if ((sdc->numSamples() <= 1 && reducedClip.maskRequiresAA()) ||
+        !sdc->asRenderTargetProxy()->canUseStencil(*rContext->priv().caps())) {
         GrSurfaceProxyView result;
-        if (UseSWOnlyPath(context, surfaceDrawContext, reducedClip)) {
+        if (UseSWOnlyPath(rContext, sdc, reducedClip)) {
             // The clip geometry is complex enough that it will be more efficient to create it
             // entirely in software
-            result = this->createSoftwareClipMask(context, reducedClip, surfaceDrawContext);
+            result = this->createSoftwareClipMask(rContext, reducedClip, sdc);
         } else {
-            result = this->createAlphaClipMask(context, reducedClip);
+            result = this->createAlphaClipMask(rContext, reducedClip);
         }
 
         if (result) {
             // The mask's top left coord should be pinned to the rounded-out top left corner of
             // the clip's device space bounds.
             out->addCoverageFP(create_fp_for_mask(std::move(result), reducedClip.scissor(),
-                                                  *context->priv().caps()));
+                                                  *rContext->priv().caps()));
             return true;
         }
 
         // If alpha or software clip mask creation fails, fall through to the stencil code paths,
         // unless stencils are disallowed.
-        if (!surfaceDrawContext->asRenderTargetProxy()->canUseStencil(*context->priv().caps())) {
+        if (!sdc->asRenderTargetProxy()->canUseStencil(*rContext->priv().caps())) {
             SkDebugf("WARNING: Clip mask requires stencil, but stencil unavailable. "
                      "Clip will be ignored.\n");
             return false;
         }
     }
 
-    reducedClip.drawStencilClipMask(context, surfaceDrawContext);
+    reducedClip.drawStencilClipMask(rContext, sdc);
     out->hardClip().addStencilClip(reducedClip.maskGenID());
     return true;
 }

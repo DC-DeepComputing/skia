@@ -14,8 +14,8 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "src/gpu/BaseDevice.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 class SkSpecialImage;
 class SkSurface;
@@ -200,7 +200,7 @@ protected:
 #endif
 
 private:
-    std::unique_ptr<GrSurfaceDrawContext> fSurfaceDrawContext;
+    std::unique_ptr<SurfaceDrawContext> fSurfaceDrawContext;
 
     GR_CLIP_STACK fClip;
 
@@ -244,15 +244,15 @@ private:
                          SkFilterMode,
                          const SkPaint&);
 
-    static std::unique_ptr<GrSurfaceDrawContext> MakeSurfaceDrawContext(GrRecordingContext*,
-                                                                        SkBudgeted,
-                                                                        const SkImageInfo&,
-                                                                        SkBackingFit,
-                                                                        int sampleCount,
-                                                                        GrMipmapped,
-                                                                        GrProtected,
-                                                                        GrSurfaceOrigin,
-                                                                        const SkSurfaceProps&);
+    static std::unique_ptr<SurfaceDrawContext> MakeSurfaceDrawContext(GrRecordingContext*,
+                                                                      SkBudgeted,
+                                                                      const SkImageInfo&,
+                                                                      SkBackingFit,
+                                                                      int sampleCount,
+                                                                      GrMipmapped,
+                                                                      GrProtected,
+                                                                      GrSurfaceOrigin,
+                                                                      const SkSurfaceProps&);
 
     friend class ::SkSurface_Gpu;      // for access to surfaceProps
     using INHERITED = BaseDevice;

@@ -20,13 +20,13 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 
@@ -337,7 +337,7 @@ SkPMColor4f texture_color(SkColor4f paintColor, float entryAlpha, GrColorType sr
 }
 
 // Assumes srcRect and dstRect have already been optimized to fit the proxy
-void draw_texture(GrSurfaceDrawContext* rtc,
+void draw_texture(skgpu::v1::SurfaceDrawContext* sdc
                   const GrClip* clip,
                   const SkMatrix& ctm,
                   const SkPaint& paint,
@@ -353,8 +353,8 @@ void draw_texture(GrSurfaceDrawContext* rtc,
     if (GrColorTypeIsAlphaOnly(srcColorInfo.colorType())) {
         view.concatSwizzle(GrSwizzle("aaaa"));
     }
-    const GrColorInfo& dstInfo = rtc->colorInfo();
-    auto textureXform = GrColorSpaceXform::Make(srcColorInfo, rtc->colorInfo());
+    const GrColorInfo& dstInfo = sdc->colorInfo();
+    auto textureXform = GrColorSpaceXform::Make(srcColorInfo, sdc->colorInfo());
     GrSurfaceProxy* proxy = view.proxy();
     // Must specify the strict constraint when the proxy is not functionally exact and the src
     // rect would access pixels outside the proxy's content area without the constraint.
@@ -376,7 +376,7 @@ void draw_texture(GrSurfaceDrawContext* rtc,
         SkPoint srcQuad[4];
         GrMapRectPoints(dstRect, srcRect, dstClip, srcQuad, 4);
 
-        rtc->drawTextureQuad(clip,
+        sdc->drawTextureQuad(clip,
                              std::move(view),
                              srcColorInfo.colorType(),
                              srcColorInfo.alphaType(),
@@ -392,7 +392,7 @@ void draw_texture(GrSurfaceDrawContext* rtc,
                              ctm,
                              std::move(textureXform));
     } else {
-        rtc->drawTexture(clip,
+        sdc->drawTexture(clip,
                          std::move(view),
                          srcColorInfo.alphaType(),
                          filter,

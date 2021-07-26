@@ -12,7 +12,6 @@
 #include "src/gpu/GrClip.h"
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrVx.h"
 #include "src/gpu/effects/GrDisableColorXP.h"
 #include "src/gpu/geometry/GrStyledShape.h"
@@ -20,6 +19,7 @@
 #include "src/gpu/tessellate/GrPathStencilCoverOp.h"
 #include "src/gpu/tessellate/GrPathTessellateOp.h"
 #include "src/gpu/tessellate/GrStrokeTessellateOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 bool GrTessellationPathRenderer::IsSupported(const GrCaps& caps) {
     return !caps.avoidStencilBuffers() &&

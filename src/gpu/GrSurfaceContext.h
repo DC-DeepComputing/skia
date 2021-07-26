@@ -164,7 +164,6 @@ public:
         return fReadView.asRenderTargetProxyRef();
     }
 
-    virtual GrSurfaceDrawContext* asSurfaceDrawContext() { return nullptr; }
     virtual GrSurfaceFillContext* asFillContext() { return nullptr; }
 
     /**

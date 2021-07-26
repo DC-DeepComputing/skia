@@ -21,12 +21,12 @@
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrSWMaskHelper.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrUtil.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
 #include "src/gpu/ops/GrDrawOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 GrPathRenderer::CanDrawPath
