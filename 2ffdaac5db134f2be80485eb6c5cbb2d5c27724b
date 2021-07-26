@@ -69,6 +69,24 @@
       "parentUuid": "bde9b56e_856f123a",
       "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc226ea_5fd651c0",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T14:38:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24cf1b48_16c0474d",
+      "revId": "2ffdaac5db134f2be80485eb6c5cbb2d5c27724b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
