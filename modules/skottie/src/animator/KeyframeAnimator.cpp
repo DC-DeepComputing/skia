@@ -13,8 +13,6 @@
 
 namespace skottie::internal {
 
-KeyframeAnimator::~KeyframeAnimator() = default;
-
 KeyframeAnimator::LERPInfo KeyframeAnimator::getLERPInfo(float t) const {
     SkASSERT(!fKFs.empty());
 
@@ -86,9 +84,9 @@ float KeyframeAnimator::compute_weight(const KFSegment &seg, float t) const {
     return w;
 }
 
-KeyframeAnimatorBuilder::~KeyframeAnimatorBuilder() = default;
+DynamicAnimatorBuilder::~DynamicAnimatorBuilder() = default;
 
-bool KeyframeAnimatorBuilder::parseKeyframes(const AnimationBuilder& abuilder,
+bool DynamicAnimatorBuilder::parseKeyframes(const AnimationBuilder& abuilder,
                                              const skjson::ArrayValue& jkfs) {
     // Keyframe format:
     //
@@ -196,7 +194,7 @@ bool KeyframeAnimatorBuilder::parseKeyframes(const AnimationBuilder& abuilder,
     return true;
 }
 
-uint32_t KeyframeAnimatorBuilder::parseMapping(const skjson::ObjectValue& jkf) {
+uint32_t DynamicAnimatorBuilder::parseMapping(const skjson::ObjectValue& jkf) {
     if (ParseDefault(jkf["h"], false)) {
         return Keyframe::kConstantMapping;
     }

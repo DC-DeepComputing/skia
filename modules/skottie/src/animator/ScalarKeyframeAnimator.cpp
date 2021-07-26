@@ -14,14 +14,36 @@ namespace skottie::internal {
 
 namespace  {
 
-// Scalar specialization: stores scalar values (floats) inline in keyframes.
+    // Scalar specialization: stores scalar values (floats) inline in keyframes.
 class ScalarKeyframeAnimator final : public KeyframeAnimator {
 public:
-    class Builder final : public KeyframeAnimatorBuilder {
-    public:
-        explicit Builder(ScalarValue* target) : fTarget(target) {}
+    ScalarKeyframeAnimator(std::vector<Keyframe> kfs,
+                           std::vector<SkCubicMap> cms,
+                           ScalarValue* target_value)
+        : INHERITED(std::move(kfs), std::move(cms))
+        , fTarget(target_value) {}
 
-        sk_sp<KeyframeAnimator> make(const AnimationBuilder& abuilder,
+private:
+
+    StateChanged onSeek(float t) override {
+        const auto& lerp_info = this->getLERPInfo(t);
+        const auto  old_value = *fTarget;
+
+        *fTarget = Lerp(lerp_info.vrec0.flt, lerp_info.vrec1.flt, lerp_info.weight);
+
+        return *fTarget != old_value;
+    }
+
+    ScalarValue* fTarget;
+
+    using INHERITED = KeyframeAnimator;
+};
+
+class ScalarDynamicBuilder final : public DynamicAnimatorBuilder {
+    public:
+        explicit ScalarDynamicBuilder(ScalarValue* target) : fTarget(target) {}
+
+        sk_sp<DynamicAnimator> make(const AnimationBuilder& abuilder,
                                      const skjson::ArrayValue& jkfs) override {
             SkASSERT(jkfs.size() > 0);
             if (!this->parseKeyframes(abuilder, jkfs)) {
@@ -47,34 +69,13 @@ public:
         ScalarValue* fTarget;
     };
 
-private:
-    ScalarKeyframeAnimator(std::vector<Keyframe> kfs,
-                           std::vector<SkCubicMap> cms,
-                           ScalarValue* target_value)
-        : INHERITED(std::move(kfs), std::move(cms))
-        , fTarget(target_value) {}
-
-    StateChanged onSeek(float t) override {
-        const auto& lerp_info = this->getLERPInfo(t);
-        const auto  old_value = *fTarget;
-
-        *fTarget = Lerp(lerp_info.vrec0.flt, lerp_info.vrec1.flt, lerp_info.weight);
-
-        return *fTarget != old_value;
-    }
-
-    ScalarValue* fTarget;
-
-    using INHERITED = KeyframeAnimator;
-};
-
 } // namespace
 
 template <>
 bool AnimatablePropertyContainer::bind<ScalarValue>(const AnimationBuilder& abuilder,
                                                     const skjson::ObjectValue* jprop,
                                                     ScalarValue* v) {
-    ScalarKeyframeAnimator::Builder builder(v);
+    ScalarDynamicBuilder builder(v);
 
     return this->bindImpl(abuilder, jprop, builder);
 }

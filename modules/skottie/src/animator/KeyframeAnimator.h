@@ -53,11 +53,16 @@ struct Keyframe {
     static constexpr uint32_t kCubicIndexOffset = 2;
 };
 
-class KeyframeAnimator : public Animator {
-public:
-    ~KeyframeAnimator() override;
+class DynamicAnimator : public Animator {
+    public:
+    ~DynamicAnimator() override = default;
 
-    bool isConstant() const {
+    virtual bool isConstant() const = 0;
+};
+
+class KeyframeAnimator : public DynamicAnimator {
+public:
+    bool isConstant() const override {
         SkASSERT(!fKFs.empty());
 
         // parseKeyFrames() ensures we only keep a single frame for constant properties.
@@ -104,11 +109,11 @@ private:
     mutable KFSegment             fCurrentSegment = { nullptr, nullptr }; // Cached segment.
 };
 
-class KeyframeAnimatorBuilder : public SkNoncopyable {
+class DynamicAnimatorBuilder : public SkNoncopyable {
 public:
-    virtual ~KeyframeAnimatorBuilder();
+    virtual ~DynamicAnimatorBuilder();
 
-    virtual sk_sp<KeyframeAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
+    virtual sk_sp<DynamicAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
 
     virtual bool parseValue(const AnimationBuilder&, const skjson::Value&) const = 0;
 
