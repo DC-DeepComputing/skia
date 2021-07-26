@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e2d7397_2e924848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2021-07-26T15:54:14Z",
+      "side": 1,
+      "message": "Hmm, how come your CQ+2 got removed?",
+      "revId": "5dd97fa4b34977538e13547b5a737b5f535ec6a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
