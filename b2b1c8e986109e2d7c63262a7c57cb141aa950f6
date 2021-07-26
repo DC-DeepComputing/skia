@@ -158,6 +158,24 @@
       "parentUuid": "e45f8b8e_fe3290b7",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f31025f8_0838baff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2021-07-26T16:09:26Z",
+      "side": 1,
+      "message": "Still worth fixing eventually. I filed https://bugs.chromium.org/p/tint/issues/detail?id\u003d1047 for this. Any concerns with adding expectations to third_party/skia/infra/bots/gen_tasks_logic/dm_flags.go though?",
+      "parentUuid": "d7c30ffb_6f073365",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
