@@ -264,7 +264,7 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
         }
 
         GrSurfaceProxy::LazyCallbackResult operator()(GrResourceProvider* resourceProvider,
-                                                      const GrSurfaceProxy::LazySurfaceDesc&) {
+                                                      const GrSurfaceProxy::LazySurfaceDesc& desc) {
             // We use the unique key in a way that is unrelated to the SkImage-based key that the
             // proxy may receive, hence kUnsynced.
             static constexpr auto kKeySyncMode =
@@ -305,6 +305,9 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
             if (!tex) {
                 return {};
             }
+            SkASSERTF(desc.fFormat == tex->backendFormat(), "%s != %s",
+                      desc.fFormat.toStr().c_str(), tex->backendFormat().toStr().c_str());
+
             tex->setRelease(fReleaseHelper);
             fTexture = tex.get();
             // We need to hold on to the GrTexture in case our proxy gets reinstantiated. However,
