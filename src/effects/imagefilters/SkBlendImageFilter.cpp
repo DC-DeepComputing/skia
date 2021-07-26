@@ -19,7 +19,7 @@
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
@@ -239,16 +239,16 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
                                                          const SkIRect& bounds) const {
     SkASSERT(ctx.gpuBacked());
 
-    auto rContext = ctx.getContext();
+    auto context = ctx.getContext();
 
     GrSurfaceProxyView backgroundView, foregroundView;
 
     if (background) {
-        backgroundView = background->view(rContext);
+        backgroundView = background->view(context);
     }
 
     if (foreground) {
-        foregroundView = foreground->view(rContext);
+        foregroundView = foreground->view(context);
     }
 
     std::unique_ptr<GrFragmentProcessor> fp;
@@ -284,19 +284,21 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
     }
 
     GrImageInfo info(ctx.grColorType(), kPremul_SkAlphaType, ctx.refColorSpace(), bounds.size());
-    auto sfc = GrSurfaceFillContext::Make(rContext, info, SkBackingFit::kApprox);
-    if (!sfc) {
+    auto surfaceFillContext = GrSurfaceFillContext::Make(context, info, SkBackingFit::kApprox);
+    if (!surfaceFillContext) {
         return nullptr;
     }
 
-    sfc->fillRectToRectWithFP(bounds, SkIRect::MakeSize(bounds.size()), std::move(fp));
+    surfaceFillContext->fillRectToRectWithFP(bounds,
+                                             SkIRect::MakeSize(bounds.size()),
+                                             std::move(fp));
 
-    return SkSpecialImage::MakeDeferredFromGpu(rContext,
+    return SkSpecialImage::MakeDeferredFromGpu(context,
                                                SkIRect::MakeWH(bounds.width(), bounds.height()),
                                                kNeedNewImageUniqueID_SpecialImage,
-                                               sfc->readSurfaceView(),
-                                               sfc->colorInfo().colorType(),
-                                               sfc->colorInfo().refColorSpace(),
+                                               surfaceFillContext->readSurfaceView(),
+                                               surfaceFillContext->colorInfo().colorType(),
+                                               surfaceFillContext->colorInfo().refColorSpace(),
                                                ctx.surfaceProps());
 }
 

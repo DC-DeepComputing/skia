@@ -11,9 +11,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "src/gpu/GrAppliedClip.h"
-
-class GrDrawOp;
-class GrSurfaceDrawContext;
+#include "src/gpu/GrSurfaceDrawContext.h"
 
 /**
  * GrClip is an abstract base class for applying a clip. It constructs a clip mask if necessary, and

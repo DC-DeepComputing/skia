@@ -22,7 +22,6 @@ class GrProxyProvider;
 class GrRecordingContext;
 class GrSurfaceDrawContext;
 class GrSWMaskHelper;
-class SkMatrixProvider;
 
 class GrClipStack final : public GrClip {
 public:

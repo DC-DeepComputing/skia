@@ -14,7 +14,6 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrGaussianConvolutionFragmentProcessor.h"
 #include "src/gpu/effects/GrMatrixConvolutionEffect.h"

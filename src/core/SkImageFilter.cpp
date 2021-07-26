@@ -25,7 +25,7 @@
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
 #endif
@@ -581,7 +581,7 @@ SkImageFilter_Base::Context SkImageFilter_Base::mapContext(const Context& ctx) c
 }
 
 #if SK_SUPPORT_GPU
-sk_sp<SkSpecialImage> SkImageFilter_Base::DrawWithFP(GrRecordingContext* rContext,
+sk_sp<SkSpecialImage> SkImageFilter_Base::DrawWithFP(GrRecordingContext* context,
                                                      std::unique_ptr<GrFragmentProcessor> fp,
                                                      const SkIRect& bounds,
                                                      SkColorType colorType,
@@ -593,27 +593,27 @@ sk_sp<SkSpecialImage> SkImageFilter_Base::DrawWithFP(GrRecordingContext* rContex
                      sk_ref_sp(colorSpace),
                      bounds.size());
 
-    auto sfc = GrSurfaceFillContext::Make(rContext,
-                                          info,
-                                          SkBackingFit::kApprox,
-                                          1,
-                                          GrMipmapped::kNo,
-                                          isProtected,
-                                          kBottomLeft_GrSurfaceOrigin);
-    if (!sfc) {
+    auto surfaceFillContext = GrSurfaceFillContext::Make(context,
+                                                         info,
+                                                         SkBackingFit::kApprox,
+                                                         1,
+                                                         GrMipmapped::kNo,
+                                                         isProtected,
+                                                         kBottomLeft_GrSurfaceOrigin);
+    if (!surfaceFillContext) {
         return nullptr;
     }
 
     SkIRect dstIRect = SkIRect::MakeWH(bounds.width(), bounds.height());
     SkRect srcRect = SkRect::Make(bounds);
-    sfc->fillRectToRectWithFP(srcRect, dstIRect, std::move(fp));
+    surfaceFillContext->fillRectToRectWithFP(srcRect, dstIRect, std::move(fp));
 
-    return SkSpecialImage::MakeDeferredFromGpu(rContext,
+    return SkSpecialImage::MakeDeferredFromGpu(context,
                                                dstIRect,
                                                kNeedNewImageUniqueID_SpecialImage,
-                                               sfc->readSurfaceView(),
-                                               sfc->colorInfo().colorType(),
-                                               sfc->colorInfo().refColorSpace(),
+                                               surfaceFillContext->readSurfaceView(),
+                                               surfaceFillContext->colorInfo().colorType(),
+                                               surfaceFillContext->colorInfo().refColorSpace(),
                                                surfaceProps);
 }
 

@@ -11,7 +11,6 @@
 #include "include/core/SkPath.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrStencilSettings.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/effects/GrDisableColorXP.h"
 #include "src/gpu/geometry/GrShape.h"
 #include "src/gpu/geometry/GrStyledShape.h"
@@ -338,12 +337,6 @@ static GrAA supported_aa(GrSurfaceDrawContext* sdc, GrAA aa) {
 }
 
 }  // namespace
-
-GrStencilMaskHelper::GrStencilMaskHelper(GrRecordingContext* rContext, GrSurfaceDrawContext* sdc)
-        : fContext(rContext)
-        , fSDC(sdc)
-        , fClip(sdc->dimensions()) {
-}
 
 bool GrStencilMaskHelper::init(const SkIRect& bounds, uint32_t genID,
                                const GrWindowRectangles& windowRects, int numFPs) {
