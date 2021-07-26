@@ -24,7 +24,7 @@ namespace skottie {
 namespace internal {
 
 class AnimationBuilder;
-class KeyframeAnimatorBuilder;
+class DynamicAnimatorBuilder;
 
 class Animator : public SkRefCnt {
 public:
@@ -72,7 +72,7 @@ protected:
 private:
     StateChanged onSeek(float) final;
 
-    bool bindImpl(const AnimationBuilder&, const skjson::ObjectValue*, KeyframeAnimatorBuilder&);
+    bool bindImpl(const AnimationBuilder&, const skjson::ObjectValue*, DynamicAnimatorBuilder&);
 
     std::vector<sk_sp<Animator>> fAnimators;
     bool                         fHasSynced = false;
