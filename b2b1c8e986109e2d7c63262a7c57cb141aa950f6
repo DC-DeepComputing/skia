@@ -248,6 +248,24 @@
       "parentUuid": "3ce4628e_4ba02c45",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95bfa9ff_a85ac380",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T18:10:08Z",
+      "side": 1,
+      "message": "Nice! That sounds worth fixing to me :) Glad these tests caught a live one!",
+      "parentUuid": "914cb46d_f6af8c1d",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
