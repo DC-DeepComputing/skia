@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ff36ce6_0e7c2a1a",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-26T20:14:42Z",
+      "side": 1,
+      "message": "That certainly doesn\u0027t hurt, but I thought this would be automatically initialized to false? (See https://en.cppreference.com/w/cpp/language/zero_initialization.)",
+      "parentUuid": "eb367b1a_8d4981a0",
+      "range": {
+        "startLine": 36,
+        "startChar": 16,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e20abbc_056c4105",
         "filename": "src/ports/SkImageEncoder_NDK.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-26T19:09:02Z",
       "side": 1,
       "message": "I believe that dlclose allows the program to unmap the memory making all your dlsym calls potentially point at invalid memory locations.\n\nI think we should be doing the dlclose iff we hit the error case and not when we succeed.",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 25
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "484ff1fe_be525f58",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-26T20:14:42Z",
+      "side": 1,
+      "message": "According to https://man7.org/linux/man-pages/man3/dlopen.3.html, using RTLD_NODELETE (as I did on line 40), provides the following behavior:\n\n              Do not unload the shared object during dlclose().\n              Consequently, the object\u0027s static and global variables are\n              not reinitialized if the object is reloaded with dlopen()\n              at a later time.\n\nIf I\u0027m reading that correctly, that means I can continue using these symbols. That said, if you prefer leaving it open, I think I\u0027ll remove RTLD_NODELETE.",
+      "parentUuid": "4e20abbc_056c4105",
       "range": {
         "startLine": 50,
         "startChar": 8,
