@@ -70,6 +70,27 @@ SkString GrGLSLFragmentProcessor::invokeChild(int childIndex, const char* inputC
     }
 }
 
+SkString GrGLSLFragmentProcessor::invokeChild(int childIndex,
+                                              const char* srcColor,
+                                              const char* dstColor,
+                                              EmitArgs& args) {
+    SkASSERT(srcColor && srcColor[0]);
+    SkASSERT(dstColor && dstColor[0]);
+    SkASSERT(childIndex >= 0);
+
+    const GrFragmentProcessor* childProc = args.fFp.childProcessor(childIndex);
+    const char* functionName;
+    if (childProc) {
+        this->emitChildFunction(childIndex, args);
+        functionName = fFunctionNames[childIndex].c_str();
+    } else {
+        // Null blend samplers are interpreted as src-over.
+        functionName = "blend_src_over";
+    }
+
+    return SkStringPrintf("%s(%s, %s)", functionName, srcColor, dstColor);
+}
+
 SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const char* inputColor,
                                                         EmitArgs& args) {
     if (!inputColor) {
