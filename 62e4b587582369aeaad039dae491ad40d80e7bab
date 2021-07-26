@@ -68,6 +68,23 @@
       "message": "It looks like our public.bzl file will need to be updated for the G3 build.",
       "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "666c8579_9dd20535",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T18:00:26Z",
+      "side": 1,
+      "message": "And modules/canvaskit/compile.sh will need to be updated to add (and enable) this new module.",
+      "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
