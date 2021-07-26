@@ -51,6 +51,23 @@
       "message": "Arg... looks like I also forgot to remove the no longer used \u0027unicode/uscript.h\u0027 include as well. Will put up a CL for that in a second.",
       "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a29c8a6_7ddba721",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T17:56:49Z",
+      "side": 1,
+      "message": "It looks like our public.bzl file will need to be updated for the G3 build.",
+      "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
