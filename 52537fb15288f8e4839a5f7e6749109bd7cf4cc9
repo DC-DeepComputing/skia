@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "126de749_1dd16b17",
+        "filename": "gm/arithmode.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-26T18:57:17Z",
+      "side": 1,
+      "message": "Nope, just added a cell vertically -- went from 3 to 4 (2x2)",
+      "parentUuid": "b6f4e4e1_1ffcc041",
+      "range": {
+        "startLine": 181,
+        "startChar": 41,
+        "endLine": 181,
+        "endChar": 44
+      },
+      "revId": "52537fb15288f8e4839a5f7e6749109bd7cf4cc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a79792e8_04a19ba6",
         "filename": "gm/arithmode.cpp",
         "patchSetId": 11
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-26T17:51:50Z",
       "side": 1,
       "message": "tiny nit: /*background\u003d*/nullptr as a hint to the reader",
+      "range": {
+        "startLine": 236,
+        "startChar": 62,
+        "endLine": 236,
+        "endChar": 69
+      },
+      "revId": "52537fb15288f8e4839a5f7e6749109bd7cf4cc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1031c4db_660f6f58",
+        "filename": "gm/arithmode.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-26T18:57:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a79792e8_04a19ba6",
       "range": {
         "startLine": 236,
         "startChar": 62,
@@ -77,6 +125,30 @@
       "writtenOn": "2021-07-26T17:51:50Z",
       "side": 1,
       "message": "tiny nit: open brace on the same line\n\n    ...) {",
+      "range": {
+        "startLine": 38,
+        "startChar": 39,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "52537fb15288f8e4839a5f7e6749109bd7cf4cc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e76ddedf_4d105e93",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-26T18:57:17Z",
+      "side": 1,
+      "message": "At least in some other sites, where we have constructor initializers, we place the leading { on its on line, for readability (since the initializers are only indented 2x). Not a requirement, but usable in skia.",
+      "parentUuid": "7dd80318_e38d04e8",
       "range": {
         "startLine": 38,
         "startChar": 39,
