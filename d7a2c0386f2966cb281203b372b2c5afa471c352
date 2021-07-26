@@ -118,6 +118,30 @@
       },
       "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c723766b_7cf68de8",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T18:08:08Z",
+      "side": 1,
+      "message": "The problem is that when a Program disappears, every allocation made by the Program disappears simultaneously as well, because they are all stored in the program\u0027s SkSL::MemoryPool. If the Program\u0027s strings have ended up in a built-in SymbolTable, that SymbolTable will continue to exist past the Program\u0027s lifetime, but the built-in SymbolTable now contains pointers to objects (strings, types) that used to exist in that Program\u0027s SkSL::MemoryPool, and now no longer exist at all. \n\nWe actually detect this issue and report it as a leak when the MemoryPool is destroyed in debug. But in release mode, we don\u0027t leak check, so when the SymbolTable is eventually destroyed, it will crash trying to delete those leaked objects.",
+      "parentUuid": "30458b52_6d7ddbf0",
+      "range": {
+        "startLine": 131,
+        "startChar": 33,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "d7a2c0386f2966cb281203b372b2c5afa471c352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
