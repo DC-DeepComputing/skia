@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a3ed52_3513a08f",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-07-26T20:49:33Z",
+      "side": 1,
+      "message": "Ah, I didn\u0027t realize that static and thread-local variables get special treatment. I think I would still prefer adding false here so that the reader need not lookup that rule, but I\u0027m fine either way.",
+      "parentUuid": "5ff36ce6_0e7c2a1a",
+      "range": {
+        "startLine": 36,
+        "startChar": 16,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e20abbc_056c4105",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "According to https://man7.org/linux/man-pages/man3/dlopen.3.html, using RTLD_NODELETE (as I did on line 40), provides the following behavior:\n\n              Do not unload the shared object during dlclose().\n              Consequently, the object\u0027s static and global variables are\n              not reinitialized if the object is reloaded with dlopen()\n              at a later time.\n\nIf I\u0027m reading that correctly, that means I can continue using these symbols. That said, if you prefer leaving it open, I think I\u0027ll remove RTLD_NODELETE.",
       "parentUuid": "4e20abbc_056c4105",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 25
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9df37c62_4aa745f9",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-07-26T20:49:33Z",
+      "side": 1,
+      "message": "So doesn\u0027t that mean on older devices that we will load in libjnigraphics and keep it loaded even if it doesn\u0027t have the symbol that we need?  It seems more memory efficient to keep the memory mapped only if we will be using it instead of keeping it around when we hit the error case as well.  Do we anticipate hitting the error case in any of our clients?\n\nIf we do keep it as is can you cadd a comment above dlclose that we can remove this handle because we used RTLD_NODELETE?",
+      "parentUuid": "484ff1fe_be525f58",
       "range": {
         "startLine": 50,
         "startChar": 8,
