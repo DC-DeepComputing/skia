@@ -16,6 +16,8 @@
 #include "modules/skottie/include/ExternalLayer.h"
 #include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skresources/include/SkResources.h"
+#include "third_party/skia/HEAD/include/core/SkScalar.h"
+#include "third_party/skia/HEAD/modules/skottie/src/SkottieValue.h"
 
 #include <memory>
 #include <vector>
@@ -51,6 +53,21 @@ public:
     };
 
     virtual void log(Level, const char message[], const char* json = nullptr);
+};
+
+// Evaluates an expression to a scalar.
+class SK_API ScalarExpressionEvaluator : public SkRefCnt {
+public:
+    virtual SkScalar Evaluate() const = 0;
+};
+
+/**
+ * An expression manager which will evaluate javascript expressions.
+ */
+class SK_API ExpressionManager : public SkRefCnt {
+public:
+    // Evaluates an expression to a scalar.
+    virtual sk_sp<ScalarExpressionEvaluator> GetScalarEvaluator(const char expression[]) const = 0;
 };
 
 /**
@@ -127,6 +144,12 @@ public:
         Builder& setPrecompInterceptor(sk_sp<PrecompInterceptor>);
 
         /**
+         * Register an expression manager.
+         * This class is responsible for evaluating expressions.
+         */
+        Builder& setExpressionManager(sk_sp<ExpressionManager>);
+
+        /**
          * Animation factories.
          */
         sk_sp<Animation> make(SkStream*);
@@ -142,6 +165,7 @@ public:
         sk_sp<Logger>             fLogger;
         sk_sp<MarkerObserver  >   fMarkerObserver;
         sk_sp<PrecompInterceptor> fPrecompInterceptor;
+        sk_sp<ExpressionManager> fExpressionManager;
         Stats                     fStats;
     };
 

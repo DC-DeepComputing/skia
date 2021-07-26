@@ -151,7 +151,7 @@ VectorDynamicAnimatorBuilder::VectorDynamicAnimatorBuilder(std::vector<float>* t
     , fTarget(target) {}
 
 sk_sp<DynamicAnimator> VectorDynamicAnimatorBuilder::make(const AnimationBuilder& abuilder,
-                                                            const skjson::ArrayValue& jkfs) {
+                                                            const skjson::ArrayValue& jkfs, const skjson::Value& expression) {
     SkASSERT(jkfs.size() > 0);
 
     // peek at the first keyframe value to find our vector length

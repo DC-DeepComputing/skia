@@ -21,7 +21,7 @@ public:
 
     VectorDynamicAnimatorBuilder(std::vector<float>*, VectorLenParser, VectorDataParser);
 
-    sk_sp<DynamicAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&) override;
+    sk_sp<DynamicAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&, const skjson::Value&) override;
 
 private:
     bool parseValue(const AnimationBuilder&, const skjson::Value&) const override;

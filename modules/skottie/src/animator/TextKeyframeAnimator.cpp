@@ -45,7 +45,7 @@ public:
     explicit TextDynamicAnimatorBuilder(TextValue* target) : fTarget(target) {}
 
     sk_sp<DynamicAnimator> make(const AnimationBuilder& abuilder,
-                                    const skjson::ArrayValue& jkfs) override {
+                                    const skjson::ArrayValue& jkfs, const skjson::Value& expression) override {
         SkASSERT(jkfs.size() > 0);
 
         fValues.reserve(jkfs.size());

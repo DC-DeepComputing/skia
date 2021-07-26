@@ -60,6 +60,14 @@ class DynamicAnimator : public Animator {
     virtual bool isConstant() const = 0;
 };
 
+class ExpressionAnimator : public DynamicAnimator {
+    public:
+    // Expressions always need to be evaluated.
+    bool isConstant() const override {
+        return false;
+    }
+};
+
 class KeyframeAnimator : public DynamicAnimator {
 public:
     bool isConstant() const override {
@@ -113,7 +121,7 @@ class DynamicAnimatorBuilder : public SkNoncopyable {
 public:
     virtual ~DynamicAnimatorBuilder();
 
-    virtual sk_sp<DynamicAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
+    virtual sk_sp<DynamicAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&, const skjson::Value&) = 0;
 
     virtual bool parseValue(const AnimationBuilder&, const skjson::Value&) const = 0;
 
