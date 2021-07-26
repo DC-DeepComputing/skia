@@ -16,6 +16,24 @@
       "message": "The GPU side should be workable now. SkBlendModeBlenders don\u0027t yet support asFragmentProcessor, but I\u0027ll be working on support for that ASAP. In the interim, you can test this with a hand-rolled RuntimeBlender, or GetRuntimeBlendForBlendMode.",
       "revId": "e4768736e3eb832ce0f81a3606098012f0866100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53e8890b_880b5dc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T13:50:31Z",
+      "side": 1,
+      "message": "SkBlendModeBlender fixed at http://review.skia.org/432796 ... fix was much easier than I originally thought it would be! Turns out all the code was already written; all I had to do was call it.",
+      "parentUuid": "41d478ec_a9f8e9cf",
+      "revId": "e4768736e3eb832ce0f81a3606098012f0866100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
