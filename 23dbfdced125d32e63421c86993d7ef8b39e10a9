@@ -51,6 +51,24 @@
       "parentUuid": "566f84f7_0b46885d",
       "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2caa8833_ec78fa2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-26T13:26:52Z",
+      "side": 1,
+      "message": "In Vulkan the user needs to make sure to keep the VkPipeline alive while it is in use by the driver. Our GrVkPipeline is kept alive by the GrVkPipelineState which itself is held in the PipelienStateCache. Entries in this cache can be deleted at any time when the cache fills and are not locked by use on the GPU. So we need a separate ref on the command buffer for the vulkan things.\n\nIn metal the cache is similar but the big difference is that we are free to drop our ref the metal pipeline whenever because the driver tracks its own lifetime usage of it. Now I recall you were saying something that if you switch to using manually managed resources/memory that you (the user/client) may be responsible for more objects than just memory allocated for textures and buffers. If pipelines fall into this category than I guess we do need a system similar to vulkan. But it still surprises me that the manual memory stuff is more than just textures and buffers.",
+      "parentUuid": "aa2f4b39_26acf542",
+      "revId": "23dbfdced125d32e63421c86993d7ef8b39e10a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
