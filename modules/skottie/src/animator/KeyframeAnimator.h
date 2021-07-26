@@ -57,7 +57,7 @@ class KeyframeAnimator : public Animator {
 public:
     ~KeyframeAnimator() override;
 
-    bool isConstant() const {
+    virtual bool isConstant() const {
         SkASSERT(!fKFs.empty());
 
         // parseKeyFrames() ensures we only keep a single frame for constant properties.
@@ -104,11 +104,11 @@ private:
     mutable KFSegment             fCurrentSegment = { nullptr, nullptr }; // Cached segment.
 };
 
-class KeyframeAnimatorBuilder : public SkNoncopyable {
+class AnimatorBuilder : public SkNoncopyable {
 public:
-    virtual ~KeyframeAnimatorBuilder();
+    virtual ~AnimatorBuilder();
 
-    virtual sk_sp<KeyframeAnimator> make(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
+    virtual sk_sp<KeyframeAnimator> makeFromKeyframes(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
 
     virtual bool parseValue(const AnimationBuilder&, const skjson::Value&) const = 0;
 
