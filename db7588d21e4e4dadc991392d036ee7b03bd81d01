@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0da3d629_d378a6d3",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T17:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d161ae10_7f6984d7",
+      "range": {
+        "startLine": 156,
+        "startChar": 12,
+        "endLine": 156,
+        "endChar": 24
+      },
+      "revId": "db7588d21e4e4dadc991392d036ee7b03bd81d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8703c1b6_f75a6a87",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ee8ec8_ff5577df",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T17:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8703c1b6_f75a6a87",
+      "range": {
+        "startLine": 203,
+        "startChar": 12,
+        "endLine": 203,
+        "endChar": 24
+      },
+      "revId": "db7588d21e4e4dadc991392d036ee7b03bd81d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c80285f0_90dc5cda",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-07-26T16:24:21Z",
       "side": 1,
       "message": "Should this be skstd::string_view?\n\nMakeStructType and Variable take a string_view.\nInterfaceBlock actually takes a String, but IMO having the explicit conversion there is good anyway.",
+      "range": {
+        "startLine": 3592,
+        "startChar": 4,
+        "endLine": 3592,
+        "endChar": 15
+      },
+      "revId": "db7588d21e4e4dadc991392d036ee7b03bd81d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43edc3ee_553e501e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3592,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T17:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c80285f0_90dc5cda",
       "range": {
         "startLine": 3592,
         "startChar": 4,
@@ -106,6 +178,54 @@
       "writtenOn": "2021-07-26T16:24:21Z",
       "side": 1,
       "message": "Should be more efficient to turn the returned String into a string_view directly, rather than go through c_str() which forces an extra strlen() to occur when the string_view is constructed.",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 19
+      },
+      "revId": "db7588d21e4e4dadc991392d036ee7b03bd81d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4db02e_14274ee5",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T17:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14f506d1_8ecaaee6",
+      "range": {
+        "startLine": 134,
+        "startChar": 61,
+        "endLine": 134,
+        "endChar": 70
+      },
+      "revId": "db7588d21e4e4dadc991392d036ee7b03bd81d01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a600f618_73a33053",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-07-26T17:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65c3d976_06454f48",
       "range": {
         "startLine": 134,
         "startChar": 8,
