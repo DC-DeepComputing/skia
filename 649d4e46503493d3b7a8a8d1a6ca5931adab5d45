@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ce615aa_135ee2c5",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Color.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-26T15:00:40Z",
+      "side": 1,
+      "message": "Duh, that was it. Done.",
+      "parentUuid": "8e84a247_3090ed06",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 34
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "416291d8_4f263400",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb4fbbb6_7149f9b2",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-26T15:00:40Z",
+      "side": 1,
+      "message": "Added TODO",
+      "parentUuid": "416291d8_4f263400",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260fc86d_6515eb9e",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-07-23T19:40:01Z",
       "side": 1,
       "message": "remove logging",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 40
+      },
+      "revId": "649d4e46503493d3b7a8a8d1a6ca5931adab5d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbf95fff_eadfc9f7",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-07-26T15:00:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "260fc86d_6515eb9e",
       "range": {
         "startLine": 146,
         "startChar": 0,
