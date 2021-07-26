@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea5bb3b_f2b7af7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-26T19:22:01Z",
+      "side": 1,
+      "message": "fyi -- generalized to composeshader as well, bumped picture version",
+      "revId": "5d997803312b9b9b5c28e8b4cd55d4a190c259cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
