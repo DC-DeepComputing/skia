@@ -16,6 +16,24 @@
       "message": "I thought I had removed all the ICU from our HarfBuzz build, but apparently (at least our) HarfBuzz not defining that we have ICU doesn\u0027t prevent the ICU parts from being built anyway (even though they won\u0027t actually end up being used). I\u0027ll put together a CL to remove building those files.",
       "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4574ccf_98a30f4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-26T15:48:00Z",
+      "side": 1,
+      "message": "I was going to try adding icu:headers as a dep for HB, but yours sounds like a better fix.",
+      "parentUuid": "ef0c0610_4a0de149",
+      "revId": "62e4b587582369aeaad039dae491ad40d80e7bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
