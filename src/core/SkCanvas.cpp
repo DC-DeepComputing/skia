@@ -478,6 +478,12 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 #endif
 
 SkCanvas::~SkCanvas() {
+    // Discard all pending layers
+    for (MCRec& rec : fMCStack) {
+        rec.fLayer.reset();
+    }
+
+    // free up the contents of our deque
     this->restoreToCount(1);    // restore everything but the last
     this->internalRestore();    // restore the last, since we're going away
 
