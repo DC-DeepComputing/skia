@@ -230,6 +230,24 @@
       "parentUuid": "d2b175b7_4376f1e6",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "914cb46d_f6af8c1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5290
+      },
+      "writtenOn": "2021-07-26T17:31:55Z",
+      "side": 1,
+      "message": "Corentin narrowed it down further to lack of support for the MatrixStride decoration in Tint:\n\nhttps://bugs.chromium.org/p/tint/issues/detail?id\u003d1047#c1",
+      "parentUuid": "3ce4628e_4ba02c45",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
