@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a2b713_cfc10749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-26T18:04:10Z",
+      "side": 1,
+      "message": "Yep. I think this is the right way to do this. I came to the same fix after messing around with the input values.",
+      "revId": "ee100a183bed0c2abb8308eccfbd30cafdffab10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
