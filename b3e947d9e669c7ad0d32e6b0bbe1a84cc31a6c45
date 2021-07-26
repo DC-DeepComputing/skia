@@ -33,6 +33,23 @@
       "message": "lgtm so far.",
       "revId": "b3e947d9e669c7ad0d32e6b0bbe1a84cc31a6c45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1122a3a4_ce22508a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-26T15:56:51Z",
+      "side": 1,
+      "message": "Apparently, if you type lgtm at the start of the message, it automatically selects the thumbs up button.",
+      "revId": "b3e947d9e669c7ad0d32e6b0bbe1a84cc31a6c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
