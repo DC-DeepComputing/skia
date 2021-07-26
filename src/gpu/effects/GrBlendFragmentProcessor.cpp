@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkBlenderBase.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 #include "src/gpu/GrFragmentProcessor.h"
@@ -233,6 +234,76 @@ void GLBlendFragmentProcessor::emitCode(EmitArgs& args) {
 
 //////////////////////////////////////////////////////////////////////////////
 
+class BlenderFragmentProcessor : public GrFragmentProcessor {
+public:
+    static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> src,
+                                                     std::unique_ptr<GrFragmentProcessor> dst,
+                                                     sk_sp<SkBlender> blender) {
+        SkASSERT(blender);
+        SkASSERT(!as_BB(blender)->asBlendMode());
+
+        return std::unique_ptr<GrFragmentProcessor>(
+                new BlenderFragmentProcessor(std::move(src), std::move(dst), std::move(blender)));
+    }
+
+    const char* name() const override { return "Blender"; }
+
+    std::unique_ptr<GrFragmentProcessor> clone() const override;
+
+    SkBlender* getBlender() const { return fBlender.get(); }
+
+private:
+    BlenderFragmentProcessor(std::unique_ptr<GrFragmentProcessor> src,
+                             std::unique_ptr<GrFragmentProcessor> dst,
+                             sk_sp<SkBlender blender)
+            : INHERITED(kBlendFragmentProcessor_ClassID, OptFlags(src.get(), dst.get(), mode))
+            , fBlender(std::move(blender)) {
+        this->registerChild(std::move(src));
+        this->registerChild(std::move(dst));
+    }
+
+    BlendFragmentProcessor(const BlendFragmentProcessor& that)
+            : INHERITED(kBlendFragmentProcessor_ClassID, ProcessorOptimizationFlags(&that))
+            , fMode(that.fMode) {
+        this->cloneAndRegisterAllChildProcessors(that);
+    }
+
+#if GR_TEST_UTILS
+    SkString onDumpInfo() const override {
+        return SkStringPrintf("(fMode=%s)", SkBlendMode_Name(fMode));
+    }
+#endif
+
+    void onGetGLSLProcessorKey(const GrShaderCaps& caps, GrProcessorKeyBuilder* b) const override {
+        b->add32((int)fMode);
+    }
+
+    bool onIsEqual(const GrFragmentProcessor& other) const override {
+        const BlendFragmentProcessor& cs = other.cast<BlendFragmentProcessor>();
+        return fMode == cs.fMode;
+    }
+
+    SkPMColor4f constantOutputForConstantInput(const SkPMColor4f& input) const override {
+        const auto* src = this->childProcessor(0);
+        const auto* dst = this->childProcessor(1);
+
+        SkPMColor4f srcColor = ConstantOutputForConstantInput(src, input);
+        SkPMColor4f dstColor = ConstantOutputForConstantInput(dst, input);
+
+        return SkBlendMode_Apply(fMode, srcColor, dstColor);
+    }
+
+    std::unique_ptr<GrGLSLFragmentProcessor> onMakeProgramImpl() const override;
+
+    SkBlendMode fMode;
+
+    GR_DECLARE_FRAGMENT_PROCESSOR_TEST
+
+    using INHERITED = GrFragmentProcessor;
+};
+
+//////////////////////////////////////////////////////////////////////////////
+
 std::unique_ptr<GrFragmentProcessor> GrBlendFragmentProcessor::Make(
         std::unique_ptr<GrFragmentProcessor> src,
         std::unique_ptr<GrFragmentProcessor> dst,
@@ -247,4 +318,18 @@ std::unique_ptr<GrFragmentProcessor> GrBlendFragmentProcessor::Make(
         default:
             return BlendFragmentProcessor::Make(std::move(src), std::move(dst), mode);
     }
+}
+
+std::unique_ptr<GrFragmentProcessor> GrBlendFragmentProcessor::Make(
+        std::unique_ptr<GrFragmentProcessor> src,
+        std::unique_ptr<GrFragmentProcessor> dst,
+        sk_sp<SkBlender> blender)
+{
+    if (!blender) {
+        return Make(std::move(src), std::move(dst), SkBlendMode::kSrcOver);
+    }
+    if (auto bm = blender->asBlendMode()) {
+        return Make(std::move(src), std::move(dst), bm.value());
+    }
+    return BlenderFragmentProcessor::Make(std::move(src), std::move(dst), std::move(blender));
 }

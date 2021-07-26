@@ -8,8 +8,7 @@
 #ifndef GrBlendFragmentProcessor_DEFINED
 #define GrBlendFragmentProcessor_DEFINED
 
-#include "include/core/SkBlendMode.h"
-#include "include/core/SkRefCnt.h"
+#include "include/core/SkBlender.h"
 
 class GrFragmentProcessor;
 
@@ -22,6 +21,10 @@ namespace GrBlendFragmentProcessor {
 std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> src,
                                           std::unique_ptr<GrFragmentProcessor> dst,
                                           SkBlendMode mode);
+
+std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> src,
+                                          std::unique_ptr<GrFragmentProcessor> dst,
+                                          sk_sp<SkBlender> blender);
 
 }  // namespace GrBlendFragmentProcessor
 
