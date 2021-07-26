@@ -8,6 +8,7 @@
 #include "src/gpu/tessellate/GrPathCurveTessellator.h"
 
 #include "src/core/SkUtils.h"
+#include "src/gpu/GrMeshDrawTarget.h"
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/geometry/GrWangsFormula.h"
@@ -308,6 +309,7 @@ void GrPathCurveTessellator::prepare(GrMeshDrawTarget* target, const SkRect& cul
     }
 }
 
+#if SK_GPU_V1
 void GrPathCurveTessellator::draw(GrOpFlushState* flushState) const {
     if (fShader->willUseTessellationShaders()) {
         for (const GrVertexChunk& chunk : fVertexChunkArray) {
@@ -330,3 +332,4 @@ void GrPathCurveTessellator::drawHullInstances(
         flushState->drawInstanced(chunk.fCount, chunk.fBase, 4, 0);
     }
 }
+#endif

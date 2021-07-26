@@ -7,6 +7,7 @@
 
 #include "src/gpu/tessellate/GrPathWedgeTessellator.h"
 
+#include "src/gpu/GrMeshDrawTarget.h"
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/geometry/GrWangsFormula.h"
@@ -350,6 +351,7 @@ void GrPathWedgeTessellator::prepare(GrMeshDrawTarget* target, const SkRect& cul
     }
 }
 
+#if SK_GPU_V1
 void GrPathWedgeTessellator::draw(GrOpFlushState* flushState) const {
     if (fShader->willUseTessellationShaders()) {
         for (const GrVertexChunk& chunk : fVertexChunkArray) {
@@ -364,3 +366,4 @@ void GrPathWedgeTessellator::draw(GrOpFlushState* flushState) const {
         }
     }
 }
+#endif

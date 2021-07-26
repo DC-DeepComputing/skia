@@ -8,6 +8,8 @@
 #ifndef GrGrAtlasRenderTask_DEFINED
 #define GrGrAtlasRenderTask_DEFINED
 
+#if 0
+
 #include "include/core/SkPath.h"
 #include "src/gpu/GrDynamicAtlas.h"
 #include "src/gpu/GrOpsTask.h"
@@ -62,4 +64,5 @@ private:
     SkPath fUberPaths[2];  // 2 fill rules: "nonzero" and "even/odd".
 };
 
+#endif
 #endif

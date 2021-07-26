@@ -753,6 +753,7 @@ static sk_sp<SkSurface> create_gpu_surface_backend_render_target(GrDirectContext
     return surf;
 }
 
+#if SK_GPU_V1
 static void test_surface_context_clear(skiatest::Reporter* reporter,
                                        GrDirectContext* dContext,
                                        GrSurfaceContext* surfaceContext,
@@ -834,6 +835,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu, reporter, ctxInfo) {
                                    kOrigColor.toSkColor());
     }
 }
+#endif
 
 static void test_surface_draw_partially(
     skiatest::Reporter* reporter, sk_sp<SkSurface> surface, SkColor origColor) {
