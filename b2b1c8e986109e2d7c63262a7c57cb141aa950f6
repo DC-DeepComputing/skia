@@ -104,6 +104,24 @@
       "parentUuid": "28593bbb_e0024572",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db1fd67_a15ec311",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-26T15:50:50Z",
+      "side": 1,
+      "message": "This would be a separate regression from either of those two bugs. It\u0027s failing to compare one matrix to another matrix, and failing to cast a mat2 to a vec4. One sec, I\u0027ll find you the SPIR-V we generate for those things.",
+      "parentUuid": "218739f3_0814a6b9",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
