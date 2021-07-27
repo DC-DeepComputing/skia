@@ -23,8 +23,8 @@
 #include "src/gpu/GrColor.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/ops/GrClearOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 

@@ -12,8 +12,8 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 static const int kSize = 64;
 

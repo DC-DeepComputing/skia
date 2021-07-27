@@ -14,8 +14,8 @@
 #include "include/utils/SkRandom.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrOpsTypes.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 // Benchmarks that exercise the bulk image and solid color quad APIs, under a variety of patterns:
 enum class ImageMode {

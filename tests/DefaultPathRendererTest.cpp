@@ -28,7 +28,7 @@
 #include "src/gpu/GrImageInfo.h"
 #include "src/gpu/GrPaint.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
