@@ -50,6 +50,23 @@
       "message": "And change this to SKUNICODE_DLL",
       "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50bc93c2_6a74adbd",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T16:53:24Z",
+      "side": 1,
+      "message": "I know it already exists, but I get a rather bit warning from msvc about \u0027end\u0027 being size_t but the Region constructor taking \u0027Position\u0027 which is int32_t.",
+      "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
