@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9b649c1_5890364e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-27T13:45:30Z",
+      "side": 1,
+      "message": "Looking at the gold images:\n - PS2 shows the failing behavior of the new GM before the triangulator fix.\n - PS4 shows that that is fixed.\n - The changes to the preservefillrule_little|big are actually making the Gm draw correctly now.\n - I need to investigate the diff in concavepaths a little further to see if that\u0027s a \"now-correct\" or corner case that\u0027s now being hit because of the updated nearly_flat detection.",
+      "revId": "3f742c2044af42d75e00cd0c07fdf6b8ae647928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
