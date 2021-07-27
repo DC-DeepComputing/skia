@@ -67,6 +67,23 @@
       "message": "I know it already exists, but I get a rather bit warning from msvc about \u0027end\u0027 being size_t but the Region constructor taking \u0027Position\u0027 which is int32_t.",
       "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "329f9ad2_2f04105a",
+        "filename": "modules/skunicode/src/SkUnicode_icu_builtin.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T16:58:04Z",
+      "side": 1,
+      "message": "For the Android issue, it\u0027s probably easier to just do the resolve statically here like\n\n    diff --git a/modules/skunicode/src/SkUnicode_icu_builtin.cpp b/modules/skunicode/src/SkUnicode_icu_builtin.cpp\n    index 4efd54c979e..b8e53da5b32 100644\n    --- a/modules/skunicode/src/SkUnicode_icu_builtin.cpp\n    +++ b/modules/skunicode/src/SkUnicode_icu_builtin.cpp\n    @@ -9,6 +9,22 @@\n    \n     #define SKICU_FUNC(funcname) funcname,\n    \n    + // ubrk_clone added as draft in ICU69 and Android API 31 (first ICU NDK).\n    + // ubrk_safeClone deprecated in ICU69 and not exposed by Android.\n    +template\u003ctypename...\u003e using void_t \u003d void;\n    +template\u003ctypename T, typename \u003d void\u003e\n    +struct SkUbrkClone {\n    +    static UBreakIterator* clone(T bi, UErrorCode* status) {\n    +        return ubrk_safeClone(bi, nullptr, nullptr, status);\n    +    }\n    +};\n    +template\u003ctypename T\u003e\n    +struct SkUbrkClone\u003cT, void_t\u003cdecltype(ubrk_clone(std::declval\u003cT\u003e(), nullptr))\u003e\u003e {\n    +    static UBreakIterator* clone(T bi, UErrorCode* status) {\n    +        return ubrk_clone(bi, status);\n    +    }\n    +};\n    +\n     std::unique_ptr\u003cSkICULib\u003e SkLoadICULib() {\n    \n         return std::make_unique\u003cSkICULib\u003e(SkICULib{\n    @@ -16,12 +32,6 @@ std::unique_ptr\u003cSkICULib\u003e SkLoadICULib() {\n    \n             // ubrk_clone added as draft in ICU69 and Android API 31 (first ICU NDK).\n             // ubrk_safeClone deprecated in ICU69 and not exposed by Android.\n    -#if U_ICU_VERSION_MAJOR_NUM \u003e\u003d 69\n    -        ubrk_clone,\n    -        nullptr,\n    -#else\n    -        nullptr,\n    -        ubrk_safeClone,\n    -#endif\n    +        \u0026SkUbrkClone\u003cconst UBreakIterator*\u003e::clone,\n    +        nullptr,\n         });\n     }",
+      "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
