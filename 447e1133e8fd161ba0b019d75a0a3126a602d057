@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a432940d_ab37efef",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-27T14:41:31Z",
+      "side": 1,
+      "message": "\u003e Ah, I didn\u0027t realize that static and thread-local variables get special treatment. I think I would still prefer adding false here so that the reader need not lookup that rule, but I\u0027m fine either way.\n\nYou\u0027re surely not the only one. No harm in adding.",
+      "parentUuid": "91a3ed52_3513a08f",
+      "range": {
+        "startLine": 36,
+        "startChar": 16,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e20abbc_056c4105",
@@ -160,6 +184,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecda0968_09fabbcf",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-27T14:41:31Z",
+      "side": 1,
+      "message": "\u003e So doesn\u0027t that mean on older devices that we will load in libjnigraphics and keep it loaded even if it doesn\u0027t have the symbol that we need?  It seems more memory efficient to keep the memory mapped only if we will be using it instead of keeping it around when we hit the error case as well. \n\nThat\u0027s a good point. Done.\n \n\u003e Do we anticipate hitting the error case in any of our clients?\n\nWhich error case? Where the symbol is not found? Absolutely - the idea is that they\u0027ll run the same code on all devices, but on devices without the symbol, they\u0027ll fall back to something else (e.g. JNI).\n\n\u003e \n\u003e If we do keep it as is can you cadd a comment above dlclose that we can remove this handle because we used RTLD_NODELETE?\n\nNah, you\u0027ve convinced me 😊",
+      "parentUuid": "9df37c62_4aa745f9",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 50,
+        "endChar": 25
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5412b469_78dc7733",
@@ -183,6 +231,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cb24ff_b84b047c",
+        "filename": "src/ports/SkImageGeneratorNDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-27T14:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5412b469_78dc7733",
+      "range": {
+        "startLine": 71,
+        "startChar": 16,
+        "endLine": 71,
+        "endChar": 27
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "553a899c_689d4fbd",
@@ -196,6 +268,30 @@
       "writtenOn": "2021-07-26T19:09:02Z",
       "side": 1,
       "message": "same concern as previous file.",
+      "range": {
+        "startLine": 105,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 25
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42f7bdd5_6f49155a",
+        "filename": "src/ports/SkImageGeneratorNDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-27T14:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "553a899c_689d4fbd",
       "range": {
         "startLine": 105,
         "startChar": 8,
