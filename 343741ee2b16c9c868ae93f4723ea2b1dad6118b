@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01e101ae_2e3f53a7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T14:39:43Z",
+      "side": 1,
+      "message": "might actually document that this is approx equivalent to restoreToCount(2), but we want to explicitly *not* blit/restore the layers.",
+      "range": {
+        "startLine": 525,
+        "startChar": 27,
+        "endLine": 525,
+        "endChar": 33
+      },
+      "revId": "343741ee2b16c9c868ae93f4723ea2b1dad6118b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
