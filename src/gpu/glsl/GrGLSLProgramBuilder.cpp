@@ -189,7 +189,14 @@ SkString GrGLSLProgramBuilder::emitFragProc(const GrFragmentProcessor& fp,
                                            "_dst",
                                            "_coords");
     auto name = fFS.writeProcessorFunction(&glslFP, args);
-    fFS.codeAppendf("%s = %s(%s);", output.c_str(), name.c_str(), input.c_str());
+    if (fp.isBlendFunction()) {
+        // We only have paint color at this stage in the pipeline, so we pass transparent black for
+        // the destination color.
+        fFS.codeAppendf("%s = %s(%s, %s);",
+                        output.c_str(), name.c_str(), input.c_str(), input.c_str());
+    } else {
+        fFS.codeAppendf("%s = %s(%s);", output.c_str(), name.c_str(), input.c_str());
+    }
 
     // We have to check that effects and the code they emit are consistent, ie if an effect asks
     // for dst color, then the emit code needs to follow suit
