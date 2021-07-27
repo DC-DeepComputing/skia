@@ -16,6 +16,24 @@
       "message": "Could a FP from a blender just always have two children (src and dst) and then if we need the actual dest color from the framebuffer we just bind a child FP to dst that provides it?",
       "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b20124_be2b0bbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T20:40:19Z",
+      "side": 1,
+      "message": "That is exactly how it does work, actually! See \nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/SkGr.cpp;l\u003d517;drc\u003da6648599b594d225f5020d6c7428dcec41439934\n\nWhen your SkPaint has a blender on it, the `src` is the paintFP up until that point, and the `dst` is GrFragmentProcessor::DestColor. And that\u0027s how blenders work on the GrPaint right now.\n\nThe only time FPs *won\u0027t* be bound to both src and dst is when Runtime Effect SkSL directly calls `sample(blender, x, y)`. In that case src and dst should be used exactly as provided. I am working on adding that support now. These changes are prep work to allow for that use case.",
+      "parentUuid": "0ce796f5_28ae0d52",
+      "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
