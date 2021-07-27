@@ -23,13 +23,10 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
     this->onBeforeChildProcEmitCode();
     this->nextStage();
 
-    // An FP's function signature is theoretically always main(half4 color, float2 _coords).
-    // However, if it is only sampled by a chain of uniform matrix expressions (or legacy coord
-    // transforms), the value that would have been passed to _coords is lifted to the vertex shader
-    // and stored in a unique varying. In that case it uses that variable and does not have a
-    // second actual argument for _coords.
-    // FIXME: An alternative would be to have all FP functions have a float2 argument, and the
-    // parent FP invokes it with the varying reference when it's been lifted to the vertex shader.
+    // Conceptually, an FP is always sampled at a particular coordinate. However, if it is only
+    // sampled by a chain of uniform matrix expressions (or legacy coord transforms), the value that
+    // would have been passed to _coords is lifted to the vertex shader and stored in a unique
+    // varying. In that case it uses that variable and we do not pass a second argument for _coords.
     GrShaderVar params[] = { GrShaderVar(args.fInputColor, kHalf4_GrSLType),
                              GrShaderVar(args.fSampleCoord, kFloat2_GrSLType) };
     SkSpan<GrShaderVar> paramSpan = SkMakeSpan(params, SK_ARRAY_COUNT(params));
