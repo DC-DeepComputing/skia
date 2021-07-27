@@ -118,6 +118,10 @@ public:
      */
     SkString invokeChildWithMatrix(int childIndex, const char* inputColor, EmitArgs& parentArgs);
 
+    /** Invoke a child that takes two colors as input (i.e., sampling from a blender) */
+    SkString invokeChild(int childIndex, const char* srcColor, const char* dstColor,
+                         EmitArgs& args);
+
     /**
      * Pre-order traversal of a GLSLFP hierarchy, or of multiple trees with roots in an array of
      * GLSLFPS. If initialized with an array color followed by coverage processors installed in a

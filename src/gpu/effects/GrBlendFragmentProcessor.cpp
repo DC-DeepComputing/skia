@@ -13,12 +13,12 @@
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 
-// Some of the cpu implementations of blend modes differ too much from the GPU enough that
-// we can't use the cpu implementation to implement constantOutputForConstantInput.
+// Some of the CPU implementations of blend modes differ from the GPU enough that
+// we can't use the CPU implementation to implement constantOutputForConstantInput.
 static inline bool does_cpu_blend_impl_match_gpu(SkBlendMode mode) {
-    // The non-seperable modes differ too much. So does SoftLight. ColorBurn differs too much on our
-    // test iOS device (but we just disable it across the aboard since it may happen on untested
-    // GPUs).
+    // The non-separable modes differ too much. So does SoftLight. ColorBurn differs too much on our
+    // test iOS device, but we just disable it across the board since it might differ on untested
+    // GPUs.
     return mode <= SkBlendMode::kLastSeparableMode && mode != SkBlendMode::kSoftLight &&
            mode != SkBlendMode::kColorBurn;
 }
