@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1820fdda_031ea3dc",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T21:17:18Z",
+      "side": 1,
+      "message": "I\u0027m not sure it\u0027s necessary. With the swap, we get this:\n\nhalf4 myBlenderFunc(half4 _src, half4 _dst) {\n  _src \u003d sample(child1, _src);\n  _dst \u003d sample(child2, _dst);\n  // ... perform blend\n}\n\nWithout a swap we get this.\n\nhalf4 myBlenderFunc(half4 _src, half4 _dst) {\n  _src \u003d sample(child1, _src);\n  _dst \u003d sample(child2, _src);\n  // ... perform blend\n}\n\nI don\u0027t have any particular intuition for what the paint color should be when invoking the child FP of a blender, but the symmetry in the first case felt compelling. In practice I don\u0027t intend to write any blenders where the paint color is meaningful and I would be fine going to far as to drop the paint color entirely and force half4(0 or 1) here.",
+      "parentUuid": "92832120_a85938c9",
+      "range": {
+        "startLine": 181,
+        "startChar": 12,
+        "endLine": 181,
+        "endChar": 57
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "530431c4_ed6b35f2",
         "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-27T21:05:10Z",
       "side": 1,
       "message": "Does this change when we can invoke a blender FP via sample()? I\u0027m trying to reason about how the right inputs are going to get where they need to be eventually.",
+      "range": {
+        "startLine": 74,
+        "startChar": 77,
+        "endLine": 74,
+        "endChar": 99
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ca800d_d196bd6f",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T21:17:18Z",
+      "side": 1,
+      "message": "If sample(blender) calls this version of invokeChild, then no, this can\u0027t work as written. The two arguments will need to be different. At one point I had this working by adding a new form of invokeChild() that took two color arguments but that isn\u0027t represented in this CL.",
+      "parentUuid": "530431c4_ed6b35f2",
       "range": {
         "startLine": 74,
         "startChar": 77,
