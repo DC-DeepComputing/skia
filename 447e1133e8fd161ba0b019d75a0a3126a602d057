@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb55bb48_e3e768e9",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T14:43:41Z",
+      "side": 1,
+      "message": "note: we have a lot of these in skia codebase, and we usually don\u0027t init to false/0, since that is well defined.",
+      "parentUuid": "a432940d_ab37efef",
+      "range": {
+        "startLine": 36,
+        "startChar": 16,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "447e1133e8fd161ba0b019d75a0a3126a602d057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e20abbc_056c4105",
