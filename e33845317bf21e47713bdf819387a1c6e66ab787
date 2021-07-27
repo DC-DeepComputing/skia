@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b5230b_3b4637da",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T14:39:09Z",
+      "side": 0,
+      "message": "If you want to test for the existence of ubrk_clone vs ubrk_safeClone I think you need to do it this way and not try to do a version test. As noted in the comment above ubrk_safeClone is not exposed by Androids ICU at all and the version is set wonky (I think Android may be setting it to version 1 at the moment?), so just test for the existence of the call.",
+      "revId": "e33845317bf21e47713bdf819387a1c6e66ab787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
