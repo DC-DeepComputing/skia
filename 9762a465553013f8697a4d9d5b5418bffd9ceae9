@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "088533fa_892b177f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T16:30:59Z",
+      "side": 1,
+      "message": "Needed Windows changes",
+      "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18d43367_f306da76",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T16:30:59Z",
+      "side": 1,
+      "message": "Need to add something like\n    if (is_component_build) {\n      defines +\u003d [ \"SKUNICODE_DLL\" ]\n    }",
+      "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "694bb9b9_0640e9ac",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-27T16:30:59Z",
+      "side": 1,
+      "message": "And change this to SKUNICODE_DLL",
+      "revId": "9762a465553013f8697a4d9d5b5418bffd9ceae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
