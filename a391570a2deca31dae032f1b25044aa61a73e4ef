@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "563173bc_7fa10a5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-07-27T18:30:59Z",
+      "side": 1,
+      "message": "\u003e Error when getting verifiers. Removing from CQ. Please ask Infra Gardener to investigate.\nThis hit a Gerrit rate limit (429 status code). Should be harmless to retry.",
+      "revId": "a391570a2deca31dae032f1b25044aa61a73e4ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
