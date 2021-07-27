@@ -284,6 +284,24 @@
       "parentUuid": "95bfa9ff_a85ac380",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "859775a6_5c41f0aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2021-07-27T15:34:17Z",
+      "side": 1,
+      "message": "We likely still need to fix https://bugs.chromium.org/p/tint/issues/detail?id\u003d1045",
+      "parentUuid": "4b7a02b1_ac64dcde",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
