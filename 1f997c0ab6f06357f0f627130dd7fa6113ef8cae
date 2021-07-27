@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75577818_a509f0ef",
+        "filename": "src/gpu/tessellate/GrPathStencilCoverOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-27T20:32:29Z",
+      "side": 1,
+      "message": "Should we add something like writeAffineMatrix?",
+      "revId": "1f997c0ab6f06357f0f627130dd7fa6113ef8cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
