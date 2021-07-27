@@ -16,6 +16,52 @@
       "message": "Now, with indirect arrays!",
       "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3cb2e26_930ae585",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T17:43:29Z",
+      "side": 1,
+      "message": "might could land this addtional separately (sooner)",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124f10e0_b1242ae1",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T17:43:29Z",
+      "side": 1,
+      "message": "is the change to SkVM.h still needed?",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 47
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
