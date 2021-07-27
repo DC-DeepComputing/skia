@@ -62,6 +62,98 @@
       },
       "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14294e80_ca4bf231",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T18:25:50Z",
+      "side": 1,
+      "message": "ditto question about needing to modify this file anymore",
+      "range": {
+        "startLine": 559,
+        "startChar": 10,
+        "endLine": 559,
+        "endChar": 19
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73cdb0c5_5f6c235c",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T18:25:50Z",
+      "side": 1,
+      "message": "do we need this to be optional?\ndo we need 2 separate matrix args?",
+      "range": {
+        "startLine": 269,
+        "startChar": 45,
+        "endLine": 269,
+        "endChar": 67
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b78d30_78b8ce7f",
+        "filename": "src/shaders/SkTexCoordShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T18:25:50Z",
+      "side": 1,
+      "message": "we pass in this local matrix, but don\u0027t pass it to applyMatrix (nor check if it is in perspective). Is that cool?\n\nbtw -- why are we passing it and the provider? (this question is independent of this CL)",
+      "range": {
+        "startLine": 15,
+        "startChar": 72,
+        "endLine": 15,
+        "endChar": 78
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "293b4c6a_8df179ce",
+        "filename": "src/shaders/SkTexCoordShader.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T18:25:50Z",
+      "side": 1,
+      "message": "I don\u0027t like this name, but don\u0027t have a good replacement suggestion yet...\n\nPreApplyMatrixShader?\n\nMatrixShader?",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 22
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
