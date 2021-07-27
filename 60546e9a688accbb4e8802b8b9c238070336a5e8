@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ab57f78_3600e0f2",
+        "filename": "src/gpu/ops/GrAAHairLinePathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T13:36:23Z",
+      "side": 1,
+      "message": "It would be nice to catch this sooner (prior to allocating vertex space and/or before we have to check each individual quad), but there\u0027s a cascade of problems, starting with chopping the cubics, and I\u0027m afraid that trying to catch it too soon will allow other almost-infinite values to slip by and then break later.",
+      "revId": "60546e9a688accbb4e8802b8b9c238070336a5e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
