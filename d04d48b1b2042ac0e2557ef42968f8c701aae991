@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d81b1a_52900f86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-27T17:38:05Z",
+      "side": 1,
+      "message": "Now, with indirect arrays!",
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
