@@ -16,6 +16,24 @@
       "message": "Let\u0027s also try measuring just constructor/destructor of a canvas (i.e. mallocs)\n",
       "revId": "f763db477057a9fb7f9373796cef2277e2794e4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6a3fcca_bf190ad6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T18:47:05Z",
+      "side": 1,
+      "message": "Are you picturing making empty canvas (with no surface?), making actual surfaces, or using the make-from-SkBitmap one? I\u0027m not sure how often anyone does any of these things, right?",
+      "parentUuid": "6a73d68e_1d403f83",
+      "revId": "f763db477057a9fb7f9373796cef2277e2794e4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
