@@ -46,6 +46,7 @@ public:
         kDashingLineEffect_ClassID,
         kDefaultGeoProc_ClassID,
         kDestColorProcessor_ClassID,
+        kDeviceSpace_ClassID,
         kDIEllipseGeometryProcessor_ClassID,
         kDisableColorXP_ClassID,
         kDrawAtlasPathShader_ClassID,
