@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "646d077e_fffc52e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-27T15:43:45Z",
+      "side": 1,
+      "message": "Is the change to concavepaths expected? The old version looks like it might agree with Raster",
+      "revId": "3f742c2044af42d75e00cd0c07fdf6b8ae647928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7851f1e_a9bab524",
