@@ -34,6 +34,24 @@
       "parentUuid": "6a73d68e_1d403f83",
       "revId": "f763db477057a9fb7f9373796cef2277e2794e4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2ba3813_b96f243f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T18:55:01Z",
+      "side": 1,
+      "message": "recording canvases, NWayCanvas, etc.",
+      "parentUuid": "e6a3fcca_bf190ad6",
+      "revId": "f763db477057a9fb7f9373796cef2277e2794e4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
