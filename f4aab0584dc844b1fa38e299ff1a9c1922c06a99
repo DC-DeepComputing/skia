@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d0a3a8c_da4dfe9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-07-27T13:23:15Z",
+      "side": 1,
+      "message": "FYI: I\u0027m assuming this was reverted due to breakages in Status, but I want to make sure you know (in case there are plans to reland) that it *also* broke the Android roll. (It\u0027s a little less obvious for the usual reasons, plus the Android roll has been flaky anyway, due to a flaky Android test.)\n\nAnyway, please run Android Canary on the reland.",
+      "revId": "f4aab0584dc844b1fa38e299ff1a9c1922c06a99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
