@@ -401,7 +401,8 @@ protected:
         // TODO: add 'is_elegant' and 'is_compact' bits to 'style' request.
 
         SkString familyNameString(familyName);
-        for (const SkString& currentFamilyName : { familyNameString, SkString() }) {
+        // TODO(kojii): The 2nd loop checks for empty "fallbackFor", not the empty (default) family?
+        for (const SkString& currentFamilyName : {familyNameString /* , SkString() */}) {
             // The first time match anything elegant, second time anything not elegant.
             for (int elegant = 2; elegant --> 0;) {
                 for (int bcp47Index = bcp47Count; bcp47Index --> 0;) {
@@ -418,6 +419,10 @@ protected:
                         lang = lang.getParent();
                     }
                 }
+                // TODO(kojii): This seems to find the specified "fallbackFor" for any language, the
+                // first one in the |fFallbackNameToFamilyMap|? Need to understand in what order
+                // |fFallbackNameToFamilyMap| is to understand what this matches.
+#if 0
                 sk_sp<SkTypeface_AndroidSystem> matchingTypeface =
                     find_family_style_character(currentFamilyName, fFallbackNameToFamilyMap,
                                                 style, SkToBool(elegant),
@@ -425,6 +430,7 @@ protected:
                 if (matchingTypeface) {
                     return matchingTypeface.release();
                 }
+#endif
             }
         }
         return nullptr;
