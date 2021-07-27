@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7e348e_de724f64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-27T20:58:13Z",
+      "side": 1,
+      "message": "I see, so x, y here are arbitrary colors computed in the caller, right?\n\nWe have most FPs that don\u0027t use the single input color that is always there, a few that do, and now we\u0027re going to have some that use two inputs. I\u0027m wondering if we really should be thinking about some new model of FPs with a more flexible call signature.",
+      "parentUuid": "f7b20124_be2b0bbc",
+      "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "369720f8_337efe18",
