@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a89247f_110e27f5",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T22:09:20Z",
+      "side": 1,
+      "message": "I\u0027ve changed it to half4(0). \n\n  half4 myBlenderFunc(half4 _src, half4 _dst) {\n    _src \u003d sample(child1, half4(0));\n    _dst \u003d sample(child2, half4(0));\n    // ... perform blend\n  }",
+      "parentUuid": "1820fdda_031ea3dc",
+      "range": {
+        "startLine": 181,
+        "startChar": 12,
+        "endLine": 181,
+        "endChar": 57
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "530431c4_ed6b35f2",
