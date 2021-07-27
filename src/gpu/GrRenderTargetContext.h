@@ -12,7 +12,7 @@
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
 
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 // Android Framework is relying on this header existing and the old name
 // of GrSurfaceDrawContext.

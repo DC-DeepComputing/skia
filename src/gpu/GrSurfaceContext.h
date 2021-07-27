@@ -26,7 +26,7 @@ class GrRecordingContext;
 class GrRenderTargetProxy;
 class GrSingleOwner;
 class GrSurface;
-class GrSurfaceDrawContext;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 class GrSurfaceFillContext;
 class GrSurfaceProxy;
 class GrTextureProxy;
@@ -164,7 +164,6 @@ public:
         return fReadView.asRenderTargetProxyRef();
     }
 
-    virtual GrSurfaceDrawContext* asSurfaceDrawContext() { return nullptr; }
     virtual GrSurfaceFillContext* asFillContext() { return nullptr; }
 
     /**

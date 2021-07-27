@@ -58,7 +58,7 @@
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
 #   include "src/gpu/GrRenderTarget.h"
 #   include "src/gpu/GrRenderTargetProxy.h"
-#   include "src/gpu/GrSurfaceDrawContext.h"
+#   include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #endif
 #endif
 
@@ -1658,7 +1658,7 @@ SkM44 SkCanvas::getLocalToDevice() const {
 
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrRenderTargetProxy.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 SkIRect SkCanvas::topLayerBounds() const {
     return this->topDevice()->getGlobalBounds();
