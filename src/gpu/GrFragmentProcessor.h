@@ -547,6 +547,9 @@ public:
 
     CIter& operator=(CIter&&) = default;
 
+    // Advances iter past current iterated FP's subtree.
+    void skipSubtree() { fFPStack.pop_back(); }
+
 protected:
     CIter() = delete;
 
