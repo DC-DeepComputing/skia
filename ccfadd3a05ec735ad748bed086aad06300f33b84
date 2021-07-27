@@ -34,6 +34,29 @@
       "parentUuid": "0ce796f5_28ae0d52",
       "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "369720f8_337efe18",
+        "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T20:45:11Z",
+      "side": 1,
+      "message": "This comment is out of date, now.",
+      "range": {
+        "startLine": 26,
+        "startChar": 7,
+        "endLine": 26,
+        "endChar": 92
+      },
+      "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
