@@ -34,15 +34,15 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
     GrShaderVar params[] = { GrShaderVar(args.fInputColor, kHalf4_GrSLType),
                              GrShaderVar(args.fSampleCoord, kFloat2_GrSLType) };
 
+    GrShaderVar varying = fProgramBuilder->varyingCoordsForFragmentProcessor(&args.fFp);
     if (!args.fFp.isSampledWithExplicitCoords()) {
         // Sampled with a uniform matrix expression and/or a legacy coord transform. The actual
         // transformation code is emitted in the vertex shader, so this only has to access it.
         // Add a float2 _coords variable that maps to the associated varying and replaces the
         // absent 2nd argument to the fp's function.
         paramCount = 1;
-
-        if (args.fFp.referencesSampleCoords()) {
-            GrShaderVar varying = fProgramBuilder->varyingCoordsForFragmentProcessor(&args.fFp);
+        if (varying.getType() != kVoid_GrSLType) {
+            SkASSERT(args.fFp.referencesSampleCoords());
             switch(varying.getType()) {
                 case kFloat2_GrSLType:
                     // Just point the local coords to the varying
@@ -52,16 +52,22 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
                     // Must perform the perspective divide in the frag shader based on the varying,
                     // and since we won't actually have a function parameter for local coords, add
                     // it as a local variable.
-                    this->codeAppendf("float2 %s = %s.xy / %s.z;\n", args.fSampleCoord,
-                                      varying.getName().c_str(), varying.getName().c_str());
+                    this->codeAppendf("float2 %s = %s.xy / %s.z;\n",
+                                      args.fSampleCoord,
+                                      varying.getName().c_str(),
+                                      varying.getName().c_str());
                     break;
                 default:
                     SkDEBUGFAILF("Unexpected varying type for coord: %s %d\n",
-                                 varying.getName().c_str(), (int) varying.getType());
+                                 varying.getName().c_str(),
+                                 (int)varying.getType());
                     break;
             }
         }
-    } // else the function keeps its two arguments
+    } else {
+        // The function keeps its two arguments
+        SkASSERT(varying.getType() == kVoid_GrSLType);
+    }
 
     fp->emitCode(args);
 
