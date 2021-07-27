@@ -9,6 +9,7 @@
 #define GrMtlBuffer_DEFINED
 
 #include "src/gpu/GrGpuBuffer.h"
+#include "src/gpu/GrStagingBufferManager.h"
 #include "src/gpu/mtl/GrMtlUniformHandler.h"
 
 #import <Metal/Metal.h>
@@ -24,7 +25,7 @@ public:
     ~GrMtlBuffer() override;
 
     id<MTLBuffer> mtlBuffer() const { return fMtlBuffer; }
-    size_t offset() const { return fOffset; }
+    size_t offset() const { return 0; }
 
 protected:
     GrMtlBuffer(GrMtlGpu*, size_t size, GrGpuBufferType intendedType, GrAccessPattern);
@@ -48,8 +49,8 @@ private:
 
     bool fIsDynamic;
     id<MTLBuffer> fMtlBuffer;
-    size_t        fOffset;       // offset into shared buffer for dynamic buffers
-    id<MTLBuffer> fMappedBuffer; // buffer used by static buffers for uploads
+
+    GrStagingBufferManager::Slice fStagingSlice;  // used by static buffers for uploads
 
     using INHERITED = GrGpuBuffer;
 };

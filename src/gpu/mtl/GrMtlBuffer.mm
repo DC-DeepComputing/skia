@@ -46,8 +46,7 @@ sk_sp<GrMtlBuffer> GrMtlBuffer::Make(GrMtlGpu* gpu, size_t size, GrGpuBufferType
 GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedType,
                          GrAccessPattern accessPattern)
         : INHERITED(gpu, size, intendedType, accessPattern)
-        , fIsDynamic(accessPattern != kStatic_GrAccessPattern)
-        , fOffset(0) {
+        , fIsDynamic(accessPattern != kStatic_GrAccessPattern) {
     NSUInteger options = 0;
     if (@available(macOS 10.11, iOS 9.0, *)) {
         if (fIsDynamic) {
@@ -77,7 +76,7 @@ GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedTyp
 
 GrMtlBuffer::~GrMtlBuffer() {
     SkASSERT(fMtlBuffer == nil);
-    SkASSERT(fMappedBuffer == nil);
+    SkASSERT(fStagingSlice.fBuffer == nullptr);
     SkASSERT(fMapPtr == nullptr);
 }
 
@@ -96,10 +95,7 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t srcInBytes) {
     if (fMapPtr == nil) {
         return false;
     }
-    SkASSERT(fMappedBuffer);
-    if (!fIsDynamic) {
-        SkASSERT(SkAlign4(srcInBytes) == fMappedBuffer.length);
-    }
+    SkASSERT(fStagingSlice.fBuffer);
     memcpy(fMapPtr, src, srcInBytes);
     this->internalUnmap(srcInBytes);
 
@@ -114,7 +110,7 @@ inline GrMtlGpu* GrMtlBuffer::mtlGpu() const {
 
 void GrMtlBuffer::onAbandon() {
     fMtlBuffer = nil;
-    fMappedBuffer = nil;
+    fStagingSlice.fBuffer = nullptr;
     fMapPtr = nullptr;
     VALIDATE();
     INHERITED::onAbandon();
@@ -124,7 +120,7 @@ void GrMtlBuffer::onRelease() {
     if (!this->wasDestroyed()) {
         VALIDATE();
         fMtlBuffer = nil;
-        fMappedBuffer = nil;
+        fStagingSlice.fBuffer = nullptr;
         fMapPtr = nullptr;
         VALIDATE();
     }
@@ -138,23 +134,22 @@ void GrMtlBuffer::internalMap(size_t sizeInBytes) {
     VALIDATE();
     SkASSERT(!this->isMapped());
     if (fIsDynamic) {
-        fMappedBuffer = fMtlBuffer;
-        fMapPtr = static_cast<char*>(fMtlBuffer.contents) + fOffset;
+        fMapPtr = static_cast<char*>(fMtlBuffer.contents);
     } else {
         SkASSERT(fMtlBuffer);
-        SkASSERT(fMappedBuffer == nil);
-        NSUInteger options = 0;
-        if (@available(macOS 10.11, iOS 9.0, *)) {
-            options |= MTLResourceStorageModeShared;
-        }
+        SkASSERT(fStagingSlice.fBuffer == nullptr);
+
 #ifdef SK_BUILD_FOR_MAC
-        // Mac requires 4-byte alignment for copies so we pad this out
-        sizeInBytes = SkAlign4(sizeInBytes);
+        // Mac requires 4-byte alignment for copies
+        // TODO: true for Apple Silicon?
+        static const size_t kMinAlignment = 4;
+#else
+        static const size_t kMinAlignment = 1;
 #endif
-        fMappedBuffer =
-                [this->mtlGpu()->device() newBufferWithLength: sizeInBytes
-                                                      options: options];
-        fMapPtr = fMappedBuffer.contents;
+        fStagingSlice = this->mtlGpu()->stagingBufferManager()->allocateStagingBufferSlice(
+                sizeInBytes, kMinAlignment);
+        SkASSERT(fStagingSlice.fBuffer);
+        fMapPtr = fStagingSlice.fOffsetMapPtr;
     }
     VALIDATE();
 }
@@ -167,29 +162,26 @@ void GrMtlBuffer::internalUnmap(size_t sizeInBytes) {
     VALIDATE();
     SkASSERT(this->isMapped());
     if (fMtlBuffer == nil) {
-        fMappedBuffer = nil;
         fMapPtr = nullptr;
         return;
     }
-#ifdef SK_BUILD_FOR_MAC
-    // In both cases the size needs to be 4-byte aligned on Mac
-    sizeInBytes = SkAlign4(sizeInBytes);
-#endif
+
     if (fIsDynamic) {
 #ifdef SK_BUILD_FOR_MAC
-        SkASSERT(0 == (fOffset & 0x3));  // should be 4-byte aligned
-        [fMtlBuffer didModifyRange: NSMakeRange(fOffset, sizeInBytes)];
+        [fMtlBuffer didModifyRange: NSMakeRange(0, sizeInBytes)];
 #endif
     } else {
         GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
         id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();
-        [blitCmdEncoder copyFromBuffer: fMappedBuffer
-                          sourceOffset: 0
+        GrMtlBuffer* mtlBuffer = static_cast<GrMtlBuffer*>(fStagingSlice.fBuffer);
+        id<MTLBuffer> transferBuffer = mtlBuffer->mtlBuffer();
+        [blitCmdEncoder copyFromBuffer: transferBuffer
+                          sourceOffset: fStagingSlice.fOffset
                               toBuffer: fMtlBuffer
                      destinationOffset: 0
                                   size: sizeInBytes];
     }
-    fMappedBuffer = nil;
+    fStagingSlice.fBuffer = nullptr;
     fMapPtr = nullptr;
 }
 
@@ -210,8 +202,6 @@ void GrMtlBuffer::validate() const {
              this->intendedType() == GrGpuBufferType::kXferGpuToCpu ||
              this->intendedType() == GrGpuBufferType::kDrawIndirect ||
              this->intendedType() == GrGpuBufferType::kUniform);
-    SkASSERT(fMappedBuffer == nil || fMtlBuffer == nil ||
-             fMappedBuffer.length <= fMtlBuffer.length);
 }
 #endif
 
