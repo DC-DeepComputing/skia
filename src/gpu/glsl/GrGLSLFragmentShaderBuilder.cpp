@@ -30,16 +30,22 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
     // second actual argument for _coords.
     // FIXME: An alternative would be to have all FP functions have a float2 argument, and the
     // parent FP invokes it with the varying reference when it's been lifted to the vertex shader.
-    size_t paramCount = 2;
     GrShaderVar params[] = { GrShaderVar(args.fInputColor, kHalf4_GrSLType),
                              GrShaderVar(args.fSampleCoord, kFloat2_GrSLType) };
+    SkSpan<GrShaderVar> paramSpan = SkMakeSpan(params, SK_ARRAY_COUNT(params));
 
-    if (!args.fFp.isSampledWithExplicitCoords()) {
+    if (args.fFp.isBlendFunction()) {
+        // Blend functions take two colors as input, and never take coordinates.
+        // Replace the sampleCoord parameter with destination color.
+        params[1] = GrShaderVar(args.fDestColor, kHalf4_GrSLType);
+    } else if (args.fFp.isSampledWithExplicitCoords()) {
+        // We are passing explicit coords; the function keeps its two arguments as-is.
+    } else {
         // Sampled with a uniform matrix expression and/or a legacy coord transform. The actual
         // transformation code is emitted in the vertex shader, so this only has to access it.
         // Add a float2 _coords variable that maps to the associated varying and replaces the
         // absent 2nd argument to the fp's function.
-        paramCount = 1;
+        paramSpan = paramSpan.first(1);
 
         if (args.fFp.referencesSampleCoords()) {
             GrShaderVar varying = fProgramBuilder->varyingCoordsForFragmentProcessor(&args.fFp);
@@ -61,13 +67,12 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
                     break;
             }
         }
-    } // else the function keeps its two arguments
+    }
 
     fp->emitCode(args);
 
     SkString funcName = this->getMangledFunctionName(args.fFp.name());
-    this->emitFunction(kHalf4_GrSLType, funcName.c_str(), {params, paramCount},
-                       this->code().c_str());
+    this->emitFunction(kHalf4_GrSLType, funcName.c_str(), paramSpan, this->code().c_str());
     this->deleteStage();
     this->onAfterChildProcEmitCode();
     return funcName;
