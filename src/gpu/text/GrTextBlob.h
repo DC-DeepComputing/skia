@@ -65,11 +65,11 @@ public:
 
     virtual std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(
-            const GrClip* clip,
+            const GrClip*,
             const SkMatrixProvider& viewMatrix,
-            const SkGlyphRunList& glyphRunList,
-            const SkPaint& paint,
-            GrSurfaceDrawContext* rtc,
+            const SkGlyphRunList&,
+            const SkPaint&,
+            skgpu::v1::SurfaceDrawContext*,
             GrAtlasSubRunOwner subRun) const = 0;
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,

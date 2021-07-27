@@ -11,9 +11,9 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/ops/GrFillRectOp.h"
 #include "src/gpu/ops/GrTextureOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 
 static std::unique_ptr<GrSurfaceDrawContext> new_RTC(GrRecordingContext* rContext) {

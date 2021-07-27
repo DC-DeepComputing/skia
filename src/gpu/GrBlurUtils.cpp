@@ -18,13 +18,13 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrStyle.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrThreadSafeCache.h"
 #include "src/gpu/GrUtil.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #include "include/core/SkPaint.h"
 #include "src/core/SkDraw.h"
@@ -42,7 +42,7 @@ static constexpr auto kMaskOrigin = kTopLeft_GrSurfaceOrigin;
 // Draw a mask using the supplied paint. Since the coverage/geometry
 // is already burnt into the mask this boils down to a rect draw.
 // Return true if the mask was successfully drawn.
-static bool draw_mask(GrSurfaceDrawContext* surfaceDrawContext,
+static bool draw_mask(skgpu::v1::SurfaceDrawContext* sdc,
                       const GrClip* clip,
                       const SkMatrix& viewMatrix,
                       const SkIRect& maskBounds,
@@ -61,7 +61,7 @@ static bool draw_mask(GrSurfaceDrawContext* surfaceDrawContext,
     paint.setCoverageFragmentProcessor(
             GrTextureEffect::Make(std::move(mask), kUnknown_SkAlphaType, matrix));
 
-    surfaceDrawContext->fillPixelsWithLocalMatrix(clip, std::move(paint), maskBounds, inverse);
+    sdc->fillPixelsWithLocalMatrix(clip, std::move(paint), maskBounds, inverse);
     return true;
 }
 
@@ -185,11 +185,11 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
 }
 
 // Create a mask of 'shape' and return the resulting surfaceDrawContext
-static std::unique_ptr<GrSurfaceDrawContext> create_mask_GPU(GrRecordingContext* context,
-                                                             const SkIRect& maskRect,
-                                                             const SkMatrix& origViewMatrix,
-                                                             const GrStyledShape& shape,
-                                                             int sampleCnt) {
+static std::unique_ptr<skgpu::v1::SurfaceDrawContext> create_mask_GPU(GrRecordingContext* rContext,
+                                                                      const SkIRect& maskRect,
+                                                                      const SkMatrix& origViewMatrix,
+                                                                      const GrStyledShape& shape,
+                                                                      int sampleCnt) {
     // We cache blur masks. Use default surface props here so we can use the same cached mask
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
@@ -204,29 +204,34 @@ static std::unique_ptr<GrSurfaceDrawContext> create_mask_GPU(GrRecordingContext*
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
     auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
-    auto rtContext = GrSurfaceDrawContext::MakeWithFallback(context, GrColorType::kAlpha_8, nullptr,
-                                                            SkBackingFit::kExact, approxSize,
-                                                            defaultSurfaceProps, sampleCnt,
-                                                            GrMipmapped::kNo, GrProtected::kNo,
-                                                            kMaskOrigin);
-    if (!rtContext) {
+    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(rContext,
+                                                               GrColorType::kAlpha_8,
+                                                               nullptr,
+                                                               SkBackingFit::kExact,
+                                                               approxSize,
+                                                               defaultSurfaceProps,
+                                                               sampleCnt,
+                                                               GrMipmapped::kNo,
+                                                               GrProtected::kNo,
+                                                               kMaskOrigin);
+    if (!sdc) {
         return nullptr;
     }
 
-    rtContext->clear(SK_PMColor4fTRANSPARENT);
+    sdc->clear(SK_PMColor4fTRANSPARENT);
 
     GrPaint maskPaint;
     maskPaint.setCoverageSetOpXPFactory(SkRegion::kReplace_Op);
 
     // setup new clip
-    GrFixedClip clip(rtContext->dimensions(), SkIRect::MakeWH(maskRect.width(), maskRect.height()));
+    GrFixedClip clip(sdc->dimensions(), SkIRect::MakeWH(maskRect.width(), maskRect.height()));
 
     // Draw the mask into maskTexture with the path's integerized top-left at the origin using
     // maskPaint.
     SkMatrix viewMatrix = origViewMatrix;
     viewMatrix.postTranslate(-SkIntToScalar(maskRect.fLeft), -SkIntToScalar(maskRect.fTop));
-    rtContext->drawShape(&clip, std::move(maskPaint), GrAA::kYes, viewMatrix, GrStyledShape(shape));
-    return rtContext;
+    sdc->drawShape(&clip, std::move(maskPaint), GrAA::kYes, viewMatrix, GrStyledShape(shape));
+    return sdc;
 }
 
 static bool get_unclipped_shape_dev_bounds(const GrStyledShape& shape, const SkMatrix& matrix,
@@ -256,7 +261,7 @@ static bool get_unclipped_shape_dev_bounds(const GrStyledShape& shape, const SkM
 
 // Gets the shape bounds, the clip bounds, and the intersection (if any). Returns false if there
 // is no intersection.
-static bool get_shape_and_clip_bounds(GrSurfaceDrawContext* surfaceDrawContext,
+static bool get_shape_and_clip_bounds(skgpu::v1::SurfaceDrawContext* sdc,
                                       const GrClip* clip,
                                       const GrStyledShape& shape,
                                       const SkMatrix& matrix,
@@ -264,8 +269,7 @@ static bool get_shape_and_clip_bounds(GrSurfaceDrawContext* surfaceDrawContext,
                                       SkIRect* devClipBounds) {
     // compute bounds as intersection of rt size, clip, and path
     *devClipBounds = clip ? clip->getConservativeBounds()
-                          : SkIRect::MakeWH(surfaceDrawContext->width(),
-                                            surfaceDrawContext->height());
+                          : SkIRect::MakeWH(sdc->width(), sdc->height());
 
     if (!get_unclipped_shape_dev_bounds(shape, matrix, unclippedDevShapeBounds)) {
         *unclippedDevShapeBounds = SkIRect::MakeEmpty();

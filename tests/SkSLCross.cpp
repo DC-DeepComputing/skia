@@ -7,9 +7,9 @@
 
 #include "tests/Test.h"
 
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 static void run_test(skiatest::Reporter*, GrDirectContext*,
                      GrSurfaceDrawContext*, SkVector a,

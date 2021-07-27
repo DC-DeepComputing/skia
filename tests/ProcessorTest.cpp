@@ -15,12 +15,12 @@
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/TestUtils.h"
 
 #include <atomic>
@@ -144,20 +144,20 @@ private:
 }  // namespace
 
 DEF_GPUTEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo) {
-    auto context = ctxInfo.directContext();
-    GrProxyProvider* proxyProvider = context->priv().proxyProvider();
+    auto dContext = ctxInfo.directContext();
+    GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();
 
     static constexpr SkISize kDims = {10, 10};
 
     const GrBackendFormat format =
-        context->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
-                                                        GrRenderable::kNo);
-    GrSwizzle swizzle = context->priv().caps()->getReadSwizzle(format, GrColorType::kRGBA_8888);
+        dContext->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
+                                                         GrRenderable::kNo);
+    GrSwizzle swizzle = dContext->priv().caps()->getReadSwizzle(format, GrColorType::kRGBA_8888);
 
     for (bool makeClone : {false, true}) {
         for (int parentCnt = 0; parentCnt < 2; parentCnt++) {
-            auto surfaceDrawContext = GrSurfaceDrawContext::Make(
-                    context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {1, 1},
+            auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+                    dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {1, 1},
                     SkSurfaceProps());
             {
                 sk_sp<GrTextureProxy> proxy = proxyProvider->createProxy(
@@ -175,11 +175,11 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo) {
                     if (makeClone) {
                         clone = fp->clone();
                     }
-                    GrOp::Owner op = TestOp::Make(context, std::move(fp));
-                    surfaceDrawContext->addDrawOp(std::move(op));
+                    GrOp::Owner op = TestOp::Make(dContext, std::move(fp));
+                    sdc->addDrawOp(std::move(op));
                     if (clone) {
-                        op = TestOp::Make(context, std::move(clone));
-                        surfaceDrawContext->addDrawOp(std::move(op));
+                        op = TestOp::Make(dContext, std::move(clone));
+                        sdc->addDrawOp(std::move(op));
                     }
                 }
 
@@ -188,7 +188,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo) {
 
                 CheckSingleThreadedProxyRefs(reporter, proxy.get(), expectedProxyRefs, -1);
 
-                context->flushAndSubmit();
+                dContext->flushAndSubmit();
 
                 // just one from the 'proxy' sk_sp
                 CheckSingleThreadedProxyRefs(reporter, proxy.get(), 1, 1);

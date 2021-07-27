@@ -28,7 +28,7 @@ public:
             , fMatrixProvider(matrixProvider) {}
 
     SkIRect getConservativeBounds() const final;
-    Effect apply(GrRecordingContext*, GrSurfaceDrawContext*, GrDrawOp*, GrAAType aaType,
+    Effect apply(GrRecordingContext*, skgpu::v1::SurfaceDrawContext*, GrDrawOp*, GrAAType aaType,
                  GrAppliedClip* out, SkRect* bounds) const final;
     PreClipResult preApply(const SkRect& drawBounds, GrAA aa) const final;
 
