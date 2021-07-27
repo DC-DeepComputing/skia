@@ -16,6 +16,24 @@
       "message": "Should we add something like writeAffineMatrix?",
       "revId": "1f997c0ab6f06357f0f627130dd7fa6113ef8cae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "414bb0e3_220bdca1",
+        "filename": "src/gpu/tessellate/GrPathStencilCoverOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-27T20:41:45Z",
+      "side": 1,
+      "message": "I think that really depends on how your matrix is stored in attribs, and there would have to be some sort of understanding between your code and GrVertexWriter how this is done. (Is it 2 rows of float3\u0027s? A float4 mapped to a 2x2 matrix plus a float2 transform (as is done here)? Is the float2x2 in column major or row major order?)\n\nI think for now I might prefer something localized like this. You define your own matrix and you know the order the data should go. Since you can\u0027t simply have a well-defined matrix type as an attrib, a helper function would feel a little too magic for me.\n\nWhat do you think?",
+      "parentUuid": "75577818_a509f0ef",
+      "revId": "1f997c0ab6f06357f0f627130dd7fa6113ef8cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
