@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ce796f5_28ae0d52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-27T20:35:52Z",
+      "side": 1,
+      "message": "Could a FP from a blender just always have two children (src and dst) and then if we need the actual dest color from the framebuffer we just bind a child FP to dst that provides it?",
+      "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
