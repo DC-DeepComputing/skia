@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92832120_a85938c9",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T21:05:10Z",
+      "side": 1,
+      "message": "I\u0027m having a tough time reasoning about this one, too. We are an FP made from a blender. We have a child FP that\u0027s supposed to be invoked to produce our dst color. When that FP is invoked, we plumb our *incoming* dst color as the input color? Is that necessary?\n\nThe fact that we\u0027re doing this swap thing makes me wonder, though - what if that FP is another blender FP? It\u0027s going to do the swap again? Is that possible?\n\nSorry, this is all bending my brain a bit - might need to chat about it tomorrow to make sure we\u0027ve thought this through.",
+      "range": {
+        "startLine": 181,
+        "startChar": 12,
+        "endLine": 181,
+        "endChar": 57
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "530431c4_ed6b35f2",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T21:05:10Z",
+      "side": 1,
+      "message": "Does this change when we can invoke a blender FP via sample()? I\u0027m trying to reason about how the right inputs are going to get where they need to be eventually.",
+      "range": {
+        "startLine": 74,
+        "startChar": 77,
+        "endLine": 74,
+        "endChar": 99
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
