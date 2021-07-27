@@ -184,20 +184,18 @@ void SkCanvas::predrawNotify(const SkRect* rect, const SkPaint* paint,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace {
-
 // Canvases maintain a sparse stack of layers, where the top-most layer receives the drawing,
 // clip, and matrix commands. There is a layer per call to saveLayer() using the
 // kFullLayer_SaveLayerStrategy.
-struct Layer {
+struct SkCanvasLayer {
     sk_sp<SkBaseDevice>  fDevice;
     sk_sp<SkImageFilter> fImageFilter; // applied to layer *before* being drawn by paint
     SkPaint              fPaint;
 
-    Layer(sk_sp<SkBaseDevice> device, sk_sp<SkImageFilter> imageFilter, const SkPaint& paint)
-            : fDevice(std::move(device))
-            , fImageFilter(std::move(imageFilter))
-            , fPaint(paint) {
+    SkCanvasLayer(sk_sp<SkBaseDevice> device,
+                  sk_sp<SkImageFilter> imageFilter,
+                  const SkPaint& paint)
+            : fDevice(std::move(device)), fImageFilter(std::move(imageFilter)), fPaint(paint) {
         SkASSERT(fDevice);
         // Any image filter should have been pulled out and stored in 'imageFilter' so that 'paint'
         // can be used as-is to draw the result of the filter to the dst device.
@@ -206,10 +204,12 @@ struct Layer {
 };
 
 // Encapsulate state needed to restore from saveBehind()
-struct BackImage {
+struct SkCanvasBackImage {
     sk_sp<SkSpecialImage> fImage;
     SkIPoint              fLoc;
 };
+
+namespace {
 
 enum class CheckForOverwrite : bool {
     kNo = false,
@@ -218,65 +218,37 @@ enum class CheckForOverwrite : bool {
 
 }  // namespace
 
-/*  This is the record we keep for each save/restore level in the stack.
-    Since a level optionally copies the matrix and/or stack, we have pointers
-    for these fields. If the value is copied for this level, the copy is
-    stored in the ...Storage field, and the pointer points to that. If the
-    value is not copied for this level, we ignore ...Storage, and just point
-    at the corresponding value in the previous level in the stack.
-*/
-class SkCanvas::MCRec {
-public:
-    // If not null, this MCRec corresponds with the saveLayer() record that made the layer.
-    // The base "layer" is not stored here, since it is stored inline in SkCanvas and has no
-    // restoration behavior.
-    std::unique_ptr<Layer> fLayer;
+SkCanvas::MCRec::MCRec(SkBaseDevice* device)
+        : fLayer(nullptr), fDevice(device), fBackImage(nullptr), fDeferredSaveCount(0) {
+    SkASSERT(fDevice);
+    fMatrix.setIdentity();
+    inc_rec();
+}
 
-    // This points to the device of the top-most layer (which may be lower in the stack), or
-    // to the canvas's fBaseDevice. The MCRec does not own the device.
-    SkBaseDevice* fDevice;
+SkCanvas::MCRec::MCRec(const MCRec* prev)
+        : fLayer(nullptr), fDevice(prev->fDevice), fMatrix(prev->fMatrix), fDeferredSaveCount(0) {
+    SkASSERT(fDevice);
+    inc_rec();
+}
 
-    std::unique_ptr<BackImage> fBackImage;
-    SkM44 fMatrix;
-    int fDeferredSaveCount;
+SkCanvas::MCRec::~MCRec() { dec_rec(); }
 
-    MCRec(SkBaseDevice* device)
-            : fLayer(nullptr)
-            , fDevice(device)
-            , fBackImage(nullptr)
-            , fDeferredSaveCount(0) {
-        SkASSERT(fDevice);
-        fMatrix.setIdentity();
-        inc_rec();
-    }
+void SkCanvas::MCRec::newLayer(sk_sp<SkBaseDevice> layerDevice,
+                                sk_sp<SkImageFilter> filter,
+                                const SkPaint& restorePaint) {
+    SkASSERT(!fBackImage);
+    fLayer = std::make_unique<SkCanvasLayer>(
+            std::move(layerDevice), std::move(filter), restorePaint);
+    fDevice = fLayer->fDevice.get();
+}
 
-    MCRec(const MCRec& prev)
-            : fLayer(nullptr)
-            , fDevice(prev.fDevice)
-            , fMatrix(prev.fMatrix)
-            , fDeferredSaveCount(0) {
-        SkASSERT(fDevice);
-        inc_rec();
-    }
-    ~MCRec() {
-        dec_rec();
-    }
-
-    void newLayer(sk_sp<SkBaseDevice> layerDevice, sk_sp<SkImageFilter> filter,
-                  const SkPaint& restorePaint) {
-        SkASSERT(!fBackImage);
-        fLayer = std::make_unique<Layer>(std::move(layerDevice), std::move(filter), restorePaint);
-        fDevice = fLayer->fDevice.get();
-    }
-
-    void reset(SkBaseDevice* device) {
-        SkASSERT(!fLayer);
-        SkASSERT(device);
-        SkASSERT(fDeferredSaveCount == 0);
-        fDevice = device;
-        fMatrix.setIdentity();
-    }
-};
+void SkCanvas::MCRec::reset(SkBaseDevice* device) {
+    SkASSERT(!fLayer);
+    SkASSERT(device);
+    SkASSERT(fDeferredSaveCount == 0);
+    fDevice = device;
+    fMatrix.setIdentity();
+}
 
 class SkCanvas::AutoUpdateQRBounds {
 public:
@@ -421,11 +393,6 @@ void SkCanvas::resetForNextPicture(const SkIRect& bounds) {
 }
 
 void SkCanvas::init(sk_sp<SkBaseDevice> device) {
-    // SkCanvas.h declares internal storage for the hidden struct MCRec, and this
-    // assert ensure it's sufficient. <= is used because the struct has pointer fields, so the
-    // declared size is an upper bound across architectures. When the size is smaller, more stack
-    static_assert(sizeof(MCRec) <= kMCRecSize);
-
     if (!device) {
         device = sk_make_sp<SkNoPixelsDevice>(SkIRect::MakeEmpty(), fProps);
     }
@@ -434,7 +401,7 @@ void SkCanvas::init(sk_sp<SkBaseDevice> device) {
     SkASSERT(device);
 
     fSaveCount = 1;
-    fMCRec = new (fMCStack.push_back()) MCRec(device.get());
+    fMCRec = fMCStack.addToTail(device.get());
     fMarkerStack = sk_make_sp<SkMarkerStack>();
 
     // The root device and the canvas should always have the same pixel geometry
@@ -449,16 +416,14 @@ void SkCanvas::init(sk_sp<SkBaseDevice> device) {
 }
 
 SkCanvas::SkCanvas()
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps()
+    : fProps()
 {
     inc_canvas();
     this->init(nullptr);
 }
 
 SkCanvas::SkCanvas(int width, int height, const SkSurfaceProps* props)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps(SkSurfacePropsCopyOrDefault(props))
+    : fProps(SkSurfacePropsCopyOrDefault(props))
 {
     inc_canvas();
     this->init(sk_make_sp<SkNoPixelsDevice>(
@@ -466,8 +431,7 @@ SkCanvas::SkCanvas(int width, int height, const SkSurfaceProps* props)
 }
 
 SkCanvas::SkCanvas(const SkIRect& bounds)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps()
+    : fProps()
 {
     inc_canvas();
 
@@ -476,8 +440,7 @@ SkCanvas::SkCanvas(const SkIRect& bounds)
 }
 
 SkCanvas::SkCanvas(sk_sp<SkBaseDevice> device)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps(device->surfaceProps())
+    : fProps(device->surfaceProps())
 {
     inc_canvas();
 
@@ -485,8 +448,7 @@ SkCanvas::SkCanvas(sk_sp<SkBaseDevice> device)
 }
 
 SkCanvas::SkCanvas(const SkBitmap& bitmap, const SkSurfaceProps& props)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps(props)
+    : fProps(props)
 {
     inc_canvas();
 
@@ -496,8 +458,7 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, const SkSurfaceProps& props)
 
 SkCanvas::SkCanvas(const SkBitmap& bitmap, std::unique_ptr<SkRasterHandleAllocator> alloc,
                    SkRasterHandleAllocator::Handle hndl)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-    , fProps()
+    : fProps()
     , fAllocator(std::move(alloc))
 {
     inc_canvas();
@@ -510,7 +471,7 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap) : SkCanvas(bitmap, nullptr, nullptr) 
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
 SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
-    : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage)), fProps(), fAllocator(nullptr)
+    : fProps(), fAllocator(nullptr)
 {
     inc_canvas();
 
@@ -522,9 +483,7 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 #endif
 
 SkCanvas::~SkCanvas() {
-    // free up the contents of our deque
     this->restoreToCount(1);    // restore everything but the last
-
     this->internalRestore();    // restore the last, since we're going away
 
     dec_canvas();
@@ -614,13 +573,8 @@ void SkCanvas::checkForDeferredSave() {
 int SkCanvas::getSaveCount() const {
 #ifdef SK_DEBUG
     int count = 0;
-    SkDeque::Iter iter(fMCStack, SkDeque::Iter::kFront_IterStart);
-    for (;;) {
-        const MCRec* rec = (const MCRec*)iter.next();
-        if (!rec) {
-            break;
-        }
-        count += 1 + rec->fDeferredSaveCount;
+    for (auto it = fMCStack.headIter(); it.get(); it.next()) {
+        count += 1 + it.get()->fDeferredSaveCount;
     }
     SkASSERT(count == fSaveCount);
 #endif
@@ -671,7 +625,7 @@ void SkCanvas::restoreToCount(int count) {
 }
 
 void SkCanvas::internalSave() {
-    fMCRec = new (fMCStack.push_back()) MCRec(*fMCRec);
+    fMCRec = fMCStack.addToTail(fMCRec);
 
     this->topDevice()->save();
 }
@@ -1173,8 +1127,8 @@ void SkCanvas::internalSaveBehind(const SkRect* localBounds) {
     // we really need the save, so we can wack the fMCRec
     this->checkForDeferredSave();
 
-    fMCRec->fBackImage =
-            std::make_unique<BackImage>(BackImage{std::move(backImage), devBounds.topLeft()});
+    fMCRec->fBackImage = std::make_unique<SkCanvasBackImage>(
+            SkCanvasBackImage{std::move(backImage), devBounds.topLeft()});
 
     SkPaint paint;
     paint.setBlendMode(SkBlendMode::kClear);
@@ -1185,18 +1139,17 @@ void SkCanvas::internalRestore() {
     SkASSERT(fMCStack.count() != 0);
 
     // now detach these from fMCRec so we can pop(). Gets freed after its drawn
-    std::unique_ptr<Layer> layer = std::move(fMCRec->fLayer);
-    std::unique_ptr<BackImage> backImage = std::move(fMCRec->fBackImage);
+    std::unique_ptr<SkCanvasLayer> layer = std::move(fMCRec->fLayer);
+    std::unique_ptr<SkCanvasBackImage> backImage = std::move(fMCRec->fBackImage);
 
     fMarkerStack->restore(fMCRec);
 
     // now do the normal restore()
-    fMCRec->~MCRec();       // balanced in save()
-    fMCStack.pop_back();
-    fMCRec = (MCRec*) fMCStack.back();
+    fMCStack.popTail();
+    fMCRec = fMCStack.tail();
 
+    // This was the last record, restored during the destruction of the SkCanvas
     if (!fMCRec) {
-        // This was the last record, restored during the destruction of the SkCanvas
         return;
     }
 
@@ -1972,11 +1925,10 @@ void SkCanvas::onDrawBehind(const SkPaint& paint) {
     }
 
     SkIRect bounds;
-    SkDeque::Iter iter(fMCStack, SkDeque::Iter::kBack_IterStart);
-    for (;;) {
-        const MCRec* rec = (const MCRec*)iter.prev();
+    for (auto iter = fMCStack.tailIter();;iter.prev()) {
+        const MCRec* rec = iter.get();
         if (!rec) {
-            return; // no backimages, so nothing to draw
+            return; // no backimages, no nothing to draw
         }
         if (rec->fBackImage) {
             // drawBehind should only have been called when the saveBehind record is active;
