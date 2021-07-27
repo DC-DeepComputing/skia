@@ -23,6 +23,8 @@
 #include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
 
+extern bool gUseSkVMBlitter;
+
 struct Matrix43 {
     float fMat[12];    // column major
 
@@ -308,7 +310,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
     VertState::Proc vertProc = state.chooseProc(info.mode());
     // No colors are changing and no texture coordinates are changing, so no updates between
     // triangles are needed. Use SkVM to blit the triangles.
-    if (!colors && (!texCoords || texCoords == positions)) {
+    if (gUseSkVMBlitter && !colors && (!texCoords || texCoords == positions)) {
         if (auto blitter = SkVMBlitter::Make(
                 fDst, paint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
             while (vertProc(&state)) {
