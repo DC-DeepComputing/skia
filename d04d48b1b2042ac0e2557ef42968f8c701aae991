@@ -135,6 +135,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "769eee1b_f4d826ff",
+        "filename": "src/shaders/SkTexCoordShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T18:41:44Z",
+      "side": 1,
+      "message": "I\u0027d love to chat about this parameter at some point. I think I finally understand it, and I don\u0027t like it, but I\u0027m also not sure we can do much about it. There is no way to bake it into the matrix provider, because of the strange semantics it has. (Unless we extend the functionality of the matrix provider to track a second matrix). As to this being ignored - yeah, I think this is the same fundamental issue I pointed out here: https://skia-review.googlesource.com/c/skia/+/432158/comments/eea016d5_5069a3d0\n\nWe\u0027ve got a few spots in all of this updater-adjacent code that don\u0027t preserve this value.",
+      "parentUuid": "35b78d30_78b8ce7f",
+      "range": {
+        "startLine": 15,
+        "startChar": 72,
+        "endLine": 15,
+        "endChar": 78
+      },
+      "revId": "d04d48b1b2042ac0e2557ef42968f8c701aae991",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5e7c51b_a8016e00",
         "filename": "src/shaders/SkTexCoordShader.cpp",
         "patchSetId": 17
