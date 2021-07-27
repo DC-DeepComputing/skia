@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7451215_e48ee247",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T20:12:52Z",
+      "side": 1,
+      "message": "thought : we could pass the \"original\" shader as a parameter to update(...), since we always know whence the updating-shader came. Just a thought, may not make anything bettter.",
+      "revId": "4cc2fdfe57d70b63a024503cc7b762f2ba4475b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1c060e2_78c68e58",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-27T20:12:52Z",
+      "side": 1,
+      "message": "hehe, good fix",
+      "range": {
+        "startLine": 559,
+        "startChar": 11,
+        "endLine": 559,
+        "endChar": 56
+      },
+      "revId": "4cc2fdfe57d70b63a024503cc7b762f2ba4475b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
