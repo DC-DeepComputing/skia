@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a384a062_1fb59acd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-27T20:23:16Z",
+      "side": 1,
+      "message": "Landing this, we can definitely add some more benches to monitor the creation time. I did profile this, and it\u0027s fairly split between bookkeeping of the recs, matrix math, and memory allocation.",
+      "revId": "7790bcfb55bc185a6df9ca0aa4e7df5cf8d27731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
