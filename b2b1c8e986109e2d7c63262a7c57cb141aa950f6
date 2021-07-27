@@ -266,6 +266,24 @@
       "parentUuid": "914cb46d_f6af8c1d",
       "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b7a02b1_ac64dcde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T15:14:35Z",
+      "side": 1,
+      "message": "Now that https://dawn-review.googlesource.com/c/tint/+/59840 has been merged, is the roll unblocked?",
+      "parentUuid": "95bfa9ff_a85ac380",
+      "revId": "b2b1c8e986109e2d7c63262a7c57cb141aa950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
