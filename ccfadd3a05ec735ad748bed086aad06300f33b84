@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6035c3c_7c9a8523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-27T21:05:22Z",
+      "side": 1,
+      "message": "\"x,y are arbitrary colors computed in the caller\": Yes, exactly.\n\n\"flexible call signature\": Without a doubt. Finding and plumbing through an additional call signature throughout the various affected spots in Gr has been difficult and it would be nice to be able to say that it\u0027s a solved problem forever. It would be awesome if we had a more flexible model that supported arbitrary argument lists. Obviously this opens up a ton of unanswered questions, but it\u0027s definitely worth thinking about. Especially if we can imagine more types of sample-able things besides shaders, color filters and blenders.",
+      "parentUuid": "fb7e348e_de724f64",
+      "revId": "ccfadd3a05ec735ad748bed086aad06300f33b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "369720f8_337efe18",
