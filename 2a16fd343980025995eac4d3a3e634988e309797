@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d6e4e6f_f13ad018",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Given how I\u0027m staging things (i.e., making the SDC class hierarchy V1-only before making all the Ops V1-only) things get a bit gnarly within the Ops. Basically, making the SDC V1-only requires a bunch of \"#if SK_GPU_V1\" noise in some of the ops and the GrTextBlob. Making the v1::SDC be V1-only in this CL would make it much messier.",
+      "parentUuid": "bc392726_28ab00b7",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 29
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d93d4e2_3823f8f5",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-28T17:48:24Z",
       "side": 1,
       "message": "these are just unnecessary given the earlier includes, right?",
+      "range": {
+        "startLine": 1659,
+        "startChar": 0,
+        "endLine": 1661,
+        "endChar": 45
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f85607_556b2b55",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1661,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d93d4e2_3823f8f5",
       "range": {
         "startLine": 1659,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70a5c2a5_807c670e",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98da4f2d_d0a11f07",
+      "range": {
+        "startLine": 98,
+        "startChar": 68,
+        "endLine": 109,
+        "endChar": 90
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff7a56f7_906109ef",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-07-28T17:48:24Z",
       "side": 1,
       "message": "2 indents",
+      "range": {
+        "startLine": 150,
+        "startChar": 68,
+        "endLine": 161,
+        "endChar": 87
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a6be7f1_1c203735",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff7a56f7_906109ef",
       "range": {
         "startLine": 150,
         "startChar": 68,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc8a14b_53412a01",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42db3466_c2430512",
+      "range": {
+        "startLine": 303,
+        "startChar": 60,
+        "endLine": 308,
+        "endChar": 79
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac660e8f_cccd8740",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-07-28T17:48:24Z",
       "side": 1,
       "message": "2 indents",
+      "range": {
+        "startLine": 342,
+        "startChar": 68,
+        "endLine": 354,
+        "endChar": 87
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b708e68e_1cecd5d9",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac660e8f_cccd8740",
       "range": {
         "startLine": 342,
         "startChar": 68,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b88f8788_a5603727",
+        "filename": "src/core/SkGpuBlurUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5828eda3_cb95b60a",
+      "range": {
+        "startLine": 52,
+        "startChar": 56,
+        "endLine": 62,
+        "endChar": 98
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ee7c7ac_c1daa2e3",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-07-28T17:48:24Z",
       "side": 1,
       "message": "2 indents",
+      "range": {
+        "startLine": 189,
+        "startChar": 68,
+        "endLine": 193,
+        "endChar": 84
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e013188c_e5807320",
+        "filename": "src/gpu/GrBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ee7c7ac_c1daa2e3",
       "range": {
         "startLine": 189,
         "startChar": 68,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db311fe_7153d960",
+        "filename": "src/gpu/GrProxyProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a1193ca_2373bf59",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 54
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f844775f_fbf86af7",
@@ -231,6 +447,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77efaad6_1bd95d86",
+        "filename": "src/gpu/v1/Device_drawTexture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "Done but I\u0027ve been trying to omit the prefixes in the v1 \u0026 v2 directories.",
+      "parentUuid": "f844775f_fbf86af7",
+      "range": {
+        "startLine": 249,
+        "startChar": 47,
+        "endLine": 249,
+        "endChar": 65
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8768bb0e_61e3beca",
@@ -244,6 +484,30 @@
       "writtenOn": "2021-07-28T17:48:24Z",
       "side": 1,
       "message": "Can we keep the file name as \u0027src/gpu/v1/SurfaceDrawContext.h\u0027? I see value in having _v1 in the header guard define, but it gets redundant in all the includes for \u0027v1/SurfaceDrawContext_v1.h\u0027",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 37
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727bfdfd_8f7e56fa",
+        "filename": "src/gpu/v1/SurfaceDrawContext_v1.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-28T18:22:44Z",
+      "side": 1,
+      "message": "I have to fix our header processing tool to allow header files with the same name to exist and just be differentiated by their name. So, yes, ultimately the file will just be named v1/SurfaceDrawContext.h and will have the SurfaceDrawContext_v1_DEFINED guard inside it.",
+      "parentUuid": "8768bb0e_61e3beca",
       "range": {
         "startLine": 8,
         "startChar": 8,
