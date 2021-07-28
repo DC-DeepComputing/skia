@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72bcee42_5a88a77f",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-28T01:39:19Z",
+      "side": 1,
+      "message": "I\u0027ve restructured things some more. New plan:\n- If the blender has child FPs, the passed-in src color is used as the input color to the src FP and the passed-in dst color is used as the input color to the dst FP.\n- If the blender does not have child FPs, the passed-in colors are used directly\n- Always pass the input color as the src color to the blender.\n- In cases where we don\u0027t have a known dest color (all existing calls to invokeChild), pass half4(1) as the dst color to the blender.\n\nI\u0027m starting to think this will actually work, but we can go over it some more at the meeting tomorrow.",
+      "parentUuid": "3a89247f_110e27f5",
+      "range": {
+        "startLine": 181,
+        "startChar": 12,
+        "endLine": 181,
+        "endChar": 57
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "530431c4_ed6b35f2",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "If sample(blender) calls this version of invokeChild, then no, this can\u0027t work as written. The two arguments will need to be different. At one point I had this working by adding a new form of invokeChild() that took two color arguments but that isn\u0027t represented in this CL.",
       "parentUuid": "530431c4_ed6b35f2",
+      "range": {
+        "startLine": 74,
+        "startChar": 77,
+        "endLine": 74,
+        "endChar": 99
+      },
+      "revId": "32311560ed66bf290af0f3417565218bb85c3be3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c79e6ac7_ba0c248d",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-28T01:39:19Z",
+      "side": 1,
+      "message": "Done, a dest color is now passed in.",
+      "parentUuid": "60ca800d_d196bd6f",
       "range": {
         "startLine": 74,
         "startChar": 77,
