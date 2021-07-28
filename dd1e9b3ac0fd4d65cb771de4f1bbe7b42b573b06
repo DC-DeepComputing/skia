@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ed53f9_c973bfd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-28T22:12:08Z",
+      "side": 1,
+      "message": "To see where this is going look at the blend implementation in:\nhttps://skia-review.googlesource.com/c/skia/+/434161",
+      "revId": "dd1e9b3ac0fd4d65cb771de4f1bbe7b42b573b06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
