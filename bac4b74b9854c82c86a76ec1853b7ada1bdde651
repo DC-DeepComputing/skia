@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c50c3f89_161a2a2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T18:02:29Z",
+      "side": 1,
+      "message": "lgtm, just some questions on the initial and subsequent allocation sizes for the path draw list allocator.",
+      "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd163a8_d95de987",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T18:02:29Z",
+      "side": 1,
+      "message": "This seems a little high for the block item size per allocation. How often do we get 512 separate path lists?\n\nWould something lower like 64 for subsequent allocations make sense?",
+      "range": {
+        "startLine": 61,
+        "startChar": 50,
+        "endLine": 61,
+        "endChar": 53
+      },
+      "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5969a7a1_847d87c6",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T18:02:29Z",
+      "side": 1,
+      "message": "Have you experimented with different starting sizes for this? e.g. GrTBlockList\u003cPathDrawList, 4\u003e to have 4 PathDrawLists inline allocated with the GrAtlasRenderTask?\n\nIt seems plausible that if we use the GrAtlasRenderTask that we\u0027ll have N \u003e 1 entries into it, although 512 seems high in terms of secondary heap allocations. Maybe GrTBlockList\u003cPathDrawList, 4\u003e{64} or similar would give us a good balance? \n\nA \u0027using PathDrawAllocator \u003d GrTBlockList\u003cPathDrawList, S\u003e{N};\u0027 would then improve readability where it\u0027s referenced in AtlasPathList, etc.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 30
+      },
+      "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
