@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01697802_5dfcb27c",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T18:45:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9d6e4e6f_f13ad018",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 29
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d93d4e2_3823f8f5",
@@ -508,6 +532,30 @@
       "side": 1,
       "message": "I have to fix our header processing tool to allow header files with the same name to exist and just be differentiated by their name. So, yes, ultimately the file will just be named v1/SurfaceDrawContext.h and will have the SurfaceDrawContext_v1_DEFINED guard inside it.",
       "parentUuid": "8768bb0e_61e3beca",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 37
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05664f48_1a3efa95",
+        "filename": "src/gpu/v1/SurfaceDrawContext_v1.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T18:45:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "727bfdfd_8f7e56fa",
       "range": {
         "startLine": 8,
         "startChar": 8,
