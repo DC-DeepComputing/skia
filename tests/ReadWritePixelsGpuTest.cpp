@@ -15,8 +15,8 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
 #include "src/gpu/GrSurfaceContext.h"
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
-#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
@@ -24,6 +24,7 @@
 #include "tools/gpu/BackendTextureImageFactory.h"
 #include "tools/gpu/GrContextFactory.h"
 #include "tools/gpu/ProxyUtils.h"
+//#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #include <initializer_list>
 
@@ -1098,8 +1099,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixels, reporter, ctxInfo)
 }
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ctxInfo) {
-    auto direct = ctxInfo.directContext();
-    if (!direct->priv().caps()->mipmapSupport()) {
+    auto dContext = ctxInfo.directContext();
+    if (!dContext->priv().caps()->mipmapSupport()) {
         return;
     }
     static constexpr int kW = 25,
@@ -1118,7 +1119,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
     for (int c = 0; c < kGrColorTypeCnt; ++c) {
         auto ct = static_cast<GrColorType>(c);
         // Below we use rendering to read the level pixels back.
-        auto format = direct->priv().caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
+        auto format = dContext->priv().caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
         if (!format.isValid()) {
             continue;
         }
@@ -1138,7 +1139,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
             for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
                 for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin,
                                                kBottomLeft_GrSurfaceOrigin}) {
-                    auto sc = GrSurfaceContext::Make(direct,
+                    auto sc = GrSurfaceContext::Make(dContext,
                                                      info,
                                                      SkBackingFit::kExact,
                                                      origin,
@@ -1168,7 +1169,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
                     // Going through intermediate textures is not supported for MIP levels (because
                     // we don't support rendering to non-base levels). So it's hard to have any hard
                     // rules about when we expect success.
-                    if (!sc->writePixels(direct, levels.begin(), levels.count())) {
+                    if (!sc->writePixels(dContext, levels.begin(), levels.count())) {
                         continue;
                     }
                     // Make sure the pixels from the unowned pixmap are released and then put the
@@ -1176,14 +1177,23 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
                     keepAlive = {};
                     levels[1] = savedLevel;
 
+                    auto dst = GrSurfaceContext::Make(dContext,
+                                                      info,
+                                                      SkBackingFit::kExact,
+                                                      kBottomLeft_GrSurfaceOrigin,
+                                                      GrRenderable::kYes);
+
+#if 0
                     // TODO: Update this when read pixels supports reading back levels to read
                     // directly rather than using minimizing draws.
-                    auto dst = skgpu::v1::SurfaceDrawContext::Make(direct,
+                    auto dst = skgpu::v1::SurfaceDrawContext::Make(dContext,
                                                                    info.colorType(),
                                                                    info.refColorSpace(),
                                                                    SkBackingFit::kExact,
                                                                    info.dimensions(),
                                                                    SkSurfaceProps());
+#endif
+
                     SkASSERT(dst);
                     GrSamplerState sampler(SkFilterMode::kNearest, SkMipmapMode::kNearest);
                     for (int i = 1; i <= 1; ++i) {
@@ -1191,14 +1201,14 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
                                                         info.alphaType(),
                                                         SkMatrix::I(),
                                                         sampler,
-                                                        *direct->priv().caps());
-                        dst->fillRectToRectWithFP(SkIRect::MakeSize(sc->dimensions()),
-                                                  SkIRect::MakeSize(levels[i].dimensions()),
-                                                  std::move(te));
+                                                        *dContext->priv().caps());
+                        dst->asFillContext()->fillRectToRectWithFP(SkIRect::MakeSize(sc->dimensions()),
+                                                                   SkIRect::MakeSize(levels[i].dimensions()),
+                                                                   std::move(te));
                         GrImageInfo readInfo =
                                 dst->imageInfo().makeDimensions(levels[i].dimensions());
                         GrPixmap read = GrPixmap::Allocate(readInfo);
-                        if (!dst->readPixels(direct, read, {0, 0})) {
+                        if (!dst->readPixels(dContext, read, {0, 0})) {
                             continue;
                         }
 

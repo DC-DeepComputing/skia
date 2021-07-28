@@ -486,7 +486,8 @@ GrGeometryProcessor* GrAtlasTextOp::setupDfProcessor(SkArenaAlloc* arena,
     }
 }
 
-#if GR_TEST_UTILS
+#if GR_TEST_UTILS && SK_GPU_V1
+
 
 GrOp::Owner GrAtlasTextOp::CreateOpTestingOnly(skgpu::v1::SurfaceDrawContext* sdc,
                                                const SkPaint& skPaint,

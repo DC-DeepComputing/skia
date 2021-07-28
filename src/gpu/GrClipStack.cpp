@@ -236,7 +236,7 @@ static GrFPResult analytic_clip_fp(const GrClipStack::Element& e,
 // TODO: Currently this only works with tessellation because the tessellation path renderer owns and
 // manages the atlas. The high-level concept could be generalized to support any path renderer going
 // into a shared atlas.
-static GrFPResult clip_atlas_fp(GrRecordingContext* rContext,
+static GrFPResult clip_atlas_fp(const GrSurfaceDrawContext* sdc,
                                 const GrOp* opBeingClipped,
                                 GrAtlasPathRenderer* atlasPathRenderer,
                                 const SkIRect& scissorBounds,
@@ -252,7 +252,7 @@ static GrFPResult clip_atlas_fp(GrRecordingContext* rContext,
         // Toggling fill type does not affect the path's "generationID" key.
         path.toggleInverseFillType();
     }
-    return atlasPathRenderer->makeAtlasClipEffect(rContext, opBeingClipped, std::move(inputFP),
+    return atlasPathRenderer->makeAtlasClipEffect(sdc, opBeingClipped, std::move(inputFP),
                                                   scissorBounds, e.fLocalToDevice, path);
 }
 
