@@ -16,6 +16,24 @@
       "message": "From a behavior standpoint, since the atlas path renderer is above the triangulating path renderer now, we would see the coverage-aa paths being routed to the atlas that normally would have been handled by the aa triangulating path renderer, correct? \n\nIn theory, those paths should still be limited to 256 along a dimension, but would be anti-aliased in an MSAA manner vs. the smoother coverage ramp, so there will be some visual regression from this change. On a desktop platform, what sample count do we use for the atlas? The gold diffs appear to be msaa4, but maybe we should have it be 8 to mitigate the quality loss?\n\nAlso, some of the gold diffs look like they are affecting paths that are larger than the atlas\u0027s max dimension (IIUC), so I\u0027m wondering why they got picked up by the atlas?",
       "revId": "8f607f03637ed765a2218d7637ec18e8b4c23609",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b228bdc8_5a27a753",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-28T19:28:44Z",
+      "side": 1,
+      "message": "\u003e\u003e The gold diffs appear to be msaa4, but maybe we should have it be 8 to mitigate the quality loss?\n\nSkia gold just uses 4x AA. Chrome has this set to 8. The default behavior is 4 though, so unless people know how to control this context option, the quality will be 4x. That\u0027s probably worth another discussion. Maybe our default should be 8?\n\n\u003e\u003e Also, some of the gold diffs look like they are affecting paths that are larger than the atlas\u0027s max dimension\n\nThe limit is 256^2 pixels, and 2048 pixels in the larger dimension. This makes sure height \u003c\u003d 256 and width \u003c\u003d 2048 after transposing. Are you seeing diffs that are are wider than 2048 pixels?",
+      "parentUuid": "1cf900a9_d3dbfe68",
+      "revId": "8f607f03637ed765a2218d7637ec18e8b4c23609",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
