@@ -214,9 +214,7 @@ GrPathRenderer::CanDrawPath GrAtlasPathRenderer::onCanDrawPath(const CanDrawPath
     SkASSERT(!args.fHasUserStencilSettings);  // See onGetStencilSupport().
 #endif
     bool canDrawPath = args.fShape->style().isSimpleFill() &&
-                       // The MSAA requirement is a temporary limitation in order to preserve
-                       // functionality for refactoring. TODO: Allow kCoverage AA types.
-                       args.fAAType == GrAAType::kMSAA &&
+                       args.fAAType != GrAAType::kNone &&
                        !args.fShape->style().hasPathEffect() &&
                        !args.fViewMatrix->hasPerspective() &&
                        this->pathFitsInAtlas(args.fViewMatrix->mapRect(args.fShape->bounds()),

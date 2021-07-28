@@ -40,6 +40,18 @@ static constexpr SkScalar kMaxDim = 73;
 static constexpr SkScalar kMinSize = SK_ScalarHalf;
 static constexpr SkScalar kMaxSize = 2*kMaxMIP;
 
+static bool should_use_distance_field(const SkRect& devBounds, const SkMatrix& viewMatrix) {
+#if defined(SK_BUILD_FOR_ANDROID) && !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+    return true;
+#else
+    // only use distance fields on desktop and Android framework to save space in the atlas
+    bool useDistanceField = devBounds.width() > kMaxMIP || devBounds.height() > kMaxMIP;
+    // always use distance fields if in perspective
+    useDistanceField = useDistanceField || viewMatrix.hasPerspective();
+    return useDistanceField;
+#endif
+}
+
 GrSmallPathRenderer::GrSmallPathRenderer() {}
 
 GrSmallPathRenderer::~GrSmallPathRenderer() {}
@@ -79,15 +91,18 @@ GrPathRenderer::CanDrawPath GrSmallPathRenderer::onCanDrawPath(const CanDrawPath
     // scaled to have bounds within kMaxSize by kMaxSize.
     // The goal is to accelerate rendering of lots of small paths that may be scaling.
     SkRect bounds = args.fShape->styledBounds();
-    SkScalar minDim = std::min(bounds.width(), bounds.height());
     SkScalar maxDim = std::max(bounds.width(), bounds.height());
-    SkScalar minSize = minDim * SkScalarAbs(scaleFactors[0]);
-    SkScalar maxSize = maxDim * SkScalarAbs(scaleFactors[1]);
+    SkRect devBounds = args.fViewMatrix->mapRect(args.fShape->styledBounds());
+    SkScalar minSize = std::min(devBounds.width(), devBounds.height());
+    SkScalar maxSize = std::max(devBounds.width(), devBounds.height());
     if (maxDim > kMaxDim || kMinSize > minSize || maxSize > kMaxSize) {
         return CanDrawPath::kNo;
     }
 
-    return CanDrawPath::kYes;
+    // If we will have to fall back on CPU-rendered bitmaps, give other path renderers in the chain
+    // a chance to claim this path first.
+    return should_use_distance_field(devBounds, *args.fViewMatrix) ? CanDrawPath::kYes
+                                                                   : CanDrawPath::kAsBackup;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,16 +134,9 @@ public:
             , fHelper(processorSet, GrAAType::kCoverage, stencilSettings) {
         SkASSERT(shape.hasUnstyledKey());
         // Compute bounds
-        this->setTransformedBounds(shape.bounds(), viewMatrix, HasAABloat::kYes, IsHairline::kNo);
-
-#if defined(SK_BUILD_FOR_ANDROID) && !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
-        fUsesDistanceField = true;
-#else
-        // only use distance fields on desktop and Android framework to save space in the atlas
-        fUsesDistanceField = this->bounds().width() > kMaxMIP || this->bounds().height() > kMaxMIP;
-#endif
-        // always use distance fields if in perspective
-        fUsesDistanceField = fUsesDistanceField || viewMatrix.hasPerspective();
+        SkRect devBounds = viewMatrix.mapRect(shape.bounds());
+        fUsesDistanceField = should_use_distance_field(this->bounds(), viewMatrix);
+        this->setBounds(devBounds, HasAABloat::kYes, IsHairline::kNo);
 
         fShapes.emplace_back(Entry{color, shape, viewMatrix});
 
