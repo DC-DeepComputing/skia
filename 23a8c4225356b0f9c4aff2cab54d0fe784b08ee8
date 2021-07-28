@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3d71d0f_58644919",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-28T18:36:01Z",
+      "side": 1,
+      "message": "I don\u0027t want to land this without this being set to true somehow, otherwise the new code isn\u0027t even being compiled anywhere. I think setting this to something like `!is_fuchsia` (until HarfBuzz can be rolled in Fuchsia) and updating gn/gn_to_bp.py\u0027s generate_args function to set `skia_subset_harfbuzz_new_api \u003d false` until we roll HarfBuzz in Android should be enough.",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de96b69_2024de2f",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
