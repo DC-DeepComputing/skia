@@ -187,7 +187,7 @@ GrTriangulatingPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
             if (!args.fShape->hasUnstyledKey()) {
                 return CanDrawPath::kNo;
             }
-            break;
+            return CanDrawPath::kYes;
         case GrAAType::kCoverage:
             // Use analytic AA if we don't have MSAA. In this case, we do not cache, so we accept
             // paths without keys.
@@ -196,9 +196,10 @@ GrTriangulatingPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
             if (path.countVerbs() > fMaxVerbCount) {
                 return CanDrawPath::kNo;
             }
-            break;
+            // We are at the end of the chain, but give other backup renderers a chance to claim
+            // this path first.
+            return CanDrawPath::kAsBackup;
     }
-    return CanDrawPath::kYes;
 }
 
 namespace {
