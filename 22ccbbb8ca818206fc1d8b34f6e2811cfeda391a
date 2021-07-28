@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b2dbdfa_1dbd9b71",
+        "filename": "src/gpu/mtl/GrMtlCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-28T15:30:11Z",
+      "side": 1,
+      "message": "I changed to the one routine, with wrapping for the raw pointer resources. Is the intention to have GrVkResourceProvider return sk_sp\u003c\u003e for all the resources rather than raw pointers? Seems like that would lead to unnecessary refs.",
+      "parentUuid": "82f460dd_1f9e7f46",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1fc99271_8203d1cf",
         "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-28T14:05:00Z",
       "side": 1,
       "message": "std::move()? Or std::move into fPipeline and then copy fPipeline here.",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 46
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db32321_c7e535a6",
+        "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-28T15:30:11Z",
+      "side": 1,
+      "message": "Done. Also moved the addResource down to setData(). Otherwise it would only call addResource() on creation.",
+      "parentUuid": "1fc99271_8203d1cf",
       "range": {
         "startLine": 59,
         "startChar": 38,
