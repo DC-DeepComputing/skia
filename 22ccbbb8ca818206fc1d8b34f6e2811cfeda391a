@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89b8b40b_5e3004f7",
+        "filename": "src/gpu/mtl/GrMtlCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-07-28T16:19:34Z",
+      "side": 1,
+      "message": "Sounds reasonable. And in case it\u0027s not clear, it is removed.",
+      "parentUuid": "1debf563_b7512c6f",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1fc99271_8203d1cf",
         "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
         "patchSetId": 1
