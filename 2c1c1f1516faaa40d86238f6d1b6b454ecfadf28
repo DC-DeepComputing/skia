@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4bfc1ff_b922d9cb",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T16:31:56Z",
+      "side": 1,
+      "message": "wondering: can we put all of the boiler-plate overrides that say \"we don\u0027t support serialization\" here, so that subclasses don\u0027t have to bother?\n\n    // For serialization.  This will never be called.\n    Factory getFactory() const override { return nullptr; }\n    const char* getTypeName() const override { return nullptr; }",
+      "range": {
+        "startLine": 267,
+        "startChar": 6,
+        "endLine": 267,
+        "endChar": 23
+      },
+      "revId": "2c1c1f1516faaa40d86238f6d1b6b454ecfadf28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57cbb20f_55f432ae",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T16:31:56Z",
+      "side": 1,
+      "message": "maybe move these into baseclass?",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "2c1c1f1516faaa40d86238f6d1b6b454ecfadf28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
