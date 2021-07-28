@@ -40,6 +40,36 @@
 #include <string.h>
 #include <memory>
 
+// TODO(crbug.com/1018581) Some CoreText versions have errant behavior when
+// certain traits set.  Temporary workaround to omit specifying trait for those
+// versions.
+// Long term solution will involve serializing typefaces instead of relying upon
+// this to match between processes.
+//
+// Compare CoreText.h in an up to date SDK for where these values come from.
+static const uint32_t kSkiaLocalCTVersionNumber10_13 = 0x000A0000;
+static const uint32_t kSkiaLocalCTVersionNumber10_14 = 0x000B0000;
+static const uint32_t kSkiaLocalCTVersionNumber10_15 = 0x000C0000;
+static const uint32_t kSkiaLocalCTVersionNumber11_0 = 0x000D0000;
+
+static uint32_t get_core_text_version() {
+#if defined(__IPHONE_14_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_14_0
+#ifdef SK_BUILD_FOR_IOS
+    // If compiling for iOS and the min deployment target is iOS 14 or greater,
+    // then the CoreText version number will always be
+    // |kSkiaLocalCTVersionNumber11_0| or greater.
+    return kSkiaLocalCTVersionNumber11_0;
+#endif
+#else
+    if (&CTGetCoreTextVersion) {
+        return CTGetCoreTextVersion();
+    }
+    // Default to a version that's too small to enable any of the special-cased
+    // behavior.
+    return kSkiaLocalCTVersionNumber10_13;
+#endif
+}
+
 static SkUniqueCFRef<CFStringRef> make_CFString(const char s[]) {
     return SkUniqueCFRef<CFStringRef>(CFStringCreateWithCString(nullptr, s, kCFStringEncodingUTF8));
 }
@@ -70,21 +100,11 @@ static SkUniqueCFRef<CTFontDescriptorRef> create_descriptor(const char familyNam
         return nullptr;
     }
 
-    // TODO(crbug.com/1018581) Some CoreText versions have errant behavior when
-    // certain traits set.  Temporary workaround to omit specifying trait for
-    // those versions.
-    // Long term solution will involve serializing typefaces instead of relying
-    // upon this to match between processes.
-    //
-    // Compare CoreText.h in an up to date SDK for where these values come from.
-    static const uint32_t kSkiaLocalCTVersionNumber10_14 = 0x000B0000;
-    static const uint32_t kSkiaLocalCTVersionNumber10_15 = 0x000C0000;
-
     // CTFontTraits (symbolic)
     // macOS 14 and iOS 12 seem to behave badly when kCTFontSymbolicTrait is set.
     // macOS 15 yields LastResort font instead of a good default font when
     // kCTFontSymbolicTrait is set.
-    if (!(&CTGetCoreTextVersion && CTGetCoreTextVersion() >= kSkiaLocalCTVersionNumber10_14)) {
+    if (get_core_text_version() >= kSkiaLocalCTVersionNumber10_14) {
         CTFontSymbolicTraits ctFontTraits = 0;
         if (style.weight() >= SkFontStyle::kBold_Weight) {
             ctFontTraits |= kCTFontBoldTrait;
@@ -115,7 +135,7 @@ static SkUniqueCFRef<CTFontDescriptorRef> create_descriptor(const char familyNam
     }
     // CTFontTraits (slant)
     // macOS 15 behaves badly when kCTFontSlantTrait is set.
-    if (!(&CTGetCoreTextVersion && CTGetCoreTextVersion() == kSkiaLocalCTVersionNumber10_15)) {
+    if (get_core_text_version() == kSkiaLocalCTVersionNumber10_15) {
         CGFloat ctSlant = style.slant() == SkFontStyle::kUpright_Slant ? 0 : 1;
         SkUniqueCFRef<CFNumberRef> cfFontSlant(
                 CFNumberCreate(kCFAllocatorDefault, kCFNumberCGFloatType, &ctSlant));
