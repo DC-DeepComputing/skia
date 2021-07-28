@@ -21,6 +21,9 @@ public:
     using float4 = skvx::Vec<4, float>;
     explicit GrVectorXform() : fType(Type::kIdentity) {}
     explicit GrVectorXform(const SkMatrix& m) {
+        this->set(m);
+    }
+    void set(const SkMatrix& m) {
         SkASSERT(!m.hasPerspective());
         if (m.getType() & SkMatrix::kAffine_Mask) {
             fType = Type::kAffine;
