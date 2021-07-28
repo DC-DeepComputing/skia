@@ -20,7 +20,7 @@ GR_NORETAIN_BEGIN
 
 sk_sp<GrMtlCommandBuffer> GrMtlCommandBuffer::Make(id<MTLCommandQueue> queue) {
     id<MTLCommandBuffer> mtlCommandBuffer;
-    mtlCommandBuffer = [queue commandBuffer];
+    mtlCommandBuffer = [queue commandBufferWithUnretainedReferences];
     if (nil == mtlCommandBuffer) {
         return nullptr;
     }
@@ -43,6 +43,7 @@ GrMtlCommandBuffer::~GrMtlCommandBuffer() {
 void GrMtlCommandBuffer::releaseResources() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
+    fTrackedResources.reset();
     fTrackedGrBuffers.reset();
     fTrackedGrSurfaces.reset();
 }
