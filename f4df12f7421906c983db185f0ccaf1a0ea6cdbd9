@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab23089_4456ca0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T20:36:27Z",
+      "side": 1,
+      "message": "Chris and I talked offline and settled on Path",
+      "revId": "f4df12f7421906c983db185f0ccaf1a0ea6cdbd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96fdb56e_c5697cca",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T20:36:27Z",
+      "side": 1,
+      "message": "from offline chat, did you want this switched to 16?",
+      "range": {
+        "startLine": 62,
+        "startChar": 76,
+        "endLine": 62,
+        "endChar": 77
+      },
+      "revId": "f4df12f7421906c983db185f0ccaf1a0ea6cdbd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
