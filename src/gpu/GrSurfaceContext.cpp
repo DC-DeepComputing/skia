@@ -58,12 +58,12 @@ std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* rCo
         }
         GrSurfaceProxyView writeView(readView.refProxy(), readView.origin(), writeSwizzle);
         if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
-            surfaceContext = std::make_unique<skgpu::v1::SurfaceDrawContext>(rContext,
-                                                                             std::move(readView),
-                                                                             std::move(writeView),
-                                                                             info.colorType(),
-                                                                             info.refColorSpace(),
-                                                                             SkSurfaceProps());
+            surfaceContext = rContext->priv().baz(rContext,
+                                                  std::move(readView),
+                                                  std::move(writeView),
+                                                  info.colorType(),
+                                                  info.refColorSpace(),
+                                                  SkSurfaceProps());
         } else {
             surfaceContext = std::make_unique<GrSurfaceFillContext>(rContext,
                                                                     std::move(readView),

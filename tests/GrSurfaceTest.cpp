@@ -286,25 +286,25 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions) {
 
                     // Try creating the texture as a deferred proxy.
                     {
-                        std::unique_ptr<GrSurfaceContext> sdc;
-                        if (renderable == GrRenderable::kYes) {
-                            sdc = skgpu::v1::SurfaceDrawContext::Make(
-                                    dContext, combo.fColorType, nullptr, fit,
-                                    {desc.fWidth, desc.fHeight}, SkSurfaceProps(), 1,
-                                    GrMipmapped::kNo, GrProtected::kNo, kTopLeft_GrSurfaceOrigin);
-                        } else {
-                            GrImageInfo info(combo.fColorType,
-                                             kUnknown_SkAlphaType,
-                                             nullptr,
-                                             {desc.fHeight, desc.fHeight});
-                            sdc = GrSurfaceContext::Make(dContext, info, combo.fFormat, fit);
-                        }
-                        if (!sdc) {
+                        GrImageInfo info(combo.fColorType,
+                                         GrColorTypeHasAlpha(combo.fColorType) ? kPremul_SkAlphaType
+                                                                               : kOpaque_SkAlphaType,
+                                         nullptr,
+                                         {desc.fHeight, desc.fHeight});
+
+                        std::unique_ptr<GrSurfaceContext> sc = GrSurfaceContext::Make(
+                            dContext,
+                            info,
+                            combo.fFormat,
+                            fit,
+                            kTopLeft_GrSurfaceOrigin,
+                            renderable);
+                        if (!sc) {
                             continue;
                         }
 
                         readback.erase(kClearColor);
-                        if (sdc->readPixels(dContext, readback, {0, 0})) {
+                        if (sc->readPixels(dContext, readback, {0, 0})) {
                             for (int i = 0; i < kSize * kSize; ++i) {
                                 if (!checkColor(combo, readback.addr32()[i])) {
                                     break;

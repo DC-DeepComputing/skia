@@ -63,6 +63,7 @@ public:
     virtual size_t vertexStride(const SkMatrix& drawMatrix) const = 0;
     virtual int glyphCount() const = 0;
 
+#if SK_GPU_V1
     virtual std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(
             const GrClip*,
@@ -71,6 +72,8 @@ public:
             const SkPaint&,
             skgpu::v1::SurfaceDrawContext*,
             GrAtlasSubRunOwner subRun) const = 0;
+#endif
+
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,
             GrColor color, const SkMatrix& positionMatrix,
@@ -99,12 +102,14 @@ class GrSubRun {
 public:
     virtual ~GrSubRun() = default;
 
+#if SK_GPU_V1
     // Produce GPU ops for this subRun.
     virtual void draw(const GrClip*,
                       const SkMatrixProvider& viewMatrix,
                       const SkGlyphRunList&,
                       const SkPaint&,
                       skgpu::v1::SurfaceDrawContext*) const = 0;
+#endif
 
     // Given an already cached subRun, can this subRun handle this combination paint, matrix, and
     // position.
@@ -249,9 +254,11 @@ private:
     // Methods to satisfy SkGlyphRunPainterInterface
     void processDeviceMasks(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkStrikeSpec& strikeSpec) override;
+#if SK_GPU_V1
     void processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkFont& runFont,
                             const SkStrikeSpec& strikeSpec) override;
+#endif
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            const SkStrikeSpec& strikeSpec,
                            const SkFont& runFont,
@@ -295,6 +302,7 @@ public:
                            const SkMatrixProvider& viewMatrix,
                            const SkGlyphRunList&,
                            const SkPaint&);
+#if SK_GPU_V1
     void processDeviceMasks(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkStrikeSpec& strikeSpec) override;
     void processSourceMasks(const SkZip<SkGlyphVariant, SkPoint>& drawables,
@@ -304,9 +312,14 @@ public:
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            const SkStrikeSpec& strikeSpec, const SkFont& runFont,
                            SkScalar minScale, SkScalar maxScale) override;
+#endif
+
 private:
+
+#if SK_GPU_V1
     // Draw passes ownership of the sub run to the op.
     void draw(GrAtlasSubRunOwner subRun);
+#endif
 
     skgpu::v1::SurfaceDrawContext* const fSDC;
     GrSubRunAllocator* const fAlloc;
