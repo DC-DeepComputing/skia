@@ -9,6 +9,7 @@
 #define SkRuntimeEffect_DEFINED
 
 #include "include/core/SkBlender.h"
+#include "include/core/SkChildEffect.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
@@ -77,17 +78,11 @@ public:
         size_t sizeInBytes() const;
     };
 
-    // Reflected description of a uniform child (shader or colorFilter) in the effect's SkSL
+    // Reflected description of a uniform child (shader/colorFilter/blender) in the effect's SkSL
     struct Child {
-        enum class Type {
-            kShader,
-            kColorFilter,
-            kBlender,
-        };
-
-        SkString name;
-        Type     type;
-        int      index;
+        SkString            name;
+        SkChildEffect::Type type;
+        int                 index;
     };
 
     class Options {

@@ -9,8 +9,8 @@
 #define SkColorFilter_DEFINED
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkChildEffect.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkFlattenable.h"
 
 class SkColorMatrix;
 
@@ -22,7 +22,7 @@ class SkColorMatrix;
 *  All subclasses are required to be reentrant-safe : it must be legal to share
 *  the same instance between several threads.
 */
-class SK_API SkColorFilter : public SkFlattenable {
+class SK_API SkColorFilter : public SkChildEffect {
 public:
     /** If the filter can be represented by a source color plus Mode, this
      *  returns true, and sets (if not NULL) the color and mode appropriately.
@@ -62,7 +62,7 @@ private:
     SkColorFilter() = default;
     friend class SkColorFilterBase;
 
-    using INHERITED = SkFlattenable;
+    using INHERITED = SkChildEffect;
 };
 
 class SK_API SkColorFilters {

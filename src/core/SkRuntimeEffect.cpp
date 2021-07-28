@@ -128,11 +128,11 @@ static bool init_uniform_type(const SkSL::Context& ctx,
     return false;
 }
 
-static SkRuntimeEffect::Child::Type child_type(const SkSL::Type& type) {
+static SkChildEffect::Type child_type(const SkSL::Type& type) {
     switch (type.typeKind()) {
-        case SkSL::Type::TypeKind::kBlender:     return SkRuntimeEffect::Child::Type::kBlender;
-        case SkSL::Type::TypeKind::kColorFilter: return SkRuntimeEffect::Child::Type::kColorFilter;
-        case SkSL::Type::TypeKind::kShader:      return SkRuntimeEffect::Child::Type::kShader;
+        case SkSL::Type::TypeKind::kBlender:     return SkChildEffect::Type::kBlender;
+        case SkSL::Type::TypeKind::kColorFilter: return SkChildEffect::Type::kColorFilter;
+        case SkSL::Type::TypeKind::kShader:      return SkChildEffect::Type::kShader;
         default: SkUNREACHABLE;
     }
 }
@@ -146,17 +146,17 @@ static bool verify_child_effects(const std::vector<SkRuntimeEffect::Child>& refl
     // Verify that each child object's type matches its declared type in the SkSL.
     for (size_t i = 0; i < effectPtrs.size(); ++i) {
         switch (reflected[i].type) {
-            case SkRuntimeEffect::Child::Type::kShader:
+            case SkChildEffect::Type::kShader:
                 if (effectPtrs[i].colorFilter || effectPtrs[i].blender) {
                     return false;
                 }
                 continue;
-            case SkRuntimeEffect::Child::Type::kColorFilter:
+            case SkChildEffect::Type::kColorFilter:
                 if (effectPtrs[i].shader || effectPtrs[i].blender) {
                     return false;
                 }
                 continue;
-            case SkRuntimeEffect::Child::Type::kBlender:
+            case SkChildEffect::Type::kBlender:
                 if (effectPtrs[i].shader || effectPtrs[i].colorFilter) {
                     return false;
                 }
@@ -548,7 +548,7 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
     if (!std::all_of(effect->fChildren.begin(),
                      effect->fChildren.end(),
                      [](const SkRuntimeEffect::Child& c) {
-                         return c.type == SkRuntimeEffect::Child::Type::kColorFilter;
+                         return c.type == SkChildEffect::Type::kColorFilter;
                      })) {
         return nullptr;
     }
@@ -928,10 +928,10 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
 
     SkSTArray<4, SkRuntimeEffect::ChildPtr> children(childCount);
     for (const auto& child : effect->children()) {
-        if (child.type == SkRuntimeEffect::Child::Type::kShader) {
+        if (child.type == SkChildEffect::Type::kShader) {
             children.emplace_back(buffer.readShader());
         } else {
-            SkASSERT(child.type == SkRuntimeEffect::Child::Type::kColorFilter);
+            SkASSERT(child.type == SkChildEffect::Type::kColorFilter);
             children.emplace_back(buffer.readColorFilter());
         }
     }
@@ -1119,10 +1119,10 @@ sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
 
     SkSTArray<4, SkRuntimeEffect::ChildPtr> children(childCount);
     for (const auto& child : effect->children()) {
-        if (child.type == SkRuntimeEffect::Child::Type::kShader) {
+        if (child.type == SkChildEffect::Type::kShader) {
             children.emplace_back(buffer.readShader());
         } else {
-            SkASSERT(child.type == SkRuntimeEffect::Child::Type::kColorFilter);
+            SkASSERT(child.type == SkChildEffect::Type::kColorFilter);
             children.emplace_back(buffer.readColorFilter());
         }
     }
