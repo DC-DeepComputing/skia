@@ -25,7 +25,7 @@
 #include "src/gpu/GrImageInfo.h"
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 #include "src/image/SkSurface_Gpu.h"
@@ -34,6 +34,7 @@
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
+//#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #include <functional>
 #include <initializer_list>

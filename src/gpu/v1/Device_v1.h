@@ -8,6 +8,7 @@
 #ifndef SkGpuDevice_DEFINED
 #define SkGpuDevice_DEFINED
 
+#if 0
 #include "include/core/SkBitmap.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRegion.h"
@@ -261,5 +262,5 @@ private:
 } // namespace skgpu::v1
 
 #undef GR_CLIP_STACK
-
+#endif
 #endif

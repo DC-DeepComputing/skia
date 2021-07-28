@@ -191,28 +191,32 @@ static std::unique_ptr<uint32_t[]> make_data() {
 static std::unique_ptr<GrSurfaceContext> make_surface_context(Encoding contextEncoding,
                                                               GrRecordingContext* rContext,
                                                               skiatest::Reporter* reporter) {
-    auto surfaceContext = skgpu::v1::SurfaceDrawContext::Make(
-            rContext, GrColorType::kRGBA_8888, encoding_as_color_space(contextEncoding),
-            SkBackingFit::kExact, {kW, kH}, SkSurfaceProps(), 1, GrMipmapped::kNo, GrProtected::kNo,
-            kBottomLeft_GrSurfaceOrigin, SkBudgeted::kNo);
-    if (!surfaceContext) {
+    GrImageInfo ii(GrColorType::kRGBA_8888,
+                   kPremul_SkAlphaType,
+                   encoding_as_color_space(contextEncoding),
+                   kW, kH);
+
+    auto sc = GrSurfaceContext::Make(rContext, ii, SkBackingFit::kExact,
+                                     kBottomLeft_GrSurfaceOrigin, GrRenderable::kYes, 1,
+                                     GrMipmapped::kNo, GrProtected::kNo, SkBudgeted::kNo);
+    if (!sc) {
         ERRORF(reporter, "Could not create %s surface context.", encoding_as_str(contextEncoding));
     }
-    return std::move(surfaceContext);
+    return std::move(sc);
 }
 
 static void test_write_read(Encoding contextEncoding, Encoding writeEncoding, Encoding readEncoding,
                             float error, CheckFn check, GrDirectContext* dContext,
                             skiatest::Reporter* reporter) {
-    auto surfaceContext = make_surface_context(contextEncoding, dContext, reporter);
-    if (!surfaceContext) {
+    auto sc = make_surface_context(contextEncoding, dContext, reporter);
+    if (!sc) {
         return;
     }
     auto writeII = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                      encoding_as_color_space(writeEncoding));
     auto data = make_data();
     GrCPixmap dataPM(writeII, data.get(), kW*sizeof(uint32_t));
-    if (!surfaceContext->writePixels(dContext, dataPM, {0, 0})) {
+    if (!sc->writePixels(dContext, dataPM, {0, 0})) {
         ERRORF(reporter, "Could not write %s to %s surface context.",
                encoding_as_str(writeEncoding), encoding_as_str(contextEncoding));
         return;
@@ -223,53 +227,53 @@ static void test_write_read(Encoding contextEncoding, Encoding writeEncoding, En
     SkString testName;
     testName.printf("write %s data to a %s context and read as %s.", encoding_as_str(writeEncoding),
                     encoding_as_str(contextEncoding), encoding_as_str(readEncoding));
-    read_and_check_pixels(reporter, dContext, surfaceContext.get(), data.get(), readII, check,
+    read_and_check_pixels(reporter, dContext, sc.get(), data.get(), readII, check,
                           error, testName.c_str());
 }
 
 // Test all combinations of writePixels/readPixels where the surface context/write source/read dst
 // are sRGB, linear, or untagged RGBA_8888.
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels, reporter, ctxInfo) {
-    auto context = ctxInfo.directContext();
-    if (!context->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888_SRGB,
-                                                         GrRenderable::kNo).isValid()) {
+    auto dContext = ctxInfo.directContext();
+    if (!dContext->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888_SRGB,
+                                                          GrRenderable::kNo).isValid()) {
         return;
     }
     // We allow more error on GPUs with lower precision shader variables.
-    float error = context->priv().caps()->shaderCaps()->halfIs32Bits() ? 0.5f : 1.2f;
+    float error = dContext->priv().caps()->shaderCaps()->halfIs32Bits() ? 0.5f : 1.2f;
     // For the all-sRGB case, we allow a small error only for devices that have
     // precision variation because the sRGB data gets converted to linear and back in
     // the shader.
-    float smallError = context->priv().caps()->shaderCaps()->halfIs32Bits() ? 0.0f : 1.f;
+    float smallError = dContext->priv().caps()->shaderCaps()->halfIs32Bits() ? 0.0f : 1.f;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Write sRGB data to a sRGB context - no conversion on the write.
 
     // back to sRGB - no conversion.
     test_write_read(Encoding::kSRGB, Encoding::kSRGB, Encoding::kSRGB, smallError,
-                    check_no_conversion, context, reporter);
+                    check_no_conversion, dContext, reporter);
     // Reading back to untagged should be a pass through with no conversion.
     test_write_read(Encoding::kSRGB, Encoding::kSRGB, Encoding::kUntagged, error,
-                    check_no_conversion, context, reporter);
+                    check_no_conversion, dContext, reporter);
 
     // Converts back to linear
     test_write_read(Encoding::kSRGB, Encoding::kSRGB, Encoding::kLinear, error,
-                    check_srgb_to_linear_conversion, context, reporter);
+                    check_srgb_to_linear_conversion, dContext, reporter);
 
     // Untagged source data should be interpreted as sRGB.
     test_write_read(Encoding::kSRGB, Encoding::kUntagged, Encoding::kSRGB, smallError,
-                    check_no_conversion, context, reporter);
+                    check_no_conversion, dContext, reporter);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Write linear data to a sRGB context. It gets converted to sRGB on write. The reads
     // are all the same as the above cases where the original data was untagged.
     test_write_read(Encoding::kSRGB, Encoding::kLinear, Encoding::kSRGB, error,
-                    check_linear_to_srgb_conversion, context, reporter);
+                    check_linear_to_srgb_conversion, dContext, reporter);
     // When the dst buffer is untagged there should be no conversion on the read.
     test_write_read(Encoding::kSRGB, Encoding::kLinear, Encoding::kUntagged, error,
-                    check_linear_to_srgb_conversion, context, reporter);
+                    check_linear_to_srgb_conversion, dContext, reporter);
     test_write_read(Encoding::kSRGB, Encoding::kLinear, Encoding::kLinear, error,
-                    check_linear_to_srgb_to_linear_conversion, context, reporter);
+                    check_linear_to_srgb_to_linear_conversion, dContext, reporter);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Write data to an untagged context. The write does no conversion no matter what encoding the
@@ -277,14 +281,14 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels, reporter, ctxInfo) {
     for (auto writeEncoding : {Encoding::kSRGB, Encoding::kUntagged, Encoding::kLinear}) {
         // The read from untagged to sRGB also does no conversion.
         test_write_read(Encoding::kUntagged, writeEncoding, Encoding::kSRGB, error,
-                        check_no_conversion, context, reporter);
+                        check_no_conversion, dContext, reporter);
         // Reading untagged back as untagged should do no conversion.
         test_write_read(Encoding::kUntagged, writeEncoding, Encoding::kUntagged, error,
-                        check_no_conversion, context, reporter);
+                        check_no_conversion, dContext, reporter);
         // Reading untagged back as linear does convert (context is source, so treated as sRGB),
         // dst is tagged.
         test_write_read(Encoding::kUntagged, writeEncoding, Encoding::kLinear, error,
-                        check_srgb_to_linear_conversion, context, reporter);
+                        check_srgb_to_linear_conversion, dContext, reporter);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,28 +296,28 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels, reporter, ctxInfo) {
 
     // converts back to sRGB on read.
     test_write_read(Encoding::kLinear, Encoding::kSRGB, Encoding::kSRGB, error,
-                    check_srgb_to_linear_to_srgb_conversion, context, reporter);
+                    check_srgb_to_linear_to_srgb_conversion, dContext, reporter);
     // Reading untagged data from linear currently does no conversion.
     test_write_read(Encoding::kLinear, Encoding::kSRGB, Encoding::kUntagged, error,
-                    check_srgb_to_linear_conversion, context, reporter);
+                    check_srgb_to_linear_conversion, dContext, reporter);
     // Stays linear when read.
     test_write_read(Encoding::kLinear, Encoding::kSRGB, Encoding::kLinear, error,
-                    check_srgb_to_linear_conversion, context, reporter);
+                    check_srgb_to_linear_conversion, dContext, reporter);
 
     // Untagged source data should be interpreted as sRGB.
     test_write_read(Encoding::kLinear, Encoding::kUntagged, Encoding::kSRGB, error,
-                    check_srgb_to_linear_to_srgb_conversion, context, reporter);
+                    check_srgb_to_linear_to_srgb_conversion, dContext, reporter);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Write linear data to a linear context. Does no conversion.
 
     // Reading to sRGB does a conversion.
     test_write_read(Encoding::kLinear, Encoding::kLinear, Encoding::kSRGB, error,
-                    check_linear_to_srgb_conversion, context, reporter);
+                    check_linear_to_srgb_conversion, dContext, reporter);
     // Reading to untagged does no conversion.
     test_write_read(Encoding::kLinear, Encoding::kLinear, Encoding::kUntagged, error,
-                    check_no_conversion, context, reporter);
+                    check_no_conversion, dContext, reporter);
     // Stays linear when read.
     test_write_read(Encoding::kLinear, Encoding::kLinear, Encoding::kLinear, error,
-                    check_no_conversion, context, reporter);
+                    check_no_conversion, dContext, reporter);
 }

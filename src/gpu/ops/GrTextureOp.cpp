@@ -712,7 +712,7 @@ private:
     static void FillInVertices(const GrCaps& caps, TextureOp* texOp, Desc* desc, char* vertexData) {
         SkASSERT(vertexData);
 
-        int totQuadsSeen = 0;
+        SkDEBUGCODE(int totQuadsSeen = 0;)
         SkDEBUGCODE(int totVerticesSeen = 0;)
         SkDEBUGCODE(const size_t vertexSize = desc->fVertexSpec.vertexSize());
 
@@ -734,7 +734,7 @@ private:
                 SkASSERT((totVerticesSeen + meshVertexCnt) * vertexSize
                          == (size_t)(tessellator.vertices() - vertexData));
 
-                totQuadsSeen += quadCnt;
+                SkDEBUGCODE(totQuadsSeen += quadCnt;)
                 SkDEBUGCODE(totVerticesSeen += meshVertexCnt);
                 SkASSERT(totQuadsSeen * desc->fVertexSpec.verticesPerQuad() == totVerticesSeen);
             }
@@ -1205,6 +1205,7 @@ public:
             , fTextureColorSpaceXform(textureColorSpaceXform)
             , fNumLeft(numEntries) {}
 
+#if SK_GPU_V1
     void createOp(GrTextureSetEntry set[], int clumpSize, GrAAType aaType) {
 
         int clumpProxyCount = proxy_run_count(&set[fNumClumped], clumpSize);
@@ -1224,6 +1225,7 @@ public:
         fNumLeft -= clumpSize;
         fNumClumped += clumpSize;
     }
+#endif
 
     int numLeft() const { return fNumLeft;  }
     int baseIndex() const { return fNumClumped; }
@@ -1243,6 +1245,7 @@ private:
     int                            fNumClumped = 0; // also the offset for the start of the next clump
 };
 
+#if SK_GPU_V1
 // Greedily clump quad draws together until the index buffer limit is exceeded.
 void GrTextureOp::AddTextureSetOps(skgpu::v1::SurfaceDrawContext* sdc,
                                    const GrClip* clip,
@@ -1371,6 +1374,7 @@ void GrTextureOp::AddTextureSetOps(skgpu::v1::SurfaceDrawContext* sdc,
         }
     }
 }
+#endif
 
 #if GR_TEST_UTILS
 #include "include/gpu/GrRecordingContext.h"
