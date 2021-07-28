@@ -13,8 +13,8 @@
 
 #include "include/gpu/GrBackendSurface.h"
 #include "include/private/SkTArray.h"
+#include "include/private/SkTInternalLList.h"
 #include "src/core/SkIPoint16.h"
-#include "src/core/SkTInternalLList.h"
 #include "src/gpu/GrDeferredUpload.h"
 #include "src/gpu/GrRectanizerSkyline.h"
 #include "src/gpu/GrSurfaceProxyView.h"

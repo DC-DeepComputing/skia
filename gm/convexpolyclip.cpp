@@ -25,8 +25,8 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/private/SkTLList.h"
 #include "src/core/SkClipOpPriv.h"
-#include "src/core/SkTLList.h"
 #include "tools/ToolUtils.h"
 
 static sk_sp<SkImage> make_img(int w, int h) {

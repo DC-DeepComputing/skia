@@ -26,8 +26,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
+#include "include/private/SkTInternalLList.h"
 #include "include/utils/SkRandom.h"
-#include "src/core/SkTInternalLList.h"
 
 class SkBitmap;
 class SkCanvas;

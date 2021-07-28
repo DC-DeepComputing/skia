@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTArray.h"
-#include "src/core/SkTInternalLList.h"
+#include "include/private/SkTInternalLList.h"
 #include "src/gpu/GrSurfaceProxyView.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrTextureResolveManager.h"

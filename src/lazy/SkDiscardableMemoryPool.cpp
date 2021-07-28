@@ -7,9 +7,9 @@
 
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkTInternalLList.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkDiscardableMemory.h"
-#include "src/core/SkTInternalLList.h"
 #include "src/lazy/SkDiscardableMemoryPool.h"
 
 // Note:

@@ -13,7 +13,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/SkTArray.h"
-#include "src/core/SkTInternalLList.h"
+#include "include/private/SkTInternalLList.h"
 #include "src/gpu/GrAttachment.h"
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrOpsRenderPass.h"
