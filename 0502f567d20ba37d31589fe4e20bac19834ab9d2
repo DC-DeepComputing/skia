@@ -22,6 +22,30 @@
       },
       "revId": "0502f567d20ba37d31589fe4e20bac19834ab9d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea809ed_e21db5ed",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T19:26:00Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "10a3da7c_78f9ce32",
+      "range": {
+        "startLine": 336,
+        "startChar": 33,
+        "endLine": 336,
+        "endChar": 47
+      },
+      "revId": "0502f567d20ba37d31589fe4e20bac19834ab9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
