@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ddb7afa_fc177e33",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-28T21:16:35Z",
+      "side": 1,
+      "message": "Made the changes. I noticed that \u0027skia_pdf_subset_harfbuzz\u0027 is currently default to false though (https://github.com/google/skia/blob/main/gn/skia.gni#L37). Which means this changes won\u0027t get compiled by default. There\u0027s a TODO to change that to default to skia_use_harfbuzz. Shall I change that as well?",
+      "parentUuid": "ca6dc0c1_18012b7f",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de96b69_2024de2f",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
