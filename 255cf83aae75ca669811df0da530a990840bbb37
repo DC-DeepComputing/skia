@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f522329_f7d587a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-28T17:14:00Z",
+      "side": 1,
+      "message": "BTW, this will need to be cherry-picked to all supported branches in order to keep their CQs running: https://skia.googlesource.com/skia/+/infra/config/supported-branches.json",
+      "revId": "255cf83aae75ca669811df0da530a990840bbb37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
