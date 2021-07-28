@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "252b8da1_b97e6c1c",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-28T21:40:40Z",
+      "side": 1,
+      "message": "Yeah, we should probably try to compile it in (if the rest of the preconditions are met). It seems this gets built in Chromium through https://source.chromium.org/chromium/chromium/src/+/main:skia/config/SkUserConfig.h;l\u003d137;drc\u003d964291803b487254761118b6d6debe805c070edc . I think part of the issue here has been that since this hasn\u0027t actually been public API, Skia has somewhat gone out of its way to not enable it by default (you really need to ask for it and know what you\u0027re getting into). If you\u0027re pretty sure this is the final public API in the next release (or if it\u0027s already made it into a release, haven\u0027t looked yet) then I think we\u0027re fine building it by default. Will the subsetter generally be a separate lib in public distros (a libharfbuzz-subset.so)? If so, may want to update the skia_use_system_harfbuzz branch in third_party/harfbuzz/BUILD.gn as well.\n\nThe changes to skia.gni and gn_to_bp.py are exactly what I had in mind, though I may want to take a closer look at the Android bits to make sure what\u0027s what in there.",
+      "parentUuid": "5ddb7afa_fc177e33",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de96b69_2024de2f",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
