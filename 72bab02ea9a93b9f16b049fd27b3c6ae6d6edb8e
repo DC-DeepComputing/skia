@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fcf3dfd_d0ef4f56",
+        "filename": "src/gpu/mtl/GrMtlBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-28T14:11:54Z",
+      "side": 1,
+      "message": "should there be a return here?",
+      "range": {
+        "startLine": 98,
+        "startChar": 7,
+        "endLine": 98,
+        "endChar": 41
+      },
+      "revId": "72bab02ea9a93b9f16b049fd27b3c6ae6d6edb8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
