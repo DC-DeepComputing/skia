@@ -18,7 +18,7 @@ struct DrawQuad;
 class GrClip;
 class GrColorSpaceXform;
 class GrDrawOp;
-class GrSurfaceDrawContext;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 class GrTextureProxy;
 struct GrTextureSetEntry;
 struct SkRect;
@@ -57,11 +57,12 @@ public:
                             DrawQuad*,
                             const SkRect* subset = nullptr);
 
+#if SK_GPU_V1
     // Automatically falls back to using one GrFillRectOp per entry if dynamic states are not
     // supported, or if the blend mode is not src-over. 'cnt' is the size of the entry array.
     // 'proxyCnt' <= 'cnt' and represents the number of proxy switches within the array.
-    static void AddTextureSetOps(GrSurfaceDrawContext*,
-                                 const GrClip* clip,
+    static void AddTextureSetOps(skgpu::v1::SurfaceDrawContext*,
+                                 const GrClip*,
                                  GrRecordingContext*,
                                  GrTextureSetEntry[],
                                  int cnt,
@@ -74,6 +75,7 @@ public:
                                  SkCanvas::SrcRectConstraint,
                                  const SkMatrix& viewMatrix,
                                  sk_sp<GrColorSpaceXform> textureXform);
+#endif
 
 #if GR_TEST_UTILS
     static uint32_t ClassID();
