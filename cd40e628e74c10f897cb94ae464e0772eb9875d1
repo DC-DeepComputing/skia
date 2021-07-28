@@ -52,6 +52,24 @@
       "parentUuid": "f351ed48_e40cbc6b",
       "revId": "cd40e628e74c10f897cb94ae464e0772eb9875d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "961562ae_814d8f26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T20:55:39Z",
+      "side": 1,
+      "message": "Hmmm, I think I see. We\u0027re *not* asking for a wrapper shader, since we know what we\u0027re doing 😊\n\nThat may have to change when you support both image and colors (and likely have to use composshader). In that world, may need to override updateShader() on tricolor.",
+      "parentUuid": "06e89bb2_ff7da61c",
+      "revId": "cd40e628e74c10f897cb94ae464e0772eb9875d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
