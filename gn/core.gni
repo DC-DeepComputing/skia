@@ -16,6 +16,7 @@ skia_core_public = [
   "$_include/core/SkBlurTypes.h",
   "$_include/core/SkCanvas.h",
   "$_include/core/SkCanvasVirtualEnforcer.h",
+  "$_include/core/SkChildEffect.h",
   "$_include/core/SkClipOp.h",
   "$_include/core/SkColor.h",
   "$_include/core/SkColorFilter.h",
