@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfb69f9_2ed6d647",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18109
+      },
+      "writtenOn": "2021-07-28T16:30:28Z",
+      "side": 1,
+      "message": "Hello! I\u0027m trying to get Chrome iOS compiling with a min deployment target of 14.0, and CTGetCoreTextVersion() is deprecated on 14+. The suggested replacement is -[NSProcessInfo operatingSystemVersion], which would require keeping a map from iOS version to CoreText version.\n\nHowever, we only special-case behavior for 0xB0000 and 0xC0000, and from testing, iOS 14 has a CoreText version of 0xD0000. For now, we could get away with simply returning 0xD0000 whenever compiling with a min deployment target of 14.0+. In the future, if we need to add new fallback behaviors in the future, we can add new code to check OS versions.\n\nOne downside is that 0xA0000 and 0xD0000 are being returned as special sentinel values, even though they might not match the actual running CoreText version. This happens to work for the current set of fallback behaviors, but might not in the future. If you think this is too brittle, I could rewrite this to have separate helpers for is_core_text_version_equal() and is_core_text_version_greater().\n\nThanks!",
+      "revId": "9aad02af38e403a3d822059c3a682c12676c926f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
