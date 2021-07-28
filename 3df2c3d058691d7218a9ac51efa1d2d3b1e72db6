@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ba19a9_7fe85f3d",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/util/SkottieView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-28T14:07:58Z",
+      "side": 1,
+      "message": "nit: seekTime(targetTime); ?",
+      "revId": "3df2c3d058691d7218a9ac51efa1d2d3b1e72db6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
