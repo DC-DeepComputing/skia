@@ -8,8 +8,8 @@
 #ifndef GrReducedClip_DEFINED
 #define GrReducedClip_DEFINED
 
+#include "include/private/SkTLList.h"
 #include "src/core/SkClipStack.h"
-#include "src/core/SkTLList.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrWindowRectangles.h"
 

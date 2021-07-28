@@ -8,8 +8,8 @@
 #ifndef GrSmallPathAtlasMgr_DEFINED
 #define GrSmallPathAtlasMgr_DEFINED
 
+#include "include/private/SkTInternalLList.h"
 #include "src/core/SkTDynamicHash.h"
-#include "src/core/SkTInternalLList.h"
 #include "src/gpu/GrDrawOpAtlas.h"
 #include "src/gpu/GrOnFlushResourceProvider.h"
 

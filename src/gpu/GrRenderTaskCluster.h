@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "src/core/SkTInternalLList.h"
+#include "include/private/SkTInternalLList.h"
 
 class GrRenderTask;
 
