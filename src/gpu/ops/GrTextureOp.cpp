@@ -177,6 +177,8 @@ static void normalize_src_quad(const NormalizationParams& params,
     ys.store(srcQuad->ys());
 }
 
+#if SK_GPU_V1
+
 // Count the number of proxy runs in the entry set. This usually is already computed by
 // SkGpuDevice, but when the BatchLengthLimiter chops the set up it must determine a new proxy count
 // for each split.
@@ -191,6 +193,7 @@ static int proxy_run_count(const GrTextureSetEntry set[], int count) {
     }
     return actualProxyRunCount;
 }
+#endif
 
 static bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter filter,
                                        const DrawQuad& quad, const SkRect& subsetRect) {
@@ -1205,6 +1208,7 @@ public:
             , fTextureColorSpaceXform(textureColorSpaceXform)
             , fNumLeft(numEntries) {}
 
+#if SK_GPU_V1
     void createOp(GrTextureSetEntry set[], int clumpSize, GrAAType aaType) {
 
         int clumpProxyCount = proxy_run_count(&set[fNumClumped], clumpSize);
@@ -1224,6 +1228,7 @@ public:
         fNumLeft -= clumpSize;
         fNumClumped += clumpSize;
     }
+#endif
 
     int numLeft() const { return fNumLeft;  }
     int baseIndex() const { return fNumClumped; }
@@ -1243,6 +1248,7 @@ private:
     int                            fNumClumped = 0; // also the offset for the start of the next clump
 };
 
+#if SK_GPU_V1
 // Greedily clump quad draws together until the index buffer limit is exceeded.
 void GrTextureOp::AddTextureSetOps(skgpu::v1::SurfaceDrawContext* sdc,
                                    const GrClip* clip,
@@ -1371,6 +1377,7 @@ void GrTextureOp::AddTextureSetOps(skgpu::v1::SurfaceDrawContext* sdc,
         }
     }
 }
+#endif
 
 #if GR_TEST_UTILS
 #include "include/gpu/GrRecordingContext.h"
