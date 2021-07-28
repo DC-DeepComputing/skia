@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "150f80c8_70f186dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-07-28T14:28:07Z",
+      "side": 1,
+      "message": "Thank you for the contribution. Would you mind adding yourself to the AUTHORS file in the repository root directory?",
+      "revId": "219efe1d917794202d958f5f7a186cc7f6eb5ce4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
