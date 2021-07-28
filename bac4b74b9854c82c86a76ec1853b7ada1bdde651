@@ -62,6 +62,54 @@
       },
       "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70e302e9_4e472743",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-28T19:24:20Z",
+      "side": 1,
+      "message": "Good point. WDYT about {8, 64, exponential}?",
+      "parentUuid": "abd163a8_d95de987",
+      "range": {
+        "startLine": 61,
+        "startChar": 50,
+        "endLine": 61,
+        "endChar": 53
+      },
+      "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4849328c_2f54c4a0",
+        "filename": "src/gpu/tessellate/GrAtlasRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-28T19:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5969a7a1_847d87c6",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 30
+      },
+      "revId": "bac4b74b9854c82c86a76ec1853b7ada1bdde651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
