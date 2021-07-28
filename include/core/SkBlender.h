@@ -9,14 +9,14 @@
 #define SkBlender_DEFINED
 
 #include "include/core/SkBlendMode.h"
-#include "include/core/SkFlattenable.h"
+#include "include/core/SkChildEffect.h"
 
 /**
  * SkBlender represents a custom blend function in the Skia pipeline. When an SkBlender is
  * present in a paint, the SkBlendMode is ignored. A blender combines a source color (the
  * result of our paint) and destination color (from the canvas) into a final color.
  */
-class SK_API SkBlender : public SkFlattenable {
+class SK_API SkBlender : public SkChildEffect {
 public:
     /**
      * Create a blender that implements the specified BlendMode.
