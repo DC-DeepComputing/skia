@@ -17,7 +17,9 @@
 #include "src/gpu/ops/GrAtlasTextOp.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/gpu/text/GrTextBlobCache.h"
+#if SK_GPU_V1
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#endif
 #endif
 
 #include "include/core/SkColorFilter.h"
@@ -73,8 +75,10 @@ SkGlyphRunListPainter::SkGlyphRunListPainter(const SkSurfaceProps& props, const 
                                 compute_scaler_context_flags(csi.colorSpace()),
                                 SkStrikeCache::GlobalStrikeCache()) {}
 
+#if SK_GPU_V1
 SkGlyphRunListPainter::SkGlyphRunListPainter(const skgpu::v1::SurfaceDrawContext& sdc)
         : SkGlyphRunListPainter{sdc.surfaceProps(), sdc.colorInfo()} {}
+#endif
 
 #endif
 
@@ -325,11 +329,13 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
             maxDimensionInSourceSpace =
                     fRejects.rejectedMaxDimension() * strikeSpec.strikeToSourceRatio();
 
+#if SK_GPU_V1
             if (process && !fDrawable.drawableIsEmpty()) {
                 // processSourcePaths must be called even if there are no glyphs to make sure
                 // runs are set correctly.
                 process->processSourcePaths(fDrawable.drawable(), runFont, strikeSpec);
             }
+#endif
         }
     }
 
