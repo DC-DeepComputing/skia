@@ -16,6 +16,24 @@
       "message": "brief review of the diffs seems fine to me, and the canary chrome failure looks to be infra related, so surprisingly there won\u0027t be any suppressions needed (unless you\u0027ve already landed them?)",
       "revId": "f62da3068adb23c0de8b0e0bae6de19d4ccd7a1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b6d48e_ad8a22a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-28T18:13:59Z",
+      "side": 1,
+      "message": "I\u0027m surprised by this too. I guess they don\u0027t have much MSAA coverage. The next CL definitely needs suppressions.",
+      "parentUuid": "29cf7775_25d653af",
+      "revId": "f62da3068adb23c0de8b0e0bae6de19d4ccd7a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
