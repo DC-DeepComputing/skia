@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66bdbc2c_9f4c7809",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-28T17:42:19Z",
+      "side": 1,
+      "message": "lgtm, but I am very confused about the test error. Maybe its a validation error??",
+      "revId": "9538021cce19f0dff0c2f6005ccd52c590a9def1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
