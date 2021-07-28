@@ -32,6 +32,7 @@ GrMtlPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
                                                      GrMtlGpu* gpu)
         : fTexture(static_cast<GrMtlTexture*>(texture)->mtlTexture()) {
     fSampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state);
+    gpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(fSampler));
 }
 
 GrMtlPipelineState::GrMtlPipelineState(
@@ -46,7 +47,7 @@ GrMtlPipelineState::GrMtlPipelineState(
             std::unique_ptr<GrGLSLXferProcessor> xferProcessor,
             std::vector<std::unique_ptr<GrGLSLFragmentProcessor>> fpImpls)
         : fGpu(gpu)
-        , fPipeline(pipeline)
+        , fPipeline(std::move(pipeline))
         , fPixelFormat(pixelFormat)
         , fBuiltinUniformHandles(builtinUniformHandles)
         , fNumSamplers(numSamplers)
@@ -55,6 +56,7 @@ GrMtlPipelineState::GrMtlPipelineState(
         , fFPImpls(std::move(fpImpls))
         , fDataManager(uniforms, uniformBufferSize) {
     (void) fPixelFormat; // Suppress unused-var warning.
+    gpu->commandBuffer()->addResource(fPipeline);
 }
 
 void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
@@ -191,6 +193,7 @@ void GrMtlPipelineState::setDepthStencilState(GrMtlRenderCommandEncoder* renderC
         }
     }
     renderCmdEncoder->setDepthStencilState(state->mtlDepthStencil());
+    fGpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(state));
 }
 
 void GrMtlPipelineState::SetDynamicScissorRectState(GrMtlRenderCommandEncoder* renderCmdEncoder,
