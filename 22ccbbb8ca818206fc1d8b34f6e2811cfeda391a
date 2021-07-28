@@ -16,6 +16,52 @@
       "message": "Needs the buffer change, then it appears that everything is working fine.",
       "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f460dd_1f9e7f46",
+        "filename": "src/gpu/mtl/GrMtlCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-28T14:05:00Z",
+      "side": 1,
+      "message": "I would see if you can get by without this version of the function. Vulkan currently has both because before we couldn\u0027t use sk_sp on the resources. At one point I was slowly moving this over to the sk_sp version but that has been paused to do other refactors.\n\nAnyways if you can start with just sk_sp I think that would be better since it better describes the ownership.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fc99271_8203d1cf",
+        "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-28T14:05:00Z",
+      "side": 1,
+      "message": "std::move()? Or std::move into fPipeline and then copy fPipeline here.",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 46
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
