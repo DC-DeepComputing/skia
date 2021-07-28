@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4680f687_bb681f9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-28T18:26:10Z",
+      "side": 1,
+      "message": "Sorry, I didn\u0027t go back and look at this before it landed. Just tagged a few more spots that didn\u0027t actually need to change - with the indirect uniform code, the updater doesn\u0027t even need the Uniforms object, which simplifies how it gets invoked, etc.",
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e7faeb2_7be0d58d",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-28T18:26:10Z",
+      "side": 1,
+      "message": "Can just be code we execute right here (in the while loop)",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 18
+      },
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a34c1309_41e9094c",
+        "filename": "src/core/SkVMBlitter.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-28T18:26:10Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "836680f3_ee2dafa7",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-28T18:26:10Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 269,
+        "startChar": 45,
+        "endLine": 269,
+        "endChar": 62
+      },
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac922051_6f21c422",
+        "filename": "src/shaders/SkTransformShader.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-28T18:26:10Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 49,
+        "startChar": 52,
+        "endLine": 49,
+        "endChar": 69
+      },
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
