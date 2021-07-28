@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a952d1f0_c0a0ad86",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1224,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-28T22:03:10Z",
+      "side": 1,
+      "message": "TODO: this exists verbatim in 3 places, factor out to helper function",
+      "range": {
+        "startLine": 1218,
+        "startChar": 8,
+        "endLine": 1224,
+        "endChar": 9
+      },
+      "revId": "318bfc0da872ce291f8aa7c5962568ffecb4640d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a41f994_c96dfaeb",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-28T22:03:10Z",
+      "side": 1,
+      "message": "TODO: this exists verbatim in 3 places, factor out to helper function",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1266,
+        "endChar": 0
+      },
+      "revId": "318bfc0da872ce291f8aa7c5962568ffecb4640d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
