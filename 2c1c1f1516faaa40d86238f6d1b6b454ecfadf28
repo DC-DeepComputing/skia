@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cde1d94_8697fdc4",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-28T18:08:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f4bfc1ff_b922d9cb",
+      "range": {
+        "startLine": 267,
+        "startChar": 6,
+        "endLine": 267,
+        "endChar": 23
+      },
+      "revId": "2c1c1f1516faaa40d86238f6d1b6b454ecfadf28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57cbb20f_55f432ae",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-28T16:31:56Z",
       "side": 1,
       "message": "maybe move these into baseclass?",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "2c1c1f1516faaa40d86238f6d1b6b454ecfadf28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aefc8f71_559ab84c",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-28T18:08:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "57cbb20f_55f432ae",
       "range": {
         "startLine": 39,
         "startChar": 11,
