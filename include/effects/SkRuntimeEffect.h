@@ -157,30 +157,19 @@ public:
     static Result MakeForBlender(std::unique_ptr<SkSL::Program> program, const Options&);
     static Result MakeForBlender(std::unique_ptr<SkSL::Program> program);
 
-    // Object that allows passing a SkShader, SkColorFilter or SkBlender as a child
-    struct ChildPtr {
-        ChildPtr() = default;
-        ChildPtr(sk_sp<SkShader> s) : shader(std::move(s)) {}
-        ChildPtr(sk_sp<SkColorFilter> cf) : colorFilter(std::move(cf)) {}
-        ChildPtr(sk_sp<SkBlender> b) : blender(std::move(b)) {}
-        sk_sp<SkShader> shader;
-        sk_sp<SkColorFilter> colorFilter;
-        sk_sp<SkBlender> blender;
-    };
-
     sk_sp<SkShader> makeShader(sk_sp<SkData> uniforms,
                                sk_sp<SkShader> children[],
                                size_t childCount,
                                const SkMatrix* localMatrix,
                                bool isOpaque) const;
     sk_sp<SkShader> makeShader(sk_sp<SkData> uniforms,
-                               SkSpan<ChildPtr> children,
+                               SkSpan<sk_sp<SkChildEffect>> children,
                                const SkMatrix* localMatrix,
                                bool isOpaque) const;
 
     sk_sp<SkImage> makeImage(GrRecordingContext*,
                              sk_sp<SkData> uniforms,
-                             SkSpan<ChildPtr> children,
+                             SkSpan<sk_sp<SkChildEffect>> children,
                              const SkMatrix* localMatrix,
                              SkImageInfo resultInfo,
                              bool mipmapped) const;
@@ -190,9 +179,10 @@ public:
                                          sk_sp<SkColorFilter> children[],
                                          size_t childCount) const;
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<SkData> uniforms,
-                                         SkSpan<ChildPtr> children) const;
+                                         SkSpan<sk_sp<SkChildEffect>> children) const;
 
-    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms, SkSpan<ChildPtr> children = {}) const;
+    sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms,
+                                 SkSpan<sk_sp<SkChildEffect>> children = {}) const;
 
     const std::string& source() const;
 
@@ -351,7 +341,7 @@ public:
             if (!fChild) {
                 SkDEBUGFAIL("Assigning to missing child");
             } else {
-                fOwner->fChildren[(size_t)fChild->index] = std::move(val);
+                fOwner->fChildren[(size_t)fChild->index] = val;
             }
             return *this;
         }
@@ -360,7 +350,7 @@ public:
             if (!fChild) {
                 SkDEBUGFAIL("Assigning to missing child");
             } else {
-                fOwner->fChildren[(size_t)fChild->index] = SkRuntimeEffect::ChildPtr{};
+                fOwner->fChildren[(size_t)fChild->index] = nullptr;
             }
             return *this;
         }
@@ -394,7 +384,7 @@ protected:
     SkRuntimeEffectBuilder& operator=(const SkRuntimeEffectBuilder&) = delete;
 
     sk_sp<SkData> uniforms() { return fUniforms; }
-    SkRuntimeEffect::ChildPtr* children() { return fChildren.data(); }
+    sk_sp<SkChildEffect>* children() { return fChildren.data(); }
     size_t numChildren() { return fChildren.size(); }
 
 private:
@@ -405,9 +395,9 @@ private:
         return fUniforms->writable_data();
     }
 
-    sk_sp<SkRuntimeEffect>                 fEffect;
-    sk_sp<SkData>                          fUniforms;
-    std::vector<SkRuntimeEffect::ChildPtr> fChildren;
+    sk_sp<SkRuntimeEffect>            fEffect;
+    sk_sp<SkData>                     fUniforms;
+    std::vector<sk_sp<SkChildEffect>> fChildren;
 };
 
 /**
