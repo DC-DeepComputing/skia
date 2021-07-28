@@ -16,6 +16,24 @@
       "message": "Is your plan to land w/o an updater for tricolor? Seems like should be a small delta on top of this...",
       "revId": "cd40e628e74c10f897cb94ae464e0772eb9875d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f351ed48_e40cbc6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T20:52:45Z",
+      "side": 1,
+      "message": "Hmmm, guess we can try w/ and w/o and see if there is a timing diff.",
+      "parentUuid": "01d86d8c_e0bd4746",
+      "revId": "cd40e628e74c10f897cb94ae464e0772eb9875d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
