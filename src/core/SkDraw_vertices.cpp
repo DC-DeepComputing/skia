@@ -330,7 +330,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
                 auto updater = [&](skvm::Uniforms* uniforms) {
                     SkMatrix localM;
                     return texture_to_matrix(state, positions, texCoords, &localM) &&
-                           texCoordShader->update(SkMatrix::Concat(ctm, localM), uniforms);
+                           texCoordShader->update(SkMatrix::Concat(ctm, localM));
                 };
                 while (vertProc(&state)) {
                     if (blitter->updateUniforms(updater)) {
