@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1debf563_b7512c6f",
+        "filename": "src/gpu/mtl/GrMtlCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-07-28T16:13:35Z",
+      "side": 1,
+      "message": "Well anything returned by GrVkREsourceProvider will either end up getting reffed by something else (i.e. command buffer) or nothing should ref it (maybe because we thing the grvkrp will outlive whoever gets the object). In the first case there shouldn\u0027t be any extra refs since someone is going to have to take ownership and ref. In the second case we then shouldn\u0027t be added the resource to the command buffer ever.\n\nIf there are cases where we getting a resource for a short term where we don\u0027t need a ref and other times we get it again for a long time and need ref, we can decide if it makes sense to have two different functions of GrVkRP or just require the callers to add the ref if need be.\n\nRegardless I feel like the command buffer shouldn\u0027t need to worry about it. Though if it does become a big pain and we end up with lots of cases of every caller needing to do the ref to sk_sp then the command buffer helper does make sense. I just question if we try to do to that if there actually will be that many cases that truly need it. Always easy to add later compared to trying to remove it later.",
+      "parentUuid": "5b2dbdfa_1dbd9b71",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "22ccbbb8ca818206fc1d8b34f6e2811cfeda391a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1fc99271_8203d1cf",
         "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
         "patchSetId": 1
