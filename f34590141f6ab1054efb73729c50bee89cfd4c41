@@ -16,6 +16,24 @@
       "message": "Alternatively could just have op\u003d(const GrPathXform\u0026) and then do:\n\nfPathXform \u003d GrPathXform(m);\n\nI sometimes find it easier to read that formulation instead of a setter that is really entirely replacing the contents of the object being set.",
       "revId": "f34590141f6ab1054efb73729c50bee89cfd4c41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db84acfb_cbb771f4",
+        "filename": "src/gpu/tessellate/GrPathXform.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-07-28T15:49:06Z",
+      "side": 1,
+      "message": "Good point. I like it.",
+      "parentUuid": "f7bba389_1639ca49",
+      "revId": "f34590141f6ab1054efb73729c50bee89cfd4c41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
