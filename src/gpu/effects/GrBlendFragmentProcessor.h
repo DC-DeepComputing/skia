@@ -23,6 +23,14 @@ std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> s
                                           std::unique_ptr<GrFragmentProcessor> dst,
                                           SkBlendMode mode);
 
+/**
+ * Blends src and dst inputs according to the blend mode. Creates a blend-function FP with two
+ * color inputs. If either FP is null, the associated color input (src or dst) is used instead.
+ */
+std::unique_ptr<GrFragmentProcessor> MakeBlendFunction(std::unique_ptr<GrFragmentProcessor> src,
+                                                       std::unique_ptr<GrFragmentProcessor> dst,
+                                                       SkBlendMode mode);
+
 }  // namespace GrBlendFragmentProcessor
 
 #endif
