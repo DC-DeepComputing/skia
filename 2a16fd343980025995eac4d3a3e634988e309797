@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc392726_28ab00b7",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "what\u0027s the complication for moving these into skia_skgpuv1 sources in this CL?",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 29
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d93d4e2_3823f8f5",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1661,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "these are just unnecessary given the earlier includes, right?",
+      "range": {
+        "startLine": 1659,
+        "startChar": 0,
+        "endLine": 1661,
+        "endChar": 45
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98da4f2d_d0a11f07",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "2 indents again",
+      "range": {
+        "startLine": 98,
+        "startChar": 68,
+        "endLine": 109,
+        "endChar": 90
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff7a56f7_906109ef",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "2 indents",
+      "range": {
+        "startLine": 150,
+        "startChar": 68,
+        "endLine": 161,
+        "endChar": 87
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42db3466_c2430512",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "2 indents",
+      "range": {
+        "startLine": 303,
+        "startChar": 60,
+        "endLine": 308,
+        "endChar": 79
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac660e8f_cccd8740",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "2 indents",
+      "range": {
+        "startLine": 342,
+        "startChar": 68,
+        "endLine": 354,
+        "endChar": 87
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5828eda3_cb95b60a",
+        "filename": "src/core/SkGpuBlurUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "Maybe just 2 indents, since it won\u0027t fit with the regular chop-down indent?",
+      "range": {
+        "startLine": 52,
+        "startChar": 56,
+        "endLine": 62,
+        "endChar": 98
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ee7c7ac_c1daa2e3",
+        "filename": "src/gpu/GrBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "2 indents",
+      "range": {
+        "startLine": 189,
+        "startChar": 68,
+        "endLine": 193,
+        "endChar": 84
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a1193ca_2373bf59",
+        "filename": "src/gpu/GrProxyProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "Is MakeWithFallback still v1::SDC?",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 54
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f844775f_fbf86af7",
+        "filename": "src/gpu/v1/Device_drawTexture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "\"a v1::SurfaceDrawContext\"?",
+      "range": {
+        "startLine": 249,
+        "startChar": 47,
+        "endLine": 249,
+        "endChar": 65
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8768bb0e_61e3beca",
+        "filename": "src/gpu/v1/SurfaceDrawContext_v1.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-28T17:48:24Z",
+      "side": 1,
+      "message": "Can we keep the file name as \u0027src/gpu/v1/SurfaceDrawContext.h\u0027? I see value in having _v1 in the header guard define, but it gets redundant in all the includes for \u0027v1/SurfaceDrawContext_v1.h\u0027",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 37
+      },
+      "revId": "2a16fd343980025995eac4d3a3e634988e309797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
