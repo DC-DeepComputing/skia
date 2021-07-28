@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5e013d5_794b9658",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T19:01:57Z",
+      "side": 1,
+      "message": "wow, cool observation! Let\u0027s try that in a follow-up CL",
+      "parentUuid": "6e7faeb2_7be0d58d",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 18
+      },
+      "revId": "5992f9eb43f0ef4b15bb1e1b890668ebda6284f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a34c1309_41e9094c",
         "filename": "src/core/SkVMBlitter.h",
         "patchSetId": 25
