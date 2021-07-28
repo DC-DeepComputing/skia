@@ -16,6 +16,24 @@
       "message": "PS1 -\u003e PS2 includes the fix for a subtle bug that was found by some bots.\n\nMCRec used to rely on never being copied or moved (because SkDeque makes that guarantee). The \"construct a rec on top of another one\" had a signature that made it look like a copy-constructor, even though it had totally different semantics. SkSTArray does need to move these things now (when re-allocating), so I added an explicit move constructor, and changed the signature on the other constructor to not be accidentally usable as a copy-constructor.",
       "revId": "4408c5df218bc770fd0e9ac1733d7f1d03dc679c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbce9ef4_fadeaa87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-28T14:05:11Z",
+      "side": 1,
+      "message": "understood. This is a nice thing about a real deque -- never slides/copies, since we really don\u0027t need contiguous access. That said, assuming our perf is still good, I\u0027m still +1 for this.",
+      "parentUuid": "c36c6c04_b0a7eb4f",
+      "revId": "4408c5df218bc770fd0e9ac1733d7f1d03dc679c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
