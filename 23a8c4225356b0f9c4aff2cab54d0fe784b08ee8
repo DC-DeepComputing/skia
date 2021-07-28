@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca6dc0c1_18012b7f",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-28T20:44:10Z",
+      "side": 1,
+      "message": "Just to confirm, the idea would be in DEPS set it to use a version of harfbuzz w/ the new api, set to be default to true here and then make the changes you mentioned above so that fuschia and Android will default to not use the new API?",
+      "parentUuid": "e3d71d0f_58644919",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de96b69_2024de2f",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8a9e838_ea8af7f7",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-28T20:44:10Z",
+      "side": 1,
+      "message": "There isn\u0027t at the moment, but that\u0027s a good idea. I\u0027ve opened an issue on the harfbuzz side to add the bulk set: https://github.com/harfbuzz/harfbuzz/issues/3086",
+      "parentUuid": "8de96b69_2024de2f",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5b03ee1_92dba3e7",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
@@ -82,6 +118,24 @@
       "writtenOn": "2021-07-28T18:25:57Z",
       "side": 1,
       "message": "I would much rather see both of these alternative bits of code go straight to HBFace as was done previously (with both alternatives declaring it). No reason to introduce an unowned named pointer.",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840e1f39_a3b20b09",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-28T20:44:10Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "a5b03ee1_92dba3e7",
       "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
