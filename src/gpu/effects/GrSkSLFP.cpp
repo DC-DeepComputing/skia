@@ -167,12 +167,32 @@ public:
             int                           fUniformIndex = 0;
         };
 
-        // If we have an input child, we invoke it now, and make the result of that be the "input
-        // color" for all other purposes later (eg, the default passed via sample calls, etc.)
-        if (fp.fInputChildIndex >= 0) {
-            args.fFragBuilder->codeAppendf("%s = %s;\n",
-                                           args.fInputColor,
-                                           this->invokeChild(fp.fInputChildIndex, args).c_str());
+        if (fp.fEffect->allowBlender()) {
+            if (fp.fInputChildIndex >= 0) {
+                args.fFragBuilder->codeAppendf(
+                        "%s = %s;\n",
+                        args.fInputColor,
+                        this->invokeChild(fp.fInputChildIndex, args.fInputColor, args).c_str());
+            }
+            if (fp.fDestColorChildIndex >= 0) {
+                args.fFragBuilder->codeAppendf(
+                        "%s = %s;\n",
+                        args.fDestColor,
+                        this->invokeChild(fp.fDestColorChildIndex, args.fDestColor, args).c_str());
+            }
+        } else {
+            // We're not making a blender, so we don't expect a dest-color child to exist.
+            SkASSERT(fp.fDestColorChildIndex < 0);
+
+            // If we have an input child, we invoke it now, and make the result of that be the
+            // "input color" for all other purposes later (eg, the default passed via sample calls,
+            // etc.)
+            if (fp.fInputChildIndex >= 0) {
+                args.fFragBuilder->codeAppendf(
+                        "%s = %s;\n",
+                        args.fInputColor,
+                        this->invokeChild(fp.fInputChildIndex, args).c_str());
+            }
         }
 
         // Snap off a global copy of the input color at the start of main. We need this when
@@ -202,17 +222,6 @@ public:
             args.fFragBuilder->codeAppendf("float2 %s = %s;\n", coords, args.fSampleCoord);
         }
 
-        // For runtime blends, the destination color is stored as a child FP.
-        // Invoke that FP here and store it in a local variable.
-        const char* destColor = "half4(1)";
-        SkString destColorVarName;
-        if (fp.fDestColorChildIndex >= 0) {
-            destColorVarName = args.fFragBuilder->newTmpVarName("destColor");
-            destColor = destColorVarName.c_str();
-            SkString childFP = this->invokeChild(fp.fDestColorChildIndex, args);
-            args.fFragBuilder->codeAppendf("half4 %s = %s;", destColor, childFP.c_str());
-        }
-
         FPCallbacks callbacks(this,
                               args,
                               inputColorName.c_str(),
@@ -220,7 +229,7 @@ public:
                               fp.uniformData(),
                               fp.uniformFlags());
         SkSL::PipelineStage::ConvertProgram(
-                program, coords, args.fInputColor, destColor, &callbacks);
+                program, coords, args.fInputColor, args.fDestColor, &callbacks);
     }
 
     void onSetData(const GrGLSLProgramDataManager& pdman,
@@ -285,6 +294,7 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
     }
     if (destColorFP) {
         fp->setDestColorFP(std::move(destColorFP));
+        fp->setIsBlendFunction();
     }
     return fp;
 }
