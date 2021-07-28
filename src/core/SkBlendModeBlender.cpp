@@ -76,7 +76,7 @@ std::unique_ptr<GrFragmentProcessor> SkBlendModeBlender::asFragmentProcessor(
     // Note that for the final blend onto the canvas, we should prefer to use the GrXferProcessor
     // instead of a SkBlendModeBlender to perform the blend. The Xfer processor is able to perform
     // coefficient-based blends directly, without readback. This will be much more efficient.
-    return GrBlendFragmentProcessor::Make(std::move(srcFP), std::move(dstFP), fMode);
+    return GrBlendFragmentProcessor::MakeBlendFunction(std::move(srcFP), std::move(dstFP), fMode);
 }
 #endif
 
