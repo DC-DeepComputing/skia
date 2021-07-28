@@ -16,6 +16,57 @@
       "message": "Ben, Herb - could you take a look or suggest better reviewers? Garret is working on changing the HarfBuzz subsetting API to its final incarnation and would need your help for a gradual rollout in Skia gated on a build flag.\n",
       "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecde220f_c04ecb0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-28T18:25:57Z",
+      "side": 1,
+      "message": "This has been in use for so long I had forgotten it wasn\u0027t actually public API yet (so don\u0027t need to consider if it will work with older HarfBuzz versions in distributions).",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8de96b69_2024de2f",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-28T18:25:57Z",
+      "side": 1,
+      "message": "Is there a hb_subset_input_set_flags for setting multiple flags at once? Should it be used here? (I just don\u0027t see the point in moving a strictly worse API where part of the function name is moved to an enum without the upside of being able to do bulk updates to save call overhead. In this case you can only set flags to set or unset, so I suppose making at most two calls is fine.)",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5b03ee1_92dba3e7",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-28T18:25:57Z",
+      "side": 1,
+      "message": "I would much rather see both of these alternative bits of code go straight to HBFace as was done previously (with both alternatives declaring it). No reason to introduce an unowned named pointer.",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
