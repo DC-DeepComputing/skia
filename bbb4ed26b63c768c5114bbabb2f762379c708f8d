@@ -22,6 +22,30 @@
       },
       "revId": "bbb4ed26b63c768c5114bbabb2f762379c708f8d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db01102_2ded9e9c",
+        "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T17:11:12Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s cleaner. Done.",
+      "parentUuid": "288e202b_2de673a6",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 45
+      },
+      "revId": "bbb4ed26b63c768c5114bbabb2f762379c708f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
