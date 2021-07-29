@@ -26,7 +26,10 @@ static void draw_path(SkCanvas* canvas, const SkPath& path, const SkRect& rect,
                       SkPaint::Join join, int doFill) {
     SkPaint paint;
     paint.setAntiAlias(true);
+    paint.setStroke(true);
+#ifdef SK_SUPPORT_STROKEANDFILL
     paint.setStyle(doFill ? SkPaint::kStrokeAndFill_Style : SkPaint::kStroke_Style);
+#endif
 
     paint.setColor(SK_ColorGRAY);
     paint.setStrokeWidth(STROKE_WIDTH);
@@ -114,7 +117,9 @@ protected:
                 acr.restore();
                 canvas->translate(0, H + 2 * STROKE_WIDTH);
             }
+#ifdef SK_SUPPORT_STROKEANDFILL
             paint.setStyle(SkPaint::kStrokeAndFill_Style);
+#endif
         }
     }
 

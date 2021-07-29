@@ -340,7 +340,9 @@ public:
     // test code with GrStyledShape implementation details.
     virtual bool fillChangesGeom() const { return false; }
     virtual bool strokeIsConvertedToFill() const { return false; }
+#ifdef SK_SUPPORT_STROKEANDFILL
     virtual bool strokeAndFillIsConvertedToFill(const SkPaint&) const { return false; }
+#endif
     // Is this something we expect GrStyledShape to recognize as something simpler than a path.
     virtual bool isNonPath(const SkPaint& paint) const { return true; }
 };
@@ -359,6 +361,7 @@ public:
         return GrStyledShape(fRect, paint);
     }
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     bool strokeAndFillIsConvertedToFill(const SkPaint& paint) const override {
         SkASSERT(paint.getStyle() == SkPaint::kStrokeAndFill_Style);
         // Converted to an outset rectangle or round rect
@@ -366,6 +369,7 @@ public:
                 paint.getStrokeMiter() >= SK_ScalarSqrt2) ||
                paint.getStrokeJoin() == SkPaint::kRound_Join;
     }
+#endif
 
 private:
     SkRect fRect;
@@ -385,6 +389,7 @@ public:
         return path;
     }
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     bool strokeAndFillIsConvertedToFill(const SkPaint& paint) const override {
         SkASSERT(paint.getStyle() == SkPaint::kStrokeAndFill_Style);
         if (fRRect.isRect()) {
@@ -392,6 +397,7 @@ public:
         }
         return false;
     }
+#endif
 
 private:
     SkRRect fRRect;
@@ -457,6 +463,7 @@ public:
         return this->isAxisAlignedLine();
     }
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     bool strokeAndFillIsConvertedToFill(const SkPaint& paint) const override {
         SkASSERT(paint.getStyle() == SkPaint::kStrokeAndFill_Style);
         if (this->isAxisAlignedLine()) {
@@ -471,6 +478,7 @@ public:
         }
         return false;
     }
+#endif
 
     bool isNonPath(const SkPaint& paint) const override {
         return fPath.isLine(nullptr) || fPath.isEmpty();
@@ -832,6 +840,7 @@ static void test_basic(skiatest::Reporter* reporter, const Geo& geo) {
                                       TestCase::kSameUpToPE_ComparisonExpecation);
     }
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     // Stroke and fill cases
     SkPaint stroke2RoundBevelAndFill = stroke2RoundBevel;
     stroke2RoundBevelAndFill.setStyle(SkPaint::kStrokeAndFill_Style);
@@ -854,6 +863,7 @@ static void test_basic(skiatest::Reporter* reporter, const Geo& geo) {
         reporter, stroke2RoundBevelAndFillDashCase, TestCase::kAllSame_ComparisonExpecation);
     stroke2RoundBevelAndFillDashCase.compare(reporter, stroke2RoundBevelAndFillCase,
                                              TestCase::kAllSame_ComparisonExpecation);
+#endif
 
     SkPaint hairline;
     hairline.setStyle(SkPaint::kStroke_Style);
@@ -913,6 +923,7 @@ static void test_scale(skiatest::Reporter* reporter, const Geo& geo) {
     strokeDashCase1.compare(reporter, strokeDashCase2,
                             TestCase::kSameUpToPE_ComparisonExpecation);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     // Stroke and fill cases
     SkPaint strokeAndFill = stroke;
     strokeAndFill.setStyle(SkPaint::kStrokeAndFill_Style);
@@ -940,6 +951,7 @@ static void test_scale(skiatest::Reporter* reporter, const Geo& geo) {
                                    TestCase::kAllSame_ComparisonExpecation);
     strokeAndFillDashCase2.compare(reporter, strokeAndFillCase2,
                                    TestCase::kAllSame_ComparisonExpecation);
+#endif
 }
 
 template <typename T>
@@ -974,6 +986,7 @@ static void test_stroke_param_impl(skiatest::Reporter* reporter, const Geo& geo,
         strokeACase.compare(reporter, strokeBCase, TestCase::kAllSame_ComparisonExpecation);
     }
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     SkPaint strokeAndFillA = strokeA;
     SkPaint strokeAndFillB = strokeB;
     strokeAndFillA.setStyle(SkPaint::kStrokeAndFill_Style);
@@ -995,6 +1008,7 @@ static void test_stroke_param_impl(skiatest::Reporter* reporter, const Geo& geo,
         strokeAndFillACase.compare(reporter, strokeAndFillBCase,
                                    TestCase::kAllSame_ComparisonExpecation);
     }
+#endif
 
     // Make sure stroking params don't affect fill style.
     SkPaint fillA = strokeA, fillB = strokeB;
@@ -1650,7 +1664,9 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
         kFill,
         kStroke,
         kHairline,
+#ifdef SK_SUPPORT_STROKEANDFILL
         kStrokeAndFill
+#endif
     };
 
     // SkStrokeRec has no default cons., so init with kFill before calling the setters below.
@@ -1659,10 +1675,12 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     strokeRecs[kFill].setFillStyle();
     strokeRecs[kStroke].setStrokeStyle(2.f);
     strokeRecs[kHairline].setHairlineStyle();
+#ifdef SK_SUPPORT_STROKEANDFILL
     strokeRecs[kStrokeAndFill].setStrokeStyle(3.f, true);
     // Use a bevel join to avoid complications of stroke+filled rects becoming filled rects before
     // applyStyle() is called.
     strokeRecs[kStrokeAndFill].setStrokeParams(SkPaint::kButt_Cap, SkPaint::kBevel_Join, 1.f);
+#endif
     sk_sp<SkPathEffect> dashEffect = make_dash();
 
     static constexpr Style kStyleCnt = static_cast<Style>(SK_ARRAY_COUNT(strokeRecs));
@@ -1684,7 +1702,12 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     for (bool inverted : {false, true}) {
         for (SkPathDirection dir : {SkPathDirection::kCW, SkPathDirection::kCCW}) {
             for (unsigned start = 0; start < 8; ++start) {
-                for (Style style : {kFill, kStroke, kHairline, kStrokeAndFill}) {
+                for (Style style : {kFill, kStroke, kHairline
+#ifdef SK_SUPPORT_STROKEANDFILL
+                    , kStrokeAndFill
+#endif
+
+                }) {
                     for (bool dash : {false, true}) {
                         sk_sp<SkPathEffect> pe = dash ? dashEffect : nullptr;
                         shapes[index(inverted, dir, start, style, dash)] =
@@ -1705,21 +1728,25 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     Key exampleFillCaseKey;
     make_key(&exampleFillCaseKey, exampleFillCase);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     const GrStyledShape& exampleStrokeAndFillCase = shapes[index(false, kExamplesDir,
                                                            kExamplesStart, kStrokeAndFill, false)];
     Key exampleStrokeAndFillCaseKey;
     make_key(&exampleStrokeAndFillCaseKey, exampleStrokeAndFillCase);
+#endif
 
     const GrStyledShape& exampleInvFillCase = shapes[index(true, kExamplesDir,
                                                      kExamplesStart, kFill, false)];
     Key exampleInvFillCaseKey;
     make_key(&exampleInvFillCaseKey, exampleInvFillCase);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     const GrStyledShape& exampleInvStrokeAndFillCase = shapes[index(true, kExamplesDir,
                                                               kExamplesStart, kStrokeAndFill,
                                                               false)];
     Key exampleInvStrokeAndFillCaseKey;
     make_key(&exampleInvStrokeAndFillCaseKey, exampleInvStrokeAndFillCase);
+#endif
 
     const GrStyledShape& exampleStrokeCase = shapes[index(false, kExamplesDir, kExamplesStart,
                                                     kStroke, false)];
@@ -1760,6 +1787,7 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     REPORTER_ASSERT(r, 0 == queryStart);
     REPORTER_ASSERT(r, queryInverted);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     REPORTER_ASSERT(r, exampleStrokeAndFillCase.asRRect(&queryRR, &queryDir, &queryStart,
                                                         &queryInverted));
     REPORTER_ASSERT(r, queryRR == rrect);
@@ -1773,6 +1801,7 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
     REPORTER_ASSERT(r, SkPathDirection::kCW == queryDir);
     REPORTER_ASSERT(r, 0 == queryStart);
     REPORTER_ASSERT(r, queryInverted);
+#endif
 
     REPORTER_ASSERT(r, exampleHairlineCase.asRRect(&queryRR, &queryDir, &queryStart,
                                                    &queryInverted));
@@ -1803,15 +1832,19 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
 
     // Remember that the key reflects the geometry before styling is applied.
     REPORTER_ASSERT(r, exampleFillCaseKey != exampleInvFillCaseKey);
+#ifdef SK_SUPPORT_STROKEANDFILL
     REPORTER_ASSERT(r, exampleFillCaseKey == exampleStrokeAndFillCaseKey);
     REPORTER_ASSERT(r, exampleFillCaseKey != exampleInvStrokeAndFillCaseKey);
+#endif
     REPORTER_ASSERT(r, exampleFillCaseKey == exampleStrokeCaseKey);
     REPORTER_ASSERT(r, exampleFillCaseKey != exampleInvStrokeCaseKey);
     REPORTER_ASSERT(r, exampleFillCaseKey == exampleHairlineCaseKey);
     REPORTER_ASSERT(r, exampleFillCaseKey != exampleInvHairlineCaseKey);
+#ifdef SK_SUPPORT_STROKEANDFILL
     REPORTER_ASSERT(r, exampleInvStrokeAndFillCaseKey == exampleInvFillCaseKey);
     REPORTER_ASSERT(r, exampleInvStrokeAndFillCaseKey == exampleInvStrokeCaseKey);
     REPORTER_ASSERT(r, exampleInvStrokeAndFillCaseKey == exampleInvHairlineCaseKey);
+#endif
 
     for (bool inverted : {false, true}) {
         for (SkPathDirection dir : {SkPathDirection::kCW, SkPathDirection::kCCW}) {
@@ -1822,22 +1855,28 @@ void test_rrect(skiatest::Reporter* r, const SkRRect& rrect) {
                     Key fillCaseKey;
                     make_key(&fillCaseKey, fillCase);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
                     const GrStyledShape& strokeAndFillCase = shapes[index(inverted, dir, start,
                                                                     kStrokeAndFill, dash)];
                     Key strokeAndFillCaseKey;
                     make_key(&strokeAndFillCaseKey, strokeAndFillCase);
+#endif
 
                     // Both fill and stroke-and-fill shapes must respect the inverseness and both
                     // ignore dashing.
                     REPORTER_ASSERT(r, !fillCase.style().pathEffect());
+#ifdef SK_SUPPORT_STROKEANDFILL
                     REPORTER_ASSERT(r, !strokeAndFillCase.style().pathEffect());
+#endif
                     TestCase a(fillCase, r);
                     TestCase b(inverted ? exampleInvFillCase : exampleFillCase, r);
+                    a.compare(r, b, TestCase::kAllSame_ComparisonExpecation);
+#ifdef SK_SUPPORT_STROKEANDFILL
                     TestCase c(strokeAndFillCase, r);
                     TestCase d(inverted ? exampleInvStrokeAndFillCase
                                         : exampleStrokeAndFillCase, r);
-                    a.compare(r, b, TestCase::kAllSame_ComparisonExpecation);
                     c.compare(r, d, TestCase::kAllSame_ComparisonExpecation);
+#endif
 
                     const GrStyledShape& strokeCase = shapes[index(inverted, dir, start, kStroke,
                                                              dash)];
@@ -2078,13 +2117,19 @@ DEF_TEST(GrStyledShape_stroked_lines, r) {
 }
 
 DEF_TEST(GrStyledShape_short_path_keys, r) {
+#ifdef SK_SUPPORT_STROKEANDFILL
     SkPaint paints[4];
+#else
+    SkPaint paints[3];
+#endif
     paints[1].setStyle(SkPaint::kStroke_Style);
     paints[1].setStrokeWidth(5.f);
     paints[2].setStyle(SkPaint::kStroke_Style);
     paints[2].setStrokeWidth(0.f);
+#ifdef SK_SUPPORT_STROKEANDFILL
     paints[3].setStyle(SkPaint::kStrokeAndFill_Style);
     paints[3].setStrokeWidth(5.f);
+#endif
 
     auto compare = [r, &paints] (const SkPath& pathA, const SkPath& pathB,
                                  TestCase::ComparisonExpecation expectation) {
