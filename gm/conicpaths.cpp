@@ -185,9 +185,11 @@ DEF_SIMPLE_GM(largeovals, canvas, 250, 250) {
     canvas->drawOval(r, paint);
     r.offset(-15, -15);
     paint.setColor(SK_ColorDKGRAY);
+#ifdef SK_SUPPORT_STROKEANDFILL
     // we use stroke and fill to avoid falling into the SimpleFill path
     paint.setStyle(SkPaint::kStrokeAndFill_Style);
     paint.setStrokeWidth(1);
+#endif
     canvas->drawOval(r, paint);
 
     // Test DIEllipseOp
@@ -199,8 +201,10 @@ DEF_SIMPLE_GM(largeovals, canvas, 250, 250) {
     canvas->drawOval(r, paint);
     r.offset(-15, -15);
     paint.setColor(SK_ColorLTGRAY);
+#ifdef SK_SUPPORT_STROKEANDFILL
     paint.setStyle(SkPaint::kStrokeAndFill_Style);
     paint.setStrokeWidth(1);
+#endif
     canvas->drawOval(r, paint);
 }
 

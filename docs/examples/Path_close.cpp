@@ -12,7 +12,10 @@ void draw(SkCanvas* canvas) {
     path.addPoly(points, SK_ARRAY_COUNT(points), false);
     for (int loop = 0; loop < 2; ++loop) {
         for (auto style : {SkPaint::kStroke_Style, SkPaint::kFill_Style,
-                SkPaint::kStrokeAndFill_Style} ) {
+#ifdef SK_SUPPORT_STROKEANDFILL
+                SkPaint::kStrokeAndFill_Style
+#endif
+        } ) {
             paint.setStyle(style);
             canvas->drawPath(path, paint);
             canvas->translate(85, 0);
