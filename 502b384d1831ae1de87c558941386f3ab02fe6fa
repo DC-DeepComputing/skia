@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2ebe7ef_14fc0142",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T16:29:25Z",
+      "side": 1,
+      "message": "agreed, tricolor has its own side-door. Just thinking about generalizing.",
+      "parentUuid": "77574949_94afbbdd",
+      "range": {
+        "startLine": 368,
+        "startChar": 42,
+        "endLine": 368,
+        "endChar": 56
+      },
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e70b618_7664e218",
