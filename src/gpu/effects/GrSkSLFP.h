@@ -155,6 +155,9 @@ public:
         if (inputFP) {
             fp->setInput(std::move(inputFP));
         }
+        if (effect->allowBlender()) {
+            fp->setIsBlendFunction();
+        }
         return fp;
     }
 
