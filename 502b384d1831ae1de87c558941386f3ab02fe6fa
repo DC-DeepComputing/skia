@@ -16,6 +16,52 @@
       "message": "I *really* prefer this layout (hoisting the different setup bits, and having one loop).",
       "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e747af5_ea676e1e",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T15:50:58Z",
+      "side": 1,
+      "message": "I see that we\u0027ve snapped an updater-shader before this wrap. Seems fine, but also presumes that the compose shader doesn\u0027t want to participate. Could we alternatively wrap the tricolor and paint-shader first, and then request an updater-shader? Functionally the same, but seems more general (and would force us to update ComposeShader to forward the updator, which seems right).",
+      "range": {
+        "startLine": 368,
+        "startChar": 42,
+        "endLine": 368,
+        "endChar": 56
+      },
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e70b618_7664e218",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T15:50:58Z",
+      "side": 1,
+      "message": "is this correct, or should we fall out of this case, and see if a following blitter can succeed?",
+      "range": {
+        "startLine": 380,
+        "startChar": 12,
+        "endLine": 380,
+        "endChar": 18
+      },
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
