@@ -33,7 +33,7 @@ void GrGLSLFragmentProcessor::emitChildFunction(int childIndex, EmitArgs& args) 
                            args.fShaderCaps,
                            *childFP,
                            childFP->isBlendFunction() ? "_src" : "_input",
-                           "_dst",
+                           childFP->isBlendFunction() ? "_dst" : nullptr,
                            "_coords");
         GrGLSLFragmentProcessor* childGLSLFP = this->childProcessor(childIndex);
         fFunctionNames[childIndex] = fragBuilder->writeProcessorFunction(childGLSLFP, childArgs);
