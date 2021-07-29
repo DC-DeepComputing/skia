@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a919217_7af25d6b",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-29T18:30:14Z",
+      "side": 1,
+      "message": "We\u0027re currently finalizing the new api (one of the last remaining task is the batch flag set), and then the plan is to make a harfbuzz 3.0.0 release at which point the api will be stable and no longer change.\n\nYes the subsetting stuff is in a separate library in harfbuzz. I\u0027ll take a look at updating the skia_use_system_harfbuzz branch.",
+      "parentUuid": "252b8da1_b97e6c1c",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de96b69_2024de2f",
         "filename": "src/pdf/SkPDFSubsetFont.cpp",
         "patchSetId": 1
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "There isn\u0027t at the moment, but that\u0027s a good idea. I\u0027ve opened an issue on the harfbuzz side to add the bulk set: https://github.com/harfbuzz/harfbuzz/issues/3086",
       "parentUuid": "8de96b69_2024de2f",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a14b078c_dc3a4386",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-29T18:30:14Z",
+      "side": 1,
+      "message": "fyi I\u0027m currently implementing the bulk update. I\u0027ll update this change with that once I\u0027ve got it n on harfbuzz.",
+      "parentUuid": "d8a9e838_ea8af7f7",
       "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
