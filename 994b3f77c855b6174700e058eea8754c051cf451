@@ -87,6 +87,24 @@
       "parentUuid": "7f29b3f2_cb440860",
       "revId": "994b3f77c855b6174700e058eea8754c051cf451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0a88315_b0ee542b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T20:34:41Z",
+      "side": 1,
+      "message": "I whipped up a microbench that just constructs SkNoDrawCanvas instances in a loop. At ToT, it takes ~180ns. With this CL, that jumps to ~200ns. Seems ok.",
+      "parentUuid": "320a01f3_ac5ab6d2",
+      "revId": "994b3f77c855b6174700e058eea8754c051cf451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
