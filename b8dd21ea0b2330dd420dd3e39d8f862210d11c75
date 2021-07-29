@@ -50,6 +50,24 @@
       "message": "Since there isn\u0027t much commonality in this base class, I think it would be less intrusive to handle expression builders explicitly.  Something along these lines\n\n  bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder\u0026 abuilder,\n                                             const skjson::ObjectValue* jprop,\n -                                           KeyframeAnimatorBuilder\u0026 builder) {\n +                                           KeyframeAnimatorBuilder\u0026 builder,\n +                                           ExpressionAnimatorBuilder* ebuilder) {\n      if (!jprop) {\n          return false;\n      }\n @@ -58,7 +59,14 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder\u0026 abuilder,\n      const auto\u0026 jpropK \u003d (*jprop)[\"k\"];\n \n      if (!(*jprop)[\"x\"].is\u003cskjson::NullValue\u003e()) {\n -        abuilder.log(Logger::Level::kWarning, nullptr, \"Unsupported \nexpression.\");\n +        if (ebuilder) {\n +            if (auto eanimator \u003d ebuilder-\u003emake(abuilder, (*jprop)[\"x\"])) {\n +                fAnimators.push_back(std::move(eanimator));\n +                return true;\n +            }\n +        } else {\n +            abuilder.log(Logger::Level::kWarning, nullptr, \"Ignoring expression.\");\n +        }\n      }\n\nThen you don\u0027t have to touch the existing animators/builders and can pass the right type of expression builder from AnimatablePropertyContainer::bind\u003c\u003e specializations.  WDYT?",
       "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8318fa8_83e9c01f",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-29T13:35:29Z",
+      "side": 1,
+      "message": "Another idea would be to add a makeFromExpression() virtual to KeyframeAnimatorBuilder and still call explicitly from bindImpl like above, but without a separate ebuilder argument.\n\n(also rename KeyframeAnimatorBuilder -\u003e AnimatorBuilder, AnimatorBuilder::make() -\u003e AnimatorBuilder::makeFromKeyframes())",
+      "parentUuid": "c4680420_104eafc9",
+      "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
