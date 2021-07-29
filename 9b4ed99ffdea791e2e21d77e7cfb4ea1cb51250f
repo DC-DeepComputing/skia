@@ -67,6 +67,24 @@
       "message": "In addition to calling placement new in hb_object_set_user_data to call the hb_user_data_array_t constructor it looks like hb_object_fini should directly call the hb_user_data_array_t destructor after calling fini() and before calling free().",
       "revId": "9b4ed99ffdea791e2e21d77e7cfb4ea1cb51250f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77aa3cd0_ea5d42fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-29T18:32:19Z",
+      "side": 1,
+      "message": "Thanks for investigating that, I\u0027ll take a look and see what I can do.",
+      "parentUuid": "6df5fd9f_ece214c0",
+      "revId": "9b4ed99ffdea791e2e21d77e7cfb4ea1cb51250f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
