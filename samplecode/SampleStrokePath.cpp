@@ -91,7 +91,9 @@ static const struct {
     { SkPaint::kFill_Style,             SkPaint::kMiter_Join,   0 },
     { SkPaint::kStroke_Style,           SkPaint::kMiter_Join,   0 },
     { SkPaint::kStroke_Style,           SkPaint::kMiter_Join,   10 },
+#ifdef SK_SUPPORT_STROKEANDFILL
     { SkPaint::kStrokeAndFill_Style,    SkPaint::kMiter_Join,   10 },
+#endif
 };
 
 class StrokePathView : public Sample {

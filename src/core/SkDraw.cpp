@@ -566,13 +566,18 @@ SkDraw::RectType SkDraw::ComputeRectType(const SkRect& rect,
     const SkScalar width = paint.getStrokeWidth();
     const bool zeroWidth = (0 == width);
     SkPaint::Style style = paint.getStyle();
-
-    if ((SkPaint::kStrokeAndFill_Style == style) && zeroWidth) {
+#ifdef SK_SUPPORT_STROKEANDFILL
+    const bool strokeAndFill = SkPaint::kStrokeAndFill_Style == style;
+#else
+    const bool strokeAndFill = false;
+#endif
+    
+    if (strokeAndFill && zeroWidth) {
         style = SkPaint::kFill_Style;
     }
 
     if (paint.getPathEffect() || paint.getMaskFilter() ||
-        !matrix.rectStaysRect() || SkPaint::kStrokeAndFill_Style == style) {
+        !matrix.rectStaysRect() || strokeAndFill) {
         rtype = kPath_RectType;
     } else if (SkPaint::kFill_Style == style) {
         rtype = kFill_RectType;

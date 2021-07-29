@@ -186,12 +186,13 @@ public:
     enum Style : uint8_t {
         kFill_Style,          //!< set to fill geometry
         kStroke_Style,        //!< set to stroke geometry
-        kStrokeAndFill_Style, //!< sets to stroke and fill geometry
+//        kStrokeAndFill_Style, //!< sets to stroke and fill geometry
+        kLast_Style = kStroke_Style,
     };
 
     /** May be used to verify that SkPaint::Style is a legal value.
     */
-    static constexpr int kStyleCount = kStrokeAndFill_Style + 1;
+    static constexpr int kStyleCount = kLast_Style + 1;
 
     /** Returns whether the geometry is filled, stroked, or filled and stroked.
     */

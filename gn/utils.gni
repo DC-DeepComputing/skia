@@ -23,6 +23,7 @@ skia_utils_public = [
   "$_include/utils/SkParsePath.h",
   "$_include/utils/SkRandom.h",
   "$_include/utils/SkShadowUtils.h",
+  "$_include/utils/SkStrokeUtils.h",
 
   #mac
   "$_include/utils/mac/SkCGUtils.h",
@@ -73,6 +74,7 @@ skia_utils_sources = [
   "$_src/utils/SkShadowUtils.cpp",
   "$_src/utils/SkShaperJSONWriter.cpp",
   "$_src/utils/SkShaperJSONWriter.h",
+  "$_src/utils/SkStrokeUtils.cpp",
   "$_src/utils/SkTextUtils.cpp",
   "$_src/utils/SkThreadUtils_pthread.cpp",
   "$_src/utils/SkThreadUtils_win.cpp",
