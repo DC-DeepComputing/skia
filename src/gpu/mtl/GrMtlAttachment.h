@@ -70,12 +70,14 @@ private:
                     SkISize dimensions,
                     UsageFlags supportedUsages,
                     id<MTLTexture> texture,
+                    GrMipmapped,
                     SkBudgeted);
 
     GrMtlAttachment(GrMtlGpu* gpu,
                     SkISize dimensions,
                     UsageFlags supportedUsages,
                     id<MTLTexture> texture,
+                    GrMipmapped,
                     GrWrapCacheable);
 
     GrMtlGpu* getMtlGpu() const;
