@@ -449,7 +449,6 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::UseDestColorAsInput(
             return sample(fp, dst);
         }
     )");
-    SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "UseDestColorAsInput", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kNone, "fp", std::move(fp));
 }
