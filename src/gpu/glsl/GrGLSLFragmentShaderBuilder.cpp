@@ -66,6 +66,14 @@ SkString GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor
         }
     }
 
+    // First, emit every child's function. This needs to happen (even for children that aren't
+    // sampled), so that all of the expected uniforms are registered.
+    for (int i = 0; i < fp->numChildProcessors(); ++i) {
+        if (fp->childProcessor(i)) {
+            fp->emitChildFunction(i, args);
+        }
+    }
+
     fp->emitCode(args);
 
     SkString funcName = this->getMangledFunctionName(args.fFp.name());
