@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "288e202b_2de673a6",
+        "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T16:18:29Z",
+      "side": 1,
+      "message": "tiny nit: Could we set the function name immediately when `getMangledFunctionName` is called, and pass `fp-\u003efunctionName()` to `emitFunction`?\n\n    fp-\u003esetFunctionName(this-\u003egetMangledFunctionName(args.fFp.name()));\n    this-\u003eemitFunction(kHalf4_GrSLType, fp-\u003efunctionName(), paramSpan, this-\u003ecode().c_str());\n\nThat way, the FP is in a fully set-up state when the callbacks are invoked, rather than being 99% finished.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 45
+      },
+      "revId": "bbb4ed26b63c768c5114bbabb2f762379c708f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
