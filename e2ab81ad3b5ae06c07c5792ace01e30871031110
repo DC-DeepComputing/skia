@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16656b25_ea44e405",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T16:41:19Z",
+      "side": 1,
+      "message": "so nice and compact!",
+      "range": {
+        "startLine": 379,
+        "startChar": 12,
+        "endLine": 379,
+        "endChar": 17
+      },
+      "revId": "e2ab81ad3b5ae06c07c5792ace01e30871031110",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
