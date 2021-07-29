@@ -1443,6 +1443,13 @@ HRESULT SkXPSDevice::applyMask(const SkMask& mask,
     return S_OK;
 }
 
+static bool is_strokeandfill(SkPaint::Style style) {
+#ifdef SK_SUPPORT_STROKEANDFILL
+    return style == SkPaint::kStrokeAndFill_Style;
+#else
+    return false;
+}
+
 HRESULT SkXPSDevice::shadePath(IXpsOMPath* shadedPath,
                                const SkPaint& shaderPaint,
                                const SkMatrix& matrix,
@@ -1451,10 +1458,8 @@ HRESULT SkXPSDevice::shadePath(IXpsOMPath* shadedPath,
     *stroke = FALSE;
 
     const SkPaint::Style style = shaderPaint.getStyle();
-    const bool hasFill = SkPaint::kFill_Style == style
-                      || SkPaint::kStrokeAndFill_Style == style;
-    const bool hasStroke = SkPaint::kStroke_Style == style
-                        || SkPaint::kStrokeAndFill_Style == style;
+    const bool hasFill   = SkPaint::kFill_Style == style   || is_strokeandfill(style);
+    const bool hasStroke = SkPaint::kStroke_Style == style || is_strokeandfill(style);
 
     //TODO(bungeman): use dictionaries and lookups.
     if (hasFill) {
@@ -1887,7 +1892,7 @@ static bool text_must_be_pathed(const SkPaint& paint, const SkMatrix& matrix) {
     const SkPaint::Style style = paint.getStyle();
     return matrix.hasPerspective()
         || SkPaint::kStroke_Style == style
-        || SkPaint::kStrokeAndFill_Style == style
+        || is_strokeandfill(style)
         || paint.getMaskFilter()
     ;
 }

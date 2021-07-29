@@ -24,7 +24,11 @@ void draw(SkCanvas* canvas) {
     };
     canvas->translate(kStrokeWidth * 3 / 2, kStrokeWidth * 3 / 2);
     for (int doFill = 0; doFill <= 1; ++doFill) {
+#ifdef SK_SUPPORT_STROKEANDFILL
         SkPaint::Style style = doFill ? SkPaint::kStrokeAndFill_Style : SkPaint::kStroke_Style;
+#else
+        SkPaint::Style style = SkPaint::kStroke_Style;
+#endif
         for (size_t i = 0; i < SK_ARRAY_COUNT(gJoins); ++i) {
             SkPaint::Join join = gJoins[i];
             for (size_t j = 0; j < SK_ARRAY_COUNT(gRects); ++j) {
