@@ -517,6 +517,7 @@ GrOp::Owner GrFillRectOp::MakeOp(GrRecordingContext* context,
     return op;
 }
 
+#if SK_GPU_V1
 void GrFillRectOp::AddFillRectOps(skgpu::v1::SurfaceDrawContext* sdc,
                                   const GrClip* clip,
                                   GrRecordingContext* context,
@@ -544,6 +545,7 @@ void GrFillRectOp::AddFillRectOps(skgpu::v1::SurfaceDrawContext* sdc,
 
     SkASSERT(offset == cnt);
 }
+#endif
 
 #if GR_TEST_UTILS
 

@@ -8,6 +8,7 @@
 #ifndef SurfaceDrawContext_v1_DEFINED
 #define SurfaceDrawContext_v1_DEFINED
 
+#if 1
 #include "include/core/SkCanvas.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkRefCnt.h"
@@ -711,5 +712,6 @@ private:
 };
 
 } // namespace skgpu::v1
+#endif
 
 #endif // SurfaceDrawContext_v1_DEFINED
