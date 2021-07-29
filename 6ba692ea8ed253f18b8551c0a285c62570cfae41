@@ -16,6 +16,24 @@
       "message": "I think this is fine. If we could adapt our prior thinking so that we always refer to the \"input\" color as the \"source\" color (without changing semantics, just a rename) - then we wouldn\u0027t need so many conditionals when setting up Args, which would be nice. But that could be a follow-up (as it probably involves lots of renaming throughout every processor, etc.)",
       "revId": "6ba692ea8ed253f18b8551c0a285c62570cfae41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bf193ea_2570484c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T13:13:31Z",
+      "side": 1,
+      "message": "The names are arbitrary I think. Nothing should be relying on the exact string `_input`, so it wouldn\u0027t be hard to change, other than lots of variables being called \"inputFP\".",
+      "parentUuid": "20cecf93_61e695d5",
+      "revId": "6ba692ea8ed253f18b8551c0a285c62570cfae41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
