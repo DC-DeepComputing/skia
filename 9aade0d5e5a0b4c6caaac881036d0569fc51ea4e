@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba3e49d5_34c6e901",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T15:17:20Z",
+      "side": 1,
+      "message": "I think this is a good simplification, and it also removes the need for some complexity in https://skia-review.googlesource.com/c/skia/+/434045",
+      "revId": "9aade0d5e5a0b4c6caaac881036d0569fc51ea4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
