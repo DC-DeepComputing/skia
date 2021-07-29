@@ -33,6 +33,24 @@
       "message": "does it do chunk allocs? I had presumed it was valuable for us to have preallocated some room for these inside the canvas itself. That isn\u0027t happening here, right?",
       "revId": "994b3f77c855b6174700e058eea8754c051cf451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f29b3f2_cb440860",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T20:21:02Z",
+      "side": 1,
+      "message": "Yes, it does do chunked allocs (the chunk size is an implementation detail, but in lib++ it\u0027s the same order-of-magnitude as what we chose internally).\n\nIt doesn\u0027t pre-alloc the first chunk (so that\u0027s one extra heap alloc to get the first block). But I think that\u0027s okay - we\u0027re talking about a pretty large block, and a single allocation to get it. Again, from the performance numbers - I can\u0027t even measure that overhead.",
+      "parentUuid": "f4fe87ec_a8418c25",
+      "revId": "994b3f77c855b6174700e058eea8754c051cf451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
