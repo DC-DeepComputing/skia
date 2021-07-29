@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "071631ab_c676f2ad",
+        "filename": "gm/convex_all_line_paths.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "Can we also guard where ever this variable is declared?",
+      "range": {
+        "startLine": 341,
+        "startChar": 16,
+        "endLine": 341,
+        "endChar": 32
+      },
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae359bb_d4a81aee",
+        "filename": "gm/gradients_degenerate.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "Make this line guarded too ?",
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb48a1d6_862bc72f",
+        "filename": "gm/strokerect.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we just be setting the style to kStroke here?",
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17553bb8_56974c1f",
+        "filename": "include/utils/SkStrokeUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "LLC ?",
+      "range": {
+        "startLine": 3,
+        "startChar": 25,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "012e1b6f_170895ad",
+        "filename": "include/utils/SkStrokeUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "Just pre-declare SkPath ?",
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2014be2_45ac4da8",
+        "filename": "src/utils/SkStrokeUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-07-29T19:34:22Z",
+      "side": 1,
+      "message": "LLC ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 24,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
