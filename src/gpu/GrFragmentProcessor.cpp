@@ -638,6 +638,44 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DestColor() {
 
 //////////////////////////////////////////////////////////////////////////////
 
+std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::InputColor() {
+    class InputColorProcessor : public GrFragmentProcessor {
+    public:
+        static std::unique_ptr<GrFragmentProcessor> Make() {
+            return std::unique_ptr<GrFragmentProcessor>(new InputColorProcessor());
+        }
+
+        std::unique_ptr<GrFragmentProcessor> clone() const override { return Make(); }
+
+        const char* name() const override { return "InputColor"; }
+
+    private:
+        std::unique_ptr<GrGLSLFragmentProcessor> onMakeProgramImpl() const override {
+            class GLFP : public GrGLSLFragmentProcessor {
+            public:
+                void emitCode(EmitArgs& args) override {
+                    args.fFragBuilder->codeAppendf("return %s;", args.fInputColor);
+                }
+            };
+            return std::make_unique<GLFP>();
+        }
+
+        InputColorProcessor()
+                : INHERITED(kInputColorProcessor_ClassID,
+                            kConstantOutputForConstantInput_OptimizationFlag) {}
+
+        void onGetGLSLProcessorKey(const GrShaderCaps&, GrProcessorKeyBuilder*) const override {}
+
+        bool onIsEqual(const GrFragmentProcessor&) const override { return true; }
+
+        using INHERITED = GrFragmentProcessor;
+    };
+
+    return InputColorProcessor::Make();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
 std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DeviceSpace(
         std::unique_ptr<GrFragmentProcessor> fp) {
     static auto effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
