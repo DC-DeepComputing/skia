@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e32b7d38_20ee0a84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T19:54:20Z",
+      "side": 1,
+      "message": "primary goal at first: get it all to build, so I can see how reasonable it will be to wean our clients off of this.",
+      "revId": "1ce535d79a05c41ad8b3d875f2472957255c3fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

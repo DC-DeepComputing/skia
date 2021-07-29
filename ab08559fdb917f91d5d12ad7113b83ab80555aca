@@ -60,6 +60,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7df85794_e13e495d",
+        "filename": "gm/strokerect.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T19:54:20Z",
+      "side": 1,
+      "message": "line #29",
+      "parentUuid": "eb48a1d6_862bc72f",
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17553bb8_56974c1f",
         "filename": "include/utils/SkStrokeUtils.h",
         "patchSetId": 6
@@ -71,6 +89,30 @@
       "writtenOn": "2021-07-29T19:34:22Z",
       "side": 1,
       "message": "LLC ?",
+      "range": {
+        "startLine": 3,
+        "startChar": 25,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5310316e_9c62e5a8",
+        "filename": "include/utils/SkStrokeUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T19:54:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17553bb8_56974c1f",
       "range": {
         "startLine": 3,
         "startChar": 25,
@@ -98,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf3564b_1214ae7e",
+        "filename": "include/utils/SkStrokeUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T19:54:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "012e1b6f_170895ad",
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2014be2_45ac4da8",
@@ -111,6 +171,30 @@
       "writtenOn": "2021-07-29T19:34:22Z",
       "side": 1,
       "message": "LLC ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 24,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "ab08559fdb917f91d5d12ad7113b83ab80555aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef0a62b2_66d655bc",
+        "filename": "src/utils/SkStrokeUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T19:54:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2014be2_45ac4da8",
       "range": {
         "startLine": 2,
         "startChar": 24,
