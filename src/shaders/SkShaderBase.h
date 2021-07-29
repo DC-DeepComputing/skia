@@ -196,12 +196,13 @@ public:
     }
 
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
+    SkChildEffect::Type effectType() const final { return SkChildEffect::Type::kShader; }
 
-    static Type GetFlattenableType() { return kSkShaderBase_Type; }
-    Type getFlattenableType() const override { return GetFlattenableType(); }
+    static SkFlattenable::Type GetFlattenableType() { return kSkShaderBase_Type; }
+    SkFlattenable::Type getFlattenableType() const override { return GetFlattenableType(); }
 
     static sk_sp<SkShaderBase> Deserialize(const void* data, size_t size,
-                                             const SkDeserialProcs* procs = nullptr) {
+                                           const SkDeserialProcs* procs = nullptr) {
         return sk_sp<SkShaderBase>(static_cast<SkShaderBase*>(
                 SkFlattenable::Deserialize(GetFlattenableType(), data, size, procs).release()));
     }
