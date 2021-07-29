@@ -17,26 +17,29 @@ void GrGLSLFragmentProcessor::setData(const GrGLSLProgramDataManager& pdman,
     this->onSetData(pdman, processor);
 }
 
-void GrGLSLFragmentProcessor::emitChildFunction(int childIndex, EmitArgs& args) {
-    SkASSERT(childIndex >= 0);
-    const GrFragmentProcessor* childFP = args.fFp.childProcessor(childIndex);
-    SkASSERT(childFP);
-    GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
-    while (childIndex >= (int) fFunctionNames.size()) {
-        fFunctionNames.emplace_back();
-    }
+void GrGLSLFragmentProcessor::emitChildFunctions(EmitArgs& args) {
+    // We should only do this once
+    SkASSERT(fFunctionNames.empty());
+    fFunctionNames.reserve_back(this->numChildProcessors());
 
-    // Emit the child's helper function if this is the first time we've seen a call
-    if (fFunctionNames[childIndex].isEmpty()) {
-        EmitArgs childArgs(fragBuilder,
+    for (int i = 0; i < this->numChildProcessors(); ++i) {
+        GrGLSLFragmentProcessor* childGLSLFP = this->childProcessor(i);
+        if (!childGLSLFP) {
+            fFunctionNames.push_back();
+            continue;
+        }
+
+        const GrFragmentProcessor* childFP = args.fFp.childProcessor(i);
+        SkASSERT(childFP);
+
+        EmitArgs childArgs(args.fFragBuilder,
                            args.fUniformHandler,
                            args.fShaderCaps,
                            *childFP,
                            childFP->isBlendFunction() ? "_src" : "_input",
                            "_dst",
                            "_coords");
-        GrGLSLFragmentProcessor* childGLSLFP = this->childProcessor(childIndex);
-        fFunctionNames[childIndex] = fragBuilder->writeProcessorFunction(childGLSLFP, childArgs);
+        fFunctionNames.push_back(args.fFragBuilder->writeProcessorFunction(childGLSLFP, childArgs));
     }
 }
 
@@ -52,7 +55,7 @@ SkString GrGLSLFragmentProcessor::invokeChild(int childIndex, const char* inputC
         return SkString(inputColor);
     }
 
-    this->emitChildFunction(childIndex, args);
+    SkASSERT(!fFunctionNames[childIndex].isEmpty());
 
     if (skslCoords.empty()) {
         // Empty coords means passing through the coords of the parent
@@ -84,8 +87,7 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
         return SkString(inputColor);
     }
 
-    this->emitChildFunction(childIndex, args);
-
+    SkASSERT(!fFunctionNames[childIndex].isEmpty());
     SkASSERT(childProc->sampleUsage().isUniformMatrix());
 
     // Every uniform matrix has the same (initial) name. Resolve that into the mangled name:

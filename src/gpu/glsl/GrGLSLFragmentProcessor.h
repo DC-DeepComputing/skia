@@ -84,7 +84,7 @@ public:
         return fChildProcessors[index].get();
     }
 
-    void emitChildFunction(int childIndex, EmitArgs& parentArgs);
+    void emitChildFunctions(EmitArgs& parentArgs);
 
     // Invoke the child with the default input color (solid white)
     inline SkString invokeChild(int childIndex, EmitArgs& parentArgs,
