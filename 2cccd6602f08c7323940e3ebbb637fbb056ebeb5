@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbac7aa_e9e18bb9",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T14:36:13Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be duplicated below right? If we want to explicitly pass args.fInputColor in all cases to make it clear, that\u0027s fine.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 13
+      },
+      "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f913bcb_7a58c427",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T14:36:13Z",
+      "side": 1,
+      "message": "I think for this path (invokeChildWithMatrix), we can just assert that the childProc is never a blend function. (And probably remove the destColor parameter)? This is specific to shader-like FPs (and it\u0027s only used by GrMatrixEffect, actually).",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 39
+      },
+      "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
