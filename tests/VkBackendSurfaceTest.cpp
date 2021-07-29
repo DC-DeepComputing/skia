@@ -18,7 +18,6 @@
 #include "include/gpu/vk/GrVkVulkan.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrTextureProxy.h"
-#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/gpu/vk/GrVkGpu.h"
 #include "src/gpu/vk/GrVkImageLayout.h"
 #include "src/gpu/vk/GrVkTexture.h"
@@ -28,6 +27,7 @@
 #include "tests/Test.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
+//#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
