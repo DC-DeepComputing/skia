@@ -68,6 +68,24 @@
       "parentUuid": "c4680420_104eafc9",
       "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8357b0b9_9b4eaccb",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-07-29T18:35:19Z",
+      "side": 1,
+      "message": "Yes, it is definitely possible! The main reason I opted for this design is that expressions will also need access to keyframes. As such, the ExpressionBuilder will also need to parse the keyframes (something that is currently the responsibility of the KeyframeAnimatorBuilder). We already see this behavior for the TextAnimatorKeyframe builder because of how bodymovin exports the JSON.\n\nCreating makeFromExpression and makeFromKeyframes sounds like a good middle ground to me. It lets us to remove the DynamicAnimator superclass (whose main responsibility was an isConstant() function). At the same time, the makeFromExpression still has access to keyframe parsing functions.",
+      "parentUuid": "d8318fa8_83e9c01f",
+      "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
