@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31e20ebe_5310c53e",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T15:13:49Z",
+      "side": 1,
+      "message": "You\u0027re right, this was redundant. Fixed.",
+      "parentUuid": "2fbac7aa_e9e18bb9",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 13
+      },
+      "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f913bcb_7a58c427",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-29T14:36:13Z",
       "side": 1,
       "message": "I think for this path (invokeChildWithMatrix), we can just assert that the childProc is never a blend function. (And probably remove the destColor parameter)? This is specific to shader-like FPs (and it\u0027s only used by GrMatrixEffect, actually).",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 39
+      },
+      "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a74cc99_1ab366c6",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T15:13:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f913bcb_7a58c427",
       "range": {
         "startLine": 138,
         "startChar": 11,
