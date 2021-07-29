@@ -177,6 +177,8 @@ static void normalize_src_quad(const NormalizationParams& params,
     ys.store(srcQuad->ys());
 }
 
+#if SK_GPU_V1
+
 // Count the number of proxy runs in the entry set. This usually is already computed by
 // SkGpuDevice, but when the BatchLengthLimiter chops the set up it must determine a new proxy count
 // for each split.
@@ -191,6 +193,7 @@ static int proxy_run_count(const GrTextureSetEntry set[], int count) {
     }
     return actualProxyRunCount;
 }
+#endif
 
 static bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter filter,
                                        const DrawQuad& quad, const SkRect& subsetRect) {
@@ -1181,6 +1184,8 @@ GrOp::Owner GrTextureOp::Make(GrRecordingContext* context,
     }
 }
 
+#if SK_GPU_V1
+
 // A helper class that assists in breaking up bulk API quad draws into manageable chunks.
 class GrTextureOp::BatchSizeLimiter {
 public:
@@ -1371,6 +1376,7 @@ void GrTextureOp::AddTextureSetOps(skgpu::v1::SurfaceDrawContext* sdc,
         }
     }
 }
+#endif
 
 #if GR_TEST_UTILS
 #include "include/gpu/GrRecordingContext.h"
