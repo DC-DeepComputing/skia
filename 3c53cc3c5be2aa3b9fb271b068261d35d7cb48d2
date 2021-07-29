@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c6e86bd_c7647a41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-29T14:46:17Z",
+      "side": 1,
+      "message": "Ugh, should have updated FreeType to 2.11 before this change so this wouldn\u0027t be mixed in with the low bit rendering changes.",
+      "revId": "3c53cc3c5be2aa3b9fb271b068261d35d7cb48d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
