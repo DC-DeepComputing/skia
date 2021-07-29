@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2386e6b_e23e418d",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T23:33:49Z",
+      "side": 1,
+      "message": "Could this use UniformPayloadSize like GrSkSLFP::Make?",
+      "range": {
+        "startLine": 270,
+        "startChar": 4,
+        "endLine": 271,
+        "endChar": 79
+      },
+      "revId": "cf1cfb63eba094473f527d950a783fa12b0724db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
