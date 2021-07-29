@@ -16,8 +16,10 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkScan.h"
+#include "src/core/SkVM.h"
+#include "src/core/SkVMBlitter.h"
+#include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
-
 #include "include/core/SkMatrix.h"
 #include "src/core/SkScan.h"
 
@@ -46,6 +48,47 @@ static void load_color(SkRasterPipeline_UniformColorCtx* ctx, const float rgba[]
     ctx->rgba[3] = SkScalarRoundToInt(rgba[3]*255); ctx->a = rgba[3];
 }
 
+extern bool gUseSkVMBlitter;
+
+class UpdatableColorShader : public SkShaderBase {
+public:
+    UpdatableColorShader(SkColorSpace* cs) : fCS{cs} {}
+    skvm::Color
+    onProgram(skvm::Builder* builder, skvm::Coord device, skvm::Coord local, skvm::Color paint,
+              const SkMatrixProvider& provider, const SkMatrix* localM, const SkColorInfo& dst,
+              skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        fColors = uniforms->pushPtr(fValues);
+        skvm::F32 r = builder->arrayF(fColors, 0);
+        skvm::F32 g = builder->arrayF(fColors, 1);
+        skvm::F32 b = builder->arrayF(fColors, 2);
+        skvm::F32 a = builder->arrayF(fColors, 3);
+
+        return {r, g, b, a};
+    }
+
+    void updateColors(SkColor c) const {
+        SkColor4f c4 = SkColor4f::FromColor(c);
+        steps.apply(c4.vec());
+        auto cp4 = c4.premul();
+        fValues[0] = cp4.fR;
+        fValues[1] = cp4.fG;
+        fValues[2] = cp4.fB;
+        fValues[3] = cp4.fA;
+    }
+
+private:
+    // For serialization.  This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return nullptr; }
+
+    SkColorSpace* const fCS;
+    SkColorSpaceXformSteps steps{sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                                 fCS, kUnpremul_SkAlphaType};
+
+    mutable skvm::Uniform fColors;
+    mutable float fValues[4];
+};
+
 void SkDraw::drawAtlas(const SkImage* atlas, const SkRSXform xform[], const SkRect textures[],
                        const SkColor colors[], int count, SkBlendMode bmode,
                        const SkSamplingOptions& sampling, const SkPaint& paint) {
@@ -61,6 +104,39 @@ void SkDraw::drawAtlas(const SkImage* atlas, const SkRSXform xform[], const SkRe
     p.setMaskFilter(nullptr);
 
     SkSTArenaAlloc<256> alloc;
+    if (gUseSkVMBlitter) {
+        auto updateShader = as_SB(atlasShader)->updatableShader(&alloc);
+        UpdatableColorShader* colorShader = nullptr;
+        SkShaderBase* shader = nullptr;
+        if (colors) {
+            colorShader = alloc.make<UpdatableColorShader>(fDst.colorSpace());
+            shader = alloc.make<SkShader_Blend>(
+                    bmode, sk_ref_sp(colorShader), sk_ref_sp(updateShader));
+        } else {
+            shader = as_SB(updateShader);
+        }
+        SkPaint shaderPaint{p};
+        shaderPaint.setShader(sk_ref_sp(shader));
+        if (auto blitter = SkVMBlitter::Make(
+                fDst, shaderPaint, *fMatrixProvider, &alloc, fRC->clipShader())){
+            SkPath scratchPath;
+            for (int i = 0; i < count; ++i) {
+                if (colorShader) {
+                    colorShader->updateColors(colors[i]);
+                }
+
+                SkMatrix mx;
+                mx.setRSXform(xform[i]);
+                mx.preTranslate(-textures[i].fLeft, -textures[i].fTop);
+                mx.postConcat(fMatrixProvider->localToDevice());
+                if (updateShader->update(mx)) {
+                    fill_rect(mx, *fRC, textures[i], blitter, &scratchPath);
+                }
+            }
+            return;
+        }
+    }  // gUseSkVMBlitter
+
     SkRasterPipeline pipeline(&alloc);
     SkStageRec rec = {
         &pipeline, &alloc, fDst.colorType(), fDst.colorSpace(), p, nullptr, *fMatrixProvider
