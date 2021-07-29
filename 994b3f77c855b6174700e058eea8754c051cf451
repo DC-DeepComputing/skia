@@ -69,6 +69,24 @@
       "parentUuid": "7f29b3f2_cb440860",
       "revId": "994b3f77c855b6174700e058eea8754c051cf451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "320a01f3_ac5ab6d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-07-29T20:24:31Z",
+      "side": 1,
+      "message": "Following up on what Brian said, the consequence of this is that sizeof(SkCanvas) drops from 3232 bytes to 180 bytes, albeit there\u0027s an extra level of indirection.\n\nFrom performance testing all of these various containers, there is GrTBlockList, which is like std::deque but doesn\u0027t support random access and does allow pre-allocation. From a timings perspective, it performed the best but std::deque was not far behind. Using it would also require moving some GPU-backend types into src/core or include/private, so we agreed that std::deque was the best first move.\n\nIn the future, we could see replacing existing usage with std::deque in the GPU backend, or spend the time to migrate the GrTBlockList to an Sk-type if there are potholes we runover with std::deque and need to move SkCanvas off of it asap.",
+      "parentUuid": "7f29b3f2_cb440860",
+      "revId": "994b3f77c855b6174700e058eea8754c051cf451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
