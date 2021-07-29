@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f32f43_249257f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T13:45:34Z",
+      "side": 1,
+      "message": "I had to revert the SkSTArray version for several reasons. After fixing those (name conflicts with Layer, fuzzer issues, Android IWYU failures)... I also realized we had SkTLList. It\u0027s got the same nice memory properties as SkDeque (chunked allocation, pre-allocates a block, never moves elements), but it\u0027s also templated so we don\u0027t need the manual casting and placement new/delete. Enjoy.",
+      "revId": "b30ae5cce93ccd29214ef824e7a79f16bc0db946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
