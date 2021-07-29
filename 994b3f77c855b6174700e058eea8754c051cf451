@@ -16,6 +16,23 @@
       "message": "OK, despite the dire warnings from https://g3doc.corp.google.com/third_party/chromiumos_libchrome/base/containers/README.md#stddeque-and-stdqueue, this actually performs *really* well (even on Windows w/MSVC), has very clean interface/semantics, and it\u0027s code we don\u0027t have to maintain.",
       "revId": "994b3f77c855b6174700e058eea8754c051cf451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4fe87ec_a8418c25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-29T20:13:03Z",
+      "side": 1,
+      "message": "does it do chunk allocs? I had presumed it was valuable for us to have preallocated some room for these inside the canvas itself. That isn\u0027t happening here, right?",
+      "revId": "994b3f77c855b6174700e058eea8754c051cf451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
