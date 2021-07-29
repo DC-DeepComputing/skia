@@ -33,6 +33,23 @@
       "message": "Ugh, just rolled FreeType which caused the DEPS merge conflict...",
       "revId": "9b4ed99ffdea791e2e21d77e7cfb4ea1cb51250f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df5fd9f_ece214c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-29T17:07:35Z",
+      "side": 1,
+      "message": "The issue appears to be that hb_object_set_user_data allocates some space for a hb_user_data_array_t and calls \u0027init\u0027 on it without calling a constructor on it. This is actually rather undefined to begin with (user_data is not actually pointing to a hb_user_data_array_t object, so could be optimized away) but a side effect of this is that since the hb_user_data_array_t was never constructed, it\u0027s \u0027lock\u0027 member is not constructed (an the INIT macro here doesn\u0027t initialize one, and shouldn\u0027t, since that\u0027s not how one uses std::mutex).",
+      "revId": "9b4ed99ffdea791e2e21d77e7cfb4ea1cb51250f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
