@@ -10,11 +10,14 @@
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrDrawingManager.h"
 #include "src/gpu/GrRenderTargetProxy.h"
+#include "src/gpu/GrSurfaceProxyView.h"
 
 #if SK_GPU_V1
 #include "src/gpu/v1/Device_v1.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #endif
 #if SK_GPU_V2
+#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/v2/Device_v2.h"
 #endif
 
@@ -83,4 +86,73 @@ GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) c
             useSDFTForSmallText,
             this->options().fMinDistanceFieldFontSize,
             this->options().fGlyphsAsPathsFontSize};
+}
+
+std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::baz(GrRecordingContext* rContext,
+                                                                  GrSurfaceProxyView readView,
+                                                                  GrSurfaceProxyView writeView,
+                                                                  GrColorType,
+                                                                  sk_sp<SkColorSpace>,
+                                                                  const SkSurfaceProps&,
+                                                                  bool flushTimeOpsTask) {
+    return nullptr;
+}
+
+std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::foo(
+                                            GrRecordingContext* rContext,
+                                            GrColorType,
+                                            sk_sp<SkColorSpace>,
+                                            SkBackingFit,
+                                            SkISize dimensions,
+                                            const SkSurfaceProps&,
+                                            int sampleCnt,
+                                            GrMipmapped,
+                                            GrProtected,
+                                            GrSurfaceOrigin,
+                                            SkBudgeted) {
+    return nullptr;
+}
+
+std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::bar(
+                                            GrRecordingContext* rContext,
+                                            sk_sp<SkColorSpace>,
+                                            SkBackingFit,
+                                            SkISize dimensions,
+                                            const GrBackendFormat&,
+                                            int sampleCnt,
+                                            GrMipmapped,
+                                            GrProtected,
+                                            GrSwizzle readSwizzle,
+                                            GrSwizzle writeSwizzle,
+                                            GrSurfaceOrigin,
+                                            SkBudgeted,
+                                            const SkSurfaceProps&) {
+    return nullptr;
+}
+
+std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::floop(
+                                            GrRecordingContext* rContext,
+                                            GrColorType,
+                                            sk_sp<SkColorSpace>,
+                                            SkBackingFit,
+                                            SkISize dimensions,
+                                            const SkSurfaceProps&,
+                                            int sampleCnt,
+                                            GrMipmapped,
+                                            GrProtected,
+                                            GrSurfaceOrigin,
+                                            SkBudgeted) {
+    return nullptr;
+}
+
+std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::blorp(
+                                            GrRecordingContext* rContext,
+                                            GrColorType,
+                                            sk_sp<SkColorSpace>,
+                                            const GrBackendTexture&,
+                                            int sampleCnt,
+                                            GrSurfaceOrigin,
+                                            const SkSurfaceProps&,
+                                            sk_sp<GrRefCntedCallback> releaseHelper) {
+    return nullptr;
 }
