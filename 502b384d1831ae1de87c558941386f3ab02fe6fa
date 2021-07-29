@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77574949_94afbbdd",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-29T16:27:31Z",
+      "side": 1,
+      "message": "The tricolor shader doesn\u0027t want to participate. Its update structure is entirely different than the textures. I see what you are saying, but I think that should be part of a separate CL",
+      "parentUuid": "4e747af5_ea676e1e",
+      "range": {
+        "startLine": 368,
+        "startChar": 42,
+        "endLine": 368,
+        "endChar": 56
+      },
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e70b618_7664e218",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-07-29T15:50:58Z",
       "side": 1,
       "message": "is this correct, or should we fall out of this case, and see if a following blitter can succeed?",
+      "range": {
+        "startLine": 380,
+        "startChar": 12,
+        "endLine": 380,
+        "endChar": 18
+      },
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5308997e_a8fae6dd",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-29T16:27:31Z",
+      "side": 1,
+      "message": "You are right, I though that program could only return a skvm::Color so it couldn\u0027t fail. I didn\u0027t notice that skvm::Color has an explicit cast to bool that if all the color Vals are 0, then it returns false. In that case ok is set to false.\n\nFTR, this line was never executed when running dm.",
+      "parentUuid": "2e70b618_7664e218",
       "range": {
         "startLine": 380,
         "startChar": 12,
