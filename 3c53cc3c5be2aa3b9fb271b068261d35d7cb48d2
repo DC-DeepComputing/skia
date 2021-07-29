@@ -16,6 +16,24 @@
       "message": "Ugh, should have updated FreeType to 2.11 before this change so this wouldn\u0027t be mixed in with the low bit rendering changes.",
       "revId": "3c53cc3c5be2aa3b9fb271b068261d35d7cb48d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e2b737_2436b43f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-07-29T15:16:05Z",
+      "side": 1,
+      "message": "I gold-triaged the COLRv1 related ones now, and marked those based on the old font as failing - they\u0027ll be removed once we move all testing over to the newer script-generated test font.\n\nAre you handling the remaining FT bit change triage?",
+      "parentUuid": "4c6e86bd_c7647a41",
+      "revId": "3c53cc3c5be2aa3b9fb271b068261d35d7cb48d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
