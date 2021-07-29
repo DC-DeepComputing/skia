@@ -141,10 +141,16 @@ public:
             bool premulOutput);
 
     /**
-     * Returns a fragment processor that reads back the destination color; that is, sampling will
+     * Returns a fragment processor that reads back the surface color; that is, sampling will
      * return the color of the sample that is currently being painted over.
+     * (This is not equivalent to args.fDestColor.)
      */
     static std::unique_ptr<GrFragmentProcessor> DestColor();
+
+    /**
+     * Returns the FP input color as-is. (args.fInputColor)
+     */
+    static std::unique_ptr<GrFragmentProcessor> InputColor();
 
     /**
      * Returns a fragment processor that calls the passed in fragment processor, but evaluates it

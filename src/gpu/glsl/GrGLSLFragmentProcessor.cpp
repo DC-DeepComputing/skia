@@ -112,8 +112,6 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
     // In all other cases, we need to insert sksl to compute matrix * parent coords and then invoke
     // the function.
     if (childProc->isSampledWithExplicitCoords()) {
-        SkASSERT(!childProc->isBlendFunction());
-
         // Only check perspective for this specific matrix transform, not the aggregate FP property.
         // Any parent perspective will have already been applied when evaluated in the FS.
         if (childProc->sampleUsage().fHasPerspective) {
