@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a64e99_2561554b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-29T14:37:12Z",
+      "side": 1,
+      "message": "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-Metal\n\nseems to be consistently failing on\n\nlibc++abi.dylib: terminating with uncaught exception of type std::__1::system_error: mutex lock failed: Invalid argument\n\nthere is a stack trace in the build output. Will need to investigate what\u0027s going on with the mutex.",
+      "revId": "9b4ed99ffdea791e2e21d77e7cfb4ea1cb51250f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
