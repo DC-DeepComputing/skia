@@ -16,6 +16,40 @@
       "message": "Hey can you take a look at this and the follow-up CL and see if this looks okay to you? General idea is to have a DynamicAnimator superclass which both keyframe and expression animators will inherit from. The nice thing about havign a single builder is sometimes (e.g. TextAnimators) we need both the expression and the keyframe. This is likely going to continue to be a requirement as we add for new expressions (e.g. loopIn()/loopOut()).\n\nAs part of this, we need to make the Builders for a couple of the Keyframe Animators public.\n\nThe filenames need to change but I didn\u0027t want it to be too confusing in the code review. Thanks",
       "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bcf876a_45f42a87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-29T13:24:00Z",
+      "side": 1,
+      "message": "Sorry about the delay Kyle, I missed this one.",
+      "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4680420_104eafc9",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-29T13:24:00Z",
+      "side": 1,
+      "message": "Since there isn\u0027t much commonality in this base class, I think it would be less intrusive to handle expression builders explicitly.  Something along these lines\n\n  bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder\u0026 abuilder,\n                                             const skjson::ObjectValue* jprop,\n -                                           KeyframeAnimatorBuilder\u0026 builder) {\n +                                           KeyframeAnimatorBuilder\u0026 builder,\n +                                           ExpressionAnimatorBuilder* ebuilder) {\n      if (!jprop) {\n          return false;\n      }\n @@ -58,7 +59,14 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder\u0026 abuilder,\n      const auto\u0026 jpropK \u003d (*jprop)[\"k\"];\n \n      if (!(*jprop)[\"x\"].is\u003cskjson::NullValue\u003e()) {\n -        abuilder.log(Logger::Level::kWarning, nullptr, \"Unsupported \nexpression.\");\n +        if (ebuilder) {\n +            if (auto eanimator \u003d ebuilder-\u003emake(abuilder, (*jprop)[\"x\"])) {\n +                fAnimators.push_back(std::move(eanimator));\n +                return true;\n +            }\n +        } else {\n +            abuilder.log(Logger::Level::kWarning, nullptr, \"Ignoring expression.\");\n +        }\n      }\n\nThen you don\u0027t have to touch the existing animators/builders and can pass the right type of expression builder from AnimatablePropertyContainer::bind\u003c\u003e specializations.  WDYT?",
+      "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
