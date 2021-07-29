@@ -330,7 +330,13 @@ void SkSVGDevice::AutoElement::addPaint(const SkPaint& paint, const Resources& r
         SkDebugf("Unsupported path effect in addPaint.");
     }
     SkPaint::Style style = paint.getStyle();
-    if (style == SkPaint::kFill_Style || style == SkPaint::kStrokeAndFill_Style) {
+#ifdef SK_SUPPORT_STROKEANDFILL
+    const bool strokeAndFill = style == SkPaint::kStrokeAndFill_Style;
+#else
+    const bool strokeAndFill = false;
+#endif
+
+    if (style == SkPaint::kFill_Style || strokeAndFill) {
         static constexpr char kDefaultFill[] = "black";
         if (!resources.fPaintServer.equals(kDefaultFill)) {
             this->addAttribute("fill", resources.fPaintServer);
@@ -348,7 +354,7 @@ void SkSVGDevice::AutoElement::addPaint(const SkPaint& paint, const Resources& r
         this->addAttribute("filter", resources.fColorFilter.c_str());
     }
 
-    if (style == SkPaint::kStroke_Style || style == SkPaint::kStrokeAndFill_Style) {
+    if (style == SkPaint::kStroke_Style || strokeAndFill) {
         this->addAttribute("stroke", resources.fPaintServer);
 
         SkScalar strokeWidth = paint.getStrokeWidth();
