@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c9461fb_fb5dba06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T14:48:42Z",
+      "side": 1,
+      "message": "I *really* prefer this layout (hoisting the different setup bits, and having one loop).",
+      "revId": "502b384d1831ae1de87c558941386f3ab02fe6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
