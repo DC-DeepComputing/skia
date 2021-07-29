@@ -22,6 +22,30 @@
       },
       "revId": "3836bf4377d7c0f57e1da242872f8b25a1fd98f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc10941_5fadeaa1",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-07-29T21:42:20Z",
+      "side": 1,
+      "message": "They don\u0027t need to be moved out yet! But the they will in the next CL where we create the ExpressionAnimators. \n\ne.g. ScalarAnimatorBuilder will create ScalarKeyframeAnimator and ScalarExpressionAnimator.\n\nI could make the change in a follow up CL if you want!",
+      "parentUuid": "3fc62842_f374c72a",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 27
+      },
+      "revId": "3836bf4377d7c0f57e1da242872f8b25a1fd98f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
