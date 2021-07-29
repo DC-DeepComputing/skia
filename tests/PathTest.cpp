@@ -5117,7 +5117,10 @@ DEF_TEST(HugeGeometry, reporter) {
 
     const bool aas[] = { false, true };
     const SkPaint::Style styles[] = {
-        SkPaint::kFill_Style, SkPaint::kStroke_Style, SkPaint::kStrokeAndFill_Style
+        SkPaint::kFill_Style, SkPaint::kStroke_Style,
+#ifdef SK_SUPPORT_STROKEANDFILL
+        SkPaint::kStrokeAndFill_Style
+#endif
     };
     const SkScalar values[] = {
         0, 1, 1000, 1000 * 1000, 1000.f * 1000 * 10000, SK_ScalarMax / 2, SK_ScalarMax,

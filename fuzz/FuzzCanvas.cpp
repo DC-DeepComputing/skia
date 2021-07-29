@@ -840,7 +840,7 @@ static void fuzz_paint(Fuzz* fuzz, SkPaint* paint, int depth) {
     paint->setColor(        make_fuzz_t<SkColor>(fuzz));
     paint->setBlendMode(    make_fuzz_enum_range<SkBlendMode>(fuzz, SkBlendMode::kLastMode));
     paint->setStyle(        make_fuzz_enum_range<SkPaint::Style>(fuzz,
-                                                 SkPaint::Style::kStrokeAndFill_Style));
+                                                 SkPaint::Style::kLast_Style));
     paint->setShader(       make_fuzz_shader(fuzz, depth - 1));
     paint->setPathEffect(   make_fuzz_patheffect(fuzz, depth - 1));
     paint->setMaskFilter(   make_fuzz_maskfilter(fuzz));

@@ -495,8 +495,14 @@ static void generateMask(const SkMask& mask, const SkPath& path,
 
         // LCD hairline doesn't line up with the pixels, so do it the expensive way.
         SkStrokeRec rec(SkStrokeRec::kFill_InitStyle);
+#ifdef SK_SUPPORT_STROKEANDFILL
+        const bool strokeAndFill = paintStyle == SkPaint::kStrokeAndFill_Style;
+#else
+        const bool strokeAndFill = false;
+#endif
+
         if (paintStyle != SkPaint::kFill_Style) {
-            rec.setStrokeStyle(1.0f, paintStyle == SkPaint::kStrokeAndFill_Style);
+            rec.setStrokeStyle(1.0f, strokeAndFill);
             rec.setStrokeParams(SkPaint::kButt_Cap, SkPaint::kRound_Join, 0.0f);
         }
         if (rec.needToApply() && rec.applyToPath(&strokePath, path)) {
@@ -586,9 +592,13 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
             const bool doBGR = SkToBool(fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag);
             const bool doVert = SkToBool(fRec.fFlags & SkScalerContext::kLCD_Vertical_Flag);
             const bool a8LCD = SkToBool(fRec.fFlags & SkScalerContext::kGenA8FromLCD_Flag);
+#ifdef SK_SUPPORT_STROKEANDFILL
             const bool frameAndFill = SkToBool(fRec.fFlags & kFrameAndFill_Flag);
+#endif
             const SkPaint::Style paintStyle = fRec.fFrameWidth != 0 ? SkPaint::kFill_Style
+#ifdef SK_SUPPORT_STROKEANDFILL
                                             : frameAndFill          ? SkPaint::kStrokeAndFill_Style
+#endif
                                             :                         SkPaint::kStroke_Style;
             generateMask(mask, devPath, fPreBlend, doBGR, doVert, a8LCD, paintStyle);
         }
@@ -1023,6 +1033,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     SkScalar        strokeWidth = paint.getStrokeWidth();
 
     unsigned flags = 0;
+    bool frameAndFill = false;
 
     if (font.isEmbolden()) {
 #ifdef SK_USE_FREETYPE_EMBOLDEN
@@ -1035,7 +1046,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
         SkScalar extra = font.getSize() * fakeBoldScale;
 
         if (style == SkPaint::kFill_Style) {
-            style = SkPaint::kStrokeAndFill_Style;
+            frameAndFill = true;
             strokeWidth = extra;    // ignore paint's strokeWidth if it was "fill"
         } else {
             strokeWidth += extra;
@@ -1049,7 +1060,13 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
         rec->fStrokeJoin = SkToU8(paint.getStrokeJoin());
         rec->fStrokeCap = SkToU8(paint.getStrokeCap());
 
+#ifdef SK_SUPPORT_STROKEANDFILL
         if (style == SkPaint::kStrokeAndFill_Style) {
+            frameAndFill = true;
+        }
+#endif
+
+        if (frameAndFill) {
             flags |= SkScalerContext::kFrameAndFill_Flag;
         }
     } else {
