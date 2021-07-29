@@ -39,8 +39,10 @@
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+#if SK_GPU_V1
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
-#endif
+#endif // SK_GPU_V1
+#endif // SK_SUPPORT_GPU
 
 class SkBlurMaskFilterImpl : public SkMaskFilterBase {
 public:
@@ -1074,7 +1076,7 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     SkSurfaceProps defaultSurfaceProps;
 
     std::unique_ptr<skgpu::v1::SurfaceDrawContext> sdc =
-            skgpu::v1::SurfaceDrawContext::MakeWithFallback(dContext,
+            skgpu::v1::SurfaceDrawContext::MakeWithFallback77(dContext,
                                                             GrColorType::kAlpha_8,
                                                             nullptr,
                                                             SkBackingFit::kExact,

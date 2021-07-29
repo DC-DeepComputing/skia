@@ -37,7 +37,6 @@
 #include "src/gpu/GrUserStencilSettings.h"
 #include "src/gpu/effects/GrDisableColorXP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
-#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tools/ToolUtils.h"
 
 #include <utility>
@@ -135,6 +134,7 @@ DEF_GM( return new WindowRectanglesGM(); )
 #if SK_GPU_V1
 #include "src/gpu/GrReducedClip.h"
 #include "src/gpu/GrStencilClip.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 namespace skiagm {
 
@@ -239,7 +239,7 @@ void WindowRectanglesMaskGM::visualizeAlphaMask(GrRecordingContext* rContext,
                                                 GrPaint&& paint) {
     const int padRight = (kDeviceRect.right() - kCoverRect.right()) / 2;
     const int padBottom = (kDeviceRect.bottom() - kCoverRect.bottom()) / 2;
-    auto maskSDC = skgpu::v1::SurfaceDrawContext::MakeWithFallback(
+    auto maskSDC = skgpu::v1::SurfaceDrawContext::MakeWithFallback77(
             rContext, GrColorType::kAlpha_8, nullptr, SkBackingFit::kExact,
             {kCoverRect.width() + padRight, kCoverRect.height() + padBottom}, SkSurfaceProps());
     if (!maskSDC) {

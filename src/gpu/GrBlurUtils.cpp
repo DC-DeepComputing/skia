@@ -205,7 +205,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> create_mask_GPU(
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
     auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
-    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(rContext,
+    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback77(rContext,
                                                                GrColorType::kAlpha_8,
                                                                nullptr,
                                                                SkBackingFit::kExact,
