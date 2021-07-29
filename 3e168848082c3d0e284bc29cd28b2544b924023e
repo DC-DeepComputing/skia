@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe48b2ef_c0620a47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2021-07-29T11:46:40Z",
+      "side": 1,
+      "message": "Can someone commit this for me? I don\u0027t have rights to do so.",
+      "revId": "3e168848082c3d0e284bc29cd28b2544b924023e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
