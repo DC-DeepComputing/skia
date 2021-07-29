@@ -104,6 +104,24 @@
       "parentUuid": "8357b0b9_9b4eaccb",
       "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b693937_0ebbe657",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-07-29T21:36:30Z",
+      "side": 1,
+      "message": "Looks good!",
+      "parentUuid": "ea909922_19a67ba9",
+      "revId": "b8dd21ea0b2330dd420dd3e39d8f862210d11c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
