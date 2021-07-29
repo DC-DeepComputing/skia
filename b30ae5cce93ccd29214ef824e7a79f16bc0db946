@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6af2387e_fd664da2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T14:22:47Z",
+      "side": 1,
+      "message": "There\u0027s too much to explain here, so I dumped all the numbers in a sheet (with comments explaining each variation): https://docs.google.com/spreadsheets/d/1pPwNrou3vybPCD2SMY9Eu76M7FFkCtG98-2LdH3AtCA/edit?usp\u003dsharing\u0026resourcekey\u003d0-s0oZ58ddvFKrB9cQAD0rRA",
+      "parentUuid": "cd66c83b_178bc95c",
+      "revId": "b30ae5cce93ccd29214ef824e7a79f16bc0db946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35a2d93e_0a0d490a",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-07-29T14:01:45Z",
       "side": 1,
       "message": "I liked the brevity of BackImage and Layer, which we could do if they didn\u0027t need to be forward declared and were just inside the SkCanvas header.\n\nNeither of them are particularly complex or secret types, so maybe we just move them to SkCanvas.h too?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 21
+      },
+      "revId": "b30ae5cce93ccd29214ef824e7a79f16bc0db946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6f9839_d77df455",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T14:22:47Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "35a2d93e_0a0d490a",
       "range": {
         "startLine": 44,
         "startChar": 0,
