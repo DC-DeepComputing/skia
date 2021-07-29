@@ -17,26 +17,24 @@ void GrGLSLFragmentProcessor::setData(const GrGLSLProgramDataManager& pdman,
     this->onSetData(pdman, processor);
 }
 
-void GrGLSLFragmentProcessor::emitChildFunction(int childIndex, EmitArgs& args) {
-    SkASSERT(childIndex >= 0);
-    const GrFragmentProcessor* childFP = args.fFp.childProcessor(childIndex);
-    SkASSERT(childFP);
-    GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
-    while (childIndex >= (int) fFunctionNames.size()) {
-        fFunctionNames.emplace_back();
-    }
+void GrGLSLFragmentProcessor::emitChildFunctions(EmitArgs& args) {
+    for (int i = 0; i < this->numChildProcessors(); ++i) {
+        GrGLSLFragmentProcessor* childGLSLFP = this->childProcessor(i);
+        if (!childGLSLFP) {
+            continue;
+        }
 
-    // Emit the child's helper function if this is the first time we've seen a call
-    if (fFunctionNames[childIndex].isEmpty()) {
-        EmitArgs childArgs(fragBuilder,
+        const GrFragmentProcessor* childFP = args.fFp.childProcessor(i);
+        SkASSERT(childFP);
+
+        EmitArgs childArgs(args.fFragBuilder,
                            args.fUniformHandler,
                            args.fShaderCaps,
                            *childFP,
                            childFP->isBlendFunction() ? "_src" : "_input",
                            "_dst",
                            "_coords");
-        GrGLSLFragmentProcessor* childGLSLFP = this->childProcessor(childIndex);
-        fFunctionNames[childIndex] = fragBuilder->writeProcessorFunction(childGLSLFP, childArgs);
+        args.fFragBuilder->writeProcessorFunction(childGLSLFP, childArgs);
     }
 }
 
@@ -52,23 +50,22 @@ SkString GrGLSLFragmentProcessor::invokeChild(int childIndex, const char* inputC
         return SkString(inputColor);
     }
 
-    this->emitChildFunction(childIndex, args);
-
     if (skslCoords.empty()) {
         // Empty coords means passing through the coords of the parent
         skslCoords = args.fSampleCoord;
     }
 
+    const GrGLSLFragmentProcessor* childGLSLProc = this->childProcessor(childIndex);
     if (childProc->isSampledWithExplicitCoords()) {
         // The child's function takes a half4 color and a float2 coordinate
-        return SkStringPrintf("%s(%s, %s)", fFunctionNames[childIndex].c_str(),
+        return SkStringPrintf("%s(%s, %s)", childGLSLProc->functionName(),
                                             inputColor, skslCoords.c_str());
     } else {
         // The child's function just takes a color. We should only get here for a call to sample
         // without explicit coordinates. Assert that the child has no sample matrix and skslCoords
         // is _coords (a uniform matrix sample call would go through invokeChildWithMatrix).
         SkASSERT(skslCoords == args.fSampleCoord && childProc->sampleUsage().isPassThrough());
-        return SkStringPrintf("%s(%s)", fFunctionNames[childIndex].c_str(), inputColor);
+        return SkStringPrintf("%s(%s)", childGLSLProc->functionName(), inputColor);
     }
 }
 
@@ -83,8 +80,6 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
     if (!childProc) {
         return SkString(inputColor);
     }
-
-    this->emitChildFunction(childIndex, args);
 
     SkASSERT(childProc->sampleUsage().isUniformMatrix());
 
@@ -102,24 +97,25 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
     //
     // In all other cases, we need to insert sksl to compute matrix * parent coords and then invoke
     // the function.
+    const GrGLSLFragmentProcessor* childGLSLProc = this->childProcessor(childIndex);
     if (childProc->isSampledWithExplicitCoords()) {
         // Only check perspective for this specific matrix transform, not the aggregate FP property.
         // Any parent perspective will have already been applied when evaluated in the FS.
         if (childProc->sampleUsage().fHasPerspective) {
-            return SkStringPrintf("%s(%s, proj((%s) * %s.xy1))", fFunctionNames[childIndex].c_str(),
+            return SkStringPrintf("%s(%s, proj((%s) * %s.xy1))", childGLSLProc->functionName(),
                                   inputColor, matrixName.c_str(), args.fSampleCoord);
         } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
             return SkStringPrintf("%s(%s, float3x2(%s) * %s.xy1)",
-                                  fFunctionNames[childIndex].c_str(), inputColor,
+                                  childGLSLProc->functionName(), inputColor,
                                   matrixName.c_str(), args.fSampleCoord);
         } else {
-            return SkStringPrintf("%s(%s, ((%s) * %s.xy1).xy)", fFunctionNames[childIndex].c_str(),
+            return SkStringPrintf("%s(%s, ((%s) * %s.xy1).xy)", childGLSLProc->functionName(),
                                   inputColor, matrixName.c_str(), args.fSampleCoord);
         }
     } else {
         // Since this is uniform and not explicitly sampled, it's transform has been promoted to
         // the vertex shader and the signature doesn't take a float2 coord.
-        return SkStringPrintf("%s(%s)", fFunctionNames[childIndex].c_str(), inputColor);
+        return SkStringPrintf("%s(%s)", childGLSLProc->functionName(), inputColor);
     }
 }
 
