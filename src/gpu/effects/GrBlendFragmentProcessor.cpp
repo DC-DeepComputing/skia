@@ -13,12 +13,12 @@
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 
-// Some of the cpu implementations of blend modes differ too much from the GPU enough that
-// we can't use the cpu implementation to implement constantOutputForConstantInput.
+// Some of the CPU implementations of blend modes differ from the GPU enough that
+// we can't use the CPU implementation to implement constantOutputForConstantInput.
 static inline bool does_cpu_blend_impl_match_gpu(SkBlendMode mode) {
-    // The non-seperable modes differ too much. So does SoftLight. ColorBurn differs too much on our
-    // test iOS device (but we just disable it across the aboard since it may happen on untested
-    // GPUs).
+    // The non-separable modes differ too much. So does SoftLight. ColorBurn differs too much on our
+    // test iOS device, but we just disable it across the board since it might differ on untested
+    // GPUs.
     return mode <= SkBlendMode::kLastSeparableMode && mode != SkBlendMode::kSoftLight &&
            mode != SkBlendMode::kColorBurn;
 }
@@ -29,9 +29,10 @@ class BlendFragmentProcessor : public GrFragmentProcessor {
 public:
     static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> src,
                                                      std::unique_ptr<GrFragmentProcessor> dst,
-                                                     SkBlendMode mode) {
-        return std::unique_ptr<GrFragmentProcessor>(
-                new BlendFragmentProcessor(std::move(src), std::move(dst), mode));
+                                                     SkBlendMode mode,
+                                                     bool enableBlendFunction) {
+        return std::unique_ptr<GrFragmentProcessor>(new BlendFragmentProcessor(
+                std::move(src), std::move(dst), mode, enableBlendFunction));
     }
 
     const char* name() const override { return "Blend"; }
@@ -43,9 +44,13 @@ public:
 private:
     BlendFragmentProcessor(std::unique_ptr<GrFragmentProcessor> src,
                            std::unique_ptr<GrFragmentProcessor> dst,
-                           SkBlendMode mode)
+                           SkBlendMode mode,
+                           bool enableBlendFunction)
             : INHERITED(kBlendFragmentProcessor_ClassID, OptFlags(src.get(), dst.get(), mode))
             , fMode(mode) {
+        if (enableBlendFunction) {
+            this->setIsBlendFunction();
+        }
         this->registerChild(std::move(src));
         this->registerChild(std::move(dst));
     }
@@ -53,6 +58,9 @@ private:
     BlendFragmentProcessor(const BlendFragmentProcessor& that)
             : INHERITED(kBlendFragmentProcessor_ClassID, ProcessorOptimizationFlags(&that))
             , fMode(that.fMode) {
+        if (that.isBlendFunction()) {
+            this->setIsBlendFunction();
+        }
         this->cloneAndRegisterAllChildProcessors(that);
     }
 
@@ -67,10 +75,15 @@ private:
         OptimizationFlags flags;
         switch (mode) {
             case SkBlendMode::kClear:
-            case SkBlendMode::kSrc:
-            case SkBlendMode::kDst:
-                SK_ABORT("Shouldn't have created a Blend FP as 'clear', 'src', or 'dst'.");
                 flags = kNone_OptimizationFlags;
+                break;
+
+            case SkBlendMode::kSrc:
+                flags = src ? ProcessorOptimizationFlags(src) : kNone_OptimizationFlags;
+                break;
+
+            case SkBlendMode::kDst:
+                flags = dst ? ProcessorOptimizationFlags(dst) : kNone_OptimizationFlags;
                 break;
 
             // Produces opaque if both src and dst are opaque. These also will modulate the child's
@@ -135,8 +148,8 @@ private:
                 break;
         }
         if (does_cpu_blend_impl_match_gpu(mode) &&
-            (src ? src->hasConstantOutputForConstantInput() : true) &&
-            (dst ? dst->hasConstantOutputForConstantInput() : true)) {
+            (!src || src->hasConstantOutputForConstantInput()) &&
+            (!dst || dst->hasConstantOutputForConstantInput())) {
             flags |= kConstantOutputForConstantInput_OptimizationFlag;
         }
         return flags;
@@ -197,8 +210,8 @@ std::unique_ptr<GrFragmentProcessor> BlendFragmentProcessor::TestCreate(GrProces
     do {
         mode = static_cast<SkBlendMode>(d->fRandom->nextRangeU(0, (int)SkBlendMode::kLastMode));
     } while (SkBlendMode::kClear == mode || SkBlendMode::kSrc == mode || SkBlendMode::kDst == mode);
-    return std::unique_ptr<GrFragmentProcessor>(
-            new BlendFragmentProcessor(std::move(src), std::move(dst), mode));
+    return std::unique_ptr<GrFragmentProcessor>(new BlendFragmentProcessor(
+            std::move(src), std::move(dst), mode, /*enableBlendFunction=*/false));
 }
 #endif
 
@@ -216,19 +229,31 @@ void GLBlendFragmentProcessor::emitCode(EmitArgs& args) {
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
     const BlendFragmentProcessor& cs = args.fFp.cast<BlendFragmentProcessor>();
     SkBlendMode mode = cs.getMode();
+    const char* destColor = cs.isBlendFunction() ? args.fDestColor : args.fInputColor;
 
-    // Load the input color and make an opaque copy if needed.
     fragBuilder->codeAppendf("// Blend mode: %s\n", SkBlendMode_Name(mode));
 
-    // Invoke src/dst with our input color (or substitute input color if no child FP)
-    SkString srcColor = this->invokeChild(0, args.fInputColor, args);
-    SkString dstColor = this->invokeChild(1, args.fInputColor, args);
+    // Sample from our child FPs; optimize src/dst/clear blends by not sampling the unused side.
+    auto sampleChildFP =
+            [&](bool isUsed, int childIndex, const char* inputColor, EmitArgs& args) -> SkString {
+        if (!isUsed) {
+            // We don't use this color; emit its child function so uniforms don't go missing.
+            this->emitChildFunction(childIndex, args);
+            return SkString("half4(0)");
+        }
+        // We use this color in the blend, so actually sample from the child FP.
+        return this->invokeChild(childIndex, inputColor, args);
+    };
+
+    bool srcColorIsUsed = (mode != SkBlendMode::kClear && mode != SkBlendMode::kDst);
+    bool dstColorIsUsed = (mode != SkBlendMode::kClear && mode != SkBlendMode::kSrc);
+
+    SkString srcColor = sampleChildFP(srcColorIsUsed, /*childIndex=*/0, args.fInputColor, args);
+    SkString dstColor = sampleChildFP(dstColorIsUsed, /*childIndex=*/1, destColor, args);
 
     // Blend src and dst colors together.
-    fragBuilder->codeAppendf("return %s(%s, %s)", GrGLSLBlend::BlendFuncName(mode),
+    fragBuilder->codeAppendf("return %s(%s, %s);", GrGLSLBlend::BlendFuncName(mode),
                              srcColor.c_str(), dstColor.c_str());
-
-    fragBuilder->codeAppendf(";\n");
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -245,6 +270,19 @@ std::unique_ptr<GrFragmentProcessor> GrBlendFragmentProcessor::Make(
         case SkBlendMode::kDst:
             return dst;
         default:
-            return BlendFragmentProcessor::Make(std::move(src), std::move(dst), mode);
+            return BlendFragmentProcessor::Make(
+                    std::move(src), std::move(dst), mode, /*enableBlendFunction=*/false);
     }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+std::unique_ptr<GrFragmentProcessor> GrBlendFragmentProcessor::MakeBlendFunction(
+        std::unique_ptr<GrFragmentProcessor> src,
+        std::unique_ptr<GrFragmentProcessor> dst,
+        SkBlendMode mode) {
+    // We promised to make a blend function, so we can't return other fragment processors as they
+    // won't have the expected function signature.
+    return BlendFragmentProcessor::Make(
+            std::move(src), std::move(dst), mode, /*enableBlendFunction=*/true);
 }
