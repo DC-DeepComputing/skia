@@ -134,6 +134,30 @@
       },
       "revId": "9aade0d5e5a0b4c6caaac881036d0569fc51ea4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "599be931_4dde3c4f",
+        "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T15:54:02Z",
+      "side": 1,
+      "message": "Yes, this is what I had in mind. Great improvement.",
+      "parentUuid": "379af666_aa820aa3",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 43
+      },
+      "revId": "9aade0d5e5a0b4c6caaac881036d0569fc51ea4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "717b258d_c42c3436",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T15:54:02Z",
+      "side": 1,
+      "message": "private?",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 27
+      },
+      "revId": "83f953a5abd887a1bd0c714e340e8d52260957f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
