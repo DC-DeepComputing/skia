@@ -93,6 +93,30 @@
       },
       "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49c3f82a_841caf44",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-29T15:38:54Z",
+      "side": 1,
+      "message": "Looks like this causes assertions?\nhttp://screen/bG7oE5oaViwhsij\n\nDirect children of the matrix effect get invoked using invokeChildWithMatrix:\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/gpu/effects/GrMatrixEffect.cpp;l\u003d27;drc\u003d552a81a6c78b8409ed7251578ff85cd414fc305e\n\nA blender can be a child effect.",
+      "parentUuid": "9a74cc99_1ab366c6",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 39
+      },
+      "revId": "2cccd6602f08c7323940e3ebbb637fbb056ebeb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
