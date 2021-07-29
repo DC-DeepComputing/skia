@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "233b8d3b_5ad9858c",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T15:51:08Z",
+      "side": 1,
+      "message": "Hmm. We\u0027ve still got the issue of empty strings for null children. Tempted to leave this assert around for that one. ...\n\nActually, let me poke at this even further. I think we can switch to just storing the function name on the child, which makes everything far cleaner.",
+      "parentUuid": "111c9917_ef711ae5",
+      "range": {
+        "startLine": 54,
+        "startChar": 14,
+        "endLine": 54,
+        "endChar": 48
+      },
+      "revId": "9aade0d5e5a0b4c6caaac881036d0569fc51ea4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed951542_9d1777b4",
         "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
         "patchSetId": 1
@@ -78,6 +102,30 @@
       "writtenOn": "2021-07-29T15:21:46Z",
       "side": 1,
       "message": "Is this the only place `emitChildFunction` is called now?\n\nThe logic in `emitChildFunction` could be simplified significantly if we can guarantee that we always generate all the child functions up front in one tight loop. The array-growing and empty-name checking logic could just disappear. It could also become a private function.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 43
+      },
+      "revId": "9aade0d5e5a0b4c6caaac881036d0569fc51ea4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "379af666_aa820aa3",
+        "filename": "src/gpu/glsl/GrGLSLFragmentShaderBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-29T15:51:08Z",
+      "side": 1,
+      "message": "Yeah, I was trying to decide how far to simplify this. Unfortunately, I think we need some of the array-growing checks (because null children need blank slots in the array).\n\nWe\u0027re also calling into a different class (here, from GrGLSLFPFragmentBuilder into GrGLSLFragmentProcessor).\n\nAh, I think I have a nicer solution (might be what you were getting at). I changed it to \"emitChildFunctions\", and it just does the loop internally. That lets us grow the array with push_back, not worry about index-checking, etc... I think it\u0027s better.",
+      "parentUuid": "ed951542_9d1777b4",
       "range": {
         "startLine": 73,
         "startChar": 0,
