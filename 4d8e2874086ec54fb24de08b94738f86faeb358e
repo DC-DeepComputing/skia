@@ -34,6 +34,24 @@
       "parentUuid": "b6404453_70973e78",
       "revId": "4d8e2874086ec54fb24de08b94738f86faeb358e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee9cc18_38c6d46f",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-30T13:47:17Z",
+      "side": 1,
+      "message": "There\u0027s some code in there to extract SampleUsage from a program, by looking for calls to sample (and checking if they\u0027re shader-like, based on the arg-types). It happens to already assert that args.size() \u003e\u003d 2, and the cascade of if/else looks like it will basically lump sample(blender) with sample(colorFilter), which happens to be correct for that purpose (no changes to coordinates where the sample is happening).",
+      "parentUuid": "b764537e_2f0f4e7b",
+      "revId": "4d8e2874086ec54fb24de08b94738f86faeb358e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
