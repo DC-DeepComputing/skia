@@ -502,7 +502,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels, reporter, ctxInfo) 
         for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
             auto factory = std::function<GpuSrcFactory<Surface>>(
                     [direct, origin, renderable](const SkPixmap& src) {
-                        auto surfContext = GrSurfaceContext::Make(
+                        auto surfContext = GrSurfaceContext::Make2(
                                 direct, src.info(), SkBackingFit::kExact, origin, renderable);
                         if (surfContext) {
                             surfContext->writePixels(direct, src, {0, 0});
@@ -1085,7 +1085,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixels, reporter, ctxInfo)
         for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
             auto factory = std::function<GpuDstFactory<Surface>>(
                     [direct, origin, renderable](const SkImageInfo& info) {
-                        return GrSurfaceContext::Make(direct,
+                        return GrSurfaceContext::Make2(direct,
                                                       info,
                                                       SkBackingFit::kExact,
                                                       origin,
@@ -1138,7 +1138,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
             for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
                 for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin,
                                                kBottomLeft_GrSurfaceOrigin}) {
-                    auto sc = GrSurfaceContext::Make(direct,
+                    auto sc = GrSurfaceContext::Make2(direct,
                                                      info,
                                                      SkBackingFit::kExact,
                                                      origin,
@@ -1178,7 +1178,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
 
                     // TODO: Update this when read pixels supports reading back levels to read
                     // directly rather than using minimizing draws.
-                    auto dstSC = GrSurfaceContext::Make(direct, info,
+                    auto dstSC = GrSurfaceContext::Make2(direct, info,
                                                         SkBackingFit::kExact,
                                                         kBottomLeft_GrSurfaceOrigin,
                                                         GrRenderable::kYes);

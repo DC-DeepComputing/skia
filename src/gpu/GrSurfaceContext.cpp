@@ -28,7 +28,6 @@
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
-#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 #define ASSERT_SINGLE_OWNER         GR_ASSERT_SINGLE_OWNER(this->singleOwner())
 #define RETURN_FALSE_IF_ABANDONED   if (this->fContext->abandoned()) { return false;   }
@@ -58,12 +57,12 @@ std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* rCo
         }
         GrSurfaceProxyView writeView(readView.refProxy(), readView.origin(), writeSwizzle);
         if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
-            surfaceContext = std::make_unique<skgpu::v1::SurfaceDrawContext>(rContext,
-                                                                             std::move(readView),
-                                                                             std::move(writeView),
-                                                                             info.colorType(),
-                                                                             info.refColorSpace(),
-                                                                             SkSurfaceProps());
+            surfaceContext = rContext->priv().makeRawSDC(rContext,
+                                                         std::move(readView),
+                                                         std::move(writeView),
+                                                         info.colorType(),
+                                                         info.refColorSpace(),
+                                                         SkSurfaceProps());
         } else {
             surfaceContext = std::make_unique<GrSurfaceFillContext>(rContext,
                                                                     std::move(readView),
@@ -77,7 +76,7 @@ std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* rCo
     return surfaceContext;
 }
 
-std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* context,
+std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make1(GrRecordingContext* context,
                                                          const GrImageInfo& info,
                                                          const GrBackendFormat& format,
                                                          SkBackingFit fit,
@@ -114,7 +113,7 @@ std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* con
     return GrSurfaceContext::Make(context, std::move(view), info.colorInfo());
 }
 
-std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* context,
+std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make2(GrRecordingContext* context,
                                                          const GrImageInfo& info,
                                                          SkBackingFit fit,
                                                          GrSurfaceOrigin origin,
@@ -125,7 +124,7 @@ std::unique_ptr<GrSurfaceContext> GrSurfaceContext::Make(GrRecordingContext* con
                                                          SkBudgeted budgeted) {
     GrBackendFormat format = context->priv().caps()->getDefaultBackendFormat(info.colorType(),
                                                                              renderable);
-    return Make(context,
+    return Make1(context,
                 info,
                 format,
                 fit,
@@ -246,7 +245,7 @@ bool GrSurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPo
                                  alphaType,
                                  this->colorInfo().refColorSpace(),
                                  dst.dimensions());
-            auto sfc = GrSurfaceFillContext::Make(dContext, tempInfo, SkBackingFit::kApprox);
+            auto sfc = dContext->priv().makeSFC(tempInfo, SkBackingFit::kApprox);
             if (!sfc) {
                 return false;
             }
@@ -948,11 +947,11 @@ void GrSurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext
     }
 
     auto yInfo = SkImageInfo::MakeA8(dstSize);
-    auto yFC = GrSurfaceFillContext::MakeWithFallback(dContext, yInfo, SkBackingFit::kApprox);
+    auto yFC = dContext->priv().makeSFCWithFallback(yInfo, SkBackingFit::kApprox);
 
     auto uvInfo = yInfo.makeWH(yInfo.width()/2, yInfo.height()/2);
-    auto uFC = GrSurfaceFillContext::MakeWithFallback(dContext, uvInfo, SkBackingFit::kApprox);
-    auto vFC = GrSurfaceFillContext::MakeWithFallback(dContext, uvInfo, SkBackingFit::kApprox);
+    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
+    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
 
     if (!yFC || !uFC || !vFC) {
         callback(callbackContext, nullptr);
@@ -1155,13 +1154,12 @@ std::unique_ptr<GrSurfaceFillContext> GrSurfaceContext::rescale(const GrImageInf
                                                                 SkIRect srcRect,
                                                                 RescaleGamma rescaleGamma,
                                                                 RescaleMode rescaleMode) {
-    auto sfc = GrSurfaceFillContext::MakeWithFallback(fContext,
-                                                      info,
-                                                      SkBackingFit::kExact,
-                                                      1,
-                                                      GrMipmapped::kNo,
-                                                      this->asSurfaceProxy()->isProtected(),
-                                                      origin);
+    auto sfc = fContext->priv().makeSFCWithFallback(info,
+                                                    SkBackingFit::kExact,
+                                                    1,
+                                                    GrMipmapped::kNo,
+                                                    this->asSurfaceProxy()->isProtected(),
+                                                    origin);
     if (!sfc || !this->rescaleInto(sfc.get(),
                                    SkIRect::MakeSize(sfc->dimensions()),
                                    srcRect,
@@ -1225,13 +1223,12 @@ bool GrSurfaceContext::rescaleInto(GrSurfaceFillContext* dst,
                        dst->colorInfo().alphaType(),
                        std::move(cs),
                        srcRect.size());
-        auto linearRTC = GrSurfaceFillContext::MakeWithFallback(fContext,
-                                                                std::move(ii),
-                                                                SkBackingFit::kApprox,
-                                                                1,
-                                                                GrMipmapped::kNo,
-                                                                GrProtected::kNo,
-                                                                dst->origin());
+        auto linearRTC = fContext->priv().makeSFCWithFallback(std::move(ii),
+                                                              SkBackingFit::kApprox,
+                                                              1,
+                                                              GrMipmapped::kNo,
+                                                              GrProtected::kNo,
+                                                              dst->origin());
         if (!linearRTC) {
             return false;
         }
@@ -1274,9 +1271,7 @@ bool GrSurfaceContext::rescaleInto(GrSurfaceFillContext* dst,
             xform = GrColorSpaceXform::Make(input->colorInfo(), dst->colorInfo());
         } else {
             GrImageInfo nextInfo(input->colorInfo(), nextDims);
-            tempB = GrSurfaceFillContext::MakeWithFallback(fContext,
-                                                           nextInfo,
-                                                           SkBackingFit::kApprox);
+            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox);
             if (!tempB) {
                 return false;
             }

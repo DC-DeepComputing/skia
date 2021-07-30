@@ -271,7 +271,7 @@ GrSurfaceProxyView GrClipStackClip::createAlphaClipMask(GrRecordingContext* rCon
         return cachedView;
     }
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(
+    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback77(
             rContext, GrColorType::kAlpha_8, nullptr, SkBackingFit::kApprox,
             {reducedClip.width(), reducedClip.height()}, SkSurfaceProps(), 1, GrMipmapped::kNo,
             GrProtected::kNo, kMaskOrigin);

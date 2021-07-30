@@ -279,7 +279,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* context,
 
     if (src->backendFormat().textureType() != GrTextureType::kExternal) {
         GrImageInfo info(GrColorType::kUnknown, kUnknown_SkAlphaType, nullptr, {width, height});
-        auto dstContext = GrSurfaceContext::Make(context,
+        auto dstContext = GrSurfaceContext::Make1(context,
                                                  info,
                                                  format,
                                                  fit,
@@ -298,19 +298,18 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* context,
         }
     }
     if (src->asTextureProxy()) {
-        auto dstContext = GrSurfaceFillContext::Make(context,
-                                                     kUnknown_SkAlphaType,
-                                                     nullptr,
-                                                     {width, height},
-                                                     fit,
-                                                     format,
-                                                     1,
-                                                     mipMapped,
-                                                     src->isProtected(),
-                                                     GrSwizzle::RGBA(),
-                                                     GrSwizzle::RGBA(),
-                                                     origin,
-                                                     budgeted);
+        auto dstContext = context->priv().makeSFC(kUnknown_SkAlphaType,
+                                                  nullptr,
+                                                  {width, height},
+                                                  fit,
+                                                  format,
+                                                  1,
+                                                  mipMapped,
+                                                  src->isProtected(),
+                                                  GrSwizzle::RGBA(),
+                                                  GrSwizzle::RGBA(),
+                                                  origin,
+                                                  budgeted);
         GrSurfaceProxyView view(std::move(src), origin, GrSwizzle::RGBA());
         if (dstContext && dstContext->blitTexture(std::move(view), srcRect, dstPoint)) {
             if (outTask) {

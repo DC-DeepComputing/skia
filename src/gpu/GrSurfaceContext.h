@@ -46,7 +46,7 @@ public:
 
     // Makes either a GrSurfaceContext, GrFillDrawContext, or a SurfaceDrawContext, depending on
     // GrRenderable and the GrImageInfo.
-    static std::unique_ptr<GrSurfaceContext> Make(GrRecordingContext*,
+    static std::unique_ptr<GrSurfaceContext> Make1(GrRecordingContext*,
                                                   const GrImageInfo&,
                                                   const GrBackendFormat&,
                                                   SkBackingFit = SkBackingFit::kExact,
@@ -58,7 +58,7 @@ public:
                                                   SkBudgeted = SkBudgeted::kYes);
 
     // Same as the above but chooses the texture format using the default format for the color type.
-    static std::unique_ptr<GrSurfaceContext> Make(GrRecordingContext*,
+    static std::unique_ptr<GrSurfaceContext> Make2(GrRecordingContext*,
                                                   const GrImageInfo&,
                                                   SkBackingFit = SkBackingFit::kExact,
                                                   GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,

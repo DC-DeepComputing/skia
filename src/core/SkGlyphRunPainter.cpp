@@ -17,7 +17,9 @@
 #include "src/gpu/ops/GrAtlasTextOp.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/gpu/text/GrTextBlobCache.h"
+#if SK_GPU_V1
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#endif
 #endif
 
 #include "include/core/SkColorFilter.h"
@@ -73,8 +75,10 @@ SkGlyphRunListPainter::SkGlyphRunListPainter(const SkSurfaceProps& props, const 
                                 compute_scaler_context_flags(csi.colorSpace()),
                                 SkStrikeCache::GlobalStrikeCache()) {}
 
+#if SK_GPU_V1
 SkGlyphRunListPainter::SkGlyphRunListPainter(const skgpu::v1::SurfaceDrawContext& sdc)
         : SkGlyphRunListPainter{sdc.surfaceProps(), sdc.colorInfo()} {}
+#endif
 
 #endif
 
@@ -231,6 +235,7 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
                                             const GrSDFTControl& control,
                                             SkGlyphRunPainterInterface* process,
                                             const char* tag) {
+#if SK_GPU_V1
     #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
         SkString msg;
         msg.appendf("\nStart glyph run processing");
@@ -366,6 +371,7 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
         }
         SkDebugf("%s\n", msg.c_str());
     #endif
+#endif // SK_GPU_V1
 }
 #endif  // SK_SUPPORT_GPU
 

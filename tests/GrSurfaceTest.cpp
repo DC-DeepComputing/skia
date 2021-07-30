@@ -293,7 +293,7 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions) {
                                          nullptr,
                                          {desc.fHeight, desc.fHeight});
 
-                        auto sc = GrSurfaceContext::Make(dContext,
+                        auto sc = GrSurfaceContext::Make1(dContext,
                                                          info,
                                                          combo.fFormat,
                                                          fit,
