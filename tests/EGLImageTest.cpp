@@ -11,6 +11,7 @@
 #include "src/gpu/GrShaderCaps.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrTextureProxyPriv.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/gl/GrGLGpu.h"
 #include "src/gpu/gl/GrGLUtil.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
@@ -165,7 +166,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest, reporter, ctxInfo) {
     GrSwizzle swizzle = context0->priv().caps()->getReadSwizzle(texProxy->backendFormat(),
                                                                 colorInfo.colorType());
     GrSurfaceProxyView view(std::move(texProxy), origin, swizzle);
-    auto surfaceContext = GrSurfaceContext::Make(context0, std::move(view), colorInfo);
+    auto surfaceContext = skgpu::SurfaceContext::Make(context0, std::move(view), colorInfo);
 
     if (!surfaceContext) {
         ERRORF(reporter, "Error wrapping external texture in GrSurfaceContext.");
@@ -184,7 +185,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest, reporter, ctxInfo) {
 
     // Should not be able to wrap as a RT
     {
-        auto temp = GrSurfaceFillContext::MakeFromBackendTexture(context0,
+        auto temp = skgpu::SurfaceFillContext_Base::MakeFromBackendTexture(context0,
                                                                  colorInfo,
                                                                  backendTex,
                                                                  1,

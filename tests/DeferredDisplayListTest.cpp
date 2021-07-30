@@ -35,6 +35,7 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrRenderTargetProxy.h"
 #include "src/gpu/GrTextureProxy.h"
+#include "src/gpu/SurfaceContext.h"
 #include "src/gpu/gl/GrGLDefines.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_GpuBase.h"

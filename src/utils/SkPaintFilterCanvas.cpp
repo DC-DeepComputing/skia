@@ -279,3 +279,8 @@ SkImageInfo SkPaintFilterCanvas::onImageInfo() const {
 bool SkPaintFilterCanvas::onGetProps(SkSurfaceProps* props) const {
     return this->proxy()->getProps(props);
 }
+
+skgpu::BaseDevice* SkPaintFilterCanvas::topGpuDevice() {
+//    return SkCanvasPriv::TopGpuDevice(this->proxy());
+    return nullptr;
+}

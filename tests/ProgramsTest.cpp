@@ -300,7 +300,11 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
     direct->submit(false);
 
     // Validate that GrFPs work correctly without an input.
+<<<<<<< HEAD
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+=======
+    auto surfaceDrawContext = skgpu::v1::SurfaceDrawContext::Make(
+>>>>>>> b92be523c20 (git squash commit for nga3.)
             direct, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kRenderTargetWidth, kRenderTargetHeight}, SkSurfaceProps());
     if (!sdc) {

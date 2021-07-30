@@ -104,7 +104,7 @@ public:
 
     ~Device() override {}
 
-    SurfaceDrawContext* surfaceDrawContext() override;
+    SurfaceDrawContext* getV1SDC() override;
     const SurfaceDrawContext* surfaceDrawContext() const;
     GrSurfaceFillContext* surfaceFillContext() override;
 

@@ -11,6 +11,7 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkSurfacePriv.h"
+#include "src/gpu/GrPaint.h"
 #include "src/gpu/GrStyle.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
@@ -61,7 +62,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
                             const SkPMColor4f& color) {
     auto info = SkImageInfo::Make(w, h, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
     GrPixmap pixmap = GrPixmap::Allocate(info);
-    sdc->readPixels(ctx, pixmap, {0, 0});
+    sc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {

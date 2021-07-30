@@ -79,6 +79,8 @@ public:
                                          ReadPixelsCallback,
                                          ReadPixelsContext) override;
 
+    skgpu::BaseDevice* asGpuDevice() override { return this; }
+
 protected:
     void onSave() override;
     void onRestore() override;

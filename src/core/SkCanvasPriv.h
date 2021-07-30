@@ -36,6 +36,8 @@ private:
     int         fSaveCount;
 };
 
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+
 class SkCanvasPriv {
 public:
     // The lattice has pointers directly into the readbuffer

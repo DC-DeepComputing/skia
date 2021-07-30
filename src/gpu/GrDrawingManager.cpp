@@ -41,6 +41,7 @@
 #include "src/gpu/GrTransferFromRenderTask.h"
 #include "src/gpu/GrWaitRenderTask.h"
 #include "src/gpu/GrWritePixelsRenderTask.h"
+#include "src/gpu/SurfaceContext.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/image/SkSurface_Gpu.h"
 

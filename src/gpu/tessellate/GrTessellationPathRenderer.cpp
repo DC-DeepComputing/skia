@@ -21,6 +21,17 @@
 #include "src/gpu/tessellate/GrStrokeTessellateOp.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
+constexpr static auto kAtlasAlpha8Type = GrColorType::kAlpha_8;
+constexpr static int kAtlasInitialSize = 512;
+
+// The atlas is only used for small-area paths, which means at least one dimension of every path is
+// guaranteed to be quite small. So if we transpose tall paths, then every path will have a small
+// height, which lends very well to efficient pow2 atlas packing.
+constexpr static auto kAtlasAlgorithm = GrDynamicAtlas::RectanizerAlgorithm::kPow2;
+
+// Ensure every path in the atlas falls in or below the 128px high rectanizer band.
+constexpr static int kAtlasMaxPathHeight = 128;
+
 bool GrTessellationPathRenderer::IsSupported(const GrCaps& caps) {
     return !caps.avoidStencilBuffers() &&
            caps.drawInstancedSupport() &&

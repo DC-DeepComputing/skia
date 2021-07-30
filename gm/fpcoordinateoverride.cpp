@@ -23,6 +23,7 @@
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrRRectEffect.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"

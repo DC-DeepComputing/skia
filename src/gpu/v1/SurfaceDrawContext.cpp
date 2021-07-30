@@ -1507,7 +1507,7 @@ void SurfaceDrawContext::drawImageLattice(const GrClip* clip,
 }
 
 void SurfaceDrawContext::drawDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable,
-                                       const SkRect& bounds) {
+                                      const SkRect& bounds) {
     GrOp::Owner op(GrDrawableOp::Make(fContext, std::move(drawable), bounds));
     SkASSERT(op);
     this->addOp(std::move(op));
@@ -1920,7 +1920,7 @@ void SurfaceDrawContext::drawShapeUsingPathRenderer(const GrClip* clip,
                                       aaType,
                                       this->colorInfo().isLinearlyBlended()};
     pr->drawPath(args);
-#endif
+#endif // SK_GPU_V1
 }
 
 void SurfaceDrawContext::addDrawOp(const GrClip* clip,
