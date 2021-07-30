@@ -1239,3 +1239,57 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped, reporter, ct
         }
     }
 }
+
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(GLReadPixelsUnbindPBO, reporter, ctxInfo) {
+    auto info = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkAutoPixmapStorage pmap = make_ref_data(info, /*forceOpaque=*/false);
+    auto image = SkImage::MakeFromRaster(pmap, nullptr, nullptr);
+    image = image->makeTextureImage(ctxInfo.directContext());
+    if (!image) {
+        ERRORF(reporter, "Couldn't make texture image.");
+        return;
+    }
+    SkBitmap asyncResult;
+    asyncResult.allocPixels(info);
+    asyncResult.eraseARGB(0, 0, 0, 0);
+    auto callback = [](SkImage::ReadPixelsContext context,
+                       std::unique_ptr<const SkImage::AsyncReadResult> result) {
+        auto bmp = static_cast<SkBitmap*>(context);
+        if (result) {
+            SkASSERT(result->count() == 1);
+            result->rowBytes(0);
+            SkRectMemcpy(bmp->getPixels(), bmp->rowBytes(),
+                          result->data(0), result->rowBytes(0),
+                         bmp->info().minRowBytes(), bmp->height());
+        }
+    };
+    image->asyncRescaleAndReadPixels(info,
+                                     SkIRect::MakeSize(info.dimensions()),
+                                     SkImage::RescaleGamma::kSrc,
+                                     SkImage::RescaleMode::kNearest,
+                                     callback,
+                                     &asyncResult);
+    // This should force the async readback to finish.
+    ctxInfo.directContext()->flushAndSubmit(true);
+
+    // Bug was that this would cause GrGLGpu to think no transfer buffer was left bound even though
+    // async transfer did leave one bound. So the sync read wouldn't clear the bound PBO.
+    ctxInfo.directContext()->resetContext();
+
+    SkBitmap syncResult;
+    syncResult.allocPixels(info);
+    syncResult.eraseARGB(0xFF, 0xFF, 0xFF, 0xFF);
+
+    image->readPixels(ctxInfo.directContext(), syncResult.pixmap(), 0, 0);
+
+    float tol[4] = {};  // expect exactly same pixels, no conversions.
+    auto error = std::function<ComparePixmapsErrorReporter>([&](int x, int y,
+                                                                const float diffs[4]) {
+      SkASSERT(x >= 0 && y >= 0);
+      ERRORF(reporter, "Expect sync and async read to be the same."
+             "Error at %d, %d. Diff in floats: (%f, %f, %f, %f)",
+             x, y, diffs[0], diffs[1], diffs[2], diffs[3]);
+    });
+
+    ComparePixels(syncResult.pixmap(), asyncResult.pixmap(), tol, error);
+}
