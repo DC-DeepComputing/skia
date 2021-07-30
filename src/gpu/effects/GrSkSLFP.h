@@ -149,9 +149,6 @@ public:
         size_t uniformPayloadSize = UniformPayloadSize(effect.get());
         std::unique_ptr<GrSkSLFP> fp(new (uniformPayloadSize) GrSkSLFP(effect, name, optFlags));
         fp->appendArgs(fp->uniformData(), fp->uniformFlags(), std::forward<Args>(args)...);
-        if (effect->allowBlender()) {
-            fp->setIsBlendFunction();
-        }
         if (inputFP) {
             fp->setInput(std::move(inputFP));
         }
