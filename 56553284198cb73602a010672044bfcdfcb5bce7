@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "517691c4_818f5388",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-30T15:49:42Z",
+      "side": 1,
+      "message": "You can see the always-pass-coords change in the relation chain, though I know I want to at least rename some things in that before it\u0027s ready.",
+      "revId": "56553284198cb73602a010672044bfcdfcb5bce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
