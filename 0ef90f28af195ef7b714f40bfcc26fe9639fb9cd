@@ -16,6 +16,23 @@
       "message": "+bungeman would you be a good reviewer for this change? Thanks!",
       "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26177f9_3280082f",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-30T13:38:43Z",
+      "side": 1,
+      "message": "CTGetCoreTextVersion was also removed from other platforms, and is available in macOS 10.5–11.0, so that should also be reflected here. Instead of doing something like this, why not just do function detection, and assume if the function isn\u0027t available that it\u0027s newer. Something like\n\n    template\u003ctypename T, typename \u003d void\u003e\n    struct SkCTGetCoreTextVersion {\n        static uint32_t get() {\n            static const uint32_t kCoreTextVersionNEWER \u003d 0x000D0000;\n            return kCoreTextVersionNEWER;\n        }\n    };\n    template\u003ctypename T\u003e\n    struct SkCTGetCoreTextVersion\u003cT, void_t\u003cdecltype(CTGetCoreTextVersion())\u003e\u003e {\n        static uint32_t get() {\n            if (\u0026CTGetCoreTextVersion) {\n                return CTGetCoreTextVersion();\n            }\n        }\n    };\n\nNote that we used to also dynamically load a lot of functions, and still do dlsym already in this file, so could also do something along the lines of\n\n    using CTGetCoreTextVersionProc \u003d uint32_t (*)(void);\n    CTGetCoreTextVersionProc ctGetCoreTextVersion;\n    *(void**)(\u0026ctGetCoreTextVersion) \u003d dlsym(RTLD_DEFAULT, \"CTGetCoreTextVersion\");\n    if (ctGetCoreTextVersion) {\n        return ctGetCoreTextVersion();\n    }\n    return kUnknownCoreTextVersion;\n    \nor something like that.",
+      "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
