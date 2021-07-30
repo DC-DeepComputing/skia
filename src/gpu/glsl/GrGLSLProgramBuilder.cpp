@@ -181,6 +181,24 @@ SkString GrGLSLProgramBuilder::emitFragProc(const GrFragmentProcessor& fp,
             static_cast<GrTextureEffect::Impl&>(subGLSLFP).setSamplerHandle(handle);
         }
     }
+    SkString coords;
+    GrShaderVar varying = this->varyingCoordsForFragmentProcessor(&fp);
+    switch (varying.getType()) {
+        case kVoid_GrSLType:
+            coords = "float2(0, 0)";
+            // Presumably any use of this FP's coords by children were lifted to varyings at a
+            // descendant FP with a matrix sample usage.
+            SkASSERT(!fp.referencesSampleCoordsDirectly());
+            break;
+        case kFloat3_GrSLType:
+            coords = SkStringPrintf("%s.xy/%s.z", varying.c_str(), varying.c_str());
+            break;
+        case kFloat2_GrSLType:
+            coords = varying.getName();
+            break;
+        default:
+            SkUNREACHABLE;
+    }
     GrGLSLFragmentProcessor::EmitArgs args(&fFS,
                                            this->uniformHandler(),
                                            this->shaderCaps(),
@@ -190,10 +208,17 @@ SkString GrGLSLProgramBuilder::emitFragProc(const GrFragmentProcessor& fp,
                                            "_coords");
     fFS.writeProcessorFunction(&glslFP, args);
     if (fp.isBlendFunction()) {
-        fFS.codeAppendf(
-                "%s = %s(%s, half4(1));", output.c_str(), glslFP.functionName(), input.c_str());
+        fFS.codeAppendf("%s = %s(%s, half4(1), %s);",
+                        output.c_str(),
+                        glslFP.functionName(),
+                        input.c_str(),
+                        coords.c_str());
     } else {
-        fFS.codeAppendf("%s = %s(%s);", output.c_str(), glslFP.functionName(), input.c_str());
+        fFS.codeAppendf("%s = %s(%s, %s);",
+                        output.c_str(),
+                        glslFP.functionName(),
+                        input.c_str(),
+                        coords.c_str());
     }
 
     // We have to check that effects and the code they emit are consistent, ie if an effect asks

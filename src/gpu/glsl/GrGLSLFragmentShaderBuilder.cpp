@@ -37,34 +37,7 @@ void GrGLSLFPFragmentBuilder::writeProcessorFunction(GrGLSLFragmentProcessor* fp
         params[numParams++] = GrShaderVar(args.fDestColor, kHalf4_GrSLType);
     }
 
-    if (args.fFp.isSampledWithExplicitCoords()) {
-        // Functions sampled with explicit coordinates take a float2 coordinate as input.
-        params[numParams++] = GrShaderVar(args.fSampleCoord, kFloat2_GrSLType);
-
-    } else if (args.fFp.referencesSampleCoords()) {
-        // Sampled through a chain of passthrough/matrix samples usages. The actual transformation
-        // code is emitted in the vertex shader, so this only has to access it. Add a float2 _coords
-        // variable that maps to the associated varying and replaces the absent 2nd argument to the
-        // fp's function.
-        GrShaderVar varying = fProgramBuilder->varyingCoordsForFragmentProcessor(&args.fFp);
-        switch(varying.getType()) {
-            case kFloat2_GrSLType:
-                // Just point the local coords to the varying
-                args.fSampleCoord = varying.getName().c_str();
-                break;
-            case kFloat3_GrSLType:
-                // Must perform the perspective divide in the frag shader based on the varying, and
-                // since we won't actually have a function parameter for local coords, add it as a
-                // local variable.
-                this->codeAppendf("float2 %s = %s.xy / %s.z;\n", args.fSampleCoord,
-                                  varying.getName().c_str(), varying.getName().c_str());
-                break;
-            default:
-                SkDEBUGFAILF("Unexpected varying type for coord: %s %d\n",
-                             varying.getName().c_str(), (int) varying.getType());
-                break;
-        }
-    }
+    params[numParams++] = GrShaderVar(args.fSampleCoord, kFloat2_GrSLType);
 
     SkASSERT(numParams <= (int)SK_ARRAY_COUNT(params));
 

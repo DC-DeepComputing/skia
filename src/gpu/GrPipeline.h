@@ -105,9 +105,9 @@ public:
     bool isColorFragmentProcessor(int idx) const { return idx < fNumColorProcessors; }
     bool isCoverageFragmentProcessor(int idx) const { return idx >= fNumColorProcessors; }
 
-    bool usesVaryingCoords() const {
+    bool usesLocalCoords() const {
         for (const auto& fp : fFragmentProcessors) {
-            if (fp->usesVaryingCoords()) {
+            if (fp->referencesSampleCoordsDirectlyOrIndirectly()) {
                 return true;
             }
         }

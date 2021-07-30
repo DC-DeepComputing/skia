@@ -94,9 +94,11 @@ public:
     GrFragmentProcessor* getCoverageFragmentProcessor() const {
         return fCoverageFragmentProcessor.get();
     }
-    bool usesVaryingCoords() const {
-        return (fColorFragmentProcessor && fColorFragmentProcessor->usesVaryingCoords()) ||
-               (fCoverageFragmentProcessor && fCoverageFragmentProcessor->usesVaryingCoords());
+    bool usesLocalCoords() const {
+        return (fColorFragmentProcessor &&
+                fColorFragmentProcessor->referencesSampleCoordsDirectlyOrIndirectly()) ||
+               (fCoverageFragmentProcessor &&
+                fCoverageFragmentProcessor->referencesSampleCoordsDirectlyOrIndirectly());
     }
 
     /**

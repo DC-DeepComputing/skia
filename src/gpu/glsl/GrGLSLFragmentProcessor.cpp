@@ -5,11 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
+
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrProcessor.h"
 #include "src/gpu/GrShaderCaps.h"
-#include "src/gpu/glsl/GrGLSLFragmentProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 
 void GrGLSLFragmentProcessor::setData(const GrGLSLProgramDataManager& pdman,
@@ -38,6 +40,17 @@ void GrGLSLFragmentProcessor::emitChildFunctions(EmitArgs& args) {
     }
 }
 
+static SkString varying_as_float2(const GrShaderVar& var) {
+    switch (var.getType()) {
+        case kFloat2_GrSLType:
+            return SkString(var.c_str());
+        case kFloat3_GrSLType:
+            return SkStringPrintf("(%s.xy/%s.z)", var.c_str(), var.c_str());
+        default:
+            SkUNREACHABLE;
+    }
+}
+
 SkString GrGLSLFragmentProcessor::invokeChild(int childIndex,
                                               const char* inputColor, const char* destColor,
                                               EmitArgs& args, SkSL::String skslCoords) {
@@ -60,15 +73,22 @@ SkString GrGLSLFragmentProcessor::invokeChild(int childIndex,
         invocation.appendf(", %s", destColor ? destColor : "half4(1)");
     }
 
-    if (childProc->isSampledWithExplicitCoords()) {
-        // The child's function takes a half4 color and a float2 coordinate
-        invocation.appendf(", %s", skslCoords.empty() ? args.fSampleCoord : skslCoords.c_str());
+    // Assert that the child has no sample matrix and skslCoords matches the default. (A uniform
+    // matrix sample call would go through invokeChildWithMatrix, not here.)
+    SkASSERT(!childProc->sampleUsage().isUniformMatrix());
+
+    auto childVarying =
+            args.fFragBuilder->getProgramBuilder()->varyingCoordsForFragmentProcessor(childProc);
+    SkString coords;
+    if (childVarying.getType() != kVoid_GrSLType) {
+        coords = varying_as_float2(childVarying);
+    } else if (skslCoords.empty()) {
+        coords = args.fSampleCoord;
     } else {
-        // Assert that the child has no sample matrix and skslCoords matches the default. (A uniform
-        // matrix sample call would go through invokeChildWithMatrix, not here.)
-        SkASSERT(skslCoords.empty() || skslCoords == args.fSampleCoord);
-        SkASSERT(childProc->sampleUsage().isPassThrough());
+        coords = skslCoords.c_str();
     }
+    // The child's function takes a half4 color and a float2 coordinate
+    invocation.appendf(", %s", coords.c_str());
 
     invocation.append(")");
     return invocation;
@@ -111,16 +131,20 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
     //
     // In all other cases, we need to insert sksl to compute matrix * parent coords and then invoke
     // the function.
-    if (childProc->isSampledWithExplicitCoords()) {
+    auto childVarying =
+            args.fFragBuilder->getProgramBuilder()->varyingCoordsForFragmentProcessor(childProc);
+    if (childVarying.getType() == kVoid_GrSLType) {
         // Only check perspective for this specific matrix transform, not the aggregate FP property.
         // Any parent perspective will have already been applied when evaluated in the FS.
-        if (childProc->sampleUsage().fHasPerspective) {
+        if (childProc->sampleUsage().hasPerspective()) {
             invocation.appendf(", proj((%s) * %s.xy1)", matrixName.c_str(), args.fSampleCoord);
         } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
             invocation.appendf(", float3x2(%s) * %s.xy1", matrixName.c_str(), args.fSampleCoord);
         } else {
             invocation.appendf(", ((%s) * %s.xy1).xy", matrixName.c_str(), args.fSampleCoord);
         }
+    } else {
+        invocation.appendf(", %s", varying_as_float2(childVarying).c_str());
     }
 
     invocation.append(")");
