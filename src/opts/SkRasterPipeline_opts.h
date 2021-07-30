@@ -2752,6 +2752,7 @@ STAGE(bicubic, SkRasterPipeline_SamplerCtx2* ctx) {
     sampler(ctx, x,y, wx,wy, &r,&g,&b,&a);
 }
 
+#if 0
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
 STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
     // (cx,cy) are the center of our sample.
@@ -2793,6 +2794,52 @@ STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
         a += sa * area;
     }
 }
+
+#else  // -----------------------------------------------------------------------------------
+
+// A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
+STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+    // (cx,cy) are the center of our sample.
+    F cx = r - 0.5,
+      cy = g - 0.5;
+
+    F x = floor_(cx),
+      y = floor_(cy);
+
+    F fx = cx - x,
+      fy = cy - y;
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, x,y);
+    F lr, lg, lb, la;
+    from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+    F rr, rg, rb, ra;
+    ix = ix_and_ptr(&ptr, ctx, x+1,y);
+    from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+    F tr = lr + fx * (rr - lr),
+      tg = lg + fx * (rg - lg),
+      tb = lb + fx * (rb - lb),
+      ta = la + fx * (ra - la);
+
+    ix = ix_and_ptr(&ptr, ctx, x,y+1);
+    from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+    ix = ix_and_ptr(&ptr, ctx, x+1,y+1);
+    from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+    F br = lr + fx * (rr - lr),
+      bg = lg + fx * (rg - lg),
+      bb = lb + fx * (rb - lb),
+      ba = la + fx * (ra - la);
+
+    r = tr + fy * (br - tr);
+    g = tg + fy * (bg - tg);
+    b = tb + fy * (bb - tb);
+    a = ta + fy * (ba - ta);
+}
+#endif
 
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
 STAGE(bicubic_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
