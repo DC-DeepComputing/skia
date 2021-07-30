@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3318b005_20f69e4f",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-30T13:11:35Z",
+      "side": 1,
+      "message": "nit: I might be a luddite, but this initialization order cleverness gives me the heebie-jeebies. Can we just initialize steps in the constructor\u0027s member initializer list?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 61
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
