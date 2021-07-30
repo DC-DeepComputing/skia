@@ -37,6 +37,7 @@
 
 #include <ft2build.h>
 #include <freetype/ftadvanc.h>
+#include <freetype/ftimage.h>
 #include <freetype/ftbitmap.h>
 #ifdef FT_COLOR_H  // 2.10.0
 #   include <freetype/ftcolor.h>
@@ -1106,57 +1107,29 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph) {
                                      FT_COLOR_INCLUDE_ROOT_TRANSFORM, &opaqueLayerPaint)) {
           haveLayers = true;
 
-          // COLRv1 glyphs define a placeholder glyph in the glyf table that
-          // defines the extrema of the glyph. If this placeholder glyph
-          // contains only two points and FreeType applies the transform first -
-          // as configured by setupSize() - then we get a transformed bounding
-          // box that is too small as it only needs to fit the two points. To
-          // fix that, create a temporary contour consisting of all four corners
-          // of an imaginary rectangle enclosing those two points, then
-          // transform that and perform the bounding box computations on this
-          // one.
+          FT_BBox colrGlyphBbox;
 
-          FT_Set_Transform(fFace, nullptr, nullptr);
-
-          err = FT_Load_Glyph(fFace, glyph->getGlyphID(),
-                              fLoadGlyphFlags | FT_LOAD_BITMAP_METRICS_ONLY);
-          if (err != 0 || fFace->glyph->outline.n_contours == 0) {
-            glyph->zeroMetrics();
-            return;
+          // COLRv1 optionally provides a ClipBox that we can use for allocation.
+          bool hasClipBox = FT_Get_ClipBox(fFace, glyph->getGlyphID(), &colrGlyphBbox);
+          if (hasClipBox) {
+              SkDebugf("Clip box for glyph id: %d xMin: %f, yMin: %f, xMax: %f, yMax: %f\n",
+                       glyph->getGlyphID(),
+                       SkFDot6ToScalar(colrGlyphBbox.xMin),
+                       SkFDot6ToScalar(colrGlyphBbox.yMin),
+                       SkFDot6ToScalar(colrGlyphBbox.xMax),
+                       SkFDot6ToScalar(colrGlyphBbox.yMax));
+              bounds = colrGlyphBbox;
+          } else {
+            // Otherwise we need to traverse the glyph graph with a focus on measuring the
+            // required bounding box.
+            FT_BBox computed_bounds;
+            if (!computeColrV1GlyphBoundingBox(fFace, glyph->getGlyphID(), &computed_bounds)) {
+              SkDebugf("No clip box for glyph id: %d\n", glyph->getGlyphID());
+              glyph->zeroMetrics();
+              return;
+            }
+            bounds = computed_bounds;
           }
-          emboldenIfNeeded(fFace, fFace->glyph, glyph->getGlyphID());
-
-          FT_BBox bbox_untransformed;
-          FT_Outline_Get_CBox(&fFace->glyph->outline, &bbox_untransformed);
-
-          FT_Outline bboxOutline;
-          err = FT_Outline_New(gFTLibrary->library(), 4, 0, &bboxOutline);
-          if (err != 0) {
-            glyph->zeroMetrics();
-            return;
-          }
-
-          // Compose a rectangle contour by setting the four corners.
-          bboxOutline.points[0].x = bbox_untransformed.xMin;
-          bboxOutline.points[0].y = bbox_untransformed.yMin;
-
-          bboxOutline.points[1].x = bbox_untransformed.xMin;
-          bboxOutline.points[1].y = bbox_untransformed.yMax;
-
-          bboxOutline.points[2].x = bbox_untransformed.xMax;
-          bboxOutline.points[2].y = bbox_untransformed.yMax;
-
-          bboxOutline.points[3].x = bbox_untransformed.xMax;
-          bboxOutline.points[3].y = bbox_untransformed.yMin;
-
-          FT_Outline_Transform(&bboxOutline, &fMatrix22);
-
-          FT_Outline faceOutline = fFace->glyph->outline;
-          fFace->glyph->outline = bboxOutline;
-          // Retrieve from temporarily replaced transformed rectangle outline.
-          getBBoxForCurrentGlyph(glyph, &bounds, true);
-          fFace->glyph->outline = faceOutline;
-          FT_Outline_Done(gFTLibrary->library(), &bboxOutline);
 
         }
 #endif // #TT_SUPPORT_COLRV1
@@ -1224,6 +1197,8 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph) {
         glyph->fHeight = SkToU16(height);
         glyph->fTop    = SkToS16(top   );
         glyph->fLeft   = SkToS16(left  );
+
+        SkDebugf("glyph width %u height %u top %d left %d\n", glyph->fWidth, glyph->fHeight, glyph->fTop, glyph->fLeft);
         updateGlyphIfLCD(glyph);
 
     } else if (fFace->glyph->format == FT_GLYPH_FORMAT_BITMAP) {
