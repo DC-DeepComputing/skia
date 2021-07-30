@@ -52,6 +52,24 @@
       "parentUuid": "b764537e_2f0f4e7b",
       "revId": "4d8e2874086ec54fb24de08b94738f86faeb358e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29b74bd0_d15c2e49",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-30T13:48:23Z",
+      "side": 1,
+      "message": "Oh, cool! I didn\u0027t think to look there, but that SGTM.",
+      "parentUuid": "2ee9cc18_38c6d46f",
+      "revId": "4d8e2874086ec54fb24de08b94738f86faeb358e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
