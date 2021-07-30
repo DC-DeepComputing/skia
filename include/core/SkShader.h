@@ -9,8 +9,8 @@
 #define SkShader_DEFINED
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkChildEffect.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkFlattenable.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkTileMode.h"
@@ -36,7 +36,7 @@ class GrFragmentProcessor;
  *  w/o having to modify the original shader... only the paint's alpha needs
  *  to be modified.
  */
-class SK_API SkShader : public SkFlattenable {
+class SK_API SkShader : public SkChildEffect {
 public:
     /**
      *  Returns true if the shader is guaranteed to produce only opaque
@@ -130,7 +130,7 @@ private:
     SkShader() = default;
     friend class SkShaderBase;
 
-    using INHERITED = SkFlattenable;
+    using INHERITED = SkChildEffect;
 };
 
 class SK_API SkShaders {

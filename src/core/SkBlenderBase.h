@@ -53,7 +53,9 @@ public:
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
-    Type getFlattenableType() const override { return GetFlattenableType(); }
+    SkFlattenable::Type getFlattenableType() const override { return GetFlattenableType(); }
+
+    SkChildEffect::Type effectType() const final { return SkChildEffect::Type::kBlender; }
 
 private:
     virtual skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
