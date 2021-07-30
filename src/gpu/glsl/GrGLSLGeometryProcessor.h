@@ -32,9 +32,14 @@ class GrShaderCaps;
  */
 class GrGLSLGeometryProcessor {
 public:
-    using UniformHandle         = GrGLSLProgramDataManager::UniformHandle;
-    using SamplerHandle         = GrGLSLUniformHandler::SamplerHandle;
-    using FPToVaryingCoordsMap  = std::unordered_map<const GrFragmentProcessor*, GrShaderVar>;
+    using UniformHandle = GrGLSLProgramDataManager::UniformHandle;
+    using SamplerHandle = GrGLSLUniformHandler::SamplerHandle;
+    /**
+     * Tuple of optional varying that replaces the input coords and bool indicating whether the FP
+     * should take a coord param.
+     */
+    using FPCoordsMap = std::unordered_map<const GrFragmentProcessor*,
+                                          std::tuple<GrShaderVar, bool>>;
 
     virtual ~GrGLSLGeometryProcessor() {}
 
@@ -77,7 +82,7 @@ public:
      * has its input coords implemented by the GP as a varying, the varying will be accessible in
      * the returned map and should be used when the FP code is emitted.
      **/
-    FPToVaryingCoordsMap emitCode(EmitArgs&, const GrPipeline& pipeline);
+    FPCoordsMap emitCode(EmitArgs&, const GrPipeline& pipeline);
 
     /**
      * Called after all effect emitCode() functions, to give the processor a chance to write out
@@ -211,11 +216,12 @@ private:
     // This must happen before FP code emission so that the FPs can find the appropriate varying
     // handles they use in place of explicit coord sampling; it is automatically called after
     // onEmitCode() returns using the value stored in GpArgs::fLocalCoordVar.
-    FPToVaryingCoordsMap collectTransforms(GrGLSLVertexBuilder* vb,
-                                           GrGLSLVaryingHandler* varyingHandler,
-                                           GrGLSLUniformHandler* uniformHandler,
-                                           const GrShaderVar& localCoordsVar,
-                                           const GrPipeline& pipeline);
+    FPCoordsMap collectTransforms(GrGLSLVertexBuilder* vb,
+                                  GrGLSLVaryingHandler* varyingHandler,
+                                  GrGLSLUniformHandler* uniformHandler,
+                                  const GrShaderVar& localCoordsVar,
+                                  const GrPipeline& pipeline);
+
     struct TransformInfo {
         // The varying that conveys the coordinates to one or more FPs in the FS.
         GrGLSLVarying varying;
