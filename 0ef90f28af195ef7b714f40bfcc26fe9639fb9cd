@@ -69,6 +69,24 @@
       "parentUuid": "a26177f9_3280082f",
       "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99717f3a_4c4fb54e",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-30T17:39:30Z",
+      "side": 1,
+      "message": "Yeah, function detection won\u0027t do anything about the deprecation warning. I initially thought the issue was that CTGetCoreTextVersion was simply not declared if the minimum version was higher, but instead it is declared but marked deprecated.\n\ndlsym isn\u0027t that bad, and we\u0027ve only recently removed many uses when dropping 10.10 support. It\u0027s actually not much more expensive than the first time symbol lookup of any other external symbol. We\u0027d probably not want to do it every time though, so should probably initialize once with an SkOnce.\n\nI\u0027d rather start with dlsym anyway, otherwise in the future when CTGetCoreTextVersion is gone we still will need to compile for, say 10.15, but on say 14 it won\u0027t exist at all, so better to check for the symbol itself instead of version checking.\n\nIt\u0027s frustrating to do version checking for version checking, but we\u0027re currently using this to work around bugs and otherwise difficult to detect changes in behavior.\n\nThat being said, this is fine for now. I can do the dlsym stuff later when needed.",
+      "parentUuid": "1507ff51_ba9e117f",
+      "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
