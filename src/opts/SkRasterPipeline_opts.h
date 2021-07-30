@@ -1195,6 +1195,18 @@ SI void from_8888(U32 _8888, F* r, F* g, F* b, F* a) {
     *b = cast((_8888 >> 16) & 0xff) * (1/255.0f);
     *a = cast((_8888 >> 24)       ) * (1/255.0f);
 }
+SI void from_8888(U32 _8888, I32* r, I32* g, I32* b, I32* a) {
+    *r = (I32)((_8888      ) & 0xff);
+    *g = (I32)((_8888 >>  8) & 0xff);
+    *b = (I32)((_8888 >> 16) & 0xff);
+    *a = (I32) (_8888 >> 24)        ;
+}
+SI void from_8888(U32 _8888, U32* r, U32* g, U32* b, U32* a) {
+    *r = ((_8888      ) & 0xff);
+    *g = ((_8888 >>  8) & 0xff);
+    *b = ((_8888 >> 16) & 0xff);
+    *a =  (_8888 >> 24)        ;
+}
 SI void from_88(U16 _88, F* r, F* g) {
     U32 wide = expand(_88);
     *r = cast((wide      ) & 0xff) * (1/255.0f);
@@ -2755,43 +2767,211 @@ STAGE(bicubic, SkRasterPipeline_SamplerCtx2* ctx) {
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
 STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
     // (cx,cy) are the center of our sample.
-    F cx = r,
-      cy = g;
+    switch (3) {
+    case 0: {
+        F cx = r,
+          cy = g;
 
-    // All sample points are at the same fractional offset (fx,fy).
-    // They're the 4 corners of a logical 1x1 pixel surrounding (x,y) at (0.5,0.5) offsets.
-    F fx = fract(cx + 0.5f),
-      fy = fract(cy + 0.5f);
+        // All sample points are at the same fractional offset (fx,fy).
+        // They're the 4 corners of a logical 1x1 pixel surrounding (x,y) at (0.5,0.5) offsets.
+        F fx = fract(cx + 0.5f),
+          fy = fract(cy + 0.5f);
 
-    // We'll accumulate the color of all four samples into {r,g,b,a} directly.
-    r = g = b = a = 0;
+        // We'll accumulate the color of all four samples into {r,g,b,a} directly.
+        r = g = b = a = 0;
 
-    for (float py = -0.5f; py <= +0.5f; py += 1.0f)
-    for (float px = -0.5f; px <= +0.5f; px += 1.0f) {
-        // (x,y) are the coordinates of this sample point.
-        F x = cx + px,
-          y = cy + py;
+        for (float py = -0.5f; py <= +0.5f; py += 1.0f)
+        for (float px = -0.5f; px <= +0.5f; px += 1.0f) {
+            // (x,y) are the coordinates of this sample point.
+            F x = cx + px,
+              y = cy + py;
 
-        // ix_and_ptr() will clamp to the image's bounds for us.
+            // ix_and_ptr() will clamp to the image's bounds for us.
+            const uint32_t* ptr;
+            U32 ix = ix_and_ptr(&ptr, ctx, x,y);
+
+            F sr,sg,sb,sa;
+            from_8888(gather(ptr, ix), &sr,&sg,&sb,&sa);
+
+            // In bilinear interpolation, the 4 pixels at +/- 0.5 offsets from the sample pixel center
+            // are combined in direct proportion to their area overlapping that logical query pixel.
+            // At positive offsets, the x-axis contribution to that rectangle is fx,
+            // or (1-fx) at negative x.  Same deal for y.
+            F sx = (px > 0) ? fx : 1.0f - fx,
+              sy = (py > 0) ? fy : 1.0f - fy,
+              area = sx * sy;
+
+            r += sr * area;
+            g += sg * area;
+            b += sb * area;
+            a += sa * area;
+        }
+        return;
+    }
+    case 1: {
+
+        // (cx,cy) are the center of our sample.
+        F cx = r - 0.5,
+          cy = g - 0.5;
+
+        F x = floor_(cx),
+          y = floor_(cy);
+
+        F fx = cx - x,
+          fy = cy - y;
+
+        // Test quantization
+        if (false) {
+            float q = 256.0f;
+            fx = floor_(fx * q + 0.5f) / q;
+            fy = floor_(fy * q + 0.5f) / q;
+        }
+
         const uint32_t* ptr;
         U32 ix = ix_and_ptr(&ptr, ctx, x,y);
+        F lr, lg, lb, la;
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
 
-        F sr,sg,sb,sa;
-        from_8888(gather(ptr, ix), &sr,&sg,&sb,&sa);
+        F rr, rg, rb, ra;
+        ix = ix_and_ptr(&ptr, ctx, x+1,y);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
 
-        // In bilinear interpolation, the 4 pixels at +/- 0.5 offsets from the sample pixel center
-        // are combined in direct proportion to their area overlapping that logical query pixel.
-        // At positive offsets, the x-axis contribution to that rectangle is fx,
-        // or (1-fx) at negative x.  Same deal for y.
-        F sx = (px > 0) ? fx : 1.0f - fx,
-          sy = (py > 0) ? fy : 1.0f - fy,
-          area = sx * sy;
+        F tr = mad(fx, (rr - lr), lr),
+          tg = mad(fx, (rg - lg), lg),
+          tb = mad(fx, (rb - lb), lb),
+          ta = mad(fx, (ra - la), la);
 
-        r += sr * area;
-        g += sg * area;
-        b += sb * area;
-        a += sa * area;
+        ix = ix_and_ptr(&ptr, ctx, x,y+1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1,y+1);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        F br = mad(fx, (rr - lr), lr),
+          bg = mad(fx, (rg - lg), lg),
+          bb = mad(fx, (rb - lb), lb),
+          ba = mad(fx, (ra - la), la);
+
+        r = mad(fy, (br - tr), tr);
+        g = mad(fy, (bg - tg), tg);
+        b = mad(fy, (bb - tb), tb);
+        a = mad(fy, (ba - ta), ta);
+        return;
     }
+    case 2:{
+        F x = r - 0.5f,
+          y = g - 0.5f;
+
+        // Calculate quantized positions.
+        const float q = 256.0f;
+        F qx = floor_(q * x + 0.5f),
+          qy = floor_(q * y + 0.5f);
+
+        // Calculate x & y from quantized values because of rounding.
+        x = qx * 1/256.0f;
+        y = qy * 1/256.0f;
+
+        I32 px = (I32)(trunc_(qx) & 0xFF),
+            py = (I32)(trunc_(qy) & 0xFF);
+
+        const uint32_t* ptr;
+        U32 ix = ix_and_ptr(&ptr, ctx, x, y);
+        I32 lr, lg, lb, la;
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1, y);
+        I32 rr, rg, rb, ra;
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        I32 tr = lr + ((px * (rr - lr) + 0x80) >> 8),
+            tg = lg + ((px * (rg - lg) + 0x80) >> 8),
+            tb = lb + ((px * (rb - lb) + 0x80) >> 8),
+            ta = la + ((px * (ra - la) + 0x80) >> 8);
+
+        ix = ix_and_ptr(&ptr, ctx, x, y+1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1, y+1);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        I32 br = lr + ((px * (rr - lr) + 0x80) >> 8),
+            bg = lg + ((px * (rg - lg) + 0x80) >> 8),
+            bb = lb + ((px * (rb - lb) + 0x80) >> 8),
+            ba = la + ((px * (ra - la) + 0x80) >> 8);
+
+        r = cast((U32)(tr + ((py * (br - tr) + 0x80) >> 8))) * 1/256.0f;
+        g = cast((U32)(tg + ((py * (bg - tg) + 0x80) >> 8))) * 1/256.0f;
+        b = cast((U32)(tb + ((py * (bb - tb) + 0x80) >> 8))) * 1/256.0f;
+        a = cast((U32)(ta + ((py * (ba - ta) + 0x80) >> 8))) * 1/256.0f;
+        return;
+    }
+    case 3: {
+        F x = r - 0.5f,
+          y = g - 0.5f;
+
+        // Calculate quantized positions.
+        const float q = 256.0f;
+        F qx = floor_(q * x + 0.5f),
+          qy = floor_(q * y + 0.5f);
+
+        // Calculate x & y from quantized values because of rounding.
+        x = qx * 1/256.0f;
+        y = qy * 1/256.0f;
+
+        U32 px = trunc_(qx) & 0xFF,
+            py = trunc_(qy) & 0xFF;
+
+        U32 xy = px * py,
+            x256 = px << 8,
+            y256 = py << 8;
+        U32 w00 = xy - x256 - y256 + 65536,
+            w01 = y256 - xy,
+            w10 = x256 - xy,
+            w11 = xy;
+
+        U32 ra = 0, ga = 0, ba = 0, aa = 0;
+
+        const uint32_t* ptr;
+        U32 lr, lg, lb, la;
+        U32 ix = ix_and_ptr(&ptr, ctx, x, y);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ra += w00 * lr;
+        ga += w00 * lg;
+        ba += w00 * lb;
+        aa += w00 * la;
+
+        ix = ix_and_ptr(&ptr, ctx, x + 1, y);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ra += w10 * lr;
+        ga += w10 * lg;
+        ba += w10 * lb;
+        aa += w10 * la;
+
+        ix = ix_and_ptr(&ptr, ctx, x, y + 1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ra += w01 * lr;
+        ga += w01 * lg;
+        ba += w01 * lb;
+        aa += w01 * la;
+
+        ix = ix_and_ptr(&ptr, ctx, x + 1, y + 1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ra += w11 * lr;
+        ga += w11 * lg;
+        ba += w11 * lb;
+        aa += w11 * la;
+
+        r = cast((ra + 32767) >> 16) * 1/256.0f;
+        g = cast((ga + 32767) >> 16) * 1/256.0f;
+        b = cast((ba + 32767) >> 16) * 1/256.0f;
+        a = cast((aa + 32767) >> 16) * 1/256.0f;
+        return;
+    }
+    }  // end switch
 }
 
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
