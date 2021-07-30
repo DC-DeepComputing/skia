@@ -20,6 +20,12 @@
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/ProxyUtils.h"
 
+#if SK_GPU_V1
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#else
+#include "src/gpu/GrSurfaceFillContext.h"
+#endif
+
 DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite, reporter, ctxInfo) {
     GrDirectContext* dContext = ctxInfo.directContext();
 
@@ -87,13 +93,13 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest, reporter, ctxInfo) {
                      /*color space*/ nullptr,
                      10, 10);
 
-    auto dstSC = GrSurfaceContext::Make(dContext, info,
+    auto dstSC = GrSurfaceContext::Make2(dContext, info,
                                         SkBackingFit::kExact,
                                         kBottomLeft_GrSurfaceOrigin,
                                         GrRenderable::kYes);
     dstSC->asFillContext()->clear(SkPMColor4f{1, 0, 0, 1});
 
-    auto srcSC = GrSurfaceContext::Make(dContext, info,
+    auto srcSC = GrSurfaceContext::Make2(dContext, info,
                                         SkBackingFit::kExact,
                                         kBottomLeft_GrSurfaceOrigin,
                                         GrRenderable::kYes);

@@ -378,7 +378,7 @@ static void check_mipmaps(GrDirectContext* dContext,
     }
 
     GrImageInfo info(GrColorType::kRGBA_8888, kUnpremul_SkAlphaType, nullptr, {32, 32});
-    auto dstFillContext = GrSurfaceFillContext::Make(dContext, info);
+    auto dstFillContext = dContext->priv().makeSFC(info);
     if (!dstFillContext) {
         ERRORF(reporter, "Could not make dst fill context.");
         return;

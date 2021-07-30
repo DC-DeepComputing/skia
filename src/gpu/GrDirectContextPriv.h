@@ -16,6 +16,7 @@
 class GrAtlasManager;
 class GrBackendFormat;
 class GrBackendRenderTarget;
+class GrImageInfo;
 class GrMemoryPool;
 class GrOnFlushCallbackObject;
 class GrRenderTargetProxy;
@@ -161,6 +162,27 @@ public:
                                           const SkSurfaceProps&,
                                           skgpu::BaseDevice::InitContents);
 
+    std::unique_ptr<GrSurfaceFillContext> makeSFC(GrImageInfo,
+                                                  SkBackingFit = SkBackingFit::kExact,
+                                                  int sampleCount = 1,
+                                                  GrMipmapped = GrMipmapped::kNo,
+                                                  GrProtected = GrProtected::kNo,
+                                                  GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
+                                                  SkBudgeted = SkBudgeted::kYes);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSFCWithFallback(GrImageInfo,
+                                                              SkBackingFit = SkBackingFit::kExact,
+                                                              int sampleCount = 1,
+                                                              GrMipmapped = GrMipmapped::kNo,
+                                                              GrProtected = GrProtected::kNo,
+                                                              GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
+                                                              SkBudgeted = SkBudgeted::kYes);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSFCFromBackendTexture(GrColorInfo,
+                                                                    const GrBackendTexture&,
+                                                                    int sampleCount,
+                                                                    GrSurfaceOrigin,
+                                                                    sk_sp<GrRefCntedCallback> releaseHelper);
 #if GR_TEST_UTILS
     /** Reset GPU stats */
     void resetGpuStats() const;

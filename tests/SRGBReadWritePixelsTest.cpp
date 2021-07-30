@@ -195,7 +195,7 @@ static std::unique_ptr<GrSurfaceContext> make_surface_context(Encoding contextEn
                      encoding_as_color_space(contextEncoding),
                      kW, kH);
 
-    auto sc = GrSurfaceContext::Make(rContext, info,
+    auto sc = GrSurfaceContext::Make2(rContext, info,
                                      SkBackingFit::kExact,
                                      kBottomLeft_GrSurfaceOrigin,
                                      GrRenderable::kYes);
