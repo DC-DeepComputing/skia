@@ -22,6 +22,30 @@
       },
       "revId": "cf1cfb63eba094473f527d950a783fa12b0724db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56d045aa_e2743076",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-30T13:13:35Z",
+      "side": 1,
+      "message": "It could, but it needs uniformSize independently (for the memcpy), which is why I wrote it like this. Though, I guess that uniformSize is trivial to grab from uniforms-\u003esize(), so yeah.",
+      "parentUuid": "e2386e6b_e23e418d",
+      "range": {
+        "startLine": 270,
+        "startChar": 4,
+        "endLine": 271,
+        "endChar": 79
+      },
+      "revId": "cf1cfb63eba094473f527d950a783fa12b0724db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
