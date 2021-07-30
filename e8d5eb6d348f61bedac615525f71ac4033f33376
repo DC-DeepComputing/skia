@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ca90f24_bc7e91a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-30T14:43:46Z",
+      "side": 1,
+      "message": "The draw-atlas difference looks like the easiest to understand and debug, but I\u0027m not sure. If anything, it looks like the filtering is getting lost, but the edge is still \"noisy\", which doesn\u0027t make much sense. And I don\u0027t really see how the image filtering would be lost - it\u0027s baked into the image shader.",
+      "parentUuid": "ec782bee_6c752df6",
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a27d8371_e46bdd04",
