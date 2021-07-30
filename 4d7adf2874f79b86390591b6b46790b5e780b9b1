@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d9a033_bbcfebc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-07-30T18:21:50Z",
+      "side": 1,
+      "message": "The text part seems fine, the typefacerendering gm exercises this, so should catch any regressions. So the idea is that this is removed from SkPath and the enum is removed, but SkScalerContext doesn\u0027t really need much change since it can call the stroker directly.",
+      "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
