@@ -33,6 +33,24 @@
       "message": "CTGetCoreTextVersion was also removed from other platforms, and is available in macOS 10.5–11.0, so that should also be reflected here. Instead of doing something like this, why not just do function detection, and assume if the function isn\u0027t available that it\u0027s newer. Something like\n\n    template\u003ctypename T, typename \u003d void\u003e\n    struct SkCTGetCoreTextVersion {\n        static uint32_t get() {\n            static const uint32_t kCoreTextVersionNEWER \u003d 0x000D0000;\n            return kCoreTextVersionNEWER;\n        }\n    };\n    template\u003ctypename T\u003e\n    struct SkCTGetCoreTextVersion\u003cT, void_t\u003cdecltype(CTGetCoreTextVersion())\u003e\u003e {\n        static uint32_t get() {\n            if (\u0026CTGetCoreTextVersion) {\n                return CTGetCoreTextVersion();\n            }\n        }\n    };\n\nNote that we used to also dynamically load a lot of functions, and still do dlsym already in this file, so could also do something along the lines of\n\n    using CTGetCoreTextVersionProc \u003d uint32_t (*)(void);\n    CTGetCoreTextVersionProc ctGetCoreTextVersion;\n    *(void**)(\u0026ctGetCoreTextVersion) \u003d dlsym(RTLD_DEFAULT, \"CTGetCoreTextVersion\");\n    if (ctGetCoreTextVersion) {\n        return ctGetCoreTextVersion();\n    }\n    return kUnknownCoreTextVersion;\n    \nor something like that.",
       "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a4f8882_253082fb",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18109
+      },
+      "writtenOn": "2021-07-30T15:17:26Z",
+      "side": 1,
+      "message": "The function continues to exist in iOS 14 and macOS 11, but the compiler throws a -Wdeprecated-declarations warning if you reference or call it (which in Chromium-land becomes an error due to -Werror). The dlsym approach would work, but feels like overkill, given that we currently don\u0027t need to look at the CoreText version on 14.0+/11.0+.\n\nI\u0027ve updated the CL to include compile guards for both iOS and macOS, which avoids the compiler warning. I\u0027m not sure how to gracefully handle the method becoming unavailable in future OS versions -- as written the helper will return 0, which is indistinguishable from the \"Core Text not available on older release\" scenario. Is this something you\u0027d like to figure out now, or punt to the future when they actually remove the implementation of this function?",
+      "parentUuid": "a26177f9_3280082f",
+      "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
