@@ -6,6 +6,7 @@
 */
 
 #include "include/utils/SkShadowUtils.h"
+#include "include/utils/SkStrokeUtils.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -739,12 +740,10 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
                 // Now draw with blur
                 SkPaint paint;
                 paint.setColor(rec.fAmbientColor);
-                paint.setStrokeWidth(strokeWidth);
-                paint.setStyle(SkPaint::kStrokeAndFill_Style);
                 SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(blurRadius);
                 bool respectCTM = false;
                 paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, respectCTM));
-                this->drawPath(devSpacePath, paint);
+                this->drawPath(SkStrokeUtils::StrokeAndFill(devSpacePath, strokeWidth), paint);
             }
         }
     }
