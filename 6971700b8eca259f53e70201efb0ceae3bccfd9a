@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae5447b_fd0da202",
+        "filename": "tests/ReadWritePixelsGpuTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-30T21:36:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e929d68_86ca7c3f",
+      "range": {
+        "startLine": 1264,
+        "startChar": 12,
+        "endLine": 1264,
+        "endChar": 18
+      },
+      "revId": "6971700b8eca259f53e70201efb0ceae3bccfd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ca3bf6f_784fd4a8",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-30T21:30:46Z",
       "side": 1,
       "message": "tiny nit: this will say \"to be the same.Error at\" with no whitespace",
+      "range": {
+        "startLine": 1291,
+        "startChar": 65,
+        "endLine": 1291,
+        "endChar": 66
+      },
+      "revId": "6971700b8eca259f53e70201efb0ceae3bccfd9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "247b6451_5f6aa6cc",
+        "filename": "tests/ReadWritePixelsGpuTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-07-30T21:36:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ca3bf6f_784fd4a8",
       "range": {
         "startLine": 1291,
         "startChar": 65,
