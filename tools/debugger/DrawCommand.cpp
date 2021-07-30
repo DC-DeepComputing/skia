@@ -770,14 +770,14 @@ static void apply_paint_style(const SkPaint& paint, SkJSONWriter& writer) {
     SkPaint::Style style = paint.getStyle();
     if (style != SkPaint::kFill_Style) {
         switch (style) {
-            case SkPaint::kStroke_Style: {
+            case SkPaint::kStroke_Style:
                 writer.appendString(DEBUGCANVAS_ATTRIBUTE_STYLE, DEBUGCANVAS_STYLE_STROKE);
                 break;
-            }
-            case SkPaint::kStrokeAndFill_Style: {
+#ifdef SK_SUPPORT_STROKEANDFILL
+            case SkPaint::kStrokeAndFill_Style:
                 writer.appendString(DEBUGCANVAS_ATTRIBUTE_STYLE, DEBUGCANVAS_STYLE_STROKEANDFILL);
                 break;
-            }
+#endif
             default: SkASSERT(false);
         }
     }
