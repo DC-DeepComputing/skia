@@ -1195,6 +1195,12 @@ SI void from_8888(U32 _8888, F* r, F* g, F* b, F* a) {
     *b = cast((_8888 >> 16) & 0xff) * (1/255.0f);
     *a = cast((_8888 >> 24)       ) * (1/255.0f);
 }
+SI void from_8888(U32 _8888, I32* r, I32* g, I32* b, I32* a) {
+    *r = (I32)((_8888      ) & 0xff);
+    *g = (I32)((_8888 >>  8) & 0xff);
+    *b = (I32)((_8888 >> 16) & 0xff);
+    *a = (I32) (_8888 >> 24)        ;
+}
 SI void from_88(U16 _88, F* r, F* g) {
     U32 wide = expand(_88);
     *r = cast((wide      ) & 0xff) * (1/255.0f);
@@ -2752,6 +2758,7 @@ STAGE(bicubic, SkRasterPipeline_SamplerCtx2* ctx) {
     sampler(ctx, x,y, wx,wy, &r,&g,&b,&a);
 }
 
+#if 0
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
 STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
     // (cx,cy) are the center of our sample.
@@ -2793,6 +2800,105 @@ STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
         a += sa * area;
     }
 }
+
+#else  // -----------------------------------------------------------------------------------
+
+// A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
+STAGE(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+    if (false) {
+
+        // (cx,cy) are the center of our sample.
+        F cx = r - 0.5,
+          cy = g - 0.5;
+
+        F x = floor_(cx),
+          y = floor_(cy);
+
+        F fx = cx - x,
+          fy = cy - y;
+
+        if (true) {
+            float q = 256.0f;
+            fx = floor_(fx * q + 0.5f) / q;
+            fy = floor_(fy * q + 0.5f) / q;
+        }
+
+        const uint32_t* ptr;
+        U32 ix = ix_and_ptr(&ptr, ctx, x,y);
+        F lr, lg, lb, la;
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        F rr, rg, rb, ra;
+        ix = ix_and_ptr(&ptr, ctx, x+1,y);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        F tr = mad(fx, (rr - lr), lr),
+          tg = mad(fx, (rg - lg), lg),
+          tb = mad(fx, (rb - lb), lb),
+          ta = mad(fx, (ra - la), la);
+
+        ix = ix_and_ptr(&ptr, ctx, x,y+1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1,y+1);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        F br = mad(fx, (rr - lr), lr),
+          bg = mad(fx, (rg - lg), lg),
+          bb = mad(fx, (rb - lb), lb),
+          ba = mad(fx, (ra - la), la);
+
+        r = mad(fy, (br - tr), tr);
+        g = mad(fy, (bg - tg), tg);
+        b = mad(fy, (bb - tb), tb);
+        a = mad(fy, (ba - ta), ta);
+    } else {
+        F x = r - 0.5f,
+          y = g - 0.5f;
+
+        // Calculate quantized positions.
+        const float q = 256.0f;
+        F qx = floor_(q * x),
+          qy = floor_(q * y);
+
+        x = floor_(x);
+        y = floor_(y);
+
+        I32 px = (I32)(trunc_(qx) & 0xFF),
+            py = (I32)(trunc_(qy) & 0xFF);
+
+        const uint32_t* ptr;
+        U32 ix = ix_and_ptr(&ptr, ctx, x, y);
+        I32 lr, lg, lb, la;
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1, y);
+        I32 rr, rg, rb, ra;
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        I32 tr = lr + ((px * (rr - lr) + 0x80) >> 8),
+            tg = lg + ((px * (rg - lg) + 0x80) >> 8),
+            tb = lb + ((px * (rb - lb) + 0x80) >> 8),
+            ta = la + ((px * (ra - la) + 0x80) >> 8);
+
+        ix = ix_and_ptr(&ptr, ctx, x, y+1);
+        from_8888(gather(ptr, ix), &lr,&lg,&lb,&la);
+
+        ix = ix_and_ptr(&ptr, ctx, x+1, y+1);
+        from_8888(gather(ptr, ix), &rr,&rg,&rb,&ra);
+
+        I32 br = lr + ((px * (rr - lr) + 0x80) >> 8),
+            bg = lg + ((px * (rg - lg) + 0x80) >> 8),
+            bb = lb + ((px * (rb - lb) + 0x80) >> 8),
+            ba = la + ((px * (ra - la) + 0x80) >> 8);
+
+        r = cast((U32)(tr + ((py * (br - tr) + 0x80) >> 8))) * 1/256.0f;
+        g = cast((U32)(tg + ((py * (bg - tg) + 0x80) >> 8))) * 1/256.0f;
+        b = cast((U32)(tb + ((py * (bb - tb) + 0x80) >> 8))) * 1/256.0f;
+        a = cast((U32)(ta + ((py * (ba - ta) + 0x80) >> 8))) * 1/256.0f;
+    }
+}
+#endif
 
 // A specialized fused image shader for clamp-x, clamp-y, non-sRGB sampling.
 STAGE(bicubic_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
