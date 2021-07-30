@@ -35,6 +35,7 @@
 #include "tools/gpu/BackendTextureImageFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
+//#include "src/gpu/SurfaceContext.h"
 
 static constexpr int kSize = 8;
 
@@ -365,6 +366,10 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(Gr1x1TextureMipMappedTest, reporter, ctxInfo)
     surface->flushAndSubmit();
 }
 
+#if SK_GPU_V1
+
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
+
 // Create a new render target and draw 'mipmapView' into it using the provided 'filter'.
 static std::unique_ptr<skgpu::v1::SurfaceDrawContext> draw_mipmap_into_new_render_target(
         GrRecordingContext* rContext,
@@ -536,3 +541,5 @@ DEF_GPUTEST(GrManyDependentsMipMappedTest, reporter, /* options */) {
         REPORTER_ASSERT(reporter, sdc2Task->dependsOn(mipRegenTask2));
     }
 }
+
+#endif // SK_GPU_V1

@@ -25,9 +25,9 @@
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #endif
 #include <atomic>
 
@@ -593,13 +593,13 @@ sk_sp<SkSpecialImage> SkImageFilter_Base::DrawWithFP(GrRecordingContext* rContex
                      sk_ref_sp(colorSpace),
                      bounds.size());
 
-    auto sfc = GrSurfaceFillContext::Make(rContext,
-                                          info,
-                                          SkBackingFit::kApprox,
-                                          1,
-                                          GrMipmapped::kNo,
-                                          isProtected,
-                                          kBottomLeft_GrSurfaceOrigin);
+    auto sfc = skgpu::SurfaceFillContext_Base::Make(rContext,
+                                                    info,
+                                                    SkBackingFit::kApprox,
+                                                    1,
+                                                    GrMipmapped::kNo,
+                                                    isProtected,
+                                                    kBottomLeft_GrSurfaceOrigin);
     if (!sfc) {
         return nullptr;
     }
