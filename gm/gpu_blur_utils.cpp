@@ -59,7 +59,7 @@ static GrSurfaceProxyView slow_blur(GrRecordingContext* ctx,
                           SkIPoint offset,
                           SkTileMode mode) {
         GrImageInfo info(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr, resultSize);
-        auto sfc = GrSurfaceFillContext::Make(ctx, info);
+        auto sfc = skgpu::SurfaceFillContext_Base::Make(ctx, info);
         if (!sfc) {
             return GrSurfaceProxyView{};
         }

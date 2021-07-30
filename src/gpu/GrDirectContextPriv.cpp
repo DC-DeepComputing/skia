@@ -15,11 +15,10 @@
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceContext.h"
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrThreadSafePipelineBuilder.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/text/GrAtlasManager.h"
@@ -251,8 +250,8 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
             SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     const SkImageInfo upmII = pmII.makeAlphaType(kUnpremul_SkAlphaType);
 
-    auto readSFC = GrSurfaceFillContext::Make(dContext, upmII, SkBackingFit::kExact);
-    auto tempSFC = GrSurfaceFillContext::Make(dContext,  pmII, SkBackingFit::kExact);
+    auto readSFC = skgpu::SurfaceFillContext_Base::Make(dContext, upmII, SkBackingFit::kExact);
+    auto tempSFC = skgpu::SurfaceFillContext_Base::Make(dContext,  pmII, SkBackingFit::kExact);
     if (!readSFC || !tempSFC) {
         return false;
     }

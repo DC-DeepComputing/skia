@@ -23,10 +23,10 @@ class GrTextureProxy;
 struct GrTextureSetEntry;
 struct SkRect;
 class SkMatrix;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
 class GrTextureOp {
 public:
-
     /**
      * Controls whether saturate() is called after the texture is color-converted to ensure all
      * color values are in 0..1 range.

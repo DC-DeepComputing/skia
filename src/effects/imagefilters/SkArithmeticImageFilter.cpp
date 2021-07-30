@@ -20,9 +20,9 @@
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #endif
@@ -403,13 +403,13 @@ sk_sp<SkSpecialImage> SkArithmeticImageFilter::filterImageGPU(
     }
 
     GrImageInfo info(ctx.grColorType(), kPremul_SkAlphaType, ctx.refColorSpace(), bounds.size());
-    auto sfc = GrSurfaceFillContext::Make(rContext,
-                                          info,
-                                          SkBackingFit::kApprox,
-                                          1,
-                                          GrMipmapped::kNo,
-                                          isProtected,
-                                          kBottomLeft_GrSurfaceOrigin);
+    auto sfc = skgpu::SurfaceFillContext_Base::Make(rContext,
+                                                    info,
+                                                    SkBackingFit::kApprox,
+                                                    1,
+                                                    GrMipmapped::kNo,
+                                                    isProtected,
+                                                    kBottomLeft_GrSurfaceOrigin);
     if (!sfc) {
         return nullptr;
     }
