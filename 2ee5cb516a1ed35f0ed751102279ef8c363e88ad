@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea128c40_9a1a383a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-07-30T17:33:12Z",
+      "side": 1,
+      "message": "Friendly reminder that this needs to be cherry-picked to all supported branches.",
+      "revId": "2ee5cb516a1ed35f0ed751102279ef8c363e88ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
