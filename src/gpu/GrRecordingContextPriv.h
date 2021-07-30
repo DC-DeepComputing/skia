@@ -13,6 +13,7 @@
 #include "src/gpu/BaseDevice.h"
 #include "src/gpu/text/GrSDFTControl.h"
 
+class GrSwizzle;
 class SkDeferredDisplayList;
 
 /** Class that exposes methods to GrRecordingContext that are only intended for use internal to
@@ -133,6 +134,61 @@ public:
                                           GrSurfaceOrigin,
                                           const SkSurfaceProps&,
                                           skgpu::BaseDevice::InitContents);
+
+    std::unique_ptr<GrSurfaceFillContext> makeRawSDC(GrRecordingContext*,
+                                                     GrSurfaceProxyView readView,
+                                                     GrSurfaceProxyView writeView,
+                                                     GrColorType,
+                                                     sk_sp<SkColorSpace>,
+                                                     const SkSurfaceProps&,
+                                                     bool flushTimeOpsTask = false);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSDC2(GrRecordingContext*,
+                                                   GrColorType,
+                                                   sk_sp<SkColorSpace>,
+                                                   SkBackingFit,
+                                                   SkISize dimensions,
+                                                   const SkSurfaceProps&,
+                                                   int sampleCnt = 1,
+                                                   GrMipmapped = GrMipmapped::kNo,
+                                                   GrProtected = GrProtected::kNo,
+                                                   GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
+                                                   SkBudgeted = SkBudgeted::kYes);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSDC1(GrRecordingContext*,
+                                                   sk_sp<SkColorSpace>,
+                                                   SkBackingFit,
+                                                   SkISize dimensions,
+                                                   const GrBackendFormat&,
+                                                   int sampleCnt,
+                                                   GrMipmapped,
+                                                   GrProtected,
+                                                   GrSwizzle readSwizzle,
+                                                   GrSwizzle writeSwizzle,
+                                                   GrSurfaceOrigin,
+                                                   SkBudgeted,
+                                                   const SkSurfaceProps&);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSDCWithFallback(GrRecordingContext*,
+                                                              GrColorType,
+                                                              sk_sp<SkColorSpace>,
+                                                              SkBackingFit,
+                                                              SkISize dimensions,
+                                                              const SkSurfaceProps&,
+                                                              int sampleCnt = 1,
+                                                              GrMipmapped = GrMipmapped::kNo,
+                                                              GrProtected = GrProtected::kNo,
+                                                              GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
+                                                              SkBudgeted = SkBudgeted::kYes);
+
+    std::unique_ptr<GrSurfaceFillContext> makeSDCFromBackendTexture(GrRecordingContext*,
+                                                                    GrColorType,
+                                                                    sk_sp<SkColorSpace>,
+                                                                    const GrBackendTexture&,
+                                                                    int sampleCnt,
+                                                                    GrSurfaceOrigin,
+                                                                    const SkSurfaceProps&,
+                                                                    sk_sp<GrRefCntedCallback> releaseHelper);
 
 private:
     explicit GrRecordingContextPriv(GrRecordingContext* context) : fContext(context) {}

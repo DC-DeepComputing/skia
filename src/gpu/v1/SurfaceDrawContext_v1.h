@@ -105,7 +105,7 @@ public:
     // fails. The fallback GrColorType will have at least the number of channels and precision per
     // channel as the passed in GrColorType. It may also swizzle the changes (e.g., BGRA -> RGBA).
     // SRGB-ness will be preserved.
-    static std::unique_ptr<SurfaceDrawContext> MakeWithFallback(
+    static std::unique_ptr<SurfaceDrawContext> MakeWithFallback77(
             GrRecordingContext*,
             GrColorType,
             sk_sp<SkColorSpace>,
