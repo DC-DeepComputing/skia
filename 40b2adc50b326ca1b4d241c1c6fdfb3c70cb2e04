@@ -16,6 +16,24 @@
       "message": "This is glorious. Just so I understand fully - we can\u0027t just return SkBlender::Mode() (vs. wrapping in the pass-through runtime blender), because if we\u0027re using this to replace the actual blend on the paint - that would send us back to fixed-function blending? In any other context (eg, in blend image filter, as a blender child of another runtime effect) - the wrapper doesn\u0027t do much? Maybe just add a comment that says that the wrapper ensures that in all contexts, this is forcing us to do shader-based blending?",
       "revId": "40b2adc50b326ca1b4d241c1c6fdfb3c70cb2e04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f6d574_f1b52942",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-07-30T13:40:36Z",
+      "side": 1,
+      "message": "Exactly right, in the context of a tree of runtime effects, this wouldn\u0027t do anything useful; it just adds code for the inliner to eliminate. However, you can set this as the blend on an SkPaint directly (and that\u0027s how this function is used in practice) and in that context it is very meaningful.\n\nIn SkGr, if we see that the SkBlender on the paint is actually an SkBlendMode, we use the XferProcessor path which enables the coefficient blend formula optimizations on most (all?) Porter-Duff blends:\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/SkGr.cpp;l\u003d507;drc\u003d5b3aff4d39640584bc93e8898cf2ccdaf04e6fe8\n\nThere are other contexts where SkBlendModes are treated differently than runtime blends as well, e.g. the raster pipeline only supports the former and not the latter, even when they\u0027re functionally equivalent. So this method also forces software paints onto SkVM which otherwise might have taken faster paths.\n\nI\u0027ll add some more context to the function doc comment.",
+      "parentUuid": "f9a0d134_a3b3a074",
+      "revId": "40b2adc50b326ca1b4d241c1c6fdfb3c70cb2e04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
