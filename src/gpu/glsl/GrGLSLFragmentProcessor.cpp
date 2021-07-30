@@ -60,7 +60,7 @@ SkString GrGLSLFragmentProcessor::invokeChild(int childIndex,
         invocation.appendf(", %s", destColor ? destColor : "half4(1)");
     }
 
-    if (childProc->isSampledWithExplicitCoords()) {
+    if (!childProc->omitSampleCoordsParam()) {
         // The child's function takes a half4 color and a float2 coordinate
         invocation.appendf(", %s", skslCoords.empty() ? args.fSampleCoord : skslCoords.c_str());
     } else {
@@ -111,10 +111,10 @@ SkString GrGLSLFragmentProcessor::invokeChildWithMatrix(int childIndex, const ch
     //
     // In all other cases, we need to insert sksl to compute matrix * parent coords and then invoke
     // the function.
-    if (childProc->isSampledWithExplicitCoords()) {
+    if (!childProc->omitSampleCoordsParam()) {
         // Only check perspective for this specific matrix transform, not the aggregate FP property.
         // Any parent perspective will have already been applied when evaluated in the FS.
-        if (childProc->sampleUsage().fHasPerspective) {
+        if (childProc->sampleUsage().hasPerspective()) {
             invocation.appendf(", proj((%s) * %s.xy1)", matrixName.c_str(), args.fSampleCoord);
         } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
             invocation.appendf(", float3x2(%s) * %s.xy1", matrixName.c_str(), args.fSampleCoord);

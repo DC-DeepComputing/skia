@@ -24,13 +24,11 @@ GrGLSLGeometryProcessor::FPToVaryingCoordsMap GrGLSLGeometryProcessor::emitCode(
     this->onEmitCode(args, &gpArgs);
 
     FPToVaryingCoordsMap transformMap;
-    if (gpArgs.fLocalCoordVar.getType() != kVoid_GrSLType) {
-        transformMap = this->collectTransforms(args.fVertBuilder,
-                                               args.fVaryingHandler,
-                                               args.fUniformHandler,
-                                               gpArgs.fLocalCoordVar,
-                                               pipeline);
-    }
+    transformMap = this->collectTransforms(args.fVertBuilder,
+                                           args.fVaryingHandler,
+                                           args.fUniformHandler,
+                                           gpArgs.fLocalCoordVar,
+                                           pipeline);
 
     if (args.fGeomProc.willUseTessellationShaders()) {
         // Tessellation shaders are temporarily responsible for integrating their own code strings
@@ -82,7 +80,8 @@ GrGLSLGeometryProcessor::FPToVaryingCoordsMap GrGLSLGeometryProcessor::collectTr
         const GrShaderVar& localCoordsVar,
         const GrPipeline& pipeline) {
     SkASSERT(localCoordsVar.getType() == kFloat2_GrSLType ||
-             localCoordsVar.getType() == kFloat3_GrSLType);
+             localCoordsVar.getType() == kFloat3_GrSLType ||
+             localCoordsVar.getType() == kVoid_GrSLType);
 
     auto baseLocalCoordVarying = [&, baseLocalCoord = GrGLSLVarying()]() mutable {
         SkASSERT(GrSLTypeIsFloatType(localCoordsVar.getType()));
@@ -101,12 +100,13 @@ GrGLSLGeometryProcessor::FPToVaryingCoordsMap GrGLSLGeometryProcessor::collectTr
     // sampled with a series of matrices applied to local coords. For each such FP a varying is
     // added to the varying handler and adds to 'result'.
     auto liftTransforms = [&, traversalIndex = 0](auto& self,
-                                                  const GrFragmentProcessor& fp,
+                                                  GrFragmentProcessor& fp,
                                                   bool hasPerspective,
                                                   const GrFragmentProcessor* lastMatrixFP = nullptr,
-                                                  int lastMatrixTraversalIndex = -1) mutable {
+                                                  int lastMatrixTraversalIndex = -1,
+                                                  bool inExplicitSubtree = false) mutable -> void {
         ++traversalIndex;
-        switch (fp.sampleUsage().fKind) {
+        switch (fp.sampleUsage().kind()) {
             case SkSL::SampleUsage::Kind::kNone:
                 // This should only happen at the root. Otherwise how did this FP get added?
                 SkASSERT(!fp.parent());
@@ -115,15 +115,16 @@ GrGLSLGeometryProcessor::FPToVaryingCoordsMap GrGLSLGeometryProcessor::collectTr
                 break;
             case SkSL::SampleUsage::Kind::kUniformMatrix:
                 // Update tracking of last matrix and matrix props.
-                hasPerspective |= fp.sampleUsage().fHasPerspective;
+                hasPerspective |= fp.sampleUsage().hasPerspective();
                 lastMatrixFP = &fp;
                 lastMatrixTraversalIndex = traversalIndex;
                 break;
             case SkSL::SampleUsage::Kind::kExplicit:
-                // Nothing in this subtree can be lifted.
-                return;
+                inExplicitSubtree = true;
+                break;
         }
-        if (fp.usesVaryingCoordsDirectly()) {
+        bool coordsRequired = fp.referencesSampleCoordsDirectlyOrIndirectly();
+        if (fp.referencesSampleCoordsDirectly() && !inExplicitSubtree) {
             // Associate the varying with the highest possible node in the FP tree that shares the
             // same coordinates so that multiple FPs in a subtree can share. If there are no matrix
             // sample nodes on the way up the tree then directly use the local coord.
@@ -145,21 +146,33 @@ GrGLSLGeometryProcessor::FPToVaryingCoordsMap GrGLSLGeometryProcessor::collectTr
                 // The FP will use the varying in the fragment shader as its coords.
                 result[&fp] = varying.fsInVar();
             }
-        } else if (!fp.usesVaryingCoords()) {
-            // Early-out. No point in continuing to traversal down from here.
-            return;
+            coordsRequired = false;
+            fp.setOmitSampleCoordsParams();
         }
 
+        bool childNeedsCoords = false;
         for (int c = 0; c < fp.numChildProcessors(); ++c) {
             if (auto child = fp.childProcessor(c)) {
-                self(self, *child, hasPerspective, lastMatrixFP, lastMatrixTraversalIndex);
+                self(self,
+                     *child,
+                     hasPerspective,
+                     lastMatrixFP,
+                     lastMatrixTraversalIndex,
+                     inExplicitSubtree);
+                childNeedsCoords |= !child->omitSampleCoordsParam() &&
+                                    !child->sampleUsage().isExplicit();
             }
+        }
+        if (!fp.referencesSampleCoordsDirectly() && !childNeedsCoords) {
+            fp.setOmitSampleCoordsParams();
         }
     };
 
     bool hasPerspective = GrSLTypeVecLength(localCoordsVar.getType()) == 3;
     for (int i = 0; i < pipeline.numFragmentProcessors(); ++i) {
-        liftTransforms(liftTransforms, pipeline.getFragmentProcessor(i), hasPerspective);
+        liftTransforms(liftTransforms,
+                       const_cast<GrFragmentProcessor&>(pipeline.getFragmentProcessor(i)),
+                       hasPerspective);
     }
     return result;
 }
