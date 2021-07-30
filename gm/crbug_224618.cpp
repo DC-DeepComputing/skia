@@ -20,6 +20,7 @@ public:
     CrBug224618GM() : fTime(0.f) {}
 
 protected:
+    bool runAsBench() const override { return true; }
     SkString onShortName() override {
         return SkString("crbug_224618");
     }
