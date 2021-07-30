@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75582b45_c5ad8045",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-30T01:42:07Z",
+      "side": 1,
+      "message": "strokeandfill is pretty tightly entwined in the GrStyledShapeTest -- so just hiding all of it for now",
+      "revId": "7b078f367b6c709addf6bbfa1075a91b253fb103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
