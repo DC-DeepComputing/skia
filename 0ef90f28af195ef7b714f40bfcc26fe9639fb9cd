@@ -51,6 +51,24 @@
       "parentUuid": "a26177f9_3280082f",
       "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1507ff51_ba9e117f",
+        "filename": "src/ports/SkFontMgr_mac_ct.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 7951
+      },
+      "writtenOn": "2021-07-30T15:20:08Z",
+      "side": 1,
+      "message": "drive-by (because I was asked to explain how template code worked):\n\nI don\u0027t think function detection using template would work if the function is defined but marked as deprecated with `__attribute__((deprecated(...)))`, `[[deprecated]]` or similar annotation.",
+      "parentUuid": "a26177f9_3280082f",
+      "revId": "0ef90f28af195ef7b714f40bfcc26fe9639fb9cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
