@@ -16,6 +16,24 @@
       "message": "This whole bit seems very generic. Any chance that HarfBuzz 3.0 can have a HB_MUTEX_IMPL_STD define and this bit of code be in one of the conditionals in \u003charfbuzz\u003e/src/hb-mutex.cc? It seems like then this code could get run through all of the HarfBuzz tests to uncover any issues (instead of getting a one-off lucky failure from macOS debug builds from Skia only use).",
       "revId": "e359f42b9b9108b98eca845839d8de223bf16816",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "764ce996_3bd9347b",
+        "filename": "third_party/harfbuzz/config-override.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-07-30T16:15:35Z",
+      "side": 1,
+      "message": "Yes, I discussed this with Behdad yesterday and that\u0027s exactly what we\u0027re going to do.",
+      "parentUuid": "c8dfbe7c_f0dc1282",
+      "revId": "e359f42b9b9108b98eca845839d8de223bf16816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
