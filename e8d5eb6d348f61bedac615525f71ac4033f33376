@@ -100,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ba9ab46_24c31061",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-30T16:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f9a0c5_249685d7",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 15
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdc8a568_11d256bf",
@@ -113,6 +137,30 @@
       "writtenOn": "2021-07-30T14:11:05Z",
       "side": 1,
       "message": "nit: singular: updateColor",
+      "range": {
+        "startLine": 69,
+        "startChar": 9,
+        "endLine": 69,
+        "endChar": 21
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e0a9add_9b891b7c",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-30T16:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdc8a568_11d256bf",
       "range": {
         "startLine": 69,
         "startChar": 9,
@@ -146,6 +194,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98629428_a9d57dd8",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-30T16:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3318b005_20f69e4f",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 61
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a35e7b8_74806d55",
@@ -169,6 +241,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e01dd30_5ad8b0de",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-30T16:05:16Z",
+      "side": 1,
+      "message": "Remember that updatableShader always returns a shader that can be updated. If the underlying shader doesn\u0027t need a special updater, then we wrap the underlying in an SkTransformShader.",
+      "parentUuid": "1a35e7b8_74806d55",
+      "range": {
+        "startLine": 108,
+        "startChar": 13,
+        "endLine": 108,
+        "endChar": 25
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdf30f07_1e535ac4",
@@ -182,6 +278,30 @@
       "writtenOn": "2021-07-30T14:51:14Z",
       "side": 1,
       "message": "I think we can use \u0027p\u0027, as it is a local paint that is modifyable. (no need to make a copy)",
+      "range": {
+        "startLine": 118,
+        "startChar": 16,
+        "endLine": 118,
+        "endChar": 27
+      },
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c19a7a0d_07449510",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-07-30T16:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdf30f07_1e535ac4",
       "range": {
         "startLine": 118,
         "startChar": 16,
