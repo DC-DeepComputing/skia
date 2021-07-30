@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6404453_70973e78",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-07-30T13:34:23Z",
+      "side": 1,
+      "message": "I was about to ask if the code in Analysis needed to be updated, but it looks like it\u0027s accidentally correct.",
+      "revId": "4d8e2874086ec54fb24de08b94738f86faeb358e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
