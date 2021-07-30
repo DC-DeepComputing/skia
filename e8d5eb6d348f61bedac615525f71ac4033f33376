@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77a4916_f23dbcf9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-30T14:08:26Z",
+      "side": 1,
+      "message": "I suggest we really try to tackle updating the mips in imageshader next -- that would be a fundamental improvement over the hack we have in RP",
+      "revId": "e8d5eb6d348f61bedac615525f71ac4033f33376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a27d8371_e46bdd04",
