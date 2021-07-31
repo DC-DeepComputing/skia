@@ -16,6 +16,23 @@
       "message": "clever!",
       "revId": "5e5ad228c5d39b5ca722b08ebd91be9dbbb4a5d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f35b3645_0460894f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-07-31T18:36:20Z",
+      "side": 1,
+      "message": "In parallel, let\u0027s try creating a lowp version of the bilerp stage",
+      "revId": "5e5ad228c5d39b5ca722b08ebd91be9dbbb4a5d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
