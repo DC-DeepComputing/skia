@@ -32,6 +32,9 @@
 #include "tools/gpu/MemoryCache.h"
 #include "tools/trace/EventTracingPriv.h"
 
+#include "include/effects/SkStrokeAndFillPathEffect.h"
+#include "include/utils/SkPaintFilterCanvas.h"
+
 #include <chrono>
 #include <functional>
 #include <limits.h>
@@ -252,10 +255,25 @@ static void init(Source* source, const skiatest::Test& test) {
     };
 }
 
+class MyPaintFilterCanvas : public SkPaintFilterCanvas {
+public:
+    MyPaintFilterCanvas(SkCanvas* other) : SkPaintFilterCanvas(other) {}
+
+protected:
+    bool onFilter(SkPaint& paint) const override {
+        if (paint.getStyle() == SkPaint::kStrokeAndFill_Style) {
+            paint.setStyle(SkPaint::kStroke_Style);
+            paint.setPathEffect(SkStrokeAndFillPathEffect::Make());
+        }
+        return true;
+    }
+};
+
 static sk_sp<SkImage> draw_with_cpu(std::function<bool(SkCanvas*)> draw,
                                     SkImageInfo info) {
     if (sk_sp<SkSurface> surface = SkSurface::MakeRaster(info)) {
-        if (draw(surface->getCanvas())) {
+        MyPaintFilterCanvas filter(surface->getCanvas());
+        if (draw(&filter)) {
             return surface->makeImageSnapshot();
         }
     }
