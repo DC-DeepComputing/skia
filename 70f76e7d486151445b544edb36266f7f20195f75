@@ -16,6 +16,24 @@
       "message": "nit: extra line",
       "revId": "70f76e7d486151445b544edb36266f7f20195f75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd6935d6_faeca72b",
+        "filename": "src/gpu/ops/GrAtlasTextOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T17:27:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9e3bfd5_17cc0b4e",
+      "revId": "70f76e7d486151445b544edb36266f7f20195f75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
