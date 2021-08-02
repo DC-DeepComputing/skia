@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f07eec9_452c7d28",
+        "filename": "src/gpu/glsl/GrGLSLGeometryProcessor.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-02T16:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3985b1b4_4007c7a7",
+      "range": {
+        "startLine": 43,
+        "startChar": 42,
+        "endLine": 43,
+        "endChar": 71
+      },
+      "revId": "7ac164b3d4338a27bd744d5f1217019de34040f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc57ff0d_be45c638",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-02T16:00:48Z",
       "side": 1,
       "message": "extra words (delete?)",
+      "range": {
+        "startLine": 93,
+        "startChar": 24,
+        "endLine": 93,
+        "endChar": 35
+      },
+      "revId": "7ac164b3d4338a27bd744d5f1217019de34040f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f112dc6_4c893fca",
+        "filename": "src/gpu/glsl/GrGLSLProgramBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-02T16:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc57ff0d_be45c638",
       "range": {
         "startLine": 93,
         "startChar": 24,
