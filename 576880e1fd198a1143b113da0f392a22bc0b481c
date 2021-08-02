@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfc3dad0_6971e6e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-02T10:46:16Z",
+      "side": 1,
+      "message": "From my point of view this is now ready for review - pending Werner merging my upstream change, which I still have to file as a pull request.",
+      "revId": "576880e1fd198a1143b113da0f392a22bc0b481c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
