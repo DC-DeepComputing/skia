@@ -22,6 +22,30 @@
       },
       "revId": "6cc54c06d54c7b22fb039f8a7aa84da2d212e7a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b6cdb4_da2563e5",
+        "filename": "gm/coloremoji_blendmodes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-02T17:27:32Z",
+      "side": 1,
+      "message": "Good call, done.",
+      "parentUuid": "05ae8327_9e08acca",
+      "range": {
+        "startLine": 124,
+        "startChar": 18,
+        "endLine": 124,
+        "endChar": 23
+      },
+      "revId": "6cc54c06d54c7b22fb039f8a7aa84da2d212e7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
