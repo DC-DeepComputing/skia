@@ -16,6 +16,23 @@
       "message": "The text part seems fine, the typefacerendering gm exercises this, so should catch any regressions. So the idea is that this is removed from SkPath and the enum is removed, but SkScalerContext doesn\u0027t really need much change since it can call the stroker directly.",
       "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94fa061d_22918b50",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-02T12:45:46Z",
+      "side": 1,
+      "message": "This is predicated on |style|, which was being mutated before; now we only update |frameAndFill| which is not part of the predicate \u003d\u003e functional change?",
+      "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
