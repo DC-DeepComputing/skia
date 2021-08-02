@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7120b6e9_f11dddcd",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-02T15:09:15Z",
+      "side": 1,
+      "message": "nit: 4 space indent",
+      "range": {
+        "startLine": 1117,
+        "startChar": 10,
+        "endLine": 1117,
+        "endChar": 12
+      },
+      "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0479eb68_0819b2e6",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-02T15:09:15Z",
+      "side": 1,
+      "message": "I\u0027m somewhat uncomfortable having a whole copy of this traversal code here. Mostly because it needs to be kept in sync with the drawing traversal code.\n\nI was going to suggest that we add a \u0027noshade\u0027 flag to the existing traversal (to just not add shaders to the paint) and add a class \u0027SkCanvasBounds : public SkVirtualEnforcer\u003cSkNoDrawCanvas\u003e\u0027 which would be a canvas which records bounds (but doesn\u0027t draw anything). However, SkCanvas at the bottom unfortunately hard clips to ((0,0),(width,height)) so it\u0027s somewhat useless for finding bounds. (Yes, this means there is no way to create a generic record everything canvas.)\n\nSince I cannot suggest a simple fix, I suppose this is fine.",
+      "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
