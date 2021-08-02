@@ -11,6 +11,7 @@
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/effects/GrMatrixEffect.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
+#include "src/sksl/SkSLCPP.h"
 #include "src/sksl/SkSLUtil.h"
 
 using Wrap = GrSamplerState::WrapMode;
