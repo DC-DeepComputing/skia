@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73eb8e9f_d20b4ba5",
+        "filename": "src/gpu/GrDirectContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T15:15:22Z",
+      "side": 1,
+      "message": "Let\u0027s talk about this in a VC. I believe I tried this when I added the *ContextPriv classes and it was awkward. I think it would be worth trying again.",
+      "parentUuid": "028c6159_21a5dd6a",
+      "range": {
+        "startLine": 165,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 94
+      },
+      "revId": "edf5bacc944c3cbff21feb67507d9a38ca3b103b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a11347a_6f7d29eb",
         "filename": "src/gpu/GrRecordingContextPriv.cpp",
         "patchSetId": 6
@@ -54,6 +78,30 @@
       "writtenOn": "2021-08-02T14:49:43Z",
       "side": 1,
       "message": "nit: indent",
+      "range": {
+        "startLine": 295,
+        "startChar": 69,
+        "endLine": 304,
+        "endChar": 79
+      },
+      "revId": "edf5bacc944c3cbff21feb67507d9a38ca3b103b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a823ff_0300c709",
+        "filename": "src/gpu/GrRecordingContextPriv.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T15:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a11347a_6f7d29eb",
       "range": {
         "startLine": 295,
         "startChar": 69,
@@ -77,6 +125,30 @@
       "writtenOn": "2021-08-02T14:49:43Z",
       "side": 1,
       "message": "nit: indent (if it fits on all the lines). If it doesn\u0027t, chop down fContext and do 2 indents past the return?",
+      "range": {
+        "startLine": 345,
+        "startChar": 73,
+        "endLine": 352,
+        "endChar": 86
+      },
+      "revId": "edf5bacc944c3cbff21feb67507d9a38ca3b103b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1c85b5_37f96c74",
+        "filename": "src/gpu/GrRecordingContextPriv.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T15:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4141e821_53e520ba",
       "range": {
         "startLine": 345,
         "startChar": 73,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e22c024c_572e8d87",
+        "filename": "src/gpu/GrSurfaceContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T15:15:22Z",
+      "side": 1,
+      "message": "Yes - once in GrSurfaceProxy::Copy and once in GrSurfaceTest. In a future CL I will pull this into being dispatched through the recording context.",
+      "parentUuid": "3cd25c50_c138a9c2",
+      "range": {
+        "startLine": 43,
+        "startChar": 45,
+        "endLine": 43,
+        "endChar": 49
+      },
+      "revId": "edf5bacc944c3cbff21feb67507d9a38ca3b103b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54df4d3a_f2115a3e",
         "filename": "src/gpu/GrSurfaceContext.h",
         "patchSetId": 6
@@ -123,6 +219,30 @@
       "writtenOn": "2021-08-02T14:49:43Z",
       "side": 1,
       "message": "Same question? And if so, is there a targeted plan to get them hidden by the recording context too?",
+      "range": {
+        "startLine": 55,
+        "startChar": 45,
+        "endLine": 55,
+        "endChar": 49
+      },
+      "revId": "edf5bacc944c3cbff21feb67507d9a38ca3b103b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66744c9a_12753e5c",
+        "filename": "src/gpu/GrSurfaceContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-02T15:15:22Z",
+      "side": 1,
+      "message": "Currently yes - but only in our tests. In a future CL I will create a utility in tools to replace this entry point.",
+      "parentUuid": "54df4d3a_f2115a3e",
       "range": {
         "startLine": 55,
         "startChar": 45,
