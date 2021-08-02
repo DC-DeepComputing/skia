@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000014038866",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/433359?revision\u003d6",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c698ee76_b022b402",
+        "filename": "src/gpu/glsl/GrGLSLGeometryProcessor.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-08-02T13:49:15Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027they\u0027, \u0027them\u0027, or \u0027person\u0027; see https://developers.google.com/style/word-list#gender for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 244,
+        "startChar": 21,
+        "endLine": 244,
+        "endChar": 24
+      },
+      "revId": "817015b3af41fc0e04acdc693a250650e85568f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
