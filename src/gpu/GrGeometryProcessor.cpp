@@ -9,7 +9,6 @@
 
 #include "src/gpu/GrFragmentProcessor.h"
 
-
 GrGeometryProcessor::GrGeometryProcessor(ClassID classID) : GrProcessor(classID) {}
 
 const GrGeometryProcessor::TextureSampler& GrGeometryProcessor::textureSampler(int i) const {

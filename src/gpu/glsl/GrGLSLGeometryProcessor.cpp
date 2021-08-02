@@ -26,6 +26,7 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::emitCode(EmitArgs&
                                                        args.fVaryingHandler,
                                                        args.fUniformHandler,
                                                        gpArgs.fLocalCoordVar,
+                                                       gpArgs.fPositionVar,
                                                        pipeline);
 
     if (args.fGeomProc.willUseTessellationShaders()) {
@@ -76,18 +77,26 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::collectTransforms(
         GrGLSLVaryingHandler* varyingHandler,
         GrGLSLUniformHandler* uniformHandler,
         const GrShaderVar& localCoordsVar,
+        const GrShaderVar& positionVar,
         const GrPipeline& pipeline) {
     SkASSERT(localCoordsVar.getType() == kFloat2_GrSLType ||
              localCoordsVar.getType() == kFloat3_GrSLType ||
              localCoordsVar.getType() == kVoid_GrSLType);
+    SkASSERT(positionVar.getType() == kFloat2_GrSLType ||
+             positionVar.getType() == kFloat3_GrSLType);
+
+    enum class BaseCoord {
+        kNone,
+        kLocal,
+        kPosition
+    };
 
     auto baseLocalCoordFSVar = [&, baseLocalCoord = GrGLSLVarying()]() mutable {
         SkASSERT(GrSLTypeIsFloatType(localCoordsVar.getType()));
         if (baseLocalCoord.type() == kVoid_GrSLType) {
             // Initialize to the GP provided coordinate
-            SkString baseLocalCoordName = SkStringPrintf("LocalCoord");
             baseLocalCoord = GrGLSLVarying(localCoordsVar.getType());
-            varyingHandler->addVarying(baseLocalCoordName.c_str(), &baseLocalCoord);
+            varyingHandler->addVarying("LocalCoord", &baseLocalCoord);
             vb->codeAppendf("%s = %s;\n", baseLocalCoord.vsOut(), localCoordsVar.getName().c_str());
         }
         return baseLocalCoord.fsInVar();
@@ -102,7 +111,7 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::collectTransforms(
                                                   bool hasPerspective,
                                                   const GrFragmentProcessor* lastMatrixFP = nullptr,
                                                   int lastMatrixTraversalIndex = -1,
-                                                  bool inExplicitSubtree = false) mutable -> void {
+                                                  BaseCoord baseCoord = BaseCoord::kLocal) mutable -> void {
         ++traversalIndex;
         switch (fp.sampleUsage().kind()) {
             case SkSL::SampleUsage::Kind::kNone:
@@ -117,15 +126,27 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::collectTransforms(
                 lastMatrixFP = &fp;
                 lastMatrixTraversalIndex = traversalIndex;
                 break;
+            case SkSL::SampleUsage::Kind::kFragCoord:
+                hasPerspective = positionVar.getType() == kFloat3_GrSLType;
+                lastMatrixFP = nullptr;
+                lastMatrixTraversalIndex = -1;
+                baseCoord = BaseCoord::kPosition;
+                break;
             case SkSL::SampleUsage::Kind::kExplicit:
-                inExplicitSubtree = true;
+                baseCoord = BaseCoord::kNone;
                 break;
         }
 
         auto& [varyingFSVar, hasCoordsParam] = result[&fp];
         hasCoordsParam = fp.usesSampleCoordsDirectly();
 
-        if (fp.usesSampleCoordsDirectly() && !inExplicitSubtree) {
+        // We add a varying we're in a chain of matrices multiplied by local or device coords.
+        // If the coord is simply the local coord we add a varying. We don't if it is just the
+        // device coord since it doesn't save us anything over "sk_FragCoord.xy". Of course, if the
+        // FP doesn't use its coords then we skip.
+        if (fp.usesSampleCoordsDirectly() &&
+            (baseCoord == BaseCoord::kLocal ||
+            (baseCoord == BaseCoord::kPosition && lastMatrixFP)) ) {
             // Associate the varying with the highest possible node in the FP tree that shares the
             // same coordinates so that multiple FPs in a subtree can share. If there are no matrix
             // sample nodes on the way up the tree then directly use the local coord.
@@ -134,13 +155,13 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::collectTransforms(
             } else {
                 // If there is an already a varying that incorporates all matrices from the root to
                 // lastMatrixFP just use it. Otherwise, we add it.
-                auto& [varying, localCoord, varyingIdx] = fTransformVaryingsMap[lastMatrixFP];
+                auto& [varying, inputCoords, varyingIdx] = fTransformVaryingsMap[lastMatrixFP];
                 if (varying.type() == kVoid_GrSLType) {
                     varying = GrGLSLVarying(hasPerspective ? kFloat3_GrSLType : kFloat2_GrSLType);
                     SkString strVaryingName = SkStringPrintf("TransformedCoords_%d",
                                                              lastMatrixTraversalIndex);
                     varyingHandler->addVarying(strVaryingName.c_str(), &varying);
-                    localCoord = localCoordsVar;
+                    inputCoords = baseCoord == BaseCoord::kLocal ? localCoordsVar : positionVar;
                     varyingIdx = lastMatrixTraversalIndex;
                 }
                 SkASSERT(varyingIdx == lastMatrixTraversalIndex);
@@ -157,11 +178,12 @@ GrGLSLGeometryProcessor::FPCoordsMap GrGLSLGeometryProcessor::collectTransforms(
                      hasPerspective,
                      lastMatrixFP,
                      lastMatrixTraversalIndex,
-                     inExplicitSubtree);
+                     baseCoord);
                 // If we have a varying then we never need a param. Otherwise, if one of our
                 // children takes a non-explicit coord then we'll need our coord.
                 hasCoordsParam |= varyingFSVar.getType() == kVoid_GrSLType &&
                                   !child->sampleUsage().isExplicit()       &&
+                                  !child->sampleUsage().isFragCoord()      &&
                                   result[child].hasCoordsParam;
             }
         }
@@ -199,7 +221,7 @@ void GrGLSLGeometryProcessor::emitTransformCode(GrGLSLVertexBuilder* vb,
 
         // If we hit an ancestor with a varying on our walk up then save off the varying as the
         // input to our accumulated transformExpression. Start off assuming we'll reach the root.
-        GrShaderVar inputCoords = info.localCoords;
+        GrShaderVar inputCoords = info.inputCoords;
 
         for (const auto* base = fp->parent(); base; base = base->parent()) {
             if (auto iter = fTransformVaryingsMap.find(base); iter != fTransformVaryingsMap.end()) {
@@ -209,13 +231,16 @@ void GrGLSLGeometryProcessor::emitTransformCode(GrGLSLVertexBuilder* vb,
                 inputCoords = iter->second.varying.vsOutVar();
                 break;
             } else if (base->sampleUsage().isUniformMatrix()) {
-                // Accumulate any matrices along the path to either the original local coords or
-                // a parent varying. Getting here means this FP was sampled with a uniform matrix
+                // Accumulate any matrices along the path to either the original local/device coords
+                // or a parent varying. Getting here means this FP was sampled with a uniform matrix
                 // but all uses of coords below here in the FP hierarchy are beneath additional
                 // matrix samples and thus this node wasn't assigned a varying.
                 GrShaderVar uniform = uniformHandler->liftUniformToVertexShader(
                         *base->parent(), SkString(SkSL::SampleUsage::MatrixUniformName()));
                 transformExpression.appendf(" * %s", uniform.getName().c_str());
+            } else if (base->sampleUsage().isFragCoord()) {
+                // Our chain of matrices starts here and is based on the device space position.
+                break;
             } else {
                 // This intermediate FP is just a pass through and doesn't need to be built
                 // in to the expression, but we must visit its parents in case they add transforms.
