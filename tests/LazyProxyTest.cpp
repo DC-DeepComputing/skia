@@ -25,6 +25,7 @@
 #include "src/gpu/mock/GrMockGpu.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
+#if SK_GPU_V1
 // This test verifies that lazy proxy callbacks get invoked during flush, after onFlush callbacks,
 // but before Ops are executed. It also ensures that lazy proxy callbacks are invoked both for
 // regular Ops and for clips.
@@ -226,6 +227,7 @@ DEF_GPUTEST(LazyProxyTest, reporter, /* options */) {
         ctx->priv().testingOnly_flushAndRemoveOnFlushCallbackObject(&test);
     }
 }
+#endif // SK_GPU_V1
 
 static const int kSize = 16;
 
@@ -307,6 +309,7 @@ DEF_GPUTEST(LazyProxyReleaseTest, reporter, /* options */) {
     }
 }
 
+#if SK_GPU_V1
 class LazyFailedInstantiationTestOp : public GrDrawOp {
 public:
     DEFINE_OP_CLASS_ID
@@ -407,3 +410,4 @@ DEF_GPUTEST(LazyProxyFailedInstantiationTest, reporter, /* options */) {
         }
     }
 }
+#endif
