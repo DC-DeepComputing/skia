@@ -1473,6 +1473,7 @@ void SkCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edge
 }
 
 void SkCanvas::clipPath(const SkPath& path, SkClipOp op, bool doAA) {
+    return this->clipRect(path.getBounds(), op, doAA);
     this->checkForDeferredSave();
     ClipEdgeStyle edgeStyle = doAA ? kSoft_ClipEdgeStyle : kHard_ClipEdgeStyle;
 
@@ -1775,6 +1776,7 @@ void SkCanvas::drawVertices(const SkVertices* vertices, SkBlendMode mode, const 
 }
 
 void SkCanvas::drawPath(const SkPath& path, const SkPaint& paint) {
+    return this->drawRect(path.getBounds(), paint);
     TRACE_EVENT0("skia", TRACE_FUNC);
     this->onDrawPath(path, paint);
 }
