@@ -104,9 +104,9 @@ public:
 
     ~Device() override {}
 
-    SurfaceDrawContext* surfaceDrawContext() override;
+    SurfaceDrawContext* getV1SDC() override;
     const SurfaceDrawContext* surfaceDrawContext() const;
-    GrSurfaceFillContext* surfaceFillContext() override;
+    SurfaceFillContext_Base* surfaceFillContext() override;
 
     // set all pixels to 0
     void clearAll();

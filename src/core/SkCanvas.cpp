@@ -558,6 +558,11 @@ SkBaseDevice* SkCanvas::topDevice() const {
     return fMCRec->fDevice;
 }
 
+skgpu::BaseDevice* SkCanvas::topGpuDevice() {
+    SkASSERT(fMCRec->fDevice);
+    return fMCRec->fDevice->asGpuDevice();
+}
+
 bool SkCanvas::readPixels(const SkPixmap& pm, int x, int y) {
     return pm.addr() && this->baseDevice()->readPixels(pm, x, y);
 }
