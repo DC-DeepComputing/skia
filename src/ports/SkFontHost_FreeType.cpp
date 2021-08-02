@@ -37,6 +37,7 @@
 
 #include <ft2build.h>
 #include <freetype/ftadvanc.h>
+#include <freetype/ftimage.h>
 #include <freetype/ftbitmap.h>
 #ifdef FT_COLOR_H  // 2.10.0
 #   include <freetype/ftcolor.h>
@@ -987,6 +988,7 @@ bool SkScalerContext_FreeType::generateAdvance(SkGlyph* glyph) {
     const SkScalar advanceScalar = SkFT_FixedToScalar(advance);
     glyph->fAdvanceX = SkScalarToFloat(fMatrix22Scalar.getScaleX() * advanceScalar);
     glyph->fAdvanceY = SkScalarToFloat(fMatrix22Scalar.getSkewY() * advanceScalar);
+
     return true;
 }
 
@@ -1106,57 +1108,39 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph) {
                                      FT_COLOR_INCLUDE_ROOT_TRANSFORM, &opaqueLayerPaint)) {
           haveLayers = true;
 
-          // COLRv1 glyphs define a placeholder glyph in the glyf table that
-          // defines the extrema of the glyph. If this placeholder glyph
-          // contains only two points and FreeType applies the transform first -
-          // as configured by setupSize() - then we get a transformed bounding
-          // box that is too small as it only needs to fit the two points. To
-          // fix that, create a temporary contour consisting of all four corners
-          // of an imaginary rectangle enclosing those two points, then
-          // transform that and perform the bounding box computations on this
-          // one.
+          FT_BBox colrGlyphBbox;
 
-          FT_Set_Transform(fFace, nullptr, nullptr);
+          // COLRv1 optionally provides a ClipBox that we can use for allocation.
+          bool hasClipBox = FT_Get_ClipBox(fFace, glyph->getGlyphID(), &colrGlyphBbox);
+          if (hasClipBox) {
+              bounds = colrGlyphBbox;
+          } else {
+            // Otherwise we need to traverse the glyph graph with a focus on measuring the
+            // required bounding box.
+            FT_BBox computed_bounds;
+            if (!computeColrV1GlyphBoundingBox(fFace, glyph->getGlyphID(), &computed_bounds)) {
+              glyph->zeroMetrics();
+              return;
+            }
 
-          err = FT_Load_Glyph(fFace, glyph->getGlyphID(),
-                              fLoadGlyphFlags | FT_LOAD_BITMAP_METRICS_ONLY);
-          if (err != 0 || fFace->glyph->outline.n_contours == 0) {
-            glyph->zeroMetrics();
-            return;
+            // Reset face so the main glyph slot contains information about the
+            // base glyph again, for usage for computing and copying horizontal
+            // metrics from FreeType to Skia below.
+            if (this->setupSize()) {
+              glyph->zeroMetrics();
+              return;
+            }
+
+            FT_Error    err;
+            err = FT_Load_Glyph( fFace, glyph->getGlyphID(),
+                                 fLoadGlyphFlags | FT_LOAD_BITMAP_METRICS_ONLY );
+            if (err != 0) {
+              glyph->zeroMetrics();
+              return;
+            }
+
+            bounds = computed_bounds;
           }
-          emboldenIfNeeded(fFace, fFace->glyph, glyph->getGlyphID());
-
-          FT_BBox bbox_untransformed;
-          FT_Outline_Get_CBox(&fFace->glyph->outline, &bbox_untransformed);
-
-          FT_Outline bboxOutline;
-          err = FT_Outline_New(gFTLibrary->library(), 4, 0, &bboxOutline);
-          if (err != 0) {
-            glyph->zeroMetrics();
-            return;
-          }
-
-          // Compose a rectangle contour by setting the four corners.
-          bboxOutline.points[0].x = bbox_untransformed.xMin;
-          bboxOutline.points[0].y = bbox_untransformed.yMin;
-
-          bboxOutline.points[1].x = bbox_untransformed.xMin;
-          bboxOutline.points[1].y = bbox_untransformed.yMax;
-
-          bboxOutline.points[2].x = bbox_untransformed.xMax;
-          bboxOutline.points[2].y = bbox_untransformed.yMax;
-
-          bboxOutline.points[3].x = bbox_untransformed.xMax;
-          bboxOutline.points[3].y = bbox_untransformed.yMin;
-
-          FT_Outline_Transform(&bboxOutline, &fMatrix22);
-
-          FT_Outline faceOutline = fFace->glyph->outline;
-          fFace->glyph->outline = bboxOutline;
-          // Retrieve from temporarily replaced transformed rectangle outline.
-          getBBoxForCurrentGlyph(glyph, &bounds, true);
-          fFace->glyph->outline = faceOutline;
-          FT_Outline_Done(gFTLibrary->library(), &bboxOutline);
 
         }
 #endif // #TT_SUPPORT_COLRV1
@@ -1224,6 +1208,7 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph) {
         glyph->fHeight = SkToU16(height);
         glyph->fTop    = SkToS16(top   );
         glyph->fLeft   = SkToS16(left  );
+
         updateGlyphIfLCD(glyph);
 
     } else if (fFace->glyph->format == FT_GLYPH_FORMAT_BITMAP) {
