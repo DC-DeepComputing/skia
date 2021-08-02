@@ -1968,8 +1968,7 @@ void SkCanvas::onDrawBehind(const SkPaint& paint) {
     }
 
     SkIRect bounds;
-    SkDeque::Iter iter(fMCStack, SkDeque::Iter::kBack_IterStart);
-    for (;;) {
+    for (SkDeque::Iter iter(fMCStack, SkDeque::Iter::kBack_IterStart);;) {
         const MCRec* rec = (const MCRec*)iter.prev();
         if (!rec) {
             return; // no backimages, so nothing to draw
