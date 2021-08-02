@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3985b1b4_4007c7a7",
+        "filename": "src/gpu/glsl/GrGLSLGeometryProcessor.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-02T16:00:48Z",
+      "side": 1,
+      "message": "nit: This could just be a struct { GrShaderVar coordsVarying; bool inputCoordsArg; };\n\nI think it\u0027s fine either way, but I\u0027ve started avoiding tuple\u003c\u003e, just to get the benefits of member names (particularly in places where you want to access one field):\n\nfoo.coordsVarying conveys more info than std::get\u003c0\u003e(foo)",
+      "range": {
+        "startLine": 43,
+        "startChar": 42,
+        "endLine": 43,
+        "endChar": 71
+      },
+      "revId": "7ac164b3d4338a27bd744d5f1217019de34040f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc57ff0d_be45c638",
+        "filename": "src/gpu/glsl/GrGLSLProgramBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-02T16:00:48Z",
+      "side": 1,
+      "message": "extra words (delete?)",
+      "range": {
+        "startLine": 93,
+        "startChar": 24,
+        "endLine": 93,
+        "endChar": 35
+      },
+      "revId": "7ac164b3d4338a27bd744d5f1217019de34040f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
