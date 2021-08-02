@@ -541,8 +541,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
     SkASSERT(rt);
     SkASSERT(!this->caps()->avoidStencilBuffers());
 
-    GrAttachment* stencil = rt->getStencilAttachment(useMSAASurface);
-    if (stencil) {
+    if (GrAttachment* stencil = rt->getStencilAttachment(useMSAASurface)) {
         SkASSERT(stencil->numSamples() == num_stencil_samples(rt, useMSAASurface, *this->caps()));
         return true;
     }
@@ -578,7 +577,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         }
         rt->attachStencilAttachment(std::move(stencil), useMSAASurface);
     }
-    stencil = rt->getStencilAttachment(useMSAASurface);
+    GrAttachment* stencil = rt->getStencilAttachment(useMSAASurface);
     SkASSERT(!stencil ||
              stencil->numSamples() == num_stencil_samples(rt, useMSAASurface, *this->caps()));
     return stencil != nullptr;
