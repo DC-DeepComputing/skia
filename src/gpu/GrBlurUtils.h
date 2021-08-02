@@ -24,7 +24,7 @@ class SkMatrix;
 class SkPaint;
 class SkPath;
 class SkPathEffect;
-
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
 /**
  *  Blur utilities.

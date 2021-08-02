@@ -16,10 +16,12 @@
 #if SK_GPU_V1
 #include "src/gpu/v1/Device_v1.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#include "src/gpu/v1/SurfaceFillContext_v1.h"
 #endif
 #if SK_GPU_V2
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/v2/Device_v2.h"
+#include "src/gpu/v2/SurfaceDrawContext_v2.h"
+#include "src/gpu/v2/SurfaceFillContext_v2.h"
 #endif
 
 sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(GrColorType colorType,
@@ -71,6 +73,78 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(SkBudgeted budgete
 #if SK_GPU_V1
         return skgpu::v1::Device::Make(fContext, budgeted, ii, fit, sampleCount,
                                        mipmapped, isProtected, origin, props, init);
+#else
+        return nullptr;
+#endif
+    }
+}
+
+#if 0
+std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::createDrawContext(
+                                                                       GrRecordingContext* rContext,
+                                                                       GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       GrColorType colorType,
+                                                                       sk_sp<SkColorSpace> cs,
+                                                                       const SkSurfaceProps& props,
+                                                                       bool flushTimeOpsTask) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceDrawContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    } else
+#endif
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceDrawContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    }
+}
+#endif
+
+std::unique_ptr<skgpu::SurfaceFillContext_Base> GrRecordingContextPriv::createFillContext(
+                                                                       GrRecordingContext* rContext,
+                                                                       GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       const GrColorInfo& info,
+                                                                       bool flushTimeOpsTask) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceFillContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    } else
+#endif
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceFillContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info,
+                                                               flushTimeOpsTask);
 #else
         return nullptr;
 #endif
@@ -260,7 +334,7 @@ std::unique_ptr<GrSurfaceFillContext> GrRecordingContextPriv::makeSFC(SkAlphaTyp
         GrImageInfo info(GrColorType::kUnknown, alphaType, std::move(cs), dimensions);
         GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
         GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
-        auto fillContext = std::make_unique<GrSurfaceFillContext>(fContext,
+        auto fillContext = std::make_unique<SurfaceFillContext_Base>(fContext,
                                                                   std::move(readView),
                                                                   std::move(writeView),
                                                                   info.colorInfo());
