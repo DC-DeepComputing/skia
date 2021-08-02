@@ -197,7 +197,7 @@ static bool known_to_be_opposite_directions(const SkPath& a, const SkPath& b) {
 }
 
 bool SkStrokeAndFillPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
-                                     const SkRect*, const SkMatrix&) const {
+                                     const SkRect*, const SkMatrix& ctm) const {
     // This one is weird, since we exist to allow this paint-style to go away. If we see it,
     // just let the normal machine run its course.
     if (rec->getStyle() == SkStrokeRec::kStrokeAndFill_Style) {
@@ -206,7 +206,11 @@ bool SkStrokeAndFillPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec
     }
 
     if (rec->getStyle() == SkStrokeRec::kStroke_Style) {
+        const SkScalar origScale = rec->getResScale();
+        rec->setResScale(SkPaintPriv::ComputeResScaleForStroking(ctm));
+
         if (!rec->applyToPath(dst, src)) {
+            rec->setResScale(origScale);
             return false;
         }
 
@@ -215,6 +219,8 @@ bool SkStrokeAndFillPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec
         } else {
             dst->addPath(src);
         }
+
+        rec->setResScale(origScale);
     } else {
         *dst = src;
     }
