@@ -15,32 +15,37 @@
     additional data members or virtual methods. */
 class GrBaseContextPriv {
 public:
+    GrContext_Base* context() { return fContext4; }
+    const GrContext_Base* context() const { return fContext4; }
+
     // from GrContext_Base
-    uint32_t contextID() const { return fContext->contextID(); }
+    uint32_t contextID() const { return this->context()->contextID(); }
 
-    bool matches(GrContext_Base* candidate) const { return fContext->matches(candidate); }
+    bool matches(GrContext_Base* candidate) const { return this->context()->matches(candidate); }
 
-    const GrContextOptions& options() const { return fContext->options(); }
+    const GrContextOptions& options() const { return this->context()->options(); }
 
-    const GrCaps* caps() const { return fContext->caps(); }
+    const GrCaps* caps() const { return this->context()->caps(); }
     sk_sp<const GrCaps> refCaps() const;
 
-    GrImageContext* asImageContext() { return fContext->asImageContext(); }
-    GrRecordingContext* asRecordingContext() { return fContext->asRecordingContext(); }
-    GrDirectContext* asDirectContext() { return fContext->asDirectContext(); }
+    GrImageContext* asImageContext() { return this->context()->asImageContext(); }
+    GrRecordingContext* asRecordingContext() { return this->context()->asRecordingContext(); }
+    GrDirectContext* asDirectContext() { return this->context()->asDirectContext(); }
 
     GrContextOptions::ShaderErrorHandler* getShaderErrorHandler() const;
 
+protected:
+    explicit GrBaseContextPriv(GrContext_Base* context) : fContext4(context) {}
+
+    GrContext_Base* fContext4;
+
 private:
-    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
     GrBaseContextPriv(const GrBaseContextPriv&) = delete;
     GrBaseContextPriv& operator=(const GrBaseContextPriv&) = delete;
 
     // No taking addresses of this type.
     const GrBaseContextPriv* operator&() const;
     GrBaseContextPriv* operator&();
-
-    GrContext_Base* fContext;
 
     friend class GrContext_Base; // to construct/copy this type.
 };

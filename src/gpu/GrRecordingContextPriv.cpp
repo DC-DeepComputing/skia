@@ -18,6 +18,14 @@
 #include "src/gpu/v2/Device_v2.h"
 #endif
 
+sk_sp<const GrCaps> GrRecordingContextPriv::refCaps() const {
+    return this->context()->refCaps();
+}
+
+void GrRecordingContextPriv::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlushCBObject) {
+    this->context()->addOnFlushCallbackObject(onFlushCBObject);
+}
+
 sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(GrColorType colorType,
                                                               sk_sp<GrSurfaceProxy> proxy,
                                                               sk_sp<SkColorSpace> colorSpace,
@@ -27,8 +35,8 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(GrColorType colorT
 #if GR_TEST_UTILS
     if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
 #if SK_GPU_V2
-        return skgpu::v2::Device::Make(fContext, colorType, std::move(proxy), std::move(colorSpace),
-                                       origin, props, init);
+        return skgpu::v2::Device::Make(this->context(), colorType, std::move(proxy),
+                                       std::move(colorSpace), origin, props, init);
 #else
         return nullptr;
 #endif
@@ -36,8 +44,8 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(GrColorType colorT
 #endif
     {
 #if SK_GPU_V1
-        return skgpu::v1::Device::Make(fContext, colorType, std::move(proxy), std::move(colorSpace),
-                                       origin, props, init);
+        return skgpu::v1::Device::Make(this->context(), colorType, std::move(proxy),
+                                       std::move(colorSpace), origin, props, init);
 #else
         return nullptr;
 #endif
@@ -56,7 +64,7 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(SkBudgeted budgete
 #if GR_TEST_UTILS
     if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
 #if SK_GPU_V2
-        return skgpu::v2::Device::Make(fContext, budgeted, ii, fit, sampleCount,
+        return skgpu::v2::Device::Make(this->context(), budgeted, ii, fit, sampleCount,
                                        mipmapped, isProtected, origin, props, init);
 #else
         return nullptr;
@@ -65,7 +73,7 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(SkBudgeted budgete
 #endif
     {
 #if SK_GPU_V1
-        return skgpu::v1::Device::Make(fContext, budgeted, ii, fit, sampleCount,
+        return skgpu::v1::Device::Make(this->context(), budgeted, ii, fit, sampleCount,
                                        mipmapped, isProtected, origin, props, init);
 #else
         return nullptr;
@@ -74,7 +82,7 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(SkBudgeted budgete
 }
 
 void GrRecordingContextPriv::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
-    fContext->drawingManager()->moveRenderTasksToDDL(ddl);
+    this->context()->drawingManager()->moveRenderTasksToDDL(ddl);
 }
 
 GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) const {

@@ -36,5 +36,5 @@ sk_sp<GrImageContext> GrImageContext::MakeForPromiseImage(sk_sp<GrContextThreadS
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 sk_sp<const GrCaps> GrImageContextPriv::refCaps() const {
-    return fContext->refCaps();
+    return this->context()->refCaps();
 }

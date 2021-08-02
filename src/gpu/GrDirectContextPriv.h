@@ -12,6 +12,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/BaseDevice.h"
+#include "src/gpu/GrRecordingContextPriv.h"
 
 class GrAtlasManager;
 class GrBackendFormat;
@@ -28,39 +29,42 @@ class SkTaskGroup;
 /** Class that adds methods to GrDirectContext that are only intended for use internal to Skia.
     This class is purely a privileged window into GrDirectContext. It should never have additional
     data members or virtual methods. */
-class GrDirectContextPriv {
+class GrDirectContextPriv : GrRecordingContextPriv {
 public:
 
+    GrDirectContext* context() { return (GrDirectContext*) fContext1; }
+    const GrDirectContext* context() const { return (const GrDirectContext*) fContext1; }
+
     // from GrContext_Base
-    uint32_t contextID() const { return fContext->contextID(); }
+    uint32_t contextID() const { return this->context()->contextID(); }
 
-    bool matches(GrContext_Base* candidate) const { return fContext->matches(candidate); }
+    bool matches(GrContext_Base* candidate) const { return this->context()->matches(candidate); }
 
-    const GrContextOptions& options() const { return fContext->options(); }
+    const GrContextOptions& options() const { return this->context()->options(); }
 
-    const GrCaps* caps() const { return fContext->caps(); }
+    const GrCaps* caps() const { return this->context()->caps(); }
     sk_sp<const GrCaps> refCaps() const;
 
-    GrImageContext* asImageContext() { return fContext->asImageContext(); }
-    GrRecordingContext* asRecordingContext() { return fContext->asRecordingContext(); }
+    GrImageContext* asImageContext() { return this->context()->asImageContext(); }
+    GrRecordingContext* asRecordingContext() { return this->context()->asRecordingContext(); }
 
     // from GrRecordingContext
-    GrProxyProvider* proxyProvider() { return fContext->proxyProvider(); }
-    const GrProxyProvider* proxyProvider() const { return fContext->proxyProvider(); }
+    GrProxyProvider* proxyProvider() { return this->context()->proxyProvider(); }
+    const GrProxyProvider* proxyProvider() const { return this->context()->proxyProvider(); }
 
     /** This is only useful for debug purposes */
-    SkDEBUGCODE(GrSingleOwner* singleOwner() const { return fContext->singleOwner(); } )
+    SkDEBUGCODE(GrSingleOwner* singleOwner() const { return this->context()->singleOwner(); } )
 
     // from GrRecordingContext
-    GrDrawingManager* drawingManager() { return fContext->drawingManager(); }
+    GrDrawingManager* drawingManager() { return this->context()->drawingManager(); }
 
-    SkArenaAlloc* recordTimeAllocator() { return fContext->arenas().recordTimeAllocator(); }
-    GrRecordingContext::Arenas arenas() { return fContext->arenas(); }
+    SkArenaAlloc* recordTimeAllocator() { return this->context()->arenas().recordTimeAllocator(); }
+    GrRecordingContext::Arenas arenas() { return this->context()->arenas(); }
 
-    GrStrikeCache* getGrStrikeCache() { return fContext->fStrikeCache.get(); }
-    GrTextBlobCache* getTextBlobCache() { return fContext->getTextBlobCache(); }
+    GrStrikeCache* getGrStrikeCache() { return this->context()->fStrikeCache.get(); }
+    GrTextBlobCache* getTextBlobCache() { return this->context()->getTextBlobCache(); }
 
-    GrThreadSafeCache* threadSafeCache() { return fContext->threadSafeCache(); }
+    GrThreadSafeCache* threadSafeCache() { return this->context()->threadSafeCache(); }
 
     /**
      * Registers an object for flush-related callbacks. (See GrOnFlushCallbackObject.)
@@ -70,7 +74,7 @@ public:
      */
     void addOnFlushCallbackObject(GrOnFlushCallbackObject*);
 
-    GrAuditTrail* auditTrail() { return fContext->fAuditTrail.get(); }
+    GrAuditTrail* auditTrail() { return this->context()->fAuditTrail.get(); }
 
     /**
      * Finalizes all pending reads and writes to the surfaces and also performs an MSAA resolves
@@ -110,24 +114,24 @@ public:
     std::unique_ptr<GrFragmentProcessor> createPMToUPMEffect(std::unique_ptr<GrFragmentProcessor>);
     std::unique_ptr<GrFragmentProcessor> createUPMToPMEffect(std::unique_ptr<GrFragmentProcessor>);
 
-    SkTaskGroup* getTaskGroup() { return fContext->fTaskGroup.get(); }
+    SkTaskGroup* getTaskGroup() { return this->context()->fTaskGroup.get(); }
 
-    GrResourceProvider* resourceProvider() { return fContext->fResourceProvider.get(); }
-    const GrResourceProvider* resourceProvider() const { return fContext->fResourceProvider.get(); }
+    GrResourceProvider* resourceProvider() { return this->context()->fResourceProvider.get(); }
+    const GrResourceProvider* resourceProvider() const { return this->context()->fResourceProvider.get(); }
 
-    GrResourceCache* getResourceCache() { return fContext->fResourceCache.get(); }
+    GrResourceCache* getResourceCache() { return this->context()->fResourceCache.get(); }
 
-    GrGpu* getGpu() { return fContext->fGpu.get(); }
-    const GrGpu* getGpu() const { return fContext->fGpu.get(); }
+    GrGpu* getGpu() { return this->context()->fGpu.get(); }
+    const GrGpu* getGpu() const { return this->context()->fGpu.get(); }
 
     // This accessor should only ever be called by the GrOpFlushState.
     GrAtlasManager* getAtlasManager() {
-        return fContext->onGetAtlasManager();
+        return this->context()->onGetAtlasManager();
     }
 
     // This accessor should only ever be called by the GrOpFlushState.
     GrSmallPathAtlasMgr* getSmallPathAtlasMgr() {
-        return fContext->onGetSmallPathAtlasMgr();
+        return this->context()->onGetSmallPathAtlasMgr();
     }
 
     void createDDLTask(sk_sp<const SkDeferredDisplayList>,
@@ -136,13 +140,13 @@ public:
 
     bool compile(const GrProgramDesc&, const GrProgramInfo&);
 
-    GrContextOptions::PersistentCache* getPersistentCache() { return fContext->fPersistentCache; }
+    GrContextOptions::PersistentCache* getPersistentCache() { return this->context()->fPersistentCache; }
     GrContextOptions::ShaderErrorHandler* getShaderErrorHandler() const {
-        return fContext->fShaderErrorHandler;
+        return this->context()->fShaderErrorHandler;
     }
 
     GrClientMappedBufferManager* clientMappedBufferManager() {
-        return fContext->fMappedBufferManager.get();
+        return this->context()->fMappedBufferManager.get();
     }
 
     sk_sp<skgpu::BaseDevice> createDevice(GrColorType,
@@ -176,7 +180,7 @@ public:
     void printGpuStats() const;
 
     /** These are only active if GR_GPU_STATS == 1. */
-    void resetContextStats() const;
+    void resetContextStats();
     void dumpContextStats(SkString*) const;
     void dumpContextStatsKeyValuePairs(SkTArray<SkString>* keys, SkTArray<double>* values) const;
     void printContextStats() const;
@@ -190,7 +194,7 @@ public:
 #endif
 
 private:
-    explicit GrDirectContextPriv(GrDirectContext* context) : fContext(context) {}
+    explicit GrDirectContextPriv(GrDirectContext* dContext) : GrRecordingContextPriv(dContext) {}
     GrDirectContextPriv(const GrDirectContextPriv&) = delete;
     GrDirectContextPriv& operator=(const GrDirectContextPriv&) = delete;
 
@@ -198,9 +202,9 @@ private:
     const GrDirectContextPriv* operator&() const;
     GrDirectContextPriv* operator&();
 
-    GrDirectContext* fContext;
-
     friend class GrDirectContext; // to construct/copy this type.
+
+    using INHERITED = GrRecordingContextPriv;
 };
 
 inline GrDirectContextPriv GrDirectContext::priv() { return GrDirectContextPriv(this); }
