@@ -15,11 +15,10 @@
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceContext.h"
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrThreadSafePipelineBuilder.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/text/GrAtlasManager.h"
@@ -369,12 +368,12 @@ sk_sp<skgpu::BaseDevice> GrDirectContextPriv::createDevice(SkBudgeted budgeted,
                                                              origin, props, init);
 }
 
-std::unique_ptr<GrSurfaceContext> GrDirectContextPriv::makeSC(GrSurfaceProxyView readView,
+std::unique_ptr<skgpu::SurfaceContext> GrDirectContextPriv::makeSC(GrSurfaceProxyView readView,
                                                               const GrColorInfo& info) {
     return fContext->GrRecordingContext::priv().makeSC(readView, info);
 }
 
-std::unique_ptr<GrSurfaceFillContext> GrDirectContextPriv::makeSFC(GrImageInfo info,
+std::unique_ptr<skgpu::SurfaceFillContext> GrDirectContextPriv::makeSFC(GrImageInfo info,
                                                                    SkBackingFit fit,
                                                                    int sampleCount,
                                                                    GrMipmapped mipmapped,
@@ -385,7 +384,7 @@ std::unique_ptr<GrSurfaceFillContext> GrDirectContextPriv::makeSFC(GrImageInfo i
                                                         isProtected, origin, budgeted);
 }
 
-std::unique_ptr<GrSurfaceFillContext> GrDirectContextPriv::makeSFCWithFallback(
+std::unique_ptr<skgpu::SurfaceFillContext> GrDirectContextPriv::makeSFCWithFallback(
         GrImageInfo info,
         SkBackingFit fit,
         int sampleCount,
@@ -398,7 +397,7 @@ std::unique_ptr<GrSurfaceFillContext> GrDirectContextPriv::makeSFCWithFallback(
                                                                     origin, budgeted);
 }
 
-std::unique_ptr<GrSurfaceFillContext> GrDirectContextPriv::makeSFCFromBackendTexture(
+std::unique_ptr<skgpu::SurfaceFillContext> GrDirectContextPriv::makeSFCFromBackendTexture(
         GrColorInfo info,
         const GrBackendTexture& tex,
         int sampleCount,

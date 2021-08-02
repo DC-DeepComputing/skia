@@ -294,11 +294,11 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
                                        sk_sp<SkColorSpace> colorSpace,
                                        const SkSurfaceProps& surfaceProps,
                                        bool flushTimeOpsTask)
-        : GrSurfaceFillContext(rContext,
-                               std::move(readView),
-                               std::move(writeView),
-                               {colorType, kPremul_SkAlphaType, std::move(colorSpace)},
-                               flushTimeOpsTask)
+        : SurfaceFillContext(rContext,
+                             std::move(readView),
+                             std::move(writeView),
+                             {colorType, kPremul_SkAlphaType, std::move(colorSpace)},
+                             flushTimeOpsTask)
         , fSurfaceProps(surfaceProps)
         , fCanUseDynamicMSAA(
                 (fSurfaceProps.flags() & SkSurfaceProps::kDynamicMSAA_Flag) &&
@@ -1506,7 +1506,7 @@ void SurfaceDrawContext::drawImageLattice(const GrClip* clip,
 }
 
 void SurfaceDrawContext::drawDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable,
-                                       const SkRect& bounds) {
+                                      const SkRect& bounds) {
     GrOp::Owner op(GrDrawableOp::Make(fContext, std::move(drawable), bounds));
     SkASSERT(op);
     this->addOp(std::move(op));
@@ -1919,7 +1919,7 @@ void SurfaceDrawContext::drawShapeUsingPathRenderer(const GrClip* clip,
                                       aaType,
                                       this->colorInfo().isLinearlyBlended()};
     pr->drawPath(args);
-#endif
+#endif // SK_GPU_V1
 }
 
 void SurfaceDrawContext::addDrawOp(const GrClip* clip,
