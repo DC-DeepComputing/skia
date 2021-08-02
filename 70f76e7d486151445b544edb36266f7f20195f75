@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e3bfd5_17cc0b4e",
+        "filename": "src/gpu/ops/GrAtlasTextOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-02T14:38:33Z",
+      "side": 1,
+      "message": "nit: extra line",
+      "revId": "70f76e7d486151445b544edb36266f7f20195f75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
