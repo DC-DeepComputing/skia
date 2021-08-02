@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc1e77f5_d6002ee7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-02T14:20:03Z",
+      "side": 1,
+      "message": "Fix is in PS1-\u003ePS2 diff. We didn\u0027t check whether PBOs were supported by the GL context before binding PBO 0.",
+      "revId": "b20a75c0bc3d1529fd68ecd6f7064580c3e0e381",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
