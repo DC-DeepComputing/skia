@@ -21,6 +21,7 @@
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrTextureProxy.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
@@ -46,8 +47,7 @@ protected:
 #if SK_SUPPORT_GPU
     GrSurfaceProxyView createMaskTexture(GrRecordingContext*,
                                          const SkMatrix&,
-                                         const SkIRect& bounds,
-                                         const SkSurfaceProps&) const;
+                                         const SkIRect& bounds) const;
 #endif
 
 private:
@@ -102,11 +102,10 @@ void SkAlphaThresholdImageFilter::flatten(SkWriteBuffer& buffer) const {
 GrSurfaceProxyView SkAlphaThresholdImageFilter::createMaskTexture(
         GrRecordingContext* rContext,
         const SkMatrix& inMatrix,
-        const SkIRect& bounds,
-        const SkSurfaceProps& surfaceProps) const {
+        const SkIRect& bounds) const {
     auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(
             rContext, GrColorType::kAlpha_8, nullptr, SkBackingFit::kApprox, bounds.size(),
-            surfaceProps);
+            SkSurfaceProps());
     if (!sdc) {
         return {};
     }
@@ -115,11 +114,12 @@ GrSurfaceProxyView SkAlphaThresholdImageFilter::createMaskTexture(
     sdc->clear(SK_PMColor4fTRANSPARENT);
 
     while (!iter.done()) {
+        SkRect rect = SkRect::Make(iter.rect());
+
         GrPaint paint;
         paint.setPorterDuffXPFactory(SkBlendMode::kSrc);
 
-        SkRect rect = SkRect::Make(iter.rect());
-
+        sdc->drawRect(nullptr, std::move(paint), GrAA::kNo, inMatrix, rect);
         sdc->drawRect(nullptr, std::move(paint), GrAA::kNo, inMatrix, rect);
 
         iter.next();
@@ -196,8 +196,7 @@ sk_sp<SkSpecialImage> SkAlphaThresholdImageFilter::onFilterImage(const Context& 
         SkMatrix matrix(ctx.ctm());
         matrix.postTranslate(SkIntToScalar(-offset->fX), SkIntToScalar(-offset->fY));
 
-        GrSurfaceProxyView maskView = this->createMaskTexture(context, matrix, bounds,
-                                                              ctx.surfaceProps());
+        GrSurfaceProxyView maskView = this->createMaskTexture(context, matrix, bounds);
         if (!maskView) {
             return nullptr;
         }

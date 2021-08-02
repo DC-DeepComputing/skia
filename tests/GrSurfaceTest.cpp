@@ -18,9 +18,9 @@
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceContext.h"
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/BackendTextureImageFactory.h"
@@ -269,7 +269,7 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions) {
                             GrSurfaceProxyView view(std::move(proxy), kTopLeft_GrSurfaceOrigin,
                                                     swizzle);
                             GrColorInfo info(combo.fColorType, kPremul_SkAlphaType, nullptr);
-                            auto texCtx = GrSurfaceContext::Make(dContext, std::move(view), info);
+                            auto texCtx = skgpu::SurfaceContext::Make(dContext, std::move(view), info);
 
                             readback.erase(kClearColor);
                             if (texCtx->readPixels(dContext, readback, {0, 0})) {
@@ -293,12 +293,12 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions) {
                                          nullptr,
                                          {desc.fHeight, desc.fHeight});
 
-                        auto sc = GrSurfaceContext::Make(dContext,
-                                                         info,
-                                                         combo.fFormat,
-                                                         fit,
-                                                         kTopLeft_GrSurfaceOrigin,
-                                                         renderable);
+                        auto sc = skgpu::SurfaceContext::Make(dContext,
+                                                              info,
+                                                              combo.fFormat,
+                                                              fit,
+                                                              kTopLeft_GrSurfaceOrigin,
+                                                              renderable);
                         if (!sc) {
                             continue;
                         }
@@ -368,7 +368,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture, reporter, context_info) {
         GrSwizzle swizzle = dContext->priv().caps()->getReadSwizzle(proxy->backendFormat(),
                                                                     GrColorType::kRGBA_8888);
         GrSurfaceProxyView view(proxy, kTopLeft_GrSurfaceOrigin, swizzle);
-        auto surfContext = GrSurfaceContext::Make(dContext, std::move(view), ii.colorInfo());
+        auto surfContext = skgpu::SurfaceContext::Make(dContext, std::move(view), ii.colorInfo());
         // Read pixels should work with a read-only texture.
         {
             SkAutoPixmapStorage read;

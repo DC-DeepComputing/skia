@@ -753,6 +753,8 @@ static void test_1(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap2());
 }
 
+#if SK_GPU_V1
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View, reporter, ctxInfo) {
     test_1(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
@@ -760,6 +762,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View, reporter, ctxInfo) {
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1Verts, reporter, ctxInfo) {
     test_1(ctxInfo.directContext(), reporter, &TestHelper::addVertAccess, &TestHelper::checkVert);
 }
+
+#endif
 
 // Case 2: ensure that, if the direct context version wins, its result is reused by the
 //         DDL recorders

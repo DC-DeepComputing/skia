@@ -22,9 +22,9 @@
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #endif
 #include "src/core/SkClipOpPriv.h"
@@ -312,7 +312,7 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
         fp = as_BB(fBlender)->asFragmentProcessor(std::move(fgFP), std::move(fp), args);
     }
 
-    auto sfc = GrSurfaceFillContext::Make(rContext, info, SkBackingFit::kApprox);
+    auto sfc = skgpu::SurfaceFillContext_Base::Make(rContext, info, SkBackingFit::kApprox);
     if (!sfc) {
         return nullptr;
     }
