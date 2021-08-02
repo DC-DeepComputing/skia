@@ -15,6 +15,7 @@
 #include "src/core/SkCanvasPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/GrPaint.h"
 #include "src/gpu/GrStyle.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/glsl/GrGLSLFragmentProcessor.h"

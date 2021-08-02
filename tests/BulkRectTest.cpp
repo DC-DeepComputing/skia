@@ -10,6 +10,7 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrProxyProvider.h"
+#include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/ops/GrFillRectOp.h"
 #include "src/gpu/ops/GrTextureOp.h"
