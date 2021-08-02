@@ -162,9 +162,9 @@ public:
                                           const SkSurfaceProps&,
                                           skgpu::BaseDevice::InitContents);
 
-    std::unique_ptr<GrSurfaceContext> makeSC(GrSurfaceProxyView readView, const GrColorInfo&);
+    std::unique_ptr<skgpu::SurfaceContext> makeSC(GrSurfaceProxyView readView, const GrColorInfo&);
 
-    std::unique_ptr<GrSurfaceFillContext> makeSFC(GrImageInfo,
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFC(GrImageInfo,
                                                   SkBackingFit = SkBackingFit::kExact,
                                                   int sampleCount = 1,
                                                   GrMipmapped = GrMipmapped::kNo,
@@ -172,7 +172,7 @@ public:
                                                   GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
                                                   SkBudgeted = SkBudgeted::kYes);
 
-    std::unique_ptr<GrSurfaceFillContext> makeSFCWithFallback(
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFCWithFallback(
             GrImageInfo,
             SkBackingFit = SkBackingFit::kExact,
             int sampleCount = 1,
@@ -181,7 +181,7 @@ public:
             GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
             SkBudgeted = SkBudgeted::kYes);
 
-    std::unique_ptr<GrSurfaceFillContext> makeSFCFromBackendTexture(
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFCFromBackendTexture(
             GrColorInfo,
             const GrBackendTexture&,
             int sampleCount,

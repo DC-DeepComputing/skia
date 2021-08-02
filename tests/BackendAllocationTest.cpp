@@ -12,7 +12,7 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrProxyProvider.h"
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/image/SkImage_Base.h"

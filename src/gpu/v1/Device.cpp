@@ -281,7 +281,7 @@ bool Device::onAccessPixels(SkPixmap* pmap) {
     return false;
 }
 
-SurfaceDrawContext* Device::surfaceDrawContext() {
+SurfaceDrawContext* Device::getV1SDC() {
     ASSERT_SINGLE_OWNER
     return fSurfaceDrawContext.get();
 }
@@ -291,7 +291,7 @@ const SurfaceDrawContext* Device::surfaceDrawContext() const {
     return fSurfaceDrawContext.get();
 }
 
-GrSurfaceFillContext* Device::surfaceFillContext() {
+SurfaceFillContext_Base* Device::surfaceFillContext() {
     ASSERT_SINGLE_OWNER
     return fSurfaceDrawContext.get();
 }
