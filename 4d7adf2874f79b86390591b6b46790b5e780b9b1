@@ -33,6 +33,24 @@
       "message": "This is predicated on |style|, which was being mutated before; now we only update |frameAndFill| which is not part of the predicate \u003d\u003e functional change?",
       "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66dcd14_d121a8a4",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-02T14:35:34Z",
+      "side": 1,
+      "message": "Me *trying* to use frameAndFill to communicate this downstream ... failing so far",
+      "parentUuid": "94fa061d_22918b50",
+      "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
