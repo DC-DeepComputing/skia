@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72a1726c_8f8259b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-02T19:06:40Z",
+      "side": 1,
+      "message": "Hmmm, I like, even if its not totally needed yet, esp. if we could claw-back exposing the strokerec entirely from the public.",
+      "revId": "bef9f1c3145f148c958e6240ab27cc7bcfb3cdae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
