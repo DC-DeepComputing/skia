@@ -62,6 +62,7 @@ struct ARGB3DVertex {
     AtlasPt atlasPos;
 };
 
+#if SK_GPU_V1
 GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     switch (grMaskFormat) {
         case kA8_GrMaskFormat:   return GrAtlasTextOp::MaskType::kGrayscaleCoverage;
@@ -70,6 +71,7 @@ GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     }
     SkUNREACHABLE;
 }
+#endif
 
 SkPMColor4f calculate_colors(skgpu::v1::SurfaceDrawContext* sdc,
                              const SkPaint& paint,
@@ -215,6 +217,7 @@ void PathSubRun::draw(const GrClip* clip,
                       const SkGlyphRunList& glyphRunList,
                       const SkPaint& paint,
                       skgpu::v1::SurfaceDrawContext* sdc) const {
+#if SK_GPU_V1
     SkASSERT(!fPaths.empty());
     SkPoint drawOrigin = glyphRunList.origin();
     SkPaint runPaint{paint};
@@ -263,6 +266,7 @@ void PathSubRun::draw(const GrClip* clip,
                                                  viewMatrix, shape);
         }
     }
+#endif
 }
 
 bool PathSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
@@ -462,6 +466,7 @@ public:
 
     int glyphCount() const override;
 
+#if SK_GPU_V1
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip* clip,
                     const SkMatrixProvider& viewMatrix,
@@ -469,6 +474,7 @@ public:
                     const SkPaint& paint,
                     skgpu::v1::SurfaceDrawContext* sdc,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -557,11 +563,13 @@ void DirectMaskSubRun::draw(const GrClip* clip,
                             const SkGlyphRunList& glyphRunList,
                             const SkPaint& paint,
                             skgpu::v1::SurfaceDrawContext* sdc) const{
+#if SK_GPU_V1
     auto[drawingClip, op] = this->makeAtlasTextOp(
             clip, viewMatrix, glyphRunList, paint, sdc, nullptr);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 
 bool
@@ -631,6 +639,7 @@ calculate_clip(const GrClip* clip, SkRect deviceBounds, SkRect glyphBounds) {
 }
 }  // namespace
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip, const SkMatrixProvider& viewMatrix,
                                   const SkGlyphRunList& glyphRunList,
@@ -689,6 +698,7 @@ DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip, const SkMatrixProvider& vi
 
     return {clip, std::move(op)};
 }
+#endif
 
 void DirectMaskSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) {
     fGlyphs.packedGlyphIDToGrGlyph(cache);
@@ -851,6 +861,7 @@ public:
 
     GrAtlasSubRun* testingOnly_atlasSubRun() override;
 
+#if 0
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
                     const SkMatrixProvider& viewMatrix,
@@ -858,6 +869,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -931,11 +943,13 @@ void TransformedMaskSubRun::draw(const GrClip* clip,
                                  const SkGlyphRunList& glyphRunList,
                                  const SkPaint& paint,
                                  skgpu::v1::SurfaceDrawContext* sdc) const {
+#if SK_GPU_V1
     auto[drawingClip, op] = this->makeAtlasTextOp(
             clip, viewMatrix, glyphRunList, paint, sdc, nullptr);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 
 // If we are not scaling the cache entry to be larger, than a cache with smaller glyphs may be
@@ -947,6 +961,7 @@ bool TransformedMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawM
     return true;
 }
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                        const SkMatrixProvider& viewMatrix,
@@ -982,6 +997,7 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
             std::move(grPaint));
     return {clip, std::move(op)};
 }
+#endif
 
 void TransformedMaskSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) {
     fGlyphs.packedGlyphIDToGrGlyph(cache);
@@ -1106,6 +1122,7 @@ public:
 
     GrAtlasSubRun* testingOnly_atlasSubRun() override;
 
+#if 0
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
                     const SkMatrixProvider& viewMatrix,
@@ -1113,6 +1130,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -1197,6 +1215,8 @@ GrSubRunOwner SDFTSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
             has_some_antialiasing(runFont));
 }
 
+#if SK_GPU_V1
+
 static std::tuple<GrAtlasTextOp::MaskType, uint32_t, bool> calculate_sdf_parameters(
         const skgpu::v1::SurfaceDrawContext& sdc,
         const SkMatrix& drawMatrix,
@@ -1268,17 +1288,21 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
 
     return {clip, std::move(op)};
 }
+#endif
 
 void SDFTSubRun::draw(const GrClip* clip,
                       const SkMatrixProvider& viewMatrix,
                       const SkGlyphRunList& glyphRunList,
                       const SkPaint& paint,
                       skgpu::v1::SurfaceDrawContext* sdc) const {
+                      GrSurfaceDrawContext* sdc) const {
+#if SK_GPU_V1
     auto[drawingClip, op] = this->makeAtlasTextOp(
             clip, viewMatrix, glyphRunList, paint, sdc, nullptr);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 
 bool SDFTSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
@@ -1651,6 +1675,7 @@ public:
 
     int glyphCount() const override;
 
+#if SK_GPU_V1
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
                     const SkMatrixProvider& viewMatrix,
@@ -1658,6 +1683,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -1673,8 +1699,10 @@ private:
     const SkRect fGlyphDeviceBounds;
     const SkSpan<const DevicePosition> fLeftTopDevicePos;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -1746,6 +1774,7 @@ int DirectMaskSubRunNoCache::glyphCount() const {
     return SkCount(fGlyphs.glyphs());
 }
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 DirectMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
                                          const SkMatrixProvider& viewMatrix,
@@ -1806,6 +1835,7 @@ DirectMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
 
     return {clip, std::move(op)};
 }
+#endif
 
 void DirectMaskSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) {
     fGlyphs.packedGlyphIDToGrGlyph(cache);
@@ -1886,6 +1916,7 @@ public:
                                    GrMaskFormat format,
                                    GrSubRunAllocator* alloc);
 
+#if SK_GPU_V1
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
                     const SkMatrixProvider& viewMatrix,
@@ -1893,6 +1924,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -1915,8 +1947,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -1959,6 +1993,7 @@ GrAtlasSubRunOwner TransformedMaskSubRunNoCache::Make(
             GlyphVector::Make(strikeSpec, drawables.get<0>(), alloc));
 }
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
                                               const SkMatrixProvider& viewMatrix,
@@ -1997,6 +2032,7 @@ TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
             std::move(grPaint));
     return {clip, std::move(op)};
 }
+#endif
 
 void TransformedMaskSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) {
     fGlyphs.packedGlyphIDToGrGlyph(cache);
@@ -2107,6 +2143,7 @@ public:
                                    const SkStrikeSpec& strikeSpec,
                                    GrSubRunAllocator* alloc);
 
+#if SK_GPU_V1
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
                     const SkMatrixProvider& viewMatrix,
@@ -2114,6 +2151,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*,
                     GrAtlasSubRunOwner) const override;
+#endif
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) override;
 
@@ -2136,8 +2174,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -2193,6 +2233,7 @@ GrAtlasSubRunOwner SDFTSubRunNoCache::Make(
             has_some_antialiasing(runFont));
 }
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 SDFTSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
                                    const SkMatrixProvider& viewMatrix,
@@ -2236,6 +2277,7 @@ SDFTSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
 
     return {clip, std::move(op)};
 }
+#endif
 
 void SDFTSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) {
     fGlyphs.packedGlyphIDToGrGlyph(cache);
@@ -2343,6 +2385,7 @@ void GrSubRunNoCachePainter::processSourceMasks(
 void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                                 const SkFont& runFont,
                                                 const SkStrikeSpec& strikeSpec) {
+#if SK_GPU_V1
     SkASSERT(!drawables.empty());
     SkPoint drawOrigin = fGlyphRunList.origin();
     const SkPaint& drawPaint = fPaint;
@@ -2391,6 +2434,7 @@ void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPo
                     fSDC->recordingContext(), fSDC, fClip, runPaint, fViewMatrix, shape);
         }
     }
+#endif
 }
 
 void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
@@ -2404,6 +2448,7 @@ void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoi
 }
 
 void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
+#if SK_GPU_V1
     if (subRun == nullptr) {
         return;
     }
@@ -2413,5 +2458,6 @@ void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
     if (op != nullptr) {
         fSDC->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 

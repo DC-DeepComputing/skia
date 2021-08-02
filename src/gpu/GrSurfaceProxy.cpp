@@ -8,6 +8,7 @@
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
 
+#include "include/core/SkVertices.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkMathPriv.h"
 #include "src/gpu/GrAttachment.h"
@@ -20,6 +21,7 @@
 #include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrTextureRenderTargetProxy.h"
+//#include "src/gpu/GrOpsTask.h"
 
 #ifdef SK_DEBUG
 #include "include/gpu/GrDirectContext.h"
@@ -310,7 +312,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* context,
         GrSurfaceProxyView view(std::move(src), origin, GrSwizzle::RGBA());
         if (dstContext && dstContext->blitTexture(std::move(view), srcRect, dstPoint)) {
             if (outTask) {
-                *outTask = sk_ref_sp(dstContext->getOpsTask());
+                *outTask = dstContext->refTask();
             }
             return dstContext->asSurfaceProxyRef();
         }
