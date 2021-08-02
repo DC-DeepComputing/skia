@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "61d3530b_cbd0ed92",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "I\u0027d like Ethan to sign off on all the sksl stuff.",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "f2e85ea4_b3c16fc1",
         "filename": "/PATCHSET_LEVEL",
@@ -32,10 +33,10 @@
       "message": "Migrated SkSL changes to separate CL: http://review.skia.org/313139",
       "parentUuid": "61d3530b_cbd0ed92",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "be78efa7_2ea58ac4",
         "filename": "gm/vertices.cpp",
@@ -55,10 +56,10 @@
         "endChar": 0
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "5f040ee2_8721b218",
         "filename": "gm/vertices.cpp",
@@ -79,10 +80,10 @@
         "endChar": 0
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "28f7fc18_e0507dd6",
         "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
@@ -96,10 +97,10 @@
       "side": 1,
       "message": "Let\u0027s scope this block of code instead?",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "5ff6d01d_b4128ecc",
         "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
@@ -114,10 +115,10 @@
       "message": "Done",
       "parentUuid": "28f7fc18_e0507dd6",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "488de209_99b0fe06",
         "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
@@ -131,10 +132,10 @@
       "side": 1,
       "message": "Let\u0027s double check with whoever wrote this about naming here.  It looks like f1/f1 are meant to refer to the same thing?  (Is it literally the first and second \u0027f\u0027?)",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e6dee905_1ed2062a",
         "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
@@ -149,10 +150,10 @@
       "message": "+jlavrova@",
       "parentUuid": "488de209_99b0fe06",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "8818b085_df01f763",
         "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
@@ -167,10 +168,10 @@
       "message": "I\u0027ve restored the original names and wrapped the separate \u0027f1\u0027/\u0027f2\u0027 vars in separate scopes.",
       "parentUuid": "e6dee905_1ed2062a",
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "002f62e3_b10db13c",
         "filename": "src/core/SkContourMeasure.cpp",
@@ -190,10 +191,10 @@
         "endChar": 17
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "723e7d1f_7d198d6d",
         "filename": "src/core/SkContourMeasure.cpp",
@@ -214,10 +215,10 @@
         "endChar": 17
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "698e4fd0_4b5e0380",
         "filename": "src/core/SkContourMeasure.cpp",
@@ -237,10 +238,10 @@
         "endChar": 6
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "0afbb839_6d946e52",
         "filename": "src/core/SkContourMeasure.cpp",
@@ -261,10 +262,10 @@
         "endChar": 6
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "cd8bfe52_95a650a6",
         "filename": "src/core/SkContourMeasure.cpp",
@@ -285,10 +286,10 @@
         "endChar": 6
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d208a225_38df9b43",
         "filename": "src/core/SkPictureData.cpp",
@@ -308,10 +309,10 @@
         "endChar": 43
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "6dae5811_675a00ec",
         "filename": "src/core/SkPictureData.cpp",
@@ -332,10 +333,10 @@
         "endChar": 43
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "ae802f0d_73c699b3",
         "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
@@ -355,10 +356,10 @@
         "endChar": 23
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3136894f_3daa69c4",
         "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
@@ -379,10 +380,10 @@
         "endChar": 23
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e90748b8_b206a43c",
         "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
@@ -403,10 +404,34 @@
         "endChar": 23
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e46561f_624f07b1",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-02T18:52:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e90748b8_b206a43c",
+      "range": {
+        "startLine": 266,
+        "startChar": 14,
+        "endLine": 266,
+        "endChar": 23
+      },
+      "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "bcbf7dbc_85c0defd",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
@@ -426,10 +451,10 @@
         "endChar": 28
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "85d1fd18_bf30f217",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
@@ -450,10 +475,10 @@
         "endChar": 28
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "5b8732bb_67ad4695",
         "filename": "src/gpu/tessellate/GrPathTessellateOp.cpp",
@@ -473,10 +498,10 @@
         "endChar": 89
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "42f5802e_f3392764",
         "filename": "src/gpu/tessellate/GrPathTessellateOp.cpp",
@@ -497,10 +522,10 @@
         "endChar": 89
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6e1f311c_8f52e8a1",
         "filename": "src/opts/SkVM_opts.h",
@@ -520,10 +545,10 @@
         "endChar": 57
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "a514d1e6_9a6dcf97",
         "filename": "src/opts/SkVM_opts.h",
@@ -544,10 +569,10 @@
         "endChar": 57
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "dcab57a2_6cbe19fa",
         "filename": "src/sksl/SkSLParser.cpp",
@@ -567,10 +592,10 @@
         "endChar": 23
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "26502f08_39849ca9",
         "filename": "src/sksl/SkSLParser.cpp",
@@ -591,10 +616,10 @@
         "endChar": 23
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c6619761_83e83276",
         "filename": "tools/flags/CommandLineFlags.cpp",
@@ -614,10 +639,10 @@
         "endChar": 50
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "8221ca1e_115e2775",
         "filename": "tools/flags/CommandLineFlags.cpp",
@@ -638,8 +663,7 @@
         "endChar": 50
       },
       "revId": "03a5d92b4dd23b1939a9ebbb314d9e2778a1db9f",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

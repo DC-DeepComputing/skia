@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "8af9a56f_1c63a068",
         "filename": "src/gpu/text/GrAtlasManager.cpp",
@@ -20,10 +21,34 @@
         "endChar": 35
       },
       "revId": "052ece3e25384de07b0305eaff5955adbcb3796d",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93ef2c18_52a595a7",
+        "filename": "src/gpu/text/GrAtlasManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-02T18:52:26Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "8af9a56f_1c63a068",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 35
+      },
+      "revId": "052ece3e25384de07b0305eaff5955adbcb3796d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "a66878f3_e4a10b19",
         "filename": "src/pathops/SkOpAngle.cpp",
@@ -37,10 +62,10 @@
       "side": 0,
       "message": "I don\u0027t think I understand this code well enough to know if this is safe.",
       "revId": "052ece3e25384de07b0305eaff5955adbcb3796d",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "57b34dd5_75523c32",
         "filename": "src/pathops/SkPathOpsCubic.cpp",
@@ -60,8 +85,7 @@
         "endChar": 16
       },
       "revId": "052ece3e25384de07b0305eaff5955adbcb3796d",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
