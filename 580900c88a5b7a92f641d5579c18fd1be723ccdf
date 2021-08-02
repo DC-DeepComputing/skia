@@ -16,6 +16,23 @@
       "message": "Several of these APIs are only available on Unix.",
       "revId": "580900c88a5b7a92f641d5579c18fd1be723ccdf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c7bccf_37f0286f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-02T20:38:22Z",
+      "side": 1,
+      "message": "Thanks for the fix!  Can you confirm that the permissions are correct without these steps on Windows?",
+      "revId": "580900c88a5b7a92f641d5579c18fd1be723ccdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
