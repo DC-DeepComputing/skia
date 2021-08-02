@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcde36e8_d5532a0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-02T15:22:11Z",
+      "side": 1,
+      "message": "Actually ParallelIter is used by ParallelRange which is used in emitFragProc. But perhaps that can be rewritten....",
+      "parentUuid": "ea4d5f7d_17e1871e",
+      "revId": "c4456e42cb483f04cf1731527c407d509f7156ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e07b23e8_1430db6f",
