@@ -30,6 +30,7 @@ struct SkIRect;
 class SkMarkerStack;
 class SkRasterHandleAllocator;
 class SkSpecialImage;
+namespace skgpu { class SurfaceContext; }
 
 namespace skif { class Mapping; }
 namespace skgpu { class BaseDevice; }
@@ -197,6 +198,7 @@ public:
 
     virtual bool android_utils_clipWithStencil() { return false; }
 
+    virtual GrRecordingContext* recordingContext() const { return nullptr; }
     virtual skgpu::BaseDevice* asGpuDevice() { return nullptr; }
 
     // Ensure that non-RSXForm runs are passed to onDrawGlyphRunList.

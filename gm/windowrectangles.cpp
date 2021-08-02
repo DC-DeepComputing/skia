@@ -35,6 +35,7 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/GrUserStencilSettings.h"
+#include "src/gpu/SurfaceContext.h"
 #include "src/gpu/effects/GrDisableColorXP.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"

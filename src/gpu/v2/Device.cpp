@@ -26,7 +26,7 @@ Device::~Device() {}
 
 GrSurfaceProxyView Device::readSurfaceView() { return {}; }
 
-GrSurfaceFillContext* Device::surfaceFillContext() {
+SurfaceFillContext_Base* Device::surfaceFillContext() {
     return nullptr;
 }
 
