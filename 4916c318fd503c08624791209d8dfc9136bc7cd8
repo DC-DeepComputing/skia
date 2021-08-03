@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0c4f533_ea09be3b",
+        "filename": "src/core/SkContourMeasure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-03T14:09:48Z",
+      "side": 0,
+      "message": "Yup",
+      "parentUuid": "2491b238_24863b26",
+      "range": {
+        "startLine": 91,
+        "startChar": 28,
+        "endLine": 91,
+        "endChar": 32
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d665baf_dcb8ec1e",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d459035_dd43439b",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-03T14:09:48Z",
+      "side": 0,
+      "message": "TBH I don\u0027t see that it was shadowing anything a year ago either. This code looks roughly identical to last year\u0027s CL (https://skia-review.googlesource.com/c/skia/+/312480/17/src/core/SkPictureData.cpp )\n\nI might have just changed it to remove the awkward construct of `if ((n \u003d foo()) \u003e 0)`.",
+      "parentUuid": "9d665baf_dcb8ec1e",
+      "range": {
+        "startLine": 144,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 12
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57667c80_90dad0fd",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-08-03T13:01:59Z",
       "side": 0,
       "message": "This was the variable that shadowed the top-level \u0027i\u0027, right? Nothing else going on?",
+      "range": {
+        "startLine": 157,
+        "startChar": 17,
+        "endLine": 157,
+        "endChar": 22
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3931092_3a3c02c0",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-03T14:09:48Z",
+      "side": 0,
+      "message": "Yup",
+      "parentUuid": "57667c80_90dad0fd",
       "range": {
         "startLine": 157,
         "startChar": 17,
