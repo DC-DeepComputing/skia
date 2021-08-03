@@ -44,7 +44,7 @@ public:
 
     GrSurfaceProxyView readSurfaceView() override;
 
-    GrSurfaceFillContext* surfaceFillContext() override;
+    SurfaceFillContext* surfaceFillContext() override;
 
     bool wait(int numSemaphores,
               const GrBackendSemaphore* waitSemaphores,
@@ -78,6 +78,8 @@ public:
                                          RescaleMode,
                                          ReadPixelsCallback,
                                          ReadPixelsContext) override;
+
+    skgpu::BaseDevice* asGpuDevice() override { return this; }
 
 protected:
     void onSave() override;
