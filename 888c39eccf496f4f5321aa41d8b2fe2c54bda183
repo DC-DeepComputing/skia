@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0891c6c3_dc9ffcc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T12:55:44Z",
+      "side": 1,
+      "message": "I like this manner better, since we don\u0027t have to replicate inherited private functionality into the subclass\u0027s private interface anymore.",
+      "revId": "888c39eccf496f4f5321aa41d8b2fe2c54bda183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
