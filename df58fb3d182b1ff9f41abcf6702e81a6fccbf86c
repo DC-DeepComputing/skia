@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "369eb692_b4eec5fa",
+        "filename": "tests/sksl/runtime/AllowNarrowingConversions.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-03T15:18:48Z",
+      "side": 1,
+      "message": "PipelineStageCodeGenerator::writeReturnStatement adds a redundant half4 cast here.",
+      "range": {
+        "startLine": 7,
+        "startChar": 8,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "df58fb3d182b1ff9f41abcf6702e81a6fccbf86c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
