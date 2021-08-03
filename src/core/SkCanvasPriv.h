@@ -15,8 +15,10 @@ class SkReadBuffer;
 class SkWriteBuffer;
 
 #if GR_TEST_UTILS
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
-class GrSurfaceFillContext;
+namespace skgpu {
+    class SurfaceFillContext;
+    namespace v1 { class SurfaceDrawContext; }
+}
 #endif // GR_TEST_UTILS
 
 // This declaration must match the one in SkDeferredDisplayList.h
@@ -63,7 +65,7 @@ public:
 #if SK_GPU_V1
     static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
 #endif
-    static GrSurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
+    static skgpu::SurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
 #endif // GR_TEST_UTILS
     static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas*);
 
