@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41094b53_11e00332",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-08-03T23:27:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a919217_7af25d6b",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8de96b69_2024de2f",
@@ -173,6 +191,24 @@
       "side": 1,
       "message": "fyi I\u0027m currently implementing the bulk update. I\u0027ll update this change with that once I\u0027ve got it n on harfbuzz.",
       "parentUuid": "d8a9e838_ea8af7f7",
+      "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f9c3a5_b851f1e4",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-08-03T23:27:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a14b078c_dc3a4386",
       "revId": "23a8c4225356b0f9c4aff2cab54d0fe784b08ee8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
