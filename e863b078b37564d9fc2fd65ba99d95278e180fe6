@@ -18,6 +18,116 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d3b634d_61ed12f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "Regarding testing, I think there are two options:\n\n1) Use a fake/simplified expression manager implementation (ex: return constant values / pre-canned sequences) to test within the Skia code-base. http://google3/third_party/skia/HEAD/modules/skottie/tests/ might be relevant here?\n\n2) Use the real v8 expression manager with some real JSON exports on the Google3 side\n\nI think (2) might be better since the tests will be more realistic, but I\u0027ll defer to Florin if he has more specific suggestions.",
+      "parentUuid": "79c08b97_d6f943f9",
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bee22cb_0c314d53",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "I think this should be the templated type?",
+      "range": {
+        "startLine": 61,
+        "startChar": 35,
+        "endLine": 61,
+        "endChar": 41
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b04c0969_0074caea",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "Naming: This should be the expression string itself.",
+      "range": {
+        "startLine": 69,
+        "startChar": 78,
+        "endLine": 69,
+        "endChar": 95
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c717d03e_3a25cccf",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "Can these factory functions take a SkottieLogger reference to report errors in more detail?",
+      "range": {
+        "startLine": 69,
+        "startChar": 46,
+        "endLine": 69,
+        "endChar": 77
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6fab463_20ed0df5",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "\"If unspecified, expressions in the animation JSON will be ignored.\"",
+      "range": {
+        "startLine": 146,
+        "startChar": 68,
+        "endLine": 146,
+        "endChar": 69
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7f866b80_c0e79483",
@@ -59,6 +169,52 @@
         "startChar": 0,
         "endLine": 87,
         "endChar": 32
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d2fe02_f067c473",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "This seems redundant with the top-level check; Can you pass the ExpressionManager by reference to avoid having to do a nullptr check?",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 13
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "778e20a5_705dba6e",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-03T21:48:06Z",
+      "side": 1,
+      "message": "Nit: Use sk_make_sp instead?",
+      "range": {
+        "startLine": 97,
+        "startChar": 19,
+        "endLine": 97,
+        "endChar": 54
       },
       "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
