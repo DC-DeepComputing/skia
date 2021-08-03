@@ -57,6 +57,7 @@ sksl_error_tests = [
   "/sksl/errors/ForTypeMismatch.sksl",
   "/sksl/errors/FunctionParameterOfVoid.sksl",
   "/sksl/errors/GenericArgumentMismatch.sksl",
+  "/sksl/errors/PrecisionQualifiersDisallowed.sksl",
   "/sksl/errors/IfTypeMismatch.sksl",
   "/sksl/errors/InVarWithInitializerExpression.sksl",
   "/sksl/errors/InterfaceBlockScope.sksl",
