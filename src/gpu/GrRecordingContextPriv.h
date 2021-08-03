@@ -18,6 +18,11 @@ class GrImageInfo;
 class GrSwizzle;
 class SkDeferredDisplayList;
 
+namespace skgpu {
+    class SurfaceDrawContext;
+    class SurfaceFillContext_Base;
+}
+
 /** Class that exposes methods on GrRecordingContext that are only intended for use internal to
     Skia. This class is purely a privileged window into GrRecordingContext. It should never have
     additional data members or virtual methods. */
@@ -126,14 +131,14 @@ public:
 
     // If the passed in GrSurfaceProxy is renderable this will return a SurfaceDrawContext,
     // otherwise it will return a GrSurfaceContext.
-    std::unique_ptr<GrSurfaceContext> makeSC(GrSurfaceProxyView readView,
-                                             const GrColorInfo&);
+    std::unique_ptr<skgpu::SurfaceContext> makeSC(GrSurfaceProxyView readView,
+                                                  const GrColorInfo&);
 
     /**
      * Uses GrImageInfo's color type to pick the default texture format. Will return a
      * SurfaceDrawContext if possible.
      */
-    std::unique_ptr<GrSurfaceFillContext> makeSFC(GrImageInfo,
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFC(GrImageInfo,
                                                   SkBackingFit = SkBackingFit::kExact,
                                                   int sampleCount = 1,
                                                   GrMipmapped = GrMipmapped::kNo,
@@ -146,7 +151,7 @@ public:
      * texture format and swizzles. The color type will be kUnknown. Returns a SurfaceDrawContext
      * if possible.
      */
-    std::unique_ptr<GrSurfaceFillContext> makeSFC(SkAlphaType,
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFC(SkAlphaType,
                                                   sk_sp<SkColorSpace>,
                                                   SkISize dimensions,
                                                   SkBackingFit,
@@ -163,7 +168,7 @@ public:
      * Like the above but uses GetFallbackColorTypeAndFormat to find a fallback color type (and
      * compatible format) if the passed GrImageInfo's color type is not renderable.
      */
-    std::unique_ptr<GrSurfaceFillContext> makeSFCWithFallback(
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFCWithFallback(
             GrImageInfo,
             SkBackingFit = SkBackingFit::kExact,
             int sampleCount = 1,
@@ -177,7 +182,7 @@ public:
      * type must be compatible with backend texture's format or this will fail. All formats are
      * considered compatible with kUnknown. Returns a SurfaceDrawContext if possible.
      */
-    std::unique_ptr<GrSurfaceFillContext> makeSFCFromBackendTexture(
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> makeSFCFromBackendTexture(
             GrColorInfo,
             const GrBackendTexture&,
             int sampleCount,
@@ -186,6 +191,22 @@ public:
 
 protected:
     explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {}
+
+#if 0
+    std::unique_ptr<skgpu::SurfaceContext> createDrawContext(GrRecordingContext*,
+                                                             GrSurfaceProxyView readView,
+                                                             GrSurfaceProxyView writeView,
+                                                             GrColorType,
+                                                             sk_sp<SkColorSpace>,
+                                                             const SkSurfaceProps&,
+                                                             bool flushTimeOpsTask = false);
+
+    std::unique_ptr<skgpu::SurfaceFillContext_Base> createFillContext(GrRecordingContext*,
+                                                                 GrSurfaceProxyView readView,
+                                                                 GrSurfaceProxyView writeView,
+                                                                 const GrColorInfo&,
+                                                                 bool flushTimeOpsTask = false);
+#endif
 
 private:
     GrRecordingContextPriv(const GrRecordingContextPriv&) = delete;
