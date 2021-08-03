@@ -11,6 +11,7 @@
 #include "include/core/SkCubicMap.h"
 #include "include/core/SkPoint.h"
 #include "include/private/SkNoncopyable.h"
+#include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/src/animator/Animator.h"
 
 #include <vector>
@@ -109,6 +110,8 @@ public:
     virtual ~AnimatorBuilder();
 
     virtual sk_sp<KeyframeAnimator> makeFromKeyframes(const AnimationBuilder&, const skjson::ArrayValue&) = 0;
+
+    virtual sk_sp<Animator> makeFromExpression(sk_sp<ExpressionManager> em, sk_sp<Logger> logger, const SkString& expr) = 0;
 
     virtual bool parseValue(const AnimationBuilder&, const skjson::Value&) const = 0;
 
