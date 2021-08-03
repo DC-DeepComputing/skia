@@ -16,6 +16,75 @@
       "message": "PTAL, gold diffs seem correct now (the changes on the old GMs appear to be bug fixes)",
       "revId": "9a7d881bb96f5f8eae8f6e72b7a56d708daae2ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a020d1d_d7622b8b",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-03T18:19:37Z",
+      "side": 1,
+      "message": "ilogbf ?",
+      "range": {
+        "startLine": 156,
+        "startChar": 7,
+        "endLine": 156,
+        "endChar": 12
+      },
+      "revId": "9a7d881bb96f5f8eae8f6e72b7a56d708daae2ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e18206f_92e54c70",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-03T18:19:37Z",
+      "side": 1,
+      "message": "??",
+      "range": {
+        "startLine": 182,
+        "startChar": 7,
+        "endLine": 182,
+        "endChar": 51
+      },
+      "revId": "9a7d881bb96f5f8eae8f6e72b7a56d708daae2ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7b356c_b3df7ef5",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-03T18:19:37Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 1062,
+        "startChar": 34,
+        "endLine": 1062,
+        "endChar": 50
+      },
+      "revId": "9a7d881bb96f5f8eae8f6e72b7a56d708daae2ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
