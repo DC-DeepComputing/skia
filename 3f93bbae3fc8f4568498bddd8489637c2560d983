@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae0d10e5_097d4611",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T18:09:59Z",
+      "side": 1,
+      "message": "This leaves SkClipStack in somewhat of a clunky spot, since it\u0027s supporting both replace clip ops and these special ops. Its exposed API is also primarily there to support GrReducedClip, but that is also on the chopping block. We\u0027re just in a chicken-egg scenario but SkClipStack will be greatly simplified once expanding ops are gone fully.",
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
