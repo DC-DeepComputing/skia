@@ -34,6 +34,24 @@
       "parentUuid": "8844a32e_2c7f40c7",
       "revId": "23ffb1620d53e0970b04c3146d92a4be48ef1255",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe6e942_31991c96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-03T15:00:56Z",
+      "side": 1,
+      "message": "I see now. there was shadowing for \u0027i\u0027, not \u0027n\u0027, but the change involved both. That\u0027s what was confusing me.",
+      "parentUuid": "8cd4f84f_3c7f13e3",
+      "revId": "23ffb1620d53e0970b04c3146d92a4be48ef1255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
