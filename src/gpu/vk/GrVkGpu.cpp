@@ -1223,7 +1223,21 @@ static bool check_tex_image_info(const GrVkCaps& caps, const GrVkImageInfo& info
     if (info.fYcbcrConversionInfo.isValid() && info.fYcbcrConversionInfo.fExternalFormat != 0) {
         return true;
     }
+
+    // Linux + vaapi will provide images with the tiling field set
+    // as VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT, from the
+    // VK_EXT_image_drm_format_modifier.
+    // www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/VkImageTiling.html
+    constexpr int VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT = 1000158000;
+
+    if (info.fYcbcrConversionInfo.isValid() && info.fYcbcrConversionInfo.fExternalFormat != 0) {
+        return true;
+    }
     if (info.fImageTiling == VK_IMAGE_TILING_OPTIMAL) {
+        if (!caps.isVkFormatTexturable(info.fFormat)) {
+            return false;
+        }
+    } else if (info.fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
         if (!caps.isVkFormatTexturable(info.fFormat)) {
             return false;
         }
