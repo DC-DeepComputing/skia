@@ -17,6 +17,7 @@
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
 #include "src/gpu/GrTextureResolveRenderTask.h"
+#include "src/gpu/SurfaceFillContext.h"
 
 bool GrOnFlushResourceProvider::instatiateProxy(GrSurfaceProxy* proxy) {
     SkASSERT(proxy->canSkipResourceAllocator());

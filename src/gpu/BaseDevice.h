@@ -36,6 +36,9 @@ class GrSurfaceProxyView;
 
 namespace skgpu {
 
+class SurfaceFillContext;
+namespace v1 { class SurfaceDrawContext; }
+
 class BaseDevice : public BASE_DEVICE {
 public:
     enum InitContents {
@@ -53,9 +56,9 @@ public:
     virtual skgpu::v1::SurfaceDrawContext* surfaceDrawContext() { return nullptr; }
 #endif
 
-    virtual GrSurfaceFillContext* surfaceFillContext() = 0;
+    virtual SurfaceFillContext* surfaceFillContext() = 0;
     GrRenderTargetProxy* targetProxy();
-    GrRecordingContext* recordingContext() const { return fContext.get(); }
+    GrRecordingContext* recordingContext() const override { return fContext.get(); }
 
     virtual bool wait(int numSemaphores,
                       const GrBackendSemaphore* waitSemaphores,
@@ -90,6 +93,9 @@ public:
                                                  RescaleMode,
                                                  ReadPixelsCallback callback,
                                                  ReadPixelsContext context) = 0;
+
+    virtual v1::SurfaceDrawContext* getV1SDC() { return nullptr; }
+    virtual SurfaceFillContext* getSFC() { return nullptr; }
 
 protected:
     sk_sp<GrRecordingContext> fContext;

@@ -25,7 +25,7 @@
 #include "src/gpu/GrImageInfo.h"
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/GrSurfaceFillContext.h"
+#include "src/gpu/SurfaceFillContext.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 #include "src/image/SkSurface_Gpu.h"
@@ -755,7 +755,7 @@ static sk_sp<SkSurface> create_gpu_surface_backend_render_target(GrDirectContext
 
 static void test_surface_context_clear(skiatest::Reporter* reporter,
                                        GrDirectContext* dContext,
-                                       GrSurfaceContext* surfaceContext,
+                                       skgpu::SurfaceContext* surfaceContext,
                                        uint32_t expectedValue) {
     int w = surfaceContext->width();
     int h = surfaceContext->height();

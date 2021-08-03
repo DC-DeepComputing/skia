@@ -39,6 +39,7 @@
 
 class GrBackendRenderTarget;
 class GrRecordingContext;
+namespace skgpu { class BaseDevice; }
 class SkBaseDevice;
 class SkBitmap;
 class SkData;
