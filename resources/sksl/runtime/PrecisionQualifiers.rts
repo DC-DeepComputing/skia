@@ -1,5 +1,8 @@
 uniform half4 colorGreen;
 
+uniform mediump int3 mediumpUniform;
+uniform highp float2x2 highpUniform;
+
 vec4 main(vec2 coords) {
     highp vec4 zero = vec4(0);
     mediump vec4 green = colorGreen;

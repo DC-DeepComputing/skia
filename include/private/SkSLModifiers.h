@@ -58,14 +58,14 @@ struct Modifiers {
         if (fFlags & kHasSideEffects_Flag) {
             result += "sk_has_side_effects ";
         }
-        if (fFlags & kNoInline_Flag) {
-            result += "noinline ";
+        if (fFlags & kMediump_Flag) {
+            result += "mediump ";
         }
         if (fFlags & kHighp_Flag) {
             result += "highp ";
         }
-        if (fFlags & kMediump_Flag) {
-            result += "mediump ";
+        if (fFlags & kNoInline_Flag) {
+            result += "noinline ";
         }
         if ((fFlags & kIn_Flag) && (fFlags & kOut_Flag)) {
             result += "inout ";

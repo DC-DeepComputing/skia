@@ -1,0 +1,6 @@
+### Compilation failed:
+
+error: 3: only one precision qualifier can be used
+error: 4: type 'S' does not support precision qualifiers
+error: 5: type 'S' does not support precision qualifiers
+3 errors

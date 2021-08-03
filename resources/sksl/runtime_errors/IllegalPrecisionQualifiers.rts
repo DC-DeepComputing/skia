@@ -1,0 +1,5 @@
+struct S { int i; };
+
+void multiple()  { mediump highp int i; }
+void no_struct() { highp S s; }
+void no_struct() { highp S s; }

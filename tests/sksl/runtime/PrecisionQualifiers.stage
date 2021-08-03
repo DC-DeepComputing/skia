@@ -1,6 +1,10 @@
-### Compilation failed:
-
-error: 4: 'highp' is not permitted here
-error: 5: 'mediump' is not permitted here
-error: 6: 'mediump' is not permitted here
-3 errors
+uniform half4 colorGreen;
+uniform mediump short3 mediumpUniform;
+uniform highp float2x2 highpUniform;
+float4 main(float2 coords)
+{
+	float4 zero = float4(0.0);
+	half4 green = colorGreen;
+	half4 one = half4(1.0);
+	return half4(float4(green * one) + zero);
+}
