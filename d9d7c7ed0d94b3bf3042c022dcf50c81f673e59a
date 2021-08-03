@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3269f134_ef81f621",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T13:01:59Z",
+      "side": 1,
+      "message": "I get what this is doing, and I like that n is limited to it\u0027s used scope but it\u0027s an unusual if statement form.\n\nGiven that these are SkTArrays and we\u0027re doing slow/disk-bound serialization, maybe we just call fPaints.count() and fPaths.count() in the for loop?",
+      "range": {
+        "startLine": 146,
+        "startChar": 11,
+        "endLine": 146,
+        "endChar": 42
+      },
+      "revId": "d9d7c7ed0d94b3bf3042c022dcf50c81f673e59a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

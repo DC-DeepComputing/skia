@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2491b238_24863b26",
+        "filename": "src/core/SkContourMeasure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T13:01:59Z",
+      "side": 0,
+      "message": "This was shadowing SkPoint tmp1 at l48, nothing else I\u0027m missing?",
+      "range": {
+        "startLine": 91,
+        "startChar": 28,
+        "endLine": 91,
+        "endChar": 32
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d665baf_dcb8ec1e",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T13:01:59Z",
+      "side": 0,
+      "message": "n wasn\u0027t really shadowing anything at the moment, right?",
+      "range": {
+        "startLine": 144,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 12
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57667c80_90dad0fd",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T13:01:59Z",
+      "side": 0,
+      "message": "This was the variable that shadowed the top-level \u0027i\u0027, right? Nothing else going on?",
+      "range": {
+        "startLine": 157,
+        "startChar": 17,
+        "endLine": 157,
+        "endChar": 22
+      },
+      "revId": "4916c318fd503c08624791209d8dfc9136bc7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
