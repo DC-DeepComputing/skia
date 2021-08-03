@@ -1266,7 +1266,7 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* rContext,
     if (!draw.applyDeviceBounds(fDeviceBounds)) {
         return Effect::kClippedOut;
     }
-    SkAssertResult(bounds->intersect(SkRect::Make(fDeviceBounds)));
+    *bounds = draw.bounds(); // may be further restricted by a scissor later on
 
     const SaveRecord& cs = this->currentSaveRecord();
     // Early out if we know a priori that the clip is full 0s or full 1s.
@@ -1451,7 +1451,8 @@ GrClip::Effect GrClipStack::apply(GrRecordingContext* rContext,
     if (cs.op() == SkClipOp::kIntersect && !elementsForMask.empty()) {
         SkAssertResult(scissorBounds.intersect(draw.outerBounds()));
     }
-    if (!GrClip::IsInsideClip(scissorBounds, *bounds)) {
+    const bool needsScissor = !SkRect::Make(scissorBounds).contains(*bounds);
+    if (needsScissor) {
         out->hardClip().addScissor(scissorBounds, bounds);
     }
     if (!windowRects.empty()) {
