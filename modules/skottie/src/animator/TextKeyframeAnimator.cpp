@@ -61,6 +61,10 @@ public:
                                                 fTarget));
     }
 
+    sk_sp<Animator> makeFromExpression(ExpressionManager&, sk_sp<Logger>, const SkString&) override {
+        return nullptr;
+    }
+
     bool parseValue(const AnimationBuilder& abuilder, const skjson::Value& jv) const override {
         return Parse(jv, abuilder, fTarget);
     }

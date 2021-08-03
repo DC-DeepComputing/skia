@@ -53,6 +53,23 @@ public:
     virtual void log(Level, const char message[], const char* json = nullptr);
 };
 
+// Evaluates AE expressions.
+template <class T>
+class SK_API ExpressionEvaluator : public SkRefCnt {
+public:
+    // Evaluate the expression at the current time. Returns false if an error occurred.
+    virtual bool Evaluate(float t, T* target) = 0;
+};
+
+/**
+ * Creates ExpressionEvaluators to evaluate AE expressions and return the results.
+ */
+class SK_API ExpressionManager : public SkRefCnt {
+public:
+    // logger will be null if a logger has not been provided.
+    virtual sk_sp<ExpressionEvaluator<float>> CreateNumberExpressionEvaluator(const char expression[], sk_sp<Logger> logger) = 0;
+};
+
 /**
  * Interface for receiving AE composition markers at Animation build time.
  */
@@ -127,6 +144,12 @@ public:
         Builder& setPrecompInterceptor(sk_sp<PrecompInterceptor>);
 
         /**
+         * Registers an ExpressionManager to evaluate AE expressions.
+         * If unspecified, expressions in the animation JSON will be ignored.
+         */
+        Builder& setExpressionManager(sk_sp<ExpressionManager>);
+
+        /**
          * Animation factories.
          */
         sk_sp<Animation> make(SkStream*);
@@ -142,6 +165,7 @@ public:
         sk_sp<Logger>             fLogger;
         sk_sp<MarkerObserver  >   fMarkerObserver;
         sk_sp<PrecompInterceptor> fPrecompInterceptor;
+        sk_sp<ExpressionManager>  fExpressionManager;
         Stats                     fStats;
     };
 

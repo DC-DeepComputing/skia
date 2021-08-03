@@ -23,6 +23,8 @@ public:
 
     sk_sp<KeyframeAnimator> makeFromKeyframes(const AnimationBuilder&, const skjson::ArrayValue&) override;
 
+    sk_sp<Animator> makeFromExpression(ExpressionManager&, sk_sp<Logger>, const SkString&) override;
+
 private:
     bool parseValue(const AnimationBuilder&, const skjson::Value&) const override;
 

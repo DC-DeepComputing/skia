@@ -39,6 +39,32 @@ private:
     using INHERITED = KeyframeAnimator;
 };
 
+    // Scalar specialization: stores scalar values (floats).
+class ScalarExpressionAnimator final : public Animator {
+public:
+    ScalarExpressionAnimator(sk_sp<ExpressionEvaluator<ScalarValue>> expression_evaluator, sk_sp<Logger> logger, ScalarValue* target_value) :
+        fExpressionEvaluator(std::move(expression_evaluator)), fLogger(std::move(logger)), fTarget(target_value) {}
+
+private:
+
+    StateChanged onSeek(float t) override {
+        auto old_value = *fTarget;
+
+        bool success = fExpressionEvaluator->Evaluate(t, fTarget);
+        if (!success && fLogger && !hasLogged) {
+            // Only log once to avoid spam.
+            hasLogged = true;
+            fLogger->log(Logger::Level::kError, "Unable to evaluate the expression.");
+        }
+        return *fTarget != old_value;
+    }
+
+    sk_sp<ExpressionEvaluator<ScalarValue>> fExpressionEvaluator;
+    sk_sp<Logger> fLogger;
+    ScalarValue* fTarget;
+    bool hasLogged = false;
+};
+
 class ScalarAnimatorBuilder final : public AnimatorBuilder {
     public:
         explicit ScalarAnimatorBuilder(ScalarValue* target) : fTarget(target) {}
@@ -53,6 +79,18 @@ class ScalarAnimatorBuilder final : public AnimatorBuilder {
             return sk_sp<ScalarKeyframeAnimator>(
                         new ScalarKeyframeAnimator(std::move(fKFs), std::move(fCMs), fTarget));
         }
+
+        sk_sp<Animator> makeFromExpression(ExpressionManager& em, sk_sp<Logger> logger, const SkString& expr) override {
+            sk_sp<ExpressionEvaluator<ScalarValue>> expression_evaluator = em.CreateNumberExpressionEvaluator(expr.c_str(), logger);
+            if (!expression_evaluator) {
+                if (logger) {
+                    logger->log(Logger::Level::kWarning, "Expression evaluator could not be created.");
+                }
+                return nullptr;
+            }
+            return sk_make_sp<ScalarExpressionAnimator>(expression_evaluator, std::move(logger), fTarget);
+        }
+
 
         bool parseValue(const AnimationBuilder&, const skjson::Value& jv) const override {
             return Parse(jv, fTarget);

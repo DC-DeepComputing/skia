@@ -56,10 +56,7 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
 
     const auto& jpropA = (*jprop)["a"];
     const auto& jpropK = (*jprop)["k"];
-
-    if (!(*jprop)["x"].is<skjson::NullValue>()) {
-        abuilder.log(Logger::Level::kWarning, nullptr, "Unsupported expression.");
-    }
+    const auto& jpropX = (*jprop)["x"];
 
     // Older Json versions don't have an "a" animation marker.
     // For those, we attempt to parse both ways.
@@ -73,6 +70,23 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
             abuilder.log(Logger::Level::kError, jprop,
                          "Could not parse (explicit) static property.");
             return false;
+        }
+    }
+
+    // Handle expressions on the property.
+    if (!jpropX.is<skjson::NullValue>()) {
+        if (!abuilder.expression_manager()) {
+            abuilder.log(Logger::Level::kWarning, jprop,
+                         "Expression encountered but ExpressionManager not provided.");
+        } else {
+            SkString expression;
+            if (Parse(jpropX, &expression)) {
+                sk_sp<Animator> expression_animator = builder.makeFromExpression(*abuilder.expression_manager(), abuilder.logger(), expression);
+                if (expression_animator) {
+                    fAnimators.push_back(std::move(expression_animator));
+                    return true;
+                }
+            }
         }
     }
 
