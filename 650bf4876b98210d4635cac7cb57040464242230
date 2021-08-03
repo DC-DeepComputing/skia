@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e09d23a_c4ab19d8",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T16:55:11Z",
+      "side": 1,
+      "message": "This was based off Chris\u0027 idea to avoid false positives that were coming up when trying to fix the earlier versions of the PS. Since computing the midpoint of the line segment is stable, we can basically do a binary search over the really long segment until we are using vertices that aren\u0027t so huge that the line/distance equations are inaccurate. \n\nTesting locally, this still avoids the OOMs and timeouts of previously known fuzzer bugs and all the tests still pass.\n\nI opted to only recurse if the it was detected as a positive line intersection. Trying to recurse if it was not an intersection just ends up visiting every sub segment with lots of unnecessary tests. Maybe there\u0027s a better way to handle false negatives, but it also hasn\u0027t seemed to be necessary yet.",
+      "range": {
+        "startLine": 167,
+        "startChar": 12,
+        "endLine": 167,
+        "endChar": 36
+      },
+      "revId": "650bf4876b98210d4635cac7cb57040464242230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

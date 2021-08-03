@@ -22,6 +22,30 @@
       },
       "revId": "747c32192285e5809cca407b56af0219dfc051e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a041a05c_a02291f8",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T16:55:11Z",
+      "side": 0,
+      "message": "With the new behavior of clamp operating on x and y independently, nearly_flat isn\u0027t needed at all.\n\nPreviously, when nearly flat, an intersection might be snapped to sorting direction\u0027s component but have an unsorted secondary component. If it were then passed to the old version of clamp(), it would snap the entire intersection vertex to the end points of the line (losing the proper value for that secondary component).\n\nClamping x and y resolves any float errors in roughly the same manner w/o having to branch on whether or not the line is nearly flat. If it ends up coincident with an actual edge vertex that\u0027s detected later still, and if it\u0027s unsorted, it\u0027ll be inserted in the proper place.",
+      "parentUuid": "4f3716a9_5ee2d74c",
+      "range": {
+        "startLine": 971,
+        "startChar": 8,
+        "endLine": 975,
+        "endChar": 9
+      },
+      "revId": "747c32192285e5809cca407b56af0219dfc051e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
