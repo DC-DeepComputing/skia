@@ -73,6 +73,9 @@ module.exports = function(config) {
             // This can also help avoid crashes/timeouts:
             // https://github.com/GoogleChrome/puppeteer/issues/1834
             '--disable-dev-shm-usage',
+            // These flags workaround old swiftshader bugs (b/188239650)
+            '--use-angle=swiftshader',
+            '--use-gl=swiftshader',
           ],
         },
     };
