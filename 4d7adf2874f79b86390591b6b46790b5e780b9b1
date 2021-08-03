@@ -68,6 +68,24 @@
       "message": "After staring at this for a while, I think right here all that is needed is\n\n    if ((style !\u003d SkPaint::kFillStyle || frameAndFill) \u0026\u0026 strokeWidth \u003e\u003d 0) {\n\nEssentially, Stroke needs stroke, StokeAndFill needs stroke, and Fill with frameAndFill already set also needs stroke.",
       "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b96fb4c7_5a143a60",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-03T18:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c680a6_375a119c",
+      "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
