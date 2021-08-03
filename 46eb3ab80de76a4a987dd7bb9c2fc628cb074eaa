@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f441a320_29382d8b",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-03T19:04:48Z",
+      "side": 0,
+      "message": "So the only way to get to this line was to set stroke width to 0, not set fake bold (since it would add some positive value to the stroke width), and request the stroke and fill style. So removing this bit like this is fine, since with this change there will be no way to get to this case. (The only way to set frame and fill is with fake bold, which means the frame width will not be 0.)",
+      "revId": "46eb3ab80de76a4a987dd7bb9c2fc628cb074eaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
