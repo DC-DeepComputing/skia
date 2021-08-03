@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c08b97_d6f943f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-03T18:41:15Z",
+      "side": 1,
+      "message": "Hey can you take a quick look and let me know what you think! Also, where/how should this be tested?",
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f866b80_c0e79483",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-03T18:41:15Z",
+      "side": 1,
+      "message": "I realize this isn\u0027t the typical way most of this is done. Wdyt?",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 179,
+        "endChar": 33
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae07ad8c_6b8ef0c3",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-03T18:41:15Z",
+      "side": 1,
+      "message": "Note: no keyframe animator will be created if we create an expression animator.",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 32
+      },
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
