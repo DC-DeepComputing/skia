@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7298333_95c66cce",
+        "filename": "src/gpu/GrReducedClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T17:51:36Z",
+      "side": 0,
+      "message": "I don\u0027t know why the gerrit diff is so bad, but all this is really doing is moving the old kReplace_SkClipOp case to the if, switching the intersect and difference cases to else-if clauses, and then one final switch that contains all the expanding clip ops. This is done so that the expanding ops can be deleted all together while preserving the replace behavior using the new replace element that SkClipStack can have.",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 35
+      },
+      "revId": "7e431f7e2f0319775f4928568d536b9307ab35d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
