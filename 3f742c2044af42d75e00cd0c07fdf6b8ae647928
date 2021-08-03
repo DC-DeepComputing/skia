@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a774a37a_f1b6db0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T16:37:19Z",
+      "side": 1,
+      "message": "Nope, the changes in earlier patch sets triggered new additional bugs with the triangulator. I think they are resolved with this latest version.",
+      "parentUuid": "646d077e_fffc52e8",
+      "revId": "3f742c2044af42d75e00cd0c07fdf6b8ae647928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7851f1e_a9bab524",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-07-27T13:55:53Z",
       "side": 1,
       "message": "sorted ?",
+      "range": {
+        "startLine": 916,
+        "startChar": 34,
+        "endLine": 916,
+        "endChar": 39
+      },
+      "revId": "3f742c2044af42d75e00cd0c07fdf6b8ae647928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a6a4aa7_f3580fe2",
+        "filename": "src/gpu/GrTriangulator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T16:37:19Z",
+      "side": 1,
+      "message": "gone now",
+      "parentUuid": "f7851f1e_a9bab524",
       "range": {
         "startLine": 916,
         "startChar": 34,
