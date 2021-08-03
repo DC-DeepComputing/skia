@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "472bb9bd_dc1e709f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-03T13:30:30Z",
+      "side": 1,
+      "message": "Yes, much better moving things earlier in the pipeline.",
+      "revId": "10e8b89ac2240ca5f866dccbc328439cf059b390",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
