@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e72ba54_7f212a30",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-03T18:43:56Z",
+      "side": 0,
+      "message": "Here by \"expensive way\u0027 it\u0027s really referring to the fact that we\u0027re going to stretch this out 4x, so we need to stroke before stretching the path (done in the draw call with the matrix) so that it\u0027s wider horizontally (so that lcd hairline doesn\u0027t get 4x less coverage on vertical segments).",
+      "revId": "14d87226b3ad58dc1f82b67ba2955dd159c92418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f631a73_c3c62687",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-03T18:43:56Z",
+      "side": 0,
+      "message": "This is a little iffy, what this is really asking is \"is this hairline\". (We know the caller will Fill everything other than hairline). So explicitly stroke the path at 1 wide (not 0 wide).\n\nI just looked and the typefacerendering gm doesn\u0027t have a fake bold, stroke and fill, hairline case. Adding it drops this in, but it\u0027s somewhat debate-able what it should look like.",
+      "revId": "14d87226b3ad58dc1f82b67ba2955dd159c92418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "521c32eb_22510671",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-03T18:43:56Z",
+      "side": 0,
+      "message": "And then here the hairline has been resolved to a fill (so that it can be drawn as a 4x wide horizontally stretch hairline).",
+      "revId": "14d87226b3ad58dc1f82b67ba2955dd159c92418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
