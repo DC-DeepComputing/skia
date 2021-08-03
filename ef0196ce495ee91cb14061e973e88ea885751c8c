@@ -22,6 +22,30 @@
       },
       "revId": "ef0196ce495ee91cb14061e973e88ea885751c8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa986fab_874db332",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-03T13:34:34Z",
+      "side": 1,
+      "message": "The latter unfortunately. All the:\n\n#if !SK_GPU_V1\n    (void) fMemberVars;\n#endif\n\nare also due to unused variable errors.",
+      "parentUuid": "4f3ad4bb_0cdb555b",
+      "range": {
+        "startLine": 81,
+        "startChar": 29,
+        "endLine": 81,
+        "endChar": 45
+      },
+      "revId": "ef0196ce495ee91cb14061e973e88ea885751c8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
