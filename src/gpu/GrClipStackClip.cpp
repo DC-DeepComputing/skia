@@ -9,7 +9,6 @@
 
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkTo.h"
-#include "src/core/SkClipOpPriv.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GrAppliedClip.h"
@@ -338,16 +337,10 @@ static void draw_clip_elements_to_mask_helper(GrSWMaskHelper& helper, const Elem
         SkClipOp op = element->getOp();
         GrAA aa = GrAA(element->isAA());
 
-        if (SkClipOp::kIntersect == op || kReverseDifference_SkClipOp == op) {
-            // Intersect and reverse difference require modifying pixels outside of the geometry
-            // that is being "drawn". In both cases we erase all the pixels outside of the geometry
-            // but leave the pixels inside the geometry alone. For reverse difference we invert all
-            // the pixels before clearing the ones outside the geometry.
-            if (kReverseDifference_SkClipOp == op) {
-                SkRect temp = SkRect::Make(scissor);
-                // invert the entire scene
-                helper.drawRect(temp, translate, SkRegion::kXOR_Op, GrAA::kNo, 0xFF);
-            }
+        if (SkClipOp::kIntersect == op) {
+            // Intersect requires modifying pixels outside of the geometry that is being "drawn".
+            // In this case we erase all the pixels outside of the geometry but leave the pixels
+            // inside the geometry alone.
             SkPath clipPath;
             element->asDeviceSpacePath(&clipPath);
             clipPath.toggleInverseFillType();
