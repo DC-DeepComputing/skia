@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6647912_0839b869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-03T17:30:18Z",
+      "side": 1,
+      "message": "PTAL, gold diffs seem correct now (the changes on the old GMs appear to be bug fixes)",
+      "revId": "9a7d881bb96f5f8eae8f6e72b7a56d708daae2ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
