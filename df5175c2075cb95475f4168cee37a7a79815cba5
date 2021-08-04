@@ -16,6 +16,40 @@
       "message": "This is the corresponding chromium change that makes this work: https://chromium-review.googlesource.com/c/chromium/src/+/2999046/",
       "revId": "df5175c2075cb95475f4168cee37a7a79815cba5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cdf1abe_509112eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13069
+      },
+      "writtenOn": "2021-08-04T22:41:23Z",
+      "side": 1,
+      "message": "lgtm, but defer to Skia team since I have no power here 😊\n\ncc: Mike Reed for routing.",
+      "revId": "df5175c2075cb95475f4168cee37a7a79815cba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15cf0d51_d433a757",
+        "filename": "src/gpu/vk/GrVkGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1233,
+      "author": {
+        "id": 13069
+      },
+      "writtenOn": "2021-08-04T22:41:23Z",
+      "side": 1,
+      "message": "Duplicate of line l.1223.",
+      "revId": "df5175c2075cb95475f4168cee37a7a79815cba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
