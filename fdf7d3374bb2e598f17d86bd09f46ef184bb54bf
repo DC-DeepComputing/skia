@@ -16,6 +16,24 @@
       "message": "Do the modified tests do something useful, or should we just remove the sections that used to reference XOR or UNION ?",
       "revId": "fdf7d3374bb2e598f17d86bd09f46ef184bb54bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff161387_1220f5f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T14:38:56Z",
+      "side": 1,
+      "message": "Yes, I think they are still reasonably useful (element iteration, bounds aggregation, etc.) It appears that the use of xor and union were somewhat arbitrary. kDifference achieves the same ends (mostly just avoiding intersection of rects to not fall into the combining elements optimization).",
+      "parentUuid": "b6389710_c2f4518c",
+      "revId": "fdf7d3374bb2e598f17d86bd09f46ef184bb54bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
