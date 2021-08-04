@@ -172,6 +172,7 @@ bool SKPBench::getDMSAAStats(GrRecordingContext* rContext) {
     if (!rContext || !rContext->asDirectContext()) {
         return false;
     }
+
     // Clear the current DMSAA stats then do a single tiled draw that resets them to the specific
     // values for our SKP.
     rContext->asDirectContext()->flushAndSubmit();

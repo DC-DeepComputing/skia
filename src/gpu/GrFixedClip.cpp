@@ -7,6 +7,7 @@
 
 #include "src/gpu/GrFixedClip.h"
 
+#include "include/core/SkVertices.h"
 #include "src/gpu/GrAppliedClip.h"
 
 SkIRect GrFixedClip::getConservativeBounds() const {

@@ -22,6 +22,7 @@
 #include "src/core/SkTLList.h"
 #include "src/core/SkTLazy.h"
 #include "src/gpu/GrColor.h"
+#include "src/gpu/GrOpFlushState.h"
 #include "src/gpu/GrSubRunAllocator.h"
 #include "src/gpu/ops/GrOp.h"
 

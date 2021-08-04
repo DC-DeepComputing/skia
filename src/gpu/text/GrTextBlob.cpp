@@ -68,7 +68,6 @@ struct ARGB3DVertex {
 };
 
 #if SK_GPU_V1
-
 GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     switch (grMaskFormat) {
         case kA8_GrMaskFormat:   return GrAtlasTextOp::MaskType::kGrayscaleCoverage;
@@ -77,6 +76,7 @@ GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     }
     SkUNREACHABLE;
 }
+#endif
 
 SkPMColor4f calculate_colors(GrSurfaceContext* sc,
                              const SkPaint& paint,
@@ -93,7 +93,6 @@ SkPMColor4f calculate_colors(GrSurfaceContext* sc,
         return grPaint->getColor4f();
     }
 }
-#endif
 
 template<typename Quad, typename VertexData>
 void fill_transformed_vertices_2D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
@@ -230,6 +229,7 @@ void PathSubRun::draw(const GrClip* clip,
                       const SkGlyphRunList& glyphRunList,
                       const SkPaint& paint,
                       skgpu::v1::SurfaceDrawContext* sdc) const {
+#if SK_GPU_V1
     SkASSERT(!fPaths.empty());
     SkPoint drawOrigin = glyphRunList.origin();
     SkPaint runPaint{paint};
@@ -278,6 +278,7 @@ void PathSubRun::draw(const GrClip* clip,
                                                  viewMatrix, shape);
         }
     }
+#endif
 }
 #endif // SK_GPU_V1
 
@@ -650,6 +651,7 @@ calculate_clip(const GrClip* clip, SkRect deviceBounds, SkRect glyphBounds) {
 }
 }  // namespace
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip, const SkMatrixProvider& viewMatrix,
                                   const SkGlyphRunList& glyphRunList,
@@ -954,11 +956,13 @@ void TransformedMaskSubRun::draw(const GrClip* clip,
                                  const SkGlyphRunList& glyphRunList,
                                  const SkPaint& paint,
                                  skgpu::v1::SurfaceDrawContext* sdc) const {
+#if SK_GPU_V1
     auto[drawingClip, op] = this->makeAtlasTextOp(
             clip, viewMatrix, glyphRunList, paint, sdc, nullptr);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 
 std::tuple<const GrClip*, GrOp::Owner>
@@ -1312,7 +1316,6 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
 
     return {clip, std::move(op)};
 }
-
 #endif // SK_GPU_V1
 
 bool SDFTSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
@@ -1711,8 +1714,10 @@ private:
     const SkRect fGlyphDeviceBounds;
     const SkSpan<const DevicePosition> fLeftTopDevicePos;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -1962,8 +1967,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -2191,8 +2198,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -2406,6 +2415,7 @@ void GrSubRunNoCachePainter::processSourceMasks(
 void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                                                 const SkFont& runFont,
                                                 const SkStrikeSpec& strikeSpec) {
+#if SK_GPU_V1
     SkASSERT(!drawables.empty());
     SkPoint drawOrigin = fGlyphRunList.origin();
     const SkPaint& drawPaint = fPaint;
@@ -2454,6 +2464,7 @@ void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPo
                     fSDC->recordingContext(), fSDC, fClip, runPaint, fViewMatrix, shape);
         }
     }
+#endif
 }
 
 void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
@@ -2467,6 +2478,7 @@ void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoi
 }
 
 void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
+#if SK_GPU_V1
     if (subRun == nullptr) {
         return;
     }
@@ -2476,6 +2488,7 @@ void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
     if (op != nullptr) {
         fSDC->addDrawOp(drawingClip, std::move(op));
     }
+#endif
 }
 #endif // SK_GPU_V1
 
