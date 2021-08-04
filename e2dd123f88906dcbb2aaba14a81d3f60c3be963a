@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2506dda_2213bfdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-04T19:40:50Z",
+      "side": 1,
+      "message": "Well, I guess this is the CL that the lowp support belongs in :-). Hadn\u0027t gotten here yet when I made that comment on the other CL.",
+      "revId": "e2dd123f88906dcbb2aaba14a81d3f60c3be963a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
