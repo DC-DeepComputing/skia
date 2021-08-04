@@ -16,6 +16,24 @@
       "message": "Well, I guess this is the CL that the lowp support belongs in :-). Hadn\u0027t gotten here yet when I made that comment on the other CL.",
       "revId": "e2dd123f88906dcbb2aaba14a81d3f60c3be963a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe1d473_df030412",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T20:03:59Z",
+      "side": 1,
+      "message": "Good thought. Done.",
+      "parentUuid": "d2506dda_2213bfdc",
+      "revId": "e2dd123f88906dcbb2aaba14a81d3f60c3be963a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
