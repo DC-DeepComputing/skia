@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e877104e_ce75e7f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-04T23:20:36Z",
+      "side": 1,
+      "message": "If this added a lineTo after adding the path, then it would also test the changed code for maintaining the last moveTo index. If these gm tests are better than unit tests for verifying changes, then this might be better than my change to the unit test.",
+      "revId": "ae1e7bcb384bc0dcb3ef342e6d2d684e58669696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
