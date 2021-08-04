@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "621d7056_4acc6fad",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2335,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-04T17:36:10Z",
+      "side": 1,
+      "message": "This is the wrong type/size here. We need something that\u0027s 128 bits (SkColor4f, std::array\u003cfloat, 4\u003e, etc.)",
+      "range": {
+        "startLine": 2335,
+        "startChar": 38,
+        "endLine": 2335,
+        "endChar": 47
+      },
+      "revId": "cef047a4904e8c8b4e3f8888c4fa19705eeec166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
