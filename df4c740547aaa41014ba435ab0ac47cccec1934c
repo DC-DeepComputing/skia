@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebfa6b98_75846623",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T13:45:45Z",
+      "side": 1,
+      "message": "\"| HB_SUBSET_FLAG_HINTING\"?",
+      "revId": "df4c740547aaa41014ba435ab0ac47cccec1934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
