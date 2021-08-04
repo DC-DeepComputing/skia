@@ -1,0 +1,8 @@
+struct S { int i; };
+
+mediump highp int no_multiple_qualifiers;
+highp S no_structs;
+mediump bool no_bools;
+uniform highp colorFilter no_opaque;
+uniform highp half no_half_highp;
+uniform mediump half no_half_mediump;
