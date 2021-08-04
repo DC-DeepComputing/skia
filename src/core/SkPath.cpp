@@ -1390,6 +1390,11 @@ SkPath& SkPath::addPath(const SkPath& srcPath, const SkMatrix& matrix, AddPathMo
         return this->dirtyAfterEdit();
     }
 
+    auto is_closed = [&]() {
+        SkASSERT(fPathRef->countVerbs() > 0);
+        return fPathRef->verbsEnd()[-1] == (uint8_t)SkPathVerb::kClose;
+    };
+
     SkMatrixPriv::MapPtsProc mapPtsProc = SkMatrixPriv::GetMapPtsProc(matrix);
     bool firstVerb = true;
     for (auto [verb, pts, w] : SkPathPriv::Iterate(*src)) {
@@ -1397,13 +1402,11 @@ SkPath& SkPath::addPath(const SkPath& srcPath, const SkMatrix& matrix, AddPathMo
             SkPoint mappedPts[3];
             case SkPathVerb::kMove:
                 mapPtsProc(matrix, mappedPts, &pts[0], 1);
-                if (firstVerb && !isEmpty()) {
-                    SkASSERT(mode == kExtend_AddPathMode);
-                    injectMoveToIfNeeded(); // In case last contour is closed
+                // see if we can/should extend the our last (this) contour
+                if (firstVerb && mode == kExtend_AddPathMode && !isEmpty() && !is_closed()) {
                     SkPoint lastPt;
                     // don't add lineTo if it is degenerate
-                    if (fLastMoveToIndex < 0 || !this->getLastPt(&lastPt) ||
-                        lastPt != mappedPts[0]) {
+                    if (!this->getLastPt(&lastPt) || lastPt != mappedPts[0]) {
                         this->lineTo(mappedPts[0]);
                     }
                 } else {
