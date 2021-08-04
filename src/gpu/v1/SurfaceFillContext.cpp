@@ -7,7 +7,10 @@
 
 #include "src/gpu/v1/SurfaceFillContext_v1.h"
 
+#if SK_GPU_V1
+
 #include "include/private/GrImageContext.h"
+#include "src/gpu/GrDrawingManager.h"
 #include "src/gpu/GrDstProxyView.h"
 #include "src/gpu/GrImageContextPriv.h"
 #include "src/gpu/GrProxyProvider.h"

@@ -8,6 +8,7 @@
 #ifndef GrFillRectOp_DEFINED
 #define GrFillRectOp_DEFINED
 
+#if 0
 #include "include/private/GrTypesPriv.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelper.h"
 
@@ -80,5 +81,6 @@ private:
                               const GrUserStencilSettings*,
                               int* numConsumed);
 };
+#endif
 
 #endif // GrFillRectOp_DEFINED

@@ -15,6 +15,7 @@
 #include "src/gpu/GrSurface.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
 #include "src/gpu/GrTextureRenderTargetProxy.h"
+//#include "src/gpu/GrOpsTask.h"
 
 #ifdef SK_DEBUG
 #include "include/gpu/GrDirectContext.h"
