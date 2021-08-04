@@ -16,6 +16,29 @@
       "message": "Thanks for the speedy review Avinash!",
       "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae85b47_6b9d849e",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-04T19:07:58Z",
+      "side": 1,
+      "message": "Can you add in the other evaluator types as well?",
+      "range": {
+        "startLine": 67,
+        "startChar": 13,
+        "endLine": 67,
+        "endChar": 30
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
