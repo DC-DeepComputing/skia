@@ -527,6 +527,7 @@ sksl_rte_tests = [
   "/sksl/runtime/ConversionConstructors.rts",
   "/sksl/runtime/GLSLTypeNames.rts",
   "/sksl/runtime/GlobalVariables.rts",
+  "/sksl/runtime/InvokeChildWithExplicitCoord.rts",
   "/sksl/runtime/LoopInt.rts",
   "/sksl/runtime/LoopFloat.rts",
   "/sksl/runtime/PrecisionQualifiers.rts",

@@ -1950,6 +1950,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLSampleShader, r, ctxInfo) {
     DSLGlobalVar shader(kUniform_Modifier, kShader_Type, "shader");
     EXPECT_EQUAL(Sample(shader, Float2(0, 0)), "shader(float2(0.0, 0.0))");
 
+    // TODO (skbug.com/12302): Add operator() support to GSLGlobalVar so DSL can invoke children?
+
     {
         ExpectError error(r, "no match for sample(shader, half4)");
         Sample(shader, Half4(1)).release();

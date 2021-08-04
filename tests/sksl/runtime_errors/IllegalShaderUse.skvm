@@ -9,4 +9,9 @@ error: 15: parameters of type 'shader' not allowed
 error: 16: functions may not return opaque type 'shader'
 error: 17: cannot construct 'shader'
 error: 18: ternary expression of opaque type 'shader' not allowed
-9 errors
+error: 21: variables of type 'shader' must be global
+error: 21: variables of type 'shader' must be uniform
+error: 22: parameters of type 'shader' not allowed
+error: 23: cannot construct 'shader'
+error: 24: ternary expression of opaque type 'shader' not allowed
+14 errors

@@ -46,8 +46,8 @@ namespace PipelineStage {
      *   the declaration, and return the (possibly different) name to use for the variable.
      * - Each function definition triggers a call to 'defineFunction', which should emit the
      *   definition, and return the (possibly different) name to use for calls to that function.
-     * - Each invocation of sample() triggers a call to 'sampleChild', which should return the full
-     *   text of the call expression.
+     * - Each invocation of a child effect triggers a call to 'sampleShader' 'sampleColorFilter',
+     *   or 'sampleBlender', which should return the full text of the call expression.
      */
     void ConvertProgram(const Program& program,
                         const char* sampleCoords,
