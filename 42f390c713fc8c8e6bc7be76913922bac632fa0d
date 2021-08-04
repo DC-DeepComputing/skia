@@ -16,6 +16,24 @@
       "message": "Seems like we ought to have support for lowp as well (as an alias for mediump if nothing else)?",
       "revId": "42f390c713fc8c8e6bc7be76913922bac632fa0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db400d6_7e3ceb2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T20:21:00Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "1f143500_8c8b665b",
+      "revId": "42f390c713fc8c8e6bc7be76913922bac632fa0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
