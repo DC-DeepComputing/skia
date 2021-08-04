@@ -16,6 +16,52 @@
       "message": "This leaves SkClipStack in somewhat of a clunky spot, since it\u0027s supporting both replace clip ops and these special ops. Its exposed API is also primarily there to support GrReducedClip, but that is also on the chopping block. We\u0027re just in a chicken-egg scenario but SkClipStack will be greatly simplified once expanding ops are gone fully.",
       "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f21373c_2cec9b5f",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-04T14:15:41Z",
+      "side": 1,
+      "message": "??",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 43
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a68441d_a79e7c2a",
+        "filename": "tests/ClipStackTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-04T14:15:41Z",
+      "side": 1,
+      "message": "xtra space ?",
+      "range": {
+        "startLine": 220,
+        "startChar": 4,
+        "endLine": 220,
+        "endChar": 5
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
