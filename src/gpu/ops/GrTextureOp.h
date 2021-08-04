@@ -23,6 +23,7 @@ class GrTextureProxy;
 struct GrTextureSetEntry;
 struct SkRect;
 class SkMatrix;
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
 class GrTextureOp {
 public:
