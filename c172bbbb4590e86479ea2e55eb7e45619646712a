@@ -18,6 +18,63 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7853549_47dd6684",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Looks good overall, just some nits and various half-baked refactoring ideas.",
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3cd3d6_d047145f",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "I haven\u0027t really thought it through, but what if we skip this abstraction and instead have createNumberExpressionEvaluator() return an Animator?\n\nIt seems Animator::onSeek() could work for expression eval purposes?\n\n(I guess that means all expression animators get to live in the JS glue component)",
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d272c169_8160716e",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "nit: lower-case evaluate() to match Skia style",
+      "range": {
+        "startLine": 61,
+        "startChar": 17,
+        "endLine": 61,
+        "endChar": 25
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cae85b47_6b9d849e",
@@ -36,6 +93,172 @@
         "startChar": 13,
         "endLine": 67,
         "endChar": 30
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20473ee5_c1143349",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "nit: createNumberExpressionEvaluator()",
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e11aab_bf15dddc",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Do we have to plumb this from Skottie?  Since this is always provided by clients, they could also be responsible for passing to the evaluator impl externally, right?",
+      "range": {
+        "startLine": 70,
+        "startChar": 103,
+        "endLine": 70,
+        "endChar": 123
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89caa4fb_9da4cb56",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "nit: I think it\u0027s slightly more fluent to inline jpropX here based on skjson pointer conversion operators --\n\n  if (const skjson::StringValue* expr \u003d (*jprop)[\"x\"]) {\n      ...\n  }\n  \nWe prolly don\u0027t need to use Parse\u003cSkString\u003e either if passing as const char*, just expr-\u003ebegin().",
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fecfe221_f376eecf",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Doesn\u0027t look like SkString is particularly useful for this API, I think we could just pass through the json string as const char* to avoid SkString allocations.",
+      "range": {
+        "startLine": 114,
+        "startChar": 82,
+        "endLine": 114,
+        "endChar": 97
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d1eec03_1a7a8afe",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Nit: const sk_sp\u003cLogger\u003e\u0026 ?\n\n(to defer reffing the logger until/unless an implementation needs it)\n\nAlso, maybe we can remove from the Skottie APIs completely and push responsibility to client side?",
+      "range": {
+        "startLine": 114,
+        "startChar": 67,
+        "endLine": 114,
+        "endChar": 80
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9cfbe20_de0f66f4",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Not interesting at this stage, but maybe this could be a template ExpressionAnimator\u003cT\u003e?",
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7729af16_631fb57b",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "Can we externalize all logging decisions?  I think clients could both track the logger and handle error logging as they see fit (e.g. more descriptive error messages from V8).\n\nAs a side effect, that would declutter the API a bit, e.g. we could have\n\n  T evaluate(float)",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 48
+      },
+      "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77ca0240_c4d14ada",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:35:48Z",
+      "side": 1,
+      "message": "nit: 100-column line breaks\n\n(other places too)",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 9
       },
       "revId": "c172bbbb4590e86479ea2e55eb7e45619646712a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
