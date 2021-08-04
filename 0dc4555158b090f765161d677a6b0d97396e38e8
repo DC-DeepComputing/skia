@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8871425d_a5c268ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:44:13Z",
+      "side": 1,
+      "message": "Any particular reason? By removing the need to support StrokeAndFill hairlines this actually seems like a fine change. As far as I can tell the slight difference left is from StrokeRec still having StrokeAndFill support but not being able to report it.",
+      "parentUuid": "ac2c6128_ede34ac6",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92519999_a89ce748",
