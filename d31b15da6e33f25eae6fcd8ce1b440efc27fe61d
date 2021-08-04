@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35cc5ec3_ba427129",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-04T17:41:50Z",
+      "side": 0,
+      "message": "Because we don\u0027t want to insert two moveTos, we can\u0027t just call injectMoveToIfNeeded before this. We cannot patch up the moveTo\nfrom that because we don\u0027t know if it came from that call.",
+      "range": {
+        "startLine": 630,
+        "startChar": 3,
+        "endLine": 630,
+        "endChar": 25
+      },
+      "revId": "d31b15da6e33f25eae6fcd8ce1b440efc27fe61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
