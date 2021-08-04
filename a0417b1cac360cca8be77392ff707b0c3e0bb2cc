@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9529f4f_e61be248",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T15:56:14Z",
+      "side": 1,
+      "message": "Adding a `Type::isCallable()` method is a nice API idea, but a TODO here implies that something is broken/missing; for a while I was trying to figure out what the problem was, but I think this code works, right? It just assumes the only callable type is an effect child, which for the foreseeable future is probably true unless GLSL gets function pointers.",
+      "range": {
+        "startLine": 1402,
+        "startChar": 62,
+        "endLine": 1402,
+        "endChar": 82
+      },
+      "revId": "a0417b1cac360cca8be77392ff707b0c3e0bb2cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325bf607_b205a202",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T15:56:14Z",
+      "side": 1,
+      "message": "Do you need this at all? CodeString doesn\u0027t have a Rehydrator command.",
+      "range": {
+        "startLine": 53,
+        "startChar": 11,
+        "endLine": 53,
+        "endChar": 14
+      },
+      "revId": "a0417b1cac360cca8be77392ff707b0c3e0bb2cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af3fb0cf_14c45da8",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T15:56:14Z",
+      "side": 1,
+      "message": "nit: blank line",
+      "revId": "a0417b1cac360cca8be77392ff707b0c3e0bb2cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ad2806_bf5f9c5b",
+        "filename": "src/sksl/ir/SkSLChildCall.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T15:56:14Z",
+      "side": 1,
+      "message": "Would it be difficult to assert that the arguments match their expected types as well. (The ideal is that Make should assert everything that Convert has done. This keeps the inliner honest, e.g. it isn\u0027t replacing expressions with incompatible replacements.)",
+      "revId": "a0417b1cac360cca8be77392ff707b0c3e0bb2cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9bdf72c_cb2ca11b",
+        "filename": "src/sksl/ir/SkSLChildCall.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T15:56:14Z",
+      "side": 1,
+      "message": "Generic types in effects, no thank you :)",
+      "range": {
+        "startLine": 29,
+        "startChar": 7,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "a0417b1cac360cca8be77392ff707b0c3e0bb2cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
