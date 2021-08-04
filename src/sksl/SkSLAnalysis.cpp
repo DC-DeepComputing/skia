@@ -38,6 +38,7 @@
 // Expressions
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBoolLiteral.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorMatrixResize.h"
@@ -62,18 +63,20 @@ namespace SkSL {
 
 namespace {
 
-static bool is_sample_call_to_fp(const FunctionCall& fc, const Variable& fp) {
+static bool is_sample_call_to_child(const FunctionCall& fc, const Variable& child) {
     const FunctionDeclaration& f = fc.function();
     return f.intrinsicKind() == k_sample_IntrinsicKind && fc.arguments().size() >= 1 &&
            fc.arguments()[0]->is<VariableReference>() &&
-           fc.arguments()[0]->as<VariableReference>().variable() == &fp;
+           fc.arguments()[0]->as<VariableReference>().variable() == &child;
 }
 
 // Visitor that determines the merged SampleUsage for a given child 'fp' in the program.
 class MergeSampleUsageVisitor : public ProgramVisitor {
 public:
-    MergeSampleUsageVisitor(const Context& context, const Variable& fp, bool writesToSampleCoords)
-            : fContext(context), fFP(fp), fWritesToSampleCoords(writesToSampleCoords) {}
+    MergeSampleUsageVisitor(const Context& context,
+                            const Variable& child,
+                            bool writesToSampleCoords)
+            : fContext(context), fChild(child), fWritesToSampleCoords(writesToSampleCoords) {}
 
     SampleUsage visit(const Program& program) {
         fUsage = SampleUsage(); // reset to none
@@ -85,47 +88,53 @@ public:
 
 protected:
     const Context& fContext;
-    const Variable& fFP;
+    const Variable& fChild;
     const bool fWritesToSampleCoords;
     SampleUsage fUsage;
     int fElidedSampleCoordCount = 0;
 
     bool visitExpression(const Expression& e) override {
-        // Looking for sample(fp, ...)
+        // Looking for child(...)
         if (e.is<FunctionCall>()) {
             const FunctionCall& fc = e.as<FunctionCall>();
-            if (is_sample_call_to_fp(fc, fFP)) {
-                // Determine the type of call at this site, and merge it with the accumulated state
-                if (fc.arguments().size() >= 2) {
-                    const Expression* coords = fc.arguments()[1].get();
-                    if (coords->type() == *fContext.fTypes.fFloat2) {
-                        // If the coords are a direct reference to the program's sample-coords,
-                        // and those coords are never modified, we can conservatively turn this
-                        // into PassThrough sampling. In all other cases, we consider it Explicit.
-                        if (!fWritesToSampleCoords && coords->is<VariableReference>() &&
-                            coords->as<VariableReference>()
-                                            .variable()
-                                            ->modifiers()
-                                            .fLayout.fBuiltin == SK_MAIN_COORDS_BUILTIN) {
-                            fUsage.merge(SampleUsage::PassThrough());
-                            ++fElidedSampleCoordCount;
-                        } else {
-                            fUsage.merge(SampleUsage::Explicit());
-                        }
-                    } else {
-                        // sample(fp, half4 inputColor) -> PassThrough
-                        fUsage.merge(SampleUsage::PassThrough());
-                    }
-                } else {
-                    // sample(fp) -> PassThrough
-                    fUsage.merge(SampleUsage::PassThrough());
-                }
-                // NOTE: we don't return true here just because we found a sample call. We need to
-                // process the entire program and merge across all encountered calls.
+            if (is_sample_call_to_child(fc, fChild)) {
+                this->mergeUsage(fc.arguments(), /*argStart=*/1);
+            }
+        } else if (e.is<ChildCall>()) {
+            const ChildCall& cc = e.as<ChildCall>();
+            if (&cc.child() == &fChild) {
+                this->mergeUsage(cc.arguments());
             }
         }
 
         return INHERITED::visitExpression(e);
+    }
+
+    // TODO (skbug.com/12302): Remove argStart once sample() doesn't route here
+    void mergeUsage(const ExpressionArray& arguments, size_t argStart = 0) {
+        // Determine the type of call at this site, and merge it with the accumulated state
+        if (arguments.size() >= argStart + 1) {
+            const Expression* maybeCoords = arguments[argStart + 0].get();
+            if (maybeCoords->type() == *fContext.fTypes.fFloat2) {
+                // If the coords are a direct reference to the program's sample-coords,
+                // and those coords are never modified, we can conservatively turn this
+                // into PassThrough sampling. In all other cases, we consider it Explicit.
+                if (!fWritesToSampleCoords && maybeCoords->is<VariableReference>() &&
+                    maybeCoords->as<VariableReference>().variable()->modifiers().fLayout.fBuiltin ==
+                            SK_MAIN_COORDS_BUILTIN) {
+                    fUsage.merge(SampleUsage::PassThrough());
+                    ++fElidedSampleCoordCount;
+                } else {
+                    fUsage.merge(SampleUsage::Explicit());
+                }
+            } else {
+                // child(half4 inputColor) -> PassThrough
+                fUsage.merge(SampleUsage::PassThrough());
+            }
+        } else {
+            // child() -> PassThrough (TODO: This should never happen?)
+            fUsage.merge(SampleUsage::PassThrough());
+        }
     }
 
     using INHERITED = ProgramVisitor;
@@ -149,7 +158,7 @@ public:
     using INHERITED = ProgramVisitor;
 };
 
-// Visitor that searches for calls to sample() from a function other than main()
+// Visitor that searches for child calls (including sample()) from a function other than main()
 class SampleOutsideMainVisitor : public ProgramVisitor {
 public:
     SampleOutsideMainVisitor() {}
@@ -160,6 +169,8 @@ public:
             if (f.intrinsicKind() == k_sample_IntrinsicKind) {
                 return true;
             }
+        } else if (e.is<ChildCall>()) {
+            return true;
         }
         return INHERITED::visitExpression(e);
     }
@@ -1198,6 +1209,7 @@ public:
             // These are completely disallowed in SkSL constant-(index)-expressions. GLSL allows
             // calls to built-in functions where the arguments are all constant-expressions, but
             // we don't guarantee that behavior. (skbug.com/10835)
+            case Expression::Kind::kChildCall:
             case Expression::Kind::kExternalFunctionCall:
             case Expression::Kind::kFunctionCall:
                 return true;
@@ -1309,6 +1321,14 @@ template <typename T> bool TProgramVisitor<T>::visitExpression(typename T::Expre
             auto& b = e.template as<BinaryExpression>();
             return (b.left() && this->visitExpressionPtr(b.left())) ||
                    (b.right() && this->visitExpressionPtr(b.right()));
+        }
+        case Expression::Kind::kChildCall: {
+            // We don't visit the child variable itself, just the arguments
+            auto& c = e.template as<ChildCall>();
+            for (auto& arg : c.arguments()) {
+                if (arg && this->visitExpressionPtr(arg)) { return true; }
+            }
+            return false;
         }
         case Expression::Kind::kConstructorArray:
         case Expression::Kind::kConstructorCompound:
