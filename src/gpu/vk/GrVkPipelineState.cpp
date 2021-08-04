@@ -80,11 +80,14 @@ bool GrVkPipelineState::setAndBindUniforms(GrVkGpu* gpu,
     this->setRenderTargetState(colorAttachmentDimensions, programInfo.origin());
 
     fGeometryProcessor->setData(fDataManager, *gpu->caps()->shaderCaps(), programInfo.geomProc());
+
     for (int i = 0; i < programInfo.pipeline().numFragmentProcessors(); ++i) {
-        auto& fp = programInfo.pipeline().getFragmentProcessor(i);
-        for (auto [fp, impl] : GrGLSLFragmentProcessor::ParallelRange(fp, *fFPImpls[i])) {
-            impl.setData(fDataManager, fp);
-        }
+        const auto& fp = programInfo.pipeline().getFragmentProcessor(i);
+        auto& impl = *fFPImpls[i];
+        fp.visitWithImpls([&dm = fDataManager](const GrFragmentProcessor& fp,
+                                               GrGLSLFragmentProcessor& impl) {
+            impl.setData(dm, fp);
+        }, impl);
     }
 
     programInfo.pipeline().setDstTextureUniforms(fDataManager, &fBuiltinUniformHandles);
