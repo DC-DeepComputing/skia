@@ -23,6 +23,7 @@ struct GrUserStencilSettings;
 class SkMatrix;
 struct SkRect;
 
+namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 /**
  * A set of factory functions for drawing filled rectangles either coverage-antialiased, or
  * non-antialiased. The non-antialiased ops can be used with MSAA. As with other GrDrawOp factories,

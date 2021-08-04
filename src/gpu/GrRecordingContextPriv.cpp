@@ -16,10 +16,12 @@
 #if SK_GPU_V1
 #include "src/gpu/v1/Device_v1.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#include "src/gpu/v1/SurfaceFillContext_v1.h"
 #endif
 #if SK_GPU_V2
-#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/v2/Device_v2.h"
+#include "src/gpu/v2/SurfaceDrawContext_v2.h"
+#include "src/gpu/v2/SurfaceFillContext_v2.h"
 #endif
 
 void GrRecordingContextPriv::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlushCBObject) {
@@ -81,6 +83,78 @@ sk_sp<skgpu::BaseDevice> GrRecordingContextPriv::createDevice(SkBudgeted budgete
     }
 }
 
+#if 0
+std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::createDrawContext(
+                                                                       GrRecordingContext* rContext,
+                                                                       GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       GrColorType colorType,
+                                                                       sk_sp<SkColorSpace> cs,
+                                                                       const SkSurfaceProps& props,
+                                                                       bool flushTimeOpsTask) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceDrawContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    } else
+#endif
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceDrawContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    }
+}
+
+std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::createFillContext(
+                                                                       GrRecordingContext* rContext,
+                                                                       GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       const GrColorInfo& info,
+                                                                       bool flushTimeOpsTask) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceFillContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    } else
+#endif
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceFillContext>(rContext,
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info,
+                                                               flushTimeOpsTask);
+#else
+        return nullptr;
+#endif
+    }
+}
+#endif
+
 void GrRecordingContextPriv::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
     this->context()->drawingManager()->moveRenderTasksToDDL(ddl);
 }
@@ -93,7 +167,7 @@ GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) c
             this->options().fGlyphsAsPathsFontSize};
 }
 
-std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
+std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
                                                                  const GrColorInfo& info) {
 #if GR_TEST_UTILS
     if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
@@ -114,7 +188,7 @@ std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyV
         GrSurfaceProxy* proxy = readView.proxy();
         SkASSERT(proxy && proxy->asTextureProxy());
 
-        std::unique_ptr<GrSurfaceContext> sc;
+        std::unique_ptr<skgpu::SurfaceContext> sc;
         if (proxy->asRenderTargetProxy()) {
             // Will we ever want a swizzle that is not the default write swizzle for the format and
             // colorType here? If so we will need to manually pass that in.
@@ -139,7 +213,9 @@ std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyV
                                                                      info);
             }
         } else {
-            sc = std::make_unique<GrSurfaceContext>(this->context(), std::move(readView), info);
+            sc = std::make_unique<skgpu::SurfaceContext>(this->context(),
+                                                         std::move(readView),
+                                                         info);
         }
         SkDEBUGCODE(sc->validate();)
         return sc;
@@ -156,7 +232,6 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
                                                                            GrProtected isProtected,
                                                                            GrSurfaceOrigin origin,
                                                                            SkBudgeted budgeted) {
-
 #if GR_TEST_UTILS
     if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
 #if SK_GPU_V2
