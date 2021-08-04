@@ -53,6 +53,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d88b27_029b71c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T18:31:35Z",
+      "side": 1,
+      "message": "Need to learn how to count better... Anyhow, taking a look locally.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92519999_a89ce748",
@@ -72,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f8f8b8c_1e186d6e",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T18:31:35Z",
+      "side": 1,
+      "message": "Arg, this is the one that doesn\u0027t match. In fact, that makes a lot more sense since before this change this case was known to be somewhat iffy. (What should the answer even be?)",
+      "parentUuid": "92519999_a89ce748",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1233eb90_a79472b7",
         "filename": "gm/typeface.cpp",
         "patchSetId": 13
@@ -83,6 +118,24 @@
       "writtenOn": "2021-08-04T03:41:07Z",
       "side": 1,
       "message": "For some reason this one seems to be ever so slightly different (both normal and emboldened).",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dda281e_1e079b02",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T18:31:35Z",
+      "side": 1,
+      "message": "And this one matches exactly. Which makes more sense.",
+      "parentUuid": "1233eb90_a79472b7",
       "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
