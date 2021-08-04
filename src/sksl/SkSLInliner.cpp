@@ -16,6 +16,7 @@
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
@@ -310,6 +311,14 @@ std::unique_ptr<Expression> Inliner::inlineExpression(int offset,
         case Expression::Kind::kIntLiteral:
         case Expression::Kind::kFloatLiteral:
             return expression.clone();
+        case Expression::Kind::kChildCall: {
+            const ChildCall& childCall = expression.as<ChildCall>();
+            return ChildCall::Make(*fContext,
+                                   offset,
+                                   childCall.type().clone(symbolTableForExpression),
+                                   childCall.child(),
+                                   argList(childCall.arguments()));
+        }
         case Expression::Kind::kConstructorArray: {
             const ConstructorArray& ctor = expression.as<ConstructorArray>();
             return ConstructorArray::Make(*fContext, offset,
@@ -948,6 +957,13 @@ public:
                                          op.kind() == Token::Kind::TK_LOGICALOR);
                 if (!shortCircuitable) {
                     this->visitExpression(&binaryExpr.right());
+                }
+                break;
+            }
+            case Expression::Kind::kChildCall: {
+                ChildCall& childCallExpr = (*expr)->as<ChildCall>();
+                for (std::unique_ptr<Expression>& arg : childCallExpr.arguments()) {
+                    this->visitExpression(&arg);
                 }
                 break;
             }
