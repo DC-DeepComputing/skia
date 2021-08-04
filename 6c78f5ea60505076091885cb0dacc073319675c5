@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4ea66b_0395a8f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-04T16:59:47Z",
+      "side": 1,
+      "message": "Please take another look. Nested clipboxes need a bit more logic, as we need to configure FT_Face to strip scale and transform. \n\nAdapter for renamed FreeType function.\n\nOnce landed in FT (hopefully), I will add the FreeType roll to this CL. \n\n",
+      "revId": "6c78f5ea60505076091885cb0dacc073319675c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

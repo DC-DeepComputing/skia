@@ -39,6 +39,24 @@
       "message": "I\u0027m somewhat uncomfortable having a whole copy of this traversal code here. Mostly because it needs to be kept in sync with the drawing traversal code.\n\nI was going to suggest that we add a \u0027noshade\u0027 flag to the existing traversal (to just not add shaders to the paint) and add a class \u0027SkCanvasBounds : public SkVirtualEnforcer\u003cSkNoDrawCanvas\u003e\u0027 which would be a canvas which records bounds (but doesn\u0027t draw anything). However, SkCanvas at the bottom unfortunately hard clips to ((0,0),(width,height)) so it\u0027s somewhat useless for finding bounds. (Yes, this means there is no way to create a generic record everything canvas.)\n\nSince I cannot suggest a simple fix, I suppose this is fine.",
       "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd8fdc52_56ca3b1b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-04T16:59:47Z",
+      "side": 1,
+      "message": "Yes, a valid concern. I was trying to avoid this as well, and have been considering using a templated function or a different mode for the traversal function, but then I discarded that for readability reasons: having lots of if statements or checking optional arguments or so would not help readability. Also, traversal for bounding box calculation is a bit different in that it can terminate at the first PaintGlyph it encounters.",
+      "parentUuid": "0479eb68_0819b2e6",
+      "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
