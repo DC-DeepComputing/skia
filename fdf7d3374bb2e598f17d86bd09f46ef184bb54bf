@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6389710_c2f4518c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-04T13:53:39Z",
+      "side": 1,
+      "message": "Do the modified tests do something useful, or should we just remove the sections that used to reference XOR or UNION ?",
+      "revId": "fdf7d3374bb2e598f17d86bd09f46ef184bb54bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
