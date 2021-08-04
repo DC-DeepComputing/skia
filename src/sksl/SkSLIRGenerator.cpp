@@ -25,6 +25,7 @@
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLContinueStatement.h"
 #include "src/sksl/ir/SkSLDiscardStatement.h"
@@ -1396,6 +1397,16 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
                 return nullptr;
             }
             return this->call(offset, *functions[0], std::move(arguments));
+        }
+        case Expression::Kind::kVariableReference: {
+            if (!functionValue->type().isEffectChild()) {  // TODO: isCallable() ?
+                this->errorReporter().error(offset, "not a function");
+                return nullptr;
+            }
+            return ChildCall::Convert(fContext,
+                                      offset,
+                                      *functionValue->as<VariableReference>().variable(),
+                                      std::move(arguments));
         }
         default:
             this->errorReporter().error(offset, "not a function");

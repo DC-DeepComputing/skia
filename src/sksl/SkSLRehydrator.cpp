@@ -15,6 +15,7 @@
 #include "include/private/SkSLStatement.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
@@ -432,6 +433,9 @@ std::unique_ptr<Expression> Rehydrator::expression() {
         case Rehydrator::kBoolLiteral_Command: {
             bool value = this->readU8();
             return BoolLiteral::Make(fContext, /*offset=*/-1, value);
+        }
+        case Rehydrator::kChildCall_Command: {
+            SkUNREACHABLE;
         }
         case Rehydrator::kConstructorArray_Command: {
             const Type* type = this->type();

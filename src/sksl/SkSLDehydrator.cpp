@@ -15,6 +15,7 @@
 #include "src/sksl/SkSLRehydrator.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
@@ -276,6 +277,11 @@ void Dehydrator::write(const Expression* e) {
                 this->writeU8(b.value());
                 break;
             }
+
+            case Expression::Kind::kChildCall:
+                SkDEBUGFAIL("unimplemented--not expected to be used from within an include file");
+                break;
+
             case Expression::Kind::kCodeString:
                 SkDEBUGFAIL("shouldn't be able to receive kCodeString here");
                 break;

@@ -17,6 +17,7 @@
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
+#include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
@@ -180,6 +181,9 @@ private:
     Value writeExpression(const Expression& expr);
     Value writeBinaryExpression(const BinaryExpression& b);
     Value writeAggregationConstructor(const AnyConstructor& c);
+    Value writeChildCall(const Variable& child,
+                         const ExpressionArray& arguments,
+                         size_t argStart = 0);
     Value writeConstructorDiagonalMatrix(const ConstructorDiagonalMatrix& c);
     Value writeConstructorMatrixResize(const ConstructorMatrixResize& c);
     Value writeConstructorCast(const AnyConstructor& c);
@@ -864,6 +868,61 @@ Value SkVMGenerator::writeMatrixInverse4x4(const Value& m) {
     return result;
 }
 
+Value SkVMGenerator::writeChildCall(const Variable& child,
+                                    const ExpressionArray& arguments,
+                                    size_t argStart) {
+    auto child_it = fVariableMap.find(&child);
+    SkASSERT(child_it != fVariableMap.end());
+
+    const Expression* arg = arguments[argStart + 0].get();
+    Value argVal = this->writeExpression(*arg);
+    skvm::Color color;
+
+    switch (child.type().typeKind()) {
+        case Type::TypeKind::kShader: {
+            SkASSERT(arguments.size() == argStart + 1);
+            SkASSERT(arg->type() == *fProgram.fContext->fTypes.fFloat2);
+            skvm::Coord coord = {f32(argVal[0]), f32(argVal[1])};
+            color = fSampleShader(child_it->second, coord);
+            break;
+        }
+        case Type::TypeKind::kColorFilter: {
+            SkASSERT(arguments.size() == argStart + 1);
+            SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
+                     arg->type() == *fProgram.fContext->fTypes.fFloat4);
+            skvm::Color inColor = {f32(argVal[0]), f32(argVal[1]), f32(argVal[2]), f32(argVal[3])};
+            color = fSampleColorFilter(child_it->second, inColor);
+            break;
+        }
+        case Type::TypeKind::kBlender: {
+            SkASSERT(arguments.size() == argStart + 2);
+            SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
+                     arg->type() == *fProgram.fContext->fTypes.fFloat4);
+            skvm::Color srcColor = {f32(argVal[0]), f32(argVal[1]), f32(argVal[2]), f32(argVal[3])};
+
+            arg = arguments[argStart + 1].get();
+            argVal = this->writeExpression(*arg);
+            SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
+                     arg->type() == *fProgram.fContext->fTypes.fFloat4);
+            skvm::Color dstColor = {f32(argVal[0]), f32(argVal[1]), f32(argVal[2]), f32(argVal[3])};
+
+            color = fSampleBlender(child_it->second, srcColor, dstColor);
+            break;
+        }
+        default: {
+            SkDEBUGFAILF("cannot sample from type '%s'", child.type().description().c_str());
+        }
+    }
+
+    Value result(4);
+    result[0] = color.r;
+    result[1] = color.g;
+    result[2] = color.b;
+    result[3] = color.a;
+    return result;
+
+}
+
 Value SkVMGenerator::writeIntrinsicCall(const FunctionCall& c) {
     IntrinsicKind intrinsicKind = c.function().intrinsicKind();
     SkASSERT(intrinsicKind != kNotIntrinsic);
@@ -878,60 +937,8 @@ Value SkVMGenerator::writeIntrinsicCall(const FunctionCall& c) {
         SkASSERT(child->type().isEffectChild());
         SkASSERT(child->is<VariableReference>());
 
-        auto fp_it = fVariableMap.find(child->as<VariableReference>().variable());
-        SkASSERT(fp_it != fVariableMap.end());
-
-        // Shaders require a coordinate argument. Color filters require a color argument.
-        // When we call sampleChild, the other value remains the incoming default.
-        const Expression* arg = c.arguments()[1].get();
-        Value argVal = this->writeExpression(*arg);
-        skvm::Color color;
-
-        switch (child->type().typeKind()) {
-            case Type::TypeKind::kShader: {
-                SkASSERT(nargs == 2);
-                SkASSERT(arg->type() == *fProgram.fContext->fTypes.fFloat2);
-                skvm::Coord coord = {f32(argVal[0]), f32(argVal[1])};
-                color = fSampleShader(fp_it->second, coord);
-                break;
-            }
-            case Type::TypeKind::kColorFilter: {
-                SkASSERT(nargs == 2);
-                SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
-                         arg->type() == *fProgram.fContext->fTypes.fFloat4);
-                skvm::Color inColor = {f32(argVal[0]), f32(argVal[1]),
-                                       f32(argVal[2]), f32(argVal[3])};
-                color = fSampleColorFilter(fp_it->second, inColor);
-                break;
-            }
-            case Type::TypeKind::kBlender: {
-                SkASSERT(nargs == 3);
-                SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
-                         arg->type() == *fProgram.fContext->fTypes.fFloat4);
-                skvm::Color srcColor = {f32(argVal[0]), f32(argVal[1]),
-                                        f32(argVal[2]), f32(argVal[3])};
-
-                arg = c.arguments()[2].get();
-                argVal = this->writeExpression(*arg);
-                SkASSERT(arg->type() == *fProgram.fContext->fTypes.fHalf4 ||
-                         arg->type() == *fProgram.fContext->fTypes.fFloat4);
-                skvm::Color dstColor = {f32(argVal[0]), f32(argVal[1]),
-                                        f32(argVal[2]), f32(argVal[3])};
-
-                color = fSampleBlender(fp_it->second, srcColor, dstColor);
-                break;
-            }
-            default: {
-                SkDEBUGFAILF("cannot sample from type '%s'", child->type().description().c_str());
-            }
-        }
-
-        Value result(4);
-        result[0] = color.r;
-        result[1] = color.g;
-        result[2] = color.b;
-        result[3] = color.a;
-        return result;
+        return this->writeChildCall(
+                *child->as<VariableReference>().variable(), c.arguments(), /*argStart=*/1);
     }
 
     const size_t kMaxArgs = 3;  // eg: clamp, mix, smoothstep
@@ -1335,6 +1342,8 @@ Value SkVMGenerator::writeExpression(const Expression& e) {
             return this->writeBinaryExpression(e.as<BinaryExpression>());
         case Expression::Kind::kBoolLiteral:
             return fBuilder->splat(e.as<BoolLiteral>().value() ? ~0 : 0);
+        case Expression::Kind::kChildCall:
+            return this->writeChildCall(e.as<ChildCall>().child(), e.as<ChildCall>().arguments());
         case Expression::Kind::kConstructorArray:
         case Expression::Kind::kConstructorCompound:
         case Expression::Kind::kConstructorStruct:
