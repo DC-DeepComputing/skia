@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a917ef88_1263f578",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1399,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-04T14:34:22Z",
+      "side": 1,
+      "message": "This could be false if matrix.hasPerspective() is true.",
+      "range": {
+        "startLine": 1399,
+        "startChar": 20,
+        "endLine": 1399,
+        "endChar": 47
+      },
+      "revId": "af8797842910510551140a481dcb805782298972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6014c656_9910085f",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1404,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-04T14:34:22Z",
+      "side": 1,
+      "message": "injectMoveToIfNeeded() guarantees fLastMoveToIndex \u003e\u003d 0 as a postcondition.",
+      "range": {
+        "startLine": 1404,
+        "startChar": 24,
+        "endLine": 1404,
+        "endChar": 55
+      },
+      "revId": "af8797842910510551140a481dcb805782298972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
