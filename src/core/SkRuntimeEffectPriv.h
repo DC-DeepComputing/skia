@@ -119,10 +119,10 @@ public:
 private:
     struct SampleCall {
         enum class Kind {
-            kInputColor,  // eg sample(child) or sample(child, inputColor)
-            kImmediate,   // eg sample(child, half4(1))
-            kPrevious,    // eg sample(child1, sample(child2))
-            kUniform,     // eg uniform half4 color; ... sample(child, color)
+            kInputColor,  // eg child(inputColor)
+            kImmediate,   // eg child(half4(1))
+            kPrevious,    // eg child1(child2(...))
+            kUniform,     // eg uniform half4 color; ... child(color)
         };
 
         int  fChild;
