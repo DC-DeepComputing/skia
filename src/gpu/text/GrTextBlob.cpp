@@ -68,7 +68,6 @@ struct ARGB3DVertex {
 };
 
 #if SK_GPU_V1
-
 GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     switch (grMaskFormat) {
         case kA8_GrMaskFormat:   return GrAtlasTextOp::MaskType::kGrayscaleCoverage;
@@ -650,6 +649,7 @@ calculate_clip(const GrClip* clip, SkRect deviceBounds, SkRect glyphBounds) {
 }
 }  // namespace
 
+#if SK_GPU_V1
 std::tuple<const GrClip*, GrOp::Owner>
 DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip, const SkMatrixProvider& viewMatrix,
                                   const SkGlyphRunList& glyphRunList,

@@ -8,6 +8,8 @@
 #ifndef GrGrAtlasRenderTask_DEFINED
 #define GrGrAtlasRenderTask_DEFINED
 
+#if 0
+
 #include "include/core/SkPath.h"
 #include "src/gpu/GrDynamicAtlas.h"
 #include "src/gpu/GrOpsTask.h"
@@ -87,4 +89,5 @@ private:
     AtlasPathList fEvenOddPathList;
 };
 
+#endif
 #endif
