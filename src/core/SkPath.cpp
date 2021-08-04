@@ -1375,17 +1375,16 @@ SkPath& SkPath::addPath(const SkPath& srcPath, const SkMatrix& matrix, AddPathMo
     }
 
     if (kAppend_AddPathMode == mode && !matrix.hasPerspective()) {
-        fLastMoveToIndex = this->countPoints() + src->fLastMoveToIndex;
-
+        if (src->fLastMoveToIndex >= 0) {
+            fLastMoveToIndex = src->fLastMoveToIndex + this->countPoints();
+        } else {
+            fLastMoveToIndex = src->fLastMoveToIndex - this->countPoints();
+        }
         SkPathRef::Editor ed(&fPathRef);
         auto [newPts, newWeights] = ed.growForVerbsInPath(*src->fPathRef);
         matrix.mapPoints(newPts, src->fPathRef->points(), src->countPoints());
         if (int numWeights = src->fPathRef->countWeights()) {
             memcpy(newWeights, src->fPathRef->conicWeights(), numWeights * sizeof(newWeights[0]));
-        }
-        // fiddle with fLastMoveToIndex, as we do in SkPath::close()
-        if ((SkPathVerb)fPathRef->verbsEnd()[-1] == SkPathVerb::kClose) {
-            fLastMoveToIndex ^= ~fLastMoveToIndex >> (8 * sizeof(fLastMoveToIndex) - 1);
         }
         return this->dirtyAfterEdit();
     }
@@ -1397,13 +1396,12 @@ SkPath& SkPath::addPath(const SkPath& srcPath, const SkMatrix& matrix, AddPathMo
             SkPoint mappedPts[3];
             case SkPathVerb::kMove:
                 mapPtsProc(matrix, mappedPts, &pts[0], 1);
-                if (firstVerb && !isEmpty()) {
-                    SkASSERT(mode == kExtend_AddPathMode);
+                if (mode == kExtend_AddPathMode && firstVerb && !isEmpty()) {
                     injectMoveToIfNeeded(); // In case last contour is closed
                     SkPoint lastPt;
                     // don't add lineTo if it is degenerate
-                    if (fLastMoveToIndex < 0 || !this->getLastPt(&lastPt) ||
-                        lastPt != mappedPts[0]) {
+                    if (!this->getLastPt(&lastPt) || lastPt != mappedPts[0]) {
+                        SkASSERT(fLastMoveToIndex >= 0)
                         this->lineTo(mappedPts[0]);
                     }
                 } else {

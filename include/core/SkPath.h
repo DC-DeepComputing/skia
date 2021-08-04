@@ -1244,8 +1244,15 @@ public:
         the last contour or start a new contour.
     */
     enum AddPathMode {
-        kAppend_AddPathMode, //!< appended to destination unaltered
-        kExtend_AddPathMode, //!< add line if prior contour is not closed
+        kAppend_AddPathMode, //!< appended to destination as new contours
+        /** extends an open last contour of destination with a line to the
+            start of the first contour of source, followed by the first
+            contour of source.
+            If last contour of destination is closed, a new contour is started,
+            and the line starts at the start of the last contour.
+            If destination is empty, no line is added.
+        */
+        kExtend_AddPathMode,
     };
 
     /** Appends src to SkPath, offset by (dx, dy).
