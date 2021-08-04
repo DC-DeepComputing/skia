@@ -22,7 +22,7 @@ parser.add_argument('--gn', dest='gn_cmd', default='gn')
 args = parser.parse_args()
 
 def GenerateJSONFromGN(gn_args):
-  gn_args = ' '.join(sorted('%s=%s' % (k,v) for (k,v) in iter(gn_args.items())))
+  gn_args = ' '.join(sorted('%s=%s' % (k,v) for (k,v) in gn_args.iteritems()))
   tmp = tempfile.mkdtemp()
   subprocess.check_call([args.gn_cmd, 'gen', tmp, '--args=%s' % gn_args,
                          '--ide=json'])
@@ -92,9 +92,7 @@ def GetArchSources(opts_file):
   # that we can use execfile() if we supply definitions for GN builtins.
   builtins = { 'get_path_info': _get_path_info }
   defs = {}
-  with open(opts_file) as f:
-    code = compile(f.read(), opts_file, 'exec')
-    exec(code, builtins, defs)
+  execfile(opts_file, builtins, defs)
 
   # Perform any string substitutions.
   for arch in defs:
