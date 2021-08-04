@@ -16,6 +16,24 @@
       "message": "I added this, but if we go with SkMutex that actually means depending on the skia target instead of just pulling in this include. Forgot to fix that up before uploading (wanted to see how it worked, then forgot to fix it).",
       "revId": "9051784aaefb217bef96492165b2e1c22b740e41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0562dfc_89900574",
+        "filename": "third_party/harfbuzz/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-08-04T18:28:25Z",
+      "side": 1,
+      "message": "I tried adding a dep to \"//:skia\" but that creates a circular dependency. Any recommendations? should I define a new target that has just the mutex stuff in it and depend on that?",
+      "parentUuid": "ef4f770d_8abf62d8",
+      "revId": "9051784aaefb217bef96492165b2e1c22b740e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

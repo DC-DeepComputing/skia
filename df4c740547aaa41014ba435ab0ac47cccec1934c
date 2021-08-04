@@ -16,6 +16,24 @@
       "message": "\"| HB_SUBSET_FLAG_HINTING\"?",
       "revId": "df4c740547aaa41014ba435ab0ac47cccec1934c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae80ef45_9bed8118",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-08-04T18:28:25Z",
+      "side": 1,
+      "message": "When I added the batch api to harfbuzz I switched HB_SUBSET_FLAG_HINTING to be HB_SUBSET_FLAG_NO_HINTING (so that all flags default to false). So now not specifying the flag retains the same behaviour as before.",
+      "parentUuid": "ebfa6b98_75846623",
+      "revId": "df4c740547aaa41014ba435ab0ac47cccec1934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
