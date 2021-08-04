@@ -39,6 +39,30 @@
       },
       "revId": "20112b1f0a5c4d12a7ce32e377dee4ab76df3841",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ca875e6_b4afa753",
+        "filename": "src/sksl/ir/SkSLChildCall.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-04T20:23:33Z",
+      "side": 1,
+      "message": "Looks like it, for the inliner\u0027s candidate analyzer.",
+      "parentUuid": "51bb388e_0339e4b8",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 5
+      },
+      "revId": "20112b1f0a5c4d12a7ce32e377dee4ab76df3841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
