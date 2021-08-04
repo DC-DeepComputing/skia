@@ -15,7 +15,6 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkDeque.h"
-#include "src/core/SkClipOpPriv.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTLazy.h"
 
@@ -135,8 +134,9 @@ public:
         //!< Call if getDeviceSpaceType() is not kEmpty to get the set operation used to combine
         //!< this element.
         SkClipOp getOp() const { return fOp; }
+
         // Augments getOps()'s behavior by requiring a clip reset before the op is applied.
-        bool isReplaceOp() const { return fIsReplace || fOp == kReplace_SkClipOp; }
+        bool isReplaceOp() const { return fIsReplace; }
 
         SkRegion::Op getRegionOp() const {
             return this->isReplaceOp() ? SkRegion::kReplace_Op : (SkRegion::Op) this->getOp();
@@ -309,10 +309,7 @@ public:
         };
         // per-set operation functions used by updateBoundAndGenID().
         inline void combineBoundsDiff(FillCombo combination, const SkRect& prevFinite);
-        inline void combineBoundsXOR(int combination, const SkRect& prevFinite);
-        inline void combineBoundsUnion(int combination, const SkRect& prevFinite);
         inline void combineBoundsIntersection(int combination, const SkRect& prevFinite);
-        inline void combineBoundsRevDiff(int combination, const SkRect& prevFinite);
     };
 
     SkClipStack();
@@ -547,10 +544,6 @@ private:
      * Restore the stack back to the specified save count.
      */
     void restoreTo(int saveCount);
-
-    inline bool hasClipRestriction(SkClipOp op) {
-        return op >= kUnion_SkClipOp && !fClipRestrictionRect.isEmpty();
-    }
 
     /**
      * Return the next unique generation ID.
