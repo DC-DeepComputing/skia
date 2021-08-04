@@ -63,8 +63,7 @@ SkImageInfo make_info(skgpu::v1::SurfaceDrawContext* sdc, bool opaque) {
 
 #if !defined(SK_DISABLE_NEW_GR_CLIP_STACK)
 bool force_aa_clip(const skgpu::v1::SurfaceDrawContext* sdc) {
-    return (sdc->numSamples() > 1 && !sdc->caps()->multisampleDisableSupport()) ||
-           sdc->alwaysAntialias();
+    return sdc->numSamples() > 1 || sdc->alwaysAntialias();
 }
 #endif
 
