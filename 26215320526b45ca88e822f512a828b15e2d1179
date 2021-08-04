@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0531662b_aeacb26a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5060
+      },
+      "writtenOn": "2021-08-04T22:01:10Z",
+      "side": 1,
+      "message": "PTAL\n\nWill be followed by https://chrome-internal-review.googlesource.com/c/infradata/config/+/4031312",
+      "revId": "26215320526b45ca88e822f512a828b15e2d1179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
