@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30ce392_3fcb794f",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T16:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f21373c_2cec9b5f",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 43
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80adfd79_e03fee4a",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-08-04T16:30:46Z",
       "side": 1,
       "message": "Did this need to wrap?",
+      "range": {
+        "startLine": 286,
+        "startChar": 23,
+        "endLine": 286,
+        "endChar": 33
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd1b3a0_87a5a91b",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T16:56:01Z",
+      "side": 1,
+      "message": "nope",
+      "parentUuid": "80adfd79_e03fee4a",
       "range": {
         "startLine": 286,
         "startChar": 23,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c9789b_76a6063f",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T16:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea91ddda_3fe87f8c",
+      "range": {
+        "startLine": 289,
+        "startChar": 24,
+        "endLine": 289,
+        "endChar": 33
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a68441d_a79e7c2a",
@@ -117,6 +189,30 @@
       "writtenOn": "2021-08-04T14:15:41Z",
       "side": 1,
       "message": "xtra space ?",
+      "range": {
+        "startLine": 220,
+        "startChar": 4,
+        "endLine": 220,
+        "endChar": 5
+      },
+      "revId": "3f93bbae3fc8f4568498bddd8489637c2560d983",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c4eef58_b3f3e86d",
+        "filename": "tests/ClipStackTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T16:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a68441d_a79e7c2a",
       "range": {
         "startLine": 220,
         "startChar": 4,

@@ -16,6 +16,24 @@
       "message": "Did we need to delete this line?",
       "revId": "64303c363813e2a66cbd4a569377624d5918503d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf38994_6239ceb4",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-04T16:56:01Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "a736e061_0f402b79",
+      "revId": "64303c363813e2a66cbd4a569377624d5918503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
