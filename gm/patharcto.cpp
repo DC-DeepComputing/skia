@@ -56,3 +56,44 @@ DEF_SIMPLE_GM(arcto_skbug_9272, canvas, 150, 150) {
     canvas->drawPath(path, paint);
     canvas->drawPath(path2, paint);
 }
+
+DEF_SIMPLE_GM(path_extend, canvas, 200, 200) {
+    const SkPoint p0[] = {
+        { 10, 30 }, {30, 10}, {50, 30},
+    };
+    const SkPoint p1[] = {
+        { 10, 50 }, {30, 70}, {50, 50},
+    };
+
+    SkPath path0 = SkPath::Polygon(p0, SK_ARRAY_COUNT(p0), false);
+    SkPath path1 = SkPath::Polygon(p1, SK_ARRAY_COUNT(p1), false);
+
+    SkPaint paint;
+    paint.setStroke(true);
+    paint.setStrokeWidth(2);
+    paint.setAntiAlias(true);
+
+    canvas->drawPath(path0, paint);
+    canvas->drawPath(path1, paint);
+
+    canvas->translate(100, 0);
+    {
+        SkPath path = path0;
+        path.addPath(path1, SkPath::kAppend_AddPathMode);
+        canvas->drawPath(path, paint);
+    }
+
+    canvas->translate(100, 0);
+    {
+        SkPath path = path0;
+        path.addPath(path1, SkPath::kExtend_AddPathMode);
+        canvas->drawPath(path, paint);
+    }
+
+    canvas->translate(100, 0);
+    {
+        SkPath path = path1;
+        path.addPath(path0, SkPath::kExtend_AddPathMode);
+        canvas->drawPath(path, paint);
+    }
+}
