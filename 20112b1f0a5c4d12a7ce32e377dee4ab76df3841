@@ -16,6 +16,29 @@
       "message": "Not planning to land this right now (as I\u0027m going to be out on vacation), but PS5 is much cleaner - IR generator translates calls to sample, so we only ever have to deal with ChildCall in the generators and Analysis code.",
       "revId": "20112b1f0a5c4d12a7ce32e377dee4ab76df3841",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51bb388e_0339e4b8",
+        "filename": "src/sksl/ir/SkSLChildCall.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-04T20:16:50Z",
+      "side": 1,
+      "message": "Do we actually need mutation?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 5
+      },
+      "revId": "20112b1f0a5c4d12a7ce32e377dee4ab76df3841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
