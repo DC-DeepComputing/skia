@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a736e061_0f402b79",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-04T16:30:46Z",
+      "side": 0,
+      "message": "Did we need to delete this line?",
+      "revId": "64303c363813e2a66cbd4a569377624d5918503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
