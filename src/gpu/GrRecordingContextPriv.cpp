@@ -16,10 +16,12 @@
 #if SK_GPU_V1
 #include "src/gpu/v1/Device_v1.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
+#include "src/gpu/v1/SurfaceFillContext_v1.h"
 #endif
 #if SK_GPU_V2
-#include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/v2/Device_v2.h"
+#include "src/gpu/v2/SurfaceDrawContext_v2.h"
+#include "src/gpu/v2/SurfaceFillContext_v2.h"
 #endif
 
 void GrRecordingContextPriv::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlushCBObject) {
@@ -93,8 +95,8 @@ GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) c
             this->options().fGlyphsAsPathsFontSize};
 }
 
-std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
-                                                                 const GrColorInfo& info) {
+std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
+                                                                      const GrColorInfo& info) {
 #if GR_TEST_UTILS
     if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
 #if SK_GPU_V2
@@ -114,7 +116,7 @@ std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyV
         GrSurfaceProxy* proxy = readView.proxy();
         SkASSERT(proxy && proxy->asTextureProxy());
 
-        std::unique_ptr<GrSurfaceContext> sc;
+        std::unique_ptr<skgpu::SurfaceContext> sc;
         if (proxy->asRenderTargetProxy()) {
             // Will we ever want a swizzle that is not the default write swizzle for the format and
             // colorType here? If so we will need to manually pass that in.
@@ -139,7 +141,9 @@ std::unique_ptr<GrSurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyV
                                                                      info);
             }
         } else {
-            sc = std::make_unique<GrSurfaceContext>(this->context(), std::move(readView), info);
+            sc = std::make_unique<skgpu::SurfaceContext>(this->context(),
+                                                         std::move(readView),
+                                                         info);
         }
         SkDEBUGCODE(sc->validate();)
         return sc;
