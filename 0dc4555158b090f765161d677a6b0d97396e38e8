@@ -16,6 +16,142 @@
       "message": "I think we need a separate CL just to reorg the scalercontext code",
       "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af583bf_9cb8996c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "I stared at this for a while, and this was the only code flow difference I could see. May look more later.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92519999_a89ce748",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "So this one matches exactly.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1233eb90_a79472b7",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "For some reason this one seems to be ever so slightly different (both normal and emboldened).",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de81de88_214c2f21",
+        "filename": "include/core/SkStrokeRec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "It appears that SkStrokeRec::Style::kStrokeAndFill_Style is removed above, but this still allows fStrokeAndFill to be set. It looks like maybe things are easier if SkStrokeRec::Style::kStrokeAndFill_Style is retained?",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "488e3116_62d1fbaf",
+        "filename": "src/core/SkStrokeRec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "This means the stoker still respects fStrokeAndFill, but now applyToPaint and then applying to a path, as opposed to directly calling applyToPath no longer act the same. It appears there is only one call to applyToPaint, should one attempt to remove it?",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f209018_20f34598",
+        "filename": "src/effects/SkOpPathEffect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "So with this change, getStyle will lie and state that it\u0027s stroke, even if it is internally a stroke and fill. Also, shouldn\u0027t this be \u0027rec-\u003eneedToApply()\u0027?",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f8943a_20e48201",
+        "filename": "src/effects/SkOpPathEffect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "But this may apply a stroke and fill.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "923a54f1_9de89fb4",
+        "filename": "src/effects/SkOpPathEffect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-04T03:41:07Z",
+      "side": 1,
+      "message": "And then the src will be added again.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
