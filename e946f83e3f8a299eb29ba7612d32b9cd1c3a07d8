@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "144aa53f_668fa3ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-04T19:55:24Z",
+      "side": 1,
+      "message": "Is it worth adjusting the test with a perspective column (or always use tiny persp)?",
+      "revId": "e946f83e3f8a299eb29ba7612d32b9cd1c3a07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
