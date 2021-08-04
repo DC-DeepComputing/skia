@@ -68,7 +68,6 @@ struct ARGB3DVertex {
 };
 
 #if SK_GPU_V1
-
 GrAtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     switch (grMaskFormat) {
         case kA8_GrMaskFormat:   return GrAtlasTextOp::MaskType::kGrayscaleCoverage;
@@ -1711,8 +1710,10 @@ private:
     const SkRect fGlyphDeviceBounds;
     const SkSpan<const DevicePosition> fLeftTopDevicePos;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -1729,7 +1730,6 @@ DirectMaskSubRunNoCache::DirectMaskSubRunNoCache(GrMaskFormat format,
         , fGlyphs{glyphs} {
 #if !SK_GPU_V1
     (void) fGlyphDeviceBounds;
-    (void) fGeom;
 #endif
 }
 
@@ -1962,8 +1962,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -1978,9 +1980,6 @@ TransformedMaskSubRunNoCache::TransformedMaskSubRunNoCache(GrMaskFormat format,
         , fVertexBounds{bounds}
         , fVertexData{vertexData}
         , fGlyphs{glyphs} {
-#if !SK_GPU_V1
-    (void) fGeom;
-#endif
 }
 
 GrAtlasSubRunOwner TransformedMaskSubRunNoCache::Make(
@@ -2191,8 +2190,10 @@ private:
     const SkRect fVertexBounds;
     const SkSpan<const VertexData> fVertexData;
 
+#if SK_GPU_V1
     // Space for geometry
     alignas(alignof(GrAtlasTextOp::Geometry)) char fGeom[sizeof(GrAtlasTextOp::Geometry)];
+#endif
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -2215,7 +2216,6 @@ SDFTSubRunNoCache::SDFTSubRunNoCache(GrMaskFormat format,
         , fUseLCDText{useLCDText}
         , fAntiAliased{antiAliased} {
 #if !SK_GPU_V1
-    (void) fGeom;
     (void) fUseLCDText;
     (void) fAntiAliased;
 #endif

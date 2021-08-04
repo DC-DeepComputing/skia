@@ -13,6 +13,7 @@
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrSurfaceProxy.h"
 #include "src/gpu/GrSurfaceProxyPriv.h"
+//#include "src/gpu/GrOpsTask.h"
 
 #ifdef SK_DEBUG
 #include <atomic>

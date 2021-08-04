@@ -10,6 +10,7 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrSurfaceFillContext.h"
 #include "src/gpu/GrSwizzle.h"
 
