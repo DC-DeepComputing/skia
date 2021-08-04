@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68f9d9bf_dca37189",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-04T20:03:42Z",
+      "side": 1,
+      "message": "Not planning to land this right now (as I\u0027m going to be out on vacation), but PS5 is much cleaner - IR generator translates calls to sample, so we only ever have to deal with ChildCall in the generators and Analysis code.",
+      "revId": "20112b1f0a5c4d12a7ce32e377dee4ab76df3841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
