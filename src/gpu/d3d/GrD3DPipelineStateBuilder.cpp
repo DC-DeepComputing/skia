@@ -382,8 +382,8 @@ static void fill_in_blend_state(const GrPipeline& pipeline, D3D12_BLEND_DESC* bl
     }
 }
 
-static void fill_in_rasterizer_state(const GrPipeline& pipeline, const GrCaps* caps,
-                                     D3D12_RASTERIZER_DESC* rasterizer) {
+static void fill_in_rasterizer_state(const GrPipeline& pipeline, bool multisampleEnable,
+                                     const GrCaps* caps, D3D12_RASTERIZER_DESC* rasterizer) {
     rasterizer->FillMode = (caps->wireframeMode() || pipeline.isWireframe()) ?
         D3D12_FILL_MODE_WIREFRAME : D3D12_FILL_MODE_SOLID;
     rasterizer->CullMode = D3D12_CULL_MODE_NONE;
@@ -392,7 +392,7 @@ static void fill_in_rasterizer_state(const GrPipeline& pipeline, const GrCaps* c
     rasterizer->DepthBiasClamp = 0.0f;
     rasterizer->SlopeScaledDepthBias = 0.0f;
     rasterizer->DepthClipEnable = false;
-    rasterizer->MultisampleEnable = pipeline.isHWAntialiasState();
+    rasterizer->MultisampleEnable = multisampleEnable;
     rasterizer->AntialiasedLineEnable = false;
     rasterizer->ForcedSampleCount = 0;
     rasterizer->ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
@@ -521,7 +521,8 @@ gr_cp<ID3D12PipelineState> create_pipeline_state(
     fill_in_blend_state(programInfo.pipeline(), &psoDesc.BlendState);
     psoDesc.SampleMask = UINT_MAX;
 
-    fill_in_rasterizer_state(programInfo.pipeline(), gpu->caps(), &psoDesc.RasterizerState);
+    fill_in_rasterizer_state(programInfo.pipeline(), programInfo.numSamples() > 1, gpu->caps(),
+                             &psoDesc.RasterizerState);
 
     fill_in_depth_stencil_state(programInfo, &psoDesc.DepthStencilState);
 
