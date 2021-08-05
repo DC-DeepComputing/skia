@@ -4226,6 +4226,15 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fAvoidReorderingRenderTasks = true;
     }
 
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    if (ctxInfo.renderer() == GrGLRenderer::kPowerVRRogue) {
+        // https://b/195281495
+        // The TecnoSpark 3 Pro with a PowerVR GE8300 seems to have a steep dithering performance
+        // cliff in the Android Framework
+        fAvoidDithering = true;
+    }
+#endif
+
     // http://skbug.com/11965
     if (ctxInfo.renderer() == GrGLRenderer::kGoogleSwiftShader) {
         fShaderCaps->fVertexIDSupport = false;
