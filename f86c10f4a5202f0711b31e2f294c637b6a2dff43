@@ -37,6 +37,78 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "673d7381_738233d5",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-05T16:38:49Z",
+      "side": 1,
+      "message": "\u003e Please remove the trailing whitespace.\n\nPlease fix.",
+      "parentUuid": "a5f7a780_bedd9028",
+      "range": {
+        "startLine": 70,
+        "startChar": 37,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe86dd0_688ef509",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-05T16:38:49Z",
+      "side": 1,
+      "message": "\u003e Please remove the trailing whitespace.\n\nPlease fix.",
+      "parentUuid": "3da2d64b_b8af81aa",
+      "range": {
+        "startLine": 45,
+        "startChar": 90,
+        "endLine": 45,
+        "endChar": 91
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3df46a82_59a72647",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-08-05T16:38:49Z",
+      "side": 1,
+      "message": "\u003e Please remove the trailing whitespace.\n\nPlease fix.",
+      "parentUuid": "f024b524_acaf296c",
+      "range": {
+        "startLine": 80,
+        "startChar": 74,
+        "endLine": 80,
+        "endChar": 75
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba5d3ed0_435df096",
         "filename": "modules/skottie/tests/Expression.cpp",
         "patchSetId": 9
