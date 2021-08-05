@@ -18,7 +18,9 @@ namespace SkSL {
 
 namespace dsl {
 
-void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, skstd::string_view name,
+void DSLFunction::init(DSLModifiers modifiers,
+                       const DSLType& returnType,
+                       skstd::string_view name,
                        SkTArray<DSLParameter*> params) {
     // Conservatively assume all user-defined functions have side effects.
     if (!DSLWriter::IsModule()) {
