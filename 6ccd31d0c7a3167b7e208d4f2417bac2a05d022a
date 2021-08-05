@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08f0e8bd_1a319114",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T19:22:28Z",
+      "side": 1,
+      "message": "Note that the change to glyph_pos_h_b is to reduce the bounding box, since SkScalerContext no longer inflates the bounds when it isn\u0027t needed. In general it appears that the stroke+fill of a hairline stroke has always been the same as fill. The zero stroke width is treated as hairline for stroking, but not for stroke+filling (which should soon be immaterial, since stroke+filling is going away).",
+      "revId": "6ccd31d0c7a3167b7e208d4f2417bac2a05d022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2428ff1f_7d62d1af",
