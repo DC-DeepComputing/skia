@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "766cf480_6edd5405",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-05T19:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "673d7381_738233d5",
+      "range": {
+        "startLine": 70,
+        "startChar": 37,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fe86dd0_688ef509",
@@ -73,6 +97,30 @@
       "side": 1,
       "message": "\u003e Please remove the trailing whitespace.\n\nPlease fix.",
       "parentUuid": "3da2d64b_b8af81aa",
+      "range": {
+        "startLine": 45,
+        "startChar": 90,
+        "endLine": 45,
+        "endChar": 91
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720d3614_0c7770ac",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-05T19:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fe86dd0_688ef509",
       "range": {
         "startLine": 45,
         "startChar": 90,
@@ -107,6 +155,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2a28d6_1a127660",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-05T19:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3df46a82_59a72647",
+      "range": {
+        "startLine": 80,
+        "startChar": 74,
+        "endLine": 80,
+        "endChar": 75
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba5d3ed0_435df096",
@@ -120,6 +192,30 @@
       "writtenOn": "2021-08-05T14:44:04Z",
       "side": 1,
       "message": "nit: 2021",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "f86c10f4a5202f0711b31e2f294c637b6a2dff43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "498d205b_4866d91e",
+        "filename": "modules/skottie/tests/Expression.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-05T19:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5d3ed0_435df096",
       "range": {
         "startLine": 2,
         "startChar": 13,

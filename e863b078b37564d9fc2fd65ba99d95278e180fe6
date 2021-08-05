@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d051f79_3f0fb028",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-05T19:59:45Z",
+      "side": 1,
+      "message": "Done - added a basic test showing the normal flow for Scalar values should work!",
+      "parentUuid": "be633b30_13bf34b4",
+      "revId": "e863b078b37564d9fc2fd65ba99d95278e180fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bee22cb_0c314d53",
