@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e61063_debb9b9b",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "new behavior, getOp() now ensures that a legacy kReplace_SkClipOp looks the same as a new kIntersect + fIsReplace\u003d\u003dtrue.",
+      "range": {
+        "startLine": 137,
+        "startChar": 33,
+        "endLine": 137,
+        "endChar": 94
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8d4f7e_3554781e",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "new behavior; if the GrReducedClip sets an element to kDifference but fIsReplace had been true, fIsReplace would override that new op setting when it should have also been set to false.",
+      "range": {
+        "startLine": 164,
+        "startChar": 12,
+        "endLine": 164,
+        "endChar": 31
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f32dc12_516f4500",
+        "filename": "src/core/SkClipStackDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "new behavior: new replace ops would have shown up as an intersect, resulting in an entirely different clip shape being generated in onAsRgn.",
+      "range": {
+        "startLine": 105,
+        "startChar": 12,
+        "endLine": 105,
+        "endChar": 49
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847b11a2_5f1e4400",
+        "filename": "src/gpu/GrClipStackClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "new behavior; new replace elements would have appeared as intersects here for sw mask rendering, this fixes that (not sure if it was the cause of the android failure or not).",
+      "range": {
+        "startLine": 338,
+        "startChar": 9,
+        "endLine": 338,
+        "endChar": 49
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac16d094_778cad7e",
+        "filename": "src/gpu/GrReducedClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "As part of reland, I reworked this to just be based off of region ops, so there\u0027s a lot less code line movement. Not sure if I had inadvertently introduced a bug in the previous version, but at the very least, this makes the diff a lot clearer.",
+      "range": {
+        "startLine": 193,
+        "startChar": 9,
+        "endLine": 194,
+        "endChar": 42
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9132b3ca_d9a44c8a",
+        "filename": "src/gpu/GrReducedClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T20:52:22Z",
+      "side": 1,
+      "message": "technically new behavior: would have been treating replaces as intersects in the old version as well, but this is only used for GPU alpha mask generation, which I believe is always avoided.",
+      "range": {
+        "startLine": 724,
+        "startChar": 44,
+        "endLine": 724,
+        "endChar": 66
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
