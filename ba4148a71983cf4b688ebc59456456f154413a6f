@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5464c676_19da1ce0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-05T18:02:49Z",
+      "side": 1,
+      "message": "You\u0027ll need to run `make -C infra/bots train`",
+      "revId": "ba4148a71983cf4b688ebc59456456f154413a6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
