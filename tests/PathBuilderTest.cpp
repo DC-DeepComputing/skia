@@ -320,3 +320,26 @@ DEF_TEST(pathbuilder_addPath, reporter) {
 
     REPORTER_ASSERT(reporter, p == SkPathBuilder().addPath(p).detach());
 }
+
+/*
+ *  If paths were immutable, we would not have to track this, but until that day, we need
+ *  to ensure that paths are built correctly/consistently with this field, regardless of
+ *  either the classic mutable apis, or via SkPathBuilder (SkPath::Polygon uses builder).
+ */
+DEF_TEST(pathbuilder_lastmoveindex, reporter) {
+    const SkPoint pts[] = {
+        {0, 1}, {2, 3}, {4, 5},
+    };
+    constexpr int N = (int)SK_ARRAY_COUNT(pts);
+
+    for (bool isClosed : {false, true}) {
+        SkPath a = SkPath::Polygon(pts, N, isClosed);
+        SkPath b;        b.addPoly(pts, N, isClosed);
+
+        // We track the last moveTo verb index, and we invert it if the last verb was a close
+        const int expected = isClosed ? ~0 : 0;
+
+        REPORTER_ASSERT(reporter, SkPathPriv::LastMoveToIndex(a) == expected);
+        REPORTER_ASSERT(reporter, SkPathPriv::LastMoveToIndex(b) == expected);
+    }
+}
