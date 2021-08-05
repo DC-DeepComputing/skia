@@ -206,7 +206,32 @@ SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
     //  unknown, convex_cw, convex_ccw, concave
     // Do we ever have direction w/o convexity, or viceversa (inside path)?
     //
-    return SkPath(std::move(pr), fFillType, fIsVolatile, convexity, dir);
+    auto path = SkPath(std::move(pr), fFillType, fIsVolatile, convexity, dir);
+
+    // This hopefully can go away in the future when Paths are immutable,
+    // but if while they are still editable, we need to correctly set this.
+    const uint8_t* start = path.fPathRef->verbsBegin();
+    const uint8_t* stop  = path.fPathRef->verbsEnd();
+    if (start < stop) {
+        // need this to stop our loop
+        SkASSERT(*start == (uint8_t)SkPathVerb::kMove);
+
+        // we just care about the last contour...
+        const bool isClosed = (stop[-1] == (uint8_t)SkPathVerb::kClose);
+        for (;;) {
+            if (*--stop == (uint8_t)SkPathVerb::kMove) {
+                break;
+            }
+        }
+
+        // Now set the index
+        path.fLastMoveToIndex = stop - start;
+        if (isClosed) {
+            path.fLastMoveToIndex = ~path.fLastMoveToIndex;
+        }
+    }
+
+    return path;
 }
 
 SkPath SkPathBuilder::snapshot() const {
