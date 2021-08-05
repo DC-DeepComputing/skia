@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c2ef0ba_7bf36e66",
+        "filename": "src/gpu/GrFragmentProcessor.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Yeah, I was thinking of actually making it a nested class of GrFP. See skbug.com/11358. Started a while back, but haven\u0027t done too much yet.",
+      "parentUuid": "177bab5f_bf644d89",
+      "range": {
+        "startLine": 306,
+        "startChar": 9,
+        "endLine": 306,
+        "endChar": 23
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc362dfb_df40b4bb",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-08-05T13:47:48Z",
       "side": 1,
       "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 57,
+        "startChar": 11,
+        "endLine": 57,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "693f0824_46aa92ad",
+        "filename": "src/gpu/d3d/GrD3DPipelineState.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc362dfb_df40b4bb",
       "range": {
         "startLine": 57,
         "startChar": 11,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ba35170_5718afa8",
+        "filename": "src/gpu/dawn/GrDawnProgramBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f054b657_9b289123",
+      "range": {
+        "startLine": 512,
+        "startChar": 11,
+        "endLine": 512,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41c60e88_d29b90a0",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-08-05T13:47:48Z",
       "side": 1,
       "message": "can we pass in *fFPImpls[i] here, so we don\u0027t have two impl variables shadowing each other?",
+      "range": {
+        "startLine": 120,
+        "startChar": 11,
+        "endLine": 120,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c559d2_bd11d859",
+        "filename": "src/gpu/gl/GrGLProgram.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41c60e88_d29b90a0",
       "range": {
         "startLine": 120,
         "startChar": 11,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2a0451_470e0310",
+        "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e23edaa_f8dd7ed5",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec01103a_010cb189",
@@ -146,6 +266,30 @@
       "writtenOn": "2021-08-05T13:47:48Z",
       "side": 1,
       "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 89,
+        "startChar": 11,
+        "endLine": 89,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "790a5271_10efeb37",
+        "filename": "src/gpu/vk/GrVkPipelineState.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T14:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec01103a_010cb189",
       "range": {
         "startLine": 89,
         "startChar": 11,
