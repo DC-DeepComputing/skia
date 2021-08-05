@@ -16,6 +16,23 @@
       "message": "This can move forward now that android isn\u0027t using expanding clip ops anymore, since the new GrClipStack only supports replace/intersect/difference",
       "revId": "1383a32f635b2e5c9d939388b6e4f6630c5452de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f41fa5c_297e4907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T15:50:14Z",
+      "side": 1,
+      "message": "While the canary-android bot passed with this change, and this change would bypass whatever bug was introduced in the reverted https://skia-review.googlesource.com/c/skia/+/436158, I\u0027m going to wait to land this until I\u0027ve figured out what was wrong with the modifications to the old clip stack.",
+      "revId": "1383a32f635b2e5c9d939388b6e4f6630c5452de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
