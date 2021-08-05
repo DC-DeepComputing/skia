@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "644dabd8_88da2a24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-08-05T14:04:48Z",
+      "side": 1,
+      "message": "Here is the syntax error from the Android roller:\nexternal/skia/modules/particles/src/SkParticleEffect.cpp:149:46: error: suggest braces around initialization of subobject [-Werror,-Wmissing-braces]\n        skvm::Uniforms efUniforms(skvm::UPtr{0}, 0);\n                                             ^\n                                             {}\n                                         \nFrom:\nhttps://android-build.googleplex.com/builds/pending/P25076646/aosp_crosshatch-userdebug/latest/view/logs/build_error.log",
+      "revId": "ce64fbd80819f37a7e7db2291428ddbbf146deaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
