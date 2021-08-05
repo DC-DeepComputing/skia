@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea24de0_9c249d75",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-05T16:39:34Z",
+      "side": 1,
+      "message": "No, this is sort of a combination of the logic in injectMoveTo and in getLastPoint, without the side-effects of injecting a move.  All other places use the logic in those functions as is.",
+      "parentUuid": "0ecc3028_06db99d7",
+      "range": {
+        "startLine": 633,
+        "startChar": 8,
+        "endLine": 633,
+        "endChar": 13
+      },
+      "revId": "b536e0fd03a5054d0dd804a7f0c96cb51a4b3a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4369466_0c20581f",
@@ -78,6 +102,30 @@
       "writtenOn": "2021-08-05T13:41:01Z",
       "side": 1,
       "message": "nit: can we make it easy for the reader to know why these are the expected values?\n\n1. use rMoveTo(0,0)\n2. check_move(..., 10 + 30, 11 + 31); // sum of initial moveTo and rMoveTo\n3. other...",
+      "range": {
+        "startLine": 3881,
+        "startChar": 32,
+        "endLine": 3881,
+        "endChar": 34
+      },
+      "revId": "b536e0fd03a5054d0dd804a7f0c96cb51a4b3a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25729e6f_a2e316b7",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3881,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-05T16:39:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4369466_0c20581f",
       "range": {
         "startLine": 3881,
         "startChar": 32,
