@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "264a273d_a7ad29b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "Definitely a fan of this simplification. I have one question about visitImpls vs. current name of GrGLSLFP (hoping we can rename the GLSLFP to something less gl\u0027y). And I marked a few usages of the visitImpls where we shadowed an impl variable, which I don\u0027t think is necessary?",
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177bab5f_bf644d89",
+        "filename": "src/gpu/GrFragmentProcessor.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "Will we be doing a renaming of GrGLSLFragmentProcessor to GrFPImpl or similar? I would be very much a fan of that.",
+      "range": {
+        "startLine": 306,
+        "startChar": 9,
+        "endLine": 306,
+        "endChar": 23
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc362dfb_df40b4bb",
+        "filename": "src/gpu/d3d/GrD3DPipelineState.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 57,
+        "startChar": 11,
+        "endLine": 57,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f054b657_9b289123",
+        "filename": "src/gpu/dawn/GrDawnProgramBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 512,
+        "startChar": 11,
+        "endLine": 512,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41c60e88_d29b90a0",
+        "filename": "src/gpu/gl/GrGLProgram.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "can we pass in *fFPImpls[i] here, so we don\u0027t have two impl variables shadowing each other?",
+      "range": {
+        "startLine": 120,
+        "startChar": 11,
+        "endLine": 120,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e23edaa_f8dd7ed5",
+        "filename": "src/gpu/mtl/GrMtlPipelineState.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec01103a_010cb189",
+        "filename": "src/gpu/vk/GrVkPipelineState.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T13:47:48Z",
+      "side": 1,
+      "message": "*fFPImpls[i]",
+      "range": {
+        "startLine": 89,
+        "startChar": 11,
+        "endLine": 89,
+        "endChar": 15
+      },
+      "revId": "16c21448641431aa3611177cf82d0869eaf4e369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
