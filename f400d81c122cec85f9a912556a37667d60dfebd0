@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad24591_b75f4493",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-05T15:52:00Z",
+      "side": 1,
+      "message": "This is the actual change; the rest of the diff is just hoisting out all the optimization logic to a helper function (which made bailing out much simpler).",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 0
+      },
+      "revId": "f400d81c122cec85f9a912556a37667d60dfebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d7dd7d_e7a57f0e",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-05T15:52:00Z",
+      "side": 1,
+      "message": "Non-important change: we used to bail out here by setting a \"safeToOptimize\" flag to false and checking it below the loop. Now we can just bail directly.",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 27
+      },
+      "revId": "f400d81c122cec85f9a912556a37667d60dfebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
