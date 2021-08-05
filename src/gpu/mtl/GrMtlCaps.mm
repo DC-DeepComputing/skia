@@ -1116,8 +1116,8 @@ GrProgramDesc GrMtlCaps::makeDesc(GrRenderTarget* rt,
     }
 #endif
 
-    b.add32(rt && rt->getStencilAttachment() ? this->preferredStencilFormat()
-                                              : MTLPixelFormatInvalid);
+    bool needsStencil = programInfo.needsStencil() || programInfo.isStencilEnabled();
+    b.add32(needsStencil ? this->preferredStencilFormat() : MTLPixelFormatInvalid);
     b.add32((uint32_t)programInfo.isStencilEnabled());
     // Stencil samples don't seem to be tracked in the MTLRenderPipeline
 
