@@ -806,6 +806,12 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 			d["device_type"] = deviceInfo[0]
 			d["device_os"] = deviceInfo[1]
+
+			// Tests using Android's HWAddress Sanitizer require an HWASan build of Android.
+			// See https://developer.android.com/ndk/guides/hwasan.
+			if b.extraConfig("HWASAN") {
+				d["android_hwasan_build"] = "true"
+			}
 		} else if b.os("iOS") {
 			device, ok := map[string]string{
 				"iPadMini4": "iPad5,1",
