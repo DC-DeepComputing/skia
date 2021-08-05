@@ -39,6 +39,30 @@
       },
       "revId": "d59d22da07676729e76fbef6ebc78ecc45ff1b9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb13801_fd6212d2",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-05T18:15:51Z",
+      "side": 1,
+      "message": "Yes, turns out DSLParser does in fact need this change.",
+      "parentUuid": "684f974d_454a7748",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 47
+      },
+      "revId": "d59d22da07676729e76fbef6ebc78ecc45ff1b9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
