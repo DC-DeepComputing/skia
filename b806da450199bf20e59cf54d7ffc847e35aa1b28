@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce13e6d_8262d499",
+        "filename": "src/gpu/d3d/GrD3DGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T16:17:40Z",
+      "side": 0,
+      "message": "This is effectively already asserted at line 696. (Same in similar code in GrVkGpu.cpp)",
+      "revId": "b806da450199bf20e59cf54d7ffc847e35aa1b28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4923401e_4a915687",
+        "filename": "src/gpu/mtl/GrMtlGpu.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-05T16:17:40Z",
+      "side": 0,
+      "message": "I think removing this comment and options was just missed in https://skia-review.googlesource.com/c/skia/+/391305",
+      "range": {
+        "startLine": 1342,
+        "startChar": 0,
+        "endLine": 1350,
+        "endChar": 5
+      },
+      "revId": "b806da450199bf20e59cf54d7ffc847e35aa1b28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
