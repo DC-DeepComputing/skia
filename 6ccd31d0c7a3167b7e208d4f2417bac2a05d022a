@@ -127,6 +127,30 @@
       },
       "revId": "6ccd31d0c7a3167b7e208d4f2417bac2a05d022a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1f936fa_45960553",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-05T19:54:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3d2cc4b4_3713a432",
+      "range": {
+        "startLine": 417,
+        "startChar": 9,
+        "endLine": 417,
+        "endChar": 24
+      },
+      "revId": "6ccd31d0c7a3167b7e208d4f2417bac2a05d022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
