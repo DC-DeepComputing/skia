@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8899dfe8_be549160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-05T13:41:01Z",
+      "side": 1,
+      "message": "good catch",
+      "revId": "b536e0fd03a5054d0dd804a7f0c96cb51a4b3a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb561a3c_94391cdb",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-05T13:41:01Z",
+      "side": 1,
+      "message": "perhaps we can capture this as another shared helper method:\n\nSkPoint lastLogicalPt() // returns the last logical point or 0,0, accounting for close verbs",
+      "range": {
+        "startLine": 633,
+        "startChar": 8,
+        "endLine": 633,
+        "endChar": 13
+      },
+      "revId": "b536e0fd03a5054d0dd804a7f0c96cb51a4b3a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4369466_0c20581f",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3881,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-05T13:41:01Z",
+      "side": 1,
+      "message": "nit: can we make it easy for the reader to know why these are the expected values?\n\n1. use rMoveTo(0,0)\n2. check_move(..., 10 + 30, 11 + 31); // sum of initial moveTo and rMoveTo\n3. other...",
+      "range": {
+        "startLine": 3881,
+        "startChar": 32,
+        "endLine": 3881,
+        "endChar": 34
+      },
+      "revId": "b536e0fd03a5054d0dd804a7f0c96cb51a4b3a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

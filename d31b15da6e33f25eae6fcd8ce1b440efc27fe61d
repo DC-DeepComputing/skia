@@ -22,6 +22,29 @@
       },
       "revId": "d31b15da6e33f25eae6fcd8ce1b440efc27fe61d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d56a565_d213cbb9",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-05T13:41:01Z",
+      "side": 0,
+      "message": "is this bug in all the relative verbs? rLine, rCubic, etc.?",
+      "range": {
+        "startLine": 630,
+        "startChar": 10,
+        "endLine": 630,
+        "endChar": 19
+      },
+      "revId": "d31b15da6e33f25eae6fcd8ce1b440efc27fe61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
