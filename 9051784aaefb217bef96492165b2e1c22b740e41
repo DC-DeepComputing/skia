@@ -34,6 +34,24 @@
       "parentUuid": "ef4f770d_8abf62d8",
       "revId": "9051784aaefb217bef96492165b2e1c22b740e41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4934d140_43126314",
+        "filename": "third_party/harfbuzz/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T17:52:03Z",
+      "side": 1,
+      "message": "Yeah, the //:skia target is monolithic. Went back to std::mutex.",
+      "parentUuid": "f0562dfc_89900574",
+      "revId": "9051784aaefb217bef96492165b2e1c22b740e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
