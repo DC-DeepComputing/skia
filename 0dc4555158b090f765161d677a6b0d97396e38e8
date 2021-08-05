@@ -70,6 +70,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a93f24_7612b4c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T01:51:48Z",
+      "side": 1,
+      "message": "After taking a look, it turns out that way that typeface_styling is requesting hairlines they are not actually being drawn by the SkScalerContext here, see SkGlyphRunListPainter::drawForBitmapDevice where SkStrikeSpec::ShouldDrawAsPath returns true because hairline glyphs are just drawn as paths. (The SkScalerContext handles hairlines for code paths other than this.) SkStrikeSpec::MakePath always gets a \"Fill\" style path with no path effect and then applies these properties when drawing instead.\n\nWhich explains why when I was tweaking the SkScalerContext drawing bits this particular test in this configuration wasn\u0027t changing.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92519999_a89ce748",
