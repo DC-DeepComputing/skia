@@ -16,6 +16,24 @@
       "message": "Going forward could you please describe in any re-lands what is the difference since the last landing attempt? This makes it easier for folks on other teams who were affected by the previous landing(s) to understand what issues were addressed. Thanks.",
       "revId": "7893d2d0862db4ac80f489d93f184e1ad5668ad1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a25285_ddb931fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-05T20:37:14Z",
+      "side": 1,
+      "message": "Sure, no problem. Hopefully there isn\u0027t a next time 🤞\n\nThe most recent revert was because this CL was incorrectly suspected for bot failures, so there are no differences between this time and last time.",
+      "parentUuid": "3d7a4c3b_11b96f8b",
+      "revId": "7893d2d0862db4ac80f489d93f184e1ad5668ad1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
