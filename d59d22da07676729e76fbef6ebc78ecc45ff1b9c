@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6af550f_46262ee9",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-05T18:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5bde452_4aa9cd17",
+      "range": {
+        "startLine": 281,
+        "startChar": 100,
+        "endLine": 281,
+        "endChar": 102
+      },
+      "revId": "d59d22da07676729e76fbef6ebc78ecc45ff1b9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0dfa9fd_1c3fb99d",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96aa97c8_77f47422",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-05T18:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0dfa9fd_1c3fb99d",
+      "range": {
+        "startLine": 285,
+        "startChar": 12,
+        "endLine": 296,
+        "endChar": 39
+      },
+      "revId": "d59d22da07676729e76fbef6ebc78ecc45ff1b9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24abcaa4_8dc1a785",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-08-05T18:16:38Z",
       "side": 1,
       "message": "It\u0027s not a big deal, but it seems like PositionInfo could represent \"no known position\" internally on its own, without a separate bool to indicate it (it already uses \"null file, offset -1\" for a similar purpose if builtin_FILE/LINE don\u0027t exist).",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 314,
+        "endChar": 31
+      },
+      "revId": "d59d22da07676729e76fbef6ebc78ecc45ff1b9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bfab697_81b039a8",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-05T18:59:44Z",
+      "side": 1,
+      "message": "Coming in a followup.",
+      "parentUuid": "24abcaa4_8dc1a785",
       "range": {
         "startLine": 314,
         "startChar": 0,
