@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e44b3c_92075510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-05T00:32:02Z",
+      "side": 1,
+      "message": "This can move forward now that android isn\u0027t using expanding clip ops anymore, since the new GrClipStack only supports replace/intersect/difference",
+      "revId": "1383a32f635b2e5c9d939388b6e4f6630c5452de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
