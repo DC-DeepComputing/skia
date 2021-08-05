@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34fef350_067c0e60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-05T13:35:10Z",
+      "side": 1,
+      "message": "This is a clever approach. I like it.",
+      "revId": "60b276f986777089da01075b6510dc0654be7e1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "190e9f8c_bde2c1e2",
+        "filename": "tests/SkSLDSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2084,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-05T13:35:10Z",
+      "side": 1,
+      "message": "Since we can pop-back a prototype when functions are defined, maybe we should be EXPECT_EQUALing on the whole program just to be sure?",
+      "range": {
+        "startLine": 2077,
+        "startChar": 0,
+        "endLine": 2084,
+        "endChar": 0
+      },
+      "revId": "60b276f986777089da01075b6510dc0654be7e1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
