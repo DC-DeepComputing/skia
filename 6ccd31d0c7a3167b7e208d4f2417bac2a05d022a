@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a999acc_55658ae0",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T19:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2428ff1f_7d62d1af",
+      "range": {
+        "startLine": 475,
+        "startChar": 10,
+        "endLine": 475,
+        "endChar": 18
+      },
+      "revId": "6ccd31d0c7a3167b7e208d4f2417bac2a05d022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b883cf0b_621b9382",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-08-05T19:21:56Z",
       "side": 1,
       "message": "alternatively, could return a new enum...\n\nkFail,\nkFill,\nkHairline,\n...",
+      "range": {
+        "startLine": 417,
+        "startChar": 9,
+        "endLine": 417,
+        "endChar": 24
+      },
+      "revId": "6ccd31d0c7a3167b7e208d4f2417bac2a05d022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d2cc4b4_3713a432",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T19:53:11Z",
+      "side": 1,
+      "message": "I started trying this and it makes the callers a bit more difficult to reason about, mostly because \"there is not a path\" is a case that is always dealt with immediately (not really stored or given a name, just used) but the hairline bit is used later (with the path).",
+      "parentUuid": "b883cf0b_621b9382",
       "range": {
         "startLine": 417,
         "startChar": 9,
