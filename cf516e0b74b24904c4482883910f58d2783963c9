@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a761972c_8b4bb52e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-05T14:35:20Z",
+      "side": 1,
+      "message": "Looks like this probably wasn\u0027t the root cause of the android CTS failues",
+      "revId": "cf516e0b74b24904c4482883910f58d2783963c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
