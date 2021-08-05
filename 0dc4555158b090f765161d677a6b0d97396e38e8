@@ -176,6 +176,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57ed3b18_8d78ab04",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T02:47:20Z",
+      "side": 1,
+      "message": "So here the bool return value is whether the path exist or not (which makes sense here) but since this is applying a path effect, it appears this should have had an SkPaint::Style out parameter conveying the same information as the boolean return value of SkPaint::getFillPath which does something similar but returns if the SkStrokeRec ended up being hairline.\n\nIn other words, this method was always incorrect in the face of this sort of path effect which changed the state of the SkStrokeRec passed to it (well, it created the right path, but didn\u0027t inform the user how to draw that path). The awkward bit in getImage should have been calculated here and passed out.\n\nI\u0027ve tried this locally a bit and it seems to straighten out a number of issues. I\u0027ll try to put together a CL which can land before this one but which is friendly.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "488e3116_62d1fbaf",
         "filename": "src/core/SkStrokeRec.cpp",
         "patchSetId": 13
