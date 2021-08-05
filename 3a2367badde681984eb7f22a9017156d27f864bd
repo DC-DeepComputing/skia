@@ -16,6 +16,23 @@
       "message": "My First Skia CL™, so forgive me for not being familiar with the appropriate reviewers. Very minor change aimed at unblocking the removal of a deprecated Dawn struct.",
       "revId": "3a2367badde681984eb7f22a9017156d27f864bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23372b2d_c7457b4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18154
+      },
+      "writtenOn": "2021-08-05T21:11:10Z",
+      "side": 1,
+      "message": "Thanks for the review! I don\u0027t appear to have commit privileges for this repo, so could you land it for me? ",
+      "revId": "3a2367badde681984eb7f22a9017156d27f864bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
