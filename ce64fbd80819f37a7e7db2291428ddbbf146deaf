@@ -16,6 +16,29 @@
       "message": "Here is the syntax error from the Android roller:\nexternal/skia/modules/particles/src/SkParticleEffect.cpp:149:46: error: suggest braces around initialization of subobject [-Werror,-Wmissing-braces]\n        skvm::Uniforms efUniforms(skvm::UPtr{0}, 0);\n                                             ^\n                                             {}\n                                         \nFrom:\nhttps://android-build.googleplex.com/builds/pending/P25076646/aosp_crosshatch-userdebug/latest/view/logs/build_error.log",
       "revId": "ce64fbd80819f37a7e7db2291428ddbbf146deaf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e4d1de_81c3421a",
+        "filename": "modules/particles/src/SkParticleEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-05T16:32:18Z",
+      "side": 1,
+      "message": "This is fine, but I think you can also do \u0027skvm::UPtr{}\u0027 here which will value-initialize (set things to 0) as opposed to default-initialize (things left in indeterminate value). The \u0027skvm::UPtr{0}\u0027 is C for universal zero (it even works for zero sized structs) and \u0027skvm::UPtr{}\u0027 is more or less the C++ equivalent. Note that these two are treated very differently depending on compiling for C or C++.\n\nIn any event, this is fine and probably a better idea anyway.",
+      "range": {
+        "startLine": 149,
+        "startChar": 34,
+        "endLine": 149,
+        "endChar": 49
+      },
+      "revId": "ce64fbd80819f37a7e7db2291428ddbbf146deaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
