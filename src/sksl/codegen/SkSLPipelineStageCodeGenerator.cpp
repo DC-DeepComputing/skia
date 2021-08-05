@@ -211,9 +211,7 @@ void PipelineStageCodeGenerator::writeFunctionCall(const FunctionCall& c) {
     if (function.isBuiltin()) {
         this->write(function.name());
     } else {
-        auto it = fFunctionNames.find(&function);
-        SkASSERT(it != fFunctionNames.end());
-        this->write(it->second);
+        this->write(this->functionName(function));
     }
 
     this->write("(");
@@ -315,8 +313,6 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
         fCastReturnsToHalf = false;
     }
 
-    String fnName = this->functionName(decl);
-
     // This is similar to decl.description(), but substitutes a mangled name, and handles modifiers
     // on the function (e.g. `inline`) and its parameters (e.g. `inout`).
     String declString =
@@ -324,7 +320,7 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
                            (decl.modifiers().fFlags & Modifiers::kInline_Flag) ? "inline " : "",
                            (decl.modifiers().fFlags & Modifiers::kNoInline_Flag) ? "noinline " : "",
                            this->typeName(decl.returnType()).c_str(),
-                           fnName.c_str());
+                           this->functionName(decl).c_str());
     const char* separator = "";
     for (const Variable* p : decl.parameters()) {
         // TODO: Handle arrays
