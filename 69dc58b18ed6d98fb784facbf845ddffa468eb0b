@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55cc81e0_d96349a8",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1990,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-06T17:04:06Z",
+      "side": 1,
+      "message": "I agree. I actually thought about that here, but decided against reformatting since I was actually just restoring the old code that used to be here. Going forward I also prefer one arg per line.",
+      "parentUuid": "ec3cfa94_85acd39d",
+      "range": {
+        "startLine": 1988,
+        "startChar": 49,
+        "endLine": 1990,
+        "endChar": 84
+      },
+      "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f905f15_dd67f998",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-06T16:14:09Z",
       "side": 1,
       "message": "can we just pass numSamples here?",
+      "range": {
+        "startLine": 592,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 45
+      },
+      "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a247a9_b119327d",
+        "filename": "src/gpu/vk/GrVkPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-06T17:04:06Z",
+      "side": 1,
+      "message": "I don\u0027t think that would be compatible how DMSAA is currently implemented, and I\u0027m afraid to make even more changes in this CL. Mind if we kick that can down the road?",
+      "parentUuid": "6f905f15_dd67f998",
       "range": {
         "startLine": 592,
         "startChar": 0,
