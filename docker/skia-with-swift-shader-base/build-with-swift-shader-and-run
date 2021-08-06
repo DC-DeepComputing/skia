@@ -6,7 +6,7 @@ import argparse
 
 
 # This script compiles and runs a skia app using Swiftshader in a docker container, making it easy
-# to use Swiftshade w/o having to over-write /usr/local/lib/libEGL.so and related on the
+# to use Swiftshader w/o having to over-write /usr/local/lib/libvk_swiftshader.so and related on the
 # host development machine.
 
 # The Skia repo to be compiled will be the one on the host machine, which will
