@@ -63,6 +63,30 @@
       },
       "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e356fb4_b8a3b6e6",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-06T15:29:12Z",
+      "side": 1,
+      "message": "I removed rt. And it looks like needsStencil() is the only thing... needed.",
+      "parentUuid": "33d30572_34807084",
+      "range": {
+        "startLine": 1099,
+        "startChar": 50,
+        "endLine": 1099,
+        "endChar": 52
+      },
+      "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
