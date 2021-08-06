@@ -890,44 +890,49 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     settings.fDSLUseMemoryPool = false;
     dsl::Start(this, program.fConfig->fKind, settings);
     dsl::DSLWriter::IRGenerator().fSymbolTable = program.fSymbols;
+    bool result = false;
+    {
+        // Create a scope here to control the SPIRVCodeGenerator lifetime, as it can create pooled
+        // objects.
 #ifdef SK_ENABLE_SPIRV_VALIDATION
-    StringStream buffer;
-    SPIRVCodeGenerator cg(fContext.get(), &program, this, &buffer);
-    bool result = cg.generateCode();
-    if (result && program.fConfig->fSettings.fValidateSPIRV) {
-        spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
-        const String& data = buffer.str();
-        SkASSERT(0 == data.size() % 4);
-        String errors;
-        auto dumpmsg = [&errors](spv_message_level_t, const char*, const spv_position_t&,
-                                 const char* m) {
-            errors.appendf("SPIR-V validation error: %s\n", m);
-        };
-        tools.SetMessageConsumer(dumpmsg);
+        StringStream buffer;
+        SPIRVCodeGenerator cg(fContext.get(), &program, this, &buffer);
+        result = cg.generateCode();
+        if (result && program.fConfig->fSettings.fValidateSPIRV) {
+            spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
+            const String& data = buffer.str();
+            SkASSERT(0 == data.size() % 4);
+            String errors;
+            auto dumpmsg = [&errors](spv_message_level_t, const char*, const spv_position_t&,
+                                     const char* m) {
+                errors.appendf("SPIR-V validation error: %s\n", m);
+            };
+            tools.SetMessageConsumer(dumpmsg);
 
-        // Verify that the SPIR-V we produced is valid. At runtime, we will abort() with a message
-        // explaining the error. In standalone mode (skslc), we will send the message, plus the
-        // entire disassembled SPIR-V (for easier context & debugging) as *our* error message.
-        result = tools.Validate((const uint32_t*) data.c_str(), data.size() / 4);
+            // Verify that the SPIR-V we produced is valid. At runtime, we will abort() with a message
+            // explaining the error. In standalone mode (skslc), we will send the message, plus the
+            // entire disassembled SPIR-V (for easier context & debugging) as *our* error message.
+            result = tools.Validate((const uint32_t*) data.c_str(), data.size() / 4);
 
-        if (!result) {
+            if (!result) {
 #if defined(SKSL_STANDALONE)
-            // Convert the string-stream to a SPIR-V disassembly.
-            std::string disassembly;
-            if (tools.Disassemble((const uint32_t*)data.data(), data.size() / 4, &disassembly)) {
-                errors.append(disassembly);
+                // Convert the string-stream to a SPIR-V disassembly.
+                std::string disassembly;
+                if (tools.Disassemble((const uint32_t*)data.data(), data.size() / 4, &disassembly)) {
+                    errors.append(disassembly);
+                }
+                this->error(-1, errors);
+#else
+                SkDEBUGFAILF("%s", errors.c_str());
+#endif
             }
-            this->error(-1, errors);
-#else
-            SkDEBUGFAILF("%s", errors.c_str());
-#endif
+            out.write(data.c_str(), data.size());
         }
-        out.write(data.c_str(), data.size());
-    }
 #else
-    SPIRVCodeGenerator cg(fContext.get(), &program, this, &out);
-    bool result = cg.generateCode();
+        SPIRVCodeGenerator cg(fContext.get(), &program, this, &out);
+        result = cg.generateCode();
 #endif
+    }
     dsl::End();
     return result;
 }
