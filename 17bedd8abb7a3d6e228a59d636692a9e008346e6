@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf51a37_d4c5d763",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T15:01:12Z",
+      "side": 1,
+      "message": "If this satisfies the license checker and we don\u0027t need to add anything to the header file, I\u0027m fine with this.",
+      "revId": "17bedd8abb7a3d6e228a59d636692a9e008346e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
