@@ -131,7 +131,7 @@ public:
 
     static DSLStatement Declare(DSLVar& var, PositionInfo pos) {
         if (var.fDeclared) {
-            DSLWriter::ReportError("error: variable has already been declared\n", &pos);
+            DSLWriter::ReportError("error: variable has already been declared\n", pos);
         }
         var.fDeclared = true;
         return DSLWriter::Declaration(var);
@@ -147,7 +147,7 @@ public:
 
     static void Declare(DSLGlobalVar& var, PositionInfo pos) {
         if (var.fDeclared) {
-            DSLWriter::ReportError("error: variable has already been declared\n", &pos);
+            DSLWriter::ReportError("error: variable has already been declared\n", pos);
         }
         var.fDeclared = true;
         std::unique_ptr<SkSL::Statement> stmt = DSLWriter::Declaration(var);
