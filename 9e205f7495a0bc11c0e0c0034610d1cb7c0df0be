@@ -16,6 +16,23 @@
       "message": "Verified that the calculation is correct, and the change in the test output is as expected when the calculation now sets the correct value of 0 instead of leaving the incorrect initialization value of ~0.\n\nWould be a more solid test if it tested for a value of 1 versus ~1, by having an initial moveTo in path0, because neither are the initialization value.\n\nExpect a team member to also LGTM before submission.",
       "revId": "9e205f7495a0bc11c0e0c0034610d1cb7c0df0be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf09a9d_f7c9ae5b",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-06T02:07:36Z",
+      "side": 1,
+      "message": "Kind of a bummer to always/fully scan the last contour... I guess the alternative is to track a fLastMoveToIndex on the fly, the same way SkPath does.  Prolly not worth the complexity, considering SkPath immutability plans.",
+      "revId": "9e205f7495a0bc11c0e0c0034610d1cb7c0df0be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
