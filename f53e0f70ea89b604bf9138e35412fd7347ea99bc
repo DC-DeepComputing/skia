@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4424a3c_cf1930e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-06T14:22:25Z",
+      "side": 1,
+      "message": "should be ready to reland, but wouldn\u0027t mind another glance through. I confirmed that the android cts tests pass now.",
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34e61063_debb9b9b",
@@ -129,6 +146,30 @@
       "writtenOn": "2021-08-05T20:52:22Z",
       "side": 1,
       "message": "technically new behavior: would have been treating replaces as intersects in the old version as well, but this is only used for GPU alpha mask generation, which I believe is always avoided.",
+      "range": {
+        "startLine": 724,
+        "startChar": 44,
+        "endLine": 724,
+        "endChar": 66
+      },
+      "revId": "f53e0f70ea89b604bf9138e35412fd7347ea99bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b7d9f8_d9c14193",
+        "filename": "src/gpu/GrReducedClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-06T14:22:25Z",
+      "side": 1,
+      "message": "nvm/ this one was included in the original",
+      "parentUuid": "9132b3ca_d9a44c8a",
       "range": {
         "startLine": 724,
         "startChar": 44,
