@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3fd085_78042b6c",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-06T13:18:24Z",
+      "side": 1,
+      "message": "Can we remove \u0027rt\u0027 now? I guess along w/ the assert.",
+      "range": {
+        "startLine": 1099,
+        "startChar": 50,
+        "endLine": 1099,
+        "endChar": 52
+      },
+      "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
