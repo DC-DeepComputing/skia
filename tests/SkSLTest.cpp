@@ -222,6 +222,7 @@ SKSL_TEST(SkSLIntrinsicSignFloat,              "intrinsics/SignFloat.sksl")
 SKSL_TEST(SkSLIntrinsicStep,                   "intrinsics/Step.sksl")
 
 SKSL_TEST_ES3(SkSLArrayNarrowingConversions,   "runtime/ArrayNarrowingConversions.rts")
+SKSL_TEST_ES3(SkSLPrecisionQualifiers,         "runtime/PrecisionQualifiers.rts")
 
 SKSL_TEST_ES3(SkSLArrayComparison,             "shared/ArrayComparison.sksl")
 SKSL_TEST_ES3(SkSLArrayConstructors,           "shared/ArrayConstructors.sksl")
