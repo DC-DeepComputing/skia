@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa22a821_2a3e226b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T02:54:27Z",
+      "side": 1,
+      "message": "I suppose we should land this sooner rather than later so we can roll HarfBuzz in Chromium. If we run into any issues we can always make more changes.",
+      "revId": "547201e7eddc4cf003f79cef8171e365a42f223f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
