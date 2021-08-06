@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8d1832c_6895df54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-06T17:06:32Z",
+      "side": 1,
+      "message": "Android roll looks like it\u0027ll succeed with the other reland, so this should be good to go.",
+      "revId": "cd675de85665e06bc6610950b8daed8bb8788f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
