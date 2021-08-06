@@ -461,9 +461,26 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
 }
 
 #ifdef SK_DEBUG
+static bool is_surface_format_compatible(const GrBackendFormat& proxyFormat,
+                                         const GrBackendFormat& surfaceFormat) {
+    if (surfaceFormat.backend() == GrBackendApi::kOpenGL &&
+        proxyFormat.backend() == GrBackendApi::kOpenGL) {
+        switch (proxyFormat.asGLFormat()) {
+            case GrGLFormat::kCOMPRESSED_ETC1_RGB8:
+                // ETC2 is a superset of ETC1.
+                return surfaceFormat.asGLFormat() == GrGLFormat::kCOMPRESSED_ETC1_RGB8 ||
+                       surfaceFormat.asGLFormat() == GrGLFormat::kCOMPRESSED_RGB8_ETC2;
+            default:
+                break;
+        }
+    }
+    return proxyFormat == surfaceFormat;
+}
+
 void GrSurfaceProxy::validateSurface(const GrSurface* surface) {
-    SkASSERTF(surface->backendFormat() == fFormat, "%s != %s",
-              surface->backendFormat().toStr().c_str(), fFormat.toStr().c_str());
+    SkASSERTF(is_surface_format_compatible(fFormat, surface->backendFormat()),
+              "proxy format %s cannot be instantiated with a surface format of %s",
+              fFormat.toStr().c_str(), surface->backendFormat().toStr().c_str());
 
     this->onValidateSurface(surface);
 }
