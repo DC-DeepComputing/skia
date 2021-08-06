@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a008ad3_79bac6d3",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 18159
+      },
+      "writtenOn": "2021-08-06T23:48:50Z",
+      "side": 1,
+      "message": "FYI, this test has been deleted.",
+      "range": {
+        "startLine": 593,
+        "startChar": 17,
+        "endLine": 593,
+        "endChar": 49
+      },
+      "revId": "41a98e0a50cd4f47d7741348c07bc2e3193b6b20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
