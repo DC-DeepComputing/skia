@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec3cfa94_85acd39d",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1990,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-06T16:14:09Z",
+      "side": 1,
+      "message": "My preference here and other multiline call sites would be one-arg-per-line. I find this hard to read.",
+      "range": {
+        "startLine": 1988,
+        "startChar": 49,
+        "endLine": 1990,
+        "endChar": 84
+      },
+      "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f905f15_dd67f998",
+        "filename": "src/gpu/vk/GrVkPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-06T16:14:09Z",
+      "side": 1,
+      "message": "can we just pass numSamples here?",
+      "range": {
+        "startLine": 592,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 45
+      },
+      "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
