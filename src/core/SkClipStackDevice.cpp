@@ -102,7 +102,12 @@ void SkClipStackDevice::onAsRgnClip(SkRegion* rgn) const {
             elem->asDeviceSpacePath(&tmpPath);
             SkRegion tmpRgn;
             tmpRgn.setPath(tmpPath, boundsRgn);
-            rgn->op(tmpRgn, elem->getRegionOp());
+            if (elem->isReplaceOp()) {
+                // All replace elements are rectangles
+                rgn->setRect(elem->getDeviceSpaceRect().round());
+            } else {
+                rgn->op(tmpRgn, static_cast<SkRegion::Op>(elem->getOp()));
+            }
         }
     }
 }
