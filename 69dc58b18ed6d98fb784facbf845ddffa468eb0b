@@ -93,6 +93,30 @@
       },
       "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ff6db6_bcf77b61",
+        "filename": "src/gpu/vk/GrVkPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-06T18:08:42Z",
+      "side": 1,
+      "message": "Ah, that\u0027s fine. I was just checking whether we were taking redundant params to Make now. Sounds like not.",
+      "parentUuid": "25a247a9_b119327d",
+      "range": {
+        "startLine": 592,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 45
+      },
+      "revId": "69dc58b18ed6d98fb784facbf845ddffa468eb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
