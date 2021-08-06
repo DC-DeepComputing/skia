@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8712f864_29b457f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-06T02:44:18Z",
+      "side": 1,
+      "message": "Good suggestion to make the test more general!\n\nFound a bug -- so won\u0027t land this version.\n\n... my new code assumes #points \u003d\u003d #verbs, which is not true!!! (due to closes and quads/cubics), so I can\u0027t deduce the point-index from the verb-index in general :(",
+      "parentUuid": "211962c3_7d1c26df",
+      "revId": "9e205f7495a0bc11c0e0c0034610d1cb7c0df0be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9cf09a9d_f7c9ae5b",
         "filename": "src/core/SkPathBuilder.cpp",
         "patchSetId": 5
