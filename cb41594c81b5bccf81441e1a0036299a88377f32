@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "352dfc31_70468bac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T03:38:43Z",
+      "side": 1,
+      "message": "Had a thought to make this easier after landing the roll change. Hopefully this works, as it would remove a lot of going back and cleaning up builds (and also work with any potential roll-backs and such).",
+      "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
