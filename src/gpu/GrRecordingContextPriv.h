@@ -17,7 +17,11 @@
 class GrImageInfo;
 class GrSwizzle;
 class SkDeferredDisplayList;
-namespace skgpu { class SurfaceFillContext; }
+
+namespace skgpu {
+    class SurfaceContext;
+    class SurfaceFillContext;
+}
 
 /** Class that exposes methods on GrRecordingContext that are only intended for use internal to
     Skia. This class is purely a privileged window into GrRecordingContext. It should never have
@@ -127,8 +131,8 @@ public:
 
     // If the passed in GrSurfaceProxy is renderable this will return a SurfaceDrawContext,
     // otherwise it will return a GrSurfaceContext.
-    std::unique_ptr<GrSurfaceContext> makeSC(GrSurfaceProxyView readView,
-                                             const GrColorInfo&);
+    std::unique_ptr<skgpu::SurfaceContext> makeSC(GrSurfaceProxyView readView,
+                                                  const GrColorInfo&);
 
     /**
      * Uses GrImageInfo's color type to pick the default texture format. Will return a
