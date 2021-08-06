@@ -17,8 +17,6 @@
 
 #include <algorithm>
 #include <atomic>
-#include <unordered_set>
-#include <vector>
 
 namespace SkSL {
 

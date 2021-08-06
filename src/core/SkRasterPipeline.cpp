@@ -12,6 +12,7 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include <algorithm>
+#include <vector>
 
 bool gForceHighPrecisionRasterPipeline;
 

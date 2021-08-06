@@ -31,7 +31,6 @@
 
 #include <cstring>
 #include <memory>
-#include <vector>
 
 #ifndef SK_SUPPORT_LEGACY_GETTOTALMATRIX
 #define SK_SUPPORT_LEGACY_GETTOTALMATRIX

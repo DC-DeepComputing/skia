@@ -12,8 +12,6 @@
 #include "include/private/SkTHash.h"
 #include "src/sksl/ir/SkSLType.h"
 
-#include <unordered_map>
-
 namespace SkSL {
 
 class AnyConstructor;

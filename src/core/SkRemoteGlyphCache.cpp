@@ -13,6 +13,7 @@
 #include <new>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkSpan.h"

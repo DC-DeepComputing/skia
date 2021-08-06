@@ -8,9 +8,6 @@
 #ifndef SkStrikeCache_DEFINED
 #define SkStrikeCache_DEFINED
 
-#include <unordered_map>
-#include <unordered_set>
-
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkDescriptor.h"

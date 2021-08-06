@@ -12,7 +12,6 @@
 #include "src/sksl/ir/SkSLSwitchCase.h"
 
 #include <memory>
-#include <vector>
 
 namespace SkSL {
 

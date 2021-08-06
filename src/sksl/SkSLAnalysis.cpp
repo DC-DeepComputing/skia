@@ -7,6 +7,8 @@
 
 #include "src/sksl/SkSLAnalysis.h"
 
+#include <set>
+
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLSampleUsage.h"

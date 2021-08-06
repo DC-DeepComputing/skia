@@ -7,6 +7,8 @@
 
 #include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 
+#include <set>
+
 #include "src/sksl/GLSL.std.450.h"
 
 #include "include/sksl/DSLCore.h"

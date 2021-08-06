@@ -22,7 +22,6 @@
 #include <new>
 #include <type_traits>
 #include <utility>
-#include <vector>
 
 // We found allocating strictly doubling amounts of memory from the heap left too
 // much unused slop, particularly on Android.  Instead we'll follow a Fibonacci-like
