@@ -63,6 +63,30 @@
       },
       "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e337cad_2402753f",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18099
+      },
+      "writtenOn": "2021-08-06T17:05:16Z",
+      "side": 1,
+      "message": "I\u0027ll make sure we don\u0027t change the enum values on the harfbuzz side.",
+      "parentUuid": "12acdae5_ae9f4b1f",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 68
+      },
+      "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
