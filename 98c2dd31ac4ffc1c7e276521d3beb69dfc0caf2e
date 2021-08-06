@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb4c100_82234375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2021-08-06T13:52:36Z",
+      "side": 1,
+      "message": "Naive post-submit drive-by.",
+      "revId": "98c2dd31ac4ffc1c7e276521d3beb69dfc0caf2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4063a86d_548c6ab9",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2021-08-06T13:52:36Z",
+      "side": 1,
+      "message": "It looks like we don\u0027t initialize \u0027fValues\u0027 in the constructor here.\n\nIf the logic is such that we\u0027re assured that updateColor() is always invoked before onProgram() is used, then this shouldn\u0027t be a problem.  But if there\u0027s ever a case where onProgram() can be called before updateColor(), then we\u0027ll get inconsistent and difficult to debug behavior from uninitialized \u0027fValues\u0027.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "98c2dd31ac4ffc1c7e276521d3beb69dfc0caf2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
