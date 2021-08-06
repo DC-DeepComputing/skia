@@ -59,8 +59,7 @@
       "ninja",
       "-C",
       "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-x86_64-Debug-SwiftShader_MSAN/Debug/swiftshader_out",
-      "libEGL.so",
-      "libGLESv2.so"
+      "vk_swiftshader"
     ],
     "cwd": "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-x86_64-Debug-SwiftShader_MSAN/Debug/swiftshader_out",
     "env": {
