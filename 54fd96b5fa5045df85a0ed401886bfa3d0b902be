@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc84cb93_f7d42241",
+        "filename": "src/gpu/v2/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T01:00:23Z",
+      "side": 0,
+      "message": "Removing this causes issues since the declaration (with override) still exists in src/gpu/v2/Device_v2.h. Created https://skia-review.googlesource.com/c/skia/+/437120 to remove the declaration as well (since that is holding up a roll), though it seems odd for this class to not be instance-able?",
+      "revId": "54fd96b5fa5045df85a0ed401886bfa3d0b902be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
