@@ -506,7 +506,7 @@ SurfaceDrawContext::QuadOptimization SurfaceDrawContext::attemptQuadOptimization
 
     SkRect drawBounds = quad->fDevice.bounds();
     if (!quad->fDevice.isFinite() || drawBounds.isEmpty() ||
-        GrClip::IsOutsideClip(rtRect, drawBounds)) {
+        GrClip::IsOutsideClip(SkIRect::MakeSize(this->dimensions()), drawBounds, *aa)) {
         return QuadOptimization::kDiscarded;
     } else if (GrQuadUtils::WillUseHairline(quad->fDevice, GrAAType::kCoverage, quad->fEdgeFlags)) {
         // Don't try to apply the clip early if we know rendering will use hairline methods, as this
