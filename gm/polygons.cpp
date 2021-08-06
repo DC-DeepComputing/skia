@@ -140,7 +140,10 @@ protected:
 
         // For stroke-and-fill style painter and fill style painter
         constexpr SkPaint::Style kStyles[] = {
-            SkPaint::kStrokeAndFill_Style, SkPaint::kFill_Style
+#ifdef SK_SUPPORT_STROKEANDFILL
+            SkPaint::kStrokeAndFill_Style,
+#endif
+            SkPaint::kFill_Style
         };
         SkASSERT(kNumExtraStyles == SK_ARRAY_COUNT(kStyles));
 
@@ -162,7 +165,11 @@ protected:
 private:
     static constexpr int kNumPolygons = 8;
     static constexpr int kCellSize = 100;
+#ifdef SK_SUPPORT_STROKEANDFILL
     static constexpr int kNumExtraStyles = 2;
+#else
+    static constexpr int kNumExtraStyles = 1;
+#endif
     static constexpr int kNumStrokeWidths = 3;
     static constexpr int kNumJoins = 3;
 

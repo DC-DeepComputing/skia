@@ -186,9 +186,11 @@ DEF_SIMPLE_GM(circular_arcs_weird, canvas, 1000, 400) {
     // hairline
     paints.push_back().setStroke(true);
     paints.back().setStrokeWidth(0.f);
+#ifdef SK_SUPPORT_STROKEANDFILL
     // stroke and fill
     paints.push_back().setStyle(SkPaint::kStrokeAndFill_Style);
     paints.back().setStrokeWidth(kS / 6.f);
+#endif
     // dash effect
     paints.push_back().setStroke(true);
     paints.back().setStrokeWidth(kS / 6.f);

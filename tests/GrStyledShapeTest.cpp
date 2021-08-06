@@ -20,6 +20,8 @@
 #include <memory>
 #include <utility>
 
+#ifdef SK_SUPPORT_STROKEANDFILL
+
 uint32_t GrStyledShape::testingOnly_getOriginalGenerationID() const {
     if (const auto* lp = this->originalPathForListeners()) {
         return lp->getGenerationID();
@@ -2385,3 +2387,5 @@ DEF_TEST(GrShapeInversion, r) {
     inverseRRect.reset();
     REPORTER_ASSERT(r, !inverseRRect.inverted() && inverseRRect.isEmpty());
 }
+
+#endif

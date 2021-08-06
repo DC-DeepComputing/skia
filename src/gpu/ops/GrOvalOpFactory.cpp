@@ -39,6 +39,14 @@ static inline GrVertexWriter::TriStrip<float> origin_centered_tri_strip(float x,
     return GrVertexWriter::TriStrip<float>{ -x, -y, x, y };
 };
 
+bool is_strokeandfill(SkStrokeRec::Style style) {
+#ifdef SK_SUPPORT_STROKEANDFILL
+    return style == SkStrokeRec::kStrokeAndFill_Style;
+#else
+    return false;
+#endif
+}
+
 }  // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1037,9 +1045,11 @@ public:
         if (arcParams) {
             // Arc support depends on the style.
             switch (recStyle) {
+#ifdef SK_SUPPORT_STROKEANDFILL
                 case SkStrokeRec::kStrokeAndFill_Style:
                     // This produces a strange result that this op doesn't implement.
                     return nullptr;
+#endif
                 case SkStrokeRec::kFill_Style:
                     // This supports all fills.
                     break;
@@ -1079,7 +1089,7 @@ public:
 
         bool isStrokeOnly =
                 SkStrokeRec::kStroke_Style == recStyle || SkStrokeRec::kHairline_Style == recStyle;
-        bool hasStroke = isStrokeOnly || SkStrokeRec::kStrokeAndFill_Style == recStyle;
+        bool hasStroke = isStrokeOnly || is_strokeandfill(recStyle);
 
         SkScalar innerRadius = -SK_ScalarHalf;
         SkScalar outerRadius = radius;
@@ -1871,7 +1881,7 @@ public:
         SkStrokeRec::Style style = stroke.getStyle();
         bool isStrokeOnly =
                 SkStrokeRec::kStroke_Style == style || SkStrokeRec::kHairline_Style == style;
-        bool hasStroke = isStrokeOnly || SkStrokeRec::kStrokeAndFill_Style == style;
+        bool hasStroke = isStrokeOnly || is_strokeandfill(style);
 
         params.fInnerXRadius = 0;
         params.fInnerYRadius = 0;
@@ -3226,7 +3236,7 @@ GrOp::Owner GrOvalOpFactory::MakeCircularRRectOp(GrRecordingContext* context,
 
     bool isStrokeOnly =
         SkStrokeRec::kStroke_Style == style || SkStrokeRec::kHairline_Style == style;
-    bool hasStroke = isStrokeOnly || SkStrokeRec::kStrokeAndFill_Style == style;
+    bool hasStroke = isStrokeOnly || is_strokeandfill(style);
 
     if (hasStroke) {
         if (SkStrokeRec::kHairline_Style == style) {
@@ -3279,7 +3289,7 @@ GrOp::Owner make_rrect_op(GrRecordingContext* context,
 
     bool isStrokeOnly =
             SkStrokeRec::kStroke_Style == style || SkStrokeRec::kHairline_Style == style;
-    bool hasStroke = isStrokeOnly || SkStrokeRec::kStrokeAndFill_Style == style;
+    bool hasStroke = isStrokeOnly || is_strokeandfill(style);
 
     if (hasStroke) {
         if (SkStrokeRec::kHairline_Style == style) {

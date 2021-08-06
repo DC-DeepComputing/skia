@@ -630,6 +630,7 @@ void GrStyledShape::simplify() {
 void GrStyledShape::simplifyStroke() {
     AutoRestoreInverseness ari(&fShape, fStyle);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
     // For stroke+filled rects, a mitered shape becomes a larger rect and a rounded shape
     // becomes a round rect.
     if (!fStyle.hasPathEffect() && fShape.isRect() &&
@@ -652,6 +653,7 @@ void GrStyledShape::simplifyStroke() {
         fSimplified = true;
         return;
     }
+#endif
 
     // Otherwise, if we're a point or a line, we might be able to explicitly apply some of the
     // stroking (and even some of the dashing). Any other shape+style is too complicated to reduce.
@@ -697,12 +699,14 @@ void GrStyledShape::simplifyStroke() {
         fShape.reset();
         fSimplified = true;
         return;
+#ifdef SK_SUPPORT_STROKEANDFILL
     } else if (fStyle.strokeRec().getStyle() == SkStrokeRec::kStrokeAndFill_Style) {
         // Stroke only
         SkStrokeRec rec = fStyle.strokeRec();
         rec.setStrokeStyle(fStyle.strokeRec().getWidth(), false);
         fStyle = GrStyle(rec, nullptr);
         styleSimplified = true;
+#endif
     }
 
     // A point or line that was formed by a degenerate closed shape needs its style updated to
