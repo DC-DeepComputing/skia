@@ -508,6 +508,11 @@ const Type& SPIRVCodeGenerator::getActualType(const Type& type) {
             return fContext.fTypes.fUInt->toCompound(fContext, type.columns(), type.rows());
         }
     }
+    if (type.isArray()) {
+        const Type& innerType = this->getActualType(type.componentType());
+        AutoAttachPoolToThread attach(fProgram.fPool.get());
+        return *fProgram.fSymbols->addArrayDimension(&innerType, type.columns());
+    }
     return type;
 }
 
