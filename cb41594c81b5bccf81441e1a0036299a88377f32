@@ -39,6 +39,30 @@
       },
       "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12acdae5_ae9f4b1f",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T05:46:39Z",
+      "side": 1,
+      "message": "So hb_subset_flags_t is an enum, so we cannot forward declare it in C++, so it\u0027s very difficult to detect. It also has no dependence on any other type which exists in both 2.0 and 3.0 that we can piggy back off of (like for the functions). So the only thing that seems to work is to use the value instead of the name until the 2.0 version is no longer supported. (Once 3.0 is released the value cannot really change anyway, though I suppose it could change again between now and when 3.0 is released, which would be awkward).",
+      "parentUuid": "86e47f01_96618cdc",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 68
+      },
+      "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
