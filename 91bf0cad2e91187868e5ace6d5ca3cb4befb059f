@@ -16,6 +16,29 @@
       "message": "This is waiting on a few CLs to reland that should be all-good, so this one is ready for some review.",
       "revId": "91bf0cad2e91187868e5ace6d5ca3cb4befb059f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcf932e3_e261d67d",
+        "filename": "src/core/SkPicturePlayback.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-06T15:22:30Z",
+      "side": 1,
+      "message": "do_clip_op",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 20
+      },
+      "revId": "91bf0cad2e91187868e5ace6d5ca3cb4befb059f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
