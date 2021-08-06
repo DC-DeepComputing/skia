@@ -25,7 +25,7 @@ def compile_swiftshader(api, extra_tokens, swiftshader_root, cc, cxx, out):
   Args:
     swiftshader_root: root of the SwiftShader checkout.
     cc, cxx: compiler binaries to use
-    out: target directory for libEGL.so and libGLESv2.so
+    out: target directory for libvk_swiftshader.so
   """
   swiftshader_opts = [
       '-DSWIFTSHADER_BUILD_TESTS=OFF',
@@ -75,7 +75,7 @@ def compile_swiftshader(api, extra_tokens, swiftshader_root, cc, cxx, out):
     api.run(api.step, 'swiftshader cmake',
             cmd=['cmake'] + swiftshader_opts + [swiftshader_root, '-GNinja'])
     api.run(api.step, 'swiftshader ninja',
-            cmd=['ninja', '-C', out, 'libEGL.so', 'libGLESv2.so'])
+            cmd=['ninja', '-C', out, 'vk_swiftshader'])
 
 
 def compile_fn(api, checkout_root, out_dir):

@@ -12,12 +12,12 @@ mkdir -p /skia/out/with-swift-shader
 echo '
 cc = "clang"
 cxx = "clang++"
-skia_use_egl = true
-is_debug = false
+is_debug = true
 skia_use_system_freetype2 = false
+skia_use_vulkan = true
 extra_cflags = [
   "-I/tmp/swiftshader/include",
-  "-DGR_EGL_TRY_GLES3_THEN_GLES2",
+  "-DSK_GPU_TOOLS_VK_LIBRARY_NAME=\"libvk_swiftshader.so\"",
   "-g0",
 ]
 extra_ldflags = [
