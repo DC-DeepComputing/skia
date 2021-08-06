@@ -86,6 +86,24 @@
       "parentUuid": "59c680a6_375a119c",
       "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d26544d_65d07d92",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T22:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f66dcd14_d121a8a4",
+      "revId": "4d7adf2874f79b86390591b6b46790b5e780b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

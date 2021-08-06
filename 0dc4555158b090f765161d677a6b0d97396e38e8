@@ -124,6 +124,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37288fa1_7012bb7e",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T22:36:15Z",
+      "side": 1,
+      "message": "So it appears that the reason why typeface_styling changed ever so slightly with this is that before (sSrokeAndFill) was drawn through the scaler context but now (Stroke) it is being drawn as a path (so a slightly different outline which may be hinted at a different size).\n\nThe reason for this is SkStrikeSpec::ShouldDrawAsPath which states if\n\n    SkPaint::kStroke_Style \u003d\u003d paint.getStyle() \u0026\u0026 0 \u003d\u003d paint.getStrokeWidth()\n\nis true then it\u0027s hairline and shoudl be drawn as paths. However, this should probably add a\n\n    \u0026\u0026 !paint.getPathEffect()\n\nto this predicate since it\u0027s probably worth caching the path effect being applied to the hairline anyway. Indeed, if I add this, then the typeface_styling gm becomes unchanged.",
+      "parentUuid": "6f8f8b8c_1e186d6e",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1233eb90_a79472b7",
         "filename": "gm/typeface.cpp",
         "patchSetId": 13
@@ -153,6 +171,24 @@
       "side": 1,
       "message": "And this one matches exactly. Which makes more sense.",
       "parentUuid": "1233eb90_a79472b7",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110c20cd_c6349c90",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T22:36:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5dda281e_1e079b02",
       "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -187,6 +223,24 @@
       "writtenOn": "2021-08-05T02:47:20Z",
       "side": 1,
       "message": "So here the bool return value is whether the path exist or not (which makes sense here) but since this is applying a path effect, it appears this should have had an SkPaint::Style out parameter conveying the same information as the boolean return value of SkPaint::getFillPath which does something similar but returns if the SkStrokeRec ended up being hairline.\n\nIn other words, this method was always incorrect in the face of this sort of path effect which changed the state of the SkStrokeRec passed to it (well, it created the right path, but didn\u0027t inform the user how to draw that path). The awkward bit in getImage should have been calculated here and passed out.\n\nI\u0027ve tried this locally a bit and it seems to straighten out a number of issues. I\u0027ll try to put together a CL which can land before this one but which is friendly.",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0105347_2cd16a0b",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T22:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57ed3b18_8d78ab04",
       "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
