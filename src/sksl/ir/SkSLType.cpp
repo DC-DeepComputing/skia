@@ -657,15 +657,17 @@ const Type* Type::clone(SymbolTable* symbolTable) const {
     }
     // This type actually needs to be cloned into the destination SymbolTable.
     switch (this->typeKind()) {
-        case TypeKind::kArray:
-            return symbolTable->add(Type::MakeArrayType(this->name(), this->componentType(),
+        case TypeKind::kArray: {
+            const String* name = symbolTable->takeOwnershipOfString(String(this->name()));
+            return symbolTable->add(Type::MakeArrayType(*name, this->componentType(),
                                                         this->columns()));
-
-        case TypeKind::kStruct:
+        }
+        case TypeKind::kStruct: {
+            const String* name = symbolTable->takeOwnershipOfString(String(this->name()));
             return symbolTable->add(std::make_unique<StructType>(this->fOffset,
-                                                                 this->name(),
+                                                                 *name,
                                                                  this->fields()));
-
+        }
         default:
             SkDEBUGFAILF("don't know how to clone type '%s'", this->description().c_str());
             return nullptr;
