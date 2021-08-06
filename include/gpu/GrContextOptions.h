@@ -15,8 +15,6 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/GrTypesPriv.h"
 
-#include <vector>
-
 class SkExecutor;
 
 #if SK_SUPPORT_GPU

@@ -8,7 +8,6 @@
 #ifndef SKSL_COMPILER
 #define SKSL_COMPILER
 
-#include <set>
 #include <unordered_set>
 #include <vector>
 #include "src/sksl/SkSLASTFile.h"

@@ -11,8 +11,6 @@
 #include "src/gpu/gl/GrGLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 
-#include <vector>
-
 class GrGLCaps;
 
 class GrGLUniformHandler : public GrGLSLUniformHandler {

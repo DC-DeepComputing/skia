@@ -23,8 +23,6 @@
 #include "src/pdf/SkPDFGraphicStackState.h"
 #include "src/pdf/SkPDFTypes.h"
 
-#include <vector>
-
 class SkGlyphRunList;
 class SkKeyedImage;
 class SkPDFArray;

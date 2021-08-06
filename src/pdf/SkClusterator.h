@@ -7,7 +7,6 @@
 #ifndef SkClusterator_DEFINED
 #define SkClusterator_DEFINED
 
-#include <vector>
 #include <cstdint>
 
 class SkGlyphRun;

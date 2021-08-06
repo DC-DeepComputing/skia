@@ -17,7 +17,6 @@
 #include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLStringStream.h"
 
-#include <set>
 #include <unordered_map>
 #include <vector>
 

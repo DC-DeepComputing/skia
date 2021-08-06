@@ -10,8 +10,6 @@
 
 #include "include/private/SkSLLayout.h"
 
-#include <vector>
-
 namespace SkSL {
 
 /**
