@@ -23,8 +23,8 @@
 DEF_TEST(Paint_copy, reporter) {
     SkPaint paint;
     // set a few member variables
-    paint.setStyle(SkPaint::kStrokeAndFill_Style);
-    paint.setStrokeWidth(SkIntToScalar(2));
+    paint.setStroke(true);
+    paint.setStrokeWidth(2);
     // set a few pointers
     paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle,
                                                SkBlurMask::ConvertRadiusToSigma(1)));
@@ -93,7 +93,9 @@ DEF_TEST(Paint_flattening, reporter) {
     const SkPaint::Style styles[] = {
         SkPaint::kFill_Style,
         SkPaint::kStroke_Style,
+#ifdef SK_SUPPORT_STROKEANDFILL
         SkPaint::kStrokeAndFill_Style,
+#endif
     };
 
 #define FOR_SETUP(index, array, setter)                                 \
