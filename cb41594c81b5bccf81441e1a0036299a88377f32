@@ -87,6 +87,30 @@
       },
       "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e8ca27_4bd3ad72",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-06T17:21:43Z",
+      "side": 1,
+      "message": "Thanks, I spent a bunch of time trying to figure out a better way to do this, but an anonymous typedef\u0027ed enum without a specified underlying type seems to be the most difficult thing to detect the existence or non-existence of. Cannot forward declare a typedef so no sizeof tricks, cannot namespace ADL sandwich since it\u0027s already top level, not in a struct so no struct detection plus struct membership, cannot even infer the type of the second parameter since that requires a non-dependent use of hb_subset_input_set_flags.\n\nThen I realized that the compiler is just going to turn this into an integer anyway.",
+      "parentUuid": "9e337cad_2402753f",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 68
+      },
+      "revId": "cb41594c81b5bccf81441e1a0036299a88377f32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
