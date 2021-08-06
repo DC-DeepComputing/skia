@@ -39,6 +39,30 @@
       },
       "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33d30572_34807084",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-06T13:20:27Z",
+      "side": 1,
+      "message": "Ah, good catch.\n\nBTW I\u0027m also wondering whether it should be possible to have isStencilEnabled() \u0026\u0026 !needsStencil(), but I really don\u0027t know where these things come from.",
+      "parentUuid": "2e3fd085_78042b6c",
+      "range": {
+        "startLine": 1099,
+        "startChar": 50,
+        "endLine": 1099,
+        "endChar": 52
+      },
+      "revId": "891005e09a858cd59fb54604e3d6fce5f6cbbab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
