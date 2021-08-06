@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9612017_4f9a4928",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-06T14:56:27Z",
+      "side": 1,
+      "message": "The current behavior is intended, to match the Canvas2D spec.\nThe comment describing the mode\u0027s behavior was originally longer, and correct.\nIt was changed to a shorter, incorrect description at a later point.\n\nI added a more detailed comment to the Skia issue about this.\nThe original commit, discussing the indended behavior, is\nhttps://codereview.chromium.org/151353006#msg19\n\nI think that the current behavior is correct, and the comment should be changed,\nrather than the other way around.  Note that the current behavior does not extend\na closed contour, it creates a new contour starting at the start point of the old contour, and extends that with the added contour.",
+      "revId": "1532f8b7266d69cfe6a144d7f41333e484f392dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
