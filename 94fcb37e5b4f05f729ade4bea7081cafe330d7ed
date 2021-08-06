@@ -16,6 +16,24 @@
       "message": "Yes, l",
       "revId": "94fcb37e5b4f05f729ade4bea7081cafe330d7ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73b0c586_919a178e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-08-06T15:05:46Z",
+      "side": 1,
+      "message": "Not sure where this incomplete comment came from.",
+      "parentUuid": "a2eda020_25903bb3",
+      "revId": "94fcb37e5b4f05f729ade4bea7081cafe330d7ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
