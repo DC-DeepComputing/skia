@@ -142,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4718d796_743114fc",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-07T21:19:52Z",
+      "side": 1,
+      "message": "Another argument for adding\n\n    \u0026\u0026 !paint.getPathEffect()\n\nis that if there is a path effect, the result may not actually end up being hairline (which is the issue SkScalerConetext used to have until recently). The \"draw as path\" code path currently works because when drawing from path the fill-only, no-path-effect version of the paint is used to get the \"base path\". (Note that this means the path effect is not cached, and will be applied to the path each time drawn.)\n\nIn fact, now that we handle hairline correctly in the SkScalerContext, I\u0027m not sure why we bail on hairline here anyway. Sure, it may be somewhat quicker to draw a hairline path (is it?), but this means that hairline glyphs may be drawn from different (unhinted) outlines than the same text drawn without hairline, leading to gaps when doing hairline stroke over already drawn filled glyphs. Considering that drawing hairline glyphs is probably rare it seems that correctness may be more desirable than a potential speed up (have we actually measures this at any point?). It may be easier to just remove this hairline \"optimization\" from SkStrikeSpec::ShouldDrawAsPath.\n\nIn any event, this change still seems good to me for landing as-is. At least I understand why the one \u0027A\u0027 changed.",
+      "parentUuid": "37288fa1_7012bb7e",
+      "revId": "0dc4555158b090f765161d677a6b0d97396e38e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1233eb90_a79472b7",
         "filename": "gm/typeface.cpp",
         "patchSetId": 13
