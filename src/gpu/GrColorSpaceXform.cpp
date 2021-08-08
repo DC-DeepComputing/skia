@@ -19,6 +19,26 @@ sk_sp<GrColorSpaceXform> GrColorSpaceXform::Make(SkColorSpace* src, SkAlphaType 
                                    : sk_make_sp<GrColorSpaceXform>(steps);
 }
 
+sk_sp<GrColorSpaceXform> GrColorSpaceXform::Make(GrColorType srcCT, SkColorSpace* srcCS, SkAlphaType srcAT,
+                                                 GrColorType dstCT, SkColorSpace* dstCS, SkAlphaType dstAT) {
+    // When the colorType is in non-linear format, do not apply the encoding twice
+    bool srcCTEncoding = false;
+    bool dstCTEncoding = false;
+
+    if (srcCS && !srcCS->gammaIsLinear()) {
+        const GrColorTypeDesc ctd = GrGetColorTypeDesc(srcCT);
+        srcCTEncoding = (ctd.encoding() == GrColorTypeEncoding::kSRGBUnorm);
+    }
+
+    if (dstCS && !dstCS->gammaIsLinear()) {
+        const GrColorTypeDesc ctd = GrGetColorTypeDesc(dstCT);
+        dstCTEncoding = (ctd.encoding() == GrColorTypeEncoding::kSRGBUnorm);
+    }
+
+    return Make(srcCTEncoding ? srcCS->makeLinearGamma().get() : srcCS, srcAT,
+                dstCTEncoding ? dstCS->makeLinearGamma().get() : dstCS, dstAT);
+}
+
 bool GrColorSpaceXform::Equals(const GrColorSpaceXform* a, const GrColorSpaceXform* b) {
     if (a == b) {
         return true;

@@ -14,7 +14,7 @@ GrColorInfo::GrColorInfo(
         : fColorSpace(std::move(colorSpace)), fColorType(colorType), fAlphaType(alphaType) {}
 
 GrColorInfo::GrColorInfo(const SkColorInfo& ci)
-        : GrColorInfo(SkColorTypeToGrColorType(ci.colorType()),
+        : GrColorInfo(SkColorTypeAndSkColorSpaceToGrColorType(ci.colorType(), ci.colorSpace()),
                       ci.alphaType(),
                       ci.refColorSpace()) {}
 

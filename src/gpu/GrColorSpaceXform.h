@@ -25,6 +25,10 @@ public:
     static sk_sp<GrColorSpaceXform> Make(SkColorSpace* src, SkAlphaType srcAT,
                                          SkColorSpace* dst, SkAlphaType dstAT);
 
+    static sk_sp<GrColorSpaceXform> Make(GrColorType srcCT, SkColorSpace* srcCS,
+                                         SkAlphaType srcAT, GrColorType dstCT,
+                                         SkColorSpace* dstCS, SkAlphaType dstAT);
+
     const SkColorSpaceXformSteps& steps() const { return fSteps; }
 
     /**
