@@ -148,6 +148,11 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::Make(
         return nullptr;
     }
 
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     const GrBackendFormat& format = proxy->backendFormat();
     GrSwizzle readSwizzle = context->priv().caps()->getReadSwizzle(format, colorType);
     GrSwizzle outSwizzle = context->priv().caps()->getOutputSwizzle(format, colorType);
@@ -181,6 +186,11 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::Make(
         return nullptr;
     }
 
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     GrSwizzle swizzle = context->priv().caps()->getReadSwizzle(format, colorType);
 
     sk_sp<GrTextureProxy> proxy = context->priv().proxyProvider()->createProxy(
@@ -211,6 +221,11 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::Make(
         GrSurfaceOrigin origin,
         SkBudgeted budgeted,
         const SkSurfaceProps* surfaceProps) {
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     auto format = context->priv().caps()->getDefaultBackendFormat(colorType, GrRenderable::kYes);
     if (!format.isValid()) {
         return nullptr;
@@ -228,6 +243,7 @@ static inline GrColorType color_type_fallback(GrColorType ct) {
         case GrColorType::kAlpha_8:
         case GrColorType::kBGR_565:
         case GrColorType::kABGR_4444:
+        case GrColorType::kRGBA_8888_SRGB:
         case GrColorType::kBGRA_8888:
         case GrColorType::kRGBA_1010102:
         case GrColorType::kRGBA_F16:
@@ -275,6 +291,12 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::MakeFromBackendTex
         ReleaseProc releaseProc,
         ReleaseContext releaseCtx) {
     SkASSERT(sampleCnt > 0);
+
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     sk_sp<GrTextureProxy> proxy(context->priv().proxyProvider()->wrapRenderableBackendTexture(
             tex, sampleCnt, colorType, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, releaseProc,
             releaseCtx));
@@ -295,6 +317,12 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::MakeFromBackendTex
         GrSurfaceOrigin origin,
         const SkSurfaceProps* surfaceProps) {
     SkASSERT(sampleCnt > 0);
+
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     sk_sp<GrSurfaceProxy> proxy(context->priv().proxyProvider()->wrapBackendTextureAsRenderTarget(
             tex, colorType, sampleCnt));
     if (!proxy) {
@@ -314,6 +342,11 @@ std::unique_ptr<GrRenderTargetContext> GrRenderTargetContext::MakeFromBackendRen
         const SkSurfaceProps* surfaceProps,
         ReleaseProc releaseProc,
         ReleaseContext releaseCtx) {
+    if (colorSpace && !colorSpace->gammaIsLinear()) {
+        SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+        colorType = SkColorTypeAndSkColorSpaceToGrColorType(skColorType, colorSpace.get());
+    }
+
     sk_sp<GrSurfaceProxy> proxy(context->priv().proxyProvider()->wrapBackendRenderTarget(
             rt, colorType, releaseProc, releaseCtx));
     if (!proxy) {

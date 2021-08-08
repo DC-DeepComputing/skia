@@ -845,13 +845,13 @@ static constexpr SkColorType GrColorTypeToSkColorType(GrColorType ct) {
     SkUNREACHABLE;
 }
 
-static constexpr GrColorType SkColorTypeToGrColorType(SkColorType ct) {
+static constexpr GrColorType SkColorTypeToGrColorType(SkColorType ct, bool sRGB = false) {
     switch (ct) {
         case kUnknown_SkColorType:            return GrColorType::kUnknown;
         case kAlpha_8_SkColorType:            return GrColorType::kAlpha_8;
         case kRGB_565_SkColorType:            return GrColorType::kBGR_565;
         case kARGB_4444_SkColorType:          return GrColorType::kABGR_4444;
-        case kRGBA_8888_SkColorType:          return GrColorType::kRGBA_8888;
+        case kRGBA_8888_SkColorType:          return sRGB ? GrColorType::kRGBA_8888_SRGB : GrColorType::kRGBA_8888;
         case kRGB_888x_SkColorType:           return GrColorType::kRGB_888x;
         case kBGRA_8888_SkColorType:          return GrColorType::kBGRA_8888;
         case kGray_8_SkColorType:             return GrColorType::kGray_8;
@@ -877,6 +877,11 @@ static constexpr GrColorType SkColorTypeToGrColorType(SkColorType ct) {
 GrColorType SkColorTypeAndFormatToGrColorType(const GrCaps* caps,
                                               SkColorType skCT,
                                               const GrBackendFormat& format);
+
+inline GrColorType SkColorTypeAndSkColorSpaceToGrColorType(SkColorType ct,
+                                                   const SkColorSpace* skCI) {
+    return SkColorTypeToGrColorType(ct, skCI && !skCI->gammaIsLinear());
+}
 
 static constexpr uint32_t GrColorTypeComponentFlags(GrColorType ct) {
     switch (ct) {

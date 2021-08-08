@@ -178,7 +178,8 @@ static void draw_texture(GrRenderTargetContext* rtc, const GrClip& clip, const S
                          const GrColorInfo& srcColorInfo) {
     const GrColorInfo& dstInfo(rtc->colorInfo());
     auto textureXform =
-        GrColorSpaceXform::Make(srcColorInfo.colorSpace(), srcColorInfo.alphaType(),
+        GrColorSpaceXform::Make(srcColorInfo.colorType(), srcColorInfo.colorSpace(),
+                                srcColorInfo.alphaType(), dstInfo.colorType(),
                                 dstInfo.colorSpace(), kPremul_SkAlphaType);
     GrSamplerState::Filter filter;
     switch (paint.getFilterQuality()) {
