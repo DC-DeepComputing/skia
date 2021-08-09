@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29643a6_1e759337",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9394
+      },
+      "writtenOn": "2021-08-09T16:03:28Z",
+      "side": 1,
+      "message": "lgtm. nice",
+      "revId": "4f12b4a5993eb48774c789c614182554185a7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72825c5f_bf1cef3a",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 9394
+      },
+      "writtenOn": "2021-08-09T16:03:28Z",
+      "side": 1,
+      "message": "You can add some smarts here to do set operation on the two bounds depending on the operator.",
+      "revId": "4f12b4a5993eb48774c789c614182554185a7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
