@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d2dd951_0f5c49cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-09T15:53:35Z",
+      "side": 1,
+      "message": "Yep, stating on GP now...",
+      "parentUuid": "a0dec486_cce34c53",
+      "revId": "8a1d2593266c8fea809dc2a723889887d646dd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5241c700_0a7c8fe4",
@@ -49,6 +67,30 @@
       "writtenOn": "2021-08-09T15:47:32Z",
       "side": 1,
       "message": "rename these defines and the h/cpp files to match, e.g. GrFragmentProcessorProgramImpl?\n\nIt\u0027s a little different to have the nested class defined in its own header, but it\u0027s big enough and impl\u0027y enough that I think it makes sense, so I\u0027m not pushing for it to be moved into GrFP.h (which had been my first reaction until I started reading through everything more carefully).",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 39
+      },
+      "revId": "8a1d2593266c8fea809dc2a723889887d646dd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63a105ac_b03d3e4a",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-09T15:53:35Z",
+      "side": 1,
+      "message": "I actually was thinking about moving it into GrFP (separately and not inlining the definition directly into the GrFP definition). It seems so tied to it and everywhere we #include GrFP.h we inevitably want this as well.",
+      "parentUuid": "5241c700_0a7c8fe4",
       "range": {
         "startLine": 8,
         "startChar": 8,
