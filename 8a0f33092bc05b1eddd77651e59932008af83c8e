@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77076b6e_cfbc3054",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-09T09:30:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7120b6e9_f11dddcd",
+      "range": {
+        "startLine": 1117,
+        "startChar": 10,
+        "endLine": 1117,
+        "endChar": 12
+      },
+      "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0479eb68_0819b2e6",
@@ -55,6 +79,24 @@
       "side": 1,
       "message": "Yes, a valid concern. I was trying to avoid this as well, and have been considering using a templated function or a different mode for the traversal function, but then I discarded that for readability reasons: having lots of if statements or checking optional arguments or so would not help readability. Also, traversal for bounding box calculation is a bit different in that it can terminate at the first PaintGlyph it encounters.",
       "parentUuid": "0479eb68_0819b2e6",
+      "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b46c390c_9fb920dc",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-09T09:30:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd8fdc52_56ca3b1b",
       "revId": "8a0f33092bc05b1eddd77651e59932008af83c8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
