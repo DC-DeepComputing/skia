@@ -99,6 +99,30 @@
       },
       "revId": "8a1d2593266c8fea809dc2a723889887d646dd37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7feacb4b_c47e63e9",
+        "filename": "src/gpu/glsl/GrGLSLFragmentProcessor.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-09T16:19:19Z",
+      "side": 1,
+      "message": "Yeah, I can still see value in it being in GrFP as well. Having it in the header but separate seems like a nice way to do it, w/o obscuring all the rest of the detail in the base GrFP API.\n\nHaving that in another CL also seems like the right way to explore that part of the refactoring.",
+      "parentUuid": "63a105ac_b03d3e4a",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 39
+      },
+      "revId": "8a1d2593266c8fea809dc2a723889887d646dd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
