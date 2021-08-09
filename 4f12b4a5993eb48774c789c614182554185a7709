@@ -33,6 +33,24 @@
       "message": "You can add some smarts here to do set operation on the two bounds depending on the operator.",
       "revId": "4f12b4a5993eb48774c789c614182554185a7709",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03449660_4725d31b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-08-09T16:07:22Z",
+      "side": 1,
+      "message": "Yes, thanks, I\u0027ll add a a TODO and think about it. We would need to carry the set operation or boolean operator downstream to when we encounter the next PaintGlyph, see line 1080, as that\u0027s where we combine.",
+      "parentUuid": "72825c5f_bf1cef3a",
+      "revId": "4f12b4a5993eb48774c789c614182554185a7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
