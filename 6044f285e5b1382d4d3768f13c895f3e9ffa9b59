@@ -52,6 +52,23 @@
       "parentUuid": "b180fbfc_9586497f",
       "revId": "6044f285e5b1382d4d3768f13c895f3e9ffa9b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1291baa_2eeba168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-08-09T15:57:22Z",
+      "side": 1,
+      "message": "Thanks for the review and the original feedback that led us to move to ClipBox [1].\n\n[1] https://github.com/googlefonts/colr-gradients-spec/issues/251",
+      "revId": "6044f285e5b1382d4d3768f13c895f3e9ffa9b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
