@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3acd6c7_b5de0f4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-09T13:20:06Z",
+      "side": 1,
+      "message": "It looks like some things started drawing incorrectly after this roll. Here are the image results:\n\nhttps://gold.skia.org/search?blame\u003dff9ee6787256cb23fe1473a9502b1b5939100679\u0026corpus\u003dgm\n\nFrom the results I\u0027d guess it has to do with either alpha blending or attributes/varyings.",
+      "revId": "ff9ee6787256cb23fe1473a9502b1b5939100679",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
