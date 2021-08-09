@@ -34,6 +34,24 @@
       "parentUuid": "45860d1b_a640a474",
       "revId": "6044f285e5b1382d4d3768f13c895f3e9ffa9b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40e4a756_f88d4ae2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-08-09T15:55:34Z",
+      "side": 1,
+      "message": "And an example of the test is here:\nhttps://gold.skia.org/img/images/bc08c2884e860cc84739c3889bf6d648.png\n\nComing from these test glyphs:\nhttps://github.com/googlefonts/color-fonts/blob/main/config/more_samples-glyf_colr_1.py#L585\n\nWhich consist of \nPaintComposite of ClipBox\u0027ed glyph:\n  - PaintColrGlyph (with its own ClipBox (inset rectangle)\n  - Shaded gray rectangle showing the clipbox",
+      "parentUuid": "b180fbfc_9586497f",
+      "revId": "6044f285e5b1382d4d3768f13c895f3e9ffa9b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
