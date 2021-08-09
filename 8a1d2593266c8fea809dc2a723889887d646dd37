@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "460db3d2_5f6e3e2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-09T15:24:56Z",
+      "side": 1,
+      "message": "I resisted the temptation to do additional renamings of subclasses or of the files in order to try to limit the scope of this change.",
+      "revId": "8a1d2593266c8fea809dc2a723889887d646dd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
