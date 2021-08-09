@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9953a61_df04fdee",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1454,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-09T20:58:23Z",
+      "side": 1,
+      "message": "Should we also assert here that fClipRestrctionSaveCount is -1?",
+      "revId": "daa27138fc1ac52130de7b18baf4fa083e84fa00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
