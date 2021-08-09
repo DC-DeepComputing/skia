@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be09f44_ddcf37f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-09T17:36:05Z",
+      "side": 1,
+      "message": "Once the parent CL lands to delete the GrClipStackClip/GrReducedClip, this can land to remove the last internal usages of SkTLList.\n\nSome includes were updated to point to SkTInternalLList, which still seems like a valuable type to keep around as it\u0027s basically a simple template for a linked list datastructure.",
+      "revId": "4d7273a897c1eeb3ac7b7e304fb1d9690d375031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
