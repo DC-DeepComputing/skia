@@ -25,18 +25,13 @@ class GrGaussianConvolutionFragmentProcessor::Impl : public GrFragmentProcessor:
 public:
     void emitCode(EmitArgs&) override;
 
-    static inline void GenKey(const GrProcessor&, const GrShaderCaps&, GrProcessorKeyBuilder*);
-
-protected:
+private:
     void onSetData(const GrGLSLProgramDataManager&, const GrFragmentProcessor&) override;
 
-private:
     UniformHandle fKernelUni;
     UniformHandle fOffsetsUni;
     UniformHandle fKernelWidthUni;
     UniformHandle fIncrementUni;
-
-    using INHERITED = ProgramImpl;
 };
 
 enum class LoopType {
@@ -143,15 +138,6 @@ void GrGaussianConvolutionFragmentProcessor::Impl::onSetData(const GrGLSLProgram
     }
 }
 
-void GrGaussianConvolutionFragmentProcessor::Impl::GenKey(const GrProcessor& processor,
-                                                          const GrShaderCaps& shaderCaps,
-                                                          GrProcessorKeyBuilder* b) {
-    const auto& conv = processor.cast<GrGaussianConvolutionFragmentProcessor>();
-    if (loop_type(shaderCaps) != LoopType::kVariableLength) {
-        b->add32(conv.fRadius);
-    }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Make(
@@ -236,9 +222,11 @@ GrGaussianConvolutionFragmentProcessor::GrGaussianConvolutionFragmentProcessor(
     this->setUsesSampleCoordsDirectly();
 }
 
-void GrGaussianConvolutionFragmentProcessor::onAddToKey(const GrShaderCaps& caps,
+void GrGaussianConvolutionFragmentProcessor::onAddToKey(const GrShaderCaps& shaderCaps,
                                                         GrProcessorKeyBuilder* b) const {
-    Impl::GenKey(*this, caps, b);
+    if (loop_type(shaderCaps) != LoopType::kVariableLength) {
+        b->add32(fRadius);
+    }
 }
 
 std::unique_ptr<GrFragmentProcessor::ProgramImpl>
