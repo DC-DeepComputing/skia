@@ -17,6 +17,7 @@
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLInliner.h"
 #include "src/sksl/SkSLParsedModule.h"
+#include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
@@ -68,7 +69,7 @@ struct LoadedModule {
  *
  * See the README for information about SkSL.
  */
-class SK_API Compiler : public ErrorReporter {
+class SK_API Compiler : public dsl::ErrorHandler {
 public:
     static constexpr const char FRAGCOLOR_NAME[] = "sk_FragColor";
     static constexpr const char RTADJUST_NAME[]  = "sk_RTAdjust";
@@ -165,13 +166,14 @@ public:
 
     String errorText(bool showCount = true);
 
+    int errorCount() { return fContext->errorCount(); }
+
     void writeErrorCount();
 
-    int errorCount() override {
-        return fErrorCount;
+    void resetErrors() {
+        fErrorText.clear();
+        fContext->errors().resetErrorCount();
     }
-
-    void setErrorCount(int c) override;
 
     Context& context() {
         return *fContext;
@@ -258,9 +260,7 @@ private:
     Inliner fInliner;
     std::unique_ptr<IRGenerator> fIRGenerator;
 
-    int fErrorCount = 0;
     String fErrorText;
-    std::vector<size_t> fErrorTextLength;
 
     static OverrideFlag sOptimizer;
     static OverrideFlag sInliner;

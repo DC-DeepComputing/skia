@@ -14,7 +14,7 @@
 
 DEF_TEST(SkSLTypeLimits, r) {
     GrShaderCaps caps(GrContextOptions{});
-    SkSL::TestingOnly_AbortErrorReporter errors;
+    SkSL::TestingOnly_AbortErrorHandler errors;
     SkSL::Context context(errors, caps);
 
     using int_limits = std::numeric_limits<int32_t>;

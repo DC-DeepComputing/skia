@@ -21,22 +21,31 @@ namespace SkSL {
 
 struct ProgramConfig;
 
+namespace dsl {
+
+class ErrorHandler;
+
+} // namespace dsl
+
 /**
  * Contains compiler-wide objects, which currently means the core types.
  */
 class Context {
 public:
-    Context(ErrorReporter& errors, const ShaderCapsClass& caps);
+    Context(dsl::ErrorHandler& errors, const ShaderCapsClass& caps);
 
     ~Context() {
         SkASSERT(!Pool::IsAttached());
     }
 
+    dsl::ErrorHandler& errors() const;
+
+    int errorCount() const;
+
+    void resetErrorCount();
+
     // The Context holds all of the built-in types.
     BuiltinTypes fTypes;
-
-    // The Context holds a reference to our error reporter.
-    ErrorReporter& fErrors;
 
     // The Context holds a reference to our shader caps bits.
     const ShaderCapsClass& fCaps;
@@ -46,6 +55,9 @@ public:
 
     // The Context holds a pointer to the configuration of the program being compiled.
     ProgramConfig* fConfig = nullptr;
+
+private:
+    dsl::ErrorHandler& fErrors;
 };
 
 }  // namespace SkSL
