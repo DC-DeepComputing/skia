@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc80716c_d2104d37",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-10T18:23:52Z",
+      "side": 0,
+      "message": "it\u0027s a little sad to see this letter spaghetti go away 😊",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 19
+      },
+      "revId": "9506c3473f1f97afe394384d48beda486fc096aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
