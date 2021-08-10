@@ -75,7 +75,7 @@ private:
             const char* name() const override { return "Test GP"; }
 
             std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override {
-                class GLSLGP : public ProgramImpl {
+                class Impl : public ProgramImpl {
                 public:
                     void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
                         const GP& gp = args.fGeomProc.cast<GP>();
@@ -86,11 +86,13 @@ private:
                         fragBuilder->codeAppendf("const half4 %s = half4(1);",
                                                  args.fOutputCoverage);
                     }
+
+                private:
                     void setData(const GrGLSLProgramDataManager&,
                                  const GrShaderCaps&,
                                  const GrGeometryProcessor&) override {}
                 };
-                return std::make_unique<GLSLGP>();
+                return std::make_unique<Impl>();
             }
             void addToKey(const GrShaderCaps&, GrProcessorKeyBuilder* builder) const override {
                 builder->add32(fNumAttribs);

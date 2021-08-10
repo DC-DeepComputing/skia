@@ -14,35 +14,6 @@
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/sksl/SkSLUtil.h"
 
-class GrGLSLMatrixEffect : public GrFragmentProcessor::ProgramImpl {
-public:
-    GrGLSLMatrixEffect() {}
-
-    void emitCode(EmitArgs& args) override {
-        fMatrixVar = args.fUniformHandler->addUniform(&args.fFp,
-                                                      kFragment_GrShaderFlag,
-                                                      kFloat3x3_GrSLType,
-                                                      SkSL::SampleUsage::MatrixUniformName());
-        args.fFragBuilder->codeAppendf("return %s;\n",
-                                       this->invokeChildWithMatrix(0, args).c_str());
-    }
-
-private:
-    void onSetData(const GrGLSLProgramDataManager& pdman,
-                   const GrFragmentProcessor& proc) override {
-        const GrMatrixEffect& mtx = proc.cast<GrMatrixEffect>();
-        if (auto te = mtx.childProcessor(0)->asTextureEffect()) {
-            SkMatrix m = te->coordAdjustmentMatrix();
-            m.preConcat(mtx.matrix());
-            pdman.setSkMatrix(fMatrixVar, m);
-        } else {
-            pdman.setSkMatrix(fMatrixVar, mtx.matrix());
-        }
-    }
-
-    UniformHandle fMatrixVar;
-};
-
 std::unique_ptr<GrFragmentProcessor> GrMatrixEffect::Make(
         const SkMatrix& matrix, std::unique_ptr<GrFragmentProcessor> child) {
     if (child->classID() == kGrMatrixEffect_ClassID) {
@@ -58,7 +29,34 @@ std::unique_ptr<GrFragmentProcessor> GrMatrixEffect::Make(
 }
 
 std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrMatrixEffect::onMakeProgramImpl() const {
-    return std::make_unique<GrGLSLMatrixEffect>();
+    class Impl : public ProgramImpl {
+    public:
+        void emitCode(EmitArgs& args) override {
+            fMatrixVar = args.fUniformHandler->addUniform(&args.fFp,
+                                                          kFragment_GrShaderFlag,
+                                                          kFloat3x3_GrSLType,
+                                                          SkSL::SampleUsage::MatrixUniformName());
+            args.fFragBuilder->codeAppendf("return %s;\n",
+                                           this->invokeChildWithMatrix(0, args).c_str());
+        }
+
+    private:
+        void onSetData(const GrGLSLProgramDataManager& pdman,
+                       const GrFragmentProcessor& proc) override {
+            const GrMatrixEffect& mtx = proc.cast<GrMatrixEffect>();
+            if (auto te = mtx.childProcessor(0)->asTextureEffect()) {
+                SkMatrix m = te->coordAdjustmentMatrix();
+                m.preConcat(mtx.matrix());
+                pdman.setSkMatrix(fMatrixVar, m);
+            } else {
+                pdman.setSkMatrix(fMatrixVar, mtx.matrix());
+            }
+        }
+
+        UniformHandle fMatrixVar;
+    };
+
+    return std::make_unique<Impl>();
 }
 
 void GrMatrixEffect::onAddToKey(const GrShaderCaps& caps, GrProcessorKeyBuilder* b) const {}

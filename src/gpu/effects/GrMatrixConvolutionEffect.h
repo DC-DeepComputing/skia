@@ -31,6 +31,13 @@ public:
                                                      bool convolveAlpha,
                                                      const GrCaps&);
 
+    const char* name() const override { return "MatrixConvolution"; }
+
+    std::unique_ptr<GrFragmentProcessor> clone() const override;
+
+private:
+    class Impl;
+
     const SkIRect& bounds() const { return fBounds; }
     SkISize kernelSize() const { return fKernel.size(); }
     SkVector kernelOffset() const { return fKernelOffset; }
@@ -42,11 +49,6 @@ public:
     float bias() const { return fBias; }
     bool convolveAlpha() const { return fConvolveAlpha; }
 
-    const char* name() const override { return "MatrixConvolution"; }
-
-    std::unique_ptr<GrFragmentProcessor> clone() const override;
-
-private:
     /**
      * Small kernels are represented as float-arrays and uploaded as uniforms.
      * Large kernels go over the uniform limit and are uploaded as textures and sampled.

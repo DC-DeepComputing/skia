@@ -46,7 +46,7 @@ public:
     const char* name() const override { return "VertexColorXformGP"; }
 
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override {
-        class GLSLGP : public ProgramImpl {
+        class Impl : public ProgramImpl {
         public:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
                 const GP& gp = args.fGeomProc.cast<GP>();
@@ -89,7 +89,7 @@ public:
 
             GrGLSLColorSpaceXformHelper fColorSpaceHelper;
         };
-        return std::make_unique<GLSLGP>();
+        return std::make_unique<Impl>();
     }
 
     void addToKey(const GrShaderCaps&, GrProcessorKeyBuilder* b) const override {
