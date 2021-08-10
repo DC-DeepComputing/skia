@@ -24,7 +24,7 @@ GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
         : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
                        texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo)
-        , fTexture(texture) {
+        , fResource(new Resource(texture)) {
     this->registerWithCache(budgeted);
 }
 
@@ -36,7 +36,7 @@ GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
         : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
                        texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo)
-        , fTexture(texture) {
+        , fResource(new Resource(texture)) {
     this->registerWithCacheWrapped(cacheable);
 }
 
@@ -160,12 +160,12 @@ GrMtlAttachment::~GrMtlAttachment() {
 }
 
 void GrMtlAttachment::onRelease() {
-    fTexture = nil;
+    fResource.reset();
     GrAttachment::onRelease();
 }
 
 void GrMtlAttachment::onAbandon() {
-    fTexture = nil;
+    fResource.reset();
     GrAttachment::onAbandon();
 }
 

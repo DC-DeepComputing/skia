@@ -32,6 +32,8 @@ GrMtlPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
                                                      GrMtlGpu* gpu)
         : fTexture(static_cast<GrMtlTexture*>(texture)->mtlTexture()) {
     fSampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state);
+    gpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(fSampler));
+    gpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(static_cast<GrMtlTexture*>(texture)->attachment()->resource()));
 }
 
 GrMtlPipelineState::GrMtlPipelineState(
@@ -46,7 +48,7 @@ GrMtlPipelineState::GrMtlPipelineState(
             std::unique_ptr<GrGLSLXferProcessor> xferProcessor,
             std::vector<std::unique_ptr<GrGLSLFragmentProcessor>> fpImpls)
         : fGpu(gpu)
-        , fPipeline(pipeline)
+        , fPipeline(std::move(pipeline))
         , fPixelFormat(pixelFormat)
         , fBuiltinUniformHandles(builtinUniformHandles)
         , fNumSamplers(numSamplers)
@@ -85,6 +87,7 @@ void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
 #endif
 
     fStencil = programInfo.nonGLStencilSettings();
+    fGpu->commandBuffer()->addResource(fPipeline);
 }
 
 void GrMtlPipelineState::setTextures(const GrGeometryProcessor& geomProc,
@@ -191,6 +194,7 @@ void GrMtlPipelineState::setDepthStencilState(GrMtlRenderCommandEncoder* renderC
         }
     }
     renderCmdEncoder->setDepthStencilState(state->mtlDepthStencil());
+    fGpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(state));
 }
 
 void GrMtlPipelineState::SetDynamicScissorRectState(GrMtlRenderCommandEncoder* renderCmdEncoder,
