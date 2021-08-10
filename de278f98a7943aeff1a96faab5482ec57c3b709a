@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cda27d0_21ada611",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-10T17:58:08Z",
+      "side": 1,
+      "message": "Oh, I\u0027d meant to remove those when I was seeing if I could do without any default ctor.",
+      "parentUuid": "1724ba16_c98d782a",
+      "range": {
+        "startLine": 533,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 33
+      },
+      "revId": "de278f98a7943aeff1a96faab5482ec57c3b709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd79a952_7dfd6cf3",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-10T17:48:47Z",
       "side": 1,
       "message": "rm?",
+      "range": {
+        "startLine": 538,
+        "startChar": 8,
+        "endLine": 538,
+        "endChar": 16
+      },
+      "revId": "de278f98a7943aeff1a96faab5482ec57c3b709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b9c602_82da527f",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-10T17:58:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd79a952_7dfd6cf3",
       "range": {
         "startLine": 538,
         "startChar": 8,
