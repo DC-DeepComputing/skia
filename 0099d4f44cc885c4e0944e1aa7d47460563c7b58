@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ae83806_c01ead76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-10T19:32:39Z",
+      "side": 1,
+      "message": "Draw or Skip, but don\u0027t produce an empty canvas.",
+      "revId": "0099d4f44cc885c4e0944e1aa7d47460563c7b58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
