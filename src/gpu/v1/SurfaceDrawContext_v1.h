@@ -53,6 +53,7 @@ class SkRRect;
 struct SkRSXform;
 class SkRuntimeEffect;
 class SkTextBlob;
+struct GrTextureSetEntry;
 class SkVertices;
 
 namespace skgpu::v1 {
