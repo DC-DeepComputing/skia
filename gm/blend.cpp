@@ -39,3 +39,16 @@ DEF_SIMPLE_GM(blend, canvas, 300, 100) {
         canvas->restore();
     canvas->restore();
 }
+
+DEF_SIMPLE_GM(srgb_debug, canvas, 100, 100) {
+    SkPaint p;
+
+    canvas->save();
+    canvas->scale(100, 100);
+
+    canvas->clear(SK_ColorTRANSPARENT);
+    p.setColor(0xFC208000);
+    canvas->drawRect(SkRect::MakeXYWH(0, 0, 1, 1), p);
+
+    canvas->restore();
+}
