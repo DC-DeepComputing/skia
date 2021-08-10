@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c0e99ff_4dc41d2b",
+        "filename": "src/gpu/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-10T20:40:48Z",
+      "side": 0,
+      "message": "`col` loop index was repeated from above.",
+      "range": {
+        "startLine": 839,
+        "startChar": 25,
+        "endLine": 839,
+        "endChar": 28
+      },
+      "revId": "879b2f2e6ebd7fb465c0679e22c48a0cae58c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
