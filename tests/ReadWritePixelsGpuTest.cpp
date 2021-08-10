@@ -14,7 +14,6 @@
 #include "src/core/SkConvertPixels.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/SurfaceContext.h"
 #include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "tests/Test.h"
@@ -502,12 +501,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels, reporter, ctxInfo) 
         for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
             auto factory = std::function<GpuSrcFactory<Surface>>(
                     [direct, origin, renderable](const SkPixmap& src) {
-                        auto surfContext = skgpu::SurfaceContext::Make(
+                        auto sc = skgpu::SurfaceContext::Make(
                                 direct, src.info(), SkBackingFit::kExact, origin, renderable);
-                        if (surfContext) {
-                            surfContext->writePixels(direct, src, {0, 0});
+                        if (sc) {
+                            sc->writePixels(direct, src, {0, 0});
                         }
-                        return surfContext;
+                        return sc;
                     });
             auto label = SkStringPrintf("Renderable: %d, Origin: %d", (int)renderable, origin);
             gpu_read_pixels_test_driver(reporter, rules, factory, reader, label);
