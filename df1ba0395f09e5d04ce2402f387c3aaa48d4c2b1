@@ -16,6 +16,23 @@
       "message": "Robert, would you have a link to the MSAN failure? It\u0027d be helpful to add that to the revert message so it\u0027s easier to diagnose what went wrong. Thanks.",
       "revId": "df1ba0395f09e5d04ce2402f387c3aaa48d4c2b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ac6cae_fb446359",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-08-10T08:19:53Z",
+      "side": 1,
+      "message": "I believe it\u0027s this one:\nhttps://task-driver.skia.org/td/CuVEP5iSnQEwSmY9t07J\n\n  Uninitialized value was created by an allocation of \u0027bounds\u0027 in the stack frame of function \u0027_ZN29SkScalerContext_FreeType_Base29computeColrV1GlyphBoundingBoxEP11FT_FaceRec_tP8FT_BBox_\u0027\n    #0 0x28ae580 in SkScalerContext_FreeType_Base::computeColrV1GlyphBoundingBox(FT_FaceRec_*, unsigned short, FT_BBox_*) /mnt/pd0/s/w/ir/cache/work/skia/out/Build-Debian10-Clang-x86_64-Release-MSAN/Release/../../../../../../skia/src/ports/SkFontHost_FreeType_common.cpp:1673",
+      "revId": "df1ba0395f09e5d04ce2402f387c3aaa48d4c2b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
