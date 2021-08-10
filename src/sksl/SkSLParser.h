@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "include/private/SkSLLayout.h"
+#include "include/sksl/DSLCore.h"
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLASTNode.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -51,7 +52,7 @@ public:
         SRGB_UNPREMUL,
     };
 
-    Parser(skstd::string_view text, SymbolTable& symbols, ErrorReporter& errors);
+    Parser(skstd::string_view text, SymbolTable& symbols, dsl::ErrorHandler& errors);
 
     /**
      * Consumes a complete .sksl file and returns the parse tree. Errors are reported via the
@@ -255,28 +256,57 @@ private:
 
     void createEmptyChild(ASTNode::ID target);
 
-    class Checkpoint {
+    class Checkpoint : public dsl::ErrorHandler {
     public:
         Checkpoint(Parser* p) : fParser(p) {
             fPushbackCheckpoint = fParser->fPushback;
             fLexerCheckpoint = fParser->fLexer.getCheckpoint();
-            fASTCheckpoint = fParser->fFile->fNodes.size();
-            fErrorCount = fParser->fErrors.errorCount();
+            fOldErrorHandler = fParser->fErrors;
+            fParser->fErrors = this;
+        }
+
+        ~Checkpoint() override {
+            SkASSERTF(fDone, "Checkpoint was not accepted or rewound before destruction");
+        }
+
+        void accept() {
+            this->restoreErrorHandler();
+            // Parser errors should have been fatal, but we can encounter other errors like type
+            // mismatches despite accepting the parse. Forward those messages to the actual error
+            // handler now.
+            for (Error& error : fErrors) {
+                dsl::GetErrorHandler()->error(error.fMsg.c_str(), error.fPos);
+            }
         }
 
         void rewind() {
+            this->restoreErrorHandler();
             fParser->fPushback = fPushbackCheckpoint;
             fParser->fLexer.rewindToCheckpoint(fLexerCheckpoint);
-            fParser->fFile->fNodes.resize(fASTCheckpoint);
-            fParser->fErrors.setErrorCount(fErrorCount);
+        }
+
+        void handleError(const char* msg, dsl::PositionInfo pos) override {
+            fErrors.push_back({String(msg), pos});
         }
 
     private:
+        struct Error {
+            String fMsg;
+            dsl::PositionInfo fPos;
+        };
+
+        void restoreErrorHandler() {
+            SkASSERT(!fDone);
+            fParser->fErrors = fOldErrorHandler;
+            fDone = true;
+        }
+
         Parser* fParser;
         Token fPushbackCheckpoint;
         int32_t fLexerCheckpoint;
-        size_t fASTCheckpoint;
-        int fErrorCount;
+        ErrorHandler* fOldErrorHandler;
+        SkTArray<Error> fErrors;
+        bool fDone = false;
     };
 
     static std::unordered_map<String, LayoutToken>* layoutTokens;
@@ -288,7 +318,7 @@ private:
     int fDepth = 0;
     Token fPushback;
     SymbolTable& fSymbols;
-    ErrorReporter& fErrors;
+    dsl::ErrorHandler* fErrors;
 
     std::unique_ptr<ASTFile> fFile;
 

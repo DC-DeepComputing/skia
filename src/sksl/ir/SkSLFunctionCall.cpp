@@ -674,7 +674,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             msg += "s";
         }
         msg += ", but found " + to_string(arguments.count());
-        context.fErrors.error(offset, msg);
+        context.errors().error(offset, msg);
         return nullptr;
     }
 
@@ -690,7 +690,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             separator = ", ";
         }
         msg += ")";
-        context.fErrors.error(offset, msg);
+        context.errors().error(offset, msg);
         return nullptr;
     }
 
@@ -706,7 +706,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             const VariableRefKind refKind = paramModifiers.fFlags & Modifiers::kIn_Flag
                                                     ? VariableReference::RefKind::kReadWrite
                                                     : VariableReference::RefKind::kPointer;
-            if (!Analysis::MakeAssignmentExpr(arguments[i].get(), refKind, &context.fErrors)) {
+            if (!Analysis::MakeAssignmentExpr(arguments[i].get(), refKind, &context.errors())) {
                 return nullptr;
             }
         }

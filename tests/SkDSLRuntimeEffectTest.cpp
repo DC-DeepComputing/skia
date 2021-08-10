@@ -117,7 +117,6 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
     using float4 = std::array<float, 4>;
     using int4 = std::array<int, 4>;
     DSLTestEffect effect(r, surface);
-
     // Local coords
     {
         effect.start();
@@ -215,7 +214,8 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
             Return(1) // Error, type mismatch
         );
         effect.end(false);
-        REPORTER_ASSERT(r, errorHandler.fMsg == "error: expected 'half4', but found 'int'\n");
+        REPORTER_ASSERT(r, errorHandler.fMsg == "expected 'half4', but found 'int'");
+        exit(0);
     }
 
     // Mutating coords should work. (skbug.com/10918)
