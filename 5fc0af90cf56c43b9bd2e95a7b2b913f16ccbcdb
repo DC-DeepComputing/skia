@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73477128_fb016333",
+        "filename": "main.star",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5060
+      },
+      "writtenOn": "2021-08-10T00:50:11Z",
+      "side": 1,
+      "message": "Note that as far as I could tell, builds added here eventually end up executing on chromium-swarm-dev (which surprised me, since it \"crosses\" universes between LUCI prod and LUCI dev). It works without glitches only because Skia Task Scheduler acts as a mediator between prod Buildbucket and dev Swarming. Doing this sort of stuff using native Buildbucket functionality would have required hacks.\n\nEither way it appears skia.testing doesn\u0027t need any swarming-releated ACL configuration in LUCI prod environment, thus I put them all into skia.primary.\n\nAnother option to structure this would be to define a dedicated luci.realm(...) for Swarming ACLs (e.g. \"skia.prod\") and leave skia.primary as is. Let me know if you prefer that.",
+      "range": {
+        "startLine": 73,
+        "startChar": 12,
+        "endLine": 73,
+        "endChar": 24
+      },
+      "revId": "5fc0af90cf56c43b9bd2e95a7b2b913f16ccbcdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
