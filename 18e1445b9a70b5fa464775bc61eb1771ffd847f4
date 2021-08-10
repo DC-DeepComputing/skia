@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8869e7b4_9add3d56",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-10T19:48:39Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "6430aa9e_f44f4a43",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 732,
+        "endChar": 9
+      },
+      "revId": "18e1445b9a70b5fa464775bc61eb1771ffd847f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea7c077e_920a80c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-10T19:36:20Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 758,
+        "startChar": 4,
+        "endLine": 758,
+        "endChar": 9
+      },
+      "revId": "18e1445b9a70b5fa464775bc61eb1771ffd847f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c09da53_8a923ad3",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-10T19:48:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea7c077e_920a80c0",
       "range": {
         "startLine": 758,
         "startChar": 4,
