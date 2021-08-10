@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b92a5d72_c2acd55a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2021-08-10T15:13:46Z",
+      "side": 1,
+      "message": "Aside from learning my way around the Skia codebase as I go, my biggest concern is that something requires Python 2 as well. I\u0027m feeling lucky today. If other Debian9 jobs start failing, I can add Python 2 back in, and they should coexist just fine. The other Debian9 jobs culminate in docker-chromeos-compile.sh, which would be the only thing I would expect to (indirectly) invoke Python.",
+      "revId": "09bd0d20d7d4f9012993f7512921910022f111b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
