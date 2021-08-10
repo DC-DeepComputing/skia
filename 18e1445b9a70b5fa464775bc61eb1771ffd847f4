@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6430aa9e_f44f4a43",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-10T19:36:20Z",
+      "side": 1,
+      "message": "Either make this static, or move the block directly into the for loop:\n\n   for (const auto\u0026 f : {{ Modifiers::kConst_Flag,          \"const\" },\n                         {...}}) {\n\nRight now I think it\u0027s going to instantiate this on the stack.",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 732,
+        "endChar": 9
+      },
+      "revId": "18e1445b9a70b5fa464775bc61eb1771ffd847f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea7c077e_920a80c0",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-10T19:36:20Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 758,
+        "startChar": 4,
+        "endLine": 758,
+        "endChar": 9
+      },
+      "revId": "18e1445b9a70b5fa464775bc61eb1771ffd847f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
