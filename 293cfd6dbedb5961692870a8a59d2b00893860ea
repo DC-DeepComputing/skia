@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bcd4b75_fa846d44",
+        "filename": "src/gpu/GrDefaultGeoProcFactory.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-10T13:46:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c6c0c17a_72468e9e",
+      "range": {
+        "startLine": 59,
+        "startChar": 10,
+        "endLine": 59,
+        "endChar": 24
+      },
+      "revId": "293cfd6dbedb5961692870a8a59d2b00893860ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d13eeca8_01fbf1b8",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-08-10T13:14:51Z",
       "side": 1,
       "message": "Rename to Impl while you\u0027re here?",
+      "range": {
+        "startLine": 606,
+        "startChar": 14,
+        "endLine": 606,
+        "endChar": 28
+      },
+      "revId": "293cfd6dbedb5961692870a8a59d2b00893860ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15381790_4f18d073",
+        "filename": "src/gpu/ops/GrQuadPerEdgeAA.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-10T13:46:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d13eeca8_01fbf1b8",
       "range": {
         "startLine": 606,
         "startChar": 14,
