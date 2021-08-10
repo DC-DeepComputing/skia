@@ -16,6 +16,24 @@
       "message": "Should we also assert here that fClipRestrctionSaveCount is -1?",
       "revId": "daa27138fc1ac52130de7b18baf4fa083e84fa00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c6f3c5a_8c23e174",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1454,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-10T14:33:55Z",
+      "side": 1,
+      "message": "Done,and I updated a few more places to use the more robust saveCount vs. 0 test instead of \"rect is empty\". I didn\u0027t go so far as to always use the \u0027rect\u0027 argument, we still ignore it if it\u0027s empty. That\u0027s because on the android side, there might still be some expectation that an empty rect doesn\u0027t apply any clip restriction, and if we started treating as an actual \"empty\" clip then nothing would draw.",
+      "parentUuid": "a9953a61_df04fdee",
+      "revId": "daa27138fc1ac52130de7b18baf4fa083e84fa00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
