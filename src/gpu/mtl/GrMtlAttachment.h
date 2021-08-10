@@ -10,12 +10,16 @@
 
 #include "include/gpu/mtl/GrMtlTypes.h"
 #include "src/gpu/GrAttachment.h"
+#include "src/gpu/GrManagedResource.h"
 
 #import <Metal/Metal.h>
 
 class GrMtlGpu;
 
 class GrMtlAttachment : public GrAttachment {
+private:
+    class Resource;
+
 public:
     static sk_sp<GrMtlAttachment> MakeStencil(GrMtlGpu* gpu,
                                               SkISize dimensions,
