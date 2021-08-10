@@ -18,16 +18,13 @@
 
 class GrBicubicEffect::Impl : public GrFragmentProcessor::ProgramImpl {
 public:
-    Impl() : fKernel{-1, -1} {}
     void emitCode(EmitArgs&) override;
 
-protected:
+private:
     void onSetData(const GrGLSLProgramDataManager&, const GrFragmentProcessor&) override;
 
-private:
-    SkImage::CubicResampler fKernel;
+    SkImage::CubicResampler fKernel = {-1, -1};
     UniformHandle fCoefficientUni;
-    using INHERITED = ProgramImpl;
 };
 
 void GrBicubicEffect::Impl::emitCode(EmitArgs& args) {
