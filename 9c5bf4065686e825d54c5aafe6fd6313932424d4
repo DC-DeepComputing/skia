@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f6fcfb_f03fcd2f",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-10T20:16:07Z",
+      "side": 1,
+      "message": "check both \u003e\u003d 0 and \u003c\u003d 1 in same predicate?",
+      "range": {
+        "startLine": 529,
+        "startChar": 76,
+        "endLine": 529,
+        "endChar": 83
+      },
+      "revId": "9c5bf4065686e825d54c5aafe6fd6313932424d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
