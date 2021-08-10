@@ -194,6 +194,7 @@ public:
 
     virtual bool android_utils_clipWithStencil() { return false; }
 
+    virtual GrRecordingContext* recordingContext() const { return nullptr; }
     virtual skgpu::BaseDevice* asGpuDevice() { return nullptr; }
 
     // Ensure that non-RSXForm runs are passed to onDrawGlyphRunList.
