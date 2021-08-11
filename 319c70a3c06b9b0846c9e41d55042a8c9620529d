@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48cb1489_19565b00",
+        "filename": "gm/tilemodes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-11T19:44:31Z",
+      "side": 0,
+      "message": "12 is the default font size so these two fonts were always equivalent",
+      "range": {
+        "startLine": 93,
+        "startChar": 58,
+        "endLine": 93,
+        "endChar": 62
+      },
+      "revId": "319c70a3c06b9b0846c9e41d55042a8c9620529d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
