@@ -15,6 +15,11 @@
 class GrDrawOp;
 namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
+class GrRecordingContext;
+class GrSurfaceDrawContext;
+class GrDrawOp;
+class GrAppliedClip;
+
 /**
  * GrClip is an abstract base class for applying a clip. It constructs a clip mask if necessary, and
  * fills out a GrAppliedClip instructing the caller on how to set up the draw state.

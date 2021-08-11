@@ -37,5 +37,4 @@ namespace GrDrawVerticesOp {
                      const SkRuntimeEffect*);
 
 }  // namespace GrDrawVerticesOp
-
 #endif
