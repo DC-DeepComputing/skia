@@ -57,6 +57,7 @@ samples_sources = [
   "$_samplecode/SamplePathText.cpp",
   "$_samplecode/SamplePolyToPoly.cpp",
   "$_samplecode/SampleQuadStroker.cpp",
+  "$_samplecode/SampleRay.cpp",
   "$_samplecode/SampleRectanizer.cpp",
   "$_samplecode/SampleRepeatTile.cpp",
   "$_samplecode/SampleSG.cpp",
