@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321d9429_482eed7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18154
+      },
+      "writtenOn": "2021-08-11T17:23:44Z",
+      "side": 1,
+      "message": "PTAL! The old and new flags are equivalent, so this causes no behavioral changes.",
+      "revId": "fbb878056369350816d34eeeb06c9f88f54273c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
