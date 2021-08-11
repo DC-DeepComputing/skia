@@ -672,16 +672,25 @@ static bool compute_decomposition_center(const SkMatrix& dstToLocal,
                                          const skif::ParameterSpace<SkRect>* contentBounds,
                                          const skif::DeviceSpace<SkIRect>& targetOutput,
                                          skif::ParameterSpace<SkPoint>* out) {
-    // Will use the inverse and center of the device bounds if the content bounds aren't provided.
-    SkRect rect = contentBounds ? SkRect(*contentBounds) : SkRect::Make(SkIRect(targetOutput));
-    SkPoint center = {rect.centerX(), rect.centerY()};
-    if (!contentBounds) {
-        // Theoretically, the inverse transform could put center's homogeneous coord behind W = 0,
-        // but that case is handled automatically in DecomposeCTM later.
-        dstToLocal.mapPoints(&center, 1);
-    }
+    SkRect output = SkRect::Make(SkIRect(targetOutput));
+    if (contentBounds) {
+        // Transform device space output bounds into parameter space
+        dstToLocal.mapRect(&output);
+        if (!output.intersect(SkRect(*contentBounds))) {
+            // Content doesn't project to layer, so its empty
+            return false;
+        }
 
-    *out = skif::ParameterSpace<SkPoint>(center);
+        // Use the center of the intersection between content and target device as reference point
+        *out = skif::ParameterSpace<SkPoint>({output.centerX(), output.centerY()});
+    } else {
+        // Map the center of the device space output bounds into parameter space and use that as
+        // the reference point. Theoretically this inverse transform could put the center's
+        // homogeneous coord behind W = 0, but that is handled automatically in DecomposeCTM.
+        SkPoint center = {output.centerX(), output.centerY()};
+        dstToLocal.mapPoints(&center, 1);
+        *out = skif::ParameterSpace<SkPoint>(center);
+    }
     return true;
 }
 
@@ -695,19 +704,13 @@ static std::pair<skif::Mapping, skif::LayerSpace<SkIRect>> get_layer_mapping_and
         const SkImageFilter* filter,
         const SkMatrix& localToDst,
         const skif::DeviceSpace<SkIRect>& targetOutput,
-        const skif::ParameterSpace<SkRect>* contentBounds = nullptr,
-        bool mustCoverDst = true) {
+        const skif::ParameterSpace<SkRect>* contentBounds = nullptr) {
     skif::ParameterSpace<SkPoint> center;
     SkMatrix dstToLocal;
     if (!localToDst.isFinite() ||
         !localToDst.invert(&dstToLocal) ||
         !compute_decomposition_center(dstToLocal, contentBounds, targetOutput, &center)) {
         return {{}, skif::LayerSpace<SkIRect>(SkIRect::MakeEmpty())};
-    }
-    // *after* possibly getting a representative point from the provided content bounds, it might
-    // be necessary to discard the bounds for subsequent layer calculations.
-    if (mustCoverDst) {
-        contentBounds = nullptr;
     }
 
     // Determine initial mapping and a reasonable maximum dimension to prevent layer-to-device
@@ -998,6 +1001,11 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
             rec.fPaint ? rec.fPaint->getImageFilter() : nullptr, &restorePaint,
             &optimizedCFAffectsTransparent);
 
+    const auto* contentBounds = skif::ParameterSpace<SkRect>::Optional(rec.fBounds);
+    if (must_cover_prior_device(rec.fBackdrop, restorePaint) || optimizedCFAffectsTransparent) {
+        contentBounds = nullptr;
+    }
+
     // Size the new layer relative to the prior device, which may already be aligned for filters.
     SkBaseDevice* priorDevice = this->topDevice();
     skif::Mapping newLayerMapping;
@@ -1005,8 +1013,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
     std::tie(newLayerMapping, layerBounds) = get_layer_mapping_and_bounds(
             filter, priorDevice->localToDevice(),
             skif::DeviceSpace<SkIRect>(priorDevice->devClipBounds()),
-            skif::ParameterSpace<SkRect>::Optional(rec.fBounds),
-            must_cover_prior_device(rec.fBackdrop, restorePaint) || optimizedCFAffectsTransparent);
+            contentBounds);
 
     if (layerBounds.isEmpty()) {
         // The filtered content of the layer would not draw anything, so skip the layer
