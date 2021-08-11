@@ -24,8 +24,9 @@ public:
     static const int kPathRefGenIDBitCnt = 32;
 #endif
 
-    // skbug.com/9906: Not a perfect solution for W plane clipping, but 1/1024 is a reasonable limit
-    static constexpr SkScalar kW0PlaneDistance = 1.f / 1024.f;
+    // skbug.com/9906: Not a perfect solution for W plane clipping, but 1/(1024*1024) is a
+    // reasonable limit (roughly 1e-6)
+    static constexpr SkScalar kW0PlaneDistance = 1.f / (1 << 20);
 
     static SkPathFirstDirection AsFirstDirection(SkPathDirection dir) {
         // since we agree numerically for the values in Direction, we can just cast.
