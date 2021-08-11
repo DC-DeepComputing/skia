@@ -582,6 +582,7 @@ public:
 
     // Allows caller of addDrawOp to know which op list an op will be added to.
     using WillAddOpFn = void(GrOp*, uint32_t opsTaskID);
+
     // These perform processing specific to GrDrawOp-derived ops before recording them into an
     // op list. Before adding the op to an op list the WillAddOpFn is called. Note that it
     // will not be called in the event that the op is discarded. Moreover, the op may merge into
@@ -631,6 +632,7 @@ private:
     GrAAType chooseAAType(GrAA);
 
     GrOpsTask::CanDiscardPreviousOps canDiscardPreviousOpsOnFullClear() const override;
+
     void setNeedsStencil();
 
     void internalStencilClear(const SkIRect* scissor, bool insideStencilMask);
@@ -711,5 +713,3 @@ private:
 };
 
 } // namespace skgpu::v1
-
-#endif // SurfaceDrawContext_v1_DEFINED
