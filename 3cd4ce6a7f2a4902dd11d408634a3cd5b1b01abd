@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9753f3ab_8ac36241",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10818
+      },
+      "writtenOn": "2021-08-11T20:27:12Z",
+      "side": 1,
+      "message": "Not that familiar with these corners of the code but sanity check LGTM",
+      "revId": "3cd4ce6a7f2a4902dd11d408634a3cd5b1b01abd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
