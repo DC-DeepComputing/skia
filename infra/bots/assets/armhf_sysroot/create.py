@@ -26,20 +26,20 @@ def create_asset(target_dir):
   raw_input()
   subprocess.check_call([
     "sudo","apt-get","install",
-    "libstdc++-6-dev-armhf-cross",
-    "libgcc-6-dev-armhf-cross",
+    "libstdc++-10-dev-armhf-cross",
+    "libgcc-10-dev-armhf-cross",
     "binutils-arm-linux-gnueabihf"
   ])
 
 
   shutil.copytree('/usr/arm-linux-gnueabihf', target_dir)
-  shutil.copytree('/usr/lib/gcc-cross/arm-linux-gnueabihf/6',
+  shutil.copytree('/usr/lib/gcc-cross/arm-linux-gnueabihf/10',
                   os.path.join(target_dir, 'gcc-cross'))
 
   # Libs needed to link:
-  shutil.copy('/usr/lib/x86_64-linux-gnu/libbfd-2.28-armhf.so',
+  shutil.copy('/usr/lib/x86_64-linux-gnu/libbfd-2.35.2-armhf.so',
               os.path.join(target_dir, 'lib'))
-  shutil.copy('/usr/lib/x86_64-linux-gnu/libopcodes-2.28-armhf.so',
+  shutil.copy('/usr/lib/x86_64-linux-gnu/libopcodes-2.35.2-armhf.so',
               os.path.join(target_dir, 'lib'))
 
   # The file paths in libpthread.so and libc.so start off as absolute file
@@ -57,7 +57,7 @@ def create_asset(target_dir):
   bad_libc = os.path.join(target_dir, "lib", "libc.so")
   for line in fileinput.input(bad_libc, inplace=True):
     if line.startswith("GROUP"):
-      print ("GROUP ( libc.so.6 libc_nonshared.a "
+      print ("GROUP ( libc.so.10 libc_nonshared.a "
              "AS_NEEDED ( ld-linux-armhf.so.3 ) )")
     else:
       print line
