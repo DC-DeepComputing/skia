@@ -523,11 +523,10 @@ static void create_config(const SkCommandLineConfig* config, SkTArray<Config>* c
                          config->getTag().c_str());                            \
                 return;                                                        \
             }                                                                  \
-            Config config = {                                                  \
+            configs->push_back(Config{                                         \
                 SkString(#name), Benchmark::backend, color, alpha, colorSpace, \
                 0, kBogusContextType, kBogusContextOverrides, 0                \
-            };                                                                 \
-            configs->push_back(config);                                        \
+            });                                                                \
             return;                                                            \
         }
 
@@ -1427,8 +1426,8 @@ int main(int argc, char** argv) {
             if (!keys.empty()) {
                 // dump to json, only SKPBench currently returns valid keys / values
                 SkASSERT(keys.count() == values.count());
-                for (int i = 0; i < keys.count(); i++) {
-                    log.appendMetric(keys[i].c_str(), values[i]);
+                for (int j = 0; j < keys.count(); j++) {
+                    log.appendMetric(keys[j].c_str(), values[j]);
                 }
             }
 
@@ -1493,8 +1492,8 @@ int main(int argc, char** argv) {
 
             if (FLAGS_verbose) {
                 SkDebugf("Samples:  ");
-                for (int i = 0; i < samples.count(); i++) {
-                    SkDebugf("%s  ", HUMANIZE(samples[i]));
+                for (int j = 0; j < samples.count(); j++) {
+                    SkDebugf("%s  ", HUMANIZE(samples[j]));
                 }
                 SkDebugf("%s\n", bench->getUniqueName());
             }
