@@ -649,9 +649,8 @@ int main(int argc, char** argv) {
         }
     }
 
-    int i;
     int numUnflaggedArguments = 0;
-    for (i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--failonresult")) {
             if (argc == ++i) {
                 SkDebugf("failonresult expects one argument.\n");
@@ -832,7 +831,7 @@ int main(int argc, char** argv) {
                         baseDir, comparisonDir, outputDir);
     }
 
-    for (i = 0; i < differences.count(); i++) {
+    for (int i = 0; i < differences.count(); i++) {
         delete differences[i];
     }
     matchSubstrings.deleteAll();
