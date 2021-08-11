@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b451b12f_af4877a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-11T19:37:03Z",
+      "side": 1,
+      "message": "See https://bugs.chromium.org/p/skia/issues/detail?id\u003d12335.",
+      "revId": "0b0ae67e27c78786f1d56e87e3e94394fa8d1111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
