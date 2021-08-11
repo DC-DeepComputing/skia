@@ -1,8 +1,7 @@
 // Copyright 2021 Google LLC.
 #include "experimental/sktext/src/Paint.h"
 
-namespace skia {
-namespace text {
+namespace skia::text {
 
 bool Paint::drawText(std::u16string text, SkCanvas* canvas, SkScalar x, SkScalar y) {
 
@@ -30,7 +29,7 @@ bool Paint::drawText(std::u16string text, SkCanvas* canvas,
                          const SkString& fontFamily, SkScalar fontSize, SkFontStyle fontStyle, SkSize reqSize, SkScalar x, SkScalar y) {
 
     size_t textSize = text.size();
-    sk_sp<TrivialFontChain> fontChain = sk_make_sp<TrivialFontChain>(fontFamily.c_str(), fontSize);
+    sk_sp<TrivialFontChain> fontChain = sk_make_sp<TrivialFontChain>(fontFamily.c_str(), fontSize, fontStyle);
     FontBlock fontBlock(text.size(), fontChain);
 
     auto formattedText = Paint::layout(std::move(text), textDirection, textAlign, reqSize, SkSpan<FontBlock>(&fontBlock, 1));
@@ -47,13 +46,10 @@ bool Paint::drawText(std::u16string text, SkCanvas* canvas,
     return true;
 }
 
-void Paint::onBeginLine(TextRange lineText, float baselineY, float horizontalOffset) {
-    fHorizontalOffset = horizontalOffset;
-    fBaselineY = baselineY;
-}
-void Paint::onEndLine(TextRange, float baselineY) { }
-void Paint::onPlaceholder(TextRange, const SkRect& bounds) { }
-void Paint::onGlyphRun(SkFont font,
+void Paint::onBeginLine(TextRange lineText) { }
+void Paint::onEndLine(TextRange lineText) { }
+void Paint::onPlaceholder(TextRange lineText, const SkRect& bounds) { }
+void Paint::onGlyphRun(const SkFont& font,
                        TextRange textRange,
                        SkRect boundingRect,
                        int glyphCount,
@@ -68,9 +64,9 @@ void Paint::onGlyphRun(SkFont font,
     sk_careful_memcpy(blobBuffer.glyphs, glyphs, glyphCount * sizeof(uint16_t));
     sk_careful_memcpy(blobBuffer.points(), positions, glyphCount * sizeof(SkPoint));
     auto blob = builder.make();
-    boundingRect.offset(fXY.fX + fHorizontalOffset, fXY.fY);
+    boundingRect.offset(fXY.fX, fXY.fY);
     fCanvas->drawRect(boundingRect, decoratedBlock.backgroundPaint);
-    fCanvas->drawTextBlob(blob, fXY.fX + fHorizontalOffset, fXY.fY, decoratedBlock.foregroundPaint);
+    fCanvas->drawTextBlob(blob, fXY.fX, fXY.fY, decoratedBlock.foregroundPaint);
 }
 
 sk_sp<FormattedText> Paint::layout(std::u16string text,
@@ -115,5 +111,4 @@ void Paint::paint(SkCanvas* canvas, SkPoint xy, FormattedText* formattedText, Sk
     formattedText->visit(this, SkSpan<size_t>(chunks.data(), chunks.size()));
 }
 
-} // namespace text
 } // namespace skia
