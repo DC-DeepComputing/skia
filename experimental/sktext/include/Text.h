@@ -15,8 +15,7 @@
 #include "modules/skshaper/include/SkShaper.h"
 #include "modules/skunicode/include/SkUnicode.h"
 
-namespace skia {
-namespace text {
+namespace skia::text {
 
 class UnicodeText;
 class Text {
@@ -31,7 +30,7 @@ public:
     FormattingFontIterator(TextIndex textCount, SkSpan<FontBlock> fontBlocks, SkSpan<TextIndex> marks)
         : fTextCount(textCount)
         , fFontBlocks(fontBlocks)
-        , fFormattingMarks(std::move(marks))
+        , fFormattingMarks(marks)
         , fCurrentBlock(fontBlocks.begin())
         , fCurrentMark(marks.begin())
         , fCurrentFontIndex(0)
@@ -66,8 +65,8 @@ public:
         }
     }
     bool atEnd() const override {
-        return (fCurrentBlock != fFontBlocks.end() ? fCurrentFontIndex == fTextCount : true) &&
-                (fCurrentMark != fFormattingMarks.end() ? *fCurrentMark == fTextCount : true);
+        return (fCurrentBlock == fFontBlocks.end() || fCurrentFontIndex == fTextCount) &&
+                (fCurrentMark == fFormattingMarks.end() || *fCurrentMark == fTextCount);
     }
 
     const SkFont& currentFont() const override {
@@ -90,10 +89,6 @@ class UnicodeText : public SkShaper::RunHandler {
 public:
     std::unique_ptr<ShapedText> shape(SkSpan<FontBlock> blocks,
                                       TextDirection textDirection);
-
-    bool shapeParagraph(TextRange text,
-                        SkSpan<FontBlock> blocks,
-                        TextDirection textDirection);
 
     bool hasProperty(size_t index, CodeUnitFlags flag) {
         return (fCodeUnitProperties[index] & flag) == flag;
@@ -244,9 +239,9 @@ public:
     class Visitor {
     public:
         virtual ~Visitor() = default;
-        virtual void onBeginLine(TextRange lineText, float baselineY, float horizontalOffset) { }
-        virtual void onEndLine(TextRange lineText, float baselineY) { }
-        virtual void onGlyphRun(SkFont font,
+        virtual void onBeginLine(TextRange lineText) { }
+        virtual void onEndLine(TextRange lineText) { }
+        virtual void onGlyphRun(const SkFont& font,
                                 TextRange textRange,
                                 SkRect boundingRect,
                                 int glyphCount,
@@ -295,7 +290,7 @@ private:
     void adjustTextRange(Position* position) const;
 
     friend class WrappedText;
-    FormattedText() { }
+    FormattedText() = default;
     SkTArray<TextRun, false> fRuns;
     SkTArray<Line, false> fLines;
     SkTArray<GlyphUnitFlags, true> fGlyphUnitProperties;
@@ -303,7 +298,6 @@ private:
     std::unique_ptr<Visitor> fVisitor;
 };
 
-}  // namespace text
 }  // namespace skia
 
 #endif  // Processor_DEFINED

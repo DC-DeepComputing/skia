@@ -5,9 +5,7 @@
 #include "experimental/sktext/include/Types.h"
 #include "include/core/SkCanvas.h"
 
-
-namespace skia {
-namespace text {
+namespace skia::text {
 
 struct DecoratedBlock {
     DecoratedBlock(uint32_t count, SkPaint fg, SkPaint bg)
@@ -21,9 +19,10 @@ struct DecoratedBlock {
 
 class TrivialFontChain : public FontChain {
 public:
-    TrivialFontChain(const char* ff, SkScalar size)
-        : fTypeface(sk_sp<SkTypeface>(SkFontMgr::RefDefault()->matchFamilyStyle(ff, SkFontStyle::Normal()))),
-          fSize(size) { }
+    TrivialFontChain(const char* ff, SkScalar size, SkFontStyle fontStyle)
+        : fTypeface(sk_sp<SkTypeface>(SkFontMgr::RefDefault()->matchFamilyStyle(ff, SkFontStyle::Normal())))
+        , fSize(size)
+        , fFontStyle(fontStyle) { }
     size_t count() const override { return (size_t)1; }
     sk_sp<SkTypeface> operator[](size_t index) const  override {
         SkASSERT(index == 0);
@@ -34,14 +33,11 @@ public:
 private:
     sk_sp<SkTypeface> fTypeface;
     SkScalar fSize;
+    SkFontStyle fFontStyle;
 };
 
 class Paint : public FormattedText::Visitor {
 public:
-    static sk_sp<FormattedText> layout(std::u16string text,
-                                TextDirection textDirection, TextAlign textAlign,
-                                SkSize reqSize,
-                                SkSpan<FontBlock> fontBlocks);
     void paint(SkCanvas* canvas, SkPoint xy, FormattedText* formattedText, SkSpan<DecoratedBlock> decoratedBlocks);
     // Simplification (using default font manager, default font family and default everything possible)
     static bool drawText(std::u16string text, SkCanvas* canvas, SkScalar x, SkScalar y);
@@ -58,10 +54,14 @@ public:
                          SkSize reqSize, SkScalar x, SkScalar y);
 
 private:
-    friend class Processor;
-    void onBeginLine(TextRange lineText, float baselineY, float horizontalOffset) override;
-    void onEndLine(TextRange, float baselineY) override;
-    void onGlyphRun(SkFont font,
+    static sk_sp<FormattedText> layout(std::u16string text,
+                                TextDirection textDirection, TextAlign textAlign,
+                                SkSize reqSize,
+                                SkSpan<FontBlock> fontBlocks);
+
+    void onBeginLine(TextRange lineText) override;
+    void onEndLine(TextRange) override;
+    void onGlyphRun(const SkFont& font,
                     TextRange textRange,
                     SkRect boundingRect,
                     int glyphCount,
@@ -75,11 +75,8 @@ private:
 
     SkCanvas* fCanvas;
     SkPoint fXY;
-    SkScalar fHorizontalOffset;
-    SkScalar fBaselineY;
     SkSpan<FontBlock> fFontBlocks;
     SkSpan<DecoratedBlock> fDecoratedBlocks;
 };
-} // namespace text
 } // namespace skia
 #endif // Painter_DEFINED
