@@ -12,7 +12,6 @@
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkSLStatement.h"
 #include "src/sksl/SkSLCompiler.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -302,13 +301,9 @@ private:
 };
 
 // If a caller doesn't care about errors, we can use this trivial reporter that just counts up.
-class TrivialErrorReporter : public ErrorReporter {
+class TrivialErrorHandler : public dsl::ErrorHandler {
 public:
-    void handleError(const char*, dsl::PositionInfo) override { ++fErrorCount; }
-    int errorCount() override { return fErrorCount; }
-
-private:
-    int fErrorCount = 0;
+    void handleError(const char*, dsl::PositionInfo) override {}
 };
 
 // This isn't actually using ProgramVisitor, because it only considers a subset of the fields for
@@ -316,7 +311,7 @@ private:
 // know if the base (`x`) is assignable; the index expression (`1`) doesn't need to be.
 class IsAssignableVisitor {
 public:
-    IsAssignableVisitor(ErrorReporter* errors) : fErrors(errors) {}
+    IsAssignableVisitor(dsl::ErrorHandler* errors) : fErrors(errors) {}
 
     bool visit(Expression& expr, Analysis::AssignmentInfo* info) {
         int oldErrorCount = fErrors->errorCount();
@@ -376,7 +371,7 @@ private:
         }
     }
 
-    ErrorReporter* fErrors;
+    dsl::ErrorHandler* fErrors;
     VariableReference* fAssignedVar = nullptr;
 
     using INHERITED = ProgramVisitor;
@@ -619,7 +614,7 @@ bool Analysis::CallsSampleOutsideMain(const Program& program) {
 }
 
 bool Analysis::DetectStaticRecursion(SkSpan<std::unique_ptr<ProgramElement>> programElements,
-                                     ErrorReporter& errors) {
+                                     dsl::ErrorHandler& errors) {
     using Function = const FunctionDeclaration;
     using CallSet = std::unordered_set<Function*>;
     using CallGraph = std::unordered_map<Function*, CallSet>;
@@ -823,8 +818,8 @@ bool Analysis::StatementWritesToVariable(const Statement& stmt, const Variable& 
     return VariableWriteVisitor(&var).visit(stmt);
 }
 
-bool Analysis::IsAssignable(Expression& expr, AssignmentInfo* info, ErrorReporter* errors) {
-    TrivialErrorReporter trivialErrors;
+bool Analysis::IsAssignable(Expression& expr, AssignmentInfo* info, dsl::ErrorHandler* errors) {
+    TrivialErrorHandler trivialErrors;
     return IsAssignableVisitor{errors ? errors : &trivialErrors}.visit(expr, info);
 }
 
@@ -851,7 +846,7 @@ void Analysis::UpdateRefKind(Expression* expr, VariableRefKind refKind) {
 
 bool Analysis::MakeAssignmentExpr(Expression* expr,
                                   VariableReference::RefKind kind,
-                                  ErrorReporter* errors) {
+                                  dsl::ErrorHandler* errors) {
     Analysis::AssignmentInfo info;
     if (!Analysis::IsAssignable(*expr, &info, errors)) {
         return false;
@@ -1136,7 +1131,7 @@ bool Analysis::ForLoopIsValidForES2(int offset,
                                     const Expression* loopNext,
                                     const Statement* loopStatement,
                                     Analysis::UnrollableLoopInfo* outLoopInfo,
-                                    ErrorReporter* errors) {
+                                    dsl::ErrorHandler* errors) {
     UnrollableLoopInfo ignored,
                        *loopInfo = outLoopInfo ? outLoopInfo : &ignored;
     if (const char* msg = invalid_for_ES2(
@@ -1227,7 +1222,7 @@ private:
 
 class ES2IndexingVisitor : public ProgramVisitor {
 public:
-    ES2IndexingVisitor(ErrorReporter& errors) : fErrors(errors) {}
+    ES2IndexingVisitor(dsl::ErrorHandler& errors) : fErrors(errors) {}
 
     bool visitStatement(const Statement& s) override {
         if (s.is<ForStatement>()) {
@@ -1258,13 +1253,13 @@ public:
     using ProgramVisitor::visitProgramElement;
 
 private:
-    ErrorReporter& fErrors;
+    dsl::ErrorHandler& fErrors;
     std::set<const Variable*> fLoopIndices;
     using INHERITED = ProgramVisitor;
 };
 
 
-void Analysis::ValidateIndexingForES2(const ProgramElement& pe, ErrorReporter& errors) {
+void Analysis::ValidateIndexingForES2(const ProgramElement& pe, dsl::ErrorHandler& errors) {
     ES2IndexingVisitor visitor(errors);
     visitor.visitProgramElement(pe);
 }

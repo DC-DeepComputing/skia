@@ -25,7 +25,7 @@ public:
         , fStatement(std::move(statement))
         , fTest(std::move(test)) {}
 
-    // Creates an SkSL do-while loop; uses the ErrorReporter to report errors.
+    // Creates an SkSL do-while loop; uses the ErrorHandler to report errors.
     static std::unique_ptr<Statement> Convert(const Context& context,
                                               std::unique_ptr<Statement> stmt,
                                               std::unique_ptr<Expression> test);
