@@ -440,7 +440,8 @@ public:
     // it's layer-to-device transform. The net effect is that neither the parameter nor device
     // coordinate systems are changed, but skif::LayerSpace is adjusted.
     //
-    // Returns false if the layer matrix cannot be inverted, and this mapping is left unmodified.
+    // Returns false if the layer matrix cannot be inverted, or if the resulting Mapping has
+    // non-finite transformations. The Mapping is left in an undetermined state if false is returned
     bool adjustLayerSpace(const SkMatrix& layer);
 
     // Update the mapping's layer space so that the point 'origin' in the current layer coordinate

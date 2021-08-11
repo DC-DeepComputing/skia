@@ -668,10 +668,10 @@ static void check_drawdevice_colorspaces(SkColorSpace* src, SkColorSpace* dst) {
 
 // Helper function to compute the center reference point used for scale decomposition under
 // non-linear transformations.
-static bool compute_decomposition_center(const SkMatrix& dstToLocal,
-                                         const skif::ParameterSpace<SkRect>* contentBounds,
-                                         const skif::DeviceSpace<SkIRect>& targetOutput,
-                                         skif::ParameterSpace<SkPoint>* out) {
+static skif::ParameterSpace<SkPoint> compute_decomposition_center(
+        const SkMatrix& dstToLocal,
+        const skif::ParameterSpace<SkRect>* contentBounds,
+        const skif::DeviceSpace<SkIRect>& targetOutput) {
     // Will use the inverse and center of the device bounds if the content bounds aren't provided.
     SkRect rect = contentBounds ? SkRect(*contentBounds) : SkRect::Make(SkIRect(targetOutput));
     SkPoint center = {rect.centerX(), rect.centerY()};
@@ -681,8 +681,7 @@ static bool compute_decomposition_center(const SkMatrix& dstToLocal,
         dstToLocal.mapPoints(&center, 1);
     }
 
-    *out = skif::ParameterSpace<SkPoint>(center);
-    return true;
+    return skif::ParameterSpace<SkPoint>(center);
 }
 
 // Compute suitable transformations and layer bounds for a new layer that will be used as the source
@@ -697,13 +696,14 @@ static std::pair<skif::Mapping, skif::LayerSpace<SkIRect>> get_layer_mapping_and
         const skif::DeviceSpace<SkIRect>& targetOutput,
         const skif::ParameterSpace<SkRect>* contentBounds = nullptr,
         bool mustCoverDst = true) {
-    skif::ParameterSpace<SkPoint> center;
     SkMatrix dstToLocal;
     if (!localToDst.isFinite() ||
-        !localToDst.invert(&dstToLocal) ||
-        !compute_decomposition_center(dstToLocal, contentBounds, targetOutput, &center)) {
+        !localToDst.invert(&dstToLocal)) {
         return {{}, skif::LayerSpace<SkIRect>(SkIRect::MakeEmpty())};
     }
+
+    skif::ParameterSpace<SkPoint> center =
+            compute_decomposition_center(dstToLocal, contentBounds, targetOutput);
     // *after* possibly getting a representative point from the provided content bounds, it might
     // be necessary to discard the bounds for subsequent layer calculations.
     if (mustCoverDst) {
