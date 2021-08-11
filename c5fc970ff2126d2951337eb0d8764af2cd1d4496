@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3a8f382_97d88f41",
+        "filename": "src/gpu/effects/GrBezierEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-11T16:48:00Z",
+      "side": 0,
+      "message": "We dropped this because those values were hardcoded, right?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 74
+      },
+      "revId": "c5fc970ff2126d2951337eb0d8764af2cd1d4496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
