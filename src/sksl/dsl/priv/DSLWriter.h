@@ -47,12 +47,17 @@ class ErrorHandler;
  * Thread-safe class that tracks per-thread state associated with DSL output. This class is for
  * internal use only.
  */
-class DSLWriter {
+class DSLWriter : public dsl::ErrorHandler {
 public:
     DSLWriter(SkSL::Compiler* compiler, SkSL::ProgramKind kind,
               const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
 
-    ~DSLWriter();
+    ~DSLWriter() override;
+
+    /**
+     * Returns true if the DSL has been started.
+     */
+    static bool Active();
 
     /**
      * Returns the Compiler used by DSL operations in the current thread.
@@ -228,6 +233,7 @@ public:
     }
 
     static void SetErrorHandler(ErrorHandler* errorHandler) {
+        SkASSERT(errorHandler);
         Instance().fErrorHandler = errorHandler;
     }
 
@@ -235,7 +241,7 @@ public:
      * Notifies the current ErrorHandler that a DSL error has occurred. With a null ErrorHandler
      * (the default), any errors will be dumped to stderr and a fatal exception will be generated.
      */
-    static void ReportError(const char* msg, PositionInfo info = PositionInfo());
+    static void ReportError(const char* msg, PositionInfo info = PositionInfo::Capture());
 
     /**
      * Returns whether name mangling is enabled. Mangling is important for the DSL because its
@@ -270,11 +276,13 @@ public:
     /**
      * Forwards any pending Compiler errors to the DSL ErrorHandler.
      */
-    static void ReportErrors(PositionInfo pos = PositionInfo());
+    static void ReportErrors(PositionInfo pos = PositionInfo::Capture());
 
     static DSLWriter& Instance();
 
     static void SetInstance(std::unique_ptr<DSLWriter> instance);
+
+    void handleError(const char* msg, PositionInfo position) override;
 
 private:
     std::unique_ptr<SkSL::ProgramConfig> fConfig;
@@ -285,11 +293,10 @@ private:
     SkSL::ModifiersPool* fOldModifiersPool;
     std::vector<std::unique_ptr<SkSL::ProgramElement>> fProgramElements;
     std::vector<const SkSL::ProgramElement*> fSharedElements;
-    ErrorHandler* fErrorHandler = nullptr;
+    ErrorHandler* fErrorHandler = this;
     ProgramSettings fSettings;
     Mangler fMangler;
     bool fIsModule;
-    bool fEncounteredErrors = false;
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
     struct StackFrame {
         GrFragmentProcessor::ProgramImpl* fProcessor;

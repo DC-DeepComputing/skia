@@ -36,7 +36,7 @@ public:
     , fOwnerKind(ownerKind)
     , fBase(std::move(base)) {}
 
-    // Returns a field-access expression; reports errors via the ErrorReporter.
+    // Returns a field-access expression; reports errors via the ErrorHandler.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                std::unique_ptr<Expression> base,
                                                skstd::string_view field);

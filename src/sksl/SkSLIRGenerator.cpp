@@ -118,8 +118,8 @@ bool IRGenerator::detectVarDeclarationWithoutScope(const Statement& stmt) {
 
     // Report an error.
     SkASSERT(var);
-    this->errorReporter().error(stmt.fOffset,
-                                "variable '" + var->name() + "' must be created in a scope");
+    this->errorHandler().error(stmt.fOffset,
+                               "variable '" + var->name() + "' must be created in a scope");
     return true;
 }
 
@@ -127,7 +127,7 @@ std::unique_ptr<Extension> IRGenerator::convertExtension(int offset, skstd::stri
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex &&
         this->programKind() != ProgramKind::kGeometry) {
-        this->errorReporter().error(offset, "extensions are not allowed here");
+        this->errorHandler().error(offset, "extensions are not allowed here");
         return nullptr;
     }
 
@@ -208,7 +208,7 @@ std::unique_ptr<Statement> IRGenerator::convertVarDeclarationStatement(const AST
 
 int IRGenerator::convertArraySize(const Type& type, int offset, const ASTNode& s) {
     if (!s) {
-        this->errorReporter().error(offset, "array must have a size");
+        this->errorHandler().error(offset, "array must have a size");
         return 0;
     }
     auto size = this->convertExpression(s);
@@ -224,25 +224,25 @@ int IRGenerator::convertArraySize(const Type& type, std::unique_ptr<Expression> 
         return 0;
     }
     if (type.isVoid()) {
-        this->errorReporter().error(size->fOffset, "type 'void' may not be used in an array");
+        this->errorHandler().error(size->fOffset, "type 'void' may not be used in an array");
         return 0;
     }
     if (type.isOpaque()) {
-        this->errorReporter().error(
+        this->errorHandler().error(
                 size->fOffset, "opaque type '" + type.name() + "' may not be used in an array");
         return 0;
     }
     if (!size->is<IntLiteral>()) {
-        this->errorReporter().error(size->fOffset, "array size must be an integer");
+        this->errorHandler().error(size->fOffset, "array size must be an integer");
         return 0;
     }
     SKSL_INT count = size->as<IntLiteral>().value();
     if (count <= 0) {
-        this->errorReporter().error(size->fOffset, "array size must be positive");
+        this->errorHandler().error(size->fOffset, "array size must be positive");
         return 0;
     }
     if (!SkTFitsIn<int>(count)) {
-        this->errorReporter().error(size->fOffset, "array size is too large");
+        this->errorHandler().error(size->fOffset, "array size is too large");
         return 0;
     }
     return static_cast<int>(count);
@@ -251,36 +251,36 @@ int IRGenerator::convertArraySize(const Type& type, std::unique_ptr<Expression> 
 void IRGenerator::checkVarDeclaration(int offset, const Modifiers& modifiers, const Type* baseType,
                                       Variable::Storage storage) {
     if (this->strictES2Mode() && baseType->isArray()) {
-        this->errorReporter().error(offset, "array size must appear after variable name");
+        this->errorHandler().error(offset, "array size must appear after variable name");
     }
 
     if (baseType->componentType().isOpaque() && storage != Variable::Storage::kGlobal) {
-        this->errorReporter().error(
+        this->errorHandler().error(
                 offset,
                 "variables of type '" + baseType->displayName() + "' must be global");
     }
     if ((modifiers.fFlags & Modifiers::kIn_Flag) && baseType->isMatrix()) {
-        this->errorReporter().error(offset, "'in' variables may not have matrix type");
+        this->errorHandler().error(offset, "'in' variables may not have matrix type");
     }
     if ((modifiers.fFlags & Modifiers::kIn_Flag) && (modifiers.fFlags & Modifiers::kUniform_Flag)) {
-        this->errorReporter().error(offset, "'in uniform' variables not permitted");
+        this->errorHandler().error(offset, "'in uniform' variables not permitted");
     }
     if (this->isRuntimeEffect()) {
         if (modifiers.fFlags & Modifiers::kIn_Flag) {
-            this->errorReporter().error(offset, "'in' variables not permitted in runtime effects");
+            this->errorHandler().error(offset, "'in' variables not permitted in runtime effects");
         }
     }
     if (baseType->isEffectChild() && !(modifiers.fFlags & Modifiers::kUniform_Flag)) {
-        this->errorReporter().error(
+        this->errorHandler().error(
                 offset, "variables of type '" + baseType->displayName() + "' must be uniform");
     }
     if (modifiers.fLayout.fFlags & Layout::kSRGBUnpremul_Flag) {
         if (!this->isRuntimeEffect()) {
-            this->errorReporter().error(offset,
+            this->errorHandler().error(offset,
                                         "'srgb_unpremul' is only permitted in runtime effects");
         }
         if (!(modifiers.fFlags & Modifiers::kUniform_Flag)) {
-            this->errorReporter().error(offset,
+            this->errorHandler().error(offset,
                                         "'srgb_unpremul' is only permitted on 'uniform' variables");
         }
         auto validColorXformType = [](const Type& t) {
@@ -289,7 +289,7 @@ void IRGenerator::checkVarDeclaration(int offset, const Modifiers& modifiers, co
         };
         if (!validColorXformType(*baseType) && !(baseType->isArray() &&
                                                  validColorXformType(baseType->componentType()))) {
-            this->errorReporter().error(offset,
+            this->errorHandler().error(offset,
                                         "'srgb_unpremul' is only permitted on half3, half4, "
                                         "float3, or float4 variables");
         }
@@ -312,7 +312,7 @@ std::unique_ptr<Variable> IRGenerator::convertVar(int offset, const Modifiers& m
     if (modifiers.fLayout.fLocation == 0 && modifiers.fLayout.fIndex == 0 &&
         (modifiers.fFlags & Modifiers::kOut_Flag) &&
         this->programKind() == ProgramKind::kFragment && name != Compiler::FRAGCOLOR_NAME) {
-        this->errorReporter().error(offset,
+        this->errorHandler().error(offset,
                                     "out location=0, index=0 is reserved for sk_FragColor");
     }
     const Type* type = baseType;
@@ -350,11 +350,11 @@ std::unique_ptr<Statement> IRGenerator::convertVarDeclaration(std::unique_ptr<Va
                var->name() == Compiler::RTADJUST_NAME) {
         // `sk_RTAdjust` is special, and makes the IR generator emit position-fixup expressions.
         if (fRTAdjust) {
-            this->errorReporter().error(var->fOffset, "duplicate definition of 'sk_RTAdjust'");
+            this->errorHandler().error(var->fOffset, "duplicate definition of 'sk_RTAdjust'");
             return nullptr;
         }
         if (var->type() != *fContext.fTypes.fFloat4) {
-            this->errorReporter().error(var->fOffset, "sk_RTAdjust must have type 'float4'");
+            this->errorHandler().error(var->fOffset, "sk_RTAdjust must have type 'float4'");
             return nullptr;
         }
         fRTAdjust = var.get();
@@ -413,7 +413,7 @@ StatementArray IRGenerator::convertVarDeclarations(const ASTNode& decls,
             if (*iter) {
                 arraySize = this->convertExpression(*iter++);
             } else {
-                this->errorReporter().error(decls.fOffset, "array must have a size");
+                this->errorHandler().error(decls.fOffset, "array must have a size");
                 continue;
             }
         }
@@ -442,7 +442,7 @@ std::unique_ptr<ModifiersDeclaration> IRGenerator::convertModifiersDeclaration(c
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex &&
         this->programKind() != ProgramKind::kGeometry) {
-        this->errorReporter().error(m.fOffset, "layout qualifiers are not allowed here");
+        this->errorHandler().error(m.fOffset, "layout qualifiers are not allowed here");
         return nullptr;
     }
 
@@ -450,7 +450,7 @@ std::unique_ptr<ModifiersDeclaration> IRGenerator::convertModifiersDeclaration(c
     Modifiers modifiers = m.getModifiers();
     if (modifiers.fLayout.fInvocations != -1) {
         if (this->programKind() != ProgramKind::kGeometry) {
-            this->errorReporter().error(m.fOffset,
+            this->errorHandler().error(m.fOffset,
                                         "'invocations' is only legal in geometry shaders");
             return nullptr;
         }
@@ -651,7 +651,7 @@ std::unique_ptr<Statement> IRGenerator::convertContinue(const ASTNode& c) {
 std::unique_ptr<Statement> IRGenerator::convertDiscard(const ASTNode& d) {
     SkASSERT(d.fKind == ASTNode::Kind::kDiscard);
     if (this->programKind() != ProgramKind::kFragment) {
-        this->errorReporter().error(d.fOffset,
+        this->errorHandler().error(d.fOffset,
                                     "discard statement is only permitted in fragment shaders");
         return nullptr;
     }
@@ -748,7 +748,7 @@ void IRGenerator::CheckModifiers(const Context& context,
     for (const auto& f : kModifierFlags) {
         if (modifierFlags & f.flag) {
             if (!(permittedModifierFlags & f.flag)) {
-                context.fErrors.error(offset, "'" + String(f.name) + "' is not permitted here");
+                context.errors().error(offset, "'" + String(f.name) + "' is not permitted here");
             }
             modifierFlags &= ~f.flag;
         }
@@ -776,7 +776,7 @@ void IRGenerator::CheckModifiers(const Context& context,
     for (const auto& lf : kLayoutFlags) {
         if (layoutFlags & lf.flag) {
             if (!(permittedLayoutFlags & lf.flag)) {
-                context.fErrors.error(
+                context.errors().error(
                         offset, "layout qualifier '" + String(lf.name) + "' is not permitted here");
             }
             layoutFlags &= ~lf.flag;
@@ -828,13 +828,13 @@ std::unique_ptr<Block> IRGenerator::finalizeFunction(const FunctionDeclaration& 
                                     std::move(returnStmt.expression()), returnType));
                         } else {
                             // Returning something from a function with a void return type.
-                            fIRGenerator->errorReporter().error(returnStmt.fOffset,
+                            fIRGenerator->errorHandler().error(returnStmt.fOffset,
                                                      "may not return a value from a void function");
                         }
                     } else {
                         if (this->functionReturnsValue()) {
                             // Returning nothing from a function with a non-void return type.
-                            fIRGenerator->errorReporter().error(returnStmt.fOffset,
+                            fIRGenerator->errorHandler().error(returnStmt.fOffset,
                                   "expected function to return '" + returnType.displayName() + "'");
                         }
                     }
@@ -857,13 +857,13 @@ std::unique_ptr<Block> IRGenerator::finalizeFunction(const FunctionDeclaration& 
                 }
                 case Statement::Kind::kBreak:
                     if (!fBreakableLevel) {
-                        fIRGenerator->errorReporter().error(stmt.fOffset,
+                        fIRGenerator->errorHandler().error(stmt.fOffset,
                                                  "break statement must be inside a loop or switch");
                     }
                     break;
                 case Statement::Kind::kContinue:
                     if (!fContinuableLevel) {
-                        fIRGenerator->errorReporter().error(stmt.fOffset,
+                        fIRGenerator->errorHandler().error(stmt.fOffset,
                                                         "continue statement must be inside a loop");
                     }
                     break;
@@ -898,8 +898,8 @@ std::unique_ptr<Block> IRGenerator::finalizeFunction(const FunctionDeclaration& 
     finalizer.visitStatement(*body);
 
     if (Analysis::CanExitWithoutReturningValue(funcDecl, *body)) {
-        this->errorReporter().error(funcDecl.fOffset, "function '" + funcDecl.name() +
-                                                      "' can exit without returning a value");
+        this->errorHandler().error(funcDecl.fOffset, "function '" + funcDecl.name() +
+                                                     "' can exit without returning a value");
     }
     return body;
 }
@@ -997,8 +997,8 @@ std::unique_ptr<StructDefinition> IRGenerator::convertStructDefinition(const AST
         return nullptr;
     }
     if (!type->isStruct()) {
-        this->errorReporter().error(node.fOffset,
-                                    "expected a struct here, found '" + type->name() + "'");
+        this->errorHandler().error(node.fOffset,
+                                   "expected a struct here, found '" + type->name() + "'");
         return nullptr;
     }
     SkDEBUGCODE(auto [iter, wasInserted] =) fDefinedStructs.insert(type);
@@ -1010,7 +1010,7 @@ std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const A
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex &&
         this->programKind() != ProgramKind::kGeometry) {
-        this->errorReporter().error(intf.fOffset, "interface block is not allowed here");
+        this->errorHandler().error(intf.fOffset, "interface block is not allowed here");
         return nullptr;
     }
 
@@ -1033,9 +1033,9 @@ std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const A
             for (const auto& decl : decls) {
                 const VarDeclaration& vd = decl->as<VarDeclaration>();
                 if (vd.var().type().isOpaque()) {
-                    this->errorReporter().error(decl->fOffset,
-                                                "opaque type '" + vd.var().type().name() +
-                                                        "' is not permitted in an interface block");
+                    this->errorHandler().error(decl->fOffset,
+                                               "opaque type '" + vd.var().type().name() +
+                                                       "' is not permitted in an interface block");
                 }
                 if (&vd.var() == fRTAdjust) {
                     foundRTAdjust = true;
@@ -1045,7 +1045,7 @@ std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const A
                 fields.push_back(Type::Field(vd.var().modifiers(), vd.var().name(),
                                             &vd.var().type()));
                 if (vd.value()) {
-                    this->errorReporter().error(
+                    this->errorHandler().error(
                             decl->fOffset,
                             "initializers are not permitted on interface block fields");
                 }
@@ -1130,18 +1130,18 @@ const Type* IRGenerator::convertType(const ASTNode& type, bool allowVoid) {
     skstd::string_view name = type.getStringView();
     const Symbol* symbol = (*fSymbolTable)[name];
     if (!symbol || !symbol->is<Type>()) {
-        this->errorReporter().error(type.fOffset, "unknown type '" + name + "'");
+        this->errorHandler().error(type.fOffset, "unknown type '" + name + "'");
         return nullptr;
     }
     const Type* result = &symbol->as<Type>();
     const bool isArray = (type.begin() != type.end());
     if (result->isVoid() && !allowVoid) {
-        this->errorReporter().error(type.fOffset,
+        this->errorHandler().error(type.fOffset,
                                     "type '" + name + "' not allowed in this context");
         return nullptr;
     }
     if (!fIsBuiltinCode && this->typeContainsPrivateFields(*result)) {
-        this->errorReporter().error(type.fOffset, "type '" + name + "' is private");
+        this->errorHandler().error(type.fOffset, "type '" + name + "' is private");
         return nullptr;
     }
     if (isArray) {
@@ -1188,7 +1188,7 @@ std::unique_ptr<Expression> IRGenerator::convertExpression(const ASTNode& expr) 
 std::unique_ptr<Expression> IRGenerator::convertIdentifier(int offset, skstd::string_view name) {
     const Symbol* result = (*fSymbolTable)[name];
     if (!result) {
-        this->errorReporter().error(offset, "unknown identifier '" + name + "'");
+        this->errorHandler().error(offset, "unknown identifier '" + name + "'");
         return nullptr;
     }
     switch (result->kind()) {
@@ -1363,9 +1363,9 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
             const ExternalFunction& f = functionValue->as<ExternalFunctionReference>().function();
             int count = f.callParameterCount();
             if (count != (int) arguments.size()) {
-                this->errorReporter().error(offset, "external function expected " +
-                                                    to_string(count) + " arguments, but found " +
-                                                    to_string((int)arguments.size()));
+                this->errorHandler().error(offset, "external function expected " +
+                                                   to_string(count) + " arguments, but found " +
+                                                   to_string((int)arguments.size()));
                 return nullptr;
             }
             static constexpr int PARAMETER_MAX = 16;
@@ -1404,13 +1404,13 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
                     msg += arguments[i]->type().displayName();
                 }
                 msg += ")";
-                this->errorReporter().error(offset, msg);
+                this->errorHandler().error(offset, msg);
                 return nullptr;
             }
             return this->call(offset, *functions[0], std::move(arguments));
         }
         default:
-            this->errorReporter().error(offset, "not a function");
+            this->errorHandler().error(offset, "not a function");
             return nullptr;
     }
 }
@@ -1438,9 +1438,9 @@ std::unique_ptr<Expression> IRGenerator::convertIndexExpression(const ASTNode& i
     }
     if (iter == index.end()) {
         if (base->is<TypeReference>()) {
-            this->errorReporter().error(index.fOffset, "array must have a size");
+            this->errorHandler().error(index.fOffset, "array must have a size");
         } else {
-            this->errorReporter().error(base->fOffset, "missing index in '[]'");
+            this->errorHandler().error(base->fOffset, "missing index in '[]'");
         }
         return nullptr;
     }
@@ -1497,19 +1497,19 @@ void IRGenerator::checkValid(const Expression& expr) {
         case Expression::Kind::kFunctionCall: {
             const FunctionDeclaration& decl = expr.as<FunctionCall>().function();
             if (!decl.isBuiltin() && !decl.definition()) {
-                this->errorReporter().error(expr.fOffset,
-                                            "function '" + decl.description() + "' is not defined");
+                this->errorHandler().error(expr.fOffset,
+                                           "function '" + decl.description() + "' is not defined");
             }
             break;
         }
         case Expression::Kind::kFunctionReference:
         case Expression::Kind::kTypeReference:
             SkDEBUGFAIL("invalid reference-expression, should have been reported by coerce()");
-            this->errorReporter().error(expr.fOffset, "invalid expression");
+            this->errorHandler().error(expr.fOffset, "invalid expression");
             break;
         default:
             if (expr.type() == *fContext.fTypes.fInvalid) {
-                this->errorReporter().error(expr.fOffset, "invalid expression");
+                this->errorHandler().error(expr.fOffset, "invalid expression");
             }
             break;
     }
@@ -1699,14 +1699,14 @@ IRGenerator::IRBundle IRGenerator::finish() {
     // If we're in ES2 mode (runtime effects), do a pass to enforce Appendix A, Section 5 of the
     // GLSL ES 1.00 spec -- Indexing. Don't bother if we've already found errors - this logic
     // assumes that all loops meet the criteria of Section 4, and if they don't, could crash.
-    if (this->strictES2Mode() && this->errorReporter().errorCount() == 0) {
+    if (this->strictES2Mode() && this->errorHandler().errorCount() == 0) {
         for (const auto& pe : *fProgramElements) {
-            Analysis::ValidateIndexingForES2(*pe, this->errorReporter());
+            Analysis::ValidateIndexingForES2(*pe, this->errorHandler());
         }
     }
 
     if (this->strictES2Mode()) {
-        Analysis::DetectStaticRecursion(SkMakeSpan(*fProgramElements), this->errorReporter());
+        Analysis::DetectStaticRecursion(SkMakeSpan(*fProgramElements), this->errorHandler());
     }
 
     return IRBundle{std::move(*fProgramElements),
@@ -1719,9 +1719,9 @@ IRGenerator::IRBundle IRGenerator::convertProgram(
         const ParsedModule& base,
         bool isBuiltinCode,
         skstd::string_view text) {
-    Parser parser(text, *fSymbolTable, this->errorReporter());
+    Parser parser(text, *fSymbolTable, this->errorHandler());
     fFile = parser.compilationUnit();
-    if (this->errorReporter().errorCount() == 0) {
+    if (this->errorHandler().errorCount() == 0) {
         SkASSERT(fFile);
         for (const auto& decl : fFile->root()) {
             switch (decl.fKind) {
