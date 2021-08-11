@@ -2,12 +2,12 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    float a;
+    half a;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 struct sksl_synthetic_uniforms {
     float2 u_skRTFlip;
