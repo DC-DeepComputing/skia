@@ -117,5 +117,4 @@ private:
 };
 
 GR_MAKE_BITFIELD_CLASS_OPS(GrDrawOp::FixedFunctionFlags)
-
 #endif

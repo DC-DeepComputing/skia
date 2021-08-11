@@ -282,5 +282,4 @@ private:
     SkRect fTotalBounds = SkRect::MakeEmpty();
     SkIRect fClippedContentBounds = SkIRect::MakeEmpty();
 };
-
 #endif

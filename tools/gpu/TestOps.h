@@ -46,5 +46,4 @@ GrOp::Owner MakeRect(GrRecordingContext*,
 GrOp::Owner MakeRect(GrRecordingContext*, GrPaint&&, const SkRect& rect);
 
 }  // namespace sk_gpu_test::test_ops
-
 #endif
