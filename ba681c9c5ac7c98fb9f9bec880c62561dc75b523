@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc7a8ee_dd7415d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2021-08-11T20:56:49Z",
+      "side": 1,
+      "message": "I suppose, if I land this, I\u0027ll be fighting the autoroller when it comes along and does it all over again. How much time will I buy while I or somebody figures out what\u0027s wrong and fixes it properly?",
+      "revId": "ba681c9c5ac7c98fb9f9bec880c62561dc75b523",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
