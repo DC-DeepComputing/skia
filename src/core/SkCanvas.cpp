@@ -668,21 +668,28 @@ static void check_drawdevice_colorspaces(SkColorSpace* src, SkColorSpace* dst) {
 
 // Helper function to compute the center reference point used for scale decomposition under
 // non-linear transformations.
-static bool compute_decomposition_center(const SkMatrix& dstToLocal,
-                                         const skif::ParameterSpace<SkRect>* contentBounds,
-                                         const skif::DeviceSpace<SkIRect>& targetOutput,
-                                         skif::ParameterSpace<SkPoint>* out) {
-    // Will use the inverse and center of the device bounds if the content bounds aren't provided.
-    SkRect rect = contentBounds ? SkRect(*contentBounds) : SkRect::Make(SkIRect(targetOutput));
-    SkPoint center = {rect.centerX(), rect.centerY()};
-    if (!contentBounds) {
-        // Theoretically, the inverse transform could put center's homogeneous coord behind W = 0,
-        // but that case is handled automatically in DecomposeCTM later.
-        dstToLocal.mapPoints(&center, 1);
+static skif::ParameterSpace<SkPoint> compute_decomposition_center(
+        const SkMatrix& dstToLocal,
+        const skif::ParameterSpace<SkRect>* contentBounds,
+        const skif::DeviceSpace<SkIRect>& targetOutput) {
+    SkRect output = SkRect::Make(SkIRect(targetOutput));
+    if (contentBounds) {
+        // Transform device space output bounds into parameter space
+        dstToLocal.mapRect(&output);
+        if (output.intersect(SkRect(*contentBounds))) {
+            // Use the center of the intersection of content and target device as reference point
+            return skif::ParameterSpace<SkPoint>({output.centerX(), output.centerY()});
+        }
+        // else fall back to the target device center; we can't just skip the layer, although the
+        // draw wouldn't be visible, the effects of the image filter might make it so.
     }
 
-    *out = skif::ParameterSpace<SkPoint>(center);
-    return true;
+    // Map the center of the device space output bounds into parameter space and use that as
+    // the reference point. Theoretically this inverse transform could put the center's
+    // homogeneous coord behind W = 0, but that is handled automatically in DecomposeCTM.
+    SkPoint center = {output.centerX(), output.centerY()};
+    dstToLocal.mapPoints(&center, 1);
+    return skif::ParameterSpace<SkPoint>(center);
 }
 
 // Compute suitable transformations and layer bounds for a new layer that will be used as the source
@@ -697,13 +704,14 @@ static std::pair<skif::Mapping, skif::LayerSpace<SkIRect>> get_layer_mapping_and
         const skif::DeviceSpace<SkIRect>& targetOutput,
         const skif::ParameterSpace<SkRect>* contentBounds = nullptr,
         bool mustCoverDst = true) {
-    skif::ParameterSpace<SkPoint> center;
     SkMatrix dstToLocal;
     if (!localToDst.isFinite() ||
-        !localToDst.invert(&dstToLocal) ||
-        !compute_decomposition_center(dstToLocal, contentBounds, targetOutput, &center)) {
+        !localToDst.invert(&dstToLocal)) {
         return {{}, skif::LayerSpace<SkIRect>(SkIRect::MakeEmpty())};
     }
+
+    skif::ParameterSpace<SkPoint> center =
+            compute_decomposition_center(dstToLocal, contentBounds, targetOutput);
     // *after* possibly getting a representative point from the provided content bounds, it might
     // be necessary to discard the bounds for subsequent layer calculations.
     if (mustCoverDst) {
