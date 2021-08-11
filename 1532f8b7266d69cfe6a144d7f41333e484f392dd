@@ -34,6 +34,23 @@
       "parentUuid": "f9612017_4f9a4928",
       "revId": "1532f8b7266d69cfe6a144d7f41333e484f392dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf12a08c_751c9924",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2021-08-11T20:06:08Z",
+      "side": 1,
+      "message": "This is OK with me, because the Canvas2D spec has some contradictory language involving the \"need new subpath\" flag and the place where that flag is used, the \"ensure new subpath\" procedure.\n\nThe sentence about the need new subpath flag was inserted when going from\nhttps://www.w3.org/TR/2dcontext/#building-paths\nto\nhttps://www.w3.org/TR/2dcontext2/#building-paths\nand then copied to the current\nhttps://html.spec.whatwg.org/#building-paths\n\nThe intention when adding this flag was clearly that it would be true for closed paths, not just for the empty path.\n\nBut they did not modify the language describing the \"closePath\" method to say that\nit set that need new subpath flag, and left it as saying \"close the path and start a new subpath with the single point that was the start point of the closed path\".\n\nIf we want to assume that the intention of the spec is to say that closing a path sets the need new subpath flag, then that leads to behavior more like what this CL will produce.\n\nBut then a lot of other current Skia behavior isn\u0027t matching this intention: if the \"need new subpath\" flag is set, then according to the Canvas2D spec there is no valid starting point, and all verbs like lineTo, arcTo, etc. should have their starting point be a point from that verb, so a lineTo(x,y) produces line from (x,y) to (x,y) etc.  Not from (0,0) or from the start of the last closed subpath. An example of the problem of the spec is that original language for lineTo and arcTo differed in their description of the \"ensure there is a subpath\" step in a way that made no difference until the \"ensure there is a subpath\" procedure description dropped the check whether the path was empty. Now they make lineTo and arcTo have different start points if the needs new path flag is set after closing a subpath.\n\nAll these issues about what the action of lineTo, etc. on an empty path and after a closed path are complex, and badly, perhaps wrongly, specified by the Canvas2D spec, so I can agree if we don\u0027t want to open up a big discussion about it. Especially since the \"extend\" mode of addPath is a Skia extension, which can decide its own semantics.",
+      "revId": "1532f8b7266d69cfe6a144d7f41333e484f392dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
