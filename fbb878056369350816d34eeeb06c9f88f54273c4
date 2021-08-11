@@ -16,6 +16,23 @@
       "message": "PTAL! The old and new flags are equivalent, so this causes no behavioral changes.",
       "revId": "fbb878056369350816d34eeeb06c9f88f54273c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4249f02_958e2c04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18154
+      },
+      "writtenOn": "2021-08-11T19:24:15Z",
+      "side": 1,
+      "message": "Thanks for the review! I still don\u0027t have commit rights for this repo, so do you mind submitting the patch to the CQ?",
+      "revId": "fbb878056369350816d34eeeb06c9f88f54273c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
