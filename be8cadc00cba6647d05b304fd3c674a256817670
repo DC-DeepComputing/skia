@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb1e4b3_9c657627",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-11T19:45:48Z",
+      "side": 1,
+      "message": "haha... I know. Someday. I\u0027m ready for a break from this.",
+      "parentUuid": "d6577148_53ca98e5",
+      "revId": "be8cadc00cba6647d05b304fd3c674a256817670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bd645ba_7ab866ec",
@@ -66,6 +84,30 @@
       "writtenOn": "2021-08-11T19:06:20Z",
       "side": 1,
       "message": "I know we have to include this so that we can get access to the nested UniformHandle type, which we can\u0027t forward declare because nesting :/ \n\nUniformHandle is already a little tricky to track down since it goes through GrGLSLUniformHandler to GrGLSLProgramDataManager. What do you think (for a subsequent CL), moving the UniformHandle definition into a \"src/gpu/GrUniformHandle.h\" header so that it\u0027s not nested and can be forward declared. \n\nEven if not forward declared, it would still let us do a lighter weight include in these GrFGXP headers. Initially it had just struck as a bit of a backwards dependency for these headers to be depending into /glsl/ from their .h file, and the above would let us clean that up.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 46
+      },
+      "revId": "be8cadc00cba6647d05b304fd3c674a256817670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05cc1bde_3d8a46f9",
+        "filename": "src/gpu/GrFragmentProcessor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-11T19:45:48Z",
+      "side": 1,
+      "message": "Agreed that it would be nice to clean that up. I think I\u0027ll pause on it for now, though. What started me back on this bug was that I\u0027m about to get into exposing FP uniforms to GPs (and wanted to do a little housekeeping in this area first). I don\u0027t have a firm plan for how that will work yet but maybe that effort will do a more radical refactoring that addresses this.",
+      "parentUuid": "6bd645ba_7ab866ec",
       "range": {
         "startLine": 14,
         "startChar": 0,
