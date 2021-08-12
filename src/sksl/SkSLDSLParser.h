@@ -15,7 +15,6 @@
 #include "include/private/SkTOptional.h"
 #include "include/sksl/DSL.h"
 #include "include/sksl/DSLSymbols.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLLexer.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -130,8 +129,8 @@ private:
      */
     bool expectIdentifier(Token* result);
 
-    ErrorReporter& errors() {
-        return *fErrorReporter;
+    dsl::ErrorHandler& errors() {
+        return *fErrorHandler;
     }
     void error(Token token, String msg);
     void error(int offset, String msg);
@@ -337,7 +336,7 @@ private:
 
     Compiler& fCompiler;
     ProgramSettings fSettings;
-    ErrorReporter* fErrorReporter;
+    ErrorHandler* fErrorHandler;
     ProgramKind fKind;
     String fText;
     Lexer fLexer;
