@@ -26,7 +26,7 @@ struct IndexExpression final : public Expression {
         , fBase(std::move(base))
         , fIndex(std::move(index)) {}
 
-    // Returns a simplified index-expression; reports errors via the ErrorReporter.
+    // Returns a simplified index-expression; reports errors via the ErrorHandler.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                SymbolTable& symbolTable,
                                                std::unique_ptr<Expression> base,

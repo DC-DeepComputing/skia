@@ -30,7 +30,7 @@ public:
     }
 
     // Creates a potentially-simplified form of the ternary. Typechecks and coerces input
-    // expressions; reports errors via ErrorReporter.
+    // expressions; reports errors via ErrorHandler.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                             std::unique_ptr<Expression> test,
                                             std::unique_ptr<Expression> ifTrue,

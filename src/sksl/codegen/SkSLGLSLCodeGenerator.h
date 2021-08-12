@@ -53,7 +53,7 @@ namespace SkSL {
  */
 class GLSLCodeGenerator : public CodeGenerator {
 public:
-    GLSLCodeGenerator(const Context* context, const Program* program, ErrorReporter* errors,
+    GLSLCodeGenerator(const Context* context, const Program* program, dsl::ErrorHandler* errors,
                       OutputStream* out)
     : INHERITED(program, errors, out)
     , fLineEnding("\n")

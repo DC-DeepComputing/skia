@@ -58,8 +58,8 @@ public:
     static constexpr const char* SAMPLER_SUFFIX = "Smplr";
     static constexpr const char* PACKED_PREFIX = "packed_";
 
-    MetalCodeGenerator(const Context* context, const Program* program, ErrorReporter* errors,
-                      OutputStream* out)
+    MetalCodeGenerator(const Context* context, const Program* program, dsl::ErrorHandler* errors,
+                       OutputStream* out)
     : INHERITED(program, errors, out)
     , fReservedWords({"atan2", "rsqrt", "rint", "dfdx", "dfdy", "vertex", "fragment"})
     , fLineEnding("\n")

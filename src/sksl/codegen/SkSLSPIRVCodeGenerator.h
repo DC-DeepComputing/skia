@@ -128,7 +128,7 @@ public:
 
     SPIRVCodeGenerator(const Context* context,
                        const Program* program,
-                       ErrorReporter* errors,
+                       dsl::ErrorHandler* errors,
                        OutputStream* out)
             : INHERITED(program, errors, out)
             , fContext(*context)

@@ -2600,7 +2600,7 @@ bool MetalCodeGenerator::generateCode() {
     write_stringstream(fExtraFunctionPrototypes, *fOut);
     write_stringstream(fExtraFunctions, *fOut);
     write_stringstream(body, *fOut);
-    return 0 == fErrors.errorCount();
+    return fContext.errors().errorCount() == 0;
 }
 
 }  // namespace SkSL

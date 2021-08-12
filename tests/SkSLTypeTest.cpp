@@ -7,14 +7,14 @@
 
 #include <limits>
 
+#include "include/sksl/DSLErrorHandling.h"
 #include "src/gpu/GrCaps.h"
 #include "src/sksl/SkSLContext.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "tests/Test.h"
 
 DEF_TEST(SkSLTypeLimits, r) {
     GrShaderCaps caps(GrContextOptions{});
-    SkSL::TestingOnly_AbortErrorReporter errors;
+    SkSL::dsl::TestingOnly_AbortErrorHandler errors;
     SkSL::Context context(errors, caps);
 
     using int_limits = std::numeric_limits<int32_t>;
