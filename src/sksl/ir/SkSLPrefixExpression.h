@@ -30,7 +30,7 @@ public:
         , fOperator(op)
         , fOperand(std::move(operand)) {}
 
-    // Creates an SkSL prefix expression; uses the ErrorReporter to report errors.
+    // Creates an SkSL prefix expression; uses the ErrorHandler to report errors.
     static std::unique_ptr<Expression> Convert(const Context& context, Operator op,
                                                std::unique_ptr<Expression> base);
 

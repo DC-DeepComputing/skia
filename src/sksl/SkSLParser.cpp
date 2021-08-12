@@ -112,7 +112,7 @@ void Parser::InitLayoutMap() {
     #undef TOKEN
 }
 
-Parser::Parser(skstd::string_view text, SymbolTable& symbols, ErrorReporter& errors)
+Parser::Parser(skstd::string_view text, SymbolTable& symbols, dsl::ErrorHandler& errors)
 : fText(text)
 , fPushback(Token::Kind::TK_NONE, -1, -1)
 , fSymbols(symbols)

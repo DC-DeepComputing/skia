@@ -45,7 +45,7 @@ public:
         }
     }
 
-    // Does proper error checking and type coercion; reports errors via ErrorReporter.
+    // Does proper error checking and type coercion; reports errors via ErrorHandler.
     static std::unique_ptr<Statement> Convert(const Context& context,
                                               Variable* var,
                                               std::unique_ptr<Expression> value);
