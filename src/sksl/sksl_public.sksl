@@ -141,3 +141,9 @@ $bvec not($bvec x);
 // The max() guards against division by zero when the incoming color is transparent black
 half4  unpremul(half4  color) { return half4 (color.rgb / max(color.a, 0.0001), color.a); }
 float4 unpremul(float4 color) { return float4(color.rgb / max(color.a, 0.0001), color.a); }
+
+// ES3 functions
+$es3 $genType dFdx($genType p);
+$es3 $genType dFdy($genType p);
+$es3 $genHType dFdx($genHType p);
+$es3 $genHType dFdy($genHType p);
