@@ -30,7 +30,7 @@ public:
         : INHERITED(offset, kExpressionKind, &type, std::move(arg)) {}
 
     // ConstructorScalarCast::Convert will typecheck and create scalar-constructor expressions.
-    // Reports errors via the ErrorReporter; returns null on error.
+    // Reports errors via the ErrorHandler; returns null on error.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                int offset,
                                                const Type& rawType,

@@ -12,7 +12,7 @@
 #include "include/private/SkSLSymbol.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
-#include "src/sksl/SkSLErrorReporter.h"
+#include "include/sksl/DSLErrorHandling.h"
 
 #include <forward_list>
 #include <memory>
@@ -28,14 +28,14 @@ class FunctionDeclaration;
  */
 class SymbolTable {
 public:
-    SymbolTable(ErrorReporter* errorReporter, bool builtin)
+    SymbolTable(dsl::ErrorHandler* errorHandler, bool builtin)
     : fBuiltin(builtin)
-    , fErrorReporter(*errorReporter) {}
+    , fErrorHandler(*errorHandler) {}
 
     SymbolTable(std::shared_ptr<SymbolTable> parent, bool builtin)
     : fParent(parent)
     , fBuiltin(builtin)
-    , fErrorReporter(parent->fErrorReporter) {}
+    , fErrorHandler(parent->fErrorHandler) {}
 
     /**
      * If the input is a built-in symbol table, returns a new empty symbol table as a child of the
@@ -141,7 +141,7 @@ private:
     std::vector<std::unique_ptr<IRNode>> fOwnedNodes;
     std::forward_list<String> fOwnedStrings;
     SkTHashMap<SymbolKey, const Symbol*, SymbolKey::Hash> fSymbols;
-    ErrorReporter& fErrorReporter;
+    dsl::ErrorHandler& fErrorHandler;
 
     friend class Dehydrator;
 };
