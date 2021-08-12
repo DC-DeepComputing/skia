@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1534bace_f0cbee18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2021-08-12T17:58:49Z",
+      "side": 1,
+      "message": "Hi Brian, this CL fixes the chrome rendering issue. Is it OK for skia?",
+      "revId": "54196b76eb2f6681e5a363b7e4a8e03564e3724e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
