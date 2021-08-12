@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25948104_7e2890f4",
+        "filename": "gm/shadowutils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-12T20:45:38Z",
+      "side": 1,
+      "message": "Can this all fit on one line ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 44
+      },
+      "revId": "1cb5a25da6550e9adb22d4642cbeee2c5b6d9817",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
