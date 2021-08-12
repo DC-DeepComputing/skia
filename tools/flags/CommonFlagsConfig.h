@@ -59,7 +59,6 @@ public:
                            int                       samples,
                            SkColorType               colorType,
                            SkAlphaType               alphaType,
-                           sk_sp<SkColorSpace>       colorSpace,
                            bool                      useStencilBuffers,
                            bool                      testThreading,
                            int                       testPersistentCache,
@@ -76,7 +75,6 @@ public:
     int           getSamples() const { return fSamples; }
     SkColorType   getColorType() const { return fColorType; }
     SkAlphaType   getAlphaType() const { return fAlphaType; }
-    SkColorSpace* getColorSpace() const { return fColorSpace.get(); }
     bool          getTestThreading() const { return fTestThreading; }
     int           getTestPersistentCache() const { return fTestPersistentCache; }
     bool          getTestPrecompile() const { return fTestPrecompile; }
@@ -92,7 +90,6 @@ private:
     int                 fSamples;
     SkColorType         fColorType;
     SkAlphaType         fAlphaType;
-    sk_sp<SkColorSpace> fColorSpace;
     bool                fTestThreading;
     int                 fTestPersistentCache;
     bool                fTestPrecompile;

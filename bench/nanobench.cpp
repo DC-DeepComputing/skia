@@ -479,7 +479,6 @@ static skstd::optional<Config> create_base_config(const SkCommandLineConfig* con
         const auto ctxOverrides = gpuConfig->getContextOverrides();
         const auto sampleCount = gpuConfig->getSamples();
         const auto colorType = gpuConfig->getColorType();
-        auto colorSpace = gpuConfig->getColorSpace();
         if (gpuConfig->getSurfType() != SkCommandLineConfigGpu::SurfType::kDefault) {
             SkDebugf("This tool only supports the default surface type.");
             return skstd::nullopt;
@@ -505,7 +504,7 @@ static skstd::optional<Config> create_base_config(const SkCommandLineConfig* con
                       Benchmark::kGPU_Backend,
                       colorType,
                       kPremul_SkAlphaType,
-                      sk_ref_sp(colorSpace),
+                      nullptr,
                       sampleCount,
                       ctxType,
                       ctxOverrides,
