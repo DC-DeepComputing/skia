@@ -7,12 +7,15 @@
 
 #include "src/gpu/tessellate/shaders/GrTessellationShader.h"
 
+#if SK_GPU_V1
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelper.h"
+#endif
 
 const GrPipeline* GrTessellationShader::MakePipeline(const ProgramArgs& args,
                                                      GrAAType aaType,
                                                      GrAppliedClip&& appliedClip,
                                                      GrProcessorSet&& processors) {
+#if SK_GPU_V1
     auto pipelineFlags = GrPipeline::InputFlags::kNone;
     if (aaType == GrAAType::kMSAA) {
         pipelineFlags |= GrPipeline::InputFlags::kHWAntialias;
@@ -20,4 +23,7 @@ const GrPipeline* GrTessellationShader::MakePipeline(const ProgramArgs& args,
     return GrSimpleMeshDrawOpHelper::CreatePipeline(
             args.fCaps, args.fArena, args.fWriteView.swizzle(), std::move(appliedClip),
             *args.fDstProxyView, std::move(processors), pipelineFlags);
+#else
+    return nullptr;
+#endif
 }
