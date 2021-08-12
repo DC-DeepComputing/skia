@@ -22,6 +22,30 @@
       },
       "revId": "9a20146bc32864648aaaeb67dfa6734d84e00443",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e465f29a_b6ec1952",
+        "filename": "src/gpu/GrDrawingManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-12T15:08:59Z",
+      "side": 1,
+      "message": "Yep - I wanted to setup for the following CL(s).",
+      "parentUuid": "bbc32219_6b6b4289",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 30
+      },
+      "revId": "9a20146bc32864648aaaeb67dfa6734d84e00443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
