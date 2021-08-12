@@ -19,7 +19,19 @@
 #include "src/core/SkPathPriv.h"
 
 #include <cstddef>
+#include <limits>
 #include <utility>
+
+namespace {
+
+SkScalar removeEpsilon(SkScalar v) {
+    return v < std::numeric_limits<SkScalar>::epsilon() &&
+                           v > -std::numeric_limits<SkScalar>::epsilon()
+                   ? 0
+                   : v;
+}
+
+}  // namespace
 
 void SkMatrix::doNormalizePerspective() {
     // If the bottom row of the matrix is [0, 0, not_one], we will treat the matrix as if it
@@ -111,20 +123,21 @@ uint8_t SkMatrix::computePerspectiveTypeMask() const {
 uint8_t SkMatrix::computeTypeMask() const {
     unsigned mask = 0;
 
-    if (fMat[kMPersp0] != 0 || fMat[kMPersp1] != 0 || fMat[kMPersp2] != 1) {
+    if (removeEpsilon(fMat[kMPersp0]) != 0 || removeEpsilon(fMat[kMPersp1]) != 0 ||
+        removeEpsilon(fMat[kMPersp2] - 1) != 0) {
         // Once it is determined that that this is a perspective transform,
         // all other flags are moot as far as optimizations are concerned.
         return SkToU8(kORableMasks);
     }
 
-    if (fMat[kMTransX] != 0 || fMat[kMTransY] != 0) {
+    if (removeEpsilon(fMat[kMTransX]) != 0 || removeEpsilon(fMat[kMTransY]) != 0) {
         mask |= kTranslate_Mask;
     }
 
-    int m00 = SkScalarAs2sCompliment(fMat[SkMatrix::kMScaleX]);
-    int m01 = SkScalarAs2sCompliment(fMat[SkMatrix::kMSkewX]);
-    int m10 = SkScalarAs2sCompliment(fMat[SkMatrix::kMSkewY]);
-    int m11 = SkScalarAs2sCompliment(fMat[SkMatrix::kMScaleY]);
+    int m00 = SkScalarAs2sCompliment(removeEpsilon(fMat[SkMatrix::kMScaleX]));
+    int m01 = SkScalarAs2sCompliment(removeEpsilon(fMat[SkMatrix::kMSkewX]));
+    int m10 = SkScalarAs2sCompliment(removeEpsilon(fMat[SkMatrix::kMSkewY]));
+    int m11 = SkScalarAs2sCompliment(removeEpsilon(fMat[SkMatrix::kMScaleY]));
 
     if (m01 | m10) {
         // The skew components may be scale-inducing, unless we are dealing
