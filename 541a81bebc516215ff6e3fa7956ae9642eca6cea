@@ -22,6 +22,30 @@
       },
       "revId": "541a81bebc516215ff6e3fa7956ae9642eca6cea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23299c7f_5c43fdc3",
+        "filename": "include/sksl/DSLErrorHandling.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-12T16:03:10Z",
+      "side": 1,
+      "message": "It\u0027s about to get more complicated in a couple CLs, so hopefully my decisions will make more sense then. Of course I\u0027m happy to revisit if you disagree at that point.",
+      "parentUuid": "b3cc765b_5ac9d7c2",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "541a81bebc516215ff6e3fa7956ae9642eca6cea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
