@@ -16,7 +16,6 @@
 
 namespace SkSL {
 
-class ErrorReporter;
 class Expression;
 class ForStatement;
 class FunctionDeclaration;
@@ -29,6 +28,12 @@ class Statement;
 class Variable;
 class VariableReference;
 enum class VariableRefKind : int8_t;
+
+namespace dsl {
+
+class ErrorHandler;
+
+} // namespace dsl
 
 /**
  * Provides utilities for analyzing SkSL statically before it's composed into a full program.
@@ -57,7 +62,7 @@ struct Analysis {
      * Does the function call graph of the program include any cycles? If so, emits an error.
      */
     static bool DetectStaticRecursion(SkSpan<std::unique_ptr<ProgramElement>> programElements,
-                                      ErrorReporter& errors);
+                                      dsl::ErrorHandler& errors);
 
     static int NodeCountUpToLimit(const FunctionDefinition& function, int limit);
 
@@ -89,11 +94,12 @@ struct Analysis {
         VariableReference* fAssignedVar = nullptr;
     };
     static bool IsAssignable(Expression& expr, AssignmentInfo* info = nullptr,
-                             ErrorReporter* errors = nullptr);
+                             dsl::ErrorHandler* errors = nullptr);
 
     // Updates the `refKind` field of exactly one VariableReference inside `expr`.
     // `expr` must be `IsAssignable`; returns an error otherwise.
-    static bool MakeAssignmentExpr(Expression* expr, VariableRefKind kind, ErrorReporter* errors);
+    static bool MakeAssignmentExpr(Expression* expr, VariableRefKind kind,
+                                   dsl::ErrorHandler* errors);
 
     // Updates the `refKind` field of every VariableReference found within `expr`.
     // `expr` is allowed to have zero, one, or multiple VariableReferences.
@@ -151,9 +157,9 @@ struct Analysis {
                                      const Expression* loopNext,
                                      const Statement* loopStatement,
                                      UnrollableLoopInfo* outLoopInfo,
-                                     ErrorReporter* errors);
+                                     dsl::ErrorHandler* errors);
 
-    static void ValidateIndexingForES2(const ProgramElement& pe, ErrorReporter& errors);
+    static void ValidateIndexingForES2(const ProgramElement& pe, dsl::ErrorHandler& errors);
 
     // Detects functions that fail to return a value on at least one path.
     static bool CanExitWithoutReturningValue(const FunctionDeclaration& funcDecl,

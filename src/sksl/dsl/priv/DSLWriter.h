@@ -56,6 +56,11 @@ public:
     ~DSLWriter();
 
     /**
+     * Returns true if the DSL has been started.
+     */
+    static bool Active();
+
+    /**
      * Returns the Compiler used by DSL operations in the current thread.
      */
     static SkSL::Compiler& Compiler() {
@@ -228,6 +233,7 @@ public:
     }
 
     static void SetErrorHandler(ErrorHandler* errorHandler) {
+        SkASSERT(errorHandler);
         Instance().fErrorHandler = errorHandler;
     }
 
@@ -277,6 +283,10 @@ public:
     static void SetInstance(std::unique_ptr<DSLWriter> instance);
 
 private:
+    class DefaultErrorHandler : public dsl::ErrorHandler {
+        void handleError(const char* msg, PositionInfo pos) override;
+    };
+
     std::unique_ptr<SkSL::ProgramConfig> fConfig;
     std::unique_ptr<SkSL::ModifiersPool> fModifiersPool;
     SkSL::Compiler* fCompiler;
@@ -285,11 +295,11 @@ private:
     SkSL::ModifiersPool* fOldModifiersPool;
     std::vector<std::unique_ptr<SkSL::ProgramElement>> fProgramElements;
     std::vector<const SkSL::ProgramElement*> fSharedElements;
-    ErrorHandler* fErrorHandler = nullptr;
+    DefaultErrorHandler fDefaultErrorHandler;
+    ErrorHandler* fErrorHandler = &fDefaultErrorHandler;
     ProgramSettings fSettings;
     Mangler fMangler;
     bool fIsModule;
-    bool fEncounteredErrors = false;
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
     struct StackFrame {
         GrFragmentProcessor::ProgramImpl* fProcessor;

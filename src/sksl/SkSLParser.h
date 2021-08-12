@@ -16,8 +16,8 @@
 #include "include/sksl/DSLCore.h"
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLASTNode.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLLexer.h"
+#include "src/sksl/SkSLPosition.h"
 
 namespace SkSL {
 
@@ -52,11 +52,11 @@ public:
         SRGB_UNPREMUL,
     };
 
-    Parser(skstd::string_view text, SymbolTable& symbols, ErrorReporter& errors);
+    Parser(skstd::string_view text, SymbolTable& symbols, dsl::ErrorHandler& errors);
 
     /**
      * Consumes a complete .sksl file and returns the parse tree. Errors are reported via the
-     * ErrorReporter; the return value may contain some declarations even when errors have occurred.
+     * ErrorHandler; the return value may contain some declarations even when errors have occurred.
      */
     std::unique_ptr<ASTFile> compilationUnit();
 
@@ -261,8 +261,8 @@ private:
         Checkpoint(Parser* p) : fParser(p) {
             fPushbackCheckpoint = fParser->fPushback;
             fLexerCheckpoint = fParser->fLexer.getCheckpoint();
-            fOldErrorReporter = fParser->fErrors;
-            fParser->fErrors = &fErrorReporter;
+            fOldErrorHandler = fParser->fErrors;
+            fParser->fErrors = &fErrorHandler;
         }
 
         ~Checkpoint() {
@@ -270,33 +270,29 @@ private:
         }
 
         void accept() {
-            this->restoreErrorReporter();
+            this->restoreErrorHandler();
             // Parser errors should have been fatal, but we can encounter other errors like type
             // mismatches despite accepting the parse. Forward those messages to the actual error
             // reporter now.
-            fErrorReporter.forwardErrors(*fParser->fErrors);
+            fErrorHandler.forwardErrors(*fParser->fErrors);
         }
 
         void rewind() {
-            this->restoreErrorReporter();
+            this->restoreErrorHandler();
             fParser->fPushback = fPushbackCheckpoint;
             fParser->fLexer.rewindToCheckpoint(fLexerCheckpoint);
         }
 
     private:
-        class ForwardingErrorReporter : public ErrorReporter {
+        class ForwardingErrorHandler : public dsl::ErrorHandler {
         public:
             void handleError(const char* msg, dsl::PositionInfo pos) override {
                 fErrors.push_back({String(msg), pos});
             }
 
-            int errorCount() override {
-                return fErrors.count();
-            }
-
-            void forwardErrors(ErrorReporter& target) {
+            void forwardErrors(dsl::ErrorHandler& target) {
                 for (Error& error : fErrors) {
-                    target.handleError(error.fMsg.c_str(), error.fPos);
+                    target.error(error.fMsg.c_str(), error.fPos);
                 }
             }
 
@@ -309,17 +305,17 @@ private:
             SkTArray<Error> fErrors;
         };
 
-        void restoreErrorReporter() {
+        void restoreErrorHandler() {
             SkASSERT(!fDone);
-            fParser->fErrors = fOldErrorReporter;
+            fParser->fErrors = fOldErrorHandler;
             fDone = true;
         }
 
         Parser* fParser;
         Token fPushbackCheckpoint;
         int32_t fLexerCheckpoint;
-        ForwardingErrorReporter fErrorReporter;
-        ErrorReporter* fOldErrorReporter;
+        ForwardingErrorHandler fErrorHandler;
+        dsl::ErrorHandler* fOldErrorHandler;
         bool fDone = false;
     };
 
@@ -332,7 +328,7 @@ private:
     int fDepth = 0;
     Token fPushback;
     SymbolTable& fSymbols;
-    ErrorReporter* fErrors;
+    dsl::ErrorHandler* fErrors;
 
     std::unique_ptr<ASTFile> fFile;
 

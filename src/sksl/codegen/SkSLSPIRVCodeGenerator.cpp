@@ -3776,7 +3776,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
 }
 
 bool SPIRVCodeGenerator::generateCode() {
-    SkASSERT(!fErrors.errorCount());
+    SkASSERT(!fContext.errors().errorCount());
     this->writeWord(SpvMagicNumber, *fOut);
     this->writeWord(SpvVersion, *fOut);
     this->writeWord(SKSL_MAGIC, *fOut);
@@ -3785,7 +3785,7 @@ bool SPIRVCodeGenerator::generateCode() {
     this->writeWord(fIdCount, *fOut);
     this->writeWord(0, *fOut); // reserved, always zero
     write_stringstream(buffer, *fOut);
-    return 0 == fErrors.errorCount();
+    return !fContext.errors().errorCount();
 }
 
 }  // namespace SkSL

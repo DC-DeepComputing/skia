@@ -14,9 +14,9 @@
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLInliner.h"
 #include "src/sksl/SkSLParsedModule.h"
+#include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
@@ -68,7 +68,7 @@ struct LoadedModule {
  *
  * See the README for information about SkSL.
  */
-class SK_API Compiler : public ErrorReporter {
+class SK_API Compiler {
 public:
     static constexpr const char FRAGCOLOR_NAME[] = "sk_FragColor";
     static constexpr const char RTADJUST_NAME[]  = "sk_RTAdjust";
@@ -120,7 +120,7 @@ public:
 
     Compiler(const ShaderCapsClass* caps);
 
-    ~Compiler() override;
+    ~Compiler();
 
     Compiler(const Compiler&) = delete;
     Compiler& operator=(const Compiler&) = delete;
@@ -161,19 +161,19 @@ public:
 
     bool toMetal(Program& program, String* out);
 
-    void handleError(const char* msg, dsl::PositionInfo pos) override;
+    void handleError(const char* msg, dsl::PositionInfo pos);
 
     String errorText(bool showCount = true);
+
+    dsl::ErrorHandler& errorHandler() { return fContext->errors(); }
+
+    int errorCount() const { return fContext->errors().errorCount(); }
 
     void writeErrorCount();
 
     void resetErrors() {
         fErrorText.clear();
-        fErrorCount = 0;
-    }
-
-    int errorCount() override {
-        return fErrorCount;
+        fContext->errors().resetErrorCount();
     }
 
     Context& context() {
@@ -207,6 +207,19 @@ public:
     const ParsedModule& moduleForProgramKind(ProgramKind kind);
 
 private:
+    class CompilerErrorHandler : public dsl::ErrorHandler {
+    public:
+        CompilerErrorHandler(Compiler* compiler)
+            : fCompiler(*compiler) {}
+
+        void handleError(const char* msg, dsl::PositionInfo pos) override {
+            fCompiler.handleError(msg, pos);
+        }
+
+    private:
+        Compiler& fCompiler;
+    };
+
     const ParsedModule& loadGPUModule();
     const ParsedModule& loadFragmentModule();
     const ParsedModule& loadVertexModule();
@@ -261,7 +274,7 @@ private:
     Inliner fInliner;
     std::unique_ptr<IRGenerator> fIRGenerator;
 
-    int fErrorCount = 0;
+    CompilerErrorHandler fErrorHandler;
     String fErrorText;
 
     static OverrideFlag sOptimizer;

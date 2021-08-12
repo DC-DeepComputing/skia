@@ -112,7 +112,7 @@ void Parser::InitLayoutMap() {
     #undef TOKEN
 }
 
-Parser::Parser(skstd::string_view text, SymbolTable& symbols, ErrorReporter& errors)
+Parser::Parser(skstd::string_view text, SymbolTable& symbols, dsl::ErrorHandler& errors)
 : fText(text)
 , fPushback(Token::Kind::TK_NONE, -1, -1)
 , fSymbols(symbols)
@@ -536,6 +536,7 @@ ASTNode::ID Parser::varDeclarationEnd(Modifiers mods, ASTNode::ID type, skstd::s
         while (this->checkNext(Token::Kind::TK_LBRACKET)) {
             if (vd->fIsArray || this->isArrayType(type)) {
                 this->error(this->peek(), "multi-dimensional arrays are not supported");
+                printf("reported array error\n");
                 return false;
             }
             if (this->checkNext(Token::Kind::TK_RBRACKET)) {

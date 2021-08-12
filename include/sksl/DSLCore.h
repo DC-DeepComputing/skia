@@ -60,13 +60,12 @@ std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<SkSL::String> sour
 
 /**
  * Returns the ErrorHandler which will be notified of any errors that occur during DSL calls. The
- * default error handler is null, which means any errors encountered will be fatal.
+ * default error handler aborts on any error.
  */
-ErrorHandler* GetErrorHandler();
+ErrorHandler& GetErrorHandler();
 
 /**
- * Installs an ErrorHandler which will be notified of any errors that occur during DSL calls. If
- * no ErrorHandler is installed, any errors will be fatal.
+ * Installs an ErrorHandler which will be notified of any errors that occur during DSL calls.
  */
 void SetErrorHandler(ErrorHandler* errorHandler);
 
