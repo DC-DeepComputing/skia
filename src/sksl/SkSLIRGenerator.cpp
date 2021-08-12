@@ -742,6 +742,7 @@ void IRGenerator::CheckModifiers(const Context& context,
         { Modifiers::kHighp_Flag,          "highp" },
         { Modifiers::kMediump_Flag,        "mediump" },
         { Modifiers::kLowp_Flag,           "lowp" },
+        { Modifiers::kES3_Flag,            "$es3" },
     };
 
     int modifierFlags = modifiers.fFlags;
