@@ -9,7 +9,6 @@
 
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkPathPriv.h"
-#include "src/gpu/GrMeshDrawTarget.h"
 #include "src/gpu/GrOpFlushState.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrVx.h"
@@ -898,9 +897,13 @@ void GrStrokeHardwareTessellator::prepare(GrMeshDrawTarget* target, int totalCom
     }
 }
 
+#if SK_GPU_V1
+
 void GrStrokeHardwareTessellator::draw(GrOpFlushState* flushState) const {
     for (const auto& vertexChunk : fPatchChunks) {
         flushState->bindBuffers(nullptr, nullptr, vertexChunk.fBuffer);
         flushState->draw(vertexChunk.fCount, vertexChunk.fBase);
     }
 }
+
+#endif
