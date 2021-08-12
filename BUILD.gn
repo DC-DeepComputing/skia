@@ -2009,7 +2009,8 @@ if (skia_enable_tools) {
       ":gpu_tool_utils",
       ":skia",
       ":tool_utils",
-      "modules/skparagraph:bench",
+     "//third_party/icu",
+#      "modules/skparagraph:bench",
       "modules/skshaper",
     ]
   }
