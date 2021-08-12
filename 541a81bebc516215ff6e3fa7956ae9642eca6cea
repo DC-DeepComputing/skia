@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3cc765b_5ac9d7c2",
+        "filename": "include/sksl/DSLErrorHandling.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-12T15:50:24Z",
+      "side": 1,
+      "message": "Why don\u0027t we just make it a struct with default null/-1 values on the member vars? With this redesign, we don\u0027t seem to benefit from ctors and accessors anymore. Capture can still be a static method on the class, or a freestanding CapturePositionInfo function; it doesn\u0027t really matter. This would give us the same results with even less magic.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "541a81bebc516215ff6e3fa7956ae9642eca6cea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
