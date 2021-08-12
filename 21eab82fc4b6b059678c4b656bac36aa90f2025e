@@ -16,6 +16,24 @@
       "message": "Can the caller not perform this directly on their matrix data before giving it to skia? I am nervous when we add heuristics/fuzz like this.",
       "revId": "21eab82fc4b6b059678c4b656bac36aa90f2025e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84f494d_8bba2dc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-12T18:43:50Z",
+      "side": 1,
+      "message": "This is also my proposal. Chrome currently has an equivalent to rectStaysRect() that has a tolerance. I think that code should construct a matrix with the values that are detected as \"close to zero\" actually set to zero and then that matrix should be used to transform the SkRRect.",
+      "parentUuid": "2e3ebc49_62ccbebb",
+      "revId": "21eab82fc4b6b059678c4b656bac36aa90f2025e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
