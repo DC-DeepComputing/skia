@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "761a8bc9_049c0ab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-12T13:04:40Z",
+      "side": 1,
+      "message": "The previous CL lets us specify color spaces separately from color types in DM config names. This just updates the bots to use the new syntax. After this lands, I\u0027ll update any ignores that are targeting the old configs, and - I\u0027m guessing - bulk triage everything else?",
+      "revId": "d033ab2003255d982c69eff85750b9c2796d70a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
