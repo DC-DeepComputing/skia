@@ -31,7 +31,7 @@ public:
     , fNext(std::move(next))
     , fStatement(std::move(statement)) {}
 
-    // Creates an SkSL for loop; handles type-coercion and uses the ErrorReporter to report errors.
+    // Creates an SkSL for loop; handles type-coercion and uses the ErrorHandler to report errors.
     static std::unique_ptr<Statement> Convert(const Context& context, int offset,
                                               std::unique_ptr<Statement> initializer,
                                               std::unique_ptr<Expression> test,
@@ -39,7 +39,7 @@ public:
                                               std::unique_ptr<Statement> statement,
                                               std::shared_ptr<SymbolTable> symbolTable);
 
-    // Creates an SkSL while loop; handles type-coercion and uses the ErrorReporter for errors.
+    // Creates an SkSL while loop; handles type-coercion and uses the ErrorHandler for errors.
     static std::unique_ptr<Statement> ConvertWhile(const Context& context, int offset,
                                                    std::unique_ptr<Expression> test,
                                                    std::unique_ptr<Statement> statement,
