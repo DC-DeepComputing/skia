@@ -11,12 +11,6 @@
 #include "src/gpu/mtl/GrMtlTextureRenderTarget.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlTextureRenderTarget::GrMtlTextureRenderTarget(GrMtlGpu* gpu,
                                                    SkBudgeted budgeted,
                                                    SkISize dimensions,
@@ -101,13 +95,13 @@ sk_sp<GrMtlTextureRenderTarget> GrMtlTextureRenderTarget::MakeWrappedTextureRend
         GrMtlGpu* gpu,
         SkISize dimensions,
         int sampleCnt,
-        id<MTLTexture> texture,
+        sk_cfp<id<MTLTexture>> texture,
         GrWrapCacheable cacheable) {
-    SkASSERT(nil != texture);
+    SkASSERT(texture);
     if (@available(macOS 10.11, iOS 9.0, *)) {
-        SkASSERT((MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget) & texture.usage);
+        SkASSERT((MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget) & (*texture).usage);
     }
-    GrMipmapStatus mipmapStatus = texture.mipmapLevelCount > 1
+    GrMipmapStatus mipmapStatus = (*texture).mipmapLevelCount > 1
                                             ? GrMipmapStatus::kDirty
                                             : GrMipmapStatus::kNotAllocated;
     GrAttachment::UsageFlags textureUsageFlags = GrAttachment::UsageFlags::kTexture |
@@ -120,8 +114,8 @@ sk_sp<GrMtlTextureRenderTarget> GrMtlTextureRenderTarget::MakeWrappedTextureRend
 
     sk_sp<GrMtlAttachment> colorAttachment;
     sk_sp<GrMtlAttachment> resolveAttachment;
-    if (!create_rt_attachments(gpu, dimensions, texture.pixelFormat, sampleCnt, textureAttachment,
-                               &colorAttachment, &resolveAttachment)) {
+    if (!create_rt_attachments(gpu, dimensions, (*texture).pixelFormat, sampleCnt,
+                               textureAttachment, &colorAttachment, &resolveAttachment)) {
         return nullptr;
     }
     SkASSERT(colorAttachment);
@@ -155,5 +149,3 @@ size_t GrMtlTextureRenderTarget::onGpuMemorySize() const {
     return GrSurface::ComputeSize(this->backendFormat(), this->dimensions(),
                                   1 /*colorSamplesPerPixel*/, this->mipmapped());
 }
-
-GR_NORETAIN_END

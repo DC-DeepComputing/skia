@@ -10,33 +10,27 @@
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
                                  UsageFlags supportedUsages,
-                                 id<MTLTexture> texture,
+                                 sk_cfp<id<MTLTexture>> texture,
                                  SkBudgeted budgeted)
-        : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
-                       texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
+        : GrAttachment(gpu, dimensions, supportedUsages, (*texture).sampleCount,
+                       (*texture).mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo)
-        , fTexture(texture) {
+        , fTexture(std::move(texture)) {
     this->registerWithCache(budgeted);
 }
 
 GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
                                  UsageFlags supportedUsages,
-                                 id<MTLTexture> texture,
+                                 sk_cfp<id<MTLTexture>> texture,
                                  GrWrapCacheable cacheable)
-        : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
-                       texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
+        : GrAttachment(gpu, dimensions, supportedUsages, (*texture).sampleCount,
+                       (*texture).mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo)
-        , fTexture(texture) {
+        , fTexture(std::move(texture)) {
     this->registerWithCacheWrapped(cacheable);
 }
 
@@ -115,43 +109,43 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::Make(GrMtlGpu* gpu,
         desc.usage = mtlTextureUsage;
         desc.storageMode = (MTLStorageMode)mtlStorageMode;
     }
-    id<MTLTexture> texture = [gpu->device() newTextureWithDescriptor:desc];
+    sk_cfp<id<MTLTexture>> texture([gpu->device() newTextureWithDescriptor:desc]);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     if (attachmentUsages == UsageFlags::kStencilAttachment) {
-        texture.label = @"Stencil";
+        (*texture).label = @"Stencil";
     } else if (SkToBool(attachmentUsages & UsageFlags::kColorAttachment)) {
         if (sampleCnt > 1) {
             if (SkToBool(attachmentUsages & UsageFlags::kTexture)) {
-                texture.label = @"MSAA TextureRenderTarget";
+                (*texture).label = @"MSAA TextureRenderTarget";
             } else {
-                texture.label = @"MSAA RenderTarget";
+                (*texture).label = @"MSAA RenderTarget";
             }
         } else {
             if (SkToBool(attachmentUsages & UsageFlags::kTexture)) {
-                texture.label = @"TextureRenderTarget";
+                (*texture).label = @"TextureRenderTarget";
             } else {
-                texture.label = @"RenderTarget";
+                (*texture).label = @"RenderTarget";
             }
         }
     } else {
         SkASSERT(attachmentUsages == UsageFlags::kTexture);
-        texture.label = @"Texture";
+        (*texture).label = @"Texture";
     }
 #endif
 
     return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages,
-                                                      texture, budgeted));
+                                                      std::move(texture), budgeted));
 }
 
 sk_sp<GrMtlAttachment> GrMtlAttachment::MakeWrapped(
         GrMtlGpu* gpu,
         SkISize dimensions,
-        id<MTLTexture> texture,
+        sk_cfp<id<MTLTexture>> texture,
         UsageFlags attachmentUsages,
         GrWrapCacheable cacheable) {
 
-    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages, texture,
-                                                      cacheable));
+    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages,
+                                                      std::move(texture), cacheable));
 }
 
 GrMtlAttachment::~GrMtlAttachment() {
@@ -160,12 +154,12 @@ GrMtlAttachment::~GrMtlAttachment() {
 }
 
 void GrMtlAttachment::onRelease() {
-    fTexture = nil;
+    fTexture.reset();
     GrAttachment::onRelease();
 }
 
 void GrMtlAttachment::onAbandon() {
-    fTexture = nil;
+    fTexture.reset();
     GrAttachment::onAbandon();
 }
 
@@ -174,4 +168,3 @@ GrMtlGpu* GrMtlAttachment::getMtlGpu() const {
     return static_cast<GrMtlGpu*>(this->getGpu());
 }
 
-GR_NORETAIN_END

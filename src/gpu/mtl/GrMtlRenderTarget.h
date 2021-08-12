@@ -11,6 +11,7 @@
 #include "src/gpu/GrRenderTarget.h"
 
 #include "include/gpu/GrBackendSurface.h"
+#include "include/ports/SkCFObject.h"
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/mtl/GrMtlAttachment.h"
 #include "src/gpu/mtl/GrMtlFramebuffer.h"
@@ -26,7 +27,7 @@ public:
     static sk_sp<GrMtlRenderTarget> MakeWrappedRenderTarget(GrMtlGpu*,
                                                             SkISize,
                                                             int sampleCnt,
-                                                            id<MTLTexture>);
+                                                            sk_cfp<id<MTLTexture>>);
 
     ~GrMtlRenderTarget() override;
 
