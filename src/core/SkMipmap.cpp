@@ -778,10 +778,11 @@ bool SkMipmap::validForRootLevel(const SkImageInfo& root) const {
     }
 
     for (int i = 0; i < this->countLevels(); ++i) {
-        const SkPixmap& pm = fLevels[0].fPixmap;
-        if (pm.colorType() != root.colorType() ||
-            pm.alphaType() != root.alphaType())
+        const SkPixmap& mipPixmap = fLevels[i].fPixmap;
+        if (mipPixmap.colorType() != root.colorType() ||
+            mipPixmap.alphaType() != root.alphaType()) {
             return false;
+        }
     }
     return true;
 }
