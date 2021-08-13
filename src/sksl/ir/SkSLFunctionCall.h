@@ -28,7 +28,7 @@ public:
         , fArguments(std::move(arguments)) {}
 
     // Resolves generic types, performs type conversion on arguments, determines return type, and
-    // reports errors via the ErrorReporter.
+    // reports errors via the ErrorHandler.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                int offset,
                                                const FunctionDeclaration& function,

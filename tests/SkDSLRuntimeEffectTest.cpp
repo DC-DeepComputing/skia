@@ -215,7 +215,7 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
             Return(1) // Error, type mismatch
         );
         effect.end(false);
-        REPORTER_ASSERT(r, errorHandler.fMsg == "error: expected 'half4', but found 'int'\n");
+        REPORTER_ASSERT(r, errorHandler.fMsg == "expected 'half4', but found 'int'");
     }
 
     // Mutating coords should work. (skbug.com/10918)

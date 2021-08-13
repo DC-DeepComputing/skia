@@ -31,7 +31,7 @@ public:
         , fIsStatic(isStatic) {}
 
     // Creates a potentially-simplified form of the if-statement. Typechecks and coerces the test
-    // expression; reports errors via ErrorReporter.
+    // expression; reports errors via ErrorHandler.
     static std::unique_ptr<Statement> Convert(const Context& context, int offset, bool isStatic,
                                               std::unique_ptr<Expression> test,
                                               std::unique_ptr<Statement> ifTrue,

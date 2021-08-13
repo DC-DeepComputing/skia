@@ -45,7 +45,7 @@ static bool check_modifiers(const Context& context, int offset, const Modifiers&
 
 static bool check_return_type(const Context& context, int offset, const Type& returnType,
                               bool isBuiltin) {
-    ErrorReporter& errors = context.errors();
+    dsl::ErrorHandler& errors = context.errors();
     if (returnType.isArray()) {
         errors.error(offset, "functions may not return type '" + returnType.displayName() + "'");
         return false;
@@ -120,7 +120,7 @@ static bool check_parameters(const Context& context,
 static bool check_main_signature(const Context& context, int offset, const Type& returnType,
                                  std::vector<std::unique_ptr<Variable>>& parameters,
                                  bool isBuiltin) {
-    ErrorReporter& errors = context.errors();
+    dsl::ErrorHandler& errors = context.errors();
     ProgramKind kind = context.fConfig->fKind;
 
     auto typeIsValidForColor = [&](const Type& type) {
@@ -223,7 +223,7 @@ static bool find_existing_declaration(const Context& context, SymbolTable& symbo
                                       std::vector<std::unique_ptr<Variable>>& parameters,
                                       const Type* returnType, bool isBuiltin,
                                       const FunctionDeclaration** outExistingDecl) {
-    ErrorReporter& errors = context.errors();
+    dsl::ErrorHandler& errors = context.errors();
     const Symbol* entry = symbols[name];
     *outExistingDecl = nullptr;
     if (entry) {

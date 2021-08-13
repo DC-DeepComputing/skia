@@ -33,7 +33,7 @@ struct Swizzle final : public Expression {
     }
 
     // Swizzle::Convert permits component arrays containing ZERO or ONE, does typechecking, reports
-    // errors via ErrorReporter, and returns an expression that combines constructors and native
+    // errors via ErrorHandler, and returns an expression that combines constructors and native
     // swizzles (comprised solely of X/Y/W/Z).
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                std::unique_ptr<Expression> base,
