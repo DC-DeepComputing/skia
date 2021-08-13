@@ -68,6 +68,7 @@ filter_and_mm_have_effect(const GrQuad& srcQuad, const GrQuad& dstQuad) {
     // If not axis-aligned in src or dst, then always say it has an effect
     if (srcQuad.quadType() != GrQuad::Type::kAxisAligned ||
         dstQuad.quadType() != GrQuad::Type::kAxisAligned) {
+        printf("FIXMEsk - preserving filtering since coords aren't axis-aligned\n");
         return {true, true};
     }
 
@@ -82,6 +83,11 @@ filter_and_mm_have_effect(const GrQuad& srcQuad, const GrQuad& dstQuad) {
                       SkScalarFraction(srcRect.fLeft) != SkScalarFraction(dstRect.fLeft) ||
                       SkScalarFraction(srcRect.fTop)  != SkScalarFraction(dstRect.fTop);
         bool mm = srcRect.width() > dstRect.width() || srcRect.height() > dstRect.height();
+        printf("FIXMEsk - keep filter? %d - src and dst are rects, width match? %d, height match? %d, offsets match? %d %d\n",
+                filter,
+                srcRect.width() == dstRect.width(), srcRect.height() == dstRect.height(),
+                SkScalarFraction(srcRect.fLeft) == SkScalarFraction(dstRect.fLeft),
+                SkScalarFraction(srcRect.fTop) == SkScalarFraction(dstRect.fTop));
         return {filter, mm};
     }
     // Extract edge lengths
@@ -97,6 +103,9 @@ filter_and_mm_have_effect(const GrQuad& srcQuad, const GrQuad& dstQuad) {
                   !SkScalarIsInt(dstQuad.x(0)) ||
                   !SkScalarIsInt(dstQuad.y(0));
     bool mm = srcSize.fWidth > dstSize.fWidth || srcSize.fHeight > dstSize.fHeight;
+    printf("FIXMEsk - keep filter? %d - src and dst are axis-aligned only; size match? %d, src pixel corner? %d, dst pixel corner? %d\n",
+            filter, srcSize == dstSize, SkScalarIsInt(srcQuad.x(0)) && SkScalarIsInt(srcQuad.y(0)),
+            SkScalarIsInt(dstQuad.x(0)) && SkScalarIsInt(dstQuad.y(0)));
     return {filter, mm};
 }
 
@@ -149,6 +158,8 @@ static SkRect normalize_and_inset_subset(GrSamplerState::Filter filter,
     if (filter == GrSamplerState::Filter::kNearest) {
         // Make sure our insetting puts us at pixel centers.
         ltrb = skvx::floor(ltrb*flipHi)*flipHi;
+        printf("FIXMEsk snapping NN subset to pixels [%f %f %f %f]\n",
+            ltrb[0], ltrb[1], ltrb[2], ltrb[3]);
     }
     // Inset with pin to the rect center.
     ltrb += skvx::Vec<4, float>({.5f, .5f, -.5f, -.5f});
@@ -204,22 +215,29 @@ static bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter f
     // overshoot. Unfortunately, antialiasing adds enough jitter that we can only rely on this in
     // the non-antialiased case.
     SkRect localBounds = quad.fLocal.bounds();
+    printf("FIXMEsk safe_to_ignore_subset_rect? aa = %d filter = %d\n",
+            (int) aaType, (int) filter);
+    printf("FIXMEsk    local bounds: [%f %f %f %f], subset rect: [%f %f %f %f]\n",
+            localBounds.fLeft, localBounds.fTop, localBounds.fRight, localBounds.fBottom,
+            subsetRect.fLeft, subsetRect.fTop, subsetRect.fRight, subsetRect.fBottom);
     if (aaType == GrAAType::kNone &&
         filter == GrSamplerState::Filter::kNearest &&
         quad.fDevice.quadType() == GrQuad::Type::kAxisAligned &&
         quad.fLocal.quadType() == GrQuad::Type::kAxisAligned &&
         subsetRect.contains(localBounds)) {
-
+        printf("FIXMEsk   dropping subset in first condition\n");
         return true;
     }
 
     // If the subset rect is inset by at least 0.5 pixels into the local quad's bounds, the
     // sampler shouldn't overshoot, even when antialiasing and filtering is taken into account.
     if (subsetRect.makeInset(0.5f, 0.5f).contains(localBounds)) {
+        printf("FIXMEsk   dropping subset in second condition\n");
         return true;
     }
 
     // The subset rect cannot be ignored safely.
+    printf("FIXMEsk    must keep subset\n");
     return false;
 }
 
@@ -556,9 +574,16 @@ private:
                 SkPoint srcPts[4];
                 GrMapRectPoints(set[q].fDstRect, set[q].fSrcRect, set[q].fDstClipQuad, srcPts, 4);
                 quad.fLocal = GrQuad::MakeFromSkQuad(srcPts, SkMatrix::I());
+                printf("Analyzing entry %d, device quad = %d (%f %f), (%f %f), (%f %f), (%f %f), local quad = %d (%f %f), (%f %f), (%f %f), (%f %f)\n",
+                    q, (int) quad.fDevice.quadType(), quad.fDevice.x(0), quad.fDevice.y(0), quad.fDevice.x(1), quad.fDevice.y(1), quad.fDevice.x(2), quad.fDevice.y(2), quad.fDevice.x(3), quad.fDevice.y(3),
+                    (int) quad.fLocal.quadType(), quad.fLocal.x(0), quad.fLocal.y(0), quad.fLocal.x(1), quad.fLocal.y(1), quad.fLocal.x(2), quad.fLocal.y(2), quad.fLocal.x(3), quad.fLocal.y(3));
             } else {
                 quad.fDevice = GrQuad::MakeFromRect(set[q].fDstRect, ctm);
                 quad.fLocal = GrQuad(set[q].fSrcRect);
+
+                 printf("Analyzing entry %d, device rect = %d (%f %f), (%f %f), (%f %f), (%f %f), local rect = %d (%f %f), (%f %f), (%f %f), (%f %f)\n",
+                    q, (int) quad.fDevice.quadType(), quad.fDevice.x(0), quad.fDevice.y(0), quad.fDevice.x(1), quad.fDevice.y(1), quad.fDevice.x(2), quad.fDevice.y(2), quad.fDevice.x(3), quad.fDevice.y(3),
+                    (int) quad.fLocal.quadType(), quad.fLocal.x(0), quad.fLocal.y(0), quad.fLocal.x(1), quad.fLocal.y(1), quad.fLocal.x(2), quad.fLocal.y(2), quad.fLocal.x(3), quad.fLocal.y(3));
             }
 
             if (netFilter != filter || netMM != mm) {
@@ -627,6 +652,9 @@ private:
         fMetadata.fAAType = static_cast<uint16_t>(netAAType);
         fMetadata.fFilter = static_cast<uint16_t>(netFilter);
         fMetadata.fSubset = static_cast<uint16_t>(netSubset);
+
+        printf("FIXMEsk - Net subset for batch: %d, net filter: %d, net aa: %d\n",
+                (int) netSubset, (int) netFilter, (int) netAAType);
 
         this->setBounds(bounds, HasAABloat(netAAType == GrAAType::kCoverage),
                         hasSubpixel ? IsHairline::kYes : IsHairline::kNo);
