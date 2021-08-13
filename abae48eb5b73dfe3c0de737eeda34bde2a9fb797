@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d9e0f01_d1c31ee2",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T16:17:39Z",
+      "side": 0,
+      "message": "These pointers already exist in fRootModule/fPrivateModule, and there isn\u0027t any benefit to keeping around a second pointer.",
+      "range": {
+        "startLine": 242,
+        "startChar": 2,
+        "endLine": 243,
+        "endChar": 53
+      },
+      "revId": "abae48eb5b73dfe3c0de737eeda34bde2a9fb797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
