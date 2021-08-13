@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f234f2d_fd172010",
+        "filename": "include/sksl/DSLErrorHandling.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T14:17:50Z",
+      "side": 1,
+      "message": "mark `const`",
+      "range": {
+        "startLine": 42,
+        "startChar": 14,
+        "endLine": 42,
+        "endChar": 16
+      },
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
