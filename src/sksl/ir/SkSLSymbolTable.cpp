@@ -101,7 +101,7 @@ void SymbolTable::addWithoutOwnership(const Symbol* symbol) {
     }
 
     if (!symbol->is<FunctionDeclaration>()) {
-        fErrorReporter.error(symbol->fOffset, "symbol '" + name + "' was already defined");
+        fErrorHandler.error(symbol->fOffset, "symbol '" + name + "' was already defined");
         return;
     }
 

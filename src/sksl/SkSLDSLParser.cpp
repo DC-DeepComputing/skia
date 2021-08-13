@@ -109,7 +109,7 @@ DSLParser::DSLParser(Compiler* compiler, const ProgramSettings& settings, Progra
                      String text)
     : fCompiler(*compiler)
     , fSettings(settings)
-    , fErrorReporter(compiler)
+    , fErrorHandler(compiler)
     , fKind(kind)
     , fText(std::move(text))
     , fPushback(Token::Kind::TK_NONE, -1, -1) {
@@ -202,17 +202,17 @@ void DSLParser::error(Token token, String msg) {
 }
 
 void DSLParser::error(int offset, String msg) {
-    fErrorReporter->error(offset, msg);
+    fErrorHandler->error(offset, msg);
 }
 
 class DSLParserErrorHandler final : public ErrorHandler {
 public:
-    DSLParserErrorHandler(ErrorReporter* reporter)
-        : fReporter(*reporter) {}
+    DSLParserErrorHandler(ErrorHandler* handler)
+        : fHandler(*handler) {}
 
     ~DSLParserErrorHandler() override {
         for (const String& s : fErrors) {
-            fReporter.error(/*offset=*/-1, s.c_str());
+            fHandler.error(/*offset=*/-1, s.c_str());
         }
     }
 
@@ -222,7 +222,7 @@ public:
 
 private:
     SkTArray<String> fErrors;
-    ErrorReporter& fReporter;
+    ErrorHandler& fHandler;
 
     friend class DSLParser;
 };

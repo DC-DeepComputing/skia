@@ -36,7 +36,7 @@ public:
 
     // Create a `switch` statement with an array of case-values and case-statements.
     // Coerces case values to the proper type and reports an error if cases are duplicated.
-    // Reports errors via the ErrorReporter.
+    // Reports errors via the ErrorHandler.
     static std::unique_ptr<Statement> Convert(const Context& context,
                                               int offset,
                                               bool isStatic,

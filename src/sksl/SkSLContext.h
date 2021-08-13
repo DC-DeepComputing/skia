@@ -10,8 +10,8 @@
 
 #include <memory>
 
+#include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLPool.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -19,6 +19,7 @@
 
 namespace SkSL {
 
+class ErrorReporter;
 struct ProgramConfig;
 
 /**
@@ -32,8 +33,8 @@ public:
         SkASSERT(!Pool::IsAttached());
     }
 
-    // Returns the current error handler
-    ErrorReporter& errors() const { return fErrors; }
+    // Returns the current error reporter
+    ErrorReporter& errors() const;
 
     // The Context holds all of the built-in types.
     BuiltinTypes fTypes;
@@ -48,7 +49,8 @@ public:
     ProgramConfig* fConfig = nullptr;
 
 private:
-    // The Context holds a reference to our error reporter.
+    // The default error reporter to use outside of DSL code (between Start() and End(), the DSL
+    // error reporter is used instead)
     ErrorReporter& fErrors;
 };
 

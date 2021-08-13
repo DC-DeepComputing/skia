@@ -39,7 +39,7 @@ public:
     }
 
     // Creates a potentially-simplified form of the expression. Determines the result type
-    // programmatically. Typechecks and coerces input expressions; reports errors via ErrorReporter.
+    // programmatically. Typechecks and coerces input expressions; reports errors via ErrorHandler.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                std::unique_ptr<Expression> left,
                                                Operator op,

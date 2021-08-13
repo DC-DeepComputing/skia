@@ -93,7 +93,8 @@ struct Analysis {
 
     // Updates the `refKind` field of exactly one VariableReference inside `expr`.
     // `expr` must be `IsAssignable`; returns an error otherwise.
-    static bool MakeAssignmentExpr(Expression* expr, VariableRefKind kind, ErrorReporter* errors);
+    static bool MakeAssignmentExpr(Expression* expr, VariableRefKind kind,
+                                   ErrorReporter* errors);
 
     // Updates the `refKind` field of every VariableReference found within `expr`.
     // `expr` is allowed to have zero, one, or multiple VariableReferences.

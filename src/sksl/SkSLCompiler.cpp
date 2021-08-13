@@ -84,12 +84,12 @@ class AutoSource {
 public:
     AutoSource(Compiler* compiler, const char* source)
             : fCompiler(compiler) {
-        SkASSERT(!fCompiler->fSource);
-        fCompiler->fSource = source;
+        SkASSERT(!fCompiler->errorReporter().source());
+        fCompiler->errorReporter().setSource(source);
     }
 
     ~AutoSource() {
-        fCompiler->fSource = nullptr;
+        fCompiler->errorReporter().setSource(nullptr);
     }
 
     Compiler* fCompiler;
@@ -98,16 +98,17 @@ public:
 class AutoProgramConfig {
 public:
     AutoProgramConfig(std::shared_ptr<Context>& context, ProgramConfig* config)
-            : fContext(context.get()) {
-        SkASSERT(!fContext->fConfig);
+            : fContext(context.get())
+            , fOldConfig(fContext->fConfig) {
         fContext->fConfig = config;
     }
 
     ~AutoProgramConfig() {
-        fContext->fConfig = nullptr;
+        fContext->fConfig = fOldConfig;
     }
 
     Context* fContext;
+    ProgramConfig* fOldConfig;
 };
 
 class AutoModifiersPool {
@@ -126,10 +127,11 @@ public:
 };
 
 Compiler::Compiler(const ShaderCapsClass* caps)
-        : fContext(std::make_shared<Context>(/*errors=*/*this, *caps))
-        , fInliner(fContext.get()) {
+        : fContext(std::make_shared<Context>(fErrorReporter, *caps))
+        , fInliner(fContext.get())
+        , fErrorReporter(this) {
     SkASSERT(caps);
-    fRootSymbolTable = std::make_shared<SymbolTable>(this, /*builtin=*/true);
+    fRootSymbolTable = std::make_shared<SymbolTable>(&this->errorReporter(), /*builtin=*/true);
     fPrivateSymbolTable = std::make_shared<SymbolTable>(fRootSymbolTable, /*builtin=*/true);
     fIRGenerator = std::make_unique<IRGenerator>(fContext.get());
 
@@ -330,6 +332,7 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     settings.fReplaceSettings = !dehydrate;
 
 #if defined(SKSL_STANDALONE)
+    SkASSERT(this->errorCount() == 0);
     SkASSERT(data.fPath);
     std::ifstream in(data.fPath);
     String text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
@@ -343,16 +346,17 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     std::vector<std::unique_ptr<ProgramElement>> elements;
     std::vector<const ProgramElement*> sharedElements;
     dsl::StartModule(this, kind, settings, baseModule);
+    dsl::SetErrorReporter(&this->errorReporter());
     AutoSource as(this, source->c_str());
     IRGenerator::IRBundle ir = fIRGenerator->convertProgram(baseModule, /*isBuiltinCode=*/true,
                                                             *source);
     SkASSERT(ir.fSharedElements.empty());
     LoadedModule module = { kind, std::move(ir.fSymbolTable), std::move(ir.fElements) };
-    dsl::End();
-    if (this->fErrorCount) {
+    if (this->errorCount()) {
         printf("Unexpected errors: %s\n", this->fErrorText.c_str());
         SkDEBUGFAILF("%s %s\n", data.fPath, this->fErrorText.c_str());
     }
+    dsl::End();
 #else
     ProgramConfig config;
     config.fKind = kind;
@@ -464,8 +468,7 @@ std::unique_ptr<Program> Compiler::convertProgram(
         settings.fAllowNarrowingConversions = true;
     }
 
-    fErrorText = "";
-    fErrorCount = 0;
+    this->resetErrors();
     fInliner.reset();
 
 #if SKSL_DSL_PARSER
@@ -476,7 +479,7 @@ std::unique_ptr<Program> Compiler::convertProgram(
     AutoSource as(this, textPtr->c_str());
 
     dsl::Start(this, kind, settings);
-    dsl::SetErrorHandler(this);
+    dsl::SetErrorReporter(&fErrorReporter);
     IRGenerator::IRBundle ir = fIRGenerator->convertProgram(baseModule, /*isBuiltinCode=*/false,
                                                             *textPtr);
     // Ideally, we would just use dsl::ReleaseProgram and not have to do any manual mucking about
@@ -491,8 +494,9 @@ std::unique_ptr<Program> Compiler::convertProgram(
                                              std::move(ir.fSymbolTable),
                                              std::move(dsl::DSLWriter::MemoryPool()),
                                              ir.fInputs);
+    this->errorReporter().reportPendingErrors(PositionInfo());
     bool success = false;
-    if (fErrorCount) {
+    if (this->errorCount()) {
         // Do not return programs that failed to compile.
     } else if (!this->optimize(*program)) {
         // Do not return programs that failed to optimize.
@@ -551,7 +555,7 @@ void Compiler::verifyStaticTests(const Program& program) {
     }
 
     // Check all of the program's owned elements. (Built-in elements are assumed to be valid.)
-    StaticTestVerifier visitor{this};
+    StaticTestVerifier visitor{&this->errorReporter()};
     for (const std::unique_ptr<ProgramElement>& element : program.ownedElements()) {
         if (element->is<FunctionDefinition>()) {
             visitor.visitProgramElement(*element);
@@ -560,7 +564,7 @@ void Compiler::verifyStaticTests(const Program& program) {
 }
 
 bool Compiler::optimize(LoadedModule& module) {
-    SkASSERT(!fErrorCount);
+    SkASSERT(!this->errorCount());
 
     // Create a temporary program configuration with default settings.
     ProgramConfig config;
@@ -572,13 +576,13 @@ bool Compiler::optimize(LoadedModule& module) {
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module);
 
-    while (fErrorCount == 0) {
+    while (this->errorCount() == 0) {
         // Perform inline-candidate analysis and inline any functions deemed suitable.
         if (!fInliner.analyze(module.fElements, module.fSymbols, usage.get())) {
             break;
         }
     }
-    return fErrorCount == 0;
+    return this->errorCount() == 0;
 }
 
 bool Compiler::removeDeadFunctions(Program& program, ProgramUsage* usage) {
@@ -854,10 +858,10 @@ bool Compiler::optimize(Program& program) {
         return true;
     }
 
-    SkASSERT(!fErrorCount);
+    SkASSERT(!this->errorCount());
     ProgramUsage* usage = program.fUsage.get();
 
-    if (fErrorCount == 0) {
+    if (this->errorCount() == 0) {
         // Run the inliner only once; it is expensive! Multiple passes can occasionally shake out
         // more wins, but it's diminishing returns.
         fInliner.analyze(program.ownedElements(), program.fSymbols, usage);
@@ -874,11 +878,11 @@ bool Compiler::optimize(Program& program) {
         this->removeDeadGlobalVariables(program, usage);
     }
 
-    if (fErrorCount == 0) {
+    if (this->errorCount() == 0) {
         this->verifyStaticTests(program);
     }
 
-    return fErrorCount == 0;
+    return this->errorCount() == 0;
 }
 
 #if defined(SKSL_STANDALONE) || SK_SUPPORT_GPU
@@ -889,6 +893,7 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     ProgramSettings settings;
     settings.fDSLUseMemoryPool = false;
     dsl::Start(this, program.fConfig->fKind, settings);
+    dsl::SetErrorReporter(&fErrorReporter);
     dsl::DSLWriter::IRGenerator().fSymbolTable = program.fSymbols;
 #ifdef SK_ENABLE_SPIRV_VALIDATION
     StringStream buffer;
@@ -917,7 +922,7 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
             if (tools.Disassemble((const uint32_t*)data.data(), data.size() / 4, &disassembly)) {
                 errors.append(disassembly);
             }
-            this->error(-1, errors);
+            this->errorReporter().error(-1, errors);
 #else
             SkDEBUGFAILF("%s", errors.c_str());
 #endif
@@ -986,29 +991,29 @@ bool Compiler::toMetal(Program& program, String* out) {
 
 #endif // defined(SKSL_STANDALONE) || SK_SUPPORT_GPU
 
-void Compiler::handleError(const char* msg, dsl::PositionInfo pos) {
+void Compiler::handleError(const char* msg, PositionInfo pos) {
     if (strstr(msg, POISON_TAG)) {
         // don't report errors on poison values
         return;
     }
-    fErrorCount++;
     fErrorText += "error: " + (pos.line() >= 1 ? to_string(pos.line()) + ": " : "") + msg + "\n";
 }
 
 String Compiler::errorText(bool showCount) {
+    this->errorReporter().reportPendingErrors(PositionInfo());
     if (showCount) {
         this->writeErrorCount();
     }
-    fErrorCount = 0;
     String result = fErrorText;
-    fErrorText = "";
+    this->resetErrors();
     return result;
 }
 
 void Compiler::writeErrorCount() {
-    if (fErrorCount) {
-        fErrorText += to_string(fErrorCount) + " error";
-        if (fErrorCount > 1) {
+    int count = this->errorCount();
+    if (count) {
+        fErrorText += to_string(count) + " error";
+        if (count > 1) {
             fErrorText += "s";
         }
         fErrorText += "\n";

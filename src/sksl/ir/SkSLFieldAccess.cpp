@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLSetting.h"
