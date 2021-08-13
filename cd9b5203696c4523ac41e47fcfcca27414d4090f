@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6bbe57d_6f01be4d",
+        "filename": "src/gpu/GrCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-13T17:47:42Z",
+      "side": 1,
+      "message": "We could add a thing to isFormatTexturable that checks for kNone, but I would imagine the call should return false in that case. However, in this use case here we want to continue on if textureType \u003d\u003d kNone and not fail the validate check.\n\nSo I think things should stay as is for this call, and we can decide if we separately want the isFormatTexturable call to explicitly check for none.",
+      "parentUuid": "0c363818_0409a1c3",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 46
+      },
+      "revId": "cd9b5203696c4523ac41e47fcfcca27414d4090f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "152d5006_640f5c5b",
         "filename": "src/gpu/GrGpu.cpp",
         "patchSetId": 3
