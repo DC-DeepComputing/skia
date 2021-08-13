@@ -7,14 +7,6 @@
 
 #include "src/gpu/mtl/GrMtlVaryingHandler.h"
 
-#include "include/private/GrMtlTypesPriv.h"
-
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 static void finalize_helper(GrMtlVaryingHandler::VarArray& vars) {
     int locationIndex = 0;
     int componentCount = 0;
@@ -45,4 +37,3 @@ void GrMtlVaryingHandler::onFinalize() {
     finalize_helper(fFragOutputs);
 }
 
-GR_NORETAIN_END
