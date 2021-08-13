@@ -15,7 +15,6 @@
 #include "include/private/SkSLStatement.h"
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLASTNode.h"
-#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLOperators.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -124,7 +123,7 @@ public:
     const Program::Settings& settings() const { return fContext.fConfig->fSettings; }
     ProgramKind programKind() const { return fContext.fConfig->fKind; }
 
-    ErrorReporter& errorReporter() const { return fContext.errors(); }
+    ErrorReporter& errorHandler() const { return fContext.errors(); }
 
     std::shared_ptr<SymbolTable>& symbolTable() {
         return fSymbolTable;
