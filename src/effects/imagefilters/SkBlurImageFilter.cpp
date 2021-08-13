@@ -252,6 +252,7 @@ static void blur_one_direction(skvx::Vec<4, uint32_t>* buffer, int window,
     // weight = 1 / d * 2 ^ 32
     auto weight = static_cast<uint32_t>(round((1.0 / divisor) * (1ull << 32)));
     auto half = static_cast<uint32_t>((divisor + 1) / 2);
+    skvx::divideUsingMult<4, uint32_t> mWeight(divisor);
 
     auto border = calculate_border(window);
 
@@ -279,8 +280,10 @@ static void blur_one_direction(skvx::Vec<4, uint32_t>* buffer, int window,
             sum1 += sum0;
             sum2 += sum1;
 
-            skvx::Vec<4, uint64_t> w = skvx::cast<uint64_t>(sum2) * weight;
-            skvx::Vec<4, uint32_t> value = skvx::cast<uint32_t>(w >> 32);
+            //skvx::Vec<4, uint64_t> w = skvx::cast<uint64_t>(sum2) * weight;
+            //skvx::Vec<4, uint32_t> value = skvx::cast<uint32_t>(w >> 32);
+
+            skvx::Vec<4, uint32_t> value = mWeight.divide(sum2);
 
             sum2 -= *buffer2Cursor;
             *buffer2Cursor = sum1;

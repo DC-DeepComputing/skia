@@ -639,6 +639,33 @@ SIN Vec<N,uint8_t> approx_scale(const Vec<N,uint8_t>& x, const Vec<N,uint8_t>& y
     return cast<uint8_t>( (X*Y+X)/256 );
 }
 
+template <int N, typename T> struct divideUsingMult {
+    divideUsingMult() = default;
+    // TODO generalize
+};
+
+template <>
+struct divideUsingMult<4, uint32_t> {
+    divideUsingMult(float divisor)
+        : denom{static_cast<uint32_t>(std::round((1.0 / divisor) * (1ull << 32)))}
+        , half{static_cast<uint32_t>((divisor + 1) / 2)} {}
+
+    Vec<4, uint32_t> divide(const Vec<4, uint32_t>& num) {
+        #if defined(__SSE2__)
+            auto d = _mm_set1_epi32(denom);
+            auto n = unchecked_bit_pun<__m128i>(num);
+            auto v20 = unchecked_bit_pun<Vec<4, uint32_t>>(_mm_mul_epu32(n, d));
+            auto v31 = unchecked_bit_pun<Vec<4, uint32_t>>(_mm_mul_epu32(_mm_srli_si128(n, 4), d));
+            return Vec<4, uint32_t>{v20[1], v31[1], v20[3], v31[3]};
+        #else
+            return cast<uint32_t>((cast<uint64_t>(num) * denom) >> 32);
+        #endif
+    }
+
+    const uint64_t denom;
+    const uint32_t half;
+};
+
 #if !defined(SKNX_NO_SIMD) && defined(__ARM_NEON)
     // With NEON we can do eight u8*u8 -> u16 in one instruction, vmull_u8 (read, mul-long).
     SI Vec<8,uint16_t> mull(const Vec<8,uint8_t>& x,
