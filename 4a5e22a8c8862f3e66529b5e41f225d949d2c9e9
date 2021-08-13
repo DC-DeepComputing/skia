@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5a8a86_cdcc0279",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T22:34:11Z",
+      "side": 0,
+      "message": "Shadows member variable \"SkRuntimeEffect::Uniform::type\".",
+      "range": {
+        "startLine": 470,
+        "startChar": 32,
+        "endLine": 470,
+        "endChar": 36
+      },
+      "revId": "4a5e22a8c8862f3e66529b5e41f225d949d2c9e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
