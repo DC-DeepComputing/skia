@@ -670,7 +670,8 @@ public:
     }
     void writeGlyph(SkPoint xy,
                     SkScalar advanceWidth,
-                    uint16_t glyph) {
+                    uint16_t glyph,
+                    bool advanceMayBeAppliedIncorrectly) {
         if (!fInitialized) {
             // Flip the text about the x-axis to account for origin swap and include
             // the passed parameters.
@@ -685,7 +686,7 @@ public:
             fInitialized = true;
         }
         SkPoint position = xy - fCurrentMatrixOrigin;
-        if (position != SkPoint{fXAdvance, 0}) {
+        if (fXAdvanceMayBeAppliedIncorrectly || position != SkPoint{fXAdvance, 0}) {
             this->flush();
             SkPDFUtils::AppendScalar(position.x() - position.y() * fTextSkewX, fContent);
             fContent->writeText(" ");
@@ -693,8 +694,12 @@ public:
             fContent->writeText(" Td ");
             fCurrentMatrixOrigin = xy;
             fXAdvance = 0;
+            fXAdvanceMayBeAppliedIncorrectly = false;
         }
         fXAdvance += advanceWidth;
+        if (advanceMayBeAppliedIncorrectly) {
+            fXAdvanceMayBeAppliedIncorrectly = true;
+        }
         if (!fInText) {
             fContent->writeText("<");
             fInText = true;
@@ -711,6 +716,7 @@ private:
     SkDynamicMemoryWStream* fContent;
     SkPoint fCurrentMatrixOrigin;
     SkScalar fXAdvance = 0.0f;
+    bool fXAdvanceMayBeAppliedIncorrectly = false;
     SkScalar fTextSkewX;
     bool fWideChars = true;
     bool fInText = false;
@@ -944,7 +950,10 @@ void SkPDFDevice::internalDrawGlyphRun(
             SkGlyphID encodedGlyph = font->multiByteGlyphs()
                                    ? gid : font->glyphToPDFFontEncoding(gid);
             SkScalar advance = advanceScale * glyphs[index]->advanceX();
-            glyphPositioner.writeGlyph(xy, advance, encodedGlyph);
+            // Reader advances incorrectly for Type3 fonts. https://crbug.com/1226960
+            bool advanceMayBeAppliedIncorrectly =
+                    font->getType() == SkAdvancedTypefaceMetrics::FontType::kOther_Font;
+            glyphPositioner.writeGlyph(xy, advance, encodedGlyph, advanceMayBeAppliedIncorrectly);
         }
     }
 }
