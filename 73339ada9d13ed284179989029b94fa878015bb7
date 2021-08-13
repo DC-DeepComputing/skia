@@ -22,6 +22,30 @@
       },
       "revId": "73339ada9d13ed284179989029b94fa878015bb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad662b9_d989625a",
+        "filename": "src/sksl/dsl/DSLExpression.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 0,
+      "message": "When the two error handling paths were separate, the DSL error handler was (from the DSL\u0027s perspective) the source of truth, and the compiler error handler was just where errors lived for a little while before they eventually got forwarded to the DSL error handler. This assert was making sure that had actually happened.\n\nNow that there\u0027s only one error handler, the situation this assert is checking for doesn\u0027t exist anymore.",
+      "parentUuid": "f11e33b4_782cfae2",
+      "range": {
+        "startLine": 257,
+        "startChar": 3,
+        "endLine": 260,
+        "endChar": 57
+      },
+      "revId": "73339ada9d13ed284179989029b94fa878015bb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

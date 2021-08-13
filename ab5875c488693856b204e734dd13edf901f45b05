@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88f7d35_9b0a7cc2",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be0bfd6c_6f1e224d",
+      "range": {
+        "startLine": 130,
+        "startChar": 10,
+        "endLine": 132,
+        "endChar": 32
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d6e3904_371758dc",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-13T21:04:25Z",
       "side": 1,
       "message": "Probably not intended for this CL? I guess this is related to my Struct changes yesterday? The move() is meaningless now, I guess... sorry!\nDoes SkMakeSpan(fields) work?",
+      "range": {
+        "startLine": 547,
+        "startChar": 41,
+        "endLine": 547,
+        "endChar": 71
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddf307e3_669f2f6c",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 1,
+      "message": "Didn\u0027t know about SkMakeSpan, thanks. Yes, this got missed because DSLParser is #ifdef\u0027ed out.",
+      "parentUuid": "4d6e3904_371758dc",
       "range": {
         "startLine": 547,
         "startChar": 41,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "414f6ab1_c0f46396",
+        "filename": "src/sksl/dsl/priv/DSLWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bd1def8_79bbb0ee",
+      "range": {
+        "startLine": 60,
+        "startChar": 16,
+        "endLine": 60,
+        "endChar": 22
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d2f6c91_8f535f33",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83d7626b_43dc9248",
+        "filename": "src/sksl/dsl/priv/DSLWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2d2f6c91_8f535f33",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 0
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f5e3b21_6cc6b54c",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-08-13T21:04:25Z",
       "side": 1,
       "message": "Consider `fMsg +\u003d msg;`. On the off chance that more than one error occurs, we want our REPORTER_ASSERT below to definitely fire.",
+      "range": {
+        "startLine": 206,
+        "startChar": 16,
+        "endLine": 206,
+        "endChar": 27
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40e213c3_ec83be0a",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-13T21:30:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f5e3b21_6cc6b54c",
       "range": {
         "startLine": 206,
         "startChar": 16,
