@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e608a791_9279c3a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T15:22:26Z",
+      "side": 1,
+      "message": "Oh, my bad, `handleError(const char* msg, PositionInfo position)` is the interface. I was confused since that\u0027s in the protected part.",
+      "parentUuid": "c536c639_572008ff",
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f234f2d_fd172010",
         "filename": "include/sksl/DSLErrorHandling.h",
         "patchSetId": 14
