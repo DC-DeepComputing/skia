@@ -32,10 +32,11 @@ void DDLTileHelper::TileData::init(int id,
                                                               this->paddedRectSize().height());
     SkASSERT(fPlaybackChar.isValid());
 
+    // Why do we not use the backendFormat on the surface characterization?
     GrBackendFormat backendFormat = direct->defaultBackendFormat(fPlaybackChar.colorType(),
                                                                  GrRenderable::kYes);
     SkDEBUGCODE(const GrCaps* caps = direct->priv().caps());
-    SkASSERT(caps->isFormatTexturable(backendFormat));
+    SkASSERT(caps->isFormatTexturable(backendFormat, backendFormat.textureType()));
 
     fCallbackContext.reset(new PromiseImageCallbackContext(direct, backendFormat));
 }
