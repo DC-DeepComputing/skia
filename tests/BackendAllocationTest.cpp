@@ -800,8 +800,9 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest, reporter, ctxInfo) {
     for (auto combo : combinations) {
         for (GrGLenum target : {GR_GL_TEXTURE_2D, GR_GL_TEXTURE_RECTANGLE}) {
             GrBackendFormat format = GrBackendFormat::MakeGL(combo.fFormat, target);
-
-            if (!glCaps->isFormatTexturable(format)) {
+            GrTextureType textureType =
+                    target == GR_GL_TEXTURE_2D ? GrTextureType::k2D : GrTextureType::kRectangle;
+            if (!glCaps->isFormatTexturable(format, textureType)) {
                 continue;
             }
 
