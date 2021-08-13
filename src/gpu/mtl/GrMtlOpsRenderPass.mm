@@ -17,12 +17,6 @@
 #include "src/gpu/mtl/GrMtlRenderTarget.h"
 #include "src/gpu/mtl/GrMtlTexture.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlOpsRenderPass::GrMtlOpsRenderPass(GrMtlGpu* gpu, GrRenderTarget* rt,
                                        sk_sp<GrMtlFramebuffer> framebuffer, GrSurfaceOrigin origin,
                                        const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
@@ -40,7 +34,7 @@ void GrMtlOpsRenderPass::precreateCmdEncoder() {
     // For clears, we may not have an associated draw. So we prepare a cmdEncoder that
     // will be submitted whether there's a draw or not.
     SkDEBUGCODE(GrMtlRenderCommandEncoder* cmdEncoder =)
-            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc.get(), nullptr, this);
     SkASSERT(nil != cmdEncoder);
 }
 
@@ -92,7 +86,7 @@ bool GrMtlOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo,
 
     if (!fActiveRenderCmdEncoder) {
         fActiveRenderCmdEncoder =
-                fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc,
+                fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc.get(),
                                                                fActivePipelineState, this);
         fGpu->commandBuffer()->addGrSurface(
                 sk_ref_sp<GrMtlAttachment>(fFramebuffer->colorAttachment()));
@@ -159,13 +153,13 @@ void GrMtlOpsRenderPass::onClear(const GrScissorState& scissor, std::array<float
 
     // Ideally we should never end up here since all clears should either be done as draws or
     // load ops in metal. However, if a client inserts a wait op we need to handle it.
-    auto colorAttachment = fRenderPassDesc.colorAttachments[0];
+    auto colorAttachment = (*fRenderPassDesc).colorAttachments[0];
     colorAttachment.clearColor = MTLClearColorMake(color[0], color[1], color[2], color[3]);
     colorAttachment.loadAction = MTLLoadActionClear;
     this->precreateCmdEncoder();
     colorAttachment.loadAction = MTLLoadActionLoad;
     fActiveRenderCmdEncoder =
-            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc.get(), nullptr, this);
 }
 
 void GrMtlOpsRenderPass::onClearStencilClip(const GrScissorState& scissor, bool insideStencilMask) {
@@ -180,7 +174,7 @@ void GrMtlOpsRenderPass::onClearStencilClip(const GrScissorState& scissor, bool 
 
     // The contract with the callers does not guarantee that we preserve all bits in the stencil
     // during this clear. Thus we will clear the entire stencil to the desired value.
-    auto stencilAttachment = fRenderPassDesc.stencilAttachment;
+    auto stencilAttachment = (*fRenderPassDesc).stencilAttachment;
     if (insideStencilMask) {
         stencilAttachment.clearStencil = (1 << (stencilBitCount - 1));
     } else {
@@ -191,7 +185,7 @@ void GrMtlOpsRenderPass::onClearStencilClip(const GrScissorState& scissor, bool 
     this->precreateCmdEncoder();
     stencilAttachment.loadAction = MTLLoadActionLoad;
     fActiveRenderCmdEncoder =
-            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc.get(), nullptr, this);
 }
 
 void GrMtlOpsRenderPass::inlineUpload(GrOpFlushState* state, GrDeferredTextureUploadFn& upload) {
@@ -199,7 +193,7 @@ void GrMtlOpsRenderPass::inlineUpload(GrOpFlushState* state, GrDeferredTextureUp
     state->doUpload(upload);
     // doUpload() creates a blitCommandEncoder, so we need to recreate a renderCommandEncoder
     fActiveRenderCmdEncoder =
-            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc.get(), nullptr, this);
 }
 
 void GrMtlOpsRenderPass::initRenderState(GrMtlRenderCommandEncoder* encoder) {
@@ -243,8 +237,8 @@ void GrMtlOpsRenderPass::setupRenderPass(
     SkASSERT(colorInfo.fStoreOp <= GrStoreOp::kDiscard);
     SkASSERT(stencilInfo.fStoreOp <= GrStoreOp::kDiscard);
 
-    fRenderPassDesc = [MTLRenderPassDescriptor new];
-    auto colorAttachment = fRenderPassDesc.colorAttachments[0];
+    fRenderPassDesc.reset([MTLRenderPassDescriptor new]);
+    auto colorAttachment = (*fRenderPassDesc).colorAttachments[0];
     auto* color = fFramebuffer->colorAttachment();
     colorAttachment.texture = color->mtlTexture();
     const std::array<float, 4>& clearColor = colorInfo.fClearColor;
@@ -254,7 +248,7 @@ void GrMtlOpsRenderPass::setupRenderPass(
     colorAttachment.storeAction = mtlStoreAction[static_cast<int>(colorInfo.fStoreOp)];
 
     auto* stencil = fFramebuffer->stencilAttachment();
-    auto mtlStencil = fRenderPassDesc.stencilAttachment;
+    auto mtlStencil = (*fRenderPassDesc).stencilAttachment;
     if (stencil) {
         mtlStencil.texture = stencil->mtlTexture();
     }
@@ -515,5 +509,3 @@ void GrMtlOpsRenderPass::setVertexBuffer(GrMtlRenderCommandEncoder* encoder,
     size_t offset = vertexOffset;
     encoder->setVertexBuffer(mtlVertexBuffer, offset, index);
 }
-
-GR_NORETAIN_END

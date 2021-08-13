@@ -11,6 +11,7 @@
 #import <Metal/Metal.h>
 
 #include "include/gpu/GrTypes.h"
+#include "include/ports/SkCFObject.h"
 #include "src/core/SkOpts.h"
 #include "src/gpu/GrManagedResource.h"
 #include <atomic>
@@ -23,9 +24,9 @@ class GrMtlDepthStencil : public GrManagedResource {
 public:
     static GrMtlDepthStencil* Create(const GrMtlGpu*, const GrStencilSettings&, GrSurfaceOrigin);
 
-    ~GrMtlDepthStencil() override { fMtlDepthStencilState = nil; }
+    ~GrMtlDepthStencil() override {}
 
-    id<MTLDepthStencilState> mtlDepthStencil() const { return fMtlDepthStencilState; }
+    id<MTLDepthStencilState> mtlDepthStencil() const { return fMtlDepthStencilState.get(); }
 
     struct Key {
         struct Face {
@@ -58,22 +59,22 @@ public:
     /** output a human-readable dump of this resource's information
      */
     void dumpInfo() const override {
-        SkDebugf("GrMtlDepthStencil: %p (%ld refs)\n", fMtlDepthStencilState,
-                 CFGetRetainCount((CFTypeRef)fMtlDepthStencilState));
+        SkDebugf("GrMtlDepthStencil: %p (%ld refs)\n", fMtlDepthStencilState.get(),
+                 CFGetRetainCount((CFTypeRef)fMtlDepthStencilState.get()));
     }
 #endif
 
     void freeGPUData() const override {
-        fMtlDepthStencilState = nil;
+        fMtlDepthStencilState.reset();
     }
 
 private:
-    GrMtlDepthStencil(id<MTLDepthStencilState> mtlDepthStencilState, Key key)
-        : fMtlDepthStencilState(mtlDepthStencilState)
+    GrMtlDepthStencil(sk_cfp<id<MTLDepthStencilState>> mtlDepthStencilState, Key key)
+        : fMtlDepthStencilState(std::move(mtlDepthStencilState))
         , fKey(key) {}
 
-    mutable id<MTLDepthStencilState> fMtlDepthStencilState;
-    Key                      fKey;
+    mutable sk_cfp<id<MTLDepthStencilState>> fMtlDepthStencilState;
+    Key fKey;
 };
 
 #endif

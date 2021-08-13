@@ -11,12 +11,6 @@
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(const UniformInfoArray& uniforms,
                                                              uint32_t uniformSize)
         : INHERITED(uniforms.count(), uniformSize) {
@@ -136,5 +130,3 @@ void GrMtlPipelineStateDataManager::uploadAndBindUniformBuffers(
 void GrMtlPipelineStateDataManager::resetDirtyBits() {
     fUniformsDirty = true;
 }
-
-GR_NORETAIN_END

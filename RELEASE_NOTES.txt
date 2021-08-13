@@ -2,6 +2,11 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 95
+------------
+  * Remove use of ARC from Metal backend. 
+    https://review.skia.org/311113
+
 * * *
 
 Milestone 94

@@ -12,17 +12,11 @@
 #include "src/gpu/mtl/GrMtlCommandBuffer.h"
 #include "src/gpu/mtl/GrMtlGpu.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
 #ifdef SK_DEBUG
 #define VALIDATE() this->validate()
 #else
 #define VALIDATE() do {} while(false)
 #endif
-
-GR_NORETAIN_BEGIN
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
 NSString* kBufferTypeNames[kGrGpuBufferTypeCount] = {
@@ -65,12 +59,13 @@ GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedTyp
     // to ensure we have space for the extra data
     size = SkAlign4(size);
 #endif
-    fMtlBuffer = size == 0 ? nil :
-            [gpu->device() newBufferWithLength: size
-                                       options: options];
+    if (size != 0) {
+        fMtlBuffer.reset([gpu->device() newBufferWithLength: size
+                                                    options: options]);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
-    fMtlBuffer.label = kBufferTypeNames[(int)intendedType];
+        (*fMtlBuffer).label = kBufferTypeNames[(int)intendedType];
 #endif
+    }
     this->registerWithCache(SkBudgeted::kYes);
     VALIDATE();
 }
@@ -114,12 +109,12 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
         memcpy(slice.fOffsetMapPtr, src, sizeInBytes);
 
         GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
-        id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();
+        id<MTLBlitCommandEncoder> blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();
         GrMtlBuffer* mtlBuffer = static_cast<GrMtlBuffer*>(slice.fBuffer);
         id<MTLBuffer> transferBuffer = mtlBuffer->mtlBuffer();
         [blitCmdEncoder copyFromBuffer: transferBuffer
                           sourceOffset: slice.fOffset
-                              toBuffer: fMtlBuffer
+                              toBuffer: fMtlBuffer.get()
                      destinationOffset: 0
                                   size: sizeInBytes];
     }
@@ -154,7 +149,7 @@ void GrMtlBuffer::internalMap(size_t sizeInBytes) {
         VALIDATE();
         SkASSERT(sizeInBytes <= this->size());
         SkASSERT(!this->isMapped());
-        fMapPtr = static_cast<char*>(fMtlBuffer.contents);
+        fMapPtr = static_cast<char*>((*fMtlBuffer).contents);
         VALIDATE();
     }
 }
@@ -166,7 +161,7 @@ void GrMtlBuffer::internalUnmap(size_t sizeInBytes) {
         SkASSERT(sizeInBytes <= this->size());
         SkASSERT(this->isMapped());
 #ifdef SK_BUILD_FOR_MAC
-        [fMtlBuffer didModifyRange: NSMakeRange(0, sizeInBytes)];
+        [*fMtlBuffer didModifyRange: NSMakeRange(0, sizeInBytes)];
 #endif
         fMapPtr = nullptr;
     }
@@ -197,4 +192,3 @@ void GrMtlBuffer::validate() const {
 }
 #endif
 
-GR_NORETAIN_END

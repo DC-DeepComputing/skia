@@ -11,6 +11,7 @@
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/mtl/GrMtlAttachment.h"
 #import <Metal/Metal.h>
+#include "include/ports/SkCFObject.h"
 
 class GrMtlGpu;
 
@@ -25,7 +26,7 @@ public:
 
     static sk_sp<GrMtlTexture> MakeWrappedTexture(GrMtlGpu*,
                                                   SkISize,
-                                                  id<MTLTexture>,
+                                                  sk_cfp<id<MTLTexture>>,
                                                   GrWrapCacheable,
                                                   GrIOType);
 

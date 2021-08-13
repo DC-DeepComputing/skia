@@ -17,15 +17,15 @@
  */
 class GrMtlRenderPipeline : public GrManagedResource {
 public:
-    static sk_sp<GrMtlRenderPipeline> Make(id<MTLRenderPipelineState> pso) {
-        return sk_sp<GrMtlRenderPipeline>(new GrMtlRenderPipeline(pso));
+    static sk_sp<GrMtlRenderPipeline> Make(sk_cfp<id<MTLRenderPipelineState>> pso) {
+        return sk_sp<GrMtlRenderPipeline>(new GrMtlRenderPipeline(std::move(pso)));
     }
 #ifdef SK_TRACE_MANAGED_RESOURCES
     /** output a human-readable dump of this resource's information
      */
     void dumpInfo() const override {
-        SkDebugf("GrMtlRenderPipeline: %p (%ld refs)\n", fPipelineState,
-                 CFGetRetainCount((CFTypeRef)fPipelineState));
+        SkDebugf("GrMtlRenderPipeline: %p (%ld refs)\n", fPipelineState.get(),
+                 CFGetRetainCount((CFTypeRef)fPipelineState.get()));
     }
 #endif
 
@@ -33,15 +33,15 @@ public:
         fPipelineState = nil;
     }
 
-    id<MTLRenderPipelineState> mtlPipelineState() { return fPipelineState; }
+    id<MTLRenderPipelineState> mtlPipelineState() { return fPipelineState.get(); }
 
 private:
-    GrMtlRenderPipeline(id<MTLRenderPipelineState> pso)
+    GrMtlRenderPipeline(sk_cfp<id<MTLRenderPipelineState>> pso)
         : GrManagedResource()
-        , fPipelineState(pso) {
+        , fPipelineState(std::move(pso)) {
     }
 
-    mutable id<MTLRenderPipelineState> fPipelineState;
+    mutable sk_cfp<id<MTLRenderPipelineState>> fPipelineState;
 };
 
 #endif
