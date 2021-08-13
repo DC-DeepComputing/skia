@@ -37,19 +37,19 @@ public:
 
     static sk_sp<GrMtlAttachment> MakeWrapped(GrMtlGpu* gpu,
                                               SkISize dimensions,
-                                              id<MTLTexture>,
+                                              sk_cfp<id<MTLTexture>>,
                                               UsageFlags attachmentUsages,
                                               GrWrapCacheable);
 
     ~GrMtlAttachment() override;
 
     GrBackendFormat backendFormat() const override {
-        return GrBackendFormat::MakeMtl(fTexture.pixelFormat);
+        return GrBackendFormat::MakeMtl((*fTexture).pixelFormat);
     }
 
-    MTLPixelFormat mtlFormat() const { return fTexture.pixelFormat; }
+    MTLPixelFormat mtlFormat() const { return (*fTexture).pixelFormat; }
 
-    id<MTLTexture> mtlTexture() const { return fTexture; }
+    id<MTLTexture> mtlTexture() const { return fTexture.get(); }
 
 protected:
     void onRelease() override;
@@ -69,18 +69,18 @@ private:
     GrMtlAttachment(GrMtlGpu* gpu,
                     SkISize dimensions,
                     UsageFlags supportedUsages,
-                    id<MTLTexture> texture,
+                    sk_cfp<id<MTLTexture>> texture,
                     SkBudgeted);
 
     GrMtlAttachment(GrMtlGpu* gpu,
                     SkISize dimensions,
                     UsageFlags supportedUsages,
-                    id<MTLTexture> texture,
+                    sk_cfp<id<MTLTexture>> texture,
                     GrWrapCacheable);
 
     GrMtlGpu* getMtlGpu() const;
 
-    id<MTLTexture> fTexture;
+    sk_cfp<id<MTLTexture>> fTexture;
 };
 
 #endif

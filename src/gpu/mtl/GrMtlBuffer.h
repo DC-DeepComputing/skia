@@ -8,6 +8,7 @@
 #ifndef GrMtlBuffer_DEFINED
 #define GrMtlBuffer_DEFINED
 
+#include "include/ports/SkCFObject.h"
 #include "src/gpu/GrGpuBuffer.h"
 #include "src/gpu/mtl/GrMtlUniformHandler.h"
 
@@ -23,7 +24,7 @@ public:
 
     ~GrMtlBuffer() override;
 
-    id<MTLBuffer> mtlBuffer() const { return fMtlBuffer; }
+    id<MTLBuffer> mtlBuffer() const { return fMtlBuffer.get(); }
 
 protected:
     GrMtlBuffer(GrMtlGpu*, size_t size, GrGpuBufferType intendedType, GrAccessPattern);
@@ -46,7 +47,7 @@ private:
 #endif
 
     bool fIsDynamic;
-    id<MTLBuffer> fMtlBuffer;
+    sk_cfp<id<MTLBuffer>> fMtlBuffer;
 
     using INHERITED = GrGpuBuffer;
 };

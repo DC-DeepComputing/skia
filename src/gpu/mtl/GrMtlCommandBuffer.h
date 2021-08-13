@@ -25,8 +25,6 @@ class GrMtlPipelineState;
 class GrMtlOpsRenderPass;
 class GrMtlRenderCommandEncoder;
 
-GR_NORETAIN_BEGIN
-
 class GrMtlCommandBuffer : public SkRefCnt {
 public:
     static sk_sp<GrMtlCommandBuffer> Make(id<MTLCommandQueue> queue);
@@ -47,7 +45,7 @@ public:
                                                        GrMtlOpsRenderPass* opsRenderPass);
 
     void addCompletedHandler(MTLCommandBufferHandler block) {
-        [fCmdBuffer addCompletedHandler:block];
+        [*fCmdBuffer addCompletedHandler:block];
     }
 
     void addResource(sk_sp<const GrManagedResource> resource) {
@@ -67,32 +65,29 @@ public:
     void encodeWaitForEvent(sk_sp<GrMtlEvent>, uint64_t value);
 
     void waitUntilCompleted() {
-        [fCmdBuffer waitUntilCompleted];
+        [*fCmdBuffer waitUntilCompleted];
     }
     bool isCompleted() {
-        return fCmdBuffer.status == MTLCommandBufferStatusCompleted ||
-               fCmdBuffer.status == MTLCommandBufferStatusError;
+        return (*fCmdBuffer).status == MTLCommandBufferStatusCompleted ||
+               (*fCmdBuffer).status == MTLCommandBufferStatusError;
     }
     void callFinishedCallbacks() { fFinishedCallbacks.reset(); }
 
     void pushDebugGroup(NSString* string) {
         if (@available(macOS 10.13, iOS 11.0, *)) {
-            [fCmdBuffer pushDebugGroup:string];
+            [*fCmdBuffer pushDebugGroup:string];
         }
     }
 
     void popDebugGroup() {
         if (@available(macOS 10.13, iOS 11.0, *)) {
-            [fCmdBuffer popDebugGroup];
+            [*fCmdBuffer popDebugGroup];
         }
     }
 
 private:
-    GrMtlCommandBuffer(id<MTLCommandBuffer> cmdBuffer)
-        : fCmdBuffer(cmdBuffer)
-        , fActiveBlitCommandEncoder(nil)
-        , fActiveRenderCommandEncoder(nil)
-        , fPreviousRenderPassDescriptor(nil)
+    GrMtlCommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
+        : fCmdBuffer(std::move(cmdBuffer))
         , fHasWork(false) {}
 
     void endAllEncoding();
@@ -103,16 +98,14 @@ private:
     SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>> fTrackedGrBuffers;
     SkSTArray<16, gr_cb<const GrSurface>> fTrackedGrSurfaces;
 
-    id<MTLCommandBuffer>        fCmdBuffer;
-    id<MTLBlitCommandEncoder>   fActiveBlitCommandEncoder;
+    sk_cfp<id<MTLCommandBuffer>> fCmdBuffer;
+    sk_cfp<id<MTLBlitCommandEncoder>> fActiveBlitCommandEncoder;
     std::unique_ptr<GrMtlRenderCommandEncoder> fActiveRenderCommandEncoder;
-    MTLRenderPassDescriptor*    fPreviousRenderPassDescriptor;
+    sk_cfp<MTLRenderPassDescriptor*> fPreviousRenderPassDescriptor;
     bool                        fHasWork;
 
     SkTArray<sk_sp<GrRefCntedCallback>> fFinishedCallbacks;
 
 };
-
-GR_NORETAIN_END
 
 #endif

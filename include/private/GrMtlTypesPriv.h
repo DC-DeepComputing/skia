@@ -38,17 +38,6 @@
 #endif
 #endif
 
-#if __has_feature(objc_arc) && __has_attribute(objc_externally_retained)
-#define GR_NORETAIN __attribute__((objc_externally_retained))
-#define GR_NORETAIN_BEGIN \
-    _Pragma("clang attribute push (__attribute__((objc_externally_retained)), apply_to=any(function,objc_method))")
-#define GR_NORETAIN_END _Pragma("clang attribute pop")
-#else
-#define GR_NORETAIN
-#define GR_NORETAIN_BEGIN
-#define GR_NORETAIN_END
-#endif
-
 #endif  // __APPLE__
 
 #endif  // GrMtlTypesPriv_DEFINED

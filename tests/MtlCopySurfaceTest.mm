@@ -27,9 +27,9 @@ DEF_GPUTEST_FOR_METAL_CONTEXT(MtlCopySurfaceTest, reporter, ctxInfo) {
     // This is a bit weird, but it's the only way to get a framebufferOnly surface
     GrMtlGpu* gpu = (GrMtlGpu*) context->priv().getGpu();
 
-    MTKView* view = [[MTKView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)
-                                            device:gpu->device()];
-    id<CAMetalDrawable> drawable = [view currentDrawable];
+    sk_cfp<MTKView*> view([[MTKView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)
+                                                  device:gpu->device()]);
+    id<CAMetalDrawable> drawable = [*view currentDrawable];
     REPORTER_ASSERT(reporter, drawable.texture.framebufferOnly);
     REPORTER_ASSERT(reporter, drawable.texture.usage & MTLTextureUsageRenderTarget);
 
@@ -38,7 +38,7 @@ DEF_GPUTEST_FOR_METAL_CONTEXT(MtlCopySurfaceTest, reporter, ctxInfo) {
 
     // TODO: check multisampled RT as well
     GrMtlTextureInfo fbInfo;
-    fbInfo.fTexture.retain((__bridge const void*)(drawable.texture));
+    fbInfo.fTexture.retain(drawable.texture);
     GrBackendRenderTarget backendRT(kWidth, kHeight, fbInfo);
 
     GrProxyProvider* proxyProvider = context->priv().proxyProvider();
