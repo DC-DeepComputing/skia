@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66134c25_b2ec551d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T15:10:01Z",
+      "side": 1,
+      "message": "A huge amount of churn in this CL is caused just by renaming \"error reporter\" to \"error handler\" in a ton of places.\n\nI am OK with the name \"error reporter\" and don\u0027t think it\u0027s worth any churn to change the name. It was a useful distinction when we had two things (an SkSL::ErrorReporter and a dsl::ErrorHandler) but now there is only one and I think the name change is not needed anymore.\n\nI mentioned in chat that I would rather not put all error handling under the \"DSL\" umbrella, as handling errors is something that all SkSL will need to do, not just DSL. I think my ideal would be:\n\n- Bring back SkSLErrorReporter.h\n",
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f234f2d_fd172010",
         "filename": "include/sksl/DSLErrorHandling.h",
         "patchSetId": 14
@@ -19,6 +36,29 @@
         "startChar": 14,
         "endLine": 42,
         "endChar": 16
+      },
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c7a5177_6ee976f2",
+        "filename": "include/sksl/DSLErrorHandling.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T15:10:01Z",
+      "side": 1,
+      "message": "These methods aren\u0027t used anywhere, and I\u0027m not sure if the ctor which takes a filename is used either. (I searched through the CL for a while without finding anything) \n\nWhat\u0027s fFilename for?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 68
       },
       "revId": "890b9887727b148d655c053732c05d21a15db587",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
