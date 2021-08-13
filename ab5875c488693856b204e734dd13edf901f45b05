@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0bfd6c_6f1e224d",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T21:04:25Z",
+      "side": 1,
+      "message": "tiny tiny nit: Passing fErrorReporter to fContext before it is constructed feels scary. The Context ctor just stores a reference, which is safe. But if it tried to do anything more with the reference within the ctor, we\u0027d blow up. Can we reorganize the member variables so that fErrorReporter can be constructed before fContext? That removes any possibility of trouble.",
+      "range": {
+        "startLine": 130,
+        "startChar": 10,
+        "endLine": 132,
+        "endChar": 32
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d6e3904_371758dc",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T21:04:25Z",
+      "side": 1,
+      "message": "Probably not intended for this CL? I guess this is related to my Struct changes yesterday? The move() is meaningless now, I guess... sorry!\nDoes SkMakeSpan(fields) work?",
+      "range": {
+        "startLine": 547,
+        "startChar": 41,
+        "endLine": 547,
+        "endChar": 71
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd1def8_79bbb0ee",
+        "filename": "src/sksl/dsl/priv/DSLWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T21:04:25Z",
+      "side": 1,
+      "message": "Optional: what do you think about naming this `IsActive`? An \"Is\" prefix on boolean accessors is nice for ease of readability IMO, but don\u0027t feel strongly.",
+      "range": {
+        "startLine": 60,
+        "startChar": 16,
+        "endLine": 60,
+        "endChar": 22
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2f6c91_8f535f33",
+        "filename": "src/sksl/dsl/priv/DSLWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T21:04:25Z",
+      "side": 1,
+      "message": "In a followup CL, let\u0027s remove these, and push/pop the ErrorReporter in the context in the rare case that the ErrorReporter needs to be swapped out (such as in the `Checkpoint` class).",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 0
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f5e3b21_6cc6b54c",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T21:04:25Z",
+      "side": 1,
+      "message": "Consider `fMsg +\u003d msg;`. On the off chance that more than one error occurs, we want our REPORTER_ASSERT below to definitely fire.",
+      "range": {
+        "startLine": 206,
+        "startChar": 16,
+        "endLine": 206,
+        "endChar": 27
+      },
+      "revId": "ab5875c488693856b204e734dd13edf901f45b05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
