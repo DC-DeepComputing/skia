@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0a5cf68_4c6f222c",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-13T17:10:34Z",
+      "side": 1,
+      "message": "make the loop be:\nfor (GrTextureType type : {GrTextureType::k2D, GrTextureType::kRectangle}) {\n\n?",
+      "range": {
+        "startLine": 800,
+        "startChar": 7,
+        "endLine": 804,
+        "endChar": 96
+      },
+      "revId": "a938f1a22b019b19b6aa69f50a221445f70697c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
