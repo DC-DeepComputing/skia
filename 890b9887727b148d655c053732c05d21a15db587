@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c536c639_572008ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T15:13:13Z",
+      "side": 1,
+      "message": "Huh, I didn\u0027t mean to send that yet, sorry.\n\n- Bring back SkSLErrorReporter.h\n- Rename dsl::ErrorHandler to SkSL::ErrorReporter\n- Rename DSLErrorHandling.h to DSLErrorReporter.h\n- use type aliases to make dsl::ErrorReporter \u003d SkSL::ErrorReporter (or a very simple subclass)\n\nAlso, I\u0027m not yet actually sure how this API interfaces with public code, since it has no virtual functions, but I\u0027m guessing that happens in a followup CL.",
+      "parentUuid": "66134c25_b2ec551d",
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f234f2d_fd172010",
         "filename": "include/sksl/DSLErrorHandling.h",
         "patchSetId": 14
