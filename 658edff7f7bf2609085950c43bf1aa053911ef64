@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e20807f_c811e065",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-08-13T20:30:31Z",
+      "side": 1,
+      "message": "lgtm on the upgrade front, but I\u0027ll defer to Eric on the python changes.",
+      "revId": "658edff7f7bf2609085950c43bf1aa053911ef64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
