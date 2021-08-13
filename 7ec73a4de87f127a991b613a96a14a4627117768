@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97b579ba_2eb7b698",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T22:18:01Z",
+      "side": 1,
+      "message": "I noticed this because the \"pm\" variable name triggered -Wshadow (there is already a \"pm\" variable in the outer scope).",
+      "range": {
+        "startLine": 781,
+        "startChar": 24,
+        "endLine": 781,
+        "endChar": 33
+      },
+      "revId": "7ec73a4de87f127a991b613a96a14a4627117768",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
