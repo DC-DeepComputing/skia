@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eeca4d2_5aa63bf9",
+        "filename": "include/sksl/DSLErrorHandling.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-13T20:25:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4489edba_33dbf328",
+      "range": {
+        "startLine": 42,
+        "startChar": 14,
+        "endLine": 42,
+        "endChar": 16
+      },
+      "revId": "890b9887727b148d655c053732c05d21a15db587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c7a5177_6ee976f2",
