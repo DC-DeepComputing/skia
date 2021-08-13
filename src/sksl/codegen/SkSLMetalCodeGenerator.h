@@ -167,7 +167,7 @@ protected:
 
     bool matrixConstructHelperIsNeeded(const ConstructorCompound& c);
     String getMatrixConstructHelper(const AnyConstructor& c);
-    void assembleMatrixFromMatrix(const Type& sourceMatrix, int rows, int columns);
+    void assembleMatrixFromMatrix(const Type& sourceMatrix, int columns, int rows);
     void assembleMatrixFromExpressions(const AnyConstructor& ctor, int rows, int columns);
 
     void writeMatrixCompMult();
@@ -178,7 +178,7 @@ protected:
 
     void writeMatrixEqualityHelpers(const Type& left, const Type& right);
 
-    void writeVectorFromMat2x2ConstructorHelper();
+    String getVectorFromMat2x2ConstructorHelper(const Type& matrixType);
 
     void writeArrayEqualityHelpers(const Type& type);
 
