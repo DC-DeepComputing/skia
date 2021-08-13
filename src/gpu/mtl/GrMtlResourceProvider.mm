@@ -18,12 +18,6 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlResourceProvider::GrMtlResourceProvider(GrMtlGpu* gpu)
     : fGpu(gpu) {
     fPipelineStateCache.reset(new PipelineStateCache(gpu));
@@ -187,5 +181,3 @@ bool GrMtlResourceProvider::PipelineStateCache::precompileShader(const SkData& k
     return true;
 
 }
-
-GR_NORETAIN_END

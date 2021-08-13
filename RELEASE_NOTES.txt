@@ -6,6 +6,9 @@ This file includes a list of high level updates for each milestone release.
 
 Milestone 94
 ------------
+  * Remove use of ARC from Metal backend. 
+    https://review.skia.org/311113
+
   * Metal backend has been changed to track command buffer resources manually
     rather than using retained resources.
     https://review.skia.org/432878

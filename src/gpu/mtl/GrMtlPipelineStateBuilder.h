@@ -16,6 +16,8 @@
 
 #import <Metal/Metal.h>
 
+#include "include/ports/SkCFObject.h"
+
 class GrProgramDesc;
 class GrProgramInfo;
 class GrMtlCaps;
@@ -24,9 +26,8 @@ class GrMtlPipelineState;
 class SkReadBuffer;
 
 struct GrMtlPrecompiledLibraries {
-    // TODO: wrap these in sk_cfp<> or unique_ptr<> when we remove ARC
-    id<MTLLibrary> fVertexLibrary;
-    id<MTLLibrary> fFragmentLibrary;
+    sk_cfp<id<MTLLibrary>> fVertexLibrary;
+    sk_cfp<id<MTLLibrary>> fFragmentLibrary;
     bool fRTFlip = false;
 };
 
@@ -61,9 +62,9 @@ private:
 
     void finalizeFragmentSecondaryColor(GrShaderVar& outputColor) override;
 
-    id<MTLLibrary> compileMtlShaderLibrary(const SkSL::String& shader,
-                                           SkSL::Program::Inputs inputs,
-                                           GrContextOptions::ShaderErrorHandler* errorHandler);
+    sk_cfp<id<MTLLibrary>> compileMtlShaderLibrary(const SkSL::String& shader,
+                                                   SkSL::Program::Inputs,
+                                                   GrContextOptions::ShaderErrorHandler*);
     void storeShadersInCache(const SkSL::String shaders[], const SkSL::Program::Inputs inputs[],
                              SkSL::Program::Settings*, sk_sp<SkData>, bool isSkSL);
 

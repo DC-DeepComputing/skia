@@ -69,22 +69,16 @@ private:
 
     GrMtlGpu*                   fGpu;
 
-    sk_sp<GrMtlFramebuffer>     fFramebuffer;
-    GrMtlRenderCommandEncoder*  fActiveRenderCmdEncoder;
-    GrMtlPipelineState*         fActivePipelineState = nullptr;
-    MTLPrimitiveType            fActivePrimitiveType;
-    MTLRenderPassDescriptor*    fRenderPassDesc;
-    SkRect                      fBounds;
-    size_t                      fCurrentVertexStride;
+    sk_sp<GrMtlFramebuffer> fFramebuffer;
+    GrMtlRenderCommandEncoder* fActiveRenderCmdEncoder;
+    GrMtlPipelineState* fActivePipelineState = nullptr;
+    MTLPrimitiveType fActivePrimitiveType;
+    sk_cfp<MTLRenderPassDescriptor*> fRenderPassDesc;
+    SkRect fBounds;
+    size_t fCurrentVertexStride;
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
-    bool                        fDebugGroupActive = false;
+    bool fDebugGroupActive = false;
 #endif
-
-    static constexpr size_t kNumBindings = GrMtlUniformHandler::kUniformBindingCount + 2;
-    struct {
-        id<MTLBuffer> fBuffer;
-        size_t fOffset;
-    } fBufferBindings[kNumBindings];
 
     using INHERITED = GrOpsRenderPass;
 };
