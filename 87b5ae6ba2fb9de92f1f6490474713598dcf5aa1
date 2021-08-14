@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855b9ebf_f01066eb",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-14T00:04:38Z",
+      "side": 0,
+      "message": "wow, this was quite a bug",
+      "range": {
+        "startLine": 781,
+        "startChar": 37,
+        "endLine": 781,
+        "endChar": 38
+      },
+      "revId": "87b5ae6ba2fb9de92f1f6490474713598dcf5aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4bfec69_a7ab9ec3",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-14T00:04:38Z",
+      "side": 0,
+      "message": "personally, I bet we don\u0027t need an intermediate named variable\n\ne.g. how about\n\nfLevels[i].fPixmap.colorType() !\u003d root.colorType()\nfLevels[i].fPixmap.alphaType() !\u003d root.alphaType()",
+      "range": {
+        "startLine": 782,
+        "startChar": 12,
+        "endLine": 782,
+        "endChar": 14
+      },
+      "revId": "87b5ae6ba2fb9de92f1f6490474713598dcf5aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
