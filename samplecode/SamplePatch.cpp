@@ -474,12 +474,14 @@ protected:
         this->dodraw(canvas, fPE[4], 900, 0);
         this->dodraw(canvas, fPE[5], 900, 300);
 
+#ifdef SK_SUPPORT_STROKEANDFILL
         p.setColor(SK_ColorBLACK);
         p.setStyle(SkPaint::kStrokeAndFill_Style);
         p.setStrokeJoin(SkPaint::kRound_Join);
         p.setStrokeCap(SkPaint::kRound_Cap);
         p.setStrokeWidth(20);
         this->dodraw(canvas, nullptr, 600, 0, &p);
+#endif
     }
 
     Click* onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey modi) override {

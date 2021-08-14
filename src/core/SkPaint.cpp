@@ -283,7 +283,7 @@ static uint32_t unpack_v68(SkPaint* paint, uint32_t packed, SkSafeRange& safe) {
     packed >>= 2;
     paint->setStrokeJoin(safe.checkLE(packed & 0x3, SkPaint::kLast_Join));
     packed >>= 2;
-    paint->setStyle(safe.checkLE(packed & 0x3, SkPaint::kStrokeAndFill_Style));
+    paint->setStyle(safe.checkLE(packed & 0x3, SkPaint::kLast_Style));
     packed >>= 2;
     // skip the (now ignored) filterquality bits
     packed >>= 2;

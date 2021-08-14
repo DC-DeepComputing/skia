@@ -264,9 +264,13 @@ DEF_SIMPLE_GM(stroke_and_fill_patheffect, canvas, 900, 450) {
         { SkPaint::kStroke_Style,                   0, false, false },
         { SkPaint::kFill_Style,                     0,  true, false },
         { SkPaint::kStroke_Style,                   0,  true, false },
+#ifdef SK_SUPPORT_STROKEANDFILL
         { SkPaint::kStrokeAndFill_Style, kStrokeWidth, false, true  },
+#endif
         { SkPaint::kStroke_Style,        kStrokeWidth,  true, true  },
+#ifdef SK_SUPPORT_STROKEANDFILL
         { SkPaint::kStrokeAndFill_Style, kStrokeWidth,  true, true  },
+#endif
     };
 
     SkPaint paint;

@@ -43,7 +43,9 @@ GrPathRenderer::CanDrawPath GrTessellationPathRenderer::onCanDrawPath(
     if (args.fAAType == GrAAType::kCoverage ||
         shape.style().hasPathEffect() ||
         args.fViewMatrix->hasPerspective() ||
+#ifdef SK_SUPPORT_STROKEANDFILL
         shape.style().strokeRec().getStyle() == SkStrokeRec::kStrokeAndFill_Style ||
+#endif
         !args.fProxy->canUseStencil(*args.fCaps)) {
         return CanDrawPath::kNo;
     }
@@ -112,7 +114,9 @@ bool GrTessellationPathRenderer::onDrawPath(const DrawPathArgs& args) {
         SkASSERT(!path.isInverseFillType());  // See onGetStencilSupport().
         SkASSERT(args.fUserStencilSettings->isUnused());
         const SkStrokeRec& stroke = args.fShape->style().strokeRec();
+#ifdef SK_SUPPORT_STROKEANDFILL
         SkASSERT(stroke.getStyle() != SkStrokeRec::kStrokeAndFill_Style);
+#endif
         auto op = GrOp::Make<GrStrokeTessellateOp>(args.fContext, args.fAAType, *args.fViewMatrix,
                                                    path, stroke, std::move(args.fPaint));
         sdc->addDrawOp(args.fClip, std::move(op));

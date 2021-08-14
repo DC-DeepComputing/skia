@@ -1030,6 +1030,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     SkScalar        strokeWidth = paint.getStrokeWidth();
 
     unsigned flags = 0;
+    bool frameAndFill = false;
 
     if (font.isEmbolden()) {
 #ifdef SK_USE_FREETYPE_EMBOLDEN
@@ -1042,7 +1043,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
         SkScalar extra = font.getSize() * fakeBoldScale;
 
         if (style == SkPaint::kFill_Style) {
-            style = SkPaint::kStrokeAndFill_Style;
+            frameAndFill = true;
             strokeWidth = extra;    // ignore paint's strokeWidth if it was "fill"
         } else {
             strokeWidth += extra;
@@ -1050,13 +1051,19 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
 #endif
     }
 
-    if (style != SkPaint::kFill_Style && strokeWidth >= 0) {
+    if (((style != SkPaint::kFill_Style) || frameAndFill) && strokeWidth >= 0) {
         rec->fFrameWidth = strokeWidth;
         rec->fMiterLimit = paint.getStrokeMiter();
         rec->fStrokeJoin = SkToU8(paint.getStrokeJoin());
         rec->fStrokeCap = SkToU8(paint.getStrokeCap());
 
+#ifdef SK_SUPPORT_STROKEANDFILL
         if (style == SkPaint::kStrokeAndFill_Style) {
+            frameAndFill = true;
+        }
+#endif
+
+        if (frameAndFill) {
             flags |= SkScalerContext::kFrameAndFill_Flag;
         }
     } else {
