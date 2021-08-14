@@ -204,13 +204,13 @@ static bool init_instance_extensions_and_layers(GrVkGetProc getProc,
     // via explicitly enabled layers
     layerCount = instanceLayers->count();
     for (uint32_t layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
-        uint32_t extensionCount = 0;
+        extensionCount = 0;
         res = EnumerateInstanceExtensionProperties((*instanceLayers)[layerIndex].layerName,
                                                    &extensionCount, nullptr);
         if (VK_SUCCESS != res) {
             return false;
         }
-        VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
+        extensions = new VkExtensionProperties[extensionCount];
         res = EnumerateInstanceExtensionProperties((*instanceLayers)[layerIndex].layerName,
                                                    &extensionCount, extensions);
         if (VK_SUCCESS != res) {
@@ -289,14 +289,14 @@ static bool init_device_extensions_and_layers(GrVkGetProc getProc, uint32_t spec
     // via explicitly enabled layers
     layerCount = deviceLayers->count();
     for (uint32_t layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
-        uint32_t extensionCount = 0;
+        extensionCount = 0;
         res = EnumerateDeviceExtensionProperties(physDev,
             (*deviceLayers)[layerIndex].layerName,
             &extensionCount, nullptr);
         if (VK_SUCCESS != res) {
             return false;
         }
-        VkExtensionProperties* extensions = new VkExtensionProperties[extensionCount];
+        extensions = new VkExtensionProperties[extensionCount];
         res = EnumerateDeviceExtensionProperties(physDev,
             (*deviceLayers)[layerIndex].layerName,
             &extensionCount, extensions);
