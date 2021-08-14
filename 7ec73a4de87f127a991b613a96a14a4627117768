@@ -22,6 +22,30 @@
       },
       "revId": "7ec73a4de87f127a991b613a96a14a4627117768",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851f3c2f_9d9eb0d8",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-14T00:30:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "97b579ba_2eb7b698",
+      "range": {
+        "startLine": 781,
+        "startChar": 24,
+        "endLine": 781,
+        "endChar": 33
+      },
+      "revId": "7ec73a4de87f127a991b613a96a14a4627117768",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
