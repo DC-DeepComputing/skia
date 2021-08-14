@@ -268,7 +268,9 @@ static void draw_typeface_rendering_gm(SkCanvas* canvas, sk_sp<SkTypeface> face,
         { SkPaint::kFill_Style, 0.0f},
         { SkPaint::kStroke_Style, 0.0f},
         { SkPaint::kStroke_Style, 0.5f},
+#ifdef SK_SUPPORT_STROKEANDFILL
         { SkPaint::kStrokeAndFill_Style, 1.0f},
+#endif
     };
 
     constexpr bool fakeBoldTypes[] = { false, true };
@@ -398,8 +400,14 @@ DEF_SIMPLE_GM_CAN_FAIL(typefacerendering_pfb, canvas, errMsg, 640, 840) {
 
 #include "include/effects/SkStrokeAndFillPathEffect.h"
 
+#ifdef SK_SUPPORT_STROKEANDFILL
+constexpr int typeface_styling_W = 710;
+#else
+constexpr int typeface_styling_W = 508;
+#endif
+
 // Exercise different paint styles and embolden, and compare with strokeandfill patheffect
-DEF_SIMPLE_GM(typeface_styling, canvas, 710, 360) {
+DEF_SIMPLE_GM(typeface_styling, canvas, typeface_styling_W, 360) {
     sk_sp<SkTypeface> face = MakeResourceAsTypeface("fonts/Roboto-Regular.ttf");
     SkFont font;
     font.setTypeface(face);
@@ -438,8 +446,10 @@ DEF_SIMPLE_GM(typeface_styling, canvas, 710, 360) {
         { SkPaint::kFill_Style,             0,  false },
         { SkPaint::kStroke_Style,           0,  false },
         { SkPaint::kStroke_Style,           3,  false },
+#ifdef SK_SUPPORT_STROKEANDFILL
         { SkPaint::kStrokeAndFill_Style,    0,  false },
         { SkPaint::kStrokeAndFill_Style,    3,  false },
+#endif
         { SkPaint::kStroke_Style,           0,  true },
         { SkPaint::kStroke_Style,           3,  true },
     };

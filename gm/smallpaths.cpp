@@ -378,6 +378,8 @@ protected:
             canvas->translate(gXTranslate[i], fDY[i]);
         }
         canvas->restore();
+
+#ifdef SK_SUPPORT_STROKEANDFILL
         canvas->translate(SkIntToScalar(120), SkIntToScalar(0));
 
         // fourth column: stroked and filled paths
@@ -389,7 +391,7 @@ protected:
             canvas->drawPath(fPath[i], paint);
             canvas->translate(gXTranslate[i], fDY[i]);
         }
-
+#endif
     }
 
 private:
