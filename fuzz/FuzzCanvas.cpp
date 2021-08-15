@@ -1013,7 +1013,7 @@ static void fuzz_canvas(Fuzz* fuzz, SkCanvas* canvas, int depth = 9) {
     SkAutoCanvasRestore autoCanvasRestore(canvas, false);
     unsigned N;
     fuzz->nextRange(&N, 0, 2000);
-    for (unsigned i = 0; i < N; ++i) {
+    for (unsigned loop = 0; loop < N; ++loop) {
         if (fuzz->exhausted()) {
             return;
         }
