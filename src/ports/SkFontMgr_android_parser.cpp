@@ -276,9 +276,9 @@ static const TagHandler familyHandler = {
         // If there is no name, this is a fallback only font.
         FontFamily* family = new FontFamily(self->fBasePath, true);
         self->fCurrentFamily.reset(family);
-        for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
-            const char* name = attributes[i];
-            const char* value = attributes[i+1];
+        for (size_t attrIdx = 0; ATTS_NON_NULL(attributes, attrIdx); attrIdx += 2) {
+            const char* name = attributes[attrIdx];
+            const char* value = attributes[attrIdx+1];
             size_t nameLen = strlen(name);
             size_t valueLen = strlen(value);
             if (MEMEQ("name", name, nameLen)) {
