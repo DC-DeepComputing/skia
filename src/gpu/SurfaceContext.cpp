@@ -188,6 +188,11 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                             defaultRGBAFormat.isValid() &&
                             dContext->priv().validPMUPMConversionExists();
 
+    // Since the validPMUPMConversionExists function actually submits work to the gpu to do its
+    // tests, it is possible that during that call we have abanoned the context. Thus we do
+    // another abanoned check here to make sure we are still valid.
+    RETURN_FALSE_IF_ABANDONED
+
     auto readFlag = caps->surfaceSupportsReadPixels(srcSurface);
     if (readFlag == GrCaps::SurfaceReadPixelsSupport::kUnsupported) {
         return false;
