@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f68ff0e8_4883fb0a",
+        "filename": "infra/bots/assets/android_ndk_darwin/create.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-16T16:34:33Z",
+      "side": 1,
+      "message": "You can use 145247227042 for the skia-public project, but I don\u0027t think it should matter.  It just sets the default for convenience in not having to type the project number every time for some commands.",
+      "parentUuid": "14f0ca2e_3cd37bf9",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 27
+      },
+      "revId": "658edff7f7bf2609085950c43bf1aa053911ef64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f008701_6187c7ad",
         "filename": "infra/bots/assets/android_ndk_darwin/create.py",
         "patchSetId": 3
