@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cabcede5_a6fc78b2",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3472,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-16T18:12:00Z",
+      "side": 1,
+      "message": "Tangential side note to this change, I\u0027ve been trying to figure out exactly what this check here does and/or why this is \u0027!\u0027 for the renderabale check. Do you know why this check is causing us to early out here? Is the \u0027!\u0027 right? Is the comment and the check referring to different things? Like does the format have to renderable in order to use copy[sub]image or blit so there isn\u0027t any reason to keep checking things? I\u0027m also not exactly sure why we\u0027re doing the colorType version here and not the pure backend format one. Like if src is an GrRTProxy then we at least know some version of the format is renderable.",
+      "range": {
+        "startLine": 3465,
+        "startChar": 0,
+        "endLine": 3472,
+        "endChar": 5
+      },
+      "revId": "5ad4da6729e463309ac0e08873db32226ca051ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
