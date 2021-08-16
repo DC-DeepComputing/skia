@@ -6,7 +6,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ops/GrSmallPathRenderer.h"
+#include "src/gpu/ops/SmallPathRenderer.h"
 
 #include "include/core/SkPaint.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -32,6 +32,8 @@
 #include "src/gpu/ops/GrSmallPathShapeData.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
+namespace skgpu::v1 {
+
 // mip levels
 static constexpr SkScalar kIdealMinMIP = 12;
 static constexpr SkScalar kMaxMIP = 162;
@@ -40,11 +42,11 @@ static constexpr SkScalar kMaxDim = 73;
 static constexpr SkScalar kMinSize = SK_ScalarHalf;
 static constexpr SkScalar kMaxSize = 2*kMaxMIP;
 
-GrSmallPathRenderer::GrSmallPathRenderer() {}
+SmallPathRenderer::SmallPathRenderer() {}
 
-GrSmallPathRenderer::~GrSmallPathRenderer() {}
+SmallPathRenderer::~SmallPathRenderer() {}
 
-GrPathRenderer::CanDrawPath GrSmallPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
+GrPathRenderer::CanDrawPath SmallPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
     if (!args.fCaps->shaderCaps()->shaderDerivativeSupport()) {
         return CanDrawPath::kNo;
     }
@@ -95,7 +97,7 @@ GrPathRenderer::CanDrawPath GrSmallPathRenderer::onCanDrawPath(const CanDrawPath
 // padding around path bounds to allow for antialiased pixels
 static const int kAntiAliasPad = 1;
 
-class GrSmallPathRenderer::SmallPathOp final : public GrMeshDrawOp {
+class SmallPathRenderer::SmallPathOp final : public GrMeshDrawOp {
 private:
     using Helper = GrSimpleMeshDrawOpHelperWithStencil;
 
@@ -694,9 +696,9 @@ private:
     using INHERITED = GrMeshDrawOp;
 };
 
-bool GrSmallPathRenderer::onDrawPath(const DrawPathArgs& args) {
+bool SmallPathRenderer::onDrawPath(const DrawPathArgs& args) {
     GR_AUDIT_TRAIL_AUTO_FRAME(args.fContext->priv().auditTrail(),
-                              "GrSmallPathRenderer::onDrawPath");
+                              "SmallPathRenderer::onDrawPath");
 
     // we've already bailed on inverse filled paths, so this is safe
     SkASSERT(!args.fShape->isEmpty());
@@ -710,20 +712,24 @@ bool GrSmallPathRenderer::onDrawPath(const DrawPathArgs& args) {
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #if GR_TEST_UTILS
-
-GrOp::Owner GrSmallPathRenderer::createOp_TestingOnly(
+GrOp::Owner SmallPathRenderer::createOp_TestingOnly(
         GrRecordingContext* context,
         GrPaint&& paint,
         const GrStyledShape& shape,
         const SkMatrix& viewMatrix,
         bool gammaCorrect,
         const GrUserStencilSettings* stencil) {
-    return GrSmallPathRenderer::SmallPathOp::Make(context, std::move(paint), shape, viewMatrix,
-                                                  gammaCorrect, stencil);
+    return SmallPathRenderer::SmallPathOp::Make(context, std::move(paint), shape, viewMatrix,
+                                                gammaCorrect, stencil);
 }
+#endif // GR_TEST_UTILS
+
+} // namespace skgpu::v1
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if GR_TEST_UTILS
 
 GR_DRAW_OP_TEST_DEFINE(SmallPathOp) {
     SkMatrix viewMatrix = GrTest::TestMatrix(random);
@@ -731,11 +737,12 @@ GR_DRAW_OP_TEST_DEFINE(SmallPathOp) {
 
     // This path renderer only allows fill styles.
     GrStyledShape shape(GrTest::TestPath(random), GrStyle::SimpleFill());
-    return GrSmallPathRenderer::createOp_TestingOnly(
+    return skgpu::v1::SmallPathRenderer::createOp_TestingOnly(
                                          context,
                                          std::move(paint), shape, viewMatrix,
                                          gammaCorrect,
                                          GrGetRandomStencil(random, context));
 }
 
-#endif
+#endif // GR_TEST_UTILS
+
