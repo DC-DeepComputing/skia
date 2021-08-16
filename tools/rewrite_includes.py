@@ -8,10 +8,10 @@
 
 import argparse
 import os
+import six
 import sys
 
-from io import StringIO
-
+from six import StringIO
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-n', '--dry-run', action='store_true',
