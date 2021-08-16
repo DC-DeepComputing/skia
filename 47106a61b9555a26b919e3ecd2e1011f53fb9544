@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e297d842_450f54ab",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-16T19:27:17Z",
+      "side": 1,
+      "message": "maybe document that we explicitly want this to be a double for the intermediate calculation...?",
+      "range": {
+        "startLine": 650,
+        "startChar": 50,
+        "endLine": 650,
+        "endChar": 53
+      },
+      "revId": "47106a61b9555a26b919e3ecd2e1011f53fb9544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d31bb74_c47b5335",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-16T19:27:17Z",
+      "side": 1,
+      "message": "I think I understand this, but it does seem to read funny, when we say \"divide(x)\" and we mean multipy_by_x_and_divide_by_this",
+      "range": {
+        "startLine": 286,
+        "startChar": 51,
+        "endLine": 286,
+        "endChar": 57
+      },
+      "revId": "47106a61b9555a26b919e3ecd2e1011f53fb9544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
