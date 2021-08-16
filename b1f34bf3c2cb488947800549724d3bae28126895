@@ -16,6 +16,24 @@
       "message": "This is one of those awkward places with accidental non-logical shadowing. The reality is that this block of code is a function which returns \u0027glyphbuf\u0027 and \u0027total_size\u0027. The \u0027format\u0027 isn\u0027t logically part of the output nor is it logically related the the below \u0027else format\u0027.\n\nMaybe this is better expressed as\n\n    SkAutoSTMalloc\u003cBUFFERSIZE, uint8_t\u003e glyphbuf(BUFFERSIZE);\n    DWORD total_size \u003d 0;\n    {\n        UINT format \u003d GGO_NATIVE | GGO_GLYPH_INDEX;\n        if (fRec.getHinting() \u003d\u003d SkFontHinting::kNone || fRec.getHinting() \u003d\u003d SkFontHinting::kSlight){\n            format |\u003d GGO_UNHINTED;\n        }\n        total_size \u003d getGDIGlyphPath(glyph, format, \u0026glyphbuf);\n    }",
       "revId": "b1f34bf3c2cb488947800549724d3bae28126895",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b3d2e7e_96b0c674",
+        "filename": "src/ports/SkFontHost_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-16T15:38:13Z",
+      "side": 0,
+      "message": "I realized that the second \"format\" didn\u0027t need to exist at all; I just removed it. Now the second call to `getGDIGlyphPath` just passes `GGO_NATIVE | GGO_GLYPH_INDEX` directly.",
+      "parentUuid": "3b746e91_47cacecf",
+      "revId": "b1f34bf3c2cb488947800549724d3bae28126895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
