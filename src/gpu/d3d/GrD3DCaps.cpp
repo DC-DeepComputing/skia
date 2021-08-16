@@ -797,8 +797,10 @@ bool GrD3DCaps::isFormatTexturable(DXGI_FORMAT format) const {
     return SkToBool(FormatInfo::kTexturable_Flag & info.fFlags);
 }
 
-bool GrD3DCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
-                                             int sampleCount) const {
+bool GrD3DCaps::isFormatAsColorTypeRenderable(GrColorType ct,
+                                              const GrBackendFormat& format,
+                                              GrTextureType,
+                                              int sampleCount) const {
     DXGI_FORMAT dxgiFormat;
     if (!format.asDxgiFormat(&dxgiFormat)) {
         return false;
@@ -813,7 +815,9 @@ bool GrD3DCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFor
     return true;
 }
 
-bool GrD3DCaps::isFormatRenderable(const GrBackendFormat& format, int sampleCount) const {
+bool GrD3DCaps::isFormatRenderable(const GrBackendFormat& format,
+                                   GrTextureType,
+                                   int sampleCount) const {
     DXGI_FORMAT dxgiFormat;
     if (!format.asDxgiFormat(&dxgiFormat)) {
         return false;

@@ -150,7 +150,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability, reporter, ctxInfo) {
 
         // Check if 'isFormatAsColorTypeRenderable' agrees with 'createTexture' (w/o MSAA)
         {
-            bool isRenderable = caps->isFormatRenderable(combo.fFormat, 1);
+            bool isRenderable = caps->isFormatRenderable(combo.fFormat, GrTextureType::k2D, 1);
 
             sk_sp<GrSurface> tex = resourceProvider->createTexture(
                     kDims, combo.fFormat, GrTextureType::k2D, GrRenderable::kYes, 1,
@@ -163,7 +163,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability, reporter, ctxInfo) {
 
         // Check if 'isFormatAsColorTypeRenderable' agrees with 'createTexture' w/ MSAA
         {
-            bool isRenderable = caps->isFormatRenderable(combo.fFormat, 2);
+            bool isRenderable = caps->isFormatRenderable(combo.fFormat, GrTextureType::k2D, 2);
 
             sk_sp<GrSurface> tex = resourceProvider->createTexture(
                     kDims, combo.fFormat, GrTextureType::k2D, GrRenderable::kYes, 2,
@@ -252,7 +252,8 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions) {
 
             for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
                 if (renderable == GrRenderable::kYes &&
-                    !caps->isFormatAsColorTypeRenderable(combo.fColorType, combo.fFormat)) {
+                    !caps->isFormatAsColorTypeRenderable(
+                            combo.fColorType, combo.fFormat, GrTextureType::k2D)) {
                     continue;
                 }
 

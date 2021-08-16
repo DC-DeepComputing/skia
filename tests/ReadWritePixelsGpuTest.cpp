@@ -488,7 +488,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels, reporter, ctxInfo) 
                     // We'd have to be able to force a copy or draw draw to a renderable format.
                     const auto& caps = *direct->priv().caps();
                     if (direct->backend() == GrBackendApi::kOpenGL &&
-                        !caps.isFormatRenderable(surface->asSurfaceProxy()->backendFormat(), 1)) {
+                        !caps.isFormatRenderable(surface->asSurfaceProxy()->backendFormat(),
+                                                 GrTextureType::k2D,
+                                                 1)) {
                         return Result::kExcusedFailure;
                     }
                     return Result::kFail;
@@ -647,7 +649,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels, reporter, ctxInfo) {
         // types.
         auto ct = SkColorTypeToGrColorType(image->colorType());
         auto format = context->priv().caps()->getDefaultBackendFormat(ct, GrRenderable::kYes);
-        if (!context->priv().caps()->isFormatAsColorTypeRenderable(ct, format)) {
+        if (!context->priv().caps()->isFormatAsColorTypeRenderable(ct,
+                                                                   format,
+                                                                   GrTextureType::k2D)) {
             return Result::kExcusedFailure;
         }
 

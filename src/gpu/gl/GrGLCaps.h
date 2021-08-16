@@ -123,9 +123,13 @@ public:
     bool isFormatTexturable(const GrBackendFormat&, GrTextureType) const override;
     bool isFormatTexturable(GrGLFormat) const;
 
-    bool isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+    bool isFormatAsColorTypeRenderable(GrColorType ct,
+                                       const GrBackendFormat& format,
+                                       GrTextureType,
                                        int sampleCount = 1) const override;
-    bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const override;
+    bool isFormatRenderable(const GrBackendFormat& format,
+                            GrTextureType,
+                            int sampleCount) const override;
     bool isFormatRenderable(GrGLFormat format, int sampleCount) const {
         return sampleCount <= this->maxRenderTargetSampleCount(format);
     }

@@ -383,7 +383,9 @@ bool GrMtlCaps::isFormatTexturable(MTLPixelFormat format) const {
     return SkToBool(FormatInfo::kTexturable_Flag && formatInfo.fFlags);
 }
 
-bool GrMtlCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+bool GrMtlCaps::isFormatAsColorTypeRenderable(GrColorType ct,
+                                              const GrBackendFormat& format,
+                                              GrTextureType,
                                               int sampleCount) const {
     if (!this->isFormatRenderable(format, sampleCount)) {
         return false;
@@ -397,7 +399,9 @@ bool GrMtlCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFor
     return true;
 }
 
-bool GrMtlCaps::isFormatRenderable(const GrBackendFormat& format, int sampleCount) const {
+bool GrMtlCaps::isFormatRenderable(const GrBackendFormat& format,
+                                   GrTextureTye,
+                                   int sampleCount) const {
     return this->isFormatRenderable(GrBackendFormatAsMTLPixelFormat(format), sampleCount);
 }
 

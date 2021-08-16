@@ -33,9 +33,13 @@ public:
 
     bool isFormatCopyable(const GrBackendFormat&) const override { return true; }
 
-    bool isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+    bool isFormatAsColorTypeRenderable(GrColorType ct,
+                                       const GrBackendFormat& format,
+                                       GrTextureType,
                                        int sampleCount = 1) const override;
-    bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const override;
+    bool isFormatRenderable(const GrBackendFormat& format,
+                            GrTextureType,
+                            int sampleCount) const override;
     bool isFormatRenderable(DXGI_FORMAT, int sampleCount) const;
 
     bool isFormatUnorderedAccessible(DXGI_FORMAT) const;

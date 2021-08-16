@@ -337,7 +337,9 @@ sk_sp<GrTexture> GrGpu::wrapRenderableBackendTexture(const GrBackendTexture& bac
     const GrCaps* caps = this->caps();
 
     if (!caps->isFormatTexturable(backendTex.getBackendFormat(), backendTex.textureType()) ||
-        !caps->isFormatRenderable(backendTex.getBackendFormat(), sampleCnt)) {
+        !caps->isFormatRenderable(backendTex.getBackendFormat(),
+                                  backendTex.textureType(),
+                                  sampleCnt)) {
         return nullptr;
     }
 
@@ -359,7 +361,9 @@ sk_sp<GrRenderTarget> GrGpu::wrapBackendRenderTarget(const GrBackendRenderTarget
 
     const GrCaps* caps = this->caps();
 
-    if (!caps->isFormatRenderable(backendRT.getBackendFormat(), backendRT.sampleCnt())) {
+    if (!caps->isFormatRenderable(backendRT.getBackendFormat(),
+                                  GrTextureType::kNone,
+                                  backendRT.sampleCnt())) {
         return nullptr;
     }
 

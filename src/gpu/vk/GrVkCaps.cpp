@@ -1429,9 +1429,11 @@ bool GrVkCaps::isVkFormatTexturable(VkFormat format) const {
     return SkToBool(FormatInfo::kTexturable_Flag & info.fOptimalFlags);
 }
 
-bool GrVkCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+bool GrVkCaps::isFormatAsColorTypeRenderable(GrColorType ct,
+                                             const GrBackendFormat& format,
+                                             GrTextureType textureType,
                                              int sampleCount) const {
-    if (!this->isFormatRenderable(format, sampleCount)) {
+    if (!this->isFormatRenderable(format, textureType, sampleCount)) {
         return false;
     }
     VkFormat vkFormat;
@@ -1445,7 +1447,9 @@ bool GrVkCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendForm
     return true;
 }
 
-bool GrVkCaps::isFormatRenderable(const GrBackendFormat& format, int sampleCount) const {
+bool GrVkCaps::isFormatRenderable(const GrBackendFormat& format,
+                                  GrTextureType,
+                                  int sampleCount) const {
     VkFormat vkFormat;
     if (!format.asVkFormat(&vkFormat)) {
         return false;

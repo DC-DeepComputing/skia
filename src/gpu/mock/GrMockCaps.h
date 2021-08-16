@@ -65,7 +65,9 @@ public:
         return false;
     }
 
-    bool isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+    bool isFormatAsColorTypeRenderable(GrColorType ct,
+                                       const GrBackendFormat& format,
+                                       GrTextureType textureType,
                                        int sampleCount = 1) const override {
         // Currently we don't allow RGB_888X to be renderable because we don't have a way to
         // handle blends that reference dst alpha when the values in the dst alpha channel are
@@ -73,10 +75,12 @@ public:
         if (ct == GrColorType::kRGB_888x) {
             return false;
         }
-        return this->isFormatRenderable(format, sampleCount);
+        return this->isFormatRenderable(format, textureType, sampleCount);
     }
 
-    bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const override {
+    bool isFormatRenderable(const GrBackendFormat& format,
+                            GrTextureType,
+                            int sampleCount) const override {
         if (format.asMockCompressionType() != SkImage::CompressionType::kNone) {
             return false;  // compressed formats are never renderable
         }

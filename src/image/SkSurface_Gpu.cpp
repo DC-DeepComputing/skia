@@ -438,7 +438,7 @@ static bool validate_backend_texture(const GrCaps* caps, const GrBackendTexture&
         return false;
     }
 
-    if (!caps->isFormatAsColorTypeRenderable(grCT, backendFormat, sampleCnt)) {
+    if (!caps->isFormatAsColorTypeRenderable(grCT, backendFormat, tex.textureType(), sampleCnt)) {
         return false;
     }
 
@@ -580,7 +580,10 @@ bool validate_backend_render_target(const GrCaps* caps, const GrBackendRenderTar
         return false;
     }
 
-    if (!caps->isFormatAsColorTypeRenderable(grCT, rt.getBackendFormat(), rt.sampleCnt())) {
+    if (!caps->isFormatAsColorTypeRenderable(grCT,
+                                             rt.getBackendFormat(),
+                                             GrTextureType::kNone,
+                                             rt.sampleCnt())) {
         return false;
     }
 

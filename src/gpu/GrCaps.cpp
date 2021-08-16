@@ -325,7 +325,7 @@ bool GrCaps::validateSurfaceParams(const SkISize& dimensions, const GrBackendFor
     }
 
     if (renderable == GrRenderable::kYes) {
-        if (!this->isFormatRenderable(format, renderTargetSampleCnt)) {
+        if (!this->isFormatRenderable(format, textureType, renderTargetSampleCnt)) {
             return false;
         }
         int maxRTSize = this->maxRenderTargetSize();
@@ -402,7 +402,7 @@ GrBackendFormat GrCaps::getDefaultBackendFormat(GrColorType colorType,
         return {};
     }
     if (renderable == GrRenderable::kYes &&
-        !this->isFormatAsColorTypeRenderable(colorType, format)) {
+        !this->isFormatAsColorTypeRenderable(colorType, format, GrTextureType::k2D)) {
         return {};
     }
     return format;
@@ -485,7 +485,7 @@ std::tuple<GrColorType, GrBackendFormat> GrCaps::getFallbackColorTypeAndFormat(
         auto format = this->getDefaultBackendFormat(ct, GrRenderable::kYes);
         // We continue to the fallback color type if there no default renderable format or we
         // requested msaa and the format doesn't support msaa.
-        if (format.isValid() && this->isFormatRenderable(format, sampleCnt)) {
+        if (format.isValid() && this->isFormatRenderable(format, GrTextureType::k2D, sampleCnt)) {
             return {ct, format};
         }
         ct = color_type_fallback(ct);

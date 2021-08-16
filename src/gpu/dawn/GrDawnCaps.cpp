@@ -70,6 +70,7 @@ static GrSwizzle get_swizzle(const GrBackendFormat& format, GrColorType colorTyp
 }
 
 bool GrDawnCaps::isFormatRenderable(const GrBackendFormat& format,
+                                    GrTextureType,
                                     int sampleCount) const {
     wgpu::TextureFormat dawnFormat;
     if (!format.isValid() || sampleCount > 1 || !format.asDawnFormat(&dawnFormat)) {
@@ -79,7 +80,9 @@ bool GrDawnCaps::isFormatRenderable(const GrBackendFormat& format,
     return GrDawnFormatIsRenderable(dawnFormat);
 }
 
-bool GrDawnCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+bool GrDawnCaps::isFormatAsColorTypeRenderable(GrColorType ct,
+                                               const GrBackendFormat& format,
+                                               GrTextureType,
                                                int sampleCount) const {
     return isFormatRenderable(format, sampleCount);
 }

@@ -88,7 +88,10 @@ SkSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
         return {};
     }
 
-    if (!fCaps->isFormatAsColorTypeRenderable(grColorType, backendFormat, sampleCnt)) {
+    if (!fCaps->isFormatAsColorTypeRenderable(grColorType,
+                                              backendFormat,
+                                              backendFormat.textureType(),
+                                              sampleCnt)) {
         return {};
     }
 
@@ -148,7 +151,7 @@ GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skCol
     }
 
     SkASSERT(renderable == GrRenderable::kNo ||
-             fCaps->isFormatAsColorTypeRenderable(grColorType, format));
+             fCaps->isFormatAsColorTypeRenderable(grColorType, format, GrTextureType::k2D));
 
     return format;
 }

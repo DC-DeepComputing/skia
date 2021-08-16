@@ -43,8 +43,11 @@ public:
 
     bool isFormatAsColorTypeRenderable(GrColorType ct,
                                        const GrBackendFormat& format,
+                                       GrTextureType,
                                        int sampleCount = 1) const override;
-    bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const override;
+    bool isFormatRenderable(const GrBackendFormat& format,
+                            GrTextureType,
+                            int sampleCount) const override;
     bool isFormatRenderable(VkFormat, int sampleCount) const;
 
     int getRenderTargetSampleCount(int requestedCount, const GrBackendFormat&) const override;

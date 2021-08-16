@@ -238,10 +238,14 @@ public:
         return std::min(fInternalMultisampleCount, this->maxRenderTargetSampleCount(format));
     }
 
-    virtual bool isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+    virtual bool isFormatAsColorTypeRenderable(GrColorType ct,
+                                               const GrBackendFormat& format,
+                                               GrTextureType,
                                                int sampleCount = 1) const = 0;
 
-    virtual bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const = 0;
+    virtual bool isFormatRenderable(const GrBackendFormat& format,
+                                    GrTextureType,
+                                    int sampleCount) const = 0;
 
     // Find a sample count greater than or equal to the requested count which is supported for a
     // render target of the given format or 0 if no such sample count is supported. If the requested

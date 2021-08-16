@@ -3464,12 +3464,14 @@ GrCaps::DstCopyRestrictions GrGLCaps::getDstCopyRestrictions(const GrRenderTarge
                                                              GrColorType colorType) const {
     // If the src is a texture, we can implement the blit as a draw assuming the config is
     // renderable.
-    if (src->asTextureProxy() && !this->isFormatAsColorTypeRenderable(colorType,
-                                                                      src->backendFormat())) {
+    auto texProxy = src->asTextureProxy();
+    if (texProxy && !this->isFormatAsColorTypeRenderable(colorType,
+                                                         src->backendFormat(),
+                                                         GrTextureType::k2D)) {
         return {};
     }
 
-    if (const auto* texProxy = src->asTextureProxy()) {
+    if (texProxy) {
         if (texProxy->textureType() == GrTextureType::kExternal) {
             // Not supported for FBO blit or CopyTexSubImage. Caller will have to fall back to a
             // draw (if the source is also a texture).
@@ -4462,12 +4464,14 @@ bool GrGLCaps::isFormatTexturable(GrGLFormat format) const {
     return SkToBool(info.fFlags & FormatInfo::kTexturable_Flag);
 }
 
-bool GrGLCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
+bool GrGLCaps::isFormatAsColorTypeRenderable(GrColorType ct,
+                                             const GrBackendFormat& format,
+                                             GrTextureType textureType,
                                              int sampleCount) const {
-    if (format.textureType() == GrTextureType::kRectangle && !this->rectangleTextureSupport()) {
+    if (textureType == GrTextureType::kRectangle && !this->rectangleTextureSupport()) {
         return false;
     }
-    if (format.textureType() == GrTextureType::kExternal) {
+    if (textureType == GrTextureType::kExternal) {
         return false;
     }
     auto f = format.asGLFormat();
@@ -4479,11 +4483,13 @@ bool GrGLCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendForm
     return this->isFormatRenderable(f, sampleCount);
 }
 
-bool GrGLCaps::isFormatRenderable(const GrBackendFormat& format, int sampleCount) const {
-    if (format.textureType() == GrTextureType::kRectangle && !this->rectangleTextureSupport()) {
+bool GrGLCaps::isFormatRenderable(const GrBackendFormat& format,
+                                  GrTextureType textureType,
+                                  int sampleCount) const {
+    if (textureType == GrTextureType::kRectangle && !this->rectangleTextureSupport()) {
         return false;
     }
-    if (format.textureType() == GrTextureType::kExternal) {
+    if (textureType == GrTextureType::kExternal) {
         return false;
     }
     return this->isFormatRenderable(format.asGLFormat(), sampleCount);

@@ -687,9 +687,10 @@ sk_sp<GrRenderTargetProxy> GrProxyProvider::wrapVulkanSecondaryCBAsRenderTarget(
     SkASSERT(GrBudgetedType::kBudgeted != rt->resourcePriv().budgetedType());
 
     GrColorType colorType = SkColorTypeToGrColorType(imageInfo.colorType());
-
-    if (!this->caps()->isFormatAsColorTypeRenderable(
-            colorType, GrBackendFormat::MakeVk(vkInfo.fFormat), /*sampleCount=*/1)) {
+    if (!this->caps()->isFormatAsColorTypeRenderable(colorType,
+                                                     GrBackendFormat::MakeVk(vkInfo.fFormat),
+                                                     GrTextureType::kNone,
+                                                     /*sampleCount=*/1)) {
         return nullptr;
     }
 
