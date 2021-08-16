@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "376227eb_e0c478f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-16T16:11:08Z",
+      "side": 1,
+      "message": "A non-specialized version has been written at http://review.skia.org/439738 , choose your favorite and submit it.",
+      "revId": "dd1d1f6ca40286f5f6a9b05cf7ccc2e8523dad27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
