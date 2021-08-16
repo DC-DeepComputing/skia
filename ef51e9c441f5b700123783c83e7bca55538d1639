@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f2b8b2_725012fa",
+        "filename": "infra/bots/assets/android_ndk_darwin/create.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-08-16T18:33:48Z",
+      "side": 1,
+      "message": "A little more context here: copytree expects the directory to not be there, but I guess sk creates the directory. I was tempted to use dirs_exist_ok\u003dFalse in copytree(), but that\u0027s not supported by python2. (I\u0027m not sure what the bots are running, but my Mac still has both, and \u0027sk\u0027 is using python2.)\n\nI\u0027m assuming this will be a directory just for the ndk; if it\u0027s not, this wouldn\u0027t be okay.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "ef51e9c441f5b700123783c83e7bca55538d1639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

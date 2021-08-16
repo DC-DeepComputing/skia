@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0699e044_4e6a8279",
+        "filename": "infra/bots/assets/android_ndk_darwin/create.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-08-16T18:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f68ff0e8_4883fb0a",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 27
+      },
+      "revId": "658edff7f7bf2609085950c43bf1aa053911ef64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f008701_6187c7ad",
@@ -197,6 +221,30 @@
       "writtenOn": "2021-08-16T11:59:56Z",
       "side": 1,
       "message": "After making this change, you probably need to run \"make train\" in the infra/bots directory to regenerate the expectation files.",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 63
+      },
+      "revId": "658edff7f7bf2609085950c43bf1aa053911ef64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5b0d77c_af040ab3",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-08-16T18:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2172287c_71d860b2",
       "range": {
         "startLine": 354,
         "startChar": 0,
