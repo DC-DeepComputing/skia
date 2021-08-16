@@ -5,14 +5,16 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrAAHairLinePathRenderer_DEFINED
-#define GrAAHairLinePathRenderer_DEFINED
+#ifndef AAHairLinePathRenderer_DEFINED
+#define AAHairLinePathRenderer_DEFINED
 
 #include "src/gpu/GrPathRenderer.h"
 
-class GrAAHairLinePathRenderer : public GrPathRenderer {
+namespace skgpu::v1 {
+
+class AAHairLinePathRenderer : public GrPathRenderer {
 public:
-    GrAAHairLinePathRenderer() {}
+    AAHairLinePathRenderer() = default;
 
     const char* name() const final { return "AAHairline"; }
 
@@ -21,12 +23,13 @@ public:
     typedef SkTArray<float, true> FloatArray;
 
 private:
-    CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override;
+    CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const final;
 
-    bool onDrawPath(const DrawPathArgs&) override;
+    bool onDrawPath(const DrawPathArgs&) final;
 
     using INHERITED = GrPathRenderer;
 };
 
+} // namespace skgpu::v1
 
-#endif
+#endif // AAHairLinePathRenderer_DEFINED
