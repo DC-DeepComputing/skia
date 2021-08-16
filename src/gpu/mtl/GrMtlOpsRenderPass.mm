@@ -36,14 +36,6 @@ GrMtlOpsRenderPass::GrMtlOpsRenderPass(GrMtlGpu* gpu, GrRenderTarget* rt,
 GrMtlOpsRenderPass::~GrMtlOpsRenderPass() {
 }
 
-void GrMtlOpsRenderPass::precreateCmdEncoder() {
-    // For clears, we may not have an associated draw. So we prepare a cmdEncoder that
-    // will be submitted whether there's a draw or not.
-    SkDEBUGCODE(GrMtlRenderCommandEncoder* cmdEncoder =)
-            fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
-    SkASSERT(nil != cmdEncoder);
-}
-
 void GrMtlOpsRenderPass::submit() {
     if (!fFramebuffer) {
         return;
@@ -161,11 +153,11 @@ void GrMtlOpsRenderPass::onClear(const GrScissorState& scissor, std::array<float
     // load ops in metal. However, if a client inserts a wait op we need to handle it.
     auto colorAttachment = fRenderPassDesc.colorAttachments[0];
     colorAttachment.clearColor = MTLClearColorMake(color[0], color[1], color[2], color[3]);
+    MTLLoadAction previousLoadAction = colorAttachment.loadAction;
     colorAttachment.loadAction = MTLLoadActionClear;
-    this->precreateCmdEncoder();
-    colorAttachment.loadAction = MTLLoadActionLoad;
     fActiveRenderCmdEncoder =
             fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+    colorAttachment.loadAction = previousLoadAction;
 }
 
 void GrMtlOpsRenderPass::onClearStencilClip(const GrScissorState& scissor, bool insideStencilMask) {
@@ -187,11 +179,11 @@ void GrMtlOpsRenderPass::onClearStencilClip(const GrScissorState& scissor, bool 
         stencilAttachment.clearStencil = 0;
     }
 
+    MTLLoadAction previousLoadAction = stencilAttachment.loadAction;
     stencilAttachment.loadAction = MTLLoadActionClear;
-    this->precreateCmdEncoder();
-    stencilAttachment.loadAction = MTLLoadActionLoad;
     fActiveRenderCmdEncoder =
             fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+    stencilAttachment.loadAction = previousLoadAction;
 }
 
 void GrMtlOpsRenderPass::inlineUpload(GrOpFlushState* state, GrDeferredTextureUploadFn& upload) {
@@ -266,7 +258,8 @@ void GrMtlOpsRenderPass::setupRenderPass(
     if (colorInfo.fLoadOp == GrLoadOp::kClear || stencilInfo.fLoadOp == GrLoadOp::kClear)  {
         fBounds = SkRect::MakeWH(color->dimensions().width(),
                                  color->dimensions().height());
-        this->precreateCmdEncoder();
+        fActiveRenderCmdEncoder =
+                fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
         if (colorInfo.fLoadOp == GrLoadOp::kClear) {
             colorAttachment.loadAction = MTLLoadActionLoad;
         }
@@ -275,13 +268,12 @@ void GrMtlOpsRenderPass::setupRenderPass(
         }
     } else {
         fBounds.setEmpty();
+        // For now, we lazily create the renderCommandEncoder because we may have no draws,
+        // and an empty renderCommandEncoder can still produce output. This can cause issues
+        // when we've cleared a texture upon creation -- we'll subsequently discard the contents.
+        // This can be removed when that ordering is fixed.
+        fActiveRenderCmdEncoder = nil;
     }
-
-    // For now, we lazily create the renderCommandEncoder because we may have no draws,
-    // and an empty renderCommandEncoder can still produce output. This can cause issues
-    // when we've cleared a texture upon creation -- we'll subsequently discard the contents.
-    // This can be removed when that ordering is fixed.
-    fActiveRenderCmdEncoder = nil;
 }
 
 void GrMtlOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
