@@ -351,6 +351,107 @@ private:
     int8_t fColumns;
 };
 
+/** Wraps an existing type and provides it with a new name. */
+class TypeAlias final : public Type {
+public:
+    TypeAlias(skstd::string_view name, const Type& originalType)
+        : INHERITED(name, originalType.abbreviatedName(), originalType.typeKind())
+        , fOriginalType(originalType) {}
+
+    const Type& unaliasedType() const override {
+        return fOriginalType.unaliasedType();
+    }
+
+    NumberKind numberKind() const override {
+        return fOriginalType.numberKind();
+    }
+
+    int priority() const override {
+        return fOriginalType.priority();
+    }
+
+    const Type& componentType() const override {
+        return fOriginalType.componentType();
+    }
+
+    const Type& textureType() const override {
+        return fOriginalType.textureType();
+    }
+
+    int columns() const override {
+        return fOriginalType.columns();
+    }
+
+    int rows() const override {
+        return fOriginalType.rows();
+    }
+
+    const std::vector<Field>& fields() const override {
+        return fOriginalType.fields();
+    }
+
+    const std::vector<const Type*>& coercibleTypes() const override {
+        return fOriginalType.coercibleTypes();
+    }
+
+    SpvDim_ dimensions() const override {
+        return fOriginalType.dimensions();
+    }
+
+    bool isDepth() const override {
+        return fOriginalType.isDepth();
+    }
+
+    bool isArrayedTexture() const override {
+        return fOriginalType.isArrayedTexture();
+    }
+
+    bool isScalar() const override {
+        return fOriginalType.isScalar();
+    }
+
+    bool isLiteral() const override {
+        return fOriginalType.isLiteral();
+    }
+
+    const Type& scalarTypeForLiteral() const override {
+        return fOriginalType.scalarTypeForLiteral();
+    }
+
+    bool isVector() const override {
+        return fOriginalType.isVector();
+    }
+
+    bool isMatrix() const override {
+        return fOriginalType.isMatrix();
+    }
+
+    bool isArray() const override {
+        return fOriginalType.isArray();
+    }
+
+    bool isStruct() const override {
+        return fOriginalType.isStruct();
+    }
+
+    bool isMultisampled() const override {
+        return fOriginalType.isMultisampled();
+    }
+
+    bool isSampled() const override {
+        return fOriginalType.isSampled();
+    }
+
+    int bitWidth() const override {
+        return fOriginalType.bitWidth();
+    }
+
+private:
+    using INHERITED = Type;
+
+    const Type& fOriginalType;
+};
+
 String Type::getArrayName(int arraySize) const {
     skstd::string_view name = this->name();
     return (arraySize != kUnsizedArray)
@@ -409,6 +510,10 @@ std::unique_ptr<Type> Type::MakeTextureType(const char* name, SpvDim_ dimensions
 std::unique_ptr<Type> Type::MakeVectorType(const char* name, const char* abbrev,
                                            const Type& componentType, int columns) {
     return std::make_unique<VectorType>(name, abbrev, componentType, columns);
+}
+
+std::unique_ptr<Type> Type::MakeTypeAlias(skstd::string_view name, const Type& originalType) {
+    return std::make_unique<TypeAlias>(name, originalType);
 }
 
 CoercionCost Type::coercionCost(const Type& other) const {

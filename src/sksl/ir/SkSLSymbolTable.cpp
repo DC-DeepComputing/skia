@@ -7,7 +7,6 @@
 
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
-#include "src/sksl/ir/SkSLSymbolAlias.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 
@@ -75,9 +74,6 @@ const Symbol* SymbolTable::lookup(SymbolTable* writableSymbolTable, const Symbol
             }
         }
     }
-    while (symbol && symbol->is<SymbolAlias>()) {
-        symbol = symbol->as<SymbolAlias>().origSymbol();
-    }
     return symbol;
 }
 
@@ -87,8 +83,8 @@ const String* SymbolTable::takeOwnershipOfString(String str) {
     return &fOwnedStrings.front();
 }
 
-void SymbolTable::addAlias(skstd::string_view name, const Symbol* symbol) {
-    this->add(std::make_unique<SymbolAlias>(symbol->fOffset, name, symbol));
+void SymbolTable::addAlias(skstd::string_view name, const Type* type) {
+    this->add(Type::MakeTypeAlias(name, *type));
 }
 
 void SymbolTable::addWithoutOwnership(const Symbol* symbol) {
