@@ -9,6 +9,7 @@
 
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkStringView.h"
 #include "include/private/SkFixed.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTDArray.h"
@@ -268,6 +269,32 @@ static const TagHandler fontHandler = {
     }
 };
 
+template <typename T>
+static void parse_space_separated_list(skstd::string_view str, T acceptValueFn) {
+    while (!str.empty()) {
+        // Identify and strip off leading whitespace.
+        size_t pos = 0;
+        while (pos < str.size() && is_whitespace(str[pos])) {
+            ++pos;
+        }
+        if (pos > 0) {
+            str.remove_prefix(pos);
+            if (str.empty()) {
+                break;
+            }
+        }
+        // Identify a range of non-whitespace characters.
+        pos = 0;
+        while (pos < str.size() && !is_whitespace(str[pos])) {
+            ++pos;
+        }
+        if (pos > 0) {
+            acceptValueFn(skstd::string_view(str.data(), pos));
+            str.remove_prefix(pos);
+        }
+    }
+}
+
 static const TagHandler familyHandler = {
     /*start*/[](FamilyData* self, const char* tag, const char** attributes) {
         // 'name' (string) [optional]
@@ -286,16 +313,9 @@ static const TagHandler familyHandler = {
                 family->fNames.push_back().set(tolc.lc());
                 family->fIsFallbackFont = false;
             } else if (MEMEQ("lang", name, nameLen)) {
-                size_t i = 0;
-                while (true) {
-                    for (; i < valueLen && is_whitespace(value[i]); ++i) { }
-                    if (i == valueLen) { break; }
-                    size_t j;
-                    for (j = i + 1; j < valueLen && !is_whitespace(value[j]); ++j) { }
-                    family->fLanguages.emplace_back(value + i, j - i);
-                    i = j;
-                    if (i == valueLen) { break; }
-                }
+                parse_space_separated_list({name, nameLen}, [&](skstd::string_view lang) {
+                    family->fLanguages.emplace_back(SkLanguage(lang.data(), lang.size()));
+                });
             } else if (MEMEQ("variant", name, nameLen)) {
                 if (MEMEQ("elegant", value, valueLen)) {
                     family->fVariant = kElegant_FontVariant;
