@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4010fddb_6cb86c32",
+        "filename": "src/ports/SkFontMgr_android_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-16T16:16:59Z",
+      "side": 1,
+      "message": "In light of http://review.skia.org/439737, the attrIdx change has been reverted.",
+      "parentUuid": "481a9a6e_52030d36",
+      "revId": "a1dd08562fdeebaaaa5658a98f7a368439e15510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c86ee969_7ce87174",
