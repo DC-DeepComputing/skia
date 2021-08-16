@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrSmallPathRenderer_DEFINED
-#define GrSmallPathRenderer_DEFINED
+#ifndef SmallPathRenderer_DEFINED
+#define SmallPathRenderer_DEFINED
 
 #include "src/gpu/GrPathRenderer.h"
 #include "src/gpu/ops/GrOp.h"
@@ -15,10 +15,12 @@ class GrDrawOp;
 class GrRecordingContext;
 class GrStyledShape;
 
-class GrSmallPathRenderer : public GrPathRenderer {
+namespace skgpu::v1 {
+
+class SmallPathRenderer : public GrPathRenderer {
 public:
-    GrSmallPathRenderer();
-    ~GrSmallPathRenderer() override;
+    SmallPathRenderer();
+    ~SmallPathRenderer() override;
 
     const char* name() const final { return "Small"; }
 
@@ -43,4 +45,6 @@ private:
     using INHERITED = GrPathRenderer;
 };
 
-#endif
+} // namespace skgpu::v1
+
+#endif // SmallPathRenderer_DEFINED
