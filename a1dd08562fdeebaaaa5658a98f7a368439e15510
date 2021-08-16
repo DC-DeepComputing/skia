@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937da7a9_db923ed2",
+        "filename": "fuzz/FuzzCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-16T15:03:38Z",
+      "side": 1,
+      "message": "Wow, this loop way down here doing the shadowing...\n\nIt is annoying that the outermost loop counter doesn\u0027t actually need a name (will never be referred to outside the loop construct itself, so might as well be named \u0027_n\u0027) and that this is a big switch and not broken up. However, it seems that this could be more obviously fixed by just using \u0027index\u0027 and the name of the counter, since the limit is already named \u0027indexCount\u0027.",
+      "revId": "a1dd08562fdeebaaaa5658a98f7a368439e15510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cd96ed9_a9b4e2d4",
+        "filename": "src/ports/SkFontMgr_android_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-16T15:03:38Z",
+      "side": 1,
+      "message": "If anything, this block should just move \u0027i\u0027 and \u0027j\u0027 to \u0027j\u0027 and \u0027k\u0027. Though I suppose this is complex enough to extract into a \u0027parse_space_separated_list\u0027 (like the existing \u0027parse_non_negative_integer\u0027 and the like). Since it\u0027s currently only done here (which is why it isn\u0027t already extracted) it can go just before the \u0027familyHandler\u0027 declaration.\n\nI\u0027m just against going to attrIdx because there are many loops over attributes in this file and it would be nice for them all to stay the same. Also, it makes more sense generally to extract or change the code casting the shadow instead of changing the shadowed.",
+      "revId": "a1dd08562fdeebaaaa5658a98f7a368439e15510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c86ee969_7ce87174",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-16T15:03:38Z",
+      "side": 1,
+      "message": "explicitExtensionCount? layerExtensionCount?\n\nOnce again, this isn\u0027t logically the same \u0027extensionCount\u0027 which is why it was re-declared here. The above code where \u0027extensionCount\u0027 is first defined doesn\u0027t actually logically export \u0027extensionCount\u0027 (in some sense it wasn\u0027t meant to be an out parameter of that code, it jus accidentally is because of language limitations). It may actually be better to just put the above block of code it its own braces (just enclose it in \u0027{\u0027 and \u0027}\u0027) to make it obvious that it is its own block which modifies surrounding state but does not export any of its internal names. Probably best to put each of the three stages of this method in braces to explicitly mark their actual independence.",
+      "range": {
+        "startLine": 207,
+        "startChar": 8,
+        "endLine": 207,
+        "endChar": 22
+      },
+      "revId": "a1dd08562fdeebaaaa5658a98f7a368439e15510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
