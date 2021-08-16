@@ -23,12 +23,6 @@
 
 #import <simd/simd.h>
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlPipelineState* GrMtlPipelineStateBuilder::CreatePipelineState(
         GrMtlGpu* gpu, const GrProgramDesc& desc, const GrProgramInfo& programInfo,
         const GrMtlPrecompiledLibraries* precompiledLibs) {
@@ -87,10 +81,10 @@ void GrMtlPipelineStateBuilder::storeShadersInCache(const SkSL::String shaders[]
     fGpu->getContext()->priv().getPersistentCache()->store(*key, *data, description);
 }
 
-id<MTLLibrary> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
+sk_cfp<id<MTLLibrary>> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
         const SkSL::String& shader, SkSL::Program::Inputs inputs,
         GrContextOptions::ShaderErrorHandler* errorHandler) {
-    id<MTLLibrary> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
+    sk_cfp<id<MTLLibrary>> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
     if (shaderLibrary != nil && inputs.fUseFlipRTUniform) {
         this->addRTFlipUniform(SKSL_RTFLIP_NAME);
     }
@@ -175,8 +169,8 @@ static inline MTLVertexFormat attribute_type_to_mtlformat(GrVertexAttribType typ
     SK_ABORT("Unknown vertex attribute type");
 }
 
-static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& geomProc,
-                                                     SkBinaryWriteBuffer* writer) {
+static sk_cfp<MTLVertexDescriptor*> create_vertex_descriptor(
+        const GrGeometryProcessor& geomProc, SkBinaryWriteBuffer* writer) {
     uint32_t vertexBinding = 0, instanceBinding = 0;
 
     int nextBinding = GrMtlUniformHandler::kLastUniformBinding + 1;
@@ -192,7 +186,7 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& 
         writer->writeUInt(instanceBinding);
     }
 
-    auto vertexDescriptor = [[MTLVertexDescriptor alloc] init];
+    sk_cfp<MTLVertexDescriptor*> vertexDescriptor([[MTLVertexDescriptor alloc] init]);
     int attributeIndex = 0;
 
     int vertexAttributeCount = geomProc.numVertexAttributes();
@@ -201,7 +195,7 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& 
     }
     size_t vertexAttributeOffset = 0;
     for (const auto& attribute : geomProc.vertexAttributes()) {
-        MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
+        MTLVertexAttributeDescriptor* mtlAttribute = (*vertexDescriptor).attributes[attributeIndex];
         MTLVertexFormat format = attribute_type_to_mtlformat(attribute.cpuType());
         SkASSERT(MTLVertexFormatInvalid != format);
         mtlAttribute.format = format;
@@ -220,7 +214,7 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& 
 
     if (vertexAttributeCount) {
         MTLVertexBufferLayoutDescriptor* vertexBufferLayout =
-                vertexDescriptor.layouts[vertexBinding];
+                (*vertexDescriptor).layouts[vertexBinding];
         vertexBufferLayout.stepFunction = MTLVertexStepFunctionPerVertex;
         vertexBufferLayout.stepRate = 1;
         vertexBufferLayout.stride = vertexAttributeOffset;
@@ -235,7 +229,7 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& 
     }
     size_t instanceAttributeOffset = 0;
     for (const auto& attribute : geomProc.instanceAttributes()) {
-        MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
+        MTLVertexAttributeDescriptor* mtlAttribute = (*vertexDescriptor).attributes[attributeIndex];
         MTLVertexFormat format = attribute_type_to_mtlformat(attribute.cpuType());
         SkASSERT(MTLVertexFormatInvalid != format);
         mtlAttribute.format = format;
@@ -254,7 +248,7 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GrGeometryProcessor& 
 
     if (instanceAttributeCount) {
         MTLVertexBufferLayoutDescriptor* instanceBufferLayout =
-                vertexDescriptor.layouts[instanceBinding];
+                (*vertexDescriptor).layouts[instanceBinding];
         instanceBufferLayout.stepFunction = MTLVertexStepFunctionPerInstance;
         instanceBufferLayout.stepRate = 1;
         instanceBufferLayout.stride = instanceAttributeOffset;
@@ -337,12 +331,13 @@ static MTLBlendOperation blend_equation_to_mtl_blend_op(GrBlendEquation equation
     return gTable[equation];
 }
 
-static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
+static sk_cfp<MTLRenderPipelineColorAttachmentDescriptor*> create_color_attachment(
         MTLPixelFormat format, const GrPipeline& pipeline, SkBinaryWriteBuffer* writer) {
-    auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
+    sk_cfp<MTLRenderPipelineColorAttachmentDescriptor*> mtlColorAttachment(
+            [[MTLRenderPipelineColorAttachmentDescriptor alloc] init]);
 
     // pixel format
-    mtlColorAttachment.pixelFormat = format;
+    (*mtlColorAttachment).pixelFormat = format;
     if (writer) {
         writer->writeInt(format);
     }
@@ -355,31 +350,31 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
     GrBlendCoeff dstCoeff = blendInfo.fDstBlend;
     bool blendOn = !GrBlendShouldDisable(equation, srcCoeff, dstCoeff);
 
-    mtlColorAttachment.blendingEnabled = blendOn;
+    (*mtlColorAttachment).blendingEnabled = blendOn;
     if (writer) {
         writer->writeBool(blendOn);
     }
     if (blendOn) {
-        mtlColorAttachment.sourceRGBBlendFactor = blend_coeff_to_mtl_blend(srcCoeff);
-        mtlColorAttachment.destinationRGBBlendFactor = blend_coeff_to_mtl_blend(dstCoeff);
-        mtlColorAttachment.rgbBlendOperation = blend_equation_to_mtl_blend_op(equation);
-        mtlColorAttachment.sourceAlphaBlendFactor = blend_coeff_to_mtl_blend(srcCoeff);
-        mtlColorAttachment.destinationAlphaBlendFactor = blend_coeff_to_mtl_blend(dstCoeff);
-        mtlColorAttachment.alphaBlendOperation = blend_equation_to_mtl_blend_op(equation);
+        (*mtlColorAttachment).sourceRGBBlendFactor = blend_coeff_to_mtl_blend(srcCoeff);
+        (*mtlColorAttachment).destinationRGBBlendFactor = blend_coeff_to_mtl_blend(dstCoeff);
+        (*mtlColorAttachment).rgbBlendOperation = blend_equation_to_mtl_blend_op(equation);
+        (*mtlColorAttachment).sourceAlphaBlendFactor = blend_coeff_to_mtl_blend(srcCoeff);
+        (*mtlColorAttachment).destinationAlphaBlendFactor = blend_coeff_to_mtl_blend(dstCoeff);
+        (*mtlColorAttachment).alphaBlendOperation = blend_equation_to_mtl_blend_op(equation);
         if (writer) {
-            writer->writeInt(mtlColorAttachment.sourceRGBBlendFactor);
-            writer->writeInt(mtlColorAttachment.destinationRGBBlendFactor);
-            writer->writeInt(mtlColorAttachment.rgbBlendOperation);
-            writer->writeInt(mtlColorAttachment.sourceAlphaBlendFactor);
-            writer->writeInt(mtlColorAttachment.destinationAlphaBlendFactor);
-            writer->writeInt(mtlColorAttachment.alphaBlendOperation);
+            writer->writeInt((*mtlColorAttachment).sourceRGBBlendFactor);
+            writer->writeInt((*mtlColorAttachment).destinationRGBBlendFactor);
+            writer->writeInt((*mtlColorAttachment).rgbBlendOperation);
+            writer->writeInt((*mtlColorAttachment).sourceAlphaBlendFactor);
+            writer->writeInt((*mtlColorAttachment).destinationAlphaBlendFactor);
+            writer->writeInt((*mtlColorAttachment).alphaBlendOperation);
         }
     }
 
     if (blendInfo.fWriteColor) {
-        mtlColorAttachment.writeMask = MTLColorWriteMaskAll;
+        (*mtlColorAttachment).writeMask = MTLColorWriteMaskAll;
     } else {
-        mtlColorAttachment.writeMask = MTLColorWriteMaskNone;
+        (*mtlColorAttachment).writeMask = MTLColorWriteMaskNone;
     }
     if (writer) {
         writer->writeBool(blendInfo.fWriteColor);
@@ -397,21 +392,22 @@ static uint32_t buffer_size(uint32_t offset, uint32_t maxAlignment) {
     return offset + offsetDiff;
 }
 
-static MTLRenderPipelineDescriptor* read_pipeline_data(SkReadBuffer* reader) {
-    auto pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+static sk_cfp<MTLRenderPipelineDescriptor*> read_pipeline_data(SkReadBuffer* reader) {
+    sk_cfp<MTLRenderPipelineDescriptor*> pipelineDescriptor(
+            [[MTLRenderPipelineDescriptor alloc] init]);
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     // set label
     {
         SkString description;
         reader->readString(&description);
-        pipelineDescriptor.label = @(description.c_str());
+        (*pipelineDescriptor).label = @(description.c_str());
     }
 #endif
 
     // set up vertex descriptor
     {
-        auto vertexDescriptor = [[MTLVertexDescriptor alloc] init];
+        sk_cfp<MTLVertexDescriptor*> vertexDescriptor([[MTLVertexDescriptor alloc] init]);
         uint32_t vertexBinding = reader->readUInt();
         uint32_t instanceBinding = reader->readUInt();
 
@@ -420,7 +416,8 @@ static MTLRenderPipelineDescriptor* read_pipeline_data(SkReadBuffer* reader) {
         // vertex attributes
         int vertexAttributeCount = reader->readInt();
         for (int i = 0; i < vertexAttributeCount; ++i) {
-            MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
+            MTLVertexAttributeDescriptor* mtlAttribute =
+                    (*vertexDescriptor).attributes[attributeIndex];
             mtlAttribute.format = (MTLVertexFormat) reader->readInt();
             mtlAttribute.offset = reader->readUInt();
             mtlAttribute.bufferIndex = reader->readUInt();
@@ -428,7 +425,7 @@ static MTLRenderPipelineDescriptor* read_pipeline_data(SkReadBuffer* reader) {
         }
         if (vertexAttributeCount) {
             MTLVertexBufferLayoutDescriptor* vertexBufferLayout =
-                    vertexDescriptor.layouts[vertexBinding];
+                    (*vertexDescriptor).layouts[vertexBinding];
             vertexBufferLayout.stepFunction = MTLVertexStepFunctionPerVertex;
             vertexBufferLayout.stepRate = 1;
             vertexBufferLayout.stride = reader->readUInt();
@@ -437,7 +434,8 @@ static MTLRenderPipelineDescriptor* read_pipeline_data(SkReadBuffer* reader) {
         // instance attributes
         int instanceAttributeCount = reader->readInt();
         for (int i = 0; i < instanceAttributeCount; ++i) {
-            MTLVertexAttributeDescriptor* mtlAttribute = vertexDescriptor.attributes[attributeIndex];
+            MTLVertexAttributeDescriptor* mtlAttribute =
+                    (*vertexDescriptor).attributes[attributeIndex];
             mtlAttribute.format = (MTLVertexFormat) reader->readInt();
             mtlAttribute.offset = reader->readUInt();
             mtlAttribute.bufferIndex = reader->readUInt();
@@ -445,38 +443,39 @@ static MTLRenderPipelineDescriptor* read_pipeline_data(SkReadBuffer* reader) {
         }
         if (instanceAttributeCount) {
             MTLVertexBufferLayoutDescriptor* instanceBufferLayout =
-                    vertexDescriptor.layouts[instanceBinding];
+                    (*vertexDescriptor).layouts[instanceBinding];
             instanceBufferLayout.stepFunction = MTLVertexStepFunctionPerInstance;
             instanceBufferLayout.stepRate = 1;
             instanceBufferLayout.stride = reader->readUInt();
         }
-        pipelineDescriptor.vertexDescriptor = vertexDescriptor;
+        (*pipelineDescriptor).vertexDescriptor = vertexDescriptor.get();
     }
 
     // set up color attachments
     {
-        auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
+        sk_cfp<MTLRenderPipelineColorAttachmentDescriptor*> mtlColorAttachment(
+                [[MTLRenderPipelineColorAttachmentDescriptor alloc] init]);
 
-        mtlColorAttachment.pixelFormat = (MTLPixelFormat) reader->readInt();
-        mtlColorAttachment.blendingEnabled = reader->readBool();
-        if (mtlColorAttachment.blendingEnabled) {
-            mtlColorAttachment.sourceRGBBlendFactor = (MTLBlendFactor) reader->readInt();
-            mtlColorAttachment.destinationRGBBlendFactor = (MTLBlendFactor) reader->readInt();
-            mtlColorAttachment.rgbBlendOperation = (MTLBlendOperation) reader->readInt();
-            mtlColorAttachment.sourceAlphaBlendFactor = (MTLBlendFactor) reader->readInt();
-            mtlColorAttachment.destinationAlphaBlendFactor = (MTLBlendFactor) reader->readInt();
-            mtlColorAttachment.alphaBlendOperation = (MTLBlendOperation) reader->readInt();
+        (*mtlColorAttachment).pixelFormat = (MTLPixelFormat) reader->readInt();
+        (*mtlColorAttachment).blendingEnabled = reader->readBool();
+        if ((*mtlColorAttachment).blendingEnabled) {
+            (*mtlColorAttachment).sourceRGBBlendFactor = (MTLBlendFactor) reader->readInt();
+            (*mtlColorAttachment).destinationRGBBlendFactor = (MTLBlendFactor) reader->readInt();
+            (*mtlColorAttachment).rgbBlendOperation = (MTLBlendOperation) reader->readInt();
+            (*mtlColorAttachment).sourceAlphaBlendFactor = (MTLBlendFactor) reader->readInt();
+            (*mtlColorAttachment).destinationAlphaBlendFactor = (MTLBlendFactor) reader->readInt();
+            (*mtlColorAttachment).alphaBlendOperation = (MTLBlendOperation) reader->readInt();
         }
         if (reader->readBool()) {
-            mtlColorAttachment.writeMask = MTLColorWriteMaskAll;
+            (*mtlColorAttachment).writeMask = MTLColorWriteMaskAll;
         } else {
-            mtlColorAttachment.writeMask = MTLColorWriteMaskNone;
+            (*mtlColorAttachment).writeMask = MTLColorWriteMaskNone;
         }
 
-        pipelineDescriptor.colorAttachments[0] = mtlColorAttachment;
+        (*pipelineDescriptor).colorAttachments[0] = mtlColorAttachment.get();
     }
 
-    pipelineDescriptor.stencilAttachmentPixelFormat = (MTLPixelFormat) reader->readInt();
+    (*pipelineDescriptor).stencilAttachmentPixelFormat = (MTLPixelFormat) reader->readInt();
 
     return pipelineDescriptor;
 }
@@ -503,51 +502,53 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     }
 
     // Ordering in how we set these matters. If it changes adjust read_pipeline_data, above.
-    auto pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+    sk_cfp<MTLRenderPipelineDescriptor*> pipelineDescriptor(
+            [[MTLRenderPipelineDescriptor alloc] init]);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     SkString description = GrProgramDesc::Describe(programInfo, *fGpu->caps());
     int split = description.find("\n");
     description.resize(split);
-    pipelineDescriptor.label = @(description.c_str());
+    (*pipelineDescriptor).label = @(description.c_str());
     if (writer) {
         writer->writeString(description.c_str());
     }
 #endif
 
-    pipelineDescriptor.vertexDescriptor = create_vertex_descriptor(programInfo.geomProc(),
-                                                                   writer.get());
+    auto vertexDescriptor = create_vertex_descriptor(programInfo.geomProc(), writer.get());
+    (*pipelineDescriptor).vertexDescriptor = vertexDescriptor.get();
 
     MTLPixelFormat pixelFormat = GrBackendFormatAsMTLPixelFormat(programInfo.backendFormat());
     if (pixelFormat == MTLPixelFormatInvalid) {
         return nullptr;
     }
 
-    pipelineDescriptor.colorAttachments[0] = create_color_attachment(pixelFormat,
-                                                                     programInfo.pipeline(),
-                                                                     writer.get());
-    pipelineDescriptor.sampleCount = programInfo.numSamples();
+    auto colorAttachment = create_color_attachment(pixelFormat,
+                                                   programInfo.pipeline(),
+                                                   writer.get());
+    (*pipelineDescriptor).colorAttachments[0] = colorAttachment.get();
+    (*pipelineDescriptor).sampleCount = programInfo.numSamples();
     GrMtlCaps* mtlCaps = (GrMtlCaps*)this->caps();
-    pipelineDescriptor.stencilAttachmentPixelFormat = mtlCaps->getStencilPixelFormat(desc);
+    (*pipelineDescriptor).stencilAttachmentPixelFormat = mtlCaps->getStencilPixelFormat(desc);
     if (writer) {
-        writer->writeInt(pipelineDescriptor.stencilAttachmentPixelFormat);
+        writer->writeInt((*pipelineDescriptor).stencilAttachmentPixelFormat);
     }
-    SkASSERT(pipelineDescriptor.vertexDescriptor);
-    SkASSERT(pipelineDescriptor.colorAttachments[0]);
+    SkASSERT((*pipelineDescriptor).vertexDescriptor);
+    SkASSERT((*pipelineDescriptor).colorAttachments[0]);
 
     if (precompiledLibs) {
         SkASSERT(precompiledLibs->fVertexLibrary);
         SkASSERT(precompiledLibs->fFragmentLibrary);
-        pipelineDescriptor.vertexFunction =
-                [precompiledLibs->fVertexLibrary newFunctionWithName: @"vertexMain"];
-        pipelineDescriptor.fragmentFunction =
-                [precompiledLibs->fFragmentLibrary newFunctionWithName: @"fragmentMain"];
-        SkASSERT(pipelineDescriptor.vertexFunction);
-        SkASSERT(pipelineDescriptor.fragmentFunction);
+        (*pipelineDescriptor).vertexFunction =
+                [*precompiledLibs->fVertexLibrary newFunctionWithName: @"vertexMain"];
+        (*pipelineDescriptor).fragmentFunction =
+                [*precompiledLibs->fFragmentLibrary newFunctionWithName: @"fragmentMain"];
+        SkASSERT((*pipelineDescriptor).vertexFunction);
+        SkASSERT((*pipelineDescriptor).fragmentFunction);
         if (precompiledLibs->fRTFlip) {
             this->addRTFlipUniform(SKSL_RTFLIP_NAME);
         }
     } else {
-        id<MTLLibrary> shaderLibraries[kGrShaderTypeCount];
+        sk_cfp<id<MTLLibrary>> shaderLibraries[kGrShaderTypeCount];
 
         fVS.extensions().appendf("#extension GL_ARB_separate_shader_objects : enable\n");
         fFS.extensions().appendf("#extension GL_ARB_separate_shader_objects : enable\n");
@@ -666,22 +667,22 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
             return nullptr;
         }
 
-        pipelineDescriptor.vertexFunction =
-                [shaderLibraries[kVertex_GrShaderType] newFunctionWithName: @"vertexMain"];
-        pipelineDescriptor.fragmentFunction =
-                [shaderLibraries[kFragment_GrShaderType] newFunctionWithName: @"fragmentMain"];
+        (*pipelineDescriptor).vertexFunction =
+                [*shaderLibraries[kVertex_GrShaderType] newFunctionWithName: @"vertexMain"];
+        (*pipelineDescriptor).fragmentFunction =
+                [*shaderLibraries[kFragment_GrShaderType] newFunctionWithName: @"fragmentMain"];
     }
 
-    if (pipelineDescriptor.vertexFunction == nil) {
+    if ((*pipelineDescriptor).vertexFunction == nil) {
         SkDebugf("Couldn't find vertexMain() in library\n");
         return nullptr;
     }
-    if (pipelineDescriptor.fragmentFunction == nil) {
+    if ((*pipelineDescriptor).fragmentFunction == nil) {
         SkDebugf("Couldn't find fragmentMain() in library\n");
         return nullptr;
     }
-    SkASSERT(pipelineDescriptor.vertexFunction);
-    SkASSERT(pipelineDescriptor.fragmentFunction);
+    SkASSERT((*pipelineDescriptor).vertexFunction);
+    SkASSERT((*pipelineDescriptor).fragmentFunction);
 
     NSError* error = nil;
 #if GR_METAL_SDK_VERSION >= 230
@@ -689,11 +690,11 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
         id<MTLBinaryArchive> archive = fGpu->binaryArchive();
         if (archive) {
             NSArray* archiveArray = [NSArray arrayWithObjects:archive, nil];
-            pipelineDescriptor.binaryArchives = archiveArray;
+            (*pipelineDescriptor).binaryArchives = archiveArray;
             BOOL result;
             {
                 TRACE_EVENT0("skia.shaders", "addRenderPipelineFunctionsWithDescriptor");
-                result = [archive addRenderPipelineFunctionsWithDescriptor: pipelineDescriptor
+                result = [archive addRenderPipelineFunctionsWithDescriptor: pipelineDescriptor.get()
                                                                             error: &error];
             }
             if (!result && error) {
@@ -704,16 +705,18 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     }
 #endif
 
-    id<MTLRenderPipelineState> pipelineState;
+    sk_cfp<id<MTLRenderPipelineState>> pipelineState;
     {
         TRACE_EVENT0("skia.shaders", "newRenderPipelineStateWithDescriptor");
 #if defined(SK_BUILD_FOR_MAC)
-        pipelineState = GrMtlNewRenderPipelineStateWithDescriptor(
-                                                     fGpu->device(), pipelineDescriptor, &error);
+        pipelineState.reset(
+                GrMtlNewRenderPipelineStateWithDescriptor(fGpu->device(),
+                                                          pipelineDescriptor.get(),
+                                                          &error));
 #else
-        pipelineState =
-            [fGpu->device() newRenderPipelineStateWithDescriptor: pipelineDescriptor
-                                                           error: &error];
+        pipelineState.reset(
+                [fGpu->device() newRenderPipelineStateWithDescriptor: pipelineDescriptor.get()
+                                                               error: &error]);
 #endif
     }
     if (error) {
@@ -731,7 +734,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
                                       fUniformHandler.fCurrentUBOMaxAlignment);
     return new GrMtlPipelineState(fGpu,
                                   std::move(renderPipeline),
-                                  pipelineDescriptor.colorAttachments[0].pixelFormat,
+                                  (*pipelineDescriptor).colorAttachments[0].pixelFormat,
                                   fUniformHandles,
                                   fUniformHandler.fUniforms,
                                   bufferSize,
@@ -812,22 +815,22 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
         }
     }
 
-    pipelineDescriptor.vertexFunction =
-            [precompiledLibs->fVertexLibrary newFunctionWithName: @"vertexMain"];
-    pipelineDescriptor.fragmentFunction =
-            [precompiledLibs->fFragmentLibrary newFunctionWithName: @"fragmentMain"];
+    (*pipelineDescriptor).vertexFunction =
+            [*precompiledLibs->fVertexLibrary newFunctionWithName: @"vertexMain"];
+    (*pipelineDescriptor).fragmentFunction =
+            [*precompiledLibs->fFragmentLibrary newFunctionWithName: @"fragmentMain"];
 
 #if GR_METAL_SDK_VERSION >= 230
     if (@available(macOS 11.0, iOS 14.0, *)) {
         id<MTLBinaryArchive> archive = gpu->binaryArchive();
         if (archive) {
             NSArray* archiveArray = [NSArray arrayWithObjects:archive, nil];
-            pipelineDescriptor.binaryArchives = archiveArray;
+            (*pipelineDescriptor).binaryArchives = archiveArray;
             BOOL result;
             NSError* error = nil;
             {
                 TRACE_EVENT0("skia.shaders", "addRenderPipelineFunctionsWithDescriptor");
-                result = [archive addRenderPipelineFunctionsWithDescriptor: pipelineDescriptor
+                result = [archive addRenderPipelineFunctionsWithDescriptor: pipelineDescriptor.get()
                                                                             error: &error];
             }
             if (!result && error) {
@@ -849,12 +852,10 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
                  };
 
         // kick off asynchronous pipeline build and depend on Apple's cache to manage it
-        [gpu->device() newRenderPipelineStateWithDescriptor: pipelineDescriptor
+        [gpu->device() newRenderPipelineStateWithDescriptor: pipelineDescriptor.get()
                                           completionHandler: completionHandler];
     }
 
     precompiledLibs->fRTFlip = inputs[kFragment_GrShaderType].fUseFlipRTUniform;
     return true;
 }
-
-GR_NORETAIN_END

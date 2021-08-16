@@ -20,12 +20,6 @@
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/mtl/GrMtlTexture.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
                                                      GrTexture* texture,
                                                      GrMtlGpu* gpu)
@@ -233,5 +227,3 @@ bool GrMtlPipelineState::doesntSampleAttachment(
     }
     return true;
 }
-
-GR_NORETAIN_END

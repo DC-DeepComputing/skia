@@ -27,6 +27,8 @@
 
 #import <Metal/Metal.h>
 
+#include "include/ports/SkCFObject.h"
+
 class GrMtlOpsRenderPass;
 class GrMtlTexture;
 class GrSemaphore;
@@ -44,7 +46,7 @@ public:
 
     const GrMtlCaps& mtlCaps() const { return *fMtlCaps.get(); }
 
-    id<MTLDevice> device() const { return fDevice; }
+    id<MTLDevice> device() const { return fDevice.get(); }
 
     GrMtlResourceProvider& resourceProvider() { return fResourceProvider; }
 
@@ -87,7 +89,7 @@ public:
 
 #if GR_METAL_SDK_VERSION >= 230
     id<MTLBinaryArchive> binaryArchive() const SK_API_AVAILABLE(macos(11.0), ios(14.0)) {
-        return fBinaryArchive;
+        return (id<MTLBinaryArchive>)(fBinaryArchive.get());
     }
 #endif
 
@@ -119,8 +121,8 @@ public:
     GrRingBuffer* uniformsRingBuffer() override { return &fUniformsRingBuffer; }
 
 private:
-    GrMtlGpu(GrDirectContext*, const GrContextOptions&, id<MTLDevice>,
-             id<MTLCommandQueue>, GrMTLHandle binaryArchive, MTLFeatureSet);
+    GrMtlGpu(GrDirectContext*, const GrContextOptions&, sk_cfp<id<MTLDevice>>,
+             sk_cfp<id<MTLCommandQueue>>, sk_cfp<GrMTLHandle> binaryArchive, MTLFeatureSet);
 
     void destroyResources();
 
@@ -290,8 +292,8 @@ private:
 
     sk_sp<GrMtlCaps> fMtlCaps;
 
-    id<MTLDevice> fDevice;
-    id<MTLCommandQueue> fQueue;
+    sk_cfp<id<MTLDevice>> fDevice;
+    sk_cfp<id<MTLCommandQueue>> fQueue;
 
     sk_sp<GrMtlCommandBuffer> fCurrentCmdBuffer;
 
@@ -299,7 +301,7 @@ private:
     SkDeque fOutstandingCommandBuffers;
 
 #if GR_METAL_SDK_VERSION >= 230
-    id<MTLBinaryArchive> fBinaryArchive SK_API_AVAILABLE(macos(11.0), ios(14.0));
+    sk_cfp<GrMTLHandle> fBinaryArchive SK_API_AVAILABLE(macos(11.0), ios(14.0));
 #endif
 
     GrMtlResourceProvider fResourceProvider;

@@ -22,12 +22,6 @@
 #include "src/gpu/mtl/GrMtlRenderTarget.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
-#if !__has_feature(objc_arc)
-#error This file must be compiled with Arc. Use -fobjc-arc flag
-#endif
-
-GR_NORETAIN_BEGIN
-
 GrMtlCaps::GrMtlCaps(const GrContextOptions& contextOptions, const id<MTLDevice> device,
                      MTLFeatureSet featureSet)
         : INHERITED(contextOptions) {
@@ -1209,5 +1203,3 @@ void GrMtlCaps::onDumpJSON(SkJSONWriter* writer) const {
 #else
 void GrMtlCaps::onDumpJSON(SkJSONWriter* writer) const { }
 #endif
-
-GR_NORETAIN_END
