@@ -370,7 +370,7 @@ void PipelineStageCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclar
 
 void PipelineStageCodeGenerator::writeStructDefinition(const StructDefinition& s) {
     const Type& type = s.type();
-    String mangledName = fCallbacks->getMangledName(String(type.name()).c_str());
+    String mangledName = fCallbacks->getMangledName(String(type.unaliasedType().name()).c_str());
     String definition = "struct " + mangledName + " {\n";
     for (const auto& f : type.fields()) {
         definition += this->typedVariable(*f.fType, f.fName) + ";\n";
@@ -417,7 +417,7 @@ String PipelineStageCodeGenerator::typeName(const Type& type) {
     }
 
     auto it = fStructNames.find(&type);
-    return it != fStructNames.end() ? it->second : String(type.name());
+    return it != fStructNames.end() ? it->second : String(type.unaliasedType().name());
 }
 
 void PipelineStageCodeGenerator::writeType(const Type& type) {

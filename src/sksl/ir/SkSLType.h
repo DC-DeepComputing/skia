@@ -156,6 +156,9 @@ public:
     static std::unique_ptr<Type> MakeVectorType(const char* name, const char* abbrev,
                                                 const Type& componentType, int columns);
 
+    /** Create a type alias. */
+    static std::unique_ptr<Type> MakeTypeAlias(skstd::string_view name, const Type& originalType);
+
     template <typename T>
     bool is() const {
         return this->typeKind() == T::kTypeKind;
@@ -199,11 +202,18 @@ public:
     }
 
     bool operator==(const Type& other) const {
-        return this->name() == other.name();
+        return this->unaliasedType().name() == other.unaliasedType().name();
     }
 
     bool operator!=(const Type& other) const {
-        return this->name() != other.name();
+        return !operator==(other);
+    }
+
+    /**
+     * If this type is an alias, returns the original unaliased type.
+     */
+    virtual const Type& unaliasedType() const {
+        return *this;
     }
 
     /**
