@@ -22,6 +22,30 @@
       },
       "revId": "ef51e9c441f5b700123783c83e7bca55538d1639",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd39323c_f314fa6c",
+        "filename": "infra/bots/assets/android_ndk_darwin/create.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-16T18:51:45Z",
+      "side": 1,
+      "message": "Yes, this should be an empty temporary directory created by sk.  This is fine as long as the uploaded asset looks correct.",
+      "parentUuid": "86f2b8b2_725012fa",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "ef51e9c441f5b700123783c83e7bca55538d1639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
