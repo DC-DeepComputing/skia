@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14f0ca2e_3cd37bf9",
+        "filename": "infra/bots/assets/android_ndk_darwin/create.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-08-16T16:31:06Z",
+      "side": 1,
+      "message": "Ah, thanks!\n\nI\u0027m on a new Mac; what all do I need to do to setup gcloud? I\u0027ve followed https://cloud.google.com/sdk/docs/install, but now it wants to know my project ID. What\u0027s Skia\u0027s/where can I find it?",
+      "parentUuid": "01ac46cf_0f01305e",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 27
+      },
+      "revId": "658edff7f7bf2609085950c43bf1aa053911ef64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f008701_6187c7ad",
         "filename": "infra/bots/assets/android_ndk_darwin/create.py",
         "patchSetId": 3
