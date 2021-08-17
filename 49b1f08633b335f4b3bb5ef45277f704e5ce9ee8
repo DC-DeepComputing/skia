@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a4567f_13baee01",
+        "filename": "modules/skottie/src/animator/Vec2KeyframeAnimator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-17T17:31:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb172663_2967ba85",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 31
+      },
+      "revId": "49b1f08633b335f4b3bb5ef45277f704e5ce9ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c892bd8_ed3eafbe",
@@ -95,6 +119,30 @@
       "side": 1,
       "message": "Sounds reasonable.",
       "parentUuid": "7c892bd8_ed3eafbe",
+      "range": {
+        "startLine": 153,
+        "startChar": 19,
+        "endLine": 153,
+        "endChar": 49
+      },
+      "revId": "49b1f08633b335f4b3bb5ef45277f704e5ce9ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a27609a5_c83cb035",
+        "filename": "modules/skottie/src/animator/Vec2KeyframeAnimator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-17T17:31:12Z",
+      "side": 1,
+      "message": "Will address in follow-up if required. Changing the interface seems like it\u0027ll take at least two commits and one Google3 CL.",
+      "parentUuid": "41b6a846_5e97b252",
       "range": {
         "startLine": 153,
         "startChar": 19,
