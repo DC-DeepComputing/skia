@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda23c27_bba72fc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-17T00:34:40Z",
+      "side": 1,
+      "message": "Expanding the expression animator to support Vec2 animators",
+      "revId": "49b1f08633b335f4b3bb5ef45277f704e5ce9ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c892bd8_ed3eafbe",
+        "filename": "modules/skottie/src/animator/Vec2KeyframeAnimator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-08-17T00:34:40Z",
+      "side": 1,
+      "message": "Thoughts on changing the interface of this slightly? Have createArrayExpressionEvaluator also pass the number of elements it is expecting. Makes it easier for the client to detect if there is an issue otherwise there might just be a mismatch where the client is returning a vector of size 3 but skottie only uses the first two elements.",
+      "range": {
+        "startLine": 153,
+        "startChar": 19,
+        "endLine": 153,
+        "endChar": 49
+      },
+      "revId": "49b1f08633b335f4b3bb5ef45277f704e5ce9ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
