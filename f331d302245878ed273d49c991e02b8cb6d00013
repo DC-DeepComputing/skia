@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b039142a_d6850b38",
+        "filename": "src/gpu/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T19:00:36Z",
+      "side": 1,
+      "message": "Do we need the ifs here at all? Can we just always set it to load?",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 59
+      },
+      "revId": "f331d302245878ed273d49c991e02b8cb6d00013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
