@@ -230,6 +230,7 @@ private:
 
     std::shared_ptr<SymbolTable> makeRootSymbolTable();
     std::shared_ptr<SymbolTable> makePrivateSymbolTable(std::shared_ptr<SymbolTable> parent);
+    void makeES3TypesPublic(std::shared_ptr<SymbolTable> symbols);
 
     /** Verifies that @if and @switch statements were actually optimized away. */
     void verifyStaticTests(const Program& program);

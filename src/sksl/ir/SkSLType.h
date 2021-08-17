@@ -129,6 +129,9 @@ public:
                                                 const Type& componentType, int columns,
                                                 int8_t rows);
 
+    /** Create a public version of a normally-private type. */
+    static std::unique_ptr<Type> MakePublicizedType(const Type& type);
+
     /** Create a sampler type. */
     static std::unique_ptr<Type> MakeSamplerType(const char* name, const Type& textureType);
 
@@ -194,16 +197,23 @@ public:
         return this->displayName();
     }
 
-    bool isPrivate() const {
+    virtual bool isPrivate() const {
         return this->name().starts_with("$");
     }
 
     bool operator==(const Type& other) const {
-        return this->name() == other.name();
+        return this->unaliasedType().name() == other.unaliasedType().name();
     }
 
     bool operator!=(const Type& other) const {
-        return this->name() != other.name();
+        return !operator==(other);
+    }
+
+    /**
+     * If this type is an alias, returns the original unaliased type.
+     */
+    virtual const Type& unaliasedType() const {
+        return *this;
     }
 
     /**

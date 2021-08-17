@@ -123,7 +123,6 @@ private:
     int8_t fPriority;
 };
 
-
 class ScalarType final : public Type {
 public:
     static constexpr TypeKind kTypeKind = TypeKind::kScalar;
@@ -157,6 +156,10 @@ public:
 
     bool isScalar() const override {
         return true;
+    }
+
+    bool isPrivate() const override {
+        return this->isUnsigned() || INHERITED::isPrivate();
     }
 
 private:
@@ -199,6 +202,10 @@ public:
 
     bool isMatrix() const override {
         return true;
+    }
+
+    bool isPrivate() const override {
+        return (fColumns != fRows) || INHERITED::isPrivate();
     }
 
 private:
@@ -344,6 +351,10 @@ public:
         return true;
     }
 
+    bool isPrivate() const override {
+        return fComponentType.isUnsigned() || INHERITED::isPrivate();
+    }
+
 private:
     using INHERITED = Type;
 
@@ -351,12 +362,123 @@ private:
     int8_t fColumns;
 };
 
-String Type::getArrayName(int arraySize) const {
-    skstd::string_view name = this->name();
-    return (arraySize != kUnsizedArray)
-                   ? String::printf("%.*s[%d]", (int)name.size(), name.data(), arraySize)
-                   : String::printf("%.*s[]", (int)name.size(), name.data());
-}
+/** Wraps an existing type, forwarding all virtual calls. */
+class ForwardingType : public Type {
+public:
+    ForwardingType(skstd::string_view name, const Type& type)
+        : INHERITED(name, type.abbreviatedName(), type.typeKind())
+        , fOriginalType(type) {}
+
+    const Type& unaliasedType() const override {
+        return fOriginalType.unaliasedType();
+    }
+
+    NumberKind numberKind() const override {
+        return fOriginalType.numberKind();
+    }
+
+    int priority() const override {
+        return fOriginalType.priority();
+    }
+
+    const Type& componentType() const override {
+        return fOriginalType.componentType();
+    }
+
+    const Type& textureType() const override {
+        return fOriginalType.textureType();
+    }
+
+    int columns() const override {
+        return fOriginalType.columns();
+    }
+
+    int rows() const override {
+        return fOriginalType.rows();
+    }
+
+    const std::vector<Field>& fields() const override {
+        return fOriginalType.fields();
+    }
+
+    const std::vector<const Type*>& coercibleTypes() const override {
+        return fOriginalType.coercibleTypes();
+    }
+
+    SpvDim_ dimensions() const override {
+        return fOriginalType.dimensions();
+    }
+
+    bool isDepth() const override {
+        return fOriginalType.isDepth();
+    }
+
+    bool isArrayedTexture() const override {
+        return fOriginalType.isArrayedTexture();
+    }
+
+    bool isScalar() const override {
+        return fOriginalType.isScalar();
+    }
+
+    bool isLiteral() const override {
+        return fOriginalType.isLiteral();
+    }
+
+    const Type& scalarTypeForLiteral() const override {
+        return fOriginalType.scalarTypeForLiteral();
+    }
+
+    bool isVector() const override {
+        return fOriginalType.isVector();
+    }
+
+    bool isMatrix() const override {
+        return fOriginalType.isMatrix();
+    }
+
+    bool isArray() const override {
+        return fOriginalType.isArray();
+    }
+
+    bool isStruct() const override {
+        return fOriginalType.isStruct();
+    }
+
+    bool isMultisampled() const override {
+        return fOriginalType.isMultisampled();
+    }
+
+    bool isSampled() const override {
+        return fOriginalType.isSampled();
+    }
+
+    int bitWidth() const override {
+        return fOriginalType.bitWidth();
+    }
+
+    bool isPrivate() const override {
+        return fOriginalType.isPrivate();
+    }
+
+private:
+    using INHERITED = Type;
+
+    const Type& fOriginalType;
+};
+
+/** Converts a private type to a public one by overriding isPrivate. */
+class PublicizedType final : public ForwardingType {
+public:
+    PublicizedType(const Type& type) : INHERITED(type.name(), type) {}
+
+    bool isPrivate() const override {
+        return false;
+    }
+
+private:
+    using INHERITED = ForwardingType;
+};
 
 std::unique_ptr<Type> Type::MakeArrayType(skstd::string_view name, const Type& componentType,
                                           int columns) {
@@ -376,6 +498,10 @@ std::unique_ptr<Type> Type::MakeLiteralType(const char* name, const Type& scalar
 std::unique_ptr<Type> Type::MakeMatrixType(const char* name, const char* abbrev,
                                            const Type& componentType, int columns, int8_t rows) {
     return std::make_unique<MatrixType>(name, abbrev, componentType, columns, rows);
+}
+
+std::unique_ptr<Type> Type::MakePublicizedType(const Type& type) {
+    return std::make_unique<PublicizedType>(type);
 }
 
 std::unique_ptr<Type> Type::MakeSamplerType(const char* name, const Type& textureType) {
@@ -409,6 +535,13 @@ std::unique_ptr<Type> Type::MakeTextureType(const char* name, SpvDim_ dimensions
 std::unique_ptr<Type> Type::MakeVectorType(const char* name, const char* abbrev,
                                            const Type& componentType, int columns) {
     return std::make_unique<VectorType>(name, abbrev, componentType, columns);
+}
+
+String Type::getArrayName(int arraySize) const {
+    skstd::string_view name = this->name();
+    return (arraySize != kUnsizedArray)
+                   ? String::printf("%.*s[%d]", (int)name.size(), name.data(), arraySize)
+                   : String::printf("%.*s[]", (int)name.size(), name.data());
 }
 
 CoercionCost Type::coercionCost(const Type& other) const {
