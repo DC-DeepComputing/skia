@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46080d74_c9ad2289",
+        "filename": "src/gpu/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T18:49:41Z",
+      "side": 1,
+      "message": "If the small path renderer is v1-only, should we be able to make onGetSmallPathAtlasMgr only defined in v1? Then we could move the #ifdef outside of the function definition and avoid the vestigial definition of the atlas.\n\nOr does that not build?",
+      "range": {
+        "startLine": 378,
+        "startChar": 4,
+        "endLine": 378,
+        "endChar": 13
+      },
+      "revId": "71668f853e08cd05fdd40d32020e6177615d5848",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
