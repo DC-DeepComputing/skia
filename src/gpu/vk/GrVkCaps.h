@@ -37,7 +37,8 @@ public:
     bool isFormatSRGB(const GrBackendFormat&) const override;
 
     bool isFormatTexturable(const GrBackendFormat&, GrTextureType) const override;
-    bool isVkFormatTexturable(VkFormat) const;
+    bool isFormatTexturable(const GrSurfaceSpec& spec) const override;
+    bool isVkFormatTexturable(VkFormat, VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL) const;
 
     bool isFormatCopyable(const GrBackendFormat&) const override { return true; }
 

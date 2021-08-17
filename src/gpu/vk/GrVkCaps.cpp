@@ -1424,9 +1424,31 @@ bool GrVkCaps::isFormatTexturable(const GrBackendFormat& format, GrTextureType) 
     return this->isVkFormatTexturable(vkFormat);
 }
 
-bool GrVkCaps::isVkFormatTexturable(VkFormat format) const {
+bool GrVkCaps::isFormatTexturable(const GrSurfaceSpec& spec) const {
+    GrVkImageSpec vkSpec;
+    if (!spec.getVkImageSpec(&vkSpec)) {
+        return false;
+    }
+    if (vkSpec.fYcbcrConversionInfo.isValid() && vkSpec.fYcbcrConversionInfo.fExternalFormat != 0) {
+        // We can always texture from an external format (assuming we have the ycbcr conversion
+        // info which we require to be passed in).
+        return true;
+    }
+    return this->isVkFormatTexturable(vkSpec.fFormat, vkSpec.fImageTiling);
+}
+
+bool GrVkCaps::isVkFormatTexturable(VkFormat format, VkImageTiling tiling) const {
     const FormatInfo& info = this->getFormatInfo(format);
-    return SkToBool(FormatInfo::kTexturable_Flag & info.fOptimalFlags);
+    if (tiling == VK_IMAGE_TILING_OPTIMAL) {
+        return SkToBool(FormatInfo::kTexturable_Flag & info.fOptimalFlags);
+    } else if (tiling == VK_IMAGE_TILING_LINEAR) {
+        return SkToBool(FormatInfo::kTexturable_Flag & info.fLinearFlags);
+    } else if (tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT && this->supportsDRMModifiers()) {
+        // Not fully sure what to do here yet but this is just demo code
+        return true;
+    } else {
+        SkUNREACHABLE;
+    }
 }
 
 bool GrVkCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,

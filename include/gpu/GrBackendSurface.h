@@ -601,5 +601,155 @@ private:
 
 #endif
 
+
+struct GrVkImageSpec {
+    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkFormat fFormat = VK_FORMAT_UNDEFINED;
+    VkImageUsageFlags fImageUsageFlags = 0;
+    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
+    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+};
+
+struct GrVkImageInfo2 {
+    VkImage fImage = VK_NULL_HANDLE;
+    GrVkAlloc fAlloc;
+
+    // These are mutable properties of a VkImage
+    VkImageLayout fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    uint32_t fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
+
+    GrVkImageSpec fSpec;
+};
+
+struct GrGLTextureSpec {
+    GrGLenum fTarget = 0;
+    GrGLenum fFormat = 0;
+};
+
+struct GrGLTextureInfo2 {
+    GrGLuint fID;
+    GrGLTextureSpec fSpec;
+};
+
+struct GrD3DTextureResourceSpec {
+    DXGI_FORMAT fFormat = DXGI_FORMAT_UNKNOWN;
+    unsigned int fSampleQualityPattern = DXGI_STANDARD_MULTISAMPLE_QUALITY_PATTERN;
+};
+
+struct GrD3DTextureResourceInfo2 {
+    gr_cp<ID3D12Resource> fResource = nullptr;
+    sk_sp<GrD3DAlloc> fAlloc = nullptr;
+
+    // This is mutable state on the texture
+    D3D12_RESOURCE_STATES fResourceState = D3D12_RESOURCE_STATE_COMMON;
+
+    GrD3DTextureResourceSpec fSpec;
+};
+
+struct GrMtlTextureSpec{
+    // I have no idea what to do here since we currently just store a MtlTexture everywhere and then
+    // pull off all the info from the texture.
+};
+struct GrMtlTextureInfo2 {
+    sk_cfp<GrMTLHandle> fTexture;
+    GrMtlTextureSpec fSpec;
+};
+
+struct GrDawnTextureSpec {
+    wgpu::TextureFormat fFormat;
+};
+
+struct GrDawnTextureInfo2 {
+    wgpu::Texture fTexture;
+    GrDawnTextureSpec fSpec;
+};
+
+struct GrMockTextureSpec {
+    GrColorType fColorType = GrColorType::kUnknown;
+    SkImage::CompressionType fCompressionType = SkImage::CompressionType::kNone;
+};
+
+struct GrMockTextureInfo2 {
+    int fID = 0;
+    GrMockTextureSpec fSpec;
+};
+
+struct GrSharedSurfaceSpec {
+    uint32_t fSampleCount = 1;
+    uint32_t fLevelCount = 0;
+    GrProtected fProtected = GrProtected::kNo;
+};
+
+struct GrSurfaceSpec {
+public:
+    GrSurfaceSpec();
+#ifdef SK_GL
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrGLTextureSpec& glSpec)
+            : fBackend(GrBackendApi::kOpenGL), fSharedSpec(sharedSpec), fGLSpec(glSpec) {}
+#endif
+#ifdef SK_VULKAN
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrVkImageSpec& vkSpec)
+        : fBackend(GrBackendApi::kVulkan), fSharedSpec(sharedSpec), fVkSpec(vkSpec) {}
+#endif
+#ifdef SK_DIRECT3D
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrD3DTextureResourceSpec& d3dSpec)
+        : fBackend(GrBackendApi::kDirect3D), fSharedSpec(sharedSpec), fD3DSpec(d3dSpec) {}
+#endif
+#ifdef SK_METAL
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrMtlTextureSpec& mtlSpec)
+            : fBackend(GrBackendApi::kMetal), fSharedSpec(sharedSpec), fMtlSpec(mtlSpec) {}
+#endif
+#ifdef SK_DAWN
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrDawnTextureSpec& dawnSpec)
+            : fBackend(GrBackendApi::kDawn), fSharedSpec(sharedSpec), fDawnSpec(dawnSpec) {}
+#endif
+    GrSurfaceSpec(const GrSharedSurfaceSpec& sharedSpec, const GrMockTextureSpec& mockSpec)
+            : fBackend(GrBackendApi::kMock), fSharedSpec(sharedSpec), fMockSpec(mockSpec) {}
+
+    GrBackendApi backend() const { return fBackend; }
+
+    const GrSharedSurfaceSpec& sharedSpec() const { return fSharedSpec; }
+
+    bool getGLTextureSpec(GrGLTextureSpec* spec) const {
+        if (fBackend != GrBackendApi::kOpenGL) {
+            return false;
+        }
+        *spec = fGLSpec;
+        return true;
+    }
+    bool getVkImageSpec(GrVkImageSpec* spec) const {
+        if (fBackend != GrBackendApi::kVulkan) {
+            return false;
+        }
+        *spec = fVkSpec;
+        return true;
+    }
+    // Other backend getters
+
+private:
+    GrBackendApi fBackend;
+    GrSharedSurfaceSpec fSharedSpec;
+
+    union {
+#ifdef SK_GL
+        GrGLTextureSpec fGLSpec;
+#endif
+#ifdef SK_VULKAN
+        GrVkImageSpec fVkSpec;
+#endif
+#ifdef SK_DIRECT3D
+        GrD3DTextureResourceSpec fD3DSpec;
+#endif
+#ifdef SK_METAL
+        GrMtlTextureSpec fMtlSpec;
+#endif
+#ifdef SK_DAWN
+        GrDawnTextureSpec fDawnSpec;
+#endif
+        GrMockTextureSpec fMockSpec;
+    };
+};
+
+
 #endif
 
