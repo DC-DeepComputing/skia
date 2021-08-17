@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "400f2344_5db71ab8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:24:55Z",
+      "side": 1,
+      "message": "@backer confirmed that this resolved the render pass sampling artifacts on the android tv",
+      "revId": "dde05f8cdb6053921d1e8563254f13c51e172f7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
