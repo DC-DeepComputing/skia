@@ -1113,19 +1113,34 @@ void IRGenerator::convertGlobalVarDeclarations(const ASTNode& decl) {
     }
 }
 
-bool IRGenerator::typeContainsPrivateFields(const Type& type) {
+static bool type_contains_private_fields(const Type& type) {
     // Checks for usage of private types, including fields inside a struct.
     if (type.isPrivate()) {
         return true;
     }
     if (type.isStruct()) {
         for (const auto& f : type.fields()) {
-            if (this->typeContainsPrivateFields(*f.fType)) {
+            if (type_contains_private_fields(*f.fType)) {
                 return true;
             }
         }
     }
     return false;
+}
+
+static bool type_allowed_in_es2(const Type& type) {
+    // Checks for usage of ES2-disallowed types, including fields inside a struct.
+    if (!type.allowedInES2()) {
+        return false;
+    }
+    if (type.isStruct()) {
+        for (const auto& f : type.fields()) {
+            if (!type_allowed_in_es2(*f.fType)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 const Type* IRGenerator::convertType(const ASTNode& type, bool allowVoid) {
@@ -1142,8 +1157,12 @@ const Type* IRGenerator::convertType(const ASTNode& type, bool allowVoid) {
                                     "type '" + name + "' not allowed in this context");
         return nullptr;
     }
-    if (!fIsBuiltinCode && this->typeContainsPrivateFields(*result)) {
+    if (!fIsBuiltinCode && type_contains_private_fields(*result)) {
         this->errorReporter().error(type.fOffset, "type '" + name + "' is private");
+        return nullptr;
+    }
+    if (this->strictES2Mode() && !type_allowed_in_es2(*result)) {
+        this->errorReporter().error(type.fOffset, "type '" + name + "' is not supported");
         return nullptr;
     }
     if (isArray) {
