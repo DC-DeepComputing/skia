@@ -37,7 +37,6 @@
 #include "src/gpu/GrImageContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
 #include "src/gpu/GrMemoryPool.h"
-#include "src/gpu/GrPathRenderer.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrResourceProvider.h"
@@ -70,6 +69,7 @@
 #include "src/gpu/tessellate/GrTessellationPathRenderer.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/gpu/text/GrTextBlobCache.h"
+#include "src/gpu/v1/PathRenderer.h"
 
 #define ASSERT_OWNED_RESOURCE(R) SkASSERT(!(R) || (R)->getContext() == this->drawingManager()->getContext())
 #define ASSERT_SINGLE_OWNER        GR_ASSERT_SINGLE_OWNER(this->singleOwner())
