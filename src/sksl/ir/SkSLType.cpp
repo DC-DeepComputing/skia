@@ -128,12 +128,13 @@ class ScalarType final : public Type {
 public:
     static constexpr TypeKind kTypeKind = TypeKind::kScalar;
 
-    ScalarType(const char* name, const char* abbrev, NumberKind numberKind, int8_t priority,
-               int8_t bitWidth)
+    ScalarType(skstd::string_view name, const char* abbrev, NumberKind numberKind, int8_t priority,
+               int8_t bitWidth, bool allowedInES2)
         : INHERITED(name, abbrev, kTypeKind)
         , fNumberKind(numberKind)
         , fPriority(priority)
-        , fBitWidth(bitWidth) {}
+        , fBitWidth(bitWidth)
+        , fAllowedInES2(allowedInES2) {}
 
     NumberKind numberKind() const override {
         return fNumberKind;
@@ -159,12 +160,17 @@ public:
         return true;
     }
 
+    bool allowedInES2() const override {
+        return fAllowedInES2;
+    }
+
 private:
     using INHERITED = Type;
 
     NumberKind fNumberKind;
     int8_t fPriority;
     int8_t fBitWidth;
+    bool fAllowedInES2;
 };
 
 class MatrixType final : public Type {
@@ -172,11 +178,12 @@ public:
     static constexpr TypeKind kTypeKind = TypeKind::kMatrix;
 
     MatrixType(skstd::string_view name, const char* abbrev, const Type& componentType,
-               int8_t columns, int8_t rows)
+               int8_t columns, int8_t rows, bool allowedInES2)
         : INHERITED(name, abbrev, kTypeKind)
         , fComponentType(componentType.as<ScalarType>())
         , fColumns(columns)
-        , fRows(rows) {
+        , fRows(rows)
+        , fAllowedInES2(allowedInES2) {
         SkASSERT(columns >= 2 && columns <= 4);
         SkASSERT(rows >= 2 && rows <= 4);
     }
@@ -201,12 +208,17 @@ public:
         return true;
     }
 
+    bool allowedInES2() const override {
+        return fAllowedInES2;
+    }
+
 private:
     using INHERITED = Type;
 
     const ScalarType& fComponentType;
     int8_t fColumns;
     int8_t fRows;
+    bool fAllowedInES2;
 };
 
 class TextureType final : public Type {
@@ -317,10 +329,11 @@ public:
     static constexpr TypeKind kTypeKind = TypeKind::kVector;
 
     VectorType(skstd::string_view name, const char* abbrev, const Type& componentType,
-               int8_t columns)
+               int8_t columns, bool allowedInES2)
         : INHERITED(name, abbrev, kTypeKind)
         , fComponentType(componentType.as<ScalarType>())
-        , fColumns(columns) {
+        , fColumns(columns)
+        , fAllowedInES2(allowedInES2) {
         SkASSERT(columns >= 2 && columns <= 4);
     }
 
@@ -344,11 +357,16 @@ public:
         return true;
     }
 
+    bool allowedInES2() const override {
+        return fAllowedInES2;
+    }
+
 private:
     using INHERITED = Type;
 
     const ScalarType& fComponentType;
     int8_t fColumns;
+    bool fAllowedInES2;
 };
 
 String Type::getArrayName(int arraySize) const {
@@ -373,9 +391,10 @@ std::unique_ptr<Type> Type::MakeLiteralType(const char* name, const Type& scalar
     return std::make_unique<LiteralType>(name, scalarType, priority);
 }
 
-std::unique_ptr<Type> Type::MakeMatrixType(const char* name, const char* abbrev,
-                                           const Type& componentType, int columns, int8_t rows) {
-    return std::make_unique<MatrixType>(name, abbrev, componentType, columns, rows);
+std::unique_ptr<Type> Type::MakeMatrixType(skstd::string_view name, const char* abbrev,
+                                           const Type& componentType, int columns, int8_t rows,
+                                           bool allowedInES2) {
+    return std::make_unique<MatrixType>(name, abbrev, componentType, columns, rows, allowedInES2);
 }
 
 std::unique_ptr<Type> Type::MakeSamplerType(const char* name, const Type& textureType) {
@@ -387,10 +406,10 @@ std::unique_ptr<Type> Type::MakeSpecialType(const char* name, const char* abbrev
     return std::unique_ptr<Type>(new Type(name, abbrev, typeKind));
 }
 
-std::unique_ptr<Type> Type::MakeScalarType(const char* name, const char* abbrev,
+std::unique_ptr<Type> Type::MakeScalarType(skstd::string_view name, const char* abbrev,
                                            Type::NumberKind numberKind, int8_t priority,
-                                           int8_t bitWidth) {
-    return std::make_unique<ScalarType>(name, abbrev, numberKind, priority, bitWidth);
+                                           int8_t bitWidth, bool allowedInES2) {
+    return std::make_unique<ScalarType>(name, abbrev, numberKind, priority, bitWidth, allowedInES2);
 
 }
 
@@ -406,9 +425,10 @@ std::unique_ptr<Type> Type::MakeTextureType(const char* name, SpvDim_ dimensions
                                          isMultisampled, isSampled);
 }
 
-std::unique_ptr<Type> Type::MakeVectorType(const char* name, const char* abbrev,
-                                           const Type& componentType, int columns) {
-    return std::make_unique<VectorType>(name, abbrev, componentType, columns);
+std::unique_ptr<Type> Type::MakeVectorType(skstd::string_view name, const char* abbrev,
+                                           const Type& componentType, int columns,
+                                           bool allowedInES2) {
+    return std::make_unique<VectorType>(name, abbrev, componentType, columns, allowedInES2);
 }
 
 CoercionCost Type::coercionCost(const Type& other) const {

@@ -18,64 +18,85 @@ namespace SkSL {
  * Initializes the core SkSL types.
  */
 BuiltinTypes::BuiltinTypes()
-        : fFloat(Type::MakeScalarType(
-                  "float", "f", Type::NumberKind::kFloat, /*priority=*/10, /*bitWidth=*/32))
-        , fFloat2(Type::MakeVectorType("float2", "f2", *fFloat, /*columns=*/2))
-        , fFloat3(Type::MakeVectorType("float3", "f3", *fFloat, /*columns=*/3))
-        , fFloat4(Type::MakeVectorType("float4", "f4", *fFloat, /*columns=*/4))
-        , fHalf(Type::MakeScalarType(
-                  "half", "h", Type::NumberKind::kFloat, /*priority=*/9, /*bitWidth=*/16))
-        , fHalf2(Type::MakeVectorType("half2", "h2", *fHalf, /*columns=*/2))
-        , fHalf3(Type::MakeVectorType("half3", "h3", *fHalf, /*columns=*/3))
-        , fHalf4(Type::MakeVectorType("half4", "h4", *fHalf, /*columns=*/4))
-        , fInt(Type::MakeScalarType(
-                  "int", "i", Type::NumberKind::kSigned, /*priority=*/7, /*bitWidth=*/32))
-        , fInt2(Type::MakeVectorType("int2", "i2", *fInt, /*columns=*/2))
-        , fInt3(Type::MakeVectorType("int3", "i3", *fInt, /*columns=*/3))
-        , fInt4(Type::MakeVectorType("int4", "i4", *fInt, /*columns=*/4))
-        , fUInt(Type::MakeScalarType(
-                  "uint", "I", Type::NumberKind::kUnsigned, /*priority=*/6, /*bitWidth=*/32))
-        , fUInt2(Type::MakeVectorType("uint2", "I2", *fUInt, /*columns=*/2))
-        , fUInt3(Type::MakeVectorType("uint3", "I3", *fUInt, /*columns=*/3))
-        , fUInt4(Type::MakeVectorType("uint4", "I4", *fUInt, /*columns=*/4))
-        , fShort(Type::MakeScalarType(
-                  "short", "s", Type::NumberKind::kSigned, /*priority=*/4, /*bitWidth=*/16))
-        , fShort2(Type::MakeVectorType("short2", "s2", *fShort, /*columns=*/2))
-        , fShort3(Type::MakeVectorType("short3", "s3", *fShort, /*columns=*/3))
-        , fShort4(Type::MakeVectorType("short4", "s4", *fShort, /*columns=*/4))
-        , fUShort(Type::MakeScalarType(
-                  "ushort", "S", Type::NumberKind::kUnsigned, /*priority=*/3, /*bitWidth=*/16))
-        , fUShort2(Type::MakeVectorType("ushort2", "S2", *fUShort, /*columns=*/2))
-        , fUShort3(Type::MakeVectorType("ushort3", "S3", *fUShort, /*columns=*/3))
-        , fUShort4(Type::MakeVectorType("ushort4", "S4", *fUShort, /*columns=*/4))
-        , fBool(Type::MakeScalarType(
-                  "bool", "b", Type::NumberKind::kBoolean, /*priority=*/0, /*bitWidth=*/1))
-        , fBool2(Type::MakeVectorType("bool2", "b2", *fBool, /*columns=*/2))
-        , fBool3(Type::MakeVectorType("bool3", "b3", *fBool, /*columns=*/3))
-        , fBool4(Type::MakeVectorType("bool4", "b4", *fBool, /*columns=*/4))
+        : fFloat(Type::MakeScalarType("float", "f", Type::NumberKind::kFloat, /*priority=*/10,
+                                      /*bitWidth=*/32, /*allowedInES2=*/true))
+        , fFloat2(Type::MakeVectorType("float2", "f2", *fFloat,/*columns=*/2,/*allowedInES2=*/true))
+        , fFloat3(Type::MakeVectorType("float3", "f3", *fFloat,/*columns=*/3,/*allowedInES2=*/true))
+        , fFloat4(Type::MakeVectorType("float4", "f4", *fFloat,/*columns=*/4,/*allowedInES2=*/true))
+        , fHalf(Type::MakeScalarType("half", "h", Type::NumberKind::kFloat, /*priority=*/9,
+                                     /*bitWidth=*/16, /*allowedInES2=*/true))
+        , fHalf2(Type::MakeVectorType("half2", "h2", *fHalf, /*columns=*/2, /*allowedInES2=*/true))
+        , fHalf3(Type::MakeVectorType("half3", "h3", *fHalf, /*columns=*/3, /*allowedInES2=*/true))
+        , fHalf4(Type::MakeVectorType("half4", "h4", *fHalf, /*columns=*/4, /*allowedInES2=*/true))
+        , fInt(Type::MakeScalarType("int", "i", Type::NumberKind::kSigned, /*priority=*/7,
+                                    /*bitWidth=*/32, /*allowedInES2=*/true))
+        , fInt2(Type::MakeVectorType("int2", "i2", *fInt, /*columns=*/2, /*allowedInES2=*/true))
+        , fInt3(Type::MakeVectorType("int3", "i3", *fInt, /*columns=*/3, /*allowedInES2=*/true))
+        , fInt4(Type::MakeVectorType("int4", "i4", *fInt, /*columns=*/4, /*allowedInES2=*/true))
+        , fUInt(Type::MakeScalarType("uint", "I", Type::NumberKind::kUnsigned, /*priority=*/6,
+                                     /*bitWidth=*/32, /*allowedInES2=*/false))
+        , fUInt2(Type::MakeVectorType("uint2", "I2", *fUInt, /*columns=*/2, /*allowedInES2=*/false))
+        , fUInt3(Type::MakeVectorType("uint3", "I3", *fUInt, /*columns=*/3, /*allowedInES2=*/false))
+        , fUInt4(Type::MakeVectorType("uint4", "I4", *fUInt, /*columns=*/4, /*allowedInES2=*/false))
+        , fShort(Type::MakeScalarType("short", "s", Type::NumberKind::kSigned, /*priority=*/4,
+                                      /*bitWidth=*/16, /*allowedInES2=*/true))
+        , fShort2(Type::MakeVectorType("short2", "s2", *fShort,/*columns=*/2,/*allowedInES2=*/true))
+        , fShort3(Type::MakeVectorType("short3", "s3", *fShort,/*columns=*/3,/*allowedInES2=*/true))
+        , fShort4(Type::MakeVectorType("short4", "s4", *fShort,/*columns=*/4,/*allowedInES2=*/true))
+        , fUShort(Type::MakeScalarType("ushort", "S", Type::NumberKind::kUnsigned, /*priority=*/3,
+                                       /*bitWidth=*/16, /*allowedInES2=*/false))
+        , fUShort2(Type::MakeVectorType("ushort2", "S2", *fUShort,
+                                        /*columns=*/2, /*allowedInES2=*/false))
+        , fUShort3(Type::MakeVectorType("ushort3", "S3", *fUShort,
+                                        /*columns=*/3, /*allowedInES2=*/false))
+        , fUShort4(Type::MakeVectorType("ushort4", "S4", *fUShort,
+                                        /*columns=*/4, /*allowedInES2=*/false))
+        , fBool(Type::MakeScalarType("bool", "b", Type::NumberKind::kBoolean, /*priority=*/0,
+                                     /*bitWidth=*/1, /*allowedInES2=*/true))
+        , fBool2(Type::MakeVectorType("bool2", "b2", *fBool, /*columns=*/2, /*allowedInES2=*/true))
+        , fBool3(Type::MakeVectorType("bool3", "b3", *fBool, /*columns=*/3, /*allowedInES2=*/true))
+        , fBool4(Type::MakeVectorType("bool4", "b4", *fBool, /*columns=*/4, /*allowedInES2=*/true))
         , fInvalid(Type::MakeSpecialType("<INVALID>", "O", Type::TypeKind::kOther))
         , fPoison(Type::MakeSpecialType(Compiler::POISON_TAG, "P", Type::TypeKind::kOther))
         , fVoid(Type::MakeSpecialType("void", "v", Type::TypeKind::kVoid))
         , fFloatLiteral(Type::MakeLiteralType("$floatLiteral", *fFloat, /*priority=*/8))
         , fIntLiteral(Type::MakeLiteralType("$intLiteral", *fInt, /*priority=*/5))
-        , fFloat2x2(Type::MakeMatrixType("float2x2", "f22", *fFloat, /*columns=*/2, /*rows=*/2))
-        , fFloat2x3(Type::MakeMatrixType("float2x3", "f23", *fFloat, /*columns=*/2, /*rows=*/3))
-        , fFloat2x4(Type::MakeMatrixType("float2x4", "f24", *fFloat, /*columns=*/2, /*rows=*/4))
-        , fFloat3x2(Type::MakeMatrixType("float3x2", "f32", *fFloat, /*columns=*/3, /*rows=*/2))
-        , fFloat3x3(Type::MakeMatrixType("float3x3", "f33", *fFloat, /*columns=*/3, /*rows=*/3))
-        , fFloat3x4(Type::MakeMatrixType("float3x4", "f34", *fFloat, /*columns=*/3, /*rows=*/4))
-        , fFloat4x2(Type::MakeMatrixType("float4x2", "f42", *fFloat, /*columns=*/4, /*rows=*/2))
-        , fFloat4x3(Type::MakeMatrixType("float4x3", "f43", *fFloat, /*columns=*/4, /*rows=*/3))
-        , fFloat4x4(Type::MakeMatrixType("float4x4", "f44", *fFloat, /*columns=*/4, /*rows=*/4))
-        , fHalf2x2(Type::MakeMatrixType("half2x2", "h22", *fHalf, /*columns=*/2, /*rows=*/2))
-        , fHalf2x3(Type::MakeMatrixType("half2x3", "h23", *fHalf, /*columns=*/2, /*rows=*/3))
-        , fHalf2x4(Type::MakeMatrixType("half2x4", "h24", *fHalf, /*columns=*/2, /*rows=*/4))
-        , fHalf3x2(Type::MakeMatrixType("half3x2", "h32", *fHalf, /*columns=*/3, /*rows=*/2))
-        , fHalf3x3(Type::MakeMatrixType("half3x3", "h33", *fHalf, /*columns=*/3, /*rows=*/3))
-        , fHalf3x4(Type::MakeMatrixType("half3x4", "h34", *fHalf, /*columns=*/3, /*rows=*/4))
-        , fHalf4x2(Type::MakeMatrixType("half4x2", "h42", *fHalf, /*columns=*/4, /*rows=*/2))
-        , fHalf4x3(Type::MakeMatrixType("half4x3", "h43", *fHalf, /*columns=*/4, /*rows=*/3))
-        , fHalf4x4(Type::MakeMatrixType("half4x4", "h44", *fHalf, /*columns=*/4, /*rows=*/4))
+        , fFloat2x2(Type::MakeMatrixType("float2x2", "f22", *fFloat,
+                                         /*columns=*/2, /*rows=*/2, /*allowedInES2=*/true))
+        , fFloat2x3(Type::MakeMatrixType("float2x3", "f23", *fFloat,
+                                         /*columns=*/2, /*rows=*/3, /*allowedInES2=*/false))
+        , fFloat2x4(Type::MakeMatrixType("float2x4", "f24", *fFloat,
+                                         /*columns=*/2, /*rows=*/4, /*allowedInES2=*/false))
+        , fFloat3x2(Type::MakeMatrixType("float3x2", "f32", *fFloat,
+                                         /*columns=*/3, /*rows=*/2, /*allowedInES2=*/false))
+        , fFloat3x3(Type::MakeMatrixType("float3x3", "f33", *fFloat,
+                                         /*columns=*/3, /*rows=*/3, /*allowedInES2=*/true))
+        , fFloat3x4(Type::MakeMatrixType("float3x4", "f34", *fFloat,
+                                         /*columns=*/3, /*rows=*/4, /*allowedInES2=*/false))
+        , fFloat4x2(Type::MakeMatrixType("float4x2", "f42", *fFloat,
+                                         /*columns=*/4, /*rows=*/2, /*allowedInES2=*/false))
+        , fFloat4x3(Type::MakeMatrixType("float4x3", "f43", *fFloat,
+                                         /*columns=*/4, /*rows=*/3, /*allowedInES2=*/false))
+        , fFloat4x4(Type::MakeMatrixType("float4x4", "f44", *fFloat,
+                                         /*columns=*/4, /*rows=*/4, /*allowedInES2=*/true))
+        , fHalf2x2(Type::MakeMatrixType("half2x2", "h22", *fHalf,
+                                        /*columns=*/2, /*rows=*/2, /*allowedInES2=*/true))
+        , fHalf2x3(Type::MakeMatrixType("half2x3", "h23", *fHalf,
+                                        /*columns=*/2, /*rows=*/3, /*allowedInES2=*/false))
+        , fHalf2x4(Type::MakeMatrixType("half2x4", "h24", *fHalf,
+                                        /*columns=*/2, /*rows=*/4, /*allowedInES2=*/false))
+        , fHalf3x2(Type::MakeMatrixType("half3x2", "h32", *fHalf,
+                                        /*columns=*/3, /*rows=*/2, /*allowedInES2=*/false))
+        , fHalf3x3(Type::MakeMatrixType("half3x3", "h33", *fHalf,
+                                        /*columns=*/3, /*rows=*/3, /*allowedInES2=*/true))
+        , fHalf3x4(Type::MakeMatrixType("half3x4", "h34", *fHalf,
+                                        /*columns=*/3, /*rows=*/4, /*allowedInES2=*/false))
+        , fHalf4x2(Type::MakeMatrixType("half4x2", "h42", *fHalf,
+                                        /*columns=*/4, /*rows=*/2, /*allowedInES2=*/false))
+        , fHalf4x3(Type::MakeMatrixType("half4x3", "h43", *fHalf,
+                                        /*columns=*/4, /*rows=*/3, /*allowedInES2=*/false))
+        , fHalf4x4(Type::MakeMatrixType("half4x4", "h44", *fHalf,
+                                        /*columns=*/4, /*rows=*/4, /*allowedInES2=*/true))
         , fTexture1D(Type::MakeTextureType("texture1D",
                                            SpvDim1D,
                                            /*isDepth=*/false,
