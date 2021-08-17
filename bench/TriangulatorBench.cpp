@@ -10,7 +10,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/GrEagerVertexAllocator.h"
 #include "src/gpu/GrInnerFanTriangulator.h"
-#include "src/gpu/GrTriangulator.h"
+#include "src/gpu/geometry/GrTriangulator.h"
 #include <vector>
 
 struct TigerPath {
