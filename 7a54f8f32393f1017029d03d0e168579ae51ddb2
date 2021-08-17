@@ -16,6 +16,24 @@
       "message": "It\u0027s funny, I originally pictured doing something like this, then decided the modules/layering was easier. But this is much better (particularly with the error reporting). In addition, this helps address skbug.com/11115.\n\nQuestion: Are arrays handled? Wasn\u0027t sure if they were caught before the array type was ever created, or if we need a check similar to the struct one?",
       "revId": "7a54f8f32393f1017029d03d0e168579ae51ddb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6938b3be_6e8b3e56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-17T15:18:19Z",
+      "side": 1,
+      "message": "Great question about array types. I\u0027ll update the test code to cover arrays and structs to eliminate any doubt.\n\nI think this might make more sense now that SkSL::Type is so much easier to work with. Before all the Type subclasses I think it would have been a lot messier to add in behavior like this.",
+      "parentUuid": "fb36f6a0_89dd9875",
+      "revId": "7a54f8f32393f1017029d03d0e168579ae51ddb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
