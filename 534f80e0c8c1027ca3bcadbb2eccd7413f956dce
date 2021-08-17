@@ -22,6 +22,30 @@
       },
       "revId": "534f80e0c8c1027ca3bcadbb2eccd7413f956dce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ab471b3_0b68b6e8",
+        "filename": "src/gpu/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-17T17:19:29Z",
+      "side": 1,
+      "message": "Good idea, done.",
+      "parentUuid": "e1d46e8f_73e18d41",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 51
+      },
+      "revId": "534f80e0c8c1027ca3bcadbb2eccd7413f956dce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
