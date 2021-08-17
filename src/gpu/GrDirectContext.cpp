@@ -25,10 +25,14 @@
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/gl/GrGLGpu.h"
 #include "src/gpu/mock/GrMockGpu.h"
-#include "src/gpu/ops/GrSmallPathAtlasMgr.h"
 #include "src/gpu/text/GrAtlasManager.h"
 #include "src/gpu/text/GrStrikeCache.h"
 #include "src/image/SkImage_GpuBase.h"
+#if SK_GPU_V1
+#include "src/gpu/ops/GrSmallPathAtlasMgr.h"
+#else
+class GrSmallPathAtlasMgr {};
+#endif
 #ifdef SK_METAL
 #include "include/gpu/mtl/GrMtlBackendContext.h"
 #include "src/gpu/mtl/GrMtlTrampoline.h"
@@ -129,9 +133,11 @@ void GrDirectContext::abandonContext() {
     // Must be after GrResourceCache::abandonAll().
     fMappedBufferManager.reset();
 
+#if SK_GPU_V1
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
+#endif
     fAtlasManager->freeAll();
 }
 
@@ -168,9 +174,11 @@ void GrDirectContext::releaseResourcesAndAbandonContext() {
     fMappedBufferManager.reset();
 
     fGpu->disconnect(GrGpu::DisconnectType::kCleanup);
+#if SK_GPU_V1
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
+#endif
     fAtlasManager->freeAll();
 }
 
@@ -182,9 +190,11 @@ void GrDirectContext::freeGpuResources() {
     }
 
     this->flushAndSubmit();
+#if SK_GPU_V1
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
+#endif
     fAtlasManager->freeAll();
 
     // TODO: the glyph cache doesn't hold any GpuResources so this call should not be needed here.
@@ -366,6 +376,7 @@ bool GrDirectContext::wait(int numSemaphores, const GrBackendSemaphore waitSemap
 }
 
 GrSmallPathAtlasMgr* GrDirectContext::onGetSmallPathAtlasMgr() {
+#if SK_GPU_V1
     if (!fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr = std::make_unique<GrSmallPathAtlasMgr>();
 
@@ -375,6 +386,7 @@ GrSmallPathAtlasMgr* GrDirectContext::onGetSmallPathAtlasMgr() {
     if (!fSmallPathAtlasMgr->initAtlas(this->proxyProvider(), this->caps())) {
         return nullptr;
     }
+#endif
 
     return fSmallPathAtlasMgr.get();
 }
