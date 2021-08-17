@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81c4f396_285411dc",
+        "filename": "src/gpu/ops/AAConvexPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9deb9ae_d80dd79a",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 27
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee082c72_780235d1",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-17T13:49:59Z",
       "side": 1,
       "message": "Is this local debug only? maybe we add a comment for that, otherwise delete?",
+      "range": {
+        "startLine": 741,
+        "startChar": 0,
+        "endLine": 742,
+        "endChar": 5
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a78bc9_b3d760d6",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done - deleted!",
+      "parentUuid": "ee082c72_780235d1",
       "range": {
         "startLine": 741,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2f61e10_20d2628a",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2afef802_132ed699",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e6d96b5_78c283e6",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-08-17T13:49:59Z",
       "side": 1,
       "message": "could be usings, and could go into the cpp file",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d791ae0b_c4f38f54",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e6d96b5_78c283e6",
       "range": {
         "startLine": 21,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5d96729_abc61da7",
+        "filename": "src/gpu/ops/AALinearizingConvexPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05f034fe_a5eb2ac1",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cec8c1e_3b9212f1",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b724504_f9f6522d",
+        "filename": "src/gpu/ops/DashLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cec8c1e_3b9212f1",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb3c0f52_23fd797f",
@@ -152,6 +296,30 @@
       "writtenOn": "2021-08-17T13:49:59Z",
       "side": 1,
       "message": "final",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf79629c_f74aa303",
+        "filename": "src/gpu/ops/DefaultPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T16:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb3c0f52_23fd797f",
       "range": {
         "startLine": 21,
         "startChar": 6,
