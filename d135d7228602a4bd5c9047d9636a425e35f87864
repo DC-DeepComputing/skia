@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9deb9ae_d80dd79a",
+        "filename": "src/gpu/ops/AAConvexPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "final?",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 27
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee082c72_780235d1",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "Is this local debug only? maybe we add a comment for that, otherwise delete?",
+      "range": {
+        "startLine": 741,
+        "startChar": 0,
+        "endLine": 742,
+        "endChar": 5
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2afef802_132ed699",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "final",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e6d96b5_78c283e6",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "could be usings, and could go into the cpp file",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f034fe_a5eb2ac1",
+        "filename": "src/gpu/ops/AALinearizingConvexPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "final",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cec8c1e_3b9212f1",
+        "filename": "src/gpu/ops/DashLinePathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "final",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb3c0f52_23fd797f",
+        "filename": "src/gpu/ops/DefaultPathRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-17T13:49:59Z",
+      "side": 1,
+      "message": "final",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "d135d7228602a4bd5c9047d9636a425e35f87864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
