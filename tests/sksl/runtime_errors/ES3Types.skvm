@@ -1,4 +1,23 @@
 ### Compilation failed:
 
-error: 1: expected ';', but found 'x'
-1 error
+error: 1: type 'float2x3' is private
+error: 2: type 'float2x4' is private
+error: 3: type 'float3x2' is private
+error: 4: type 'float3x4' is private
+error: 5: type 'float4x2' is private
+error: 6: type 'float4x3' is private
+error: 8: type 'half2x3' is private
+error: 9: type 'half2x4' is private
+error: 10: type 'half3x2' is private
+error: 11: type 'half3x4' is private
+error: 12: type 'half4x2' is private
+error: 13: type 'half4x3' is private
+error: 15: type 'uint' is private
+error: 16: type 'uint2' is private
+error: 17: type 'uint3' is private
+error: 18: type 'uint4' is private
+error: 20: type 'ushort' is private
+error: 21: type 'ushort2' is private
+error: 22: type 'ushort3' is private
+error: 23: type 'ushort4' is private
+20 errors

@@ -125,17 +125,17 @@ public:
                                                  int8_t priority);
 
     /** Create a matrix type. */
-    static std::unique_ptr<Type> MakeMatrixType(const char* name, const char* abbrev,
+    static std::unique_ptr<Type> MakeMatrixType(skstd::string_view name, const char* abbrev,
                                                 const Type& componentType, int columns,
-                                                int8_t rows);
+                                                int8_t rows, bool isPrivate);
 
     /** Create a sampler type. */
     static std::unique_ptr<Type> MakeSamplerType(const char* name, const Type& textureType);
 
     /** Create a scalar type. */
-    static std::unique_ptr<Type> MakeScalarType(const char* name, const char* abbrev,
+    static std::unique_ptr<Type> MakeScalarType(skstd::string_view name, const char* abbrev,
                                                 Type::NumberKind numberKind, int8_t priority,
-                                                int8_t bitWidth);
+                                                int8_t bitWidth, bool isPrivate);
 
     /**
      * Create a "special" type with the given name, abbreviation, and TypeKind.
@@ -153,8 +153,9 @@ public:
                                                  bool isMultisampled, bool isSampled);
 
     /** Create a vector type. */
-    static std::unique_ptr<Type> MakeVectorType(const char* name, const char* abbrev,
-                                                const Type& componentType, int columns);
+    static std::unique_ptr<Type> MakeVectorType(skstd::string_view name, const char* abbrev,
+                                                const Type& componentType, int columns,
+                                                bool isPrivate);
 
     template <typename T>
     bool is() const {
@@ -194,7 +195,7 @@ public:
         return this->displayName();
     }
 
-    bool isPrivate() const {
+    virtual bool isPrivate() const {
         return this->name().starts_with("$");
     }
 
