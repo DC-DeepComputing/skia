@@ -22,6 +22,30 @@
       },
       "revId": "71668f853e08cd05fdd40d32020e6177615d5848",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dce7fc_286eb8c5",
+        "filename": "src/gpu/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T18:59:58Z",
+      "side": 1,
+      "message": "Unfortunately, most of the problem is building w/ the unique_ptr in GrDirectContext.h.",
+      "parentUuid": "46080d74_c9ad2289",
+      "range": {
+        "startLine": 378,
+        "startChar": 4,
+        "endLine": 378,
+        "endChar": 13
+      },
+      "revId": "71668f853e08cd05fdd40d32020e6177615d5848",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
