@@ -14,13 +14,13 @@ class GrCaps;
 
 #if SK_GPU_V1
 
-#include "src/gpu/GrPathRenderer.h"
+#include "src/gpu/v1/PathRenderer.h"
 
 // This is the tie-in point for path rendering via GrPathTessellateOp. This path renderer draws
 // paths using a hybrid Red Book "stencil, then cover" method. Curves get linearized by GPU
 // tessellation shaders. This path renderer doesn't apply analytic AA, so it requires MSAA if AA is
 // desired.
-class GrTessellationPathRenderer : public GrPathRenderer {
+class GrTessellationPathRenderer : public skgpu::v1::PathRenderer {
 public:
     // We send these flags to the internal path filling Ops to control how a path gets rendered.
     enum class PathFlags {
