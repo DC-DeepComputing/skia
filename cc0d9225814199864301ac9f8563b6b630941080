@@ -16,6 +16,24 @@
       "message": "This didn\u0027t change the errors generated yet?",
       "revId": "cc0d9225814199864301ac9f8563b6b630941080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edfc056d_8886d435",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-17T16:16:26Z",
+      "side": 1,
+      "message": "This is coming in chronologically before the CL which fixes up the root symbol table.",
+      "parentUuid": "4df8f344_f5c9ab38",
+      "revId": "cc0d9225814199864301ac9f8563b6b630941080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
