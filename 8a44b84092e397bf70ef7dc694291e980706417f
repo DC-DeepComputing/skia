@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63fa81b3_780b5901",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T18:51:46Z",
+      "side": 1,
+      "message": "Okay so Brian and I were talking about what it would look like to have a \"Surface Spec\" type object that describes everything about the properties of a surface (i.e. things needed to create the surface) besides size and ids. This spec would be used for various functionality queries (texturable, renderable, etc.), start to replace SkSurfaceCharacterization for ddls, and in general be one struct that we can pass around throughout Ganesh, whether proxy or real surface, that we can always use to know the properties of a surface. I.E. every proxy, surface, backend surface, characterization, etc. will all have a GrSurfaceSpec object.\n\nThis CL is less of a real CL and more of a way to hack out some ideas and see what they look like in code before diving too deep into such a new approach. Just wanted to start to get y\u0027alls high level thoughts at this point (I personally find it very hard to write (at least quickly) tons of structs in a design doc and have someone reading it be able to follow them).",
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8cc7115_34b7a156",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T18:51:46Z",
+      "side": 1,
+      "message": "All to below backend specific structs will go in their respective Gr*Types.h files. And the general structs in GrTypes.h I just was hacking around with them all in one place so put them here for now so I can easily see and access them all.",
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54d58198_d889def7",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T18:51:46Z",
+      "side": 1,
+      "message": "So D3D has an issue where if we are outside of core GrD3D* code we all include in GrD3DTypesMinimal.h which does not include d3d12.h which includes windows.h.\n\nThese structs have d3d specific values in them so they should live in GrD3DTypes.h. However, with the current way I have things set up that would mean where ever GrSurfaceSpec lives (probably GrTypes.h) would have to include GrD3DTypes.h since we need the size of the struct. Then that brings in windows.h which messes up all our code.\n\nJim any thoughts on how to get around this or how to set up this code to make it happier?",
+      "range": {
+        "startLine": 634,
+        "startChar": 0,
+        "endLine": 647,
+        "endChar": 2
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb6bf426_324afa40",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T18:51:46Z",
+      "side": 1,
+      "message": "Jim any thoughts for what this should look like for metal?",
+      "range": {
+        "startLine": 650,
+        "startChar": 3,
+        "endLine": 651,
+        "endChar": 46
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
