@@ -225,6 +225,8 @@ public:
     // sampled in a shader.
     virtual bool isFormatTexturable(const GrBackendFormat&, GrTextureType) const = 0;
 
+    virtual bool isFormatTexturable(const GrSurfaceSpec& spec) const = 0;
+
     // Returns whether a texture of the given format can be copied to a texture of the same format.
     virtual bool isFormatCopyable(const GrBackendFormat&) const = 0;
 

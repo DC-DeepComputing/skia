@@ -4457,6 +4457,17 @@ bool GrGLCaps::isFormatTexturable(const GrBackendFormat& format, GrTextureType t
     return this->isFormatTexturable(format.asGLFormat());
 }
 
+bool GrGLCaps::isFormatTexturable(const GrSurfaceSpec& spec) const {
+    GrGLTextureSpec glSpec;
+    if (!spec.getGLTextureSpec(&glSpec)) {
+        return false;
+    }
+    if (glSpec.fTarget == GR_GL_TEXTURE_RECTANGLE && !this->rectangleTextureSupport()) {
+        return false;
+    }
+    return this->isFormatTexturable(GrGLFormatFromGLEnum(glSpec.fFormat));
+}
+
 bool GrGLCaps::isFormatTexturable(GrGLFormat format) const {
     const FormatInfo& info = this->getFormatInfo(format);
     return SkToBool(info.fFlags & FormatInfo::kTexturable_Flag);
