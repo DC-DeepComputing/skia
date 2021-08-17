@@ -19,8 +19,8 @@
 #include "src/gpu/GrSurfaceProxy.h"
 
 #if SK_GPU_V1
-#include "src/gpu/GrPathRenderer.h"
-#include "src/gpu/GrPathRendererChain.h"
+#include "src/gpu/v1/PathRenderer.h"
+#include "src/gpu/v1/PathRendererChain.h"
 #endif
 
 // Enabling this will print out which path renderers are being chosen
@@ -112,12 +112,12 @@ public:
     GrRecordingContext* getContext() { return fContext; }
 
 #if SK_GPU_V1
-    GrPathRenderer* getPathRenderer(const GrPathRenderer::CanDrawPathArgs& args,
-                                    bool allowSW,
-                                    GrPathRendererChain::DrawType drawType,
-                                    GrPathRenderer::StencilSupport* stencilSupport = nullptr);
+    skgpu::v1::PathRenderer* getPathRenderer(const skgpu::v1::PathRenderer::CanDrawPathArgs&,
+                                             bool allowSW,
+                                             skgpu::v1::PathRendererChain::DrawType,
+                                             skgpu::v1::PathRenderer::StencilSupport* = nullptr);
 
-    GrPathRenderer* getSoftwarePathRenderer();
+    skgpu::v1::PathRenderer* getSoftwarePathRenderer();
 
     // Returns a direct pointer to the atlas path renderer, or null if it is not supported and
     // turned on.
@@ -142,7 +142,7 @@ public:
 #if GR_TEST_UTILS
     void testingOnly_removeOnFlushCallbackObject(GrOnFlushCallbackObject*);
 #if SK_GPU_V1
-    GrPathRendererChain::Options testingOnly_getOptionsForPathRendererChain() {
+    skgpu::v1::PathRendererChain::Options testingOnly_getOptionsForPathRendererChain() {
         return fOptionsForPathRendererChain;
     }
 #endif
@@ -160,7 +160,7 @@ public:
 private:
 #if SK_GPU_V1
     GrDrawingManager(GrRecordingContext*,
-                     const GrPathRendererChain::Options&,
+                     const skgpu::v1::PathRendererChain::Options&,
                      bool reduceOpsTaskSplitting);
 #else
     GrDrawingManager(GrRecordingContext*, bool reduceOpsTaskSplitting);
@@ -220,8 +220,8 @@ private:
     SkSTArray<4, sk_sp<GrRenderTask>>        fOnFlushRenderTasks;
 
 #if SK_GPU_V1
-    GrPathRendererChain::Options             fOptionsForPathRendererChain;
-    std::unique_ptr<GrPathRendererChain>     fPathRendererChain;
+    skgpu::v1::PathRendererChain::Options    fOptionsForPathRendererChain;
+    std::unique_ptr<skgpu::v1::PathRendererChain> fPathRendererChain;
     sk_sp<skgpu::v1::SoftwarePathRenderer>   fSoftwarePathRenderer;
 #endif
 
