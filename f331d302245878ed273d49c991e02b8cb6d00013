@@ -22,6 +22,30 @@
       },
       "revId": "f331d302245878ed273d49c991e02b8cb6d00013",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2316cbb2_1f49b38f",
+        "filename": "src/gpu/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-17T19:26:02Z",
+      "side": 1,
+      "message": "Yeah, I guess even if it\u0027s DontCare we still want to load from the previous render.",
+      "parentUuid": "b039142a_d6850b38",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 59
+      },
+      "revId": "f331d302245878ed273d49c991e02b8cb6d00013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
