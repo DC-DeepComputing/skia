@@ -28,6 +28,10 @@ class TextRun {
   GlyphIndex findGlyph(TextIndex textIndex) const;
   size_t size() const { return fGlyphs.size(); }
   TextRange getTextRange(GlyphRange glyphRange) const;
+  GlyphRange getGlyphRange(TextRange textRange) const;
+  GlyphIndex getGlyphIndex(TextIndex textIndex) const;
+
+  SkTArray<GlyphIndex> convertTextIntoGlyphs(GlyphRange glyphRange, SkSpan<TextIndex> textChunks) const;
 
   template <typename Callback>
   void forEachCluster(Callback&& callback) {
@@ -39,8 +43,12 @@ class TextRun {
     // Convert indexes into utf16 and also shift them to be on the entire text scale
     template <typename Callback>
     void convertClusterIndexes(Callback&& callback) {
+        TextIndex textIndex = fGlyphByText[0];
         for(auto& clusterIndex : fClusters) {
+            auto i8 = clusterIndex;
             clusterIndex = callback(clusterIndex);
+            // TODO: Convert fGlyphByText, too
+            auto i16 = clusterIndex;
         }
     }
 
@@ -67,6 +75,8 @@ class TextRun {
   SkSTArray<128, SkPoint, true> fOffsets;
   SkSTArray<128, uint32_t, true> fClusters;
   SkSTArray<128, SkRect, true> fBounds;
+
+  SkSTArray<128, GlyphIndex> fGlyphByText;
 
   TextMetrics fTextMetrics;
   uint8_t fBidiLevel;

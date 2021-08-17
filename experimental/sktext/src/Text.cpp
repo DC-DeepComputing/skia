@@ -358,7 +358,7 @@ void FormattedText::visit(Visitor* visitor) const {
     }
 }
 
-void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
+void FormattedText::visit(Visitor* visitor, SkSpan<TextIndex> textChunks) const {
     // Decor blocks have to be sorted by text cannot intersect but can skip some parts of the text
     // (in which case we use default text style from paragraph style)
     // The edges of the decor blocks don't have to match glyph, grapheme or even unicode code point edges
@@ -366,10 +366,9 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
     // [a:b) -> [c:d) where
     // c is closest GG cluster edge to a from the left and d is closest GG cluster edge to b from the left
 
-    size_t* currentBlock = &chunks[0];
-    size_t currentStart = 0;
+    TextIndex* currentBlock = &textChunks[0];
+    TextIndex currentStart = 0;
     SkPoint offset = SkPoint::Make(0 , 0);
-    size_t lineIndex = 0;
     for (auto& line : this->fLines) {
         offset.fX = 0;
         visitor->onBeginLine(line.text());
@@ -389,12 +388,16 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
             // "ef": blue
             // green[d] blue[ef] green [C] red [BA]
 
+            // Map all the relevant chunks to the current run?
+            // chunks[text index] -> chunks [glyph index] -> walk through in glyph index order (the visual order)
+            SkTArray<GlyphIndex> glyphChunks = run.convertTextIntoGlyphs(runGlyphRange, textChunks);
+
             GlyphRange glyphRange(runGlyphRange);
             SkScalar runWidth = run.calculateWidth(glyphRange);
-            size_t currentEnd = *currentBlock;
+            TextIndex currentEnd = *currentBlock;
             for (auto glyphIndex = runGlyphRange.fStart; glyphIndex <= runGlyphRange.fEnd; ++glyphIndex) {
 
-                SkASSERT(currentBlock < chunks.end());
+                SkASSERT(currentBlock < textChunks.end());
                 auto textIndex = run.fRunStart + run.fClusters[glyphIndex];
                 if (glyphIndex == runGlyphRange.fEnd) {
                     // last piece of the text
@@ -407,7 +410,7 @@ void FormattedText::visit(Visitor* visitor, SkSpan<size_t> chunks) const {
 
                 // Update positions & calculate the bounding rect
                 SkAutoSTMalloc<256, SkPoint> positions(glyphRange.width() + 1);
-                for (size_t i = glyphRange.fStart; i <= glyphRange.fEnd; ++i) {
+                for (GlyphIndex i = glyphRange.fStart; i <= glyphRange.fEnd; ++i) {
                     positions[i - glyphRange.fStart] = run.fPositions[i] + shift + offset + SkPoint::Make(line.horizontalOffset(), 0.0f);
                 }
                 SkRect boundingRect = SkRect::MakeXYWH(positions[0].fX + line.horizontalOffset(), offset.fY, positions[glyphRange.width()].fX - positions[0].fX, run.fTextMetrics.height());
