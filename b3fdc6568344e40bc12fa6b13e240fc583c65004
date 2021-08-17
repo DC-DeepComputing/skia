@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d81366bb_2a58dfd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T15:59:40Z",
+      "side": 1,
+      "message": "It is in the skia_skgpu_v1_sources pile in gn but I haven\u0027t moved it into gpu/v1 and the skgpu::v1 namespace yet.",
+      "parentUuid": "862bb0b8_6502a298",
+      "revId": "b3fdc6568344e40bc12fa6b13e240fc583c65004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dce97dd7_5d2e5907",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-08-17T13:42:09Z",
       "side": 1,
       "message": "align the below variables to this one?",
+      "range": {
+        "startLine": 212,
+        "startChar": 45,
+        "endLine": 212,
+        "endChar": 60
+      },
+      "revId": "b3fdc6568344e40bc12fa6b13e240fc583c65004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0abdaa7_903a19fd",
+        "filename": "src/gpu/GrDrawingManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-17T15:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dce97dd7_5d2e5907",
       "range": {
         "startLine": 212,
         "startChar": 45,
