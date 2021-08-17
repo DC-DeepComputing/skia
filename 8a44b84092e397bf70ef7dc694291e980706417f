@@ -79,6 +79,29 @@
       },
       "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7758ede_652ad07e",
+        "filename": "src/gpu/GrCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-17T18:56:13Z",
+      "side": 1,
+      "message": "We can also add helper functions that either make default specs for each backend or queries that assume lots of default values so we can do things like quickly see if format X is texturable assuming defaults like Texture2D, 1 sample, optimal tiling, etc. These would be mostly for all internal things where we know we create internal surfaces is very specific, known ways.",
+      "range": {
+        "startLine": 228,
+        "startChar": 36,
+        "endLine": 228,
+        "endChar": 61
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
