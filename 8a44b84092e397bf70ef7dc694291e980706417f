@@ -127,6 +127,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75810052_82669993",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-18T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77563ff4_ff0bb514",
+      "range": {
+        "startLine": 687,
+        "startChar": 24,
+        "endLine": 687,
+        "endChar": 43
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b4788a7_6bbd26fa",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-18T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cccd57b6_d1ea1941",
+      "range": {
+        "startLine": 687,
+        "startChar": 24,
+        "endLine": 687,
+        "endChar": 43
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7758ede_652ad07e",
@@ -164,6 +212,30 @@
       "side": 1,
       "message": "Yeah, maybe something like:\n bool isSurfaceSpecTexturable(const GrSurfaceSpec\u0026) const;\n bool isFormatTexturableWithDefaultSpec(const GrBackendFormat\u0026) const",
       "parentUuid": "f7758ede_652ad07e",
+      "range": {
+        "startLine": 228,
+        "startChar": 36,
+        "endLine": 228,
+        "endChar": 61
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce60642_f530c609",
+        "filename": "src/gpu/GrCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-18T15:26:36Z",
+      "side": 1,
+      "message": "So in this patch set I added some \"default\" queries to the caps. I went with the idea that all main queries will take a GrSurfaceSpec and nothing takes a GrBackendFormat (I actually thing GrBackendFormat may disappear eventual at least internally).\n\nAs a helper you can get a GrSurfaceSpec from a GrBackendFormat with:\nGrSurfaceSpec getDefaultSurfaceSpec(const GrBackendFormat\u0026, GrRenderable);\n\nSo a caller wanting to use your second function would do something like:\ncaps-\u003eisSurfaceSpecTexturable(caps-\u003egetDefaultSurfaceSpec(beFormat, renderable));\n\nEventually I believe that anywhere internally in ganesh that is using a GrBackendFormat will have easy access to a GrSurfaceSpec so I would rather have those callers using the isSurfaceSpec*() calls from the get go.",
+      "parentUuid": "0a7f86c6_152a1cd7",
       "range": {
         "startLine": 228,
         "startChar": 36,

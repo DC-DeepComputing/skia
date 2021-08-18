@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d04f58_390abebe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-18T15:26:36Z",
+      "side": 1,
+      "message": "Updated with some suggestings from last patch set as well as adding some example default queries in caps.",
+      "revId": "34dd9625f9c65ba560f1540d70d1c2453e88f58f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
