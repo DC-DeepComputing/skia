@@ -20,37 +20,23 @@ class GrCaps;
 // paths using a hybrid Red Book "stencil, then cover" method. Curves get linearized by GPU
 // tessellation shaders. This path renderer doesn't apply analytic AA, so it requires MSAA if AA is
 // desired.
-class GrTessellationPathRenderer : public GrPathRenderer {
+class GrTessellationPathRenderer final : public GrPathRenderer {
 public:
-    // We send these flags to the internal path filling Ops to control how a path gets rendered.
-    enum class PathFlags {
-        kNone = 0,
-        kStencilOnly = (1 << 0),
-        kWireframe = (1 << 1)
-    };
-
     static bool IsSupported(const GrCaps&);
 
-    const char* name() const final { return "GrTessellationPathRenderer"; }
+    const char* name() const override { return "Tessellation"; }
+
+private:
     StencilSupport onGetStencilSupport(const GrStyledShape&) const override;
     CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override;
     bool onDrawPath(const DrawPathArgs&) override;
     void onStencilPath(const StencilPathArgs&) override;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrTessellationPathRenderer::PathFlags)
-
 #else // SK_GPU_V1
 
 class GrTessellationPathRenderer {
 public:
-    // We send these flags to the internal path filling Ops to control how a path gets rendered.
-    enum class PathFlags {
-        kNone = 0,
-        kStencilOnly = (1 << 0),
-        kWireframe = (1 << 1)
-    };
-
     static bool IsSupported(const GrCaps&) { return false; }
 
 };
