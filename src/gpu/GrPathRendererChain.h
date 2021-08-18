@@ -15,7 +15,7 @@
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTArray.h"
 
-class GrAtlasPathRenderer;
+namespace skgpu { namespace v1 { class AtlasPathRenderer; }}
 class GrTessellationPathRenderer;
 
 /**
@@ -50,7 +50,7 @@ public:
 
     /** Returns a direct pointer to the atlas path renderer, or null if it is not in the
         chain. */
-    GrAtlasPathRenderer* getAtlasPathRenderer() {
+    skgpu::v1::AtlasPathRenderer* getAtlasPathRenderer() {
         return fAtlasPathRenderer;
     }
 
@@ -64,9 +64,9 @@ private:
     enum {
         kPreAllocCount = 8,
     };
-    SkSTArray<kPreAllocCount, sk_sp<GrPathRenderer>>    fChain;
-    GrAtlasPathRenderer*                                fAtlasPathRenderer = nullptr;
-    GrTessellationPathRenderer*                         fTessellationPathRenderer = nullptr;
+    SkSTArray<kPreAllocCount, sk_sp<GrPathRenderer>> fChain;
+    skgpu::v1::AtlasPathRenderer*                    fAtlasPathRenderer = nullptr;
+    GrTessellationPathRenderer*                      fTessellationPathRenderer = nullptr;
 };
 
 #endif
