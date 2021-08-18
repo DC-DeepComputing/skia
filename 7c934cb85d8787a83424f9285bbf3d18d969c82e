@@ -16,6 +16,24 @@
       "message": "Curious what people think. We already landed the support for calling children directly (rather than using sample). This CL updates all internal SkSL to use the new syntax. There are a few spots that read much nicer (eg, \u0027colorizer(...)\u0027 in gradient code). There are a bunch that seem more awkward, though? (eg, look at some of the internal runtime FPs in things like image filters).\n\nIt may just be that we\u0027ve been naming the shader variables like nouns, so they look funny when they\u0027re invoked - and that we\u0027ll adapt to the new conventions as we write more code?\n\nI\u0027m planning a follow-up CL to update the SkSL user docs (and linked fiddles) - I\u0027m planning to be much more careful about how I describe the process of calling a child there (and emphasizing why it\u0027s written so differently than GLSL\u0027s sample).",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbc7485d_70a750c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-18T19:46:46Z",
+      "side": 1,
+      "message": "I read the code changes before reading this comment and independently arrived at the same conclusions you did. We\u0027ve named all the samplers as nouns, and they don\u0027t feel like functions, but that\u0027s just a naming choice. We can fix it.\n\nIn the specific example you mention, `colorizer`-\u003e`colorize` and `gradLayout`-\u003e`layoutGradient` would probably improve it further.\n\nWe probably want to come up with a new convention for common cases like reading a texture. `image(coords)` definitely feels off. My C++ brain wants it to be like\n\n    sample(image, coords) --\u003e image.sample(coords) \n\nbut that\u0027s foreign syntax to SkSL and not worth introducing.\n\nIn general though I like this and it\u0027s IMO worth it to eliminate sample.",
+      "parentUuid": "80fa4161_1a7345a8",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
