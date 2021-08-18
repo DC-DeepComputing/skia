@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6378eb1_fd2c9da3",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-08-18T19:25:58Z",
+      "side": 1,
+      "message": "stray \u0027 \u0027",
+      "range": {
+        "startLine": 548,
+        "startChar": 22,
+        "endLine": 548,
+        "endChar": 23
+      },
+      "revId": "f85d12c7dba626c402a9e34193b56478a1d6f0ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
