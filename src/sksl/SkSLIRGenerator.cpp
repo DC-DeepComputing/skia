@@ -1565,11 +1565,21 @@ void IRGenerator::findAndDeclareBuiltinVariables() {
         bool visitProgramElement(const ProgramElement& pe) override {
             if (pe.is<FunctionDefinition>()) {
                 const FunctionDefinition& funcDef = pe.as<FunctionDefinition>();
-                // We synthesize writes to sk_FragColor if main() returns a color, even if it's
-                // otherwise unreferenced. Check main's return type to see if it's half4.
-                if (funcDef.declaration().isMain() &&
-                    funcDef.declaration().returnType() == *fGenerator->fContext.fTypes.fHalf4) {
-                    fPreserveFragColor = true;
+                if (funcDef.declaration().isMain()) {
+                    // We synthesize writes to sk_FragColor if main() returns a color, even if it's
+                    // otherwise unreferenced. Check main's return type to see if it's half4.
+                    const FunctionDeclaration& decl = funcDef.declaration();
+                    if (decl.returnType() == *fGenerator->fContext.fTypes.fHalf4) {
+                        fPreserveFragColor = true;
+                    }
+                    // If main() takes a frag coord as an input parameter, make sure the global
+                    // sk_FragCoord is included. The SPIR-V code generator assumes its existence.
+                    for (const Variable* param : decl.parameters()) {
+                        if (param->modifiers().fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
+                            this->addDeclaringElement("sk_FragCoord");
+                            break;
+                        }
+                    }
                 }
             }
             return INHERITED::visitProgramElement(pe);
