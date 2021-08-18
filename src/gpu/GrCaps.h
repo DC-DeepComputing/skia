@@ -225,6 +225,8 @@ public:
     // sampled in a shader.
     virtual bool isFormatTexturable(const GrBackendFormat&, GrTextureType) const = 0;
 
+    virtual bool isSpecTexturable(const GrSurfaceSpec& spec) const = 0;
+
     // Returns whether a texture of the given format can be copied to a texture of the same format.
     virtual bool isFormatCopyable(const GrBackendFormat&) const = 0;
 
@@ -240,6 +242,9 @@ public:
 
     virtual bool isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
                                                int sampleCount = 1) const = 0;
+    virtual bool isSpecAsColorTypeRenderable(GrColorType ct,
+                                             const GrSurfaceSpec&,
+                                             int sampleCount = 1) const = 0;
 
     virtual bool isFormatRenderable(const GrBackendFormat& format, int sampleCount) const = 0;
 
@@ -293,6 +298,9 @@ public:
      */
     virtual SupportedWrite supportedWritePixelsColorType(GrColorType surfaceColorType,
                                                          const GrBackendFormat& surfaceFormat,
+                                                         GrColorType srcColorType) const = 0;
+    virtual SupportedWrite supportedWritePixelsColorType(GrColorType surfaceColorType,
+                                                         const GrSurfaceSpec& surfaceFormat,
                                                          GrColorType srcColorType) const = 0;
 
     struct SupportedRead {
@@ -424,11 +432,17 @@ public:
                                int renderTargetSampleCnt, GrMipmapped, GrTextureType) const;
 
     bool areColorTypeAndFormatCompatible(GrColorType grCT, const GrBackendFormat& format) const;
+    bool areColorTypeAndSpecCompatible(GrColorType, const GrSurfaceSpec&) const;
+
 
     /** These are used when creating a new texture internally. */
     GrBackendFormat getDefaultBackendFormat(GrColorType, GrRenderable) const;
 
     virtual GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const = 0;
+
+    GrSurfaceSpec getDefaultSurfaceSpec(GrColorType, GrRenderable) const;
+    virtual GrSurfaceSpec getSurfaceSpecFromCompressionType(SkImage::CompressionType) const = 0;
+    virtual GrSurfaceSpec getDefaultSurfaceSpec(const GrBackendFormat&, GrRenderable) const = 0;
 
     /**
      * The CLAMP_TO_BORDER wrap mode for texture coordinates was added to desktop GL in 1.3, and
@@ -613,6 +627,7 @@ private:
     virtual bool onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
                                   const SkIRect& srcRect, const SkIPoint& dstPoint) const = 0;
     virtual GrBackendFormat onGetDefaultBackendFormat(GrColorType) const = 0;
+    virtual GrSurfaceSpec onGetDefaultSurfaceSpec(GrColorType, GrRenderable) const = 0;
 
     // Backends should implement this if they have any extra requirements for use of window
     // rectangles for a specific GrBackendRenderTarget outside of basic support.
@@ -621,6 +636,7 @@ private:
     }
 
     virtual bool onAreColorTypeAndFormatCompatible(GrColorType, const GrBackendFormat&) const = 0;
+    virtual bool onAreColorTypeAndSpecCompatible(GrColorType, const GrSurfaceSpec&) const = 0;
 
     virtual SupportedRead onSupportedReadPixelsColorType(GrColorType srcColorType,
                                                          const GrBackendFormat& srcFormat,

@@ -408,6 +408,61 @@ GrBackendFormat GrCaps::getDefaultBackendFormat(GrColorType colorType,
     return format;
 }
 
+GrBackendFormat GrCaps::getDefaultBackendFormat(GrColorType colorType,
+                                                GrRenderable renderable) const {
+    // Unknown color types are always an invalid format, so early out before calling virtual.
+    if (colorType == GrColorType::kUnknown) {
+        return {};
+    }
+
+    auto format = this->onGetDefaultBackendFormat(colorType);
+    if (!this->isFormatTexturable(format, GrTextureType::k2D)) {
+        return {};
+    }
+    if (!this->areColorTypeAndFormatCompatible(colorType, format)) {
+        return {};
+    }
+    // Currently we require that it be possible to write pixels into the "default" format. Perhaps,
+    // that could be a separate requirement from the caller. It seems less necessary if
+    // renderability was requested.
+    if (this->supportedWritePixelsColorType(colorType, format, colorType).fColorType ==
+        GrColorType::kUnknown) {
+        return {};
+    }
+    if (renderable == GrRenderable::kYes &&
+        !this->isFormatAsColorTypeRenderable(colorType, format)) {
+        return {};
+    }
+    return format;
+}
+
+GrSurfaceSpec GrCaps::getDefaultSurfaceSpec(GrColorType colorType, GrRenderable renderable) const {
+    // Unknown color types are always an invalid format, so early out before calling virtual.
+    if (colorType == GrColorType::kUnknown) {
+        return {};
+    }
+
+    auto spec = this->onGetDefaultSurfaceSpec(colorType, renderable);
+    if (!this->isSpecTexturable(spec)) {
+        return {};
+    }
+    if (!this->areColorTypeAndSpecCompatible(colorType, spec)) {
+        return {};
+    }
+    // Currently we require that it be possible to write pixels into the "default" format. Perhaps,
+    // that could be a separate requirement from the caller. It seems less necessary if
+    // renderability was requested.
+    if (this->supportedWritePixelsColorType(colorType, spec, colorType).fColorType ==
+        GrColorType::kUnknown) {
+        return {};
+    }
+    if (renderable == GrRenderable::kYes &&
+        !this->isSpecAsColorTypeRenderable(colorType, spec)) {
+        return {};
+    }
+    return spec;
+}
+
 bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
                                              const GrBackendFormat& format) const {
     if (GrColorType::kUnknown == grCT) {
@@ -421,6 +476,20 @@ bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
     }
 
     return this->onAreColorTypeAndFormatCompatible(grCT, format);
+}
+
+bool GrCaps::areColorTypeAndSpecCompatible(GrColorType grCT, const GrSurfaceSpec& spec) const {
+    if (GrColorType::kUnknown == grCT) {
+        return false;
+    }
+
+    SkImage::CompressionType compression = GrSurfaceSpecToCompressionType(spec);
+    if (compression != SkImage::CompressionType::kNone) {
+        return grCT == (SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
+                                                               : GrColorType::kRGBA_8888);
+    }
+
+    return this->onAreColorTypeAndSpecCompatible(grCT, spec);
 }
 
 GrSwizzle GrCaps::getReadSwizzle(const GrBackendFormat& format, GrColorType colorType) const {

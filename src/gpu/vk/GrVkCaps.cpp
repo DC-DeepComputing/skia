@@ -1424,9 +1424,32 @@ bool GrVkCaps::isFormatTexturable(const GrBackendFormat& format, GrTextureType) 
     return this->isVkFormatTexturable(vkFormat);
 }
 
-bool GrVkCaps::isVkFormatTexturable(VkFormat format) const {
+bool GrVkCaps::isSpecTexturable(const GrSurfaceSpec& spec) const {
+    GrVkImageSpec vkSpec;
+    if (!spec.getVkImageSpec(&vkSpec)) {
+        return false;
+    }
+    if (vkSpec.fYcbcrConversionInfo.isValid() && vkSpec.fYcbcrConversionInfo.fExternalFormat != 0) {
+        // We can always texture from an external format (assuming we have the ycbcr conversion
+        // info which we require to be passed in).
+        return true;
+    }
+    return SkToBool(vkSpec.fImageUsageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) &&
+           this->isVkFormatTexturable(vkSpec.fFormat, vkSpec.fImageTiling);
+}
+
+bool GrVkCaps::isVkFormatTexturable(VkFormat format, VkImageTiling tiling) const {
     const FormatInfo& info = this->getFormatInfo(format);
-    return SkToBool(FormatInfo::kTexturable_Flag & info.fOptimalFlags);
+    if (tiling == VK_IMAGE_TILING_OPTIMAL) {
+        return SkToBool(FormatInfo::kTexturable_Flag & info.fOptimalFlags);
+    } else if (tiling == VK_IMAGE_TILING_LINEAR) {
+        return SkToBool(FormatInfo::kTexturable_Flag & info.fLinearFlags);
+    } else if (tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT && this->supportsDRMModifiers()) {
+        // Not fully sure what to do here yet but this is just demo code
+        return true;
+    } else {
+        SkUNREACHABLE;
+    }
 }
 
 bool GrVkCaps::isFormatAsColorTypeRenderable(GrColorType ct, const GrBackendFormat& format,
@@ -1630,6 +1653,41 @@ GrBackendFormat GrVkCaps::onGetDefaultBackendFormat(GrColorType ct) const {
     return GrBackendFormat::MakeVk(format);
 }
 
+static GrVkImageSpec default_image_spec(VkFormat format, GrRenderable renderable) {
+    GrVkImageSpec spec;
+    // Shared stuff
+    spec.fSampleCount = 1;
+    spec.fLevelCount = 1;
+    spec.fProtected = GrProtected::kNo;
+
+    // Vulkan stuff
+    spec.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    spec.fFormat = format;
+    spec.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+                            VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    if (renderable == GrRenderable::kYes) {
+        spec.fImageUsageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    }
+    spec.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    return spec;
+}
+
+GrSurfaceSpec GrVkCaps::onGetDefaultSurfaceSpec(GrColorType ct, GrRenderable renderable) const {
+    VkFormat format = this->getFormatFromColorType(ct);
+    if (format == VK_FORMAT_UNDEFINED) {
+        return {};
+    }
+
+    return GrSurfaceSpec(default_image_spec(format, renderable));
+}
+
+GrSurfaceSpec GrVkCaps::getDefaultSurfaceSpec(const GrBackendFormat& format,
+                                              GrRenderable renderable) const {
+    VkFormat vkFormat;
+    SkAssertResult(format.asVkFormat(&vkFormat));
+    return GrSurfaceSpec(default_image_spec(vkFormat, renderable));
+}
+
 GrBackendFormat GrVkCaps::getBackendFormatFromCompressionType(
         SkImage::CompressionType compressionType) const {
     switch (compressionType) {
@@ -1654,6 +1712,35 @@ GrBackendFormat GrVkCaps::getBackendFormatFromCompressionType(
 
     SkUNREACHABLE;
 }
+
+GrSurfaceSpec GrVkCaps::getSurfaceSpecFromCompressionType(
+        SkImage::CompressionType compressionType) const {
+    switch (compressionType) {
+        case SkImage::CompressionType::kNone:
+            return {};
+        case SkImage::CompressionType::kETC2_RGB8_UNORM:
+            if (this->isVkFormatTexturable(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK)) {
+                return GrSurfaceSpec(
+                    default_image_spec(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK, GrRenderable::kNo));
+            }
+            return {};
+        case SkImage::CompressionType::kBC1_RGB8_UNORM:
+            if (this->isVkFormatTexturable(VK_FORMAT_BC1_RGB_UNORM_BLOCK)) {
+                return GrSurfaceSpec(
+                        default_image_spec(VK_FORMAT_BC1_RGB_UNORM_BLOCK, GrRenderable::kNo));
+            }
+            return {};
+        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
+            if (this->isVkFormatTexturable(VK_FORMAT_BC1_RGBA_UNORM_BLOCK)) {
+                return GrSurfaceSpec(
+                        default_image_spec(VK_FORMAT_BC1_RGBA_UNORM_BLOCK, GrRenderable::kNo));
+            }
+            return {};
+    }
+
+    SkUNREACHABLE;
+}
+
 
 GrSwizzle GrVkCaps::onGetReadSwizzle(const GrBackendFormat& format, GrColorType colorType) const {
     VkFormat vkFormat;

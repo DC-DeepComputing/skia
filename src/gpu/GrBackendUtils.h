@@ -13,6 +13,7 @@
 #include "include/gpu/GrBackendSurface.h"
 
 SkImage::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat& format);
+SkImage::CompressionType GrSurfaceSpecToCompressionType(const GrSurfaceSpec&);
 
 // Returns the number of bytes per texel block for the given format. All non compressed formats
 // are treated as having a block size of 1x1, so this is equivalent to bytesPerPixel.

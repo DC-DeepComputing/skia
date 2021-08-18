@@ -37,7 +37,8 @@ public:
     bool isFormatSRGB(const GrBackendFormat&) const override;
 
     bool isFormatTexturable(const GrBackendFormat&, GrTextureType) const override;
-    bool isVkFormatTexturable(VkFormat) const;
+    bool isSpecTexturable(const GrSurfaceSpec& spec) const override;
+    bool isVkFormatTexturable(VkFormat, VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL) const;
 
     bool isFormatCopyable(const GrBackendFormat&) const override { return true; }
 
@@ -226,6 +227,8 @@ public:
                           bool srcHasYcbcr) const;
 
     GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrSurfaceSpec getSurfaceSpecFromCompressionType(SkImage::CompressionType) const override;
+    GrSurfaceSpec getDefaultSurfaceSpec(const GrBackendFormat&, GrRenderable) const override;
 
     VkFormat getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);
@@ -297,6 +300,7 @@ private:
     bool onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
                           const SkIRect& srcRect, const SkIPoint& dstPoint) const override;
     GrBackendFormat onGetDefaultBackendFormat(GrColorType) const override;
+    GrSurfaceSpec onGetDefaultSurfaceSpec(GrColorType, GrRenderable) const override;
 
     bool onAreColorTypeAndFormatCompatible(GrColorType, const GrBackendFormat&) const override;
 
