@@ -83,6 +83,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77563ff4_ff0bb514",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-18T14:24:44Z",
+      "side": 1,
+      "message": "Does this type exist? Wondering if it makes more sense for the API-specific structs to extend it.",
+      "range": {
+        "startLine": 687,
+        "startChar": 24,
+        "endLine": 687,
+        "endChar": 43
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccd57b6_d1ea1941",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-18T14:24:44Z",
+      "side": 1,
+      "message": "Does this type exist? Wondering if it would make more sense for the API-specific structs to extend it.",
+      "range": {
+        "startLine": 687,
+        "startChar": 24,
+        "endLine": 687,
+        "endChar": 43
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7758ede_652ad07e",
         "filename": "src/gpu/GrCaps.h",
         "patchSetId": 2
@@ -94,6 +140,30 @@
       "writtenOn": "2021-08-17T18:56:13Z",
       "side": 1,
       "message": "We can also add helper functions that either make default specs for each backend or queries that assume lots of default values so we can do things like quickly see if format X is texturable assuming defaults like Texture2D, 1 sample, optimal tiling, etc. These would be mostly for all internal things where we know we create internal surfaces is very specific, known ways.",
+      "range": {
+        "startLine": 228,
+        "startChar": 36,
+        "endLine": 228,
+        "endChar": 61
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a7f86c6_152a1cd7",
+        "filename": "src/gpu/GrCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-18T14:24:44Z",
+      "side": 1,
+      "message": "Yeah, maybe something like:\n bool isSurfaceSpecTexturable(const GrSurfaceSpec\u0026) const;\n bool isFormatTexturableWithDefaultSpec(const GrBackendFormat\u0026) const",
+      "parentUuid": "f7758ede_652ad07e",
       "range": {
         "startLine": 228,
         "startChar": 36,
