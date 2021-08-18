@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3902ee6_06b32bf9",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-18T16:25:23Z",
+      "side": 0,
+      "message": "This is only on iOS 8, which we no longer support.",
+      "range": {
+        "startLine": 289,
+        "startChar": 39,
+        "endLine": 289,
+        "endChar": 43
+      },
+      "revId": "2ed4a3671aff9bb871d6706aea0548eafe0a0e1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
