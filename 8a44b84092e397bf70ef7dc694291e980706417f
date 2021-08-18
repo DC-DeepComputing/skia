@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2dba6f3_f982c7d7",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-18T19:13:54Z",
+      "side": 1,
+      "message": "I don\u0027t have an immediate solution other than maybe having our own header for these types, like we do for Vulkan, or using const void* handles like we do for Metal, which probably only works because CoreFoundation is shared between C++ and ObjC. Does GrSurfaceSpec need to go GrTypes.h?",
+      "parentUuid": "54d58198_d889def7",
+      "range": {
+        "startLine": 634,
+        "startChar": 0,
+        "endLine": 647,
+        "endChar": 2
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb6bf426_324afa40",
         "filename": "include/gpu/GrBackendSurface.h",
         "patchSetId": 2
@@ -71,6 +95,30 @@
       "writtenOn": "2021-08-17T18:51:46Z",
       "side": 1,
       "message": "Jim any thoughts for what this should look like for metal?",
+      "range": {
+        "startLine": 650,
+        "startChar": 3,
+        "endLine": 651,
+        "endChar": 46
+      },
+      "revId": "8a44b84092e397bf70ef7dc694291e980706417f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efbc9de1_35f4d87f",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-18T19:13:54Z",
+      "side": 1,
+      "message": "Maybe MTLPixelFormat, MTLTextureUsage, and MTLStorageMode?",
+      "parentUuid": "fb6bf426_324afa40",
       "range": {
         "startLine": 650,
         "startChar": 3,
