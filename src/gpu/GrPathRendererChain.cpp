@@ -22,8 +22,8 @@
 #include "src/gpu/ops/DashLinePathRenderer.h"
 #include "src/gpu/ops/DefaultPathRenderer.h"
 #include "src/gpu/ops/GrAtlasPathRenderer.h"
-#include "src/gpu/ops/GrTriangulatingPathRenderer.h"
 #include "src/gpu/ops/SmallPathRenderer.h"
+#include "src/gpu/ops/TriangulatingPathRenderer.h"
 #include "src/gpu/tessellate/GrTessellationPathRenderer.h"
 
 GrPathRendererChain::GrPathRendererChain(GrRecordingContext* context, const Options& options) {
@@ -51,7 +51,7 @@ GrPathRendererChain::GrPathRendererChain(GrRecordingContext* context, const Opti
         fChain.push_back(sk_make_sp<skgpu::v1::SmallPathRenderer>());
     }
     if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
-        fChain.push_back(sk_make_sp<GrTriangulatingPathRenderer>());
+        fChain.push_back(sk_make_sp<skgpu::v1::TriangulatingPathRenderer>());
     }
     if (options.fGpuPathRenderers & GpuPathRenderers::kTessellation) {
         if (GrTessellationPathRenderer::IsSupported(caps)) {
