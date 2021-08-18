@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80fa4161_1a7345a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-18T18:50:33Z",
+      "side": 1,
+      "message": "Curious what people think. We already landed the support for calling children directly (rather than using sample). This CL updates all internal SkSL to use the new syntax. There are a few spots that read much nicer (eg, \u0027colorizer(...)\u0027 in gradient code). There are a bunch that seem more awkward, though? (eg, look at some of the internal runtime FPs in things like image filters).\n\nIt may just be that we\u0027ve been naming the shader variables like nouns, so they look funny when they\u0027re invoked - and that we\u0027ll adapt to the new conventions as we write more code?\n\nI\u0027m planning a follow-up CL to update the SkSL user docs (and linked fiddles) - I\u0027m planning to be much more careful about how I describe the process of calling a child there (and emphasizing why it\u0027s written so differently than GLSL\u0027s sample).",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
