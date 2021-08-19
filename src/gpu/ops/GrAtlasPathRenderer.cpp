@@ -215,7 +215,8 @@ template<typename T> bool refs_atlas(const T* proxyOwner, const GrSurfaceProxy* 
     return refsAtlas;
 }
 
-GrPathRenderer::CanDrawPath GrAtlasPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
+skgpu::v1::PathRenderer::CanDrawPath GrAtlasPathRenderer::onCanDrawPath(
+        const CanDrawPathArgs& args) const {
 #ifdef SK_DEBUG
     if (!fAtlasRenderTasks.empty()) {
         // args.fPaint should NEVER reference our current atlas. If it does, it means somebody
