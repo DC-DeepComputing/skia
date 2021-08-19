@@ -24,7 +24,7 @@
 #include "src/gpu/ops/GrAtlasPathRenderer.h"
 #include "src/gpu/ops/GrTriangulatingPathRenderer.h"
 #include "src/gpu/ops/SmallPathRenderer.h"
-#include "src/gpu/tessellate/GrTessellationPathRenderer.h"
+#include "src/gpu/ops/TessellationPathRenderer.h"
 
 GrPathRendererChain::GrPathRendererChain(GrRecordingContext* context, const Options& options) {
     const GrCaps& caps = *context->priv().caps();
