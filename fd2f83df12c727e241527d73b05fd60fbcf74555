@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42967046_75f8cfd4",
+        "filename": "resources/sksl/folding/MatrixFoldingES2.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-19T22:05:57Z",
+      "side": 1,
+      "message": "This line can be eliminated completely even though it relies on a uniform! We can simplify away the arithmetic, and then `float4(testMatrix2x2) \u003d\u003d float4(testMatrix2x2)` can be optimized to true even though we don\u0027t know the value, because it\u0027s the same (trivial) expression on both sides. And of course, `ok \u003d ok \u0026\u0026 true` can optimize to `ok \u003d ok`, and self-assignment optimizes away to nothing.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 77
+      },
+      "revId": "fd2f83df12c727e241527d73b05fd60fbcf74555",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
