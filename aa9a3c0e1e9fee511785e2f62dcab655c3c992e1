@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb33450_cf54e739",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-19T16:21:30Z",
+      "side": 1,
+      "message": "PTAL, patched up to work with Flutter\u0027s build setup. I also added fallback settings in case GPU Family detection fails.",
+      "revId": "aa9a3c0e1e9fee511785e2f62dcab655c3c992e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
