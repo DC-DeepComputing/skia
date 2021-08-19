@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrOpsTask_DEFINED
-#define GrOpsTask_DEFINED
+#ifndef OpsTask_DEFINED
+#define OpsTask_DEFINED
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
@@ -32,15 +32,18 @@ class GrCaps;
 class GrClearOp;
 class GrGpuBuffer;
 class GrRenderTargetProxy;
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
 
-class GrOpsTask : public GrRenderTask {
+namespace skgpu::v1 {
+
+class SurfaceDrawContext;
+
+class OpsTask : public GrRenderTask {
 public:
     // Manage the arenas life time by maintaining are reference to it.
-    GrOpsTask(GrDrawingManager*, GrSurfaceProxyView, GrAuditTrail*, sk_sp<GrArenas>);
-    ~GrOpsTask() override;
+    OpsTask(GrDrawingManager*, GrSurfaceProxyView, GrAuditTrail*, sk_sp<GrArenas>);
+    ~OpsTask() override;
 
-    GrOpsTask* asOpsTask() override { return this; }
+    OpsTask* asOpsTask() override { return this; }
 
     bool isEmpty() const { return fOpChains.empty(); }
     bool usesMSAASurface() const { return fUsesMSAASurface; }
@@ -90,7 +93,7 @@ public:
     void setColorLoadOp(GrLoadOp op, std::array<float, 4> color = {0, 0, 0, 0});
 
     // Returns whether the given opsTask can be appended at the end of this one.
-    bool canMerge(const GrOpsTask*) const;
+    bool canMerge(const OpsTask*) const;
 
     // Merge as many opsTasks as possible from the head of 'tasks'. They should all be
     // renderPass compatible. Return the number of tasks merged into 'this'.
@@ -284,4 +287,6 @@ private:
     SkIRect fClippedContentBounds = SkIRect::MakeEmpty();
 };
 
-#endif
+} // namespace skgpu::v1
+
+#endif // OpsTask_DEFINED

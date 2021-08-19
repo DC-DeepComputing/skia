@@ -250,7 +250,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             // This should combine w/ the prior combined clear and overwrite the color
             sdc->clear(kScissorRect, SK_PMColor4fBLACK);
 
-            GrOpsTask* ops = sdc->getOpsTask();
+            skgpu::v1::OpsTask* ops = sdc->getOpsTask();
             REPORTER_ASSERT(reporter, ops->numOpChains() == 1);
 
             const GrClearOp& clearOp = ops->getChain(0)->cast<GrClearOp>();
@@ -276,7 +276,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             // field
             sdc->clearStencilClip(kScissorRect, false);
 
-            GrOpsTask* ops = sdc->getOpsTask();
+            skgpu::v1::OpsTask* ops = sdc->getOpsTask();
             REPORTER_ASSERT(reporter, ops->numOpChains() == 1);
 
             const GrClearOp& clearOp = ops->getChain(0)->cast<GrClearOp>();

@@ -10,8 +10,8 @@
 
 #include "include/core/SkPath.h"
 #include "src/gpu/GrDynamicAtlas.h"
-#include "src/gpu/GrOpsTask.h"
 #include "src/gpu/GrTBlockList.h"
+#include "src/gpu/ops/OpsTask.h"
 #include "src/gpu/tessellate/GrPathTessellator.h"
 
 struct SkIPoint16;
@@ -22,7 +22,7 @@ struct SkIPoint16;
 //
 // The atlas texture does not get instantiated automatically. It is the creator's responsibility to
 // call instantiate() at flush time.
-class GrAtlasRenderTask : public GrOpsTask {
+class GrAtlasRenderTask : public skgpu::v1::OpsTask {
 public:
     GrAtlasRenderTask(GrRecordingContext*,
                       sk_sp<GrArenas>,

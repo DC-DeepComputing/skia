@@ -9,10 +9,10 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrMemoryPool.h"
 #include "src/gpu/GrOpFlushState.h"
-#include "src/gpu/GrOpsTask.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/ops/GrOp.h"
+#include "src/gpu/ops/OpsTask.h"
 #include "tests/Test.h"
 #include <iterator>
 
@@ -220,10 +220,10 @@ DEF_GPUTEST(OpChainTest, reporter, /*ctxInfo*/) {
                 GrOpFlushState flushState(dContext->priv().getGpu(),
                                           dContext->priv().resourceProvider(),
                                           &tracker);
-                GrOpsTask opsTask(drawingMgr,
-                                  GrSurfaceProxyView(proxy, kOrigin, writeSwizzle),
-                                  dContext->priv().auditTrail(),
-                                  arenas);
+                skgpu::v1::OpsTask opsTask(drawingMgr,
+                                           GrSurfaceProxyView(proxy, kOrigin, writeSwizzle),
+                                           dContext->priv().auditTrail(),
+                                           arenas);
                 // This assumes the particular values of kRanges.
                 std::fill_n(result, result_width(), -1);
                 std::fill_n(validResult, result_width(), -1);
