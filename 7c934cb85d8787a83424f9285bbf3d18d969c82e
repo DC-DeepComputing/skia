@@ -70,6 +70,24 @@
       "parentUuid": "48c4c7db_d4da0612",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "106b552f_fbb36fcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-19T16:04:28Z",
+      "side": 1,
+      "message": "image.sample() is very interesting, because it opens us up to allowing richer interaction with Skia types bound to SkSL effects. (This is also how HLSL has worked for a while - texture2D is an object with several different method calls).",
+      "parentUuid": "0fe0304f_0282cae9",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
