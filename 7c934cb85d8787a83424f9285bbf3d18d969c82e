@@ -124,6 +124,24 @@
       "parentUuid": "0b7a4ca6_23ebc08d",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc8b51f_462f0da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-19T16:17:13Z",
+      "side": 1,
+      "message": "(The initial impetus for these changes was that users thought `sample` was a texture-sampling op, not a function call.)",
+      "parentUuid": "7b772777_08560f1a",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
