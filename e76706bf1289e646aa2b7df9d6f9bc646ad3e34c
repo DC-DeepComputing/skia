@@ -33,6 +33,42 @@
       "message": "Is there anyway we can write a test for this?",
       "revId": "e76706bf1289e646aa2b7df9d6f9bc646ad3e34c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a293f8be_c76bc05d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-19T15:14:30Z",
+      "side": 1,
+      "message": "Forcing explicit positioning of the next glyph is what we do with it, but that\u0027s not why we do it. On the other hand, the the negative (\u0027incorrect\u0027) is probably something we can do without. Renamed things to be positive and negated as needed. Also changed things so this class just gets the PDFFont itself and knows what to do with it instead of having the user tell it.",
+      "parentUuid": "ee1b2f30_47437ae7",
+      "revId": "e76706bf1289e646aa2b7df9d6f9bc646ad3e34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b6f998_183cb26c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-19T15:14:30Z",
+      "side": 1,
+      "message": "Not without some sort of useful test framework. Note that the actual test we\u0027re interested in is creating a PDF with a font which must be converted to Type3 (variable or non-embeddable) which has a EM which is not 1000 and which has a few (but not a lot) of kerning pairs which are used sparsely and make sure not to hint the advances and look at how it is rendered by ArcoRd32.dll. Note that this is a very specific workaround for what appears to be a bug in Reader (no other viewer does this). If we could get this fixed in Reader that would be even better, but I\u0027m not sure how to go about that.",
+      "parentUuid": "3c0f209d_1b0e5aac",
+      "revId": "e76706bf1289e646aa2b7df9d6f9bc646ad3e34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
