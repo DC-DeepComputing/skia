@@ -615,6 +615,8 @@ public:
         return GrAA(paint.isAntiAlias() || this->alwaysAntialias());
     }
 
+    GrAAType chooseAAType(GrAA);
+
     // This entry point should only be called if the backing GPU object is known to be
     // instantiated.
     GrRenderTarget* accessRenderTarget() { return this->asSurfaceProxy()->peekRenderTarget(); }
@@ -627,8 +629,6 @@ private:
     enum class QuadOptimization;
 
     void willReplaceOpsTask(GrOpsTask* prevTask, GrOpsTask* nextTask) override;
-
-    GrAAType chooseAAType(GrAA);
 
     GrOpsTask::CanDiscardPreviousOps canDiscardPreviousOpsOnFullClear() const override;
     void setNeedsStencil();
