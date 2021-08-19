@@ -732,6 +732,8 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     return new GrMtlPipelineState(fGpu,
                                   std::move(renderPipeline),
                                   pipelineDescriptor.colorAttachments[0].pixelFormat,
+                                  fUniformAggregator.snapUniformRecords(),
+                                  fUniformHandler.fAggregatorOffsets,
                                   fUniformHandles,
                                   fUniformHandler.fUniforms,
                                   bufferSize,

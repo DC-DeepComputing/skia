@@ -32,9 +32,11 @@ struct GrDawnProgram : public SkRefCnt {
         }
     };
     typedef GrGLSLBuiltinUniformHandles BuiltinUniformHandles;
-    GrDawnProgram(const GrSPIRVUniformHandler::UniformInfoArray& uniforms,
+    GrDawnProgram(GrUniformAggregator::UniformRecords uniformRecords,
+                  const std::vector<uint32_t>& uniformRecordOffsets,
+                  const GrSPIRVUniformHandler::UniformInfoArray& uniforms,
                   uint32_t uniformBufferSize)
-      : fDataManager(uniforms, uniformBufferSize) {
+      : fDataManager(std::move(uniformRecords), uniformRecordOffsets, uniforms, uniformBufferSize) {
     }
     std::unique_ptr<GrGeometryProcessor::ProgramImpl> fGPImpl;
     std::unique_ptr<GrXferProcessor::ProgramImpl> fXPImpl;

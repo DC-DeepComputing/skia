@@ -17,9 +17,15 @@
 
 GR_NORETAIN_BEGIN
 
-GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(const UniformInfoArray& uniforms,
+GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(GrUniformAggregator::UniformRecords uniformRecords,
+                                                             const std::vector<uint32_t>& uniformRecordOffsets,
+                                                             const UniformInfoArray& uniforms,
                                                              uint32_t uniformSize)
-        : INHERITED(uniforms.count(), uniformSize) {
+        : INHERITED(std::move(uniformRecords),
+                    uniformRecordOffsets,
+                    Layout::kMetal,
+                    uniforms.count(),
+                    uniformSize) {
     // We must add uniforms in same order is the UniformInfoArray so that UniformHandles already
     // owned by other objects will still match up here.
     int i = 0;

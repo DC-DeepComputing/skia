@@ -83,6 +83,8 @@ bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkStrin
     this->nameExpression(outputColor, "outputColor");
     this->nameExpression(outputCoverage, "outputCoverage");
 
+    fUniformAggregator.addUniforms(&geomProc, fFS.getMangleString().c_str());
+
     SkASSERT(!fUniformHandles.fRTAdjustmentUni.isValid());
     GrShaderFlags rtAdjustVisibility;
     if (geomProc.willUseGeoShader()) {
@@ -185,6 +187,7 @@ SkString GrGLSLProgramBuilder::emitFragProc(const GrFragmentProcessor& fp,
     }
 
     GrFragmentProcessor::ProgramImpl::EmitArgs args(&fFS,
+                                                    &fUniformAggregator,
                                                     this->uniformHandler(),
                                                     this->shaderCaps(),
                                                     fp,
@@ -273,6 +276,7 @@ bool GrGLSLProgramBuilder::emitAndInstallXferProc(const SkString& colorIn,
 
     SkASSERT(!fXPImpl);
     const GrXferProcessor& xp = this->pipeline().getXferProcessor();
+    fUniformAggregator.addUniforms(&xp, fFS.getMangleString().c_str());
     fXPImpl = xp.makeProgramImpl();
 
     // Enable dual source secondary output if we have one
@@ -372,7 +376,7 @@ void GrGLSLProgramBuilder::nameExpression(SkString* output, const char* baseName
 }
 
 void GrGLSLProgramBuilder::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
-    this->uniformHandler()->appendUniformDecls(visibility, out);
+    this->uniformHandler()->appendUniformDecls(fUniformAggregator, visibility, out);
 }
 
 void GrGLSLProgramBuilder::addRTFlipUniform(const char* name) {

@@ -278,7 +278,10 @@ sk_sp<GrDawnProgram> GrDawnProgramBuilder::Build(GrDawnGpu* gpu,
                                                &fragInputs);
     GrSPIRVUniformHandler::UniformInfoArray& uniforms = builder.fUniformHandler.fUniforms;
     uint32_t uniformBufferSize = builder.fUniformHandler.fCurrentUBOOffset;
-    sk_sp<GrDawnProgram> result(new GrDawnProgram(uniforms, uniformBufferSize));
+    sk_sp<GrDawnProgram> result(new GrDawnProgram(builder.fUniformAggregator.snapUniformRecords(),
+                                                  builder.fUniformHandler.fAggregatorOffsets,
+                                                  uniforms,
+                                                  uniformBufferSize));
     result->fGPImpl = std::move(builder.fGPImpl);
     result->fXPImpl = std::move(builder.fXPImpl);
     result->fFPImpls = std::move(builder.fFPImpls);
@@ -499,6 +502,7 @@ wgpu::BindGroup GrDawnProgram::setUniformData(GrDawnGpu* gpu, const GrRenderTarg
     if (0 == fDataManager.uniformBufferSize()) {
         return nullptr;
     }
+    fDataManager.setUniforms(programInfo);
     this->setRenderTargetState(renderTarget, programInfo.origin());
     const GrPipeline& pipeline = programInfo.pipeline();
     const GrGeometryProcessor& geomProc = programInfo.geomProc();

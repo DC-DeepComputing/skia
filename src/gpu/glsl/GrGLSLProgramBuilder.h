@@ -17,6 +17,7 @@
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 #include "src/sksl/SkSLCompiler.h"
 
 #include <vector>
@@ -105,6 +106,8 @@ public:
     GrGLSLVertexBuilder          fVS;
     GrGLSLGeometryBuilder        fGS;
     GrGLSLFragmentShaderBuilder  fFS;
+
+    GrUniformAggregator fUniformAggregator;
 
     int fStageIndex;
 

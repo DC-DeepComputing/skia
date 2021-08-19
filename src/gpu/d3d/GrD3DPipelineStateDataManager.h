@@ -20,7 +20,9 @@ class GrD3DPipelineStateDataManager : public GrUniformDataManager {
 public:
     typedef GrSPIRVUniformHandler::UniformInfoArray UniformInfoArray;
 
-    GrD3DPipelineStateDataManager(const UniformInfoArray&,
+    GrD3DPipelineStateDataManager(GrUniformAggregator::UniformRecords uniformRecords,
+                                  const std::vector<uint32_t>& uniformRecordOffsets,
+                                  const UniformInfoArray&,
                                   uint32_t uniformSize);
 
     D3D12_GPU_VIRTUAL_ADDRESS uploadConstants(GrD3DGpu* gpu);

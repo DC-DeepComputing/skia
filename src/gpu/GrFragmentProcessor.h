@@ -23,6 +23,7 @@ class GrProcessorKeyBuilder;
 class GrShaderCaps;
 class GrSwizzle;
 class GrTextureEffect;
+class GrUniformAggregator;
 
 /**
  * Some fragment-processor creation methods have preconditions that might not be satisfied by the
@@ -314,6 +315,8 @@ public:
 
     void visitTextureEffects(const std::function<void(const GrTextureEffect&)>&) const;
 
+    void visit(const std::function<void(const GrFragmentProcessor&)>&) const;
+
     void visitWithImpls(const std::function<void(const GrFragmentProcessor&, ProgramImpl&)>&,
                         ProgramImpl&) const;
 
@@ -523,6 +526,7 @@ public:
      */
     struct EmitArgs {
         EmitArgs(GrGLSLFPFragmentBuilder* fragBuilder,
+                 const GrUniformAggregator* uniformAggregator,
                  GrGLSLUniformHandler* uniformHandler,
                  const GrShaderCaps* caps,
                  const GrFragmentProcessor& fp,
@@ -530,6 +534,7 @@ public:
                  const char* destColor,
                  const char* sampleCoord)
                 : fFragBuilder(fragBuilder)
+                , fUniformAggregator(uniformAggregator)
                 , fUniformHandler(uniformHandler)
                 , fShaderCaps(caps)
                 , fFp(fp)
@@ -537,6 +542,7 @@ public:
                 , fDestColor(destColor)
                 , fSampleCoord(sampleCoord) {}
         GrGLSLFPFragmentBuilder* fFragBuilder;
+        const GrUniformAggregator* fUniformAggregator;
         GrGLSLUniformHandler* fUniformHandler;
         const GrShaderCaps* fShaderCaps;
         const GrFragmentProcessor& fFp;

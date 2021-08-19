@@ -63,6 +63,15 @@ void GrFragmentProcessor::visitTextureEffects(
     }
 }
 
+void GrFragmentProcessor::visit(const std::function<void(const GrFragmentProcessor&)>& f) const {
+    f(*this);
+    for (int i = 0; i < this->numChildProcessors(); ++i) {
+        if (const auto* child = this->childProcessor(i)) {
+            child->visit(f);
+        }
+    }
+}
+
 void GrFragmentProcessor::visitWithImpls(
         const std::function<void(const GrFragmentProcessor&, ProgramImpl&)>& f,
         ProgramImpl& impl) const {
@@ -946,6 +955,7 @@ void ProgramImpl::emitChildFunctions(EmitArgs& args) {
         SkASSERT(childFP);
 
         EmitArgs childArgs(args.fFragBuilder,
+                           args.fUniformAggregator,
                            args.fUniformHandler,
                            args.fShaderCaps,
                            *childFP,

@@ -38,6 +38,8 @@ public:
     GrMtlPipelineState(GrMtlGpu*,
                        sk_sp<GrMtlRenderPipeline> pipeline,
                        MTLPixelFormat,
+                       GrUniformAggregator::UniformRecords records,
+                       const std::vector<uint32_t>& uniformRecordOffsets,
                        const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
                        const UniformInfoArray& uniforms,
                        uint32_t uniformBufferSize,

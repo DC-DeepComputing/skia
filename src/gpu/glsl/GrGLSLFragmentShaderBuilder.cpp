@@ -24,6 +24,8 @@ void GrGLSLFPFragmentBuilder::writeProcessorFunction(
     this->onBeforeChildProcEmitCode();
     this->nextStage();
 
+    fProgramBuilder->fUniformAggregator.addUniforms(&args.fFp, this->getMangleString().c_str());
+
     // Conceptually, an FP is always sampled at a particular coordinate. However, if it is only
     // sampled by a chain of uniform matrix expressions (or legacy coord transforms), the value that
     // would have been passed to _coords is lifted to the vertex shader and stored in a unique

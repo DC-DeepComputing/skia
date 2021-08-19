@@ -6,16 +6,119 @@
  */
 
 #include "include/core/SkMatrix.h"
+#include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/gl/GrGLGpu.h"
 #include "src/gpu/gl/GrGLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+
+GrGLProgramDataManager::UniformManager::UniformManager(GrUniformAggregator::UniformRecords uniforms,
+                                                       GrGLuint programID,
+                                                       const GrGLContext& ctx) {
+    fUniforms.reserve(uniforms.size());
+    GrGLuint id = 1;
+    for (const auto& u : uniforms) {
+        if (ctx.caps()->bindUniformLocationSupport()) {
+            GR_GL_CALL(ctx.glInterface(), BindUniformLocation(programID, id++, u.uniform.name()));
+        } else {
+            GR_GL_CALL_RET(ctx.glInterface(), id, GetUniformLocation(programID, u.uniform.name()));
+        }
+        fUniforms.push_back({
+            u.processorIndex,
+            u.indexInProcessor,
+            u.uniform.type(),
+            u.uniform.count(),
+            id,
+            });
+    }
+}
+
+namespace {
+class GLUniformWriter final : public GrUniformWriter {
+public:
+    GLUniformWriter(const GrGLInterface* interface, GrGLuint id, GrSLType type, int n)
+    : GrUniformWriter(type, n), fInterface(interface), fID(id) {}
+
+private:
+    void onWriteiv(int n, const int32_t v[]) override {
+        GR_GL_CALL(fInterface, Uniform1iv(fID, n, v));
+    }
+
+    void onWritefv(int n, const float v[]) override {
+        GR_GL_CALL(fInterface, Uniform1fv(fID, n, v));
+    }
+
+    void onWrite2iv(int n, const int32_t v[]) override {
+        GR_GL_CALL(fInterface, Uniform2iv(fID, n, v));
+    }
+
+    void onWrite2fv(int n, const float v[]) override {
+        GR_GL_CALL(fInterface, Uniform2fv(fID, n, v));
+    }
+
+    void onWrite3iv(int n, const int32_t v[]) override {
+        GR_GL_CALL(fInterface, Uniform3iv(fID, n, v));
+    }
+
+    void onWrite3fv(int n, const float v[]) override {
+        GR_GL_CALL(fInterface, Uniform3fv(fID, n, v));
+    }
+
+    void onWrite4iv(int n, const int32_t v[]) override {
+        GR_GL_CALL(fInterface, Uniform4iv(fID, n, v));
+    }
+
+    void onWrite4fv(int n, const float v[]) override {
+        GR_GL_CALL(fInterface, Uniform4fv(fID, n, v));
+    }
+
+    void onWriteMatrix2x2fv(int n, const float matrices[]) override {
+        GR_GL_CALL(fInterface, UniformMatrix2fv(fID, n, false, matrices));
+    }
+
+    void onWriteMatrix3x3fv(int n, const float matrices[]) override {
+        GR_GL_CALL(fInterface, UniformMatrix3fv(fID, n, false, matrices));
+    }
+
+    void onWriteMatrix4x4fv(int n, const float matrices[]) override {
+        GR_GL_CALL(fInterface, UniformMatrix4fv(fID, n, false, matrices));
+    }
+
+    const GrGLInterface* fInterface;
+
+    const GrGLuint fID;
+};
+}  // anonymous namespace
+
+void GrGLProgramDataManager::UniformManager::setUniforms(const GrGLInterface* gl, const GrProgramInfo& info) {
+    auto set = [&, processorIndex = 0, index = 0ULL](const GrProcessor& p) mutable {
+        while (index < fUniforms.size() && fUniforms[index].processorIdx == processorIndex) {
+            SkASSERT(fUniforms[index].indexInProcessor < p.uniforms().size());
+            GLUniformWriter writer(gl, fUniforms[index].id, fUniforms[index].type, fUniforms[index].count);
+            p.writeUniform(fUniforms[index].indexInProcessor, &writer);
+            ++index;
+        }
+        ++processorIndex;
+    };
+    set(info.geomProc());
+    for (int i = 0; i < info.pipeline().numFragmentProcessors(); ++i) {
+        info.pipeline().getFragmentProcessor(i).visit([&](const GrFragmentProcessor& fp) {
+            set(fp);
+        });
+    }
+    set(info.pipeline().getXferProcessor());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define ASSERT_ARRAY_UPLOAD_IN_BOUNDS(UNI, COUNT) \
          SkASSERT((COUNT) <= (UNI).fArrayCount || \
                   (1 == (COUNT) && GrShaderVar::kNonArray == (UNI).fArrayCount))
 
-GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu, const UniformInfoArray& uniforms)
-        : fGpu(gpu) {
+GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu,
+                                               const UniformInfoArray& uniforms,
+                                               GrGLuint programID,
+                                               GrUniformAggregator::UniformRecords uniformRecords)
+        : fGpu(gpu), fManager(std::move(uniformRecords), programID, gpu->glContext()) {
     fUniforms.push_back_n(uniforms.count());
     int i = 0;
     for (const GLUniformInfo& builderUniform : uniforms.items()) {
@@ -28,6 +131,10 @@ GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu, const UniformInfoAr
         )
         uniform.fLocation = builderUniform.fLocation;
     }
+}
+
+void GrGLProgramDataManager::setUniforms(const GrProgramInfo& info) {
+    fManager.setUniforms(fGpu->glInterface(), info);
 }
 
 void GrGLProgramDataManager::setSamplerUniforms(const UniformInfoArray& samplers,

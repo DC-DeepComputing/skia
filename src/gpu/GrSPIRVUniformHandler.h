@@ -53,7 +53,9 @@ private:
                              const char* name, const GrShaderCaps*) override;
     const char* samplerVariable(SamplerHandle handle) const override;
     GrSwizzle samplerSwizzle(SamplerHandle handle) const override;
-    void appendUniformDecls(GrShaderFlags visibility, SkString*) const override;
+    void appendUniformDecls(const GrUniformAggregator&,
+                            GrShaderFlags visibility,
+                            SkString*) const override;
     UniformHandle internalAddUniformArray(const GrFragmentProcessor* owner,
                                           uint32_t visibility,
                                           GrSLType type,
@@ -68,7 +70,8 @@ private:
     SkTArray<GrSwizzle> fSamplerSwizzles;
     SkTArray<SkString>  fSamplerReferences;
 
-    uint32_t fCurrentUBOOffset = 0;
+    mutable std::vector<uint32_t> fAggregatorOffsets;
+    mutable uint32_t fCurrentUBOOffset = 0;
     uint32_t fRTFlipOffset = 0;
 
     friend class GrD3DPipelineStateBuilder;

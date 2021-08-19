@@ -93,6 +93,11 @@ public:
         return fUsePushConstants ? fCurrentOffsets[kStd430Layout] : fCurrentOffsets[kStd140Layout];
     }
 
+    const std::vector<uint32_t> aggregatorOffsets() const {
+        return fUsePushConstants ? fAggregatorOffsets[kStd430Layout]
+                                 : fAggregatorOffsets[kStd140Layout];
+    }
+
 private:
     explicit GrVkUniformHandler(GrGLSLProgramBuilder* program)
         : INHERITED(program)
@@ -145,7 +150,7 @@ private:
         return fInputSwizzle;
     }
 
-    void appendUniformDecls(GrShaderFlags, SkString*) const override;
+    void appendUniformDecls(const GrUniformAggregator&, GrShaderFlags, SkString*) const override;
 
     const VkUniformInfo& getUniformInfo(UniformHandle u) const {
         return fUniforms.item(u.toIndex());
@@ -160,7 +165,13 @@ private:
     GrSwizzle           fInputSwizzle;
     mutable bool        fUsePushConstants;
 
-    uint32_t            fCurrentOffsets[kLayoutCount];
+    mutable uint32_t  fCurrentOffsets[kLayoutCount];
+
+    /**
+     * Offsets for uniforms that are in GrUniformAggregator. Computed lazily in
+     * appendUniformDecls().
+     */
+    mutable std::vector<uint32_t> fAggregatorOffsets[kLayoutCount];
 
     friend class GrVkPipelineStateBuilder;
     friend class GrVkDescriptorSetManager;
