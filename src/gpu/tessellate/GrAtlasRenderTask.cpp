@@ -18,10 +18,10 @@
 GrAtlasRenderTask::GrAtlasRenderTask(GrRecordingContext* rContext,
                                      sk_sp<GrArenas> arenas,
                                      std::unique_ptr<GrDynamicAtlas> dynamicAtlas)
-        : GrOpsTask(rContext->priv().drawingManager(),
-                    dynamicAtlas->writeView(*rContext->priv().caps()),
-                    rContext->priv().auditTrail(),
-                    std::move(arenas))
+        : skgpu::v1::OpsTask(rContext->priv().drawingManager(),
+                             dynamicAtlas->writeView(*rContext->priv().caps()),
+                             rContext->priv().auditTrail(),
+                             std::move(arenas))
         , fDynamicAtlas(std::move(dynamicAtlas)) {
 }
 
@@ -72,7 +72,7 @@ GrRenderTask::ExpectedOutcome GrAtlasRenderTask::onMakeClosed(GrRecordingContext
     // Clear the atlas.
     if (caps.performColorClearsAsDraws() || caps.performStencilClearsAsDraws()) {
         this->setColorLoadOp(GrLoadOp::kDiscard);
-        this->setInitialStencilContent(GrOpsTask::StencilContent::kDontCare);
+        this->setInitialStencilContent(skgpu::v1::OpsTask::StencilContent::kDontCare);
 
         constexpr static GrUserStencilSettings kClearStencil(
             GrUserStencilSettings::StaticInit<
@@ -86,7 +86,7 @@ GrRenderTask::ExpectedOutcome GrAtlasRenderTask::onMakeClosed(GrRecordingContext
         this->stencilAtlasRect(rContext, drawRect, SK_PMColor4fTRANSPARENT, &kClearStencil);
     } else {
         this->setColorLoadOp(GrLoadOp::kClear);
-        this->setInitialStencilContent(GrOpsTask::StencilContent::kUserBitsCleared);
+        this->setInitialStencilContent(StencilContent::kUserBitsCleared);
     }
 
     // Add ops to stencil the atlas paths.
@@ -137,7 +137,7 @@ GrRenderTask::ExpectedOutcome GrAtlasRenderTask::onMakeClosed(GrRecordingContext
     }
     this->stencilAtlasRect(rContext, drawRect, SK_PMColor4fWHITE, stencil);
 
-    this->GrOpsTask::onMakeClosed(rContext, targetUpdateBounds);
+    this->skgpu::v1::OpsTask::onMakeClosed(rContext, targetUpdateBounds);
 
     // Don't mark msaa dirty. Since this op defers being closed, the drawing manager's dirty
     // tracking doesn't work anyway. We will just resolve msaa manually during onExecute.
@@ -172,7 +172,7 @@ void GrAtlasRenderTask::addAtlasDrawOp(GrOp::Owner op, const GrCaps& caps) {
 }
 
 bool GrAtlasRenderTask::onExecute(GrOpFlushState* flushState) {
-    if (!this->GrOpsTask::onExecute(flushState)) {
+    if (!this->skgpu::v1::OpsTask::onExecute(flushState)) {
         return false;
     }
     if (this->target(0)->requiresManualMSAAResolve()) {

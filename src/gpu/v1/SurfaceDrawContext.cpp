@@ -306,14 +306,14 @@ SurfaceDrawContext::~SurfaceDrawContext() {
     ASSERT_SINGLE_OWNER
 }
 
-void SurfaceDrawContext::willReplaceOpsTask(GrOpsTask* prevTask, GrOpsTask* nextTask) {
+void SurfaceDrawContext::willReplaceOpsTask(OpsTask* prevTask, OpsTask* nextTask) {
     if (prevTask && fNeedsStencil) {
         // Store the stencil values in memory upon completion of fOpsTask.
         prevTask->setMustPreserveStencil();
         // Reload the stencil buffer content at the beginning of newOpsTask.
         // FIXME: Could the topo sort insert a task between these two that modifies the stencil
         // values?
-        nextTask->setInitialStencilContent(GrOpsTask::StencilContent::kPreserved);
+        nextTask->setInitialStencilContent(OpsTask::StencilContent::kPreserved);
     }
 #if GR_GPU_STATS && GR_TEST_UTILS
     if (fCanUseDynamicMSAA) {
@@ -859,10 +859,10 @@ int SurfaceDrawContext::maxWindowRectangles() const {
     return this->asRenderTargetProxy()->maxWindowRectangles(*this->caps());
 }
 
-GrOpsTask::CanDiscardPreviousOps SurfaceDrawContext::canDiscardPreviousOpsOnFullClear() const {
+OpsTask::CanDiscardPreviousOps SurfaceDrawContext::canDiscardPreviousOpsOnFullClear() const {
 #if GR_TEST_UTILS
     if (fPreserveOpsOnFullClear_TestingOnly) {
-        return GrOpsTask::CanDiscardPreviousOps::kNo;
+        return OpsTask::CanDiscardPreviousOps::kNo;
     }
 #endif
     // Regardless of how the clear is implemented (native clear or a fullscreen quad), all prior ops
@@ -871,7 +871,7 @@ GrOpsTask::CanDiscardPreviousOps SurfaceDrawContext::canDiscardPreviousOpsOnFull
     // Although the clear will ignore the stencil buffer, following draw ops may not so we can't get
     // rid of all the preceding ops. Beware! If we ever add any ops that have a side effect beyond
     // modifying the stencil buffer we will need a more elaborate tracking system (skbug.com/7002).
-    return GrOpsTask::CanDiscardPreviousOps(!fNeedsStencil);
+    return OpsTask::CanDiscardPreviousOps(!fNeedsStencil);
 }
 
 void SurfaceDrawContext::setNeedsStencil() {
@@ -887,7 +887,7 @@ void SurfaceDrawContext::setNeedsStencil() {
             this->internalStencilClear(nullptr, /* inside mask */ false);
         } else {
             this->getOpsTask()->setInitialStencilContent(
-                    GrOpsTask::StencilContent::kUserBitsCleared);
+                    OpsTask::StencilContent::kUserBitsCleared);
         }
     }
 }
@@ -1501,7 +1501,7 @@ void SurfaceDrawContext::drawDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler
 void SurfaceDrawContext::setLastClip(uint32_t clipStackGenID,
                                      const SkIRect& devClipBounds,
                                      int numClipAnalyticElements) {
-    GrOpsTask* opsTask = this->getOpsTask();
+    OpsTask* opsTask = this->getOpsTask();
     opsTask->fLastClipStackGenID = clipStackGenID;
     opsTask->fLastDevClipBounds = devClipBounds;
     opsTask->fLastClipNumAnalyticElements = numClipAnalyticElements;
@@ -1510,7 +1510,7 @@ void SurfaceDrawContext::setLastClip(uint32_t clipStackGenID,
 bool SurfaceDrawContext::mustRenderClip(uint32_t clipStackGenID,
                                         const SkIRect& devClipBounds,
                                         int numClipAnalyticElements) {
-    GrOpsTask* opsTask = this->getOpsTask();
+    OpsTask* opsTask = this->getOpsTask();
     return opsTask->fLastClipStackGenID != clipStackGenID ||
            !opsTask->fLastDevClipBounds.contains(devClipBounds) ||
            opsTask->fLastClipNumAnalyticElements != numClipAnalyticElements;
@@ -2124,7 +2124,7 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
     return true;
 }
 
-GrOpsTask* SurfaceDrawContext::replaceOpsTaskIfModifiesColor() {
+OpsTask* SurfaceDrawContext::replaceOpsTaskIfModifiesColor() {
     if (!this->getOpsTask()->isColorNoOp()) {
         this->replaceOpsTask();
     }
