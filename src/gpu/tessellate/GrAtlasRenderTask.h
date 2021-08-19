@@ -10,8 +10,8 @@
 
 #include "include/core/SkPath.h"
 #include "src/gpu/GrDynamicAtlas.h"
-#include "src/gpu/GrOpsTask.h"
 #include "src/gpu/GrTBlockList.h"
+#include "src/gpu/ops/OpsTask.h"
 #include "src/gpu/tessellate/GrPathTessellator.h"
 
 struct SkIPoint16;

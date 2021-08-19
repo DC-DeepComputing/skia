@@ -15,12 +15,12 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/GrTypesPriv.h"
 #include "src/core/SkGlyphRunPainter.h"
-#include "src/gpu/GrOpsTask.h"
 #include "src/gpu/GrPaint.h"
 #include "src/gpu/GrRenderTargetProxy.h"
 #include "src/gpu/GrSurfaceProxyView.h"
 #include "src/gpu/GrXferProcessor.h"
 #include "src/gpu/geometry/GrQuad.h"
+#include "src/gpu/ops/OpsTask.h"
 #include "src/gpu/v1/SurfaceFillContext_v1.h"
 
 class GrBackendSemaphore;

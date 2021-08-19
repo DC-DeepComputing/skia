@@ -11,9 +11,9 @@
 #include "include/core/SkSize.h"
 #include "include/private/GrTypesPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrOpsTask.h"
 #include "src/gpu/GrSwizzle.h"
 #include "src/gpu/SurfaceFillContext.h"
+#include "src/gpu/ops/OpsTask.h"
 
 #include <array>
 #include <tuple>

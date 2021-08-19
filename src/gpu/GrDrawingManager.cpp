@@ -44,7 +44,7 @@
 #include "src/image/SkSurface_Gpu.h"
 
 #if SK_GPU_V1
-#include "src/gpu/GrOpsTask.h"
+#include "src/gpu/ops/OpsTask.h"
 #include "src/gpu/ops/SoftwarePathRenderer.h"
 #endif
 

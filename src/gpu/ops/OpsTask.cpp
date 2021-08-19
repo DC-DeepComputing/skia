@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/GrOpsTask.h"
+#include "src/gpu/ops/OpsTask.h"
 
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkRectPriv.h"
