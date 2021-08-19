@@ -421,17 +421,28 @@ double evaluate_round(double a, double, double)        { return std::round(a / 2
 }  // namespace
 }  // namespace Intrinsics
 
+static void extract_matrix(const Expression* expr, float mat[16]) {
+    size_t numSlots = expr->type().slotCount();
+    for (size_t index = 0; index < numSlots; ++index) {
+        mat[index] = expr->getConstantSubexpression(index)->as<FloatLiteral>().value();
+    }
+}
+
+static std::unique_ptr<Expression> synthesize_matrix(const Context& context, float mat[16],
+                                                     const Type& type, int offset) {
+    size_t numSlots = type.slotCount();
+    ExpressionArray array;
+    array.reserve_back(numSlots);
+    for (size_t index = 0; index < numSlots; ++index) {
+        array.push_back(FloatLiteral::Make(offset, mat[index], &type.componentType()));
+    }
+    return ConstructorCompound::Make(context, offset, type, std::move(array));
+}
+
 static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& context,
                                                            IntrinsicKind intrinsic,
                                                            const ExpressionArray& arguments,
                                                            const Type& returnType) {
-    // Helper function for accessing a matrix argument by column and row.
-    const Expression* matrix = nullptr;
-    auto M = [&](int c, int r) -> float {
-        int index = (matrix->type().rows() * c) + r;
-        return matrix->getConstantSubexpression(index)->as<FloatLiteral>().value();
-    };
-
     using namespace SkSL::dsl;
     switch (intrinsic) {
         // 8.1 : Angle and Trigonometry Functions
@@ -619,60 +630,63 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             return evaluate_pairwise_intrinsic(context, arguments,
                                                Intrinsics::evaluate_matrixCompMult);
         case k_transpose_IntrinsicKind: {
-            matrix = ConstantFolder::GetConstantValueForVariable(*arguments[0]);
-            ExpressionArray array;
-            array.reserve_back(returnType.slotCount());
-            for (int c = 0; c < returnType.columns(); ++c) {
-                for (int r = 0; r < returnType.rows(); ++r) {
-                    array.push_back(FloatLiteral::Make(matrix->fOffset, M(r, c),
-                                                       &returnType.componentType()));
+            const Expression* matrix = ConstantFolder::GetConstantValueForVariable(*arguments[0]);
+            float m[16];
+            extract_matrix(matrix, m);
+            // Reassemble the matrix in transposed form.
+            float mT[16];
+            int src = 0, dst = 0, numColumns = returnType.columns(), numRows = returnType.rows();
+            for (int c = 0; c < numColumns; ++c) {
+                src = c;
+                for (int r = 0; r < numRows; ++r) {
+                    mT[dst++] = m[src];
+                    src += numColumns;
                 }
             }
-            return ConstructorCompound::Make(context, matrix->fOffset, returnType,
-                                             std::move(array));
+            return synthesize_matrix(context, mT, returnType, matrix->fOffset);
+        }
+        case k_determinant_IntrinsicKind: {
+            const Expression* matrix = ConstantFolder::GetConstantValueForVariable(*arguments[0]);
+            float m[16];
+            extract_matrix(matrix, m);
+            float determinant;
+            switch (matrix->type().slotCount()) {
+                case 4:
+                    determinant = SkInvert2x2Matrix(m, /*outMatrix=*/nullptr);
+                    break;
+                case 9:
+                    determinant = SkInvert3x3Matrix(m, /*outMatrix=*/nullptr);
+                    break;
+                case 16:
+                    determinant = SkInvert4x4Matrix(m, /*outMatrix=*/nullptr);
+                    break;
+                default:
+                    SkDEBUGFAILF("unsupported type %s", matrix->type().description().c_str());
+                    return nullptr;
+            }
+            return FloatLiteral::Make(matrix->fOffset, determinant, &returnType);
         }
         case k_inverse_IntrinsicKind: {
-            matrix = ConstantFolder::GetConstantValueForVariable(*arguments[0]);
-            switch (arguments[0]->type().slotCount()) {
-                case 4: {
-                    float mat2[4] = {M(0, 0), M(0, 1),
-                                     M(1, 0), M(1, 1)};
-                    if (SkInvert2x2Matrix(mat2, mat2) == 0.0f) {
-                        return nullptr;
-                    }
-                    return DSLType::Construct(&arguments[0]->type(),
-                                              mat2[0], mat2[1],
-                                              mat2[2], mat2[3]).release();
-                }
-                case 9: {
-                    float mat3[9] = {M(0, 0), M(0, 1), M(0, 2),
-                                     M(1, 0), M(1, 1), M(1, 2),
-                                     M(2, 0), M(2, 1), M(2, 2)};
-                    if (SkInvert3x3Matrix(mat3, mat3) == 0.0f) {
-                        return nullptr;
-                    }
-                    return DSLType::Construct(&arguments[0]->type(),
-                                              mat3[0], mat3[1], mat3[2],
-                                              mat3[3], mat3[4], mat3[5],
-                                              mat3[6], mat3[7], mat3[8]).release();
-                }
-                case 16: {
-                    float mat4[16] = {M(0, 0), M(0, 1), M(0, 2), M(0, 3),
-                                      M(1, 0), M(1, 1), M(1, 2), M(1, 3),
-                                      M(2, 0), M(2, 1), M(2, 2), M(2, 3),
-                                      M(3, 0), M(3, 1), M(3, 2), M(3, 3)};
-                    if (SkInvert4x4Matrix(mat4, mat4) == 0.0f) {
-                        return nullptr;
-                    }
-                    return DSLType::Construct(&arguments[0]->type(),
-                                              mat4[0],  mat4[1],  mat4[2],  mat4[3],
-                                              mat4[4],  mat4[5],  mat4[6],  mat4[7],
-                                              mat4[8],  mat4[9],  mat4[10], mat4[11],
-                                              mat4[12], mat4[13], mat4[14], mat4[15]).release();
-                }
+            const Expression* matrix = ConstantFolder::GetConstantValueForVariable(*arguments[0]);
+            float m[16], determinant;
+            extract_matrix(matrix, m);
+            switch (matrix->type().slotCount()) {
+                case 4:
+                    determinant = SkInvert2x2Matrix(m, m);
+                    break;
+                case 9:
+                    determinant = SkInvert3x3Matrix(m, m);
+                    break;
+                case 16:
+                    determinant = SkInvert4x4Matrix(m, m);
+                    break;
+                default:
+                    SkDEBUGFAILF("unsupported type %s", matrix->type().description().c_str());
+                    return nullptr;
             }
-            SkDEBUGFAILF("unsupported type %s", arguments[0]->type().description().c_str());
-            return nullptr;
+            return (determinant != 0.0f)
+                           ? synthesize_matrix(context, m, returnType, matrix->fOffset)
+                           : nullptr;
         }
 
         // 8.6 : Vector Relational Functions
