@@ -33,8 +33,11 @@ DEF_TEST(SkSLGLSLTestbed, r) {
     test(r,
          *SkSL::ShaderCapsFactory::Default(),
          R"__SkSL__(
-             void main() {
-                 sk_FragColor = half4(0);
-             }
+uniform float testInput;
+uniform half4 colorGreen, colorRed;
+
+half4 main(float2 coords) {
+    return (floatBitsToInt(1) == 0x3F800000) ? colorGreen : colorRed;
+}
          )__SkSL__");
 }
