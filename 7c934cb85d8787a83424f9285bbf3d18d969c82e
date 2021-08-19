@@ -34,6 +34,24 @@
       "parentUuid": "80fa4161_1a7345a8",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c4c7db_d4da0612",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-19T15:29:42Z",
+      "side": 1,
+      "message": "I agree that most of the awkwardness can be chalked up to the naming of child variables.\n\nI do wonder about the use of \"uniform\" for a thing that is used like a function. Samplers are uniforms in GLSL, but they encapsulate things that are unchanging for a draw (a texture and the sample parameters used with it) and past as arguments to functions that return a non-uniform result.",
+      "parentUuid": "dbc7485d_70a750c1",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
