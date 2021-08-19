@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83cff7ca_9c74f3c9",
+        "filename": "src/gpu/v1/SurfaceDrawContext_v1.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-19T02:04:34Z",
+      "side": 1,
+      "message": "Thoughts on making chooseAAType public?",
+      "range": {
+        "startLine": 618,
+        "startChar": 13,
+        "endLine": 618,
+        "endChar": 25
+      },
+      "revId": "33d27ee618ba83dbf868b7e2ed2461166d4a3610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
