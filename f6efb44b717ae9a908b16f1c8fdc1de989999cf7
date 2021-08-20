@@ -93,6 +93,54 @@
       },
       "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0845730_ae6fba21",
+        "filename": "fuzz/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-20T14:53:42Z",
+      "side": 1,
+      "message": "The Skia Infra team has a few Google Cloud projects. This note is a reminder of which project the skia-fuzzer bucket belongs to, which is handy when navigating the cloud console web UI\n\ne.g.\nhttps://console.cloud.google.com/storage/browser?project\u003dskia-public\nvs\nhttps://console.cloud.google.com/storage/browser?google.com:skia-buildbots\n\nI added a link to the web UI.",
+      "parentUuid": "392d2dbd_f52b5384",
+      "range": {
+        "startLine": 27,
+        "startChar": 64,
+        "endLine": 27,
+        "endChar": 83
+      },
+      "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "998010ea_c7b0906c",
+        "filename": "fuzz/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-20T14:53:42Z",
+      "side": 1,
+      "message": "I\u0027ll see what I can find.",
+      "parentUuid": "8642c062_5168abae",
+      "range": {
+        "startLine": 27,
+        "startChar": 28,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
