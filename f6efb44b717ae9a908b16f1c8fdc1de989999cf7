@@ -141,6 +141,30 @@
       },
       "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59474d77_29ab07dd",
+        "filename": "fuzz/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-20T14:55:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we have anything special other than a link to setting up the cloud sdk CLI https://cloud.google.com/sdk/",
+      "parentUuid": "998010ea_c7b0906c",
+      "range": {
+        "startLine": 27,
+        "startChar": 28,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
