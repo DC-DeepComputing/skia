@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43cfb608_1af23780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18129
+      },
+      "writtenOn": "2021-08-20T14:25:01Z",
+      "side": 1,
+      "message": "Hello Michael Ludwig, we are merging this change to the current LTS branch, but I don\u0027t have permissions for submitting it, could you please review/submit the change?",
+      "revId": "2eb96fb376dbb6c1571b8c5d0aa9a7e7e3b18fbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
