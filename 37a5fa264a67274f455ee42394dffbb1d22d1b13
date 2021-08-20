@@ -94,6 +94,30 @@
       },
       "revId": "37a5fa264a67274f455ee42394dffbb1d22d1b13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "206dac8f_517b9123",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-20T18:40:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "658fda6f_8ed78a31",
+      "range": {
+        "startLine": 738,
+        "startChar": 17,
+        "endLine": 738,
+        "endChar": 37
+      },
+      "revId": "37a5fa264a67274f455ee42394dffbb1d22d1b13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
