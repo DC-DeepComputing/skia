@@ -1390,7 +1390,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
         uniform half blurRadius;
 
         half4 main(float2 xy, half4 inColor) {
-            // Warp the fragment position to the appropriate part of the 9-patch blur texture by
+            // Warp the fragment position to the appropriate part of the 9-patch blurSegment texture by
             // snipping out the middle section of the proxy rect.
             float2 translatedFragPosFloat = sk_FragCoord.xy - proxyRect.LT;
             float2 proxyCenter = (proxyRect.RB - proxyRect.LT) * 0.5;

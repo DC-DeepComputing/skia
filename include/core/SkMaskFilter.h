@@ -23,11 +23,11 @@ struct SkRect;
 */
 class SK_API SkMaskFilter : public SkFlattenable {
 public:
-    /** Create a blur maskfilter.
+    /** Create a blurSegment maskfilter.
      *  @param style      The SkBlurStyle to use
-     *  @param sigma      Standard deviation of the Gaussian blur to apply. Must be > 0.
-     *  @param respectCTM if true the blur's sigma is modified by the CTM.
-     *  @return The new blur maskfilter
+     *  @param sigma      Standard deviation of the Gaussian blurSegment to apply. Must be > 0.
+     *  @param respectCTM if true the blurSegment's sigma is modified by the CTM.
+     *  @return The new blurSegment maskfilter
      */
     static sk_sp<SkMaskFilter> MakeBlur(SkBlurStyle style, SkScalar sigma,
                                         bool respectCTM = true);

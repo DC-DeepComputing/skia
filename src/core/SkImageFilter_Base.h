@@ -55,7 +55,7 @@ public:
      *  image filter (assuming its CTM and basis matrix are configured to match 'mapping').
      *
      *  While this operation transforms an device-space output bounds to a layer-space input bounds,
-     *  it is not necessarily the inverse of getOutputBounds(). For instance, a blur needs to have
+     *  it is not necessarily the inverse of getOutputBounds(). For instance, a blurSegment needs to have
      *  an outset margin when reading pixels at the edge (to satisfy its kernel), thus it expands
      *  its required input rect to include every pixel that contributes to the desired output rect.
 
@@ -82,9 +82,9 @@ public:
      *  space and the parameter space of the initially provided content).
      *
      *  While this operation transforms a parameter-space input bounds to an device-space output
-     *  bounds, it is not necessarily the inverse of getInputBounds(). For instance, a blur needs to
+     *  bounds, it is not necessarily the inverse of getInputBounds(). For instance, a blurSegment needs to
      *  have an outset margin when reading pixels at the edge (to satisfy its kernel), so it will
-     *  generate a result larger than its input (so that the blur is visible) and, thus, expands its
+     *  generate a result larger than its input (so that the blurSegment is visible) and, thus, expands its
      *  output to include every pixel that it will touch.
      *
      *  @param mapping       The coordinate space mapping that defines both the transformation

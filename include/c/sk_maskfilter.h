@@ -36,9 +36,9 @@ SK_API void sk_maskfilter_ref(sk_maskfilter_t*);
 SK_API void sk_maskfilter_unref(sk_maskfilter_t*);
 
 /**
-    Create a blur maskfilter.
+    Create a blurSegment maskfilter.
     @param sk_blurstyle_t The SkBlurStyle to use
-    @param sigma Standard deviation of the Gaussian blur to apply. Must be > 0.
+    @param sigma Standard deviation of the Gaussian blurSegment to apply. Must be > 0.
 */
 SK_API sk_maskfilter_t* sk_maskfilter_new_blur(sk_blurstyle_t, float sigma);
 

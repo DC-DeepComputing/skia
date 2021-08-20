@@ -658,7 +658,7 @@ for (const variant of ['static', 'color_changing', 'size_changing', 'layout_chan
 }
 
 tests.push({
-    description: 'Draw a path with a blur mask',
+    description: 'Draw a path with a blurSegment mask',
     setup: function(CanvasKit, ctx) {
         ctx.canvas = ctx.surface.getCanvas();
         ctx.paint = new CanvasKit.Paint();

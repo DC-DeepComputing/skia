@@ -28,7 +28,7 @@ static constexpr float kMaxSigma = 4.f;
 
 #if SK_GPU_V1
 /**
- * Applies a 2D Gaussian blur to a given texture. The blurred result is returned
+ * Applies a 2D Gaussian blurSegment to a given texture. The blurred result is returned
  * as a surfaceDrawContext in case the caller wishes to draw into the result.
  * The GrSurfaceOrigin of the result will watch the GrSurfaceOrigin of srcView. The output
  * color type, color space, and alpha type will be the same as the src.
@@ -42,8 +42,8 @@ static constexpr float kMaxSigma = 4.f;
  * @param dstBounds       The destination bounds, relative to the source texture.
  * @param srcBounds       The source bounds, relative to the source texture's offset. No pixels
  *                        will be sampled outside of this rectangle.
- * @param sigmaX          The blur's standard deviation in X.
- * @param sigmaY          The blur's standard deviation in Y.
+ * @param sigmaX          The blurSegment's standard deviation in X.
+ * @param sigmaY          The blurSegment's standard deviation in Y.
  * @param tileMode        The mode to handle samples outside bounds.
  * @param fit             backing fit for the returned render target context
  * @return                The surfaceDrawContext containing the blurred result.

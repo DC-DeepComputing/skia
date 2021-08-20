@@ -3250,7 +3250,7 @@ export interface MaskFilterFactory {
      * Create a blur maskfilter
      * @param style
      * @param sigma - Standard deviation of the Gaussian blur to apply. Must be > 0.
-     * @param respectCTM - if true the blur's sigma is modified by the CTM.
+     * @param respectCTM - if true the blurSegment's sigma is modified by the CTM.
      */
     MakeBlur(style: BlurStyle, sigma: number, respectCTM: boolean): MaskFilter;
 }

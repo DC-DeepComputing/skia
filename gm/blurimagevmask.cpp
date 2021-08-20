@@ -33,8 +33,8 @@ DEF_SIMPLE_GM(blurimagevmask, canvas, 700, 1200) {
 
     const double sigmas[] = {3.0, 8.0, 16.0, 24.0, 32.0};
 
-    canvas->drawString("mask blur",  285, 50, font, paint);
-    canvas->drawString("image blur", 285 + 250, 50, font, paint);
+    canvas->drawString("mask blurSegment",  285, 50, font, paint);
+    canvas->drawString("image blurSegment", 285 + 250, 50, font, paint);
 
 
     SkRect r = {35, 100, 135, 200};

@@ -508,7 +508,7 @@
       oCanvas.drawRect(CanvasKit.LTRBRect(0, 0, quadrantSize, quadrantSize), paint);
 
       paint.delete();
-      blur.delete();
+      blurSegment.delete();
       spiralShader.delete();
       return offscreenSurface.makeImageSnapshot()
                              .makeShader(CanvasKit.TileMode.Clamp, CanvasKit.TileMode.Clamp);

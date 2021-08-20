@@ -110,7 +110,7 @@ public:
 
     /**
      *  Create a filter that blurs its input by the separate X and Y sigmas. The provided tile mode
-     *  is used when the blur kernel goes outside the input image.
+     *  is used when the blurSegment kernel goes outside the input image.
      *  @param sigmaX   The Gaussian sigma value for blurring along the X axis.
      *  @param sigmaY   The Gaussian sigma value for blurring along the Y axis.
      *  @param tileMode The tile mode applied at edges .
@@ -166,8 +166,8 @@ public:
      *  image that includes the inputs' content.
      *  @param dx       The X offset of the shadow.
      *  @param dy       The Y offset of the shadow.
-     *  @param sigmaX   The blur radius for the shadow, along the X axis.
-     *  @param sigmaY   The blur radius for the shadow, along the Y axis.
+     *  @param sigmaX   The blurSegment radius for the shadow, along the X axis.
+     *  @param sigmaY   The blurSegment radius for the shadow, along the Y axis.
      *  @param color    The color of the drop shadow.
      *  @param input    The input filter, or will use the source bitmap if this is null.
      *  @param cropRect Optional rectangle that crops the input and output.
@@ -182,8 +182,8 @@ public:
      *  and input to be composed by a filter DAG in a more flexible manner.
      *  @param dx       The X offset of the shadow.
      *  @param dy       The Y offset of the shadow.
-     *  @param sigmaX   The blur radius for the shadow, along the X axis.
-     *  @param sigmaY   The blur radius for the shadow, along the Y axis.
+     *  @param sigmaX   The blurSegment radius for the shadow, along the X axis.
+     *  @param sigmaY   The blurSegment radius for the shadow, along the Y axis.
      *  @param color    The color of the drop shadow.
      *  @param input    The input filter, or will use the source bitmap if this is null.
      *  @param cropRect Optional rectangle that crops the input and output.

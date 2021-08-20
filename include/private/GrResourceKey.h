@@ -171,7 +171,7 @@ private:
  *          resource itself.
  *        * When a scratch resource is ref'ed it will not be returned from the
  *          cache for a subsequent cache request until all refs are released. This facilitates using
- *          a scratch key for multiple render-to-texture scenarios. An example is a separable blur:
+ *          a scratch key for multiple render-to-texture scenarios. An example is a separable blurSegment:
  *
  *  GrTexture* texture[2];
  *  texture[0] = get_scratch_texture(scratchKey);

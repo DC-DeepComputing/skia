@@ -131,7 +131,7 @@ public:
                     SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kB, 20.0f,
                                                     std::move(gradientSource), input, cropRect));
         }
-        this->addFilter("blur", SkImageFilters::Blur(SK_Scalar1, SK_Scalar1, input, cropRect));
+        this->addFilter("blurSegment", SkImageFilters::Blur(SK_Scalar1, SK_Scalar1, input, cropRect));
         this->addFilter("drop shadow", SkImageFilters::DropShadow(
                 SK_Scalar1, SK_Scalar1, SK_Scalar1, SK_Scalar1, SK_ColorGREEN, input, cropRect));
         this->addFilter("diffuse lighting",
@@ -194,7 +194,7 @@ public:
         {
             sk_sp<SkImageFilter> blur(SkImageFilters::Blur(kBlurSigma, kBlurSigma, input));
 
-            this->addFilter("blur and offset", SkImageFilters::Offset(
+            this->addFilter("blurSegment and offset", SkImageFilters::Offset(
                     kBlurSigma, kBlurSigma, std::move(blur), cropRect));
         }
         {
@@ -207,14 +207,14 @@ public:
             sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
             sk_sp<SkImageFilter> pictureFilter(SkImageFilters::Picture(std::move(picture)));
 
-            this->addFilter("picture and blur", SkImageFilters::Blur(
+            this->addFilter("picture and blurSegment", SkImageFilters::Blur(
                     kBlurSigma, kBlurSigma, std::move(pictureFilter), cropRect));
         }
         {
             sk_sp<SkImageFilter> paintFilter(SkImageFilters::Shader(
                     SkPerlinNoiseShader::MakeTurbulence(SK_Scalar1, SK_Scalar1, 1, 0)));
 
-            this->addFilter("paint and blur", SkImageFilters::Blur(
+            this->addFilter("paint and blurSegment", SkImageFilters::Blur(
                     kBlurSigma, kBlurSigma,  std::move(paintFilter), cropRect));
         }
         this->addFilter("blend", SkImageFilters::Blend(

@@ -985,7 +985,7 @@ function CanvasRenderingContext2D(skcanvas) {
 
   // Returns the shadow paint for the current settings or null if there
   // should be no shadow. This ends up being a copy of the given
-  // paint with a blur maskfilter and the correct color.
+  // paint with a blurSegment maskfilter and the correct color.
   this._shadowPaint = function(basePaint) {
     // multiply first to see if the alpha channel goes to 0 after multiplication.
     var alphaColor = CanvasKit.multiplyByAlpha(this._shadowColor, this._globalAlpha);

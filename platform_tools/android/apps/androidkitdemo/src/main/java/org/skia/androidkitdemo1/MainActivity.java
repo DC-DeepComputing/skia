@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
             p.setStrokeJoin(Paint.Join.ROUND);
             p.setStrokeMiter(4);
 //            ImageFilter filter = ImageFilter.distantLitDiffuse(.5f, .5f, .5f, new Color(1, 0, 0, 1), 1, 1, null);
-//            ImageFilter filter = ImageFilter.blur(10, 10, TileMode.DECAL, null);
+//            ImageFilter filter = ImageFilter.blurSegment(10, 10, TileMode.DECAL, null);
             ImageFilter filter = ImageFilter.dropShadow(10, 10, 10, 10, new Color(1, 0, 0, 1), null);
 //            ImageFilter filter2 = ImageFilter.blend(BlendMode.DIFFERENCE, null, filter);
             p.setImageFilter(filter);

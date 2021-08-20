@@ -34,7 +34,7 @@ public:
      *                  towards the light.
      * @param lightRadius  Generally, the radius of the disc light.
      *                     If DirectionalLight_ShadowFlag is set, this specifies the amount of
-     *                     blur when the occluder is at Z offset == 1. The blur will grow linearly
+     *                     blur when the occluder is at Z offset == 1. The blurSegment will grow linearly
      *                     as the Z value increases.
      * @param ambientColor  The color of the ambient shadow.
      * @param spotColor  The color of the spot shadow.
@@ -59,7 +59,7 @@ public:
      *                  towards the light.
      * @param lightRadius  Generally, the radius of the disc light.
      *                     If DirectionalLight_ShadowFlag is set, this specifies the amount of
-     *                     blur when the occluder is at Z offset == 1. The blur will grow linearly
+     *                     blur when the occluder is at Z offset == 1. The blurSegment will grow linearly
      *                     as the Z value increases.
      * @param flags  Options controlling opaque occluder optimizations, shadow appearance,
      *               and light position. See SkShadowFlags.

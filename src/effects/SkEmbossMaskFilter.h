@@ -12,7 +12,7 @@
 
 /** \class SkEmbossMaskFilter
 
-    This mask filter creates a 3D emboss look, by specifying a light and blur amount.
+    This mask filter creates a 3D emboss look, by specifying a light and blurSegment amount.
 */
 class SkEmbossMaskFilter : public SkMaskFilterBase {
 public:

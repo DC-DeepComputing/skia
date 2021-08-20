@@ -33,7 +33,7 @@ class SkShader;
 
     SkPaint collects effects and filters that describe single-pass and multiple-pass
     algorithms that alter the drawing geometry, color, and transparency. For instance,
-    SkPaint does not directly implement dashing or blur, but contains the objects that do so.
+    SkPaint does not directly implement dashing or blurSegment, but contains the objects that do so.
 */
 class SK_API SkPaint {
 public:

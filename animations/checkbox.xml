@@ -41,7 +41,7 @@
 
 		<paint stroke="true" strokeWidth="9">
             <shader/>
-            <blur radius="1" blurStyle="normal"/>
+            <blurSegment radius="1" blurStyle="normal"/>
             <color color="0x88777777"/>
         </paint>
         <matrix translate="[0,-2]" />

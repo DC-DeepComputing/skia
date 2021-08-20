@@ -21,7 +21,7 @@ class SkColorFilter;
  *  which is what will finally be drawn to the device (using the original xfermode).
  *
  *  The local space of image filters matches the local space of the drawn geometry. For instance if
- *  there is rotation on the canvas, the blur will be computed along those rotated axes and not in
+ *  there is rotation on the canvas, the blurSegment will be computed along those rotated axes and not in
  *  the device space. In order to achieve this result, the actual drawing of the geometry may happen
  *  in an unrotated coordinate system so that the filtered image can be computed more easily, and
  *  then it will be post transformed to match what would have been produced if the geometry were

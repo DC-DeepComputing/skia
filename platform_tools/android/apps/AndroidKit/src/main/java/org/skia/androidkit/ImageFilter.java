@@ -61,7 +61,7 @@ public class ImageFilter {
      *  @param dx       The X offset of the shadow.
      *  @param dy       The Y offset of the shadow.
      *  @param sigmaX   The blur radius for the shadow, along the X axis.
-     *  @param sigmaY   The blur radius for the shadow, along the Y axis.
+     *  @param sigmaY   The blurSegment radius for the shadow, along the Y axis.
      *  @param c    The color of the drop shadow.
      *  @param input    The input filter, or will use the source bitmap if this is null.
      */

@@ -22,14 +22,14 @@
 #include "tools/timer/TimeUtils.h"
 
 /**
- * In GM mode this draws an array of circles with different radii and different blur radii. Below
- * each circle an almost-circle path is drawn with the same blur filter for comparison.
+ * In GM mode this draws an array of circles with different radii and different blurSegment radii. Below
+ * each circle an almost-circle path is drawn with the same blurSegment filter for comparison.
  *
- * In Sample mode this draws a single circle and almost-circle with animating radius and blur
+ * In Sample mode this draws a single circle and almost-circle with animating radius and blurSegment
  * radius.
  *
  * Bench mode draws the same as GM mode but without the comparison almost-circle paths. It also
- * slightly perturbs the blur and circle radii to stress caching of blurred profiles in GPU mode.
+ * slightly perturbs the blurSegment and circle radii to stress caching of blurred profiles in GPU mode.
  */
 class BlurCircles2GM : public skiagm::GM {
 public:

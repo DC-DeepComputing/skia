@@ -32,7 +32,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest, reporter, ctxInfo) {
 
     sk_sp<SkSurface> dst(SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii));
     if (!dst) {
-        ERRORF(reporter, "Could not create surfaces for repeated clipped blur test.");
+        ERRORF(reporter, "Could not create surfaces for repeated clipped blurSegment test.");
         return;
     }
 
