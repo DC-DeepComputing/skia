@@ -16,6 +16,23 @@
       "message": "Baby steps. PTAL.",
       "revId": "b1ed851b627146d630f3b082f94104ee5e33af92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33300f07_0214b03e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-20T18:51:50Z",
+      "side": 1,
+      "message": "So this has a chance of adding a little extra overhead today or save us time depending on the call usage. We avoid needing the extra load in order to do a resolve, but we now resolve every render pass instead of when we actually need it. Regardless I\u0027m fine moving this way as it helps future changes, but just wanted to point this out.",
+      "revId": "b1ed851b627146d630f3b082f94104ee5e33af92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
