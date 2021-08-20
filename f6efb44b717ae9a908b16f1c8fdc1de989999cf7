@@ -69,6 +69,30 @@
       },
       "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8642c062_5168abae",
+        "filename": "fuzz/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-20T14:49:40Z",
+      "side": 1,
+      "message": "Gotcha... I haven\u0027t had to deal with gcloud stuff yet. Is there a codelab/doc covering the basics for Skia?",
+      "parentUuid": "c7f2f4e2_559a6d72",
+      "range": {
+        "startLine": 27,
+        "startChar": 28,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
