@@ -16,6 +16,24 @@
       "message": "This is no longer as clean/clever as the original version, but it also doesn\u0027t access freed memory, and it\u0027s still pretty easy to reason about.\n\nI can picture a more elaborate version of the original (that avoids adding state), but I think the algorithm might be more trouble than it\u0027s worth:\n\n  - Iterate over the MCRecs in reverse order\n  - For any that have a layer, change the device pointer to the next (parent) record\u0027s device, then reset the layer pointer\n  - Then reset the layer pointer\n \n ... actually, that wouldn\u0027t work either, if you had saveLayer(), followed by save(). I think you\u0027d just want to update EVERY MCRec\u0027s device pointer to the base device?",
       "revId": "a89bff7a93dff8e18ccd8dff6b5eedee162e6ff0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b845f5f5_db16ac60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-20T19:16:24Z",
+      "side": 1,
+      "message": "Scratch that: The idea of re-targeting the device pointers without popping things from the MCRec stack is bad. It leads to inconsistencies in other bookkeeping data (eg, the clip stack), and subsequently triggers other asserts. I\u0027m going to say that this CL is the simplest solution that works. (But happy to be proven wrong).",
+      "parentUuid": "b1109339_51fb1590",
+      "revId": "a89bff7a93dff8e18ccd8dff6b5eedee162e6ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
