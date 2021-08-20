@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "832b82fe_f54994ae",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-20T18:37:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a583eb92_8685d574",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c3a06d7b_ed9622e7",
         "filename": "modules/androidkit/src/Text.cpp",
         "patchSetId": 2
@@ -81,6 +99,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20defc15_ae7c0f48",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-20T18:37:24Z",
+      "side": 1,
+      "message": "Started working on a small cl to expose more params to jetski, will add you when done.",
+      "parentUuid": "c3a06d7b_ed9622e7",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 46
+      },
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d3ab242_2fcd9365",
@@ -98,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "733ddca7_cb7d9012",
+        "filename": "modules/androidkit/src/Utils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-20T18:37:24Z",
+      "side": 1,
+      "message": "I see, good catch with the non null-terminated UTF16 strings. Would String_view or SkSpan need to copy the data as well? Because if not, we\u0027ll need this function later, correct? Either way, I\u0027ll add the explicit conversion function.",
+      "parentUuid": "9d3ab242_2fcd9365",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6f0bb0a_7063cb79",
@@ -111,6 +171,24 @@
       "writtenOn": "2021-08-20T13:43:45Z",
       "side": 1,
       "message": "It seems more in line with other primitives to have this as a Canvas method: canvas.drawText(Text, x, y)\n\nAlso, unless we\u0027re planning to add more payload to Text, at that point there\u0027s is little reason to have a Text object at all - this could be canvas.drawText(String, x, y)\n\nWDYT?",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04160726_ea75cf20",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Text.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-20T18:37:24Z",
+      "side": 1,
+      "message": "When thinking forward, I want to keep our canvas class from depending on SkText for now.\n1) it\u0027s experimental and can change\n2) I don\u0027t think we want Canvas depending on text if we plan on dividing our build up into smaller chunks for the jetpack team. Like this, our core Jetski lib can survive on its own as we add more to our text lib.\nGiven the separation, the Text class just gives all this code a place to live.",
+      "parentUuid": "f6f0bb0a_7063cb79",
       "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
