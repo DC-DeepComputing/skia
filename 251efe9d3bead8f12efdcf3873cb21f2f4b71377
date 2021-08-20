@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5021d537_a92727b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-20T19:04:12Z",
+      "side": 1,
+      "message": "This started out as Mike Klein\u0027s old CL, but I\u0027ve made a few changes to get here:\n\n  - Added support to DM, nanobench, skpbench.\n  - Fixed a bug in the raster pipeline dst-load logic (we were applying the TF to the src, not the dst)\n  - Removed the GrColorType shenanigans in GrDataUtils, so we just trust the SkColorType in the GPU backend.\n  - Changed SkPixmap::getColor to apply the linearization. We had been unsure of how this should work, but I claim this is correct. In particular, it means that drawing something in src-mode (or clearing to a color), then reading back with getColor produces (almost) the same color.\n  \nStill no support for CPU mips. I can only imagine what happens with CPU image filters.\n\nStill doesn\u0027t add any bots, but from my local testing, there are very few large-magnitude diffs between 8888 and srgba (or between gl and glsrgba).\n\nCPU does have some unexplained diffs in certain text GMs, I suspect this is related to the mask gamma hack and how luminance is being calculated, but still need to investigate.",
+      "revId": "251efe9d3bead8f12efdcf3873cb21f2f4b71377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
