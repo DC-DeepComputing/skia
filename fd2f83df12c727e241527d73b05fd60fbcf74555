@@ -22,6 +22,30 @@
       },
       "revId": "fd2f83df12c727e241527d73b05fd60fbcf74555",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7108ea5_35b375e5",
+        "filename": "resources/sksl/folding/MatrixFoldingES2.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-20T14:04:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "42967046_75f8cfd4",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 77
+      },
+      "revId": "fd2f83df12c727e241527d73b05fd60fbcf74555",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
