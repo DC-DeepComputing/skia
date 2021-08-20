@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4a7c56_c82cee13",
+        "filename": "fuzz/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-20T14:45:40Z",
+      "side": 1,
+      "message": "What\u0027s \"gs:\"?",
+      "range": {
+        "startLine": 27,
+        "startChar": 28,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "f6efb44b717ae9a908b16f1c8fdc1de989999cf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
