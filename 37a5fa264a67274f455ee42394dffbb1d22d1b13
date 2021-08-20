@@ -22,6 +22,30 @@
       },
       "revId": "37a5fa264a67274f455ee42394dffbb1d22d1b13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "243cf64a_64c280a8",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2021-08-20T18:28:26Z",
+      "side": 1,
+      "message": "I think that would then cause all of our Build- and Housekeeper tasks to fail since we run 10.3 in GCE, but I could be totally wrong on that.",
+      "parentUuid": "d93b2078_1cdcda3e",
+      "range": {
+        "startLine": 738,
+        "startChar": 17,
+        "endLine": 738,
+        "endChar": 37
+      },
+      "revId": "37a5fa264a67274f455ee42394dffbb1d22d1b13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
