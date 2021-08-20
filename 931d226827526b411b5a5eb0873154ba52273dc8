@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81ca9c02_23082f27",
+        "filename": "resources/sksl/intrinsics/RoundEven.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-20T22:02:28Z",
+      "side": 0,
+      "message": "I had picked test values that never rounded to an odd number, masking the bug in the test output. Oops.",
+      "range": {
+        "startLine": 5,
+        "startChar": 33,
+        "endLine": 5,
+        "endChar": 53
+      },
+      "revId": "931d226827526b411b5a5eb0873154ba52273dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
