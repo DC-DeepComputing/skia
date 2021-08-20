@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40123dd3_d2eba10b",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "Kind of a bummer that sktext wants a u16string, which forces a data copy.\n\nIdeally it should take a u16string_view, to allow pointing to external data -- but that\u0027s c++17 only.\n\nSkSpan\u003cchar16_t\u003e might be a good replacement.",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a583eb92_8685d574",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3a06d7b_ed9622e7",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "TODO: take a jetski Paint param for text color/shader/fill-vs-stroke/etc\n\nI see sktext uses straight colors, not paints, at the moment -- which is a limitation we may need to address.",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 46
+      },
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1c9fc7d_b8c3f261",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "TODO: introduce and pass a Font object for typeface params.\n\nThat will avoid looking up typefaces by name on every call.",
+      "range": {
+        "startLine": 24,
+        "startChar": 48,
+        "endLine": 24,
+        "endChar": 90
+      },
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d3ab242_2fcd9365",
+        "filename": "modules/androidkit/src/Utils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "Is the jchar representation guaranteed to be null-terminated?\n\nI found some clues that it may not be: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/320c789d-3068-4262-a73a-54bf7f7f9600/is-const-jchar-null-terminated-string\n\nIf that\u0027s the case, we need to get an explicit length with GetStringLength() and also write the conversion operator for std::u16string (to capture both the data and the length).\n\nTaking a step back, the reason we have CString is to allow access to the string chars as provided by JNI, without making an extra copy.\n\nIf for U16String we always have to make a std::u16string copy, then it would be simpler to just write an explicit conversion function instead of a RAII helper:\n\n  std::u16string JStringToU16String(JNIEnv* env, const jstring\u0026 jstr) {\n      const jchar* u16 \u003d env-\u003eGetStringChars(jstr, nullptr);\n      std::u16string str(u16, env-\u003eGetStringLength(jstr));\n      env-\u003eReleaseStringChars(jstr, u16);\n      return str;\n  }\n  \nThis can live in Text.cpp for now.",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f0bb0a_7063cb79",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Text.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-20T13:43:45Z",
+      "side": 1,
+      "message": "It seems more in line with other primitives to have this as a Canvas method: canvas.drawText(Text, x, y)\n\nAlso, unless we\u0027re planning to add more payload to Text, at that point there\u0027s is little reason to have a Text object at all - this could be canvas.drawText(String, x, y)\n\nWDYT?",
+      "revId": "89a46c51df7c04f2f233f0d7303039f1fb4dc54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
