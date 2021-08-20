@@ -53,7 +53,11 @@ GrD3DCommandList::SubmitResult GrD3DCommandList::submit(ID3D12CommandQueue* queu
 void GrD3DCommandList::reset() {
     SkASSERT(!fIsActive);
     GR_D3D_CALL_ERRCHECK(fAllocator->Reset());
-    GR_D3D_CALL_ERRCHECK(fCommandList->Reset(fAllocator.get(), nullptr));
+    // GR_D3D_CALL_ERRCHECK();
+    auto result = fCommandList->Reset(fAllocator.get(), nullptr);
+    if (result != S_OK) {
+        SkDebugf("command list reset result: %lx\n", result);
+    }
     this->onReset();
 
     this->releaseResources();
