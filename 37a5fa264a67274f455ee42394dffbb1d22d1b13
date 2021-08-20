@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d93b2078_1cdcda3e",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-20T18:14:45Z",
+      "side": 1,
+      "message": "Would it be better to change this to be DEFAULT_OS_DEBIAN?",
+      "range": {
+        "startLine": 738,
+        "startChar": 17,
+        "endLine": 738,
+        "endChar": 37
+      },
+      "revId": "37a5fa264a67274f455ee42394dffbb1d22d1b13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
