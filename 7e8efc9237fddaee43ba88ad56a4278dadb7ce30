@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbfda3c9_941e64a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T15:27:41Z",
+      "side": 1,
+      "message": "Might want to add `Bug: oss-fuzz:xxxxx` as a hint to future us for \"why did we do this\"",
+      "revId": "7e8efc9237fddaee43ba88ad56a4278dadb7ce30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc65133e_49cb0312",
+        "filename": "src/sksl/SkSLContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T15:27:41Z",
+      "side": 1,
+      "message": "This wasn\u0027t private before, and I don\u0027t see a benefit in keeping it in private if we are just going to friend our way out of it. Let\u0027s just move it back to public like the rest of the members.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 32
+      },
+      "revId": "7e8efc9237fddaee43ba88ad56a4278dadb7ce30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
