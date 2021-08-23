@@ -125,11 +125,6 @@
         "Build-Debian10-Clang-x86-Release-Android_Vulkan"
       ]
     },
-    "Build-Debian10-Clang-x86-devrel-Android_SKQP": {
-      "tasks": [
-        "Build-Debian10-Clang-x86-devrel-Android_SKQP"
-      ]
-    },
     "Build-Debian10-Clang-x86_64-Debug": {
       "tasks": [
         "Build-Debian10-Clang-x86_64-Debug"
@@ -811,11 +806,6 @@
     "FM-Win-MSVC-GCE-CPU-AVX2-x86_64-Debug-All": {
       "tasks": [
         "FM-Win-MSVC-GCE-CPU-AVX2-x86_64-Debug-All"
-      ]
-    },
-    "Fuzz-Debian10-Clang": {
-      "tasks": [
-        "Fuzz-Debian10-Clang"
       ]
     },
     "Housekeeper-Nightly-RecreateSKPs_DryRun": {
@@ -2146,11 +2136,6 @@
     "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Release-All-Vulkan": {
       "tasks": [
         "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Release-All-Vulkan"
-      ]
-    },
-    "Test-Debian10-Clang-NUC7i5BNK-CPU-Emulator-x86-devrel-All-Android_SKQP": {
-      "tasks": [
-        "Test-Debian10-Clang-NUC7i5BNK-CPU-Emulator-x86-devrel-All-Android_SKQP"
       ]
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All": {
@@ -5479,124 +5464,6 @@
         "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
       },
       "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Debian10-Clang-x86-devrel-Android_SKQP": {
-      "caches": [
-        {
-          "name": "docker",
-          "path": "cache/docker"
-        },
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        },
-        {
-          "name": "vpython",
-          "path": "cache/vpython"
-        },
-        {
-          "name": "work",
-          "path": "cache/work"
-        }
-      ],
-      "casSpec": "run-recipe",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython/linux-amd64",
-          "path": "cipd_bin_packages/cpython",
-          "version": "version:2@2.7.18.chromium.39"
-        },
-        {
-          "name": "infra/3pp/tools/cpython3/linux-amd64",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:2@3.8.10.chromium.19"
-        },
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:2@2.32.0.chromium.6"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/vpython-native/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/vpython/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "sync_and_compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Build-Debian10-Clang-x86-devrel-Android_SKQP\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"build\",\"task_id\":\"<(TASK_ID)\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-highcpu-64",
-        "os:Debian-10.3",
-        "pool:Skia",
-        "docker_installed:true"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages/cpython",
-          "cipd_bin_packages/cpython/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin",
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin"
-        ],
-        "VPYTHON_LOG_TRACE": [
-          "1"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
       "outputs": [
@@ -18547,67 +18414,6 @@
       "max_attempts": 1,
       "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "Fuzz-Debian10-Clang": {
-      "casSpec": "whole-repo",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:2@2.32.0.chromium.6"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        }
-      ],
-      "command": [
-        "./cifuzz",
-        "--project_id",
-        "skia-swarming-bots",
-        "--task_id",
-        "<(TASK_ID)",
-        "--task_name",
-        "Fuzz-Debian10-Clang",
-        "--git_exe_path",
-        "./cipd_bin_packages/git",
-        "--out_path",
-        "./cifuzz_out",
-        "--skia_path",
-        "./skia",
-        "--work_path",
-        "./cifuzz_work",
-        "--alsologtostderr"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
-      ],
-      "dimensions": [
-        "docker_installed:true",
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "execution_timeout_ns": 3600000000000,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 1,
-      "outputs": [
-        "cifuzz_out"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "Housekeeper-Nightly-RecreateSKPs_DryRun": {
       "caches": [
         {
@@ -20533,12 +20339,12 @@
       "casSpec": "perf",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -20622,12 +20428,12 @@
       "casSpec": "skpbench",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -20710,12 +20516,12 @@
       "casSpec": "skpbench",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -20798,12 +20604,12 @@
       "casSpec": "skpbench",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -20886,12 +20692,12 @@
       "casSpec": "perf",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -20975,12 +20781,12 @@
       "casSpec": "skpbench",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -21063,12 +20869,12 @@
       "casSpec": "skpbench",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -22229,12 +22035,12 @@
       "casSpec": "perf",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -22318,12 +22124,12 @@
       "casSpec": "perf",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -25346,7 +25152,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -25456,7 +25262,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -25571,7 +25377,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -25676,7 +25482,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -25786,7 +25592,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -25896,7 +25702,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -26001,7 +25807,7 @@
       ],
       "dimensions": [
         "gpu:8086:0f31",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -26106,7 +25912,7 @@
       ],
       "dimensions": [
         "gpu:8086:0102",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -33810,12 +33616,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -33905,12 +33711,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -34000,12 +33806,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -34095,12 +33901,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -34190,12 +33996,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36470,12 +36276,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36565,12 +36371,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36660,12 +36466,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36755,12 +36561,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36850,12 +36656,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -36945,12 +36751,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -37040,12 +36846,12 @@
       "casSpec": "test",
       "cipd_packages": [
         {
-          "name": "infra/3pp/tools/cpython/linux-armv6l",
+          "name": "infra/3pp/tools/cpython/linux-arm64",
           "path": "cipd_bin_packages/cpython",
           "version": "version:2@2.7.18.chromium.39"
         },
         {
-          "name": "infra/3pp/tools/cpython3/linux-armv6l",
+          "name": "infra/3pp/tools/cpython3/linux-arm64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
         },
@@ -43356,7 +43162,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -43472,7 +43278,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -43583,7 +43389,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -43699,7 +43505,7 @@
       ],
       "dimensions": [
         "gpu:8086:22b1",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -43729,108 +43535,6 @@
         "test"
       ],
       "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Test-Debian10-Clang-NUC7i5BNK-CPU-Emulator-x86-devrel-All-Android_SKQP": {
-      "caches": [
-        {
-          "name": "vpython",
-          "path": "cache/vpython"
-        }
-      ],
-      "casSpec": "skqp",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython/linux-amd64",
-          "path": "cipd_bin_packages/cpython",
-          "version": "version:2@2.7.18.chromium.39"
-        },
-        {
-          "name": "infra/3pp/tools/cpython3/linux-amd64",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:2@3.8.10.chromium.19"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/vpython-native/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "infra/tools/luci/vpython/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:cadd7dad6e9466c9988ec9eaed70210f2aa1ca86"
-        },
-        {
-          "name": "skia/bots/skimage",
-          "path": "skimage",
-          "version": "version:44"
-        },
-        {
-          "name": "skia/bots/skp",
-          "path": "skp",
-          "version": "version:313"
-        },
-        {
-          "name": "skia/bots/svg",
-          "path": "svg",
-          "version": "version:14"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "test_skqp_emulator",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-Clang-NUC7i5BNK-CPU-Emulator-x86-devrel-All-Android_SKQP\",\"gold_hashes_url\":\"https://storage.googleapis.com/skia-infra-gm/hash_files/gold-prod-hashes.txt\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Build-Debian10-Clang-x86-devrel-Android_SKQP",
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "cpu:x86-64-i5-7260U",
-        "docker_installed:true",
-        "kvm:1",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages/cpython",
-          "cipd_bin_packages/cpython/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin",
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin"
-        ],
-        "VPYTHON_LOG_TRACE": [
-          "1"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython"
-        ]
-      },
-      "execution_timeout_ns": 14400000000000,
-      "expiration_ns": 72000000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "io_timeout_ns": 14400000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "test"
-      ]
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All": {
       "caches": [
@@ -43912,7 +43616,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44028,7 +43732,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44138,7 +43842,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44254,7 +43958,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44365,7 +44069,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44480,7 +44184,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44590,7 +44294,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44705,7 +44409,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44820,7 +44524,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -44930,7 +44634,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45041,7 +44745,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45156,7 +44860,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45266,7 +44970,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45381,7 +45085,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45491,7 +45195,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45606,7 +45310,7 @@
       ],
       "dimensions": [
         "gpu:8086:5926",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45717,7 +45421,7 @@
       ],
       "dimensions": [
         "gpu:8086:0f31",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45828,7 +45532,7 @@
       ],
       "dimensions": [
         "gpu:8086:0f31",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -45939,7 +45643,7 @@
       ],
       "dimensions": [
         "gpu:8086:0102",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -46050,7 +45754,7 @@
       ],
       "dimensions": [
         "gpu:8086:0102",
-        "os:Debian-10.3",
+        "os:Debian-10.10",
         "pool:Skia"
       ],
       "env_prefixes": {
