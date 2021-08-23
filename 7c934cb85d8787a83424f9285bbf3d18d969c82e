@@ -196,6 +196,24 @@
       "parentUuid": "3c3e375b_c4bc3798",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64e9cee1_7c28b72e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T15:25:10Z",
+      "side": 1,
+      "message": "I had also thought about eval(), although I\u0027m starting to wonder if we just fix this with naming instead. HLSL has the object/method-call pattern, but that\u0027s pretty foreign to GLSL. (Other than array.count(), for some reason). The sampler pattern is still to use sample(), plus other intrinsics that operate on sampler objects (eg, to get texture dimensions).\n\nThat, plus the fact that any further operations are still theoretical, makes me lean back towards the current approach (directly invoking the child objects with function call syntax). Of all the options, that most directly reflects the underlying mechanism, too.",
+      "parentUuid": "84b92387_88d95d2c",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
