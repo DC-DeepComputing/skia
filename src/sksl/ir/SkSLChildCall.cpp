@@ -29,12 +29,17 @@ std::unique_ptr<Expression> ChildCall::clone() const {
 }
 
 String ChildCall::description() const {
-    String result = String(this->child().name()) + "(";
-    String separator;
+    String result;
+    switch (this->child().type().typeKind()) {
+        case Type::TypeKind::kBlender:     result += "blend(";  break;
+        case Type::TypeKind::kColorFilter: result += "filter("; break;
+        case Type::TypeKind::kShader:      result += "shade(";  break;
+        default: SkUNREACHABLE;
+    }
+    result += this->child().name();
     for (const std::unique_ptr<Expression>& arg : this->arguments()) {
-        result += separator;
+        result += ", ";
         result += arg->description();
-        separator = ", ";
     }
     result += ")";
     return result;
