@@ -214,6 +214,24 @@
       "parentUuid": "84b92387_88d95d2c",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01c3b8d7_60a04541",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T19:43:36Z",
+      "side": 1,
+      "message": "Talked with Brian some more, and I\u0027m now in favor of yet-another alternative:\n\n  - Keep invocation as intrinsic functions, but rename them from sample() to shade/filter/blend (depending on the type).\n\nThis is a smaller syntactic substitution for clients. It more closely aligns with GLSL idioms, while also using type-specific verbs that don\u0027t suggest texture-sampling. If we ever allow binding of an actual SkImage (rather than SkShader), we can use sample(), and it remains consistent with both GLSL, and the pattern we\u0027d be establishing for other Skia types.",
+      "parentUuid": "64e9cee1_7c28b72e",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
