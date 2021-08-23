@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c68589c8_963133ed",
+        "filename": "include/core/SkString.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-23T15:20:48Z",
+      "side": 1,
+      "message": "Even though there is no logical difference between the literal empty string \"\" and a a char array containing a single zero byte {\u0027\\0\u0027}, msvc++ believes that the string version cannot be used to initialize in a constexpr way.",
+      "range": {
+        "startLine": 258,
+        "startChar": 35,
+        "endLine": 258,
+        "endChar": 37
+      },
+      "revId": "caeaff83014c6ce5f03ed8f7775e3686f4c729f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
