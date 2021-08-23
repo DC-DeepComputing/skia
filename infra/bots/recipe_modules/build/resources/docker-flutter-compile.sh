@@ -11,6 +11,10 @@ set -x
 
 export PATH="$1/recipe_bundle/depot_tools:${PATH}"
 
+echo $PATH
+which vpython3
+which vpython
+
 # e.g. /mnt/pd0/s/w/ir/cache/work/flutter/src
 source_dir=$2
 # e.g. /mnt/pd0/s/w/ir/cache/work/flutter/src/out/android_release
