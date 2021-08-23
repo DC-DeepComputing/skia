@@ -430,7 +430,7 @@ double evaluate_sinh(double a, double, double)         { return std::sinh(a); }
 double evaluate_cosh(double a, double, double)         { return std::cosh(a); }
 double evaluate_tanh(double a, double, double)         { return std::tanh(a); }
 double evaluate_trunc(double a, double, double)        { return std::trunc(a); }
-double evaluate_round(double a, double, double)        { return std::round(a / 2) * 2; }
+double evaluate_round(double a, double, double)        { return a - std::remainder(a, 1.0); }
 double evaluate_floatBitsToInt(double a, double, double)  { return pun_value<float, int32_t> (a); }
 double evaluate_floatBitsToUint(double a, double, double) { return pun_value<float, uint32_t>(a); }
 double evaluate_intBitsToFloat(double a, double, double)  { return pun_value<int32_t,  float>(a); }
