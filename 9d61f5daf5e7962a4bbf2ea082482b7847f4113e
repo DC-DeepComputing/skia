@@ -52,6 +52,23 @@
       "parentUuid": "9115f3ce_1f83dff3",
       "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a852a8a_626de6e1",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T13:49:26Z",
+      "side": 1,
+      "message": "Took me a while to figure out why this works. Might be worth a comment. (And I\u0027m still trying to decide if we can end up with catastrophic cancellation, and get not-quite integer results). Alternatively, this could be:\n\n  int oldMode \u003d std::fegetround();\n  std::fesetround(FE_TONEAREST);\n  a \u003d std::nearbyint(a);\n  std::fesetround(oldMode);",
+      "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
