@@ -16,6 +16,23 @@
       "message": "Holding off on landing this until Flutter Canary passes.",
       "revId": "4b806d3bc0e6895c4bc4440a087d956737e470bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c816f70_7606f8d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-23T16:17:40Z",
+      "side": 1,
+      "message": "Not sure why it\u0027s saying the canary failed -- all the checks are green.",
+      "revId": "4b806d3bc0e6895c4bc4440a087d956737e470bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
