@@ -1293,16 +1293,27 @@ void IRGenerator::copyIntrinsicIfNeeded(const FunctionDeclaration& function) {
 std::unique_ptr<Expression> IRGenerator::call(int offset,
                                               const FunctionDeclaration& function,
                                               ExpressionArray arguments) {
-    if (function.intrinsicKind() == k_sample_IntrinsicKind && arguments.size() >= 1 &&
-        arguments[0]->type().isEffectChild()) {
-        // Translate old-style sample(child, ...) calls into new-style child(...) IR
-        SkASSERT(arguments[0]->is<VariableReference>());
-        const Variable& child = *arguments[0]->as<VariableReference>().variable();
-        ExpressionArray argumentsWithoutChild;
-        for (size_t i = 1; i < arguments.size(); i++) {
-            argumentsWithoutChild.push_back(std::move(arguments[i]));
+    switch (function.intrinsicKind()) {
+        case k_blend_IntrinsicKind:
+        case k_sample_IntrinsicKind:
+        case k_shade_IntrinsicKind:
+        case k_filter_IntrinsicKind: {
+            if (arguments.size() >= 1 && arguments[0]->type().isEffectChild()) {
+                // Translate these intrinsic calls into dedicated IR, which simplifies handling in
+                // the generators and analysis code
+                SkASSERT(arguments[0]->is<VariableReference>());
+                const Variable& child = *arguments[0]->as<VariableReference>().variable();
+                ExpressionArray argumentsWithoutChild;
+                for (size_t i = 1; i < arguments.size(); i++) {
+                    argumentsWithoutChild.push_back(std::move(arguments[i]));
+                }
+                return ChildCall::Convert(
+                        fContext, offset, child, std::move(argumentsWithoutChild));
+            }
+            break;
         }
-        return ChildCall::Convert(fContext, offset, child, std::move(argumentsWithoutChild));
+        default:
+            break;
     }
 
     if (function.isBuiltin()) {
@@ -1403,16 +1414,6 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
                 return nullptr;
             }
             return this->call(offset, *functions[0], std::move(arguments));
-        }
-        case Expression::Kind::kVariableReference: {
-            if (!functionValue->type().isEffectChild()) {
-                this->errorReporter().error(offset, "not a function");
-                return nullptr;
-            }
-            return ChildCall::Convert(fContext,
-                                      offset,
-                                      *functionValue->as<VariableReference>().variable(),
-                                      std::move(arguments));
         }
         default:
             this->errorReporter().error(offset, "not a function");
