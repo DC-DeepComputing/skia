@@ -38,9 +38,6 @@ public:
         kInsideLoop = (1 << 2)
     };
 
-    void writeProcessorFunction(GrFragmentProcessor::ProgramImpl*,
-                                GrFragmentProcessor::ProgramImpl::EmitArgs&);
-
     virtual void forceHighPrecision() = 0;
 
     /** Returns the variable name that holds the color of the destination pixel. This may be nullptr
@@ -48,14 +45,6 @@ public:
     virtual const char* dstColor() = 0;
 
 private:
-    /**
-     * These are called before/after calling emitCode on a child proc to update mangling.
-     */
-    virtual void onBeforeChildProcEmitCode() = 0;
-    virtual void onAfterChildProcEmitCode() = 0;
-
-    virtual const SkString& getMangleString() const = 0;
-
     // WARNING: LIke GrRenderTargetProxy, changes to this can cause issues in ASAN. This is caused
     // by GrGLSLProgramBuilder's GrTBlockLists requiring 16 byte alignment, but since
     // GrGLSLFragmentShaderBuilder has a virtual diamond hierarchy, ASAN requires all this pointers
@@ -107,11 +96,6 @@ public:
     void enableAdvancedBlendEquationIfNeeded(GrBlendEquation) override;
 
 private:
-    // GrGLSLFPFragmentBuilder private interface.
-    void onBeforeChildProcEmitCode() override;
-    void onAfterChildProcEmitCode() override;
-    const SkString& getMangleString() const override { return fMangleString; }
-
     // Private public interface, used by GrGLProgramBuilder to build a fragment shader
     void enableCustomOutput();
     void enableSecondaryOutput();
