@@ -29,17 +29,24 @@ std::unique_ptr<Expression> ChildCall::clone() const {
 }
 
 String ChildCall::description() const {
-    String result = String(this->child().name()) + "(";
-    String separator;
+    String result;
+    switch (this->child().type().typeKind()) {
+        case Type::TypeKind::kBlender:     result += "blend(";  break;
+        case Type::TypeKind::kColorFilter: result += "filter("; break;
+        case Type::TypeKind::kShader:      result += "shade(";  break;
+        default: SkUNREACHABLE;
+    }
+    result += this->child().name();
     for (const std::unique_ptr<Expression>& arg : this->arguments()) {
-        result += separator;
+        result += ", ";
         result += arg->description();
-        separator = ", ";
     }
     result += ")";
     return result;
 }
 
+#ifdef SK_DEBUG
+namespace {
 struct ChildCallSignature {
     const Type*               fReturnType = nullptr;
     SkSTArray<2, const Type*> fParamTypes;
@@ -57,36 +64,8 @@ static ChildCallSignature child_call_signature(const Context& context, const Var
             SkUNREACHABLE;
     }
 }
-
-std::unique_ptr<Expression> ChildCall::Convert(const Context& context,
-                                               int offset,
-                                               const Variable& child,
-                                               ExpressionArray arguments) {
-    ChildCallSignature signature = child_call_signature(context, child);
-    skstd::string_view typeName = child.type().name();
-
-    // Reject function calls with the wrong number of arguments.
-    if (signature.fParamTypes.size() != arguments.size()) {
-        String msg = "call to '" + typeName + "' expected " +
-                     to_string((int)signature.fParamTypes.size()) + " argument";
-        if (signature.fParamTypes.size() != 1) {
-            msg += "s";
-        }
-        msg += ", but found " + to_string(arguments.count());
-        context.fErrors->error(offset, msg);
-        return nullptr;
-    }
-
-    for (size_t i = 0; i < arguments.size(); i++) {
-        // Coerce each argument to the proper type.
-        arguments[i] = signature.fParamTypes[i]->coerceExpression(std::move(arguments[i]), context);
-        if (!arguments[i]) {
-            return nullptr;
-        }
-    }
-
-    return Make(context, offset, signature.fReturnType, child, std::move(arguments));
-}
+}  // namespace
+#endif
 
 std::unique_ptr<Expression> ChildCall::Make(const Context& context,
                                             int offset,
