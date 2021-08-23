@@ -34,6 +34,24 @@
       "parentUuid": "e01e128d_f2936fe1",
       "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53019bd_d7f942ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T13:36:55Z",
+      "side": 1,
+      "message": "The HLSL docs do put `round_ne` as a SM4 instruction:\nhttps://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/round-ne--sm4---asm-",
+      "parentUuid": "9115f3ce_1f83dff3",
+      "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
