@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d409ee53_e43c821e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-23T23:39:07Z",
+      "side": 1,
+      "message": "As discussed offline, this turns off AA clipping if the device would be large enough to hit numeric limits with SkFixed and forward differencing calculations.",
+      "revId": "309db364476034eb7a21976876e3ffaaedf2ced0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
