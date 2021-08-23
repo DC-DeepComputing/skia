@@ -81,11 +81,12 @@ public:
         return GrBackendFormat(format, target);
     }
 
-    static GrBackendFormat MakeVk(VkFormat format) {
-        return GrBackendFormat(format, GrVkYcbcrConversionInfo());
+    static GrBackendFormat MakeVk(VkFormat format, bool willUseDRMFormatModifiers = false) {
+        return GrBackendFormat(format, GrVkYcbcrConversionInfo(), willUseDRMFormatModifiers);
     }
 
-    static GrBackendFormat MakeVk(const GrVkYcbcrConversionInfo& ycbcrInfo);
+    static GrBackendFormat MakeVk(const GrVkYcbcrConversionInfo& ycbcrInfo,
+                                  bool willUseDRMFormatModifiers = false);
 
 #ifdef SK_DAWN
     static GrBackendFormat MakeDawn(wgpu::TextureFormat format) {
@@ -184,7 +185,8 @@ public:
 private:
     GrBackendFormat(GrGLenum format, GrGLenum target);
 
-    GrBackendFormat(const VkFormat vkFormat, const GrVkYcbcrConversionInfo&);
+    GrBackendFormat(const VkFormat vkFormat, const GrVkYcbcrConversionInfo&,
+                    bool willUseDRMFormatModifiers);
 
 #ifdef SK_DAWN
     GrBackendFormat(wgpu::TextureFormat format);
