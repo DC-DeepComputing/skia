@@ -69,6 +69,24 @@
       "message": "Took me a while to figure out why this works. Might be worth a comment. (And I\u0027m still trying to decide if we can end up with catastrophic cancellation, and get not-quite integer results). Alternatively, this could be:\n\n  int oldMode \u003d std::fegetround();\n  std::fesetround(FE_TONEAREST);\n  a \u003d std::nearbyint(a);\n  std::fesetround(oldMode);",
       "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d739c62f_aba6f73b",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T13:58:18Z",
+      "side": 1,
+      "message": "I looked for various ways to do this rounding cleanly and found this approach here.\nhttps://stackoverflow.com/a/32751115/291737\n\nDo you want a comment that links to this post or should I just try to summarize it?\n\nI\u0027ve seen a handful of claims that the result of `round(x) - x` should always be exactly representable, and it makes sense in my head. For small x, rounding gives you a nice exactly-represented integral value. For very large x, round(x) will give x as-is (because there\u0027s not enough precision to have a fractional component).",
+      "parentUuid": "2a852a8a_626de6e1",
+      "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
