@@ -3982,6 +3982,65 @@ STAGE_GP(evenly_spaced_2_stop_gradient, const SkRasterPipeline_EvenlySpaced2Stop
                    &r,&g,&b,&a);
 }
 
+STAGE_GP(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+    F partitionX = x - 0.5f,
+      partitionY = y - 0.5f;
+
+    F qx = floor_(256.0f * partitionX + 0.5f),
+      qy = floor_(256.0f * partitionY + 0.5f);
+
+    F sx = floor_(qx * 1/256.0f),
+      sy = floor_(qy * 1/256.0f);
+
+    U16 tx = cast<U16>(trunc_(qx) & 0xff),
+        ty = cast<U16>(trunc_(qy) & 0xff);
+
+    U16 xy = tx * ty;
+    U16 w00 = 65535 - (tx << 8) - (ty << 8) + xy,
+        w01 = (ty << 8) - xy,
+        w10 = (tx << 8) - xy,
+        w11 = xy;
+
+    auto m = [](U16 w, U16 v) -> U16 {
+        return cast<U16>(cast<U32>(w) * cast<U32>(v) >> 16);
+    };
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    U16 ur, ug, ub, ua;
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r = m(w00, ur << 8);
+    g = m(w00, ug << 8);
+    b = m(w00, ub << 8);
+    a = m(w00, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w10, ur << 8);
+    g += m(w10, ug << 8);
+    b += m(w10, ub << 8);
+    a += m(w10, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w01, ur << 8);
+    g += m(w01, ug << 8);
+    b += m(w01, ub << 8);
+    a += m(w01, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w11, ur << 8);
+    g += m(w11, ug << 8);
+    b += m(w11, ub << 8);
+    a += m(w11, ua << 8);
+
+    r = (r + 0x80) >> 8;
+    g = (g + 0x80) >> 8;
+    b = (b + 0x80) >> 8;
+    a = (a + 0x80) >> 8;
+}
+
 STAGE_GG(xy_to_unit_angle, Ctx::None) {
     F xabs = abs_(x),
       yabs = abs_(y);
@@ -4112,7 +4171,6 @@ STAGE_PP(swizzle, void* ctx) {
     NOT_IMPLEMENTED(repeat_y)
     NOT_IMPLEMENTED(negate_x)
     NOT_IMPLEMENTED(bilinear)
-    NOT_IMPLEMENTED(bilerp_clamp_8888)
     NOT_IMPLEMENTED(bicubic)
     NOT_IMPLEMENTED(bicubic_clamp_8888)
     NOT_IMPLEMENTED(bilinear_nx)
