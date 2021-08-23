@@ -9,7 +9,26 @@
 set -e
 set -x
 
-export PATH="$1/recipe_bundle/depot_tools:${PATH}"
+# export PATH="$1/recipe_bundle/depot_tools:${PATH}"
+echo "LOOK AT OLD DEPOT_TOOLS"
+ls -l $1/recipe_bundle/depot_tools
+# echo "THIS IS THE GIT REV_PARSE HEAD"
+#cd $1/recipe_bundle/depot_tools
+#git rev-parse HEAD
+# Checkpoint depot_tools in /tmp/
+git clone https://chromium.googlesource.com/chromium/tools/depot_tools /tmp/depot_tools
+# chmod 755 /tmp/depot_tools
+export PATH="/tmp/depot_tools:${PATH}"
+export VPYTHON_VIRTUALENV_ROOT=$1/cache/vpython
+export CIPD_CACHE_DIR=/b/s/cipd_cache/cache
+echo "LOOK AT ENV-"
+env
+echo "LOOK AT PATH-"
+echo $PATH
+echo "LOOK AT CONTENTS OF DEPOT_TOOLS"
+ls -l /tmp/depot_tools
+echo "WHICH VPYTHON3"
+which vpython3
 
 # e.g. /mnt/pd0/s/w/ir/cache/work/flutter/src
 source_dir=$2
