@@ -46,6 +46,30 @@
       },
       "revId": "e424e20edaf5c40126c8f8f79980ab2615eb64a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5816717c_d0411b27",
+        "filename": "fuzz/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T14:35:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8048210b_a22b3dab",
+      "range": {
+        "startLine": 57,
+        "startChar": 126,
+        "endLine": 57,
+        "endChar": 156
+      },
+      "revId": "e424e20edaf5c40126c8f8f79980ab2615eb64a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
