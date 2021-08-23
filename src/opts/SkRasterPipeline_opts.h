@@ -3102,6 +3102,12 @@ SI F if_then_else(I32 c, F t, F e) {
 SI F max(F x, F y) { return if_then_else(x < y, y, x); }
 SI F min(F x, F y) { return if_then_else(x < y, x, y); }
 
+SI I32 if_then_else(I32 c, I32 t, I32 e) {
+    return (t & c) | (e & ~c);
+}
+SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+
 SI F mad(F f, F m, F a) { return f*m+a; }
 SI U32 trunc_(F x) { return (U32)cast<I32>(x); }
 
@@ -3374,6 +3380,19 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, F x, F y) {
 
     *ptr = (const T*)ctx->pixels;
     return trunc_(y)*ctx->stride + trunc_(x);
+}
+
+template <typename T>
+SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, I32 x, I32 y) {
+    // Exclusive -> inclusive.
+    const I32 w =  ctx->width - 1,
+              h = ctx->height - 1;
+
+    U32 ax = cast<U32>(min(max(0, x), w)),
+        ay = cast<U32>(min(max(0, y), h));
+
+    *ptr = (const T*)ctx->pixels;
+    return ay * ctx->stride + ax;
 }
 
 template <typename V, typename T>
@@ -3982,6 +4001,130 @@ STAGE_GP(evenly_spaced_2_stop_gradient, const SkRasterPipeline_EvenlySpaced2Stop
                    &r,&g,&b,&a);
 }
 
+STAGE_GP(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+    switch (0) {
+    case 0: {
+    F partitionX = x - 0.5f,
+      partitionY = y - 0.5f;
+
+    I32 qx = cast<I32>(floor_(256.0f * partitionX + 0.5f)),
+        qy = cast<I32>(floor_(256.0f * partitionY + 0.5f));
+
+    I32 sx = qx >> 8,
+        sy = qy >> 8;
+
+    U16 tx = cast<U16>(qx & 0xff),
+        ty = cast<U16>(qy & 0xff);
+
+    U16 xy = tx * ty;
+    U16 w00 = 65535 - (tx << 8) - (ty << 8) + xy,
+        w01 = (ty << 8) - xy,
+        w10 = (tx << 8) - xy,
+        w11 = xy;
+
+    auto m = [](U16 w, U16 v) -> U16 {
+        return cast<U16>(cast<U32>(w) * cast<U32>(v) >> 16);
+    };
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    U16 ur, ug, ub, ua;
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r = m(w00, ur << 8);
+    g = m(w00, ug << 8);
+    b = m(w00, ub << 8);
+    a = m(w00, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w10, ur << 8);
+    g += m(w10, ug << 8);
+    b += m(w10, ub << 8);
+    a += m(w10, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w01, ur << 8);
+    g += m(w01, ug << 8);
+    b += m(w01, ub << 8);
+    a += m(w01, ua << 8);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    r += m(w11, ur << 8);
+    g += m(w11, ug << 8);
+    b += m(w11, ub << 8);
+    a += m(w11, ua << 8);
+
+    r = (r + 0x80) >> 8;
+    g = (g + 0x80) >> 8;
+    b = (b + 0x80) >> 8;
+    a = (a + 0x80) >> 8;
+    return;
+    }
+
+    // Keep the full 32-bit precision for intermediate results. Does does not seem any more
+    // accurate than the version above. But, it is much slower.
+    case 1: {
+    F partitionX = x - 0.5f,
+      partitionY = y - 0.5f;
+
+    F qx = floor_(256.0f * partitionX + 0.5f),
+      qy = floor_(256.0f * partitionY + 0.5f);
+
+    F sx = floor_(qx * 1/256.0f),
+      sy = floor_(qy * 1/256.0f);
+
+    U32 tx = trunc_(qx) & 0xff,
+        ty = trunc_(qy) & 0xff;
+
+    U32 xy = tx * ty;
+    U32 w00 = 65536 - (tx << 8) - (ty << 8) + xy,
+        w01 = (ty << 8) - xy,
+        w10 = (tx << 8) - xy,
+        w11 = xy;
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    U16 ur, ug, ub, ua;
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    U32 ar, ag, ab, aa;
+    ar = w00 * cast<U32>(ur);
+    ag = w00 * cast<U32>(ug);
+    ab = w00 * cast<U32>(ub);
+    aa = w00 * cast<U32>(ua);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    ar += w10 * cast<U32>(ur);
+    ag += w10 * cast<U32>(ug);
+    ab += w10 * cast<U32>(ub);
+    aa += w10 * cast<U32>(ua);
+
+    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    ar += w01 * cast<U32>(ur);
+    ag += w01 * cast<U32>(ug);
+    ab += w01 * cast<U32>(ub);
+    aa += w01 * cast<U32>(ua);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+    from_8888(gather<U32>(ptr, ix), &ur,&ug,&ub,&ua);
+    ar += w11 * cast<U32>(ur);
+    ag += w11 * cast<U32>(ug);
+    ab += w11 * cast<U32>(ub);
+    aa += w11 * cast<U32>(ua);
+
+    r = cast<U16>((ar + 32767) >> 16);
+    g = cast<U16>((ag + 32767) >> 16);
+    b = cast<U16>((ab + 32767) >> 16);
+    a = cast<U16>((aa + 32767) >> 16);
+
+    return;
+    }
+    }
+}
+
 STAGE_GG(xy_to_unit_angle, Ctx::None) {
     F xabs = abs_(x),
       yabs = abs_(y);
@@ -4112,7 +4255,6 @@ STAGE_PP(swizzle, void* ctx) {
     NOT_IMPLEMENTED(repeat_y)
     NOT_IMPLEMENTED(negate_x)
     NOT_IMPLEMENTED(bilinear)
-    NOT_IMPLEMENTED(bilerp_clamp_8888)
     NOT_IMPLEMENTED(bicubic)
     NOT_IMPLEMENTED(bicubic_clamp_8888)
     NOT_IMPLEMENTED(bilinear_nx)
