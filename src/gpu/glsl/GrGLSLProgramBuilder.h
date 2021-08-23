@@ -78,13 +78,6 @@ public:
     SkString nameVariable(char prefix, const char* name, bool mangle = true);
 
     /**
-     * If computation of a FP's input coords have been lifted to the vertex shader, this method
-     * retrieves the name of the coords varying in the FS. The FP code should read this directly
-     * rather than writing a function that takes a float2 coord.
-     */
-    GrShaderVar varyingCoordsForFragmentProcessor(const GrFragmentProcessor*);
-
-    /**
      * If the FP's coords are unused or all uses have been lifted to interpolated varyings then
      * don't put coords in the FP's function signature or call sites.
      */
@@ -132,38 +125,32 @@ protected:
     bool fragColorIsInOut() const { return fFS.primaryColorOutputIsInOut(); }
 
 private:
-    // reset is called by program creator between each processor's emit code.  It increments the
-    // stage offset for variable name mangling, and also ensures verfication variables in the
+    // advanceStage is called by program creator between each processor's emit code.  It increments
+    // the stage index for variable name mangling, and also ensures verification variables in the
     // fragment shader are cleared.
-    void reset() {
-        this->addStage();
+    void advanceStage() {
+        fStageIndex++;
         SkDEBUGCODE(fFS.debugOnly_resetPerStageVerification();)
+        fFS.nextStage();
     }
-    void addStage() { fStageIndex++; }
-
-    class AutoStageAdvance {
-    public:
-        AutoStageAdvance(GrGLSLProgramBuilder* pb)
-            : fPB(pb) {
-            fPB->reset();
-            // Each output to the fragment processor gets its own code section
-            fPB->fFS.nextStage();
-        }
-        ~AutoStageAdvance() {}
-    private:
-        GrGLSLProgramBuilder* fPB;
-    };
 
     // Generates a possibly mangled name for a stage variable and writes it to the fragment shader.
     void nameExpression(SkString*, const char* baseName);
 
     bool emitAndInstallPrimProc(SkString* outputColor, SkString* outputCoverage);
     bool emitAndInstallDstTexture();
+    /** Adds the root FPs */
     bool emitAndInstallFragProcs(SkString* colorInOut, SkString* coverageInOut);
+    /** Adds a single root FP tree. */
     SkString emitFragProc(const GrFragmentProcessor&,
                           GrFragmentProcessor::ProgramImpl&,
                           const SkString& input,
                           SkString output);
+    /** Recursive step to write out children FPs' functions before parent's. */
+    void writeChildFPFunctions(const GrFragmentProcessor& fp,
+                               GrFragmentProcessor::ProgramImpl& impl);
+    /** Adds the SkSL function that implements an FP assuming its children are already written. */
+    void writeFPFunction(const GrFragmentProcessor& fp, GrFragmentProcessor::ProgramImpl& impl);
     bool emitAndInstallXferProc(const SkString& colorIn, const SkString& coverageIn);
     SamplerHandle emitSampler(const GrBackendFormat&, GrSamplerState, const GrSwizzle&,
                               const char* name);
