@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e01e128d_f2936fe1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T13:31:39Z",
+      "side": 1,
+      "message": "My read (https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-round) is that HLSL round() always implements round-to-even, so both round() and roundEven() could be mapped to round(). (Which is explicitly legal, according to the GLSL docs, because round just uses an unspecified rounding mode).",
+      "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
