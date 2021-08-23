@@ -160,6 +160,24 @@
       "parentUuid": "7bc8b51f_462f0da5",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c3e375b_c4bc3798",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-23T14:44:35Z",
+      "side": 1,
+      "message": "I don\u0027t disagree with anything Brian S said, it does seem like names can be addressed to have this be a verb instead of a noun.\n\nHowever, if we\u0027re trying to address the `sample` texture confusion, maybe we switch to something like `eval`? That fits my mental model that we\u0027re invoking a function that was passed in as an argument (via uniform).",
+      "parentUuid": "36e2cb84_490a9569",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
