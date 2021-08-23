@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d31ff6e2_da196ea2",
+        "filename": "resources/sksl/errors/ArrayOfVoid.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T13:22:53Z",
+      "side": 1,
+      "message": "nit: this wasn\u0027t correct before (or after) this change.",
+      "range": {
+        "startLine": 1,
+        "startChar": 10,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "2ff67de7c98a7470ce310bddbdaa586604f63af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
