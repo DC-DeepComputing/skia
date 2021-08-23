@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8159e9cb_7d3a394e",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T20:53:57Z",
+      "side": 1,
+      "message": "If this fails, do we end up going into FunctionCall::Convert and not finding any candidates?",
+      "range": {
+        "startLine": 1301,
+        "startChar": 16,
+        "endLine": 1301,
+        "endChar": 77
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a57c74c7_01b2d4db",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1302,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T20:53:57Z",
+      "side": 1,
+      "message": "\"a ChildCall\"\n\n(everything we do in here makes dedicated IR :)  )",
+      "range": {
+        "startLine": 1302,
+        "startChar": 56,
+        "endLine": 1302,
+        "endChar": 68
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f1e3cf5_7dc33847",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T20:53:57Z",
+      "side": 1,
+      "message": "Seems like you could avoid allocating a new buffer via http://go/std::rotate by 1, followed by a pop-back.",
+      "range": {
+        "startLine": 1306,
+        "startChar": 0,
+        "endLine": 1309,
+        "endChar": 17
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
