@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38814c52_1fc5b053",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-23T14:40:39Z",
+      "side": 1,
+      "message": "The main motivation for this was to make the name mangle suffix usable in my uniform rework. But it was pretty entangled with the distributed responsibilities for writing FP functions, hence the larger refactor.",
+      "revId": "f5625b57634501be259756ca24c0e0df056dac1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
