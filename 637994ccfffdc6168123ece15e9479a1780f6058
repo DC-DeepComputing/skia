@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b32e1df8_6964df18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-23T13:27:15Z",
+      "side": 1,
+      "message": "Ted can you try out this CL? It is similar to your original fix, but adds to checking higher up in Skia to make things are happening as expected. The big change that will need to happen is where Chrome is passing Skia a GrBackendFormat to describe an image that Skia will have to draw. Chrome would need to tell Skia that the format being passed in will have a drm modifier (see GrBackendSurface.h changes). I believe there are two main entry points for this type of thing. First would be when making promise images, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkDeferredDisplayListRecorder.h;l\u003d60. Second is when chrome has Skia make GrBackendTextures for it. This happens in a set of calls here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/gpu/GrDirectContext.h;l\u003d442.\n\nI would suggest trying to trace the Chrome calls of how your drm videos get into chrome and there where Chrome makes GrBackendFormats/textures from that. I don\u0027t know enough about Chromes pipelines to know exactly where this happens, but I\u0027m sure you could reach out to some of the chrome Gpu folks to help guide you.",
+      "revId": "637994ccfffdc6168123ece15e9479a1780f6058",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
