@@ -22,6 +22,30 @@
       },
       "revId": "e424e20edaf5c40126c8f8f79980ab2615eb64a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8048210b_a22b3dab",
+        "filename": "fuzz/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-23T12:59:02Z",
+      "side": 1,
+      "message": "AFAIK, there is not a way to do a relative timestamp. So having baked in dates for these example dashboards is fine, IMO.",
+      "parentUuid": "9a7376f7_0b6d5887",
+      "range": {
+        "startLine": 57,
+        "startChar": 126,
+        "endLine": 57,
+        "endChar": 156
+      },
+      "revId": "e424e20edaf5c40126c8f8f79980ab2615eb64a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
