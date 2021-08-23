@@ -23,6 +23,8 @@
 GrD3DPipelineState::GrD3DPipelineState(
         sk_sp<GrD3DPipeline> pipeline,
         sk_sp<GrD3DRootSignature> rootSignature,
+        GrUniformAggregator::UniformRecords uniformRecords,
+        const std::vector<uint32_t>& uniformRecordOffsets,
         const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
         const UniformInfoArray& uniforms,
         uint32_t uniformSize,
@@ -38,7 +40,7 @@ GrD3DPipelineState::GrD3DPipelineState(
         , fGPImpl(std::move(gpImpl))
         , fXPImpl(std::move(xpImpl))
         , fFPImpls(std::move(fpImpls))
-        , fDataManager(uniforms, uniformSize)
+        , fDataManager(std::move(uniformRecords), uniformRecordOffsets, uniforms, uniformSize)
         , fNumSamplers(numSamplers)
         , fVertexStride(vertexStride)
         , fInstanceStride(instanceStride) {}
@@ -46,6 +48,8 @@ GrD3DPipelineState::GrD3DPipelineState(
 void GrD3DPipelineState::setAndBindConstants(GrD3DGpu* gpu,
                                              const GrRenderTarget* renderTarget,
                                              const GrProgramInfo& programInfo) {
+    fDataManager.setUniforms(programInfo);
+
     this->setRenderTargetState(renderTarget, programInfo.origin());
 
     fGPImpl->setData(fDataManager, *gpu->caps()->shaderCaps(), programInfo.geomProc());

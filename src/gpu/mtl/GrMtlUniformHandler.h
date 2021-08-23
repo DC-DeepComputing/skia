@@ -87,7 +87,7 @@ private:
         return fSamplers.item(handle.toIndex()).fVisibility;
     }
 
-    void appendUniformDecls(GrShaderFlags, SkString*) const override;
+    void appendUniformDecls(const GrUniformAggregator&, GrShaderFlags, SkString*) const override;
 
     const UniformInfo& getUniformInfo(UniformHandle u) const {
         return fUniforms.item(u.toIndex());
@@ -97,8 +97,10 @@ private:
     UniformInfoArray    fSamplers;
     SkTArray<GrSwizzle> fSamplerSwizzles;
 
-    uint32_t            fCurrentUBOOffset;
-    uint32_t            fCurrentUBOMaxAlignment;
+    mutable uint32_t fCurrentUBOOffset;
+    mutable uint32_t fCurrentUBOMaxAlignment;
+
+    mutable std::vector<uint32_t> fAggregatorOffsets;
 
     friend class GrMtlPipelineStateBuilder;
 

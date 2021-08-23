@@ -13,12 +13,17 @@
 #include "src/gpu/GrTBlockList.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 
 #include "include/private/SkTArray.h"
+
+#include <vector>
 
 class GrGLGpu;
 class SkMatrix;
 class GrGLProgram;
+class GrGLContext;
+struct GrGLInterface;
 
 /** Manages the resources used by a shader program.
  * The resources are objects the program uses to communicate with the
@@ -41,7 +46,10 @@ public:
     typedef GrTBlockList<GLUniformInfo> UniformInfoArray;
     typedef GrTBlockList<VaryingInfo>   VaryingInfoArray;
 
-    GrGLProgramDataManager(GrGLGpu*, const UniformInfoArray&);
+    GrGLProgramDataManager(GrGLGpu*,
+                           const UniformInfoArray&,
+                           GrGLuint programID,
+                           GrUniformAggregator::UniformRecords);
 
     void setSamplerUniforms(const UniformInfoArray& samplers, int startUnit) const;
 
@@ -73,6 +81,8 @@ public:
     void setMatrix3fv(UniformHandle, int arrayCount, const float matrices[]) const override;
     void setMatrix4fv(UniformHandle, int arrayCount, const float matrices[]) const override;
 
+    void setUniforms(const GrProgramInfo& info);
+
 private:
     enum {
         kUnusedUniform = -1,
@@ -91,6 +101,27 @@ private:
 
     SkTArray<Uniform, true> fUniforms;
     GrGLGpu* fGpu;
+
+    class UniformManager {
+    public:
+        UniformManager(GrUniformAggregator::UniformRecords,
+                       GrGLuint programID,
+                       const GrGLContext& ctx);
+
+        void setUniforms(const GrGLInterface* gl, const GrProgramInfo& info);
+
+    private:
+        struct Uniform {
+            int      processorIdx      = -1;
+            size_t   indexInProcessor  = -1;
+            GrSLType type              = kVoid_GrSLType;
+            int      count             = 0;
+            GrGLuint id                = -1;
+        };
+        std::vector<Uniform> fUniforms;
+    };
+
+    UniformManager fManager;
 
     using INHERITED = GrGLSLProgramDataManager;
 };

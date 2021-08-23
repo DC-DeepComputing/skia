@@ -324,7 +324,9 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addInputSampler(const Gr
     return GrGLSLUniformHandler::SamplerHandle(0);
 }
 
-void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
+void GrVkUniformHandler::appendUniformDecls(const GrUniformAggregator& aggregator,
+                                            GrShaderFlags visibility,
+                                            SkString* out) const {
     for (const VkUniformInfo& sampler : fSamplers.items()) {
         SkASSERT(sampler.fVariable.getType() == kTexture2DSampler_GrSLType ||
                  sampler.fVariable.getType() == kTextureExternalSampler_GrSLType);
@@ -353,6 +355,27 @@ void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* 
         }
     }
 #endif
+    SkASSERT(fAggregatorOffsets[0].empty() || fAggregatorOffsets[0].size() == aggregator.count());
+    for (int i = 1; i < kLayoutCount; ++i) {
+        SkASSERT(fAggregatorOffsets[i].size() == fAggregatorOffsets[0].size());
+    }
+    if (aggregator.count() && fAggregatorOffsets[0].empty()) {
+        for (int i = 0; i < kLayoutCount; ++i) {
+            fAggregatorOffsets[i].reserve(aggregator.count());
+        }
+        for (size_t u = 0; u < aggregator.count(); ++u) {
+            const auto uniform = aggregator.getUniform(u);
+            if (GrSLTypeCanBeUniformValue(uniform.type())) {
+                for (int l = 0; l < kLayoutCount; ++l) {
+                    fAggregatorOffsets[l].push_back(get_aligned_offset(&fCurrentOffsets[l],
+                                                                       uniform.type(),
+                                                                       uniform.count(),
+                                                                       l));
+                }
+            }
+        }
+    }
+
 
     // At this point we determine whether we'll be using push constants based on the
     // uniforms set so far. Later checks will use the internal bool we set here to
@@ -365,6 +388,22 @@ void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* 
                 Layout layout = fUsePushConstants ? kStd430Layout : kStd140Layout;
                 uniformsString.appendf("layout(offset=%d) ", localUniform.fOffsets[layout]);
                 localUniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
+                uniformsString.append(";\n");
+            }
+        }
+    }
+    for (size_t u = 0; u < aggregator.count(); ++u) {
+        const auto uniform = aggregator.getUniform(u);
+        if (visibility & uniform.visibility()) {
+            if (GrSLTypeCanBeUniformValue(uniform.type())) {
+                Layout layout = fUsePushConstants ? kStd430Layout : kStd140Layout;
+                uniformsString.appendf("layout(offset=%d) ", fAggregatorOffsets[layout][u]);
+                GrShaderVar var = uniform.asShaderVar();
+                // We put these in a uniform block. Each variable should not be prefixed with
+                // "uniform".
+                SkASSERT(var.getTypeModifier() == GrShaderVar::TypeModifier::Uniform);
+                var.setTypeModifier(GrShaderVar::TypeModifier::None);
+                var.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
                 uniformsString.append(";\n");
             }
         }

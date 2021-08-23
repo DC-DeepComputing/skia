@@ -679,6 +679,8 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     return std::unique_ptr<GrD3DPipelineState>(
             new GrD3DPipelineState(std::move(pipeline),
                                    std::move(rootSig),
+                                   fUniformAggregator.snapUniformRecords(),
+                                   fUniformHandler.fAggregatorOffsets,
                                    fUniformHandles,
                                    fUniformHandler.fUniforms,
                                    fUniformHandler.fCurrentUBOOffset,

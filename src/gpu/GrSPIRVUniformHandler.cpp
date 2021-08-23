@@ -293,7 +293,9 @@ GrSwizzle GrSPIRVUniformHandler::samplerSwizzle(GrGLSLUniformHandler::SamplerHan
     return fSamplerSwizzles[handle.toIndex()];
 }
 
-void GrSPIRVUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
+void GrSPIRVUniformHandler::appendUniformDecls(const GrUniformAggregator& aggregator,
+                                               GrShaderFlags visibility,
+                                               SkString* out) const {
     auto textures = fTextures.items().begin();
     for (const SPIRVUniformInfo& sampler : fSamplers.items()) {
         if (sampler.fVisibility & visibility) {
@@ -309,6 +311,22 @@ void GrSPIRVUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkStrin
         if (uniform.fVisibility & visibility) {
             uniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
             uniformsString.append(";\n");
+        }
+    }
+    SkASSERT(fAggregatorOffsets.empty() || fAggregatorOffsets.size() == aggregator.count());
+    bool determineOffsets = fAggregatorOffsets.empty();
+    for (const GrProcessor::Uniform& uniform : aggregator.uniforms()) {
+        if (uniform.visibility() & visibility) {
+            GrShaderVar var = uniform.asShaderVar();
+            SkASSERT(var.getTypeModifier() == GrShaderVar::TypeModifier::Uniform);
+            var.setTypeModifier(GrShaderVar::TypeModifier::None);
+            var.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
+            uniformsString.append(";\n");
+        }
+        if (determineOffsets) {
+            fAggregatorOffsets.push_back(get_ubo_offset(&fCurrentUBOOffset,
+                                                        uniform.type(),
+                                                        uniform.count()));
         }
     }
     if (!uniformsString.isEmpty()) {

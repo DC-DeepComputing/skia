@@ -17,6 +17,7 @@
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 #include "src/sksl/SkSLCompiler.h"
 
 #include <vector>
@@ -112,6 +113,8 @@ public:
     GrSurfaceOrigin fDstTextureOrigin;
 
 protected:
+    GrUniformAggregator fUniformAggregator;
+
     explicit GrGLSLProgramBuilder(const GrProgramDesc&, const GrProgramInfo&);
 
     void addFeature(GrShaderFlags shaders, uint32_t featureBit, const char* extensionName);
@@ -165,6 +168,7 @@ private:
 
     // These are used to check that we don't excede the allowable number of resources in a shader.
     int fNumFragmentSamplers;
+
     GrGeometryProcessor::ProgramImpl::FPCoordsMap fFPCoordsMap;
 
     /**

@@ -284,7 +284,9 @@ GrGLSLUniformHandler::SamplerHandle GrMtlUniformHandler::addSampler(
     return GrGLSLUniformHandler::SamplerHandle(fSamplers.count() - 1);
 }
 
-void GrMtlUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
+void GrMtlUniformHandler::appendUniformDecls(const GrUniformAggregator& aggregator,
+                                             GrShaderFlags visibility,
+                                             SkString* out) const {
     for (const UniformInfo& sampler : fSamplers.items()) {
         SkASSERT(sampler.fVariable.getType() == kTexture2DSampler_GrSLType);
         if (visibility == sampler.fVisibility) {
@@ -313,6 +315,29 @@ void GrMtlUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString*
                 uniformsString.append(";\n");
             }
         }
+    }
+
+    SkASSERT(fAggregatorOffsets.empty() || fAggregatorOffsets.size() == aggregator.count());
+    bool determineOffsets = fAggregatorOffsets.empty();
+    int i = 0;
+    for (const GrProcessor::Uniform& uniform : aggregator.uniforms()) {
+        if (determineOffsets) {
+            fAggregatorOffsets.push_back(get_ubo_aligned_offset(&fCurrentUBOOffset,
+                                                                &fCurrentUBOMaxAlignment,
+                                                                uniform.type(),
+                                                                uniform.count()));
+        }
+        if (uniform.visibility() & visibility) {
+            GrShaderVar var = uniform.asShaderVar();
+            SkASSERT(var.getTypeModifier() == GrShaderVar::TypeModifier::Uniform);
+            var.setTypeModifier(GrShaderVar::TypeModifier::None);
+            SkString layoutQualifier;
+            layoutQualifier.appendf("offset=%d", fAggregatorOffsets[i]);
+            var.addLayoutQualifier(layoutQualifier.c_str());
+            var.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
+            uniformsString.append(";\n");
+        }
+        ++i;
     }
 
     if (!uniformsString.isEmpty()) {

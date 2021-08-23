@@ -31,6 +31,8 @@ GrVkPipelineState::GrVkPipelineState(
         GrVkGpu* gpu,
         sk_sp<const GrVkPipeline> pipeline,
         const GrVkDescriptorSetManager::Handle& samplerDSHandle,
+        GrUniformAggregator::UniformRecords uniformRecords,
+        const std::vector<uint32_t>& uniformRecordOffsets,
         const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
         const UniformInfoArray& uniforms,
         uint32_t uniformSize,
@@ -45,7 +47,11 @@ GrVkPipelineState::GrVkPipelineState(
         , fGPImpl(std::move(gpImpl))
         , fXPImpl(std::move(xpImpl))
         , fFPImpls(std::move(fpImpls))
-        , fDataManager(uniforms, uniformSize, usePushConstants) {
+        , fDataManager(uniformRecords,
+                       uniformRecordOffsets,
+                       uniforms,
+                       uniformSize,
+                       usePushConstants) {
     fNumSamplers = samplers.count();
     for (const auto& sampler : samplers.items()) {
         // We store the immutable samplers here and take a ref on the sampler. Once we switch to
@@ -77,6 +83,8 @@ bool GrVkPipelineState::setAndBindUniforms(GrVkGpu* gpu,
                                            SkISize colorAttachmentDimensions,
                                            const GrProgramInfo& programInfo,
                                            GrVkCommandBuffer* commandBuffer) {
+    fDataManager.setUniforms(programInfo);
+
     this->setRenderTargetState(colorAttachmentDimensions, programInfo.origin());
 
     fGPImpl->setData(fDataManager, *gpu->caps()->shaderCaps(), programInfo.geomProc());

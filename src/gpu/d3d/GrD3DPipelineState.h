@@ -29,6 +29,8 @@ public:
 
     GrD3DPipelineState(sk_sp<GrD3DPipeline> pipeline,
                        sk_sp<GrD3DRootSignature> rootSignature,
+                       GrUniformAggregator::UniformRecords uniformRecords,
+                       const std::vector<uint32_t>& uniformRecordOffsets,
                        const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
                        const UniformInfoArray& uniforms,
                        uint32_t uniformSize,
