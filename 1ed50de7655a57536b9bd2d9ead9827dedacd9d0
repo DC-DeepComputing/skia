@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f8222a_c2c0d113",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T14:35:05Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "range": {
+        "startLine": 447,
+        "startChar": 56,
+        "endLine": 450,
+        "endChar": 26
+      },
+      "revId": "1ed50de7655a57536b9bd2d9ead9827dedacd9d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
