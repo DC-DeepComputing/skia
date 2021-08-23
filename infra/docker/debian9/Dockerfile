@@ -26,5 +26,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y  \
   libfontconfig-dev \
   libglu-dev \
   python \
+  python3 \
   git \
   && rm -rf /var/lib/apt/lists/*
