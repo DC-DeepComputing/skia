@@ -178,6 +178,24 @@
       "parentUuid": "36e2cb84_490a9569",
       "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84b92387_88d95d2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T15:16:30Z",
+      "side": 1,
+      "message": "It\u0027s not difficult for us to have multiple intrinsics here, if it makes the language clearer. If we use one function name to mean both \"sample from a texture\" and \"call a function\" I suspect we are just going to shift the confusion point around.\n\n(`sample` implies that every child FP is as cheap as a texture read. `eval` implies they are all as expensive as evaluating the result of a function call. In reality it depends on what we are sampling-from/evaluating.)",
+      "parentUuid": "3c3e375b_c4bc3798",
+      "revId": "7c934cb85d8787a83424f9285bbf3d18d969c82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
