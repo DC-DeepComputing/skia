@@ -64,6 +64,11 @@ class DrawAtlasGM : public skiagm::GM {
     }
 
 public:
+    bool runAsBench() const override {
+        return true;
+    }
+
+public:
     DrawAtlasGM() {}
 
 protected:
@@ -94,7 +99,7 @@ protected:
                 xform->fTy   = fTy;
             }
         } rec[] = {
-            { 1, 0, 10, 10 },       // just translate
+            //{ 1, 0, 10, 10 },       // just translate
             { 2, 0, 110, 10 },      // scale + translate
             { 1, 30, 210, 10 },     // rotate + translate
             { 2, -30, 310, 30 },    // scale + rotate + translate
