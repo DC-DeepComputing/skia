@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623f3ce3_2cbe53f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T18:06:01Z",
+      "side": 1,
+      "message": "It looks like MetalCodeGenerator also has several paths where it writes to fErrors. Should we have its errors reported at the end of code generation as well?",
+      "revId": "8db8999338a7fb4aced15a5322b372b98a2144f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
