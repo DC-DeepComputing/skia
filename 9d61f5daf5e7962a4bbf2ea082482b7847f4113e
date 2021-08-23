@@ -16,6 +16,24 @@
       "message": "My read (https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-round) is that HLSL round() always implements round-to-even, so both round() and roundEven() could be mapped to round(). (Which is explicitly legal, according to the GLSL docs, because round just uses an unspecified rounding mode).",
       "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9115f3ce_1f83dff3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T13:35:46Z",
+      "side": 1,
+      "message": "SPIRV-Cross has this:\nhttp://screen/39nD7SoshVUMTpJ\n\nI\u0027m actually a little baffled by this still, because we set our shader_model to 51: \nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLSPIRVtoHLSL.cpp;l\u003d32;drc\u003d3738ef531bbb448c6eec87abf0d6573cd6021f4e\n\nI don\u0027t have a Windows machine to debug it with and the crashes out of the trybots have no additional data or stack frames.",
+      "parentUuid": "e01e128d_f2936fe1",
+      "revId": "9d61f5daf5e7962a4bbf2ea082482b7847f4113e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
