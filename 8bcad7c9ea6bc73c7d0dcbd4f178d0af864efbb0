@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b76e751_cfee856c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T16:50:06Z",
+      "side": 1,
+      "message": "Please add the fuzzer\u0027s code (or a simplified equivalent) as a test file.",
+      "revId": "8bcad7c9ea6bc73c7d0dcbd4f178d0af864efbb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
