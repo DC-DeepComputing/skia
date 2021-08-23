@@ -16,6 +16,24 @@
       "message": "Please add the fuzzer\u0027s code (or a simplified equivalent) as a test file.",
       "revId": "8bcad7c9ea6bc73c7d0dcbd4f178d0af864efbb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f05e4e4d_9ee91e7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-23T18:10:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b76e751_cfee856c",
+      "revId": "8bcad7c9ea6bc73c7d0dcbd4f178d0af864efbb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
