@@ -64,6 +64,11 @@ class DrawAtlasGM : public skiagm::GM {
     }
 
 public:
+    bool runAsBench() const override {
+        return true;
+    }
+
+public:
     DrawAtlasGM() {}
 
 protected:
