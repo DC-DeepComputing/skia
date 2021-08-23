@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7376f7_0b6d5887",
+        "filename": "fuzz/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-23T12:57:28Z",
+      "side": 1,
+      "message": "This has baked-in dates, is that what you want?",
+      "range": {
+        "startLine": 57,
+        "startChar": 126,
+        "endLine": 57,
+        "endChar": 156
+      },
+      "revId": "e424e20edaf5c40126c8f8f79980ab2615eb64a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
