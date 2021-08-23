@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b62d0159_f6c7b8ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-23T19:26:46Z",
+      "side": 1,
+      "message": "Chromium is now guarded (internally), and PS2 includes a corresponding #define. Guard and define will be removed after everything lands.",
+      "revId": "2103844f72150d1aad7d7cfc3e6fecce1fadadba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
