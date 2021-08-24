@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d3c160_9a362c24",
+        "filename": "infra/docker/debian9/Dockerfile",
+        "patchSetId": 15
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-08-24T18:50:30Z",
+      "side": 1,
+      "message": "This was for some reason required by vpython.",
+      "revId": "026f9394d3aabb6e2c9da32f64c1fa5797c20afd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
