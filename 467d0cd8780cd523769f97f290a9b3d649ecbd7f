@@ -16,6 +16,24 @@
       "message": "Is this en route to exposing the new (lower-level than skparagraph) SkText? Have we already added drawGlyphs() to Canvas?",
       "revId": "467d0cd8780cd523769f97f290a9b3d649ecbd7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a0ebcf_1613a919",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-24T16:07:06Z",
+      "side": 1,
+      "message": "This does expose SkText, renderText() calls SkText::Paint::drawText(). drawText() seems to be the best entrypoint for JetSki.\nCanvas.drawGlyphs() seemed too low level for what we\u0027d want to expose in JetSki, but we could always add it.",
+      "parentUuid": "10460c71_9f60ccd2",
+      "revId": "467d0cd8780cd523769f97f290a9b3d649ecbd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
