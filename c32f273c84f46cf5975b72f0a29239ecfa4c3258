@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7edb7982_cdbb49ba",
+        "filename": "resources/sksl/runtime/SampleWithExplicitCoord.rts",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-24T19:15:36Z",
+      "side": 1,
+      "message": "Upon reflection--is this test trying to prove that both \u0027sample\u0027 and \u0027shade\u0027 emit the same skvm code?\nMaybe a comment is needed to convey the intent here.",
+      "parentUuid": "dd75f93f_31ba433b",
+      "range": {
+        "startLine": 3,
+        "startChar": 11,
+        "endLine": 3,
+        "endChar": 17
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c71eca5_e36c1a4a",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 2
