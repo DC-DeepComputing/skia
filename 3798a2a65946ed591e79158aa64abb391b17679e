@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fbc36c1_a2eb34c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T16:49:16Z",
+      "side": 1,
+      "message": "gold images are fake, coming from another CL that tested at the same time.",
+      "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
