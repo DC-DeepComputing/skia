@@ -16,6 +16,29 @@
       "message": "This use Mike\u0027s suggestion to shift the colors by 8 bits so there is 8-bits of final pixels, and 8-bits of fractional pixels. This produces obviously better results with little addition runtime overhead.",
       "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9027d9_41203a6f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 4005,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-24T16:31:48Z",
+      "side": 1,
+      "message": "Is this what really happens, or does this sequence get recognized somewhere as a 16x16 --\u003e 16 single instruction?\n\nIf that latter, should we capture that as its own helper/util?",
+      "range": {
+        "startLine": 4005,
+        "startChar": 15,
+        "endLine": 4005,
+        "endChar": 53
+      },
+      "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
