@@ -43,6 +43,9 @@ bool CreateD3DBackendContext(GrD3DBackendContext* ctx,
         if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
         {
             debugController->EnableDebugLayer();
+            SkDebugf("Debug layer enabled.\n");
+        } else {
+            SkDebugf("Debug layer NOT enabled.\n");
         }
     }
 #endif

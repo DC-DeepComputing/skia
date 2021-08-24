@@ -939,9 +939,11 @@ optional("gpu") {
       "//third_party/spirv-cross:spirv_cross",
     ]
     sources += skia_direct3d_sources
-    if (skia_enable_direct3d_debug_layer) {
-      public_defines += [ "SK_ENABLE_D3D_DEBUG_LAYER" ]
-    }
+
+    #    if (skia_enable_direct3d_debug_layer) {
+    public_defines += [ "SK_ENABLE_D3D_DEBUG_LAYER" ]
+
+    #    }
     libs += [
       "d3d12.lib",
       "dxgi.lib",
