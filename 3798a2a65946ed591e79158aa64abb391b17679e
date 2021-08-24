@@ -16,6 +16,52 @@
       "message": "gold images are fake, coming from another CL that tested at the same time.",
       "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac822ab5_03501160",
+        "filename": "src/core/SkBlockAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T17:20:46Z",
+      "side": 1,
+      "message": "nit: \u0027Skia\u0027",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 34
+      },
+      "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04b4f41_20ed553a",
+        "filename": "src/core/SkTBlockList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T17:20:46Z",
+      "side": 1,
+      "message": "This can be removed, right?",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 6
+      },
+      "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
