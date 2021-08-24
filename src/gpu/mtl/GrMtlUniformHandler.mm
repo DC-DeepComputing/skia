@@ -284,7 +284,38 @@ GrGLSLUniformHandler::SamplerHandle GrMtlUniformHandler::addSampler(
     return GrGLSLUniformHandler::SamplerHandle(fSamplers.count() - 1);
 }
 
-void GrMtlUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
+GrUniformDataManager::ProgramUniforms GrMtlUniformHandler::getNewProgramUniforms(
+        const GrUniformAggregator& aggregator) {
+    GrUniformDataManager::ProgramUniforms result;
+    for (const auto& [processorIndex, indexInProcessor, uniform] : aggregator.uniforms()) {
+        uint32_t offset = get_ubo_aligned_offset(&fCurrentUBOOffset,
+                                                 &fCurrentUBOMaxAlignment,
+                                                 uniform.type(),
+                                                 uniform.count());
+        result[processorIndex][indexInProcessor] = {uniform.type(),
+                                                    uniform.count(),
+                                                    offset};
+
+        // Add to fNewUniforms so that these get declared.
+        MtlUniformInfo info;
+        GrShaderVar var = uniform.asShaderVar();
+        SkString qualifier = SkStringPrintf("offset = %d", offset);
+        SkASSERT(var.getTypeModifier() == GrShaderVar::TypeModifier::Uniform);
+        var.setTypeModifier(GrShaderVar::TypeModifier::None);
+        var.addLayoutQualifier(qualifier.c_str());
+        info.fUBOffset   = offset;
+        info.fVariable   = var;
+        info.fVisibility = uniform.visibility();
+        info.fOwner      = nullptr;
+
+        fNewUniforms.emplace_back(info);
+    }
+    return result;
+}
+
+void GrMtlUniformHandler::appendUniformDecls(const GrUniformAggregator& aggregator,
+                                             GrShaderFlags visibility,
+                                             SkString* out) const {
     for (const UniformInfo& sampler : fSamplers.items()) {
         SkASSERT(sampler.fVariable.getType() == kTexture2DSampler_GrSLType);
         if (visibility == sampler.fVisibility) {
@@ -307,6 +338,15 @@ void GrMtlUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString*
 
     SkString uniformsString;
     for (const UniformInfo& localUniform : fUniforms.items()) {
+        if (visibility & localUniform.fVisibility) {
+            if (GrSLTypeCanBeUniformValue(localUniform.fVariable.getType())) {
+                localUniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);
+                uniformsString.append(";\n");
+            }
+        }
+    }
+
+    for (const UniformInfo& localUniform : fNewUniforms.items()) {
         if (visibility & localUniform.fVisibility) {
             if (GrSLTypeCanBeUniformValue(localUniform.fVariable.getType())) {
                 localUniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), &uniformsString);

@@ -5,17 +5,182 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkMatrix.h"
-#include "src/gpu/gl/GrGLGpu.h"
 #include "src/gpu/gl/GrGLProgramDataManager.h"
+
+#include "include/core/SkMatrix.h"
+#include "src/gpu/GrProgramInfo.h"
+#include "src/gpu/gl/GrGLGpu.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+
+GrGLProgramDataManager::UniformManager::UniformManager(
+        GrUniformAggregator::ProcessorUniformMap uniformMap,
+        GrGLuint programID,
+        GrGLint firstUniformLocation,
+        const GrGLContext& ctx) {
+    GrGLint location = firstUniformLocation;
+    fUniforms.reserve(uniformMap.size());
+    for (const auto& [processorIndex, uniforms] : uniformMap) {
+        fUniforms[processorIndex].reserve(uniforms.size());
+        for (const auto& u : uniforms) {
+            if (ctx.caps()->bindUniformLocationSupport()) {
+                GR_GL_CALL(ctx.glInterface(),
+                           BindUniformLocation(programID, location++, u.uniform.name()));
+            } else {
+                GR_GL_CALL_RET(ctx.glInterface(),
+                               location,
+                               GetUniformLocation(programID, u.uniform.name()));
+            }
+            fUniforms[processorIndex][u.indexInProcessor] = {
+                    u.uniform.type(),
+                    u.uniform.count(),
+                    location,
+            };
+        }
+    }
+}
+
+class GrGLProgramDataManager::UniformManager::UniformWriter final : public GrUniformWriter {
+public:
+    UniformWriter(const GrGLInterface* interface, const ProcessorUniforms& uniforms)
+            : GrUniformWriter(), fUniforms(uniforms), fInterface(interface) {}
+
+private:
+    std::tuple<GrSLType, int> willSetUniform(int index) override {
+        if (auto iter = fUniforms.find(index); iter != fUniforms.end()) {
+            const auto& u = iter->second;
+            fID = u.location;
+            return {u.type, u.count};
+        }
+        return {kVoid_GrSLType, -1};
+    }
+
+    void didSetUniform() override { fID = -1; }
+
+    void onWriteiv(int n, const int32_t v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform1iv(fID, n, v));
+    }
+
+    void onWritefv(int n, const float v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform1fv(fID, n, v));
+    }
+
+    void onWrite2iv(int n, const int32_t v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform2iv(fID, n, v));
+    }
+
+    void onWrite2fv(int n, const float v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform2fv(fID, n, v));
+    }
+
+    void onWrite3iv(int n, const int32_t v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform3iv(fID, n, v));
+    }
+
+    void onWrite3fv(int n, const float v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform3fv(fID, n, v));
+    }
+
+    void onWrite4iv(int n, const int32_t v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform4iv(fID, n, v));
+    }
+
+    void onWrite4fv(int n, const float v[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, Uniform4fv(fID, n, v));
+    }
+
+    void onWriteMatrix2x2fv(int n, const float matrices[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, UniformMatrix2fv(fID, n, false, matrices));
+    }
+
+    void onWriteMatrix3x3fv(int n, const float matrices[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, UniformMatrix3fv(fID, n, false, matrices));
+    }
+
+    void onWriteMatrix4x4fv(int n, const float matrices[]) override {
+        if (fID == -1) {
+            return;
+        }
+        GR_GL_CALL(fInterface, UniformMatrix4fv(fID, n, false, matrices));
+    }
+
+    const ProcessorUniforms& fUniforms;
+    const GrGLInterface* fInterface;
+    GrGLint fID = -1;
+};
+
+void GrGLProgramDataManager::UniformManager::setUniforms(const GrGLInterface* gl,
+                                                         const GrProgramInfo& info) {
+    auto set = [&, processorIndex = 0](const GrProcessor& p) mutable {
+        if (auto iter = fUniforms.find(processorIndex); iter != fUniforms.end()) {
+            const ProcessorUniforms& uniforms = iter->second;
+            UniformWriter writer(gl, uniforms);
+            p.writeUniforms(&writer);
+        }
+        ++processorIndex;
+    };
+    set(info.geomProc());
+    for (int i = 0; i < info.pipeline().numFragmentProcessors(); ++i) {
+        info.pipeline().getFragmentProcessor(i).visit([&](const GrFragmentProcessor& fp) {
+            set(fp);
+        });
+    }
+    set(info.pipeline().getXferProcessor());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define ASSERT_ARRAY_UPLOAD_IN_BOUNDS(UNI, COUNT) \
          SkASSERT((COUNT) <= (UNI).fArrayCount || \
                   (1 == (COUNT) && GrShaderVar::kNonArray == (UNI).fArrayCount))
 
-GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu, const UniformInfoArray& uniforms)
-        : fGpu(gpu) {
+GrGLint get_first_unused_uniform_location(
+        const GrGLProgramDataManager::UniformInfoArray& uniforms) {
+    GrGLint id = -1;
+    for (int i = 0; i < uniforms.count(); ++i) {
+        id = std::max(id, uniforms.item(i).fLocation);
+    }
+    return id + 1;
+}
+
+GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu,
+                                               const UniformInfoArray& uniforms,
+                                               GrGLuint programID,
+                                               GrUniformAggregator::ProcessorUniformMap uniformMap)
+        : fGpu(gpu)
+        , fManager(std::move(uniformMap),
+                   programID,
+                   get_first_unused_uniform_location(uniforms),
+                   gpu->glContext()) {
     fUniforms.push_back_n(uniforms.count());
     int i = 0;
     for (const GLUniformInfo& builderUniform : uniforms.items()) {
@@ -28,6 +193,10 @@ GrGLProgramDataManager::GrGLProgramDataManager(GrGLGpu* gpu, const UniformInfoAr
         )
         uniform.fLocation = builderUniform.fLocation;
     }
+}
+
+void GrGLProgramDataManager::setUniforms(const GrProgramInfo& info) {
+    fManager.setUniforms(fGpu->glInterface(), info);
 }
 
 void GrGLProgramDataManager::setSamplerUniforms(const UniformInfoArray& samplers,
