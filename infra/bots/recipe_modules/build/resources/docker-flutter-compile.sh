@@ -9,7 +9,28 @@
 set -e
 set -x
 
+# export PATH="$1/recipe_bundle/depot_tools:${PATH}"
+echo "LOOK FOR CIPD"
+ls -l $1/
+ls -l $1/cache
+ls -l $1/cipd_bin_packages/
+ls -l $1/cipd_bin_packages/vpython3
 export PATH="$1/recipe_bundle/depot_tools:${PATH}"
+# Add CIPD to the PATH for vpython3 and python3.
+export PATH="$1/cipd_bin_packages:$1/cipd_bin_packages/bin:$1/cipd_bin_packages/cpython3:$1/cipd_bin_packages/cpython3/bin:${PATH}"
+# Set env for vpython3.
+export VPYTHON_VIRTUALENV_ROOT=$1/cache/vpython
+export CIPD_CACHE_DIR=/tmp/.cipd_cache
+
+# echo "LOOK AT OLD DEPOT_TOOLS"
+# ls -l $1/recipe_bundle/depot_tools
+# # Checkpoint depot_tools in /tmp/
+# git clone https://chromium.googlesource.com/chromium/tools/depot_tools /tmp/depot_tools
+# export PATH="/tmp/depot_tools:${PATH}"
+# export VPYTHON_VIRTUALENV_ROOT=$1/cache/vpython
+# export CIPD_CACHE_DIR=/tmp/.cipd_cache
+# echo "WHICH VPYTHON3"
+# which vpython3
 
 # e.g. /mnt/pd0/s/w/ir/cache/work/flutter/src
 source_dir=$2
