@@ -1358,34 +1358,17 @@ static U8CPU sectAlphaProc(U8CPU alphaA, U8CPU alphaB) {
     return SkMulDiv255Round(alphaA, alphaB);
 }
 
-static U8CPU unionAlphaProc(U8CPU alphaA, U8CPU alphaB) {
-    // SrcOver
-    return alphaA + alphaB - SkMulDiv255Round(alphaA, alphaB);
-}
-
 static U8CPU diffAlphaProc(U8CPU alphaA, U8CPU alphaB) {
     // SrcOut
     return SkMulDiv255Round(alphaA, 0xFF - alphaB);
 }
 
-static U8CPU xorAlphaProc(U8CPU alphaA, U8CPU alphaB) {
-    // XOR
-    return alphaA + alphaB - 2 * SkMulDiv255Round(alphaA, alphaB);
-}
-
-static AlphaProc find_alpha_proc(SkRegion::Op op) {
+static AlphaProc find_alpha_proc(SkClipOp op) {
     switch (op) {
-        case SkRegion::kIntersect_Op:
+        case SkClipOp::kIntersect:
             return sectAlphaProc;
-        case SkRegion::kDifference_Op:
+        case SkClipOp::kDifference:
             return diffAlphaProc;
-        case SkRegion::kUnion_Op:
-            return unionAlphaProc;
-        case SkRegion::kXOR_Op:
-            return xorAlphaProc;
-        default:
-            SkDEBUGFAIL("unexpected region op");
-            return sectAlphaProc;
     }
 }
 
@@ -1443,23 +1426,6 @@ static void adjust_row(RowIter& iter, int& leftA, int& riteA, int rite) {
         riteA = iter.right();
     }
 }
-
-#if 0 // UNUSED
-static bool intersect(int& min, int& max, int boundsMin, int boundsMax) {
-    SkASSERT(min < max);
-    SkASSERT(boundsMin < boundsMax);
-    if (min >= boundsMax || max <= boundsMin) {
-        return false;
-    }
-    if (min < boundsMin) {
-        min = boundsMin;
-    }
-    if (max > boundsMax) {
-        max = boundsMax;
-    }
-    return true;
-}
-#endif
 
 static void operatorX(SkAAClip::Builder& builder, int lastY,
                       RowIter& iterA, RowIter& iterB,
@@ -1531,7 +1497,7 @@ static void adjust_iter(SkAAClip::Iter& iter, int& topA, int& botA, int bot) {
 }
 
 static void operateY(SkAAClip::Builder& builder, const SkAAClip& A,
-                     const SkAAClip& B, SkRegion::Op op) {
+                     const SkAAClip& B, SkClipOp op) {
     AlphaProc proc = find_alpha_proc(op);
     const SkIRect& bounds = builder.getBounds();
 
@@ -1603,29 +1569,18 @@ static void operateY(SkAAClip::Builder& builder, const SkAAClip& A,
     } while (!iterA.done() || !iterB.done());
 }
 
-bool SkAAClip::op(const SkAAClip& clipAOrig, const SkAAClip& clipBOrig,
-                  SkRegion::Op op) {
+bool SkAAClip::op(const SkAAClip& clipAOrig, const SkAAClip& clipBOrig, SkClipOp op) {
     AUTO_AACLIP_VALIDATE(*this);
-
-    if (SkRegion::kReplace_Op == op) {
-        return this->set(clipBOrig);
-    }
 
     const SkAAClip* clipA = &clipAOrig;
     const SkAAClip* clipB = &clipBOrig;
-
-    if (SkRegion::kReverseDifference_Op == op) {
-        using std::swap;
-        swap(clipA, clipB);
-        op = SkRegion::kDifference_Op;
-    }
 
     bool a_empty = clipA->isEmpty();
     bool b_empty = clipB->isEmpty();
 
     SkIRect bounds;
     switch (op) {
-        case SkRegion::kDifference_Op:
+        case SkClipOp::kDifference:
             if (a_empty) {
                 return this->setEmpty();
             }
@@ -1635,28 +1590,12 @@ bool SkAAClip::op(const SkAAClip& clipAOrig, const SkAAClip& clipBOrig,
             bounds = clipA->fBounds;
             break;
 
-        case SkRegion::kIntersect_Op:
+        case SkClipOp::kIntersect:
             if ((a_empty | b_empty) || !bounds.intersect(clipA->fBounds,
                                                          clipB->fBounds)) {
                 return this->setEmpty();
             }
             break;
-
-        case SkRegion::kUnion_Op:
-        case SkRegion::kXOR_Op:
-            if (a_empty) {
-                return this->set(*clipB);
-            }
-            if (b_empty) {
-                return this->set(*clipA);
-            }
-            bounds = clipA->fBounds;
-            bounds.join(clipB->fBounds);
-            break;
-
-        default:
-            SkDEBUGFAIL("unknown region op");
-            return !this->isEmpty();
     }
 
     SkASSERT(SkIRect::Intersects(bounds, clipB->fBounds));
@@ -1674,12 +1613,12 @@ bool SkAAClip::op(const SkAAClip& clipAOrig, const SkAAClip& clipBOrig,
  *  bounds, or note that the new rect subsumes our current clip.
  */
 
-bool SkAAClip::op(const SkIRect& rOrig, SkRegion::Op op) {
+bool SkAAClip::op(const SkIRect& rOrig, SkClipOp op) {
     SkIRect        rStorage;
     const SkIRect* r = &rOrig;
 
     switch (op) {
-        case SkRegion::kIntersect_Op:
+        case SkClipOp::kIntersect:
             if (!rStorage.intersect(rOrig, fBounds)) {
                 // no overlap, so we're empty
                 return this->setEmpty();
@@ -1694,14 +1633,7 @@ bool SkAAClip::op(const SkIRect& rOrig, SkRegion::Op op) {
             }
             r = &rStorage;   // use the intersected bounds
             break;
-        case SkRegion::kDifference_Op:
-            break;
-        case SkRegion::kUnion_Op:
-            if (rOrig.contains(fBounds)) {
-                return this->setRect(rOrig);
-            }
-            break;
-        default:
+        case SkClipOp::kDifference:
             break;
     }
 
@@ -1710,38 +1642,26 @@ bool SkAAClip::op(const SkIRect& rOrig, SkRegion::Op op) {
     return this->op(*this, clip, op);
 }
 
-bool SkAAClip::op(const SkRect& rOrig, SkRegion::Op op, bool doAA) {
+bool SkAAClip::op(const SkRect& rOrig, SkClipOp op, bool doAA) {
     SkRect        rStorage, boundsStorage;
     const SkRect* r = &rOrig;
 
     boundsStorage.set(fBounds);
-    switch (op) {
-        case SkRegion::kIntersect_Op:
-        case SkRegion::kDifference_Op:
-            if (!rStorage.intersect(rOrig, boundsStorage)) {
-                if (SkRegion::kIntersect_Op == op) {
-                    return this->setEmpty();
-                } else {    // kDifference
-                    return !this->isEmpty();
-                }
-            }
-            r = &rStorage;   // use the intersected bounds
-            break;
-        case SkRegion::kUnion_Op:
-            if (rOrig.contains(boundsStorage)) {
-                return this->setRect(rOrig);
-            }
-            break;
-        default:
-            break;
+    if (!rStorage.intersect(rOrig, boundsStorage)) {
+        if (SkClipOp::kIntersect == op) {
+            return this->setEmpty();
+        } else {    // kDifference
+            return !this->isEmpty();
+        }
     }
+    r = &rStorage;   // use the intersected bounds
 
     SkAAClip clip;
     clip.setRect(*r, doAA);
     return this->op(*this, clip, op);
 }
 
-bool SkAAClip::op(const SkAAClip& clip, SkRegion::Op op) {
+bool SkAAClip::op(const SkAAClip& clip, SkClipOp op) {
     return this->op(*this, clip, op);
 }
 

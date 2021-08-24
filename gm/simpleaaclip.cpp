@@ -87,7 +87,7 @@ protected:
 
         SkAAClip clip2;
         clip2.setPath(fRectPath, nullptr, true);
-        clip->op(clip2, (SkRegion::Op)op);
+        clip->op(clip2, op);
     }
 
     void drawOrig(SkCanvas* canvas) {

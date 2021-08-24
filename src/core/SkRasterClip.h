@@ -8,6 +8,7 @@
 #ifndef SkRasterClip_DEFINED
 #define SkRasterClip_DEFINED
 
+#include "include/core/SkClipOp.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkMacros.h"
@@ -23,9 +24,9 @@ class SkConservativeClip {
     enum class ClipAA : bool { kNo = false, kYes = true };
     enum class IsRect : bool { kNo = false, kYes = true };
 
-    inline void applyOpParams(SkRegion::Op op, ClipAA aa, IsRect rect) {
+    inline void applyOpParams(SkClipOp op, ClipAA aa, IsRect rect) {
         fAA |= (bool) aa;
-        fIsRect &= (op == SkRegion::kIntersect_Op && (bool) rect);
+        fIsRect &= (op == SkClipOp::kIntersect && (bool) rect);
     }
 
 public:
@@ -44,11 +45,11 @@ public:
     void opShader(sk_sp<SkShader>) {
         fIsRect = false;
     }
-    void opRect(const SkRect&, const SkMatrix&, const SkIRect& limit, SkRegion::Op, bool isAA);
-    void opRRect(const SkRRect&, const SkMatrix&, const SkIRect& limit, SkRegion::Op, bool isAA);
-    void opPath(const SkPath&, const SkMatrix&, const SkIRect& limit, SkRegion::Op, bool isAA);
-    void opRegion(const SkRegion&, SkRegion::Op);
-    void opIRect(const SkIRect&, SkRegion::Op);
+    void opRect(const SkRect&, const SkMatrix&, const SkIRect& limit, SkClipOp, bool isAA);
+    void opRRect(const SkRRect&, const SkMatrix&, const SkIRect& limit, SkClipOp, bool isAA);
+    void opPath(const SkPath&, const SkMatrix&, const SkIRect& limit, SkClipOp, bool isAA);
+    void opRegion(const SkRegion&, SkClipOp);
+    void opIRect(const SkIRect&, SkClipOp);
 };
 
 /**
@@ -97,11 +98,11 @@ public:
     bool setEmpty();
     bool setRect(const SkIRect&);
 
-    bool op(const SkIRect&, SkRegion::Op);
-    bool op(const SkRegion&, SkRegion::Op);
-    bool op(const SkRect&, const SkMatrix& matrix, const SkIRect&, SkRegion::Op, bool doAA);
-    bool op(const SkRRect&, const SkMatrix& matrix, const SkIRect&, SkRegion::Op, bool doAA);
-    bool op(const SkPath&, const SkMatrix& matrix, const SkIRect&, SkRegion::Op, bool doAA);
+    bool op(const SkIRect&, SkClipOp);
+    bool op(const SkRegion&, SkClipOp);
+    bool op(const SkRect&, const SkMatrix& matrix, const SkIRect&, SkClipOp, bool doAA);
+    bool op(const SkRRect&, const SkMatrix& matrix, const SkIRect&, SkClipOp, bool doAA);
+    bool op(const SkPath&, const SkMatrix& matrix, const SkIRect&, SkClipOp, bool doAA);
     bool op(sk_sp<SkShader>);
 
     void translate(int dx, int dy, SkRasterClip* dst) const;
@@ -170,7 +171,7 @@ private:
 
     bool setPath(const SkPath& path, const SkRegion& clip, bool doAA);
     bool setPath(const SkPath& path, const SkIRect& clip, bool doAA);
-    bool op(const SkRasterClip&, SkRegion::Op);
+    bool op(const SkRasterClip&, SkClipOp);
     bool setConservativeRect(const SkRect& r, const SkIRect& clipR, bool isInverse);
 };
 

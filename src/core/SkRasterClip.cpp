@@ -15,46 +15,18 @@ enum MutateResult {
     kContinue_MutateResult,
 };
 
-static MutateResult mutate_conservative_op(SkRegion::Op* op, bool inverseFilled) {
+static MutateResult mutate_conservative_op(SkClipOp* op, bool inverseFilled) {
     if (inverseFilled) {
-        switch (*op) {
-            case SkRegion::kIntersect_Op:
-            case SkRegion::kDifference_Op:
-                // These ops can only shrink the current clip. So leaving
-                // the clip unchanged conservatively respects the contract.
-                return kDoNothing_MutateResult;
-            case SkRegion::kUnion_Op:
-            case SkRegion::kReplace_Op:
-            case SkRegion::kReverseDifference_Op:
-            case SkRegion::kXOR_Op: {
-                // These ops can grow the current clip up to the extents of
-                // the input clip, which is inverse filled, so we just set
-                // the current clip to the device bounds.
-                *op = SkRegion::kReplace_Op;
-                return kReplaceClippedAgainstGlobalBounds_MutateResult;
-            }
-        }
+        return kDoNothing_MutateResult;
     } else {
         // Not inverse filled
         switch (*op) {
-            case SkRegion::kIntersect_Op:
-            case SkRegion::kUnion_Op:
-            case SkRegion::kReplace_Op:
+            case SkClipOp::kIntersect:
                 return kContinue_MutateResult;
-            case SkRegion::kDifference_Op:
+            case SkClipOp::kDifference:
                 // Difference can only shrink the current clip.
                 // Leaving clip unchanged conservatively fullfills the contract.
                 return kDoNothing_MutateResult;
-            case SkRegion::kReverseDifference_Op:
-                // To reverse, we swap in the bounds with a replace op.
-                // As with difference, leave it unchanged.
-                *op = SkRegion::kReplace_Op;
-                return kContinue_MutateResult;
-            case SkRegion::kXOR_Op:
-                // Be conservative, based on (A XOR B) always included in (A union B),
-                // which is always included in (bounds(A) union bounds(B))
-                *op = SkRegion::kUnion_Op;
-                return kContinue_MutateResult;
         }
     }
     SkASSERT(false);    // unknown op
@@ -62,7 +34,7 @@ static MutateResult mutate_conservative_op(SkRegion::Op* op, bool inverseFilled)
 }
 
 void SkConservativeClip::opRect(const SkRect& localRect, const SkMatrix& ctm,
-                                const SkIRect& devBounds, SkRegion::Op op, bool doAA) {
+                                const SkIRect& devBounds, SkClipOp op, bool doAA) {
     this->applyOpParams(op, doAA ? ClipAA::kYes : ClipAA::kNo,
                         ctm.isScaleTranslate() ? IsRect::kYes : IsRect::kNo);
     SkIRect ir;
@@ -82,14 +54,14 @@ void SkConservativeClip::opRect(const SkRect& localRect, const SkMatrix& ctm,
 }
 
 void SkConservativeClip::opRRect(const SkRRect& rrect, const SkMatrix& ctm,
-                                 const SkIRect& devBounds, SkRegion::Op op, bool doAA) {
+                                 const SkIRect& devBounds, SkClipOp op, bool doAA) {
     this->applyOpParams(op, doAA ? ClipAA::kYes : ClipAA::kNo,
                         (rrect.isRect() && ctm.isScaleTranslate()) ? IsRect::kYes : IsRect:: kNo);
     this->opRect(rrect.getBounds(), ctm, devBounds, op, doAA);
 }
 
 void SkConservativeClip::opPath(const SkPath& path, const SkMatrix& ctm, const SkIRect& devBounds,
-                                SkRegion::Op op, bool doAA) {
+                                SkClipOp op, bool doAA) {
     this->applyOpParams(op, doAA ? ClipAA::kYes : ClipAA::kNo, IsRect::kNo);
     SkIRect ir;
     switch (mutate_conservative_op(&op, path.isInverseFillType())) {
@@ -108,15 +80,15 @@ void SkConservativeClip::opPath(const SkPath& path, const SkMatrix& ctm, const S
     return this->opIRect(ir, op);
 }
 
-void SkConservativeClip::opRegion(const SkRegion& rgn, SkRegion::Op op) {
+void SkConservativeClip::opRegion(const SkRegion& rgn, SkClipOp op) {
     this->applyOpParams(op, ClipAA::kNo, rgn.isRect() ? IsRect::kYes : IsRect::kNo);
     this->opIRect(rgn.getBounds(), op);
 }
 
-void SkConservativeClip::opIRect(const SkIRect& devRect, SkRegion::Op op) {
+void SkConservativeClip::opIRect(const SkIRect& devRect, SkClipOp op) {
     this->applyOpParams(op, ClipAA::kNo, IsRect::kYes);
 
-    if (SkRegion::kIntersect_Op == op) {
+    if (SkClipOp::kIntersect == op) {
         if (!fBounds.intersect(devRect)) {
             fBounds.setEmpty();
         }
@@ -126,7 +98,7 @@ void SkConservativeClip::opIRect(const SkIRect& devRect, SkRegion::Op op) {
     // This may still create a complex region (which we would then take the bounds
     // Perhaps we should inline the op-logic directly to never create the rgn...
     SkRegion result;
-    result.op(SkRegion(fBounds), SkRegion(devRect), op);
+    result.op(SkRegion(fBounds), SkRegion(devRect), (SkRegion::Op)op);
     fBounds = result.getBounds();
 }
 
@@ -237,14 +209,14 @@ bool SkRasterClip::setRect(const SkIRect& rect) {
 /////////////////////////////////////////////////////////////////////////////////////
 
 bool SkRasterClip::setConservativeRect(const SkRect& r, const SkIRect& clipR, bool isInverse) {
-    SkRegion::Op op;
+    SkClipOp op;
     if (isInverse) {
-        op = SkRegion::kDifference_Op;
+        op = SkClipOp::kDifference;
     } else {
-        op = SkRegion::kIntersect_Op;
+        op = SkClipOp::kIntersect;
     }
     fBW.setRect(clipR);
-    fBW.op(r.roundOut(), op);
+    fBW.op(r.roundOut(), (SkRegion::Op)op);
     return this->updateCacheAndReturnNonEmpty();
 }
 
@@ -267,13 +239,13 @@ bool SkRasterClip::setPath(const SkPath& path, const SkRegion& clip, bool doAA) 
 }
 
 bool SkRasterClip::op(const SkRRect& rrect, const SkMatrix& matrix, const SkIRect& devBounds,
-                      SkRegion::Op op, bool doAA) {
+                      SkClipOp op, bool doAA) {
     SkIRect bounds(devBounds);
     return this->op(SkPath::RRect(rrect), matrix, bounds, op, doAA);
 }
 
 bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, const SkIRect& devBounds,
-                      SkRegion::Op op, bool doAA) {
+                      SkClipOp op, bool doAA) {
     AUTO_RASTERCLIP_VALIDATE(*this);
     SkIRect bounds(devBounds);
 
@@ -288,7 +260,7 @@ bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, const SkIRect&
         path.transform(matrix, &devPath);
         devPath.setIsVolatile(true);
     }
-    if (SkRegion::kIntersect_Op == op) {
+    if (SkClipOp::kIntersect == op) {
         // since we are intersect, we can do better (tighter) with currRgn's
         // bounds, than just using the device. However, if currRgn is complex,
         // our region blitter may hork, so we do that case in two steps.
@@ -306,13 +278,9 @@ bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, const SkIRect&
     } else {
         base.setRect(bounds);
 
-        if (SkRegion::kReplace_Op == op) {
-            return this->setPath(devPath, base, doAA);
-        } else {
-            SkRasterClip clip;
-            clip.setPath(devPath, base, doAA);
-            return this->op(clip, op);
-        }
+        SkRasterClip clip;
+        clip.setPath(devPath, base, doAA);
+        return this->op(clip, op);
     }
 }
 
@@ -322,18 +290,18 @@ bool SkRasterClip::setPath(const SkPath& path, const SkIRect& clip, bool doAA) {
     return this->setPath(path, tmp, doAA);
 }
 
-bool SkRasterClip::op(const SkIRect& rect, SkRegion::Op op) {
+bool SkRasterClip::op(const SkIRect& rect, SkClipOp op) {
     AUTO_RASTERCLIP_VALIDATE(*this);
 
-    fIsBW ? fBW.op(rect, op) : fAA.op(rect, op);
+    fIsBW ? fBW.op(rect, (SkRegion::Op)op) : fAA.op(rect, op);
     return this->updateCacheAndReturnNonEmpty();
 }
 
-bool SkRasterClip::op(const SkRegion& rgn, SkRegion::Op op) {
+bool SkRasterClip::op(const SkRegion& rgn, SkClipOp op) {
     AUTO_RASTERCLIP_VALIDATE(*this);
 
     if (fIsBW) {
-        (void)fBW.op(rgn, op);
+        (void)fBW.op(rgn, (SkRegion::Op)op);
     } else {
         SkAAClip tmp;
         tmp.setRegion(rgn);
@@ -342,12 +310,12 @@ bool SkRasterClip::op(const SkRegion& rgn, SkRegion::Op op) {
     return this->updateCacheAndReturnNonEmpty();
 }
 
-bool SkRasterClip::op(const SkRasterClip& clip, SkRegion::Op op) {
+bool SkRasterClip::op(const SkRasterClip& clip, SkClipOp op) {
     AUTO_RASTERCLIP_VALIDATE(*this);
     clip.validate();
 
     if (this->isBW() && clip.isBW()) {
-        (void)fBW.op(clip.fBW, op);
+        (void)fBW.op(clip.fBW, (SkRegion::Op)op);
     } else {
         SkAAClip tmp;
         const SkAAClip* other;
@@ -391,7 +359,7 @@ static bool nearly_integral(SkScalar x) {
 }
 
 bool SkRasterClip::op(const SkRect& localRect, const SkMatrix& matrix, const SkIRect& devBounds,
-                      SkRegion::Op op, bool doAA) {
+                      SkClipOp op, bool doAA) {
     AUTO_RASTERCLIP_VALIDATE(*this);
     SkRect devRect;
 
@@ -417,7 +385,7 @@ bool SkRasterClip::op(const SkRect& localRect, const SkMatrix& matrix, const SkI
     if (fIsBW && !doAA) {
         SkIRect ir;
         devRect.round(&ir);
-        (void)fBW.op(ir, op);
+        (void)fBW.op(ir, (SkRegion::Op)op);
     } else {
         if (fIsBW) {
             this->convertToAA();

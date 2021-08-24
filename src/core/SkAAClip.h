@@ -8,6 +8,7 @@
 #ifndef SkAAClip_DEFINED
 #define SkAAClip_DEFINED
 
+#include "include/core/SkClipOp.h"
 #include "include/core/SkRegion.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkBlitter.h"
@@ -40,12 +41,12 @@ public:
     bool setRegion(const SkRegion&);
     bool set(const SkAAClip&);
 
-    bool op(const SkAAClip&, const SkAAClip&, SkRegion::Op);
+    bool op(const SkAAClip&, const SkAAClip&, SkClipOp);
 
     // Helpers for op()
-    bool op(const SkIRect&, SkRegion::Op);
-    bool op(const SkRect&, SkRegion::Op, bool doAA);
-    bool op(const SkAAClip&, SkRegion::Op);
+    bool op(const SkIRect&, SkClipOp);
+    bool op(const SkRect&, SkClipOp, bool doAA);
+    bool op(const SkAAClip&, SkClipOp);
 
     bool translate(int dx, int dy, SkAAClip* dst) const;
     bool translate(int dx, int dy) {
