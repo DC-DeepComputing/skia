@@ -258,10 +258,12 @@ public:
     // like normal.
     // This flag is similar to enabling gl render to texture for msaa rendering.
     bool preferDiscardableMSAAAttachment() const { return fPreferDiscardableMSAAAttachment; }
-
     bool mustLoadFullImageWithDiscardableMSAA() const {
         return fMustLoadFullImageWithDiscardableMSAA;
     }
+    bool supportsDiscardableMSAAForDMSAA() const { return fSupportsDiscardableMSAAForDMSAA; }
+    bool renderTargetSupportsDiscardableMSAA(const GrVkRenderTarget*) const;
+    bool programInfoWillUseDiscardableMSAA(const GrProgramInfo&) const;
 
 #if GR_TEST_UTILS
     std::vector<TestFormatColorTypeCombination> getTestingCombinations() const override;
@@ -306,6 +308,8 @@ private:
     GrSwizzle onGetReadSwizzle(const GrBackendFormat&, GrColorType) const override;
 
     GrDstSampleFlags onGetDstSampleFlagsForProxy(const GrRenderTargetProxy*) const override;
+
+    bool onSupportsDynamicMSAA(const GrRenderTargetProxy*) const override;
 
     // ColorTypeInfo for a specific format
     struct ColorTypeInfo {
@@ -408,6 +412,7 @@ private:
 
     bool fPreferDiscardableMSAAAttachment = false;
     bool fMustLoadFullImageWithDiscardableMSAA = false;
+    bool fSupportsDiscardableMSAAForDMSAA = true;
 
     uint32_t fMaxDrawIndirectDrawCount = 0;
 
