@@ -39,6 +39,30 @@
       },
       "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4e6d3a_a8e94ce3",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 4005,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-08-24T16:36:08Z",
+      "side": 1,
+      "message": "This is not what really happens. This produces the vpmulhuw instruction which is the high 16-bits of the 16-bit multiply.\nFor details see:\nhttps://software.intel.com/sites/landingpage/IntrinsicsGuide/#techs\u003dAVX2\u0026text\u003d_mm256_mulhi_epu16\u0026expand\u003d4957,4968,4957,4968",
+      "parentUuid": "0f9027d9_41203a6f",
+      "range": {
+        "startLine": 4005,
+        "startChar": 15,
+        "endLine": 4005,
+        "endChar": 53
+      },
+      "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
