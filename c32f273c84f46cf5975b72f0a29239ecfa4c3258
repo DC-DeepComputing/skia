@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc6b18c8_c3f98edc",
+        "filename": "resources/sksl/runtime/SampleWithExplicitCoord.rts",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T19:29:26Z",
+      "side": 1,
+      "message": "Yeah, the idea was to temporarily include both (then remove sample() once all clients are updated), although that may not be necessary - we have other tests of sample. I\u0027ll just make this a straight substitution.",
+      "parentUuid": "7edb7982_cdbb49ba",
+      "range": {
+        "startLine": 3,
+        "startChar": 11,
+        "endLine": 3,
+        "endChar": 17
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c71eca5_e36c1a4a",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "750f9db1_6cfb2ed6",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T19:29:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c71eca5_e36c1a4a",
+      "range": {
+        "startLine": 560,
+        "startChar": 7,
+        "endLine": 560,
+        "endChar": 22
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea2f28af_bff6d8d7",
@@ -125,6 +173,30 @@
       "writtenOn": "2021-08-24T19:14:47Z",
       "side": 1,
       "message": "\"coordinates arguments\" is grammatically goofy, maybe \"coordinate argument\"?",
+      "range": {
+        "startLine": 616,
+        "startChar": 75,
+        "endLine": 616,
+        "endChar": 96
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37c6bbca_28398ea6",
+        "filename": "src/gpu/GrFragmentProcessor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T19:29:26Z",
+      "side": 1,
+      "message": "Removed goofy plural, changed \u0027coordinates\u0027 to the actual argument name (\"_coords\").",
+      "parentUuid": "ea2f28af_bff6d8d7",
       "range": {
         "startLine": 616,
         "startChar": 75,
