@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9fdb1f1_f6a8e006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-08-24T00:43:10Z",
+      "side": 1,
+      "message": "This is a working draft of a 16-bit bilerp. It quantizes 2^8 in x and y. Looking at the assembly, there are 17 vpmulhuw (U16 * U16) \u003e\u003e 16. One is for xy, and the others are the bilerping. I have 4 unaccounted for vmulps instruction which are floating point. This is faster for draw-atlas, but I think it could be faster.",
+      "revId": "ae9e779031b7a9379f084e0ca8a16b74569a4717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
