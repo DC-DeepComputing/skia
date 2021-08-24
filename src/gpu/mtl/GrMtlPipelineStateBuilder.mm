@@ -534,6 +534,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     SkASSERT(pipelineDescriptor.vertexDescriptor);
     SkASSERT(pipelineDescriptor.colorAttachments[0]);
 
+    GrUniformDataManager::ProgramUniforms uniforms;
     if (precompiledLibs) {
         SkASSERT(precompiledLibs->fVertexLibrary);
         SkASSERT(precompiledLibs->fFragmentLibrary);
@@ -554,6 +555,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
         fVS.extensions().appendf("#extension GL_ARB_shading_language_420pack : enable\n");
         fFS.extensions().appendf("#extension GL_ARB_shading_language_420pack : enable\n");
 
+        uniforms = fUniformHandler.getNewProgramUniforms(fUniformAggregator);
         this->finalizeShaders();
 
         SkSL::Program::Settings settings;
@@ -732,6 +734,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     return new GrMtlPipelineState(fGpu,
                                   std::move(renderPipeline),
                                   pipelineDescriptor.colorAttachments[0].pixelFormat,
+                                  std::move(uniforms),
                                   fUniformHandles,
                                   fUniformHandler.fUniforms,
                                   bufferSize,

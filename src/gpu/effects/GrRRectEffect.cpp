@@ -16,6 +16,7 @@
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 
 // The effects defined here only handle rrect radii >= kRadiusMin.
 static const SkScalar kRadiusMin = SK_ScalarHalf;
@@ -53,6 +54,8 @@ public:
 
     std::unique_ptr<GrFragmentProcessor> clone() const override;
 
+    void writeUniforms(GrUniformWriter*) const override;
+
 private:
     class Impl;
 
@@ -70,6 +73,10 @@ private:
     GrClipEdgeType    fEdgeType;
     uint32_t          fCircularCornerFlags;
 
+    static constexpr Uniform kUniforms[] {
+            {"innerRect",      kFloat4_GrSLType},
+            {"radiusPlusHalf", kHalf2_GrSLType },
+    };
     GR_DECLARE_FRAGMENT_PROCESSOR_TEST
 
     using INHERITED = GrFragmentProcessor;
@@ -97,6 +104,7 @@ CircularRRectEffect::CircularRRectEffect(std::unique_ptr<GrFragmentProcessor> in
         , fEdgeType(edgeType)
         , fCircularCornerFlags(circularCornerFlags) {
     this->registerChild(std::move(inputFP));
+    this->setUniforms(kUniforms, SK_ARRAY_COUNT(kUniforms));
 }
 
 CircularRRectEffect::CircularRRectEffect(const CircularRRectEffect& that)
@@ -145,28 +153,20 @@ public:
     void emitCode(EmitArgs&) override;
 
 private:
-    void onSetData(const GrGLSLProgramDataManager&, const GrFragmentProcessor&) override;
-
-    GrGLSLProgramDataManager::UniformHandle fInnerRectUniform;
-    GrGLSLProgramDataManager::UniformHandle fRadiusPlusHalfUniform;
     SkRRect                                 fPrevRRect;
 };
 
 void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
     const CircularRRectEffect& crre = args.fFp.cast<CircularRRectEffect>();
-    GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
-    const char *rectName;
-    const char *radiusPlusHalfName;
+    const char *rectName           = args.fUniformAggregator->findUniform(&args.fFp, 0).name();
+    const char *radiusPlusHalfName = args.fUniformAggregator->findUniform(&args.fFp, 1).name();
+
     // The inner rect is the rrect bounds inset by the radius. Its left, top, right, and bottom
     // edges correspond to components x, y, z, and w, respectively. When a side of the rrect has
     // only rectangular corners, that side's value corresponds to the rect edge's value outset by
     // half a pixel.
-    fInnerRectUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag, kFloat4_GrSLType,
-                                                   "innerRect", &rectName);
+
     // x is (r + .5) and y is 1/(r + .5)
-    fRadiusPlusHalfUniform = uniformHandler->addUniform(&crre, kFragment_GrShaderFlag,
-                                                        kHalf2_GrSLType, "radiusPlusHalf",
-                                                        &radiusPlusHalfName);
 
     // If we're on a device where float != fp32 then the length calculation could overflow.
     SkString clampedCircleDistance;
@@ -289,84 +289,78 @@ void CircularRRectEffect::Impl::emitCode(EmitArgs& args) {
     fragBuilder->codeAppendf("return %s * alpha;", inputSample.c_str());
 }
 
-void CircularRRectEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdman,
-                                          const GrFragmentProcessor& processor) {
-    const CircularRRectEffect& crre = processor.cast<CircularRRectEffect>();
-    const SkRRect& rrect = crre.fRRect;
-    if (rrect != fPrevRRect) {
-        SkRect rect = rrect.getBounds();
-        SkScalar radius = 0;
-        switch (crre.fCircularCornerFlags) {
-            case CircularRRectEffect::kAll_CornerFlags:
-                SkASSERT(SkRRectPriv::IsSimpleCircular(rrect));
-                radius = SkRRectPriv::GetSimpleRadii(rrect).fX;
-                SkASSERT(radius >= kRadiusMin);
-                rect.inset(radius, radius);
-                break;
-            case CircularRRectEffect::kTopLeft_CornerFlag:
-                radius = rrect.radii(SkRRect::kUpperLeft_Corner).fX;
-                rect.fLeft += radius;
-                rect.fTop += radius;
-                rect.fRight += 0.5f;
-                rect.fBottom += 0.5f;
-                break;
-            case CircularRRectEffect::kTopRight_CornerFlag:
-                radius = rrect.radii(SkRRect::kUpperRight_Corner).fX;
-                rect.fLeft -= 0.5f;
-                rect.fTop += radius;
-                rect.fRight -= radius;
-                rect.fBottom += 0.5f;
-                break;
-            case CircularRRectEffect::kBottomRight_CornerFlag:
-                radius = rrect.radii(SkRRect::kLowerRight_Corner).fX;
-                rect.fLeft -= 0.5f;
-                rect.fTop -= 0.5f;
-                rect.fRight -= radius;
-                rect.fBottom -= radius;
-                break;
-            case CircularRRectEffect::kBottomLeft_CornerFlag:
-                radius = rrect.radii(SkRRect::kLowerLeft_Corner).fX;
-                rect.fLeft += radius;
-                rect.fTop -= 0.5f;
-                rect.fRight += 0.5f;
-                rect.fBottom -= radius;
-                break;
-            case CircularRRectEffect::kLeft_CornerFlags:
-                radius = rrect.radii(SkRRect::kUpperLeft_Corner).fX;
-                rect.fLeft += radius;
-                rect.fTop += radius;
-                rect.fRight += 0.5f;
-                rect.fBottom -= radius;
-                break;
-            case CircularRRectEffect::kTop_CornerFlags:
-                radius = rrect.radii(SkRRect::kUpperLeft_Corner).fX;
-                rect.fLeft += radius;
-                rect.fTop += radius;
-                rect.fRight -= radius;
-                rect.fBottom += 0.5f;
-                break;
-            case CircularRRectEffect::kRight_CornerFlags:
-                radius = rrect.radii(SkRRect::kUpperRight_Corner).fX;
-                rect.fLeft -= 0.5f;
-                rect.fTop += radius;
-                rect.fRight -= radius;
-                rect.fBottom -= radius;
-                break;
-            case CircularRRectEffect::kBottom_CornerFlags:
-                radius = rrect.radii(SkRRect::kLowerLeft_Corner).fX;
-                rect.fLeft += radius;
-                rect.fTop -= 0.5f;
-                rect.fRight -= radius;
-                rect.fBottom -= radius;
-                break;
-            default:
-                SK_ABORT("Should have been one of the above cases.");
-        }
-        pdman.set4f(fInnerRectUniform, rect.fLeft, rect.fTop, rect.fRight, rect.fBottom);
-        radius += 0.5f;
-        pdman.set2f(fRadiusPlusHalfUniform, radius, 1.f / radius);
-        fPrevRRect = rrect;
+void CircularRRectEffect::writeUniforms(GrUniformWriter* writer) const {
+    SkScalar radius = 0;
+    SkRect rect = fRRect.rect();
+    switch (fCircularCornerFlags) {
+        case CircularRRectEffect::kAll_CornerFlags:
+            SkASSERT(SkRRectPriv::IsSimpleCircular(fRRect));
+            radius = SkRRectPriv::GetSimpleRadii(fRRect).fX;
+            SkASSERT(radius >= kRadiusMin);
+            rect.inset(radius, radius);
+            break;
+        case CircularRRectEffect::kTopLeft_CornerFlag:
+            radius = fRRect.radii(SkRRect::kUpperLeft_Corner).fX;
+            rect.fLeft += radius;
+            rect.fTop += radius;
+            rect.fRight += 0.5f;
+            rect.fBottom += 0.5f;
+            break;
+        case CircularRRectEffect::kTopRight_CornerFlag:
+            radius = fRRect.radii(SkRRect::kUpperRight_Corner).fX;
+            rect.fLeft -= 0.5f;
+            rect.fTop += radius;
+            rect.fRight -= radius;
+            rect.fBottom += 0.5f;
+            break;
+        case CircularRRectEffect::kBottomRight_CornerFlag:
+            radius = fRRect.radii(SkRRect::kLowerRight_Corner).fX;
+            rect.fLeft -= 0.5f;
+            rect.fTop -= 0.5f;
+            rect.fRight -= radius;
+            rect.fBottom -= radius;
+            break;
+        case CircularRRectEffect::kBottomLeft_CornerFlag:
+            radius = fRRect.radii(SkRRect::kLowerLeft_Corner).fX;
+            rect.fLeft += radius;
+            rect.fTop -= 0.5f;
+            rect.fRight += 0.5f;
+            rect.fBottom -= radius;
+            break;
+        case CircularRRectEffect::kLeft_CornerFlags:
+            radius = fRRect.radii(SkRRect::kUpperLeft_Corner).fX;
+            rect.fLeft += radius;
+            rect.fTop += radius;
+            rect.fRight += 0.5f;
+            rect.fBottom -= radius;
+            break;
+        case CircularRRectEffect::kTop_CornerFlags:
+            radius = fRRect.radii(SkRRect::kUpperLeft_Corner).fX;
+            rect.fLeft += radius;
+            rect.fTop += radius;
+            rect.fRight -= radius;
+            rect.fBottom += 0.5f;
+            break;
+        case CircularRRectEffect::kRight_CornerFlags:
+            radius = fRRect.radii(SkRRect::kUpperRight_Corner).fX;
+            rect.fLeft -= 0.5f;
+            rect.fTop += radius;
+            rect.fRight -= radius;
+            rect.fBottom -= radius;
+            break;
+        case CircularRRectEffect::kBottom_CornerFlags:
+            radius = fRRect.radii(SkRRect::kLowerLeft_Corner).fX;
+            rect.fLeft += radius;
+            rect.fTop -= 0.5f;
+            rect.fRight -= radius;
+            rect.fBottom -= radius;
+            break;
+        default:
+            SK_ABORT("Should have been one of the above cases.");
     }
+    writer->writeRect(0, rect);
+    radius += 0.5f;
+    writer->write2f(1, radius, 1.f/radius);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -578,6 +578,8 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     fVS.extensions().appendf("#extension GL_ARB_shading_language_420pack : enable\n");
     fFS.extensions().appendf("#extension GL_ARB_shading_language_420pack : enable\n");
 
+    GrUniformDataManager::ProgramUniforms uniforms =
+            fUniformHandler.getNewProgramUniforms(fUniformAggregator);
     this->finalizeShaders();
 
     SkSL::Program::Settings settings;
@@ -679,6 +681,7 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     return std::unique_ptr<GrD3DPipelineState>(
             new GrD3DPipelineState(std::move(pipeline),
                                    std::move(rootSig),
+                                   std::move(uniforms),
                                    fUniformHandles,
                                    fUniformHandler.fUniforms,
                                    fUniformHandler.fCurrentUBOOffset,
