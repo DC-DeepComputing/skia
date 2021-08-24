@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc219b9_e6464de5",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1301,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T15:24:42Z",
+      "side": 1,
+      "message": "Yup (this is currently tested for every combination of parent and child effect type in the SkRuntimeEffectForXXX unit tests, including both correct and incorrect usage). I\u0027m going to rebase this on top of https://skia-review.googlesource.com/c/skia/+/441518, then update the golden test to include the new names (and attempting to call shade(blender, ...), etc.",
+      "parentUuid": "8159e9cb_7d3a394e",
+      "range": {
+        "startLine": 1301,
+        "startChar": 16,
+        "endLine": 1301,
+        "endChar": 77
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a57c74c7_01b2d4db",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bb2cc28_c9899d05",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1302,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T15:24:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a57c74c7_01b2d4db",
+      "range": {
+        "startLine": 1302,
+        "startChar": 56,
+        "endLine": 1302,
+        "endChar": 68
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f1e3cf5_7dc33847",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-08-23T20:53:57Z",
       "side": 1,
       "message": "Seems like you could avoid allocating a new buffer via http://go/std::rotate by 1, followed by a pop-back.",
+      "range": {
+        "startLine": 1306,
+        "startChar": 0,
+        "endLine": 1309,
+        "endChar": 17
+      },
+      "revId": "0fb12f0fbf98a4f7e6fd6c8b0a0415dd6f3a5a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7a163d_2ac30e37",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T15:24:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f1e3cf5_7dc33847",
       "range": {
         "startLine": 1306,
         "startChar": 0,
