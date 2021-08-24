@@ -16,6 +16,23 @@
       "message": "You may have already done this, but clearly this is suggested by your other recent CLs. (and this will have to be rebased).",
       "revId": "a37ad4a0264ae99031f15f35d648eed869ad7b53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4e9b29_803f2052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T12:46:24Z",
+      "side": 1,
+      "message": "Let\u0027s rebase this on top of https://skia-review.googlesource.com/c/skia/+/437737, which will be landable once the tree stabilizes a bit.\n\nI had started some changes on SkRasterClipStack, but they were more aggressive. It seems better to do these type changes first before I go changing out the deque implementation, so I am happy to get this through first and redo my WIP simplifications on top of it.",
+      "revId": "a37ad4a0264ae99031f15f35d648eed869ad7b53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
