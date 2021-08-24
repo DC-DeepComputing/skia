@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "747dd4bb_322f7451",
+        "filename": "src/core/SkBlockAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T17:25:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac822ab5_03501160",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 34
+      },
+      "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f04b4f41_20ed553a",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-08-24T17:20:46Z",
       "side": 1,
       "message": "This can be removed, right?",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 6
+      },
+      "revId": "3798a2a65946ed591e79158aa64abb391b17679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6b0667_96e8e3dc",
+        "filename": "src/core/SkTBlockList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T17:25:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f04b4f41_20ed553a",
       "range": {
         "startLine": 289,
         "startChar": 0,
