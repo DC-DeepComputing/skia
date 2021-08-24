@@ -39,6 +39,30 @@
       },
       "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd75f93f_31ba433b",
+        "filename": "resources/sksl/runtime/SampleWithExplicitCoord.rts",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-24T19:09:39Z",
+      "side": 1,
+      "message": "Actually, this whole program is different. Did it need to change?",
+      "parentUuid": "3d9f9f77_ea1337b6",
+      "range": {
+        "startLine": 3,
+        "startChar": 11,
+        "endLine": 3,
+        "endChar": 17
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
