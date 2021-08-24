@@ -36,19 +36,25 @@ void get_hardware_adapter(IDXGIFactory4* pFactory, IDXGIAdapter1** ppAdapter) {
 
 bool CreateD3DBackendContext(GrD3DBackendContext* ctx,
                              bool isProtected) {
+    UINT dxgiFactoryFlags = 0;
 #if defined(SK_ENABLE_D3D_DEBUG_LAYER)
     // Enable the D3D12 debug layer.
     {
+        dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
         gr_cp<ID3D12Debug> debugController;
         if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
         {
             debugController->EnableDebugLayer();
+            SkDebugf("Debug layer enabled.\n");
+        } else {
+            SkDebugf("Debug layer NOT enabled.\n");
         }
     }
 #endif
     // Create the device
     gr_cp<IDXGIFactory4> factory;
-    if (!SUCCEEDED(CreateDXGIFactory1(IID_PPV_ARGS(&factory)))) {
+
+    if (!SUCCEEDED(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&factory)))) {
         return false;
     }
 

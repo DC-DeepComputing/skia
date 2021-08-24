@@ -31,6 +31,8 @@ class GrScissorState;
 
 class GrD3DCommandList {
 public:
+    bool closed = false;
+
     virtual ~GrD3DCommandList() {
         this->releaseResources();
     }
