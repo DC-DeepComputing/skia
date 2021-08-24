@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23cdfa0a_bcc12862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T15:10:05Z",
+      "side": 1,
+      "message": "build flag has landed in g3 https://critique-ng.corp.google.com/cl/392665432",
+      "revId": "0580a22d640b1afba3e99d31e3be28b45c69afc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
