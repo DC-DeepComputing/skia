@@ -33,6 +33,29 @@
       "message": "Let\u0027s rebase this on top of https://skia-review.googlesource.com/c/skia/+/437737, which will be landable once the tree stabilizes a bit.\n\nI had started some changes on SkRasterClipStack, but they were more aggressive. It seems better to do these type changes first before I go changing out the deque implementation, so I am happy to get this through first and redo my WIP simplifications on top of it.",
       "revId": "a37ad4a0264ae99031f15f35d648eed869ad7b53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5e624e_89d69f7f",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T12:47:30Z",
+      "side": 1,
+      "message": "these were only used by SkConservativeClip, which is being deleted in https://skia-review.googlesource.com/c/skia/+/437737, so they can also just be deleted.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 1
+      },
+      "revId": "a37ad4a0264ae99031f15f35d648eed869ad7b53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
