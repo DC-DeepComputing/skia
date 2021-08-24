@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10460c71_9f60ccd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-24T15:28:00Z",
+      "side": 1,
+      "message": "Is this en route to exposing the new (lower-level than skparagraph) SkText? Have we already added drawGlyphs() to Canvas?",
+      "revId": "467d0cd8780cd523769f97f290a9b3d649ecbd7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
