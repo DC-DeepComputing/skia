@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fed0b74_0e00c876",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9291
+      },
+      "writtenOn": "2021-08-24T13:57:30Z",
+      "side": 1,
+      "message": "Hi Herb, as part of our work to make SwiftShader Vulkan-only, and to provide a conformant OpenGL ES implementation through ANGLE, we\u0027ve clarified the deprecated state of SwiftShader\u0027s legacy OpenGL ES implementation by renaming the libEGL and libGLESv2 CMake build targets to libEGL_deprecated and libGLESv2_deprecated (see second change from the top in this roll). For Android we\u0027ve already completely deleted these build targets, and we\u0027re very close to doing the same for Chrome.\n\nChris is working on switching Skia to using \"SwANGLE\" instead of the legacy code. This deprecation does not increase the urgency of that. We\u0027ll keep the deprecated build targets and code around for as long as reasonably necessary. Also note the legacy code hasn\u0027t changed in any significant way in over two years, so these rolls aren\u0027t very important, except for getting the latest Vulkan implementation.",
+      "revId": "ccaf550ae9cbed2b6ffe6e8f59020908d53ff6f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
