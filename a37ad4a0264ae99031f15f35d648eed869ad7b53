@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf49ecc2_13fd72dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-24T01:55:39Z",
+      "side": 1,
+      "message": "You may have already done this, but clearly this is suggested by your other recent CLs. (and this will have to be rebased).",
+      "revId": "a37ad4a0264ae99031f15f35d648eed869ad7b53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
