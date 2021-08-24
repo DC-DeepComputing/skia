@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "617ed6a8_e004b8fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8025
+      },
+      "writtenOn": "2021-08-24T15:13:07Z",
+      "side": 1,
+      "message": "Why not land this and verify it through the regular channels? The users facing this issue (we just had another report) are not in a position to build and test Chrome. The bug reports are coming from developers responding to their users.",
+      "revId": "0c8d118b913382f22d82ac62a6a24d71cd16bbc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
