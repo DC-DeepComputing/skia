@@ -63,6 +63,30 @@
       },
       "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c004946b_c2e053ae",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 4005,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-24T17:05:09Z",
+      "side": 1,
+      "message": "I believe you -- perhaps future contributors won\u0027t know this magical transformation -- what do you think about formally exposing this as a utility?",
+      "parentUuid": "7b4e6d3a_a8e94ce3",
+      "range": {
+        "startLine": 4005,
+        "startChar": 15,
+        "endLine": 4005,
+        "endChar": 53
+      },
+      "revId": "55c9c4e2c13988d2240e6b3e023f8e5ee2f37f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
