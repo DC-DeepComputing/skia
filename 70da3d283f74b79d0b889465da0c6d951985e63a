@@ -16,6 +16,24 @@
       "message": "It looks like something in Android includes src/core/SkRasterClip and uses SkConservativeClip so I\u0027ll need to untangle that before I can land this.",
       "revId": "70da3d283f74b79d0b889465da0c6d951985e63a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feee1b5b_59584d32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-24T00:01:01Z",
+      "side": 1,
+      "message": "Android\u0027s usage of SkConservativeClip is removed in this CL: https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/base/+/15603146",
+      "parentUuid": "af46d276_7bc9fffa",
+      "revId": "70da3d283f74b79d0b889465da0c6d951985e63a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
