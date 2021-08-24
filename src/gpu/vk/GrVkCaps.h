@@ -307,6 +307,8 @@ private:
 
     GrDstSampleFlags onGetDstSampleFlagsForProxy(const GrRenderTargetProxy*) const override;
 
+    bool onSupportsDynamicMSAA(const GrRenderTargetProxy*) const override;
+
     // ColorTypeInfo for a specific format
     struct ColorTypeInfo {
         GrColorType fColorType = GrColorType::kUnknown;

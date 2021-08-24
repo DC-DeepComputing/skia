@@ -343,6 +343,8 @@ bool GrVkOpsRenderPass::set(GrRenderTarget* rt,
                             GrVkRenderPass::SelfDependencyFlags selfDepFlags,
                             GrVkRenderPass::LoadFromResolve loadFromResolve,
                             const SkTArray<GrSurfaceProxy*, true>& sampledProxies) {
+    SkDebugf("starting render pass. framebuffer color samples: %d\n",
+             framebuffer->colorAttachment()->numSamples());
     SkASSERT(!fRenderTarget);
     SkASSERT(fGpu == rt->getContext()->priv().getGpu());
 
@@ -633,9 +635,13 @@ bool GrVkOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo, const S
     SkASSERT(fCurrentRenderPass);
 
     VkRenderPass compatibleRenderPass = fCurrentRenderPass->vkRenderPass();
-
+    GrProgramInfo pi2 = programInfo;
+    pi2.setNumSamples(fFramebuffer->colorAttachment()->numSamples());
+    if (programInfo.numSamples() != pi2.numSamples()) {
+        pi2.setTSVRL();
+    }
     fCurrentPipelineState = fGpu->resourceProvider().findOrCreateCompatiblePipelineState(
-            fRenderTarget, programInfo, compatibleRenderPass, fOverridePipelinesForResolveLoad);
+            fRenderTarget, pi2, compatibleRenderPass, fOverridePipelinesForResolveLoad);
     if (!fCurrentPipelineState) {
         return false;
     }

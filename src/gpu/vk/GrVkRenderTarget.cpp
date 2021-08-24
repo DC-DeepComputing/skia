@@ -67,6 +67,8 @@ GrVkRenderTarget::GrVkRenderTarget(GrVkGpu* gpu,
              (fResolveAttachment->isProtected() == fColorAttachment->isProtected()));
     SkASSERT(SkToBool(fColorAttachment->vkUsageFlags() & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT));
     this->setFlags();
+    SkDebugf("GrVkRT ctor. This: %p, colorAttachment: %p, resolveAttachment: %p\n",
+             this, colorAttachment.get(), resolveAttachment.get());
     if (createType == CreateType::kDirectlyWrapped) {
         this->registerWithCacheWrapped(GrWrapCacheable::kNo);
     }
@@ -229,7 +231,7 @@ GrVkAttachment* GrVkRenderTarget::msaaAttachment() {
 
 bool GrVkRenderTarget::completeStencilAttachment(GrAttachment* stencil, bool useMSAASurface) {
     SkASSERT(!this->wrapsSecondaryCommandBuffer());
-    SkASSERT(useMSAASurface == (this->numSamples() > 1));
+    //SkASSERT(useMSAASurface == (this->numSamples() > 1));
     return true;
 }
 
@@ -326,7 +328,7 @@ void GrVkRenderTarget::createFramebuffer(bool withResolve,
 
     // Stencil attachment view is stored in the base RT stencil attachment
     GrVkAttachment* stencil =
-            withStencil ? static_cast<GrVkAttachment*>(this->getStencilAttachment())
+            withStencil ? static_cast<GrVkAttachment*>(this->getStencilAttachment(withResolve))
                         : nullptr;
     fCachedFramebuffers[cacheIndex] =
             GrVkFramebuffer::Make(gpu, this->dimensions(),
@@ -355,7 +357,7 @@ void GrVkRenderTarget::getAttachmentsDescriptor(GrVkRenderPass::AttachmentsDescr
     }
 
     if (withStencil) {
-        const GrAttachment* stencil = this->getStencilAttachment();
+        const GrAttachment* stencil = this->getStencilAttachment(withResolve);
         SkASSERT(stencil);
         const GrVkAttachment* vkStencil = static_cast<const GrVkAttachment*>(stencil);
         desc->fStencil.fFormat = vkStencil->imageFormat();
@@ -448,28 +450,6 @@ GrBackendRenderTarget GrVkRenderTarget::getBackendRenderTarget() const {
     const GrVkAttachment* beAttachment = this->externalAttachment();
     return GrBackendRenderTarget(beAttachment->width(), beAttachment->height(),
                                  beAttachment->vkImageInfo(), beAttachment->getMutableState());
-}
-
-const GrManagedResource* GrVkRenderTarget::stencilImageResource() const {
-    SkASSERT(!this->wrapsSecondaryCommandBuffer());
-    const GrAttachment* stencil = this->getStencilAttachment();
-    if (stencil) {
-        const GrVkAttachment* vkStencil = static_cast<const GrVkAttachment*>(stencil);
-        return vkStencil->imageResource();
-    }
-
-    return nullptr;
-}
-
-const GrVkImageView* GrVkRenderTarget::stencilAttachmentView() const {
-    SkASSERT(!this->wrapsSecondaryCommandBuffer());
-    const GrAttachment* stencil = this->getStencilAttachment();
-    if (stencil) {
-        const GrVkAttachment* vkStencil = static_cast<const GrVkAttachment*>(stencil);
-        return vkStencil->framebufferView();
-    }
-
-    return nullptr;
 }
 
 GrVkGpu* GrVkRenderTarget::getVkGpu() const {

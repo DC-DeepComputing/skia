@@ -46,6 +46,7 @@ public:
     }
 
     int numSamples() const { return fNumSamples; }
+    void setNumSamples(int samples) { fNumSamples = samples; }
     int needsStencil() const { return fNeedsStencil; }
     bool isStencilEnabled() const {
         return fUserStencilSettings != &GrUserStencilSettings::kUnused ||
@@ -54,7 +55,7 @@ public:
     const GrUserStencilSettings* userStencilSettings() const { return fUserStencilSettings; }
     // The backend format of the destination render target [proxy]
     const GrBackendFormat& backendFormat() const { return fBackendFormat; }
-    GrSurfaceOrigin origin() const { return fOrigin;  }
+    GrSurfaceOrigin origin() const { return fOrigin; }
     const GrPipeline& pipeline() const { return *fPipeline; }
     const GrGeometryProcessor& geomProc() const { return *fGeomProc; }
 
@@ -65,6 +66,7 @@ public:
     }
 
     bool targetSupportsVkResolveLoad() const { return fTargetSupportsVkResolveLoad; }
+    void setTSVRL() { fTargetSupportsVkResolveLoad = true; }
 
     GrXferBarrierFlags renderPassBarriers() const { return fRenderPassXferBarriers; }
 
@@ -89,11 +91,11 @@ public:
 #endif
 
 private:
-    const int                             fNumSamples;
+    int                             fNumSamples;
     const bool                            fNeedsStencil;
     const GrBackendFormat                 fBackendFormat;
     const GrSurfaceOrigin                 fOrigin;
-    const bool                            fTargetSupportsVkResolveLoad;
+    bool                            fTargetSupportsVkResolveLoad;
     const GrPipeline*                     fPipeline;
     const GrUserStencilSettings*          fUserStencilSettings;
     const GrGeometryProcessor*            fGeomProc;

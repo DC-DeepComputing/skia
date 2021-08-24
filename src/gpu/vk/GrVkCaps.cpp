@@ -396,6 +396,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions, const GrVkInterface*
     if (kARM_VkVendor == properties.vendorID) {
         fPreferDiscardableMSAAAttachment = true;
     }
+    fPreferDiscardableMSAAAttachment = true;
 
     this->initGrCaps(vkInterface, physDev, properties, memoryProperties, features, extensions);
     this->initShaderCaps(properties, features);
@@ -1630,6 +1631,12 @@ GrBackendFormat GrVkCaps::onGetDefaultBackendFormat(GrColorType ct) const {
     return GrBackendFormat::MakeVk(format);
 }
 
+bool GrVkCaps::onSupportsDynamicMSAA(const GrRenderTargetProxy* rtProxy) const {
+    return this->preferDiscardableMSAAAttachment() &&
+           rtProxy->supportsVkInputAttachment() &&
+           rtProxy->asTextureProxy();
+}
+
 GrBackendFormat GrVkCaps::getBackendFormatFromCompressionType(
         SkImage::CompressionType compressionType) const {
     switch (compressionType) {
@@ -1839,7 +1846,7 @@ GrProgramDesc GrVkCaps::makeDesc(GrRenderTarget* rt,
         rp->genKey(&b);
 
 #ifdef SK_DEBUG
-        if (!rp->isExternal()) {
+        if (false && !rp->isExternal()) {
             // This is to ensure ReconstructAttachmentsDescriptor keeps matching
             // getSimpleRenderPass' result
             GrVkRenderPass::AttachmentsDescriptor attachmentsDescriptor;

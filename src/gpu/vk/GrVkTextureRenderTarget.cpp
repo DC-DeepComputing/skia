@@ -67,6 +67,7 @@ bool create_rt_attachments(GrVkGpu* gpu, SkISize dimensions, VkFormat format, in
         *resolveAttachment = std::move(texture);
     } else {
         *colorAttachment = std::move(texture);
+        *resolveAttachment = *colorAttachment;
     }
     return true;
 }
