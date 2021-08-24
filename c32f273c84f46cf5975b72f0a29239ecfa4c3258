@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54228c1f_69d745e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T18:55:47Z",
+      "side": 1,
+      "message": "This is basically a re-creation of the other CL, but using the new type-specific intrinsics, rather than the direct invocation. A few spots still read funny (due to names), but overall I think it\u0027s much cleaner.",
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
