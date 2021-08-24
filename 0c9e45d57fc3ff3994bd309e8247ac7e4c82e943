@@ -16,6 +16,29 @@
       "message": "PTAL - I moved the ChildCall logic after FunctionCall has already done signature matching. This lets us remove ChildCall::Convert (and we get error messages that match all of our other function-signature errors).",
       "revId": "0c9e45d57fc3ff3994bd309e8247ac7e4c82e943",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f91397_906ec304",
+        "filename": "src/sksl/ir/SkSLChildCall.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-24T15:52:35Z",
+      "side": 1,
+      "message": "Consider breaking this out to a helper function and calling\n\n    SkASSERT(call_signature_is_valid(context, child, arguments));\n\nThis would let you avoid wrapping big blocks of code in #ifdef SK_DEBUG.\nFunctions that aren\u0027t used in release can be marked with [[maybe_unused]] to squelch unused-code warnings.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 6
+      },
+      "revId": "0c9e45d57fc3ff3994bd309e8247ac7e4c82e943",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
