@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c5d8f7_cb78b46d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-24T16:57:27Z",
+      "side": 1,
+      "message": "We were hitting a float that prints differently with the MS CRT vs. other platforms. Minor change appears to avoid that now.",
+      "revId": "59c5ec8b99930e6fc78e73b1d7474144558e7ef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
