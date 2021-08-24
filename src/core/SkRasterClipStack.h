@@ -100,20 +100,17 @@ public:
     }
 
     void clipRect(const SkMatrix& ctm, const SkRect& rect, SkClipOp op, bool aa) {
-        this->writable_rc().op(rect, ctm, fRootBounds, (SkRegion::Op)op, aa);
-        this->trimIfExpanding(op);
+        this->writable_rc().op(rect, ctm, fRootBounds, op, aa);
         this->validate();
     }
 
     void clipRRect(const SkMatrix& ctm, const SkRRect& rrect, SkClipOp op, bool aa) {
-        this->writable_rc().op(rrect, ctm, fRootBounds, (SkRegion::Op)op, aa);
-        this->trimIfExpanding(op);
+        this->writable_rc().op(rrect, ctm, fRootBounds, op, aa);
         this->validate();
     }
 
     void clipPath(const SkMatrix& ctm, const SkPath& path, SkClipOp op, bool aa) {
-        this->writable_rc().op(path, ctm, fRootBounds, (SkRegion::Op)op, aa);
-        this->trimIfExpanding(op);
+        this->writable_rc().op(path, ctm, fRootBounds, op, aa);
         this->validate();
     }
 
@@ -123,8 +120,7 @@ public:
     }
 
     void clipRegion(const SkRegion& rgn, SkClipOp op) {
-        this->writable_rc().op(rgn, (SkRegion::Op)op);
-        this->trimIfExpanding(op);
+        this->writable_rc().op(rgn, op);
         this->validate();
     }
 
@@ -170,14 +166,6 @@ private:
             fStack.top().fDeferredCount = 0;
         }
         return fStack.top().fRC;
-    }
-
-    void trimIfExpanding(SkClipOp op) {
-        if ((int)op > (int)SkClipOp::kIntersect) {
-            Rec& rec = fStack.top();
-            SkASSERT(rec.fDeferredCount == 0);
-            rec.fRC.op(fRootBounds, SkRegion::kIntersect_Op);
-        }
     }
 };
 

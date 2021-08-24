@@ -521,17 +521,15 @@ SkConservativeClip& SkNoPixelsDevice::writableClip() {
 }
 
 void SkNoPixelsDevice::onClipRect(const SkRect& rect, SkClipOp op, bool aa) {
-    this->writableClip().opRect(rect, this->localToDevice(), this->bounds(), (SkRegion::Op) op, aa);
+    this->writableClip().opRect(rect, this->localToDevice(), this->bounds(), op, aa);
 }
 
 void SkNoPixelsDevice::onClipRRect(const SkRRect& rrect, SkClipOp op, bool aa) {
-    this->writableClip().opRRect(rrect, this->localToDevice(), this->bounds(),
-                                 (SkRegion::Op) op, aa);
+    this->writableClip().opRRect(rrect, this->localToDevice(), this->bounds(), op, aa);
 }
 
 void SkNoPixelsDevice::onClipPath(const SkPath& path, SkClipOp op, bool aa) {
-    this->writableClip().opPath(path, this->localToDevice(), this->bounds(),
-                            (SkRegion::Op) op, aa);
+    this->writableClip().opPath(path, this->localToDevice(), this->bounds(), op, aa);
 }
 
 void SkNoPixelsDevice::onClipRegion(const SkRegion& globalRgn, SkClipOp op) {
@@ -541,11 +539,11 @@ void SkNoPixelsDevice::onClipRegion(const SkRegion& globalRgn, SkClipOp op) {
         SkIPoint origin = this->getOrigin();
         SkRegion deviceRgn(globalRgn);
         deviceRgn.translate(-origin.fX, -origin.fY);
-        this->writableClip().opRegion(deviceRgn, (SkRegion::Op) op);
+        this->writableClip().opRegion(deviceRgn, op);
     } else {
         this->writableClip().opRect(SkRect::Make(globalRgn.getBounds()),
                                     this->globalToDevice().asM33(), this->bounds(),
-                                    (SkRegion::Op) op, false);
+                                    op, false);
     }
 }
 
