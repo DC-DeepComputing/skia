@@ -30,6 +30,7 @@ bool GrD3DCommandList::close() {
     this->submitResourceBarriers();
     HRESULT hr = fCommandList->Close();
     SkDEBUGCODE(fIsActive = false;)
+    closed = true;
     return SUCCEEDED(hr);
 }
 
@@ -37,10 +38,12 @@ GrD3DCommandList::SubmitResult GrD3DCommandList::submit(ID3D12CommandQueue* queu
     SkASSERT(fIsActive);
     if (!this->hasWork()) {
         this->callFinishedCallbacks();
+        SkDebugf("No work\n");
         return SubmitResult::kNoWork;
     }
 
     if (!this->close()) {
+        SkDebugf("Close failed\n");
         return SubmitResult::kFailure;
     }
     SkASSERT(!fIsActive);
@@ -53,7 +56,10 @@ GrD3DCommandList::SubmitResult GrD3DCommandList::submit(ID3D12CommandQueue* queu
 void GrD3DCommandList::reset() {
     SkASSERT(!fIsActive);
     GR_D3D_CALL_ERRCHECK(fAllocator->Reset());
-    GR_D3D_CALL_ERRCHECK(fCommandList->Reset(fAllocator.get(), nullptr));
+    auto result = fCommandList->Reset(fAllocator.get(), nullptr);
+    if (result != S_OK) {
+        SkDebugf("command list reset result: %lx, closed: %d\n", result, closed);
+    }
     this->onReset();
 
     this->releaseResources();
