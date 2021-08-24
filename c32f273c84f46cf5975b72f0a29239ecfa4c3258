@@ -63,6 +63,52 @@
       },
       "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c71eca5_e36c1a4a",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-24T19:14:47Z",
+      "side": 1,
+      "message": "\"Also\" is out of place now that this paragraph stands by itself. This sentence needs a reword.",
+      "range": {
+        "startLine": 560,
+        "startChar": 7,
+        "endLine": 560,
+        "endChar": 22
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea2f28af_bff6d8d7",
+        "filename": "src/gpu/GrFragmentProcessor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-24T19:14:47Z",
+      "side": 1,
+      "message": "\"coordinates arguments\" is grammatically goofy, maybe \"coordinate argument\"?",
+      "range": {
+        "startLine": 616,
+        "startChar": 75,
+        "endLine": 616,
+        "endChar": 96
+      },
+      "revId": "c32f273c84f46cf5975b72f0a29239ecfa4c3258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
