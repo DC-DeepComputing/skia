@@ -33,6 +33,24 @@
       "message": "Curious - the error is specific to vardecls inside structs? (eg, it doesn\u0027t happen with locals in a function?)",
       "revId": "6c4b7360ee57f123ee38703fc23ac986d414e915",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09a54e2b_5fbd4024",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-25T15:50:32Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "5585b434_c3401d95",
+      "revId": "6c4b7360ee57f123ee38703fc23ac986d414e915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
