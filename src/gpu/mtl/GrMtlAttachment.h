@@ -51,6 +51,8 @@ public:
 
     id<MTLTexture> mtlTexture() const { return fTexture; }
 
+    bool framebufferOnly() const { return fTexture.framebufferOnly; }
+
 protected:
     void onRelease() override;
     void onAbandon() override;

@@ -290,6 +290,9 @@ void GrMtlOpsRenderPass::setupRenderPass(
         // This can be removed when that ordering is fixed.
         fActiveRenderCmdEncoder = nil;
     }
+
+    SkIRect crapBounds;
+    fGpu->loadMSAAFromResolve(color, color, crapBounds);
 }
 
 void GrMtlOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,

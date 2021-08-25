@@ -532,6 +532,25 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             }
             return true;
         }
+        // TODO: need to add k_subpassLoad_IntrinsicKind here
+        // use 'read' instead of 'sample'
+        case k_subpassLoad_IntrinsicKind: {
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(".read(");
+//            const Type& arg1Type = arguments[1]->type();
+//            if (arg1Type.columns() == 3) {
+//                // have to store the vector in a temp variable to avoid double evaluating it
+//                String tmpVar = this->getTempVariable(arg1Type);
+//                this->write("(" + tmpVar + " = ");
+//                this->writeExpression(*arguments[1], Precedence::kSequence);
+//                this->write(", " + tmpVar + ".xy / " + tmpVar + ".z))");
+//            } else {
+//                SkASSERT(arg1Type.columns() == 2);
+//                this->writeExpression(*arguments[1], Precedence::kSequence);
+                this->write(")");
+//            }
+            return true;
+        }
         case k_mod_IntrinsicKind: {
             // fmod(x, y) in metal calculates x - y * trunc(x / y) instead of x - y * floor(x / y)
             String tmpX = this->getTempVariable(arguments[0]->type());
