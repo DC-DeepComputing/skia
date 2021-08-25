@@ -16,7 +16,9 @@ class GrStencilSettings;
 
 class GrProgramInfo {
 public:
-    GrProgramInfo(const GrSurfaceProxyView& targetView,
+    GrProgramInfo(const GrCaps& caps,
+                  const GrSurfaceProxyView& targetView,
+                  bool usesMSAASurface,
                   const GrPipeline* pipeline,
                   const GrUserStencilSettings* userStencilSettings,
                   const GrGeometryProcessor* geomProc,
@@ -24,8 +26,7 @@ public:
                   uint8_t tessellationPatchVertexCount,
                   GrXferBarrierFlags renderPassXferBarriers,
                   GrLoadOp colorLoadOp)
-            : fNumSamples(targetView.asRenderTargetProxy()->numSamples())
-            , fNeedsStencil(targetView.asRenderTargetProxy()->needsStencil())
+            : fNeedsStencil(targetView.asRenderTargetProxy()->needsStencil())
             , fBackendFormat(targetView.proxy()->backendFormat())
             , fOrigin(targetView.origin())
             , fTargetHasVkResolveAttachmentWithInput(
@@ -41,13 +42,17 @@ public:
             , fTessellationPatchVertexCount(tessellationPatchVertexCount)
             , fRenderPassXferBarriers(renderPassXferBarriers)
             , fColorLoadOp(colorLoadOp) {
-        SkASSERT(this->numSamples() > 0);
+        SkASSERT(fTargetsNumSamples > 0);
+        fNumRasterSamples = fTargetsNumSamples;
+        if (fNumRasterSamples == 1 && usesMSAASurface) {
+            fNumRasterSamples = caps.internalMultisampleCount(this->backendFormat());
+        }
         SkASSERT((GrPrimitiveType::kPatches == fPrimitiveType) ==
                  (fTessellationPatchVertexCount > 0));
         SkDEBUGCODE(this->validate(false);)
     }
 
-    int numSamples() const { return fNumSamples; }
+    int numSamples() const { return fNumRasterSamples; }
     int needsStencil() const { return fNeedsStencil; }
     bool isStencilEnabled() const {
         return fUserStencilSettings != &GrUserStencilSettings::kUnused ||
@@ -95,10 +100,10 @@ public:
 #endif
 
 private:
-    int                                   fNumSamples;
-    const bool                            fNeedsStencil;
-    const GrBackendFormat                 fBackendFormat;
-    const GrSurfaceOrigin                 fOrigin;
+    int                                   fNumRasterSamples;
+    bool                                  fNeedsStencil;
+    GrBackendFormat                       fBackendFormat;
+    GrSurfaceOrigin                       fOrigin;
     bool                                  fTargetHasVkResolveAttachmentWithInput;
     int                                   fTargetsNumSamples;
     const GrPipeline*                     fPipeline;
