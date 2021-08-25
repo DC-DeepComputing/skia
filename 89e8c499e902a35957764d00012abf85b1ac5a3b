@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81102747_bebb3aaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-25T18:21:41Z",
+      "side": 1,
+      "message": "To the extent I understand it, lgtm. ",
+      "revId": "89e8c499e902a35957764d00012abf85b1ac5a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
