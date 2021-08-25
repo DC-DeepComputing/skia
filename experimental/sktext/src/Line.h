@@ -166,10 +166,10 @@ private:
     TextMetrics fTextMetrics;
 };
 
-class Line {
+class LogicalLine {
 public:
-    Line(const Stretch& stretch, const Stretch& spaces, SkSTArray<1, size_t, true> visualOrder, SkScalar verticalOffset, bool hardLineBreak);
-    ~Line() = default;
+    LogicalLine(const Stretch& stretch, const Stretch& spaces, SkScalar verticalOffset, bool hardLineBreak);
+    ~LogicalLine() = default;
 
     TextMetrics getMetrics() const { return fTextMetrics; }
     GlyphPos glyphStart() const { return fTextStart; }
@@ -232,7 +232,6 @@ private:
     SkScalar fVerticalOffset;
     TextMetrics fTextMetrics;
     bool fHardLineBreak;
-    SkSTArray<1, size_t, true> fRunsInVisualOrder;
 };
 
 } // namespace text
