@@ -571,7 +571,8 @@ static constexpr SkFourByteTag kSKSL_Tag = SkSetFourByteTag('S', 'K', 'S', 'L');
 std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     TRACE_EVENT0("skia.shaders", TRACE_FUNC);
 
-    this->finalizeShaders();
+    GrUniformDataManager::ProgramUniforms uniforms =
+            fUniformHandler.getNewProgramUniforms(fUniformAggregator);    this->finalizeShaders();
 
     SkSL::Program::Settings settings;
     settings.fSharpenTextures =
@@ -672,6 +673,7 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     return std::unique_ptr<GrD3DPipelineState>(
             new GrD3DPipelineState(std::move(pipeline),
                                    std::move(rootSig),
+                                   std::move(uniforms),
                                    fUniformHandles,
                                    fUniformHandler.fUniforms,
                                    fUniformHandler.fCurrentUBOOffset,

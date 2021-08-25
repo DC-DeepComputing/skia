@@ -12,6 +12,7 @@
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/GrSamplerState.h"
 #include "src/gpu/GrShaderVar.h"
+#include "src/gpu/GrUniformDataManager.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/vk/GrVkSampler.h"
@@ -93,6 +94,14 @@ public:
         return fUsePushConstants ? fCurrentOffsets[kStd430Layout] : fCurrentOffsets[kStd140Layout];
     }
 
+    /**
+     * Call after all legacy style uniforms have been added to assign offsets to new style
+     * uniforms and create the data structure needed to initialize GrUniformDataManger to
+     * handle writing new style uniforms. This must be called before appendUniformDecls()
+     * in order to ensure new style uniforms get declared.
+     */
+    GrUniformDataManager::ProgramUniforms getNewProgramUniforms(const GrUniformAggregator&);
+
 private:
     explicit GrVkUniformHandler(GrGLSLProgramBuilder* program)
         : INHERITED(program)
@@ -145,22 +154,23 @@ private:
         return fInputSwizzle;
     }
 
-    void appendUniformDecls(GrShaderFlags, SkString*) const override;
+    void appendUniformDecls(const GrUniformAggregator&, GrShaderFlags, SkString*) const override;
 
     const VkUniformInfo& getUniformInfo(UniformHandle u) const {
         return fUniforms.item(u.toIndex());
     }
 
-    void determineIfUsePushConstants() const;
+    void determineIfUsePushConstants();
 
     UniformInfoArray    fUniforms;
+    UniformInfoArray    fNewUniforms;
     UniformInfoArray    fSamplers;
     SkTArray<GrSwizzle> fSamplerSwizzles;
     UniformInfo         fInputUniform;
     GrSwizzle           fInputSwizzle;
-    mutable bool        fUsePushConstants;
+    bool                fUsePushConstants;
 
-    uint32_t            fCurrentOffsets[kLayoutCount];
+    uint32_t fCurrentOffsets[kLayoutCount];
 
     friend class GrVkPipelineStateBuilder;
     friend class GrVkDescriptorSetManager;
