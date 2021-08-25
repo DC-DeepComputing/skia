@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b3c214_429e4965",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-25T14:45:42Z",
+      "side": 1,
+      "message": "This cleans up the staging build flag needed for https://skia-review.googlesource.com/c/skia/+/441497, g3 has been rebased and canary is green.",
+      "revId": "c117481fbad747adf820c37fbcb83c5ba42c4e1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
