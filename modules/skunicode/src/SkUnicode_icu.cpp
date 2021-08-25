@@ -498,6 +498,16 @@ public:
         }
     }
 
+    std::u16string convertUtf8ToUtf16(const SkString& utf8) override {
+        std::unique_ptr<uint16_t[]> utf16;
+        auto utf16Units = SkUnicode_icu::utf8ToUtf16(utf8.c_str(), utf8.size(), &utf16);
+        if (utf16Units >= 0) {
+            return std::u16string((char16_t *)utf16.get(), utf16Units);
+        } else {
+            return std::u16string();
+        }
+    }
+
     bool getBidiRegions(const char utf8[],
                         int utf8Units,
                         TextDirection dir,
