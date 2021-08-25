@@ -19,6 +19,7 @@ enum class TextAlign {
     kJustify,
     kStart,
     kEnd,
+    kNothing,
 };
 
 enum class TextDirection {
@@ -28,6 +29,7 @@ enum class TextDirection {
 
 // This enum lists all possible ways to query output positioning
 enum class PositionType {
+    kRandomText,
     kGraphemeCluster, // Both the edge of the glyph cluster and the text grapheme
     kGlyphCluster,
     kGlyph,
@@ -45,20 +47,23 @@ enum class CodeUnitFlags : uint8_t {
     kGraphemeStart = (1 << 2),
     kSoftLineBreakBefore = (1 << 3),
     kHardLineBreakBefore = (1 << 4),
+    kAllCodeUnitFlags = ((1 << 5) - 1),
 };
 
 enum class GlyphUnitFlags : uint8_t {
     kNoGlyphUnitFlag = (1 << 0),
-    kPartOfWhiteSpace = (1 << 1),
-    kGraphemeStart = (1 << 2),
-    kSoftLineBreakBefore = (1 << 3),
-    kHardLineBreakBefore = (1 << 4),
+    //kPartOfWhiteSpace = (1 << 1),
+    //kGraphemeStart = (1 << 2),
+    //kSoftLineBreakBefore = (1 << 3),
+    //kHardLineBreakBefore = (1 << 4),
     kGlyphClusterStart = (1 << 5),
     kGraphemeClusterStart = (1 << 6),
 };
 
 typedef size_t TextIndex;
 typedef size_t GlyphIndex;
+typedef size_t RunIndex;
+typedef size_t LineIndex;
 const size_t EMPTY_INDEX = std::numeric_limits<size_t>::max();
 
 template <typename T>
@@ -71,11 +76,27 @@ public:
         return fEnd >= fStart;
     }
 
+    bool before(T index) const {
+        if (leftToRight()) {
+            return index >= fEnd;
+        } else {
+            return index >= fStart;
+        }
+    }
+
     bool contains(T index) const {
         if (leftToRight()) {
             return index >= fStart && index < fEnd;
         } else {
             return index < fStart && index >= fEnd;
+        }
+    }
+
+    bool contains(Range<T> range) const {
+        if (leftToRight()) {
+            return range.fStart >= fStart && range.fEnd < fEnd;
+        } else {
+            return range.fStart < fStart && range.fEnd >= fEnd;
         }
     }
 
