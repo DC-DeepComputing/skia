@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24006442_3bfb98c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-25T18:14:40Z",
+      "side": 1,
+      "message": "Just as a note, this should go down with the \u0027Change-ID: \u0027 line. This makes things work better with \"git interpret-trailers\" tooling (see https://git-scm.com/docs/git-interpret-trailers).",
+      "revId": "53980efca4867643fe8870457ce2d9cb48af978c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

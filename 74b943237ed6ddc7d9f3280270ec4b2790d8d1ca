@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f961eaf_434f9a37",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1249,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-25T18:14:40Z",
+      "side": 0,
+      "message": "So this is also throwing away all handling of long clusters (like long ligatures) and the like?",
+      "revId": "74b943237ed6ddc7d9f3280270ec4b2790d8d1ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
