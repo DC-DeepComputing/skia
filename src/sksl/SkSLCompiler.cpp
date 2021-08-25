@@ -84,7 +84,7 @@ class AutoSource {
 public:
     AutoSource(Compiler* compiler, const char* source)
             : fCompiler(compiler) {
-        SkASSERT(!fCompiler->errorReporter().source());
+//        SkASSERT(!fCompiler->errorReporter().source());
         fCompiler->errorReporter().setSource(source);
     }
 
@@ -92,6 +92,7 @@ public:
         fCompiler->errorReporter().setSource(nullptr);
     }
 
+private:
     Compiler* fCompiler;
 };
 
@@ -1002,6 +1003,7 @@ bool Compiler::toMetal(Program& program, String* out) {
 void Compiler::handleError(const char* msg, PositionInfo pos) {
     if (strstr(msg, POISON_TAG)) {
         // don't report errors on poison values
+        fContext->fErrors->setErrorCount(fContext->fErrors->errorCount() - 1);
         return;
     }
     fErrorText += "error: " + (pos.line() >= 1 ? to_string(pos.line()) + ": " : "") + msg + "\n";

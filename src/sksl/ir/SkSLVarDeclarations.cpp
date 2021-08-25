@@ -8,6 +8,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLPoison.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
 namespace SkSL {
@@ -37,6 +38,9 @@ String VarDeclaration::description() const {
 std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
                                                    Variable* var,
                                                    std::unique_ptr<Expression> value) {
+    if (value && value->is<Poison>()) {
+        return nullptr;
+    }
     if (var->modifiers().fFlags & Modifiers::kConst_Flag) {
         if (!value) {
             context.fErrors->error(var->fOffset, "'const' variables must be initialized");

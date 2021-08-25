@@ -40,17 +40,17 @@ public:
         // (parameterArray.push_back(&parameters), ...);
         int unused[] = {0, (static_cast<void>(parameterArray.push_back(&parameters)), 0)...};
         static_cast<void>(unused);
-        this->init(modifiers, returnType, name, std::move(parameterArray));
+        this->init(modifiers, returnType, name, std::move(parameterArray), PositionInfo());
     }
 
     DSLFunction(const DSLType& returnType, skstd::string_view name,
-                SkTArray<DSLParameter*> parameters) {
-        this->init(DSLModifiers(), returnType, name, std::move(parameters));
+                SkTArray<DSLParameter*> parameters, PositionInfo pos = PositionInfo()) {
+        this->init(DSLModifiers(), returnType, name, std::move(parameters), pos);
     }
 
     DSLFunction(const DSLModifiers& modifiers, const DSLType& returnType, skstd::string_view name,
-                SkTArray<DSLParameter*> parameters) {
-        this->init(modifiers, returnType, name, std::move(parameters));
+                SkTArray<DSLParameter*> parameters, PositionInfo pos = PositionInfo()) {
+        this->init(modifiers, returnType, name, std::move(parameters), pos);
     }
 
     DSLFunction(const SkSL::FunctionDeclaration* decl)
@@ -100,7 +100,7 @@ private:
     }
 
     void init(DSLModifiers modifiers, const DSLType& returnType, skstd::string_view name,
-              SkTArray<DSLParameter*> params);
+              SkTArray<DSLParameter*> params, PositionInfo pos);
 
     const SkSL::FunctionDeclaration* fDecl = nullptr;
 };

@@ -225,6 +225,7 @@ void IRGenerator::checkVarDeclaration(int offset, const Modifiers& modifiers, co
     }
 
     if (baseType->componentType().isOpaque() && storage != Variable::Storage::kGlobal) {
+        SkASSERT(offset >= 0);
         this->errorReporter().error(
                 offset,
                 "variables of type '" + baseType->displayName() + "' must be global");
@@ -801,13 +802,13 @@ std::unique_ptr<Block> IRGenerator::finalizeFunction(const FunctionDeclaration& 
                                     std::move(returnStmt.expression()), returnType));
                         } else {
                             // Returning something from a function with a void return type.
-                            fIRGenerator->errorReporter().error(returnStmt.fOffset,
+                            fIRGenerator->fContext.fErrors->error(returnStmt.fOffset,
                                                      "may not return a value from a void function");
                         }
                     } else {
                         if (this->functionReturnsValue()) {
                             // Returning nothing from a function with a non-void return type.
-                            fIRGenerator->errorReporter().error(returnStmt.fOffset,
+                            fIRGenerator->fContext.fErrors->error(returnStmt.fOffset,
                                   "expected function to return '" + returnType.displayName() + "'");
                         }
                     }
@@ -1391,6 +1392,8 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
             }
             return this->call(offset, *functions[0], std::move(arguments));
         }
+        case Expression::Kind::kPoison:
+            return std::move(functionValue);
         default:
             this->errorReporter().error(offset, "not a function");
             return nullptr;

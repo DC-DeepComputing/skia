@@ -32,7 +32,6 @@ class Type;
 class Variable;
 class VariableReference;
 enum class VariableRefKind : int8_t;
-enum class VariableStorage : int8_t;
 
 /**
  * Represents a node in the intermediate representation (IR) tree. The IR is a fully-resolved
