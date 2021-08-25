@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "959133e1_149b66f7",
+        "filename": "experimental/sktext/src/Paint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-25T13:59:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f62d43b4_6f81ddef",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "82309487b382d076727bf3182b69b9103b2e9234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0c88424_30a5c17d",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7f7744_dda7cea4",
+        "filename": "modules/androidkit/src/Text.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-25T13:59:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0c88424_30a5c17d",
+      "revId": "82309487b382d076727bf3182b69b9103b2e9234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71194be9_8ecb822a",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-08-24T18:01:09Z",
       "side": 1,
       "message": "The text background idea doesn\u0027t match other Skia APIs, and it\u0027s not obvious how useful it is in practice.\n\nI guess I\u0027m leaning towards leaving out for now and only exposing the foreground property as a \u0027paint\u0027 parameter for renderText (not a Text field).\n\n(this may all become moot when we start working with FormattedText, as I suspect the styling/paints are going to baked into the object).",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 5
+      },
+      "revId": "82309487b382d076727bf3182b69b9103b2e9234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0b228c9_eb04a7cd",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Text.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-08-25T13:59:25Z",
+      "side": 1,
+      "message": "Makes sense, we can remove it for now.",
+      "parentUuid": "71194be9_8ecb822a",
       "range": {
         "startLine": 30,
         "startChar": 0,
