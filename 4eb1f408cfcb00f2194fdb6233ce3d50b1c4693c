@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f43dcf_2e728ae0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-25T15:37:54Z",
+      "side": 1,
+      "message": "Neat (clever failure by the fuzzer).",
+      "revId": "4eb1f408cfcb00f2194fdb6233ce3d50b1c4693c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
