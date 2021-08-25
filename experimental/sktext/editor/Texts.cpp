@@ -7,20 +7,32 @@ namespace skia {
 namespace editor {
 
 void DynamicText::paint(SkCanvas* canvas) {
+    if (!fDrawableText) {
+        auto chunks = this->getDecorationChunks(fDecorations);
+        fDrawableText = fWrappedText->prepareToDraw(PositionType::kGraphemeCluster,
+                                                    SkSpan<TextIndex>(chunks.data(), chunks.size()));
+    }
 
-    Paint painter;
-    painter.paint(canvas, this->fOffset, this->fFormattedText.get(), this->fDecorations);
+    auto foregroundPaint = fDecorations[0].foregroundPaint;
+    auto textBlobs = fDrawableText->getTextBlobs();
+    for (auto& textBLob : textBlobs) {
+        canvas->drawTextBlob(textBLob, 0, 0, foregroundPaint);
+    }
 }
 
 void EditableText::paint(SkCanvas* canvas) {
 
-    Paint painter;
-
     if (fSelection->isEmpty()) {
-        painter.paint(canvas, this->fOffset, this->fFormattedText.get(), fDecorations);
+        DynamicText::paint(canvas);
     } else {
         auto decorations = mergeSelectionIntoDecorations();
-        painter.paint(canvas, this->fOffset, this->fFormattedText.get(), SkSpan<DecoratedBlock>(decorations.data(), decorations.size()));
+        auto chunks = this->getDecorationChunks(SkSpan<DecoratedBlock>(decorations.data(), decorations.size()));
+        fDrawableText = fWrappedText->prepareToDraw(PositionType::kGraphemeCluster, SkSpan<TextIndex>(chunks.data(), chunks.size()));
+    }
+    auto foregroundPaint = fDecorations[0].foregroundPaint;
+    auto textBlobs = fDrawableText->getTextBlobs();
+    for (auto& textBLob : textBlobs) {
+        canvas->drawTextBlob(textBLob, 0, 0, foregroundPaint);
     }
 }
 
