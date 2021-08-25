@@ -507,26 +507,37 @@ public:
         }
 
         UErrorCode icu_err = U_ZERO_ERROR;
-        const auto upper16len = sk_u_strToUpper(nullptr, 0, (UChar*)(str16.get()), str16len,
-                                                nullptr, &icu_err);
+        const auto upper16len =
+                sk_u_strToUpper(nullptr, 0, (UChar*)(str16.get()), str16len, nullptr, &icu_err);
         if (icu_err != U_BUFFER_OVERFLOW_ERROR || upper16len <= 0) {
             return SkString();
         }
 
         SkAutoSTArray<128, uint16_t> upper16(upper16len);
         icu_err = U_ZERO_ERROR;
-        sk_u_strToUpper((UChar*)(upper16.get()), SkToS32(upper16.size()),
-                        (UChar*)(str16.get()), str16len,
-                        nullptr, &icu_err);
+        sk_u_strToUpper((UChar*)(upper16.get()),
+                        SkToS32(upper16.size()),
+                        (UChar*)(str16.get()),
+                        str16len,
+                        nullptr,
+                        &icu_err);
         SkASSERT(!U_FAILURE(icu_err));
 
         // ... and back to utf8 'cause that's what we want.
         std::unique_ptr<char[]> upper8;
         auto upper8len = utf16ToUtf8(upper16.data(), upper16.size(), &upper8);
 
-        return upper8len >= 0
-                ? SkString(upper8.get(), upper8len)
-                : SkString();
+        return upper8len >= 0 ? SkString(upper8.get(), upper8len) : SkString();
+    }
+
+    std::u16string convertUtf8ToUtf16(const SkString& utf8) override {
+        std::unique_ptr<uint16_t[]> utf16;
+        auto utf16Units = SkUnicode_icu::utf8ToUtf16(utf8.c_str(), utf8.size(), &utf16);
+        if (utf16Units >= 0) {
+            return std::u16string((char16_t *)utf16.get(), utf16Units);
+        } else {
+            return std::u16string();
+        }
     }
 
     bool getBidiRegions(const char utf8[],
