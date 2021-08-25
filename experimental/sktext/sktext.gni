@@ -13,5 +13,6 @@ sktext_sources = [
   "$_src/Line.cpp",
   "$_src/Paint.cpp",
   "$_src/Text.cpp",
-  "$_src/TextRun.cpp",
+  "$_src/LogicalRun.cpp",
+  "$_src/VisualRun.cpp",
 ]
