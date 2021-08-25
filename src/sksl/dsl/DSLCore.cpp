@@ -121,12 +121,12 @@ public:
         return ir.call(/*offset=*/-1, ir.convertIdentifier(-1, name), std::move(argArray));
     }
 
-    static DSLStatement Break() {
-        return SkSL::BreakStatement::Make(/*offset=*/-1);
+    static DSLStatement Break(PositionInfo pos) {
+        return SkSL::BreakStatement::Make(pos.offset());
     }
 
-    static DSLStatement Continue() {
-        return SkSL::ContinueStatement::Make(/*offset=*/-1);
+    static DSLStatement Continue(PositionInfo pos) {
+        return SkSL::ContinueStatement::Make(pos.offset());
     }
 
     static DSLStatement Declare(DSLVar& var, PositionInfo pos) {
@@ -203,7 +203,30 @@ public:
         // the old fashioned way with MakeStructType.
         std::vector<SkSL::Type::Field> skslFields;
         skslFields.reserve(fields.count());
+        bool foundRTAdjust = false;
         for (const DSLField& field : fields) {
+            if (field.fName == Compiler::RTADJUST_NAME) {
+                // `sk_RTAdjust` is special, and makes the IR generator emit position-fixup expressions.
+                if (DSLWriter::IRGenerator().fRTAdjust) {
+                    DSLWriter::ReportError("duplicate definition of 'sk_RTAdjust'", pos);
+                    continue;
+                }
+                if (field.fType.skslType() != *DSLWriter::Context().fTypes.fFloat4) {
+                    DSLWriter::ReportError("sk_RTAdjust must have type 'float4'", pos);
+                    continue;
+                }
+                DSLWriter::IRGenerator().fRTAdjustFieldIndex = skslFields.size();
+
+                DSLWriter::IRGenerator().convertVarDeclaration(/*offset=*/-1,
+                                                               field.fModifiers.fModifiers,
+                                                               &field.fType.skslType(),
+                                                               field.fName,
+                                                               false,
+                                                               nullptr,
+                                                               nullptr,
+                                                               VariableStorage::kInterfaceBlock);
+                foundRTAdjust = true;
+            }
             skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
                                                    &field.fType.skslType()));
         }
@@ -216,15 +239,21 @@ public:
         if (!DSLWriter::Settings().fDSLMarkVarsDeclared) {
             DSLWriter::MarkDeclared(var);
         }
+        const SkSL::Variable* intfVar = DSLWriter::Var(var);
         DSLWriter::ProgramElements().push_back(std::make_unique<SkSL::InterfaceBlock>(/*offset=*/-1,
-                DSLWriter::Var(var), typeName, varName, arraySize, DSLWriter::SymbolTable()));
+                intfVar, typeName, varName, arraySize, DSLWriter::SymbolTable()));
+        if (foundRTAdjust) {
+            DSLWriter::IRGenerator().fRTAdjustInterfaceBlock = intfVar;
+        }
         if (varName.empty()) {
             const std::vector<SkSL::Type::Field>& structFields = structType->fields();
             const SkSL::Variable* skslVar = DSLWriter::Var(var);
             for (size_t i = 0; i < structFields.size(); ++i) {
-                DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
-                                                                            skslVar,
-                                                                            i));
+                if (structFields[i].fName != Compiler::RTADJUST_NAME) {
+                    DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
+                                                                                skslVar,
+                                                                                i));
+                }
             }
         } else {
             AddToSymbolTable(var);
@@ -319,12 +348,12 @@ DSLExpression sk_Position() {
     return DSLCore::sk_Position();
 }
 
-DSLStatement Break() {
-    return DSLCore::Break();
+DSLStatement Break(PositionInfo pos) {
+    return DSLCore::Break(pos);
 }
 
-DSLStatement Continue() {
-    return DSLCore::Continue();
+DSLStatement Continue(PositionInfo pos) {
+    return DSLCore::Continue(pos);
 }
 
 // Logically, we'd want the variable's initial value to appear on here in Declare, since that

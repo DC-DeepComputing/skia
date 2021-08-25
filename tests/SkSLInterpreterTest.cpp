@@ -26,7 +26,7 @@ struct ProgramBuilder {
         fProgram = fCompiler.convertProgram(SkSL::ProgramKind::kGeneric, SkSL::String(src),
                                             settings);
         if (!fProgram) {
-            ERRORF(r, "Program failed to compile:\n%s\n%s\n", src, fCompiler.errorText().c_str());
+            ERRORF(r, ">>>>>Program failed to compile:\n%s\n%s<<<<<<\n", src, fCompiler.errorText().c_str());
         }
     }
 

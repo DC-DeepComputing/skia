@@ -21,23 +21,29 @@ namespace SkSL {
 
 namespace dsl {
 
-DSLVarBase::DSLVarBase(DSLType type, skstd::string_view name, DSLExpression initialValue)
-    : DSLVarBase(DSLModifiers(), std::move(type), name, std::move(initialValue)) {}
+DSLVarBase::DSLVarBase(DSLType type, skstd::string_view name, DSLExpression initialValue,
+                       PositionInfo pos)
+    : DSLVarBase(DSLModifiers(), std::move(type), name, std::move(initialValue), pos) {}
 
-DSLVarBase::DSLVarBase(DSLType type, DSLExpression initialValue)
-    : DSLVarBase(type, "var", std::move(initialValue)) {}
+DSLVarBase::DSLVarBase(DSLType type, DSLExpression initialValue, PositionInfo pos)
+    : DSLVarBase(type, "var", std::move(initialValue), pos) {}
 
-DSLVarBase::DSLVarBase(const DSLModifiers& modifiers, DSLType type, DSLExpression initialValue)
-    : DSLVarBase(modifiers, type, "var", std::move(initialValue)) {}
+DSLVarBase::DSLVarBase(const DSLModifiers& modifiers, DSLType type, DSLExpression initialValue,
+                       PositionInfo pos)
+    : DSLVarBase(modifiers, type, "var", std::move(initialValue), pos) {}
 
 DSLVarBase::DSLVarBase(const DSLModifiers& modifiers, DSLType type, skstd::string_view name,
-                       DSLExpression initialValue)
+                       DSLExpression initialValue, PositionInfo pos)
     : fModifiers(std::move(modifiers))
     , fType(std::move(type))
     , fRawName(name)
     , fName(fType.skslType().isOpaque() ? name : DSLWriter::Name(name))
     , fInitialValue(std::move(initialValue))
+    , fPosition(pos)
     , fDeclared(DSLWriter::MarkVarsDeclared()) {
+    if (fName == "INDEX") {
+        SkASSERT(fPosition.offset() >= 0);
+    }
     if (fModifiers.fModifiers.fFlags & Modifiers::kUniform_Flag) {
 #if SK_SUPPORT_GPU && !defined(SKSL_STANDALONE)
         if (DSLWriter::InFragmentProcessor()) {
@@ -90,6 +96,7 @@ void DSLVarBase::swap(DSLVarBase& other) {
     std::swap(fName, other.fName);
     std::swap(fInitialValue.fExpression, other.fInitialValue.fExpression);
     std::swap(fDeclared, other.fDeclared);
+    std::swap(fPosition, other.fPosition);
 }
 
 void DSLVar::swap(DSLVar& other) {
@@ -101,7 +108,7 @@ VariableStorage DSLVar::storage() const {
 }
 
 DSLGlobalVar::DSLGlobalVar(const char* name)
-    : INHERITED(kVoid_Type, name, DSLExpression()) {
+    : INHERITED(kVoid_Type, name, DSLExpression(), PositionInfo()) {
     fName = name;
     DSLWriter::MarkDeclared(*this);
 #if SK_SUPPORT_GPU && !defined(SKSL_STANDALONE)

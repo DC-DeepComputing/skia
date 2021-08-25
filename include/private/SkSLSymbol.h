@@ -35,6 +35,9 @@ public:
         : INHERITED(offset, (int) kind)
         , fName(name)
         , fType(type) {
+        if (name == "INDEX") {
+            SkASSERT(offset != -1);
+        }
         SkASSERT(kind >= Kind::kFirst && kind <= Kind::kLast);
     }
 
