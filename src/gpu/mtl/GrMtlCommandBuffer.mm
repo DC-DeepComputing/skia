@@ -76,6 +76,8 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
                              first.storeAction == MTLStoreActionDontCare;
     bool loadActionsValid = second.loadAction == MTLLoadActionLoad ||
                             second.loadAction == MTLLoadActionDontCare;
+    // TODO: If both store actions are resolve we can probably reuse the
+    // current renderCommandEncoder -- need to verify
     bool secondStoreActionStoreAndMultisampleResolve = false;
     if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
         secondStoreActionStoreAndMultisampleResolve =

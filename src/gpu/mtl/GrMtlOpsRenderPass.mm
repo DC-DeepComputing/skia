@@ -265,6 +265,8 @@ void GrMtlOpsRenderPass::setupRenderPass(
                 colorAttachment.storeAction = MTLStoreActionMultisampleResolve;
             }
         }
+        SkIRect crapBounds;
+        fGpu->loadMSAAFromResolve(color, resolve, crapBounds);
     }
 
     auto* stencil = fFramebuffer->stencilAttachment();
@@ -290,6 +292,7 @@ void GrMtlOpsRenderPass::setupRenderPass(
         // This can be removed when that ordering is fixed.
         fActiveRenderCmdEncoder = nil;
     }
+
 }
 
 void GrMtlOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,

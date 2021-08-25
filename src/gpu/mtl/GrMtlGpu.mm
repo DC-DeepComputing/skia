@@ -124,6 +124,8 @@ void GrMtlGpu::destroyResources() {
 
     fStagingBufferManager.reset();
 
+    fMSAALoadManager.destroyResources();
+
     fResourceProvider.destroyResources();
 
     fQueue = nil;
@@ -1528,6 +1530,12 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
     cmdEncoder->setLabel(@"resolveTexture");
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
+}
+
+bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
+                                   GrMtlAttachment* src,
+                                   const SkIRect& srcRect) {
+    return fMSAALoadManager.loadMSAAFromResolve(this, dst, src, srcRect);
 }
 
 #if GR_TEST_UTILS
