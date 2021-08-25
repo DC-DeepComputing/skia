@@ -6,18 +6,15 @@ using namespace skia::text;
 namespace skia {
 namespace editor {
 
-void Selection::select(TextRange range, SkRect rect) {
-    fGlyphBoxes.clear();
-    fTextRanges.clear();
-
-    fGlyphBoxes.emplace_back(rect);
-    fTextRanges.emplace_back(range);
+void Selection::select(TextRange textRange, SkRect rect) {
+    fChunks.clear();
+    fChunks.emplace_back(textRange, rect);
 }
 
 void Selection::paint(SkCanvas* canvas, SkPoint xy) {
-    for (auto& box : fGlyphBoxes) {
+    for (auto& chunk : fChunks) {
         canvas->drawRect(
-                SkRect::MakeXYWH(box.fLeft + xy.fX, box.fTop + xy.fY, box.width(), box.height()),
+                SkRect::MakeXYWH(chunk.fGlyphBox.fLeft + xy.fX, chunk.fGlyphBox.fTop + xy.fY, chunk.fGlyphBox.width(), chunk.fGlyphBox.height()),
                 fBackground);
     }
 }

@@ -49,8 +49,9 @@ private:
     bool insertCodepoint(SkUnichar unichar);
     bool deleteElement(skui::Key key);
 
-    std::unique_ptr<EditableText> fEditableText;
-    std::unique_ptr<DynamicText> fStatus;
+    std::unique_ptr<DrawableText> fDrawableText;
+    std::unique_ptr<SelectableText> fSelectableText;
+    std::unique_ptr<StaticText> fStatus;
 
     std::unique_ptr<Cursor> fCursor;
     std::unique_ptr<Mouse> fMouse;

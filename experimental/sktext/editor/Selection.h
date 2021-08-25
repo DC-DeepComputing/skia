@@ -18,9 +18,9 @@ namespace editor {
 
 using namespace skia::text;
 
-class Selection {
+class Selection : public SelectableText {
 public:
-    Selection(SkColor color) : fTextRanges(), fGlyphRanges(), fGlyphBoxes() {
+    Selection(SkColor color) : fChunks() {
         fBackground.setColor(color);
         fBackground.setAlphaf(0.3f);
     }
@@ -28,23 +28,31 @@ public:
     void select(TextRange range, SkRect rect);
 
     void clear() {
-        fGlyphBoxes.clear();
-        fTextRanges.clear();
+        fChunks.clear();
     }
 
-    bool isEmpty() const { return fTextRanges.empty(); }
-    size_t count() const { return fTextRanges.size(); }
-    DecoratedBlock selected(size_t index) const { return DecoratedBlock(fTextRanges[index].width(), fForeground, fBackground); }
+    bool isEmpty() const { return fChunks.empty(); }
+    size_t count() const { return fChunks.size(); }
+    DecoratedBlock selected(size_t index) const { return DecoratedBlock(fChunks[index].fTextRange.width(), fForeground, fBackground); }
 
     void paint(SkCanvas* canvas, SkPoint xy);
 
 private:
     friend class EditableText;
+
+    struct Chunk {
+        Chunk(TextRange textRange, SkRect box) : fTextRange(textRange), fGlyphBox(box) { }
+        TextRange fTextRange;
+        // TODO: Use glyph range, too. For now we only paint selection as a background so we do not need the glyphs
+        GlyphRange fGlyphRange;
+        SkRect fGlyphBox;
+    };
+
     SkPaint fForeground;
     SkPaint fBackground;
-    std::vector<TextRange> fTextRanges;
-    std::vector<GlyphRange> fGlyphRanges;
-    std::vector<SkRect> fGlyphBoxes;
+
+    // List of selected chunks
+    std::vector<Chunk> fChunks;
 };
 
 } // namespace editor

@@ -24,7 +24,7 @@ Editor::Editor(std::u16string text, SkSize size)
         static FontBlock textBlock(text.size(), sk_make_sp<TrivialFontChain>("Roboto", 40, SkFontStyle::Normal()));
         static DecoratedBlock textDecor(text.size(), foreground, background);
         auto textSize = SkSize::Make(size.width(), size.height() - DEFAULT_STATUS_HEIGHT);
-        fEditableText = std::make_unique<EditableText>(
+        fSelectableText = std::make_unique<EditableText>(
                 text, SkPoint::Make(0, 0), textSize,
                 SkSpan<FontBlock>(&textBlock, 1), SkSpan<DecoratedBlock>(&textDecor, 1),
                 DEFAULT_TEXT_DIRECTION, DEFAULT_TEXT_ALIGN);
@@ -46,20 +46,20 @@ Editor::Editor(std::u16string text, SkSize size)
     // or possibly something in the middle for a combination of LTR & RTL)
     // In order to get that position we look for a position outside of the text
     // and that will give us the last glyph on the line
-    auto endOfText = fEditableText->lastElement(fDefaultPositionType);
-    fEditableText->recalculateBoundaries(endOfText);
+    auto endOfText = fSelectableText->lastElement(fDefaultPositionType);
+    fSelectableText->recalculateBoundaries(endOfText);
     fCursor->place(endOfText.fBoundaries);
 }
 
 void Editor::update() {
 
-    if (!fEditableText->isInvalidated()) {
+    if (!fSelectableText->isInvalidated()) {
         return;
     }
 
     // Update the (shift it to point at the grapheme edge)
-    auto position = fEditableText->adjustedPosition(fDefaultPositionType, fCursor->getCenterPosition());
-    fEditableText->recalculateBoundaries(position);
+    auto position = fSelectableText->adjustedPosition(fDefaultPositionType, fCursor->getCenterPosition());
+    fSelectableText->recalculateBoundaries(position);
     fCursor->place(position.fBoundaries);
 
     // TODO: Update the mouse
@@ -70,36 +70,36 @@ void Editor::update() {
 // We don't want to move by the input text indexes because then we will have to take in account LTR/RTL
 bool Editor::moveCursor(skui::Key key) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto position = fEditableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
+    auto position = fSelectableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
     if (position.fRun == nullptr) {
         return false;
     }
     if (key == skui::Key::kLeft) {
-        position = fEditableText->previousElement(position);
+        position = fSelectableText->previousElement(position);
     } else if (key == skui::Key::kRight) {
-        position = fEditableText->nextElement(position);
+        position = fSelectableText->nextElement(position);
     } else if (key == skui::Key::kHome) {
-        position = fEditableText->firstElement(PositionType::kGraphemeCluster);
+        position = fSelectableText->firstElement(PositionType::kGraphemeCluster);
     } else if (key == skui::Key::kEnd) {
-        position = fEditableText->lastElement(PositionType::kGraphemeCluster);
+        position = fSelectableText->lastElement(PositionType::kGraphemeCluster);
     } else if (key == skui::Key::kUp) {
         // Move one line up (if possible)
         if (position.fLineIndex == 0) {
             return false;
         }
-        cursorPosition.offset(0, - fEditableText->lineHeight(position.fLineIndex));
-        position = fEditableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
+        cursorPosition.offset(0, - fSelectableText->lineHeight(position.fLineIndex));
+        position = fSelectableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
     } else if (key == skui::Key::kDown) {
         // Move one line down (if possible)
-        if (position.fLineIndex == fEditableText->lineCount() - 1) {
+        if (position.fLineIndex == fSelectableText->lineCount() - 1) {
             return false;
         }
-        cursorPosition.offset(0, fEditableText->lineHeight(position.fLineIndex));
-        position = fEditableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
+        cursorPosition.offset(0, fSelectableText->lineHeight(position.fLineIndex));
+        position = fSelectableText->adjustedPosition(PositionType::kGraphemeCluster, cursorPosition);
      }
 
     // Place the cursor at the new position
-    fEditableText->recalculateBoundaries(position);
+    fSelectableText->recalculateBoundaries(position);
     fCursor->place(position.fBoundaries);
     this->invalidate();
 
@@ -146,39 +146,39 @@ bool Editor::onChar(SkUnichar c, skui::ModifierKey modi) {
 
 bool Editor::deleteElement(skui::Key key) {
 
-    if (fEditableText->isEmpty()) {
+    if (fSelectableText->isEmpty()) {
         return false;
     }
 
     auto cursorPosition = fCursor->getCenterPosition();
-    auto position = fEditableText->adjustedPosition(fDefaultPositionType, cursorPosition);
+    auto position = fSelectableText->adjustedPosition(fDefaultPositionType, cursorPosition);
     TextRange textRange = position.fTextRange;
 
     // IMPORTANT: We assume that a single element (grapheme cluster) does not cross the run boundaries;
     // It's not exactly true but we are going to enforce in by breaking the grapheme by the run boundaries
     if (key == skui::Key::kBack) {
         // Move to the previous element (could be another run and/or line)
-        if (position.fLineIndex > 0 && fEditableText->isFirstOnTheLine(position)) {
-            auto line = fEditableText->line(position.fLineIndex - 1);
+        if (position.fLineIndex > 0 && fSelectableText->isFirstOnTheLine(position)) {
+            auto line = fSelectableText->line(position.fLineIndex - 1);
             if (line->isHardLineBreak()) {
                 // We remove invisible hard line break from the previous line
                 textRange = line->whitespaces();
             } else {
                 // We remove the last non-whitespace element on the previous line (ignoring trailing whitespaces)
-                position = fEditableText->previousElement(position);
+                position = fSelectableText->previousElement(position);
                 textRange = position.fTextRange;
             }
         } else {
             // We remove the previous element on the current line
-            position = fEditableText->previousElement(position);
+            position = fSelectableText->previousElement(position);
             textRange = position.fTextRange;
         }
     }
 
-    fEditableText->removeElement(textRange);
+    fSelectableText->removeElement(textRange);
 
     // Find the grapheme the cursor points to
-    position = fEditableText->adjustedPosition(fDefaultPositionType, textRange.fStart);
+    position = fSelectableText->adjustedPosition(fDefaultPositionType, textRange.fStart);
     fCursor->place(position.fBoundaries);
     this->invalidate();
 
@@ -187,22 +187,22 @@ bool Editor::deleteElement(skui::Key key) {
 
 bool Editor::insertCodepoint(SkUnichar unichar) {
     auto cursorPosition = fCursor->getCenterPosition();
-    auto position = fEditableText->adjustedPosition(fDefaultPositionType, cursorPosition);
+    auto position = fSelectableText->adjustedPosition(fDefaultPositionType, cursorPosition);
 
     if (fInsertMode) {
-        fEditableText->insertElement(unichar, position.fTextRange.fStart);
+        fSelectableText->insertElement(unichar, position.fTextRange.fStart);
     } else {
-        fEditableText->replaceElement(unichar, position.fTextRange);
+        fSelectableText->replaceElement(unichar, position.fTextRange);
     }
 
     this->update();
 
     // Find the element the cursor points to
-    position = fEditableText->adjustedPosition(fDefaultPositionType, cursorPosition);
+    position = fSelectableText->adjustedPosition(fDefaultPositionType, cursorPosition);
 
     // Move the cursor to the next element
-    position = fEditableText->nextElement(position);
-    fEditableText->recalculateBoundaries(position);
+    position = fSelectableText->nextElement(position);
+    fSelectableText->recalculateBoundaries(position);
     fCursor->place(position.fBoundaries);
 
     this->invalidate();
@@ -246,21 +246,21 @@ bool Editor::onKey(skui::Key key, skui::InputState state, skui::ModifierKey modi
 
 bool Editor::onMouse(int x, int y, skui::InputState state, skui::ModifierKey modifiers) {
 
-    if (!fEditableText->contains(x, y)) {
+    if (!fSelectableText->contains(x, y)) {
         // We only support mouse on an editable area
     }
     if (skui::InputState::kDown == state) {
-        auto position = fEditableText->adjustedPosition(fDefaultPositionType, SkPoint::Make(x, y));
+        auto position = fSelectableText->adjustedPosition(fDefaultPositionType, SkPoint::Make(x, y));
         if (fMouse->isDoubleClick(SkPoint::Make(x, y))) {
             // Select the element
-            fEditableText->select(position.fTextRange, position.fBoundaries);
+            fSelectableText->select(position.fTextRange, position.fBoundaries);
             position.fBoundaries.fLeft = position.fBoundaries.fRight - DEFAULT_CURSOR_WIDTH;
             // Clear mouse
             fMouse->up();
         } else {
             // Clear selection
             fMouse->down();
-            fEditableText->clearSelection();
+            fSelectableText->clearSelection();
         }
 
         fCursor->place(position.fBoundaries);
@@ -273,7 +273,7 @@ bool Editor::onMouse(int x, int y, skui::InputState state, skui::ModifierKey mod
 
 void Editor::paint(SkCanvas* canvas) {
 
-    fEditableText->paint(canvas);
+    fSelectableText->paint(canvas);
     fCursor->paint(canvas);
 
     SkPaint background; background.setColor(DEFAULT_STATUS_BACKGROUND);

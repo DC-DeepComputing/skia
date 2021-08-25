@@ -25,33 +25,39 @@ using namespace skia::text;
 class StaticText {
 public:
 
-    StaticText(std::u16string text, SkPoint offset, SkSize size, SkSpan<FontBlock> fontBlocks, TextDirection textDirection, TextAlign textAlign) {
+    StaticText(std::u16string text, SkPoint offset, SkSize size, SkSpan<FontBlock> fontBlocks, SkPaint* backgroundPaint, TextDirection textDirection, TextAlign textAlign) {
         fOffset = offset;
         fSize = size;
         fFontBlocks = fontBlocks;
+        fBackgroundPaint = backgroundPaint;
         fText = std::move(text);
-        fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-        fShapedText = fUnicodeText->shape(fontBlocks, DEFAULT_TEXT_DIRECTION);
-        fWrappedText = fShapedText->wrap(size.width(), size.height(), fUnicodeText->getUnicode());
-        fFormattedText = fWrappedText->format(DEFAULT_TEXT_ALIGN, DEFAULT_TEXT_DIRECTION);
+        auto unicodeText = std::unique_ptr<UnicodeText>(new UnicodeText(SkUnicode::Make(), SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size())));
+        auto shapedText = unicodeText->shape(fontBlocks, DEFAULT_TEXT_DIRECTION);
+        auto wrappedText = shapedText->wrap(unicodeText.get(), size.width(), size.height());
+        wrappedText->format(DEFAULT_TEXT_ALIGN, DEFAULT_TEXT_DIRECTION);
+
+        fDrawableText = wrappedText->prepareToDraw(PositionType::kGraphemeCluster, {});
     }
 
     virtual ~StaticText() = default;
 
-    virtual void paint(SkCanvas* canvas, SkSpan<DecoratedBlock> decors);
+    virtual void paint(SkCanvas* canvas) const {
+        auto textBlobs = fDrawableText->getTextBlobs();
+        for (auto& textBlob : textBlobs) {
+            canvas->drawTextBlob(textBlob.get(), 0, 0, *fBackgroundPaint);
+        }
+    }
 
     std::u16string fText;
-    std::unique_ptr<UnicodeText> fUnicodeText;
-    std::unique_ptr<ShapedText> fShapedText;
-    std::unique_ptr<WrappedText> fWrappedText;
-    sk_sp<FormattedText> fFormattedText;
+    std::unique_ptr<DrawableText> fDrawableText;
+    SkPaint* fBackgroundPaint;
     SkSize fSize;
     SkPoint fOffset;
     SkSpan<FontBlock> fFontBlocks;
 };
 
-// The text can change but it's not selectable/editable
-class DynamicText {
+// The text can be navigated but not selected
+class DynamicText : public Visitor {
 public:
     DynamicText(std::u16string text,
                 SkPoint offset, SkSize size,
@@ -64,15 +70,26 @@ public:
         fDecorations = decorations;
         fTextAlign = textAlign;
         fTextDirection = textDirection;
-        fText = std::move(text);
-        fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-        fShapedText = fUnicodeText->shape(fontBlocks, fTextDirection);
-        fWrappedText = fShapedText->wrap(size.width(), size.height(), fUnicodeText->getUnicode());
-        fFormattedText = fWrappedText->format(fTextAlign, fTextDirection);
-        fInvalidated = false;
+
+        this->rebuild(text);
     }
 
     virtual ~DynamicText() = default;
+
+    virtual void onGlyphRun(const SkFont& font,
+                    TextRange textRange,
+                    SkRect boundingRect,
+                    int glyphCount,
+                    const uint16_t glyphs[],
+                    const SkPoint positions[]) override {
+
+        auto decoration = this->findDecoration(textRange);
+        SkTextBlobBuilder builder;
+        const auto& blobBuffer = builder.allocRunPos(font, SkToInt(glyphCount));
+        sk_careful_memcpy(blobBuffer.glyphs, glyphs, glyphCount * sizeof(uint16_t));
+        sk_careful_memcpy(blobBuffer.points(), positions, glyphCount * sizeof(SkPoint));
+        auto textBlob = builder.make();
+    }
 
     bool contains(SkScalar x, SkScalar y) {
         return SkRect::MakeXYWH(fOffset.fX, fOffset.fY, fRequiredSize.fWidth, fRequiredSize.fHeight).contains(x, y);
@@ -81,37 +98,53 @@ public:
     void invalidate() { fInvalidated = true; }
     bool isInvalidated() { return fInvalidated; }
 
+    DecoratedBlock findDecoration(TextRange textRange);
+
     bool rebuild(std::u16string text) {
         if (!this->fFontBlocks.empty()) {
             SkASSERT(this->fFontBlocks.size() == 1);
             this->fFontBlocks[0].charCount = text.size();
         }
-        this->fText = std::move(text);
-        this->fUnicodeText = Text::parse(SkSpan<uint16_t>((uint16_t*)this->fText.data(), this->fText.size()));
-        this->fShapedText = fUnicodeText->shape(this->fFontBlocks, fTextDirection);
-        this->fWrappedText = fShapedText->wrap(this->fRequiredSize.fWidth, this->fRequiredSize.fHeight, this->fUnicodeText->getUnicode());
-        this->fFormattedText = fWrappedText->format(fTextAlign, fTextDirection);
-        this->fActualSize = fFormattedText->actualSize();
-        this->fInvalidated = false;
+        fText = std::move(text);
+        auto unicodeText = std::unique_ptr<UnicodeText>(new UnicodeText(SkUnicode::Make(), SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size())));
+        auto shapedText = unicodeText->shape(fFontBlocks, fTextDirection);
+        fWrappedText = shapedText->wrap(unicodeText.get(), fRequiredSize.fWidth, fRequiredSize.fHeight);
+        fWrappedText->format(fTextAlign, fTextDirection);
+        fActualSize = fWrappedText->actualSize();
+        fInvalidated = false;
+
+        fSelectableText = fWrappedText->prepareToEdit(unicodeText.get(), PositionType::kGraphemeCluster);
 
         return true;
     }
-
-    SkScalar lineHeight(size_t index) const { return fFormattedText->line(index)->height(); }
-    size_t lineCount() const { return fFormattedText->countLines(); }
 
     SkRect actualSize() const {
         return SkRect::MakeXYWH(fOffset.fX, fOffset.fY, fActualSize.fWidth, fActualSize.fHeight);
     }
 
-    virtual void paint(SkCanvas* canvas);
+    // TODO: Deal with decorations
+    virtual void paint(SkCanvas* canvas) {
+        SkASSERT(fDecorations.size() == 1);
+        auto drawableText = fWrappedText->prepareToDraw(PositionType::kGraphemeCluster, SkSpan<TextIndex>(0, fText.size()));
+        auto textBlobs = drawableText->getTextBlobs();
+        for (auto& textBlob : textBlobs) {
+            canvas->drawTextBlob(textBlob.get(), 0, 0, fDecorations[0].backgroundPaint);
+        }
+    }
+
+    // TODO: Deal with decorations
+    virtual void paint(SkCanvas* canvas, SkSpan<DecoratedBlock> decorations) {
+        auto drawableText = fWrappedText->prepareToDraw(PositionType::kGraphemeCluster, SkSpan<TextIndex>(0, fText.size()));
+        auto textBlobs = drawableText->getTextBlobs();
+        for (auto& textBlob : textBlobs) {
+            canvas->drawTextBlob(textBlob.get(), 0, 0, fDecorations[0].backgroundPaint);
+        }
+    }
 
 protected:
     std::u16string fText;
-    std::unique_ptr<UnicodeText> fUnicodeText;
-    std::unique_ptr<ShapedText> fShapedText;
     std::unique_ptr<WrappedText> fWrappedText;
-    sk_sp<FormattedText> fFormattedText;
+    std::unique_ptr<SelectableText> fSelectableText;
     SkSize fRequiredSize;
     SkSize fActualSize;
     SkPoint fOffset;
@@ -131,28 +164,28 @@ public:
     }
 
     bool isEmpty() { return fText.empty(); }
-
+/*
     Position adjustedPosition(PositionType positionType, SkPoint point) const {
-        return fFormattedText->adjustedPosition(positionType, point - fOffset);
+        return fWrappedText->adjustedPosition(positionType, point - fOffset);
     }
 
     Position adjustedPosition(PositionType positionType, TextIndex textIndex) const {
-        return fFormattedText->adjustedPosition(positionType, textIndex);
+        return fWrappedText->adjustedPosition(positionType, textIndex);
     }
 
     bool recalculateBoundaries(Position& position) const {
-        return fFormattedText->recalculateBoundaries(position);
+        return fWrappedText->recalculateBoundaries(position);
     }
 
-    const Line* line(size_t index) const { return fFormattedText->line(index); }
+    const Line* line(size_t index) const { return fSelectableText->line(index); }
+*/
+    Position previousElement(Position element) const { return fSelectableText->previousElement(element); }
+    Position nextElement(Position current) const { return fSelectableText->nextElement(current); }
+    Position firstElement(PositionType positionType) const { return fSelectableText->firstElement(positionType); }
+    Position lastElement(PositionType positionType) const { return fSelectableText->lastElement(positionType); }
 
-    Position previousElement(Position element) const { return fFormattedText->previousElement(element); }
-    Position nextElement(Position current) const { return fFormattedText->nextElement(current); }
-    Position firstElement(PositionType positionType) const { return fFormattedText->firstElement(positionType); }
-    Position lastElement(PositionType positionType) const { return fFormattedText->lastElement(positionType); }
-
-    bool isFirstOnTheLine(Position element) const { return fFormattedText->isFirstOnTheLine(element); }
-    bool isLastOnTheLine(Position element) const { return fFormattedText->isLastOnTheLine(element); }
+    bool isFirstOnTheLine(Position element) const { return fSelectableText->isFirstOnTheLine(element); }
+    bool isLastOnTheLine(Position element) const { return fSelectableText->isLastOnTheLine(element); }
 
     void removeElement(TextRange toRemove) {
         std::u16string text;

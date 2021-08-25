@@ -19,6 +19,7 @@ enum class TextAlign {
     kJustify,
     kStart,
     kEnd,
+    kNothing,
 };
 
 enum class TextDirection {
@@ -49,10 +50,10 @@ enum class CodeUnitFlags : uint8_t {
 
 enum class GlyphUnitFlags : uint8_t {
     kNoGlyphUnitFlag = (1 << 0),
-    kPartOfWhiteSpace = (1 << 1),
-    kGraphemeStart = (1 << 2),
-    kSoftLineBreakBefore = (1 << 3),
-    kHardLineBreakBefore = (1 << 4),
+    //kPartOfWhiteSpace = (1 << 1),
+    //kGraphemeStart = (1 << 2),
+    //kSoftLineBreakBefore = (1 << 3),
+    //kHardLineBreakBefore = (1 << 4),
     kGlyphClusterStart = (1 << 5),
     kGraphemeClusterStart = (1 << 6),
 };
