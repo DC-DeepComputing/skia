@@ -16,6 +16,29 @@
       "message": "I\u0027m not confident about the ACL setting at the bottom of the script, because the results don\u0027t mirror any of the existing files. However, I don\u0027t have permission to view the ACLs on any of the other existing files, so I can\u0027t tell exactly what is different.\n\n(Interestingly, I can\u0027t view the ACLs on existing files, but I *do* seem to be able to overwrite and delete the existing files!)",
       "revId": "8ea29bc074397b6400109f34bbfafa14e8c6be03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a342dc4_934f6218",
+        "filename": "resources/sksl/update_fuzzer.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-26T12:49:14Z",
+      "side": 1,
+      "message": "allUsers",
+      "range": {
+        "startLine": 63,
+        "startChar": 47,
+        "endLine": 63,
+        "endChar": 70
+      },
+      "revId": "8ea29bc074397b6400109f34bbfafa14e8c6be03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
