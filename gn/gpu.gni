@@ -231,6 +231,8 @@ skia_gpu_sources = [
   "$_src/gpu/GrTransferFromRenderTask.h",
   "$_src/gpu/GrUniformDataManager.cpp",
   "$_src/gpu/GrUniformDataManager.h",
+  "$_src/gpu/GrUniformWriter.cpp",
+  "$_src/gpu/GrUniformWriter.h",
   "$_src/gpu/GrUserStencilSettings.h",
   "$_src/gpu/GrUtil.cpp",
   "$_src/gpu/GrUtil.h",
@@ -388,6 +390,8 @@ skia_gpu_sources = [
   "$_src/gpu/glsl/GrGLSLVarying.h",
   "$_src/gpu/glsl/GrGLSLVertexGeoBuilder.cpp",
   "$_src/gpu/glsl/GrGLSLVertexGeoBuilder.h",
+  "$_src/gpu/glsl/GrUniformAggregator.cpp",
+  "$_src/gpu/glsl/GrUniformAggregator.h",
 
   # Mock
   "$_src/gpu/mock/GrMockAttachment.h",

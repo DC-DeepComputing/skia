@@ -534,6 +534,8 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     SkASSERT(pipelineDescriptor.vertexDescriptor);
     SkASSERT(pipelineDescriptor.colorAttachments[0]);
 
+    GrUniformDataManager::ProgramUniforms uniforms =
+            fUniformHandler.getNewProgramUniforms(fUniformAggregator);
     if (precompiledLibs) {
         SkASSERT(precompiledLibs->fVertexLibrary);
         SkASSERT(precompiledLibs->fFragmentLibrary);
@@ -727,6 +729,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
     return new GrMtlPipelineState(fGpu,
                                   std::move(renderPipeline),
                                   pipelineDescriptor.colorAttachments[0].pixelFormat,
+                                  std::move(uniforms),
                                   fUniformHandles,
                                   fUniformHandler.fUniforms,
                                   bufferSize,

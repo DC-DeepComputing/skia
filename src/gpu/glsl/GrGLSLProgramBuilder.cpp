@@ -82,6 +82,8 @@ bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkStrin
     this->nameExpression(outputColor, "outputColor");
     this->nameExpression(outputCoverage, "outputCoverage");
 
+    fUniformAggregator.addUniforms(geomProc, this->getMangleSuffix().c_str());
+
     SkASSERT(!fUniformHandles.fRTAdjustmentUni.isValid());
     GrShaderFlags rtAdjustVisibility;
     if (geomProc.willUseGeoShader()) {
@@ -118,6 +120,7 @@ bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkStrin
                                                     geomProc.willUseGeoShader() ? &fGS : nullptr,
                                                     &fFS,
                                                     this->varyingHandler(),
+                                                    &fUniformAggregator,
                                                     this->uniformHandler(),
                                                     this->shaderCaps(),
                                                     geomProc,
@@ -223,6 +226,8 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
               const char* const inputColor   = fp.isBlendFunction() ? "_src" : "_input";
               const char*       sampleCoords = "_coords";
     fFS.nextStage();
+    fUniformAggregator.addUniforms(fp, this->getMangleSuffix().c_str());
+
     // Conceptually, an FP is always sampled at a particular coordinate. However, if it is only
     // sampled by a chain of uniform matrix expressions (or legacy coord transforms), the value that
     // would have been passed to _coords is lifted to the vertex shader and
@@ -276,7 +281,9 @@ void GrGLSLProgramBuilder::writeFPFunction(const GrFragmentProcessor& fp,
     // First, emit every child's function. This needs to happen (even for children that aren't
     // sampled), so that all of the expected uniforms are registered.
     this->writeChildFPFunctions(fp, impl);
+
     GrFragmentProcessor::ProgramImpl::EmitArgs args(&fFS,
+                                                    &fUniformAggregator,
                                                     this->uniformHandler(),
                                                     this->shaderCaps(),
                                                     fp,
@@ -361,6 +368,7 @@ bool GrGLSLProgramBuilder::emitAndInstallXferProc(const SkString& colorIn,
 
     SkASSERT(!fXPImpl);
     const GrXferProcessor& xp = this->pipeline().getXferProcessor();
+    fUniformAggregator.addUniforms(xp, this->getMangleSuffix().c_str());
     fXPImpl = xp.makeProgramImpl();
 
     // Enable dual source secondary output if we have one
@@ -380,6 +388,7 @@ bool GrGLSLProgramBuilder::emitAndInstallXferProc(const SkString& colorIn,
 
     GrXferProcessor::ProgramImpl::EmitArgs args(
             &fFS,
+            &fUniformAggregator,
             this->uniformHandler(),
             this->shaderCaps(),
             xp,
@@ -470,7 +479,7 @@ void GrGLSLProgramBuilder::nameExpression(SkString* output, const char* baseName
 }
 
 void GrGLSLProgramBuilder::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
-    this->uniformHandler()->appendUniformDecls(visibility, out);
+    this->uniformHandler()->appendUniformDecls(fUniformAggregator, visibility, out);
 }
 
 void GrGLSLProgramBuilder::addRTFlipUniform(const char* name) {
