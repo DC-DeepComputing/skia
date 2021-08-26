@@ -22,6 +22,30 @@
       },
       "revId": "2a26c50a628fbc6363bff432489c3facab4341ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8feabf14_e1c7f768",
+        "filename": "include/private/SkTOptional.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-26T18:21:53Z",
+      "side": 0,
+      "message": "I checked the standard and this isn\u0027t a real ctor anyway. You need a `std::in_place_t` as a prefix before the argument list. I\u0027ll remove it in a followup since we don\u0027t appear to use it.",
+      "parentUuid": "10646b7d_6ef20e5b",
+      "range": {
+        "startLine": 68,
+        "startChar": 32,
+        "endLine": 68,
+        "endChar": 62
+      },
+      "revId": "2a26c50a628fbc6363bff432489c3facab4341ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
