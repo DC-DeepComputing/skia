@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e9f03a1_73686bff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-26T13:15:16Z",
+      "side": 1,
+      "message": "Yes. I manually fixed those permissions about 30 min ago",
+      "parentUuid": "bd7cb18e_97f5dd95",
+      "revId": "8ea29bc074397b6400109f34bbfafa14e8c6be03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "452dfb73_2b9750a6",
