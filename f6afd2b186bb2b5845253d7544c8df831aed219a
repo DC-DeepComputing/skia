@@ -22,6 +22,30 @@
       },
       "revId": "f6afd2b186bb2b5845253d7544c8df831aed219a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a4676ce_26a05820",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-26T17:13:48Z",
+      "side": 1,
+      "message": "Specifically, wondering about:\n  - Move the type checking logic into the derived classes (could add some helper functions, to move the checks into a single function that can be asserted).\n  - Then remove both fields from here, remove all the base-class methods that just did type-checking and forwarding, and basically make the public methods the virtual ones (so the derived classes just get the index, n, array). They can do all the work of all three functions in one spot, and not need to fiddle state internally, either.",
+      "parentUuid": "06f2f1a7_f0793d81",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "f6afd2b186bb2b5845253d7544c8df831aed219a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
