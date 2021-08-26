@@ -46,6 +46,30 @@
       },
       "revId": "2a26c50a628fbc6363bff432489c3facab4341ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32270c41_306d0226",
+        "filename": "include/private/SkTOptional.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-26T18:42:05Z",
+      "side": 0,
+      "message": "Removed at http://review.skia.org/442320",
+      "parentUuid": "8feabf14_e1c7f768",
+      "range": {
+        "startLine": 68,
+        "startChar": 32,
+        "endLine": 68,
+        "endChar": 62
+      },
+      "revId": "2a26c50a628fbc6363bff432489c3facab4341ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
