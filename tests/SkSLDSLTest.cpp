@@ -2001,21 +2001,60 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLWrapper, r, ctxInfo) {
     REPORTER_ASSERT(r, DSLWriter::Var(*vars[0])->name() == "x");
 }
 
+void test_verifyInterfaceBlockRTAdjust(skiatest::Reporter* r) {
+    REPORTER_ASSERT(r, !DSLWriter::IRGenerator().fRTAdjust);
+    REPORTER_ASSERT(r, !DSLWriter::IRGenerator().fRTAdjustInterfaceBlock);
+
+    DSLGlobalVar intf = InterfaceBlock(kUniform_Modifier, "uniforms",
+                                       { Field(kInt_Type, "unused"),
+                                         Field(kFloat4_Type, "sk_RTAdjust") });
+    REPORTER_ASSERT(r, DSLWriter::IRGenerator().fRTAdjust != nullptr);
+    REPORTER_ASSERT(r, DSLWriter::IRGenerator().fRTAdjustInterfaceBlock != nullptr);
+    REPORTER_ASSERT(r, DSLWriter::IRGenerator().fRTAdjustFieldIndex == 1);
+}
+
 DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLRTAdjust, r, ctxInfo) {
-    AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
-                           SkSL::ProgramKind::kVertex);
-    DSLGlobalVar rtAdjust(kUniform_Modifier, kFloat4_Type, "sk_RTAdjust");
-    Declare(rtAdjust);
-    DSLFunction(kVoid_Type, "main").define(
-        sk_Position() = Half4(0)
-    );
-    REPORTER_ASSERT(r, DSLWriter::ProgramElements().size() == 2);
-    EXPECT_EQUAL(*DSLWriter::ProgramElements()[1],
-        "void main() {"
-        "(sk_PerVertex.sk_Position = float4(0.0));"
-        "(sk_PerVertex.sk_Position = float4(((sk_PerVertex.sk_Position.xy * sk_RTAdjust.xz) + "
-        "(sk_PerVertex.sk_Position.ww * sk_RTAdjust.yw)), 0.0, sk_PerVertex.sk_Position.w));"
-        "}");
+    {
+        AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
+                               SkSL::ProgramKind::kVertex);
+        DSLGlobalVar rtAdjust(kUniform_Modifier, kFloat4_Type, "sk_RTAdjust");
+        Declare(rtAdjust);
+        DSLFunction(kVoid_Type, "main").define(
+            sk_Position() = Half4(0)
+        );
+        REPORTER_ASSERT(r, DSLWriter::ProgramElements().size() == 2);
+        EXPECT_EQUAL(*DSLWriter::ProgramElements()[1],
+            "void main() {"
+            "(sk_PerVertex.sk_Position = float4(0.0));"
+            "(sk_PerVertex.sk_Position = float4(((sk_PerVertex.sk_Position.xy * sk_RTAdjust.xz) + "
+            "(sk_PerVertex.sk_Position.ww * sk_RTAdjust.yw)), 0.0, sk_PerVertex.sk_Position.w));"
+            "}");
+    }
+
+    {
+        AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
+                               SkSL::ProgramKind::kVertex);
+        test_verifyInterfaceBlockRTAdjust(r);
+    }
+
+    {
+        AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
+                               SkSL::ProgramKind::kVertex);
+        ExpectError error(r, "sk_RTAdjust must have type 'float4'");
+        InterfaceBlock(kUniform_Modifier, "uniforms",
+                       { Field(kInt_Type, "unused"), Field(kHalf4_Type, "sk_RTAdjust") });
+    }
+
+    {
+        AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
+                               SkSL::ProgramKind::kVertex);
+        ExpectError error(r, "duplicate definition of 'sk_RTAdjust'");
+        InterfaceBlock(kUniform_Modifier, "uniforms1",
+                       { Field(kInt_Type, "unused1"), Field(kFloat4_Type, "sk_RTAdjust") });
+        InterfaceBlock(kUniform_Modifier, "uniforms2",
+                       { Field(kInt_Type, "unused2"), Field(kFloat4_Type, "sk_RTAdjust") });
+    }
+
 }
 
 DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLInlining, r, ctxInfo) {

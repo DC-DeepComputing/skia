@@ -276,7 +276,6 @@ void IRGenerator::checkVarDeclaration(int offset, const Modifiers& modifiers, co
 
 std::unique_ptr<Variable> IRGenerator::convertVar(int offset, const Modifiers& modifiers,
                                                   const Type* baseType, skstd::string_view name,
-                                                  bool isArray,
                                                   std::unique_ptr<Expression> arraySize,
                                                   Variable::Storage storage) {
     if (modifiers.fLayout.fLocation == 0 && modifiers.fLayout.fIndex == 0 &&
@@ -287,8 +286,7 @@ std::unique_ptr<Variable> IRGenerator::convertVar(int offset, const Modifiers& m
     }
     const Type* type = baseType;
     int arraySizeValue = 0;
-    if (isArray) {
-        SkASSERT(arraySize);
+    if (arraySize) {
         arraySizeValue = type->convertArraySize(fContext, std::move(arraySize));
         if (!arraySizeValue) {
             return {};
@@ -342,16 +340,49 @@ std::unique_ptr<Statement> IRGenerator::convertVarDeclaration(int offset,
                                                               const Modifiers& modifiers,
                                                               const Type* baseType,
                                                               skstd::string_view name,
-                                                              bool isArray,
                                                               std::unique_ptr<Expression> arraySize,
                                                               std::unique_ptr<Expression> value,
                                                               Variable::Storage storage) {
-    std::unique_ptr<Variable> var = this->convertVar(offset, modifiers, baseType, name, isArray,
+    std::unique_ptr<Variable> var = this->convertVar(offset, modifiers, baseType, name,
                                                      std::move(arraySize), storage);
     if (!var) {
         return nullptr;
     }
     return this->convertVarDeclaration(std::move(var), std::move(value));
+}
+
+StatementArray IRGenerator::convertVarDeclarations(int offset, const Modifiers& modifiers,
+        const Type* baseType, std::vector<skstd::string_view> names,
+        std::vector<std::unique_ptr<Expression>> sizes, std::vector<ASTNode> values,
+        VariableStorage storage) {
+    SkASSERT(baseType);
+    SkASSERT(names.size() == sizes.size() && names.size() == values.size());
+    baseType = baseType->applyPrecisionQualifiers(fContext, modifiers, fSymbolTable.get(), offset);
+    if (!baseType) {
+        return {};
+    }
+
+    this->checkVarDeclaration(offset, modifiers, baseType, storage);
+
+    StatementArray varDecls;
+    for (size_t i = 0; i < names.size(); ++i) {
+        std::unique_ptr<Expression> value;
+        if (values[i]) {
+            value = this->convertExpression(values[i]);
+        }
+        std::unique_ptr<Statement> varDeclStmt = this->convertVarDeclaration(offset,
+                                                                             modifiers,
+                                                                             baseType,
+                                                                             names[i],
+                                                                             std::move(sizes[i]),
+                                                                             std::move(value),
+                                                                             storage);
+        if (varDeclStmt) {
+            varDecls.push_back(std::move(varDeclStmt));
+        }
+    }
+    return varDecls;
+
 }
 
 StatementArray IRGenerator::convertVarDeclarations(const ASTNode& decls,
@@ -364,50 +395,42 @@ StatementArray IRGenerator::convertVarDeclarations(const ASTNode& decls,
     if (!baseType) {
         return {};
     }
-    baseType = baseType->applyPrecisionQualifiers(fContext, modifiers, fSymbolTable.get(),
-                                                  decls.fOffset);
-    if (!baseType) {
-        return {};
-    }
 
     this->checkVarDeclaration(decls.fOffset, modifiers, baseType, storage);
 
-    StatementArray varDecls;
+    std::vector<skstd::string_view> names;
+    std::vector<std::unique_ptr<Expression>> sizes;
+    std::vector<ASTNode> values;
     for (; declarationsIter != decls.end(); ++declarationsIter) {
         const ASTNode& varDecl = *declarationsIter;
         const ASTNode::VarData& varData = varDecl.getVarData();
-        std::unique_ptr<Expression> arraySize;
-        std::unique_ptr<Expression> value;
+        names.push_back(varData.fName);
         auto iter = varDecl.begin();
         if (iter != varDecl.end() && varData.fIsArray) {
             if (!*iter) {
                 this->errorReporter().error(decls.fOffset, "array must have a size");
+                sizes.push_back(nullptr);
                 continue;
             }
-            arraySize = this->convertExpression(*iter++);
+            std::unique_ptr<Expression> arraySize = this->convertExpression(*iter++);
             if (!arraySize) {
+                sizes.push_back(nullptr);
                 continue;
             }
+            sizes.push_back(std::move(arraySize));
+        } else {
+            sizes.push_back(nullptr);
         }
         if (iter != varDecl.end()) {
-            value = this->convertExpression(*iter);
-            if (!value) {
-                continue;
-            }
-        }
-        std::unique_ptr<Statement> varDeclStmt = this->convertVarDeclaration(varDecl.fOffset,
-                                                                             modifiers,
-                                                                             baseType,
-                                                                             varData.fName,
-                                                                             varData.fIsArray,
-                                                                             std::move(arraySize),
-                                                                             std::move(value),
-                                                                             storage);
-        if (varDeclStmt) {
-            varDecls.push_back(std::move(varDeclStmt));
+            // we have to wait until later to call convertExpression; the vars aren't in the
+            // symbol table yet
+            values.push_back(*iter);
+        } else {
+            values.push_back(ASTNode());
         }
     }
-    return varDecls;
+    return this->convertVarDeclarations(decls.fOffset, modifiers, baseType, std::move(names),
+                                        std::move(sizes), std::move(values), storage);
 }
 
 std::unique_ptr<ModifiersDeclaration> IRGenerator::convertModifiersDeclaration(const ASTNode& m) {
@@ -979,31 +1002,33 @@ std::unique_ptr<StructDefinition> IRGenerator::convertStructDefinition(const AST
     return std::make_unique<StructDefinition>(node.fOffset, *type);
 }
 
-std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const ASTNode& intf) {
+std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(int offset,
+        Modifiers modifiers, skstd::string_view typeName, skstd::string_view instanceName,
+        std::vector<VarDeclarations> declarations, std::unique_ptr<Expression> arraySizeExpr,
+        bool isUnsizedArray) {
+    SkASSERT(!isUnsizedArray || !arraySizeExpr);
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex &&
         this->programKind() != ProgramKind::kGeometry) {
-        this->errorReporter().error(intf.fOffset, "interface block is not allowed here");
+        this->errorReporter().error(offset, "interface block is not allowed here");
         return nullptr;
     }
-
-    SkASSERT(intf.fKind == ASTNode::Kind::kInterfaceBlock);
-    const ASTNode::InterfaceBlockData& id = intf.getInterfaceBlockData();
     std::shared_ptr<SymbolTable> old = fSymbolTable;
     std::shared_ptr<SymbolTable> symbols;
     std::vector<Type::Field> fields;
     bool foundRTAdjust = false;
-    auto iter = intf.begin();
     {
         AutoSymbolTable table(this);
         symbols = fSymbolTable;
-        for (size_t i = 0; i < id.fDeclarationCount; ++i) {
-            StatementArray decls = this->convertVarDeclarations(*(iter++),
-                                                                Variable::Storage::kInterfaceBlock);
-            if (decls.empty()) {
+        for (VarDeclarations& rawDecls : declarations) {
+            StatementArray convertedDecls = this->convertVarDeclarations(offset,
+                    rawDecls.fModifiers, rawDecls.fType, std::move(rawDecls.fNames),
+                    std::move(rawDecls.fSizes), std::move(rawDecls.fValues),
+                    Variable::Storage::kInterfaceBlock);
+            if (convertedDecls.empty()) {
                 return nullptr;
             }
-            for (const auto& decl : decls) {
+            for (const auto& decl : convertedDecls) {
                 const VarDeclaration& vd = decl->as<VarDeclaration>();
                 if (vd.var().type().isOpaque()) {
                     this->errorReporter().error(decl->fOffset,
@@ -1025,48 +1050,91 @@ std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const A
             }
         }
     }
-    const Type* type = old->takeOwnershipOfSymbol(Type::MakeStructType(intf.fOffset,
-                                                                       id.fTypeName,
+    const Type* type = old->takeOwnershipOfSymbol(Type::MakeStructType(offset,
+                                                                       typeName,
                                                                        fields));
     int arraySize = 0;
-    if (id.fIsArray) {
-        const ASTNode& size = *(iter++);
-        if (size) {
-            // convertArraySize rejects unsized arrays. This is the one place we allow those, but
-            // we've already checked for that, so this is verifying the other aspects (constant,
-            // positive, not too large).
-            arraySize = this->convertArraySize(*type, size.fOffset, size);
-            if (!arraySize) {
-                return nullptr;
-            }
-        } else {
-            arraySize = Type::kUnsizedArray;
-        }
+    if (arraySizeExpr) {
+        arraySize = type->convertArraySize(fContext, std::move(arraySizeExpr));
+    } else if (isUnsizedArray) {
+        arraySize = Type::kUnsizedArray;
+    }
+    if (arraySize) {
         type = symbols->addArrayDimension(type, arraySize);
     }
     const Variable* var = old->takeOwnershipOfSymbol(
-            std::make_unique<Variable>(intf.fOffset,
-                                       this->modifiersPool().add(id.fModifiers),
-                                       id.fInstanceName.length() ? id.fInstanceName : id.fTypeName,
+            std::make_unique<Variable>(offset,
+                                       this->modifiersPool().add(modifiers),
+                                       instanceName.length() ? instanceName : typeName,
                                        type,
                                        fIsBuiltinCode,
                                        Variable::Storage::kGlobal));
     if (foundRTAdjust) {
         fRTAdjustInterfaceBlock = var;
     }
-    if (id.fInstanceName.length()) {
+    if (instanceName.length()) {
         old->addWithoutOwnership(var);
     } else {
         for (size_t i = 0; i < fields.size(); i++) {
-            old->add(std::make_unique<Field>(intf.fOffset, var, (int)i));
+            old->add(std::make_unique<Field>(offset, var, (int)i));
         }
     }
-    return std::make_unique<SkSL::InterfaceBlock>(intf.fOffset,
+    return std::make_unique<SkSL::InterfaceBlock>(offset,
                                                   var,
-                                                  id.fTypeName,
-                                                  id.fInstanceName,
+                                                  typeName,
+                                                  instanceName,
                                                   arraySize,
                                                   symbols);
+}
+
+std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const ASTNode& intf) {
+    SkASSERT(intf.fKind == ASTNode::Kind::kInterfaceBlock);
+    const ASTNode::InterfaceBlockData& id = intf.getInterfaceBlockData();
+    std::vector<VarDeclarations> decls;
+    auto iter = intf.begin();
+    for (size_t i = 0; i < id.fDeclarationCount; ++i) {
+        VarDeclarations declsStruct;
+        ASTNode declsNode = *(iter++);
+        auto declsIter = declsNode.begin();
+        declsStruct.fModifiers = (iter++)->getModifiers();
+        declsStruct.fType = this->convertType(*(iter++));
+        if (!declsStruct.fType) {
+            return nullptr;
+        }
+        while (declsIter != declsNode.end()) {
+            ASTNode declNode = *(declsIter++);
+            auto declIter = declNode.begin();
+            const ASTNode::VarData& vd = declNode.getVarData();
+            declsStruct.fNames.push_back(vd.fName);
+            if (vd.fIsArray) {
+                std::unique_ptr<Expression> arraySize = this->convertExpression(*(declIter++));
+                declsStruct.fSizes.push_back(std::move(arraySize));
+            } else {
+                declsStruct.fSizes.push_back(0);
+            }
+            if (declIter != declNode.end()) {
+                declsStruct.fValues.push_back(*declIter++);
+            } else {
+                declsStruct.fValues.push_back(ASTNode());
+            }
+            decls.push_back(std::move(declsStruct));
+        }
+    }
+    std::unique_ptr<Expression> arraySize;
+    bool isUnsizedArray = false;
+    if (id.fIsArray) {
+        const ASTNode& size = *(iter++);
+        if (size) {
+            arraySize = this->convertExpression(size);
+            if (!arraySize) {
+                return nullptr;
+            }
+        } else {
+            isUnsizedArray = true;
+        }
+    }
+    return this->convertInterfaceBlock(intf.fOffset, id.fModifiers, id.fTypeName, id.fInstanceName,
+                                       std::move(decls), std::move(arraySize), isUnsizedArray);
 }
 
 void IRGenerator::convertGlobalVarDeclarations(const ASTNode& decl) {
