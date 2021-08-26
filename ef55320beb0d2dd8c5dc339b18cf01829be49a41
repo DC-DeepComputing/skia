@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f78b47a_ccc4d904",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-26T17:31:27Z",
+      "side": 1,
+      "message": "I don\u0027t think variables with kParameter storage even through VarDeclaration::Convert (they don\u0027t have VarDeclarations at all). Pretty sure you could just put an assert to that effect at the top of Convert/Make.",
+      "revId": "ef55320beb0d2dd8c5dc339b18cf01829be49a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
