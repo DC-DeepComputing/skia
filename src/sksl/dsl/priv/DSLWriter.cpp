@@ -241,7 +241,6 @@ const SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
                                                                           var.fModifiers.fModifiers,
                                                                           &var.fType.skslType(),
                                                                           var.fName,
-                                                                          /*isArray=*/false,
                                                                           /*arraySize=*/nullptr,
                                                                           var.storage());
         SkSL::Variable* varPtr = skslvar.get();
@@ -269,7 +268,7 @@ std::unique_ptr<SkSL::Variable> DSLWriter::CreateParameterVar(DSLParameter& var)
     // ahead regardless so we don't have to worry about null pointers potentially sneaking in and
     // breaking things. DSLFunction is responsible for reporting errors for invalid parameters.
     return DSLWriter::IRGenerator().convertVar(/*offset=*/-1, var.fModifiers.fModifiers,
-                                               &var.fType.skslType(), var.fName, /*isArray=*/false,
+                                               &var.fType.skslType(), var.fName,
                                                /*arraySize=*/nullptr, var.storage());
 }
 
