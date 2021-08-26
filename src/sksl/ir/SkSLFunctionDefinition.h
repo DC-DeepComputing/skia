@@ -16,6 +16,8 @@ namespace SkSL {
 
 struct ASTNode;
 
+using IntrinsicSet = std::unordered_set<const FunctionDeclaration*>;
+
 /**
  * A function definition (a declaration plus an associated block of code).
  */
@@ -25,8 +27,7 @@ public:
 
     FunctionDefinition(int offset,
                        const FunctionDeclaration* declaration, bool builtin,
-                       std::unique_ptr<Statement> body,
-                       std::unordered_set<const FunctionDeclaration*> referencedIntrinsics = {})
+                       std::unique_ptr<Statement> body, IntrinsicSet referencedIntrinsics)
         : INHERITED(offset, kProgramElementKind)
         , fDeclaration(declaration)
         , fBuiltin(builtin)
