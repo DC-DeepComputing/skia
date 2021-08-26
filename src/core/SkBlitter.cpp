@@ -194,6 +194,7 @@ void SkBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
     SkASSERT(mask.fBounds.contains(clip));
 
     if (mask.fFormat == SkMask::kLCD16_Format) {
+        SkASSERT(false);
         return; // needs to be handled by subclass
     }
 
@@ -672,7 +673,9 @@ bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
 
     // All the real legacy fast paths are for shaders and SrcOver.
     // Choosing SkRasterPipelineBlitter will also let us to hit its single-color memset path.
-    if (!paint.getShader() && mode != SkBlendMode::kSrcOver) {
+    // The legacy fast paths do not support non-a8 masks with non-src-over when using a shader.
+    // However, we don't know the mask format here, so cannot choose based on that.
+    if (mode != SkBlendMode::kSrcOver) {
         return false;
     }
 

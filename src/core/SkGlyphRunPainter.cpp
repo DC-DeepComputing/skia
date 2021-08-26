@@ -45,9 +45,8 @@ SkGlyphRunListPainter::SkGlyphRunListPainter(const SkSurfaceProps& props,
                                              SkScalerContextFlags flags,
                                              SkStrikeForGPUCacheInterface* strikeCache)
         : fDeviceProps{props}
-        ,  fBitmapFallbackProps{SkSurfaceProps{props.flags(), kUnknown_SkPixelGeometry}}
-        ,  fColorType{colorType}, fScalerContextFlags{flags}
-        ,  fStrikeCache{strikeCache} {}
+        , fScalerContextFlags{flags}
+        , fStrikeCache{strikeCache} {}
 
 // TODO: unify with code in GrSDFTControl.cpp
 static SkScalerContextFlags compute_scaler_context_flags(const SkColorSpace* cs) {
@@ -90,12 +89,6 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
     //  gpu build. Remove when SkGlyphRunListPainter is split into GPU and CPU version.
     (void)fStrikeCache;
 
-    // The bitmap blitters can only draw lcd text to a N32 bitmap in srcOver. Otherwise,
-    // convert the lcd text into A8 text. The props communicates this to the scaler.
-    auto& props = (kN32_SkColorType == fColorType && paint.isSrcOver())
-                  ? fDeviceProps
-                  : fBitmapFallbackProps;
-
     SkPoint drawOrigin = glyphRunList.origin();
     for (auto& glyphRun : glyphRunList) {
         const SkFont& runFont = glyphRun.font();
@@ -105,7 +98,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
         if (SkStrikeSpec::ShouldDrawAsPath(paint, runFont, deviceMatrix)) {
 
             SkStrikeSpec strikeSpec = SkStrikeSpec::MakePath(
-                    runFont, paint, props, fScalerContextFlags);
+                    runFont, paint, fDeviceProps, fScalerContextFlags);
 
             auto strike = strikeSpec.findOrCreateStrike();
 
@@ -123,7 +116,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
         }
         if (!fRejects.source().empty() && !deviceMatrix.hasPerspective()) {
             SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
-                    runFont, paint, props, fScalerContextFlags, deviceMatrix);
+                    runFont, paint, fDeviceProps, fScalerContextFlags, deviceMatrix);
 
             auto strike = strikeSpec.findOrCreateStrike();
 
@@ -140,7 +133,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
 
             // Create a strike is source space to calculate scale information.
             SkStrikeSpec scaleStrikeSpec = SkStrikeSpec::MakeMask(
-                    runFont, paint, props, fScalerContextFlags, SkMatrix::I());
+                    runFont, paint, fDeviceProps, fScalerContextFlags, SkMatrix::I());
             SkBulkGlyphMetrics metrics{scaleStrikeSpec};
 
             auto glyphIDs = fRejects.source().get<0>();
@@ -177,7 +170,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
 
             SkMatrix cacheScale = SkMatrix::Scale(maxScale, maxScale);
             SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
-                    runFont, paint, props, fScalerContextFlags, cacheScale);
+                    runFont, paint, fDeviceProps, fScalerContextFlags, cacheScale);
 
             auto strike = strikeSpec.findOrCreateStrike();
 
