@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d47cfb_151ed92a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-08-26T18:32:47Z",
+      "side": 1,
+      "message": "I think the InfraTests bot is starting to break because the master branch was removed.",
+      "revId": "2257d8dbea652286a2589204dc918284727755d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
