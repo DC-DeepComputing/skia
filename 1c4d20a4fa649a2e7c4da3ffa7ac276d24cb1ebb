@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cfafe6c_7fdb5cdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-26T17:58:51Z",
+      "side": 1,
+      "message": "I confirmed that the unit test case triggered the same assert as the linked fuzzer crash, and no longer triggers the assert with the changes to SkRect.cpp. Unfortunately I have been unable to reproduce the original crash using the fuzzer\u0027s test case inside chromium. I am assuming that it somehow created conditions similar to this and will be resolved.\n\nIf it\u0027s not resolved, at least this fixes another way we could get it to crash and I\u0027ll go back to the drawing board on what the fuzzer may have concocted.",
+      "revId": "1c4d20a4fa649a2e7c4da3ffa7ac276d24cb1ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
