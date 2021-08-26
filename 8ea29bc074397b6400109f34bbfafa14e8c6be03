@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ffbdc93_f6343906",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-26T13:38:38Z",
+      "side": 1,
+      "message": "I used \"AllAuthenticatedUsers:R\" instead of \"AllUsers:R\" because I couldn\u0027t see ACLs on the existing files and needed to take a best-guess. Script is updated now to use AllUsers:R..",
+      "parentUuid": "7e9f03a1_73686bff",
+      "revId": "8ea29bc074397b6400109f34bbfafa14e8c6be03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "452dfb73_2b9750a6",
