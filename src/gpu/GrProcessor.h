@@ -9,6 +9,7 @@
 #define GrProcessor_DEFINED
 
 #include "include/core/SkMath.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "src/gpu/GrColor.h"
 #include "src/gpu/GrGpuBuffer.h"
@@ -20,6 +21,7 @@
 #include "src/gpu/GrTextureProxy.h"
 
 class GrResourceProvider;
+class GrUniformWriter;
 
 /** Provides custom shader code to the Ganesh shading pipeline. GrProcessor objects *must* be
     immutable: after being constructed, their fields may not change.
@@ -144,12 +146,73 @@ public:
 
     ClassID classID() const { return fClassID; }
 
+    /** Describes a uniform. */
+    class Uniform {
+    public:
+        constexpr Uniform() = default;
+        constexpr Uniform(const char* name,
+                          GrSLType type,
+                          GrShaderFlags visibility = kFragment_GrShaderFlag)
+                : fName(name), fType(type), fVisibility(visibility) {
+            SkASSERT(name && type != kVoid_GrSLType);
+        }
+        constexpr Uniform(const char* name,
+                          GrSLType type,
+                          int arrayCount,
+                          GrShaderFlags visibility = kFragment_GrShaderFlag)
+                : fName(name), fType(type), fCount(arrayCount) {
+            SkASSERT(name && type != kVoid_GrSLType);
+        }
+
+        constexpr Uniform(const Uniform&) = default;
+
+        Uniform& operator=(const Uniform&) = default;
+
+        constexpr bool isInitialized() const { return fType != kVoid_GrSLType; }
+
+        constexpr const char*  name() const { return fName;  }
+        constexpr GrSLType     type() const { return fType;  }
+        constexpr int         count() const { return fCount; }
+
+        GrShaderVar asShaderVar() const {
+            return {SkString(fName), fType, GrShaderVar::TypeModifier::Uniform, fCount};
+        }
+
+        GrShaderFlags visibility() const { return fVisibility; }
+
+    private:
+        const char*   fName       = nullptr;
+        GrSLType      fType       = kVoid_GrSLType;
+        int           fCount      = GrShaderVar::kNonArray;
+        GrShaderFlags fVisibility = kFragment_GrShaderFlag;
+    };
+
+    /** Returns the array of uniforms inserted into the program by this processor. */
+    SkSpan<const Uniform> uniforms() const { return fUniforms; }
+
+    /** Processors that have uniforms must override this in order to provide the uniform values. */
+    virtual void writeUniforms(GrUniformWriter*) const {
+        // Any processor that adds uniforms should override this function.
+        SkUNREACHABLE;
+    }
+
 protected:
     GrProcessor(ClassID classID) : fClassID(classID) {}
     GrProcessor(const GrProcessor&) = delete;
     GrProcessor& operator=(const GrProcessor&) = delete;
 
+    /**
+     * Specifies the uniforms used by this processor. Should be called when the processor is made
+     * (i.e. constructor or factory function). Any uniforms with type void are ignored. This allows
+     * a processor to have a contiguous array of data member uniforms where some are conditionally
+     * initialized.
+     */
+    void setUniforms(SkSpan<const Uniform> uniforms) { fUniforms = uniforms; }
+
     const ClassID fClassID;
+
+private:
+    SkSpan<const Uniform> fUniforms;
 };
 
 #endif
