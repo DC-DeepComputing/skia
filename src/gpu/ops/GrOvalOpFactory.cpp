@@ -19,12 +19,14 @@
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrShaderCaps.h"
 #include "src/gpu/GrStyle.h"
+#include "src/gpu/GrUniformWriter.h"
 #include "src/gpu/GrVertexWriter.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelper.h"
 
@@ -732,13 +734,15 @@ public:
 
     void addToKey(const GrShaderCaps& caps, GrProcessorKeyBuilder* b) const override {
         b->addBits(2, static_cast<uint32_t>(fStyle), "style");
-        b->addBits(ProgramImpl::kMatrixKeyBits,
-                   ProgramImpl::ComputeMatrixKey(caps, fViewMatrix),
-                   "viewMatrixType");
+        b->addBool(fViewMatrix.hasPerspective(), "matrix_perspective");
     }
 
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override {
         return std::make_unique<Impl>();
+    }
+
+    void writeUniforms(GrUniformWriter* writer) const override {
+        writer->writeSkMatrix(0, fViewMatrix);
     }
 
 private:
@@ -759,24 +763,20 @@ private:
         }
         fInEllipseOffsets1 = {"inEllipseOffsets1", kFloat2_GrVertexAttribType, kFloat2_GrSLType};
         this->setVertexAttributes(&fInPosition, 4);
+        this->setUniforms(SkMakeSpan(&kViewMatrixUniform, 1));
     }
 
     class Impl : public ProgramImpl {
     public:
-        void setData(const GrGLSLProgramDataManager& pdman,
-                     const GrShaderCaps& shaderCaps,
-                     const GrGeometryProcessor& geomProc) override {
-            const auto& diegp = geomProc.cast<DIEllipseGeometryProcessor>();
-
-            SetTransform(pdman, shaderCaps, fViewMatrixUniform, diegp.fViewMatrix, &fViewMatrix);
-        }
+        void setData(const GrGLSLProgramDataManager&,
+                     const GrShaderCaps&,
+                     const GrGeometryProcessor&) override {}
 
     private:
         void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
             const auto& diegp = args.fGeomProc.cast<DIEllipseGeometryProcessor>();
             GrGLSLVertexBuilder* vertBuilder = args.fVertBuilder;
             GrGLSLVaryingHandler* varyingHandler = args.fVaryingHandler;
-            GrGLSLUniformHandler* uniformHandler = args.fUniformHandler;
 
             // emit attributes
             varyingHandler->emitAttributes(diegp);
@@ -795,14 +795,27 @@ private:
             varyingHandler->addPassThroughAttribute(diegp.fInColor.asShaderVar(),
                                                     args.fOutputColor);
 
-            // Setup position
-            WriteOutputPosition(vertBuilder,
-                                uniformHandler,
-                                *args.fShaderCaps,
-                                gpArgs,
-                                diegp.fInPosition.name(),
-                                diegp.fViewMatrix,
-                                &fViewMatrixUniform);
+            const char* vm = args.fUniformAggregator->findUniform(&diegp, 0).name();
+
+            auto posType = diegp.fViewMatrix.hasPerspective() ? kFloat3_GrSLType : kFloat2_GrSLType;
+            gpArgs->fPositionVar = GrShaderVar("outpos", posType);
+            vertBuilder->declAppend(gpArgs->fPositionVar);
+            if (posType == kFloat3_GrSLType) {
+                vertBuilder->codeAppendf("%s = %s * %s.xy1;\n",
+                                         gpArgs->fPositionVar.c_str(),
+                                         vm,
+                                         diegp.fInPosition.name());
+            } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
+                vertBuilder->codeAppendf("%s = float3x2(%s) * %s.xy1;\n",
+                                         gpArgs->fPositionVar.c_str(),
+                                         vm,
+                                         diegp.fInPosition.name());
+            } else {
+                vertBuilder->codeAppendf("%s = (%s * %s.xy1).xy;\n",
+                                         gpArgs->fPositionVar.c_str(),
+                                         vm,
+                                         diegp.fInPosition.name());
+            }
             gpArgs->fLocalCoordVar = diegp.fInPosition.asShaderVar();
 
             // for outer curve
@@ -863,15 +876,16 @@ private:
 
             fragBuilder->codeAppendf("half4 %s = half4(half(edgeAlpha));", args.fOutputCoverage);
         }
-
-        SkMatrix fViewMatrix = SkMatrix::InvalidMatrix();
-        UniformHandle fViewMatrixUniform;
     };
 
     Attribute fInPosition;
     Attribute fInColor;
     Attribute fInEllipseOffsets0;
     Attribute fInEllipseOffsets1;
+
+    static constexpr Uniform kViewMatrixUniform{"viewMatrix",
+                                                kFloat3x3_GrSLType,
+                                                kVertex_GrShaderFlag};
 
     SkMatrix fViewMatrix;
     bool fUseScale;

@@ -9,16 +9,18 @@
 #define GrGLProgramDataManager_DEFINED
 
 #include "include/gpu/gl/GrGLTypes.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/GrShaderVar.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
-
-#include "include/private/SkTArray.h"
+#include "src/gpu/glsl/GrUniformAggregator.h"
 
 class GrGLGpu;
 class SkMatrix;
 class GrGLProgram;
+class GrGLContext;
+struct GrGLInterface;
 
 /** Manages the resources used by a shader program.
  * The resources are objects the program uses to communicate with the
@@ -41,7 +43,10 @@ public:
     typedef SkTBlockList<GLUniformInfo> UniformInfoArray;
     typedef SkTBlockList<VaryingInfo>   VaryingInfoArray;
 
-    GrGLProgramDataManager(GrGLGpu*, const UniformInfoArray&);
+    GrGLProgramDataManager(GrGLGpu*,
+                           const UniformInfoArray&,
+                           GrGLuint programID,
+                           GrUniformAggregator::ProcessorUniformMap);
 
     void setSamplerUniforms(const UniformInfoArray& samplers, int startUnit) const;
 
@@ -73,6 +78,8 @@ public:
     void setMatrix3fv(UniformHandle, int arrayCount, const float matrices[]) const override;
     void setMatrix4fv(UniformHandle, int arrayCount, const float matrices[]) const override;
 
+    void setUniforms(const GrProgramInfo& info);
+
 private:
     enum {
         kUnusedUniform = -1,
@@ -91,6 +98,29 @@ private:
 
     SkTArray<Uniform, true> fUniforms;
     GrGLGpu* fGpu;
+
+    class UniformManager {
+    public:
+        UniformManager(GrUniformAggregator::ProcessorUniformMap,
+                       GrGLuint programID,
+                       GrGLint firstUnusedUniformID,  // used with BindUniformLocation
+                       const GrGLContext& ctx);
+
+        void setUniforms(const GrGLInterface* gl, const GrProgramInfo& info);
+
+    private:
+        struct Uniform {
+            GrSLType type     = kVoid_GrSLType;
+            int      count    = 0;
+            GrGLint  location = -1;
+        };
+        using ProcessorUniforms = std::unordered_map</*uniform index*/ int, Uniform>;
+        std::unordered_map</*processor index*/ int, ProcessorUniforms> fUniforms;
+
+        class UniformWriter;
+    };
+
+    UniformManager fManager;
 
     using INHERITED = GrGLSLProgramDataManager;
 };
