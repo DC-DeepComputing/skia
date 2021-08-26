@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "755ca482_8f24394f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T15:06:15Z",
+      "side": 1,
+      "message": "Sorry this is fairly big. I couldn\u0027t think of a way to significantly reduce the size (e.g. only supporting one backend would make processors have backed-dependent behavior). Many of the files just change a few lines.\n\nThe way I\u0027d approach this is first look at GrProcessor.h, then specific processors (GrRRectEffect.cpp, GrPorterDuffXferProcessor.cpp, GrOvalFactory.cpp) to see how it\u0027s used. Then I\u0027d look at GrUniformAggregator, GrUniformWriter, and GrGLSLProgamBuilder to see how it fits together at the API-neutral layer. Then I\u0027d look an arbitrary backend. They\u0027re all pretty similar, except GL as it doesn\u0027t use uniform buffers.\n\nI think when everything moves over to the new system a lot of the backend-specific code goes away, GrGLProgram mostly just needs a private GrUniformWriter implementation. GrUniformDataManager can be made to handle offset/aligment computation for all the other backends and use its family of UniformWriters for different layouts. I think all the ProgramDataManager subclasses go away and what little functionality they have left gets absorbed into the Program/Pipeline classes that currently own them.",
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
