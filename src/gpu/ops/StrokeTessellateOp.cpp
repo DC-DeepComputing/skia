@@ -221,9 +221,12 @@ void GrStrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
                                         const GrDstProxyView& dstProxyView,
                                         GrXferBarrierFlags renderPassXferBarriers, GrLoadOp
                                         colorLoadOp) {
-    this->prePrepareTessellator({context->priv().recordTimeAllocator(), writeView, &dstProxyView,
-                                renderPassXferBarriers, colorLoadOp, context->priv().caps()},
-                                (clip) ? std::move(*clip) : GrAppliedClip::Disabled());
+    // DMSAA is not supported on DDL.
+    bool usesMSAASurface = writeView.asRenderTargetProxy()->numSamples() > 1;
+    this->prePrepareTessellator({context->priv().recordTimeAllocator(), writeView, usesMSAASurface,
+                                &dstProxyView, renderPassXferBarriers, colorLoadOp,
+                                context->priv().caps()}, (clip) ? std::move(*clip) :
+                                GrAppliedClip::Disabled());
     if (fStencilProgram) {
         context->priv().recordProgramInfo(fStencilProgram);
     }
@@ -235,9 +238,9 @@ void GrStrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
 void GrStrokeTessellateOp::onPrepare(GrOpFlushState* flushState) {
     if (!fTessellator) {
         this->prePrepareTessellator({flushState->allocator(), flushState->writeView(),
-                                    &flushState->dstProxyView(), flushState->renderPassBarriers(),
-                                    flushState->colorLoadOp(), &flushState->caps()},
-                                    flushState->detachAppliedClip());
+                                    flushState->usesMSAASurface(), &flushState->dstProxyView(),
+                                    flushState->renderPassBarriers(), flushState->colorLoadOp(),
+                                    &flushState->caps()}, flushState->detachAppliedClip());
     }
     SkASSERT(fTessellator);
     fTessellator->prepare(flushState, fTotalCombinedVerbCnt);
