@@ -48,13 +48,26 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
             return nullptr;
         }
     }
-    if (value) {
-        if (var->storage() == Variable::Storage::kGlobal &&
-            !Analysis::IsConstantExpression(*value)) {
+    if (var->storage() == Variable::Storage::kInterfaceBlock) {
+        if (var->type().isOpaque()) {
+            context.fErrors->error(var->fOffset, "opaque type '" + var->type().name() +
+                                                 "' is not permitted in an interface block");
+            return nullptr;
+        }
+        if (value) {
+            context.fErrors->error(value->fOffset,
+                                   "initializers are not permitted on interface block fields");
+            return nullptr;
+        }
+    }
+    if (var->storage() == Variable::Storage::kGlobal) {
+        if (value && !Analysis::IsConstantExpression(*value)) {
             context.fErrors->error(value->fOffset,
                                    "global variable initializer must be a constant expression");
             return nullptr;
         }
+    }
+    if (value) {
         if (var->type().isOpaque()) {
             context.fErrors->error(
                     value->fOffset,
