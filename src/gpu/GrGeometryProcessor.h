@@ -299,6 +299,7 @@ public:
                  GrGLSLGeometryBuilder* geomBuilder,
                  GrGLSLFPFragmentBuilder* fragBuilder,
                  GrGLSLVaryingHandler* varyingHandler,
+                 const GrUniformAggregator* uniformAggregator,
                  GrGLSLUniformHandler* uniformHandler,
                  const GrShaderCaps* caps,
                  const GrGeometryProcessor& geomProc,
@@ -309,6 +310,7 @@ public:
                 , fGeomBuilder(geomBuilder)
                 , fFragBuilder(fragBuilder)
                 , fVaryingHandler(varyingHandler)
+                , fUniformAggregator(uniformAggregator)
                 , fUniformHandler(uniformHandler)
                 , fShaderCaps(caps)
                 , fGeomProc(geomProc)
@@ -319,6 +321,7 @@ public:
         GrGLSLGeometryBuilder* fGeomBuilder;
         GrGLSLFPFragmentBuilder* fFragBuilder;
         GrGLSLVaryingHandler* fVaryingHandler;
+        const GrUniformAggregator* fUniformAggregator;
         GrGLSLUniformHandler* fUniformHandler;
         const GrShaderCaps* fShaderCaps;
         const GrGeometryProcessor& fGeomProc;
