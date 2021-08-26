@@ -172,7 +172,7 @@ public:
 
     void resetErrors() {
         fErrorText.clear();
-        this->errorReporter().resetErrorCount();
+        this->errorReporter().setErrorCount(0);
     }
 
     Context& context() {
@@ -281,6 +281,7 @@ private:
 
     friend class AutoSource;
     friend class ::SkSLCompileBench;
+    friend class DSLParser;
     friend class dsl::DSLCore;
     friend class dsl::DSLWriter;
 };
