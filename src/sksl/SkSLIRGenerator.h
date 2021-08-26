@@ -13,6 +13,7 @@
 
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLStatement.h"
+#include "include/private/SkTOptional.h"
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLASTNode.h"
 #include "src/sksl/SkSLOperators.h"
@@ -260,7 +261,7 @@ private:
     std::shared_ptr<SymbolTable> fSymbolTable = nullptr;
     // Symbols which have definitions in the include files.
     IRIntrinsicMap* fIntrinsics = nullptr;
-    std::unordered_set<const FunctionDeclaration*> fReferencedIntrinsics;
+    skstd::optional<std::unordered_set<const FunctionDeclaration*>> fReferencedIntrinsics;
     int fInvocations;
     std::unordered_set<const Type*> fDefinedStructs;
     std::vector<std::unique_ptr<ProgramElement>>* fProgramElements = nullptr;
