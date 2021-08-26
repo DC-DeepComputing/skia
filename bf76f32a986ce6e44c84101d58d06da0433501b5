@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea6bf455_6f3abcb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-26T20:07:48Z",
+      "side": 1,
+      "message": "Do you think it would make sense to also add a vkdmsaa config to the Quadro bot with this CL?",
+      "revId": "bf76f32a986ce6e44c84101d58d06da0433501b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
