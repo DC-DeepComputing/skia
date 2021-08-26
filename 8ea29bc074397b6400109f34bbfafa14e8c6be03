@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd7cb18e_97f5dd95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-26T13:13:59Z",
+      "side": 1,
+      "message": "Step #1: Step 25/32 : RUN wget -O $SRC/skia_data/sksl_seed_corpus.zip https://storage.googleapis.com/skia-fuzzer/oss-fuzz/sksl_seed_corpus.zip\n  ...\nStep #1: HTTP request sent, awaiting response... 403 Forbidden",
+      "parentUuid": "314c9376_47e03fcc",
+      "revId": "8ea29bc074397b6400109f34bbfafa14e8c6be03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "452dfb73_2b9750a6",
