@@ -930,6 +930,9 @@ optional("gpu") {
     } else if (dawn_enable_metal) {
       frameworks += [ "Metal.framework" ]
     }
+  } else if (skia_use_wgpu) {
+    public_defines += [ "SK_DAWN" ]
+    sources += skia_dawn_sources
   }
 
   if (skia_use_direct3d) {
