@@ -287,6 +287,7 @@ public:
 
     struct EmitArgs {
         EmitArgs(GrGLSLXPFragmentBuilder* fragBuilder,
+                 const GrUniformAggregator* uniformAggregator,
                  GrGLSLUniformHandler* uniformHandler,
                  const GrShaderCaps* caps,
                  const GrXferProcessor& xp,
@@ -298,6 +299,7 @@ public:
                  GrSurfaceOrigin dstTextureOrigin,
                  const GrSwizzle& writeSwizzle)
                 : fXPFragBuilder(fragBuilder)
+                , fUniformAggregator(uniformAggregator)
                 , fUniformHandler(uniformHandler)
                 , fShaderCaps(caps)
                 , fXP(xp)
@@ -309,6 +311,7 @@ public:
                 , fDstTextureOrigin(dstTextureOrigin)
                 , fWriteSwizzle(writeSwizzle) {}
         GrGLSLXPFragmentBuilder* fXPFragBuilder;
+        const GrUniformAggregator* fUniformAggregator;
         GrGLSLUniformHandler* fUniformHandler;
         const GrShaderCaps* fShaderCaps;
         const GrXferProcessor& fXP;
