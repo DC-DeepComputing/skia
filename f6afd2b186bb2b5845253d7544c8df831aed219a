@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f2f1a7_f0793d81",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-26T17:01:38Z",
+      "side": 1,
+      "message": "I\u0027m wondering if there\u0027s a different pattern we can use here, even if it means the (two?) derived impls need some boilerplate or repetition. I see two issues with the current code:\n\n  - We\u0027re making three virtual calls, per uniform. That feels like a lot of overhead to put a single float in a buffer. (Before even counting the work done to lookup the uniform).\n  - There\u0027s a complicated stateful back-and-forth, in both the base class (with AutoSetUniform), *and* the derived classes (remembering the pointer or ID for the thing that was looked up in willSetUniform). That leads to lots of temporarily changing class member state, then using those values once, then re-setting them.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "f6afd2b186bb2b5845253d7544c8df831aed219a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
