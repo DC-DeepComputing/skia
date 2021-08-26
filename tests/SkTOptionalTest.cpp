@@ -317,7 +317,7 @@ DEF_TEST(SkTOptionalSelfAssignment, r) {
     empty = std::move(emptyRef);
     REPORTER_ASSERT(r, !empty);
 
-    skstd::optional<SkString> full("full");
+    skstd::optional<SkString> full(SkString("full"));
     skstd::optional<SkString>& fullRef = full;
     full = fullRef;
     REPORTER_ASSERT(r, full);
