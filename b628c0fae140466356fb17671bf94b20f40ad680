@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfe56a2_fce24e89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T16:35:24Z",
+      "side": 1,
+      "message": "Processor indices probably are really just used so that the UniformWriter can be configured with the right set of uniforms before calling GrProcessor::writeUniforms(). The map keyed by processor index is definitely not essential at all. The per-processor map is also not particularly important. The only significant role it serves is avoiding holes of uninitialized uniforms after the aggregation step in the program builder.\n\nThe reason for processor index (as opposed to say Processor*) is that the aggregation occurs only on a program/pipeline cache miss and whereas writeUniforms is per-draw and so the actual processors change.\n\nThe double map could be replaced by a single vector of uniform records with a separate vector of per-processor index start,count pairs.",
+      "parentUuid": "ead339d2_f276a7c8",
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16fbc8ab_0471d112",
