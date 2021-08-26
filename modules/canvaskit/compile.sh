@@ -63,11 +63,14 @@ mkdir -p $BUILD_DIR
 # we get a fresh build.
 rm -f $BUILD_DIR/*.a
 
-GN_GPU="skia_enable_gpu=true skia_gl_standard = \"webgl\""
-GN_GPU_FLAGS="\"-DSK_DISABLE_LEGACY_SHADERCONTEXT\","
-WASM_GPU="-lGL -DSK_SUPPORT_GPU=1 -DSK_GL \
+GN_GPU="skia_enable_gpu=true skia_use_gl=true skia_use_wgpu=true skia_gl_standard = \"webgl\""
+GN_GPU_FLAGS="\"-DSK_DISABLE_LEGACY_SHADERCONTEXT\",
+              \"-I/home/bsalomon/src/dawn/src/include/\",
+              \"-I/home/bsalomon/src/dawn/out/Release/gen/src/include/\","
+
+WASM_GPU="-lGL -DSK_SUPPORT_GPU=1 -DSK_GL -DSK_DAWN\
           -DSK_DISABLE_LEGACY_SHADERCONTEXT --pre-js $BASE_DIR/cpu.js --pre-js $BASE_DIR/gpu.js\
-          -s USE_WEBGL2=1"
+          -s USE_WEBGL2=1 -s USE_WEBGPU=1"
 if [[ $@ == *cpu* ]]; then
   echo "Using the CPU backend instead of the GPU backend"
   GN_GPU="skia_enable_gpu=false"
@@ -282,6 +285,7 @@ echo "Compiling bitcode"
   extra_cflags=[\"-s\", \"WARN_UNALIGNED=1\", \"-s\", \"MAIN_MODULE=1\",
     \"-DSKNX_NO_SIMD\", \"-DSK_DISABLE_AAA\",
     \"-DSK_FORCE_8_BYTE_ALIGNMENT\",
+
     ${GN_GPU_FLAGS}
     ${GN_SKP_FLAGS}
     ${EXTRA_CFLAGS}
@@ -355,6 +359,8 @@ EMCC_DEBUG=1 ${EMCXX} \
     -Ithird_party/icu \
     -Ithird_party/skcms \
     -Ithird_party/externals/icu/source/common/ \
+    -I/home/bsalomon/src/dawn/src/include/ \
+    -I/home/bsalomon/src/dawn/out/Release/gen/src/include/ \
     -DSK_DISABLE_AAA \
     -DSK_FORCE_8_BYTE_ALIGNMENT \
     -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 \
