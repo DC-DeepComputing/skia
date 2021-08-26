@@ -108,11 +108,7 @@ private:
     ScopedBuffers SK_WARN_UNUSED_RESULT ensureBuffers(const SkGlyphRunList& glyphRunList);
     ScopedBuffers SK_WARN_UNUSED_RESULT ensureBuffers(const SkGlyphRun& glyphRun);
 
-    // The props as on the actual device.
     const SkSurfaceProps fDeviceProps;
-    // The props for when the bitmap device can't draw LCD text.
-    const SkSurfaceProps fBitmapFallbackProps;
-    const SkColorType fColorType;
     const SkScalerContextFlags fScalerContextFlags;
 
     SkStrikeForGPUCacheInterface* const fStrikeCache;
