@@ -16,6 +16,23 @@
       "message": "I have added the failing bots to the tryjobs.",
       "revId": "0edd942f8dc6d306897851342808a1ba7ca10578",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64c8dccd_7d30e051",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-26T19:03:43Z",
+      "side": 1,
+      "message": "You still need (or at least really want) to align these to death to actually do the simd work on ARM?",
+      "revId": "0edd942f8dc6d306897851342808a1ba7ca10578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
