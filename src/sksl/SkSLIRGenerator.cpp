@@ -878,8 +878,9 @@ std::unique_ptr<Block> IRGenerator::finalizeFunction(const FunctionDeclaration& 
 }
 
 void IRGenerator::convertFunction(const ASTNode& f) {
-    SkASSERT(fReferencedIntrinsics.empty());
-    SK_AT_SCOPE_EXIT(fReferencedIntrinsics.clear());
+    SkASSERT(!fReferencedIntrinsics);
+    fReferencedIntrinsics.emplace();
+    SK_AT_SCOPE_EXIT(fReferencedIntrinsics.reset());
 
     auto iter = f.begin();
     const Type* returnType = this->convertType(*(iter++), /*allowVoid=*/true);
@@ -954,8 +955,11 @@ void IRGenerator::convertFunction(const ASTNode& f) {
             return;
         }
         body = this->finalizeFunction(*decl, std::move(body));
-        auto result = std::make_unique<FunctionDefinition>(
-                f.fOffset, decl, fIsBuiltinCode, std::move(body), std::move(fReferencedIntrinsics));
+        auto result = std::make_unique<FunctionDefinition>(f.fOffset,
+                                                           decl,
+                                                           fIsBuiltinCode,
+                                                           std::move(body),
+                                                           std::move(*fReferencedIntrinsics));
         decl->setDefinition(result.get());
         result->setSource(&f);
         fProgramElements->push_back(std::move(result));
@@ -1287,7 +1291,11 @@ std::unique_ptr<Expression> IRGenerator::call(int offset,
             fInputs.fUseFlipRTUniform = true;
         }
         if (function.definition()) {
-            fReferencedIntrinsics.insert(&function);
+            if (!fReferencedIntrinsics) {
+                this->errorReporter().error(offset, "constant expression required at global scope");
+                return nullptr;
+            }
+            fReferencedIntrinsics->insert(&function);
         }
         if (!fIsBuiltinCode && fIntrinsics) {
             this->copyIntrinsicIfNeeded(function);

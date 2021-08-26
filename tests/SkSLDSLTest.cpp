@@ -1811,7 +1811,6 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLBuiltins, r, ctxInfo) {
     EXPECT_EQUAL(Sqrt(a),                "sqrt(a)");
     EXPECT_EQUAL(Step(a, b),             "step(a, b)");
     EXPECT_EQUAL(Tan(a),                 "tan(a)");
-    EXPECT_EQUAL(Unpremul(a),            "unpremul(a)");
 
     // these calls all go through the normal channels, so it ought to be sufficient to prove that
     // one of them reports errors correctly
