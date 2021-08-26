@@ -11,6 +11,7 @@
 
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrGeometryProcessor.h"
+#include "src/gpu/GrUniformAggregator.h"
 #include "src/gpu/GrXferProcessor.h"
 #include "src/gpu/gl/GrGLProgramDataManager.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
@@ -54,6 +55,7 @@ public:
             GrGLGpu*,
             const GrGLSLBuiltinUniformHandles&,
             GrGLuint programID,
+            GrUniformAggregator::ProcessorUniformMap,
             const UniformInfoArray& uniforms,
             const UniformInfoArray& textureSamplers,
             std::unique_ptr<GrGeometryProcessor::ProgramImpl>,
@@ -127,6 +129,7 @@ private:
     GrGLProgram(GrGLGpu*,
                 const GrGLSLBuiltinUniformHandles&,
                 GrGLuint programID,
+                GrUniformAggregator::ProcessorUniformMap,
                 const UniformInfoArray& uniforms,
                 const UniformInfoArray& textureSamplers,
                 std::unique_ptr<GrGeometryProcessor::ProgramImpl>,
