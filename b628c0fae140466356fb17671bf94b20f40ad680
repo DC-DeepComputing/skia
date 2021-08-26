@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "461dd4b6_25af1e35",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T16:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16fbc8ab_0471d112",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "694971ce_16dda5f2",
@@ -89,6 +113,30 @@
       "writtenOn": "2021-08-26T16:04:25Z",
       "side": 1,
       "message": "Can all of this be hoisted out of the lambda, so we\u0027re not doing it repeatedly?",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 13
+      },
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2c9043e_480c50ea",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T16:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "694971ce_16dda5f2",
       "range": {
         "startLine": 237,
         "startChar": 0,
@@ -122,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d297d4b9_1f44c56b",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T16:47:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ebf9774_efd7ae82",
+      "range": {
+        "startLine": 98,
+        "startChar": 81,
+        "endLine": 98,
+        "endChar": 86
+      },
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59a68358_dbea67bb",
@@ -135,6 +207,30 @@
       "writtenOn": "2021-08-26T16:04:25Z",
       "side": 1,
       "message": "Still reading code, so maybe this will become clear, but: This makes it sound like willSetUniform can fail (and return kVoid). But all uses are in AutoSetUniform, which - in turn - is just tied to the type-checking logic in the write calls. Those all have assets like \"TypeIsIntegral()\", not \"TypeIsVoid || TypeIsIntegral\". Is the return value of willSetUniform ever used to skip setting elided uniforms?",
+      "range": {
+        "startLine": 98,
+        "startChar": 93,
+        "endLine": 99,
+        "endChar": 46
+      },
+      "revId": "b628c0fae140466356fb17671bf94b20f40ad680",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e5aeb3_81ff7b3d",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-26T16:47:03Z",
+      "side": 1,
+      "message": "Ah good point. That connection was never finished. Now kVoid is detected.",
+      "parentUuid": "59a68358_dbea67bb",
       "range": {
         "startLine": 98,
         "startChar": 93,
