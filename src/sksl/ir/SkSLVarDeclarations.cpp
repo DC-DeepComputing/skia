@@ -84,6 +84,11 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
                                    "'uniform' variables cannot use initializer expressions");
             return nullptr;
         }
+        if (var->storage() == Variable::Storage::kParameter) {
+            context.fErrors->error(value->fOffset,
+                                   "function parameters cannot have initializer expressions");
+            return nullptr;
+        }
         value = var->type().coerceExpression(std::move(value), context);
         if (!value) {
             return nullptr;
@@ -116,6 +121,8 @@ std::unique_ptr<Statement> VarDeclaration::Make(const Context& context,
     SkASSERT(!(var->storage() == Variable::Storage::kInterfaceBlock && var->type().isOpaque()));
     // initializers are not permitted on interface block fields
     SkASSERT(!(var->storage() == Variable::Storage::kInterfaceBlock && value));
+    // function parameters cannot have initializer expressions
+    SkASSERT(!(var->storage() == Variable::Storage::kParameter && value));
     // opaque type cannot use initializer expressions
     SkASSERT(!(value && var->type().isOpaque()));
     // 'in' variables cannot use initializer expressions
