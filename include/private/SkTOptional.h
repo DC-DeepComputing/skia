@@ -62,12 +62,6 @@ public:
         *this = std::move(other);
     }
 
-    template<typename... Args>
-    optional(Args&&... args) {
-        fHasValue = true;
-        new(&fPayload.fValue) T(std::forward<Args>(args)...);
-    }
-
     ~optional() {
         this->reset();
     }
