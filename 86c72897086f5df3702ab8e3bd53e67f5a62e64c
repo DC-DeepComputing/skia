@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5811f92b_5b1b625c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-27T20:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7678513b_5bfa1a8c",
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82464500_37e12e78",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-08-27T13:41:11Z",
       "side": 1,
       "message": "I didn\u0027t understand why we were passing around ASTNodes at first, but I think this is the explanation? We need to support\n\n    `int x\u003d0, y\u003dx;`\n\nThe expression for `y` depends on convertVarDeclaration for `x` having run; otherwise `x` won\u0027t exist in the symbol table.\n\nSo that explains the motivation. I am still not really happy about the outcome here, even now that I understand it. It feels awkward. Is there another way to structure this that could let us pass Expressions?\n\nAlso, it seems strange to introduce a refactor for the benefit of DSL that relies on synthesizing empty AST nodes. Isn\u0027t DSLParser getting rid of ASTNode, fairly soon? What happens at that point?",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 425,
+        "endChar": 31
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d31607_3d93ae30",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-27T20:57:04Z",
+      "side": 1,
+      "message": "It wasn\u0027t going to be an issue - there wouldn\u0027t be a need for this in a DSLParser world - but it\u0027s no longer relevant in any case.",
+      "parentUuid": "82464500_37e12e78",
       "range": {
         "startLine": 424,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf1b1fd_049debd0",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-27T20:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e18f61e_bce1f1ff",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 0
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "760f26a6_67876b6c",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-08-27T13:41:11Z",
       "side": 1,
       "message": "Wrap the name/size/value in one struct and make a vector of that struct. \n\nParallel vectors are less efficient (3x the number of malloc calls) and more difficult to reason about (what do you do if the lengths aren\u0027t the same?)",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 37
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f849852_8ac6de79",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-27T20:57:04Z",
+      "side": 1,
+      "message": "No longer relevant.",
+      "parentUuid": "760f26a6_67876b6c",
       "range": {
         "startLine": 125,
         "startChar": 0,
