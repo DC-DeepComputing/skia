@@ -14,6 +14,8 @@
 #include "src/gpu/GrPipeline.h"
 #include "src/gpu/GrProcessor.h"
 #include "src/gpu/GrProcessorAnalysis.h"
+#include "src/gpu/GrUniformAggregator.h"
+#include "src/gpu/GrUniformWriter.h"
 #include "src/gpu/GrXferProcessor.h"
 #include "src/gpu/glsl/GrGLSLBlend.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -543,6 +545,8 @@ public:
 
     std::unique_ptr<ProgramImpl> makeProgramImpl() const override;
 
+    void writeUniforms(GrUniformWriter*) const override;
+
 private:
     PDLCDXferProcessor(const SkPMColor4f& blendConstant, float alpha);
 
@@ -565,6 +569,8 @@ private:
     SkPMColor4f fBlendConstant;
     float fAlpha;
 
+    static constexpr Uniform kAlphaUniform{"alpha", kHalf_GrSLType};
+
     using INHERITED = GrXferProcessor;
 };
 
@@ -573,6 +579,7 @@ PDLCDXferProcessor::PDLCDXferProcessor(const SkPMColor4f& blendConstant, float a
                 GrProcessorAnalysisCoverage::kLCD)
     , fBlendConstant(blendConstant)
     , fAlpha(alpha) {
+    this->setUniforms(SkMakeSpan(&kAlphaUniform, 1));
 }
 
 sk_sp<const GrXferProcessor> PDLCDXferProcessor::Make(SkBlendMode mode,
@@ -594,12 +601,7 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> PDLCDXferProcessor::makeProgramImp
     class Impl : public ProgramImpl {
     private:
         void emitOutputsForBlendState(const EmitArgs& args) override {
-            const char* alpha;
-            fAlphaUniform = args.fUniformHandler->addUniform(nullptr,
-                                                             kFragment_GrShaderFlag,
-                                                             kHalf_GrSLType,
-                                                             "alpha",
-                                                             &alpha);
+            const char* alpha = args.fUniformAggregator->findUniform(&args.fXP, 0).name();
             GrGLSLXPFragmentBuilder* fragBuilder = args.fXPFragBuilder;
             // We want to force our primary output to be alpha * Coverage, where alpha is the alpha
             // value of the src color. We know that there are no color stages (or we wouldn't have
@@ -611,20 +613,13 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> PDLCDXferProcessor::makeProgramImp
                                      alpha, args.fInputCoverage);
         }
 
-        void onSetData(const GrGLSLProgramDataManager& pdm, const GrXferProcessor& xp) override {
-            float alpha = xp.cast<PDLCDXferProcessor>().fAlpha;
-            if (fLastAlpha != alpha) {
-                pdm.set1f(fAlphaUniform, alpha);
-                fLastAlpha = alpha;
-            }
-        }
-
-        GrGLSLUniformHandler::UniformHandle fAlphaUniform;
-        float fLastAlpha = SK_FloatNaN;
+        void onSetData(const GrGLSLProgramDataManager& pdm, const GrXferProcessor& xp) override {}
     };
 
     return std::make_unique<Impl>();
 }
+
+void PDLCDXferProcessor::writeUniforms(GrUniformWriter* writer) const { writer->writef(0, fAlpha); }
 
 ///////////////////////////////////////////////////////////////////////////////
 
