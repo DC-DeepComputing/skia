@@ -29,6 +29,14 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+namespace skiatest {
+
+class Reporter;
+
+} // namespace skiatest
+
+void test_verifyInterfaceBlockRTAdjust(skiatest::Reporter* r);
+
 namespace SkSL {
 
 namespace dsl {
@@ -111,6 +119,14 @@ public:
         Program::Inputs                              fInputs;
     };
 
+    struct VarDeclarations {
+        Modifiers fModifiers;
+        const Type* fType;
+        std::vector<skstd::string_view> fNames;
+        std::vector<std::unique_ptr<Expression>> fSizes;
+        std::vector<ASTNode> fValues;
+    };
+
     /**
      * If externalFunctions is supplied, those values are registered in the symbol table of the
      * Program, but ownership is *not* transferred. It is up to the caller to keep them alive.
@@ -160,17 +176,23 @@ private:
                              Variable::Storage storage);
     std::unique_ptr<Variable> convertVar(int offset, const Modifiers& modifiers,
                                          const Type* baseType, skstd::string_view name,
-                                         bool isArray, std::unique_ptr<Expression> arraySize,
+                                         std::unique_ptr<Expression> arraySize,
                                          Variable::Storage storage);
     std::unique_ptr<Statement> convertVarDeclaration(std::unique_ptr<Variable> var,
                                                      std::unique_ptr<Expression> value,
                                                      bool addToSymbolTable = true);
     std::unique_ptr<Statement> convertVarDeclaration(int offset, const Modifiers& modifiers,
                                                      const Type* baseType, skstd::string_view name,
-                                                     bool isArray,
                                                      std::unique_ptr<Expression> arraySize,
                                                      std::unique_ptr<Expression> value,
                                                      Variable::Storage storage);
+    StatementArray convertVarDeclarations(int offset,
+                                          const Modifiers& modifiers,
+                                          const Type* baseType,
+                                          std::vector<skstd::string_view> names,
+                                          std::vector<std::unique_ptr<Expression>> sizes,
+                                          std::vector<ASTNode> values,
+                                          VariableStorage storage);
     StatementArray convertVarDeclarations(const ASTNode& decl, Variable::Storage storage);
     void convertFunction(const ASTNode& f);
     std::unique_ptr<Statement> convertStatement(const ASTNode& statement);
@@ -205,8 +227,11 @@ private:
     std::unique_ptr<Statement> convertFor(const ASTNode& f);
     std::unique_ptr<Expression> convertIdentifier(const ASTNode& identifier);
     std::unique_ptr<Statement> convertIf(const ASTNode& s);
+    std::unique_ptr<SkSL::InterfaceBlock> convertInterfaceBlock(int offset, Modifiers modifiers,
+            skstd::string_view typeName, skstd::string_view instanceName,
+            std::vector<VarDeclarations> declarations, std::unique_ptr<Expression> arraySizeExpr,
+            bool isUnsizedArray);
     std::unique_ptr<InterfaceBlock> convertInterfaceBlock(const ASTNode& s);
-    Modifiers convertModifiers(const Modifiers& m);
     std::unique_ptr<Expression> convertPrefixExpression(const ASTNode& expression);
     std::unique_ptr<Statement> convertReturn(int offset, std::unique_ptr<Expression> result);
     std::unique_ptr<Statement> convertReturn(const ASTNode& r);
@@ -281,6 +306,7 @@ private:
     friend class dsl::DSLFunction;
     friend class dsl::DSLVar;
     friend class dsl::DSLWriter;
+    friend void ::test_verifyInterfaceBlockRTAdjust(skiatest::Reporter* r);
 };
 
 }  // namespace SkSL
