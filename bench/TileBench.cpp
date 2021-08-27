@@ -40,17 +40,11 @@ public:
                     SkFilterMode fm,
                     bool doTrans,
                     bool doScale)
-        : fDoTrans(doTrans)
-        , fDoScale(doScale) {
-        SkBitmap bm;
-
-        bm.allocN32Pixels(kWidth, kHeight, true);
-        bm.eraseColor(SK_ColorWHITE);
-
-        create_gradient(&bm);
-
-        fPaint.setShader(bm.makeShader(xTile, yTile, SkSamplingOptions(fm)));
-
+            : fXTile{xTile}
+            , fYTile{yTile}
+            , fFilerMode{fm}
+            , fDoTrans{doTrans}
+            , fDoScale{doScale} {
         fName.printf("constXTile_");
 
         static const char* gTileModeStr[kSkTileModeCount] = { "C", "R", "M", "D" };
@@ -73,6 +67,17 @@ public:
 protected:
     const char* onGetName() override {
         return fName.c_str();
+    }
+
+    void onDelayedSetup() override {
+        SkBitmap bm;
+
+        bm.allocN32Pixels(kWidth, kHeight, true);
+        bm.eraseColor(SK_ColorWHITE);
+
+        create_gradient(&bm);
+
+        fPaint.setShader(bm.makeShader(fXTile, fYTile, SkSamplingOptions(fFilerMode)));
     }
 
     void onDraw(int loops, SkCanvas* canvas) override {
@@ -104,6 +109,9 @@ protected:
     }
 
 private:
+    const SkTileMode fXTile,
+                     fYTile;
+    const SkFilterMode fFilerMode;
     using INHERITED = Benchmark;
 };
 
