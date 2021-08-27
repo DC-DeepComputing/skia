@@ -221,7 +221,6 @@ private:
     std::unique_ptr<Statement> convertVarDeclarationStatement(const ASTNode& s);
     std::unique_ptr<Statement> convertWhile(const ASTNode& w);
     void convertGlobalVarDeclarations(const ASTNode& decl);
-    std::unique_ptr<Block> applyInvocationIDWorkaround(std::unique_ptr<Block> main);
     // returns a statement which converts sk_Position from device to normalized coordinates
     std::unique_ptr<Statement> getNormalizeSkPositionCode();
 
@@ -261,7 +260,6 @@ private:
     // Symbols which have definitions in the include files.
     IRIntrinsicMap* fIntrinsics = nullptr;
     std::unordered_set<const FunctionDeclaration*> fReferencedIntrinsics;
-    int fInvocations;
     std::unordered_set<const Type*> fDefinedStructs;
     std::vector<std::unique_ptr<ProgramElement>>* fProgramElements = nullptr;
     std::vector<const ProgramElement*>*           fSharedElements = nullptr;
