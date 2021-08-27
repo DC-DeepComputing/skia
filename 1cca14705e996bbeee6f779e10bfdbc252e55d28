@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b85c75fc_55bbb059",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "Not 100% sure where to put this comment, since it relates to several spread out areas.\n\nI\u0027m wondering if it\u0027s possible to leverage this new Uniform type more, to simplify the processor index and uniform index iteration patterns, the emitCode generation and the uniform writing.\n\nSpecifically, once setUniforms() is called, the Uniform index within the GrProcessor is constant. But we have to refer back to these indices when we call GrUniformWriter::write(...) and when we findUniform(). If we could somehow pass the Uniform into these functions instead, I wonder if it would read nicer (e.g. writer.writeSkMatrix(p, kViewMatrix, ...)) and avoid needing to do map lookups from the aggregator? A findUniform() update would be aggregator.getMangledUniform(p, kViewMatrix)\n\nI have not tried actually writing code, but just imagining ways to remove magic indices from the calling code.",
+      "range": {
+        "startLine": 150,
+        "startChar": 10,
+        "endLine": 150,
+        "endChar": 18
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4589489d_f231f14b",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "So far this is only used to get the final mangled uniform name for code emission. I can imagine either simplifying this to return just const char* and rename to getFinalUniformName(), or add a comment as to its primary purpose.",
+      "range": {
+        "startLine": 41,
+        "startChar": 25,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce93416_31da3d08",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "TIL you can declare a private inner class and have it be the return type of a public function.",
+      "range": {
+        "startLine": 52,
+        "startChar": 11,
+        "endLine": 52,
+        "endChar": 17
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8795ff8_67427355",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "This is the mandated order for aggregating uniforms, and everything is available on the GrPipeline. Should that have a visit() for all of its GrProcessors instead of repeating this code in several places?",
+      "range": {
+        "startLine": 256,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 44
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2257ec1_b2b915fa",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "\"legacy uniforms\" now right?",
+      "range": {
+        "startLine": 277,
+        "startChar": 29,
+        "endLine": 277,
+        "endChar": 30
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "095993ec_596dfcbf",
+        "filename": "src/gpu/GrUniformDataManager.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "These are fairly sparse right now since most GrProcessors don\u0027t use the new system, but since they are queried every time we set uniform data, I wonder if it would better to switch to a vector and have the GrProc visitor pattern just skip over invalid entries (negative proc index, or void glsl type)?\n\nOnce most procs are converted, there ought to be relatively few null entries, right?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 93
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee4efd9_20a6b8da",
+        "filename": "src/gpu/d3d/GrD3DPipelineState.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "Once everything is using the new uniform aggregators, the added fDataManager.setUniforms() is sufficient and these marked lines will go away?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349984f6_c639e087",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "This will be one of the pending helper functions, right?",
+      "range": {
+        "startLine": 800,
+        "startChar": 12,
+        "endLine": 818,
+        "endChar": 13
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fed1205_9aecea30",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-27T15:51:34Z",
+      "side": 1,
+      "message": "stylistically, wdyt about having these uniforms declared above the Impl definition? That way they read a bit more like the final program flow.\n\nIt doesn\u0027t work as well in the 2 other processors you\u0027ve updated since they forward declare the Impl and have the definition farther away, but for cases like this, I think it reads better.",
+      "range": {
+        "startLine": 886,
+        "startChar": 4,
+        "endLine": 888,
+        "endChar": 70
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
