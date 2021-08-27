@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b719367e_2bc2c30f",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "I didn\u0027t do a kRect here, just relying on layout being consistent with float4. But would be easy to add.",
+      "revId": "7559ad8200a59e5e3e6c5497cd984e0719729291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2153afee_1b7ad374",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "I\u0027m thinking maybe it\u0027d be possible to redo this as a single templated writeUniform() where the template arguments are functions that implement the Layout\u0027s rounding rules rather than as 3 big functions.",
+      "revId": "7559ad8200a59e5e3e6c5497cd984e0719729291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

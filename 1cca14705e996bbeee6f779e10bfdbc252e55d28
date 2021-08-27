@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a906e5d_a59eea74",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "I\u0027m thinking I might remove name from Uniform entirely and changing this to take a name and return the mangled name. Really the name isn\u0027t needed anywhere else.",
+      "parentUuid": "4589489d_f231f14b",
+      "range": {
+        "startLine": 41,
+        "startChar": 25,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5ce93416_31da3d08",
@@ -100,6 +124,30 @@
       "writtenOn": "2021-08-27T15:51:34Z",
       "side": 1,
       "message": "This is the mandated order for aggregating uniforms, and everything is available on the GrPipeline. Should that have a visit() for all of its GrProcessors instead of repeating this code in several places?",
+      "range": {
+        "startLine": 256,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 44
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d512ee8a_0ea3e8d9",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "Makes sense... maybe on programinfo since it also has the GP.",
+      "parentUuid": "e8795ff8_67427355",
       "range": {
         "startLine": 256,
         "startChar": 4,
@@ -158,6 +206,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59868754_154d7bbe",
+        "filename": "src/gpu/GrUniformDataManager.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "Yeah, will revisit these data structures.",
+      "parentUuid": "095993ec_596dfcbf",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 93
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aee4efd9_20a6b8da",
         "filename": "src/gpu/d3d/GrD3DPipelineState.cpp",
         "patchSetId": 15
@@ -169,6 +241,30 @@
       "writtenOn": "2021-08-27T15:51:34Z",
       "side": 1,
       "message": "Once everything is using the new uniform aggregators, the added fDataManager.setUniforms() is sufficient and these marked lines will go away?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f08c7a4_33b4c678",
+        "filename": "src/gpu/d3d/GrD3DPipelineState.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "Yep",
+      "parentUuid": "aee4efd9_20a6b8da",
       "range": {
         "startLine": 54,
         "startChar": 4,
@@ -202,6 +298,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34e7d14f_035a036d",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "Right",
+      "parentUuid": "349984f6_c639e087",
+      "range": {
+        "startLine": 800,
+        "startChar": 12,
+        "endLine": 818,
+        "endChar": 13
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fed1205_9aecea30",
@@ -215,6 +335,30 @@
       "writtenOn": "2021-08-27T15:51:34Z",
       "side": 1,
       "message": "stylistically, wdyt about having these uniforms declared above the Impl definition? That way they read a bit more like the final program flow.\n\nIt doesn\u0027t work as well in the 2 other processors you\u0027ve updated since they forward declare the Impl and have the definition farther away, but for cases like this, I think it reads better.",
+      "range": {
+        "startLine": 886,
+        "startChar": 4,
+        "endLine": 888,
+        "endChar": 70
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf0b9b3_e61f5bba",
+        "filename": "src/gpu/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "In latest PS these have to be after the defn of the Processor, but also need private access. The three have been moved to the constructor.",
+      "parentUuid": "3fed1205_9aecea30",
       "range": {
         "startLine": 886,
         "startChar": 4,

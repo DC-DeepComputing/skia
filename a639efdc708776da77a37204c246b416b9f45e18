@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b43c384_19f4dc4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T21:18:05Z",
+      "side": 1,
+      "message": "Please see PS 15:17:\nhttps://skia-review.googlesource.com/c/skia/+/440841/15..17\n\nThis is WIP, but what do you think of direction? Note that I haven\u0027t addressed the UniformAggregator or UniformDataManager\u0027s data structures yet.\n\nI don\u0027t love the use of offsetof. Using a ptr to the data would require Uniforms to be non-static members of each processor instance. Another alternative could be a ptr to a function that is passed const GrProcessor\u0026, downcasts it, and returns the data. That would allow the Uniforms to be non-members and might open up alternatives to CType. However, I think it would get really tedious writing those functions.\n",
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
