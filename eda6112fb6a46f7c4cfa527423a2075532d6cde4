@@ -34,6 +34,24 @@
       "parentUuid": "7c7cfdea_6076d1ae",
       "revId": "eda6112fb6a46f7c4cfa527423a2075532d6cde4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fca63aa2_60602952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-27T18:17:03Z",
+      "side": 1,
+      "message": "My only concern with removing it is that it will never be implemented until there is a motivator. But it\u0027s hard to experiment and create a motivation when the feature has been deleted and is extremely difficult to bring back.\n\nIt\u0027s a tough balance. There have been times in the past when I wanted to experiment with an idea, just to find out the feature had been deleted, but it\u0027s also a waste of time to try and support everything we could conceivably want to use.\n\nConsidering the fact that geometry shaders are falling more and more out of favor, it\u0027s probably best to not spend too much time on them.",
+      "parentUuid": "0183327a_4ab993dd",
+      "revId": "eda6112fb6a46f7c4cfa527423a2075532d6cde4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
