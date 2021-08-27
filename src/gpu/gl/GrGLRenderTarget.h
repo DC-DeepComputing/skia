@@ -41,8 +41,9 @@ public:
                                                const IDs&,
                                                int stencilBits);
 
-    GrGLuint singleSampleFBOID() const { return fSingleSampleFBOID; }
-    GrGLuint multisampleFBOID() const { return fMultisampleFBOID; }
+    bool isGLFBO0(bool multisample) const {
+        return (multisample ? fMultisampleFBOID : fSingleSampleFBOID) == 0;
+    }
 
     GrBackendRenderTarget getBackendRenderTarget() const override;
 
@@ -58,6 +59,15 @@ public:
 
     bool hasDynamicMSAAAttachment() const { return SkToBool(fDynamicMSAAAttachment); }
     bool ensureDynamicMSAAAttachment();
+
+    void bindFBO(GrGLenum target, bool useMultisampleFBO);
+
+    enum class ResolveDirection : bool {
+        kSingleToMSAA,  // glCaps.canResolveSingleToMSAA() must be true.
+        kMSAAToSingle
+    };
+
+    void bindFBOsForResolve(ResolveDirection);
 
 protected:
     // Constructor for subclasses.
@@ -93,6 +103,7 @@ private:
     GrGLuint    fSingleSampleFBOID;
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
+    bool        fStencilAttachmentIsValid[2] = {false, false};
 
     GrBackendObjectOwnership fRTFBOOwnership;
 
