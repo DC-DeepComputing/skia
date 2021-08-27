@@ -2206,8 +2206,7 @@ void GrGLGpu::flushRenderTargetNoColorWrites(GrGLRenderTarget* target, bool useM
     SkASSERT(target);
     GrGpuResource::UniqueID rtID = target->uniqueID();
     if (fHWBoundRenderTargetUniqueID != rtID || fHWBoundFramebufferIsMSAA != useMultisampleFBO) {
-        this->bindFramebuffer(GR_GL_FRAMEBUFFER, (useMultisampleFBO) ? target->multisampleFBOID()
-                                                                     : target->singleSampleFBOID());
+        target->bindFBOForRendering(useMultisampleFBO);
 #ifdef SK_DEBUG
         // don't do this check in Chromium -- this is causing
         // lots of repeated command buffer flushes when the compositor is

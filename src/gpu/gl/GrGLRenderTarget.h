@@ -59,6 +59,8 @@ public:
     bool hasDynamicMSAAAttachment() const { return SkToBool(fDynamicMSAAAttachment); }
     bool ensureDynamicMSAAAttachment();
 
+    void bindFBOForRendering(bool useMultisampleFBO);
+
 protected:
     // Constructor for subclasses.
     GrGLRenderTarget(GrGLGpu*,
@@ -93,6 +95,7 @@ private:
     GrGLuint    fSingleSampleFBOID;
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
+    bool        fStencilAttachmentIsValid[2] = {false, false};
 
     GrBackendObjectOwnership fRTFBOOwnership;
 
