@@ -33,8 +33,9 @@
 #include "tools/gpu/GpuTimer.h"
 #include "tools/gpu/GrContextFactory.h"
 
-#ifdef SK_XML
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGNode.h"
 #include "src/xml/SkDOM.h"
 #endif
 
@@ -699,7 +700,7 @@ static sk_sp<SkPicture> create_warmup_skp() {
 }
 
 static sk_sp<SkPicture> create_skp_from_svg(SkStream* stream, const char* filename) {
-#ifdef SK_XML
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
     sk_sp<SkSVGDOM> svg = SkSVGDOM::MakeFromStream(*stream);
     if (!svg) {
         exitf(ExitErr::kData, "failed to build svg dom from file %s", filename);

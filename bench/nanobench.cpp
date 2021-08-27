@@ -51,8 +51,9 @@
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
-#ifdef SK_XML
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGNode.h"
 #endif  // SK_XML
 
 #ifdef SK_ENABLE_ANDROID_UTILS
@@ -726,7 +727,7 @@ public:
             return nullptr;
         }
 
-#ifdef SK_XML
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
         SkMemoryStream stream(std::move(data));
         sk_sp<SkSVGDOM> svgDom = SkSVGDOM::MakeFromStream(stream);
         if (!svgDom) {
@@ -746,7 +747,7 @@ public:
         return recorder.finishRecordingAsPicture();
 #else
         return nullptr;
-#endif  // SK_XML
+#endif  // SK_XML && SK_ENABLE_SVG
     }
 
     Benchmark* next() {

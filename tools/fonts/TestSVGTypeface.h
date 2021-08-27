@@ -40,6 +40,8 @@ struct SkAdvancedTypefaceMetrics;
 struct SkScalerContextEffects;
 struct SkScalerContextRec;
 
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
+
 struct SkSVGTestTypefaceGlyphData {
     const char* fSvgResourcePath;
     SkPoint     fOrigin;  // y-down
@@ -157,4 +159,6 @@ private:
     friend class SkTestSVGScalerContext;
 };
 
-#endif
+#endif // defined(SK_XML) && defined(SK_ENABLE_SVG)
+
+#endif // TestSVGTypeface_DEFINED
