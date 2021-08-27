@@ -67,6 +67,9 @@ public:
     DrawAtlasGM() {}
 
 protected:
+    bool runAsBench() const override {
+        return true;
+    }
 
     SkString onShortName() override {
         return SkString("draw-atlas");
