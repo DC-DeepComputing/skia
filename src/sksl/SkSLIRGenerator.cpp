@@ -1369,6 +1369,7 @@ void IRGenerator::checkValid(const Expression& expr) {
             }
             break;
         }
+        case Expression::Kind::kExternalFunctionReference:
         case Expression::Kind::kFunctionReference:
         case Expression::Kind::kTypeReference:
             SkDEBUGFAIL("invalid reference-expression, should have been reported by coerce()");
