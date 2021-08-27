@@ -63,9 +63,9 @@
 #include "src/gpu/ops/GrOp.h"
 #include "src/gpu/ops/GrOvalOpFactory.h"
 #include "src/gpu/ops/GrRegionOp.h"
-#include "src/gpu/ops/GrShadowRRectOp.h"
 #include "src/gpu/ops/GrStrokeRectOp.h"
 #include "src/gpu/ops/GrTextureOp.h"
+#include "src/gpu/ops/ShadowRRectOp.h"
 #include "src/gpu/text/GrSDFTControl.h"
 #include "src/gpu/text/GrTextBlobCache.h"
 #include "src/gpu/v1/PathRenderer.h"
@@ -1199,12 +1199,12 @@ bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
             devSpaceInsetWidth = ambientRRect.width();
         }
 
-        GrOp::Owner op = GrShadowRRectOp::Make(fContext,
-                                               ambientColor,
-                                               viewMatrix,
-                                               ambientRRect,
-                                               devSpaceAmbientBlur,
-                                               devSpaceInsetWidth);
+        GrOp::Owner op = ShadowRRectOp::Make(fContext,
+                                             ambientColor,
+                                             viewMatrix,
+                                             ambientRRect,
+                                             devSpaceAmbientBlur,
+                                             devSpaceInsetWidth);
         if (op) {
             this->addDrawOp(clip, std::move(op));
         }
@@ -1304,12 +1304,12 @@ bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
 
         GrColor spotColor = SkColorToPremulGrColor(rec.fSpotColor);
 
-        GrOp::Owner op = GrShadowRRectOp::Make(fContext,
-                                               spotColor,
-                                               viewMatrix,
-                                               spotShadowRRect,
-                                               2.0f * devSpaceSpotBlur,
-                                               insetWidth);
+        GrOp::Owner op = ShadowRRectOp::Make(fContext,
+                                             spotColor,
+                                             viewMatrix,
+                                             spotShadowRRect,
+                                             2.0f * devSpaceSpotBlur,
+                                             insetWidth);
         if (op) {
             this->addDrawOp(clip, std::move(op));
         }
