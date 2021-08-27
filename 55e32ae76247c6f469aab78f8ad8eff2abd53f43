@@ -16,6 +16,24 @@
       "message": "Great explanation",
       "revId": "55e32ae76247c6f469aab78f8ad8eff2abd53f43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef14602_480a367b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T14:12:42Z",
+      "side": 1,
+      "message": "Honestly, writing it down helped me understand it better too. I ended up cleaning up my \"simplified form\" of the reproducer significantly once I wrote my explanation.",
+      "parentUuid": "bb30dc00_8622d73b",
+      "revId": "55e32ae76247c6f469aab78f8ad8eff2abd53f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
