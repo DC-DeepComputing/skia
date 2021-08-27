@@ -501,6 +501,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::createProgram(GrGLuint programID) {
     return GrGLProgram::Make(fGpu,
                              fUniformHandles,
                              programID,
+                             fUniformAggregator.snapUniforms(),
                              fUniformHandler.fUniforms,
                              fUniformHandler.fSamplers,
                              std::move(fGPImpl),

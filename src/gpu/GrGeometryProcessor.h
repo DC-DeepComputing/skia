@@ -292,6 +292,7 @@ public:
         EmitArgs(GrGLSLVertexBuilder* vertBuilder,
                  GrGLSLFPFragmentBuilder* fragBuilder,
                  GrGLSLVaryingHandler* varyingHandler,
+                 const GrUniformAggregator* uniformAggregator,
                  GrGLSLUniformHandler* uniformHandler,
                  const GrShaderCaps* caps,
                  const GrGeometryProcessor& geomProc,
@@ -301,6 +302,7 @@ public:
                 : fVertBuilder(vertBuilder)
                 , fFragBuilder(fragBuilder)
                 , fVaryingHandler(varyingHandler)
+                , fUniformAggregator(uniformAggregator)
                 , fUniformHandler(uniformHandler)
                 , fShaderCaps(caps)
                 , fGeomProc(geomProc)
@@ -310,6 +312,7 @@ public:
         GrGLSLVertexBuilder* fVertBuilder;
         GrGLSLFPFragmentBuilder* fFragBuilder;
         GrGLSLVaryingHandler* fVaryingHandler;
+        const GrUniformAggregator* fUniformAggregator;
         GrGLSLUniformHandler* fUniformHandler;
         const GrShaderCaps* fShaderCaps;
         const GrGeometryProcessor& fGeomProc;
