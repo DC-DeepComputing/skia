@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7678513b_5bfa1a8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T13:41:11Z",
+      "side": 1,
+      "message": "I think it might be possible to do this without a huge restructuring of how variables are declared. What if we just moved out the \"Detect the declaration of magical variables\" section of `convertVarDeclaration` into a separate function in IRGenerator? That would allow DSL to call it directly as needed, and keeps the structure of things the same.",
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82464500_37e12e78",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T13:41:11Z",
+      "side": 1,
+      "message": "I didn\u0027t understand why we were passing around ASTNodes at first, but I think this is the explanation? We need to support\n\n    `int x\u003d0, y\u003dx;`\n\nThe expression for `y` depends on convertVarDeclaration for `x` having run; otherwise `x` won\u0027t exist in the symbol table.\n\nSo that explains the motivation. I am still not really happy about the outcome here, even now that I understand it. It feels awkward. Is there another way to structure this that could let us pass Expressions?\n\nAlso, it seems strange to introduce a refactor for the benefit of DSL that relies on synthesizing empty AST nodes. Isn\u0027t DSLParser getting rid of ASTNode, fairly soon? What happens at that point?",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 425,
+        "endChar": 31
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e18f61e_bce1f1ff",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T13:41:11Z",
+      "side": 1,
+      "message": "We shouldn\u0027t rely on friend unless there\u0027s no other choice. Instead, create accessor functions for the things you need. IRGenerator isn\u0027t a public-facing API so it\u0027s harmless and safe to let any part of SkSL inspect the RTHeight fields via an accessor. This limits the exposure to reading-only, and just those fields, instead of full read/write access to every field.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 0
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "760f26a6_67876b6c",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T13:41:11Z",
+      "side": 1,
+      "message": "Wrap the name/size/value in one struct and make a vector of that struct. \n\nParallel vectors are less efficient (3x the number of malloc calls) and more difficult to reason about (what do you do if the lengths aren\u0027t the same?)",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 37
+      },
+      "revId": "86c72897086f5df3702ab8e3bd53e67f5a62e64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

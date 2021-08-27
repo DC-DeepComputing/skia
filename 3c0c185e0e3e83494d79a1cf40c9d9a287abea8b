@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "125bb589_dcad4dc5",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T13:41:11Z",
+      "side": 0,
+      "message": "nit: I suspect the removal of this redundant param could be landed as a separate small CL?",
+      "range": {
+        "startLine": 279,
+        "startChar": 50,
+        "endLine": 279,
+        "endChar": 63
+      },
+      "revId": "3c0c185e0e3e83494d79a1cf40c9d9a287abea8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
