@@ -14,10 +14,11 @@
 
 namespace SkSL {
 
-void FunctionDefinition::FinalizeFunctionBody(const Context& context,
-                                              const FunctionDeclaration& function,
-                                              Statement* body,
-                                              IntrinsicSet* referencedIntrinsics) {
+std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& context,
+                                                                int offset,
+                                                                const FunctionDeclaration& function,
+                                                                std::unique_ptr<Statement> body,
+                                                                bool builtin) {
     class Finalizer : public ProgramWriter {
     public:
         Finalizer(const Context& context, const FunctionDeclaration& function,
@@ -29,6 +30,11 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
         ~Finalizer() override {
             SkASSERT(!fBreakableLevel);
             SkASSERT(!fContinuableLevel);
+        }
+
+        bool visit(Statement& stmt) {
+            this->visitStatement(stmt);
+            return fIsValid;
         }
 
         bool functionReturnsValue() const {
@@ -45,6 +51,11 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
             return INHERITED::visitExpression(expr);
         }
 
+        void reportError(int offset, std::string message) {
+            fIsValid = false;
+            fContext.fErrors->error(offset, std::move(message));
+        }
+
         bool visitStatement(Statement& stmt) override {
             switch (stmt.kind()) {
                 case Statement::Kind::kReturn: {
@@ -52,9 +63,8 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
                     // normalization, so SkASSERT that we aren't doing that. If this becomes an
                     // issue, we can add normalization before each return statement.
                     if (fContext.fConfig->fKind == ProgramKind::kVertex && fFunction.isMain()) {
-                        fContext.fErrors->error(
-                                stmt.fOffset,
-                                "early returns from vertex programs are not supported");
+                        this->reportError(stmt.fOffset,
+                                          "early returns from vertex programs are not supported");
                     }
 
                     // Verify that the return statement matches the function's return type.
@@ -67,15 +77,15 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
                         } else {
                             // Returning something from a function with a void return type.
                             returnStmt.setExpression(nullptr);
-                            fContext.fErrors->error(returnStmt.fOffset,
-                                                    "may not return a value from a void function");
+                            this->reportError(returnStmt.fOffset,
+                                              "may not return a value from a void function");
                         }
                     } else {
                         if (this->functionReturnsValue()) {
                             // Returning nothing from a function with a non-void return type.
-                            fContext.fErrors->error(returnStmt.fOffset,
-                                                    "expected function to return '" +
-                                                    fFunction.returnType().displayName() + "'");
+                            this->reportError(returnStmt.fOffset,
+                                              "expected function to return '" +
+                                              fFunction.returnType().displayName() + "'");
                         }
                     }
                     break;
@@ -97,14 +107,14 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
                 }
                 case Statement::Kind::kBreak:
                     if (!fBreakableLevel) {
-                        fContext.fErrors->error(stmt.fOffset,
-                                                "break statement must be inside a loop or switch");
+                        this->reportError(stmt.fOffset,
+                                          "break statement must be inside a loop or switch");
                     }
                     break;
                 case Statement::Kind::kContinue:
                     if (!fContinuableLevel) {
-                        fContext.fErrors->error(stmt.fOffset,
-                                                "continue statement must be inside a loop");
+                        this->reportError(stmt.fOffset,
+                                          "continue statement must be inside a loop");
                     }
                     break;
                 default:
@@ -116,6 +126,8 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
     private:
         const Context& fContext;
         const FunctionDeclaration& fFunction;
+        // is the function error-free?
+        bool fIsValid = true;
         // which intrinsics have we encountered in this function
         IntrinsicSet* fReferencedIntrinsics;
         // how deeply nested we are in breakable constructs (for, do, switch).
@@ -126,12 +138,16 @@ void FunctionDefinition::FinalizeFunctionBody(const Context& context,
         using INHERITED = ProgramWriter;
     };
 
-    Finalizer(context, function, referencedIntrinsics).visitStatement(*body);
+    IntrinsicSet referencedIntrinsics;
+    Finalizer(context, function, &referencedIntrinsics).visit(*body);
 
     if (Analysis::CanExitWithoutReturningValue(function, *body)) {
         context.fErrors->error(function.fOffset, "function '" + function.name() +
                                                  "' can exit without returning a value");
     }
+
+    return std::make_unique<FunctionDefinition>(offset, &function, builtin, std::move(body),
+                                                std::move(referencedIntrinsics));
 }
 
 }  // namespace SkSL
