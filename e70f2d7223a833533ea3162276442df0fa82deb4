@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dffb74d4_c282f9b7",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T21:19:39Z",
+      "side": 1,
+      "message": "Nice, I looked at this and I missed it",
+      "range": {
+        "startLine": 208,
+        "startChar": 15,
+        "endLine": 208,
+        "endChar": 19
+      },
+      "revId": "e70f2d7223a833533ea3162276442df0fa82deb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
