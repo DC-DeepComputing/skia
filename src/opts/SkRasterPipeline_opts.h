@@ -2904,6 +2904,8 @@ namespace lowp {
     using I16 =  int16_t __attribute__((ext_vector_type(16)));
     using I32 =  int32_t __attribute__((ext_vector_type(16)));
     using U32 = uint32_t __attribute__((ext_vector_type(16)));
+    using I64 =  int64_t __attribute__((ext_vector_type(16)));
+    using U64 = uint64_t __attribute__((ext_vector_type(16)));
     using F   = float    __attribute__((ext_vector_type(16)));
 #else
     using U8  = uint8_t  __attribute__((ext_vector_type(8)));
@@ -2911,6 +2913,8 @@ namespace lowp {
     using I16 =  int16_t __attribute__((ext_vector_type(8)));
     using I32 =  int32_t __attribute__((ext_vector_type(8)));
     using U32 = uint32_t __attribute__((ext_vector_type(8)));
+    using I64 =  int64_t __attribute__((ext_vector_type(8)));
+    using U64 = uint64_t __attribute__((ext_vector_type(8)));
     using F   = float    __attribute__((ext_vector_type(8)));
 #endif
 
@@ -3118,6 +3122,12 @@ SI F if_then_else(I32 c, F t, F e) {
 SI F max(F x, F y) { return if_then_else(x < y, y, x); }
 SI F min(F x, F y) { return if_then_else(x < y, x, y); }
 
+SI I32 if_then_else(I32 c, I32 t, I32 e) {
+    return (t & c) | (e & ~c);
+}
+SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+
 SI F mad(F f, F m, F a) { return f*m+a; }
 SI U32 trunc_(F x) { return (U32)cast<I32>(x); }
 
@@ -3188,6 +3198,50 @@ SI F floor_(F x) {
     return roundtrip - if_then_else(roundtrip > x, F(1), F(0));
 #endif
 }
+
+
+/*
+ _NEON2SSE_INLINE int16x8_t vqrdmulhq_s16(int16x8_t a, int16x8_t b) // VQRDMULH.S16 q0,q0,q0
+{
+    __m128i mask, res;
+    _NEON2SSE_ALIGN_16 static const uint16_t cmask[] = {0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000};
+    res = _mm_mulhrs_epi16 (a, b);
+    mask = _mm_cmpeq_epi16 (res, *(__m128i*)cmask);
+    return _mm_xor_si128 (res,  mask); //res saturated for 0x8000
+}
+
+ */
+SI I16 QMult(I16 a, I16 b) {
+#if defined(JUMPER_IS_HSW) || defined(JUMPER_IS_SKX)
+    /*{
+        const U16 mask(0x8000);
+        const U16 unsaturated = _mm256_mulhrs_epi16(a, b);
+        return _mm256_xor_si256(unsaturated, _mm256_cmpeq_epi16(unsaturated, mask));
+    }*/
+    return _mm256_mulhrs_epi16(a, b);
+#elif defined(JUMPER_IS_SSE41) || defined(JUMPER_IS_AVX)
+    /*for (size_t i = 0; i < N; i++) {
+        int32_t temp = (int32_t)a[i] * (int32_t)b[i];
+        SkASSERT(-(1<<20) < temp && temp < (1<<20) - 1);
+    }
+
+    {
+        const U16 mask(0x8000);
+        const U16 unsaturated = _mm_mulhrs_epi16(a, b);
+        return _mm_xor_si128(unsaturated, _mm_cmpeq_epi16(unsaturated, mask));
+    }
+     */
+    return _mm_mulhrs_epi16(a, b);
+#elif defined(SK_CPU_ARM64)
+    return vqrdmulhq_s16(a, b);
+#elif defined(JUMPER_IS_NEON)
+    return vqrdmulhq_s16(a, b);
+#else
+    const I32 roundingTerm = 1 << 14;
+    return cast<I16>((cast<I32>(a) * cast<I32>(b) + roundingTerm) >> 15);
+#endif
+}
+
 SI F fract(F x) { return x - floor_(x); }
 SI F abs_(F x) { return sk_bit_cast<F>( sk_bit_cast<I32>(x) & 0x7fffffff ); }
 
@@ -3381,6 +3435,19 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, F x, F y) {
     return trunc_(y)*ctx->stride + trunc_(x);
 }
 
+template <typename T>
+SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, I32 x, I32 y) {
+    // Exclusive -> inclusive.
+    const I32 w =  ctx->width - 1,
+              h = ctx->height - 1;
+
+    U32 ax = cast<U32>(min(max(0, x), w)),
+        ay = cast<U32>(min(max(0, y), h));
+
+    *ptr = (const T*)ctx->pixels;
+    return ay * ctx->stride + ax;
+}
+
 template <typename V, typename T>
 SI V load(const T* ptr, size_t tail) {
     V v = 0;
@@ -3490,6 +3557,10 @@ SI void from_8888(U32 rgba, U16* r, U16* g, U16* b, U16* a) {
     *g = cast_U16(rgba & 65535) >>  8;
     *b = cast_U16(rgba >>   16) & 255;
     *a = cast_U16(rgba >>   16) >>  8;
+}
+
+SI void from_8888(U32 rgba, I16* r, I16* g, I16* b, I16* a) {
+    from_8888(rgba, (U16*)r, (U16*)g, (U16*)b, (U16*)a);
 }
 
 SI void load_8888_(const uint32_t* ptr, size_t tail, U16* r, U16* g, U16* b, U16* a) {
@@ -3987,6 +4058,205 @@ STAGE_GP(evenly_spaced_2_stop_gradient, const SkRasterPipeline_EvenlySpaced2Stop
                    &r,&g,&b,&a);
 }
 
+SI F   cast  (U32 v) { return      __builtin_convertvector((I32)v,   F); }
+SI void from_8888(U32 _8888, F* r, F* g, F* b, F* a) {
+    *r = cast((_8888      ) & 0xff) * (1/255.0f);
+    *g = cast((_8888 >>  8) & 0xff) * (1/255.0f);
+    *b = cast((_8888 >> 16) & 0xff) * (1/255.0f);
+    *a = cast((_8888 >> 24)       ) * (1/255.0f);
+}
+
+#if 1
+STAGE_GP(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+    F partitionX = x - 0.5f,
+      partitionY = y - 0.5f;
+
+    I32 qx = cast<I32>(floor_(65536.0f * partitionX + 0.5f)),
+        qy = cast<I32>(floor_(65536.0f * partitionY + 0.5f));
+
+    I32 sx = qx >> 16,
+        sy = qy >> 16;
+
+    I16 tx = cast<I16>(qx ^ 0x8000),
+        ty = cast<I16>(qy ^ 0x8000);
+
+    auto lerpX = [&](I16 left, I16 right) -> I16 {
+        I16 width  = (right - left) << 7,
+            middle = (right + left) << 7,
+            blend  = QMult(tx, width) + middle;
+
+        return (I16)(((U16)(blend + 1)) >> 1);
+    };
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    I16 leftR, leftG, leftB, leftA;
+    from_8888(gather<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    I16 rightR, rightG, rightB, rightA;
+    from_8888(gather<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+
+    I16 topR = lerpX(leftR, rightR),
+        topG = lerpX(leftG, rightG),
+        topB = lerpX(leftB, rightB),
+        topA = lerpX(leftA, rightA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    from_8888(gather<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+    from_8888(gather<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+
+    I16 bottomR = lerpX(leftR, rightR),
+        bottomG = lerpX(leftG, rightG),
+        bottomB = lerpX(leftB, rightB),
+        bottomA = lerpX(leftA, rightA);
+
+    // left and right have values in bits 0 - 13 (14 bits)
+    auto lerpY = [&](I16 top, I16 bottom) -> U16 {
+        I16 width  = bottom - top,
+            middle = bottom + top,
+            blend  = QMult(ty, width) + middle;
+
+        return ((U16)(blend + 0x80)) >> 8;
+    };
+
+    r = lerpY(topR, bottomR);
+    g = lerpY(topG, bottomG);
+    b = lerpY(topB, bottomB);
+    a = lerpY(topA, bottomA);
+}
+#else
+// No loss bilerp. This only has quantization error and no truncation error.
+STAGE_GP(bilerp_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
+
+    U16 r1, g1, b1, a1;
+    {
+    F partitionX = x - 0.5f,
+      partitionY = y - 0.5f;
+
+    I32 qx = cast<I32>(floor_(65536.0f * partitionX + 0.5f)),
+        qy = cast<I32>(floor_(65536.0f * partitionY + 0.5f));
+
+    I32 sx = qx >> 16,
+        sy = qy >> 16;
+
+    I32 tx = qx & 0xffff,
+        ty = qy & 0xffff;
+
+    auto lerpX = [&](I16 left, I16 right) -> I32 {
+        I32 width = cast<I32>(right - left),
+            shift = cast<I32>(left) << 16;
+        return tx * width + shift;
+    };
+
+    const uint32_t* ptr;
+    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    I16 leftR, leftG, leftB, leftA;
+    from_8888(gather<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
+    I16 rightR, rightG, rightB, rightA;
+    from_8888(gather<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+
+    I32 topR = lerpX(leftR, rightR),
+        topG = lerpX(leftG, rightG),
+        topB = lerpX(leftB, rightB),
+        topA = lerpX(leftA, rightA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
+    from_8888(gather<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
+
+    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
+    from_8888(gather<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+
+    I32 bottomR = lerpX(leftR, rightR),
+        bottomG = lerpX(leftG, rightG),
+        bottomB = lerpX(leftB, rightB),
+        bottomA = lerpX(leftA, rightA);
+
+    // left and right have values in bits 0 - 13 (14 bits)
+    auto lerpY = [&](I32 top, I32 bottom) -> U16 {
+        I64 width = cast<I64>(bottom - top),
+            shift = cast<I64>(top) << 16,
+            blend  = cast<I64>(ty) * width + shift;
+        return cast<U16>((U64)(blend + (1LL << 31)) >> 32);
+    };
+
+    r1 = lerpY(topR, bottomR);
+    g1 = lerpY(topG, bottomG);
+    b1 = lerpY(topB, bottomB);
+    a1 = lerpY(topA, bottomA);
+    }
+
+    F r2, g2, b2, a2;
+    {
+        // (cx,cy) are the center of our sample.
+        F cx = x,
+          cy = y;
+
+        // All sample points are at the same fractional offset (fx,fy).
+        // They're the 4 corners of a logical 1x1 pixel surrounding (x,y) at (0.5,0.5) offsets.
+        F fx = fract(cx + 0.5f),
+          fy = fract(cy + 0.5f);
+
+        // We'll accumulate the color of all four samples into {r,g,b,a} directly.
+        r2 = g2 = b2 = a2 = 0;
+
+        for (float py = -0.5f; py <= +0.5f; py += 1.0f)
+        for (float px = -0.5f; px <= +0.5f; px += 1.0f) {
+            // (x,y) are the coordinates of this sample point.
+            F x = cx + px,
+              y = cy + py;
+
+            // ix_and_ptr() will clamp to the image's bounds for us.
+            const uint32_t* ptr;
+            U32 ix = ix_and_ptr(&ptr, ctx, x,y);
+
+            F sr,sg,sb,sa;
+            from_8888(gather<U32>(ptr, ix), &sr,&sg,&sb,&sa);
+
+            // In bilinear interpolation, the 4 pixels at +/- 0.5 offsets from the sample pixel center
+            // are combined in direct proportion to their area overlapping that logical query pixel.
+            // At positive offsets, the x-axis contribution to that rectangle is fx,
+            // or (1-fx) at negative x.  Same deal for y.
+            F sx = (px > 0) ? fx : 1.0f - fx,
+              sy = (py > 0) ? fy : 1.0f - fy,
+              area = sx * sy;
+
+            r2 += sr * area;
+            g2 += sg * area;
+            b2 += sb * area;
+            a2 += sa * area;
+        }
+    }
+    for (size_t i = 0; i < N; i++) {
+        if (std::abs(r1[i] - floor(r2[i] * 255.0f + 0.5f)) >= 2
+         || std::abs(g1[i] - floor(g2[i] * 255.0f + 0.5f)) >= 2
+         || std::abs(b1[i] - floor(b2[i] * 255.0f + 0.5f)) >= 2
+         || std::abs(a1[i] - floor(a2[i] * 255.0f + 0.5f)) >= 2) {
+            SkDebugf("i: %zu x: %g y: %g\n", i, x[i], y[i]);
+            SkDebugf("r1: %d  r2: %g\n", r1[i], floor(r2[1] * 255.0f + 0.5f));
+            SkDebugf("g1: %d  g2: %g\n", g1[i], floor(g2[1] * 255.0f + 0.5f));
+            SkDebugf("b1: %d  b2: %g\n", b1[i], floor(b2[1] * 255.0f + 0.5f));
+            SkDebugf("a1: %d  a2: %g\n", a1[i], floor(a2[1] * 255.0f + 0.5f));
+        }
+    }
+    if (false) {
+        r = r1;
+        g = g1;
+        b = b1;
+        a = a1;
+    } else {
+        r = cast<U16>(floor_(r2 * 255.0f + 0.5f));
+        g = cast<U16>(floor_(g2 * 255.0f + 0.5f));
+        b = cast<U16>(floor_(b2 * 255.0f + 0.5f));
+        a = cast<U16>(floor_(a2 * 255.0f + 0.5f));
+    }
+}
+#endif
+
 STAGE_GG(xy_to_unit_angle, Ctx::None) {
     F xabs = abs_(x),
       yabs = abs_(y);
@@ -4117,7 +4387,6 @@ STAGE_PP(swizzle, void* ctx) {
     NOT_IMPLEMENTED(repeat_y)
     NOT_IMPLEMENTED(negate_x)
     NOT_IMPLEMENTED(bilinear)
-    NOT_IMPLEMENTED(bilerp_clamp_8888)
     NOT_IMPLEMENTED(bicubic)
     NOT_IMPLEMENTED(bicubic_clamp_8888)
     NOT_IMPLEMENTED(bilinear_nx)
