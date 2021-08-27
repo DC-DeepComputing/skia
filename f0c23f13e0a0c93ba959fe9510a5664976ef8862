@@ -16,6 +16,24 @@
       "message": "Hmm. Do we need to run the finalize pass here? The block that we\u0027re using as the body of this function is \"user\" code, right? (Although it\u0027s extremely unlikely to come up - this only applies to geometry shaders, which aren\u0027t likely to use blend intrinsics).",
       "revId": "f0c23f13e0a0c93ba959fe9510a5664976ef8862",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a030c87b_f0d3be2c",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-27T13:44:42Z",
+      "side": 1,
+      "message": "Specifically, if you added a call to one of the blend intrinsics in the the main() function of GeometryNoGSInvocations.geom, I think we\u0027d fail to detect/include it?",
+      "parentUuid": "95e81172_815aea80",
+      "revId": "f0c23f13e0a0c93ba959fe9510a5664976ef8862",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
