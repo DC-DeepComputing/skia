@@ -60,7 +60,7 @@ public:
     bool hasDynamicMSAAAttachment() const { return SkToBool(fDynamicMSAAAttachment); }
     bool ensureDynamicMSAAAttachment();
 
-    void bindFBOForRendering(bool useMultisampleFBO);
+    void bindFBOForRendering(GrGLenum fboTarget, bool useMultisampleFBO);
 
     enum class ResolveDirection : bool {
         kSingleToMSAA,  // glCaps.canResolveSingleToMSAA() must be true.
@@ -68,8 +68,6 @@ public:
     };
 
     void bindFBOsForResolve(ResolveDirection);
-
-    void bindSurfaceFBOForPixelOps(GrGLenum fboTarget);
 
 protected:
     // Constructor for subclasses.
@@ -106,6 +104,7 @@ private:
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
     bool        fStencilAttachmentIsValid[2] = {false, false};
+    bool        fDMSAARenderToTextureFBOIsMultisample = false;
 
     GrBackendObjectOwnership fRTFBOOwnership;
 

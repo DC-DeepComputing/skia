@@ -2204,7 +2204,7 @@ void GrGLGpu::flushRenderTargetNoColorWrites(GrGLRenderTarget* target, bool useM
     SkASSERT(target);
     GrGpuResource::UniqueID rtID = target->uniqueID();
     if (fHWBoundRenderTargetUniqueID != rtID || fHWBoundFramebufferIsMSAA != useMultisampleFBO) {
-        target->bindFBOForRendering(useMultisampleFBO);
+        target->bindFBOForRendering(GR_GL_FRAMEBUFFER, useMultisampleFBO);
 #ifdef SK_DEBUG
         // don't do this check in Chromium -- this is causing
         // lots of repeated command buffer flushes when the compositor is
@@ -2352,7 +2352,7 @@ void GrGLGpu::resolveRenderFBOs(GrGLRenderTarget* rt, const SkIRect& resolveRect
         } else {
             SkASSERT(caps.invalidateFBType() == GrGLCaps::kDiscard_InvalidateFBType);
             // glDiscardFramebuffer only accepts GL_FRAMEBUFFER.
-            rt->bindFBOForRendering(readBufferIsMSAA);
+            rt->bindFBOForRendering(GR_GL_FRAMEBUFFER, readBufferIsMSAA);
             GL_CALL(DiscardFramebuffer(GR_GL_FRAMEBUFFER, 1, &colorDiscardAttachment));
         }
     }
@@ -2883,7 +2883,7 @@ void GrGLGpu::bindSurfaceFBOForPixelOps(GrSurface* surface, int mipLevel, GrGLen
             texture->baseLevelWasBoundToFBO();
         }
     } else {
-        rt->bindSurfaceFBOForPixelOps(fboTarget);
+        rt->bindFBOForRendering(fboTarget, rt->numSamples() > 1);
     }
 }
 

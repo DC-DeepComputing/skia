@@ -151,21 +151,19 @@ bool GrGLRenderTarget::ensureDynamicMSAAAttachment() {
         return false;
     }
 
+    if (resourceProvider->caps()->msaaResolvesAutomatically()) {
+        if (GrGLTexture* glTex = static_cast<GrGLTexture*>(this->asTexture())) {
+            fMultisampleFBOID = fSingleSampleFBOID;
+            return true;
+        }
+    }
+
     GL_CALL(GenFramebuffers(1, &fMultisampleFBOID));
     if (!fMultisampleFBOID) {
         return false;
     }
 
     this->getGLGpu()->bindFramebuffer(GR_GL_FRAMEBUFFER, fMultisampleFBOID);
-
-    if (resourceProvider->caps()->msaaResolvesAutomatically()) {
-        if (GrGLTexture* glTex = static_cast<GrGLTexture*>(this->asTexture())) {
-            GL_CALL(FramebufferTexture2DMultisample(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0,
-                                                    glTex->target(), glTex->textureID(),
-                                                    0 /*mipMapLevel*/, internalSampleCount));
-            return true;
-        }
-    }
 
     fDynamicMSAAAttachment.reset(
             static_cast<GrGLAttachment*>(resourceProvider->getDiscardableMSAAAttachment(
@@ -180,34 +178,58 @@ bool GrGLRenderTarget::ensureDynamicMSAAAttachment() {
     return true;
 }
 
-void GrGLRenderTarget::bindFBOForRendering(bool useMultisampleFBO) {
+void GrGLRenderTarget::bindFBOForRendering(GrGLenum fboTarget, bool useMultisampleFBO) {
     GrGLuint fbo = useMultisampleFBO ? fMultisampleFBOID : fSingleSampleFBOID;
-    this->getGLGpu()->bindFramebuffer(GR_GL_FRAMEBUFFER, fbo);
+    this->getGLGpu()->bindFramebuffer(fboTarget, fbo);
+
+    if (fSingleSampleFBOID != 0 &&
+        fSingleSampleFBOID == fMultisampleFBOID &&
+        useMultisampleFBO != fDMSAARenderToTextureFBOIsMultisample) {
+        auto* glTex = static_cast<GrGLTexture*>(this->asTexture());
+        if (useMultisampleFBO) {
+            int internalSampleCount =
+                    this->getGpu()->caps()->internalMultisampleCount(this->backendFormat());
+            GL_CALL(FramebufferTexture2DMultisample(fboTarget,
+                                                    GR_GL_COLOR_ATTACHMENT0,
+                                                    glTex->target(),
+                                                    glTex->textureID(),
+                                                    0 /*mipMapLevel*/,
+                                                    internalSampleCount));
+        } else {
+            GL_CALL(FramebufferTexture2D(fboTarget,
+                                         GR_GL_COLOR_ATTACHMENT0,
+                                         glTex->target(),
+                                         glTex->textureID(),
+                                         0 /*mipMapLevel*/));
+        }
+        fDMSAARenderToTextureFBOIsMultisample = useMultisampleFBO;
+        fStencilAttachmentIsValid[useMultisampleFBO] = false;
+    }
 
     if (!fStencilAttachmentIsValid[useMultisampleFBO]) {
         if (auto stencil = this->getStencilAttachment(useMultisampleFBO)) {
             const GrGLAttachment* glStencil = static_cast<const GrGLAttachment*>(stencil);
-            GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+            GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             glStencil->renderbufferID()));
             if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
-                GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                GL_CALL(FramebufferRenderbuffer(fboTarget,
                                                 GR_GL_DEPTH_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
                                                 glStencil->renderbufferID()));
             } else {
-                GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                GL_CALL(FramebufferRenderbuffer(fboTarget,
                                                 GR_GL_DEPTH_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
                                                 0));
             }
         } else {
-            GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+            GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             0));
-            GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+            GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_DEPTH_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             0));
@@ -215,7 +237,7 @@ void GrGLRenderTarget::bindFBOForRendering(bool useMultisampleFBO) {
 #ifdef SK_DEBUG
         if (!this->getGLGpu()->glCaps().skipErrorChecks()) {
             GrGLenum status;
-            GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+            GL_CALL_RET(status, CheckFramebufferStatus(fboTarget));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
                 // This can fail if the context has been asynchronously abandoned (see
                 // skbug.com/5200).
@@ -245,22 +267,13 @@ void GrGLRenderTarget::bindFBOsForResolve(GrGLGpu::ResolveDirection resolveDirec
     }
 }
 
-void GrGLRenderTarget::bindSurfaceFBOForPixelOps(GrGLenum fboTarget) {
-    if (this->numSamples() > 1) {
-        this->getGLGpu()->bindFramebuffer(fboTarget, fMultisampleFBOID);
-    } else {
-        this->getGLGpu()->bindFramebuffer(fboTarget, fSingleSampleFBOID);
-    }
-}
-
 void GrGLRenderTarget::onRelease() {
     if (GrBackendObjectOwnership::kBorrowed != fRTFBOOwnership) {
         GrGLGpu* gpu = this->getGLGpu();
         if (fSingleSampleFBOID) {
-            SkASSERT(fSingleSampleFBOID != fMultisampleFBOID);
             gpu->deleteFramebuffer(fSingleSampleFBOID);
         }
-        if (fMultisampleFBOID) {
+        if (fMultisampleFBOID && fMultisampleFBOID != fSingleSampleFBOID) {
             SkASSERT(fMultisampleFBOID != fSingleSampleFBOID);
             gpu->deleteFramebuffer(fMultisampleFBOID);
         }
