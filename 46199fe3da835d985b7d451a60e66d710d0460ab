@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "186eb7aa_dcd87e92",
+        "filename": "src/sksl/ir/SkSLSymbolTable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T19:19:05Z",
+      "side": 1,
+      "message": "Tiny nit: seems weird to pass a const* when callers generally have a const\u0026 and we store a const\u0026.",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "46199fe3da835d985b7d451a60e66d710d0460ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
