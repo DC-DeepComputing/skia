@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8890ca92_1fb3c914",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-27T12:09:25Z",
+      "side": 1,
+      "message": "Exciting that this is making progress!\n\nBe sure you have emsdk 2.0.20 installed and activated. That might address some of those pre-existing linking errors.",
+      "revId": "49312889586480ffcac2780502f21ccac9995fcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a037ac31_116c39bb",
         "filename": "modules/canvaskit/compile.sh",
         "patchSetId": 2
@@ -14,6 +31,30 @@
       "writtenOn": "2021-08-26T21:15:12Z",
       "side": 1,
       "message": "Probably don\u0027t need this.",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 60
+      },
+      "revId": "49312889586480ffcac2780502f21ccac9995fcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54abcc00_b796b553",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-27T12:09:25Z",
+      "side": 1,
+      "message": "I agree. If anything, emscripten provides some webgpu headers already that we should use.",
+      "parentUuid": "a037ac31_116c39bb",
       "range": {
         "startLine": 362,
         "startChar": 0,
