@@ -1,8 +1,9 @@
 ### Compilation failed:
 
-error: 3: only one primitive-type layout qualifier is allowed
-error: 4: only one primitive-type layout qualifier is allowed
-error: 5: only one primitive-type layout qualifier is allowed
-error: 6: only one primitive-type layout qualifier is allowed
-error: 7: only one primitive-type layout qualifier is allowed
-5 errors
+error: 2: 'points' is not a valid layout qualifier
+error: 3: 'lines' is not a valid layout qualifier
+error: 4: 'line_strip' is not a valid layout qualifier
+error: 5: 'lines_adjacency' is not a valid layout qualifier
+error: 6: 'triangles' is not a valid layout qualifier
+error: 7: 'triangle_strip' is not a valid layout qualifier
+6 errors
