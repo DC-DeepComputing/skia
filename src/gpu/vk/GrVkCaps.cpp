@@ -699,10 +699,6 @@ void GrVkCaps::initShaderCaps(const VkPhysicalDeviceProperties& properties,
     // RelaxedPrecision. Rewriting the multiply as a sum of vector*scalar fixes this. (skia:11769)
     shaderCaps->fRewriteMatrixVectorMultiply = (kARM_VkVendor == properties.vendorID);
 
-    // FIXME: http://skbug.com/7733: Disable geometry shaders until Intel/Radeon GMs draw correctly.
-    // shaderCaps->fGeometryShaderSupport =
-    //         shaderCaps->fGSInvocationsSupport = features.features.geometryShader;
-
     shaderCaps->fDualSourceBlendingSupport = features.features.dualSrcBlend;
 
     shaderCaps->fIntegerSupport = true;
