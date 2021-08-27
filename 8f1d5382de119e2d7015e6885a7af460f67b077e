@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4e5a6ef_45032646",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-27T22:02:35Z",
+      "side": 1,
+      "message": "This doesn\u0027t appear to fix the adreno dmsaa hang, but might be worth keeping around to test other issues?",
+      "revId": "8f1d5382de119e2d7015e6885a7af460f67b077e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
