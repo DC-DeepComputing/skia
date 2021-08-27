@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1a2848_b3b271ec",
+        "filename": "src/gpu/GrSPIRVVaryingHandler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T20:11:07Z",
+      "side": 1,
+      "message": "Simple enough to use a ternary now",
+      "range": {
+        "startLine": 99,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 9
+      },
+      "revId": "ac676e59310f9b7150af6f9ac10cd818cd134d3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60cfea35_bf811898",
+        "filename": "src/gpu/GrShaderVar.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T20:11:07Z",
+      "side": 1,
+      "message": "This isn\u0027t used AFAICS, feel free to delete",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 17
+      },
+      "revId": "ac676e59310f9b7150af6f9ac10cd818cd134d3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6185b0f8_3bdc1507",
+        "filename": "src/gpu/vk/GrVkVaryingHandler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T20:11:07Z",
+      "side": 1,
+      "message": "Simple enough to use a ternary now",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 9
+      },
+      "revId": "ac676e59310f9b7150af6f9ac10cd818cd134d3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
