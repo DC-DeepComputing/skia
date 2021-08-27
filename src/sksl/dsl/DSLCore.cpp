@@ -198,38 +198,31 @@ public:
     static DSLGlobalVar InterfaceBlock(const DSLModifiers& modifiers, skstd::string_view typeName,
                                        SkTArray<DSLField> fields, skstd::string_view varName,
                                        int arraySize, PositionInfo pos) {
-        // We need to create a new struct type for the interface block, but we don't want it in the
-        // symbol table. Since dsl::Struct automatically sticks it in the symbol table, we create it
-        // the old fashioned way with MakeStructType.
-        std::vector<SkSL::Type::Field> skslFields;
-        skslFields.reserve(fields.count());
-        for (const DSLField& field : fields) {
-            skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
-                                                   &field.fType.skslType()));
+        std::unique_ptr<Expression> arraySizeExpr;
+        if (arraySize && arraySize != SkSL::Type::kUnsizedArray) {
+            arraySizeExpr = DSLExpression(arraySize).release();
         }
-        const SkSL::Type* structType = DSLWriter::SymbolTable()->takeOwnershipOfSymbol(
-                SkSL::Type::MakeStructType(/*offset=*/-1, typeName, std::move(skslFields)));
-        DSLType varType = arraySize > 0 ? Array(structType, arraySize) : DSLType(structType);
-        DSLGlobalVar var(modifiers, varType, !varName.empty() ? varName : typeName);
-        // Interface blocks can't be declared, so we always need to mark the var declared ourselves.
-        // We do this only when fDSLMarkVarDeclared is false, so we don't double-declare it.
-        if (!DSLWriter::Settings().fDSLMarkVarsDeclared) {
-            DSLWriter::MarkDeclared(var);
+        std::vector<SkSL::IRGenerator::VarDeclarations> skslFields;
+        for (DSLField& field : fields) {
+            SkSL::IRGenerator::VarDeclarations decls;
+            decls.fModifiers = field.fModifiers.fModifiers;
+            decls.fType = &field.fType.skslType();
+            decls.fNames.push_back(field.fName);
+            decls.fSizes.push_back(nullptr);
+            decls.fValues.push_back(ASTNode());
+            skslFields.push_back(std::move(decls));
         }
-        DSLWriter::ProgramElements().push_back(std::make_unique<SkSL::InterfaceBlock>(/*offset=*/-1,
-                DSLWriter::Var(var), typeName, varName, arraySize, DSLWriter::SymbolTable()));
-        if (varName.empty()) {
-            const std::vector<SkSL::Type::Field>& structFields = structType->fields();
-            const SkSL::Variable* skslVar = DSLWriter::Var(var);
-            for (size_t i = 0; i < structFields.size(); ++i) {
-                DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
-                                                                            skslVar,
-                                                                            i));
-            }
-        } else {
-            AddToSymbolTable(var);
+        std::unique_ptr<SkSL::InterfaceBlock> intf =
+                DSLWriter::IRGenerator().convertInterfaceBlock(/*offset=*/-1,
+                    modifiers.fModifiers, typeName, varName, std::move(skslFields),
+                    std::move(arraySizeExpr), arraySize == SkSL::Type::kUnsizedArray);
+        GetErrorReporter().reportPendingErrors(pos);
+        DSLGlobalVar result;
+        if (intf) {
+            result.fVar = &intf->variable();
+            DSLWriter::ProgramElements().push_back(std::move(intf));
         }
-        return var;
+        return result;
     }
 
     static DSLPossibleStatement Return(DSLExpression value, PositionInfo pos) {
