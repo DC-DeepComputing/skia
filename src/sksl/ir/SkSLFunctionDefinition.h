@@ -40,11 +40,16 @@ public:
      *     - `break` and `continue` statements must be in reasonable places.
      *     - non-void functions are required to return a value on all paths.
      *     - vertex main() functions don't allow early returns.
+     *
+     * This will return a FunctionDefinition even if an error is detected; this leads to better
+     * diagnostics overall. (Returning null here leads to spurious "function 'f()' was not defined"
+     * errors when trying to call a function with an error in it.)
      */
-    static void FinalizeFunctionBody(const Context& context,
-                                     const FunctionDeclaration& function,
-                                     Statement* body,
-                                     IntrinsicSet* referencedIntrinsics);
+    static std::unique_ptr<FunctionDefinition> Convert(const Context& context,
+                                                       int offset,
+                                                       const FunctionDeclaration& function,
+                                                       std::unique_ptr<Statement> body,
+                                                       bool builtin);
 
     const FunctionDeclaration& declaration() const {
         return *fDeclaration;
