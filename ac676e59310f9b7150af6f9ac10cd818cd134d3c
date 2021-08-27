@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d472a42_d17c21aa",
+        "filename": "src/gpu/GrShaderVar.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-27T20:20:45Z",
+      "side": 1,
+      "message": "Ack, I thought this was in SkSL, nvm",
+      "parentUuid": "e4e6331e_aac4f145",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 17
+      },
+      "revId": "ac676e59310f9b7150af6f9ac10cd818cd134d3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6185b0f8_3bdc1507",
