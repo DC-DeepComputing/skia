@@ -52,6 +52,24 @@
       "parentUuid": "0183327a_4ab993dd",
       "revId": "eda6112fb6a46f7c4cfa527423a2075532d6cde4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c8f628_816e15dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-27T18:18:16Z",
+      "side": 1,
+      "message": "Also, I didn\u0027t love the current implementation. Maybe if we come up with a better way of handling varyings for tessellation, we can then bring back geometry shaders with a cleaner implementation.",
+      "parentUuid": "fca63aa2_60602952",
+      "revId": "eda6112fb6a46f7c4cfa527423a2075532d6cde4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
