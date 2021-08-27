@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7cfdea_6076d1ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-08-27T17:45:18Z",
+      "side": 1,
+      "message": "I have had plans to (some day) try out new ideas that might want to use geometry shaders. Geometry shaders are nice to have around for experimental reasons -- I\u0027ve also used them for local experiments that I never submitted. Would it be too difficult to keep them around?",
+      "revId": "eda6112fb6a46f7c4cfa527423a2075532d6cde4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
