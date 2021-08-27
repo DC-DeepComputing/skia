@@ -124,6 +124,8 @@ void GrMtlGpu::destroyResources() {
 
     fStagingBufferManager.reset();
 
+    fMSAALoadManager.destroyResources();
+
     fResourceProvider.destroyResources();
 
     fQueue = nil;
@@ -141,15 +143,16 @@ GrOpsRenderPass* GrMtlGpu::onGetOpsRenderPass(
     // framebuffer to use.
     GrMtlRenderTarget* mtlRT = static_cast<GrMtlRenderTarget*>(renderTarget);
 
+    // TODO: support DMSAA
     SkASSERT(!useMSAASurface ||
              (renderTarget->numSamples() > 1));
 
-    // TODO: Make use of discardable MSAA
     bool withResolve = false;
 
-    // Figure out if we can use a Resolve store action for this render pass.
-    if (useMSAASurface && mtlRT->resolveAttachment() &&
-        this->mtlCaps().storeAndMultisampleResolveSupport()) {
+    // Figure out if we can use a Resolve store action for this render pass. When we set up
+    // the render pass we'll update the color load/store ops since we don't want to ever load
+    // or store the msaa color attachment, but may need to for the resolve attachment.
+    if (useMSAASurface && this->mtlCaps().renderTargetSupportsDiscardableMSAA(mtlRT)) {
         withResolve = true;
     }
 
@@ -1504,7 +1507,7 @@ void GrMtlGpu::onResolveRenderTarget(GrRenderTarget* target, const SkIRect&) {
     SkASSERT(target->numSamples() > 1);
     GrMtlRenderTarget* rt = static_cast<GrMtlRenderTarget*>(target);
 
-    if (rt->resolveAttachment() && this->mtlCaps().storeAndMultisampleResolveSupport()) {
+    if (rt->resolveAttachment() && this->mtlCaps().renderTargetSupportsDiscardableMSAA(rt)) {
         // We would have resolved the RT during the render pass.
         return;
     }
@@ -1528,6 +1531,12 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
     cmdEncoder->setLabel(@"resolveTexture");
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
+}
+
+bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
+                                   GrMtlAttachment* src,
+                                   const SkIRect& srcRect) {
+    return fMSAALoadManager.loadMSAAFromResolve(this, dst, src, srcRect);
 }
 
 #if GR_TEST_UTILS
