@@ -22,6 +22,30 @@
       },
       "revId": "46199fe3da835d985b7d451a60e66d710d0460ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0680ee34_a621cb96",
+        "filename": "src/sksl/ir/SkSLSymbolTable.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-27T19:34:34Z",
+      "side": 1,
+      "message": "I thought that was the preferred style, to use a pointer to make it more clear that it gets retained. But I don\u0027t have any objection to changing it.",
+      "parentUuid": "186eb7aa_dcd87e92",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "46199fe3da835d985b7d451a60e66d710d0460ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
