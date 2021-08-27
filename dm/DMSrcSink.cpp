@@ -75,6 +75,7 @@
 #if defined(SK_XML)
     #include "include/svg/SkSVGCanvas.h"
     #include "modules/svg/include/SkSVGDOM.h"
+    #include "modules/svg/include/SkSVGNode.h"
     #include "src/xml/SkXMLWriter.h"
 #endif
 
