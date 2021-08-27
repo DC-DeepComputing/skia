@@ -46,6 +46,30 @@
       },
       "revId": "f6afd2b186bb2b5845253d7544c8df831aed219a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "798b161b_8086cccd",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-27T17:05:27Z",
+      "side": 1,
+      "message": "I\u0027m going to try something a little more radical. Instead of a writer, have GrProcessor::Uniform store the location within itself to where the data is. Might need a ctype like thing to support, e.g. SkMatrix to column-major float3x3.",
+      "parentUuid": "9a4676ce_26a05820",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "f6afd2b186bb2b5845253d7544c8df831aed219a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
