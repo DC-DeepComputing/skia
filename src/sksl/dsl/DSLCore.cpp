@@ -121,12 +121,12 @@ public:
         return ir.call(/*offset=*/-1, ir.convertIdentifier(-1, name), std::move(argArray));
     }
 
-    static DSLStatement Break() {
-        return SkSL::BreakStatement::Make(/*offset=*/-1);
+    static DSLStatement Break(PositionInfo pos) {
+        return SkSL::BreakStatement::Make(pos.offset());
     }
 
-    static DSLStatement Continue() {
-        return SkSL::ContinueStatement::Make(/*offset=*/-1);
+    static DSLStatement Continue(PositionInfo pos) {
+        return SkSL::ContinueStatement::Make(pos.offset());
     }
 
     static DSLStatement Declare(DSLVar& var, PositionInfo pos) {
@@ -225,9 +225,11 @@ public:
             const std::vector<SkSL::Type::Field>& structFields = structType->fields();
             const SkSL::Variable* skslVar = DSLWriter::Var(var);
             for (size_t i = 0; i < structFields.size(); ++i) {
-                DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
-                                                                            skslVar,
-                                                                            i));
+                if (structFields[i].fName != Compiler::RTADJUST_NAME) {
+                    DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
+                                                                                skslVar,
+                                                                                i));
+                }
             }
         } else {
             AddToSymbolTable(var);
@@ -323,12 +325,12 @@ DSLExpression sk_Position() {
     return DSLCore::sk_Position();
 }
 
-DSLStatement Break() {
-    return DSLCore::Break();
+DSLStatement Break(PositionInfo pos) {
+    return DSLCore::Break(pos);
 }
 
-DSLStatement Continue() {
-    return DSLCore::Continue();
+DSLStatement Continue(PositionInfo pos) {
+    return DSLCore::Continue(pos);
 }
 
 // Logically, we'd want the variable's initial value to appear on here in Declare, since that
