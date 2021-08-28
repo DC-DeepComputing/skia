@@ -231,10 +231,14 @@ void DSLWriter::DefaultErrorReporter::handleError(const char* msg, PositionInfo 
 }
 
 const SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
-    if (!var.fVar) {
+    if (!var.fInitialized) {
+        SkASSERT(!var.fVar);
+        var.fInitialized = true;
         if (var.storage() != SkSL::VariableStorage::kParameter) {
-            DSLWriter::IRGenerator().checkVarDeclaration(/*offset=*/-1, var.fModifiers.fModifiers,
-                                                         &var.fType.skslType(), var.storage());
+            DSLWriter::IRGenerator().checkVarDeclaration(/*offset=*/-1,
+                                                         var.fModifiers.fModifiers,
+                                                         &var.fType.skslType(),
+                                                         var.storage());
         }
         std::unique_ptr<SkSL::Variable> skslvar = DSLWriter::IRGenerator().convertVar(
                                                                           /*offset=*/-1,
@@ -245,19 +249,21 @@ const SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
                                                                           /*arraySize=*/nullptr,
                                                                           var.storage());
         SkSL::Variable* varPtr = skslvar.get();
-        // We can't call VarDeclaration::Convert directly here, because the IRGenerator has special
-        // treatment for sk_FragColor that we want to preserve in DSL. We also do not want the
-        // variable added to the symbol table for several reasons - DSLParser handles the symbol
-        // table itself, parameters don't go into the symbol table until after the
-        // FunctionDeclaration is created which makes this the wrong spot for them, and outside of
-        // DSLParser we don't even need DSL variables to show up in the symbol table in the first
-        // place.
-        var.fDeclaration = DSLWriter::IRGenerator().convertVarDeclaration(
-                                                                 std::move(skslvar),
-                                                                 var.fInitialValue.releaseIfValid(),
-                                                                 /*addToSymbolTable=*/false);
-        if (var.fDeclaration) {
-            var.fVar = varPtr;
+        if (var.storage() != SkSL::VariableStorage::kParameter) {
+            // We can't call VarDeclaration::Convert directly here, because the IRGenerator has
+            // special treatment for sk_FragColor that we want to preserve in DSL. We also do not
+            // want the variable added to the symbol table for several reasons - DSLParser handles
+            // the symbol table itself, parameters don't go into the symbol table until after the
+            // FunctionDeclaration is created which makes this the wrong spot for them, and outside
+            // of DSLParser we don't even need DSL variables to show up in the symbol table in the
+            // first place.
+            var.fDeclaration = DSLWriter::IRGenerator().convertVarDeclaration(
+                    std::move(skslvar), var.fInitialValue.releaseIfValid(),
+                    /*addToSymbolTable=*/false);
+            if (var.fDeclaration) {
+                var.fVar = varPtr;
+                var.fInitialized = true;
+            }
         }
         ReportErrors();
     }
