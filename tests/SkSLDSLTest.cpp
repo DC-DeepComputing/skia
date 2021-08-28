@@ -566,7 +566,7 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLType, r, ctxInfo) {
     }
 
     {
-        ExpectError error(r, "multidimensional arrays are not permitted");
+        ExpectError error(r, "multi-dimensional arrays are not supported");
         Array(Array(kFloat_Type, 2), 2);
     }
 }
@@ -2042,7 +2042,7 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLRTAdjust, r, ctxInfo) {
     {
         AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared(),
                                SkSL::ProgramKind::kVertex);
-        ExpectError error(r, "symbol 'sk_RTAdjust' was already defined");
+        ExpectError error(r, "duplicate definition of 'sk_RTAdjust'");
         InterfaceBlock(kUniform_Modifier, "uniforms1",
                        { Field(kInt_Type, "unused1"), Field(kFloat4_Type, "sk_RTAdjust") });
         InterfaceBlock(kUniform_Modifier, "uniforms2",
