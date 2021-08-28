@@ -8,6 +8,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLPoison.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
 namespace SkSL {
