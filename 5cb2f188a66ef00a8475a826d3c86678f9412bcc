@@ -39,6 +39,30 @@
       },
       "revId": "5cb2f188a66ef00a8475a826d3c86678f9412bcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93021b75_aaabf7e6",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-29T18:31:56Z",
+      "side": 1,
+      "message": "We don\u0027t assert that its state matches - we only check that fVar is null when fInitialized is false. It\u0027s legal for fVar to be null when fInitialized is true, and that\u0027s exactly the state this is intended to address. Basically, the intent is \"when you already tried to initialize, but failed to create a var for some reason, don\u0027t keep trying (and therefore keep reporting errors about the same thing)\". This change fixes a bunch of duplicate error reports.\n\nI\u0027ll add a comment to clarify.",
+      "parentUuid": "80ce890c_285e001a",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 0
+      },
+      "revId": "5cb2f188a66ef00a8475a826d3c86678f9412bcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
