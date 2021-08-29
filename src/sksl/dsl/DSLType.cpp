@@ -213,6 +213,10 @@ DSLType Array(const DSLType& base, int count, PositionInfo pos) {
         DSLWriter::ReportError("multi-dimensional arrays are not supported", pos);
         return kPoison_Type;
     }
+    if (base.skslType() == *DSLWriter::Context().fTypes.fVoid) {
+        DSLWriter::ReportError("type 'void' may not be used in an array", pos);
+        return kPoison_Type;
+    }
     return DSLWriter::SymbolTable()->addArrayDimension(&base.skslType(), count);
 }
 
