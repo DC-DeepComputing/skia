@@ -13,8 +13,6 @@
 
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLStatement.h"
-#include "src/sksl/SkSLASTFile.h"
-#include "src/sksl/SkSLASTNode.h"
 #include "src/sksl/SkSLOperators.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -260,8 +258,6 @@ private:
     }
 
     Program::Inputs fInputs;
-
-    std::unique_ptr<ASTFile> fFile;
 
     std::shared_ptr<SymbolTable> fSymbolTable = nullptr;
     // Symbols which have definitions in the include files.

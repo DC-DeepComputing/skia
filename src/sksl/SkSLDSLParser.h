@@ -134,8 +134,6 @@ private:
     // don't need to call any of these outside of the parser. The function declarations in the .cpp
     // file have comments describing the grammar rules.
 
-    ASTNode::ID precision();
-
     SKSL_INT arraySize();
 
     bool declaration();

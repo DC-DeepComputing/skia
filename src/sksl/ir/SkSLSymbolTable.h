@@ -13,6 +13,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "include/sksl/SkSLErrorReporter.h"
+#include "src/sksl/SkSLContext.h"
 
 #include <forward_list>
 #include <memory>
