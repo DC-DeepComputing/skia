@@ -356,8 +356,11 @@ SKSL_INT DSLParser::arraySize() {
         this->error(next, "array size must be positive");
         return 1;
     } else {
+        int errorCount = GetErrorReporter().errorCount();
         this->expression();
-        this->error(next, "expected int literal");
+        if (GetErrorReporter().errorCount() == errorCount) {
+            this->error(next, "expected int literal");
+        }
         return 1;
     }
 }
