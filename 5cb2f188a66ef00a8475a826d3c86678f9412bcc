@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c91c0f1_f0c12ce0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-29T15:34:39Z",
+      "side": 1,
+      "message": "Everything LGTM but I\u0027d like a little more info about why fInitialized is needed now.",
+      "revId": "5cb2f188a66ef00a8475a826d3c86678f9412bcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80ce890c_285e001a",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-29T15:34:39Z",
+      "side": 1,
+      "message": "This appears to be the only time we take action on `fInitialized` and we assert that its state matches `fVar`. We used to use `fVar` directly, but presumably we can\u0027t use it directly anymore--why not? Because of poison?\n\n(If so, can we just check for \"var is null or var is Poison/var type is Invalid\" instead of having a new member?)",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 0
+      },
+      "revId": "5cb2f188a66ef00a8475a826d3c86678f9412bcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
