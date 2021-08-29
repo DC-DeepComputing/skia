@@ -16,6 +16,24 @@
       "message": "Do you think it\u0027s worth adding a case to SkSLDSLTest?",
       "revId": "cb9c9249435d6863828ab152a7b0b6cc72d4a007",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df03b6ee_be0f9a1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-29T18:55:37Z",
+      "side": 1,
+      "message": "Every one of the error reporting CLs I\u0027m sending out are a reaction to existing tests, where our error reporting behavior substantially differs from SkSLParser\u0027s. That\u0027s why none of them have tests attached; the existing tests are already catching these issues.",
+      "parentUuid": "d74e6191_04de43a4",
+      "revId": "cb9c9249435d6863828ab152a7b0b6cc72d4a007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
