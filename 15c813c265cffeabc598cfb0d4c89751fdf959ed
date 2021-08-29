@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9537edf_532e05e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-29T19:20:24Z",
+      "side": 1,
+      "message": "That error is coming from Type::convertArraySize which does a ton of other useful checks too... are we not getting any of those checks (or, are these checks duplicated) in DSL? Can we get DSL to use that code path?",
+      "revId": "15c813c265cffeabc598cfb0d4c89751fdf959ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
