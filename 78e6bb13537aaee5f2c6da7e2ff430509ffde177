@@ -16,6 +16,24 @@
       "message": "When it is preferable to return nullopt versus Poison? I don\u0027t have any intuition for how the two behaviors differ.",
       "revId": "78e6bb13537aaee5f2c6da7e2ff430509ffde177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbf13ccd_77818e63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-29T18:39:54Z",
+      "side": 1,
+      "message": "Poison will cause it to continue processing things, but mostly ignore errors related to the poison value. nullopt will stop things dead.\n\nSince we only introduced poison recently, most of the spots where we\u0027re using nullopt are probably just historical. I don\u0027t know if there are any good reasons to use nullopt over poison, but I\u0027m not confident enough in that to just switch over wholesale and am proceeding more cautiously.",
+      "parentUuid": "3a49f7bc_c794eef3",
+      "revId": "78e6bb13537aaee5f2c6da7e2ff430509ffde177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
