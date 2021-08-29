@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a49f7bc_c794eef3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-29T15:48:25Z",
+      "side": 1,
+      "message": "When it is preferable to return nullopt versus Poison? I don\u0027t have any intuition for how the two behaviors differ.",
+      "revId": "78e6bb13537aaee5f2c6da7e2ff430509ffde177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
