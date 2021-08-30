@@ -222,7 +222,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			}
 		} else if b.matchGpu("Intel") {
 			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926
-			sampleCount = 0
+			sampleCount = 4
 		} else if b.os("ChromeOS") {
 			glPrefix = "gles"
 		}
@@ -234,7 +234,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			if sampleCount > 0 {
 				configs = append(configs, fmt.Sprintf("%smsaa%d", glPrefix, sampleCount))
 				// Temporarily limit the bots we test dynamic MSAA on.
-				if b.gpu("QuadroP400", "MaliG77") || b.matchOs("Mac") {
+				if b.gpu("QuadroP400", "MaliG77", "IntelIris640") || b.matchOs("Mac") {
 					configs = append(configs, fmt.Sprintf("%sdmsaa", glPrefix))
 				}
 			}
@@ -358,11 +358,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.extraConfig("Vulkan") {
 			configs = []string{"vk"}
 			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926, skia:9023
-			if !b.matchGpu("Intel") {
-				configs = append(configs, "vkmsaa4")
-			}
 			// Temporarily limit the bots we test dynamic MSAA on.
-			if b.gpu("QuadroP400", "MaliG77") {
+			configs = append(configs, "vkmsaa4")
+			if b.gpu("QuadroP400", "MaliG77", "IntelIris640") {
 				configs = append(configs, "vkdmsaa")
 			}
 		}
