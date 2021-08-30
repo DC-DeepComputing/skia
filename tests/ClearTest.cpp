@@ -23,7 +23,7 @@
 #include "src/gpu/GrColor.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/ops/GrClearOp.h"
+#include "src/gpu/ops/ClearOp.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
@@ -253,7 +253,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             auto opsTask = sdc->getOpsTask();
             REPORTER_ASSERT(reporter, opsTask->numOpChains() == 1);
 
-            const GrClearOp& clearOp = opsTask->getChain(0)->cast<GrClearOp>();
+            const skgpu::v1::ClearOp& clearOp = opsTask->getChain(0)->cast<skgpu::v1::ClearOp>();
 
             constexpr std::array<float, 4> kExpected { 0, 0, 0, 1 };
             REPORTER_ASSERT(reporter, clearOp.color() == kExpected);
@@ -279,7 +279,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
             auto opsTask = sdc->getOpsTask();
             REPORTER_ASSERT(reporter, opsTask->numOpChains() == 1);
 
-            const GrClearOp& clearOp = opsTask->getChain(0)->cast<GrClearOp>();
+            const skgpu::v1::ClearOp& clearOp = opsTask->getChain(0)->cast<skgpu::v1::ClearOp>();
 
             constexpr std::array<float, 4> kExpected { 1, 1, 1, 1 };
             REPORTER_ASSERT(reporter, clearOp.color() == kExpected);

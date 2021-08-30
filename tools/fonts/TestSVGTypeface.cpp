@@ -30,6 +30,7 @@
 #include "include/private/SkTemplates.h"
 #include "include/utils/SkNoDrawCanvas.h"
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGNode.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
