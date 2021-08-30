@@ -63,6 +63,30 @@
       },
       "revId": "cf8625733adccfa8d9f6ddb9176b4a1fb5988bd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8ca4a8_db4af0ed",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-30T19:58:24Z",
+      "side": 1,
+      "message": "although I think I had SkBitmapDevice handle it since SkRasterClip::isRect() is used more internally for whether or not the clip mask stored in fBW or fAA is rectangular, which is orthogonal to whether or not there\u0027s a shader.  While SkBitmapDevice\u0027s isRect() is just used for signalling the overall clip type up to SkCanvas, which *should* incorporate the shader so it\u0027s properly marked as complex.\n\nSo after a little more consideration, I think it should stare where I added that check.",
+      "parentUuid": "c09b8f91_32b30247",
+      "range": {
+        "startLine": 711,
+        "startChar": 31,
+        "endLine": 711,
+        "endChar": 53
+      },
+      "revId": "cf8625733adccfa8d9f6ddb9176b4a1fb5988bd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
