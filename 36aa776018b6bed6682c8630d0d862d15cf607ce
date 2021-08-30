@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a15e65da_43b738e2",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-30T21:57:12Z",
+      "side": 1,
+      "message": "Please fix (either uncomment or delete)",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 2
+      },
+      "revId": "36aa776018b6bed6682c8630d0d862d15cf607ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77e92219_638d417a",
+        "filename": "include/sksl/DSLFunction.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-30T21:57:12Z",
+      "side": 1,
+      "message": "It\u0027s probably fine to leave it as-is since it sounds like we aren\u0027t focused on rewriting things in raw DSL much anymore. Maybe leave a comment acknowledging the issue.",
+      "parentUuid": "9267b03e_0930ae83",
+      "range": {
+        "startLine": 43,
+        "startChar": 73,
+        "endLine": 43,
+        "endChar": 89
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "968a58d8_291ffbe1",
         "filename": "include/sksl/SkSLErrorReporter.h",
         "patchSetId": 4
