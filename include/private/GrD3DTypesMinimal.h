@@ -9,7 +9,7 @@
 #define GrD3DTypesPriv_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/d3d/GrD3DTypesMinimal.h"
+#include "include/gpu/d3d/GrD3DDependentTypes.h"
 
 class GrD3DResourceState;
 

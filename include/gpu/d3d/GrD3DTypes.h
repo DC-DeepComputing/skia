@@ -22,7 +22,7 @@
 // prepared to rename those identifiers. Otherwise use GrD3DTypesMinimal.h.
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/d3d/GrD3DTypesMinimal.h"
+#include "include/gpu/d3d/GrD3DDependentTypes.h"
 #include <d3d12.h>
 #include <dxgi1_4.h>
 
