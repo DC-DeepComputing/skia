@@ -112,6 +112,9 @@ bool GrDrawingManager::flush(
     }
 
     SkDEBUGCODE(this->validate());
+    if (auto direct = fContext->asDirectContext()) {
+        direct->resetContext();
+    }
 
     // As of now we only short-circuit if we got an explicit list of surfaces to flush.
     if (!proxies.empty() && !info.fNumSemaphores && !info.fFinishedProc &&
