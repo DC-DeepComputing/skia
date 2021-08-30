@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c80be1_0d6d2136",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-30T14:10:39Z",
+      "side": 1,
+      "message": "This seems kinda weird, can\u0027t we just look at the return value from expression() and see if it\u0027s got a value or not?",
+      "range": {
+        "startLine": 359,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 60
+      },
+      "revId": "0656321793a6b367d332cf4d3c499da80457a8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
