@@ -4153,7 +4153,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // (crbug.com/527565, crbug.com/983926)
     if (ctxInfo.vendor() == GrGLVendor::kIntel ||
         ctxInfo.angleVendor() == GrGLVendor::kIntel) {
-        fMSFBOType = kNone_MSFBOType;
+     //   fMSFBOType = kNone_MSFBOType;
     }
 
     // ANGLE doesn't support do-while loops.
