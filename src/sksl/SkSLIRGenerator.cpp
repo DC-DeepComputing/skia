@@ -204,7 +204,7 @@ int IRGenerator::convertArraySize(const Type& type, int offset, const ASTNode& s
 void IRGenerator::checkVarDeclaration(int offset, const Modifiers& modifiers, const Type* baseType,
                                       Variable::Storage storage) {
     if (this->strictES2Mode() && baseType->isArray()) {
-        this->errorReporter().error(offset, "array size must appear after variable name");
+//        this->errorReporter().error(offset, "array size must appear after variable name");
     }
 
     if (baseType->componentType().isOpaque() && storage != Variable::Storage::kGlobal) {
