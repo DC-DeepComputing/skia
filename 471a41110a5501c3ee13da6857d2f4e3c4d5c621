@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e5e5ec9_d2c3284a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-30T14:08:00Z",
+      "side": 1,
+      "message": "How do you actually declare an array? This looks like it will always downgrade array types to their base type.",
+      "revId": "471a41110a5501c3ee13da6857d2f4e3c4d5c621",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
