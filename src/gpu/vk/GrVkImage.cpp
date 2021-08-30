@@ -22,6 +22,10 @@ GrVkImage::GrVkImage(const GrVkGpu* gpu,
         , fInitialQueueFamily(info.fCurrentQueueFamily)
         , fMutableState(std::move(mutableState))
         , fIsBorrowed(GrBackendObjectOwnership::kBorrowed == ownership) {
+   // GrBackendTexture* blah = new GrBackendTexture();
+   // SkDebugf("is valid: %d\n", blah->isValid());
+  //  void** blah2 = nullptr;
+  //  void* blah3 = *blah2;
     SkASSERT(fMutableState->getImageLayout() == fInfo.fImageLayout);
     SkASSERT(fMutableState->getQueueFamilyIndex() == fInfo.fCurrentQueueFamily);
 #ifdef SK_DEBUG

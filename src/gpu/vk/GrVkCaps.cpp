@@ -1338,7 +1338,7 @@ void GrVkCaps::FormatInfo::initSampleCounts(const GrVkInterface* interface,
     }
     if (kIntel_VkVendor == physProps.vendorID) {
         // MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926
-        return;
+       // return;
     }
     if (flags & VK_SAMPLE_COUNT_2_BIT) {
         fColorSampleCounts.push_back(2);
