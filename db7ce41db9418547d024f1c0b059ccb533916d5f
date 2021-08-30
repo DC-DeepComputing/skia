@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9267b03e_0930ae83",
+        "filename": "include/sksl/DSLFunction.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T21:14:16Z",
+      "side": 1,
+      "message": "Yes, the variadic constructors lack position info. I don\u0027t know of a way to solve this - you can fake default parameters with variadic templates by checking the type of the last parameter, but that only allows you to detect the presence of the extra parameter. It doesn\u0027t let you fill it in with Position::Capture() (which of course has to run in the calling context). Is there some way to do this I\u0027m not aware of?\n\nIn any case I don\u0027t think it\u0027s the end of the world, as you\u0027ll still get a stack trace pointing you right to the error.",
+      "parentUuid": "ea85c019_59efea9a",
+      "range": {
+        "startLine": 43,
+        "startChar": 73,
+        "endLine": 43,
+        "endChar": 89
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "968a58d8_291ffbe1",
         "filename": "include/sksl/SkSLErrorReporter.h",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-30T03:07:32Z",
       "side": 1,
       "message": "There\u0027s probably no reason not to make this an int32. Alignment will likely prevent the 2 bytes after this from being used for anything else.",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 11
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a74f693_cda097ad",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T21:14:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "968a58d8_291ffbe1",
       "range": {
         "startLine": 71,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "457de042_459be860",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T21:14:16Z",
+      "side": 1,
+      "message": "I had considered that approach, but didn\u0027t like it either given that this is ostensibly a public API. Not only do I think it would be unclear to people why they might need to ignore some errors, letting them ignore arbitrary errors could potentially result in some weird and possibly even dangerous behaviors as the compiler follows untested code paths with broken code.\n\nI think maybe the best way to address this is to move the poison check higher up so that it never even makes it into handleError. Tell me what you think.",
+      "parentUuid": "0d413362_4c9c43c7",
+      "range": {
+        "startLine": 995,
+        "startChar": 0,
+        "endLine": 995,
+        "endChar": 78
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f076a41_8672819b",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4fb02be_53ed2dd5",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T21:14:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f076a41_8672819b",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 32
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57723674_8217f0e1",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-08-30T03:07:32Z",
       "side": 1,
       "message": "Maybe belongs in a different CL than this one?",
+      "range": {
+        "startLine": 1199,
+        "startChar": 0,
+        "endLine": 1200,
+        "endChar": 33
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39baaf4_f25f1408",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T21:14:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57723674_8217f0e1",
       "range": {
         "startLine": 1199,
         "startChar": 0,
