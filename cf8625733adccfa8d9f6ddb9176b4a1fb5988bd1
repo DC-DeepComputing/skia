@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a647659_29b6b2a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-30T19:30:24Z",
+      "side": 1,
+      "message": "Will tackle SkAAClip in another CL since that gets pretty hefty.",
+      "revId": "cf8625733adccfa8d9f6ddb9176b4a1fb5988bd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
