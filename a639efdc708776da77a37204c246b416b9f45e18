@@ -16,6 +16,70 @@
       "message": "Please see PS 15:17:\nhttps://skia-review.googlesource.com/c/skia/+/440841/15..17\n\nThis is WIP, but what do you think of direction? Note that I haven\u0027t addressed the UniformAggregator or UniformDataManager\u0027s data structures yet.\n\nI don\u0027t love the use of offsetof. Using a ptr to the data would require Uniforms to be non-static members of each processor instance. Another alternative could be a ptr to a function that is passed const GrProcessor\u0026, downcasts it, and returns the data. That would allow the Uniforms to be non-members and might open up alternatives to CType. However, I think it would get really tedious writing those functions.\n",
       "revId": "a639efdc708776da77a37204c246b416b9f45e18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4186a70d_167efddd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-30T13:53:48Z",
+      "side": 1,
+      "message": "I agree; offsetof and CType look a little awkward in the uniform definition, but I think it wins out for conciseness and makes the uniform value writing a lot simpler.\n\nI also like that it makes the uniform data spec directly connected to the C++ code, so if those values are re-arranged, etc., it just works. There\u0027s no magic offsets or indices that the GrProc has to remember to use or update.\n\nGiven that, I think this direction should be further fleshed out and am liking that the multi-virtual GrUniformWriter is gone.",
+      "parentUuid": "3b43c384_19f4dc4e",
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9c98fa9_6bcc917c",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-30T13:53:48Z",
+      "side": 1,
+      "message": "We should make the documentation obvious that this refers to the offset to the uniforms\u0027 data within the GrProcessor, and not an offset into a UBO or the uniform index.",
+      "range": {
+        "startLine": 209,
+        "startChar": 32,
+        "endLine": 209,
+        "endChar": 42
+      },
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c23448_4a48e533",
+        "filename": "src/gpu/gl/GrGLProgramDataManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-30T13:53:48Z",
+      "side": 1,
+      "message": "this could be a helper on GrProcessor? Like `p.getUniformIntValues(index) -\u003e const int32_t*` and a similar one for float uniforms, or we have it templated like\n\n`p.getUniformValues\u003cT\u003e(index) \u003d\u003e const T*`. Just to help hide the offsetof pointer arithmetic.",
+      "range": {
+        "startLine": 53,
+        "startChar": 38,
+        "endLine": 53,
+        "endChar": 99
+      },
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
