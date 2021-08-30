@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20931a4_26df08bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-30T00:27:27Z",
+      "side": 1,
+      "message": "Did you mean to +1 this? You gave it a CQ +1 instead.",
+      "revId": "2dd103a91091daa0f0b6517b8434b9f648052314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
