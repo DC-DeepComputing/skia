@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be9a346_0e8bb0b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-30T20:30:42Z",
+      "side": 1,
+      "message": "One way to simplify this would be to use\n\n  if (skia_enable_svg \u0026\u0026 skia_use_expat)\n\nin modules/svg/BUILD.gn and then only test SK_ENABLE_SVG for SVG-specific code guarding.\n\nYou still need to touch all the instances so not sure if any easier, just somewhat cleaner maybe.",
+      "revId": "68368f4d58dfeceb438e7438b984dd74fe51c7f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
