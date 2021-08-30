@@ -20,7 +20,7 @@
 #include "include/sksl/DSLWrapper.h"
 #include "include/sksl/SkSLErrorReporter.h"
 
-#define SKSL_DSL_PARSER 0
+#define SKSL_DSL_PARSER 1
 
 namespace SkSL {
 
@@ -78,12 +78,12 @@ DSLExpression sk_Position();
 /**
  * break;
  */
-DSLStatement Break();
+DSLStatement Break(PositionInfo pos = PositionInfo::Capture());
 
 /**
  * continue;
  */
-DSLStatement Continue();
+DSLStatement Continue(PositionInfo pos = PositionInfo::Capture());
 
 /**
  * Creates a local variable declaration statement.
