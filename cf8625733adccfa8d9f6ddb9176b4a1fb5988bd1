@@ -16,6 +16,29 @@
       "message": "Will tackle SkAAClip in another CL since that gets pretty hefty.",
       "revId": "cf8625733adccfa8d9f6ddb9176b4a1fb5988bd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a8b8b6_fa2de093",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-30T19:36:01Z",
+      "side": 1,
+      "message": "is this related to the simplification, or a separate fix?",
+      "range": {
+        "startLine": 711,
+        "startChar": 31,
+        "endLine": 711,
+        "endChar": 53
+      },
+      "revId": "cf8625733adccfa8d9f6ddb9176b4a1fb5988bd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
