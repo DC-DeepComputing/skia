@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa09448a_875483f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-30T20:05:46Z",
+      "side": 1,
+      "message": "Currently the SkARGB32_Shader_Blitter is chosen, but SkARGB32_Shader_Blitter::blitMask only does a8 with xfermode, falling back to the default, which doesn\u0027t handle LCD16. Setting gSkForceRasterPipelineBlitter to true makes everything work. Setting gUseSkVMBlitter currently does not.\n\nThis seems to imply that UseLegacyBlitter should be updated to take this into account. However, the blitter chooser is not passed a mask format so the blitter cannot be chosen pased on the mask format.",
+      "revId": "874d821ca0c7b17559f8c29fd10b4f4025585b94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
