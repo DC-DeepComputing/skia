@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5691c4af_0b84cbb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-31T14:02:01Z",
+      "side": 1,
+      "message": "Let\u0027s test the rubber stamper permissions.",
+      "revId": "21b38828c7b2cc49d20cd5641c4e1cfd65f04a25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
