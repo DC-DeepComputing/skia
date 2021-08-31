@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58a30905_8f65cff6",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-08-31T02:24:54Z",
+      "side": 1,
+      "message": "*sigh* this assert should have been here from the beginning. If one gets here it means some drawing was just completely skipped. Turns out 565 gammagradienttext gets here. I suppose the assert could be commented out to keep the status quo.\n\nAs far as I can tell, none of the legacy blitters, raster pipeline, nor skvm blitters are complete. Between the three of them they seem to cover most things, but apparently 565 gammagradienttext is doing something which doesn\u0027t appear to be covered, as this assert fires no matter how I tweak the blitter forcing statics.",
+      "revId": "da2b7baf7fce2d1cd7c6d15cae3d160920fbd079",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
