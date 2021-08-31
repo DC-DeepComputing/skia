@@ -106,6 +106,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c0f39fa_320efb7d",
+        "filename": "experimental/sktext/src/LogicalRun.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-08-31T18:54:59Z",
+      "side": 1,
+      "message": "wow, this is pretty heavy -- anyway clients can avoid this pre-allocation if their runs are smaller?",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 0
+      },
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3eda26a_3b320cf0",
         "filename": "experimental/sktext/src/Text.cpp",
         "patchSetId": 3
