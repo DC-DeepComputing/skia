@@ -1,4 +1,4 @@
-debug: clean_examples
+ervedebug: clean_examples
 	# Does an incremental build where possible.
 	./compile.sh debug
 	cp ../../out/skottiekit_debug/skottiekit.js       ./examples/bin
@@ -45,4 +45,4 @@ clean_npm:
 
 serve:
 	echo "Go check out http://localhost:8001/"
-	cd examples && python ../serve.py
+	cd examples && python3 ../serve.py
