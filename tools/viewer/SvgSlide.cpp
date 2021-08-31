@@ -7,7 +7,7 @@
 
 #include "tools/viewer/SvgSlide.h"
 
-#if defined(SK_XML)
+#if defined(SK_XML) && defined(SK_ENABLE_SVG)
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkStream.h"
@@ -63,4 +63,4 @@ void SvgSlide::draw(SkCanvas* canvas) {
     }
 }
 
-#endif // SK_XML
+#endif // defined(SK_XML) && defined(SK_ENABLE_SVG)

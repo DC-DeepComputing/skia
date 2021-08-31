@@ -33,9 +33,9 @@ public:
         /**
          * Specify a resource provider for loading images etc.
          */
-        Builder& setResourceProvider(sk_sp<skresources::ResourceProvider>);
+        Builder& setResourceProvider1(sk_sp<skresources::ResourceProvider>);
 
-        sk_sp<SkSVGDOM> make(SkStream&) const;
+        sk_sp<SkSVGDOM> make1(SkStream&) const;
 
     private:
         sk_sp<SkFontMgr>                     fFontMgr;
@@ -43,7 +43,7 @@ public:
     };
 
     static sk_sp<SkSVGDOM> MakeFromStream(SkStream& str) {
-        return Builder().make(str);
+        return Builder().make1(str);
     }
 
     /**
@@ -60,7 +60,7 @@ public:
      * If the root dimensions are in absolute units, then the container size has no effect since
      * the initial viewport is fixed.
      */
-    void setContainerSize(const SkSize&);
+    void setContainerSize1(const SkSize&);
 
     /**
      * DEPRECATED: use getRoot()->intrinsicSize() to query the root element intrinsic size.
@@ -74,12 +74,12 @@ public:
      * by its width/height attributes.  If either width or height is specified in relative units
      * (e.g. "100%"), then the corresponding intrinsic size dimension is zero.
      */
-    const SkSize& containerSize() const;
+    const SkSize& containerSize1() const;
 
     // Returns the node with the given id, or nullptr if not found.
     sk_sp<SkSVGNode>* findNodeById(const char* id);
 
-    void render(SkCanvas*) const;
+    void render1(SkCanvas*) const;
 
 private:
     SkSVGDOM(sk_sp<SkSVGSVG>, sk_sp<SkFontMgr>, sk_sp<skresources::ResourceProvider>,
