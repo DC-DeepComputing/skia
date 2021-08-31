@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee7d9a3_1401121d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-08-31T16:31:01Z",
+      "side": 1,
+      "message": "The more test files the better, just making sure: do we have permission to check these assets into a public repo?",
+      "revId": "1fc63923c1fc2697cab0b2f6ca4c25f5d8701cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
