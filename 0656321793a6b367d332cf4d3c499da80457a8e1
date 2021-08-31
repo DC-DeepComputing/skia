@@ -22,6 +22,30 @@
       },
       "revId": "0656321793a6b367d332cf4d3c499da80457a8e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3735a456_e0c3da6f",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T15:12:30Z",
+      "side": 1,
+      "message": "Doesn\u0027t work in the case of poison. I could have checked for poison specifically, but I felt that this expressed my intent better - which is literally \"if you didn\u0027t report any errors in the expression, report an error here\".",
+      "parentUuid": "05c80be1_0d6d2136",
+      "range": {
+        "startLine": 359,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 60
+      },
+      "revId": "0656321793a6b367d332cf4d3c499da80457a8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
