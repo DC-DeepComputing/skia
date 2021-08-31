@@ -70,6 +70,30 @@
       },
       "revId": "0656321793a6b367d332cf4d3c499da80457a8e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ba295bd_2cda2dc0",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T18:02:57Z",
+      "side": 1,
+      "message": "Pending errors shouldn\u0027t be an issue because the count takes them into account. But I\u0027ve gone ahead and done the necessary API changes to make this happen.",
+      "parentUuid": "3d7f6ab4_cdb2a5e4",
+      "range": {
+        "startLine": 359,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 60
+      },
+      "revId": "0656321793a6b367d332cf4d3c499da80457a8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
