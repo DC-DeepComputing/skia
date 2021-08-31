@@ -220,7 +220,19 @@ DSLType Struct(skstd::string_view name, SkSpan<DSLField> fields, PositionInfo po
     std::vector<SkSL::Type::Field> skslFields;
     skslFields.reserve(fields.size());
     for (const DSLField& field : fields) {
-        skslFields.emplace_back(field.fModifiers.fModifiers, field.fName, &field.fType.skslType());
+        if (field.fModifiers.fModifiers.fFlags != Modifiers::kNo_Flag) {
+            String desc = field.fModifiers.fModifiers.description();
+            desc.pop_back();  // remove trailing space
+            DSLWriter::ReportError(("modifier '" + desc +
+                    "' is not permitted on a struct field").c_str(), field.fPosition);
+        }
+
+        const SkSL::Type& type = field.fType.skslType();
+        if (type.isOpaque()) {
+            DSLWriter::ReportError(("opaque type '" + type.displayName() +
+                                    "' is not permitted in a struct").c_str(), field.fPosition);
+        }
+        skslFields.emplace_back(field.fModifiers.fModifiers, field.fName, &type);
     }
     const SkSL::Type* result = DSLWriter::SymbolTable()->add(Type::MakeStructType(pos.offset(),
                                                                                   name,
