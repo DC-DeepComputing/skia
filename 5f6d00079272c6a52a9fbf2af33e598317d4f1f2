@@ -16,6 +16,46 @@
       "message": "I think this is ready for another look",
       "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f4e07c_8495bf0c",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-31T15:47:15Z",
+      "side": 1,
+      "message": "Leftover?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 16
+      },
+      "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4247834e_ef090f45",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-08-31T15:47:15Z",
+      "side": 1,
+      "message": "I spent a while trying to figure out how this worked - we didn\u0027t seem to be dealing with alignment / size correctly here. But I realized that we\u0027re still relying on the calculation that was done elsewhere, right? This code figures out how much data to copy (and how to handle array strides), but anything that impacts offsets (eg, alignment) is already baked in to the NewUniform.offset ?",
+      "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
