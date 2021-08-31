@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "include/gpu/d3d/GrD3DTypes.h"
-#include "include/private/GrD3DTypesPriv.h"
+#include "include/private/GrD3DTypesMinimal.h"
 
+#include "include/gpu/d3d/GrD3DTypes.h"
 #include "src/gpu/d3d/GrD3DResourceState.h"
 
 GrD3DBackendSurfaceInfo::GrD3DBackendSurfaceInfo(const GrD3DTextureResourceInfo& info,

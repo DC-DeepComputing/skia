@@ -6,8 +6,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrD3DTypesMinimal_DEFINED
-#define GrD3DTypesMinimal_DEFINED
+#ifndef GrD3DDependentTypes_DEFINED
+#define GrD3DDependentTypes_DEFINED
 
 // Minimal definitions of Direct3D types, without including d3d12.h
 

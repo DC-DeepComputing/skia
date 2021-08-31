@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrD3DTypesPriv_DEFINED
-#define GrD3DTypesPriv_DEFINED
+#ifndef GrD3DTypesMinimal_DEFINED
+#define GrD3DTypesMinimal_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/d3d/GrD3DTypesMinimal.h"
+#include "include/gpu/d3d/GrD3DDependentTypes.h"
 
 class GrD3DResourceState;
 
