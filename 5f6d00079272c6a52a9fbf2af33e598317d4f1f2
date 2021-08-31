@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ad805f_dbd9573a",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T16:17:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15f4e07c_8495bf0c",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 16
+      },
+      "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4247834e_ef090f45",
@@ -54,6 +78,24 @@
       "writtenOn": "2021-08-31T15:47:15Z",
       "side": 1,
       "message": "I spent a while trying to figure out how this worked - we didn\u0027t seem to be dealing with alignment / size correctly here. But I realized that we\u0027re still relying on the calculation that was done elsewhere, right? This code figures out how much data to copy (and how to handle array strides), but anything that impacts offsets (eg, alignment) is already baked in to the NewUniform.offset ?",
+      "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9f4bd7c_7dc0a205",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T16:17:34Z",
+      "side": 1,
+      "message": "That\u0027s right. This is the actual spec language. It was helpful to have it here while writing this code. I figure in the future this class will evolve to implement the rest of it (alignment + size) rather than just how much to write when \"legacy\" uniforms are all converted over to GrProcessor::Uniform.",
+      "parentUuid": "4247834e_ef090f45",
       "revId": "5f6d00079272c6a52a9fbf2af33e598317d4f1f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
