@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b3171de_5c6514ae",
+        "filename": "include/sksl/DSLFunction.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T11:47:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77e92219_638d417a",
+      "range": {
+        "startLine": 43,
+        "startChar": 73,
+        "endLine": 43,
+        "endChar": 89
+      },
+      "revId": "db7ce41db9418547d024f1c0b059ccb533916d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "968a58d8_291ffbe1",
