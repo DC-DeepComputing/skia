@@ -70,6 +70,30 @@
       },
       "revId": "90a697494ccd6234853da73f7fa7e3667b9d94ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "704bc09b_3e40b4d2",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-08-31T16:17:25Z",
+      "side": 0,
+      "message": "Benchmark says it doesn\u0027t matter?\nhttps://screenshot.googleplex.com/3Tmm5GhGcqP7bYG\n\nPlease be aware that I have low faith in this benchmark. At smaller sample sizes (--ms\u003d5000) it was wildly unreliable. I was unable to get consistent results unless I waited at least 15 seconds between runs, probably due to thermal effects. There was tons of noise but no signal that implicated this CL in any performance delta.\n\nAt larger sizes (--ms\u003d15000) with the computer running cool (wait for low fan noise) it seems to have stabilized on a median of 14 - 14.4 µs regardless of which branch I pick.",
+      "parentUuid": "b18737bc_f3c7019e",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 0
+      },
+      "revId": "90a697494ccd6234853da73f7fa7e3667b9d94ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
