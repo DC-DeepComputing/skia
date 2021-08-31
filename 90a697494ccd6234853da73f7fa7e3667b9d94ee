@@ -46,6 +46,30 @@
       },
       "revId": "90a697494ccd6234853da73f7fa7e3667b9d94ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18737bc_f3c7019e",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T15:56:24Z",
+      "side": 0,
+      "message": "Normally only at startup, but with startup time being one of the big complaints against us, it seemed like we shouldn\u0027t go out of our way to exacerbate it. I haven\u0027t benchmarked this, so it\u0027s possible it\u0027s utterly negligible, but I wanted to at least call attention to it.",
+      "parentUuid": "5a4aed43_f141d447",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 0
+      },
+      "revId": "90a697494ccd6234853da73f7fa7e3667b9d94ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
