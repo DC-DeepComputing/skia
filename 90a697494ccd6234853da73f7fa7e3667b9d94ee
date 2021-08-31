@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dad9993_7f7e41f6",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T14:30:01Z",
+      "side": 0,
+      "message": "I don\u0027t know that I\u0027m excited about having to re-derive this information every time we spin up a Compiler. You don\u0027t think it\u0027s worth plumbing it through to avoid that extra work?",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 0
+      },
+      "revId": "90a697494ccd6234853da73f7fa7e3667b9d94ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
