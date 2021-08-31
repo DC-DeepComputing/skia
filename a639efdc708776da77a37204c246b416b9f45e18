@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8f8b0f_43aaf009",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T01:50:23Z",
+      "side": 1,
+      "message": "I put a comment at the top of the class explaining all the components.",
+      "parentUuid": "c9c98fa9_6bcc917c",
+      "range": {
+        "startLine": 209,
+        "startChar": 32,
+        "endLine": 209,
+        "endChar": 42
+      },
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c23448_4a48e533",
@@ -72,6 +96,30 @@
       "writtenOn": "2021-08-30T13:53:48Z",
       "side": 1,
       "message": "this could be a helper on GrProcessor? Like `p.getUniformIntValues(index) -\u003e const int32_t*` and a similar one for float uniforms, or we have it templated like\n\n`p.getUniformValues\u003cT\u003e(index) \u003d\u003e const T*`. Just to help hide the offsetof pointer arithmetic.",
+      "range": {
+        "startLine": 53,
+        "startChar": 38,
+        "endLine": 53,
+        "endChar": 99
+      },
+      "revId": "a639efdc708776da77a37204c246b416b9f45e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4499a0d_045f2846",
+        "filename": "src/gpu/gl/GrGLProgramDataManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T01:50:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22c23448_4a48e533",
       "range": {
         "startLine": 53,
         "startChar": 38,

@@ -90,6 +90,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5021aa13_96925fe3",
+        "filename": "src/gpu/GrUniformAggregator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T01:50:23Z",
+      "side": 1,
+      "message": "Things have moved around a bit, but this is basically done now.",
+      "parentUuid": "8a906e5d_a59eea74",
+      "range": {
+        "startLine": 41,
+        "startChar": 25,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5ce93416_31da3d08",
         "filename": "src/gpu/GrUniformAggregator.h",
         "patchSetId": 15
@@ -181,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f93b951_6bad5db7",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T01:50:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2257ec1_b2b915fa",
+      "range": {
+        "startLine": 277,
+        "startChar": 29,
+        "endLine": 277,
+        "endChar": 30
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "095993ec_596dfcbf",
@@ -218,6 +266,30 @@
       "side": 1,
       "message": "Yeah, will revisit these data structures.",
       "parentUuid": "095993ec_596dfcbf",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 93
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db71cda_cfac14b4",
+        "filename": "src/gpu/GrUniformDataManager.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-08-31T01:50:23Z",
+      "side": 1,
+      "message": "This is now a vector of vectors.",
+      "parentUuid": "59868754_154d7bbe",
       "range": {
         "startLine": 36,
         "startChar": 4,
