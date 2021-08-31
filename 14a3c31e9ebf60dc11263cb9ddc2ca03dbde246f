@@ -22,6 +22,30 @@
       },
       "revId": "14a3c31e9ebf60dc11263cb9ddc2ca03dbde246f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca096a86_aee6a734",
+        "filename": "include/gpu/d3d/GrD3DDependentTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-08-31T14:25:03Z",
+      "side": 1,
+      "message": "So this class currently resides in include/gpu/d3d. So it depends if the intention was that clients can/should include this file or not. I assumed since it was here then that was the intention. If not, then yes we can merge the current Minimal and Private and store the result in include/private.",
+      "parentUuid": "9cadf442_be7970e3",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 27
+      },
+      "revId": "14a3c31e9ebf60dc11263cb9ddc2ca03dbde246f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
