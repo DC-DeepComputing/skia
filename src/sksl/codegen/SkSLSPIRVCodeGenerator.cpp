@@ -3416,11 +3416,10 @@ SPIRVCodeGenerator::EntrypointAdapter SPIRVCodeGenerator::writeEntrypointAdapter
                                                   /*returnType=*/fContext.fTypes.fVoid.get(),
                                                   /*builtin=*/false);
     // Define it.
-    adapter.entrypointDef = FunctionDefinition::Convert(fContext,
-                                                        /*offset=*/-1,
-                                                        *adapter.entrypointDecl,
-                                                        std::move(entrypointBlock),
-                                                        /*builtin=*/false);
+    adapter.entrypointDef =
+            std::make_unique<FunctionDefinition>(/*offset=*/-1, adapter.entrypointDecl.get(),
+                                                 /*builtin=*/false, std::move(entrypointBlock),
+                                                 IntrinsicSet{});
 
     adapter.entrypointDecl->setDefinition(adapter.entrypointDef.get());
     return adapter;

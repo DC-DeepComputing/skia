@@ -14,11 +14,10 @@
 
 namespace SkSL {
 
-std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& context,
-                                                                int offset,
-                                                                const FunctionDeclaration& function,
-                                                                std::unique_ptr<Statement> body,
-                                                                bool builtin) {
+void FunctionDefinition::FinalizeFunctionBody(const Context& context,
+                                              const FunctionDeclaration& function,
+                                              Statement* body,
+                                              IntrinsicSet* referencedIntrinsics) {
     class Finalizer : public ProgramWriter {
     public:
         Finalizer(const Context& context, const FunctionDeclaration& function,
@@ -127,16 +126,12 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         using INHERITED = ProgramWriter;
     };
 
-    IntrinsicSet referencedIntrinsics;
-    Finalizer(context, function, &referencedIntrinsics).visitStatement(*body);
+    Finalizer(context, function, referencedIntrinsics).visitStatement(*body);
 
     if (Analysis::CanExitWithoutReturningValue(function, *body)) {
         context.fErrors->error(function.fOffset, "function '" + function.name() +
                                                  "' can exit without returning a value");
     }
-
-    return std::make_unique<FunctionDefinition>(offset, &function, builtin, std::move(body),
-                                                std::move(referencedIntrinsics));
 }
 
 }  // namespace SkSL

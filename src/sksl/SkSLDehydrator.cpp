@@ -552,6 +552,14 @@ void Dehydrator::write(const ProgramElement& e) {
             this->writeCommand(Rehydrator::kFunctionDefinition_Command);
             this->writeU16(this->symbolId(&f.declaration()));
             this->write(f.body().get());
+            this->writeU8(f.referencedIntrinsics().size());
+            std::set<uint16_t> ordered;
+            for (const FunctionDeclaration* ref : f.referencedIntrinsics()) {
+                ordered.insert(this->symbolId(ref));
+            }
+            for (uint16_t ref : ordered) {
+                this->writeU16(ref);
+            }
             break;
         }
         case ProgramElement::Kind::kFunctionPrototype: {
