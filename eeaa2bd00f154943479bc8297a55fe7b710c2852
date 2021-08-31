@@ -16,6 +16,115 @@
       "message": "Still is in progress",
       "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "386e2814_de59c49b",
+        "filename": "experimental/sktext/include/Text.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-31T18:27:08Z",
+      "side": 1,
+      "message": "I was confused about this -- presumably it\u0027s per-character font data?\n\nSome docs would help here.",
+      "range": {
+        "startLine": 29,
+        "startChar": 38,
+        "endLine": 29,
+        "endChar": 62
+      },
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caeb75f4_b3bb108c",
+        "filename": "experimental/sktext/include/Text.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-31T18:27:08Z",
+      "side": 1,
+      "message": "The visitor pattern works fine, but I found it is not the most ergonomic way to access internal data.\n\nAnother approach to consider is some sort of GlyphRunIterator that would allow clients to write stuff like\n\n  for (auto run : wrapped_text) {\n      canvas-\u003edrawGlyphs(run.glyphCount, run.glyphs, run.positions, run.font, ...);\n  }\n  \nWe don\u0027t have to tweak it now, just a thought.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 84
+      },
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed9e87d7_4a6055ef",
+        "filename": "experimental/sktext/include/Text.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-31T18:27:08Z",
+      "side": 1,
+      "message": "DrawableText seems fine as a utility/helper, but it\u0027s unclear whether it adds enough value to be present in the public API.\n\nOne can always render directly from a visitor callback (onGlyphRun \u003d\u003e canvas-\u003edrawGlyphs), and, for an editor with external styling info, text blobs built this way may not be usable (e.g. the editor may need to further split runs based on paint/styling, which is not possible with immutable blobs).",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 2
+      },
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b75a9c_fb49fc31",
+        "filename": "experimental/sktext/include/Types.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-31T18:27:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure what a FontChain is -- is it a font fallback descriptor?\n\nIf so, I suspect most clients don\u0027t have the gumption to set up these explicit chains.  Is there a way to punt to e.g. FontConfig and use SkFontMgr instead?",
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3eda26a_3b320cf0",
+        "filename": "experimental/sktext/src/Text.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-08-31T18:27:08Z",
+      "side": 1,
+      "message": "nit: std::make_unique\u003cDrawableText\u003e()",
+      "range": {
+        "startLine": 429,
+        "startChar": 24,
+        "endLine": 429,
+        "endChar": 74
+      },
+      "revId": "eeaa2bd00f154943479bc8297a55fe7b710c2852",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
