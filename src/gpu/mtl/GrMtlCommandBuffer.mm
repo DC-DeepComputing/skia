@@ -77,11 +77,6 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
                              first.storeAction == MTLStoreActionDontCare;
     bool loadActionsValid = second.loadAction == MTLLoadActionLoad ||
                             second.loadAction == MTLLoadActionDontCare;
-    bool secondStoreActionStoreAndMultisampleResolve = false;
-    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
-        secondStoreActionStoreAndMultisampleResolve =
-                (second.storeAction == MTLStoreActionStoreAndMultisampleResolve);
-    }
     bool secondDoesntSampleFirst = (!pipelineState ||
                                     pipelineState->doesntSampleAttachment(first));
 
@@ -90,8 +85,6 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
     bool secondStoreValid = true;
     if (second.storeAction == MTLStoreActionDontCare) {
         secondStoreValid = (first.storeAction == MTLStoreActionDontCare);
-        // TODO: if first.storeAction is Store and second.loadAction is Load,
-        // we could reset the active RenderCommandEncoder's store action to DontCare
     } else if (second.storeAction == MTLStoreActionStore) {
         if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
             secondStoreValid = (first.storeAction == MTLStoreActionStore ||
@@ -110,9 +103,9 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
             secondStoreValid = (first.resolveTexture == second.resolveTexture) &&
                                (first.storeAction == MTLStoreActionMultisampleResolve);
         }
-        // When we first check whether store actions are valid we don't consider resolves,
-        // so we need to reset that here.
-        storeActionsValid = secondStoreValid;
+        if (secondStoreValid) {
+            storeActionsValid = true;
+        }
     } else {
         if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
             if (second.storeAction == MTLStoreActionStoreAndMultisampleResolve) {
@@ -121,10 +114,9 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
                 // TODO: if the first store action is simply MultisampleResolve we could reset
                 // the active RenderCommandEncoder's store action to StoreAndMultisampleResolve,
                 // but it's not clear if it's worth it.
-
-                // When we first check whether store actions are valid we don't consider resolves,
-                // so we need to reset that here.
-                storeActionsValid = secondStoreValid;
+                if (secondStoreValid) {
+                    storeActionsValid = true;
+                }
             }
         }
     }

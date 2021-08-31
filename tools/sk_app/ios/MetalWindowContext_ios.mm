@@ -75,6 +75,7 @@ bool MetalWindowContext_ios::onInitializeContext() {
     fMetalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
     fMetalLayer.drawableSize = frameRect.size;
     fMetalLayer.frame = frameRect;
+    fMetalLayer.framebufferOnly = FALSE;
 
     // TODO: need solution for iOS
     // BOOL useVsync = fDisplayParams.fDisableVsync ? NO : YES;

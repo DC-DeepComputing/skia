@@ -22,6 +22,7 @@
 #include "src/gpu/mtl/GrMtlAttachment.h"
 #include "src/gpu/mtl/GrMtlCaps.h"
 #include "src/gpu/mtl/GrMtlCommandBuffer.h"
+#include "src/gpu/mtl/GrMtlMSAALoadManager.h"
 #include "src/gpu/mtl/GrMtlResourceProvider.h"
 #include "src/gpu/mtl/GrMtlUtil.h"
 
@@ -79,7 +80,8 @@ public:
 
     void copySurfaceAsResolve(GrSurface* dst, GrSurface* src);
 
-    void copySurfaceAsBlit(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
+    void copySurfaceAsBlit(GrSurface* dst, GrSurface* src, GrMtlAttachment* dstAttachment,
+                           GrMtlAttachment* srcAttachment, const SkIRect& srcRect,
                            const SkIPoint& dstPoint);
 
     bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
@@ -106,6 +108,10 @@ public:
     void checkFinishProcs() override { this->checkForFinishedCommandBuffers(); }
     void finishOutstandingGpuWork() override;
     std::unique_ptr<GrSemaphore> prepareTextureForCrossContextUsage(GrTexture*) override;
+
+    bool loadMSAAFromResolve(GrAttachment* dst,
+                             GrMtlAttachment* src,
+                             const SkIRect& srcRect);
 
     // When the Metal backend actually uses indirect command buffers, this function will actually do
     // what it says. For now, every command is encoded directly into the primary command buffer, so
@@ -305,6 +311,8 @@ private:
     GrMtlResourceProvider fResourceProvider;
     GrStagingBufferManager fStagingBufferManager;
     GrRingBuffer fUniformsRingBuffer;
+
+    GrMtlMSAALoadManager fMSAALoadManager;
 
     bool fDisconnected;
 
