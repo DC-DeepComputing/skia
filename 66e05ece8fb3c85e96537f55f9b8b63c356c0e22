@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6f8d356_6420960c",
+        "filename": "src/gpu/GrUniformAggregator.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-31T16:50:33Z",
+      "side": 1,
+      "message": "maybe go with \"default\" since it might be \u0027used\u0027 if someone forgot to provide a name?",
+      "range": {
+        "startLine": 26,
+        "startChar": 46,
+        "endLine": 26,
+        "endChar": 52
+      },
+      "revId": "66e05ece8fb3c85e96537f55f9b8b63c356c0e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82d8ed6f_33074225",
+        "filename": "src/gpu/GrUniformDataManager.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-08-31T16:50:33Z",
+      "side": 1,
+      "message": "out of date now",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "66e05ece8fb3c85e96537f55f9b8b63c356c0e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
