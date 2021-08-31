@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7563425a_c7d37209",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-08-31T15:28:11Z",
+      "side": 1,
+      "message": "I agree w/r to the duplication. Some of these copies exist because we deploy them to npm and include the script (canvaskit/pathkit). We probably don\u0027t need all of them.",
+      "revId": "926985141ba709fdc829e62ede67ac0903a81164",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
