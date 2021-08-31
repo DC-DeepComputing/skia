@@ -34,6 +34,24 @@
       "parentUuid": "0e5e5ec9_d2c3284a",
       "revId": "471a41110a5501c3ee13da6857d2f4e3c4d5c621",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f377809f_28376b05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-08-31T14:44:29Z",
+      "side": 1,
+      "message": "This doesn\u0027t change anything about the allocation, which still uses the actual type. We just pass in the base type to checkVarDeclarations to avoid it complaining about arrays.",
+      "parentUuid": "1c2d155f_c6a37a33",
+      "revId": "471a41110a5501c3ee13da6857d2f4e3c4d5c621",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
