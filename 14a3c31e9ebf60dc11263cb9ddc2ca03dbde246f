@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cadf442_be7970e3",
+        "filename": "include/gpu/d3d/GrD3DDependentTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-08-31T14:10:33Z",
+      "side": 1,
+      "message": "Now that I see it, it doesn\u0027t feel like the right name -- could the current contents of GrD3DTypesPriv just be included here, and leave the name as TypesMinimal?",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 27
+      },
+      "revId": "14a3c31e9ebf60dc11263cb9ddc2ca03dbde246f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
