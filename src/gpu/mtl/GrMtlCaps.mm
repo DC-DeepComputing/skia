@@ -45,6 +45,8 @@ GrMtlCaps::GrMtlCaps(const GrContextOptions& contextOptions, const id<MTLDevice>
     // TODO: appears to be slow with Mac msaa8, disabled for now
     fStoreAndMultisampleResolveSupport = (fGPUFamily == GPUFamily::kApple &&
                                           fFamilyGroup >= 3);
+    // TODO: only enable if memoryless attachments available?
+    fPreferDiscardableMSAAAttachment = true;
 
     this->finishInitialization(contextOptions);
 }
@@ -385,7 +387,7 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
     fMaxPreferredRenderTargetSize = fMaxRenderTargetSize;
     fMaxTextureSize = fMaxRenderTargetSize;
 
-    fMaxPushConstantsSize = 0; // TODO: should be 4*1024 but disabled for now
+    fMaxPushConstantsSize = 128; // TODO: should be 4*1024 but disabled for now
     fTransferBufferAlignment = 1;
 
     // Init sample counts. All devices support 1 (i.e. 0 in skia).
@@ -1220,6 +1222,12 @@ MTLPixelFormat GrMtlCaps::getStencilPixelFormat(const GrProgramDesc& desc) {
     readBuffer.readUInt();
 
     return (MTLPixelFormat) readBuffer.readUInt();
+}
+
+bool GrMtlCaps::renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget* rt) const {
+    return rt->resolveAttachment() &&
+           !rt->resolveAttachment()->framebufferOnly() &&
+           (rt->numSamples() > 1 && this->preferDiscardableMSAAAttachment());
 }
 
 #if GR_TEST_UTILS

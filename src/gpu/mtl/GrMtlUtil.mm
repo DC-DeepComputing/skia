@@ -125,6 +125,7 @@ id<MTLLibrary> GrCompileMtlShaderLibrary(const GrMtlGpu* gpu,
 #endif
     if (!compiledLibrary) {
         errorHandler->compileError(msl.c_str(), error.debugDescription.UTF8String);
+        SkDebugf("%s\n", error.debugDescription.UTF8String);
         return nil;
     }
 
