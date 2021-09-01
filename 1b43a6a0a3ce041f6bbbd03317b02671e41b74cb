@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bfad100_cf95b295",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-01T21:22:38Z",
+      "side": 1,
+      "message": "First stage in adding discardable MSAA support, PTAL.",
+      "revId": "1b43a6a0a3ce041f6bbbd03317b02671e41b74cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
