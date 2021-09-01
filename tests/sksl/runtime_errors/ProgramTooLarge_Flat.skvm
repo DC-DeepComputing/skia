@@ -1,4 +1,4 @@
 ### Compilation failed:
 
-error: 3: loop must guarantee termination in fewer iterations
+error: program is too large
 1 error

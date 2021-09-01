@@ -1231,7 +1231,7 @@ static const char* invalid_for_ES2(int offset,
     }
 
     // Finally, compute the iteration count, based on the bounds, and the termination operator.
-    constexpr int kMaxUnrollableLoopLength = 128;
+    constexpr int kMaxUnrollableLoopLength = 1000000;
     loopInfo.fCount = 0;
 
     double val = loopInfo.fStart;
