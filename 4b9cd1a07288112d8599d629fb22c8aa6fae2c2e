@@ -16,6 +16,52 @@
       "message": "Not sure we want to land this yet - really depends on people\u0027s opinions about the syntax. (I think the current version was a compromise based on what was easy to do - this feels like the nicest syntax to me). In any case - does this impl look reasonable? Much of it is in IR generator, in code that\u0027s going to have to go away with DSL parser. I haven\u0027t looked at how the DSL version is going to work.",
       "revId": "4b9cd1a07288112d8599d629fb22c8aa6fae2c2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3d90f0_f7c14d77",
+        "filename": "src/sksl/ir/SkSLExpression.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-01T19:41:28Z",
+      "side": 1,
+      "message": "Search for kFunctionReference throughout SkSL to find places which need support added for kMethodReference. I count a handful in Analysis, at the very least.",
+      "range": {
+        "startLine": 51,
+        "startChar": 8,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "4b9cd1a07288112d8599d629fb22c8aa6fae2c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ea0ae1_2fdd4151",
+        "filename": "src/sksl/ir/SkSLMethodReference.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-01T19:41:28Z",
+      "side": 1,
+      "message": "This is probably the best choice for speed (push_back is fast!), but it really flies in the face of expectations. How much harder would it be for the self parameter to come first in the argument list?",
+      "range": {
+        "startLine": 24,
+        "startChar": 58,
+        "endLine": 24,
+        "endChar": 62
+      },
+      "revId": "4b9cd1a07288112d8599d629fb22c8aa6fae2c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
