@@ -147,12 +147,6 @@ GrOpsRenderPass* GrMtlGpu::onGetOpsRenderPass(
     // TODO: Make use of discardable MSAA
     bool withResolve = false;
 
-    // Figure out if we can use a Resolve store action for this render pass.
-    if (useMSAASurface && mtlRT->resolveAttachment() &&
-        this->mtlCaps().storeAndMultisampleResolveSupport()) {
-        withResolve = true;
-    }
-
     sk_sp<GrMtlFramebuffer> framebuffer =
             sk_ref_sp(mtlRT->getFramebuffer(withResolve, SkToBool(stencil)));
     if (!framebuffer) {
@@ -356,7 +350,7 @@ bool GrMtlGpu::uploadToTexture(GrMtlTexture* tex,
 
     int currentWidth = rect.width();
     int currentHeight = rect.height();
-    int layerHeight = tex->height();
+    SkDEBUGCODE(int layerHeight = tex->height());
     MTLOrigin origin = MTLOriginMake(rect.left(), rect.top(), 0);
 
     auto cmdBuffer = this->commandBuffer();
@@ -387,7 +381,7 @@ bool GrMtlGpu::uploadToTexture(GrMtlTexture* tex,
         }
         currentWidth = std::max(1, currentWidth/2);
         currentHeight = std::max(1, currentHeight/2);
-        layerHeight = currentHeight;
+        SkDEBUGCODE(layerHeight = currentHeight);
     }
 #ifdef SK_BUILD_FOR_MAC
     [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, combinedBufferSize)];
@@ -1501,14 +1495,6 @@ void GrMtlGpu::waitSemaphore(GrSemaphore* semaphore) {
 }
 
 void GrMtlGpu::onResolveRenderTarget(GrRenderTarget* target, const SkIRect&) {
-    SkASSERT(target->numSamples() > 1);
-    GrMtlRenderTarget* rt = static_cast<GrMtlRenderTarget*>(target);
-
-    if (rt->resolveAttachment() && this->mtlCaps().storeAndMultisampleResolveSupport()) {
-        // We would have resolved the RT during the render pass.
-        return;
-    }
-
     this->resolve(static_cast<GrMtlRenderTarget*>(target)->resolveAttachment(),
                   static_cast<GrMtlRenderTarget*>(target)->colorAttachment());
 }
@@ -1528,6 +1514,12 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
     cmdEncoder->setLabel(@"resolveTexture");
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
     this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
+}
+
+bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
+                                   GrMtlAttachment* src,
+                                   const SkIRect& srcRect) {
+    return fMSAALoadManager.loadMSAAFromResolve(this, dst, src, srcRect);
 }
 
 #if GR_TEST_UTILS
