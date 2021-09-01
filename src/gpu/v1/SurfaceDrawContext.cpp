@@ -57,8 +57,8 @@
 #include "src/gpu/ops/DrawAtlasOp.h"
 #include "src/gpu/ops/DrawVerticesOp.h"
 #include "src/gpu/ops/DrawableOp.h"
+#include "src/gpu/ops/FillRRectOp.h"
 #include "src/gpu/ops/GrDrawOp.h"
-#include "src/gpu/ops/GrFillRRectOp.h"
 #include "src/gpu/ops/GrFillRectOp.h"
 #include "src/gpu/ops/GrLatticeOp.h"
 #include "src/gpu/ops/GrOp.h"
@@ -823,9 +823,9 @@ void SurfaceDrawContext::fillRectToRect(const GrClip* clip,
             croppedLocal = localRect;
         }
 
-        if (auto op = GrFillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint),
-                                          viewMatrix, SkRRect::MakeRect(croppedRect), croppedLocal,
-                                          GrAA::kYes)) {
+        if (auto op = FillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint),
+                                        viewMatrix, SkRRect::MakeRect(croppedRect), croppedLocal,
+                                        GrAA::kYes)) {
             this->addDrawOp(optimizedClip, std::move(op));
             return;
         }
@@ -1095,8 +1095,8 @@ void SurfaceDrawContext::drawRRect(const GrClip* origClip,
     }
     if (!op && style.isSimpleFill()) {
         assert_alive(paint);
-        op = GrFillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint), viewMatrix, rrect,
-                                 rrect.rect(), GrAA(aaType != GrAAType::kNone));
+        op = FillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint), viewMatrix, rrect,
+                               rrect.rect(), GrAA(aaType != GrAAType::kNone));
     }
     if (!op && (aaType == GrAAType::kCoverage || fCanUseDynamicMSAA)) {
         assert_alive(paint);
@@ -1401,8 +1401,8 @@ void SurfaceDrawContext::drawOval(const GrClip* clip,
         // inside the oval's inner diamond). Given these optimizations, it's a clear win to draw
         // ovals the exact same way we do round rects.
         assert_alive(paint);
-        op = GrFillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint), viewMatrix,
-                                 SkRRect::MakeOval(oval), oval, GrAA(aaType != GrAAType::kNone));
+        op = FillRRectOp::Make(fContext, this->arenaAlloc(), std::move(paint), viewMatrix,
+                               SkRRect::MakeOval(oval), oval, GrAA(aaType != GrAAType::kNone));
     }
     if (!op && (aaType == GrAAType::kCoverage || fCanUseDynamicMSAA)) {
         assert_alive(paint);
