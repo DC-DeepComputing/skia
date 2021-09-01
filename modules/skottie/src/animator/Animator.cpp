@@ -10,7 +10,7 @@
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/animator/KeyframeAnimator.h"
-
+    
 namespace skottie::internal {
 
 Animator::StateChanged AnimatablePropertyContainer::onSeek(float t) {
@@ -54,12 +54,16 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
         return false;
     }
 
+    const auto& jpropA = (*jprop)["a"];
+    const auto& jpropK = (*jprop)["k"];
+
     // Handle expressions on the property.
     if (const skjson::StringValue* expr = (*jprop)["x"]) {
         if (!abuilder.expression_manager()) {
             abuilder.log(Logger::Level::kWarning, jprop,
                          "Expression encountered but ExpressionManager not provided.");
         } else {
+            builder.parseValue(abuilder, jpropK);
             sk_sp<Animator> expression_animator = builder.makeFromExpression(
                                                     *abuilder.expression_manager(),
                                                     expr->begin());
@@ -69,9 +73,6 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
             }
         }
     }
-
-    const auto& jpropA = (*jprop)["a"];
-    const auto& jpropK = (*jprop)["k"];
 
     // Older Json versions don't have an "a" animation marker.
     // For those, we attempt to parse both ways.
@@ -89,8 +90,8 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
     }
 
     // Keyframed property.
-    sk_sp<KeyframeAnimator> animator;
     const skjson::ArrayValue* jkfs = jpropK;
+    sk_sp<KeyframeAnimator> animator;
     if (jkfs && jkfs->size() > 0) {
         animator = builder.makeFromKeyframes(abuilder, *jkfs);
     }

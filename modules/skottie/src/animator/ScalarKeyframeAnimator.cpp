@@ -76,7 +76,8 @@ class ScalarAnimatorBuilder final : public AnimatorBuilder {
                         new ScalarKeyframeAnimator(std::move(fKFs), std::move(fCMs), fTarget));
         }
 
-        sk_sp<Animator> makeFromExpression(ExpressionManager& em, const char* expr) override {
+        sk_sp<Animator> makeFromExpression(ExpressionManager& em,
+                                           const char* expr) override {
             sk_sp<ExpressionEvaluator<ScalarValue>> expression_evaluator =
                 em.createNumberExpressionEvaluator(expr);
             return sk_make_sp<ScalarExpressionAnimator>(expression_evaluator, fTarget);
