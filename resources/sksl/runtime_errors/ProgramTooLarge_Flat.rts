@@ -1,0 +1,7 @@
+half4 main(float2 xy) {
+    int i;
+    for (int x=0; x<200000; ++x) {
+        ++i;
+    }
+    return half4(0);
+}
