@@ -1,4 +1,9 @@
-### Compilation failed:
-
-error: 3: loop must guarantee termination in fewer iterations
-1 error
+half4 main(float2 xy)
+{
+	int i = 0;
+	for (int x = 0;x < 10000; ++x) 
+	{
+		++i;
+	}
+	return half4(half4(half(i)));
+}
