@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -40,6 +41,13 @@ std::unique_ptr<Statement> IfStatement::Convert(const Context& context, int offs
                                                 std::unique_ptr<Statement> ifFalse) {
     test = context.fTypes.fBool->coerceExpression(std::move(test), context);
     if (!test) {
+        return nullptr;
+    }
+    SkASSERT(ifTrue);
+    if (Analysis::DetectVarDeclarationWithoutScope(*ifTrue, *context.fErrors)) {
+        return nullptr;
+    }
+    if (ifFalse && Analysis::DetectVarDeclarationWithoutScope(*ifFalse, *context.fErrors)) {
         return nullptr;
     }
     return IfStatement::Make(context, offset, isStatic, std::move(test),

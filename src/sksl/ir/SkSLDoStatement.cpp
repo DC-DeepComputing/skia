@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
@@ -20,6 +21,9 @@ std::unique_ptr<Statement> DoStatement::Convert(const Context& context,
     }
     test = context.fTypes.fBool->coerceExpression(std::move(test), context);
     if (!test) {
+        return nullptr;
+    }
+    if (Analysis::DetectVarDeclarationWithoutScope(*stmt, *context.fErrors)) {
         return nullptr;
     }
     return DoStatement::Make(context, std::move(stmt), std::move(test));

@@ -132,6 +132,10 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context, int off
         return Block::Make(offset, std::move(scope));
     }
 
+    if (Analysis::DetectVarDeclarationWithoutScope(*statement, *context.fErrors)) {
+        return nullptr;
+    }
+
     return ForStatement::Make(context, offset, std::move(initializer), std::move(test),
                               std::move(next), std::move(statement), std::move(unrollInfo),
                               std::move(symbolTable));

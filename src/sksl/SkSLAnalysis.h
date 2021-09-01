@@ -60,6 +60,12 @@ struct Analysis {
     static bool DetectStaticRecursion(SkSpan<std::unique_ptr<ProgramElement>> programElements,
                                       ErrorReporter& errors);
 
+    /**
+     * Detect an orphaned variable declaration outside of a scope, e.g. if (true) int a;. Returns
+     * true if an error was reported.
+     */
+    static bool DetectVarDeclarationWithoutScope(const Statement& stmt, ErrorReporter& errors);
+
     static int NodeCountUpToLimit(const FunctionDefinition& function, int limit);
 
     /**
