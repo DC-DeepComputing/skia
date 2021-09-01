@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "187b0832_92ee6c27",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-01T18:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc95efd4_cb842985",
+      "range": {
+        "startLine": 725,
+        "startChar": 71,
+        "endLine": 725,
+        "endChar": 92
+      },
+      "revId": "002916359e8b7d32b30f73235e74d59f179cbbbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a90993d_0eedb4c6",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2785fcbc_0ec33223",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-01T18:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a90993d_0eedb4c6",
+      "range": {
+        "startLine": 752,
+        "startChar": 12,
+        "endLine": 752,
+        "endChar": 22
+      },
+      "revId": "002916359e8b7d32b30f73235e74d59f179cbbbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70347c61_86f463d4",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-09-01T17:47:16Z",
       "side": 1,
       "message": "In Make, we should assert the errors we\u0027ve reported in Convert (for each Statement type):\n\n   SkASSERT(!Analysis::DetectVarDeclarationWithoutScope(*stmt, /*errors\u003d*/nullptr));",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 4
+      },
+      "revId": "002916359e8b7d32b30f73235e74d59f179cbbbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5827aa76_01c08391",
+        "filename": "src/sksl/ir/SkSLDoStatement.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-01T18:39:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70347c61_86f463d4",
       "range": {
         "startLine": 37,
         "startChar": 0,
