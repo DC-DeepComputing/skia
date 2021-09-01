@@ -37,7 +37,7 @@
 #include "src/gpu/geometry/GrQuadUtils.h"
 #include "src/gpu/geometry/GrRect.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
-#include "src/gpu/ops/GrFillRectOp.h"
+#include "src/gpu/ops/FillRectOp.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/ops/GrQuadPerEdgeAA.h"
 #include "src/gpu/ops/GrSimpleMeshDrawOpHelper.h"
@@ -1185,7 +1185,7 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
             fp = GrFragmentProcessor::ClampOutput(std::move(fp));
         }
         paint.setColorFragmentProcessor(std::move(fp));
-        return GrFillRectOp::Make(context, std::move(paint), aaType, quad);
+        return FillRectOp::Make(context, std::move(paint), aaType, quad);
     }
 }
 

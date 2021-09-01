@@ -11,7 +11,7 @@
 #include "src/gpu/GrOpsTypes.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/ops/GrFillRectOp.h"
+#include "src/gpu/ops/FillRectOp.h"
 #include "src/gpu/ops/TextureOp.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 #include "tests/Test.h"
@@ -70,8 +70,8 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
     GrPaint paint;
     paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
 
-    GrFillRectOp::AddFillRectOps(sdc.get(), nullptr, dContext, std::move(paint), overallAA,
-                                 SkMatrix::I(), quads, requestedTotNumQuads);
+    skgpu::v1::FillRectOp::AddFillRectOps(sdc.get(), nullptr, dContext, std::move(paint), overallAA,
+                                          SkMatrix::I(), quads, requestedTotNumQuads);
 
     auto opsTask = sdc->testingOnly_PeekLastOpsTask();
     int actualNumOps = opsTask->numOpChains();
@@ -80,7 +80,7 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
 
     for (int i = 0; i < actualNumOps; ++i) {
         const GrOp* tmp = opsTask->getChain(i);
-        REPORTER_ASSERT(reporter, tmp->classID() == GrFillRectOp::ClassID());
+        REPORTER_ASSERT(reporter, tmp->classID() == skgpu::v1::FillRectOp::ClassID());
         REPORTER_ASSERT(reporter, tmp->isChainTail());
         actualTotNumQuads += ((GrDrawOp*) tmp)->numQuads();
     }
@@ -191,7 +191,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
         expectedNumOps = requestedTotNumQuads;
     }
     uint32_t expectedOpID = blendMode == SkBlendMode::kSrcOver ? skgpu::v1::TextureOp::ClassID()
-                                                               : GrFillRectOp::ClassID();
+                                                               : skgpu::v1::FillRectOp::ClassID();
     for (int i = 0; i < actualNumOps; ++i) {
         const GrOp* tmp = opsTask->getChain(i);
         REPORTER_ASSERT(reporter, allUniqueProxies || tmp->isChainTail());
