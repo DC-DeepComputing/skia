@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99d7b678_73bbffb2",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-01T21:11:16Z",
+      "side": 1,
+      "message": "Is it a problem that we never count the loop overhead itself? eg, if we remove the body (i++) from one of the nested loop tests, the resulting skvm code will still emit a bunch of (dead) instructions to compute the N different loop indices, but the cost would suddenly drop to ~0, I think?",
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3366c0_65cca01a",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-01T21:11:16Z",
+      "side": 1,
+      "message": "Don\u0027t we need to set expressionCost here, whether or not this is the first time we saw this function?",
+      "range": {
+        "startLine": 823,
+        "startChar": 0,
+        "endLine": 823,
+        "endChar": 47
+      },
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
