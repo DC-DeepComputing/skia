@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9185da4_f6db9a77",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-01T21:17:45Z",
+      "side": 1,
+      "message": "It\u0027s just some bookkeeping. The loop index generates a splat() for every iteration (which adds an \"immediate\" skvm instruction). Those all end up unused in this case, but they still add to the sequence of stuff in the builder. It also does some other splatting (and bitwise ops) to handle lane-masking (for break/continue).",
+      "parentUuid": "404f920d_f7d94bdc",
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f3366c0_65cca01a",
         "filename": "src/sksl/SkSLAnalysis.cpp",
         "patchSetId": 10
