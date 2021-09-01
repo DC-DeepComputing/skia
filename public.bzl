@@ -731,6 +731,7 @@ def base_defines(os_conditions):
         "SK_CODEC_DECODES_JPEG",
         "SK_ENCODE_JPEG",
         "SK_HAS_ANDROID_CODEC",
+        "SK_ENABLE_SVG",
     ] + skia_select(
         os_conditions,
         [
