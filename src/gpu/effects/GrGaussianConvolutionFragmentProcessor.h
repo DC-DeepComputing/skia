@@ -57,14 +57,14 @@ private:
     GrGaussianConvolutionFragmentProcessor(std::unique_ptr<GrFragmentProcessor>,
                                            Direction,
                                            int halfWidth,
-                                           float gaussianSigma);
+                                           float gaussianSigma,
+                                           const GrShaderCaps&);
 
     explicit GrGaussianConvolutionFragmentProcessor(const GrGaussianConvolutionFragmentProcessor&);
 
 #if GR_TEST_UTILS
     SkString onDumpInfo() const override {
-        return SkStringPrintf("(dir=%s, radius=%d)",
-                              Direction::kX == fDirection ? "X" : "Y", fRadius);
+        return SkStringPrintf("(dir=%s, width=%d)", fIncrement[0] ? "X" : "Y", fKernelWidth);
     }
 #endif
 
@@ -78,12 +78,17 @@ private:
 
     static constexpr int kMaxKernelWidth = kMaxKernelRadius + 1;
 
+    Uniform fKernelU;
+    Uniform fOffsetsU;
+    Uniform fIncrementU;
+    Uniform fKernelWidthU;
+
     // The array size must be a multiple of 4 because we pass it as an array of float4 uniform
     // values.
-    float                 fKernel[SkAlign4(kMaxKernelWidth)];
-    float                 fOffsets[SkAlign4(kMaxKernelWidth)];
-    int                   fRadius;
-    Direction             fDirection;
+    float   fKernel   [SkAlign4(kMaxKernelWidth)];
+    float   fOffsets  [SkAlign4(kMaxKernelWidth)];
+    float   fIncrement[2] = {};
+    int32_t fKernelWidth;
 
     using INHERITED = GrFragmentProcessor;
 };
