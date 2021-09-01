@@ -271,7 +271,7 @@ constexpr bool GrProcessor::Uniform::CTypeCompatibleWithType(CType ctype, GrSLTy
  * is not required to be supported by the compiler (conditionally supported by c++17). clang, GCC,
  * and MSVC all support it, however.
  */
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__clang__) || defined(__GNUC__)
 #   define GR_BEGIN_UNIFORM_DEFINITIONS _Pragma("GCC diagnostic push") \
                                         _Pragma("GCC diagnostic ignored \"-Winvalid-offsetof\"")
 #   define GR_END_UNIFORM_DEFINITIONS   _Pragma("GCC diagnostic pop")

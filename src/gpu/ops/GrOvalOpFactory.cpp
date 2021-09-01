@@ -732,8 +732,8 @@ public:
     const char* name() const override { return "DIEllipseGeometryProcessor"; }
 
     void addToKey(const GrShaderCaps& caps, GrProcessorKeyBuilder* b) const override {
-        b->addBits(2, static_cast<uint32_t>(fStyle), "style");
-        b->addBool(fViewMatrix.hasPerspective(), "matrix_perspective");
+        b->addBits(2, static_cast<uint32_t>(fStyle     ), "style"      );
+        b->addBits(2, static_cast<uint32_t>(fMatrixType), "matrix_type");
     }
 
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override {
@@ -745,6 +745,12 @@ private:
                                bool useScale,
                                const SkMatrix& viewMatrix,
                                DIEllipseStyle style);
+
+    enum class MatrixType {
+        kScaleTranslate,
+        kAffine,
+        kPerspective
+    };
 
     class Impl : public ProgramImpl {
     public:
@@ -777,7 +783,8 @@ private:
 
             const char* vm = args.fUniforms.getUniformName(0, "viewMatrix");
 
-            auto posType = diegp.fViewMatrix.hasPerspective() ? kFloat3_GrSLType : kFloat2_GrSLType;
+            auto posType = diegp.fMatrixType == MatrixType::kPerspective ? kFloat3_GrSLType
+                                                                         : kFloat2_GrSLType;
             gpArgs->fPositionVar = GrShaderVar("outpos", posType);
             vertBuilder->declAppend(gpArgs->fPositionVar);
             if (posType == kFloat3_GrSLType) {
@@ -785,16 +792,24 @@ private:
                                          gpArgs->fPositionVar.c_str(),
                                          vm,
                                          diegp.fInPosition.name());
-            } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
-                vertBuilder->codeAppendf("%s = float3x2(%s) * %s.xy1;\n",
-                                         gpArgs->fPositionVar.c_str(),
-                                         vm,
-                                         diegp.fInPosition.name());
             } else {
-                vertBuilder->codeAppendf("%s = (%s * %s.xy1).xy;\n",
-                                         gpArgs->fPositionVar.c_str(),
-                                         vm,
-                                         diegp.fInPosition.name());
+                if (diegp.fMatrixType == MatrixType::kScaleTranslate) {
+                    vertBuilder->codeAppendf("%s = %s.xy * %s.xy + %s.zw;\n",
+                                             gpArgs->fPositionVar.c_str(),
+                                             vm,
+                                             diegp.fInPosition.name(),
+                                             vm);
+                } else if (args.fShaderCaps->nonsquareMatrixSupport()) {
+                    vertBuilder->codeAppendf("%s = float3x2(%s) * %s.xy1;\n",
+                                             gpArgs->fPositionVar.c_str(),
+                                             vm,
+                                             diegp.fInPosition.name());
+                } else {
+                    vertBuilder->codeAppendf("%s = (%s * %s.xy1).xy;\n",
+                                             gpArgs->fPositionVar.c_str(),
+                                             vm,
+                                             diegp.fInPosition.name());
+                }
             }
             gpArgs->fLocalCoordVar = diegp.fInPosition.asShaderVar();
 
@@ -863,8 +878,12 @@ private:
     Attribute fInEllipseOffsets0;
     Attribute fInEllipseOffsets1;
 
-    SkMatrix fViewMatrix;
+    Uniform    fMatrixU;
+    float      fMatrix[3*3]; // We will only use 4 of these values if scale + translate.
+    MatrixType fMatrixType;
+
     bool fUseScale;
+
     DIEllipseStyle fStyle;
 
     GR_DECLARE_GEOMETRY_PROCESSOR_TEST
@@ -879,7 +898,6 @@ DIEllipseGeometryProcessor::DIEllipseGeometryProcessor(bool wideColor,
                                                        const SkMatrix& viewMatrix,
                                                        DIEllipseStyle style)
         : INHERITED(kDIEllipseGeometryProcessor_ClassID)
-        , fViewMatrix(viewMatrix)
         , fUseScale(useScale)
         , fStyle(style) {
     fInPosition = {"inPosition", kFloat2_GrVertexAttribType, kFloat2_GrSLType};
@@ -891,13 +909,25 @@ DIEllipseGeometryProcessor::DIEllipseGeometryProcessor(bool wideColor,
     }
     fInEllipseOffsets1 = {"inEllipseOffsets1", kFloat2_GrVertexAttribType, kFloat2_GrSLType};
     this->setVertexAttributes(&fInPosition, 4);
+
+    if (viewMatrix.isScaleTranslate()) {
+        fMatrixType = MatrixType::kScaleTranslate;
+        fMatrix[0] = viewMatrix.getScaleX();
+        fMatrix[1] = viewMatrix.getScaleY();
+        fMatrix[2] = viewMatrix.getTranslateX();
+        fMatrix[3] = viewMatrix.getTranslateY();
+    } else {
+        fMatrixType = viewMatrix.hasPerspective() ? MatrixType::kPerspective : MatrixType::kAffine;
+        for (int r = 0; r < 3; ++r)
+        for (int c = 0; c < 3; ++c)
+            fMatrix[c*3 + r] = viewMatrix.rc(r, c);
+    }
+    GrSLType uniformType = (fMatrixType == MatrixType::kScaleTranslate) ? kFloat4_GrSLType
+                                                                        : kFloat3x3_GrSLType;
 GR_BEGIN_UNIFORM_DEFINITIONS
-    static constexpr Uniform kViewMatrixU{kFloat3x3_GrSLType,
-                                          offsetof(DIEllipseGeometryProcessor, fViewMatrix),
-                                          kVertex_GrShaderFlag,
-                                          Uniform::CType::kSkMatrix};
+    fMatrixU = {uniformType, offsetof(DIEllipseGeometryProcessor, fMatrix), kVertex_GrShaderFlag};
 GR_END_UNIFORM_DEFINITIONS
-    this->setUniforms(SkMakeSpan(&kViewMatrixU, 1));
+    this->setUniforms(SkMakeSpan(&fMatrixU, 1));
 }
 
 #if GR_TEST_UTILS
