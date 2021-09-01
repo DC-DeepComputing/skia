@@ -45,6 +45,8 @@ GrMtlCaps::GrMtlCaps(const GrContextOptions& contextOptions, const id<MTLDevice>
     // TODO: appears to be slow with Mac msaa8, disabled for now
     fStoreAndMultisampleResolveSupport = (fGPUFamily == GPUFamily::kApple &&
                                           fFamilyGroup >= 3);
+    // TODO: only enable if memoryless attachments available?
+    fPreferDiscardableMSAAAttachment = true;
 
     this->finishInitialization(contextOptions);
 }
@@ -251,28 +253,6 @@ static bool is_resolving_msaa(GrSurface* surf) {
     return false;
 }
 
-bool GrMtlCaps::canCopyAsBlit(GrSurface* dst,
-                              GrSurface* src,
-                              const SkIRect& srcRect,
-                              const SkIPoint& dstPoint) const {
-    if (is_resolving_msaa(src) || is_resolving_msaa(dst)) {
-        return false;
-    }
-    id<MTLTexture> dstTex = GrGetMTLTextureFromSurface(dst);
-    id<MTLTexture> srcTex = GrGetMTLTextureFromSurface(src);
-    if (srcTex.framebufferOnly || dstTex.framebufferOnly) {
-        return false;
-    }
-
-    MTLPixelFormat dstFormat = dstTex.pixelFormat;
-    MTLPixelFormat srcFormat = srcTex.pixelFormat;
-    int srcSampleCount = get_surface_sample_cnt(src);
-    int dstSampleCount = get_surface_sample_cnt(dst);
-
-    return this->canCopyAsBlit(dstFormat, dstSampleCount, srcFormat, srcSampleCount, srcRect,
-                               dstPoint, src == dst);
-}
-
 bool GrMtlCaps::canCopyAsBlit(MTLPixelFormat dstFormat, int dstSampleCount,
                               MTLPixelFormat srcFormat, int srcSampleCount,
                               const SkIRect& srcRect, const SkIPoint& dstPoint,
@@ -291,22 +271,6 @@ bool GrMtlCaps::canCopyAsBlit(MTLPixelFormat dstFormat, int dstSampleCount,
         }
     }
     return true;
-}
-
-bool GrMtlCaps::canCopyAsResolve(GrSurface* dst,
-                                 GrSurface* src,
-                                 const SkIRect& srcRect,
-                                 const SkIPoint& dstPoint) const {
-    MTLPixelFormat dstFormat = GrBackendFormatAsMTLPixelFormat(dst->backendFormat());
-    MTLPixelFormat srcFormat = GrBackendFormatAsMTLPixelFormat(src->backendFormat());
-
-    int srcSampleCount = get_surface_sample_cnt(src);
-    int dstSampleCount = get_surface_sample_cnt(dst);
-
-    bool srcIsRenderTarget = src->asRenderTarget();
-    SkISize srcSize = src->dimensions();
-    return this->canCopyAsResolve(dstFormat, dstSampleCount, srcFormat, srcSampleCount,
-                                  srcIsRenderTarget, srcSize, srcRect, dstPoint, src == dst);
 }
 
 bool GrMtlCaps::canCopyAsResolve(MTLPixelFormat dstFormat, int dstSampleCount,
@@ -385,7 +349,7 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
     fMaxPreferredRenderTargetSize = fMaxRenderTargetSize;
     fMaxTextureSize = fMaxRenderTargetSize;
 
-    fMaxPushConstantsSize = 0; // TODO: should be 4*1024 but disabled for now
+    fMaxPushConstantsSize = 128; // TODO: should be 4*1024 but disabled for now
     fTransferBufferAlignment = 1;
 
     // Init sample counts. All devices support 1 (i.e. 0 in skia).
@@ -1220,6 +1184,12 @@ MTLPixelFormat GrMtlCaps::getStencilPixelFormat(const GrProgramDesc& desc) {
     readBuffer.readUInt();
 
     return (MTLPixelFormat) readBuffer.readUInt();
+}
+
+bool GrMtlCaps::renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget* rt) const {
+    return rt->resolveAttachment() &&
+           !rt->resolveAttachment()->framebufferOnly() &&
+           (rt->numSamples() > 1 && this->preferDiscardableMSAAAttachment());
 }
 
 #if GR_TEST_UTILS
