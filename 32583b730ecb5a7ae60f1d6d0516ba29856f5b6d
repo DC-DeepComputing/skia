@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5fad134a_2d33d39a",
+        "filename": "resources/sksl/runtime/LargeProgram_NestedFor.rts",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-01T20:55:31Z",
+      "side": 1,
+      "message": "It makes pretty much the program you\u0027d expect, http://go/paste/5927866085670912\n(It does `r1 \u003d add_i32 r1 r0` ten thousand times inside the loop.)\nDo you want me to check it in this way?",
+      "parentUuid": "13d49f62_5b0f6aaf",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "32583b730ecb5a7ae60f1d6d0516ba29856f5b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c71a0ffb_716808d6",
         "filename": "tests/sksl/runtime/LargeProgram_Flat.skvm",
         "patchSetId": 9
