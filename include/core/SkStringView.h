@@ -22,6 +22,7 @@ public:
     using iterator = const_pointer;
     using const_iterator = iterator;
     using size_type = size_t;
+    static constexpr size_type npos = size_type(-1);
 
     constexpr string_view()
         : fData(nullptr)
@@ -97,6 +98,13 @@ public:
 
     constexpr bool ends_with(value_type c) const {
         return !this->empty() && this->back() == c;
+    }
+
+    constexpr string_view substr(size_type pos = 0, size_type count = npos) const {
+        if (pos > fLength) {
+            return {};
+        }
+        return string_view{fData + pos, std::min(count, fLength - pos)};
     }
 
     constexpr void swap(string_view& other) {
