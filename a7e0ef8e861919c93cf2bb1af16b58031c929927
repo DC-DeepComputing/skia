@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "713025f1_1833294c",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-01T21:20:26Z",
+      "side": 1,
+      "message": "OK, we now pass the entire ForStatement to INHERITED::visitStatement, so its expressions will get counted too.",
+      "parentUuid": "e9185da4_f6db9a77",
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f3366c0_65cca01a",
