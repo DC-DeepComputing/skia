@@ -891,6 +891,13 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             }
             break;
         }
+        case k_eval_IntrinsicKind: {
+            // Similar, but this is a method call, so the argument ordering is different
+            SkASSERT(arguments.back()->is<VariableReference>());
+            const Variable& child = *arguments.back()->as<VariableReference>().variable();
+            arguments.pop_back();
+            return ChildCall::Make(context, offset, returnType, child, std::move(arguments));
+        }
         default:
             break;
     }
