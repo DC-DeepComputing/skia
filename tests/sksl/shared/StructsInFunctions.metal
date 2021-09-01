@@ -10,13 +10,13 @@ struct Nested {
     S b;
 };
 struct Uniforms {
-    float4 colorRed;
-    float4 colorGreen;
+    half4 colorRed;
+    half4 colorGreen;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 
 thread bool operator==(thread const S& left, thread const S& right);
@@ -52,12 +52,12 @@ thread bool operator!=(thread const Nested& left, thread const Nested& right) {
 }
 S returns_a_struct_S() {
     S s;
-    s.x = 1.0;
+    s.x = 1.0f;
     s.y = 2;
     return s;
 }
 S constructs_a_struct_S() {
-    return S{2.0, 3};
+    return S{2.0f, 3};
 }
 float accepts_a_struct_fS(S s) {
     return s.x + float(s.y);
@@ -81,7 +81,7 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     n2 = n1;
     n3 = n2;
     _skOutParamHelper1_modifies_a_struct_vS(n3);
-    bool valid = (((((((x == 3.0 && s.x == 2.0) && s.y == 3) && s == expected) && s == S{2.0, 3}) && s != returns_a_struct_S()) && n1 == n2) && n1 != n3) && n3 == Nested{S{1.0, 2}, S{2.0, 3}};
+    bool valid = (((((((x == 3.0f && s.x == 2.0f) && s.y == 3) && s == expected) && s == S{2.0f, 3}) && s != returns_a_struct_S()) && n1 == n2) && n1 != n3) && n3 == Nested{S{1.0f, 2}, S{2.0f, 3}};
     _out.sk_FragColor = valid ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }

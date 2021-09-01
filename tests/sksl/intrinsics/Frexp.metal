@@ -2,13 +2,13 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    float4 colorGreen;
-    float4 colorRed;
+    half4 colorGreen;
+    half4 colorRed;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 float _skOutParamHelper0_frexp(float _var0, thread int4& exp) {
     int _var1;
@@ -37,18 +37,18 @@ float4 _skOutParamHelper3_frexp(float4 _var0, thread int4& exp) {
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
-    float4 value = _uniforms.colorGreen.yyyy * 6.0;
+    float4 value = float4(_uniforms.colorGreen.yyyy * 6.0h);
     int4 exp;
     float4 result;
     bool4 ok;
     result.x =     _skOutParamHelper0_frexp(value.x, exp);
-    ok.x = result.x == 0.75 && exp.x == 3;
+    ok.x = result.x == 0.75f && exp.x == 3;
     result.xy =     _skOutParamHelper1_frexp(value.xy, exp);
-    ok.y = result.y == 0.75 && exp.y == 3;
+    ok.y = result.y == 0.75f && exp.y == 3;
     result.xyz =     _skOutParamHelper2_frexp(value.xyz, exp);
-    ok.z = result.z == 0.75 && exp.z == 3;
+    ok.z = result.z == 0.75f && exp.z == 3;
     result =     _skOutParamHelper3_frexp(value, exp);
-    ok.w = result.w == 0.75 && exp.w == 3;
+    ok.w = result.w == 0.75f && exp.w == 3;
     _out.sk_FragColor = all(ok) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
