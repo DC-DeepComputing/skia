@@ -225,6 +225,9 @@ private:
     std::shared_ptr<SymbolTable> makeRootSymbolTable();
     std::shared_ptr<SymbolTable> makePrivateSymbolTable(std::shared_ptr<SymbolTable> parent);
 
+    /** Verifies that the program fits within our size budget. (This is a fairly coarse check.) */
+    bool verifyProgramSize(const Program& program);
+
     /** Optimize every function in the program. */
     bool optimize(Program& program);
 
