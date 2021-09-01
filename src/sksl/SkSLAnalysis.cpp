@@ -1263,6 +1263,7 @@ public:
             case Expression::Kind::kPoison:
             case Expression::Kind::kFunctionReference:
             case Expression::Kind::kExternalFunctionReference:
+            case Expression::Kind::kMethodReference:
             case Expression::Kind::kTypeReference:
             case Expression::Kind::kCodeString:
                 return true;
@@ -1379,6 +1380,7 @@ void Analysis::VerifyStaticTestsAndExpressions(const Program& program) {
                 }
                 case Expression::Kind::kExternalFunctionReference:
                 case Expression::Kind::kFunctionReference:
+                case Expression::Kind::kMethodReference:
                 case Expression::Kind::kTypeReference:
                     SkDEBUGFAIL("invalid reference-expr, should have been reported by coerce()");
                     fContext.fErrors->error(expr.fOffset, "invalid expression");
@@ -1423,6 +1425,7 @@ template <typename T> bool TProgramVisitor<T>::visitExpression(typename T::Expre
         case Expression::Kind::kFloatLiteral:
         case Expression::Kind::kFunctionReference:
         case Expression::Kind::kIntLiteral:
+        case Expression::Kind::kMethodReference:
         case Expression::Kind::kPoison:
         case Expression::Kind::kSetting:
         case Expression::Kind::kTypeReference:
