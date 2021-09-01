@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed7bd9d_a62e8797",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-01T19:36:15Z",
+      "side": 1,
+      "message": "Not sure we want to land this yet - really depends on people\u0027s opinions about the syntax. (I think the current version was a compromise based on what was easy to do - this feels like the nicest syntax to me). In any case - does this impl look reasonable? Much of it is in IR generator, in code that\u0027s going to have to go away with DSL parser. I haven\u0027t looked at how the DSL version is going to work.",
+      "revId": "4b9cd1a07288112d8599d629fb22c8aa6fae2c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
