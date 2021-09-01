@@ -228,6 +228,9 @@ private:
     /** Verifies that @if and @switch statements were actually optimized away. */
     void verifyStaticTests(const Program& program);
 
+    /** Verifies that the program fits within our size budget. (This is a fairly coarse check.) */
+    bool verifyProgramSize(const Program& program);
+
     /** Optimize every function in the program. */
     bool optimize(Program& program);
 
