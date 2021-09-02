@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16a15c13_1e11a8f4",
+        "filename": "tests/sksl/runtime/LargeProgram_StackDepth.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T20:20:18Z",
+      "side": 1,
+      "message": "Fun mystery: what is going on with the inliner here? I thought it was turned off.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 11
+      },
+      "revId": "36aacc3f8b407bd23d97284714a900828f984ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
