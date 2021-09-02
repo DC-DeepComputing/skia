@@ -13,6 +13,7 @@
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skunicode/include/SkUnicode.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/utils/SkUTF.h"
@@ -360,7 +361,7 @@ private:
     Shaper::Result fResult;
 };
 
-Shaper::Result ShapeImpl(const SkString& txt, const Shaper::TextDesc& desc,
+Shaper::Result ShapeImpl(const SkString& orig_txt, const Shaper::TextDesc& desc,
                          const SkRect& box, const sk_sp<SkFontMgr>& fontmgr,
                          SkSize* shaped_size = nullptr) {
     const auto& is_line_break = [](SkUnichar uch) {
@@ -368,9 +369,21 @@ Shaper::Result ShapeImpl(const SkString& txt, const Shaper::TextDesc& desc,
         return uch == '\r';
     };
 
-    const char* ptr        = txt.c_str();
+    SkTCopyOnFirstWrite<SkString> txt(orig_txt);
+
+    switch (desc.fCapitalization) {
+        case Shaper::Capitalization::kNone:
+            break;
+        case Shaper::Capitalization::kUpperCase:
+            if (auto skuni = SkUnicode::Make()) {
+                *txt.writable() = skuni->toUpper(*txt);
+            }
+            break;
+    }
+
+    const char* ptr        = txt->c_str();
     const char* line_start = ptr;
-    const char* end        = ptr + txt.size();
+    const char* end        = ptr + txt->size();
 
     BlobMaker blobMaker(desc, box, fontmgr);
     while (ptr < end) {
