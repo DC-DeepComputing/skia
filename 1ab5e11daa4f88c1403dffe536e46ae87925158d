@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5650ff7_dbc00940",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-02T20:00:57Z",
+      "side": 1,
+      "message": "FYI this was the bug in the demo/release build: I had the line guarded as SkDEBUG_CODE, which left the prev U_BUFFER_OVERFLOW_ERROR in place, which caused the next icu call to bail.",
+      "range": {
+        "startLine": 517,
+        "startChar": 8,
+        "endLine": 517,
+        "endChar": 31
+      },
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
