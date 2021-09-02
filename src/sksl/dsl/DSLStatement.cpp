@@ -52,6 +52,7 @@ DSLStatement::DSLStatement(DSLPossibleStatement stmt, PositionInfo pos) {
     DSLWriter::ReportErrors(pos);
     if (stmt.hasValue()) {
         fStatement = std::move(stmt.fStatement);
+        fStatement->fOffset = pos.offset();
     } else {
         fStatement = SkSL::Nop::Make();
     }
