@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c95f3d8_20646b26",
+        "filename": "src/sksl/dsl/DSLStatement.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T15:02:58Z",
+      "side": 1,
+      "message": "The position of a nop is probably irrelevant, but couldn\u0027t this be moved after the if block so we always honor `pos`?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 43
+      },
+      "revId": "c6488f98cdae1d934632ae947c2bb837e741fe38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
