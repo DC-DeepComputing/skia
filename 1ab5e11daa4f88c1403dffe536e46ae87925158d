@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "26d41bd2_5d6768d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-02T20:41:04Z",
+      "side": 1,
+      "message": "It isn\u0027t entirely clear from the terms used in this change if the effect is supposed to be a text transform (like toUpper) or a glyph transform (like Small Caps \u0027smcp\u0027 or Caps to Small Caps \u0027c2sc\u0027) or some mix of these.",
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f5650ff7_dbc00940",
         "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
         "patchSetId": 8
@@ -20,6 +37,23 @@
         "endLine": 517,
         "endChar": 31
       },
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19d2cb3b_411152ce",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-02T20:41:04Z",
+      "side": 1,
+      "message": "Went and manually checked this is available in Android\u0027s ICU.",
       "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
