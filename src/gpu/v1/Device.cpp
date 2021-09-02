@@ -54,11 +54,11 @@
 
 namespace {
 
-SkImageInfo make_info(skgpu::v1::SurfaceDrawContext* sdc, bool opaque) {
-    SkColorType colorType = GrColorTypeToSkColorType(sdc->colorInfo().colorType());
-    return SkImageInfo::Make(sdc->width(), sdc->height(), colorType,
+SkImageInfo make_info(skgpu::SurfaceContext* sc, bool opaque) {
+    SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
+    return SkImageInfo::Make(sc->width(), sc->height(), colorType,
                              opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType,
-                             sdc->colorInfo().refColorSpace());
+                             sc->colorInfo().refColorSpace());
 }
 
 bool force_aa_clip(const skgpu::v1::SurfaceDrawContext* sdc) {
@@ -127,21 +127,21 @@ namespace skgpu::v1 {
     should fail. */
 bool Device::CheckAlphaTypeAndGetFlags(const SkImageInfo* info,
                                        Device::InitContents init,
-                                       unsigned* flags) {
-    *flags = 0;
+                                       DeviceFlags* flags) {
+    *flags = DeviceFlags::kNone;
     if (info) {
         switch (info->alphaType()) {
             case kPremul_SkAlphaType:
                 break;
             case kOpaque_SkAlphaType:
-                *flags |= Device::kIsOpaque_Flag;
+                *flags |= DeviceFlags::kIsOpaque;
                 break;
             default: // If it is unpremul or unknown don't try to render
                 return false;
         }
     }
     if (kClear_InitContents == init) {
-        *flags |= kNeedClear_Flag;
+        *flags |= DeviceFlags::kNeedClear;
     }
     return true;
 }
@@ -160,10 +160,10 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
                                         origin,
                                         surfaceProps);
 
-    return Device::Make(std::move(sdc), nullptr, init);
+    return Device::Make7(std::move(sdc), nullptr, init);
 }
 
-sk_sp<BaseDevice> Device::Make(std::unique_ptr<SurfaceDrawContext> sdc,
+sk_sp<BaseDevice> Device::Make7(std::unique_ptr<SurfaceDrawContext> sdc,
                                const SkImageInfo* ii,
                                InitContents init) {
     if (!sdc) {
@@ -177,7 +177,7 @@ sk_sp<BaseDevice> Device::Make(std::unique_ptr<SurfaceDrawContext> sdc,
 
     SkColorType ct = GrColorTypeToSkColorType(sdc->colorInfo().colorType());
 
-    unsigned flags;
+    DeviceFlags flags;
     if (!rContext->colorTypeSupportedAsSurface(ct) ||
         !CheckAlphaTypeAndGetFlags(ii, init, &flags)) {
         return nullptr;
@@ -195,52 +195,32 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
                                GrSurfaceOrigin origin,
                                const SkSurfaceProps& props,
                                InitContents init) {
-    auto sdc = MakeSurfaceDrawContext(rContext,
-                                      budgeted,
-                                      ii,
-                                      fit,
-                                      sampleCount,
-                                      mipMapped,
-                                      isProtected,
-                                      origin,
-                                      props);
+    auto sdc = SurfaceDrawContext::Make(rContext,
+                                        SkColorTypeToGrColorType(ii.colorType()),
+                                        ii.refColorSpace(),
+                                        fit,
+                                        ii.dimensions(),
+                                        props,
+                                        sampleCount,
+                                        mipMapped,
+                                        isProtected,
+                                        origin,
+                                        budgeted);
 
-    return Device::Make(std::move(sdc), &ii, init);
+    return Device::Make7(std::move(sdc), &ii, init);
 }
 
-Device::Device(std::unique_ptr<SurfaceDrawContext> sdc, unsigned flags)
+Device::Device(std::unique_ptr<SurfaceDrawContext> sdc, DeviceFlags flags)
         : INHERITED(sk_ref_sp(sdc->recordingContext()),
-                    make_info(sdc.get(), SkToBool(flags & kIsOpaque_Flag)),
+                    make_info(sdc.get(), SkToBool(flags & DeviceFlags::kIsOpaque)),
                     sdc->surfaceProps())
         , fSurfaceDrawContext(std::move(sdc))
         , fClip(SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
                 &this->asMatrixProvider(),
                 force_aa_clip(fSurfaceDrawContext.get())) {
-    if (flags & kNeedClear_Flag) {
+    if (flags & DeviceFlags::kNeedClear) {
         this->clearAll();
     }
-}
-
-std::unique_ptr<SurfaceDrawContext> Device::MakeSurfaceDrawContext(
-        GrRecordingContext* rContext,
-        SkBudgeted budgeted,
-        const SkImageInfo& origInfo,
-        SkBackingFit fit,
-        int sampleCount,
-        GrMipmapped mipmapped,
-        GrProtected isProtected,
-        GrSurfaceOrigin origin,
-        const SkSurfaceProps& surfaceProps) {
-    if (!rContext) {
-        return nullptr;
-    }
-
-    // This method is used to create SkGpuDevice's for SkSurface_Gpus. In this case
-    // they need to be exact.
-    return SurfaceDrawContext::Make(
-            rContext, SkColorTypeToGrColorType(origInfo.colorType()), origInfo.refColorSpace(),
-            fit, origInfo.dimensions(), surfaceProps,
-            sampleCount, mipmapped, isProtected, origin, budgeted);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1083,7 +1063,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     InitContents init = cinfo.fInfo.isOpaque() ? kUninit_InitContents : kClear_InitContents;
 
-    return Device::Make(std::move(sdc), &cinfo.fInfo, init).release();
+    return Device::Make7(std::move(sdc), &cinfo.fInfo, init).release();
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
