@@ -93,6 +93,14 @@ bool Parse(const skjson::Value& jv, const internal::AnimationBuilder& abuilder, 
                 : Shaper::LinebreakPolicy::kParagraph; // 'm': 1 -> paragraph text
     }
 
+    // Optional capitalization.
+    static constexpr Shaper::Capitalization gCapMap[] = {
+        Shaper::Capitalization::kNone,      // 'ca': 0
+        Shaper::Capitalization::kUpperCase, // 'ca': 1
+    };
+    v->fCapitalization = gCapMap[std::min<size_t>(ParseDefault<size_t>((*jtxt)["ca"], 0),
+                                                  SK_ARRAY_COUNT(gCapMap))];
+
     // In point mode, the text is baseline-aligned.
     v->fVAlign = v->fBox.isEmpty() ? Shaper::VAlign::kTopBaseline
                                    : Shaper::VAlign::kTop;
