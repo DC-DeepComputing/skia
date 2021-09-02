@@ -20,6 +20,41 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "51ad5924_9ebdc5a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-02T20:55:37Z",
+      "side": 1,
+      "message": "I think I may need to land a skottie -\u003e skunicode dependency in google3 first.",
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "115bf3ba_5cac1c38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-02T20:55:37Z",
+      "side": 1,
+      "message": "I\u0027m not sure, the AE verbiage is sort of confusing: \"you can apply faux styles — simulated versions of bold, italic, superscript, subscript, all caps, and small caps styles\" [1]\n\nGrouping with small caps, superscript etc. kinda suggests these are font features, but the faux/simulated terms seem to indicate otherwise?\n\n\n[1] https://helpx.adobe.com/after-effects/using/formatting-characters-character-panel.html",
+      "parentUuid": "26d41bd2_5d6768d4",
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f5650ff7_dbc00940",
         "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
         "patchSetId": 8
@@ -54,6 +89,24 @@
       "writtenOn": "2021-09-02T20:41:04Z",
       "side": 1,
       "message": "Went and manually checked this is available in Android\u0027s ICU.",
+      "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea2e466_f0b4a88e",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-02T20:55:37Z",
+      "side": 1,
+      "message": "Right, per current ICU docs this is Stable: ICU 2.0",
+      "parentUuid": "19d2cb3b_411152ce",
       "revId": "1ab5e11daa4f88c1403dffe536e46ae87925158d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
