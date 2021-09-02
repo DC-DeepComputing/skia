@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f11706_d645559e",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-02T13:09:50Z",
+      "side": 1,
+      "message": "Looks good. This applies the unroll factor to all parts of the loop (init, condition, increment), but that\u0027s close enough. (Obviously the init only runs once, but there\u0027s some hidden loop cost as well, and it\u0027s safer to be conservative). Might just throw a comment indicating that we\u0027re intentionally multiplying the loop bookkeeping by the unroll factor (as well as the body).",
+      "parentUuid": "713025f1_1833294c",
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f3366c0_65cca01a",
