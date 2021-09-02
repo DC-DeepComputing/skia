@@ -280,4 +280,10 @@ enum class GrSemaphoresSubmitted : bool {
     kYes = true
 };
 
+struct GrSharedSurfaceInfo {
+    uint32_t fSampleCount = 1;
+    uint32_t fLevelCount = 0;
+    GrProtected fProtected = GrProtected::kNo;
+};
+
 #endif

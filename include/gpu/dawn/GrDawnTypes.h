@@ -8,6 +8,8 @@
 #ifndef GrDawnTypes_DEFINED
 #define GrDawnTypes_DEFINED
 
+#include "include/gpu/GrTypes.h"
+
 #ifdef Always
 #undef Always
 static constexpr int Always = 2;
@@ -80,6 +82,15 @@ struct GrDawnRenderTargetInfo {
                fFormat == other.fFormat &&
                fLevelCount == other.fLevelCount;
     }
+};
+
+struct GrDawnSurfaceInfo : public GrSharedSurfaceInfo {
+    wgpu::TextureFormat fFormat;
+};
+
+struct GrDawnTextureInfo2 {
+    wgpu::Texture fTexture;
+    GrDawnSurfaceInfo fSpec;
 };
 
 #endif

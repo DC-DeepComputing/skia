@@ -160,4 +160,23 @@ struct GrVkDrawableInfo {
     VkImage         fImage;
 };
 
+struct GrVkSurfaceInfo : public GrSharedSurfaceInfo {
+    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkFormat fFormat = VK_FORMAT_UNDEFINED;
+    VkImageUsageFlags fImageUsageFlags = 0;
+    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
+    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+};
+
+struct GrVkImageInfo2 {
+    VkImage fImage = VK_NULL_HANDLE;
+    GrVkAlloc fAlloc;
+
+    // These are mutable properties of a VkImage
+    VkImageLayout fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    uint32_t fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
+
+    GrVkSurfaceInfo fSpec;
+};
+
 #endif

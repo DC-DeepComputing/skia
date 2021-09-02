@@ -78,4 +78,43 @@ private:
     std::atomic<uint32_t> fQueueFamilyIndex;
 };
 
+struct GrVkImageSpec {
+    GrVkImageSpec()
+            : fImageTiling(VK_IMAGE_TILING_OPTIMAL)
+            , fFormat(VK_FORMAT_UNDEFINED)
+            , fImageUsageFlags(0)
+            , fSharingMode(VK_SHARING_MODE_EXCLUSIVE) {}
+
+    GrVkImageSpec(const GrVkSurfaceInfo& info)
+            : fImageTiling(info.fImageTiling)
+            , fFormat(info.fFormat)
+            , fImageUsageFlags(info.fImageUsageFlags)
+            , fYcbcrConversionInfo(info.fYcbcrConversionInfo)
+            , fSharingMode(info.fSharingMode) {}
+
+    VkImageTiling fImageTiling;
+    VkFormat fFormat;
+    VkImageUsageFlags fImageUsageFlags;
+    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
+    VkSharingMode fSharingMode;
+};
+
+static GrVkSurfaceInfo GrVkImageSpecToSurfaceInfo(const GrVkImageSpec& vkSpec,
+                                                  const GrSharedSurfaceInfo& sharedInfo) {
+    GrVkSurfaceInfo info;
+    // Shared info
+    info.fSampleCount = sharedInfo.fSampleCount;
+    info.fLevelCount = sharedInfo.fLevelCount;
+    info.fProtected = sharedInfo.fProtected;
+
+    // Vulkan info
+    info.fImageTiling = vkSpec.fImageTiling;
+    info.fFormat = vkSpec.fFormat;
+    info.fImageUsageFlags = vkSpec.fImageUsageFlags;
+    info.fYcbcrConversionInfo = vkSpec.fYcbcrConversionInfo;
+    info.fSharingMode = vkSpec.fSharingMode;
+
+    return info;
+}
+
 #endif

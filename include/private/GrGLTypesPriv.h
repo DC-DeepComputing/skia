@@ -91,4 +91,27 @@ private:
     GrGLTextureParameters* fParams;
 };
 
+struct GrGLTextureSpec {
+    GrGLTextureSpec() : fTarget(0), fFormat(0) {}
+    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget), fFormat(info.fFormat) {}
+
+    GrGLenum fTarget;
+    GrGLenum fFormat;
+};
+
+static GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
+                                                    const GrSharedSurfaceInfo& sharedInfo) {
+    GrGLSurfaceInfo info;
+    // Shared info
+    info.fSampleCount = sharedInfo.fSampleCount;
+    info.fLevelCount = sharedInfo.fLevelCount;
+    info.fProtected = sharedInfo.fProtected;
+
+    // GL info
+    info.fTarget = glSpec.fTarget;
+    info.fFormat = glSpec.fFormat;
+
+    return info;
+}
+
 #endif
