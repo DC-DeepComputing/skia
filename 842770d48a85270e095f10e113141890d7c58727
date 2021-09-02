@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "399a4811_198ec6ab",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-02T16:31:24Z",
+      "side": 1,
+      "message": "Just some extra clean-up, using the factory instead of in-place mutator. Volatility doesn\u0027t matter for raster anyways.",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 67
+      },
+      "revId": "842770d48a85270e095f10e113141890d7c58727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d3242e_db9d7950",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-02T16:31:24Z",
+      "side": 1,
+      "message": "Some extra clean-up. SkPath::transform already performs the matrix \u003d\u003d identity optimization. And we don\u0027t need to set volatile either.",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 37
+      },
+      "revId": "842770d48a85270e095f10e113141890d7c58727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
