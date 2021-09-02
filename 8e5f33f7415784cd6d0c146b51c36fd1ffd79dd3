@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "8e5f33f7415784cd6d0c146b51c36fd1ffd79dd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0073439_b5b66506",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-02T18:06:47Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this was disabled. I think I was testing the uniform buffer path\nand left it in by mistake.",
+      "range": {
+        "startLine": 336,
+        "startChar": 28,
+        "endLine": 336,
+        "endChar": 34
+      },
+      "revId": "8e5f33f7415784cd6d0c146b51c36fd1ffd79dd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
