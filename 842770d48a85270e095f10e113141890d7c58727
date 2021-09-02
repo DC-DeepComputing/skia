@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e2a56d_cbb0909b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-02T17:56:17Z",
+      "side": 1,
+      "message": "The previous simplification of SkRasterClip went too far in its simplifications. When the clip is a rect and a path is intersected, there\u0027s a noticeable perf improvement doing it \"in-place\" vs. building a new SkRasterClip and then performing the general clip to clip intersection.",
+      "revId": "842770d48a85270e095f10e113141890d7c58727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "399a4811_198ec6ab",
