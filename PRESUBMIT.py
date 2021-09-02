@@ -517,19 +517,6 @@ def PostUploadHook(gerrit, change, output_api):
             'This change has only doc changes. Automatically added '
             '\'No-Try: true\' to the CL\'s description'))
 
-  # If there is at least one docs change then add preview link in the CL's
-  # description if it does not already exist there.
-  docs_preview_link = DOCS_PREVIEW_URL.format(issue=change.issue)
-  if (at_least_one_docs_change
-      and docs_preview_link not in footers.get('Docs-Preview', [])):
-    # Automatically add a link to where the docs can be previewed.
-    description_changed = True
-    change.AddDescriptionFooter('Docs-Preview', docs_preview_link)
-    results.append(
-        output_api.PresubmitNotifyResult(
-            'Automatically added a link to preview the docs changes to the '
-            'CL\'s description'))
-
   # If the description has changed update it.
   if description_changed:
     gerrit.UpdateDescription(
