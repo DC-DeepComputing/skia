@@ -15,6 +15,21 @@ namespace SkSL {
 
 namespace dsl {
 
+static bool type_contains_private_fields(const Type& type) {
+    // Checks for usage of private types, including fields inside a struct.
+    if (type.isPrivate()) {
+        return true;
+    }
+    if (type.isStruct()) {
+        for (const auto& f : type.fields()) {
+            if (type_contains_private_fields(*f.fType)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 static const Type* find_type(skstd::string_view name) {
     const Symbol* symbol = (*DSLWriter::SymbolTable())[name];
     if (!symbol) {
@@ -27,7 +42,18 @@ static const Type* find_type(skstd::string_view name) {
                                               (int)name.length(), name.data()).c_str());
         return nullptr;
     }
-    return &symbol->as<Type>();
+    const Type& result = symbol->as<Type>();
+    if (!DSLWriter::IsModule()) {
+        if (type_contains_private_fields(result)) {
+            DSLWriter::ReportError(("type '" + String(name) + "' is private").c_str());
+            return nullptr;
+        }
+        if (DSLWriter::Context().fConfig->strictES2Mode() && !result.allowedInES2()) {
+            DSLWriter::ReportError(("type '" + String(name) + "' is not supported").c_str());
+            return nullptr;
+        }
+    }
+    return &result;
 }
 
 static const Type* find_type(skstd::string_view name, const Modifiers& modifiers,
