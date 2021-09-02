@@ -22,6 +22,30 @@
       },
       "revId": "36aacc3f8b407bd23d97284714a900828f984ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba558940_67e004f3",
+        "filename": "tests/sksl/runtime/LargeProgram_StackDepth.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-02T20:27:48Z",
+      "side": 1,
+      "message": "I think that\u0027s turned off by the compiler instance used in SkRuntimeEffect, but *not* in skslc, even when processing .rts files?",
+      "parentUuid": "16a15c13_1e11a8f4",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 11
+      },
+      "revId": "36aacc3f8b407bd23d97284714a900828f984ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
