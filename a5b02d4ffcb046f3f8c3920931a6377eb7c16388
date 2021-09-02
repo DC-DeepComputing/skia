@@ -22,6 +22,30 @@
       },
       "revId": "a5b02d4ffcb046f3f8c3920931a6377eb7c16388",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f086da20_b453f30b",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T14:43:39Z",
+      "side": 1,
+      "message": "I would suggest that this really belongs in SkSLType. There\u0027s nothing IRGenerator- or DSL-specific about it. And that avoids the duplication, even temporarily.\n\nAt one point I had actually moved it there! But that was part of my experimentation with conditionally exposing ES3 types in Runtime Effects, and I ended up doing it another way and that CL was abandoned. While I was experimenting, I had it set up so that ES3 types could be conditionally private. But it was more complex than the solution we landed on.",
+      "parentUuid": "a81e4542_463c3645",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "a5b02d4ffcb046f3f8c3920931a6377eb7c16388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
