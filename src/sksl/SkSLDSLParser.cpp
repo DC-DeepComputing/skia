@@ -416,6 +416,7 @@ SkTArray<T> DSLParser::varDeclarationEnd(PositionInfo pos, const dsl::DSLModifie
         if (!parseArrayDimensions(&type)) {
             return result;
         }
+        initializer = DSLExpression(); // avoid used-after-move complaint from clang-tidy
         if (!parseInitializer(&initializer)) {
             return result;
         }
