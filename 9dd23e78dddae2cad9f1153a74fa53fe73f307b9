@@ -22,6 +22,30 @@
       },
       "revId": "9dd23e78dddae2cad9f1153a74fa53fe73f307b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b853770_4b0ff807",
+        "filename": "src/gpu/mtl/GrMtlCaps.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-02T19:37:12Z",
+      "side": 1,
+      "message": "DMSAA has another clause in this connected by ||. Seems safer to leave it to avoid a mistake later.",
+      "parentUuid": "7401cab7_eae0c6bc",
+      "range": {
+        "startLine": 1176,
+        "startChar": 11,
+        "endLine": 1176,
+        "endChar": 76
+      },
+      "revId": "9dd23e78dddae2cad9f1153a74fa53fe73f307b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
