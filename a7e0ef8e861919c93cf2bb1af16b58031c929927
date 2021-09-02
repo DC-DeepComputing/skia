@@ -126,6 +126,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1c1c405_08b6ea74",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T13:59:11Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "8d50480c_2d274f24",
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f3366c0_65cca01a",
@@ -211,6 +229,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "aa4164b4_0afff18c",
+      "range": {
+        "startLine": 823,
+        "startChar": 0,
+        "endLine": 823,
+        "endChar": 47
+      },
+      "revId": "a7e0ef8e861919c93cf2bb1af16b58031c929927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe40b2c_93cd47b8",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T13:59:11Z",
+      "side": 1,
+      "message": "I\u0027ve added a test that would have caught this case. (ProgramTooLarge_Functions.rts) And it\u0027s a pretty good test in its own right, as it\u0027s the only test case which doesn\u0027t rely on a for loop in some way.",
+      "parentUuid": "90f3d494_68c8fcb4",
       "range": {
         "startLine": 823,
         "startChar": 0,

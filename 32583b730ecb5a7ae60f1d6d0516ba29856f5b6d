@@ -48,6 +48,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbe2c563_efc96192",
+        "filename": "resources/sksl/runtime/LargeProgram_NestedFor.rts",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T13:59:11Z",
+      "side": 1,
+      "message": "I\u0027ll fix the stack overflow in DCE in a separate CL.",
+      "parentUuid": "5fad134a_2d33d39a",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "32583b730ecb5a7ae60f1d6d0516ba29856f5b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9257dc6_91568cf2",
+        "filename": "resources/sksl/runtime/LargeProgram_NestedFor.rts",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T13:59:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5fad134a_2d33d39a",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 13
+      },
+      "revId": "32583b730ecb5a7ae60f1d6d0516ba29856f5b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c71a0ffb_716808d6",
@@ -79,6 +127,24 @@
       "side": 1,
       "message": "Yes. Here\u0027s a sneak peek/WIP: http://review.skia.org/444878",
       "parentUuid": "c71a0ffb_716808d6",
+      "revId": "32583b730ecb5a7ae60f1d6d0516ba29856f5b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfaad727_ef0f608b",
+        "filename": "tests/sksl/runtime/LargeProgram_Flat.skvm",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-02T13:59:11Z",
+      "side": 1,
+      "message": "I decided to rewrite these tests to make sure they work as expected in this CL.",
+      "parentUuid": "ded0e3c2_af26d78e",
       "revId": "32583b730ecb5a7ae60f1d6d0516ba29856f5b6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
