@@ -97,6 +97,24 @@
       "parentUuid": "37862e5a_d05e09b2",
       "revId": "842770d48a85270e095f10e113141890d7c58727",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4c4a347_19f7fe84",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-03T18:30:31Z",
+      "side": 1,
+      "message": "Ah, makes sense now, thanks!",
+      "parentUuid": "21936e49_b1a3fbe1",
+      "revId": "842770d48a85270e095f10e113141890d7c58727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
