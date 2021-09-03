@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "164c9f04_06a61f27",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T17:42:19Z",
+      "side": 1,
+      "message": "Yeah, I like that better. (I had reservations about this phrasing, for the same reason).",
+      "parentUuid": "f8241134_647fa7b5",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 43
+      },
+      "revId": "e7d313f150c51a8da4e1764182f5bc928934b7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2878fc70_b3746ca8",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-03T17:30:36Z",
       "side": 1,
       "message": "This phrasing feels a bit inside-baseball, but the sentence itself is useful. NBD, leave as-is if you can\u0027t think of a rephrasing.",
+      "range": {
+        "startLine": 60,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 40
+      },
+      "revId": "e7d313f150c51a8da4e1764182f5bc928934b7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fac27db_684f6644",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T17:42:19Z",
+      "side": 1,
+      "message": "Ack. (I don\u0027t love the phrasing either, but don\u0027t have anything meaningfully better right now. Easy enough to change if I come up with something better later).",
+      "parentUuid": "2878fc70_b3746ca8",
       "range": {
         "startLine": 60,
         "startChar": 6,
