@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8d6d4c8_d69c943f",
+        "filename": "tests/sksl/runtime_errors/IllegalStatements.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T17:47:37Z",
+      "side": 1,
+      "message": "Again, worried these values might not be consistent over time.",
+      "parentUuid": "ba1693e7_847e678e",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "123e85f0_b6f56ed3",
         "filename": "tests/sksl/runtime_errors/LoopConditionErrors.skvm",
         "patchSetId": 8

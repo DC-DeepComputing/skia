@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f02c3803_2d521992",
+        "filename": "tests/sksl/errors/UnscopedVariableInDoWhile.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T17:47:37Z",
+      "side": 1,
+      "message": "Is this just a uninitialized value? Worried the housekeeper might start failing if the position is inconsistent across runs.",
+      "parentUuid": "f3497258_25edda87",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 53
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccda45ba_14748aa8",
         "filename": "tests/sksl/errors/VertexEarlyReturn.glsl",
         "patchSetId": 1
