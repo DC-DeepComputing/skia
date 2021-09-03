@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "335c14ee_e2bd3d83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-03T14:50:20Z",
+      "side": 1,
+      "message": "Looks like this broke the Flutter roll (iOS): https://github.com/flutter/engine/pull/28445/checks?check_run_id\u003d3505954430\n\nFAILED: obj/third_party/skia/src/gpu/mtl/gpu.GrMtlGpu.o \n/opt/s/w/ir/cache/goma/client/gomacc  ../../buildtools/mac-x64/clang/bin/clang++ -MD -MF obj/third_party/skia/src/gpu/mtl/gpu.GrMtlGpu.o.d -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE\u003d2 -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCPP_ENABLE_THREAD_SAFETY_ANNOTATIONS -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED\u003d0 -DSK_ENABLE_DUMP_GPU -DSK_DISABLE_AAA -DSK_PARAGRAPH_LIBTXT_SPACES_RESOLUTION -DSK_LEGACY_INNER_JOINS -DSK_DISABLE_LEGACY_SHADERCONTEXT -DSK_DISABLE_LOWP_RASTER_PIPELINE -DSK_FORCE_RASTER_PIPELINE_BLITTER -DSK_GL -DSK_DISABLE_EFFECT_DESERIALIZATION -DSK_ENABLE_SKSL -DSK_ASSUME_GL_ES\u003d1 -DSK_ENABLE_API_AVAILABLE -DSK_GAMMA_APPLY_TO_A8 -DSKIA_IMPLEMENTATION\u003d1 -DSK_METAL -I../.. -Igen -I../../third_party/skia -isysroot /opt/s/w/ir/cache/osx_sdk/XCode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator14.0.sdk -mios-simulator-version-min\u003d8.0 -fno-strict-aliasing -arch x86_64 -fcolor-diagnostics -Wall -Wextra -Wendif-labels -Werror -Wno-missing-field-initializers -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-deprecated-copy -Wno-psabi -Wno-non-c-typedef-for-linkage -Wno-range-loop-construct -Wunguarded-availability -Wno-deprecated-declarations -fvisibility\u003dhidden -stdlib\u003dlibc++ -Wstring-conversion -Wnewline-eof -Os -fno-ident -fdata-sections -ffunction-sections -g2 -fvisibility-inlines-hidden -std\u003dc++17 -fno-rtti -fno-exceptions -nostdinc++ -isystem /opt/s/w/ir/cache/osx_sdk/XCode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -fobjc-arc -fvisibility-inlines-hidden -fobjc-call-cxx-cdtors -std\u003dc++17 -fno-rtti -fno-exceptions -nostdinc++ -isystem /opt/s/w/ir/cache/osx_sdk/XCode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1  -c ../../third_party/skia/src/gpu/mtl/GrMtlGpu.mm -o obj/third_party/skia/src/gpu/mtl/gpu.GrMtlGpu.o\n../../third_party/skia/src/gpu/mtl/GrMtlGpu.mm:1602:5: error: \u0027drawPrimitives\u0027 is only available on iOS 9.0 or newer [-Werror,-Wunguarded-availability]\n    renderCmdEncoder-\u003edrawPrimitives(MTLPrimitiveTypeTriangleStrip, 0, 4, 1, 0);\n    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n../../third_party/skia/src/gpu/mtl/GrMtlRenderCommandEncoder.h:185:10: note: \u0027drawPrimitives\u0027 has been marked as being introduced in iOS 9.0 here, but the deployment target is iOS 8.0.0\n    void drawPrimitives(MTLPrimitiveType primitiveType, NSUInteger vertexStart,\n         ^\n../../third_party/skia/src/gpu/mtl/GrMtlGpu.mm:1602:5: note: enclose \u0027drawPrimitives\u0027 in an @available check to silence this warning\n    renderCmdEncoder-\u003edrawPrimitives(MTLPrimitiveTypeTriangleStrip, 0, 4, 1, 0);\n    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n1 error generated.",
+      "revId": "9f82158f17ee638e11cf68cbb07d0cec1a4c847c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
