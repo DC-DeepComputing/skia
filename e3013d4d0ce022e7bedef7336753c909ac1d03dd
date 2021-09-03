@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc832f94_8d35ed8e",
+        "filename": "site/docs/dev/design/text_shaper.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 12084
+      },
+      "writtenOn": "2021-09-03T15:50:53Z",
+      "side": 1,
+      "message": "Is the list of font properties expected to grow over time? I\u0027m wondering if we expect to add more properties, whether it\u0027s worth wrapping them in a separate interface, e.g. `GlyphRunStyle`, like this:\n\ninterface GlyphRunStyle {\n    readonly attribute Typeface typeface;\n    readonly attribute double size;\n    readonly attribute double scaleX?;\n    readonly attribute double skewX?;\n}\n\ninterface GlyphRun : TextRun {\n    readonly attribute GlyphRunStyle style;\n    readonly attribute sequence\u003cunsigned short\u003e glyphs;\n    readonly attribute sequence\u003cfloat\u003e positions;\n    readonly attribute sequence\u003cTextIndex\u003e indices;\n}\n\nI\u0027m expecting `GlyphRunStyle` can be shared across many glyph runs",
+      "revId": "e3013d4d0ce022e7bedef7336753c909ac1d03dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
