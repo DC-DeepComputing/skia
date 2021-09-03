@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dbd9363_546782e1",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T18:43:01Z",
+      "side": 1,
+      "message": "I think these have to be split out (or factored in somehow). For \"proper\" loops, the math produces the right answer, because the signs cancel out. And for loops that move in the wrong direction, the signs produce a negative answer, which is good. But:\n  for (int x \u003d 0; x \u003e 5; x++) {}\n  \n... should not execute at all, but the algorithm says 5?",
+      "range": {
+        "startLine": 1172,
+        "startChar": 0,
+        "endLine": 1173,
+        "endChar": 34
+      },
+      "revId": "ee0a076de24d48843b3f1e4aef50fa8e163aa730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
