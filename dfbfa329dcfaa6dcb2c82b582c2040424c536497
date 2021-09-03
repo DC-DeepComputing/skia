@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3bbf230_e4bdd84c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This is a largely structural change to SkAAClip that I wanted to land before I update it to use SkClipOp instead of SkRegion::Op. SkAAClip\u0027s public header leaked a lot of functionality so this reorganizes the functions and declarations to hide more of it in the cpp file. \n\nAdditionally, within the CPP file, static helper functions were migrated to be local inlinable lambdas when possible or moved into the anonymous namespace at the top of the file. Most definitions for SkAAClip were re-arranged w/o major changes to better match the declaration order and grouping in the header, along with moving the internal classes like Builder, Iter, etc. to be before any SkAAClip definitions.\n\nSince many of these functions and internal types are large blocks of code, the gerrit differ isn\u0027t the most helpful, so I tried making notes of what things were simply moved and calling out slightly more substantive tweaks. That being said, this shouldn\u0027t have any behavioral changes in it, it\u0027s all reorg work.",
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12c54d41_680071f0",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "No changes to this class, just moved into the anonymous namespace.",
+      "range": {
+        "startLine": 106,
+        "startChar": 6,
+        "endLine": 106,
+        "endChar": 14
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf70cfc9_04af9b32",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "Iter\u0027s constructor has been updated to not depend on RunHead directly, since it\u0027s not accessible to it. RunHead provides an Iterate() function that creates an Iter in the same manner as before.",
+      "range": {
+        "startLine": 153,
+        "startChar": 6,
+        "endLine": 153,
+        "endChar": 11
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3322744d_0fcea686",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This is unchanged from previous, but moved it inline.",
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2cdbf62_1e9d3137",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This is mostly unchanged, but moved to be above the rest of the SkAAClip definitions. Specific changes will be called out.",
+      "range": {
+        "startLine": 274,
+        "startChar": 16,
+        "endLine": 274,
+        "endChar": 24
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6716b474_44a5d9a2",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This replaces SkAAClip::BuilderBlitter and now is managed internally to Builder as part of its new blitPath() public function.",
+      "range": {
+        "startLine": 275,
+        "startChar": 10,
+        "endLine": 275,
+        "endChar": 17
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "544a2f1a_42ef465d",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "These are simple abstractions over the previous way that Builder was used. A Builder would be created, then operated on, and then \"finished\" into a target SkAAClip. For the setPath case, it would also have to create a Blitter that had to be finished before the Builder. Now Builder can handle all of that logic within these functions and make most of its API private.",
+      "range": {
+        "startLine": 308,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 89
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b3437c5_b33474af",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "operateX and operateY had been static functions that accepted a Builder, which is why Builder had to be a public forward declaration. Making them private members of the Builder being operated on lets us hide Builder\u0027s declaration.",
+      "range": {
+        "startLine": 312,
+        "startChar": 9,
+        "endLine": 312,
+        "endChar": 17
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "274b9db9_65f6b123",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This replaces the y_in_rect static function",
+      "range": {
+        "startLine": 1659,
+        "startChar": 8,
+        "endLine": 1659,
+        "endChar": 48
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c178c5ee_912bdcd2",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1677,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "This replaces the debug-only defined x_in_rect static function",
+      "range": {
+        "startLine": 1677,
+        "startChar": 13,
+        "endLine": 1677,
+        "endChar": 53
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "533ecd50_57debfaf",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:54:39Z",
+      "side": 1,
+      "message": "Simply moved, no change",
+      "range": {
+        "startLine": 1695,
+        "startChar": 15,
+        "endLine": 1695,
+        "endChar": 28
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
