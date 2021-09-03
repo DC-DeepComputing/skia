@@ -33,6 +33,24 @@
       "message": "So in theory, this will not change anything because today we have presubmit checks that go out and seek a similar list for changes to includes? We branch next Thursday, we don\u0027t think this will have any implications right.. maybe silly question, I\u0027m just paranoid",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2050495c_bd8645ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T20:00:40Z",
+      "side": 1,
+      "message": "I\u0027m hesitating a bit, because it\u0027s slightly more strict than the existing presubmit checks. Those allowed the CL author to still use TBR, and (AFAICT) would actually accept CLs that simply had one of the owners as a reviewer, whether or not they gave a +1. This will actually enforce that one of the API owners approves the change.",
+      "parentUuid": "42c00bb5_9547ace6",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
