@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19648273_5e677601",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2021-09-03T14:48:46Z",
+      "side": 1,
+      "message": "I don\u0027t have ACLs to +1/+2, but LGTM.  Thanks!",
+      "revId": "cdcb2b86c296abfb48b0624703cd071dc56506e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
