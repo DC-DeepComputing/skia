@@ -69,6 +69,24 @@
       "parentUuid": "2050495c_bd8645ca",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66252bf1_dae38b38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-03T20:07:27Z",
+      "side": 1,
+      "message": "I don\u0027t like that that would stop us from using any OWNERS files. Maybe the roller should instead automatically remove any OWNERS files that it finds after the merge and before the upload.",
+      "parentUuid": "b18c7ea5_a128fd66",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
