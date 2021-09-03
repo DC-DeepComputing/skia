@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74b287dc_3a401b1c",
+        "filename": "tests/sksl/errors/PrivateTypes.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12404",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 0
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f8c4ce4_8475c2f9",
+        "filename": "tests/sksl/errors/StaticSwitchTest.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12405",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 40
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3497258_25edda87",
+        "filename": "tests/sksl/errors/UnscopedVariableInDoWhile.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12406",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 53
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccda45ba_14748aa8",
+        "filename": "tests/sksl/errors/VertexEarlyReturn.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12407",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 62
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4515d53_a42cf078",
+        "filename": "tests/sksl/glsl/LayoutQualifiers.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12408",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 54
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d8dc3a4_25ea749b",
+        "filename": "tests/sksl/runtime_errors/ProgramTooLarge_StackDepth.skvm",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 40
+      },
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

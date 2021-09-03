@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57931090_751355a4",
+        "filename": "tests/sksl/runtime_errors/IllegalRecursionComplex.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 61
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a00f142f_20ba97fb",
+        "filename": "tests/sksl/runtime_errors/IllegalRecursionMutual.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 61
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ff0040_aa94628b",
+        "filename": "tests/sksl/runtime_errors/IllegalRecursionSimple.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 61
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba1693e7_847e678e",
+        "filename": "tests/sksl/runtime_errors/IllegalStatements.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12411",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "123e85f0_b6f56ed3",
+        "filename": "tests/sksl/runtime_errors/LoopConditionErrors.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12411",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "592375a4_2edff0ac",
+        "filename": "tests/sksl/runtime_errors/LoopExpressionErrors.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12411",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9bc2a84_347e5bcc",
+        "filename": "tests/sksl/runtime_errors/LoopInitializerErrors.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12411",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad2d571_bd25fbe3",
+        "filename": "tests/sksl/runtime_errors/LoopStructureErrors.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12411",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "562b9ce6_774381e1",
+        "filename": "tests/sksl/runtime_errors/Ossfuzz36655.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 61
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7ba8265_89b8fbe5",
+        "filename": "tests/sksl/shared/ReturnBadTypeFromMain.metal",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 1,
+      "message": "skbug.com/12412",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 58
+      },
+      "revId": "8783b56d3356de257edece5f93949b42028ccb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "363f02ac_71170272",
+        "filename": "tests/sksl/runtime_errors/FirstClassArrays.skvm",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T17:31:19Z",
+      "side": 0,
+      "message": "skbug.com/12410",
+      "range": {
+        "startLine": 3,
+        "startChar": 10,
+        "endLine": 3,
+        "endChar": 52
+      },
+      "revId": "936ade912cb567ba5f2428a2e674471198a57177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
