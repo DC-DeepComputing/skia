@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cced0beb_059fec79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T13:47:04Z",
+      "side": 1,
+      "message": "PS1 -\u003e PS2: realized that with the new code structure, we no longer needed a lambda helper function at all",
+      "revId": "a4e315be635dc5aac60e8108d7c617855d9b645d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
