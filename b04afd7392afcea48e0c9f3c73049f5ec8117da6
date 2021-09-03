@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67f91f48_3567f13f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-03T13:50:46Z",
+      "side": 1,
+      "message": "This reland includes a couple of build fixes:\n\n1) turn off skia_use_icu for NoDEPS bots\n\n2) SkottieShaper must be able to build without skunicode\n\nInterestingly, SkShaper was getting away without #1 because it guards its ICU dependency on both skia_use_icu and skia_use_harfbuzz (and the latter is already disabled for NoDEPS).\n\nPTAL",
+      "revId": "b04afd7392afcea48e0c9f3c73049f5ec8117da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
