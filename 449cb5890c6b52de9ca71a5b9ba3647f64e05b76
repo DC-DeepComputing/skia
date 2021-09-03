@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9ad951a_fcb49e5c",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T13:55:17Z",
+      "side": 1,
+      "message": "I pulled the \"find the best function\" logic out, which also got rid of the duplicate calls to -\u003ecall in each case. The error reporting could share some code, but I think it might be more trouble than it\u0027s worth (with all of the subtle differences).",
+      "parentUuid": "8e3e01e4_cb9e2433",
+      "range": {
+        "startLine": 1136,
+        "startChar": 12,
+        "endLine": 1163,
+        "endChar": 9
+      },
+      "revId": "449cb5890c6b52de9ca71a5b9ba3647f64e05b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3adf1376_67aab24e",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-09-03T03:03:31Z",
       "side": 1,
       "message": "up to you: I tend to prefer passing pointers when mutation can occur, and SymbolTable::operator[] is (unfortunately) a mutating operation",
+      "range": {
+        "startLine": 18,
+        "startChar": 60,
+        "endLine": 18,
+        "endChar": 61
+      },
+      "revId": "449cb5890c6b52de9ca71a5b9ba3647f64e05b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d18e15_9657ffcc",
+        "filename": "src/sksl/ir/SkSLFieldAccess.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T13:55:17Z",
+      "side": 1,
+      "message": "I was just copying what\u0027s done in other IR nodes (IndexExpression and FunctionDeclaration).",
+      "parentUuid": "3adf1376_67aab24e",
       "range": {
         "startLine": 18,
         "startChar": 60,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb86410c_875b08ce",
+        "filename": "src/sksl/ir/SkSLFieldAccess.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T13:55:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3f5cde7_333ab7b4",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "449cb5890c6b52de9ca71a5b9ba3647f64e05b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9297b6e3_d157741f",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-09-03T03:03:31Z",
       "side": 1,
       "message": "The as\u003c\u003e call on the next line will make this same assertion for you.",
+      "range": {
+        "startLine": 896,
+        "startChar": 12,
+        "endLine": 896,
+        "endChar": 64
+      },
+      "revId": "449cb5890c6b52de9ca71a5b9ba3647f64e05b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12462122_03362607",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-03T13:55:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9297b6e3_d157741f",
       "range": {
         "startLine": 896,
         "startChar": 12,
