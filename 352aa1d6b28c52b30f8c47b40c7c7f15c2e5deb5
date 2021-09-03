@@ -22,6 +22,30 @@
       },
       "revId": "352aa1d6b28c52b30f8c47b40c7c7f15c2e5deb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3276633_61f9faf7",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T15:12:32Z",
+      "side": 1,
+      "message": "Because we don\u0027t have any error handling surrounding extensions, and the offset is generally useless from DSL anyway. Pure DSL code only has a line number, not an offset; the general pattern is to not be super concerned about the offset but then ReportErrors(pos) to get reports at the correct line number, but that won\u0027t work in this case.\n\nI\u0027ve gone ahead and added the error handling pattern just to be safe; it can\u0027t hurt, after all.",
+      "parentUuid": "929554ce_ce0d9d76",
+      "range": {
+        "startLine": 334,
+        "startChar": 41,
+        "endLine": 334,
+        "endChar": 42
+      },
+      "revId": "352aa1d6b28c52b30f8c47b40c7c7f15c2e5deb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
