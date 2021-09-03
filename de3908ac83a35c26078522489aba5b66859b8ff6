@@ -16,6 +16,23 @@
       "message": "My theory is that after this lands, we can remove the existing presubmit logic that checks for the same thing.",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42c00bb5_9547ace6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5095
+      },
+      "writtenOn": "2021-09-03T19:53:14Z",
+      "side": 1,
+      "message": "So in theory, this will not change anything because today we have presubmit checks that go out and seek a similar list for changes to includes? We branch next Thursday, we don\u0027t think this will have any implications right.. maybe silly question, I\u0027m just paranoid",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
