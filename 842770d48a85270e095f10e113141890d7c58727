@@ -79,6 +79,24 @@
       "message": "Maybe I\u0027m missing some subtlety here: if we start with an AA rect clip, do we just turn it into a BW rect clip for the path?  |clip| is a region and cannot hold AA data, so how is the original AA rect info being preserved?",
       "revId": "842770d48a85270e095f10e113141890d7c58727",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21936e49_b1a3fbe1",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:26:23Z",
+      "side": 1,
+      "message": "SkRasterClip::isRect() only returns true if the clip is rectangular AND lies on pixel boundary, so whether or not fIsBW is true, it can still be represented as an SkIRect or an SkRegion (in this case). So an original AA rect with fractional coverage on some edges would never get into this optimization and we just call op() on line 215.",
+      "parentUuid": "37862e5a_d05e09b2",
+      "revId": "842770d48a85270e095f10e113141890d7c58727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
