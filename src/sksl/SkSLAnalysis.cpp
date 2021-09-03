@@ -1165,30 +1165,46 @@ static const char* invalid_for_ES2(int offset,
     }
 
     // Finally, compute the iteration count, based on the bounds, and the termination operator.
-    constexpr int kMaxUnrollableLoopLength = 128;
+    constexpr int kLoopTerminationLimit = 1000000;
     loopInfo.fCount = 0;
 
-    double val = loopInfo.fStart;
-    auto evalCond = [&]() {
-        switch (cond.getOperator().kind()) {
-            case Token::Kind::TK_GT:   return val >  loopEnd;
-            case Token::Kind::TK_GTEQ: return val >= loopEnd;
-            case Token::Kind::TK_LT:   return val <  loopEnd;
-            case Token::Kind::TK_LTEQ: return val <= loopEnd;
-            case Token::Kind::TK_EQEQ: return val == loopEnd;
-            case Token::Kind::TK_NEQ:  return val != loopEnd;
-            default: SkUNREACHABLE;
-        }
-    };
-
-    for (loopInfo.fCount = 0; loopInfo.fCount <= kMaxUnrollableLoopLength; ++loopInfo.fCount) {
-        if (!evalCond()) {
+    switch (cond.getOperator().kind()) {
+        case Token::Kind::TK_LT:
+        case Token::Kind::TK_GT: {
+            loopInfo.fCount = std::ceil((loopEnd - loopInfo.fStart) / loopInfo.fDelta);
             break;
         }
-        val += loopInfo.fDelta;
+        case Token::Kind::TK_LTEQ:
+        case Token::Kind::TK_GTEQ: {
+            float iterations = (loopEnd - loopInfo.fStart) / loopInfo.fDelta;
+            loopInfo.fCount = std::ceil(iterations);
+            if (loopInfo.fCount == iterations) {
+                loopInfo.fCount += 1;
+            }
+            break;
+        }
+        case Token::Kind::TK_NEQ: {
+            float iterations = std::abs((loopEnd - loopInfo.fStart) / loopInfo.fDelta);
+            loopInfo.fCount = std::ceil(iterations);
+            if (loopInfo.fCount != iterations) {
+                loopInfo.fCount = kLoopTerminationLimit;
+            }
+            break;
+        }
+        case Token::Kind::TK_EQEQ: {
+            if (loopInfo.fStart == loopEnd) {
+                loopInfo.fCount = loopInfo.fDelta ? 1 : kLoopTerminationLimit;
+            } else {
+                loopInfo.fCount = 0;
+            }
+            break;
+        }
+        default: SkUNREACHABLE;
     }
 
-    if (loopInfo.fCount > kMaxUnrollableLoopLength) {
+    if (loopInfo.fCount < 0) {
+        loopInfo.fCount = 0;
+    } else if (loopInfo.fCount >= kLoopTerminationLimit) {
         return "loop must guarantee termination in fewer iterations";
     }
 

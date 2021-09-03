@@ -1,3 +1,5 @@
+uniform half4 colorRed, colorGreen;
+
 // Should return 5
 int return_loop() {
     for (int i = 0; i < 10; ++i) {
@@ -27,5 +29,8 @@ int break_loop() {
 }
 
 half4 main(float2 xy) {
-    return half4(return_loop(), continue_loop(), break_loop(), 1);
+    if (return_loop() != 5 || continue_loop() != 35 || break_loop() != 15) {
+        return colorRed;
+    }
+    return colorGreen;
 }
