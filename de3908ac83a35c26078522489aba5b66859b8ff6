@@ -51,6 +51,24 @@
       "parentUuid": "42c00bb5_9547ace6",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b18c7ea5_a128fd66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-03T20:04:29Z",
+      "side": 1,
+      "message": "Maybe another reason to hesitate: Since Android rollers are merges, we have seen them enforce the OWNERS file in directories. So any changes to include/ will require an API owner to CR+1 the Android roll (Derek can correct me if I am wrong).",
+      "parentUuid": "2050495c_bd8645ca",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
