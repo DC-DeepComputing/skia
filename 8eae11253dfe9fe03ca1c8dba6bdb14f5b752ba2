@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd23987_8f29da94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "They\u0027re from PositionInfo::Capture(), mostly line numbers in DSLParser.cpp. They\u0027re going to be the first things I fix, because otherwise they\u0027ll all change every time DSLParser.cpp changes.",
+      "parentUuid": "a083aa48_c4864864",
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b45e1a2_88253295",
@@ -31,6 +49,54 @@
       "writtenOn": "2021-09-03T17:47:37Z",
       "side": 1,
       "message": "Please cut a bug. We previously allowed a constant-expression for array size (as does GLSL). The problem here is that the final value of the expression is out of range and doesn\u0027t constant fold.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64ecc1f_aa11be3e",
+        "filename": "tests/sksl/errors/Ossfuzz32156.glsl",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "skbug.com/12415",
+      "parentUuid": "2b45e1a2_88253295",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c2ac29e_9ead4af3",
+        "filename": "tests/sksl/errors/Ossfuzz32156.glsl",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b45e1a2_88253295",
       "range": {
         "startLine": 3,
         "startChar": 0,
@@ -64,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c37a4217_10b98a24",
+        "filename": "tests/sksl/errors/Ossfuzz36850.asm.frag",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "skbug.com/12416",
+      "parentUuid": "94752d16_b18dbf15",
+      "range": {
+        "startLine": 3,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 37
+      },
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b99ac65a_794507f4",
@@ -77,6 +167,30 @@
       "writtenOn": "2021-09-03T17:47:37Z",
       "side": 1,
       "message": "Why are we missing the error about discard statement support?",
+      "range": {
+        "startLine": 3,
+        "startChar": 6,
+        "endLine": 3,
+        "endChar": 7
+      },
+      "revId": "8eae11253dfe9fe03ca1c8dba6bdb14f5b752ba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4263afbc_6ba655c6",
+        "filename": "tests/sksl/runtime_errors/IllegalStatements.skvm",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "skbug.com/12414",
+      "parentUuid": "b99ac65a_794507f4",
       "range": {
         "startLine": 3,
         "startChar": 6,

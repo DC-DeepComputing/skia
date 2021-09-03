@@ -94,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc8f588_e2cf853c",
+        "filename": "tests/sksl/errors/UnscopedVariableInDoWhile.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T18:34:46Z",
+      "side": 1,
+      "message": "Another source line capture.",
+      "parentUuid": "f02c3803_2d521992",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 53
+      },
+      "revId": "d8f5f48f15242f2d844afaa64f2f250f7da0aeba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccda45ba_14748aa8",
