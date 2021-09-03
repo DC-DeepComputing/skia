@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b63e9d_b5d812ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-03T18:58:34Z",
+      "side": 1,
+      "message": "As I prepare to work on the new crop image filter using purely new skif APIs, I realized that the Usage enum and having FilterResult be a template is overly verbose and goes to far on that pendulum swing from when I initially designed the API.",
+      "revId": "6be475edada0fa37b62741433833f9b77962c255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
