@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dc53f55_e5c8993d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-03T03:49:48Z",
+      "side": 1,
+      "message": "This fixes https://chromium-swarm.appspot.com/tasklist?f\u003dsk_name%3ABuild-Debian10-Clang-x86_64-Release-NoDEPS .\n\nSkShaper was getting away with it because its SkUnicode dependency is predicated on both skia_use_icu and skia_use_harfbuzz (which is disabled for NoDEPS).\n\nThe Skottie ifdef guard is a temp workaround: I think a cleaner approach would be to have a SkUnicode_none factory which just returns a null SkUnicode when ICU support is disabled.",
+      "revId": "b518b6e3666d95c5cb2138600f98c9169cd350af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
