@@ -221,6 +221,9 @@ std::unique_ptr<Program> DSLParser::program() {
                     result = dsl::ReleaseProgram(std::move(fText));
                 }
                 break;
+            case Token::Kind::TK_DIRECTIVE:
+                this->directive();
+                break;
             case Token::Kind::TK_INVALID: {
                 this->nextToken();
                 this->error(this->peek(), String("invalid token"));
@@ -235,6 +238,31 @@ std::unique_ptr<Program> DSLParser::program() {
     End();
     errorReporter->setSource(nullptr);
     return result;
+}
+
+/* DIRECTIVE(#extension) IDENTIFIER COLON IDENTIFIER */
+void DSLParser::directive() {
+    Token start;
+    if (!this->expect(Token::Kind::TK_DIRECTIVE, "a directive", &start)) {
+        return;
+    }
+    skstd::string_view text = this->text(start);
+    if (text == "#extension") {
+        Token name;
+        if (!this->expectIdentifier(&name)) {
+            return;
+        }
+        if (!this->expect(Token::Kind::TK_COLON, "':'")) {
+            return;
+        }
+        // FIXME: need to start paying attention to this token
+        if (!this->expect(Token::Kind::TK_IDENTIFIER, "an identifier")) {
+            return;
+        }
+        dsl::AddExtension(this->text(name));
+    } else {
+        this->error(start, "unsupported directive '" + this->text(start) + "'");
+    }
 }
 
 /* modifiers (structVarDeclaration | type IDENTIFIER ((LPAREN parameter (COMMA parameter)* RPAREN

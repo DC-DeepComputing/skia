@@ -76,6 +76,11 @@ DSLGlobalVar sk_FragCoord();
 DSLExpression sk_Position();
 
 /**
+ * #extension <name> : enable
+ */
+void AddExtension(skstd::string_view name);
+
+/**
  * break;
  */
 DSLStatement Break(PositionInfo pos = PositionInfo::Capture());

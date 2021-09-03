@@ -331,6 +331,10 @@ DSLExpression sk_Position() {
     return DSLCore::sk_Position();
 }
 
+void AddExtension(skstd::string_view name) {
+    DSLWriter::ProgramElements().push_back(std::make_unique<SkSL::Extension>(/*offset=*/-1, name));
+}
+
 DSLStatement Break(PositionInfo pos) {
     return DSLCore::Break(pos);
 }
