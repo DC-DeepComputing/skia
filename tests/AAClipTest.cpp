@@ -197,7 +197,7 @@ static void test_path_bounds(skiatest::Reporter* reporter) {
 
     path.addOval(SkRect::MakeWH(sheight, sheight));
     REPORTER_ASSERT(reporter, sheight == path.getBounds().height());
-    clip.setPath(path, nullptr, true);
+    clip.setPath(path, path.getBounds().roundOut(), true);
     REPORTER_ASSERT(reporter, height == clip.getBounds().height());
 
     // this is the trimmed height of this cubic (with aa). The critical thing
@@ -211,7 +211,7 @@ static void test_path_bounds(skiatest::Reporter* reporter) {
     imoveTo(path, 0, 20);
     icubicTo(path, 40, 40, 40, 0, 0, 20);
     REPORTER_ASSERT(reporter, sheight == path.getBounds().height());
-    clip.setPath(path, nullptr, true);
+    clip.setPath(path, path.getBounds().roundOut(), true);
     REPORTER_ASSERT(reporter, teardrop_height == clip.getBounds().height());
 }
 
@@ -269,9 +269,9 @@ static void test_irect(skiatest::Reporter* reporter) {
         rgn1.setRect(r1);
         for (size_t j = 0; j < SK_ARRAY_COUNT(gRgnOps); ++j) {
             SkRegion::Op op = gRgnOps[j];
-            SkAAClip clip2;
+            SkAAClip clip2 = clip0; // preserve clip0 for later iterations
             SkRegion rgn2;
-            bool nonEmptyAA = clip2.op(clip0, clip1, op);
+            bool nonEmptyAA = clip2.op(clip1, op);
             bool nonEmptyBW = rgn2.op(rgn0, rgn1, op);
             if (nonEmptyAA != nonEmptyBW || clip2.getBounds() != rgn2.getBounds()) {
                 ERRORF(reporter, "%s %s "
@@ -320,7 +320,7 @@ static void test_path_with_hole(skiatest::Reporter* reporter) {
 
     for (int i = 0; i < 2; ++i) {
         SkAAClip clip;
-        clip.setPath(path, nullptr, 1 == i);
+        clip.setPath(path, path.getBounds().roundOut(), 1 == i);
 
         SkMask mask;
         clip.copyToMask(&mask);
@@ -347,7 +347,7 @@ static void test_really_a_rect(skiatest::Reporter* reporter) {
     // leaving just a rect.
     const SkIRect ir = SkIRect::MakeLTRB(10, -10, 50, 90);
 
-    clip.op(ir, SkRegion::kIntersect_Op);
+    clip.op(ir, SkClipOp::kIntersect);
 
     REPORTER_ASSERT(reporter, clip.getBounds() == SkIRect::MakeLTRB(10, 0, 50, 90));
     // the clip recognized that that it is just a rect!
@@ -401,7 +401,7 @@ static void test_regressions() {
         r.fTop = 10.3999996f;
         r.fRight = 130.892181f;
         r.fBottom = 20.3999996f;
-        clip.setRect(r, true);
+        clip.setPath(SkPath::Rect(r), r.roundOut(), true);
     }
 }
 

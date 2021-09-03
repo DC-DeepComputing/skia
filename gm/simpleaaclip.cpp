@@ -26,45 +26,18 @@
 
 namespace skiagm {
 
-static void paint_rgn(SkCanvas* canvas, const SkAAClip& clip,
-                      const SkPaint& paint) {
-    SkMask mask;
-    SkBitmap bm;
-
-    clip.copyToMask(&mask);
-
-    SkAutoMaskFreeImage amfi(mask.fImage);
-
-    bm.installMaskPixels(mask);
-
-    // need to copy for deferred drawing test to work
-    SkBitmap bm2;
-
-    ToolUtils::copy_to(&bm2, bm.colorType(), bm);
-
-    canvas->drawImage(bm2.asImage(),
-                      SK_Scalar1 * mask.fBounds.fLeft,
-                      SK_Scalar1 * mask.fBounds.fTop,
-                      SkSamplingOptions(),
-                      &paint);
-}
-
 //////////////////////////////////////////////////////////////////////////////
 /*
- * This GM tests anti aliased single operation booleans with SkAAClips,
- * SkRect and SkPaths.
+ * This GM tests anti aliased single operation booleans with SkRect and SkPath
  */
 class SimpleClipGM : public GM {
 public:
     enum SkGeomTypes {
         kRect_GeomType,
-        kPath_GeomType,
-        kAAClip_GeomType
+        kPath_GeomType
     };
 
-    SimpleClipGM(SkGeomTypes geomType)
-    : fGeomType(geomType) {
-    }
+    SimpleClipGM(SkGeomTypes geomType) : fGeomType(geomType) {}
 
 protected:
     void onOnceBeforeDraw() override {
@@ -82,14 +55,6 @@ protected:
         INHERITED::setBGColor(0xFFDDDDDD);
     }
 
-    void buildRgn(SkAAClip* clip, SkClipOp op) {
-        clip->setPath(fBasePath, nullptr, true);
-
-        SkAAClip clip2;
-        clip2.setPath(fRectPath, nullptr, true);
-        clip->op(clip2, (SkRegion::Op)op);
-    }
-
     void drawOrig(SkCanvas* canvas) {
         SkPaint     paint;
 
@@ -98,18 +63,6 @@ protected:
 
         canvas->drawRect(fBase, paint);
         canvas->drawRect(fRect, paint);
-    }
-
-    void drawRgnOped(SkCanvas* canvas, SkClipOp op, SkColor color) {
-
-        SkAAClip clip;
-
-        this->buildRgn(&clip, op);
-        this->drawOrig(canvas);
-
-        SkPaint paint;
-        paint.setColor(color);
-        paint_rgn(canvas, clip, paint);
     }
 
     void drawPathsOped(SkCanvas* canvas, SkClipOp op, SkColor color) {
@@ -143,10 +96,7 @@ protected:
 
     SkString onShortName() override {
         SkString str;
-        str.printf("simpleaaclip_%s",
-                    kRect_GeomType == fGeomType ? "rect" :
-                    (kPath_GeomType == fGeomType ? "path" :
-                    "aaclip"));
+        str.printf("simpleaaclip_%s", kRect_GeomType == fGeomType ? "rect" : "path");
         return str;
     }
 
@@ -155,14 +105,13 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-
         const struct {
             SkColor         fColor;
             const char*     fName;
             SkClipOp        fOp;
         } gOps[] = {
                 {SK_ColorBLACK, "Difference", SkClipOp::kDifference},
-                {SK_ColorRED, "Intersect", SkClipOp::kIntersect},
+                {SK_ColorRED,   "Intersect",  SkClipOp::kIntersect},
         };
 
         SkPaint textPaint;
@@ -172,11 +121,7 @@ protected:
         for (size_t op = 0; op < SK_ARRAY_COUNT(gOps); op++) {
             canvas->drawString(gOps[op].fName, 75.0f, 50.0f, font, textPaint);
 
-            if (kAAClip_GeomType == fGeomType) {
-                this->drawRgnOped(canvas, gOps[op].fOp, gOps[op].fColor);
-            } else {
-                this->drawPathsOped(canvas, gOps[op].fOp, gOps[op].fColor);
-            }
+            this->drawPathsOped(canvas, gOps[op].fOp, gOps[op].fColor);
 
             if (xOff >= 400) {
                 canvas->translate(SkIntToScalar(-400), SkIntToScalar(250));
@@ -187,8 +132,8 @@ protected:
             }
         }
     }
-private:
 
+private:
     SkGeomTypes fGeomType;
 
     SkRect fBase;
@@ -205,6 +150,5 @@ private:
 // rects
 DEF_GM( return new SimpleClipGM(SimpleClipGM::kRect_GeomType); )
 DEF_GM( return new SimpleClipGM(SimpleClipGM::kPath_GeomType); )
-DEF_GM( return new SimpleClipGM(SimpleClipGM::kAAClip_GeomType); )
 
 }  // namespace skiagm

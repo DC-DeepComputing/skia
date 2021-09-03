@@ -25,7 +25,7 @@ public:
     SkRasterClip();
     explicit SkRasterClip(const SkIRect&);
     explicit SkRasterClip(const SkRegion&);
-    explicit SkRasterClip(const SkRasterClip&);
+    SkRasterClip(const SkRasterClip&);
     SkRasterClip(const SkPath& path, const SkIRect& bounds, bool doAA);
 
     ~SkRasterClip();
