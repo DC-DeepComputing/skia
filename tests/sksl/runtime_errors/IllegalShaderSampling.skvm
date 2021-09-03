@@ -12,17 +12,29 @@ error: 20: no match for sample(blender)
 error: 21: no match for sample(blender, half4)
 error: 22: no match for sample(blender, float2)
 error: 23: no match for sample(blender, float2, half4)
+error: 27: duplicate definition of half4 shader_xy_color()
 error: 27: call to 'shade' expected 2 arguments, but found 3
+error: 28: duplicate definition of half4 shader_color()
 error: 28: expected 'float2', but found 'half4'
+error: 29: duplicate definition of half4 shader_color_xy()
 error: 29: call to 'shade' expected 2 arguments, but found 3
+error: 30: duplicate definition of half4 shader_empty()
 error: 30: call to 'shade' expected 2 arguments, but found 1
+error: 31: duplicate definition of half4 shader_matrix()
 error: 31: expected 'float2', but found 'float3x3'
+error: 33: duplicate definition of half4 filter_empty()
 error: 33: call to 'filter' expected 2 arguments, but found 1
+error: 34: duplicate definition of half4 filter_xy()
 error: 34: expected 'half4', but found 'float2'
+error: 35: duplicate definition of half4 filter_xy_color()
 error: 35: call to 'filter' expected 2 arguments, but found 3
+error: 37: duplicate definition of half4 blender_empty()
 error: 37: call to 'blend' expected 3 arguments, but found 1
+error: 38: duplicate definition of half4 blender_color()
 error: 38: call to 'blend' expected 3 arguments, but found 2
+error: 39: duplicate definition of half4 blender_xy()
 error: 39: call to 'blend' expected 3 arguments, but found 2
+error: 40: duplicate definition of half4 blender_xy_color()
 error: 40: expected 'half4', but found 'float2'
 error: 45: expected 'blender', but found 'shader'
 error: 46: call to 'blend' expected 3 arguments, but found 2
@@ -36,4 +48,4 @@ error: 55: expected 'colorFilter', but found 'blender'
 error: 56: call to 'filter' expected 2 arguments, but found 3
 error: 57: expected 'shader', but found 'blender'
 error: 58: call to 'shade' expected 2 arguments, but found 3
-36 errors
+48 errors

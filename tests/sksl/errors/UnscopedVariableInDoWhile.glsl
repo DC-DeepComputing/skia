@@ -1,4 +1,4 @@
 ### Compilation failed:
 
-error: 2: variable 'foo' must be created in a scope
+error: 936: variable 'foo' must be created in a scope
 1 error
