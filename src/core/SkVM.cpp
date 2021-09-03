@@ -441,18 +441,24 @@ namespace skvm {
     std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program) {
         // Determine which Instructions are live by working back from side effects.
         std::vector<bool> live(program.size(), false);
-        auto mark_live = [&](Val id, auto& recurse) -> void {
-            if (live[id] == false) {
-                live[id] =  true;
-                Instruction inst = program[id];
-                for (Val arg : {inst.x, inst.y, inst.z, inst.w}) {
-                    if (arg != NA) { recurse(arg, recurse); }
+        std::vector<Val> worklist;
+        auto mark_live = [&]() -> void {
+            while (!worklist.empty()) {
+                Val id = worklist.back();
+                worklist.pop_back();
+                if (live[id] == false) {
+                    live[id] =  true;
+                    const Instruction& inst = program[id];
+                    for (Val arg : {inst.x, inst.y, inst.z, inst.w}) {
+                        if (arg != NA) { worklist.push_back(arg); }
+                    }
                 }
             }
         };
         for (Val id = 0; id < (Val)program.size(); id++) {
             if (has_side_effect(program[id].op)) {
-                mark_live(id, mark_live);
+                worklist.push_back(id);
+                mark_live();
             }
         }
 
