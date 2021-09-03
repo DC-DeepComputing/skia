@@ -22,6 +22,30 @@
       },
       "revId": "936ade912cb567ba5f2428a2e674471198a57177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9277a955_f996ce96",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T14:51:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5a031fec_c10abd1a",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 355,
+        "endChar": 97
+      },
+      "revId": "936ade912cb567ba5f2428a2e674471198a57177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
