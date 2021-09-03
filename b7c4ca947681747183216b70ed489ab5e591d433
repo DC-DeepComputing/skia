@@ -22,6 +22,30 @@
       },
       "revId": "b7c4ca947681747183216b70ed489ab5e591d433",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1948c58_bde3d259",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-03T14:50:39Z",
+      "side": 1,
+      "message": "Yeah, that was my original plan, but I decided to go with the lower-magic approach and just spell it out.",
+      "parentUuid": "92fb9e54_48f9d72a",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 9
+      },
+      "revId": "b7c4ca947681747183216b70ed489ab5e591d433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
