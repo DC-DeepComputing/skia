@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a031fec_c10abd1a",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T14:39:00Z",
+      "side": 1,
+      "message": "For some future time: I feel like the principled thing to do would be to handle errors like this in a `ModifiersDeclaration::Convert` method, but that method doesn\u0027t exist today. This is mostly just because I haven\u0027t focused on cleaning ProgramElements up the same way I focused on Statements and Expressions. This is fine for now, but it does mean we have redundant error checks between IRGenerator and DSL.",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 355,
+        "endChar": 97
+      },
+      "revId": "936ade912cb567ba5f2428a2e674471198a57177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
