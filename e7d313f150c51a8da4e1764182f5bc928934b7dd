@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8241134_647fa7b5",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T17:30:36Z",
+      "side": 1,
+      "message": "The world\u0027s smallest nitpick, I feel guilty even writing it: user shaders can have helper functions, so your singular SkSL effect can contribute more than one function. \n\n\"contributes a function\" means the same thing but I think puts less emphasis on the part that can be technically-incorrect.",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 43
+      },
+      "revId": "e7d313f150c51a8da4e1764182f5bc928934b7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2878fc70_b3746ca8",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T17:30:36Z",
+      "side": 1,
+      "message": "This phrasing feels a bit inside-baseball, but the sentence itself is useful. NBD, leave as-is if you can\u0027t think of a rephrasing.",
+      "range": {
+        "startLine": 60,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 40
+      },
+      "revId": "e7d313f150c51a8da4e1764182f5bc928934b7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
