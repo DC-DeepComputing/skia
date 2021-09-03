@@ -41,8 +41,13 @@ public:
                                                const IDs&,
                                                int stencilBits);
 
-    GrGLuint singleSampleFBOID() const { return fSingleSampleFBOID; }
-    GrGLuint multisampleFBOID() const { return fMultisampleFBOID; }
+    bool isFBO0(bool multisample) const {
+        return (multisample ? fMultisampleFBOID : fSingleSampleFBOID) == 0;
+    }
+
+    bool isMultisampledRenderToTexture() const {
+        return fMultisampleFBOID != 0 && fMultisampleFBOID == fSingleSampleFBOID;
+    }
 
     GrBackendRenderTarget getBackendRenderTarget() const override;
 
@@ -58,6 +63,13 @@ public:
 
     bool hasDynamicMSAAAttachment() const { return SkToBool(fDynamicMSAAAttachment); }
     bool ensureDynamicMSAAAttachment();
+
+    // Binds the render target for copying, reading, or clearing color buffer values (not stencil or
+    // depth).
+    void bindForColorBufferOps(GrGLenum fboTarget, bool useMultisampleFBO);
+
+    // Binds the render target to GL_FRAMEBUFFER for rendering.
+    void bind(bool useMultisampleFBO);
 
 protected:
     // Constructor for subclasses.
@@ -93,6 +105,7 @@ private:
     GrGLuint    fSingleSampleFBOID;
     GrGLuint    fMSColorRenderbufferID;
     GrGLFormat  fRTFormat;
+    bool        fStencilAttachmentIsValid[2] = {false, false};
 
     GrBackendObjectOwnership fRTFBOOwnership;
 
