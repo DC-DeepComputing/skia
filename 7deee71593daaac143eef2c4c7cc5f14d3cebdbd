@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "569a1646_2de2887f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8511
+      },
+      "writtenOn": "2021-09-03T19:17:42Z",
+      "side": 1,
+      "message": "hi guys!",
+      "revId": "7deee71593daaac143eef2c4c7cc5f14d3cebdbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63951a4d_e6c1ba3a",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 8511
+      },
+      "writtenOn": "2021-09-03T19:17:42Z",
+      "side": 1,
+      "message": "fwiw, I don\u0027t think this needs either recursion or a worklist if you do it backwards, \n\n   for (int i \u003d N; i --\u003e 0;) {\n       if (has_side_effect(program[i].op)) {\n           live[i] \u003d true;\n       }\n       \n       if (live[i]) {\n           for (kid : {x,y,z,w}) {\n               if (kid !\u003d NA) {\n                   live[kid] \u003d true;\n               }\n           }\n       }\n   }",
+      "revId": "7deee71593daaac143eef2c4c7cc5f14d3cebdbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
