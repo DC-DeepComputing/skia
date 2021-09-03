@@ -22,6 +22,30 @@
       },
       "revId": "c7a1bc6cf3c7345308a7d3d0d61395f4d82b9942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92718768_5fdece2d",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T14:47:34Z",
+      "side": 0,
+      "message": "Good call. I think the code as written does work, but I also don\u0027t see any downside to just initializing them at construction time. There wouldn\u0027t be any measurable performance difference and there\u0027s no reason to tempt fate here.\n\nPTAL http://review.skia.org/445636",
+      "parentUuid": "22c2bb5d_3b3a8d5b",
+      "range": {
+        "startLine": 846,
+        "startChar": 0,
+        "endLine": 847,
+        "endChar": 30
+      },
+      "revId": "c7a1bc6cf3c7345308a7d3d0d61395f4d82b9942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
