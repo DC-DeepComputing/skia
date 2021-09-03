@@ -126,7 +126,7 @@ DSLCase Default(Statements... statements) {
 /**
  * discard;
  */
-DSLStatement Discard();
+DSLStatement Discard(PositionInfo pos = PositionInfo::Capture());
 
 /**
  * do stmt; while (test);

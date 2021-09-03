@@ -180,8 +180,8 @@ public:
         }
     }
 
-    static DSLStatement Discard() {
-        return SkSL::DiscardStatement::Make(/*offset=*/-1);
+    static DSLStatement Discard(PositionInfo pos) {
+        return SkSL::DiscardStatement::Make(pos.offset());
     }
 
     static DSLPossibleStatement Do(DSLStatement stmt, DSLExpression test) {
@@ -387,8 +387,8 @@ void Declare(SkTArray<DSLGlobalVar>& vars, PositionInfo pos) {
     DSLCore::Declare(vars, pos);
 }
 
-DSLStatement Discard() {
-    return DSLCore::Discard();
+DSLStatement Discard(PositionInfo pos) {
+    return DSLCore::Discard(pos);
 }
 
 DSLStatement Do(DSLStatement stmt, DSLExpression test, PositionInfo pos) {
