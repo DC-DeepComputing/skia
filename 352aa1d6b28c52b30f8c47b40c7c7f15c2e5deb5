@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929554ce_ce0d9d76",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T14:34:51Z",
+      "side": 1,
+      "message": "No PositionInfo? Why not?",
+      "range": {
+        "startLine": 334,
+        "startChar": 41,
+        "endLine": 334,
+        "endChar": 42
+      },
+      "revId": "352aa1d6b28c52b30f8c47b40c7c7f15c2e5deb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
