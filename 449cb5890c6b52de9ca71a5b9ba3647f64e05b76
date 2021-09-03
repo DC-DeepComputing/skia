@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76b81eb4_c39233b8",
+        "filename": "src/sksl/ir/SkSLFieldAccess.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-03T13:59:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c1d18e15_9657ffcc",
+      "range": {
+        "startLine": 18,
+        "startChar": 60,
+        "endLine": 18,
+        "endChar": 61
+      },
+      "revId": "449cb5890c6b52de9ca71a5b9ba3647f64e05b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3f5cde7_333ab7b4",
