@@ -105,6 +105,24 @@
       "parentUuid": "66252bf1_dae38b38",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a80016e0_7a1508e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-03T21:53:17Z",
+      "side": 1,
+      "message": "Adding the autoroller as an owner would work. We would have to unfortunately add it to all added OWNERS files (since they will be using \"noparent\"). I don\u0027t think there is a way to specify a group.",
+      "parentUuid": "626cc05f_39b05005",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
