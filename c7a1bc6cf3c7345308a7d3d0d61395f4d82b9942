@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c2bb5d_3b3a8d5b",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2021-09-03T14:18:54Z",
+      "side": 0,
+      "message": "We removed the initialization of these member here, and while we changed the constructor code, we didn\u0027t change it to initialize these members.\n\nShould we change the constructor to initialize these?  I\u0027m guessing the assumed code path will have us initializing these fields before something like functionSize() is called, but it seems a bit dangerous.  And even if that\u0027s a misuse of the class to call something like functionSize() first, it would be easier for future debuggers if that gave a consistent value, instead of uninitialized memory.\n\nPerhaps this is a performance critical section where initializing these two ints makes an impact.  But if not, I think we should consider initializing these in the constructor.",
+      "range": {
+        "startLine": 846,
+        "startChar": 0,
+        "endLine": 847,
+        "endChar": 30
+      },
+      "revId": "c7a1bc6cf3c7345308a7d3d0d61395f4d82b9942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
