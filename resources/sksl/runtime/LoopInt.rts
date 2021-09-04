@@ -1,3 +1,5 @@
+uniform half4 colorRed, colorGreen;
+
 // Should return 5
 int return_loop() {
     for (int i = 0; i < 10; ++i) {
@@ -26,6 +28,96 @@ int break_loop() {
     return sum;
 }
 
+bool loop_operator_le() {
+    int4 result = int4(-999);
+    for (int i = 1; i <= 4; ++i) {
+        result = int4(result.yzw, i);
+    }
+    if (result != int4(1, 2, 3, 4)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (int i = 4; i <= 1; ++i) { return false; }
+    for (int i = 4; i <= 1; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_lt() {
+    int4 result = int4(-999);
+    for (int i = 1; i < 5; ++i) {
+        result = int4(result.yzw, i);
+    }
+    if (result != int4(1, 2, 3, 4)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (int i = 5; i < 1; ++i) { return false; }
+    for (int i = 5; i < 1; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_ge() {
+    int4 result = int4(-999);
+    for (int i = 4; i >= 1; --i) {
+        result = int4(result.yzw, i);
+    }
+    if (result != int4(4, 3, 2, 1)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (int i = 1; i >= 4; ++i) { return false; }
+    for (int i = 1; i >= 4; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_gt() {
+    int4 result = int4(-999);
+    for (int i = 4; i > 0; --i) {
+        result = int4(result.yzw, i);
+    }
+    if (result != int4(4, 3, 2, 1)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (int i = 0; i > 4; ++i) { return false; }
+    for (int i = 0; i > 4; --i) { return false; }
+    return true;
+}
+
+/*
+bool loop_operator_ne() {
+    int4 result = int4(-999);
+    for (int i = -2; i != 2; ++i) {
+        result = half4(result.yzw, i);
+    }
+    if (result != int4(-999)) {
+        return false;
+    }
+    return true;
+}
+
+bool loop_operator_eq() {
+    int4 result = int4(-999);
+    for (int i = -2; i == 2; ++i) {
+        result.yzw = result.xyz;
+        result.x = i;
+    }
+    if (result != int4(-999)) {
+        return false;
+    }
+    return true;
+}
+*/
+
 half4 main(float2 xy) {
-    return half4(return_loop(), continue_loop(), break_loop(), 1);
+    if (return_loop() != 5 || continue_loop() != 35 || break_loop() != 15 ||
+        !loop_operator_le() || !loop_operator_lt() ||
+        !loop_operator_ge() || !loop_operator_gt()) {
+        return colorRed;
+    }
+    return colorGreen;
 }

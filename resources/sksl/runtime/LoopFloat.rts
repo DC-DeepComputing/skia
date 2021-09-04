@@ -1,3 +1,5 @@
+uniform half4 colorRed, colorGreen;
+
 // Should return 5
 float return_loop() {
     for (float i = 0; i < 10; ++i) {
@@ -35,6 +37,71 @@ float float_loop() {
     return sum;
 }
 
+bool loop_operator_le() {
+    float4 result = float4(-999);
+    for (float i = 1; i <= 4; ++i) {
+        result = float4(result.yzw, i);
+    }
+    if (result != float4(1, 2, 3, 4)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (float i = 4; i <= 1; ++i) { return false; }
+    for (float i = 4; i <= 1; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_lt() {
+    float4 result = float4(-999);
+    for (float i = 1; i < 5; ++i) {
+        result = float4(result.yzw, i);
+    }
+    if (result != float4(1, 2, 3, 4)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (float i = 5; i < 1; ++i) { return false; }
+    for (float i = 5; i < 1; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_ge() {
+    float4 result = float4(-999);
+    for (float i = 4; i >= 1; --i) {
+        result = float4(result.yzw, i);
+    }
+    if (result != float4(4, 3, 2, 1)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (float i = 1; i >= 4; ++i) { return false; }
+    for (float i = 1; i >= 4; --i) { return false; }
+    return true;
+}
+
+bool loop_operator_gt() {
+    float4 result = float4(-999);
+    for (float i = 4; i > 0; --i) {
+        result = float4(result.yzw, i);
+    }
+    if (result != float4(4, 3, 2, 1)) {
+        return false;
+    }
+
+    // These loops are inside-out and execute zero times.
+    for (float i = 0; i > 4; ++i) { return false; }
+    for (float i = 0; i > 4; --i) { return false; }
+    return true;
+}
+
 half4 main(float2 xy) {
-    return half4(return_loop(), continue_loop(), break_loop(), float_loop());
+    if (return_loop() != 5 || continue_loop() != 35 || break_loop() != 15 ||
+        !loop_operator_le() || !loop_operator_lt() ||
+        !loop_operator_ge() || !loop_operator_gt()) {
+        return colorRed;
+    }
+    return colorGreen;
 }
