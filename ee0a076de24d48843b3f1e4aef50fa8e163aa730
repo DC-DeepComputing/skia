@@ -22,6 +22,30 @@
       },
       "revId": "ee0a076de24d48843b3f1e4aef50fa8e163aa730",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "739c7373_73132e61",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-04T03:18:29Z",
+      "side": 1,
+      "message": "Yes, absolutely correct. Getting \"normal\" loops to work was the easy part. Properly handling zero-iteration and infinite-iteration loops required much more care. The logic handles these cases now.",
+      "parentUuid": "8dbd9363_546782e1",
+      "range": {
+        "startLine": 1172,
+        "startChar": 0,
+        "endLine": 1173,
+        "endChar": 34
+      },
+      "revId": "ee0a076de24d48843b3f1e4aef50fa8e163aa730",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

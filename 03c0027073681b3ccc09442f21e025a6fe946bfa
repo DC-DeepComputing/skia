@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc708f3_ea2054f1",
+        "filename": "tests/sksl/runtime_errors/LoopStructureErrors.skvm",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-04T03:18:29Z",
+      "side": 1,
+      "message": "This one is interesting, we get a different error that we expect because we optimized the next-expression from `i +\u003d 0` to `i`, which makes it no longer valid ES2. Fortunately there\u0027s no case where i+\u003d0 makes a valid ES2 loop anyway.",
+      "range": {
+        "startLine": 11,
+        "startChar": 11,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "03c0027073681b3ccc09442f21e025a6fe946bfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
