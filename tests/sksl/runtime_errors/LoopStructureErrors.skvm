@@ -5,4 +5,12 @@ error: 5: invalid loop expression
 error: 10: loop index must not be modified within body of the loop
 error: 11: loop index must not be modified within body of the loop
 error: 12: loop index must not be modified within body of the loop
-5 errors
+error: 14: loop must guarantee termination in fewer iterations
+error: 15: loop must guarantee termination in fewer iterations
+error: 16: loop must guarantee termination in fewer iterations
+error: 17: loop must guarantee termination in fewer iterations
+error: 18: invalid loop expression
+error: 19: invalid loop expression
+error: 20: loop must guarantee termination in fewer iterations
+error: 21: loop must guarantee termination in fewer iterations
+13 errors
