@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42024f6c_91aabb80",
+        "filename": "src/sksl/dsl/DSLFunction.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-05T15:19:33Z",
+      "side": 1,
+      "message": "Should we really add it as a program element if there is already a function with a matching signature? Compiling it to allow the parser to continue is fine, and lets us report the errors inside, but I feel like we ought to just discard it afterwards.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 64
+      },
+      "revId": "eae9c6c962b88cc955953ed326e7401c109aeb06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
