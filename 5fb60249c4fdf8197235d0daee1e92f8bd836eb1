@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b921c7ea_f551ca51",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-05T15:37:03Z",
+      "side": 1,
+      "message": "SkString? That\u0027s very unusual for SkSL--why? What was wrong with std::string (or SkSL::String)?",
+      "range": {
+        "startLine": 124,
+        "startChar": 16,
+        "endLine": 124,
+        "endChar": 24
+      },
+      "revId": "5fb60249c4fdf8197235d0daee1e92f8bd836eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a422063_592b812f",
+        "filename": "src/sksl/SkSLErrorReporter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-05T15:37:03Z",
+      "side": 1,
+      "message": "Let\u0027s put this CL behind a leading CL which inserts a proper string_view::find API:\n\nhttp://go/cppref/cpp/string/basic_string_view/find\nhttp://go/cppref/cpp/string/basic_string_view/contains\n\nHere\u0027s some inspiration for an efficient implementation using a memchr prepass:\n\nhttp://google3/strings/memutil.cc?l\u003d121\u0026rcl\u003d394852475",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 1
+      },
+      "revId": "5fb60249c4fdf8197235d0daee1e92f8bd836eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
