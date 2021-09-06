@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17608c2e_3c29e95e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18254
+      },
+      "writtenOn": "2021-09-06T14:37:53Z",
+      "side": 1,
+      "message": "Add cc myself(Project Luda is Nam se hyun, the Author).",
+      "revId": "92312df9a40c94d3cb315c0a82b06d3b08fdf354",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
