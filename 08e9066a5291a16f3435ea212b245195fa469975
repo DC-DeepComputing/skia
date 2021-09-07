@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1300e523_5bdbf8d1",
+        "filename": "src/gpu/mtl/GrMtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-07T14:55:49Z",
+      "side": 1,
+      "message": "While [[maybe_unused]] is cool, we\u0027d normally use SkDEBUGCODE so to be consistent we should probably do that here.",
+      "range": {
+        "startLine": 359,
+        "startChar": 4,
+        "endLine": 359,
+        "endChar": 21
+      },
+      "revId": "08e9066a5291a16f3435ea212b245195fa469975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fc451d7_ae4acaf5",
+        "filename": "src/gpu/mtl/GrMtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-07T14:55:49Z",
+      "side": 1,
+      "message": "Would need an SkDEBUGCODE here as well.",
+      "range": {
+        "startLine": 390,
+        "startChar": 8,
+        "endLine": 390,
+        "endChar": 36
+      },
+      "revId": "08e9066a5291a16f3435ea212b245195fa469975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
