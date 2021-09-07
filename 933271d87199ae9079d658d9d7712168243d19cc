@@ -35,6 +35,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e3ea93_1628b164",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T18:32:22Z",
+      "side": 1,
+      "message": "I would very much like to avoid doing any implicit String to Typeface conversions here. That should only be done in an explicit font management service.",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38fe76f6_71a9a5c9",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T18:32:22Z",
+      "side": 1,
+      "message": "This is the sort of thing we created SkFont to avoid. No lookups or reliance on a default font manager should be assumed here. Ideally this would take a non-nullable reference to a Typeface object.",
+      "range": {
+        "startLine": 15,
+        "startChar": 47,
+        "endLine": 15,
+        "endChar": 66
+      },
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d7682a1_44046abb",
