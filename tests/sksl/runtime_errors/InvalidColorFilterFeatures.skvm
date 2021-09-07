@@ -1,4 +1,5 @@
 ### Compilation failed:
 
 error: 6: unknown identifier 'sk_FragCoord'
-1 error
+error: 6: expected function to return 'half4'
+2 errors

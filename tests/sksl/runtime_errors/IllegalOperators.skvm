@@ -1,16 +1,29 @@
 ### Compilation failed:
 
 error: 1: operator '~' is not allowed
+error: 1: expected function to return 'int'
 error: 3: operator '%' is not allowed
+error: 3: expected function to return 'int'
 error: 4: operator '%=' is not allowed
+error: 4: expected function to return 'int'
 error: 6: operator '<<' is not allowed
+error: 6: expected function to return 'int'
 error: 7: operator '<<=' is not allowed
+error: 7: expected function to return 'int'
 error: 8: operator '>>' is not allowed
+error: 8: expected function to return 'int'
 error: 9: operator '>>=' is not allowed
+error: 9: expected function to return 'int'
 error: 11: operator '&' is not allowed
+error: 11: expected function to return 'int'
 error: 12: operator '&=' is not allowed
+error: 12: expected function to return 'int'
 error: 13: operator '|' is not allowed
+error: 13: expected function to return 'int'
 error: 14: operator '|=' is not allowed
+error: 14: expected function to return 'int'
 error: 15: operator '^' is not allowed
+error: 15: expected function to return 'int'
 error: 16: operator '^=' is not allowed
-13 errors
+error: 16: expected function to return 'int'
+26 errors

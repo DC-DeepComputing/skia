@@ -1,5 +1,7 @@
 ### Compilation failed:
 
 error: 1: no match for dFdx(float2)
+error: 1: expected function to return 'float2'
 error: 2: no match for dFdy(float2)
-2 errors
+error: 2: expected function to return 'float2'
+4 errors
