@@ -88,6 +88,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67d18190_e067a157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T19:00:19Z",
+      "side": 1,
+      "message": "Requested access to this...",
+      "parentUuid": "9b3642ab_a266ec6a",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c4a73e_8e5f784a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T19:00:19Z",
+      "side": 1,
+      "message": "Even if this did get fixed later (which is doubtful) its existence would badly influence the \"meaty\" parts of the API. This should just take a non-nullable typeface handle and then the testing code can create something and pass it in as needed.",
+      "parentUuid": "e6f8a777_88012b6d",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
