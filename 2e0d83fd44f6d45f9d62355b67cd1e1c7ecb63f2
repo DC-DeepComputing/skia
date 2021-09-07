@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec69f8c_60c48448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T14:14:29Z",
+      "side": 1,
+      "message": "LG, just a couple of nits.",
+      "revId": "2e0d83fd44f6d45f9d62355b67cd1e1c7ecb63f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b84749c_966d78ff",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T14:14:29Z",
+      "side": 1,
+      "message": "What if typeface is null?\n\nreturn 0 is a good option, although allocating a Font with a null typeface may also work.",
+      "revId": "2e0d83fd44f6d45f9d62355b67cd1e1c7ecb63f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a5abb85_2c02c232",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Font.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T14:14:29Z",
+      "side": 1,
+      "message": "We can defer the other font options, but let\u0027s add a float size now so we can control the text size.",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 33
+      },
+      "revId": "2e0d83fd44f6d45f9d62355b67cd1e1c7ecb63f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
