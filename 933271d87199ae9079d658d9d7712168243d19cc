@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b3642ab_a266ec6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T18:41:39Z",
+      "side": 1,
+      "message": "Working on a class diagram. Right now have a sequence of how data passes through JetSki to native that kind of outlines the model.\nhttps://docs.google.com/document/d/1K9wP1WKUA3klxBStLz1v3glIpzzrPd75RIZPJS4jpDw/edit?resourcekey\u003d0-DnKE76Mgoy5QbZ6Ws6OMRA",
+      "parentUuid": "9d71db8f_292eb420",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
