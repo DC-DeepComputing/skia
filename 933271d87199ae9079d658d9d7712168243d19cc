@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6f8a777_88012b6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T18:40:18Z",
+      "side": 1,
+      "message": "This is not a final API proposal but initial plumbing for the Font type.\n\nThe idea is to get something useful on screen so Jorge can focus on the meaty parts (Text/shaping and editor demo).\n\nIt seems premature to spend too much energy on this while the SkText APIs are in flux.",
+      "parentUuid": "b3e3ea93_1628b164",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
