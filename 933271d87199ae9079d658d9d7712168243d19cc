@@ -159,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade8f581_9e4c80b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T19:30:03Z",
+      "side": 1,
+      "message": "\u003e Even if this did get fixed later (which is doubtful) its existence would badly influence the \"meaty\" parts of the API.\n\nThe parts we\u0027re trying to focus on are Font consumers, it would be pretty weird if they\u0027re impacted by changes in how we build Fonts.\n\n\u003e This should just take a non-nullable typeface handle and then the testing code can create something and pass it in as needed.\n\nIs the typeface abstraction required or particularly useful for high level clients?  I.e. what do we lose if we go directly FontManager -\u003e Font?",
+      "parentUuid": "29c4a73e_8e5f784a",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
