@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2433a1a_397834e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-09-07T12:16:26Z",
+      "side": 1,
+      "message": "Thanks for the contribution. FYI: fontMgr.MakeTypefaceFromData has been deprecated and the new version is at CanvasKit.Typeface.MakeFreeTypeFaceFromData() [exactly the same functionality].",
+      "revId": "68c8b214a8b05060db0126473c5a5327b5d8e915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
