@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea4357b_d13a096f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-07T18:42:39Z",
+      "side": 1,
+      "message": "Looks like this will get discardable MSAA working.",
+      "revId": "c4c4b507f6ee5e6b38afe2e2dab5f1cf1a883e55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
