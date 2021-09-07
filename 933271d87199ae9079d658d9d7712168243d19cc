@@ -149,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf95857d_6f39bf7f",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T19:05:47Z",
+      "side": 1,
+      "message": "This is temporary. Once I can prove we can plumb into experimental::SkText, I\u0027ll create a Java Typeface object and pass that in here instead. For testing SkText, typeface and font are treated as the same to simplify the pipeline.",
+      "parentUuid": "38fe76f6_71a9a5c9",
+      "range": {
+        "startLine": 15,
+        "startChar": 47,
+        "endLine": 15,
+        "endChar": 66
+      },
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d7682a1_44046abb",
         "filename": "modules/androidkit/src/Font.cpp",
         "patchSetId": 3
