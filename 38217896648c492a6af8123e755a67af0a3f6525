@@ -46,6 +46,30 @@
       },
       "revId": "38217896648c492a6af8123e755a67af0a3f6525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74efcc09_16575aae",
+        "filename": "tests/sksl/errors/Ossfuzz38140.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T20:32:13Z",
+      "side": 1,
+      "message": "Not 100% sure what to expect, but you might need to recompile this now that http://review.skia.org/446325 has landed to update the error.",
+      "parentUuid": "e1ffb1bf_16ec412b",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 7
+      },
+      "revId": "38217896648c492a6af8123e755a67af0a3f6525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
