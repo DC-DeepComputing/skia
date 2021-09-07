@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "554cabfd_0d859b62",
+        "filename": "tests/sksl/runtime_errors/Ossfuzz38131.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T19:01:59Z",
+      "side": 1,
+      "message": "Maybe update the old IRGenerator error to match yours? \"this kind of program\" is better phrasing.",
+      "range": {
+        "startLine": 3,
+        "startChar": 41,
+        "endLine": 3,
+        "endChar": 45
+      },
+      "revId": "483b85908598b35ec9584540c303d35211347d00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
