@@ -16,6 +16,23 @@
       "message": "This seems to be the only change failing with 409 when trying to submit via SkCQ. I don\u0027t know why that is happening but I\u0027m going to manually submit this.",
       "revId": "b56ef5ebc652818e147af6c2b612cf45c744e1a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d48d6ae_7e33787a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-07T20:25:19Z",
+      "side": 1,
+      "message": "Manual submit also failed with:\n\"\"\"\nCould not perform action: Failed to submit 1 change due to the following problems:\nChange 446078: Change could not be merged because the commit is empty. Project policy requires all commits to contain modifications to at least one file.\n\"\"\"",
+      "revId": "b56ef5ebc652818e147af6c2b612cf45c744e1a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
