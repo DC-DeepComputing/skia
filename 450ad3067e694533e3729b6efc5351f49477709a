@@ -16,6 +16,29 @@
       "message": "Hey, can you take a look and let me know what you think?",
       "revId": "450ad3067e694533e3729b6efc5351f49477709a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96e2eed7_9d2664f0",
+        "filename": "modules/skottie/src/animator/VectorKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T14:41:01Z",
+      "side": 1,
+      "message": "Naively, I would have just assigned *fTarget \u003d std::move(result).  How come we don\u0027t allow the expression evaluator to grow the vector?",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 9
+      },
+      "revId": "450ad3067e694533e3729b6efc5351f49477709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
