@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f919130_567cc1aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-07T14:32:20Z",
+      "side": 1,
+      "message": "This should be a \";\" to match the format-\n\"bucket1:bot1,bot2;bucket2:bot3\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 121,
+        "endLine": 22,
+        "endChar": 123
+      },
+      "revId": "fb353e54a021777bef2137d607fc2dbe8c1be1c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b41b7aa1_91ba6e7d",
