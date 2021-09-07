@@ -70,6 +70,30 @@
       },
       "revId": "38217896648c492a6af8123e755a67af0a3f6525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fb7efd2_4588e940",
+        "filename": "tests/sksl/errors/Ossfuzz38140.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-07T21:10:16Z",
+      "side": 1,
+      "message": "Looks like it still generates the same output.",
+      "parentUuid": "74efcc09_16575aae",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 7
+      },
+      "revId": "38217896648c492a6af8123e755a67af0a3f6525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
