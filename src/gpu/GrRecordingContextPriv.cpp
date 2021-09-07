@@ -108,8 +108,8 @@ std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceP
 #if SK_GPU_V1
         // It is probably not necessary to check if the context is abandoned here since uses of the
         // SurfaceContext which need the context will mostly likely fail later on w/o an issue.
-        // However having this hear adds some reassurance in case there is a path doesn't handle an
-        // abandoned context correctly. It also lets us early out of some extra work.
+        // However having this here adds some reassurance in case there is a path that doesn't
+        // handle an abandoned context correctly. It also lets us early out of some extra work.
         if (this->context()->abandoned()) {
             return nullptr;
         }
@@ -208,6 +208,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
         if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
             return skgpu::v1::SurfaceDrawContext::Make(this->context(),
                                                        info.colorType(),
+                                                       info.alphaType(),
                                                        info.refColorSpace(),
                                                        fit,
                                                        info.dimensions(),

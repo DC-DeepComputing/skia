@@ -187,19 +187,13 @@ private:
 
     ClipStack fClip;
 
-    enum Flags {
-        kNeedClear_Flag = 1 << 0,  //!< Surface requires an initial clear
-        kIsOpaque_Flag  = 1 << 1,  //!< Hint from client that rendering to this device will be
-                                   //   opaque even if the config supports alpha.
-    };
-    static bool CheckAlphaTypeAndGetFlags(const SkImageInfo* info, InitContents init,
-                                          unsigned* flags);
+    static bool CheckAlphaTypeAndGetFlags(SkAlphaType, InitContents, DeviceFlags*);
 
-    static sk_sp<BaseDevice> Make(std::unique_ptr<SurfaceDrawContext>,
+    static sk_sp<BaseDevice> Make7(std::unique_ptr<SurfaceDrawContext>,
                                   const SkImageInfo*,
                                   InitContents);
 
-    Device(std::unique_ptr<SurfaceDrawContext>, unsigned flags);
+    Device(std::unique_ptr<SurfaceDrawContext>, DeviceFlags flags);
 
     SkBaseDevice* onCreateDevice(const CreateInfo&, const SkPaint*) override;
 
@@ -226,16 +220,6 @@ private:
                          const SkRect& dst,
                          SkFilterMode,
                          const SkPaint&);
-
-    static std::unique_ptr<SurfaceDrawContext> MakeSurfaceDrawContext(GrRecordingContext*,
-                                                                      SkBudgeted,
-                                                                      const SkImageInfo&,
-                                                                      SkBackingFit,
-                                                                      int sampleCount,
-                                                                      GrMipmapped,
-                                                                      GrProtected,
-                                                                      GrSurfaceOrigin,
-                                                                      const SkSurfaceProps&);
 
     friend class ::SkSurface_Gpu;      // for access to surfaceProps
     using INHERITED = BaseDevice;
