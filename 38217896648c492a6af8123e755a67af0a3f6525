@@ -22,6 +22,30 @@
       },
       "revId": "38217896648c492a6af8123e755a67af0a3f6525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ffb1bf_16ec412b",
+        "filename": "tests/sksl/errors/Ossfuzz38140.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T17:16:15Z",
+      "side": 1,
+      "message": "Ack. Maybe I\u0027ll figure out why the old parser gets this wrong.",
+      "parentUuid": "54bb5d4f_21c10651",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 7
+      },
+      "revId": "38217896648c492a6af8123e755a67af0a3f6525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
