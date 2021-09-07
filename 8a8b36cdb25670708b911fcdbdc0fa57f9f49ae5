@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fc149e_18151689",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T14:00:09Z",
+      "side": 1,
+      "message": "Added defensive checks for zero deltas and for non-finite counts.\nAdded two test cases to check your example.\n- The first test uses a delta of true zero, which does not fail for the reasons you expect (it fails earlier because `i +\u003d 0` optimizes to `i` which is not recognized as an ES2-compliant for-loop structure)\n- The second test uses a delta of 1e-20, which exercises the path you were envisioning.",
+      "parentUuid": "4873fb59_d5afafab",
+      "revId": "8a8b36cdb25670708b911fcdbdc0fa57f9f49ae5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "752a2f60_43216e68",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-09-07T12:48:27Z",
       "side": 1,
       "message": "Can this also produce Inf or NaN, if Delta is 0? I guess the count !\u003d iterations will trigger in that case, but the fuzzer is still going to be unhappy about the UB?",
+      "range": {
+        "startLine": 1215,
+        "startChar": 12,
+        "endLine": 1215,
+        "endChar": 77
+      },
+      "revId": "8a8b36cdb25670708b911fcdbdc0fa57f9f49ae5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "475ba669_72327f61",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T14:00:09Z",
+      "side": 1,
+      "message": "Added sk_ieee_double_divide to placate the fuzzer.",
+      "parentUuid": "752a2f60_43216e68",
       "range": {
         "startLine": 1215,
         "startChar": 12,
