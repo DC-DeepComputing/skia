@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4873fb59_d5afafab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-07T12:44:02Z",
+      "side": 1,
+      "message": "The strict inequality in the first condition (forwards !\u003d (start  \u003c end)) made me assume there was some non-symmetric behavior for LTEQ and GTEQ. I\u0027m pretty sure that:\n\n  for (int i \u003d 3; i \u003e\u003d 3; i +\u003d 0) {}\n  \n... produces the wrong answer (including a NaN along the way). ",
+      "revId": "8a8b36cdb25670708b911fcdbdc0fa57f9f49ae5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
