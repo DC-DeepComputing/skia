@@ -16,6 +16,23 @@
       "message": "Add cc myself(Project Luda is Nam se hyun, the Author).",
       "revId": "92312df9a40c94d3cb315c0a82b06d3b08fdf354",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f56cc048_5d054d4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-09-07T12:11:04Z",
+      "side": 1,
+      "message": "Thanks for the contribution!",
+      "revId": "92312df9a40c94d3cb315c0a82b06d3b08fdf354",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
