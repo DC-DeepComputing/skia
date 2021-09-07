@@ -16,6 +16,23 @@
       "message": "Can you update the sksl input to hit the same code path but contain less binary garbage? Right now it\u0027s not even viewable in Gerrit without messing around.",
       "revId": "2e0ab749af369a8f8dc67b4e815336a2c79d75f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ce539ad_3b353456",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T21:38:05Z",
+      "side": 1,
+      "message": "Also, I\u0027m not sure if you mean you are able to get the old parser to crash in the same way.",
+      "revId": "2e0ab749af369a8f8dc67b4e815336a2c79d75f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
