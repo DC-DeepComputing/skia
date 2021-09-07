@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcde489d_3d958638",
+        "filename": "experimental/sktext/include/Text.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T18:45:06Z",
+      "side": 1,
+      "message": "Is this the intended UnicodeText or is it the one in Interface.h?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 3
+      },
+      "revId": "974a7a61c91c8262bbcc2c7b40a047b04c6fb477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

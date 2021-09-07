@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b363820_c1a694f2",
+        "filename": "experimental/sktext/include/Interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T18:45:06Z",
+      "side": 1,
+      "message": "I forget if we talked about this, but why do we pass in UnicodeText in wrap() if we hold onto it in ShapedText?",
+      "revId": "dc7b131f14109a368ec440052b63f73f30905859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
