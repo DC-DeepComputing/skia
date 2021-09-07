@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7682a1_44046abb",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-07T18:11:25Z",
+      "side": 1,
+      "message": "nit: the default SkFont ctor is just an alias for SkFont(nullptr, kDefault_Size), so this should cover both cases:\n\n  return reinterpret_cast\u003cjlong\u003e(new SkFont(std::move(typeface), size));",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 49
+      },
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
