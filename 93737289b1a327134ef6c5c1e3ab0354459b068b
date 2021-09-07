@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f75e188_77979785",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T17:21:32Z",
+      "side": 1,
+      "message": "(Nothing to change in this CL) It seems a little goofy that msg is in front here, and in back on the next error() call. But I wouldn\u0027t change that in this CL, and it\u0027s nbd either way (either one would be fine in isolation).",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 62
+      },
+      "revId": "93737289b1a327134ef6c5c1e3ab0354459b068b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deae6ce2_252ea46c",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T17:21:32Z",
+      "side": 1,
+      "message": "Can this be `const String\u0026 msg`?",
+      "range": {
+        "startLine": 100,
+        "startChar": 13,
+        "endLine": 100,
+        "endChar": 24
+      },
+      "revId": "93737289b1a327134ef6c5c1e3ab0354459b068b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe656e9_9c3e966c",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T17:21:32Z",
+      "side": 1,
+      "message": "Remove c_str(), this will make it recalculate the length unnecessarily.",
+      "range": {
+        "startLine": 101,
+        "startChar": 33,
+        "endLine": 101,
+        "endChar": 41
+      },
+      "revId": "93737289b1a327134ef6c5c1e3ab0354459b068b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
