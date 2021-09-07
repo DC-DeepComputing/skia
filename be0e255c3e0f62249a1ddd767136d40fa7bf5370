@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8e16b5_521954f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-07T17:02:02Z",
+      "side": 1,
+      "message": "The android autoroller is failing with:\n```\n2021-09-07T16:53:22.403217152Z remote: ERROR: commit c9a6123: [code-owners] the domain of the code owner email \u0027android-autoroll@skia-corp.google.com.iam.gserviceaccount.com\u0027 in \u0027/include/OWNERS\u0027 is not allowed for code owners        \n2021-09-07T16:53:22.403221177Z remote: ERROR: commit c9a6123: [code-owners] the domain of the code owner email \u0027skia-autoroll@skia-public.iam.gserviceaccount.com\u0027 in \u0027/include/third_party/skcms/OWNERS\u0027 is not allowed for code owners      \n```",
+      "revId": "be0e255c3e0f62249a1ddd767136d40fa7bf5370",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
