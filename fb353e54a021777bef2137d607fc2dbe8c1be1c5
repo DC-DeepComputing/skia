@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "498873f7_2edf2b1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-09-07T14:34:37Z",
+      "side": 1,
+      "message": "I guess, I could also skip the \"luci.skia.skia.primary\" prefix as both bots are from the same bucket?",
+      "parentUuid": "2f919130_567cc1aa",
+      "range": {
+        "startLine": 22,
+        "startChar": 121,
+        "endLine": 22,
+        "endChar": 123
+      },
+      "revId": "fb353e54a021777bef2137d607fc2dbe8c1be1c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b41b7aa1_91ba6e7d",
