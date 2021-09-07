@@ -177,6 +177,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f58276ab_34f56fcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T20:09:08Z",
+      "side": 1,
+      "message": "What is really wanted is a way for the user to provide a callback thingy which is given the state of shaping after a shaping call and can produce the next \u0027Font\u0027 object to use to shape (and incidentally to font selection also state what ranges should be re-shaped). Unfortunately, the current shaping API is also not great, so not forcing you to write something correct.\n\nTypeface objects should come from a font manager, which will provide some means of matching typefaces, one criteria which may be a family name but may also include style name, the family name in multiple languages, weight, width, slant (these three possibly as ranges), italic, monospace, language, character coverage, color support, axis tag support, feature support, etc.\n\nIn general I would have nothing against going from FontManager -\u003e Font, though then one would need to expose a Typeface object to get off of the Font or expose all the interesting bits of SkTypeface on the Font.\n\nThat being said, most of the issue I have here is about pretending that one can create a Font from a String (assumed to be a family name). This is pernicious and a common misconception (it\u0027s what people think they\u0027re doing when they select a font name from a drop down, or what they think they\u0027re doing when writing a css font-family list) but it isn\u0027t how things work. There is actually a really complicated and policy heavy set of things going on in these cases which requires full font management.",
+      "parentUuid": "fc23746d_76f890ad",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
@@ -214,6 +232,30 @@
       "side": 1,
       "message": "This is temporary. Once I can prove we can plumb into experimental::SkText, I\u0027ll create a Java Typeface object and pass that in here instead. For testing SkText, typeface and font are treated as the same to simplify the pipeline.",
       "parentUuid": "38fe76f6_71a9a5c9",
+      "range": {
+        "startLine": 15,
+        "startChar": 47,
+        "endLine": 15,
+        "endChar": 66
+      },
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08b0a0c7_20177415",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-07T20:09:08Z",
+      "side": 1,
+      "message": "In that case can we put \"Temporary\" or \"Toy\" into the name of either the class or the \u0027Create\u0027 method? Unfortunately, you cannot name the constructor anything other than the class name in Java. Probably easiest to just name the Java class ToyFont? \"Temporary\" things generally tend to end up being used because they influence later design and become really difficult to get rid of.\n\nEven passing just typefaces into shaping isn\u0027t quite right. You\u0027ll need some sort of font management in order to do fallback, though it appears that the idea here is just to rely on the default.",
+      "parentUuid": "bf95857d_6f39bf7f",
       "range": {
         "startLine": 15,
         "startChar": 47,
