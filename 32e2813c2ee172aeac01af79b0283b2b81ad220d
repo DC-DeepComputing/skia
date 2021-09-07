@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9801d539_49763edc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-07T19:39:36Z",
+      "side": 1,
+      "message": "Sorry, I had meant to do CQ+1 (not CQ+2) here.",
+      "revId": "32e2813c2ee172aeac01af79b0283b2b81ad220d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
