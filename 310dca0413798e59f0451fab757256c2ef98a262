@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "310dca0413798e59f0451fab757256c2ef98a262",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb4c1b58_a9d3f7d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17351
+      },
+      "writtenOn": "2021-09-07T23:59:19Z",
+      "side": 1,
+      "message": "Do we still need a code owner approval in order to submit this? Is it possible to get this submitted today? This is blocking a Flutter stable release.",
+      "revId": "310dca0413798e59f0451fab757256c2ef98a262",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
