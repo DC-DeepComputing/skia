@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bf66020_e5439654",
+        "filename": "modules/androidkit/src/Font.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T18:03:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b84749c_966d78ff",
+      "revId": "2e0d83fd44f6d45f9d62355b67cd1e1c7ecb63f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a5abb85_2c02c232",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-09-07T14:14:29Z",
       "side": 1,
       "message": "We can defer the other font options, but let\u0027s add a float size now so we can control the text size.",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 33
+      },
+      "revId": "2e0d83fd44f6d45f9d62355b67cd1e1c7ecb63f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "765cecb2_4c0f2e58",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Font.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T18:03:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a5abb85_2c02c232",
       "range": {
         "startLine": 6,
         "startChar": 16,
