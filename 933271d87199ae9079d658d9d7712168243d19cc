@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc23746d_76f890ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-07T19:12:45Z",
+      "side": 1,
+      "message": "I\u0027m probably missing something. Isn\u0027t implementing Typeface in JetSki adding another step in a linear pipeline.\nThe way I understand it:\nRight now, the experience would be to make a Font obj using a String, then pass that into Text. (bad practice, but temporary)\nThe API when fixed later would be to make a Typeface obj using a String, then pass that into the Font constructor, then pass that into Text.",
+      "parentUuid": "29c4a73e_8e5f784a",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
