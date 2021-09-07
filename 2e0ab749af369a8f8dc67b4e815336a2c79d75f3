@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d6c3cc_13f44fb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T21:36:50Z",
+      "side": 1,
+      "message": "Can you update the sksl input to hit the same code path but contain less binary garbage? Right now it\u0027s not even viewable in Gerrit without messing around.",
+      "revId": "2e0ab749af369a8f8dc67b4e815336a2c79d75f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
