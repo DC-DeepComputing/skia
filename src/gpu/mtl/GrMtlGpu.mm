@@ -356,7 +356,7 @@ bool GrMtlGpu::uploadToTexture(GrMtlTexture* tex,
 
     int currentWidth = rect.width();
     int currentHeight = rect.height();
-    int layerHeight = tex->height();
+    [[maybe_unused]] int layerHeight = tex->height();
     MTLOrigin origin = MTLOriginMake(rect.left(), rect.top(), 0);
 
     auto cmdBuffer = this->commandBuffer();
