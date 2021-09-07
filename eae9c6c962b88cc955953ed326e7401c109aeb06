@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38f2cf79_07dfa466",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-07T13:41:07Z",
+      "side": 1,
+      "message": "Let\u0027s add an OssFuzz38140.sksl test file to the /errors/ directory as well.",
+      "revId": "eae9c6c962b88cc955953ed326e7401c109aeb06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42024f6c_91aabb80",
         "filename": "src/sksl/dsl/DSLFunction.cpp",
         "patchSetId": 2
