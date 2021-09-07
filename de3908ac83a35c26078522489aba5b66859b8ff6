@@ -123,6 +123,24 @@
       "parentUuid": "626cc05f_39b05005",
       "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d95cf32_2b04079b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-07T13:10:28Z",
+      "side": 1,
+      "message": "I added the Android autoroller account as an OWNER of include. The other new OWNERS files either inherit those settings, or copy settings from the root, so I think that\u0027s sufficient.",
+      "parentUuid": "a80016e0_7a1508e1",
+      "revId": "de3908ac83a35c26078522489aba5b66859b8ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
