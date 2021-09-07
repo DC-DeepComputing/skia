@@ -142,6 +142,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "906cf92e_24cb794f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-07T19:24:36Z",
+      "side": 1,
+      "message": "Part of the disconnect might be SkText/SkParagraph, which (used to?) take a string for the font -- this is also not the real plan -- a Paragraph should take typeface(s) and/or fontmgrs, not strings.",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38fe76f6_71a9a5c9",
