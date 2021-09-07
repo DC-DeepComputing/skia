@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78d0c76c_4ef3ce62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-07T18:26:26Z",
+      "side": 1,
+      "message": "What are we modeling this from? SkTypeface? SkFont?",
+      "revId": "933271d87199ae9079d658d9d7712168243d19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d7682a1_44046abb",
