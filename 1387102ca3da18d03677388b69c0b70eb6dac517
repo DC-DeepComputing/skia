@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f414a029_84c9ad17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-08T16:07:34Z",
+      "side": 1,
+      "message": "I think we can be even more aggressive with that assert - we should *never* add a child with a sample usage of None. (And I don\u0027t think we do, other than this existing loophole of a runtime effect with an un-sampled child).",
+      "parentUuid": "a12ca4d8_4a1ac89b",
+      "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3cb1e34_84aea5b3",
@@ -66,6 +84,30 @@
       "writtenOn": "2021-09-08T15:30:15Z",
       "side": 1,
       "message": "Are we going to leave skia:12429 open after this CL is submitted?\nAs far as I\u0027m concerned, this fixes that bug.\nThe only remaining concern is that we emit some dead code, but that\u0027s a performance concern at worst, not a defect/correctness issue.\nAlso, if we play our cards right, we might be able to eliminate the dead variable during SkSL optimization; what does the generated code look like?",
+      "range": {
+        "startLine": 325,
+        "startChar": 68,
+        "endLine": 325,
+        "endChar": 83
+      },
+      "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4284819_b93c65ac",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-08T16:07:34Z",
+      "side": 1,
+      "message": "I was on the fence, but I\u0027ll probably close it. Prior to Brian\u0027s last refactor of coord transforms, this wasn\u0027t an issue, so I was hoping that we might find a more fundamental fix (eg, for C++ authored FPs that could get into the same situation - even if that\u0027s tremendously unlikely). In any case, the generated code is pretty good, but I don\u0027t think we ever eliminate unused varyings (because it breaks the fragment/vertex shader contract to do so).",
+      "parentUuid": "d3cb1e34_84aea5b3",
       "range": {
         "startLine": 325,
         "startChar": 68,
