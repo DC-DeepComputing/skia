@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7422a377_7830dfd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-08T15:32:01Z",
+      "side": 1,
+      "message": "Can we add an assert in GrFragmentProcessor::registerChild() that if the child uses sample coords that the input SampleUsage is not none? That should catch this situation earlier than an assert in the GP so would make it easier for to detect internal errors. \n\nI am fine with that still be an assert/error for internal code since we shouldn\u0027t declare children and then not actually use them. The runtime effect fix, presumably, is so that we have more graceful behavior for untrusted, external shader code.",
+      "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3cb1e34_84aea5b3",
