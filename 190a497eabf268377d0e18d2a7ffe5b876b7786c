@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe9987d9_d1409854",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-09-08T13:54:22Z",
+      "side": 1,
+      "message": "Looking back through the history, it looks like this was originally introduced in ag/4508899, which was just to set up layout lib using Skia to begin with. It seems like there might be a perf regression, though if it\u0027s incompatible, that seems more important. Would it make sense to optionally turn it on? Or to use -march\u003dnative?",
+      "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
