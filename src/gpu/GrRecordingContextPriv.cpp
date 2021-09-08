@@ -208,6 +208,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
         if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
             return skgpu::v1::SurfaceDrawContext::Make(this->context(),
                                                        info.colorType(),
+                                                       info.alphaType(),
                                                        info.refColorSpace(),
                                                        fit,
                                                        info.dimensions(),

@@ -7,7 +7,82 @@
 
 #include "src/gpu/v2/SurfaceDrawContext_v2.h"
 
+#include "src/gpu/GrProxyProvider.h"
+#include "src/gpu/GrRecordingContextPriv.h"
+
 namespace skgpu::v2 {
+
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+                                                             GrColorType colorType,
+                                                             SkAlphaType alphaType,
+                                                             sk_sp<GrSurfaceProxy> proxy,
+                                                             sk_sp<SkColorSpace> colorSpace,
+                                                             GrSurfaceOrigin origin,
+                                                             const SkSurfaceProps& surfaceProps,
+                                                             bool flushTimeOpsTask) {
+    if (!rContext || !proxy) {
+        return nullptr;
+    }
+
+    const GrBackendFormat& format = proxy->backendFormat();
+    GrSwizzle readSwizzle, writeSwizzle;
+    if (colorType != GrColorType::kUnknown) {
+        readSwizzle = rContext->priv().caps()->getReadSwizzle(format, colorType);
+        writeSwizzle = rContext->priv().caps()->getWriteSwizzle(format, colorType);
+    }
+
+    GrSurfaceProxyView readView (           proxy, origin,  readSwizzle);
+    GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
+
+    return std::make_unique<SurfaceDrawContext>(rContext,
+                                                std::move(readView),
+                                                std::move(writeView),
+                                                colorType,
+                                                std::move(colorSpace),
+                                                surfaceProps,
+                                                flushTimeOpsTask);
+}
+
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+                                                             GrColorType colorType,
+                                                             SkAlphaType alphaType,
+                                                             sk_sp<SkColorSpace> colorSpace,
+                                                             SkBackingFit fit,
+                                                             SkISize dimensions,
+                                                             const SkSurfaceProps& surfaceProps,
+                                                             int sampleCnt,
+                                                             GrMipmapped mipMapped,
+                                                             GrProtected isProtected,
+                                                             GrSurfaceOrigin origin,
+                                                             SkBudgeted budgeted) {
+    if (!rContext || (alphaType == kPremul_SkAlphaType || alphaType == kOpaque_SkAlphaType)) {
+        return nullptr;
+    }
+
+    auto format = rContext->priv().caps()->getDefaultBackendFormat(colorType, GrRenderable::kYes);
+    if (!format.isValid()) {
+        return nullptr;
+    }
+    sk_sp<GrTextureProxy> proxy = rContext->priv().proxyProvider()->createProxy(format,
+                                                                                dimensions,
+                                                                                GrRenderable::kYes,
+                                                                                sampleCnt,
+                                                                                mipMapped,
+                                                                                fit,
+                                                                                budgeted,
+                                                                                isProtected);
+    if (!proxy) {
+        return nullptr;
+    }
+
+    return SurfaceDrawContext::Make(rContext,
+                                    colorType,
+                                    alphaType,
+                                    std::move(proxy),
+                                    std::move(colorSpace),
+                                    origin,
+                                    surfaceProps);
+}
 
 SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
                                        GrSurfaceProxyView readView,
@@ -20,7 +95,8 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
                          std::move(readView),
                          std::move(writeView),
                          {colorType, kPremul_SkAlphaType, std::move(colorSpace)},
-                         flushTimeOpsTask) {
+                         flushTimeOpsTask)
+    , fSurfaceProps(surfaceProps) {
 }
 
 } // namespace skgpu::v2
