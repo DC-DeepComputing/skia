@@ -595,7 +595,42 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->write(")");
             return true;
         }
-
+        case k_packUnorm2x16_IntrinsicKind: {
+            this->write("pack_float_to_unorm2x16(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_unpackUnorm2x16_IntrinsicKind: {
+            this->write("unpack_unorm2x16_to_float(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_packSnorm2x16_IntrinsicKind: {
+            this->write("pack_float_to_snorm2x16(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_unpackSnorm2x16_IntrinsicKind: {
+            this->write("unpack_snorm2x16_to_float(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_packHalf2x16_IntrinsicKind: {
+            this->write("as_type<uint>(half2(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write("))");
+            return true;
+        }
+        case k_unpackHalf2x16_IntrinsicKind: {
+            this->write("float2(as_type<half2>(");
+            this->writeExpression(*arguments[0], Precedence::kSequence);
+            this->write("))");
+            return true;
+        }
         case k_floatBitsToInt_IntrinsicKind:
         case k_floatBitsToUint_IntrinsicKind:
         case k_intBitsToFloat_IntrinsicKind:
