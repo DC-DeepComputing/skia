@@ -348,6 +348,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.extraConfig("CommandBuffer") {
 			// skbug.com/10412
 			skip("_ test _ GLBackendAllocationTest")
+			skip("_ test _ InitialTextureClear")
 		}
 
 		// skbug.com/9043 - these devices render this test incorrectly
