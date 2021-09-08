@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f083401_44afda67",
+        "filename": "experimental/sktext/include/Interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-08T15:55:16Z",
+      "side": 1,
+      "message": "I updated the inteface.h file",
+      "parentUuid": "43665213_8a27eca5",
+      "revId": "dc7b131f14109a368ec440052b63f73f30905859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "705877c8_392b8380",
@@ -67,6 +85,24 @@
       "writtenOn": "2021-09-08T15:02:53Z",
       "side": 1,
       "message": "Is this duplicating UnicodeText from interface.h?\n\n(also WrappedText/ShapedText/etc below)",
+      "revId": "dc7b131f14109a368ec440052b63f73f30905859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1d0dfb9_65fa4fcb",
+        "filename": "experimental/sktext/include/Text.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-08T15:55:16Z",
+      "side": 1,
+      "message": "The interface.h file is not a part of the code. It\u0027s just a \"document\" that contains only the public part of the API to discuss.",
+      "parentUuid": "705877c8_392b8380",
       "revId": "dc7b131f14109a368ec440052b63f73f30905859",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
