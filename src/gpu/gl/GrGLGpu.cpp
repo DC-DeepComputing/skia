@@ -2527,6 +2527,16 @@ void GrGLGpu::flushBlendAndColorWrite(
                 fHWBlendState.fEquation = blend_equation;
             }
 
+            // Workaround for Adreno 5xx BlendFunc bug.
+            if (this->glCaps().mustResetBlendFuncAfterDualSourceBeforeDisable() &&
+                (GrBlendCoeffRefsSrc2(fHWBlendState.fSrcCoeff) ||
+                 GrBlendCoeffRefsSrc2(fHWBlendState.fDstCoeff))) {
+                // We just reset the blend func to anything that doesn't reference src2
+                GL_CALL(BlendFunc(GR_GL_ONE, GR_GL_ZERO));
+                fHWBlendState.fSrcCoeff = kOne_GrBlendCoeff;
+                fHWBlendState.fDstCoeff = kZero_GrBlendCoeff;
+            }
+
             fHWBlendState.fEnabled = kNo_TriState;
         }
     } else {
@@ -2554,7 +2564,7 @@ void GrGLGpu::flushBlendAndColorWrite(
             fHWBlendState.fDstCoeff = dstCoeff;
         }
 
-        if ((GrBlendCoeffRefsConstant(srcCoeff) || GrBlendCoeffRefsConstant(dstCoeff))) {
+        if (GrBlendCoeffRefsConstant(srcCoeff) || GrBlendCoeffRefsConstant(dstCoeff)) {
             SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant);
             if (!fHWBlendState.fConstColorValid || fHWBlendState.fConstColor != blendConst) {
                 GL_CALL(BlendColor(blendConst.fR, blendConst.fG, blendConst.fB, blendConst.fA));
