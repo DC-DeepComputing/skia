@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a55b030_b0b4d335",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-08T15:21:10Z",
+      "side": 1,
+      "message": "I tried to fix this inside the GP\u0027s code a few different ways, but the error just kept shifting around. This solution is simple enough, and only impacts degenerate SkSL.",
+      "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
