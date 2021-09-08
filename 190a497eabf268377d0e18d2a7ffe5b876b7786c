@@ -52,6 +52,23 @@
       "parentUuid": "9a7ece96_66624009",
       "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "439f693a_2fdfb90e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-09-08T16:42:32Z",
+      "side": 1,
+      "message": "I\u0027m all for fixing the broken behavior first and then adding back any optimizations later if we need to.",
+      "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
