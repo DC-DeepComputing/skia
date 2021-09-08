@@ -19,47 +19,53 @@ DEF_GPUTEST(GrDDLImage_MakeSubset, reporter, options) {
         if (!dContext) {
             continue;
         }
-        SkIRect subsetBounds = SkIRect::MakeLTRB(4,4,8,8);
-        SkImageInfo ii = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-        // Raster image:
-        SkBitmap bm;
-        bm.setInfo(ii);
-        bm.allocPixels();
-        bm.eraseColor(SK_ColorBLACK);
-        bm.setImmutable();
-        auto rasterImg = bm.asImage();
-        REPORTER_ASSERT(reporter, rasterImg->isValid(static_cast<GrRecordingContext*>(nullptr)));
+        GrBackendTexture beTex;
 
-        // raster + context:
-        auto subImg1 = rasterImg->makeSubset(subsetBounds, dContext);
-        REPORTER_ASSERT(reporter, subImg1->isValid(dContext));
+        {
+            SkIRect subsetBounds = SkIRect::MakeLTRB(4,4,8,8);
+            SkImageInfo ii = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-        // raster + no context:
-        auto subImg2 = rasterImg->makeSubset(subsetBounds, nullptr);
-        REPORTER_ASSERT(reporter, subImg2->isValid(static_cast<GrRecordingContext*>(nullptr)));
+            // Raster image:
+            SkBitmap bm;
+            bm.setInfo(ii);
+            bm.allocPixels();
+            bm.eraseColor(SK_ColorBLACK);
+            bm.setImmutable();
+            sk_sp<SkImage> rasterImg = bm.asImage();
+            REPORTER_ASSERT(reporter, rasterImg->isValid(static_cast<GrRecordingContext*>(nullptr)));
 
-        // Texture image:
-        auto surf = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii);
-        SkSurfaceCharacterization sc;
-        REPORTER_ASSERT(reporter, surf->characterize(&sc));
-        GrBackendTexture tex =
-                dContext->createBackendTexture(ii.width(), ii.height(), ii.colorType(),
-                                               GrMipmapped(sc.isMipMapped()), GrRenderable::kYes);
-        auto gpuImage = SkImage::MakeFromTexture(dContext, tex, kTopLeft_GrSurfaceOrigin,
-                                                 ii.colorType(), ii.alphaType(),
-                                                 ii.refColorSpace());
-        REPORTER_ASSERT(reporter, gpuImage->isValid(dContext));
+            // raster + context:
+            sk_sp<SkImage> subImg1 = rasterImg->makeSubset(subsetBounds, dContext);
+            REPORTER_ASSERT(reporter, subImg1->isValid(dContext));
 
-        // gpu image + context:
-        auto subImg5 = gpuImage->makeSubset(subsetBounds, dContext);
-        REPORTER_ASSERT(reporter, subImg5->isValid(dContext));
+            // raster + no context:
+            sk_sp<SkImage> subImg2 = rasterImg->makeSubset(subsetBounds, nullptr);
+            REPORTER_ASSERT(reporter, subImg2->isValid(static_cast<GrRecordingContext*>(nullptr)));
 
-        // gpu image + nullptr:
-        REPORTER_ASSERT(reporter, !gpuImage->makeSubset(subsetBounds, nullptr));
+            // Texture image:
+            sk_sp<SkSurface> surf = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii);
+            SkSurfaceCharacterization sc;
+            REPORTER_ASSERT(reporter, surf->characterize(&sc));
+            beTex = dContext->createBackendTexture(ii.width(), ii.height(), ii.colorType(),
+                                                   GrMipmapped(sc.isMipMapped()),
+                                                   GrRenderable::kYes);
+            sk_sp<SkImage> gpuImage = SkImage::MakeFromTexture(dContext, beTex,
+                                                               kTopLeft_GrSurfaceOrigin,
+                                                               ii.colorType(), ii.alphaType(),
+                                                               ii.refColorSpace());
+            REPORTER_ASSERT(reporter, gpuImage->isValid(dContext));
+
+            // gpu image + context:
+            sk_sp<SkImage> subImg5 = gpuImage->makeSubset(subsetBounds, dContext);
+            REPORTER_ASSERT(reporter, subImg5->isValid(dContext));
+
+            // gpu image + nullptr:
+            REPORTER_ASSERT(reporter, !gpuImage->makeSubset(subsetBounds, nullptr));
+        }
 
         dContext->flush();
         dContext->submit(true);
-        dContext->deleteBackendTexture(tex);
+        dContext->deleteBackendTexture(beTex);
     }
 }
