@@ -39,6 +39,30 @@
       },
       "revId": "450ad3067e694533e3729b6efc5351f49477709a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1f10f72_5d9ad84b",
+        "filename": "modules/skottie/src/animator/VectorKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-09-08T17:43:09Z",
+      "side": 1,
+      "message": "Should the expression evaluator be able to grow the vector? For example, if we are expecting a color we should have a vector of length 4 (RGBA). It would seem like an error if the vector returned a longer vector. A shorter vector is also problematic which is why I use a default value if it is too small.",
+      "parentUuid": "96e2eed7_9d2664f0",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 9
+      },
+      "revId": "450ad3067e694533e3729b6efc5351f49477709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
