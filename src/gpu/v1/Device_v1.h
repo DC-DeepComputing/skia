@@ -187,7 +187,7 @@ private:
 
     ClipStack fClip;
 
-    static sk_sp<BaseDevice> Make(std::unique_ptr<SurfaceDrawContext>,
+    static sk_sp<BaseDevice> Make7(std::unique_ptr<SurfaceDrawContext>,
                                   SkAlphaType,
                                   InitContents);
 
@@ -218,16 +218,6 @@ private:
                          const SkRect& dst,
                          SkFilterMode,
                          const SkPaint&);
-
-    static std::unique_ptr<SurfaceDrawContext> MakeSurfaceDrawContext(GrRecordingContext*,
-                                                                      SkBudgeted,
-                                                                      const SkImageInfo&,
-                                                                      SkBackingFit,
-                                                                      int sampleCount,
-                                                                      GrMipmapped,
-                                                                      GrProtected,
-                                                                      GrSurfaceOrigin,
-                                                                      const SkSurfaceProps&);
 
     friend class ::SkSurface_Gpu;      // for access to surfaceProps
     using INHERITED = BaseDevice;

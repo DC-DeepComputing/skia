@@ -11,15 +11,78 @@
 #include "src/core/SkImageFilterCache.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrTracing.h"
+#include "src/gpu/v2/SurfaceDrawContext_v2.h"
 
 #define ASSERT_SINGLE_OWNER GR_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
 
+namespace {
+
+SkImageInfo make_info(skgpu::SurfaceContext* sc, bool opaque) {
+    SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
+    return SkImageInfo::Make(sc->width(), sc->height(), colorType,
+                             opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType,
+                             sc->colorInfo().refColorSpace());
+}
+
+}
+
 namespace skgpu::v2 {
 
-Device::Device(sk_sp<GrRecordingContext> rContext,
-               const SkImageInfo& ii,
-               const SkSurfaceProps& props)
-    : INHERITED(std::move(rContext), ii, props) {
+sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
+                               GrColorType colorType,
+                               sk_sp<GrSurfaceProxy> proxy,
+                               sk_sp<SkColorSpace> colorSpace,
+                               GrSurfaceOrigin origin,
+                               const SkSurfaceProps& surfaceProps,
+                               InitContents init) {
+    if (rContext->abandoned()) {
+        return nullptr;
+    }
+
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(rContext,
+                                                                       colorType,
+                                                                       std::move(proxy),
+                                                                       std::move(colorSpace),
+                                                                       origin,
+                                                                       surfaceProps);
+
+    return Device::Make8(std::move(sdc), nullptr, init);
+}
+
+sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
+                               SkBudgeted budgeted,
+                               const SkImageInfo& ii,
+                               SkBackingFit fit,
+                               int sampleCount,
+                               GrMipmapped mipMapped,
+                               GrProtected isProtected,
+                               GrSurfaceOrigin origin,
+                               const SkSurfaceProps& surfaceProps,
+                               InitContents init) {
+    auto sdc = SurfaceDrawContext::Make(rContext,
+                                        SkColorTypeToGrColorType(ii.colorType()),
+                                        ii.refColorSpace(),
+                                        fit,
+                                        ii.dimensions(),
+                                        surfaceProps,
+                                        sampleCount,
+                                        mipMapped,
+                                        isProtected,
+                                        origin,
+                                        budgeted);
+
+    return Device::Make8(std::move(sdc), &ii, init);
+}
+
+Device::Device(std::unique_ptr<SurfaceDrawContext> sdc, DeviceFlags flags)
+        : BaseDevice(sk_ref_sp(sdc->recordingContext()),
+                     make_info(sdc.get(), SkToBool(flags & DeviceFlags::kIsOpaque)),
+                     sdc->surfaceProps())
+        , fSurfaceDrawContext(std::move(sdc)) {
+//    : INHERITED(std::move(rContext), ii, props) {
+    if (flags & DeviceFlags::kNeedClear) {
+//        this->clearAll();
+    }
 }
 
 Device::~Device() {}
