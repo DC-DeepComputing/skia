@@ -16,6 +16,24 @@
       "message": "I think this needs a short design doc, before we know how to evaluate it.\n\nFor me, it would just focus on the public API, and the flow/function of each high level object -- no need to worry about impl concerns. Reading just the .h files is sort of like that, but even there its easy to get distracted by impls, and there is no declaration of the flow and/or function of each.",
       "revId": "753b819354617c86a6862b14fee474e1ece7d0ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d097cf38_08b5546d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-08T14:16:43Z",
+      "side": 1,
+      "message": "I an going to start such a document. Once I have something I hope we can discuss it.",
+      "parentUuid": "e1939c13_6f745fe5",
+      "revId": "753b819354617c86a6862b14fee474e1ece7d0ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

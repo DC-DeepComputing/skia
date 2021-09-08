@@ -16,6 +16,24 @@
       "message": "I forget if we talked about this, but why do we pass in UnicodeText in wrap() if we hold onto it in ShapedText?",
       "revId": "dc7b131f14109a368ec440052b63f73f30905859",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "954ae4a5_309e7a64",
+        "filename": "experimental/sktext/include/Interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-08T14:16:43Z",
+      "side": 1,
+      "message": "Because we don\u0027t have to hold on to ShapedText. The idea is that you only keep around the objects you need. For instance, DrawableText to draw and SelectableText to navigate.",
+      "parentUuid": "1b363820_c1a694f2",
+      "revId": "dc7b131f14109a368ec440052b63f73f30905859",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
