@@ -183,6 +183,8 @@ public:
     }
 #endif
 
+    static SkImageInfo MakeInfo(SurfaceContext*, bool opaque);
+
 protected:
     GrDrawingManager* drawingManager();
     const GrDrawingManager* drawingManager() const;
