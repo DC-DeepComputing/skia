@@ -29,6 +29,16 @@ static void draw_paint_with_aa(skgpu::v1::SurfaceDrawContext* sdc,
                   nullptr);
 }
 
+static void draw_paint_with_no_aa(skgpu::v1::SurfaceDrawContext* sdc,
+                                  const SkPMColor4f& color,
+                                  SkBlendMode blendMode) {
+    GrPaint paint;
+    paint.setColor4f(color);
+    paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
+    sdc->drawRect(
+            nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(), SkRect::MakeIWH(w, h), nullptr);
+}
+
 static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
                                   const SkPMColor4f& color,
                                   SkBlendMode blendMode) {
@@ -179,4 +189,35 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
     dstColor = SkBlendMode_Apply(SkBlendMode::kSrcOver, kTransCyan, dstColor);
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
+}
+
+// This test checks that things work correctly when we do a dual source blend followed by disabling
+// blending. see crbug.com/1241134
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dual_source_blend_disable,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         nullptr) {
+    auto dContext = ctxInfo.directContext();
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+            dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {w, h}, kDMSAAProps);
+
+    draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
+    check_sdc_color(reporter, sdc.get(), dContext, SK_PMColor4fTRANSPARENT);
+
+    // Clear the main texture to yellow.
+    sdc->clear(kTransYellow);
+    check_sdc_color(reporter, sdc.get(), dContext, kTransYellow);
+
+    // Now the DMSAA attachment is clear and the texture is yellow. Blend cyan into the DMSAA
+    // attachment. Using src mode here should trigger dual source blending on hardware the supports
+    // it.
+    draw_paint_with_dmsaa(sdc.get(), kTransCyan, SkBlendMode::kSrc);
+    check_sdc_color(reporter, sdc.get(), dContext, kTransCyan);
+
+    // Draw back to trans yellow, but don't trigger dmsaa. We again use kSrcMode, but this time it
+    // should disable blending.
+    draw_paint_with_no_aa(sdc.get(), kTransYellow, SkBlendMode::kSrc);
+    check_sdc_color(reporter, sdc.get(), dContext, kTransYellow);
+    SkDebugf("I ran this test with backend: %d\n", ctxInfo.backend());
 }
