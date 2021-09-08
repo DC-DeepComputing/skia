@@ -34,6 +34,24 @@
       "parentUuid": "fe9987d9_d1409854",
       "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c1c98e_2d00a71c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-09-08T15:21:06Z",
+      "side": 1,
+      "message": "\u003e I think -march\u003dnative is not the answer as it applies whatever flags are supported by the CPU which does the compiling. That risks causing similar issues if the CPUs of the build machines support more modern features than the CPUs of our users.\n\nAh, right, I wasn\u0027t sure where it was built, but that makes sense that it\u0027s not built by the end user.\n\n\u003e I wonder how this is handle for Chrome which must face the same issue.\n\nI\u0027m not sure what Chrome does, but Skia\u0027s BUILD.gn file has some code to automatically choose which files to build and what defines to use. (See e.g. opts(\"sse2\").) And then there\u0027s also SkCpu; I\u0027m not sure how the two relate.",
+      "parentUuid": "9a7ece96_66624009",
+      "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
