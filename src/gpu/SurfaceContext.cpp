@@ -1308,4 +1308,11 @@ void SurfaceContext::validate() const {
 }
 #endif
 
+SkImageInfo SurfaceContext::MakeInfo(SurfaceContext* sc, bool opaque) {
+    SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
+    return SkImageInfo::Make(sc->width(), sc->height(), colorType,
+                             opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType,
+                             sc->colorInfo().refColorSpace());
+}
+
 } // namespace skgpu
