@@ -11,6 +11,7 @@
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrSurfaceProxyView.h"
+#include "src/gpu/SurfaceContext.h"
 
 #define ASSERT_SINGLE_OWNER GR_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
 
@@ -42,6 +43,13 @@ bool BaseDevice::CheckAlphaTypeAndGetFlags(SkAlphaType alphaType,
         *flags |= DeviceFlags::kNeedClear;
     }
     return true;
+}
+
+SkImageInfo BaseDevice::MakeInfo(SurfaceContext* sc, bool opaque) {
+    SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
+    return SkImageInfo::Make(sc->width(), sc->height(), colorType,
+                             opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType,
+                             sc->colorInfo().refColorSpace());
 }
 
 GrRenderTargetProxy* BaseDevice::targetProxy() {
