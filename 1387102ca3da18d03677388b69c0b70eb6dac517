@@ -16,6 +16,29 @@
       "message": "I tried to fix this inside the GP\u0027s code a few different ways, but the error just kept shifting around. This solution is simple enough, and only impacts degenerate SkSL.",
       "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3cb1e34_84aea5b3",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-08T15:30:15Z",
+      "side": 1,
+      "message": "Are we going to leave skia:12429 open after this CL is submitted?\nAs far as I\u0027m concerned, this fixes that bug.\nThe only remaining concern is that we emit some dead code, but that\u0027s a performance concern at worst, not a defect/correctness issue.\nAlso, if we play our cards right, we might be able to eliminate the dead variable during SkSL optimization; what does the generated code look like?",
+      "range": {
+        "startLine": 325,
+        "startChar": 68,
+        "endLine": 325,
+        "endChar": 83
+      },
+      "revId": "1387102ca3da18d03677388b69c0b70eb6dac517",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
