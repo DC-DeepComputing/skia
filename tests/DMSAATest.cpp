@@ -15,18 +15,29 @@
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_SkPixelGeometry);
+static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
 constexpr static int w=10, h=10;
 
 static void draw_paint_with_aa(skgpu::v1::SurfaceDrawContext* sdc,
                                const SkPMColor4f& color,
-                               SkBlendMode blendMode) {
+                               SkBlendMode blendMode,
+                               const SkRect& rect) {
     GrPaint paint;
     paint.setColor4f(color);
     paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
-    sdc->drawRect(nullptr, std::move(paint), GrAA::kYes, SkMatrix::I(), SkRect::MakeIWH(w, h),
-                  nullptr);
+    sdc->drawRect(nullptr, std::move(paint), GrAA::kYes, SkMatrix::I(), rect, nullptr);
+}
+
+static void draw_paint_with_no_aa(skgpu::v1::SurfaceDrawContext* sdc,
+                                  const SkPMColor4f& color,
+                                  SkBlendMode blendMode,
+                                  const SkRect& rect) {
+    GrPaint paint;
+    paint.setColor4f(color);
+    paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
+    sdc->drawRect(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(), rect, nullptr);
 }
 
 static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
@@ -58,19 +69,23 @@ static bool fuzzy_equals(const float a[4], const SkPMColor4f& b) {
 static void check_sdc_color(skiatest::Reporter* reporter,
                             skgpu::v1::SurfaceDrawContext* sdc,
                             GrDirectContext* ctx,
-                            const SkPMColor4f& color) {
+                            const SkPMColor4f& color,
+                            bool skipEdges = false) {
     auto info = SkImageInfo::Make(w, h, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
     GrPixmap pixmap = GrPixmap::Allocate(info);
     sdc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
-            if (!fuzzy_equals(pix, color)) {
-                ERRORF(reporter, "SDC color mismatch.\n"
-                                 "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
-                                 "Expected [%0.3f, %0.3f, %0.3f, %0.3f]",
-                       pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
-                return;
+            if (!skipEdges || (x != 0 && x != w - 1 && y != 0 && y != h - 1)) {
+                if (!fuzzy_equals(pix, color)) {
+                    ERRORF(reporter, "SDC color mismatch.\n"
+                                        "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
+                                        "Expected [%0.3f, %0.3f, %0.3f, %0.3f]",
+                            pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
+                    SkDebugf("x, y: %d, %d\n", x, y);
+                    return;
+                }
             }
             pix += 4;
         }
@@ -148,7 +163,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
     dstColor = SkBlendMode_Apply(SkBlendMode::kDarken, kTransYellow, dstColor);
 
     // Draw with aa after dmsaa. This should break up the render pass and issue a texture barrier.
-    draw_paint_with_aa(sdc.get(), kTransCyan, SkBlendMode::kDarken);
+    draw_paint_with_aa(sdc.get(), kTransCyan, SkBlendMode::kDarken, SkRect::MakeIWH(w, h));
     dstColor = SkBlendMode_Apply(SkBlendMode::kDarken, kTransCyan, dstColor);
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
@@ -170,7 +185,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
 
     // Blend to the texture (not the dmsaa attachment) with a dst read. This creates a texture
     // barrier.
-    draw_paint_with_aa(sdc.get(), kTransYellow, SkBlendMode::kDarken);
+    draw_paint_with_aa(sdc.get(), kTransYellow, SkBlendMode::kDarken, SkRect::MakeIWH(w, h));
     dstColor = SkBlendMode_Apply(SkBlendMode::kDarken, kTransYellow, dstColor);
 
     // Blend to the msaa attachment _without_ a dst read. This ensures we respect the prior texture
@@ -179,4 +194,36 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
     dstColor = SkBlendMode_Apply(SkBlendMode::kSrcOver, kTransCyan, dstColor);
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
+}
+
+// This test checks that things work correctly when we do a dual source blend followed by disabling
+// blending. see crbug.com/1241134
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dual_source_blend_disable,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         nullptr) {
+    auto dContext = ctxInfo.directContext();
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+            dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {w, h}, kBasicProps);
+
+    draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
+    check_sdc_color(reporter, sdc.get(), dContext, SK_PMColor4fTRANSPARENT);
+
+    // Clear the main texture to yellow.
+   // sdc->clear(kTransYellow);
+    //check_sdc_color(reporter, sdc.get(), dContext, kTransYellow);
+
+    // Now the DMSAA attachment is clear and the texture is yellow. Blend cyan into the DMSAA
+    // attachment. Using src mode here should trigger dual source blending on hardware the supports
+    // it.
+    SkRect rect = SkRect::MakeXYWH(0.5f, 0.5f, w - 1, h - 1);
+    draw_paint_with_aa(sdc.get(), kTransCyan, SkBlendMode::kSrc, rect);
+    check_sdc_color(reporter, sdc.get(), dContext, kTransCyan, true);
+
+    // Draw back to trans yellow, but don't trigger dmsaa. We again use kSrcMode, but this time it
+    // should disable blending.
+    draw_paint_with_no_aa(sdc.get(), kTransYellow, SkBlendMode::kSrc, rect);
+    check_sdc_color(reporter, sdc.get(), dContext, kTransYellow, true);
+    SkDebugf("I ran this test with backend: %d\n", ctxInfo.backend());
 }
