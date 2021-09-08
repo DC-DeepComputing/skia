@@ -865,6 +865,7 @@ void gather_file_srcs(const CommandLineFlags::StringArray& flags,
 }
 
 static bool gather_srcs() {
+if (0) {
     for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
         push_src("gm", "", new GMSrc(f));
     }
@@ -904,6 +905,7 @@ static bool gather_srcs() {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));
         push_src("colorImage", "decode_to_dst", new ColorCodecSrc(colorImage,  true));
     }
+}
 
     return true;
 }
@@ -1423,6 +1425,9 @@ static void gather_tests() {
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
         if (!in_shard()) {
+            continue;
+        }
+        if (strcmp("GrDDLImage_MakeSubset", test.name)) {
             continue;
         }
         if (CommandLineFlags::ShouldSkip(FLAGS_match, test.name)) {
