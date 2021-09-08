@@ -1585,7 +1585,8 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
 
 bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
                                    GrMtlAttachment* src,
-                                   const SkIRect& srcRect) {
+                                   const SkIRect& srcRect,
+                                   MTLRenderPassStencilAttachmentDescriptor* stencil) {
     if (!dst) {
         return false;
     }
@@ -1595,8 +1596,10 @@ bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
 
     GrMtlAttachment* mtlDst = static_cast<GrMtlAttachment*>(dst);
 
+    MTLPixelFormat stencilFormat = stencil.texture.pixelFormat;
     auto renderPipeline = this->resourceProvider().findOrCreateMSAALoadPipeline(mtlDst->mtlFormat(),
-                                                                                dst->numSamples());
+                                                                                dst->numSamples(),
+                                                                                stencilFormat);
 
     // Set up rendercommandencoder
     auto renderPassDesc = [MTLRenderPassDescriptor new];
@@ -1606,8 +1609,10 @@ bool GrMtlGpu::loadMSAAFromResolve(GrAttachment* dst,
     colorAttachment.storeAction = MTLStoreActionMultisampleResolve;
     colorAttachment.resolveTexture = src->mtlTexture();
 
+    renderPassDesc.stencilAttachment = stencil;
+
     auto renderCmdEncoder =
-                this->commandBuffer()->getRenderCommandEncoder(renderPassDesc, nullptr, nullptr);
+                this->commandBuffer()->getRenderCommandEncoder(renderPassDesc, nullptr);
 
     // Bind pipeline
     renderCmdEncoder->setRenderPipelineState(renderPipeline->mtlPipelineState());
