@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3831a2d_cb10c90e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-09T17:16:25Z",
+      "side": 1,
+      "message": "It looks like this set of changes will finally allow discardable MSAA to be turned on.",
+      "revId": "cfcde883f1713365377c44ae9d7a86b30515b6ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
