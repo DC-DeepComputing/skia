@@ -84,20 +84,20 @@ public:
      */
     DSLExpression call(SkTArray<DSLWrapper<DSLExpression>> args);
 
+    DSLExpression call(ExpressionArray args);
+
 private:
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args) {}
+    void collectArgs(ExpressionArray& args) {}
 
     template<class... RemainingArgs>
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args, DSLVar& var,
-                     RemainingArgs&&... remaining) {
-        args.push_back(DSLWrapper<DSLExpression>(var));
+    void collectArgs(ExpressionArray& args, DSLVar& var, RemainingArgs&&... remaining) {
+        args.push_back(DSLExpression(var).release());
         collectArgs(args, std::forward<RemainingArgs>(remaining)...);
     }
 
     template<class... RemainingArgs>
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args, DSLExpression expr,
-                     RemainingArgs&&... remaining) {
-        args.push_back(DSLWrapper<DSLExpression>(std::move(expr)));
+    void collectArgs(ExpressionArray& args, DSLExpression expr, RemainingArgs&&... remaining) {
+        args.push_back(expr.release());
         collectArgs(args, std::forward<RemainingArgs>(remaining)...);
     }
 
