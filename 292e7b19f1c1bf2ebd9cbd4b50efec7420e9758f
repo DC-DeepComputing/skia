@@ -16,6 +16,23 @@
       "message": "To be landed after I physically make the switch of moving all Android devices off rack1 to rack4, and re-populate the remaining rack4 devices still on k3s with new arm64 SD cards.",
       "revId": "292e7b19f1c1bf2ebd9cbd4b50efec7420e9758f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "088b792b_32a7de85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-09-09T13:01:20Z",
+      "side": 1,
+      "message": "\\o/",
+      "revId": "292e7b19f1c1bf2ebd9cbd4b50efec7420e9758f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
