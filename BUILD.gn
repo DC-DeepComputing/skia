@@ -2474,6 +2474,7 @@ if (skia_enable_tools) {
         "modules/androidkit/src/Surface.h",
         "modules/androidkit/src/SurfaceThread.cpp",
         "modules/androidkit/src/SurfaceThread.h",
+        "modules/androidkit/src/Test.cpp",
         "modules/androidkit/src/Text.cpp",
         "modules/androidkit/src/Utils.cpp",
       ]
