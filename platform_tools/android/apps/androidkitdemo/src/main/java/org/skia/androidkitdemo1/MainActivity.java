@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.io.InputStream;
 import org.skia.androidkit.*;
 import org.skia.androidkit.util.SkottieView;
 import org.skia.androidkit.util.SurfaceRenderer;
@@ -100,6 +101,21 @@ public class MainActivity extends Activity {
         });
         LinearLayout skottieContainer = findViewById(R.id.skottie_container);
         skottieContainer.addView(skottieView);
+
+        testGpuDecode(R.raw.omw   , 512, 512, 30);
+        testGpuDecode(R.raw.cheers, 512, 512, 30);
+    }
+
+    private void testGpuDecode(int resID, int width, int height, float fps) {
+        String json = "";
+        InputStream is = getResources().openRawResource(R.raw.omw);
+        try {
+            byte[] data = new byte[is.available()];
+            is.read(data);
+            json = new String(data);
+        } catch (Exception e) {}
+
+        Canvas.GpuDecode(json, width, height, fps);
     }
 
     private class ThreadedSurfaceHandler implements SurfaceHolder.Callback {
