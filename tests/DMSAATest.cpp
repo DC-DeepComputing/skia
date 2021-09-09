@@ -15,6 +15,7 @@
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_SkPixelGeometry);
+static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
 constexpr static int w=10, h=10;
@@ -69,7 +70,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
                 ERRORF(reporter, "SDC color mismatch.\n"
                                  "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
                                  "Expected [%0.3f, %0.3f, %0.3f, %0.3f]",
-                       pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
+                        pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
                 return;
             }
             pix += 4;
@@ -180,3 +181,123 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
 }
+
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable, reporter, ctxInfo) {
+    SkISize surfaceDims = {100, 100};
+    SkISize texDims = {50, 50};
+    auto context = ctxInfo.directContext();
+
+    auto sourceTexture = context->createBackendTexture(texDims.width(),
+                                                       texDims.height(),
+                                                       kRGBA_8888_SkColorType,
+                                                       SkColors::kBlue,
+                                                       GrMipMapped::kNo,
+                                                       GrRenderable::kYes,
+                                                       GrProtected::kNo);
+
+    auto sourceImage = SkImage::MakeFromTexture(context,
+                                                sourceTexture,
+                                                kTopLeft_GrSurfaceOrigin,
+                                                kRGBA_8888_SkColorType,
+                                                kPremul_SkAlphaType,
+                                                nullptr);
+
+    auto texture1 = context->createBackendTexture(surfaceDims.width(),
+                                                  surfaceDims.height(),
+                                                  kRGBA_8888_SkColorType,
+                                                  SkColors::kRed,
+                                                  GrMipMapped::kNo,
+                                                  GrRenderable::kYes,
+                                                  GrProtected::kNo);
+
+    auto texture2 = context->createBackendTexture(surfaceDims.width(),
+                                                  surfaceDims.height(),
+                                                  kRGBA_8888_SkColorType,
+                                                  SkColors::kYellow,
+                                                  GrMipMapped::kNo,
+                                                  GrRenderable::kYes,
+                                                  GrProtected::kNo);
+
+    SkPaint paint;
+    paint.setBlendMode(SkBlendMode::kSrc);
+
+    SkRect srcRect = SkRect::MakeIWH(texDims.width(), texDims.height());
+    SkRect dstRect = SkRect::MakeXYWH(texDims.width()/2, texDims.height()/2,
+                                      texDims.width(), texDims.height());
+
+    {
+        auto surface = SkSurface::MakeFromBackendTexture(context,
+                                                         texture1,
+                                                         kTopLeft_GrSurfaceOrigin,
+                                                         1,
+                                                         kRGBA_8888_SkColorType,
+                                                         nullptr,
+                                                         &kDMSAAProps);
+
+        surface->getCanvas()->drawImageRect(sourceImage,
+                                            srcRect,
+                                            dstRect,
+                                            SkSamplingOptions(),
+                                            &paint,
+                                            SkCanvas::kStrict_SrcRectConstraint);
+        // Make sure there isn't any batching
+        surface->flushAndSubmit();
+    }
+    {
+        auto surface = SkSurface::MakeFromBackendTexture(context,
+                                                         texture2,
+                                                         kTopLeft_GrSurfaceOrigin,
+                                                         1,
+                                                         kRGBA_8888_SkColorType,
+                                                         nullptr,
+                                                         &kBasicProps);
+
+        surface->getCanvas()->drawImageRect(sourceImage,
+                                            srcRect,
+                                            dstRect,
+                                            SkSamplingOptions(),
+                                            &paint,
+                                            SkCanvas::kStrict_SrcRectConstraint);
+        surface->flushAndSubmit();
+    }
+    {
+        auto readImage = SkImage::MakeFromTexture(context,
+                                                  texture2,
+                                                  kTopLeft_GrSurfaceOrigin,
+                                                  kRGBA_8888_SkColorType,
+                                                  kPremul_SkAlphaType,
+                                                  nullptr);
+        SkImageInfo dstIInfo = SkImageInfo::Make(texDims.width(),
+                                                 texDims.height(),
+                                                 kRGBA_8888_SkColorType,
+                                                 kPremul_SkAlphaType,
+                                                 nullptr);
+
+        SkBitmap bitmap;
+        bitmap.allocPixels(dstIInfo);
+
+        bool success = readImage->readPixels(context, bitmap.pixmap(), dstRect.fLeft, dstRect.fTop);
+        if (!success) {
+            ERRORF(reporter, "Failed to read pixels");
+            return;
+        }
+        auto pix = static_cast<const uint32_t*>(bitmap.getAddr(0, 0));
+        for (int x = 0; x < 50; ++x) {
+            for (int y = 0; y < 50; ++y) {
+                uint32_t pixColor = pix[x + y * 50];
+                if (pixColor != 0xFFFF0000) {
+                    ERRORF(reporter, "Didn't get a blue pixel at %d, %d. Got 0x%8X",
+                           x, y, pixColor);
+                    continue;
+                }
+            }
+        }
+    }
+    sourceImage.reset();
+    // Need to make sure the gpu is fully finished before deleting the textures
+    context->flushAndSubmit(true);
+    context->deleteBackendTexture(sourceTexture);
+    context->deleteBackendTexture(texture1);
+    context->deleteBackendTexture(texture2);
+}
+
