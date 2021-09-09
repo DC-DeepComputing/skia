@@ -597,17 +597,12 @@ DSLExpression Refract(DSLExpression i, DSLExpression n, DSLExpression eta, Posit
     return DSLExpression(DSLCore::Call("refract", std::move(i), std::move(n), std::move(eta)), pos);
 }
 
-DSLExpression Sample(DSLExpression target, PositionInfo pos) {
-    return DSLExpression(DSLCore::Call("sample", std::move(target)), pos);
-}
-
-
 DSLExpression Sample(DSLExpression target, DSLExpression x, PositionInfo pos) {
-    return DSLExpression(DSLCore::Call("sample", std::move(target), std::move(x)), pos);
+    return DSLExpression(DSLCore::Call("$eval", std::move(x), std::move(target)), pos);
 }
 
 DSLExpression Sample(DSLExpression target, DSLExpression x, DSLExpression y, PositionInfo pos) {
-    return DSLExpression(DSLCore::Call("sample", std::move(target), std::move(x), std::move(y)),
+    return DSLExpression(DSLCore::Call("$eval", std::move(x), std::move(y), std::move(target)),
                          pos);
 }
 
