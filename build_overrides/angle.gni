@@ -5,6 +5,7 @@ angle_spirv_tools_dir = "//third_party/externals/spirv-tools"
 
 # We don't have Chromium's build/ or testing/ directories.
 angle_has_build = false
+angle_has_rapidjson = false
 
 # Bunch of features ANGLE's build files test for that we never set.
 is_cfi = false
