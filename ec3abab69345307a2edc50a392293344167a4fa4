@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583a0ee3_de130eed",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 3985,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-09T16:46:09Z",
+      "side": 1,
+      "message": "nit: \"does not\"",
+      "range": {
+        "startLine": 3985,
+        "startChar": 69,
+        "endLine": 3985,
+        "endChar": 74
+      },
+      "revId": "ec3abab69345307a2edc50a392293344167a4fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7318a584_fc703de4",
+        "filename": "src/gpu/gl/GrGLCaps.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-09T16:46:09Z",
+      "side": 1,
+      "message": "This name is a mouthful, and the concept is also kind of a mouthful, so I\u0027m not sure there\u0027s much we can do, but wdyt about \u0027mustResetBlendFuncBetweenDualSourceAndDisable\u0027?",
+      "range": {
+        "startLine": 409,
+        "startChar": 9,
+        "endLine": 409,
+        "endChar": 55
+      },
+      "revId": "ec3abab69345307a2edc50a392293344167a4fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2fae6aa_bb01f311",
+        "filename": "tests/DMSAATest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-09T16:46:09Z",
+      "side": 1,
+      "message": "wow, nice test!",
+      "range": {
+        "startLine": 188,
+        "startChar": 35,
+        "endLine": 188,
+        "endChar": 66
+      },
+      "revId": "ec3abab69345307a2edc50a392293344167a4fa4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
