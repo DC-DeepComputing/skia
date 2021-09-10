@@ -22,6 +22,30 @@
       },
       "revId": "a0579027f9c4d006d338806e843ada599d7ff0a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb3f5ca_215df14d",
+        "filename": "tests/DrawPathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T15:59:41Z",
+      "side": 1,
+      "message": "They aren\u0027t important for triggering the debug assert or ubsan, but they are important for making the plain-old-release build to draw in the right-most column so that the test would fail on those builds as well.",
+      "parentUuid": "8f0bd5a9_c000ada4",
+      "range": {
+        "startLine": 147,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 45
+      },
+      "revId": "a0579027f9c4d006d338806e843ada599d7ff0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
