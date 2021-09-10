@@ -105,67 +105,6 @@ public:
 
     // A generic driver that maps fn over a src array into a dst array.
     // fn should take an Sk4px (4 src pixels) and return an Sk4px (4 dst pixels).
-    template <typename Fn>
-    static void MapSrc(int n, SkPMColor* dst, const SkPMColor* src, const Fn& fn) {
-        SkASSERT(dst);
-        SkASSERT(src);
-        // This looks a bit odd, but it helps loop-invariant hoisting across different calls to fn.
-        // Basically, we need to make sure we keep things inside a single loop.
-        while (n > 0) {
-            if (n >= 8) {
-                Sk4px dst0 = fn(Load4(src+0)),
-                      dst4 = fn(Load4(src+4));
-                dst0.store4(dst+0);
-                dst4.store4(dst+4);
-                dst += 8; src += 8; n -= 8;
-                continue;  // Keep our stride at 8 pixels as long as possible.
-            }
-            SkASSERT(n <= 7);
-            if (n >= 4) {
-                fn(Load4(src)).store4(dst);
-                dst += 4; src += 4; n -= 4;
-            }
-            if (n >= 2) {
-                fn(Load2(src)).store2(dst);
-                dst += 2; src += 2; n -= 2;
-            }
-            if (n >= 1) {
-                fn(Load1(src)).store1(dst);
-            }
-            break;
-        }
-    }
-
-    // As above, but with dst4' = fn(dst4, src4).
-    template <typename Fn>
-    static void MapDstSrc(int n, SkPMColor* dst, const SkPMColor* src, const Fn& fn) {
-        SkASSERT(dst);
-        SkASSERT(src);
-        while (n > 0) {
-            if (n >= 8) {
-                Sk4px dst0 = fn(Load4(dst+0), Load4(src+0)),
-                      dst4 = fn(Load4(dst+4), Load4(src+4));
-                dst0.store4(dst+0);
-                dst4.store4(dst+4);
-                dst += 8; src += 8; n -= 8;
-                continue;  // Keep our stride at 8 pixels as long as possible.
-            }
-            SkASSERT(n <= 7);
-            if (n >= 4) {
-                fn(Load4(dst), Load4(src)).store4(dst);
-                dst += 4; src += 4; n -= 4;
-            }
-            if (n >= 2) {
-                fn(Load2(dst), Load2(src)).store2(dst);
-                dst += 2; src += 2; n -= 2;
-            }
-            if (n >= 1) {
-                fn(Load1(dst), Load1(src)).store1(dst);
-            }
-            break;
-        }
-    }
-
     // As above, but with dst4' = fn(dst4, alpha4).
     template <typename Fn>
     static void MapDstAlpha(int n, SkPMColor* dst, const SkAlpha* a, const Fn& fn) {
@@ -191,38 +130,6 @@ public:
             }
             if (n >= 1) {
                 fn(Load1(dst), Sk16b(*a)).store1(dst);
-            }
-            break;
-        }
-    }
-
-    // As above, but with dst4' = fn(dst4, src4, alpha4).
-    template <typename Fn>
-    static void MapDstSrcAlpha(int n, SkPMColor* dst, const SkPMColor* src, const SkAlpha* a,
-                               const Fn& fn) {
-        SkASSERT(dst);
-        SkASSERT(src);
-        SkASSERT(a);
-        while (n > 0) {
-            if (n >= 8) {
-                Sk4px dst0 = fn(Load4(dst+0), Load4(src+0), Load4Alphas(a+0)),
-                      dst4 = fn(Load4(dst+4), Load4(src+4), Load4Alphas(a+4));
-                dst0.store4(dst+0);
-                dst4.store4(dst+4);
-                dst += 8; src += 8; a += 8; n -= 8;
-                continue;  // Keep our stride at 8 pixels as long as possible.
-            }
-            SkASSERT(n <= 7);
-            if (n >= 4) {
-                fn(Load4(dst), Load4(src), Load4Alphas(a)).store4(dst);
-                dst += 4; src += 4; a += 4; n -= 4;
-            }
-            if (n >= 2) {
-                fn(Load2(dst), Load2(src), Load2Alphas(a)).store2(dst);
-                dst += 2; src += 2; a += 2; n -= 2;
-            }
-            if (n >= 1) {
-                fn(Load1(dst), Load1(src), Sk16b(*a)).store1(dst);
             }
             break;
         }

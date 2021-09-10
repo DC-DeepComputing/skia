@@ -24,44 +24,35 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class SkProcCoeffXfermode : public SkXfermode {
-public:
-    SkProcCoeffXfermode(SkBlendMode mode) : fMode(mode) {}
+SkXfermode::SkXfermode(SkBlendMode mode) : fMode(mode) {}
 
-    void xfer32(SkPMColor dst[], const SkPMColor src[], int count,
-                const SkAlpha aa[]) const override {
-        SkASSERT(dst && src && count >= 0);
+void SkXfermode::xfer32(SkPMColor dst[], const SkPMColor src[], int count, const SkAlpha aa[]) {
+    SkASSERT(dst && src && count >= 0);
 
-        SkRasterPipeline_<256> p;
+    SkRasterPipeline_<256> p;
 
-        SkRasterPipeline_MemoryCtx dst_ctx = { (void*)dst, 0 },
-                                   src_ctx = { (void*)src, 0 },
-                                    aa_ctx = { (void*)aa,  0 };
+    SkRasterPipeline_MemoryCtx dst_ctx = { (void*)dst, 0 },
+                               src_ctx = { (void*)src, 0 },
+                               aa_ctx  = { (void*)aa,  0 };
 
-        p.append_load    (kN32_SkColorType, &src_ctx);
-        p.append_load_dst(kN32_SkColorType, &dst_ctx);
+    p.append_load    (kN32_SkColorType, &src_ctx);
+    p.append_load_dst(kN32_SkColorType, &dst_ctx);
 
-        if (SkBlendMode_ShouldPreScaleCoverage(fMode, /*rgb_coverage=*/false)) {
-            if (aa) {
-                p.append(SkRasterPipeline::scale_u8, &aa_ctx);
-            }
-            SkBlendMode_AppendStages(fMode, &p);
-        } else {
-            SkBlendMode_AppendStages(fMode, &p);
-            if (aa) {
-                p.append(SkRasterPipeline::lerp_u8, &aa_ctx);
-            }
+    if (SkBlendMode_ShouldPreScaleCoverage(fMode, /*rgb_coverage=*/false)) {
+        if (aa) {
+            p.append(SkRasterPipeline::scale_u8, &aa_ctx);
         }
-
-        p.append_store(kN32_SkColorType, &dst_ctx);
-        p.run(0, 0, count,1);
+        SkBlendMode_AppendStages(fMode, &p);
+    } else {
+        SkBlendMode_AppendStages(fMode, &p);
+        if (aa) {
+            p.append(SkRasterPipeline::lerp_u8, &aa_ctx);
+        }
     }
 
-private:
-    const SkBlendMode fMode;
-
-    using INHERITED = SkXfermode;
-};
+    p.append_store(kN32_SkColorType, &dst_ctx);
+    p.run(0, 0, count,1);
+}
 
 const char* SkBlendMode_Name(SkBlendMode mode) {
     SkASSERT((unsigned) mode <= (unsigned)SkBlendMode::kLastMode);
@@ -94,11 +85,7 @@ sk_sp<SkXfermode> SkXfermode::Make(SkBlendMode mode) {
     static SkXfermode* cached[COUNT_BLENDMODES];
 
     once[(int)mode]([mode] {
-        if (auto xfermode = SkOpts::create_xfermode(mode)) {
-            cached[(int)mode] = xfermode;
-        } else {
-            cached[(int)mode] = new SkProcCoeffXfermode(mode);
-        }
+        cached[(int)mode] = new SkXfermode(mode);
     });
     return sk_ref_sp(cached[(int)mode]);
 }

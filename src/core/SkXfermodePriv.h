@@ -20,8 +20,7 @@ class SkString;
 
 class SkXfermode : public SkRefCnt {
 public:
-    virtual void xfer32(SkPMColor dst[], const SkPMColor src[], int count,
-                        const SkAlpha aa[]) const = 0;
+    void xfer32(SkPMColor dst[], const SkPMColor src[], int count, const SkAlpha aa[]);
 
     /** Return an SkXfermode object for the specified mode.
      */
@@ -55,8 +54,9 @@ public:
 
     static bool IsOpaque(SkBlendMode, SrcColorOpacity);
 
-protected:
-    SkXfermode() {}
+private:
+    SkXfermode(SkBlendMode);
+    const SkBlendMode fMode;
 };
 
 #endif
