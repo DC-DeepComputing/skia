@@ -12,41 +12,41 @@ namespace SkSL {
 
 static std::unique_ptr<Expression> cast_scalar_literal(const Type& constructorType,
                                                        const Expression& expr) {
-    if (expr.is<IntLiteral>()) {
-        SKSL_INT value = expr.as<IntLiteral>().value();
+    if (expr.is<Literal>() && expr.type().isInteger()) {
+        SKSL_INT value = expr.as<Literal>().intValue();
         if (constructorType.isFloat()) {
             // promote float(1) to 1.0
-            return FloatLiteral::Make(expr.fOffset, (SKSL_FLOAT)value, &constructorType);
+            return Literal::MakeFloat(expr.fOffset, (SKSL_FLOAT)value, &constructorType);
         } else if (constructorType.isInteger()) {
             // promote uint(1) to 1u
-            return IntLiteral::Make(expr.fOffset, value, &constructorType);
+            return Literal::MakeInt(expr.fOffset, value, &constructorType);
         } else if (constructorType.isBoolean()) {
             // promote bool(1) to true/false
-            return BoolLiteral::Make(expr.fOffset, value != 0, &constructorType);
+            return Literal::MakeBool(expr.fOffset, value != 0, &constructorType);
         }
-    } else if (expr.is<FloatLiteral>()) {
-        float value = expr.as<FloatLiteral>().value();
+    } else if (expr.is<Literal>() && expr.type().isFloat()) {
+        float value = expr.as<Literal>().floatValue();
         if (constructorType.isFloat()) {
             // promote float(1.23) to 1.23
-            return FloatLiteral::Make(expr.fOffset, value, &constructorType);
+            return Literal::MakeFloat(expr.fOffset, value, &constructorType);
         } else if (constructorType.isInteger()) {
             // promote uint(1.23) to 1u
-            return IntLiteral::Make(expr.fOffset, (SKSL_INT)value, &constructorType);
+            return Literal::MakeInt(expr.fOffset, (SKSL_INT)value, &constructorType);
         } else if (constructorType.isBoolean()) {
             // promote bool(1.23) to true/false
-            return BoolLiteral::Make(expr.fOffset, value != 0.0f, &constructorType);
+            return Literal::MakeBool(expr.fOffset, value != 0.0f, &constructorType);
         }
-    } else if (expr.is<BoolLiteral>()) {
-        bool value = expr.as<BoolLiteral>().value();
+    } else if (expr.is<Literal>() && expr.type().isBoolean()) {
+        bool value = expr.as<Literal>().boolValue();
         if (constructorType.isFloat()) {
             // promote float(true) to 1.0
-            return FloatLiteral::Make(expr.fOffset, value ? 1.0f : 0.0f, &constructorType);
+            return Literal::MakeFloat(expr.fOffset, value ? 1.0f : 0.0f, &constructorType);
         } else if (constructorType.isInteger()) {
             // promote uint(true) to 1u
-            return IntLiteral::Make(expr.fOffset, value ? 1 : 0, &constructorType);
+            return Literal::MakeInt(expr.fOffset, value ? 1 : 0, &constructorType);
         } else if (constructorType.isBoolean()) {
             // promote bool(true) to true/false
-            return BoolLiteral::Make(expr.fOffset, value, &constructorType);
+            return Literal::MakeBool(expr.fOffset, value, &constructorType);
         }
     }
     return nullptr;

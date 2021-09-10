@@ -20,7 +20,7 @@ class Expression;
 
 /**
  * Performs constant folding on IR expressions. This simplifies expressions containing
- * compile-time constants, such as replacing `IntLiteral(2) + IntLiteral(2)` with `IntLiteral(4)`.
+ * compile-time constants, such as replacing `Literal(2) + Literal(2)` with `Literal(4)`.
  */
 class ConstantFolder {
 public:
