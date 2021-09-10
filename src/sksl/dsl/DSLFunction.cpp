@@ -103,13 +103,25 @@ void DSLFunction::define(DSLBlock block) {
     DSLWriter::ProgramElements().push_back(std::move(function));
 }
 
+std::unique_ptr<Expression> DSLFunction::releaseArg(DSLVar& var) {
+    return DSLExpression(var).release();
+}
+
+std::unique_ptr<Expression> DSLFunction::releaseArg(DSLExpression expr) {
+    return expr.release();
+}
+
 DSLExpression DSLFunction::call(SkTArray<DSLWrapper<DSLExpression>> args) {
     ExpressionArray released;
     released.reserve_back(args.size());
     for (DSLWrapper<DSLExpression>& arg : args) {
         released.push_back(arg->release());
     }
-    std::unique_ptr<SkSL::Expression> result = DSLWriter::Call(*fDecl, std::move(released));
+    return this->call(std::move(released));
+}
+
+DSLExpression DSLFunction::call(ExpressionArray args) {
+    std::unique_ptr<SkSL::Expression> result = DSLWriter::Call(*fDecl, std::move(args));
     return result ? DSLExpression(std::move(result)) : DSLExpression();
 }
 

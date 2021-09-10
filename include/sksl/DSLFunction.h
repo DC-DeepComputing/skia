@@ -73,9 +73,12 @@ public:
      */
     template<class... Args>
     DSLExpression operator()(Args&&... args) {
-        SkTArray<DSLWrapper<DSLExpression>> argArray;
-        argArray.reserve_back(sizeof...(args));
-        this->collectArgs(argArray, std::forward<Args>(args)...);
+        std::unique_ptr<SkSL::Expression> argsUnpacked[] = {
+            this->releaseArg(std::forward<Args>(args))...
+        };
+
+        ExpressionArray argArray;
+        argArray.move_back_n(sizeof...(args), argsUnpacked);
         return this->call(std::move(argArray));
     }
 
@@ -84,22 +87,11 @@ public:
      */
     DSLExpression call(SkTArray<DSLWrapper<DSLExpression>> args);
 
+    DSLExpression call(ExpressionArray args);
+
 private:
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args) {}
-
-    template<class... RemainingArgs>
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args, DSLVar& var,
-                     RemainingArgs&&... remaining) {
-        args.push_back(DSLWrapper<DSLExpression>(var));
-        collectArgs(args, std::forward<RemainingArgs>(remaining)...);
-    }
-
-    template<class... RemainingArgs>
-    void collectArgs(SkTArray<DSLWrapper<DSLExpression>>& args, DSLExpression expr,
-                     RemainingArgs&&... remaining) {
-        args.push_back(DSLWrapper<DSLExpression>(std::move(expr)));
-        collectArgs(args, std::forward<RemainingArgs>(remaining)...);
-    }
+    std::unique_ptr<SkSL::Expression> releaseArg(DSLVar& var);
+    std::unique_ptr<SkSL::Expression> releaseArg(DSLExpression expr);
 
     void init(DSLModifiers modifiers, const DSLType& returnType, skstd::string_view name,
               SkTArray<DSLParameter*> params, PositionInfo pos);
