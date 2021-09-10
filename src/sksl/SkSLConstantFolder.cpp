@@ -12,13 +12,11 @@
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
-#include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLExpression.h"
-#include "src/sksl/ir/SkSLFloatLiteral.h"
-#include "src/sksl/ir/SkSLIntLiteral.h"
+#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -29,8 +27,8 @@ namespace SkSL {
 static std::unique_ptr<Expression> eliminate_no_op_boolean(const Expression& left,
                                                            Operator op,
                                                            const Expression& right) {
-    SkASSERT(right.is<BoolLiteral>());
-    bool rightVal = right.as<BoolLiteral>().value();
+    SkASSERT(right.is<Literal>() && right.type().isBoolean());
+    bool rightVal = right.as<Literal>().boolValue();
 
     // Detect no-op Boolean expressions and optimize them away.
     if ((op.kind() == Token::Kind::TK_LOGICALAND && rightVal)  ||  // (expr && true)  -> (expr)
@@ -48,8 +46,8 @@ static std::unique_ptr<Expression> eliminate_no_op_boolean(const Expression& lef
 static std::unique_ptr<Expression> short_circuit_boolean(const Expression& left,
                                                          Operator op,
                                                          const Expression& right) {
-    SkASSERT(left.is<BoolLiteral>());
-    bool leftVal = left.as<BoolLiteral>().value();
+    SkASSERT(left.is<Literal>() && left.type().isBoolean());
+    bool leftVal = left.as<Literal>().boolValue();
 
     // When the literal is on the left, we can sometimes eliminate the other expression entirely.
     if ((op.kind() == Token::Kind::TK_LOGICALAND && !leftVal) ||  // (false && expr) -> (false)
@@ -76,7 +74,7 @@ static std::unique_ptr<Expression> simplify_vector_equality(const Context& conte
                 [[fallthrough]];
 
             case Expression::ComparisonResult::kEqual:
-                return BoolLiteral::Make(context, left.fOffset, equality);
+                return Literal::MakeBool(context, left.fOffset, equality);
 
             case Expression::ComparisonResult::kUnknown:
                 break;
@@ -109,18 +107,18 @@ static std::unique_ptr<Expression> simplify_vector(const Context& context,
         ExpressionArray args;
         args.reserve_back(type.columns());
         for (int i = 0; i < type.columns(); i++) {
-            U value = foldFn(left.getConstantSubexpression(i)->as<Literal<T>>().value(),
-                             right.getConstantSubexpression(i)->as<Literal<T>>().value());
-            args.push_back(Literal<T>::Make(left.fOffset, value, &componentType));
+            double value = foldFn(left.getConstantSubexpression(i)->as<Literal>().value(),
+                                  right.getConstantSubexpression(i)->as<Literal>().value());
+            args.push_back(Literal::Make(left.fOffset, value, &componentType));
         }
         return ConstructorCompound::Make(context, left.fOffset, type, std::move(args));
     };
 
     switch (op.kind()) {
-        case Token::Kind::TK_PLUS:  return vectorComponentwiseFold([](U a, U b) { return a + b; });
-        case Token::Kind::TK_MINUS: return vectorComponentwiseFold([](U a, U b) { return a - b; });
-        case Token::Kind::TK_STAR:  return vectorComponentwiseFold([](U a, U b) { return a * b; });
-        case Token::Kind::TK_SLASH: return vectorComponentwiseFold([](T a, T b) { return a / b; });
+        case Token::Kind::TK_PLUS:  return vectorComponentwiseFold([](double a, double b) { return a + b; });
+        case Token::Kind::TK_MINUS: return vectorComponentwiseFold([](double a, double b) { return a - b; });
+        case Token::Kind::TK_STAR:  return vectorComponentwiseFold([](double a, double b) { return a * b; });
+        case Token::Kind::TK_SLASH: return vectorComponentwiseFold([](double a, double b) { return a / b; });
         default:
             return nullptr;
     }
@@ -147,40 +145,30 @@ static ConstructorSplat splat_scalar(const Expression& scalar, const Type& type)
 
 bool ConstantFolder::GetConstantInt(const Expression& value, SKSL_INT* out) {
     const Expression* expr = GetConstantValueForVariable(value);
-    if (!expr->is<IntLiteral>()) {
+    if (!expr->isIntLiteral()) {
         return false;
     }
-    *out = expr->as<IntLiteral>().value();
+    *out = expr->as<Literal>().intValue();
     return true;
 }
 
-bool ConstantFolder::GetConstantFloat(const Expression& value, SKSL_FLOAT* out) {
-    const Expression* expr = GetConstantValueForVariable(value);
-    if (!expr->is<FloatLiteral>()) {
-        return false;
-    }
-    *out = expr->as<FloatLiteral>().value();
-    return true;
-}
-
-static bool is_constant_scalar_value(const Expression& inExpr, float match) {
+static bool is_constant_scalar_value(const Expression& inExpr, double match) {
     const Expression* expr = ConstantFolder::GetConstantValueForVariable(inExpr);
-    return (expr->is<IntLiteral>()   && expr->as<IntLiteral>().value()   == match) ||
-           (expr->is<FloatLiteral>() && expr->as<FloatLiteral>().value() == match);
+    return (expr->is<Literal>() && expr->as<Literal>().value() == match);
 }
 
 static bool contains_constant_zero(const Expression& expr) {
     int numSlots = expr.type().slotCount();
     for (int index = 0; index < numSlots; ++index) {
         const Expression* subexpr = expr.getConstantSubexpression(index);
-        if (subexpr && is_constant_scalar_value(*subexpr, 0.0f)) {
+        if (subexpr && is_constant_scalar_value(*subexpr, 0.0)) {
             return true;
         }
     }
     return false;
 }
 
-static bool is_constant_value(const Expression& expr, float value) {
+static bool is_constant_value(const Expression& expr, double value) {
     int numSlots = expr.type().slotCount();
     for (int index = 0; index < numSlots; ++index) {
         const Expression* subexpr = expr.getConstantSubexpression(index);
@@ -325,7 +313,7 @@ static std::unique_ptr<Expression> fold_float_expression(int offset,
         }
     }
 
-    return Literal<T>::Make(offset, result, resultType);
+    return Literal::Make(offset, result, resultType);
 }
 
 template <typename T>
@@ -339,7 +327,7 @@ static std::unique_ptr<Expression> fold_int_expression(int offset,
         }
     }
 
-    return Literal<T>::Make(offset, result, resultType);
+    return Literal::Make(offset, result, resultType);
 }
 
 std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
@@ -373,9 +361,9 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     }
 
     // Simplify the expression when both sides are constant Boolean literals.
-    if (left->is<BoolLiteral>() && right->is<BoolLiteral>()) {
-        bool leftVal  = left->as<BoolLiteral>().value();
-        bool rightVal = right->as<BoolLiteral>().value();
+    if (left->isBoolLiteral() && right->isBoolLiteral()) {
+        bool leftVal  = left->as<Literal>().boolValue();
+        bool rightVal = right->as<Literal>().boolValue();
         bool result;
         switch (op.kind()) {
             case Token::Kind::TK_LOGICALAND: result = leftVal && rightVal; break;
@@ -385,16 +373,16 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
             case Token::Kind::TK_NEQ:        result = leftVal != rightVal; break;
             default: return nullptr;
         }
-        return BoolLiteral::Make(context, offset, result);
+        return Literal::MakeBool(context, offset, result);
     }
 
     // If the left side is a Boolean literal, apply short-circuit optimizations.
-    if (left->is<BoolLiteral>()) {
+    if (left->isBoolLiteral()) {
         return short_circuit_boolean(*left, op, *right);
     }
 
     // If the right side is a Boolean literal...
-    if (right->is<BoolLiteral>()) {
+    if (right->isBoolLiteral()) {
         // ... and the left side has no side effects...
         if (!left->hasSideEffects()) {
             // We can reverse the expressions and short-circuit optimizations are still valid.
@@ -408,13 +396,13 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     if (op.kind() == Token::Kind::TK_EQEQ && Analysis::IsSameExpressionTree(*left, *right)) {
         // With == comparison, if both sides are the same trivial expression, this is self-
         // comparison and is always true. (We are not concerned with NaN.)
-        return BoolLiteral::Make(context, leftExpr.fOffset, /*value=*/true);
+        return Literal::MakeBool(context, leftExpr.fOffset, /*value=*/true);
     }
 
     if (op.kind() == Token::Kind::TK_NEQ && Analysis::IsSameExpressionTree(*left, *right)) {
         // With != comparison, if both sides are the same trivial expression, this is self-
         // comparison and is always false. (We are not concerned with NaN.)
-        return BoolLiteral::Make(context, leftExpr.fOffset, /*value=*/false);
+        return Literal::MakeBool(context, leftExpr.fOffset, /*value=*/false);
     }
 
     if (ErrorOnDivideByZero(context, offset, op, *right)) {
@@ -442,9 +430,10 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     // precision to calculate the results and hope the result makes sense.
     // TODO(skia:10932): detect and handle integer overflow properly.
     using SKSL_UINT = uint64_t;
-    if (left->is<IntLiteral>() && right->is<IntLiteral>()) {
-        SKSL_INT leftVal  = left->as<IntLiteral>().value();
-        SKSL_INT rightVal = right->as<IntLiteral>().value();
+    if (left->is<Literal>()  && left->type().isInteger() &&
+        right->is<Literal>() && right->type().isInteger()) {
+        SKSL_INT leftVal  = left->as<Literal>().intValue();
+        SKSL_INT rightVal = right->as<Literal>().intValue();
 
         #define RESULT(Op)   fold_int_expression(offset, \
                                         (SKSL_INT)(leftVal) Op (SKSL_INT)(rightVal), &resultType)
@@ -498,9 +487,10 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     }
 
     // Perform constant folding on pairs of floating-point literals.
-    if (left->is<FloatLiteral>() && right->is<FloatLiteral>()) {
-        SKSL_FLOAT leftVal  = left->as<FloatLiteral>().value();
-        SKSL_FLOAT rightVal = right->as<FloatLiteral>().value();
+    if (left->is<Literal>() && left->type().isFloat() &&
+        right->is<Literal>() && right->type().isFloat()) {
+        SKSL_FLOAT leftVal  = left->as<Literal>().floatValue();
+        SKSL_FLOAT rightVal = right->as<Literal>().floatValue();
 
         #define RESULT(Op) fold_float_expression(offset, leftVal Op rightVal, &resultType)
         switch (op.kind()) {
@@ -588,7 +578,7 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
                 [[fallthrough]];
 
             case Expression::ComparisonResult::kEqual:
-                return BoolLiteral::Make(context, offset, equality);
+                return Literal::MakeBool(context, offset, equality);
 
             case Expression::ComparisonResult::kUnknown:
                 return nullptr;
