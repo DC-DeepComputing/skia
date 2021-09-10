@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcfcbec1_03664a3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-10T13:55:02Z",
+      "side": 1,
+      "message": "Flutter apparently is setting -mios-simulator-version-min\u003d8.0 which should probably be updated.",
+      "revId": "817291ba88a79c3932ea46147f65daad0818f46a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
