@@ -16,6 +16,23 @@
       "message": "Flutter apparently is setting -mios-simulator-version-min\u003d8.0 which should probably be updated.",
       "revId": "817291ba88a79c3932ea46147f65daad0818f46a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af5ddf9_9cd18fc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-10T14:04:50Z",
+      "side": 1,
+      "message": "It appears there is a recent branch with proposed change to actually set the Flutter build minimum iOS to 9 (from 8) at https://github.com/flutter/buildroot/commit/8973b19fad628f5c8650356d277e33a661218cbd . It appears that lack of support for 8 has been documented for a while, but the buildroot itself was never updated.",
+      "revId": "817291ba88a79c3932ea46147f65daad0818f46a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
