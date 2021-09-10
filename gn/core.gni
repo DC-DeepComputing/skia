@@ -444,7 +444,6 @@ skia_core_sources = [
   "$_src/opts/SkSwizzler_opts.h",
   "$_src/opts/SkUtils_opts.h",
   "$_src/opts/SkVM_opts.h",
-  "$_src/opts/SkXfermode_opts.h",
   "$_src/shaders/SkBitmapProcShader.cpp",
   "$_src/shaders/SkBitmapProcShader.h",
   "$_src/shaders/SkColorFilterShader.cpp",

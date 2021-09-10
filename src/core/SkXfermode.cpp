@@ -94,11 +94,7 @@ sk_sp<SkXfermode> SkXfermode::Make(SkBlendMode mode) {
     static SkXfermode* cached[COUNT_BLENDMODES];
 
     once[(int)mode]([mode] {
-        if (auto xfermode = SkOpts::create_xfermode(mode)) {
-            cached[(int)mode] = xfermode;
-        } else {
-            cached[(int)mode] = new SkProcCoeffXfermode(mode);
-        }
+        cached[(int)mode] = new SkProcCoeffXfermode(mode);
     });
     return sk_ref_sp(cached[(int)mode]);
 }
