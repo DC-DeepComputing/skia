@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc52bea7_d6304f02",
+        "filename": "tests/SkSLDSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1956,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-10T18:02:58Z",
+      "side": 1,
+      "message": "This message is less than ideal, but see the follow-up CL for a larger rework of how DSL deals with this (including better syntax and better error messages).",
+      "revId": "0442a4a9f57e2af6523ee2e1c4514a86491a0e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
