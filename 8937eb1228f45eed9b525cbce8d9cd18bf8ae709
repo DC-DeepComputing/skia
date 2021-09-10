@@ -49,6 +49,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "47bd0ef5_737130f2",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T12:10:38Z",
+      "side": 1,
+      "message": "Yeah, I couldn\u0027t come up with anything better. I think if we don\u0027t like this we have to use a different representation (e.g. pointer to the value within an instance rather than offset)",
+      "parentUuid": "a83fba5e_1c671c0f",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 6
+      },
+      "revId": "8937eb1228f45eed9b525cbce8d9cd18bf8ae709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d5915dcf_2cb96831",
         "filename": "src/gpu/vk/GrVkUniformHandler.cpp",
         "patchSetId": 28
@@ -83,6 +107,24 @@
       "writtenOn": "2021-09-02T16:13:06Z",
       "side": 1,
       "message": "Aside: I\u0027m realizing I don\u0027t understand the difference between GrSPIRVUniformHandler and GrVkUniformHandler - SPIRV is actually used for the other backends that use SPIRV (but are not Vulkan) - D3D and Dawn? Can Vulkan use the SPIRV handler, too? Seems odd to have two implementations that are (I\u0027d assume) doing almost the same thing?",
+      "revId": "8937eb1228f45eed9b525cbce8d9cd18bf8ae709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12a43cda_57261fba",
+        "filename": "src/gpu/vk/GrVkUniformHandler.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T12:10:38Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ve had similar thoughts. I haven\u0027t fully classified all the differences but here are two:\n\n1) The SPIRV class doesn\u0027t handle layout 430/push constants.\n2) The SPIRV class doesn\u0027t handle input attachments\n\nI\u0027m hoping the need for two classes can be removed as the legacy uniform system is removed.",
+      "parentUuid": "4f9e8db1_124af3b1",
       "revId": "8937eb1228f45eed9b525cbce8d9cd18bf8ae709",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
