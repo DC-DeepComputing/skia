@@ -966,7 +966,9 @@ void Device::drawDrawable(SkDrawable* drawable, const SkMatrix* matrix, SkCanvas
                 drawable->snapGpuDrawHandler(api, combinedMatrix, canvas->getDeviceClipBounds(),
                                              this->imageInfo());
         if (gpuDraw) {
-            fSurfaceDrawContext->drawDrawable(std::move(gpuDraw), drawable->getBounds());
+            auto bounds = drawable->getBounds();
+            this->localToDevice().mapRect(&bounds);
+            fSurfaceDrawContext->drawDrawable(std::move(gpuDraw), bounds);
             return;
         }
     }
