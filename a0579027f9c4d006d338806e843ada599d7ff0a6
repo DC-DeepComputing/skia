@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f0bd5a9_c000ada4",
+        "filename": "tests/DrawPathTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-10T15:09:10Z",
+      "side": 1,
+      "message": "are these specific values important, or just the presence of a bunch of moves?",
+      "range": {
+        "startLine": 147,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 45
+      },
+      "revId": "a0579027f9c4d006d338806e843ada599d7ff0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
