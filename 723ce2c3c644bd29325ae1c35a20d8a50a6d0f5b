@@ -16,6 +16,24 @@
       "message": "Is anything actually submitted here without a flush or are all reads just queued?  Should this be flushAndSubmit(false)?",
       "revId": "723ce2c3c644bd29325ae1c35a20d8a50a6d0f5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f8cc8a_df2ed93e",
+        "filename": "tools/skottie2movie.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T19:54:11Z",
+      "side": 1,
+      "message": "As currently written the line above will implicitly flush the work needed to complete the read. So this is OK.",
+      "parentUuid": "19398f85_632fb55c",
+      "revId": "723ce2c3c644bd29325ae1c35a20d8a50a6d0f5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
