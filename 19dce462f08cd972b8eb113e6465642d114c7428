@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "477c54a4_cccceb90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-10T02:07:59Z",
+      "side": 1,
+      "message": "I realized we could do collectArgs() without needing recursion. I don\u0027t know if it\u0027s actually better, but PTAL: http://review.skia.org/447496\n\n(IMO we should land this CL first either way--it\u0027s almost certainly an improvement. I\u0027m less convinced that removing the recursion will actually matter, given how smart the optimizer can be.)",
+      "revId": "19dce462f08cd972b8eb113e6465642d114c7428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
