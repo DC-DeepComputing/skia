@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc531541_4b02dd7f",
+        "filename": "src/sksl/sksl_public.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-10T13:50:13Z",
+      "side": 1,
+      "message": "These all need the $es3 modifier",
+      "revId": "5e0541596d787c0b280243bc3a1d7e041dd625c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
