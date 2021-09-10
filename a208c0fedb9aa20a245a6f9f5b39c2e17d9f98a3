@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01a26e86_1d9baa64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5095
+      },
+      "writtenOn": "2021-09-10T20:01:58Z",
+      "side": 1,
+      "message": "Chinmay is looking into fixing up the minimum in the build rules Flutter side...",
+      "revId": "a208c0fedb9aa20a245a6f9f5b39c2e17d9f98a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
