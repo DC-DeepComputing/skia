@@ -165,29 +165,54 @@ void Canvas_DrawPath(JNIEnv* env, jobject, jlong native_instance, jlong native_p
     }
 }
 
+void Canvas_DrawGlyphs(JNIEnv* env, jobject, jlong native_instance, jcharArray jglyphs, jint count,
+                                             jfloatArray jxPos, jfloatArray jyPos,
+                                             jfloat xOrigin, jfloat yOrigin, jlong native_font,
+                                             jlong native_paint) {
+    auto* canvas = reinterpret_cast<SkCanvas*>(native_instance);
+    auto* font = reinterpret_cast<SkFont*>(native_font);
+    auto* paint  = reinterpret_cast<SkPaint* >(native_paint);
+    if (canvas && font && paint) {
+        // make SkPoints
+        auto* xPos = env->GetFloatArrayElements(jxPos, nullptr);
+        auto* yPos = env->GetFloatArrayElements(jyPos, nullptr);
+        SkPoint positions[count];
+        for (int i = 0; i < count; i++) {
+            positions[i] = {xPos[i], yPos[i]};
+        }
+        env->ReleaseFloatArrayElements(jxPos, xPos, 0);
+        env->ReleaseFloatArrayElements(jyPos, yPos, 0);
+
+        auto* glyphs = env->GetCharArrayElements(jglyphs, nullptr);
+        canvas->drawGlyphs(count, glyphs, positions, {xOrigin, yOrigin}, *font, *paint);
+    }
+}
+
 }  // namespace
 
 int register_androidkit_Canvas(JNIEnv* env) {
     static const JNINativeMethod methods[] = {
-        {"nGetWidth"        , "(J)I"        , reinterpret_cast<void*>(Canvas_GetWidth)      },
-        {"nGetHeight"       , "(J)I"        , reinterpret_cast<void*>(Canvas_GetHeight)     },
-        {"nSave"            , "(J)I"        , reinterpret_cast<void*>(Canvas_Save)          },
-        {"nSaveLayer"       , "(JJ)I"       , reinterpret_cast<void*>(Canvas_SaveLayer)     },
-        {"nRestore"         , "(J)V"        , reinterpret_cast<void*>(Canvas_Restore)       },
-        {"nRestoreToCount"  , "(JI)V"       , reinterpret_cast<void*>(Canvas_RestoreToCount)},
-        {"nGetLocalToDevice", "(J)J"        , reinterpret_cast<void*>(Canvas_LocalToDevice) },
-        {"nConcat"          , "(JJ)V"       , reinterpret_cast<void*>(Canvas_Concat)        },
-        {"nConcat16f"       , "(J[F)V"      , reinterpret_cast<void*>(Canvas_Concat16f)     },
-        {"nTranslate"       , "(JFFF)V"     , reinterpret_cast<void*>(Canvas_Translate)     },
-        {"nScale"           , "(JFFF)V"     , reinterpret_cast<void*>(Canvas_Scale)         },
-        {"nClipPath"        , "(JJIZ)V"     , reinterpret_cast<void*>(Canvas_ClipPath)      },
-        {"nClipRect"        , "(JFFFFIZ)V"  , reinterpret_cast<void*>(Canvas_ClipRect)      },
-        {"nClipRRect"       , "(JFFFFFFIZ)V", reinterpret_cast<void*>(Canvas_ClipRRect)     },
-        {"nClipShader"      , "(JJI)V"      , reinterpret_cast<void*>(Canvas_ClipShader)    },
-        {"nDrawColor"       , "(JFFFF)V"    , reinterpret_cast<void*>(Canvas_DrawColor)     },
-        {"nDrawRect"        , "(JFFFFJ)V"   , reinterpret_cast<void*>(Canvas_DrawRect)      },
-        {"nDrawImage"       , "(JJFFIFF)V"  , reinterpret_cast<void*>(Canvas_DrawImage)     },
-        {"nDrawPath"        , "(JJJ)V"      , reinterpret_cast<void*>(Canvas_DrawPath)      },
+        {"nGetWidth"        , "(J)I"           , reinterpret_cast<void*>(Canvas_GetWidth)      },
+        {"nGetHeight"       , "(J)I"           , reinterpret_cast<void*>(Canvas_GetHeight)     },
+        {"nSave"            , "(J)I"           , reinterpret_cast<void*>(Canvas_Save)          },
+        {"nSaveLayer"       , "(JJ)I"          , reinterpret_cast<void*>(Canvas_SaveLayer)     },
+        {"nRestore"         , "(J)V"           , reinterpret_cast<void*>(Canvas_Restore)       },
+        {"nRestoreToCount"  , "(JI)V"          , reinterpret_cast<void*>(Canvas_RestoreToCount)},
+        {"nGetLocalToDevice", "(J)J"           , reinterpret_cast<void*>(Canvas_LocalToDevice) },
+        {"nConcat"          , "(JJ)V"          , reinterpret_cast<void*>(Canvas_Concat)        },
+        {"nConcat16f"       , "(J[F)V"         , reinterpret_cast<void*>(Canvas_Concat16f)     },
+        {"nTranslate"       , "(JFFF)V"        , reinterpret_cast<void*>(Canvas_Translate)     },
+        {"nScale"           , "(JFFF)V"        , reinterpret_cast<void*>(Canvas_Scale)         },
+        {"nClipPath"        , "(JJIZ)V"        , reinterpret_cast<void*>(Canvas_ClipPath)      },
+        {"nClipRect"        , "(JFFFFIZ)V"     , reinterpret_cast<void*>(Canvas_ClipRect)      },
+        {"nClipRRect"       , "(JFFFFFFIZ)V"   , reinterpret_cast<void*>(Canvas_ClipRRect)     },
+        {"nClipShader"      , "(JJI)V"         , reinterpret_cast<void*>(Canvas_ClipShader)    },
+        {"nDrawColor"       , "(JFFFF)V"       , reinterpret_cast<void*>(Canvas_DrawColor)     },
+        {"nDrawRect"        , "(JFFFFJ)V"      , reinterpret_cast<void*>(Canvas_DrawRect)      },
+        {"nDrawImage"       , "(JJFFIFF)V"     , reinterpret_cast<void*>(Canvas_DrawImage)     },
+        {"nDrawPath"        , "(JJJ)V"         , reinterpret_cast<void*>(Canvas_DrawPath)      },
+        {"nDrawGlyphs"      , "(JI[C[F[FFFJJ)V", reinterpret_cast<void*>(Canvas_DrawGlyphs)    },
+
     };
 
     const auto clazz = env->FindClass("org/skia/androidkit/Canvas");

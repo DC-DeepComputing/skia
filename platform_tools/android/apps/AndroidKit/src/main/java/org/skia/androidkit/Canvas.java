@@ -126,6 +126,14 @@ public class Canvas {
         nDrawPath(mNativeInstance, path.getNativeInstance(), paint.getNativeInstance());
     }
 
+    public void drawGlyphs(char[] glyphs, float[] xPos, float[] yPos, float xOrigin, float yOrigin,
+                           ToyFont font, Paint paint) {
+        if (glyphs.length == xPos.length && xPos.length == yPos.length) {
+            nDrawGlyphs(mNativeInstance, glyphs.length, glyphs, xPos, yPos, xOrigin, yOrigin,
+                        font.getNativeInstance(), paint.getNativeInstance());
+        }
+    }
+
     // package private
     Canvas(Surface surface, long native_instance) {
         mNativeInstance = native_instance;
@@ -165,5 +173,7 @@ public class Canvas {
     private static native void nDrawImage(long nativeInstance, long nativeImage, float x, float y,
                                           int samplingDesc,
                                           float samplingCoeffB, float samplingCoeffC);
-    private static native void nDrawPath(long mNativeInstance, long nativePath, long nativePaint);
+    private static native void nDrawPath(long nativeInstance, long nativePath, long nativePaint);
+    private static native void nDrawGlyphs(long nativeInstance, int glyphCount, char[] glyphs, float[] x, float[] y,
+                                           float originX, float originY, long nativeFont, long nativePaint);
 }
