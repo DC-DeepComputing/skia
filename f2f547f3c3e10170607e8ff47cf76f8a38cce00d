@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7806386_83b67802",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T15:19:23Z",
+      "side": 1,
+      "message": "Maybe we should think about a different pattern for a \"nothing to draw\" return value. It\u0027s fragile that null sometimes means \"nothing to draw\" and sometimes means \"this method doesn\u0027t support drawing with these argument values\"",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 37
+      },
+      "revId": "f2f547f3c3e10170607e8ff47cf76f8a38cce00d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41696fdd_ff0157a3",
+        "filename": "src/gpu/ops/StrokeRectOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T15:19:23Z",
+      "side": 1,
+      "message": "maybe already covered by line 810?",
+      "range": {
+        "startLine": 826,
+        "startChar": 0,
+        "endLine": 826,
+        "endChar": 82
+      },
+      "revId": "f2f547f3c3e10170607e8ff47cf76f8a38cce00d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
