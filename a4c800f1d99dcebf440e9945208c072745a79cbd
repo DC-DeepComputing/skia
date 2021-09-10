@@ -16,6 +16,24 @@
       "message": "local repro case? gm or unittest?",
       "revId": "a4c800f1d99dcebf440e9945208c072745a79cbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4b3d738_4e44b5bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T00:25:14Z",
+      "side": 1,
+      "message": "added a unit test based on the fuzzer bug. The leading extraneous moveTos are from the original path, which is why this fuzzer case was blamed on my CL that changed the isConvex calculation to ignore leading moveTos. Presumably, before, this would have been considered non-convex and go through a different edge walking algorithm that avoided the issue.\n\nI can reproduce the debug asserts by removing the leading moveTos, although it doesn\u0027t draw in the far column of the image. I believe this is because the leading moveTos are still included in the path bounds?\n\nThis fix is also based on the assumption that a cubic path formed from triangular control points is indeed convex, and that there isn\u0027t a latent bug in the convexity check in that situation.",
+      "parentUuid": "2e8da393_f0335913",
+      "revId": "a4c800f1d99dcebf440e9945208c072745a79cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
