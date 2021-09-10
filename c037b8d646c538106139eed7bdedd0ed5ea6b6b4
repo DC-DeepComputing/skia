@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf3a15d_c92a3b65",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-10T17:05:46Z",
+      "side": 1,
+      "message": "Is there a better way to make the array of positions? Trying to avoid making a SkPoint wrapper.",
+      "range": {
+        "startLine": 177,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
