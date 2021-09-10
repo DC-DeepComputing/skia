@@ -22,6 +22,30 @@
       },
       "revId": "7ac7137b072c8edebea03c24e919e32ab947c9af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f04c978_a0757735",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-10T20:34:58Z",
+      "side": 1,
+      "message": "I\u0027ll hit this in a followup, since there are a number of such spots in our code.",
+      "parentUuid": "4ecb8caa_843968a0",
+      "range": {
+        "startLine": 1186,
+        "startChar": 58,
+        "endLine": 1186,
+        "endChar": 59
+      },
+      "revId": "7ac7137b072c8edebea03c24e919e32ab947c9af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
