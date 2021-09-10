@@ -45,6 +45,54 @@
       },
       "revId": "f2f547f3c3e10170607e8ff47cf76f8a38cce00d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f4ed1d_0b423b12",
+        "filename": "src/gpu/ops/StrokeRectOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T19:29:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41696fdd_ff0157a3",
+      "range": {
+        "startLine": 826,
+        "startChar": 0,
+        "endLine": 826,
+        "endChar": 82
+      },
+      "revId": "f2f547f3c3e10170607e8ff47cf76f8a38cce00d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd971406_b4f576fb",
+        "filename": "src/gpu/ops/StrokeRectOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T19:29:12Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "41696fdd_ff0157a3",
+      "range": {
+        "startLine": 826,
+        "startChar": 0,
+        "endLine": 826,
+        "endChar": 82
+      },
+      "revId": "f2f547f3c3e10170607e8ff47cf76f8a38cce00d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

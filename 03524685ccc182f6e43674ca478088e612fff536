@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9afeb355_2a6076b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T19:29:12Z",
+      "side": 1,
+      "message": "I created a new bug to capture the work needed to make ops not use a nullptr to signal \"no drawing needed\": https://bugs.chromium.org/p/skia/issues/detail?id\u003d12438\n\nI also reworked the \u0027inset\u0027 calculation to use the min of .5, and the X,Y half widths and then compare that value to \u003c 0.5 to trigger the hairline mode. Previously, it would compare the X half width to 0.5 but with switching to nearly equal, you can construct a scenario where X was slightly greater than 0.5 and Y was less.",
+      "revId": "03524685ccc182f6e43674ca478088e612fff536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
