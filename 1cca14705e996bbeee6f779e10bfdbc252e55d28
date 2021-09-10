@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da844a7_6488b2e4",
+        "filename": "src/gpu/GrProcessor.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T17:07:41Z",
+      "side": 1,
+      "message": "I think this got swept away with larger changes in how things are structured, writeUniforms no longer exists.",
+      "parentUuid": "b85c75fc_55bbb059",
+      "range": {
+        "startLine": 150,
+        "startChar": 10,
+        "endLine": 150,
+        "endChar": 18
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4589489d_f231f14b",
@@ -319,6 +343,30 @@
         "startChar": 4,
         "endLine": 37,
         "endChar": 93
+      },
+      "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "542ef6e4_94ba56fe",
+        "filename": "src/gpu/GrUniformWriter.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T17:07:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bde61d3_fac1d6d8",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 37
       },
       "revId": "1cca14705e996bbeee6f779e10bfdbc252e55d28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
