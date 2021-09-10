@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa0b9d67_6da40112",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-10T17:14:14Z",
+      "side": 1,
+      "message": "So purely on the changed lines, I think this fix is fine, but I am now having deeper questions about the SkDrawable behavior:\n\nIs drawDrawable and snapGPUHandler only used when there\u0027s no saveLayer? If there\u0027s never a saveLayer, then the top device is the same as the canvas\u0027s base device. When that happens, there\u0027s no difference between the canvas\u0027s local-\u003edevice matrix and the device\u0027s local-\u003edevice matrix.  \n\nIf there\u0027s another layer, then things get messier. The canvas local-\u003edevice matrix can differ frequently by an integer translation, but could be arbitrarily relative by another matrix transform (see SkDevice::getRelativeTransform(SkDevice*)). This would mean that these updated bounds are correct, but the total matrix calculated for the GPU handler is wrong (it should use the device\u0027s local-\u003edevice matrix).\n\nBut then I checked SkCanvas::onDrawDrawable() and that always calls into the base device. This satisfies the potential transform discrepancy above, but would lead to unexpected rendering/behavior if there was a top device different from the base device, since all drawing should go into the top device. Additionally, the getLocalClipBounds() that Android uses for its drawable bounds would reflect the total matrix, while the base device\u0027s transform isn\u0027t updated when it\u0027s not the top device.\n\nI don\u0027t think this should block this fix going in, but we should probably follow up with additional asserts, documentation, or bug fixes to address the inconsistencies I described above.",
+      "revId": "d714cc3c1ad483124622f448a410c985ff16a197",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
