@@ -46,6 +46,64 @@
       },
       "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601a2c02_bf794ccb",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-10T18:17:26Z",
+      "side": 1,
+      "message": "Yeah, to minimize friction with Skia APIs I would also vote for composite xy array (then we can skip the local copy).\n\n(for ergonomics, it might be interesting to consider a Java flavor which takes an array of Glyphs, where each Glyph stores an id, x \u0026 y;  that way one cannot pass mismatched glyphs/x/y arrays)",
+      "parentUuid": "7a630de3_059b91cc",
+      "range": {
+        "startLine": 177,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4efb922c_d78bc956",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-10T18:17:26Z",
+      "side": 1,
+      "message": "env-\u003eReleaseCharArrayElements(glyphs)",
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6df6a7d6_93288ab5",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Canvas.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-10T18:17:26Z",
+      "side": 1,
+      "message": "else throw IllegalArgumentException?",
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
