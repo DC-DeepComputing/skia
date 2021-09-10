@@ -22,6 +22,30 @@
       },
       "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a630de3_059b91cc",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-10T17:10:46Z",
+      "side": 1,
+      "message": "Common is to just take (in java) a float array, and document that it is x,y,x,y,...",
+      "parentUuid": "9bf3a15d_c92a3b65",
+      "range": {
+        "startLine": 177,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
