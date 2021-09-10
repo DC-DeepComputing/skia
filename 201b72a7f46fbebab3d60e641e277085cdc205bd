@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6342d20_abe97503",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T15:10:14Z",
+      "side": 1,
+      "message": "Thanks for taking this on in my absence. I think this is the right compromise. Eventually we probably want the sample type to be a property of each call to sample (I mean eval) rather than on the parent-\u003echild link.",
+      "revId": "201b72a7f46fbebab3d60e641e277085cdc205bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
