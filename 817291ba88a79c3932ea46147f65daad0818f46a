@@ -33,6 +33,24 @@
       "message": "It appears there is a recent branch with proposed change to actually set the Flutter build minimum iOS to 9 (from 8) at https://github.com/flutter/buildroot/commit/8973b19fad628f5c8650356d277e33a661218cbd . It appears that lack of support for 8 has been documented for a while, but the buildroot itself was never updated.",
       "revId": "817291ba88a79c3932ea46147f65daad0818f46a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42399170_5fec7228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-10T14:43:53Z",
+      "side": 1,
+      "message": "After poking about a but, I see that Flutter iOS 8 support was documented dropped with https://github.com/flutter/website/commit/7f86722b31a3612ce963d285a23b5454b3d32390#diff-0ba872f09660cb402f8521f0dc17a8a72f6d83d33f5c169f9594be9220ecf420 , but there seems to be the very recent https://github.com/flutter/website/commit/0628505ff89fca1297b83db59f723090d443314f#diff-0ba872f09660cb402f8521f0dc17a8a72f6d83d33f5c169f9594be9220ecf420 which added back iOS 8 even though the linked document proposing deprecation over a year ago now (for deprecation nine months ago). Not sure why considering iOS 8 is even a thing at this point (every device which could support iOS 8 can be updated to iOS 9).",
+      "parentUuid": "1af5ddf9_9cd18fc1",
+      "revId": "817291ba88a79c3932ea46147f65daad0818f46a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
