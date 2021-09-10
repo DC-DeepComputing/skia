@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6107550_a5779942",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-10T21:03:31Z",
+      "side": 1,
+      "message": "I figured out why there were slightly different images on a Metal bot. In Metal we declare all the uniforms in the uniform block regardless of the requested visibility. The new uniform path wasn\u0027t doing that, but now is.",
+      "revId": "2c01a13d0b4065e126128ba12136d1b8f46ba6f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
