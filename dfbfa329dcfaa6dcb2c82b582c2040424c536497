@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fcd91c5_950dd48d",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-10T15:11:36Z",
+      "side": 1,
+      "message": "return [](U8CPU alphaA, U8CPU alpha8) { return SkMulDiv255Round(alphaA, alphaB); };\n\nJust a suggestion",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 32
+      },
+      "revId": "dfbfa329dcfaa6dcb2c82b582c2040424c536497",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12c54d41_680071f0",
         "filename": "src/core/SkAAClip.cpp",
         "patchSetId": 2
