@@ -16,6 +16,24 @@
       "message": "speed diff?",
       "revId": "d4f37a267b71459a94e1e4f21e2f3a2ecdb870fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc1cae49_07985641",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-10T22:10:38Z",
+      "side": 1,
+      "message": "That\u0027s what I made this for, to see if one or the other is actually faster (and by how much). Though to be fair, the RasterPipline version needs to be cached (compiled) to make it make sense. And also to see what this looks like (like if it changes every pixel of everything or not).",
+      "parentUuid": "20c3c62a_400bed87",
+      "revId": "d4f37a267b71459a94e1e4f21e2f3a2ecdb870fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
