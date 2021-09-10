@@ -7,18 +7,281 @@
 
 #include "src/gpu/GrUniformDataManager.h"
 
+#include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/GrShaderVar.h"
 
 // ensure that these types are the sizes the uniform data is expecting
 static_assert(sizeof(int32_t) == 4);
 static_assert(sizeof(float) == 4);
 
-GrUniformDataManager::GrUniformDataManager(uint32_t uniformCount, uint32_t uniformSize)
-    : fUniformSize(uniformSize)
-    , fUniformsDirty(false) {
+//////////////////////////////////////////////////////////////////////////////
+
+GrUniformDataManager::UniformManager::UniformManager(ProgramUniforms uniforms, Layout layout)
+        : fUniforms(std::move(uniforms)), fLayout(layout) {}
+
+template<typename BaseType, int VecLength> static constexpr size_t tight_vec_stride() {
+    return sizeof(BaseType)*VecLength;
+}
+
+// Scalar bool, int, uint, float, and double:
+// Both the size and alignment are the size of the scalar in basic machine types.
+//
+// Two-component vectors (e.g. ivec2):
+// Both the size and alignment are twice the size of the underlying scalar type.
+//
+// Three-component vectors (e.g. vec3) and four-component vectors (e.g. vec4):
+// Both the size and alignment are four times the size of the underlying scalar type.
+//
+// An array of scalars or vectors: "The size of each element in the array will be the size of
+// the element type, rounded up to a multiple of the size of a vec4"
+//
+// A column-major matrix or an array of column-major matrices of size C columns and R rows:
+// Same layout as an array of N vectors each with R components, where N is the total number of
+// columns present.
+template<typename BaseType, int RowsOrVecLength=1, int Cols=1>
+struct Rules140 {
+    static constexpr size_t Stride(int count) {
+        SkASSERT(count >= 1 || count == GrShaderVar::kNonArray);
+        static_assert(RowsOrVecLength >= 1);
+        static_assert(Cols >= 1);
+
+        if (Cols == 1) {
+            if (count == GrShaderVar::kNonArray) {
+                switch (RowsOrVecLength) {
+                    case 1: return tight_vec_stride<BaseType, 1>();
+                    case 2: return tight_vec_stride<BaseType, 2>();
+                    case 3: [[fallthrough]];
+                    case 4: return tight_vec_stride<BaseType, 4>();
+                }
+                SkUNREACHABLE;
+            } else {
+                size_t kVec4Size    = Rules140<float, 4>::Stride(GrShaderVar::kNonArray);
+                size_t kElementSize = Rules140<BaseType, RowsOrVecLength>::Stride(GrShaderVar::kNonArray);
+                size_t m            = (kElementSize + kVec4Size - 1)/kVec4Size;
+                return m*kVec4Size;
+            }
+        } else {
+            // This is a matrix or array of matrices.
+            SkASSERT(RowsOrVecLength > 1);
+            return Rules140<BaseType, RowsOrVecLength, 1>::Stride(Cols*count);
+        }
+    }
+
+};
+
+// Scalar bool, int, uint, float, and double:
+// Both the size and alignment are the size of the scalar in basic machine types.
+//
+// Two-component vectors (e.g. ivec2):
+// Both the size and alignment are twice the size of the underlying scalar type.
+//
+// Three-component vectors (e.g. vec3) and four-component vectors (e.g. vec4):
+// Both the size and alignment are four times the size of the underlying scalar type.
+// However, this is true only when the member is not part of an array or nested structure.
+//
+// An array of scalars or vectors: The size of each element in the array will be the same
+// size of the element type, where three-component vectors *are not* rounded up to the size
+// of four- component vectors. This is also array's alignment. The array's size will be the
+// element's size times the number of elements in the array.
+//
+// A column-major matrix or an array of column-major matrices of size C columns and R rows:
+// Same layout as an array of N vectors each with R components, where N is the total number
+// of columns present.
+template<typename BaseType, int RowsOrVecLength=1, int Cols=1>
+struct Rules430 {
+    static constexpr size_t Stride(int count) {
+        SkASSERT(count >= 1 || count == GrShaderVar::kNonArray);
+        static_assert(RowsOrVecLength >= 1);
+        static_assert(Cols >= 1);
+
+        if (Cols == 1) {
+            switch (RowsOrVecLength) {
+                case 1: return tight_vec_stride<BaseType, 1>();
+                case 2: return tight_vec_stride<BaseType, 2>();
+                case 3:
+                    if (count != GrShaderVar::kNonArray) {
+                        return tight_vec_stride<BaseType, 3>();
+                    }
+                    [[fallthrough]];
+                case 4: return tight_vec_stride<BaseType, 4>();
+            }
+        } else {
+            // This is a matrix or array of matrices.
+            SkASSERT(RowsOrVecLength > 1);
+            return Rules430<BaseType, RowsOrVecLength, 1>::Stride(Cols*count);
+        }
+    }
+};
+
+// This strides used here were derived from the rules we've imposed on ourselves in
+// GrMtlPipelineStateDataManger. Everything is tight except 3-component which have the stride of
+// their 4-component equivalents.
+template<typename BaseType, int RowsOrVecLength=1, int Cols=1>
+struct RulesMetal {
+    static constexpr size_t Stride(int count) {
+        SkASSERT(count >= 1 || count == GrShaderVar::kNonArray);
+        static_assert(RowsOrVecLength >= 1);
+        static_assert(Cols >= 1);
+        if (RowsOrVecLength == 3) {
+            return RulesMetal<BaseType, 4, Cols>::Stride(count);
+        }
+        return tight_vec_stride<BaseType, RowsOrVecLength>();
+    }
+};
+
+using CType = GrProcessor::Uniform::CType;
+
+template <template<typename BaseType, int RowsOrVecLength, int Cols> class Rules> class Writer {
+private:
+    template<typename BaseType, int RowsOrVecLength=1, int Cols=1>
+    static size_t Write(void* dst, int n, const BaseType v[]) {
+        size_t stride = Rules<BaseType, RowsOrVecLength, Cols>::Stride(n);
+        n = (n == GrShaderVar::kNonArray) ? 1 : n;
+        n *= Cols;
+        if (dst) {
+            if (stride == sizeof(BaseType)*RowsOrVecLength) {
+                std::memcpy(dst, v, n*RowsOrVecLength*sizeof(BaseType));
+            } else {
+                for (int i = 0; i < n; ++i) {
+                    std::memcpy(dst, v, RowsOrVecLength*sizeof(BaseType));
+                    v += RowsOrVecLength;
+                    dst = SkTAddOffset<void>(dst, stride);
+                }
+            }
+        }
+        return n*stride;
+    }
+
+    template<size_t M3x3Writer(void*, int, const float[])>
+    static size_t WriteSkMatrices(void* d, int n, const SkMatrix m[]) {
+        size_t offset = 0;
+        for (int i = 0; i < n; ++i) {
+            float mt[] = {
+                    m[i].get(SkMatrix::kMScaleX),
+                    m[i].get(SkMatrix::kMSkewY),
+                    m[i].get(SkMatrix::kMPersp0),
+                    m[i].get(SkMatrix::kMSkewX),
+                    m[i].get(SkMatrix::kMScaleY),
+                    m[i].get(SkMatrix::kMPersp1),
+                    m[i].get(SkMatrix::kMTransX),
+                    m[i].get(SkMatrix::kMTransY),
+                    m[i].get(SkMatrix::kMPersp2),
+            };
+            offset += M3x3Writer(SkTAddOffset<void>(d, offset), 1, mt);
+        }
+        return offset;
+    }
+
+public:
+    static size_t WriteUniform(GrSLType type, CType ctype, void* d, int n, const void* v) {
+        switch (type) {
+            case kInt_GrSLType:
+                return Write<int32_t>(d, n, static_cast<const int32_t*>(v));
+
+            case kInt2_GrSLType:
+                return Write<int32_t, 2>(d, n, static_cast<const int32_t*>(v));
+
+            case kInt3_GrSLType:
+                return Write<int32_t, 3>(d, n, static_cast<const int32_t*>(v));
+
+            case kInt4_GrSLType:
+                return Write<int32_t, 4>(d, n, static_cast<const int32_t*>(v));
+
+            case kHalf_GrSLType:
+            case kFloat_GrSLType:
+                return Write<float>(d, n, static_cast<const float*>(v));
+
+            case kHalf2_GrSLType:
+            case kFloat2_GrSLType:
+                return Write<float, 2>(d, n, static_cast<const float*>(v));
+
+            case kHalf3_GrSLType:
+            case kFloat3_GrSLType:
+                return Write<float, 3>(d, n, static_cast<const float*>(v));
+
+            case kHalf4_GrSLType:
+            case kFloat4_GrSLType:
+                return Write<float, 4>(d, n, static_cast<const float*>(v));
+
+            case kHalf2x2_GrSLType:
+            case kFloat2x2_GrSLType:
+                return Write<float, 2, 2>(d, n, static_cast<const float*>(v));
+
+            case kHalf3x3_GrSLType:
+            case kFloat3x3_GrSLType: {
+                static constexpr auto writer = Write<float, 3, 3>;
+                switch (ctype) {
+                    case CType::kDefault:
+                        return writer(d, n, static_cast<const float*>(v));
+                    case CType::kSkMatrix:
+                        return WriteSkMatrices<writer>(d, n, static_cast<const SkMatrix*>(v));
+                }
+                SkUNREACHABLE;
+            }
+
+            case kHalf4x4_GrSLType:
+            case kFloat4x4_GrSLType:
+                return Write<float, 4, 4>(d, n, static_cast<const float*>(v));
+
+            default:
+                SK_ABORT("Unexpect uniform type");
+        }
+    }
+};
+
+bool GrUniformDataManager::UniformManager::writeUniforms(const GrProgramInfo& info, void* buffer) {
+    decltype(&Writer<Rules140>::WriteUniform) write;
+    switch (fLayout) {
+        case Layout::kStd140:
+            write = Writer<Rules140>::WriteUniform;
+            break;
+        case Layout::kStd430:
+            write = Writer<Rules430>::WriteUniform;
+            break;
+        case Layout::kMetal:
+            write = Writer<RulesMetal>::WriteUniform;
+            break;
+    }
+    bool wrote = false;
+    auto set = [&, processorIndex = 0](const GrProcessor& p) mutable {
+        const ProcessorUniforms& uniforms = fUniforms[processorIndex];
+        for (const NewUniform& u : uniforms) {
+            if (u.type != kVoid_GrSLType) {
+                SkASSERT(u.count >= 0);
+                static_assert(GrShaderVar::kNonArray == 0);
+                int n = std::max(u.count, 1);
+                void* d = SkTAddOffset<void>(buffer, u.offset);
+                size_t index = u.indexInProcessor;
+                const void* v = p.uniformData(index);
+                write(u.type, p.uniforms()[index].ctype(), d, n, v);
+                wrote = true;
+            }
+        }
+        ++processorIndex;
+    };
+
+    info.visitProcessors(set);
+    return wrote;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+GrUniformDataManager::GrUniformDataManager(ProgramUniforms uniforms,
+                                           Layout layout,
+                                           uint32_t uniformCount,
+                                           uint32_t uniformSize)
+        : fUniformSize(uniformSize)
+        , fUniformsDirty(false)
+        , fUniformManager(std::move(uniforms), layout) {
     fUniformData.reset(uniformSize);
     fUniforms.push_back_n(uniformCount);
-    // subclasses fill in the uniforms in their constructor
+    // subclasses fill in the legacy uniforms in their constructor
+}
+
+void GrUniformDataManager::setUniforms(const GrProgramInfo& info) {
+    if (fUniformManager.writeUniforms(info, fUniformData.get())) {
+        this->markDirty();
+    }
 }
 
 void* GrUniformDataManager::getBufferPtrAndMarkDirty(const Uniform& uni) const {
