@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8735985b_6ee4890a",
+        "filename": "tests/sksl/errors/Ossfuzz32587.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-11T01:19:51Z",
+      "side": 1,
+      "message": "This change is actually valid. It\u0027s a narrowing conversion from float to half that we didn\u0027t catch previously because FloatLiteral::coercionCost didn\u0027t look at the precision.",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 44
+      },
+      "revId": "485aec7b64f0bbc92eee2b38255fd12c03094a93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99b9c51_e892c19b",
+        "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-11T01:19:51Z",
+      "side": 1,
+      "message": "This seems correct--it corresponds to the result of an `inversesqrt` call on a half value. I think the old code might have accidentally converted a half literal to a float literal somewhere.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "485aec7b64f0bbc92eee2b38255fd12c03094a93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64f67326_ddb8e5f8",
+        "filename": "tests/sksl/intrinsics/Sqrt.asm.frag",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-11T01:19:51Z",
+      "side": 1,
+      "message": "Same as inversesqrt (it\u0027s almost the exact same test)",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "485aec7b64f0bbc92eee2b38255fd12c03094a93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
