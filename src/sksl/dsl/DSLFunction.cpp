@@ -107,6 +107,14 @@ void DSLFunction::define(DSLBlock block, PositionInfo pos) {
     DSLWriter::ProgramElements().push_back(std::move(function));
 }
 
+std::unique_ptr<Expression> DSLFunction::releaseArg(DSLVar& var) {
+    return DSLExpression(var).release();
+}
+
+std::unique_ptr<Expression> DSLFunction::releaseArg(DSLExpression expr) {
+    return expr.release();
+}
+
 DSLExpression DSLFunction::call(SkTArray<DSLWrapper<DSLExpression>> args) {
     ExpressionArray released;
     released.reserve_back(args.size());
