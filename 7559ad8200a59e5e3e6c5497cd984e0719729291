@@ -51,6 +51,24 @@
       "message": "I\u0027m thinking maybe it\u0027d be possible to redo this as a single templated writeUniform() where the template arguments are functions that implement the Layout\u0027s rounding rules rather than as 3 big functions.",
       "revId": "7559ad8200a59e5e3e6c5497cd984e0719729291",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd4ed307_a0df5a35",
+        "filename": "src/gpu/GrUniformDataManager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-12T18:36:06Z",
+      "side": 1,
+      "message": "I pursued this and think it is better. Right now there is only a Stride function for each layout type but in the future we\u0027d add an Alignment computation for each layout to create the offsets into the buffer.",
+      "parentUuid": "2153afee_1b7ad374",
+      "revId": "7559ad8200a59e5e3e6c5497cd984e0719729291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
