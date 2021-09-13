@@ -46,6 +46,30 @@
       },
       "revId": "8650e8157b3bc980e8dbba3de3c2ecd56ab2b13b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f77933d_5b302be5",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-09-13T14:15:29Z",
+      "side": 1,
+      "message": "sg -- neither would seem to need to be virtual (there is always a simple canonical impl), and possibly it need not even be on this object -- just hard link against some impl.",
+      "parentUuid": "753a02d3_415891d7",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 119,
+        "endChar": 49
+      },
+      "revId": "8650e8157b3bc980e8dbba3de3c2ecd56ab2b13b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
