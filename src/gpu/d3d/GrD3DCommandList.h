@@ -154,7 +154,7 @@ private:
 
 class GrD3DDirectCommandList : public GrD3DCommandList {
 public:
-    static std::unique_ptr<GrD3DDirectCommandList> Make(ID3D12Device* device);
+    static std::unique_ptr<GrD3DDirectCommandList> Make(GrD3DGpu* gpu);
 
     ~GrD3DDirectCommandList() override = default;
 
@@ -209,11 +209,13 @@ public:
     void addSampledTextureRef(GrD3DTexture*);
 
 private:
-    GrD3DDirectCommandList(gr_cp<ID3D12CommandAllocator> allocator,
+    GrD3DDirectCommandList(GrD3DGpu* gpu,
+                           gr_cp<ID3D12CommandAllocator> allocator,
                            gr_cp<ID3D12GraphicsCommandList> commandList);
 
     void onReset() override;
 
+    GrD3DGpu* fGpu;
     const GrD3DPipeline* fCurrentPipeline = nullptr;
     const GrD3DRootSignature* fCurrentGraphicsRootSignature = nullptr;
     const GrD3DRootSignature* fCurrentComputeRootSignature = nullptr;
@@ -233,7 +235,7 @@ private:
 
 class GrD3DCopyCommandList : public GrD3DCommandList {
 public:
-    static std::unique_ptr<GrD3DCopyCommandList> Make(ID3D12Device* device);
+    static std::unique_ptr<GrD3DCopyCommandList> Make(GrD3DGpu* gpu);
 
 private:
     GrD3DCopyCommandList(gr_cp<ID3D12CommandAllocator> allocator,
