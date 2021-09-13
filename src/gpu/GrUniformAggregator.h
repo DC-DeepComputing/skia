@@ -14,6 +14,10 @@
 
 #include <vector>
 
+namespace SkSL::dsl {
+class DSLGlobalVar;
+}
+
 /** Collects the uniforms from various processors comprising the shaders of a pipeline/program. */
 class GrUniformAggregator {
 public:
@@ -29,6 +33,13 @@ public:
          * be mangled to be unique.
          */
         const char* getUniformName(size_t index, const char* newBaseName = nullptr) const;
+
+        /**
+         * Same as getUniformName but wraps the uniform in a DSL GlobalVar.
+         */
+        SkSL::dsl::DSLGlobalVar getUniformAsDSLVar(size_t index,
+                                                   const GrProcessor& owner,
+                                                   const char* newBaseName = nullptr) const;
 
     private:
         ProcessorUniforms(const GrProcessor& p,
