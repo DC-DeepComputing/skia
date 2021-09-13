@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ff546aa_6124c20a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-13T20:46:54Z",
+      "side": 1,
+      "message": "🎉",
+      "revId": "cb58e25a37c0ee8eef12dbd74e54c0127e823910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a24d916_5a7c659b",
+        "filename": "src/gpu/d3d/GrD3DCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-13T20:46:54Z",
+      "side": 1,
+      "message": "accidental newlines?",
+      "revId": "cb58e25a37c0ee8eef12dbd74e54c0127e823910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd82ba1_03a6e711",
+        "filename": "src/gpu/d3d/GrD3DCommandList.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-13T20:46:54Z",
+      "side": 1,
+      "message": "Wondering if we should just thread the caps through? In particular if we ever were preparing these on threads we might now want the whole GrGpu here.",
+      "range": {
+        "startLine": 218,
+        "startChar": 4,
+        "endLine": 218,
+        "endChar": 19
+      },
+      "revId": "cb58e25a37c0ee8eef12dbd74e54c0127e823910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
