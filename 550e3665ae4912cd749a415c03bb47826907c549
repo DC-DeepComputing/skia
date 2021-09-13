@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2135cbe2_108e4809",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-13T22:51:51Z",
+      "side": 1,
+      "message": "Maybe \"AddVarDeclaration\" just for clarity? (Functions have declarations too)",
+      "range": {
+        "startLine": 138,
+        "startChar": 16,
+        "endLine": 138,
+        "endChar": 30
+      },
+      "revId": "550e3665ae4912cd749a415c03bb47826907c549",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
