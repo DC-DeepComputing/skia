@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "299c9911_2abb5c14",
+        "filename": "src/gpu/SurfaceContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88cb6431_82957ccc",
+      "range": {
+        "startLine": 186,
+        "startChar": 23,
+        "endLine": 186,
+        "endChar": 31
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a87117a_8f787a28",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-13T16:52:07Z",
       "side": 1,
       "message": "Do we need to guard against null rContext?",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 16
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57db612d_11d13864",
+        "filename": "src/gpu/v2/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a87117a_8f787a28",
       "range": {
         "startLine": 49,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e9e6d93_23eddfa0",
+        "filename": "src/gpu/v2/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f35d7173_586bcd9f",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 9
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb8393ca_82d35e28",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-09-13T16:52:07Z",
       "side": 1,
       "message": "If you agree with my suggestion to move MakeInfo, this would look like\n   `MakeInfo(sdc.get(), flags)`\n(should be able to drop the BaseDevice:: too, I think, and v1\u0027s Device ctor would look similar.)",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 99
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d73812_e6298af9",
+        "filename": "src/gpu/v2/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb8393ca_82d35e28",
       "range": {
         "startLine": 90,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "745a1340_677c141f",
+        "filename": "src/gpu/v2/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f47189fe_2ddf9bb8",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 27
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bfbcd40_00c99dad",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-09-13T16:52:07Z",
       "side": 1,
       "message": "What\u0027s it mean for color type to be unknown? Does a default initialized swizzle just mean \"do nothing\", so we treat an unknown color type as no-op swizzles? Or should we override it to our default color type?",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 42
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f74fa273_213f307e",
+        "filename": "src/gpu/v2/SurfaceDrawContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bfbcd40_00c99dad",
       "range": {
         "startLine": 28,
         "startChar": 8,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d30018b8_d841e098",
+        "filename": "src/gpu/v2/SurfaceDrawContext_v2.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "That\u0027s right, V2 had better not need that flag. Removed.",
+      "parentUuid": "b8ca3a8b_2ddd9607",
+      "range": {
+        "startLine": 23,
+        "startChar": 57,
+        "endLine": 23,
+        "endChar": 73
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f47c113d_7aca59cc",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-09-13T16:52:07Z",
       "side": 1,
       "message": "It would be nice if sampleCnt could be considered part of SkSurfaceProps, but then we\u0027d have to coordinate with the raster backend so it couldn\u0027t make a raster surface with MSAA...",
+      "range": {
+        "startLine": 31,
+        "startChar": 56,
+        "endLine": 31,
+        "endChar": 65
+      },
+      "revId": "03ac35276f3d4d3291d13a07f4260a7f76b34fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "710762a4_5f5fd23c",
+        "filename": "src/gpu/v2/SurfaceDrawContext_v2.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-13T18:52:18Z",
+      "side": 1,
+      "message": "Indeed - it certainly would.",
+      "parentUuid": "f47c113d_7aca59cc",
       "range": {
         "startLine": 31,
         "startChar": 56,
