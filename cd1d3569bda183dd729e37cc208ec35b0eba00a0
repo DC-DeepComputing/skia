@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4672f885_7fee3f57",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-13T17:22:08Z",
+      "side": 1,
+      "message": "nit: comment obsolete",
+      "range": {
+        "startLine": 84,
+        "startChar": 3,
+        "endLine": 84,
+        "endChar": 7
+      },
+      "revId": "cd1d3569bda183dd729e37cc208ec35b0eba00a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
