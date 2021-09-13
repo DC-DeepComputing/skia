@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9597648f_4993b832",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-13T18:29:59Z",
+      "side": 1,
+      "message": "I\u0027ll pass in a composite array, we can also consider a jetski.util.Glyph class based on how we write our implementation of Visitor.",
+      "parentUuid": "d3c441d3_49eb82e5",
+      "range": {
+        "startLine": 177,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 0
+      },
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4efb922c_d78bc956",
@@ -161,6 +185,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c3756e_4478c2c8",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-13T18:29:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4efb922c_d78bc956",
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6df6a7d6_93288ab5",
@@ -174,6 +216,24 @@
       "writtenOn": "2021-09-10T18:17:26Z",
       "side": 1,
       "message": "else throw IllegalArgumentException?",
+      "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57f6c586_0a89d5e8",
+        "filename": "platform_tools/android/apps/AndroidKit/src/main/java/org/skia/androidkit/Canvas.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-13T18:29:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6df6a7d6_93288ab5",
       "revId": "c037b8d646c538106139eed7bdedd0ed5ea6b6b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
