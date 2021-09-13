@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e2e2fa_08152211",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-13T17:20:27Z",
+      "side": 1,
+      "message": "So this really should be just the copying of the GrVkAttachment stuff into GrVkImage and some renaming. There should not actually be any actual changes.",
+      "revId": "f4969781b1101478ad1c8f871b7d61bbe70fd980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
