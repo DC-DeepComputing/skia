@@ -63,6 +63,30 @@
       },
       "revId": "450ad3067e694533e3729b6efc5351f49477709a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2f92eb8_ad81c531",
+        "filename": "modules/skottie/src/animator/VectorKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-09-13T16:56:20Z",
+      "side": 1,
+      "message": "Open to changing this if there is a strong preference",
+      "parentUuid": "b1f10f72_5d9ad84b",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 9
+      },
+      "revId": "450ad3067e694533e3729b6efc5351f49477709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
