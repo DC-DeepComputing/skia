@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a6562e_aeb2fbaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-13T17:32:22Z",
+      "side": 1,
+      "message": "PTAL. Cherry-pick to android-next",
+      "revId": "bd389f25f76a3b5f081c4fa1a741c4e0b68023ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
