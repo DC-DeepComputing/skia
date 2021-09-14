@@ -52,6 +52,24 @@
       "parentUuid": "d0d48b50_825d850e",
       "revId": "da655f35d84309c8097b0b67f3896915d33168e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d0b380_4ddd4c4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-14T19:28:36Z",
+      "side": 1,
+      "message": "Tangentially, should we do something similar to this in SPIR-V? We deduplicate constants but make no effort to deduplicate other expressions, leading to occasional obvious misses. Our only saving grace is that hypothetically, this should be trivially easy for the driver to do as well, so maybe it will...",
+      "parentUuid": "f20b611b_7d518be2",
+      "revId": "da655f35d84309c8097b0b67f3896915d33168e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
