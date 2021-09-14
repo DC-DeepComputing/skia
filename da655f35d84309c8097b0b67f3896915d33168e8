@@ -16,6 +16,24 @@
       "message": "Did you measure this savings? Splat of zero resolves to a single xor instructions. So, in terms of code size, I think the xor is smaller than the mov instruction which needs an offset to the spill slot. In large loops the zero value will always be spilled. In terms of speed the xor should be faster too.",
       "revId": "da655f35d84309c8097b0b67f3896915d33168e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0d48b50_825d850e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-14T19:15:22Z",
+      "side": 1,
+      "message": "There\u0027s no difference in the actual generated code at all. It makes and reuses one splat instruction either way. The difference is that we cut out the time from doing this lookup repeatedly:\n\nhttps://osscs.corp.google.com/android/_/android/platform/external/skia/+/6ec05c6dbb98ca84b50484e1cdc0fb67d31c156d:src/core/SkVM.cpp;l\u003d547;drc\u003df9734c39b884680bef9a515b168c5a8f217e99b8\n\nThis needs to hash the instruction and look it up in hash table. When compiling  loops with many many iterations, in a release build, I go from 13.08 seconds to 11.2 seconds.\n\nhttp://screen/BVhisTuVNvRzXPM\n\nThe input program is the minimized code here:\n\nhttp://go/cfet/5950985319612416",
+      "parentUuid": "31201f8e_b3af7b93",
+      "revId": "da655f35d84309c8097b0b67f3896915d33168e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
