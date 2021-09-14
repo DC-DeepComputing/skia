@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65099890_f08cacbf",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-14T14:39:24Z",
+      "side": 0,
+      "message": "This TODO was 11ish years old, so I figured we should just reduce the visible API of SkAAClip and drop the AA setRect() function.",
+      "range": {
+        "startLine": 1357,
+        "startChar": 4,
+        "endLine": 1357,
+        "endChar": 30
+      },
+      "revId": "778d6e002dce2c23fe9a9ee05bba5c907387efcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
