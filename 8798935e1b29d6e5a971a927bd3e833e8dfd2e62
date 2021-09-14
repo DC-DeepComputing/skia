@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88bb62b6_618275cb",
+        "filename": "src/gpu/d3d/GrD3DCommandList.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T18:22:20Z",
+      "side": 1,
+      "message": "is it possible that we don\u0027t allocate from these heaps during a submit, but instead just used cached objects already allocated?",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 70
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b29f77_3f3abb10",
+        "filename": "src/gpu/d3d/GrD3DDescriptorTableManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T18:22:20Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 71,
+        "startChar": 81,
+        "endLine": 71,
+        "endChar": 110
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
