@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e874bc1_37b62f1b",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T21:12:23Z",
+      "side": 1,
+      "message": "So metal build was failing because we don\u0027t have access to any of the types or enums here. I can change to use GrMTLPixelFormat (as I did here), but we still need to figure out the two enums.\n\nJim any thoughts on what we should do here? Are we trying not to include some metal header here? I forget the issues metal has.",
+      "range": {
+        "startLine": 48,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 55
+      },
+      "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
