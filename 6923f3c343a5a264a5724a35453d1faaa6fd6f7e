@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f423384_66aeed74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T20:08:34Z",
+      "side": 1,
+      "message": "I feel like I missed a step somewhere -- what is *Spec vs. SurfaceInfo?",
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3202708_8455bea5",
+        "filename": "include/gpu/d3d/GrD3DTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T20:08:34Z",
+      "side": 1,
+      "message": "Missed previously: this can be removed.",
+      "range": {
+        "startLine": 22,
+        "startChar": 41,
+        "endLine": 22,
+        "endChar": 75
+      },
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d13109f_7e6720a5",
+        "filename": "src/gpu/dawn/GrDawnTypesPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T20:08:34Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 1
+      },
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
