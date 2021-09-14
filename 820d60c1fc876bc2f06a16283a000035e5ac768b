@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "150c605b_846d504f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-14T13:50:42Z",
+      "side": 1,
+      "message": "There are a couple of mentions of GalaxyS6 in dm_flags.go and gen_tasks_logic.go not sure if those need to go as well.",
+      "revId": "820d60c1fc876bc2f06a16283a000035e5ac768b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
