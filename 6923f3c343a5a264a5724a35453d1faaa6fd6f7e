@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20085b8_ecef2fb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-14T21:10:04Z",
+      "side": 1,
+      "message": "My recollection, perhaps incorrect, was that the shared stuff would just be inlined into each Backend struct rather than a base class. (I mean repeating the members in each one, i.e. not having a GrShaderSurfaceInfo). Maybe I\u0027m misremembering?\n\nWhat are the Info2 structs?",
+      "parentUuid": "9df79c2e_a45d36c1",
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3202708_8455bea5",
