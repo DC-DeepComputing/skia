@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df79c2e_a45d36c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T21:01:06Z",
+      "side": 1,
+      "message": "So on a previous iteration each backend you make recall we had 1 struct for each backend and that struct derived from GrSharedSurfaceInfo. We actually still have that today and it is what all the public Gr*SurfaceInfo structs are like. We then use to have union of all those structs on GrSurfaceInfo itself. The issue here was then down inside general Ganesh code (not backend) it became a pain to easily access the GrSharedSurfaceInfo. We would have to first get the GrBackend, then call the right function to get the Gr*SurfaceInfo and then read the Shared stuff off that.\n\nSo instead after chatting with Brian offline, we switched to a new approach where we have private backend structs that don\u0027t include the shared stuff at all. These are what I am currently calling *Specs. So now when we make a GrSurfaceInfo we pass in the public Gr*SurfaceInfo, the ctor breaks that apart into the GrSharedSurfaceInfo which is stored directly and the private Gr*Spec objects.\n\nAs for the names info vs spec. We decided to use Info for all the public things so it makes things like SkImageInfo, SkColorInfo, etc. Spec is just another name I choose for the private things.",
+      "parentUuid": "1f423384_66aeed74",
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3202708_8455bea5",
