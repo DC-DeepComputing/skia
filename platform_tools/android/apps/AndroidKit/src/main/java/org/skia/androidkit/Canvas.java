@@ -166,4 +166,6 @@ public class Canvas {
                                           int samplingDesc,
                                           float samplingCoeffB, float samplingCoeffC);
     private static native void nDrawPath(long mNativeInstance, long nativePath, long nativePaint);
+
+    public static native void GpuDecode(String json, int width, int height, float fps, int batch_sqrt);
 }

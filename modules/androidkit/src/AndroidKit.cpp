@@ -42,6 +42,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     REGISTER_NATIVES(SkottieAnimation)
     REGISTER_NATIVES(Surface)
     REGISTER_NATIVES(SweepGradient)
+    REGISTER_NATIVES(Test)
     REGISTER_NATIVES(Text)
     REGISTER_NATIVES(TwoPointConicalGradient)
 
