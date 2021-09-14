@@ -1473,14 +1473,15 @@ void SkVMGenerator::writeForStatement(const ForStatement& f) {
     double val = loop.fStart;
 
     skvm::I32 oldLoopMask     = fLoopMask,
-              oldContinueMask = fContinueMask;
+              oldContinueMask = fContinueMask,
+              emptyMask       = fBuilder->splat(0);
 
     for (int i = 0; i < loop.fCount; ++i) {
         fSlots[indexSlot] = loop.fIndex->type().isInteger()
                                     ? fBuilder->splat(static_cast<int>(val)).id
                                     : fBuilder->splat(static_cast<float>(val)).id;
 
-        fContinueMask = fBuilder->splat(0);
+        fContinueMask = emptyMask;
         this->writeStatement(*f.statement());
         fLoopMask |= fContinueMask;
 
