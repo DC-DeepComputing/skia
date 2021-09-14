@@ -16,6 +16,23 @@
       "message": "So this really should be just the copying of the GrVkAttachment stuff into GrVkImage and some renaming. There should not actually be any actual changes.",
       "revId": "f4969781b1101478ad1c8f871b7d61bbe70fd980",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab54087e_220993bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T12:06:44Z",
+      "side": 1,
+      "message": "FWIW, the equivalent in the Metal backend is GrMtlAttachment. I don\u0027t know that it matters that they match. If it does, GrMtlAttachment could be renamed GrMtlTexture when the GrSurface switch fully happens.",
+      "revId": "f4969781b1101478ad1c8f871b7d61bbe70fd980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
