@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "262a81af_fe9ddffb",
+        "filename": "resources/sksl/errors/Ossfuzz38108.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-14T20:28:17Z",
+      "side": 1,
+      "message": "Should we move this line into errors/DuplicateSymbol.sksl ? Does it still repro if we put it in there?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 8
+      },
+      "revId": "ef82b61fd38750fc455f2fa8f72ce7d540963811",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
