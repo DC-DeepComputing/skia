@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd99fca_b7b4f0a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T15:49:25Z",
+      "side": 1,
+      "message": "So at this point I have enough local CLs to convince me this is the right approach here and the GrSurfaceInfo struct should work for us internally. So probably worth starting to get some of these things landed.\n\nThis is the first CL that just adds the main new structs. They aren\u0027t used anywhere yet. PTAL",
+      "revId": "898485890ba9eb34ca622d4fc4b87c31d3aee642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
