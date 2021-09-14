@@ -236,4 +236,19 @@ struct GrD3DFenceInfo {
     uint64_t           fValue;  // signal value for the fence
 };
 
+struct GrD3DSurfaceInfo : public GrSharedSurfaceInfo {
+    DXGI_FORMAT fFormat = DXGI_FORMAT_UNKNOWN;
+    unsigned int fSampleQualityPattern = DXGI_STANDARD_MULTISAMPLE_QUALITY_PATTERN;
+};
+
+struct GrD3DTextureResourceInfo2 {
+    gr_cp<ID3D12Resource> fResource = nullptr;
+    sk_sp<GrD3DAlloc> fAlloc = nullptr;
+
+    // This is mutable state on the texture
+    D3D12_RESOURCE_STATES fResourceState = D3D12_RESOURCE_STATE_COMMON;
+
+    GrD3DSurfaceInfo fSpec;
+};
+
 #endif
