@@ -89,6 +89,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "790dd5dc_67aa3166",
+        "filename": "src/gpu/d3d/GrD3DCommandList.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T19:10:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "419e3c7a_6d912d50",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 70
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d2f89d_9b049b68",
+        "filename": "src/gpu/d3d/GrD3DCommandList.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T19:10:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "419e3c7a_6d912d50",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 70
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12b29f77_3f3abb10",
@@ -102,6 +150,30 @@
       "writtenOn": "2021-09-14T18:22:20Z",
       "side": 1,
       "message": "100 chars",
+      "range": {
+        "startLine": 71,
+        "startChar": 81,
+        "endLine": 71,
+        "endChar": 110
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f7f4c76_44be99ee",
+        "filename": "src/gpu/d3d/GrD3DDescriptorTableManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T19:10:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12b29f77_3f3abb10",
       "range": {
         "startLine": 71,
         "startChar": 81,
