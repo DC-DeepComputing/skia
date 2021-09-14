@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "419e3c7a_6d912d50",
+        "filename": "src/gpu/d3d/GrD3DCommandList.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-14T18:30:20Z",
+      "side": 1,
+      "message": "A fuller description: the descriptor table heaps are allocated linearly for a given submit, and added to the recycled resource list on the command list. As they fill up, they get removed from the heap manager. When the submit occurs, the latest one (if it\u0027s been used) also gets removed. So they can\u0027t be used on the next submit. Then when the current command list finishes, they\u0027ll get recycled back in and reset to have no descriptors.",
+      "parentUuid": "7be6eca2_b07860dd",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 70
+      },
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12b29f77_3f3abb10",
         "filename": "src/gpu/d3d/GrD3DDescriptorTableManager.cpp",
         "patchSetId": 2
