@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55363a9e_53ca56e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T19:05:31Z",
+      "side": 1,
+      "message": "lgtm modulo nit",
+      "revId": "8798935e1b29d6e5a971a927bd3e833e8dfd2e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88bb62b6_618275cb",
