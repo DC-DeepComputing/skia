@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb52aa99_2d425dd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-14T21:17:37Z",
+      "side": 1,
+      "message": "The Info2 structs were what was going to replace the current ctor inputs to GrBackendTexture and the backend getters off of GrBackendTexture. The ctors could easily take the new Gr*SurfaceInfo + backend ids + mutable state structs. However, it would be a pain to return those all individually from the getters. So figured put it all in one struct and use it for both.\n\nTBH I haven\u0027t thought too much about those structs yet or the best name for them. So definitely open to any suggestions on how to best structure those things.",
+      "parentUuid": "c20085b8_ecef2fb2",
+      "revId": "6923f3c343a5a264a5724a35453d1faaa6fd6f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3202708_8455bea5",
