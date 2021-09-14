@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrGrAtlasInstancedHelper_DEFINED
-#define GrGrAtlasInstancedHelper_DEFINED
+#ifndef AtlasInstancedHelper_DEFINED
+#define AtlasInstancedHelper_DEFINED
 
 #include "src/core/SkIPoint16.h"
 #include "src/gpu/GrGeometryProcessor.h"
@@ -15,9 +15,11 @@
 
 struct GrVertexWriter;
 
+namespace skgpu::v1 {
+
 // This class encapsulates all the necessary steps for an instanced GrGeometryProcessor to clip
 // against a path mask from an atlas.
-class GrAtlasInstancedHelper {
+class AtlasInstancedHelper {
 public:
     enum class ShaderFlags {
         kNone = 0,
@@ -29,7 +31,7 @@ public:
 
     constexpr static int kNumShaderFlags = 2;
 
-    GrAtlasInstancedHelper(GrSurfaceProxyView atlasView, ShaderFlags shaderFlags)
+    AtlasInstancedHelper(GrSurfaceProxyView atlasView, ShaderFlags shaderFlags)
             : fAtlasProxy(atlasView.detachProxy())
             , fAtlasSwizzle(atlasView.swizzle())
             , fShaderFlags(shaderFlags) {
@@ -37,11 +39,12 @@ public:
         SkASSERT(atlasView.origin() == kTopLeft_GrSurfaceOrigin);
     }
 
-    GrSurfaceProxy* proxy() const { return fAtlasProxy.get(); }
-    const GrSwizzle& atlasSwizzle() const { return fAtlasSwizzle; }
+    GrSurfaceProxy *proxy() const { return fAtlasProxy.get(); }
+
+    const GrSwizzle &atlasSwizzle() const { return fAtlasSwizzle; }
 
     // Returns whether the two helpers can be batched together in a single draw.
-    bool isCompatible(const GrAtlasInstancedHelper& helper) {
+    bool isCompatible(const AtlasInstancedHelper& helper) {
         // TODO: We may want to consider two helpers compatible if they only differ in the
         // kCheckBounds flag -- we can always promote one to checking its bounds.
         SkASSERT(fAtlasProxy != helper.fAtlasProxy || fAtlasSwizzle == helper.fAtlasSwizzle);
@@ -49,8 +52,8 @@ public:
     }
 
     // Adds bits to the shader key that uniquely identify this specific helper's shader code.
-    void getKeyBits(GrProcessorKeyBuilder* b) const {
-        b->addBits(kNumShaderFlags, (int)fShaderFlags, "atlasFlags");
+    void getKeyBits(GrProcessorKeyBuilder *b) const {
+        b->addBits(kNumShaderFlags, (int) fShaderFlags, "atlasFlags");
     }
 
     // Appends the instanced input attribs to the back of the array that we will need in order to
@@ -58,13 +61,14 @@ public:
     void appendInstanceAttribs(SkTArray<GrGeometryProcessor::Attribute>* instanceAttribs) const;
 
     struct Instance {
-        Instance(SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds, bool transposedInAtlas)
+        Instance(SkIPoint16 locationInAtlas, const SkIRect &pathDevIBounds, bool transposedInAtlas)
                 : fLocationInAtlas(locationInAtlas)
                 , fPathDevIBounds(pathDevIBounds)
                 , fTransposedInAtlas(transposedInAtlas) {
             SkASSERT(fLocationInAtlas.x() >= 0);
             SkASSERT(fLocationInAtlas.y() >= 0);
         }
+
         SkIPoint16 fLocationInAtlas;
         SkIRect fPathDevIBounds;
         bool fTransposedInAtlas;
@@ -81,7 +85,7 @@ public:
     // setUniformData().
     void injectShaderCode(const GrGeometryProcessor::ProgramImpl::EmitArgs&,
                           const GrShaderVar& devCoord,
-                          GrGLSLUniformHandler::UniformHandle* atlasAdjustUniformHandle) const;
+                          GrGLSLUniformHandler::UniformHandle *atlasAdjustUniformHandle) const;
 
     // The atlas clip requires one uniform value -- "atlasAdjustUniform". The caller should have
     // stored this handle after its call to injectShaderCode(). This method sets its value prior to
@@ -95,6 +99,8 @@ private:
     const ShaderFlags fShaderFlags;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrAtlasInstancedHelper::ShaderFlags);
+GR_MAKE_BITFIELD_CLASS_OPS(AtlasInstancedHelper::ShaderFlags);
 
-#endif
+} // namespace skgpu::v1
+
+#endif // AtlasInstancedHelper_DEFINED
