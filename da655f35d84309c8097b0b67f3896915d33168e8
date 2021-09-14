@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31201f8e_b3af7b93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-14T18:58:24Z",
+      "side": 1,
+      "message": "Did you measure this savings? Splat of zero resolves to a single xor instructions. So, in terms of code size, I think the xor is smaller than the mov instruction which needs an offset to the spill slot. In large loops the zero value will always be spilled. In terms of speed the xor should be faster too.",
+      "revId": "da655f35d84309c8097b0b67f3896915d33168e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
