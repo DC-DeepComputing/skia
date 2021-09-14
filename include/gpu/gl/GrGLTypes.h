@@ -194,4 +194,14 @@ struct GrGLFramebufferInfo {
     }
 };
 
+struct GrGLSurfaceInfo : public GrSharedSurfaceInfo {
+    GrGLenum fTarget = 0;
+    GrGLenum fFormat = 0;
+};
+
+struct GrGLTextureInfo2 {
+    GrGLuint fID;
+    GrGLSurfaceInfo fSpec;
+};
+
 #endif

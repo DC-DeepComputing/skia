@@ -91,4 +91,15 @@ private:
     GrGLTextureParameters* fParams;
 };
 
+struct GrGLTextureSpec {
+    GrGLTextureSpec() : fTarget(0), fFormat(0) {}
+    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget), fFormat(info.fFormat) {}
+
+    GrGLenum fTarget;
+    GrGLenum fFormat;
+};
+
+GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
+                                             const GrSharedSurfaceInfo& sharedInfo);
+
 #endif

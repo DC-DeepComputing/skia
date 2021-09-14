@@ -44,6 +44,16 @@ public:
     }
 };
 
+struct GrMtlSurfaceInfo : public GrSharedSurfaceInfo {
+    GrMTLPixelFormat fFormat = MTLPixelFormatInvalid;
+    MTLTextureUsage fUsage = MTLTextureUsageUnknown;
+    MTLStorageMode fStorageMode = MTLStorageModeShared;
+};
+struct GrMtlTextureInfo2 {
+    sk_cfp<GrMTLHandle> fTexture;
+    GrMtlSurfaceInfo fSpec;
+};
+
 #endif
 
 #endif

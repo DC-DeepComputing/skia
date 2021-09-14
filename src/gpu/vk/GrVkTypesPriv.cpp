@@ -25,6 +25,24 @@ GrVkImageInfo GrVkBackendSurfaceInfo::snapImageInfo(
     return newInfo;
 }
 
+GrVkSurfaceInfo GrVkImageSpecToSurfaceInfo(const GrVkImageSpec& vkSpec,
+                                           const GrSharedSurfaceInfo& sharedInfo) {
+    GrVkSurfaceInfo info;
+    // Shared info
+    info.fSampleCount = sharedInfo.fSampleCount;
+    info.fLevelCount = sharedInfo.fLevelCount;
+    info.fProtected = sharedInfo.fProtected;
+
+    // Vulkan info
+    info.fImageTiling = vkSpec.fImageTiling;
+    info.fFormat = vkSpec.fFormat;
+    info.fImageUsageFlags = vkSpec.fImageUsageFlags;
+    info.fYcbcrConversionInfo = vkSpec.fYcbcrConversionInfo;
+    info.fSharingMode = vkSpec.fSharingMode;
+
+    return info;
+}
+
 #if GR_TEST_UTILS
 bool GrVkBackendSurfaceInfo::operator==(const GrVkBackendSurfaceInfo& that) const {
     GrVkImageInfo cpyInfoThis = fImageInfo;
