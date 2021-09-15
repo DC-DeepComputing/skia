@@ -1,4 +1,4 @@
 ### Compilation failed:
 
-error: 1: offset of field 'y' must be at least 4
+error: 6: expected ';', but found 'void'
 1 error

@@ -1,4 +1,4 @@
 ### Compilation failed:
 
-error: 1: offset of field 'x' must be a multiple of 4
+error: 5: expected ';', but found 'void'
 1 error
