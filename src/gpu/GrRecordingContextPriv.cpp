@@ -95,6 +95,66 @@ GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) c
             this->options().fGlyphsAsPathsFontSize};
 }
 
+std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       const GrColorInfo& info) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceFillContext>(this->context(),
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info);
+#else
+        return nullptr;
+#endif
+    } else
+#endif // GR_TEST_UTILS
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               info);
+#else
+        return nullptr;
+#endif
+    }
+}
+
+std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSDC(GrSurfaceProxyView readView,
+                                                                       GrSurfaceProxyView writeView,
+                                                                       GrColorType colorType,
+                                                                       sk_sp<SkColorSpace> cs,
+                                                                       const SkSurfaceProps& props) {
+#if GR_TEST_UTILS
+    if (this->options().fUseSkGpuV2 == GrContextOptions::Enable::kYes) {
+#if SK_GPU_V2
+        return std::make_unique<skgpu::v2::SurfaceDrawContext>(this->context(),
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props);
+#else
+        return nullptr;
+#endif
+    } else
+#endif // GR_TEST_UTILS
+    {
+#if SK_GPU_V1
+        return std::make_unique<skgpu::v1::SurfaceDrawContext>(this->context(),
+                                                               std::move(readView),
+                                                               std::move(writeView),
+                                                               colorType,
+                                                               std::move(cs),
+                                                               props);
+#else
+        return nullptr;
+#endif
+    }
+}
+
 std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
                                                                       const GrColorInfo& info) {
 #if GR_TEST_UTILS
@@ -128,17 +188,13 @@ std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceP
             GrSurfaceProxyView writeView(readView.refProxy(), readView.origin(), writeSwizzle);
             if (info.alphaType() == kPremul_SkAlphaType ||
                 info.alphaType() == kOpaque_SkAlphaType) {
-                sc = std::make_unique<skgpu::v1::SurfaceDrawContext>(this->context(),
-                                                                     std::move(readView),
-                                                                     std::move(writeView),
-                                                                     info.colorType(),
-                                                                     info.refColorSpace(),
-                                                                     SkSurfaceProps());
+                sc = this->makeSDC(std::move(readView),
+                                   std::move(writeView),
+                                   info.colorType(),
+                                   info.refColorSpace(),
+                                   SkSurfaceProps());
             } else {
-                sc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                                     std::move(readView),
-                                                                     std::move(writeView),
-                                                                     info);
+                sc = this->makeSFC(std::move(readView), std::move(writeView), info);
             }
         } else {
             sc = std::make_unique<skgpu::SurfaceContext>(this->context(),
@@ -237,10 +293,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
         GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
         GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
         std::unique_ptr<skgpu::SurfaceFillContext> sfc;
-        sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                              std::move(readView),
-                                                              std::move(writeView),
-                                                              info.colorInfo());
+        sfc = this->makeSFC(std::move(readView), std::move(writeView), info.colorInfo());
         sfc->discard();
         return sfc;
 #endif
@@ -306,10 +359,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
         GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
         GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
         std::unique_ptr<skgpu::SurfaceFillContext> sfc;
-        sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                              std::move(readView),
-                                                              std::move(writeView),
-                                                              info.colorInfo());
+        sfc = this->makeSFC(std::move(readView), std::move(writeView), info.colorInfo());
         sfc->discard();
         return sfc;
 #endif
@@ -417,10 +467,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFCFromBa
         GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
         GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
 
-        return std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                               std::move(readView),
-                                                               std::move(writeView),
-                                                               std::move(info));
+        return this->makeSFC(std::move(readView), std::move(writeView), std::move(info));
 #endif
     }
 
