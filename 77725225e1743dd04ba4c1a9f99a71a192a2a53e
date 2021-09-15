@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78c47dfb_71f9ec03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-15T19:02:39Z",
+      "side": 1,
+      "message": "Just for your own FYI while looking over these new classes, I\u0027ve upload two of the follow on CLs that lead to using GrSurfaceInfo in GrVkImage. Looking at this may give some insight on how I intend to use the various things added here.",
+      "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e874bc1_37b62f1b",
