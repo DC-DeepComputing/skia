@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a6ab819_eb844b5f",
+        "filename": "tests/sksl/shared/Caps.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-15T15:34:47Z",
+      "side": 0,
+      "message": "Unrelated change?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 10
+      },
+      "revId": "0c5b05c3ab532b148aa32c9c4f0a8e6c5c1ada2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
