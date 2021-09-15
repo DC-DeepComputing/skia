@@ -92,6 +92,13 @@ struct GrVkImageSpec {
             , fYcbcrConversionInfo(info.fYcbcrConversionInfo)
             , fSharingMode(info.fSharingMode) {}
 
+    GrVkImageSpec(const GrVkImageInfo& info)
+            : fImageTiling(info.fImageTiling)
+            , fFormat(info.fFormat)
+            , fImageUsageFlags(info.fImageUsageFlags)
+            , fYcbcrConversionInfo(info.fYcbcrConversionInfo)
+            , fSharingMode(info.fSharingMode) {}
+
     VkImageTiling fImageTiling;
     VkFormat fFormat;
     VkImageUsageFlags fImageUsageFlags;

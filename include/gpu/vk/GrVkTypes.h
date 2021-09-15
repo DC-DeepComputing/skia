@@ -89,6 +89,25 @@ struct GrVkYcbcrConversionInfo {
     VkFormatFeatureFlags fFormatFeatures = 0;
 };
 
+struct GrVkSurfaceInfo : public GrSharedSurfaceInfo {
+    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkFormat fFormat = VK_FORMAT_UNDEFINED;
+    VkImageUsageFlags fImageUsageFlags = 0;
+    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
+    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+};
+
+struct GrVkImageInfo2 {
+    VkImage fImage = VK_NULL_HANDLE;
+    GrVkAlloc fAlloc;
+
+    // These are mutable properties of a VkImage
+    VkImageLayout fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    uint32_t fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
+
+    GrVkSurfaceInfo fSpec;
+};
+
 /*
  * When wrapping a GrBackendTexture or GrBackendRendenderTarget, the fCurrentQueueFamily should
  * either be VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_EXTERNAL, or VK_QUEUE_FAMILY_FOREIGN_EXT. If
@@ -108,6 +127,20 @@ struct GrVkImageInfo {
     GrProtected              fProtected = GrProtected::kNo;
     GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
     VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    void setFromImageInfo2(const GrVkImageInfo2& info) {
+        fImage = info.fImage;
+        fAlloc = info.fAlloc;
+        fImageTiling = info.fSpec.fImageTiling;
+        fImageLayout = info.fImageLayout;
+        fFormat = info.fSpec.fFormat;
+        fImageUsageFlags = info.fSpec.fImageUsageFlags;
+        fSampleCount = info.fSpec.fSampleCount;
+        fLevelCount = info.fSpec.fLevelCount;
+        fCurrentQueueFamily = info.fCurrentQueueFamily;
+        fProtected = info.fSpec.fProtected;
+        fSharingMode = info.fSpec.fSharingMode;
+    }
 
 #if GR_TEST_UTILS
     bool operator==(const GrVkImageInfo& that) const {
@@ -158,25 +191,6 @@ struct GrVkDrawableInfo {
     VkFormat        fFormat;
     VkRect2D*       fDrawBounds;
     VkImage         fImage;
-};
-
-struct GrVkSurfaceInfo : public GrSharedSurfaceInfo {
-    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-    VkFormat fFormat = VK_FORMAT_UNDEFINED;
-    VkImageUsageFlags fImageUsageFlags = 0;
-    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
-    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-};
-
-struct GrVkImageInfo2 {
-    VkImage fImage = VK_NULL_HANDLE;
-    GrVkAlloc fAlloc;
-
-    // These are mutable properties of a VkImage
-    VkImageLayout fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    uint32_t fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
-
-    GrVkSurfaceInfo fSpec;
 };
 
 #endif

@@ -65,16 +65,16 @@ public:
         // Should only be called when we have a real fResource object, i.e. never when being used as
         // a RT in an external secondary command buffer.
         SkASSERT(fResource);
-        return fInfo.fImage;
+        return fResource->image();
     }
     const GrVkAlloc& alloc() const {
         // Should only be called when we have a real fResource object, i.e. never when being used as
         // a RT in an external secondary command buffer.
         SkASSERT(fResource);
-        return fInfo.fAlloc;
+        return fResource->alloc();
     }
-    const GrVkImageInfo& vkImageInfo() const { return fInfo; }
-    VkFormat imageFormat() const { return fInfo.fFormat; }
+
+    VkFormat imageFormat() const { return this->spec().fFormat; }
     GrBackendFormat backendFormat() const override {
         if (fResource && this->ycbcrConversionInfo().isValid()) {
             SkASSERT(this->imageFormat() == this->ycbcrConversionInfo().fFormat);
@@ -83,16 +83,18 @@ public:
         SkASSERT(this->imageFormat() != VK_FORMAT_UNDEFINED);
         return GrBackendFormat::MakeVk(this->imageFormat());
     }
-    uint32_t mipLevels() const { return fInfo.fLevelCount; }
+
+    GrVkImageInfo2 imageInfo() const;
+
     const GrVkYcbcrConversionInfo& ycbcrConversionInfo() const {
         // Should only be called when we have a real fResource object, i.e. never when being used as
         // a RT in an external secondary command buffer.
         SkASSERT(fResource);
-        return fInfo.fYcbcrConversionInfo;
+        return this->spec().fYcbcrConversionInfo;
     }
-    VkImageUsageFlags vkUsageFlags() { return fInfo.fImageUsageFlags; }
+    VkImageUsageFlags vkUsageFlags() { return this->spec().fImageUsageFlags; }
     bool supportsInputAttachmentUsage() const {
-        return fInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+        return this->spec().fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
     }
 
     const GrVkImageView* framebufferView() const { return fFramebufferView.get(); }
@@ -116,7 +118,7 @@ public:
         // Should only be called when we have a real fResource object, i.e. never when being used as
         // a RT in an external secondary command buffer.
         SkASSERT(fResource);
-        return SkToBool(VK_IMAGE_TILING_LINEAR == fInfo.fImageTiling);
+        return SkToBool(VK_IMAGE_TILING_LINEAR == this->spec().fImageTiling);
     }
     bool isBorrowed() const { return fIsBorrowed; }
 
@@ -188,9 +190,9 @@ public:
                 , fIsProtected(GrProtected::kNo) {}
     };
 
-    static bool InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo*);
+    static bool InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo2*);
     // Destroys the internal VkImage and VkDeviceMemory in the GrVkImageInfo
-    static void DestroyImageInfo(const GrVkGpu* gpu, GrVkImageInfo*);
+    static void DestroyImage(const GrVkGpu* gpu, VkImage, const GrVkAlloc&);
 
     // These match the definitions in SkImage, for whence they came
     typedef void* ReleaseCtx;
@@ -221,7 +223,8 @@ private:
               SkISize dimensions,
               const GrSurfaceInfo&,
               UsageFlags supportedUsages,
-              const GrVkImageInfo&,
+              VkImage image,
+              const GrVkAlloc& alloc,
               sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
               sk_sp<const GrVkImageView> framebufferView,
               sk_sp<const GrVkImageView> textureView,
@@ -231,7 +234,8 @@ private:
               SkISize dimensions,
               const GrSurfaceInfo&,
               UsageFlags supportedUsages,
-              const GrVkImageInfo&,
+              VkImage image,
+              const GrVkAlloc& alloc,
               sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
               sk_sp<const GrVkImageView> framebufferView,
               sk_sp<const GrVkImageView> textureView,
@@ -239,7 +243,9 @@ private:
               GrWrapCacheable,
               bool forSecondaryCB);
 
-    void init(GrVkGpu*, bool forSecondaryCB);
+    void init(GrVkGpu*, VkImage, const GrVkAlloc&, bool forSecondaryCB);
+
+    const GrVkImageSpec& spec() const { return this->surfaceInfo().vkImageSpec(); }
 
     void onRelease() override;
     void onAbandon() override;
@@ -249,14 +255,13 @@ private:
 
     GrVkGpu* getVkGpu() const;
 
-    GrVkImageInfo                           fInfo;
     uint32_t                                fInitialQueueFamily;
     sk_sp<GrBackendSurfaceMutableStateImpl> fMutableState;
 
     sk_sp<const GrVkImageView>              fFramebufferView;
     sk_sp<const GrVkImageView>              fTextureView;
 
-    bool fIsBorrowed;
+    bool                                    fIsBorrowed;
 
     // Descriptor set used when this is used as an input attachment for reading the dst in blending.
     gr_rp<const GrVkDescriptorSet> fCachedBlendingInputDescSet;
@@ -288,6 +293,9 @@ private:
 #ifdef SK_DEBUG
         const GrManagedResource* asVkImageResource() const override { return this; }
 #endif
+
+        VkImage image() const { return fImage; }
+        const GrVkAlloc& alloc() const { return fAlloc; }
 
     private:
         void freeGPUData() const override;

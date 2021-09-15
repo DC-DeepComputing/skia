@@ -134,6 +134,14 @@ public:
     }
 
 private:
+#ifdef SK_VULKAN
+    friend class GrVkImage;
+    const GrVkImageSpec& vkImageSpec() const {
+        SkASSERT(fValid && fBackend == GrBackendApi::kVulkan);
+        return fVkSpec;
+    }
+#endif
+
     GrBackendApi fBackend = GrBackendApi::kMock;
     bool fValid = false;
     GrSharedSurfaceInfo fSharedInfo;

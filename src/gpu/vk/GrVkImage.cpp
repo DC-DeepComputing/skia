@@ -83,7 +83,7 @@ sk_sp<GrVkImage> GrVkImage::MakeTexture(GrVkGpu* gpu,
 }
 
 static bool make_views(GrVkGpu* gpu,
-                       const GrVkImageInfo& info,
+                       const GrVkImageInfo2& info,
                        GrAttachment::UsageFlags attachmentUsages,
                        sk_sp<const GrVkImageView>* framebufferView,
                        sk_sp<const GrVkImageView>* textureView) {
@@ -100,7 +100,7 @@ static bool make_views(GrVkGpu* gpu,
         SkToBool(attachmentUsages & GrAttachment::UsageFlags::kColorAttachment)) {
         // Attachments can only have a mip level of 1
         *framebufferView = GrVkImageView::Make(
-                gpu, info.fImage, info.fFormat, viewType, 1, info.fYcbcrConversionInfo);
+                gpu, info.fImage, info.fSpec.fFormat, viewType, 1, info.fSpec.fYcbcrConversionInfo);
         if (!*framebufferView) {
             return false;
         }
@@ -109,10 +109,10 @@ static bool make_views(GrVkGpu* gpu,
     if (attachmentUsages & GrAttachment::UsageFlags::kTexture) {
         *textureView = GrVkImageView::Make(gpu,
                                            info.fImage,
-                                           info.fFormat,
+                                           info.fSpec.fFormat,
                                            viewType,
-                                           info.fLevelCount,
-                                           info.fYcbcrConversionInfo);
+                                           info.fSpec.fLevelCount,
+                                           info.fSpec.fYcbcrConversionInfo);
         if (!*textureView) {
             return false;
         }
@@ -140,7 +140,7 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
     imageDesc.fUsageFlags = vkUsageFlags;
     imageDesc.fIsProtected = isProtected;
 
-    GrVkImageInfo info;
+    GrVkImageInfo2 info;
     if (!GrVkImage::InitImageInfo(gpu, imageDesc, &info)) {
         return nullptr;
     }
@@ -148,23 +148,18 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
     sk_sp<const GrVkImageView> framebufferView;
     sk_sp<const GrVkImageView> textureView;
     if (!make_views(gpu, info, attachmentUsages, &framebufferView, &textureView)) {
-        GrVkImage::DestroyImageInfo(gpu, &info);
+        GrVkImage::DestroyImage(gpu, info.fImage, info.fAlloc);
         return nullptr;
     }
-
-    // TODO: Use a real GrSurfaceInfo here.
-    GrSharedSurfaceInfo sharedInfo;
-    sharedInfo.fSampleCount = sampleCnt;
-    sharedInfo.fLevelCount = mipLevels;
-    sharedInfo.fProtected = isProtected;
 
     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState(
             new GrBackendSurfaceMutableStateImpl(info.fImageLayout, info.fCurrentQueueFamily));
     return sk_sp<GrVkImage>(new GrVkImage(gpu,
                                           dimensions,
-                                          GrSurfaceInfo(sharedInfo),
+                                          GrSurfaceInfo(info.fSpec),
                                           attachmentUsages,
-                                          info,
+                                          info.fImage,
+                                          info.fAlloc,
                                           std::move(mutableState),
                                           std::move(framebufferView),
                                           std::move(textureView),
@@ -179,10 +174,23 @@ sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
                                         GrWrapOwnership ownership,
                                         GrWrapCacheable cacheable,
                                         bool forSecondaryCB) {
+    GrVkImageInfo2 info2;
+    info2.fImage = info.fImage;
+    info2.fAlloc = info.fAlloc;
+    info2.fImageLayout = info.fImageLayout;
+    info2.fCurrentQueueFamily = info.fCurrentQueueFamily;
+    info2.fSpec.fImageTiling = info.fImageTiling;
+    info2.fSpec.fFormat = info.fFormat;
+    info2.fSpec.fImageUsageFlags = info.fImageUsageFlags;
+    info2.fSpec.fSharingMode = info.fSharingMode;
+    info2.fSpec.fSampleCount = info.fSampleCount;
+    info2.fSpec.fLevelCount = info.fLevelCount;
+    info2.fSpec.fProtected = info.fProtected;
+
     sk_sp<const GrVkImageView> framebufferView;
     sk_sp<const GrVkImageView> textureView;
     if (!forSecondaryCB) {
-        if (!make_views(gpu, info, attachmentUsages, &framebufferView, &textureView)) {
+        if (!make_views(gpu, info2, attachmentUsages, &framebufferView, &textureView)) {
             return nullptr;
         }
     }
@@ -191,17 +199,12 @@ sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
                                                         ? GrBackendObjectOwnership::kBorrowed
                                                         : GrBackendObjectOwnership::kOwned;
 
-    // TODO: Use a real GrSurfaceInfo here.
-    GrSharedSurfaceInfo sharedInfo;
-    sharedInfo.fSampleCount = info.fSampleCount;
-    sharedInfo.fLevelCount = info.fLevelCount;
-    sharedInfo.fProtected = info.fProtected;
-
     return sk_sp<GrVkImage>(new GrVkImage(gpu,
                                           dimensions,
-                                          GrSurfaceInfo(sharedInfo),
+                                          GrSurfaceInfo(info2.fSpec),
                                           attachmentUsages,
-                                          info,
+                                          info2.fImage,
+                                          info2.fAlloc,
                                           std::move(mutableState),
                                           std::move(framebufferView),
                                           std::move(textureView),
@@ -214,7 +217,8 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                      SkISize dimensions,
                      const GrSurfaceInfo& surfaceInfo,
                      UsageFlags supportedUsages,
-                     const GrVkImageInfo& info,
+                     VkImage image,
+                     const GrVkAlloc& alloc,
                      sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
                      sk_sp<const GrVkImageView> framebufferView,
                      sk_sp<const GrVkImageView> textureView,
@@ -223,13 +227,12 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                        dimensions,
                        surfaceInfo,
                        supportedUsages)
-        , fInfo(info)
-        , fInitialQueueFamily(info.fCurrentQueueFamily)
+        , fInitialQueueFamily(mutableState->getVkSharedImageInfo().getQueueFamilyIndex())
         , fMutableState(std::move(mutableState))
         , fFramebufferView(std::move(framebufferView))
         , fTextureView(std::move(textureView))
         , fIsBorrowed(false) {
-    this->init(gpu, false);
+    this->init(gpu, image, alloc, false);
     this->registerWithCache(budgeted);
 }
 
@@ -237,7 +240,8 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                      SkISize dimensions,
                      const GrSurfaceInfo& surfaceInfo,
                      UsageFlags supportedUsages,
-                     const GrVkImageInfo& info,
+                     VkImage image,
+                     const GrVkAlloc& alloc,
                      sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
                      sk_sp<const GrVkImageView> framebufferView,
                      sk_sp<const GrVkImageView> textureView,
@@ -248,34 +252,32 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                        dimensions,
                        surfaceInfo,
                        supportedUsages)
-        , fInfo(info)
-        , fInitialQueueFamily(info.fCurrentQueueFamily)
+        , fInitialQueueFamily(mutableState->getVkSharedImageInfo().getQueueFamilyIndex())
         , fMutableState(std::move(mutableState))
         , fFramebufferView(std::move(framebufferView))
         , fTextureView(std::move(textureView))
         , fIsBorrowed(GrBackendObjectOwnership::kBorrowed == ownership) {
-    this->init(gpu, forSecondaryCB);
+    this->init(gpu, image, alloc, forSecondaryCB);
     this->registerWithCacheWrapped(cacheable);
 }
 
-void GrVkImage::init(GrVkGpu* gpu, bool forSecondaryCB) {
-    SkASSERT(fMutableState->getImageLayout() == fInfo.fImageLayout);
-    SkASSERT(fMutableState->getQueueFamilyIndex() == fInfo.fCurrentQueueFamily);
+void GrVkImage::init(GrVkGpu* gpu, VkImage image, const GrVkAlloc& alloc, bool forSecondaryCB) {
 #ifdef SK_DEBUG
-    if (fInfo.fImageUsageFlags & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
-        SkASSERT(SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT));
+    if (this->spec().fImageUsageFlags & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+        SkASSERT(SkToBool(this->spec().fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT));
     } else {
-        SkASSERT(SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) &&
-                 SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT));
+        SkASSERT(SkToBool(this->spec().fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) &&
+                 SkToBool(this->spec().fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT));
     }
     // We can't transfer from the non graphics queue to the graphics queue since we can't
     // release the image from the original queue without having that queue. This limits us in terms
     // of the types of queue indices we can handle.
-    if (fInfo.fCurrentQueueFamily != VK_QUEUE_FAMILY_IGNORED &&
-        fInfo.fCurrentQueueFamily != VK_QUEUE_FAMILY_EXTERNAL &&
-        fInfo.fCurrentQueueFamily != VK_QUEUE_FAMILY_FOREIGN_EXT) {
-        if (fInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
-            if (fInfo.fCurrentQueueFamily != gpu->queueIndex()) {
+    uint32_t currentQueueFamilyIndex = this->currentQueueFamilyIndex();
+    if (currentQueueFamilyIndex != VK_QUEUE_FAMILY_IGNORED &&
+        currentQueueFamilyIndex != VK_QUEUE_FAMILY_EXTERNAL &&
+        currentQueueFamilyIndex != VK_QUEUE_FAMILY_FOREIGN_EXT) {
+        if (this->spec().fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
+            if (currentQueueFamilyIndex != gpu->queueIndex()) {
                 SkASSERT(false);
             }
         } else {
@@ -286,10 +288,10 @@ void GrVkImage::init(GrVkGpu* gpu, bool forSecondaryCB) {
     if (forSecondaryCB) {
         fResource = nullptr;
     } else if (fIsBorrowed) {
-        fResource = new BorrowedResource(gpu, fInfo.fImage, fInfo.fAlloc, fInfo.fImageTiling);
+        fResource = new BorrowedResource(gpu, image, alloc, this->spec().fImageTiling);
     } else {
-        SkASSERT(VK_NULL_HANDLE != fInfo.fAlloc.fMemory);
-        fResource = new Resource(gpu, fInfo.fImage, fInfo.fAlloc, fInfo.fImageTiling);
+        SkASSERT(VK_NULL_HANDLE != alloc.fMemory);
+        fResource = new Resource(gpu, image, alloc, this->spec().fImageTiling);
     }
 }
 
@@ -374,7 +376,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
 
 #ifdef SK_DEBUG
-    if (fInfo.fSharingMode == VK_SHARING_MODE_CONCURRENT) {
+    if (this->spec().fSharingMode == VK_SHARING_MODE_CONCURRENT) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
                      currentQueueIndex == VK_QUEUE_FAMILY_EXTERNAL ||
@@ -385,7 +387,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED);
         }
     } else {
-        SkASSERT(fInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE);
+        SkASSERT(this->spec().fSharingMode == VK_SHARING_MODE_EXCLUSIVE);
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED ||
             currentQueueIndex == gpu->queueIndex()) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
@@ -400,7 +402,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     }
 #endif
 
-    if (fInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
+    if (this->spec().fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
             newQueueFamilyIndex = gpu->queueIndex();
         }
@@ -421,7 +423,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     VkAccessFlags srcAccessMask = GrVkImage::LayoutToSrcAccessMask(currentLayout);
     VkPipelineStageFlags srcStageMask = GrVkImage::LayoutToPipelineSrcStageFlags(currentLayout);
 
-    VkImageAspectFlags aspectFlags = vk_format_to_aspect_flags(fInfo.fFormat);
+    VkImageAspectFlags aspectFlags = vk_format_to_aspect_flags(this->spec().fFormat);
 
     VkImageMemoryBarrier imageMemoryBarrier = {
         VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,          // sType
@@ -432,8 +434,8 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
         newLayout,                                       // newLayout
         currentQueueIndex,                               // srcQueueFamilyIndex
         newQueueFamilyIndex,                             // dstQueueFamilyIndex
-        fInfo.fImage,                                    // image
-        { aspectFlags, 0, fInfo.fLevelCount, 0, 1 }      // subresourceRange
+        this->image(),                                   // image
+        { aspectFlags, 0, this->mipLevels(), 0, 1 }      // subresourceRange
     };
     SkASSERT(srcAccessMask == imageMemoryBarrier.srcAccessMask);
     gpu->addImageMemoryBarrier(this->resource(), srcStageMask, dstStageMask, byRegion,
@@ -443,7 +445,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     this->setQueueFamilyIndex(newQueueFamilyIndex);
 }
 
-bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo* info) {
+bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo2* info) {
     if (0 == imageDesc.fWidth || 0 == imageDesc.fHeight) {
         return false;
     }
@@ -501,22 +503,23 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
 
     info->fImage = image;
     info->fAlloc = alloc;
-    info->fImageTiling = imageDesc.fImageTiling;
     info->fImageLayout = initialLayout;
-    info->fFormat = imageDesc.fFormat;
-    info->fImageUsageFlags = imageDesc.fUsageFlags;
-    info->fSampleCount = imageDesc.fSamples;
-    info->fLevelCount = imageDesc.fLevels;
     info->fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
-    info->fProtected =
+    info->fSpec.fImageTiling = imageDesc.fImageTiling;
+    info->fSpec.fFormat = imageDesc.fFormat;
+    info->fSpec.fImageUsageFlags = imageDesc.fUsageFlags;
+    info->fSpec.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    info->fSpec.fSampleCount = imageDesc.fSamples;
+    info->fSpec.fLevelCount = imageDesc.fLevels;
+    info->fSpec.fProtected =
             (createflags & VK_IMAGE_CREATE_PROTECTED_BIT) ? GrProtected::kYes : GrProtected::kNo;
-    info->fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
     return true;
 }
 
-void GrVkImage::DestroyImageInfo(const GrVkGpu* gpu, GrVkImageInfo* info) {
-    VK_CALL(gpu, DestroyImage(gpu->device(), info->fImage, nullptr));
-    GrVkMemory::FreeImageMemory(gpu, info->fAlloc);
+void GrVkImage::DestroyImage(const GrVkGpu* gpu, VkImage image, const GrVkAlloc& alloc) {
+    VK_CALL(gpu, DestroyImage(gpu->device(), image, nullptr));
+    GrVkMemory::FreeImageMemory(gpu, alloc);
 }
 
 GrVkImage::~GrVkImage() {
@@ -647,6 +650,23 @@ gr_rp<const GrVkDescriptorSet> GrVkImage::inputDescSetForMSAALoad(GrVkGpu* gpu) 
                          *fCachedMSAALoadInputDescSet->descriptorSet());
 
     return fCachedMSAALoadInputDescSet;
+}
+
+GrVkImageInfo2 GrVkImage::imageInfo() const {
+    GrVkImageInfo2 info;
+    info.fImage = this->image();
+    info.fAlloc = this->alloc();
+    info.fImageLayout = this->currentLayout();
+    info.fCurrentQueueFamily = this->currentQueueFamilyIndex();
+    info.fSpec.fImageTiling = this->spec().fImageTiling;
+    info.fSpec.fFormat = this->spec().fFormat;
+    info.fSpec.fImageUsageFlags = this->spec().fImageUsageFlags;
+    info.fSpec.fSharingMode = this->spec().fSharingMode;
+    info.fSpec.fSampleCount = this->numSamples();
+    info.fSpec.fLevelCount = this->mipLevels();
+    info.fSpec.fProtected = GrProtected(this->isProtected());
+
+    return info;
 }
 
 GrVkGpu* GrVkImage::getVkGpu() const {
