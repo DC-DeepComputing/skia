@@ -323,7 +323,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			}
 		}
 
-		if b.model("AndroidOne", "Nexus5", "Nexus7") {
+		if b.model("AndroidOne", "GalaxyS6", "Nexus5", "Nexus7") {
 			// skbug.com/9019
 			skip("_ test _ ProcessorCloneTest")
 			skip("_ test _ Programs")
@@ -348,10 +348,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.extraConfig("CommandBuffer") {
 			// skbug.com/10412
 			skip("_ test _ GLBackendAllocationTest")
-			skip("_ test _ InitialTextureClear")
-			// skbug.com/12437
-			skip("_ test _ GrDDLImage_MakeSubset")
-			skip("_ test _ GrContext_oomed")
 		}
 
 		// skbug.com/9043 - these devices render this test incorrectly
@@ -449,10 +445,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip("mtltestprecompile svg _ Ghostscript_Tiger.svg")
 			skip("mtltestprecompile svg _ Seal_of_American_Samoa.svg")
 			skip("mtltestprecompile svg _ Seal_of_Illinois.svg")
-			skip("mtltestprecompile svg _ desk_motionmark_paths.svg")
-			skip("mtltestprecompile svg _ rg1024_green_grapes.svg")
-			skip("mtltestprecompile svg _ shapes-intro-02-f.svg")
 			skip("mtltestprecompile svg _ tiger-8.svg")
+			skip("mtltestprecompile svg _ desk_motionmark_paths.svg")
 		}
 		// Test reduced shader mode on iPhone 11 as representative iOS device
 		if b.model("iPhone11") && b.extraConfig("Metal") {
@@ -900,10 +894,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("_", "tests", "_", "SkSLIntrinsicDFdx_GPU")
 	}
 
-	if b.matchOs("Mac") && b.matchGpu("Intel(Iris5100|HD6000)") {
-		skip("_", "tests", "_", "SkSLLoopFloat_GPU") // skia:12426
-	}
-
 	match := []string{}
 	if b.extraConfig("Valgrind") { // skia:3021
 		match = append(match, "~Threaded")
@@ -919,6 +909,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~PremulAlphaRoundTrip_Gpu")                // skia:7501
 		match = append(match, "~ReimportImageTextureWithMipLevels")       // skia:8090
 		match = append(match, "~MorphologyFilterRadiusWithMirrorCTM_Gpu") // skia:10383
+	}
+
+	if b.model("GalaxyS6") {
+		match = append(match, "~SpecialImage") // skia:6338
+		match = append(match, "~skbug6653")    // skia:6653
 	}
 
 	if b.extraConfig("MSAN") {

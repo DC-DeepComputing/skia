@@ -28,7 +28,7 @@ public:
 
     ConstructorDiagonalMatrix(int offset, const Type& type, std::unique_ptr<Expression> arg)
         : INHERITED(offset, kExpressionKind, &type, std::move(arg))
-        , fZeroLiteral(offset, /*value=*/0.0, &type.componentType()) {}
+        , fZeroLiteral(offset, /*value=*/0.0f, &type.componentType()) {}
 
     static std::unique_ptr<Expression> Make(const Context& context,
                                             int offset,
@@ -44,7 +44,7 @@ public:
     const Expression* getConstantSubexpression(int n) const override;
 
 private:
-    const Literal fZeroLiteral;
+    const FloatLiteral fZeroLiteral;
     using INHERITED = SingleArgumentConstructor;
 };
 

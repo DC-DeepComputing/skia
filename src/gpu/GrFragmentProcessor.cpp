@@ -142,8 +142,6 @@ bool GrFragmentProcessor::isInstantiated() const {
 
 void GrFragmentProcessor::registerChild(std::unique_ptr<GrFragmentProcessor> child,
                                         SkSL::SampleUsage sampleUsage) {
-    SkASSERT(sampleUsage.isSampled());
-
     if (!child) {
         fChildProcessors.push_back(nullptr);
         return;

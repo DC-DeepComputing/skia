@@ -13,7 +13,9 @@
 #include "src/sksl/SkSLIRGenerator.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
-#include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLBoolLiteral.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 #include "src/sksl/ir/SkSLPoison.h"
 
 #include "math.h"
@@ -34,10 +36,12 @@ DSLExpression::DSLExpression(DSLExpression&& other)
 DSLExpression::DSLExpression(std::unique_ptr<SkSL::Expression> expression)
     : fExpression(std::move(expression)) {
     SkASSERT(this->hasValue());
+    DSLWriter::ReportErrors(PositionInfo::Offset(nullptr, GetErrorReporter().source(),
+            fExpression->fOffset));
 }
 
 DSLExpression::DSLExpression(float value, PositionInfo pos)
-    : fExpression(SkSL::Literal::MakeFloat(DSLWriter::Context(),
+    : fExpression(SkSL::FloatLiteral::Make(DSLWriter::Context(),
                                            pos.offset(),
                                            value)) {
     if (!isfinite(value)) {
@@ -50,22 +54,22 @@ DSLExpression::DSLExpression(float value, PositionInfo pos)
 }
 
 DSLExpression::DSLExpression(int value, PositionInfo pos)
-    : fExpression(SkSL::Literal::MakeInt(DSLWriter::Context(),
+    : fExpression(SkSL::IntLiteral::Make(DSLWriter::Context(),
                                          pos.offset(),
                                          value)) {}
 
 DSLExpression::DSLExpression(int64_t value, PositionInfo pos)
-    : fExpression(SkSL::Literal::MakeInt(DSLWriter::Context(),
+    : fExpression(SkSL::IntLiteral::Make(DSLWriter::Context(),
                                          pos.offset(),
                                          value)) {}
 
 DSLExpression::DSLExpression(unsigned int value, PositionInfo pos)
-    : fExpression(SkSL::Literal::MakeInt(DSLWriter::Context(),
+    : fExpression(SkSL::IntLiteral::Make(DSLWriter::Context(),
                                          pos.offset(),
                                          value)) {}
 
 DSLExpression::DSLExpression(bool value, PositionInfo pos)
-    : fExpression(SkSL::Literal::MakeBool(DSLWriter::Context(),
+    : fExpression(SkSL::BoolLiteral::Make(DSLWriter::Context(),
                                           pos.offset(),
                                           value)) {}
 
@@ -179,10 +183,6 @@ DSLPossibleExpression DSLExpression::operator()(SkTArray<DSLWrapper<DSLExpressio
         converted.push_back(arg->release());
     }
     return DSLWriter::Call(this->release(), std::move(converted), pos);
-}
-
-DSLPossibleExpression DSLExpression::operator()(ExpressionArray args, PositionInfo pos) {
-    return DSLWriter::Call(this->release(), std::move(args), pos);
 }
 
 #define OP(op, token)                                                                              \
@@ -350,10 +350,6 @@ DSLPossibleExpression DSLPossibleExpression::operator[](DSLExpression index) {
 
 DSLPossibleExpression DSLPossibleExpression::operator()(SkTArray<DSLWrapper<DSLExpression>> args,
                                                         PositionInfo pos) {
-    return DSLExpression(this->release())(std::move(args), pos);
-}
-
-DSLPossibleExpression DSLPossibleExpression::operator()(ExpressionArray args, PositionInfo pos) {
     return DSLExpression(this->release())(std::move(args), pos);
 }
 

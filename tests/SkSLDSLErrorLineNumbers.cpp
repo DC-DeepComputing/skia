@@ -36,12 +36,11 @@ public:
         SetErrorReporter(fOldReporter);
     }
 
-    void handleError(skstd::string_view msg, SkSL::PositionInfo pos) override {
-        REPORTER_ASSERT(fReporter, msg == fMsg,
-                "Error mismatch: expected:\n%sbut received:\n%.*s", fMsg, (int)msg.length(),
-                msg.data());
+    void handleError(const char* msg, SkSL::PositionInfo pos) override {
+        REPORTER_ASSERT(fReporter, !strcmp(msg, fMsg),
+                        "Error mismatch: expected:\n%sbut received:\n%s", fMsg, msg);
         REPORTER_ASSERT(fReporter, pos.line() == fLine,
-                "Line number mismatch: expected %d, but received %d\n", fLine, pos.line());
+                        "Line number mismatch: expected %d, but received %d\n", fLine, pos.line());
         DSLWriter::Compiler().handleError(msg, pos);
         fMsg = nullptr;
     }

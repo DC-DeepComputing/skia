@@ -157,7 +157,7 @@ public:
 
     bool toMetal(Program& program, String* out);
 
-    void handleError(skstd::string_view msg, PositionInfo pos);
+    void handleError(const char* msg, PositionInfo pos);
 
     String errorText(bool showCount = true);
 
@@ -208,7 +208,7 @@ private:
         CompilerErrorReporter(Compiler* compiler)
             : fCompiler(*compiler) {}
 
-        void handleError(skstd::string_view msg, PositionInfo pos) override {
+        void handleError(const char* msg, PositionInfo pos) override {
             fCompiler.handleError(msg, pos);
         }
 
@@ -243,11 +243,6 @@ private:
 
     /** Eliminates unreachable statements from a Program. */
     void removeUnreachableCode(Program& program, ProgramUsage* usage);
-
-    /** Flattens out function calls when it is safe to do so. */
-    bool runInliner(const std::vector<std::unique_ptr<ProgramElement>>& elements,
-                    std::shared_ptr<SymbolTable> symbols,
-                    ProgramUsage* usage);
 
     Position position(int offset);
 

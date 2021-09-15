@@ -138,7 +138,7 @@ public:
     bool loadMSAAFromResolve(GrVkCommandBuffer* commandBuffer,
                              const GrVkRenderPass& renderPass,
                              GrAttachment* dst,
-                             GrVkImage* src,
+                             GrVkAttachment* src,
                              const SkIRect& srcRect);
 
     bool onRegenerateMipMapLevels(GrTexture* tex) override;
@@ -310,7 +310,7 @@ private:
 
     GrOpsRenderPass* onGetOpsRenderPass(GrRenderTarget*,
                                         bool useMSAASurface,
-                                        GrAttachment* stencil,
+                                        GrAttachment*,
                                         GrSurfaceOrigin,
                                         const SkIRect&,
                                         const GrOpsRenderPass::LoadAndStoreInfo&,
@@ -335,35 +335,28 @@ private:
     // wait semaphores to the submission of this command buffer.
     bool submitCommandBuffer(SyncQueue sync);
 
-    void copySurfaceAsCopyImage(GrSurface* dst,
-                                GrSurface* src,
-                                GrVkImage* dstImage,
-                                GrVkImage* srcImage,
-                                const SkIRect& srcRect,
+    void copySurfaceAsCopyImage(GrSurface* dst, GrSurface* src, GrVkImage* dstImage,
+                                GrVkImage* srcImage, const SkIRect& srcRect,
                                 const SkIPoint& dstPoint);
 
-    void copySurfaceAsBlit(GrSurface* dst,
-                           GrSurface* src,
-                           GrVkImage* dstImage,
-                           GrVkImage* srcImage,
-                           const SkIRect& srcRect,
-                           const SkIPoint& dstPoint);
+    void copySurfaceAsBlit(GrSurface* dst, GrSurface* src, GrVkImage* dstImage, GrVkImage* srcImage,
+                           const SkIRect& srcRect, const SkIPoint& dstPoint);
 
     void copySurfaceAsResolve(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
                               const SkIPoint& dstPoint);
 
     // helpers for onCreateTexture and writeTexturePixels
-    bool uploadTexDataLinear(GrVkImage* tex,
+    bool uploadTexDataLinear(GrVkAttachment* tex,
                              SkIRect rect,
                              GrColorType colorType,
                              const void* data,
                              size_t rowBytes);
-    bool uploadTexDataOptimal(GrVkImage* tex,
+    bool uploadTexDataOptimal(GrVkAttachment* tex,
                               SkIRect rect,
                               GrColorType colorType,
                               const GrMipLevel texels[],
                               int mipLevelCount);
-    bool uploadTexDataCompressed(GrVkImage* tex, SkImage::CompressionType compression,
+    bool uploadTexDataCompressed(GrVkAttachment* tex, SkImage::CompressionType compression,
                                  VkFormat vkFormat, SkISize dimensions, GrMipmapped mipMapped,
                                  const void* data, size_t dataSize);
     void resolveImage(GrSurface* dst, GrVkRenderTarget* src, const SkIRect& srcRect,

@@ -61,18 +61,18 @@ wgpu::RenderPassEncoder GrDawnOpsRenderPass::beginRenderPass(wgpu::LoadOp colorO
 
     const float* c = fColorInfo.fClearColor.data();
 
-    wgpu::RenderPassColorAttachment colorAttachment;
+    wgpu::RenderPassColorAttachmentDescriptor colorAttachment;
     colorAttachment.view = static_cast<GrDawnRenderTarget*>(fRenderTarget)->textureView();
     colorAttachment.resolveTarget = nullptr;
     colorAttachment.clearColor = { c[0], c[1], c[2], c[3] };
     colorAttachment.loadOp = colorOp;
     colorAttachment.storeOp = wgpu::StoreOp::Store;
-    wgpu::RenderPassColorAttachment* colorAttachments = { &colorAttachment };
+    wgpu::RenderPassColorAttachmentDescriptor* colorAttachments = { &colorAttachment };
     wgpu::RenderPassDescriptor renderPassDescriptor;
     renderPassDescriptor.colorAttachmentCount = 1;
     renderPassDescriptor.colorAttachments = colorAttachments;
     if (stencilAttachment) {
-        wgpu::RenderPassDepthStencilAttachment depthStencilAttachment;
+        wgpu::RenderPassDepthStencilAttachmentDescriptor depthStencilAttachment;
         depthStencilAttachment.view = stencilAttachment->view();
         depthStencilAttachment.depthLoadOp = stencilOp;
         depthStencilAttachment.stencilLoadOp = stencilOp;

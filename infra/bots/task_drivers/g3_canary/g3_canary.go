@@ -78,7 +78,7 @@ func main() {
 	}
 
 	// Create token source with scope for GCS access.
-	ts, err := auth_steps.Init(ctx, *local, auth.ScopeUserinfoEmail, auth.ScopeFullControl)
+	ts, err := auth_steps.Init(ctx, *local, auth.SCOPE_USERINFO_EMAIL, auth.SCOPE_FULL_CONTROL)
 	if err != nil {
 		td.Fatal(ctx, skerr.Wrap(err))
 	}

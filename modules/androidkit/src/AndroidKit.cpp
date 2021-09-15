@@ -26,7 +26,6 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     REGISTER_NATIVES(Canvas)
     REGISTER_NATIVES(ColorFilter)
     REGISTER_NATIVES(ComposeColorFilter)
-    REGISTER_NATIVES(Font)
     REGISTER_NATIVES(HSLAMatrixColorFilter)
     REGISTER_NATIVES(Image)
     REGISTER_NATIVES(ImageFilter)

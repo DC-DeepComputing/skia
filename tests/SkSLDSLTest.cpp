@@ -65,12 +65,10 @@ public:
         SetErrorReporter(fOldReporter);
     }
 
-    void handleError(skstd::string_view msg, SkSL::PositionInfo pos) override {
-        REPORTER_ASSERT(fReporter, fMsg, "Received unexpected extra error: %.*s\n",
-                (int)msg.length(), msg.data());
-        REPORTER_ASSERT(fReporter, !fMsg || msg == fMsg,
-                "Error mismatch: expected:\n%s\nbut received:\n%.*s", fMsg, (int)msg.length(),
-                msg.data());
+    void handleError(const char* msg, SkSL::PositionInfo pos) override {
+        REPORTER_ASSERT(fReporter, fMsg, "Received unexpected extra error: %s\n", msg);
+        REPORTER_ASSERT(fReporter, !fMsg || !strcmp(msg, fMsg),
+                        "Error mismatch: expected:\n%s\nbut received:\n%s", fMsg, msg);
         fMsg = nullptr;
     }
 
@@ -1806,7 +1804,6 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLBuiltins, r, ctxInfo) {
     EXPECT_EQUAL(Radians(a),             "radians(a)");
     EXPECT_EQUAL(Reflect(a, b),          "reflect(a, b)");
     EXPECT_EQUAL(Refract(a, b, 1),       "refract(a, b, 1.0)");
-    EXPECT_EQUAL(Round(a),               "round(a)");
     EXPECT_EQUAL(Saturate(a),            "saturate(a)");
     EXPECT_EQUAL(Sign(a),                "sign(a)");
     EXPECT_EQUAL(Sin(a),                 "sin(a)");
@@ -1951,17 +1948,11 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLSampleShader, r, ctxInfo) {
     AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), default_settings(),
                            SkSL::ProgramKind::kRuntimeShader);
     DSLGlobalVar shader(kUniform_Modifier, kShader_Type, "child");
-    DSLGlobalVar notShader(kUniform_Modifier, kFloat_Type, "x");
-    EXPECT_EQUAL(shader.eval(Float2(0, 0)), "child.eval(float2(0.0, 0.0))");
+    EXPECT_EQUAL(Sample(shader, Float2(0, 0)), "child.eval(float2(0.0, 0.0))");
 
     {
-        ExpectError error(r, "no match for shader::eval(half4)");
-        shader.eval(Half4(1)).release();
-    }
-
-    {
-        ExpectError error(r, "type does not support method calls");
-        notShader.eval(Half4(1)).release();
+        ExpectError error(r, "no match for sample(shader, half4)");
+        Sample(shader, Half4(1)).release();
     }
 }
 

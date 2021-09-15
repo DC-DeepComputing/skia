@@ -521,7 +521,7 @@ export interface Camera {
 export interface EmbindObject<T extends EmbindObject<T>> {
     clone(): T;
     delete(): void;
-    deleteLater(): void;
+    deleteAfter(): void;
     isAliasOf(other: any): boolean;
     isDeleted(): boolean;
 }
@@ -1768,7 +1768,7 @@ export interface FontMgr extends EmbindObject<FontMgr> {
      * Create a typeface for the specified bytes and return it.
      * @param fontData
      */
-    MakeTypefaceFromData(fontData: ArrayBuffer): Typeface;
+    makeTypefaceFromData(fontData: ArrayBuffer): Typeface;
 }
 
 /**
