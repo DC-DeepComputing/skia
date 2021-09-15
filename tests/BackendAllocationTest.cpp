@@ -283,7 +283,7 @@ static void check_base_readbacks(GrDirectContext* dContext,
                                                                colorType);
         GrSurfaceProxyView readView(proxy, kTopLeft_GrSurfaceOrigin, swizzle);
         GrColorInfo info(colorType, kUnpremul_SkAlphaType, nullptr);
-        auto surfaceContext = dContext->priv().makeSC(readView, info);
+        auto surfaceContext = dContext->priv().allocSC1(readView, info);
         if (!surfaceContext) {
             ERRORF(reporter, "Could not create surface context for colorType: %d\n", colorType);
         }

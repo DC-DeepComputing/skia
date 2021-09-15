@@ -130,8 +130,8 @@ public:
 
     // If the passed in GrSurfaceProxy is renderable this will return a SurfaceDrawContext,
     // otherwise it will return a SurfaceContext.
-    std::unique_ptr<skgpu::SurfaceContext> makeSC(GrSurfaceProxyView readView,
-                                                  const GrColorInfo&);
+    std::unique_ptr<skgpu::SurfaceContext> allocSC1(GrSurfaceProxyView readView,
+                                                   const GrColorInfo&);
 
     // Makes either a SurfaceContext, SurfaceFillContext, or a SurfaceDrawContext, depending on
     // GrRenderable and the GrImageInfo.
@@ -213,6 +213,27 @@ private:
     GrRecordingContextPriv* operator&();
 
     friend class GrRecordingContext; // to construct/copy this type.
+
+    std::unique_ptr<skgpu::SurfaceFillContext> allocSFC(GrSurfaceProxyView readView,
+                                                        GrSurfaceProxyView writeView,
+                                                        const GrColorInfo&);
+
+    std::unique_ptr<skgpu::SurfaceContext> allocSDC(GrSurfaceProxyView readView,
+                                                    GrSurfaceProxyView writeView,
+                                                    GrColorType,
+                                                    sk_sp<SkColorSpace>,
+                                                    const SkSurfaceProps&);
+
+    std::unique_ptr<skgpu::SurfaceFillContext> makeSDC(GrColorType,
+                                                       sk_sp<SkColorSpace>,
+                                                       SkBackingFit,
+                                                       SkISize dimensions,
+                                                       const SkSurfaceProps&,
+                                                       int sampleCnt,
+                                                       GrMipmapped,
+                                                       GrProtected,
+                                                       GrSurfaceOrigin,
+                                                       SkBudgeted);
 
     using INHERITED = GrImageContextPriv;
 };

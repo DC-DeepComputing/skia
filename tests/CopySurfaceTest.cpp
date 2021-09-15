@@ -104,8 +104,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(CopySurface, reporter, ctxInfo) {
                                     }
                                 }
 
-                                auto dstContext = dContext->priv().makeSC(std::move(dstView),
-                                                                          ii.colorInfo());
+                                auto dstContext = dContext->priv().allocSC1(std::move(dstView),
+                                                                            ii.colorInfo());
 
                                 bool result = false;
                                 if (sOrigin == dOrigin) {
