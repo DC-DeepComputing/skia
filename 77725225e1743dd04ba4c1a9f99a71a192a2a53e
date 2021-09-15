@@ -39,6 +39,30 @@
       },
       "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d60ff8_010ab794",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-15T20:01:46Z",
+      "side": 1,
+      "message": "The issue with Metal is that its defs are in Objective C, so we can\u0027t include them anywhere where C++ is assumed. We can probably typedef \u0027unsigned int\u0027 like we do for GrMTLPixelFormat.",
+      "parentUuid": "2e874bc1_37b62f1b",
+      "range": {
+        "startLine": 48,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 55
+      },
+      "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
