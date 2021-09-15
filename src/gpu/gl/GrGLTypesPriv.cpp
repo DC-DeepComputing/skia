@@ -65,3 +65,18 @@ void GrGLBackendTextureInfo::assign(const GrGLBackendTextureInfo& that, bool thi
 }
 
 void GrGLBackendTextureInfo::cleanup() { SkSafeUnref(fParams); }
+
+GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
+                                             const GrSharedSurfaceInfo& sharedInfo) {
+    GrGLSurfaceInfo info;
+    // Shared info
+    info.fSampleCount = sharedInfo.fSampleCount;
+    info.fLevelCount = sharedInfo.fLevelCount;
+    info.fProtected = sharedInfo.fProtected;
+
+    // GL info
+    info.fTarget = glSpec.fTarget;
+    info.fFormat = glSpec.fFormat;
+
+    return info;
+}

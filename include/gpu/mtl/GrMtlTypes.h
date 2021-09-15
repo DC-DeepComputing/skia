@@ -15,6 +15,8 @@
  * Declares typedefs for Metal types used in Ganesh cpp code
  */
 typedef unsigned int GrMTLPixelFormat;
+typedef unsigned int GrMTLTextureUsage;
+typedef unsigned int GrMTLStorageMode;
 typedef const void*  GrMTLHandle;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,6 +44,16 @@ public:
     bool operator==(const GrMtlTextureInfo& that) const {
         return fTexture == that.fTexture;
     }
+};
+
+struct GrMtlSurfaceInfo : public GrSharedSurfaceInfo {
+    GrMTLPixelFormat fFormat = 0;
+    GrMTLTextureUsage fUsage = 0;
+    GrMTLStorageMode fStorageMode = 0;
+};
+struct GrMtlTextureInfo2 {
+    sk_cfp<GrMTLHandle> fTexture;
+    GrMtlSurfaceInfo fSpec;
 };
 
 #endif

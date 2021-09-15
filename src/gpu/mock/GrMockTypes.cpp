@@ -16,3 +16,18 @@ GrBackendFormat GrMockRenderTargetInfo::getBackendFormat() const {
 GrBackendFormat GrMockTextureInfo::getBackendFormat() const {
     return GrBackendFormat::MakeMock(fColorType, fCompressionType);
 }
+
+GrMockSurfaceInfo GrMockTextureSpecToSurfaceInfo(const GrMockTextureSpec& mockSpec,
+                                                 const GrSharedSurfaceInfo& sharedInfo) {
+    GrMockSurfaceInfo info;
+    // Shared info
+    info.fSampleCount = sharedInfo.fSampleCount;
+    info.fLevelCount = sharedInfo.fLevelCount;
+    info.fProtected = sharedInfo.fProtected;
+
+    // Mock info
+    info.fColorType = mockSpec.fColorType;
+    info.fCompressionType = mockSpec.fCompressionType;
+
+    return info;
+}
