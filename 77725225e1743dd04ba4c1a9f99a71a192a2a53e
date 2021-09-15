@@ -63,6 +63,30 @@
       },
       "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c1ba3e0_83bc99c8",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-15T20:13:01Z",
+      "side": 1,
+      "message": "Ahhh my mind just wasn\u0027t working there. I for some reason was thinking the format was a very different type than the others. But clearly they\u0027re all similar enums and we can do the same thing. I\u0027ll update to do that.",
+      "parentUuid": "f6d60ff8_010ab794",
+      "range": {
+        "startLine": 48,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 55
+      },
+      "revId": "77725225e1743dd04ba4c1a9f99a71a192a2a53e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
