@@ -11,14 +11,14 @@
 
 GrD3DAttachment::GrD3DAttachment(GrD3DGpu* gpu,
                                  SkISize dimensions,
+                                 const GrSurfaceInfo& surfaceInfo,
                                  UsageFlags supportedUsages,
                                  DXGI_FORMAT format,
                                  const D3D12_RESOURCE_DESC& desc,
                                  const GrD3DTextureResourceInfo& info,
                                  sk_sp<GrD3DResourceState> state,
                                  const GrD3DDescriptorHeap::CPUHandle& view)
-        : GrAttachment(gpu, dimensions, supportedUsages, desc.SampleDesc.Count, GrMipmapped::kNo,
-                       GrProtected::kNo)
+        : GrAttachment(gpu, dimensions, surfaceInfo, supportedUsages)
         , GrD3DTextureResource(info, state)
         , fView(view)
         , fFormat(format) {
@@ -57,11 +57,22 @@ sk_sp<GrD3DAttachment> GrD3DAttachment::MakeStencil(GrD3DGpu* gpu,
     GrD3DDescriptorHeap::CPUHandle view =
             gpu->resourceProvider().createDepthStencilView(info.fResource.get());
 
+    // TODO: Use a real GrSurfaceInfo here.
+    GrSharedSurfaceInfo sharedInfo;
+    sharedInfo.fSampleCount = sampleCnt;
+    sharedInfo.fLevelCount = 1;
+    sharedInfo.fProtected = GrProtected::kNo;
+
     sk_sp<GrD3DResourceState> state(new GrD3DResourceState(info.fResourceState));
-    return sk_sp<GrD3DAttachment>(new GrD3DAttachment(gpu, dimensions,
+    return sk_sp<GrD3DAttachment>(new GrD3DAttachment(gpu,
+                                                      dimensions,
+                                                      GrSurfaceInfo(sharedInfo),
                                                       UsageFlags::kStencilAttachment,
-                                                      format, resourceDesc, info,
-                                                      std::move(state), view));
+                                                      format,
+                                                      resourceDesc,
+                                                      info,
+                                                      std::move(state),
+                                                      view));
 }
 
 void GrD3DAttachment::onRelease() {

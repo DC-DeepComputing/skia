@@ -81,11 +81,17 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         }
     }
 
+    // TODO: Use a real GrSurfaceInfo here.
+    GrSharedSurfaceInfo sharedInfo;
+    sharedInfo.fSampleCount = sampleCnt;
+    sharedInfo.fLevelCount = 1;
+    sharedInfo.fProtected = GrProtected::kNo;
+
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
+                                                    GrSurfaceInfo(sharedInfo),
                                                     GrAttachment::UsageFlags::kStencilAttachment,
-                                                    sampleCnt,
                                                     format));
 }
 
@@ -107,11 +113,17 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
         return nullptr;
     }
 
+    // TODO: Use a real GrSurfaceInfo here.
+    GrSharedSurfaceInfo sharedInfo;
+    sharedInfo.fSampleCount = sampleCnt;
+    sharedInfo.fLevelCount = 1;
+    sharedInfo.fProtected = GrProtected::kNo;
+
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
+                                                    GrSurfaceInfo(sharedInfo),
                                                     GrAttachment::UsageFlags::kColorAttachment,
-                                                    sampleCnt,
                                                     format));
 }
 

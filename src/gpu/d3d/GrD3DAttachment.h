@@ -36,6 +36,7 @@ protected:
 private:
     GrD3DAttachment(GrD3DGpu* gpu,
                     SkISize dimensions,
+                    const GrSurfaceInfo&,
                     UsageFlags supportedUsages,
                     DXGI_FORMAT format,
                     const D3D12_RESOURCE_DESC&,

@@ -18,24 +18,22 @@ GR_NORETAIN_BEGIN
 
 GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
+                                 const GrSurfaceInfo& surfaceInfo,
                                  UsageFlags supportedUsages,
                                  id<MTLTexture> texture,
                                  SkBudgeted budgeted)
-        : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
-                       texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
-                       GrProtected::kNo)
+        : GrAttachment(gpu, dimensions, surfaceInfo, supportedUsages, texture.sampleCount)
         , fTexture(texture) {
     this->registerWithCache(budgeted);
 }
 
 GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
+                                 const GrSurfaceInfo& surfaceInfo,
                                  UsageFlags supportedUsages,
                                  id<MTLTexture> texture,
                                  GrWrapCacheable cacheable)
-        : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
-                       texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
-                       GrProtected::kNo)
+        : GrAttachment(gpu, dimensions, surfaceInfo, supportedUsages, texture.sampleCount)
         , fTexture(texture) {
     this->registerWithCacheWrapped(cacheable);
 }
@@ -139,8 +137,18 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::Make(GrMtlGpu* gpu,
     }
 #endif
 
-    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages,
-                                                      texture, budgeted));
+    // TODO: Use a real GrSurfaceInfo here.
+    GrSharedSurfaceInfo sharedInfo;
+    sharedInfo.fSampleCount = sampleCnt;
+    sharedInfo.fLevelCount = mipLevels;
+    sharedInfo.fProtected = GrProtected::kNo;
+
+    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu,
+                                                      dimensions,
+                                                      GrSurfaceInfo(sharedInfo),
+                                                      attachmentUsages,
+                                                      texture,
+                                                      budgeted));
 }
 
 sk_sp<GrMtlAttachment> GrMtlAttachment::MakeWrapped(
@@ -150,7 +158,17 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::MakeWrapped(
         UsageFlags attachmentUsages,
         GrWrapCacheable cacheable) {
 
-    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages, texture,
+    // TODO: Use a real GrSurfaceInfo here.
+    GrSharedSurfaceInfo sharedInfo;
+    sharedInfo.fSampleCount = texture.sampleCount;
+    sharedInfo.fLevelCount = texture.mipmapLevelCount;
+    sharedInfo.fProtected = GrProtected::kNo;
+
+    return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu,
+                                                      dimensions,
+                                                      GrSurfaceInfo(sharedInfo)
+                                                      attachmentUsages,
+                                                      texture,
                                                       cacheable));
 }
 

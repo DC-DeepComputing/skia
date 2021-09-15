@@ -31,9 +31,17 @@ public:
                                                          UsageFlags supportedUsages,
                                                          int sampleCnt,
                                                          GrGLFormat format) {
-        return sk_sp<GrGLAttachment>(
-                new GrGLAttachment(gpu, renderbufferID, dimensions, supportedUsages, sampleCnt,
-                                   format));
+        // TODO: Use a real GrSurfaceInfo here.
+        GrSharedSurfaceInfo sharedInfo;
+        sharedInfo.fSampleCount = sampleCnt;
+        sharedInfo.fLevelCount = 1;
+        sharedInfo.fProtected = GrProtected::kNo;
+        return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
+                                                        renderbufferID,
+                                                        dimensions,
+                                                        GrSurfaceInfo(sharedInfo),
+                                                        supportedUsages,
+                                                        format));
     }
 
     GrBackendFormat backendFormat() const override;
@@ -53,11 +61,10 @@ private:
     GrGLAttachment(GrGpu* gpu,
                    GrGLuint renderbufferID,
                    SkISize dimensions,
+                   const GrSurfaceInfo& info,
                    UsageFlags supportedUsages,
-                   int sampleCnt,
                    GrGLFormat format)
-            : GrAttachment(gpu, dimensions, supportedUsages, sampleCnt, GrMipmapped::kNo,
-                           GrProtected::kNo)
+            : GrAttachment(gpu, dimensions, info, supportedUsages)
             , fFormat(format)
             , fRenderbufferID(renderbufferID) {
         SkASSERT(supportedUsages == UsageFlags::kStencilAttachment ||

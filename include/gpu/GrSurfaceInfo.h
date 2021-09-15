@@ -68,6 +68,14 @@ public:
             , fSharedInfo(mockInfo)
             , fMockSpec(mockInfo) {}
 
+    // This is a temporary ctor that is used as a default while we switch all the backends to using
+    // it. This allows us to at least store the shared info in a GrSurfaceInfo struct.
+    GrSurfaceInfo(const GrSharedSurfaceInfo& info)
+            : fBackend(GrBackendApi::kMock)
+            , fValid(false)
+            , fSharedInfo(info)
+            , fMockSpec() {}
+
     ~GrSurfaceInfo();
     GrSurfaceInfo(const GrSurfaceInfo&) = default;
 
