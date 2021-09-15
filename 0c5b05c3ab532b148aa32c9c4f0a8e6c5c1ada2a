@@ -22,6 +22,30 @@
       },
       "revId": "0c5b05c3ab532b148aa32c9c4f0a8e6c5c1ada2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59c0ab50_de95e648",
+        "filename": "tests/sksl/shared/Caps.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-15T15:37:13Z",
+      "side": 0,
+      "message": "No, that\u0027s a side effect of the default caps not having fbFetchSupport anymore. Relevant portion of Caps.sksl looks like:\n\n    if (sk_Caps.externalTextureSupport) x \u003d 1;\n    if (sk_Caps.fbFetchSupport) y \u003d 1;\n    if (sk_Caps.canUseAnyFunctionInShader) z \u003d 1;",
+      "parentUuid": "6a6ab819_eb844b5f",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 10
+      },
+      "revId": "0c5b05c3ab532b148aa32c9c4f0a8e6c5c1ada2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
