@@ -96,17 +96,17 @@ private:
                            const ProgramUsage&,
                            const FunctionDeclaration* caller);
 
-    /** Creates a scratch variable for the inliner to use. */
-    struct InlineVariable {
+    /** Creates a scratch variable. */
+    struct ScratchVariable {
         const Variable*             fVarSymbol;
         std::unique_ptr<Statement>  fVarDecl;
     };
-    InlineVariable makeInlineVariable(const String& baseName,
-                                      const Type* type,
-                                      SymbolTable* symbolTable,
-                                      Modifiers modifiers,
-                                      bool isBuiltinCode,
-                                      std::unique_ptr<Expression>* initialValue);
+    ScratchVariable makeScratchVariable(const String& baseName,
+                                        const Type* type,
+                                        SymbolTable* symbolTable,
+                                        Modifiers modifiers,
+                                        bool isBuiltinCode,
+                                        std::unique_ptr<Expression> initialValue);
 
     /** Adds a scope to inlined bodies returned by `inlineCall`, if one is required. */
     void ensureScopedBlocks(Statement* inlinedBody, Statement* parentStmt);
