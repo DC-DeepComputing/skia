@@ -155,23 +155,22 @@ private:
 
     bool varDeclarationsPrefix(VarDeclarationsPrefix* prefixData);
 
-    dsl::DSLStatement varDeclarationsOrExpressionStatement();
+    skstd::optional<dsl::DSLStatement> varDeclarationsOrExpressionStatement();
 
-    dsl::DSLStatement varDeclarations();
+    skstd::optional<dsl::DSLStatement> varDeclarations();
 
     skstd::optional<dsl::DSLType> structDeclaration();
 
     SkTArray<dsl::DSLGlobalVar> structVarDeclaration(const dsl::DSLModifiers& modifiers);
 
-    bool parseArrayDimensions(int offset, dsl::DSLType* type);
+    /* (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)? (COMMA IDENTIFER
+       (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)?)* SEMICOLON */
+    template<class T>
+    SkTArray<T> varDeclarationEnd(PositionInfo position, const dsl::DSLModifiers& mods,
+                                  dsl::DSLType baseType, skstd::string_view name);
 
-    bool parseInitializer(int offset, dsl::DSLExpression* initializer);
-
-    void globalVarDeclarationEnd(PositionInfo position, const dsl::DSLModifiers& mods,
-            dsl::DSLType baseType, skstd::string_view name);
-
-    dsl::DSLStatement localVarDeclarationEnd(PositionInfo position, const dsl::DSLModifiers& mods,
-            dsl::DSLType baseType, skstd::string_view name);
+    SkTArray<dsl::DSLGlobalVar> globalVarDeclarationEnd(const dsl::DSLModifiers& modifiers,
+                                                        dsl::DSLType type, skstd::string_view name);
 
     skstd::optional<dsl::DSLWrapper<dsl::DSLParameter>> parameter();
 
@@ -185,75 +184,77 @@ private:
 
     dsl::DSLModifiers modifiersWithDefaults(int defaultFlags);
 
-    dsl::DSLStatement statement();
+    skstd::optional<dsl::DSLStatement> statement();
 
     skstd::optional<dsl::DSLType> type(const dsl::DSLModifiers& modifiers);
 
     bool interfaceBlock(const dsl::DSLModifiers& mods);
 
-    dsl::DSLStatement ifStatement();
+    skstd::optional<dsl::DSLStatement> ifStatement();
 
-    dsl::DSLStatement doStatement();
+    skstd::optional<dsl::DSLStatement> doStatement();
 
-    dsl::DSLStatement whileStatement();
+    skstd::optional<dsl::DSLStatement> whileStatement();
 
-    dsl::DSLStatement forStatement();
+    skstd::optional<dsl::DSLStatement> forStatement();
 
     skstd::optional<dsl::DSLCase> switchCase();
 
-    dsl::DSLStatement switchStatement();
+    skstd::optional<dsl::DSLStatement> switchStatement();
 
-    dsl::DSLStatement returnStatement();
+    skstd::optional<dsl::DSLStatement> returnStatement();
 
-    dsl::DSLStatement breakStatement();
+    skstd::optional<dsl::DSLStatement> breakStatement();
 
-    dsl::DSLStatement continueStatement();
+    skstd::optional<dsl::DSLStatement> continueStatement();
 
-    dsl::DSLStatement discardStatement();
+    skstd::optional<dsl::DSLStatement> discardStatement();
 
     skstd::optional<dsl::DSLBlock> block();
 
-    dsl::DSLStatement expressionStatement();
+    skstd::optional<dsl::DSLStatement> expressionStatement();
 
-    dsl::DSLExpression expression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> expression();
 
-    dsl::DSLExpression assignmentExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> assignmentExpression();
 
-    dsl::DSLExpression ternaryExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> ternaryExpression();
 
-    dsl::DSLExpression logicalOrExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> logicalOrExpression();
 
-    dsl::DSLExpression logicalXorExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> logicalXorExpression();
 
-    dsl::DSLExpression logicalAndExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> logicalAndExpression();
 
-    dsl::DSLExpression bitwiseOrExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> bitwiseOrExpression();
 
-    dsl::DSLExpression bitwiseXorExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> bitwiseXorExpression();
 
-    dsl::DSLExpression bitwiseAndExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> bitwiseAndExpression();
 
-    dsl::DSLExpression equalityExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> equalityExpression();
 
-    dsl::DSLExpression relationalExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> relationalExpression();
 
-    dsl::DSLExpression shiftExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> shiftExpression();
 
-    dsl::DSLExpression additiveExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> additiveExpression();
 
-    dsl::DSLExpression multiplicativeExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> multiplicativeExpression();
 
-    dsl::DSLExpression unaryExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> unaryExpression();
 
-    dsl::DSLExpression postfixExpression();
+    skstd::optional<dsl::DSLWrapper<dsl::DSLExpression>> postfixExpression();
 
-    dsl::DSLExpression swizzle(int offset, dsl::DSLExpression base, skstd::string_view swizzleMask);
+    skstd::optional<dsl::Wrapper<dsl::DSLExpression>> swizzle(int offset, dsl::DSLExpression base,
+            skstd::string_view swizzleMask);
 
-    dsl::DSLExpression call(int offset, dsl::DSLExpression base, ExpressionArray args);
+    skstd::optional<dsl::Wrapper<dsl::DSLExpression>> call(int offset, dsl::DSLExpression base,
+            SkTArray<dsl::Wrapper<dsl::DSLExpression>> args);
 
-    dsl::DSLExpression suffix(dsl::DSLExpression base);
+    skstd::optional<dsl::Wrapper<dsl::DSLExpression>> suffix(dsl::DSLExpression base);
 
-    dsl::DSLExpression term();
+    skstd::optional<dsl::Wrapper<dsl::DSLExpression>> term();
 
     bool intLiteral(SKSL_INT* dest);
 
@@ -297,7 +298,7 @@ private:
     private:
         class ForwardingErrorReporter : public ErrorReporter {
         public:
-            void handleError(skstd::string_view msg, PositionInfo pos) override {
+            void handleError(const char* msg, PositionInfo pos) override {
                 fErrors.push_back({String(msg), pos});
             }
 

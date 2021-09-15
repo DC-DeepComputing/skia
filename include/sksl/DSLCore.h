@@ -20,7 +20,7 @@
 #include "include/sksl/DSLWrapper.h"
 #include "include/sksl/SkSLErrorReporter.h"
 
-#define SKSL_DSL_PARSER 0
+#define SKSL_DSL_PARSER 1
 
 namespace SkSL {
 
@@ -126,7 +126,7 @@ DSLCase Default(Statements... statements) {
 /**
  * discard;
  */
-DSLStatement Discard(PositionInfo pos = PositionInfo::Capture());
+DSLStatement Discard();
 
 /**
  * do stmt; while (test);
@@ -165,8 +165,7 @@ DSLStatement StaticIf(DSLExpression test, DSLStatement ifTrue,
                       DSLStatement ifFalse = DSLStatement(),
                       PositionInfo pos = PositionInfo::Capture());
 
-DSLPossibleStatement StaticSwitch(DSLExpression value, SkTArray<DSLCase> cases,
-                                  PositionInfo info = PositionInfo::Capture());
+DSLPossibleStatement StaticSwitch(DSLExpression value, SkTArray<DSLCase> cases);
 
 /**
  * @switch (value) { cases }
@@ -179,8 +178,7 @@ DSLPossibleStatement StaticSwitch(DSLExpression value, Cases... cases) {
     return StaticSwitch(std::move(value), std::move(caseArray));
 }
 
-DSLPossibleStatement Switch(DSLExpression value, SkTArray<DSLCase> cases,
-                            PositionInfo info = PositionInfo::Capture());
+DSLPossibleStatement Switch(DSLExpression value, SkTArray<DSLCase> cases);
 
 /**
  * switch (value) { cases }
@@ -428,9 +426,24 @@ DSLExpression Refract(DSLExpression i, DSLExpression n, DSLExpression eta,
                       PositionInfo pos = PositionInfo::Capture());
 
 /**
- * Returns x, rounded to the nearest integer. If x is a vector, operates componentwise.
+ * Samples the child processor at the current coordinates.
  */
-DSLExpression Round(DSLExpression x, PositionInfo pos = PositionInfo::Capture());
+DSLExpression Sample(DSLExpression fp, PositionInfo pos = PositionInfo::Capture());
+
+/**
+ * Implements the following functions:
+ *     half4 sample(fragmentProcessor fp, float2 coords);
+ *     half4 sample(fragmentProcessor fp, half4 input);
+ */
+DSLExpression Sample(DSLExpression target, DSLExpression x,
+                     PositionInfo pos = PositionInfo::Capture());
+
+/**
+ * Implements the following functions:
+ *     half4 sample(fragmentProcessor fp, float2 coords, half4 input);
+ */
+DSLExpression Sample(DSLExpression childProcessor, DSLExpression x, DSLExpression y,
+                     PositionInfo pos = PositionInfo::Capture());
 
 /**
  * Returns x clamped to the range [0, 1]. If x is a vector, operates componentwise.

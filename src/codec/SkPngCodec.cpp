@@ -933,39 +933,22 @@ void AutoCleanPng::infoCallback(size_t idatLength) {
             }
         }
 
-        switch (encodedColorType) {
-            case PNG_COLOR_TYPE_GRAY_ALPHA:{
-                png_color_8p sigBits;
-                if (png_get_sBIT(fPng_ptr, fInfo_ptr, &sigBits)) {
-                    if (8 == sigBits->alpha && kGraySigBit_GrayAlphaIsJustAlpha == sigBits->gray) {
-                        color = SkEncodedInfo::kXAlpha_Color;
-                    }
+        if (encodedColorType == PNG_COLOR_TYPE_GRAY_ALPHA) {
+            png_color_8p sigBits;
+            if (png_get_sBIT(fPng_ptr, fInfo_ptr, &sigBits)) {
+                if (8 == sigBits->alpha && kGraySigBit_GrayAlphaIsJustAlpha == sigBits->gray) {
+                    color = SkEncodedInfo::kXAlpha_Color;
                 }
-                break;
             }
-            case PNG_COLOR_TYPE_RGB:{
-                png_color_8p sigBits;
-                if (png_get_sBIT(fPng_ptr, fInfo_ptr, &sigBits)) {
-                    if (5 == sigBits->red && 6 == sigBits->green && 5 == sigBits->blue) {
-                        // Recommend a decode to 565 if the sBIT indicates 565.
-                        color = SkEncodedInfo::k565_Color;
-                    }
-                }
-                break;
-            }
-        }
-
-#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-        if (encodedColorType != PNG_COLOR_TYPE_GRAY_ALPHA
-            && SkEncodedInfo::kOpaque_Alpha == alpha) {
+        } else if (SkEncodedInfo::kOpaque_Alpha == alpha) {
             png_color_8p sigBits;
             if (png_get_sBIT(fPng_ptr, fInfo_ptr, &sigBits)) {
                 if (5 == sigBits->red && 6 == sigBits->green && 5 == sigBits->blue) {
-                    SkAndroidFrameworkUtils::SafetyNetLog("190188264");
+                    // Recommend a decode to 565 if the sBIT indicates 565.
+                    color = SkEncodedInfo::k565_Color;
                 }
             }
         }
-#endif // SK_BUILD_FOR_ANDROID_FRAMEWORK
 
         SkEncodedInfo encodedInfo = SkEncodedInfo::Make(origWidth, origHeight, color, alpha,
                                                         bitDepth, std::move(profile));

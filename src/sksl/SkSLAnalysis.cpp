@@ -7,7 +7,6 @@
 
 #include "src/sksl/SkSLAnalysis.h"
 
-#include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLSampleUsage.h"
@@ -39,6 +38,7 @@
 
 // Expressions
 #include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
@@ -46,11 +46,12 @@
 #include "src/sksl/ir/SkSLExternalFunctionCall.h"
 #include "src/sksl/ir/SkSLExternalFunctionReference.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionReference.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInlineMarker.h"
-#include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLSetting.h"
@@ -289,7 +290,7 @@ private:
 class TrivialErrorReporter : public ErrorReporter {
 public:
     ~TrivialErrorReporter() override { this->reportPendingErrors({}); }
-    void handleError(skstd::string_view, PositionInfo) override {}
+    void handleError(const char*, PositionInfo) override {}
 };
 
 // This isn't actually using ProgramVisitor, because it only considers a subset of the fields for
@@ -929,7 +930,9 @@ bool Analysis::UpdateVariableRefKind(Expression* expr,
 }
 
 bool Analysis::IsTrivialExpression(const Expression& expr) {
-    return expr.is<Literal>() ||
+    return expr.is<IntLiteral>() ||
+           expr.is<FloatLiteral>() ||
+           expr.is<BoolLiteral>() ||
            expr.is<VariableReference>() ||
            (expr.is<Swizzle>() &&
             IsTrivialExpression(*expr.as<Swizzle>().base())) ||
@@ -941,7 +944,7 @@ bool Analysis::IsTrivialExpression(const Expression& expr) {
            (expr.isAnyConstructor() &&
             expr.isConstantOrUniform()) ||
            (expr.is<IndexExpression>() &&
-            expr.as<IndexExpression>().index()->isIntLiteral() &&
+            expr.as<IndexExpression>().index()->is<IntLiteral>() &&
             IsTrivialExpression(*expr.as<IndexExpression>().base()));
 }
 
@@ -955,8 +958,14 @@ bool Analysis::IsSameExpressionTree(const Expression& left, const Expression& ri
     // Since this is intended to be used for optimization purposes, handling the common cases is
     // sufficient.
     switch (left.kind()) {
-        case Expression::Kind::kLiteral:
-            return left.as<Literal>().value() == right.as<Literal>().value();
+        case Expression::Kind::kIntLiteral:
+            return left.as<IntLiteral>().value() == right.as<IntLiteral>().value();
+
+        case Expression::Kind::kFloatLiteral:
+            return left.as<FloatLiteral>().value() == right.as<FloatLiteral>().value();
+
+        case Expression::Kind::kBoolLiteral:
+            return left.as<BoolLiteral>().value() == right.as<BoolLiteral>().value();
 
         case Expression::Kind::kConstructorArray:
         case Expression::Kind::kConstructorArrayCast:
@@ -1013,8 +1022,12 @@ static bool get_constant_value(const Expression& expr, double* val) {
     if (!valExpr) {
         return false;
     }
-    if (valExpr->is<Literal>()) {
-        *val = valExpr->as<Literal>().value();
+    if (valExpr->is<IntLiteral>()) {
+        *val = static_cast<double>(valExpr->as<IntLiteral>().value());
+        return true;
+    }
+    if (valExpr->is<FloatLiteral>()) {
+        *val = static_cast<double>(valExpr->as<FloatLiteral>().value());
         return true;
     }
     SkDEBUGFAILF("unexpected constant type (%s)", expr.type().description().c_str());
@@ -1152,83 +1165,30 @@ static const char* invalid_for_ES2(int offset,
     }
 
     // Finally, compute the iteration count, based on the bounds, and the termination operator.
-    static constexpr int kLoopTerminationLimit = 100000;
+    constexpr int kMaxUnrollableLoopLength = 128;
     loopInfo.fCount = 0;
 
-    auto calculateCount = [](double start, double end, double delta,
-                             bool forwards, bool inclusive) -> int {
-        if (forwards != (start < end)) {
-            // The loop starts in a completed state (the start has already advanced past the end).
-            return 0;
+    double val = loopInfo.fStart;
+    auto evalCond = [&]() {
+        switch (cond.getOperator().kind()) {
+            case Token::Kind::TK_GT:   return val >  loopEnd;
+            case Token::Kind::TK_GTEQ: return val >= loopEnd;
+            case Token::Kind::TK_LT:   return val <  loopEnd;
+            case Token::Kind::TK_LTEQ: return val <= loopEnd;
+            case Token::Kind::TK_EQEQ: return val == loopEnd;
+            case Token::Kind::TK_NEQ:  return val != loopEnd;
+            default: SkUNREACHABLE;
         }
-        if ((delta == 0.0) || forwards != (delta > 0.0)) {
-            // The loop does not progress toward a completed state, and will never terminate.
-            return kLoopTerminationLimit;
-        }
-        double iterations = sk_ieee_double_divide(end - start, delta);
-        double count = std::ceil(iterations);
-        if (inclusive && (count == iterations)) {
-            count += 1.0;
-        }
-        if (count > kLoopTerminationLimit || !std::isfinite(count)) {
-            // The loop runs for more iterations than we can safely unroll.
-            return kLoopTerminationLimit;
-        }
-        return (int)count;
     };
 
-    switch (cond.getOperator().kind()) {
-        case Token::Kind::TK_LT:
-            loopInfo.fCount = calculateCount(loopInfo.fStart, loopEnd, loopInfo.fDelta,
-                                             /*forwards=*/true, /*inclusive=*/false);
-            break;
-
-        case Token::Kind::TK_GT:
-            loopInfo.fCount = calculateCount(loopInfo.fStart, loopEnd, loopInfo.fDelta,
-                                             /*forwards=*/false, /*inclusive=*/false);
-            break;
-
-        case Token::Kind::TK_LTEQ:
-            loopInfo.fCount = calculateCount(loopInfo.fStart, loopEnd, loopInfo.fDelta,
-                                             /*forwards=*/true, /*inclusive=*/true);
-            break;
-
-        case Token::Kind::TK_GTEQ:
-            loopInfo.fCount = calculateCount(loopInfo.fStart, loopEnd, loopInfo.fDelta,
-                                             /*forwards=*/false, /*inclusive=*/true);
-            break;
-
-        case Token::Kind::TK_NEQ: {
-            float iterations = sk_ieee_double_divide(loopEnd - loopInfo.fStart, loopInfo.fDelta);
-            loopInfo.fCount = std::ceil(iterations);
-            if (loopInfo.fCount < 0 || loopInfo.fCount != iterations ||
-                !std::isfinite(iterations)) {
-                // The loop doesn't reach the exact endpoint and so will never terminate.
-                loopInfo.fCount = kLoopTerminationLimit;
-            }
+    for (loopInfo.fCount = 0; loopInfo.fCount <= kMaxUnrollableLoopLength; ++loopInfo.fCount) {
+        if (!evalCond()) {
             break;
         }
-        case Token::Kind::TK_EQEQ: {
-            if (loopInfo.fStart == loopEnd) {
-                // Start and end begin in the same place, so we can run one iteration...
-                if (loopInfo.fDelta) {
-                    // ... and then they diverge, so the loop terminates.
-                    loopInfo.fCount = 1;
-                } else {
-                    // ... but they never diverge, so the loop runs forever.
-                    loopInfo.fCount = kLoopTerminationLimit;
-                }
-            } else {
-                // Start never equals end, so the loop will not run a single iteration.
-                loopInfo.fCount = 0;
-            }
-            break;
-        }
-        default: SkUNREACHABLE;
+        val += loopInfo.fDelta;
     }
 
-    SkASSERT(loopInfo.fCount >= 0);
-    if (loopInfo.fCount >= kLoopTerminationLimit) {
+    if (loopInfo.fCount > kMaxUnrollableLoopLength) {
         return "loop must guarantee termination in fewer iterations";
     }
 
@@ -1263,7 +1223,9 @@ public:
         // A constant-(index)-expression is one of...
         switch (e.kind()) {
             // ... a literal value
-            case Expression::Kind::kLiteral:
+            case Expression::Kind::kBoolLiteral:
+            case Expression::Kind::kIntLiteral:
+            case Expression::Kind::kFloatLiteral:
                 return false;
 
             // ... settings can appear in fragment processors; they will resolve when compiled
@@ -1471,9 +1433,11 @@ bool ProgramVisitor::visit(const Program& program) {
 
 template <typename T> bool TProgramVisitor<T>::visitExpression(typename T::Expression& e) {
     switch (e.kind()) {
+        case Expression::Kind::kBoolLiteral:
         case Expression::Kind::kExternalFunctionReference:
+        case Expression::Kind::kFloatLiteral:
         case Expression::Kind::kFunctionReference:
-        case Expression::Kind::kLiteral:
+        case Expression::Kind::kIntLiteral:
         case Expression::Kind::kMethodReference:
         case Expression::Kind::kPoison:
         case Expression::Kind::kSetting:

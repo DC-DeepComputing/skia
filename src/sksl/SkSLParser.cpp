@@ -147,7 +147,6 @@ std::unique_ptr<ASTFile> Parser::compilationUnit() {
                 if (decl) {
                     getNode(result).addChild(decl);
                 }
-                break;
             }
         }
     }

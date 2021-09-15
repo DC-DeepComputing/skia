@@ -122,9 +122,6 @@ public:
     DSLPossibleExpression operator()(SkTArray<DSLWrapper<DSLExpression>> args,
                                      PositionInfo pos = PositionInfo::Capture());
 
-    DSLPossibleExpression operator()(ExpressionArray args,
-                                     PositionInfo pos = PositionInfo::Capture());
-
     /**
      * Returns true if this object contains an expression. DSLExpressions which were created with
      * the empty constructor or which have already been release()ed do not have a value.
@@ -270,9 +267,6 @@ public:
     DSLPossibleExpression operator[](DSLExpression index);
 
     DSLPossibleExpression operator()(SkTArray<DSLWrapper<DSLExpression>> args,
-                                     PositionInfo pos = PositionInfo::Capture());
-
-    DSLPossibleExpression operator()(ExpressionArray args,
                                      PositionInfo pos = PositionInfo::Capture());
 
     DSLPossibleExpression operator++();

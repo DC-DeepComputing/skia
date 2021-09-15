@@ -404,12 +404,6 @@ public:
         return fMustSetAnyTexParameterToEnableMipmapping;
     }
 
-    // Whether we must reset the blend function to not reference src2 when disabling blending after
-    // previously referencing src2.
-    bool mustResetBlendFuncBetweenDualSourceAndDisable() const {
-        return fMustResetBlendFuncBetweenDualSourceAndDisable;
-    }
-
     // Returns the observed maximum number of instances the driver can handle in a single draw call
     // without crashing, or 'pendingInstanceCount' if this workaround is not necessary.
     // NOTE: the return value may be larger than pendingInstanceCount.
@@ -583,7 +577,6 @@ private:
     bool fMustSetAnyTexParameterToEnableMipmapping : 1;
     bool fAllowBGRA8CopyTexSubImage : 1;
     bool fDisallowDynamicMSAA : 1;
-    bool fMustResetBlendFuncBetweenDualSourceAndDisable : 1;
     int fMaxInstancesPerDrawWithoutCrashing = 0;
 
     uint32_t fBlitFramebufferFlags = kNoSupport_BlitFramebufferFlag;

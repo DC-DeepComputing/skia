@@ -31,6 +31,7 @@
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -38,8 +39,8 @@
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInlineMarker.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
-#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
@@ -414,7 +415,7 @@ std::unique_ptr<Expression> Rehydrator::expression() {
         }
         case Rehydrator::kBoolLiteral_Command: {
             bool value = this->readU8();
-            return Literal::MakeBool(fContext, /*offset=*/-1, value);
+            return BoolLiteral::Make(fContext, /*offset=*/-1, value);
         }
         case Rehydrator::kConstructorArray_Command: {
             const Type* type = this->type();
@@ -469,10 +470,9 @@ std::unique_ptr<Expression> Rehydrator::expression() {
         }
         case Rehydrator::kFloatLiteral_Command: {
             const Type* type = this->type();
-            int32_t floatBits = this->readS32();
-            float value;
-            memcpy(&value, &floatBits, sizeof(value));
-            return Literal::MakeFloat(/*offset=*/-1, value, type);
+            FloatIntUnion u;
+            u.fInt = this->readS32();
+            return FloatLiteral::Make(/*offset=*/-1, u.fFloat, type);
         }
         case Rehydrator::kFunctionCall_Command: {
             const Type* type = this->type();
@@ -489,7 +489,7 @@ std::unique_ptr<Expression> Rehydrator::expression() {
         case Rehydrator::kIntLiteral_Command: {
             const Type* type = this->type();
             int value = this->readS32();
-            return Literal::MakeInt(/*offset=*/-1, value, type);
+            return IntLiteral::Make(/*offset=*/-1, value, type);
         }
         case Rehydrator::kPostfix_Command: {
             Token::Kind op = (Token::Kind) this->readU8();

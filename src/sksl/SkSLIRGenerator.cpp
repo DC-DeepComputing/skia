@@ -23,6 +23,7 @@
 #include "src/sksl/SkSLParser.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLContinueStatement.h"
@@ -33,6 +34,7 @@
 #include "src/sksl/ir/SkSLExternalFunctionReference.h"
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -41,11 +43,10 @@
 #include "src/sksl/ir/SkSLFunctionReference.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
-#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLMethodReference.h"
 #include "src/sksl/ir/SkSLNop.h"
-#include "src/sksl/ir/SkSLPoison.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
@@ -94,7 +95,7 @@ void IRGenerator::popSymbolTable() {
 std::unique_ptr<Extension> IRGenerator::convertExtension(int offset, skstd::string_view name) {
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex) {
-        this->errorReporter().error(offset, "extensions are not allowed in this kind of program");
+        this->errorReporter().error(offset, "extensions are not allowed here");
         return nullptr;
     }
 
@@ -140,9 +141,10 @@ std::unique_ptr<Block> IRGenerator::convertBlock(const ASTNode& block) {
     StatementArray statements;
     for (const auto& child : block) {
         std::unique_ptr<Statement> statement = this->convertStatement(child);
-        if (statement) {
-            statements.push_back(std::move(statement));
+        if (!statement) {
+            return nullptr;
         }
+        statements.push_back(std::move(statement));
     }
     return Block::Make(block.fOffset, std::move(statements), fSymbolTable);
 }
@@ -363,8 +365,7 @@ StatementArray IRGenerator::convertVarDeclarations(const ASTNode& decls,
 std::unique_ptr<ModifiersDeclaration> IRGenerator::convertModifiersDeclaration(const ASTNode& m) {
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex) {
-        this->errorReporter().error(m.fOffset,
-                "layout qualifiers are not allowed in this kind of program");
+        this->errorReporter().error(m.fOffset, "layout qualifiers are not allowed here");
         return nullptr;
     }
 
@@ -517,14 +518,14 @@ std::unique_ptr<Statement> IRGenerator::convertReturn(int offset,
 std::unique_ptr<Statement> IRGenerator::convertReturn(const ASTNode& r) {
     SkASSERT(r.fKind == ASTNode::Kind::kReturn);
     if (r.begin() != r.end()) {
-        if (std::unique_ptr<Expression> value = this->convertExpression(*r.begin())) {
-            return this->convertReturn(r.fOffset, std::move(value));
-        } else {
-            return this->convertReturn(r.fOffset, Poison::Make(r.fOffset, fContext));
+        std::unique_ptr<Expression> value = this->convertExpression(*r.begin());
+        if (!value) {
+            return nullptr;
         }
+        return this->convertReturn(r.fOffset, std::move(value));
+    } else {
+        return this->convertReturn(r.fOffset, /*result=*/nullptr);
     }
-
-    return this->convertReturn(r.fOffset, /*result=*/nullptr);
 }
 
 std::unique_ptr<Statement> IRGenerator::convertBreak(const ASTNode& b) {
@@ -766,8 +767,7 @@ void IRGenerator::scanInterfaceBlock(SkSL::InterfaceBlock& intf) {
 std::unique_ptr<SkSL::InterfaceBlock> IRGenerator::convertInterfaceBlock(const ASTNode& intf) {
     if (this->programKind() != ProgramKind::kFragment &&
         this->programKind() != ProgramKind::kVertex) {
-        this->errorReporter().error(intf.fOffset,
-                "interface blocks are not allowed in this kind of program");
+        this->errorReporter().error(intf.fOffset, "interface block is not allowed here");
         return nullptr;
     }
 
@@ -880,19 +880,19 @@ std::unique_ptr<Expression> IRGenerator::convertExpression(const ASTNode& expr) 
         case ASTNode::Kind::kBinary:
             return this->convertBinaryExpression(expr);
         case ASTNode::Kind::kBool:
-            return Literal::MakeBool(fContext, expr.fOffset, expr.getBool());
+            return BoolLiteral::Make(fContext, expr.fOffset, expr.getBool());
         case ASTNode::Kind::kCall:
             return this->convertCallExpression(expr);
         case ASTNode::Kind::kField:
             return this->convertFieldExpression(expr);
         case ASTNode::Kind::kFloat:
-            return Literal::MakeFloat(fContext, expr.fOffset, expr.getFloat());
+            return FloatLiteral::Make(fContext, expr.fOffset, expr.getFloat());
         case ASTNode::Kind::kIdentifier:
             return this->convertIdentifier(expr);
         case ASTNode::Kind::kIndex:
             return this->convertIndexExpression(expr);
         case ASTNode::Kind::kInt:
-            return Literal::MakeInt(fContext, expr.fOffset, expr.getInt());
+            return IntLiteral::Make(fContext, expr.fOffset, expr.getInt());
         case ASTNode::Kind::kPostfix:
             return this->convertPostfixExpression(expr);
         case ASTNode::Kind::kPrefix:

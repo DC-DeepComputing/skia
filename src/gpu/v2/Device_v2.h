@@ -12,12 +12,10 @@
 
 namespace skgpu::v2 {
 
-class SurfaceDrawContext;
-
 /**
  *  Subclass of BaseDevice, which directs all drawing to the GrGpu owned by the canvas.
  */
-class Device final : public BaseDevice  {
+class Device : public BaseDevice  {
 public:
     static sk_sp<BaseDevice> Make(GrRecordingContext*,
                                   GrColorType,
@@ -25,7 +23,9 @@ public:
                                   sk_sp<SkColorSpace>,
                                   GrSurfaceOrigin,
                                   const SkSurfaceProps&,
-                                  InitContents);
+                                  InitContents) {
+        return nullptr;
+    }
 
     static sk_sp<BaseDevice> Make(GrRecordingContext*,
                                   SkBudgeted,
@@ -36,11 +36,12 @@ public:
                                   GrProtected,
                                   GrSurfaceOrigin,
                                   const SkSurfaceProps&,
-                                  InitContents);
+                                  InitContents) {
+        return nullptr;
+    }
 
     ~Device() override;
 
-    skgpu::SurfaceFillContext* surfaceFillContext() override;
     GrSurfaceProxyView readSurfaceView() override;
 
     bool wait(int numSemaphores,
@@ -138,17 +139,11 @@ protected:
     /* isNoPixelsDevice */
 
 private:
-    static sk_sp<BaseDevice> Make(std::unique_ptr<SurfaceDrawContext>,
-                                  SkAlphaType,
-                                  InitContents);
-
-    Device(std::unique_ptr<SurfaceDrawContext>, DeviceFlags);
+    Device(sk_sp<GrRecordingContext>, const SkImageInfo&, const SkSurfaceProps&);
 
     /* replaceBitmapBackendForRasterSurface */
     bool forceConservativeRasterClip() const override;
     SkImageFilterCache* getImageFilterCache() override;
-
-    std::unique_ptr<SurfaceDrawContext> fSurfaceDrawContext;
 
     using INHERITED = BaseDevice;
 };

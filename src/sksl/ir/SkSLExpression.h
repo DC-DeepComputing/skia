@@ -28,6 +28,7 @@ class Expression : public IRNode {
 public:
     enum class Kind {
         kBinary = (int) Statement::Kind::kLast + 1,
+        kBoolLiteral,
         kChildCall,
         kCodeString,
         kConstructorArray,
@@ -41,11 +42,12 @@ public:
         kConstructorStruct,
         kExternalFunctionCall,
         kExternalFunctionReference,
+        kIntLiteral,
         kFieldAccess,
+        kFloatLiteral,
         kFunctionReference,
         kFunctionCall,
         kIndex,
-        kLiteral,
         kMethodReference,
         kPoison,
         kPostfix,
@@ -81,7 +83,7 @@ public:
 
     /**
      *  Use is<T> to check the type of an expression.
-     *  e.g. replace `e.kind() == Expression::Kind::kLiteral` with `e.is<Literal>()`.
+     *  e.g. replace `e.kind() == Expression::Kind::kIntLiteral` with `e.is<IntLiteral>()`.
      */
     template <typename T>
     bool is() const {
@@ -94,20 +96,8 @@ public:
         return this->kind() >= Kind::kConstructorArray && this->kind() <= Kind::kConstructorStruct;
     }
 
-    bool isIntLiteral() const {
-        return this->kind() == Kind::kLiteral && this->type().isInteger();
-    }
-
-    bool isFloatLiteral() const {
-        return this->kind() == Kind::kLiteral && this->type().isFloat();
-    }
-
-    bool isBoolLiteral() const {
-        return this->kind() == Kind::kLiteral && this->type().isBoolean();
-    }
-
     /**
-     *  Use as<T> to downcast expressions: e.g. replace `(Literal&) i` with `i.as<Literal>()`.
+     *  Use as<T> to downcast expressions: e.g. replace `(IntLiteral&) i` with `i.as<IntLiteral>()`.
      */
     template <typename T>
     const T& as() const {

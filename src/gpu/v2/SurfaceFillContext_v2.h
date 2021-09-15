@@ -17,7 +17,8 @@ public:
     SurfaceFillContext(GrRecordingContext*,
                        GrSurfaceProxyView readView,
                        GrSurfaceProxyView writeView,
-                       const GrColorInfo&);
+                       const GrColorInfo&,
+                       bool flushTimeOpsTask = false);
 
     void discard() override;
 

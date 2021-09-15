@@ -8,12 +8,14 @@
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 
 #include "src/sksl/SkSLConstantFolder.h"
+#include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
-#include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 
 namespace SkSL {
 
@@ -23,11 +25,17 @@ static std::unique_ptr<Expression> simplify_negation(const Context& context,
                                                      const Expression& originalExpr) {
     const Expression* value = ConstantFolder::GetConstantValueForVariable(originalExpr);
     switch (value->kind()) {
-        case Expression::Kind::kLiteral:
-            // Convert -literal(1) to literal(-1).
-            return Literal::Make(originalExpr.fOffset,
-                                 -value->as<Literal>().value(),
-                                 &value->type());
+        case Expression::Kind::kFloatLiteral:
+            // Convert -floatLiteral(1) to floatLiteral(-1).
+            return FloatLiteral::Make(originalExpr.fOffset,
+                                      -value->as<FloatLiteral>().value(),
+                                      &value->type());
+
+        case Expression::Kind::kIntLiteral:
+            // Convert -intLiteral(1) to intLiteral(-1).
+            return IntLiteral::Make(originalExpr.fOffset,
+                                    -value->as<IntLiteral>().value(),
+                                    &value->type());
 
         case Expression::Kind::kPrefix:
             if (context.fConfig->fSettings.fOptimize) {
@@ -111,11 +119,10 @@ static std::unique_ptr<Expression> logical_not_operand(const Context& context,
                                                        std::unique_ptr<Expression> operand) {
     const Expression* value = ConstantFolder::GetConstantValueForVariable(*operand);
     switch (value->kind()) {
-        case Expression::Kind::kLiteral: {
+        case Expression::Kind::kBoolLiteral: {
             // Convert !boolLiteral(true) to boolLiteral(false).
-            SkASSERT(value->type().isBoolean());
-            const Literal& b = value->as<Literal>();
-            return Literal::MakeBool(operand->fOffset, !b.boolValue(), &operand->type());
+            const BoolLiteral& b = value->as<BoolLiteral>();
+            return BoolLiteral::Make(operand->fOffset, !b.value(), &operand->type());
         }
         case Expression::Kind::kPrefix:
             if (context.fConfig->fSettings.fOptimize) {

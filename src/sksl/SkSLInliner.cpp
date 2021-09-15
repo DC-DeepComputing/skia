@@ -14,6 +14,7 @@
 #include "include/private/SkSLLayout.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLBoolLiteral.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
 #include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -34,6 +35,7 @@
 #include "src/sksl/ir/SkSLExternalFunctionReference.h"
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLFloatLiteral.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -42,8 +44,8 @@
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInlineMarker.h"
+#include "src/sksl/ir/SkSLIntLiteral.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
-#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
@@ -306,7 +308,9 @@ std::unique_ptr<Expression> Inliner::inlineExpression(int offset,
                                           binaryExpr.getOperator(),
                                           expr(binaryExpr.right()));
         }
-        case Expression::Kind::kLiteral:
+        case Expression::Kind::kBoolLiteral:
+        case Expression::Kind::kIntLiteral:
+        case Expression::Kind::kFloatLiteral:
             return expression.clone();
         case Expression::Kind::kChildCall: {
             const ChildCall& childCall = expression.as<ChildCall>();
@@ -712,7 +716,7 @@ Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
     } else if (function.declaration().returnType().isVoid()) {
         // It's a void function, so it doesn't actually result in anything, but we have to return
         // something non-null as a standin.
-        inlinedCall.fReplacementExpr = Literal::MakeBool(*fContext, offset, /*value=*/false);
+        inlinedCall.fReplacementExpr = BoolLiteral::Make(*fContext, offset, /*value=*/false);
     } else {
         // It's a non-void function, but it never created a result expression--that is, it never
         // returned anything on any path! This should have been detected in the function finalizer.
@@ -940,10 +944,12 @@ public:
         }
 
         switch ((*expr)->kind()) {
+            case Expression::Kind::kBoolLiteral:
             case Expression::Kind::kExternalFunctionReference:
             case Expression::Kind::kFieldAccess:
+            case Expression::Kind::kFloatLiteral:
             case Expression::Kind::kFunctionReference:
-            case Expression::Kind::kLiteral:
+            case Expression::Kind::kIntLiteral:
             case Expression::Kind::kMethodReference:
             case Expression::Kind::kSetting:
             case Expression::Kind::kTypeReference:

@@ -135,21 +135,6 @@ GrGLSLUniformHandler::UniformHandle DSLWriter::VarUniformHandle(const DSLGlobalV
 }
 #endif // !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
 
-void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
-    if (existing.fStatement->is<Block>()) {
-        SkSL::Block& block = existing.fStatement->as<Block>();
-        SkASSERT(!block.isScope());
-        block.children().push_back(Declare(additional).release());
-    } else {
-        SkASSERT(existing.fStatement->is<VarDeclaration>());
-        StatementArray stmts;
-        stmts.reserve_back(2);
-        stmts.push_back(std::move(existing.fStatement));
-        stmts.push_back(Declare(additional).release());
-        existing.fStatement = SkSL::Block::MakeUnscoped(/*offset=*/-1, std::move(stmts));
-    }
-}
-
 std::unique_ptr<SkSL::Expression> DSLWriter::Call(const FunctionDeclaration& function,
                                                   ExpressionArray arguments,
                                                   PositionInfo pos) {
@@ -212,18 +197,17 @@ std::unique_ptr<SkSL::Expression> DSLWriter::ConvertPrefix(Operator op,
 DSLPossibleStatement DSLWriter::ConvertSwitch(std::unique_ptr<Expression> value,
                                               ExpressionArray caseValues,
                                               SkTArray<SkSL::StatementArray> caseStatements,
-                                              bool isStatic,
-                                              PositionInfo pos) {
+                                              bool isStatic) {
     StatementArray caseBlocks;
     caseBlocks.resize(caseStatements.count());
     for (int index = 0; index < caseStatements.count(); ++index) {
-        caseBlocks[index] = std::make_unique<SkSL::Block>(pos.offset(),
+        caseBlocks[index] = std::make_unique<SkSL::Block>(/*offset=*/-1,
                                                           std::move(caseStatements[index]),
                                                           /*symbols=*/nullptr,
                                                           /*isScope=*/false);
     }
 
-    return SwitchStatement::Convert(Context(), pos.offset(), isStatic, std::move(value),
+    return SwitchStatement::Convert(Context(), /*offset=*/-1, isStatic, std::move(value),
                                     std::move(caseValues), std::move(caseBlocks),
                                     IRGenerator().fSymbolTable);
 }
@@ -233,17 +217,17 @@ void DSLWriter::SetErrorReporter(ErrorReporter* errorReporter) {
     Compiler().fContext->fErrors = errorReporter;
 }
 
-void DSLWriter::ReportError(skstd::string_view msg, PositionInfo info) {
+void DSLWriter::ReportError(const char* msg, PositionInfo info) {
     GetErrorReporter().error(msg, info);
 }
 
-void DSLWriter::DefaultErrorReporter::handleError(skstd::string_view msg, PositionInfo pos) {
+void DSLWriter::DefaultErrorReporter::handleError(const char* msg, PositionInfo pos) {
     if (pos.line() > -1) {
-        SK_ABORT("error: %s: %d: %.*sNo SkSL DSL error reporter configured, treating this as a "
-                 "fatal error\n", pos.file_name(), pos.line(), (int)msg.length(), msg.data());
+        SK_ABORT("error: %s: %d: %sNo SkSL DSL error reporter configured, treating this as a fatal "
+                 "error\n", pos.file_name(), pos.line(), msg);
     } else {
-        SK_ABORT("error: %.*s\nNo SkSL DSL error reporter configured, treating this as a fatal "
-                 "error\n", (int)msg.length(), msg.data());
+        SK_ABORT("error: %s\nNo SkSL DSL error reporter configured, treating this as a fatal "
+                 "error\n", msg);
     }
 
 }

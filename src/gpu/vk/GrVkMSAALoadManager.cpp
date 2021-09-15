@@ -117,7 +117,7 @@ bool GrVkMSAALoadManager::loadMSAAFromResolve(GrVkGpu* gpu,
                                               GrVkCommandBuffer* commandBuffer,
                                               const GrVkRenderPass& renderPass,
                                               GrAttachment* dst,
-                                              GrVkImage* src,
+                                              GrVkAttachment* src,
                                               const SkIRect& rect) {
     if (!dst) {
         return false;

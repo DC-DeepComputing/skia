@@ -12,7 +12,8 @@ namespace skgpu::v2 {
 SurfaceFillContext::SurfaceFillContext(GrRecordingContext* rContext,
                                        GrSurfaceProxyView readView,
                                        GrSurfaceProxyView writeView,
-                                       const GrColorInfo& colorInfo)
+                                       const GrColorInfo& colorInfo,
+                                       bool flushTimeOpsTask)
     : skgpu::SurfaceFillContext(rContext,
                                 std::move(readView),
                                 std::move(writeView),
