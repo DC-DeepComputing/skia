@@ -2900,7 +2900,6 @@ if (skia_enable_tools) {
           ":gpu_tool_utils",
           ":skia",
         ]
-        defines = [ "SK_BUILD_FOR_LIBFUZZER" ]
         if (skia_use_libfuzzer_defaults) {
           cflags = [ "-fsanitize=fuzzer" ]
           ldflags = [ "-fsanitize=fuzzer" ]
