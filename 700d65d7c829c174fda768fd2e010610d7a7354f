@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d32e78cf_1412c08c",
+        "filename": "fuzz/FuzzTriangulation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-16T15:51:15Z",
+      "side": 1,
+      "message": "If the triangulator doesn\u0027t allocate any vertices, detachVertexData() asserts.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d92fcc21_992142c5",
+        "filename": "src/effects/Sk2DPathEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-16T15:51:15Z",
+      "side": 1,
+      "message": "I\u0027m not sure how this slipped through on other builds, but I found it when I was building the fuzz target locally and defined SK_BUILD_FOR_FUZZER in my args.gn",
+      "range": {
+        "startLine": 43,
+        "startChar": 12,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
