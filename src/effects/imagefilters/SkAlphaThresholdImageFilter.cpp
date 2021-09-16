@@ -107,7 +107,7 @@ GrSurfaceProxyView SkAlphaThresholdImageFilter::createMaskTexture(
         const SkIRect& bounds,
         const SkSurfaceProps& surfaceProps) const {
 #if SK_GPU_V1
-    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(
+    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback1(
             rContext, GrColorType::kAlpha_8, nullptr, SkBackingFit::kApprox, bounds.size(),
             surfaceProps);
     if (!sdc) {

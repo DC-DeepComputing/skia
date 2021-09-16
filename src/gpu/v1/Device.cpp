@@ -123,7 +123,7 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
                                GrSurfaceOrigin origin,
                                const SkSurfaceProps& surfaceProps,
                                InitContents init) {
-    auto sdc = SurfaceDrawContext::Make(rContext,
+    auto sdc = SurfaceDrawContext::Make7(rContext,
                                         colorType,
                                         std::move(proxy),
                                         std::move(colorSpace),
@@ -946,7 +946,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
                                  sk_sp<SkColorSpace> colorSpace,
                                  GrSurfaceOrigin origin,
                                  const SkSurfaceProps& props) {
-    auto sdc = SurfaceDrawContext::Make(fContext.get(), grColorType, std::move(newRTP),
+    auto sdc = SurfaceDrawContext::Make7(fContext.get(), grColorType, std::move(newRTP),
                                         std::move(colorSpace), origin, props);
     if (!sdc) {
         return false;
@@ -1025,7 +1025,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
 
     SkASSERT(cinfo.fInfo.colorType() != kRGBA_1010102_SkColorType);
 
-    auto sdc = SurfaceDrawContext::MakeWithFallback(
+    auto sdc = SurfaceDrawContext::MakeWithFallback1(
             fContext.get(), SkColorTypeToGrColorType(cinfo.fInfo.colorType()),
             fSurfaceDrawContext->colorInfo().refColorSpace(), fit, cinfo.fInfo.dimensions(), props,
             fSurfaceDrawContext->numSamples(), GrMipmapped::kNo,

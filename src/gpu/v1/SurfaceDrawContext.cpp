@@ -123,7 +123,7 @@ private:
     GrDrawingManager* fDrawingManager;
 };
 
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make7(GrRecordingContext* rContext,
                                                              GrColorType colorType,
                                                              sk_sp<GrSurfaceProxy> proxy,
                                                              sk_sp<SkColorSpace> colorSpace,
@@ -230,7 +230,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
         return nullptr;
     }
 
-    return SurfaceDrawContext::Make(rContext,
+    return SurfaceDrawContext::Make7(rContext,
                                     colorType,
                                     std::move(proxy),
                                     std::move(colorSpace),
@@ -238,7 +238,8 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
                                     surfaceProps);
 }
 
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
+// still needed? Just for V1
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback1(
         GrRecordingContext* rContext,
         GrColorType colorType,
         sk_sp<SkColorSpace> colorSpace,
@@ -257,27 +258,6 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
     }
     return SurfaceDrawContext::Make(rContext, ct, colorSpace, fit, dimensions, surfaceProps,
                                     sampleCnt, mipMapped, isProtected, origin, budgeted);
-}
-
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeFromBackendTexture(
-        GrRecordingContext* rContext,
-        GrColorType colorType,
-        sk_sp<SkColorSpace> colorSpace,
-        const GrBackendTexture& tex,
-        int sampleCnt,
-        GrSurfaceOrigin origin,
-        const SkSurfaceProps& surfaceProps,
-        sk_sp<GrRefCntedCallback> releaseHelper) {
-    SkASSERT(sampleCnt > 0);
-    sk_sp<GrTextureProxy> proxy(rContext->priv().proxyProvider()->wrapRenderableBackendTexture(
-            tex, sampleCnt, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo,
-            std::move(releaseHelper)));
-    if (!proxy) {
-        return nullptr;
-    }
-
-    return SurfaceDrawContext::Make(rContext, colorType, std::move(proxy), std::move(colorSpace),
-                                    origin, surfaceProps);
 }
 
 // In MDB mode the reffing of the 'getLastOpsTask' call's result allows in-progress

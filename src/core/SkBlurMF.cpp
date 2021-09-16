@@ -1076,7 +1076,7 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     SkSurfaceProps defaultSurfaceProps;
 
     std::unique_ptr<skgpu::v1::SurfaceDrawContext> sdc =
-            skgpu::v1::SurfaceDrawContext::MakeWithFallback(dContext,
+            skgpu::v1::SurfaceDrawContext::MakeWithFallback1(dContext,
                                                             GrColorType::kAlpha_8,
                                                             nullptr,
                                                             SkBackingFit::kExact,

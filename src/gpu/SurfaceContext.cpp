@@ -206,7 +206,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                 return false;
             }
             GrSurfaceProxyView view{std::move(copy), this->origin(), this->readSwizzle()};
-            tempCtx = dContext->priv().makeSC(std::move(view), this->colorInfo());
+            tempCtx = dContext->priv().allocSC1(std::move(view), this->colorInfo());
             SkASSERT(tempCtx);
         }
         return tempCtx->readPixels(dContext, dst, pt);

@@ -234,8 +234,8 @@ static bool save_pixels(GrDirectContext* dContext, GrSurfaceProxyView view, GrCo
         return false;
     }
 
-    auto sContext = dContext->priv().makeSC(std::move(view),
-                                            {colorType, kUnknown_SkAlphaType, nullptr});
+    auto sContext = dContext->priv().allocSC1(std::move(view),
+                                             {colorType, kUnknown_SkAlphaType, nullptr});
     if (!sContext || !sContext->asTextureProxy()) {
         return false;
     }
