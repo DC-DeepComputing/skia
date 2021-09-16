@@ -69,6 +69,30 @@
       },
       "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98f00d4_6335fa7a",
+        "filename": "src/effects/Sk2DPathEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-09-16T17:53:23Z",
+      "side": 1,
+      "message": "Michael and I discovered that the defines set here: https://github.com/google/skia/blob/db285de24756de09a5acf264b5c197acc777bf10/BUILD.gn#L2904 are not set when invoking the deps (e.g. compiling :skia)\n\nWe aren\u0027t quite sure how to fix that in GN, but we can certainly add SK_BUILD_FOR_LIBFUZZER in the oss-fuzz compilation step. Better than nothing.",
+      "parentUuid": "d92fcc21_992142c5",
+      "range": {
+        "startLine": 43,
+        "startChar": 12,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
