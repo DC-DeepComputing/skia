@@ -52,3 +52,5 @@ node_modules
 tools/lottiecap/filmstrip.png
 
 bazel-*
+# Ignore all OWNERS files in target repo when merging into Android.
+**/OWNERS
