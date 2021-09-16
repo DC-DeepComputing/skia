@@ -275,7 +275,7 @@ void Inliner::ensureScopedBlocks(Statement* inlinedBody, Statement* parentStmt) 
 }
 
 void Inliner::reset() {
-    fMangler.reset();
+    fContext->fMangler->reset();
     fInlinedStatementCounter = 0;
 }
 
@@ -556,7 +556,8 @@ std::unique_ptr<Statement> Inliner::inlineStatement(int offset,
             // regard, but see `InlinerAvoidsVariableNameOverlap` for a counterexample where unique
             // names are important.
             const String* name = symbolTableForStatement->takeOwnershipOfString(
-                    fMangler.uniqueName(String(variable.name()), symbolTableForStatement));
+                    fContext->fMangler->uniqueName(String(variable.name()),
+                                                   symbolTableForStatement));
             auto clonedVar = std::make_unique<Variable>(
                                                      offset,
                                                      &variable.modifiers(),
@@ -597,8 +598,8 @@ Inliner::InlineVariable Inliner::makeInlineVariable(const String& baseName,
     SkASSERT(!(modifiers.fFlags & Modifiers::kOut_Flag));
 
     // Provide our new variable with a unique name, and add it to our symbol table.
-    const String* name =
-            symbolTable->takeOwnershipOfString(fMangler.uniqueName(baseName, symbolTable));
+    const String* name = symbolTable->takeOwnershipOfString(
+            fContext->fMangler->uniqueName(baseName, symbolTable));
 
     // Create our new variable and add it to the symbol table.
     InlineVariable result;

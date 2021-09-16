@@ -10,6 +10,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
+#include "include/sksl/SkSLErrorReporter.h"
+
 namespace SkSL {
 
 std::unique_ptr<Statement> VarDeclaration::clone() const {

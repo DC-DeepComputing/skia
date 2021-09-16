@@ -12,6 +12,8 @@
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 
+#include "include/sksl/SkSLErrorReporter.h"
+
 namespace SkSL {
 
 std::unique_ptr<Expression> TernaryExpression::Convert(const Context& context,
