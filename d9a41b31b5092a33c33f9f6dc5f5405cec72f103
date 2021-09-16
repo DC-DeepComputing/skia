@@ -16,6 +16,24 @@
       "message": "This looks LGTM. I haven\u0027t diagnosed the DSL issue yet.",
       "revId": "d9a41b31b5092a33c33f9f6dc5f5405cec72f103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "934dd2b3_afcc4e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-16T21:08:45Z",
+      "side": 1,
+      "message": "No problem. I\u0027ve left DSLWriter alone and so it\u0027s not an issue here. It would only be an issue if we took away the DSLWriter\u0027s separate Mangler object. But it definitely seemed worth mentioning.",
+      "parentUuid": "1d75df4f_66e3b985",
+      "revId": "d9a41b31b5092a33c33f9f6dc5f5405cec72f103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
