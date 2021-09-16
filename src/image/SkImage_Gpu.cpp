@@ -333,12 +333,12 @@ void SkImage_Gpu::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                               ReadPixelsCallback callback,
                                               ReadPixelsContext context) {
     auto dContext = fContext->asDirectContext();
-    if (!dContext) {
+    if (!dContext || dContext->abandoned()) {
         // DDL TODO: buffer up the readback so it occurs when the DDL is drawn?
         callback(context, nullptr);
         return;
     }
-    auto ctx = dContext->priv().makeSC(this->makeView(dContext), this->imageInfo().colorInfo());
+    auto ctx = dContext->priv().allocSC1(this->makeView(dContext), this->imageInfo().colorInfo());
     if (!ctx) {
         callback(context, nullptr);
         return;
@@ -356,12 +356,12 @@ void SkImage_Gpu::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpac
                                                     ReadPixelsCallback callback,
                                                     ReadPixelsContext context) {
     auto dContext = fContext->asDirectContext();
-    if (!dContext) {
+    if (!dContext || dContext->abandoned()) {
         // DDL TODO: buffer up the readback so it occurs when the DDL is drawn?
         callback(context, nullptr);
         return;
     }
-    auto ctx = dContext->priv().makeSC(this->makeView(dContext), this->imageInfo().colorInfo());
+    auto ctx = dContext->priv().allocSC1(this->makeView(dContext), this->imageInfo().colorInfo());
     if (!ctx) {
         callback(context, nullptr);
         return;

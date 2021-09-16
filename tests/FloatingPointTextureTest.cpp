@@ -60,7 +60,7 @@ void runFPTest(skiatest::Reporter* reporter, GrDirectContext* dContext,
             continue;
         }
 
-        auto sc = dContext->priv().makeSC(std::move(fpView), info.colorInfo());
+        auto sc = dContext->priv().allocSC1(std::move(fpView), info.colorInfo());
         REPORTER_ASSERT(reporter, sc);
 
         GrPixmap readPixmap(info, readBuffer.begin(), info.minRowBytes());

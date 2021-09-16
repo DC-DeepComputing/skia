@@ -390,7 +390,7 @@ static bool log_texture_view(GrDirectContext* dContext, GrSurfaceProxyView src, 
     SkImageInfo ii = SkImageInfo::Make(src.proxy()->dimensions(), kRGBA_8888_SkColorType,
                                        kLogAlphaType);
 
-    auto sContext = dContext->priv().makeSC(std::move(src), ii.colorInfo());
+    auto sContext = dContext->priv().allocSC1(std::move(src), ii.colorInfo());
     SkBitmap bm;
     SkAssertResult(bm.tryAllocPixels(ii));
     SkAssertResult(sContext->readPixels(dContext, bm.pixmap(), {0, 0}));
