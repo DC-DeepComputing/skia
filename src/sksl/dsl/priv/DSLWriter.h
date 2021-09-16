@@ -14,7 +14,6 @@
 #include "include/private/SkSLStatement.h"
 #include "include/sksl/DSLExpression.h"
 #include "include/sksl/DSLStatement.h"
-#include "src/sksl/SkSLMangler.h"
 #include "src/sksl/SkSLOperators.h"
 #include "src/sksl/SkSLParsedModule.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
@@ -303,7 +302,6 @@ private:
     DefaultErrorReporter fDefaultErrorReporter;
     ErrorReporter& fOldErrorReporter;
     ProgramSettings fSettings;
-    Mangler fMangler;
     bool fIsModule;
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
     struct StackFrame {

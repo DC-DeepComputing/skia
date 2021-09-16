@@ -10,6 +10,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
 
+#include "include/sksl/SkSLErrorReporter.h"
+
 namespace SkSL {
 
 std::unique_ptr<Statement> DoStatement::Convert(const Context& context,

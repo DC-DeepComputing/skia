@@ -10,6 +10,8 @@
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+#include "include/sksl/SkSLErrorReporter.h"
+
 namespace SkSL {
 
 std::unique_ptr<Expression> PostfixExpression::Convert(const Context& context,
