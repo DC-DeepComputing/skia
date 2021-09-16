@@ -137,8 +137,9 @@ void GrD3DCommandList::aliasingBarrier(sk_sp<GrManagedResource> beforeManagedRes
     fHasWork = true;
     // Aliasing barriers can accept a null pointer for one of the resources,
     // but at this point we're not using that feature.
-    SkASSERT(beforeManagedResource);
-    this->addResource(std::move(beforeManagedResource));
+    if (beforeManagedResource) {
+        this->addResource(std::move(beforeManagedResource));
+    }
     SkASSERT(afterManagedResource);
     this->addResource(std::move(afterManagedResource));
 }

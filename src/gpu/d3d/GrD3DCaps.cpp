@@ -705,7 +705,8 @@ void GrD3DCaps::FormatInfo::InitFormatFlags(const D3D12_FEATURE_DATA_FORMAT_SUPP
         *flags = *flags | kResolve_Flag;
     }
 
-    if (SkToBool(D3D12_FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW & formatSupport.Support1)) {
+    if (SkToBool(D3D12_FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW & formatSupport.Support1) &&
+        formatSupport.Format != DXGI_FORMAT_B8G8R8A8_UNORM) {
         *flags = *flags | kUnorderedAccess_Flag;
     }
 }
