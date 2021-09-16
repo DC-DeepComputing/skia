@@ -26,6 +26,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bafe862_46b8baa6",
+        "filename": "include/gpu/d3d/GrD3DTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-16T17:39:28Z",
+      "side": 1,
+      "message": "Copied all the shared fields into each individual struct",
+      "parentUuid": "3873cc45_9a7281f6",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 2
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c5321ae_567b9af7",
+        "filename": "include/gpu/d3d/GrD3DTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-16T17:39:28Z",
+      "side": 1,
+      "message": "I deleted all the Info2 structs. As of now the plan is to not return 1 full struct from backend surface and we don\u0027t need this for anything else right now.",
+      "range": {
+        "startLine": 244,
+        "startChar": 7,
+        "endLine": 244,
+        "endChar": 33
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e767f419_b789c2b8",
         "filename": "include/gpu/mtl/GrMtlTypes.h",
         "patchSetId": 7
@@ -37,6 +84,30 @@
       "writtenOn": "2021-09-16T14:07:20Z",
       "side": 1,
       "message": "using?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8be78b3_2dc636c0",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-16T17:39:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e767f419_b789c2b8",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -60,6 +131,30 @@
       "writtenOn": "2021-09-16T14:07:20Z",
       "side": 1,
       "message": "Should we document the Obj-C types these are based on? (maybe even have a helper factory in another obj-c header file that takes the real types?)",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b87c18f0_544a46ab",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-16T17:39:28Z",
+      "side": 1,
+      "message": "Added comments to describe how these all map. We currently don\u0027t have any public Obj-C files so I\u0027m not sure if that is really something we want to add just for the helper function. Jim may have more thoughts here though.",
+      "parentUuid": "885e51e6_83e786f3",
       "range": {
         "startLine": 50,
         "startChar": 0,
