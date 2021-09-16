@@ -160,6 +160,8 @@ void GrD3DCaps::init(const GrContextOptions& contextOptions, IDXGIAdapter1* adap
         fMaxPerStageShaderResourceViews = 2032;
     }
 
+    fStandardSwizzleLayoutSupport = (optionsDesc.StandardSwizzle64KBSupported);
+
     D3D12_FEATURE_DATA_D3D12_OPTIONS2 optionsDesc2;
     GR_D3D_CALL_ERRCHECK(device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS2, &optionsDesc2,
                                                      sizeof(optionsDesc2)));
@@ -705,7 +707,8 @@ void GrD3DCaps::FormatInfo::InitFormatFlags(const D3D12_FEATURE_DATA_FORMAT_SUPP
         *flags = *flags | kResolve_Flag;
     }
 
-    if (SkToBool(D3D12_FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW & formatSupport.Support1)) {
+    if (SkToBool(D3D12_FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW & formatSupport.Support1) &&
+        formatSupport.Format != DXGI_FORMAT_B8G8R8A8_UNORM) {
         *flags = *flags | kUnorderedAccess_Flag;
     }
 }

@@ -105,6 +105,7 @@ public:
                            ProgramDescOverrideFlags) const override;
 
     bool resolveSubresourceRegionSupport() const { return fResolveSubresourceRegionSupport; }
+    bool standardSwizzleLayoutSupport() const { return fStandardSwizzleLayoutSupport; }
 
 #if GR_TEST_UTILS
     std::vector<TestFormatColorTypeCombination> getTestingCombinations() const override;
@@ -210,6 +211,7 @@ private:
     DXGI_FORMAT fPreferredStencilFormat;
 
     bool fResolveSubresourceRegionSupport;
+    bool fStandardSwizzleLayoutSupport;
 
     using INHERITED = GrCaps;
 };
