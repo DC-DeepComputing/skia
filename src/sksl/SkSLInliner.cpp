@@ -579,17 +579,24 @@ std::unique_ptr<Statement> Inliner::inlineStatement(int offset,
     }
 }
 
-Inliner::InlineVariable Inliner::makeInlineVariable(skstd::string_view baseName,
-                                                    const Type* type,
-                                                    SymbolTable* symbolTable,
-                                                    Modifiers modifiers,
-                                                    bool isBuiltinCode,
-                                                    std::unique_ptr<Expression>* initialValue) {
+/** Creates a scratch variable. */
+struct ScratchVariable {
+    const Variable* fVarSymbol;
+    std::unique_ptr<Statement> fVarDecl;
+};
+
+static ScratchVariable make_scratch_variable(const Context& context,
+                                             skstd::string_view baseName,
+                                             const Type* type,
+                                             SymbolTable* symbolTable,
+                                             Modifiers modifiers,
+                                             bool isBuiltinCode,
+                                             std::unique_ptr<Expression> initialValue) {
     // $floatLiteral or $intLiteral aren't real types that we can use for scratch variables, so
     // replace them if they ever appear here. If this happens, we likely forgot to coerce a type
     // somewhere during compilation.
     if (type->isLiteral()) {
-        SkDEBUGFAIL("found a $literal type while inlining");
+        SkDEBUGFAIL("found a $literal type in make_scratch_variable");
         type = &type->scalarTypeForLiteral();
     }
 
@@ -597,13 +604,13 @@ Inliner::InlineVariable Inliner::makeInlineVariable(skstd::string_view baseName,
     SkASSERT(!(modifiers.fFlags & Modifiers::kOut_Flag));
 
     // Provide our new variable with a unique name, and add it to our symbol table.
-    const String* name = symbolTable->takeOwnershipOfString(
-            fContext->fMangler->uniqueName(baseName, symbolTable));
+    const String* name =
+            symbolTable->takeOwnershipOfString(context.fMangler->uniqueName(baseName, symbolTable));
 
     // Create our new variable and add it to the symbol table.
-    InlineVariable result;
+    ScratchVariable result;
     auto var = std::make_unique<Variable>(/*offset=*/-1,
-                                          this->modifiersPool().add(Modifiers{}),
+                                          context.fModifiersPool->add(Modifiers{}),
                                           name->c_str(),
                                           type,
                                           isBuiltinCode,
@@ -615,8 +622,8 @@ Inliner::InlineVariable Inliner::makeInlineVariable(skstd::string_view baseName,
         type = &type->componentType();
     }
     // Create our variable declaration.
-    result.fVarDecl = VarDeclaration::Make(*fContext, var.get(), type, arraySize,
-                                           std::move(*initialValue));
+    result.fVarDecl = VarDeclaration::Make(context, var.get(), type, arraySize,
+                                           std::move(initialValue));
     result.fVarSymbol = symbolTable->add(std::move(var));
     return result;
 }
@@ -659,11 +666,13 @@ Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
         // Create a variable to hold the result in the extra statements. We don't need to do this
         // for void-return functions, or in cases that are simple enough that we can just replace
         // the function-call node with the result expression.
-        std::unique_ptr<Expression> noInitialValue;
-        InlineVariable var = this->makeInlineVariable(function.declaration().name(),
-                                                      &function.declaration().returnType(),
-                                                      symbolTable.get(), Modifiers{},
-                                                      caller->isBuiltin(), &noInitialValue);
+        ScratchVariable var = make_scratch_variable(*fContext,
+                                                    function.declaration().name(),
+                                                    &function.declaration().returnType(),
+                                                    symbolTable.get(),
+                                                    Modifiers{},
+                                                    caller->isBuiltin(),
+                                                    /*initialValue=*/nullptr);
         inlineStatements.push_back(std::move(var.fVarDecl));
         resultExpr = VariableReference::Make(/*offset=*/-1, var.fVarSymbol);
     }
@@ -673,21 +682,26 @@ Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
     VariableRewriteMap varMap;
     for (int i = 0; i < arguments.count(); ++i) {
         // If the parameter isn't written to within the inline function ...
+        Expression* arg = arguments[i].get();
         const Variable* param = function.declaration().parameters()[i];
         const ProgramUsage::VariableCounts& paramUsage = usage.get(*param);
         if (!paramUsage.fWrite) {
             // ... and can be inlined trivially (e.g. a swizzle, or a constant array index),
             // or any expression without side effects that is only accessed at most once...
-            if ((paramUsage.fRead > 1) ? Analysis::IsTrivialExpression(*arguments[i])
-                                       : !arguments[i]->hasSideEffects()) {
+            if ((paramUsage.fRead > 1) ? Analysis::IsTrivialExpression(*arg)
+                                       : !arg->hasSideEffects()) {
                 // ... we don't need to copy it at all! We can just use the existing expression.
-                varMap[param] = arguments[i]->clone();
+                varMap[param] = arg->clone();
                 continue;
             }
         }
-        InlineVariable var = this->makeInlineVariable(param->name(), &arguments[i]->type(),
-                                                      symbolTable.get(), param->modifiers(),
-                                                      caller->isBuiltin(), &arguments[i]);
+        ScratchVariable var = make_scratch_variable(*fContext,
+                                                    param->name(),
+                                                    &arg->type(),
+                                                    symbolTable.get(),
+                                                    param->modifiers(),
+                                                    caller->isBuiltin(),
+                                                    std::move(arguments[i]));
         inlineStatements.push_back(std::move(var.fVarDecl));
         varMap[param] = VariableReference::Make(/*offset=*/-1, var.fVarSymbol);
     }
