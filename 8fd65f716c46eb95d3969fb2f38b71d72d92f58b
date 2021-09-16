@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "844b5929_91e0e766",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-16T20:35:03Z",
+      "side": 1,
+      "message": "My intent w/ the alloc vs. make naming is that the alloc* methods will succeed or crash while the make* methods can validly return null.",
+      "revId": "8fd65f716c46eb95d3969fb2f38b71d72d92f58b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
