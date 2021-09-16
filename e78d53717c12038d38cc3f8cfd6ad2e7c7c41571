@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3873cc45_9a7281f6",
+        "filename": "include/gpu/d3d/GrD3DTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-16T14:07:20Z",
+      "side": 1,
+      "message": "This is maybe my personal aesthetic, but the fact that this is derived feels like a (minor) convenience for us but a (minor) burden for our user. They user has to refer to multiple places to know how understand this relatively simple object.\n\nI might feel better if these were classes with constructors that show all the inputs, but given that there are only three shared members, maybe it\u0027s just simpler to stick repeat them in each API\u0027s struct? Internally we could have a common field struct if that\u0027s useful.",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 2
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e767f419_b789c2b8",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-16T14:07:20Z",
+      "side": 1,
+      "message": "using?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "885e51e6_83e786f3",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-16T14:07:20Z",
+      "side": 1,
+      "message": "Should we document the Obj-C types these are based on? (maybe even have a helper factory in another obj-c header file that takes the real types?)",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
