@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d75df4f_66e3b985",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-16T21:01:31Z",
+      "side": 1,
+      "message": "This looks LGTM. I haven\u0027t diagnosed the DSL issue yet.",
+      "revId": "d9a41b31b5092a33c33f9f6dc5f5405cec72f103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
