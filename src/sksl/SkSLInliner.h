@@ -101,7 +101,7 @@ private:
         const Variable*             fVarSymbol;
         std::unique_ptr<Statement>  fVarDecl;
     };
-    InlineVariable makeInlineVariable(const String& baseName,
+    InlineVariable makeInlineVariable(skstd::string_view baseName,
                                       const Type* type,
                                       SymbolTable* symbolTable,
                                       Modifiers modifiers,
@@ -117,7 +117,6 @@ private:
     ModifiersPool& modifiersPool() const { return *fContext->fModifiersPool; }
 
     const Context* fContext = nullptr;
-    Mangler fMangler;
     int fInlinedStatementCounter = 0;
 };
 
