@@ -56,6 +56,7 @@ public:
                                            const Type* baseType,
                                            int arraySize,
                                            std::unique_ptr<Expression> value);
+
     const Type& baseType() const {
         return fBaseType;
     }
