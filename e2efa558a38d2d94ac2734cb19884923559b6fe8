@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae93c1d_c1fa4f7b",
+        "filename": "include/sksl/DSLExpression.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-16T13:29:09Z",
+      "side": 1,
+      "message": "Want to land this separately, in case we end up rolling back again?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 0
+      },
+      "revId": "e2efa558a38d2d94ac2734cb19884923559b6fe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d8c3823_72a687e3",
+        "filename": "tests/sksl/errors/Ossfuzz26700.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-16T13:29:09Z",
+      "side": 1,
+      "message": "Technically this one is a minor regression. (Obviously not a big deal and doesn\u0027t block anything)",
+      "range": {
+        "startLine": 3,
+        "startChar": 10,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "e2efa558a38d2d94ac2734cb19884923559b6fe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
