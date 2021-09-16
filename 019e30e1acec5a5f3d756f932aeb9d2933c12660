@@ -16,6 +16,24 @@
       "message": "Actually, the mangler isn\u0027t super cheap. I\u0027ve definitely seen it come up in Inliner profiles. printf can be heavy, and it can vary by platform.",
       "revId": "019e30e1acec5a5f3d756f932aeb9d2933c12660",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c5b6981_6789c524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-16T20:51:59Z",
+      "side": 1,
+      "message": "I had benched it on my system, and the difference was really close to undetectable. Still a win, just not a big one. Maybe it\u0027ll be a bigger deal on other platforms.",
+      "parentUuid": "81868421_d8ee7c8e",
+      "revId": "019e30e1acec5a5f3d756f932aeb9d2933c12660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
