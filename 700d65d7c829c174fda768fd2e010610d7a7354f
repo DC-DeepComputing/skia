@@ -45,6 +45,30 @@
       },
       "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc06e33a_431e0b8c",
+        "filename": "src/effects/Sk2DPathEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-16T17:52:04Z",
+      "side": 1,
+      "message": "After talking with Kevin, we realized that when this is added in our BUILD.gn, it only affects the defines seen by the fuzzer source code and anything that\u0027s built in :skia will not see them. The fuzz bots will need to be updated to define this globally so that these limits are actually applied correctly when fuzzing.",
+      "parentUuid": "d92fcc21_992142c5",
+      "range": {
+        "startLine": 43,
+        "startChar": 12,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "700d65d7c829c174fda768fd2e010610d7a7354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
