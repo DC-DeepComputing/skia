@@ -16,6 +16,23 @@
       "message": "PS2 has fixes for GL implementations that support binding rather than getting uniform locations (ANGLE/command buffer).\n\n1) Incorrect incrementing of uniform location between binding and storing\n\n2) Wasn\u0027t accounting for sampler uniform locations when determining the last used location index before binding the new style uniforms.\n\n3) We must get rather than bind when the shader is loaded from binary because the bind API works by uniform name and the name isn\u0027t available in the binary.",
       "revId": "42710c3970b6f9fdef18ea4d332afcb5116de6c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35d1e7ba_df9dad9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-17T14:37:31Z",
+      "side": 1,
+      "message": "PTAL at PS1 (pure reland) to PS2 (fixes for the \"bind\" uniform GL API that exists in ANGLE and command buffer).",
+      "revId": "42710c3970b6f9fdef18ea4d332afcb5116de6c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
