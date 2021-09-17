@@ -16,6 +16,24 @@
       "message": "It looks like this broke a few devices, eg\n\nhttps://logs.chromium.org/logs/skia/5609f5ad632c6411/+/steps/dm/0/stdout\n\nhttps://logs.chromium.org/logs/skia/560ca048a3301811/+/steps/dm/0/stdout",
       "revId": "eb68973c2f5ac8f8dd169037cfc32885a024448d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8409dde7_7c89904c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T13:20:51Z",
+      "side": 1,
+      "message": "I\u0027ll take a look, might need to adjust or disable the test.",
+      "parentUuid": "a3ab502d_c9eb9a5d",
+      "revId": "eb68973c2f5ac8f8dd169037cfc32885a024448d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
