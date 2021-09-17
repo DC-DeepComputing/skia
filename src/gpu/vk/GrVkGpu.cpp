@@ -1091,10 +1091,16 @@ sk_sp<GrTexture> GrVkGpu::onCreateTexture(SkISize dimensions,
         }
         SkASSERT(!ranges.empty());
         static constexpr VkClearColorValue kZeroClearColor = {};
-        texImage->setImageLayout(this, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                            VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, false);
-        this->currentCommandBuffer()->clearColorImage(this, texImage, &kZeroClearColor,
-                                                      ranges.count(), ranges.begin());
+        texImage->setImageLayout(this,
+                                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                                 VK_ACCESS_TRANSFER_WRITE_BIT,
+                                 VK_PIPELINE_STAGE_TRANSFER_BIT,
+                                 false);
+        this->currentCommandBuffer()->clearColorImage(this,
+                                                      texImage,
+                                                      &kZeroClearColor,
+                                                      ranges.count(),
+                                                      ranges.begin());
     }
     return std::move(tex);
 }
@@ -1567,22 +1573,32 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
         usageFlags |= VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
     }
 
-    GrVkImage::ImageDesc imageDesc;
-    imageDesc.fImageType = VK_IMAGE_TYPE_2D;
-    imageDesc.fFormat = vkFormat;
-    imageDesc.fWidth = dimensions.width();
-    imageDesc.fHeight = dimensions.height();
-    imageDesc.fLevels = numMipLevels;
-    imageDesc.fSamples = sampleCnt;
-    imageDesc.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-    imageDesc.fUsageFlags = usageFlags;
-    imageDesc.fMemProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    imageDesc.fIsProtected = fProtectedContext;
+    GrVkSurfaceInfo vkInfo;
+    vkInfo.fSampleCount = sampleCnt;
+    vkInfo.fLevelCount = numMipLevels;
+    vkInfo.fProtected = fProtectedContext;
+    vkInfo.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    vkInfo.fFormat = vkFormat;
+    vkInfo.fImageUsageFlags = usageFlags;
+    vkInfo.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    if (!GrVkImage::InitImageInfo(this, imageDesc, info)) {
+    GrVkImage::ImageObjects imageObjs;
+    if (!GrVkImage::CreateImage(this, dimensions, vkInfo, &imageObjs)) {
         SkDebugf("Failed to init image info\n");
         return false;
     }
+
+    info->fImage = imageObjs.fImage;
+    info->fAlloc = imageObjs.fAlloc;
+    info->fImageTiling = vkInfo.fImageTiling;
+    info->fImageLayout = imageObjs.fImageLayout;
+    info->fFormat = vkInfo.fFormat;
+    info->fImageUsageFlags = vkInfo.fImageUsageFlags;
+    info->fSampleCount = vkInfo.fSampleCount;
+    info->fLevelCount = vkInfo.fLevelCount;
+    info->fCurrentQueueFamily = imageObjs.fCurrentQueueFamily;
+    info->fProtected = vkInfo.fProtected;
+    info->fSharingMode = vkInfo.fSharingMode;
 
     return true;
 }
@@ -1794,12 +1810,13 @@ void set_layout_and_queue_from_mutable_state(GrVkGpu* gpu, GrVkImage* image,
                                        newQueueFamilyIndex);
 }
 
-bool GrVkGpu::setBackendSurfaceState(GrVkImageInfo info,
+bool GrVkGpu::setBackendSurfaceState(const GrVkImageInfo& info,
                                      sk_sp<GrBackendSurfaceMutableStateImpl> currentState,
                                      SkISize dimensions,
                                      const GrVkSharedImageInfo& newInfo,
                                      GrBackendSurfaceMutableState* previousState,
                                      sk_sp<GrRefCntedCallback> finishedCallback) {
+
     sk_sp<GrVkImage> texture = GrVkImage::MakeWrapped(this,
                                                       dimensions,
                                                       info,
@@ -1885,7 +1902,7 @@ void GrVkGpu::deleteBackendTexture(const GrBackendTexture& tex) {
 
     GrVkImageInfo info;
     if (tex.getVkImageInfo(&info)) {
-        GrVkImage::DestroyImageInfo(this, const_cast<GrVkImageInfo*>(&info));
+        GrVkImage::DestroyImage(this, info.fImage, info.fAlloc);
     }
 }
 
@@ -1978,7 +1995,7 @@ void GrVkGpu::deleteTestingOnlyBackendRenderTarget(const GrBackendRenderTarget& 
     if (rt.getVkImageInfo(&info)) {
         // something in the command buffer may still be using this, so force submit
         SkAssertResult(this->submitCommandBuffer(kForce_SyncQueue));
-        GrVkImage::DestroyImageInfo(this, const_cast<GrVkImageInfo*>(&info));
+        GrVkImage::DestroyImage(this, info.fImage, info.fAlloc);
     }
 }
 #endif

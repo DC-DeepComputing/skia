@@ -89,6 +89,18 @@ struct GrVkYcbcrConversionInfo {
     VkFormatFeatureFlags fFormatFeatures = 0;
 };
 
+struct GrVkSurfaceInfo {
+    uint32_t fSampleCount = 1;
+    uint32_t fLevelCount = 0;
+    GrProtected fProtected = GrProtected::kNo;
+
+    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkFormat fFormat = VK_FORMAT_UNDEFINED;
+    VkImageUsageFlags fImageUsageFlags = 0;
+    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
+    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+};
+
 /*
  * When wrapping a GrBackendTexture or GrBackendRendenderTarget, the fCurrentQueueFamily should
  * either be VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_EXTERNAL, or VK_QUEUE_FAMILY_FOREIGN_EXT. If
@@ -158,18 +170,6 @@ struct GrVkDrawableInfo {
     VkFormat        fFormat;
     VkRect2D*       fDrawBounds;
     VkImage         fImage;
-};
-
-struct GrVkSurfaceInfo {
-    uint32_t fSampleCount = 1;
-    uint32_t fLevelCount = 0;
-    GrProtected fProtected = GrProtected::kNo;
-
-    VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-    VkFormat fFormat = VK_FORMAT_UNDEFINED;
-    VkImageUsageFlags fImageUsageFlags = 0;
-    GrVkYcbcrConversionInfo fYcbcrConversionInfo;
-    VkSharingMode fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 };
 
 #endif

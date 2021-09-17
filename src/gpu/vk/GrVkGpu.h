@@ -229,7 +229,7 @@ private:
                                           const void* data,
                                           size_t length) override;
 
-    bool setBackendSurfaceState(GrVkImageInfo info,
+    bool setBackendSurfaceState(const GrVkImageInfo& info,
                                 sk_sp<GrBackendSurfaceMutableStateImpl> currentState,
                                 SkISize dimensions,
                                 const GrVkSharedImageInfo& newInfo,

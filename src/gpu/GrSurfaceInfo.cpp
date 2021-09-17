@@ -37,4 +37,5 @@ bool GrSurfaceInfo::getD3DSurfaceInfo(GrD3DSurfaceInfo* outSpec) const {
     *outSpec = fD3DSpec.getSurfaceInfo(fSampleCount, fLevelCount, fProtected);
     return true;
 }
+
 #endif
