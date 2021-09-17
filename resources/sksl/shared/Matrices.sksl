@@ -1,10 +1,9 @@
 uniform half4 colorGreen, colorRed;
-uniform float2x2 testMatrix2x2;
 
 bool test_float() {
     bool ok = true;
 
-    float2x2 m1 = testMatrix2x2;
+    float2x2 m1 = float2x2(colorGreen.g, colorRed.r * 2, colorGreen.g * 3, colorRed.r * 4);
     ok = ok && (m1 == float2x2(1, 2, 3, 4));
 
     // This generates {5, 0, 0, 5} on some Radeon GPUs.
@@ -39,7 +38,7 @@ bool test_float() {
     m11 -= m10;
     ok = ok && (m11 == float4x4(9, 20, 20, 20, 20, 9, 20, 20, 20, 20, 9, 20, 20, 20, 20, 9));
 
-    float4 f4 = float4(testMatrix2x2);
+    float4 f4 = float4(colorGreen.g, colorRed.r * 2, colorGreen.g * 3, colorRed.r * 4);
     ok = ok && float2x2(f4.xy, f4.z, 4) ==
                float2x2(1, 2, 3, 4);
     ok = ok && float3x3(f4.xy, f4.z, f4.w, f4.xy, f4.zw, f4.x) ==
@@ -52,7 +51,7 @@ bool test_float() {
 bool test_half() {
     bool ok = true;
 
-    half2x2 m1 = half2x2(testMatrix2x2);
+    half2x2 m1 = half2x2(colorGreen.g, colorRed.r * 2, colorGreen.g * 3, colorRed.r * 4);
     ok = ok && (m1 == half2x2(1, 2, 3, 4));
 
     // This generates {5, 0, 0, 5} on some Radeon GPUs.
@@ -87,7 +86,7 @@ bool test_half() {
     m11 -= m10;
     ok = ok && (m11 == half4x4(9, 20, 20, 20, 20, 9, 20, 20, 20, 20, 9, 20, 20, 20, 20, 9));
 
-    half4 h4 = half4(testMatrix2x2);
+    half4 h4 = half4(colorGreen.g, colorRed.r * 2, colorGreen.g * 3, colorRed.r * 4);
     ok = ok && half2x2(h4.xy, h4.z, 4) ==
                half2x2(1, 2, 3, 4);
     ok = ok && half3x3(h4.xy, h4.z, h4.w, h4.xy, h4.zw, h4.x) ==

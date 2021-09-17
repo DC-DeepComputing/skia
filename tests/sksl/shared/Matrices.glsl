@@ -2,10 +2,9 @@
 out vec4 sk_FragColor;
 uniform vec4 colorGreen;
 uniform vec4 colorRed;
-uniform mat2 testMatrix2x2;
 bool test_half_b() {
     bool ok = true;
-    mat2 m1 = testMatrix2x2;
+    mat2 m1 = mat2(colorGreen.y, colorRed.x * 2.0, colorGreen.y * 3.0, colorRed.x * 4.0);
     ok = ok && m1 == mat2(1.0, 2.0, 3.0, 4.0);
     mat2 m3 = m1;
     ok = ok && m3 == mat2(1.0, 2.0, 3.0, 4.0);
@@ -26,7 +25,7 @@ bool test_half_b() {
     mat4 m11 = mat4(20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0);
     m11 -= m10;
     ok = ok && m11 == mat4(9.0, 20.0, 20.0, 20.0, 20.0, 9.0, 20.0, 20.0, 20.0, 20.0, 9.0, 20.0, 20.0, 20.0, 20.0, 9.0);
-    vec4 h4 = vec4(testMatrix2x2);
+    vec4 h4 = vec4(colorGreen.y, colorRed.x * 2.0, colorGreen.y * 3.0, colorRed.x * 4.0);
     ok = ok && mat2(h4.xy, h4.z, 4.0) == mat2(1.0, 2.0, 3.0, 4.0);
     ok = ok && mat3(h4.xy, h4.z, h4.w, h4.xy, h4.zw, h4.x) == mat3(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0);
     ok = ok && mat4(h4.xy, h4.zw, h4.xyz, h4.w, h4, 1.0, h4.yzw) == mat4(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
@@ -39,7 +38,7 @@ bool test_comma_b() {
 }
 vec4 main() {
     bool _0_ok = true;
-    mat2 _1_m1 = testMatrix2x2;
+    mat2 _1_m1 = mat2(colorGreen.y, colorRed.x * 2.0, colorGreen.y * 3.0, colorRed.x * 4.0);
     _0_ok = _0_ok && _1_m1 == mat2(1.0, 2.0, 3.0, 4.0);
     mat2 _2_m3 = _1_m1;
     _0_ok = _0_ok && _2_m3 == mat2(1.0, 2.0, 3.0, 4.0);
@@ -60,7 +59,7 @@ vec4 main() {
     mat4 _8_m11 = mat4(20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0);
     _8_m11 -= _7_m10;
     _0_ok = _0_ok && _8_m11 == mat4(9.0, 20.0, 20.0, 20.0, 20.0, 9.0, 20.0, 20.0, 20.0, 20.0, 9.0, 20.0, 20.0, 20.0, 20.0, 9.0);
-    vec4 _9_f4 = vec4(testMatrix2x2);
+    vec4 _9_f4 = vec4(colorGreen.y, colorRed.x * 2.0, colorGreen.y * 3.0, colorRed.x * 4.0);
     _0_ok = _0_ok && mat2(_9_f4.xy, _9_f4.z, 4.0) == mat2(1.0, 2.0, 3.0, 4.0);
     _0_ok = _0_ok && mat3(_9_f4.xy, _9_f4.z, _9_f4.w, _9_f4.xy, _9_f4.zw, _9_f4.x) == mat3(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0);
     _0_ok = _0_ok && mat4(_9_f4.xy, _9_f4.zw, _9_f4.xyz, _9_f4.w, _9_f4, 1.0, _9_f4.yzw) == mat4(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
