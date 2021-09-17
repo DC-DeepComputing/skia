@@ -30,6 +30,7 @@ namespace text {
             return fTypeface;
         }
         float size() const override { return fSize; }
+        SkString locale() const override { return SkString("en"); }
         sk_sp<SkTypeface> getTypeface() const { return fTypeface; }
         bool empty() const { return fTypeface == nullptr; }
 
