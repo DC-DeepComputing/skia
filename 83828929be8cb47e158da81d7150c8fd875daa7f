@@ -16,6 +16,23 @@
       "message": "skia dawn rolls fail because mipLevelCount in descriptor for create texture view now must be greater than 0.\n\nIt seems that GrDawnTexture only support mipLevelCount \u003c\u003d 1 at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/dawn/GrDawnTexture.cpp;l\u003d41;drc\u003d024e285d6318dfa292e6072c8f2511a2d6c192da;bpv\u003d1;bpt\u003d1\n\nAssume the fix would unblock the roll and not causing other failures. Asking for feedback from skia team",
       "revId": "83828929be8cb47e158da81d7150c8fd875daa7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "336fb12d_4c20bc39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2021-09-17T19:19:56Z",
+      "side": 1,
+      "message": "FYI the failure log can be found at: https://bugs.chromium.org/p/dawn/issues/detail?id\u003d1026#c18",
+      "revId": "83828929be8cb47e158da81d7150c8fd875daa7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
