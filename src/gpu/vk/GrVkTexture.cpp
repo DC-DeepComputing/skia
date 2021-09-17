@@ -155,7 +155,9 @@ void GrVkTexture::onAbandon() {
 }
 
 GrBackendTexture GrVkTexture::getBackendTexture() const {
-    return GrBackendTexture(fTexture->width(), fTexture->height(), fTexture->vkImageInfo(),
+    return GrBackendTexture(fTexture->width(),
+                            fTexture->height(),
+                            fTexture->imageInfo(),
                             fTexture->getMutableState());
 }
 

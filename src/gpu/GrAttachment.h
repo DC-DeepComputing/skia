@@ -35,7 +35,10 @@ public:
 
     UsageFlags supportedUsages() const { return fSupportedUsages; }
 
+    const GrSurfaceInfo& surfaceInfo() const { return fSurfaceInfo; }
+
     int numSamples() const { return fSurfaceInfo.numSamples(); }
+    uint32_t mipLevels() const { return fSurfaceInfo.numMipLevels(); }
 
     GrMipmapped mipmapped() const { return GrMipmapped(fSurfaceInfo.numMipLevels() > 1); }
 

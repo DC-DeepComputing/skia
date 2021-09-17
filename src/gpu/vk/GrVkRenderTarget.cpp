@@ -481,8 +481,10 @@ GrBackendRenderTarget GrVkRenderTarget::getBackendRenderTarget() const {
     SkASSERT(!this->wasDestroyed());
     // If we have a resolve attachment that is what we return for the backend render target
     const GrVkImage* beAttachment = this->externalAttachment();
-    return GrBackendRenderTarget(beAttachment->width(), beAttachment->height(),
-                                 beAttachment->vkImageInfo(), beAttachment->getMutableState());
+    return GrBackendRenderTarget(beAttachment->width(),
+                                 beAttachment->height(),
+                                 beAttachment->imageInfo(),
+                                 beAttachment->getMutableState());
 }
 
 GrVkGpu* GrVkRenderTarget::getVkGpu() const {
