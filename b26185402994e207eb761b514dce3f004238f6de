@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1672c38c_f38febb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T17:35:24Z",
+      "side": 1,
+      "message": "Is there any way to make the inline Table of Contets work, or failing that, to make the right-side TOC easier to notice?",
+      "revId": "b26185402994e207eb761b514dce3f004238f6de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
