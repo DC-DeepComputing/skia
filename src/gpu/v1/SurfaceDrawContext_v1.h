@@ -62,6 +62,16 @@ namespace skgpu::v1 {
  */
 class SurfaceDrawContext final : public SurfaceFillContext {
 public:
+    ~SurfaceDrawContext() override;
+
+    static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
+                                                    GrSurfaceProxyView readView,
+                                                    GrSurfaceProxyView writeView,
+                                                    GrColorType,
+                                                    sk_sp<SkColorSpace>,
+                                                    const SkSurfaceProps&,
+                                                    bool flushTimeOpsTask);
+
     static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
                                                     GrColorType,
                                                     sk_sp<GrSurfaceProxy>,
@@ -83,24 +93,6 @@ public:
                                                     GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
                                                     SkBudgeted = SkBudgeted::kYes);
 
-    /**
-     * Takes custom swizzles rather than determining swizzles from color type and format.
-     * It will have color type kUnknown.
-     */
-    static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
-                                                    sk_sp<SkColorSpace>,
-                                                    SkBackingFit,
-                                                    SkISize dimensions,
-                                                    const GrBackendFormat&,
-                                                    int sampleCnt,
-                                                    GrMipmapped,
-                                                    GrProtected,
-                                                    GrSwizzle readSwizzle,
-                                                    GrSwizzle writeSwizzle,
-                                                    GrSurfaceOrigin,
-                                                    SkBudgeted,
-                                                    const SkSurfaceProps&);
-
     // Same as previous factory but will try to use fallback GrColorTypes if the one passed in
     // fails. The fallback GrColorType will have at least the number of channels and precision per
     // channel as the passed in GrColorType. It may also swizzle the changes (e.g., BGRA -> RGBA).
@@ -117,27 +109,6 @@ public:
             GrProtected = GrProtected::kNo,
             GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
             SkBudgeted = SkBudgeted::kYes);
-
-    // Creates a SurfaceDrawContext that wraps the passed in GrBackendTexture.
-    static std::unique_ptr<SurfaceDrawContext> MakeFromBackendTexture(
-            GrRecordingContext*,
-            GrColorType,
-            sk_sp<SkColorSpace>,
-            const GrBackendTexture&,
-            int sampleCnt,
-            GrSurfaceOrigin,
-            const SkSurfaceProps&,
-            sk_sp<GrRefCntedCallback> releaseHelper);
-
-    SurfaceDrawContext(GrRecordingContext*,
-                       GrSurfaceProxyView readView,
-                       GrSurfaceProxyView writeView,
-                       GrColorType,
-                       sk_sp<SkColorSpace>,
-                       const SkSurfaceProps&,
-                       bool flushTimeOpsTask = false);
-
-    ~SurfaceDrawContext() override;
 
     /**
      *  Draw everywhere (respecting the clip) with the paint.
@@ -630,6 +601,14 @@ public:
 #endif
 
 private:
+    SurfaceDrawContext(GrRecordingContext*,
+                       GrSurfaceProxyView readView,
+                       GrSurfaceProxyView writeView,
+                       GrColorType,
+                       sk_sp<SkColorSpace>,
+                       const SkSurfaceProps&,
+                       bool flushTimeOpsTask, bool trash);
+
     enum class QuadOptimization;
 
     void willReplaceOpsTask(OpsTask* prevTask, OpsTask* nextTask) override;

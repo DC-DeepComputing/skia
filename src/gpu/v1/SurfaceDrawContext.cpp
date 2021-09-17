@@ -124,6 +124,22 @@ private:
 };
 
 std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+                                                             GrSurfaceProxyView readView,
+                                                             GrSurfaceProxyView writeView,
+                                                             GrColorType colorType,
+                                                             sk_sp<SkColorSpace> colorSpace,
+                                                             const SkSurfaceProps& props,
+                                                             bool flushTimeOpsTask) {
+    return std::unique_ptr<SurfaceDrawContext>(new SurfaceDrawContext(rContext,
+                                                                      std::move(readView),
+                                                                      std::move(writeView),
+                                                                      colorType,
+                                                                      std::move(colorSpace),
+                                                                      props,
+                                                                      flushTimeOpsTask, true));
+}
+
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
                                                              GrColorType colorType,
                                                              sk_sp<GrSurfaceProxy> proxy,
                                                              sk_sp<SkColorSpace> colorSpace,
@@ -141,61 +157,13 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
     GrSurfaceProxyView readView (          proxy,  origin, readSwizzle);
     GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
 
-    return std::make_unique<SurfaceDrawContext>(rContext,
-                                                std::move(readView),
-                                                std::move(writeView),
-                                                colorType,
-                                                std::move(colorSpace),
-                                                surfaceProps,
-                                                flushTimeOpsTask);
-}
-
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
-        GrRecordingContext* rContext,
-        sk_sp<SkColorSpace> colorSpace,
-        SkBackingFit fit,
-        SkISize dimensions,
-        const GrBackendFormat& format,
-        int sampleCnt,
-        GrMipmapped mipMapped,
-        GrProtected isProtected,
-        GrSwizzle readSwizzle,
-        GrSwizzle writeSwizzle,
-        GrSurfaceOrigin origin,
-        SkBudgeted budgeted,
-        const SkSurfaceProps& surfaceProps) {
-    // It is probably not necessary to check if the context is abandoned here since uses of the
-    // SurfaceDrawContext which need the context will mostly likely fail later on without an
-    // issue. However having this hear adds some reassurance in case there is a path doesn't handle
-    // an abandoned context correctly. It also lets us early out of some extra work.
-    if (rContext->abandoned()) {
-        return nullptr;
-    }
-
-    sk_sp<GrTextureProxy> proxy = rContext->priv().proxyProvider()->createProxy(
-            format,
-            dimensions,
-            GrRenderable::kYes,
-            sampleCnt,
-            mipMapped,
-            fit,
-            budgeted,
-            isProtected);
-    if (!proxy) {
-        return nullptr;
-    }
-
-    GrSurfaceProxyView readView (           proxy, origin,  readSwizzle);
-    GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
-
-    auto sdc = std::make_unique<SurfaceDrawContext>(rContext,
-                                                    std::move(readView),
-                                                    std::move(writeView),
-                                                    GrColorType::kUnknown,
-                                                    std::move(colorSpace),
-                                                    surfaceProps);
-    sdc->discard();
-    return sdc;
+    return Make(rContext,
+                std::move(readView),
+                std::move(writeView),
+                colorType,
+                std::move(colorSpace),
+                surfaceProps,
+                flushTimeOpsTask);
 }
 
 std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
@@ -259,27 +227,6 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
                                     sampleCnt, mipMapped, isProtected, origin, budgeted);
 }
 
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeFromBackendTexture(
-        GrRecordingContext* rContext,
-        GrColorType colorType,
-        sk_sp<SkColorSpace> colorSpace,
-        const GrBackendTexture& tex,
-        int sampleCnt,
-        GrSurfaceOrigin origin,
-        const SkSurfaceProps& surfaceProps,
-        sk_sp<GrRefCntedCallback> releaseHelper) {
-    SkASSERT(sampleCnt > 0);
-    sk_sp<GrTextureProxy> proxy(rContext->priv().proxyProvider()->wrapRenderableBackendTexture(
-            tex, sampleCnt, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo,
-            std::move(releaseHelper)));
-    if (!proxy) {
-        return nullptr;
-    }
-
-    return SurfaceDrawContext::Make(rContext, colorType, std::move(proxy), std::move(colorSpace),
-                                    origin, surfaceProps);
-}
-
 // In MDB mode the reffing of the 'getLastOpsTask' call's result allows in-progress
 // OpsTask to be picked up and added to by SurfaceDrawContexts lower in the call
 // stack. When this occurs with a closed OpsTask, a new one will be allocated
@@ -290,7 +237,7 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
                                        GrColorType colorType,
                                        sk_sp<SkColorSpace> colorSpace,
                                        const SkSurfaceProps& surfaceProps,
-                                       bool flushTimeOpsTask)
+                                       bool flushTimeOpsTask, bool trash)
         : SurfaceFillContext(rContext,
                              std::move(readView),
                              std::move(writeView),
