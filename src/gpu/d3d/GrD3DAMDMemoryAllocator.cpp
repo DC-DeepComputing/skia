@@ -30,9 +30,6 @@ gr_cp<ID3D12Resource> GrD3DAMDMemoryAllocator::createResource(
         const D3D12_CLEAR_VALUE* clearValue) {
     D3D12MA::ALLOCATION_DESC allocationDesc = {};
     allocationDesc.HeapType = heapType;
-    // TODO: Determine flags. For now create new heaps regardless of budget,
-    //       and always suballocate and use CreatePlacedResource.
-    // allocationDesc.Flags = ?
 
     gr_cp<ID3D12Resource> resource;
     D3D12MA::Allocation* d3d12maAllocation;
