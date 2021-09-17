@@ -214,6 +214,27 @@ private:
 
     friend class GrRecordingContext; // to construct/copy this type.
 
+    std::unique_ptr<skgpu::SurfaceFillContext> allocSFC(GrSurfaceProxyView readView,
+                                                        GrSurfaceProxyView writeView,
+                                                        const GrColorInfo&);
+
+    std::unique_ptr<skgpu::SurfaceContext> allocSDC(GrSurfaceProxyView readView,
+                                                    GrSurfaceProxyView writeView,
+                                                    GrColorType,
+                                                    sk_sp<SkColorSpace>,
+                                                    const SkSurfaceProps&);
+
+    std::unique_ptr<skgpu::SurfaceFillContext> makeSDC(GrColorType,
+                                                       sk_sp<SkColorSpace>,
+                                                       SkBackingFit,
+                                                       SkISize dimensions,
+                                                       const SkSurfaceProps&,
+                                                       int sampleCnt,
+                                                       GrMipmapped,
+                                                       GrProtected,
+                                                       GrSurfaceOrigin,
+                                                       SkBudgeted);
+
     using INHERITED = GrImageContextPriv;
 };
 
