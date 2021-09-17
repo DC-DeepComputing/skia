@@ -16,6 +16,52 @@
       "message": "Baby steps. PTAL.",
       "revId": "d954364a41669381a799abf44a9ee3e1da97d2e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "971139b9_a24a6226",
+        "filename": "include/private/GrTypesPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T19:32:40Z",
+      "side": 1,
+      "message": "I think we almost want to make this stricter and say the allocation won\u0027t use GPU memory and thus won\u0027t affect memory budget. For vulkan we will test which devices don\u0027t allocate memory and disable memoryless for the ones that do in caps",
+      "range": {
+        "startLine": 164,
+        "startChar": 7,
+        "endLine": 165,
+        "endChar": 64
+      },
+      "revId": "d954364a41669381a799abf44a9ee3e1da97d2e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24d60db9_81660453",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1725,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T19:32:40Z",
+      "side": 1,
+      "message": "I wonder if for the backends that have implemented makeMSAAAttachment, we should either assert GrMemoryless::kNo or return nullptr if kYes is passed in. With this is will return an non memoryless attachment even if memoryless was requested which seems wrong.",
+      "range": {
+        "startLine": 1725,
+        "startChar": 48,
+        "endLine": 1725,
+        "endChar": 77
+      },
+      "revId": "d954364a41669381a799abf44a9ee3e1da97d2e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
