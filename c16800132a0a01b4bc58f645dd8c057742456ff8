@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f137c7a_2e9ba5d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-17T16:42:54Z",
+      "side": 1,
+      "message": "My assumption here is that the BGRA fixes will let this land, but I\u0027ll test the Quadro bot first to be sure. Alternatively we can disable that one GM temporarily.",
+      "revId": "c16800132a0a01b4bc58f645dd8c057742456ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
