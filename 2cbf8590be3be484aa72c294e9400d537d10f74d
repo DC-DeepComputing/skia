@@ -93,6 +93,30 @@
       },
       "revId": "2cbf8590be3be484aa72c294e9400d537d10f74d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "256ed132_e91fc365",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T16:55:53Z",
+      "side": 1,
+      "message": "SGTM, thanks for the explanation!",
+      "parentUuid": "7348e918_2d6e542b",
+      "range": {
+        "startLine": 1508,
+        "startChar": 23,
+        "endLine": 1508,
+        "endChar": 25
+      },
+      "revId": "2cbf8590be3be484aa72c294e9400d537d10f74d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
