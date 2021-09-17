@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "335e31ee_60e7d552",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T14:44:22Z",
+      "side": 1,
+      "message": "Do we need to update the comment?",
+      "range": {
+        "startLine": 757,
+        "startChar": 32,
+        "endLine": 757,
+        "endChar": 48
+      },
+      "revId": "f59791e867e05ce24d3fb9516e10112802b06f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
