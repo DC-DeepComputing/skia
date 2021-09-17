@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53a5c2a7_84d7849a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-17T20:07:28Z",
+      "side": 1,
+      "message": "cool. can you wrap the line to 100 cols? otherwise, lgtm!",
+      "revId": "b28f3a9468f115f46477825c22543bf5db3819dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
