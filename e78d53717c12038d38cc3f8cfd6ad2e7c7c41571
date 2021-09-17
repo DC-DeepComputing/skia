@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4c1bdaee_de1cfb0f",
+        "filename": "include/gpu/d3d/GrD3DTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T20:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bafe862_46b8baa6",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 2
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6c5321ae_567b9af7",
         "filename": "include/gpu/d3d/GrD3DTypes.h",
         "patchSetId": 7
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "I don\u0027t think it\u0027s necessary to add public ObjC headers. They\u0027re just enums so the mapping is pretty obvious.",
       "parentUuid": "b87c18f0_544a46ab",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc2e168_e7632f93",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T20:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c423daf_99b29062",
       "range": {
         "startLine": 50,
         "startChar": 0,
