@@ -184,6 +184,14 @@ enum class GrProtected : bool {
     kYes = true
 };
 
+/*
+ * Used to say whether texture is backed by memory.
+ */
+enum class GrMemoryless : bool {
+    kNo = false,
+    kYes = true
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**

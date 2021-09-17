@@ -1721,7 +1721,8 @@ sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorF
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBackendFormat& format,
-                                                int numSamples, GrProtected isProtected) {
+                                                int numSamples, GrProtected isProtected,
+                                                GrMemoryless /*isMemoryless*/) {
     return GrGLAttachment::MakeMSAA(this, dimensions, numSamples, format.asGLFormat());
 }
 
