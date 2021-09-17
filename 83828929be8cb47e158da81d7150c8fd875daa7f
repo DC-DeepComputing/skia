@@ -56,6 +56,30 @@
       },
       "revId": "83828929be8cb47e158da81d7150c8fd875daa7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd89026c_1bde52dd",
+        "filename": "src/gpu/dawn/GrDawnProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2021-09-17T19:49:01Z",
+      "side": 1,
+      "message": "Thanks for suggestion\nIt could be zero though. Let me try assigning WGPU_ARRAY_LAYER_COUNT_UNDEFINED? I\u0027m not sure (or maybe just max(level, 1)?)",
+      "parentUuid": "aa1c383d_6e7c03fa",
+      "range": {
+        "startLine": 491,
+        "startChar": 29,
+        "endLine": 491,
+        "endChar": 31
+      },
+      "revId": "83828929be8cb47e158da81d7150c8fd875daa7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
