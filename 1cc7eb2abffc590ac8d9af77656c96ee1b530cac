@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5742c20_58a6bbbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-17T13:59:47Z",
+      "side": 1,
+      "message": "I think the canary failures are unrelated, so might as well let this out the door.",
+      "revId": "1cc7eb2abffc590ac8d9af77656c96ee1b530cac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
