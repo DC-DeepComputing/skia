@@ -46,6 +46,30 @@
       },
       "revId": "f59791e867e05ce24d3fb9516e10112802b06f8d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80653c66_dad2e474",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T14:52:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "624a74d7_7ed94dc8",
+      "range": {
+        "startLine": 757,
+        "startChar": 32,
+        "endLine": 757,
+        "endChar": 48
+      },
+      "revId": "f59791e867e05ce24d3fb9516e10112802b06f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
