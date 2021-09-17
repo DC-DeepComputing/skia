@@ -39,6 +39,30 @@
       },
       "revId": "ef82b61fd38750fc455f2fa8f72ce7d540963811",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91f2569d_246cd8b2",
+        "filename": "resources/sksl/errors/Ossfuzz38108.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-17T20:23:05Z",
+      "side": 1,
+      "message": "This error depends on nobody calling reportPendingErrors after the error occurs. Other code in the file can easily end up causing us to call reportPendingErrors and prevent this error from reproducing.\n\nSo for this to reproduce in DuplicateSymbols, it needs to be the very last line of the file, and that\u0027s unnatural enough that I preferred to keep it in an Ossfuzz file (where unnatural code is expected).",
+      "parentUuid": "262a81af_fe9ddffb",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 8
+      },
+      "revId": "ef82b61fd38750fc455f2fa8f72ce7d540963811",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
