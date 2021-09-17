@@ -33,8 +33,6 @@ private:
     void internalClear(const SkIRect* scissor,
                        std::array<float, 4> color,
                        bool upgradePartialToFull = false) override;
-
-    using INHERITED = skgpu::SurfaceFillContext;
 };
 
 } // namespace skgpu::v2
