@@ -165,7 +165,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest, reporter, ctxInfo) {
     GrSwizzle swizzle = context0->priv().caps()->getReadSwizzle(texProxy->backendFormat(),
                                                                 colorInfo.colorType());
     GrSurfaceProxyView view(std::move(texProxy), origin, swizzle);
-    auto surfaceContext = context0->priv().makeSC(std::move(view), colorInfo);
+    auto surfaceContext = context0->priv().allocSC1(std::move(view), colorInfo);
 
     if (!surfaceContext) {
         ERRORF(reporter, "Error wrapping external texture in SurfaceContext.");

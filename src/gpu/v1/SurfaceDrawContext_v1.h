@@ -62,7 +62,7 @@ namespace skgpu::v1 {
  */
 class SurfaceDrawContext final : public SurfaceFillContext {
 public:
-    static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
+    static std::unique_ptr<SurfaceDrawContext> Make7(GrRecordingContext*,
                                                     GrColorType,
                                                     sk_sp<GrSurfaceProxy>,
                                                     sk_sp<SkColorSpace>,
@@ -105,7 +105,7 @@ public:
     // fails. The fallback GrColorType will have at least the number of channels and precision per
     // channel as the passed in GrColorType. It may also swizzle the changes (e.g., BGRA -> RGBA).
     // SRGB-ness will be preserved.
-    static std::unique_ptr<SurfaceDrawContext> MakeWithFallback(
+    static std::unique_ptr<SurfaceDrawContext> MakeWithFallback( /* v1-only */
             GrRecordingContext*,
             GrColorType,
             sk_sp<SkColorSpace>,
@@ -117,17 +117,6 @@ public:
             GrProtected = GrProtected::kNo,
             GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
             SkBudgeted = SkBudgeted::kYes);
-
-    // Creates a SurfaceDrawContext that wraps the passed in GrBackendTexture.
-    static std::unique_ptr<SurfaceDrawContext> MakeFromBackendTexture(
-            GrRecordingContext*,
-            GrColorType,
-            sk_sp<SkColorSpace>,
-            const GrBackendTexture&,
-            int sampleCnt,
-            GrSurfaceOrigin,
-            const SkSurfaceProps&,
-            sk_sp<GrRefCntedCallback> releaseHelper);
 
     SurfaceDrawContext(GrRecordingContext*,
                        GrSurfaceProxyView readView,

@@ -568,7 +568,7 @@ std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(GrRecordingContext* 
     }
 
     GrColorInfo colorInfo(srcColorType, srcAlphaType, colorSpace);
-    auto srcCtx = rContext->priv().makeSC(srcView, colorInfo);
+    auto srcCtx = rContext->priv().allocSC1(srcView, colorInfo);
     SkASSERT(srcCtx);
 
     float scaleX = sigmaX > kMaxSigma ? kMaxSigma/sigmaX : 1.f;

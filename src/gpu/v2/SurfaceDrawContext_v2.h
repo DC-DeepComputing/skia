@@ -14,6 +14,13 @@ namespace skgpu::v2 {
 
 class SurfaceDrawContext final : public SurfaceFillContext {
 public:
+    SurfaceDrawContext(GrRecordingContext*,
+                       GrSurfaceProxyView readView,
+                       GrSurfaceProxyView writeView,
+                       GrColorType,
+                       sk_sp<SkColorSpace>,
+                       const SkSurfaceProps&);
+
     ~SurfaceDrawContext() override;
 
     static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
@@ -37,14 +44,7 @@ public:
 
     const SkSurfaceProps& surfaceProps() const { return fSurfaceProps; }
 
-public:
-    SurfaceDrawContext(GrRecordingContext*,
-                       GrSurfaceProxyView readView,
-                       GrSurfaceProxyView writeView,
-                       GrColorType,
-                       sk_sp<SkColorSpace>,
-                       const SkSurfaceProps&);
-
+private:
     const SkSurfaceProps fSurfaceProps;
 };
 
