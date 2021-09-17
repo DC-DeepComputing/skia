@@ -16,6 +16,29 @@
       "message": "It turns out that the reportPendingErrors() in Compiler::errorText() would prevent this error from ever being hit from skslc, which always calls errorText. So it was only reproducible within fuzz, which does not call errorText().\n\nThe reportPendingErrors() in errorText was originally to make sure we didn\u0027t crash any time we failed to report a line number (which was a lot, originally). We\u0027ve fixed all of those bugs now, so now all it does is mask bugs like this from skslc (but not fuzz).\n\nAs part of this fix, I have removed that call (which required one small adjustment in SPIR-V validation), so that any future bugs like this will actually reproduce properly in skslc.",
       "revId": "ded2b6e947b56ab3b7bd7720c32d5243b11fcbca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "645128e6_7394f95e",
+        "filename": "resources/sksl/errors/DuplicateSymbol.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-17T20:24:39Z",
+      "side": 1,
+      "message": "While I was in there, this seemed worth checking.",
+      "range": {
+        "startLine": 6,
+        "startChar": 4,
+        "endLine": 6,
+        "endChar": 12
+      },
+      "revId": "ded2b6e947b56ab3b7bd7720c32d5243b11fcbca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
