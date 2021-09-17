@@ -87,7 +87,7 @@ class TestVisitor : public Visitor {
 public:
     void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds) override {
         SkASSERT(fTestLines.size() == index);
-        fTestLines.push_back({ index, lineText, hardBreak, bounds, EMPTY_RANGE, Range<RunIndex>(fTestRuns.size(), fTestRuns.size()) });
+        fTestLines.push_back({ index, lineText, hardBreak, bounds, EMPTY_RANGE, Range<RunIndex>(fTestRuns.size(), fTestRuns.size()), 0 });
     }
     void onEndLine(size_t index, TextRange lineText, GlyphRange trailingSpaces, size_t glyphCount) override {
         SkASSERT(fTestLines.size() == index + 1);
