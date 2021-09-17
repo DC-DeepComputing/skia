@@ -183,7 +183,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo) {
         TestCopyFromSurface(reporter, dContext, rectProxy, origin, grII.colorType(), refPixels,
                             "RectangleTexture-copy-from");
 
-        auto rectContext = dContext->priv().makeSC(std::move(view), grII.colorInfo());
+        auto rectContext = dContext->priv().allocSC1(std::move(view), grII.colorInfo());
         SkASSERT(rectContext);
 
         TestReadPixels(reporter, dContext, rectContext.get(), refPixels, "RectangleTexture-read");
