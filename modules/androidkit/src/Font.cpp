@@ -8,6 +8,7 @@
 #include <jni.h>
 
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
 #include "modules/androidkit/src/Utils.h"
 
 namespace {
@@ -15,7 +16,8 @@ namespace {
 //TODO: replace jstring fontFamily with TypeFace object. Wrap Typeface in JetSki
 static jlong Font_Create(JNIEnv* env, jobject, jstring jFontFamily, float size) {
     const androidkit::utils::CString cFontFamily(env, jFontFamily);
-    sk_sp<SkTypeface> typeface = SkTypeface::MakeFromName(cFontFamily, SkFontStyle());
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr::RefDefault();
+    sk_sp<SkTypeface> typeface = sk_sp<SkTypeface>(fontMgr->matchFamilyStyle(cFontFamily, SkFontStyle()));
     return reinterpret_cast<jlong>(new SkFont(std::move(typeface), size));
 }
 
