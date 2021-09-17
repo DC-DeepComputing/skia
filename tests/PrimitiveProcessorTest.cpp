@@ -177,7 +177,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(VertexAttributeCount, reporter, ctxInfo) {
     GrGpu* gpu = dContext->priv().getGpu();
 #endif
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext,
                                                    GrColorType::kRGBA_8888,
                                                    nullptr,
                                                    SkBackingFit::kApprox,

@@ -69,7 +69,7 @@ static bool check_rect(GrDirectContext* dContext,
 }
 
 std::unique_ptr<SurfaceDrawContext> newSDC(GrRecordingContext* rContext, int w, int h) {
-    return SurfaceDrawContext::Make(rContext, GrColorType::kRGBA_8888, nullptr,
+    return SurfaceDrawContext::Make2(rContext, GrColorType::kRGBA_8888, nullptr,
                                     SkBackingFit::kExact, {w, h}, SkSurfaceProps());
 }
 

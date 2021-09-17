@@ -50,7 +50,7 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(rContext,
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make1(rContext,
                                                                        colorType,
                                                                        std::move(proxy),
                                                                        std::move(colorSpace),
@@ -74,7 +74,7 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    auto sdc = SurfaceDrawContext::Make(rContext,
+    auto sdc = SurfaceDrawContext::Make2(rContext,
                                         SkColorTypeToGrColorType(ii.colorType()),
                                         ii.refColorSpace(),
                                         fit,

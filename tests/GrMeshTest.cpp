@@ -109,7 +109,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo) {
 #endif
     auto dContext = ctxInfo.directContext();
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(
             dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kImageWidth, kImageHeight}, SkSurfaceProps());
     if (!sdc) {

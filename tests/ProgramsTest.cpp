@@ -148,7 +148,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> random_surface_draw_contex
     // Above could be 0 if msaa isn't supported.
     sampleCnt = std::max(1, sampleCnt);
 
-    return skgpu::v1::SurfaceDrawContext::Make(
+    return skgpu::v1::SurfaceDrawContext::Make2(
             rContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kRenderTargetWidth, kRenderTargetHeight}, SkSurfaceProps(), sampleCnt,
             GrMipmapped::kNo, GrProtected::kNo, origin);
@@ -295,7 +295,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
     direct->submit(false);
 
     // Validate that GrFPs work correctly without an input.
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(
             direct, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kRenderTargetWidth, kRenderTargetHeight}, SkSurfaceProps());
     if (!sdc) {

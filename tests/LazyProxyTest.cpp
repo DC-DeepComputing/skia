@@ -219,11 +219,11 @@ DEF_GPUTEST(LazyProxyTest, reporter, /* options */) {
     for (bool nullTexture : {false, true}) {
         LazyProxyTest test(reporter);
         ctx->priv().addOnFlushCallbackObject(&test);
-        auto sdc = skgpu::v1::SurfaceDrawContext::Make(ctx.get(), GrColorType::kRGBA_8888, nullptr,
+        auto sdc = skgpu::v1::SurfaceDrawContext::Make2(ctx.get(), GrColorType::kRGBA_8888, nullptr,
                                                        SkBackingFit::kExact, {100, 100},
                                                        SkSurfaceProps());
         REPORTER_ASSERT(reporter, sdc);
-        auto mockAtlas = skgpu::v1::SurfaceDrawContext::Make(ctx.get(), GrColorType::kAlpha_F16,
+        auto mockAtlas = skgpu::v1::SurfaceDrawContext::Make2(ctx.get(), GrColorType::kAlpha_F16,
                                                              nullptr, SkBackingFit::kExact,
                                                              {10, 10}, SkSurfaceProps());
         REPORTER_ASSERT(reporter, mockAtlas);
@@ -405,7 +405,7 @@ DEF_GPUTEST(LazyProxyFailedInstantiationTest, reporter, /* options */) {
     sk_sp<GrDirectContext> ctx = GrDirectContext::MakeMock(&mockOptions, GrContextOptions());
     GrProxyProvider* proxyProvider = ctx->priv().proxyProvider();
     for (bool failInstantiation : {false, true}) {
-        auto sdc = skgpu::v1::SurfaceDrawContext::Make(ctx.get(), GrColorType::kRGBA_8888, nullptr,
+        auto sdc = skgpu::v1::SurfaceDrawContext::Make2(ctx.get(), GrColorType::kRGBA_8888, nullptr,
                                                        SkBackingFit::kExact, {100, 100},
                                                        SkSurfaceProps());
         REPORTER_ASSERT(reporter, sdc);

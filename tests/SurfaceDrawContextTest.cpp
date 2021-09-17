@@ -18,7 +18,7 @@
 static const int kSize = 64;
 
 static std::unique_ptr<skgpu::v1::SurfaceDrawContext> get_sdc(GrRecordingContext* rContext) {
-    return skgpu::v1::SurfaceDrawContext::Make(rContext, GrColorType::kRGBA_8888, nullptr,
+    return skgpu::v1::SurfaceDrawContext::Make2(rContext, GrColorType::kRGBA_8888, nullptr,
                                                SkBackingFit::kExact, {kSize, kSize},
                                                SkSurfaceProps());
 }

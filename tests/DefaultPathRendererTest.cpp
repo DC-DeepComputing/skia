@@ -84,7 +84,7 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
     GrStyle style(SkStrokeRec::kFill_InitStyle);
 
     {
-        auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+        auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                        SkBackingFit::kApprox,
                                                        {kBigSize/2 + 1, kBigSize/2 + 1},
                                                        SkSurfaceProps());
@@ -103,7 +103,7 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
     }
 
     {
-        auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+        auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                        SkBackingFit::kExact, {kBigSize, kBigSize},
                                                        SkSurfaceProps());
 

@@ -17,7 +17,7 @@
 #include "tests/Test.h"
 
 static std::unique_ptr<skgpu::v1::SurfaceDrawContext> new_SDC(GrRecordingContext* rContext) {
-    return skgpu::v1::SurfaceDrawContext::Make(
+    return skgpu::v1::SurfaceDrawContext::Make2(
             rContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact, {128, 128},
             SkSurfaceProps());
 }

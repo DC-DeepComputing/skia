@@ -12,7 +12,21 @@
 
 namespace skgpu::v2 {
 
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make0(GrRecordingContext* rContext,
+                                                              GrSurfaceProxyView readView,
+                                                              GrSurfaceProxyView writeView,
+                                                              GrColorType colorType,
+                                                              sk_sp<SkColorSpace> colorSpace,
+                                                              const SkSurfaceProps& props) {
+    return std::unique_ptr<SurfaceDrawContext>(new SurfaceDrawContext(rContext,
+                                                                      std::move(readView),
+                                                                      std::move(writeView),
+                                                                      colorType,
+                                                                      std::move(colorSpace),
+                                                                      props));
+}
+
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make1(GrRecordingContext* rContext,
                                                              GrColorType colorType,
                                                              sk_sp<GrSurfaceProxy> proxy,
                                                              sk_sp<SkColorSpace> colorSpace,
@@ -29,15 +43,15 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
     GrSurfaceProxyView readView (          proxy,  origin, readSwizzle);
     GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
 
-    return std::make_unique<SurfaceDrawContext>(rContext,
-                                                std::move(readView),
-                                                std::move(writeView),
-                                                colorType,
-                                                std::move(colorSpace),
-                                                surfaceProps);
+    return Make0(rContext,
+                 std::move(readView),
+                 std::move(writeView),
+                 colorType,
+                 std::move(colorSpace),
+                 surfaceProps);
 }
 
-std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext* rContext,
+std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make2(GrRecordingContext* rContext,
                                                              GrColorType colorType,
                                                              sk_sp<SkColorSpace> colorSpace,
                                                              SkBackingFit fit,
@@ -68,7 +82,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
         return nullptr;
     }
 
-    return SurfaceDrawContext::Make(rContext,
+    return SurfaceDrawContext::Make1(rContext,
                                     colorType,
                                     std::move(proxy),
                                     std::move(colorSpace),

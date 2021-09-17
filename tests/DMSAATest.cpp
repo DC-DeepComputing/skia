@@ -82,7 +82,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
                          nullptr) {
     auto dContext = ctxInfo.directContext();
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
@@ -112,7 +112,7 @@ static void require_dst_reads(GrContextOptions* options) {
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read, &sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter, ctxInfo, require_dst_reads) {
     auto dContext = ctxInfo.directContext();
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
@@ -135,7 +135,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
                          require_dst_reads) {
     auto dContext = ctxInfo.directContext();
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
@@ -159,7 +159,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
                          require_dst_reads) {
     auto dContext = ctxInfo.directContext();
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.

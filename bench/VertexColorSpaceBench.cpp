@@ -312,7 +312,7 @@ public:
         const int kDrawsPerLoop = 32;
 
         for (int i = 0; i < loops; ++i) {
-            auto sdc = skgpu::v1::SurfaceDrawContext::Make(context, GrColorType::kRGBA_8888, p3,
+            auto sdc = skgpu::v1::SurfaceDrawContext::Make2(context, GrColorType::kRGBA_8888, p3,
                                                            SkBackingFit::kApprox, {100, 100},
                                                            SkSurfaceProps());
             SkASSERT(sdc);

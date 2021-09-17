@@ -16,14 +16,21 @@ class SurfaceDrawContext final : public SurfaceFillContext {
 public:
     ~SurfaceDrawContext() override;
 
-    static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
+    static std::unique_ptr<SurfaceDrawContext> Make0(GrRecordingContext*,
+                                                    GrSurfaceProxyView readView,
+                                                    GrSurfaceProxyView writeView,
+                                                    GrColorType,
+                                                    sk_sp<SkColorSpace>,
+                                                    const SkSurfaceProps&);
+
+    static std::unique_ptr<SurfaceDrawContext> Make1(GrRecordingContext*,
                                                     GrColorType,
                                                     sk_sp<GrSurfaceProxy>,
                                                     sk_sp<SkColorSpace>,
                                                     GrSurfaceOrigin,
                                                     const SkSurfaceProps&);
 
-    static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
+    static std::unique_ptr<SurfaceDrawContext> Make2(GrRecordingContext*,
                                                     GrColorType,
                                                     sk_sp<SkColorSpace>,
                                                     SkBackingFit,
@@ -37,7 +44,7 @@ public:
 
     const SkSurfaceProps& surfaceProps() const { return fSurfaceProps; }
 
-public:
+private:
     SurfaceDrawContext(GrRecordingContext*,
                        GrSurfaceProxyView readView,
                        GrSurfaceProxyView writeView,

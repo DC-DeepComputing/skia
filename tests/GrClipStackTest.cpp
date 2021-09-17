@@ -1721,7 +1721,7 @@ DEF_TEST(ClipStack_DiffRects, r) {
 
     SkSimpleMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(&options);
-    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make2(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps());
 
@@ -1875,7 +1875,7 @@ DEF_TEST(ClipStack_Shader, r) {
 
     SkSimpleMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(nullptr);
-    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make2(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps());
 
@@ -1928,7 +1928,7 @@ DEF_TEST(ClipStack_SimpleApply, r) {
 
     SkSimpleMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(nullptr);
-    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make2(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps());
 
@@ -2061,7 +2061,7 @@ DEF_GPUTEST_FOR_CONTEXTS(ClipStack_SWMask,
     using SurfaceDrawContext = skgpu::v1::SurfaceDrawContext;
 
     GrDirectContext* context = ctxInfo.directContext();
-    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
+    std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make2(
             context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact, kDeviceBounds.size(),
             SkSurfaceProps());
 

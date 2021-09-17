@@ -40,7 +40,7 @@ static SkImageInfo default_ii(int wh) {
 
 static std::unique_ptr<skgpu::v1::SurfaceDrawContext> new_SDC(GrRecordingContext* rContext,
                                                               int wh) {
-    return skgpu::v1::SurfaceDrawContext::Make(rContext,
+    return skgpu::v1::SurfaceDrawContext::Make2(rContext,
                                                GrColorType::kRGBA_8888,
                                                nullptr,
                                                SkBackingFit::kExact,

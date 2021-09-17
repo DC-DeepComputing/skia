@@ -113,7 +113,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> convolve_gaussian_2d(
              !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaY));
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(
             rContext, srcColorType, std::move(finalCS), dstFit, dstBounds.size(), SkSurfaceProps(),
             1, GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!sdc) {
@@ -168,7 +168,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> convolve_gaussian(
     //
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto dstSDC = skgpu::v1::SurfaceDrawContext::Make(
+    auto dstSDC = skgpu::v1::SurfaceDrawContext::Make2(
             rContext, srcColorType, std::move(finalCS), fit, dstBounds.size(), SkSurfaceProps(), 1,
             GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!dstSDC) {
@@ -319,7 +319,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> reexpand(
 
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto dstSDC = skgpu::v1::SurfaceDrawContext::Make(
+    auto dstSDC = skgpu::v1::SurfaceDrawContext::Make2(
             rContext, srcColorType, std::move(colorSpace), fit, dstSize, SkSurfaceProps(), 1,
             GrMipmapped::kNo, srcView.proxy()->isProtected(), srcView.origin());
     if (!dstSDC) {
@@ -521,7 +521,7 @@ std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(GrRecordingContext* 
     if (!radiusX && !radiusY) {
         // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
         // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-        auto result = skgpu::v1::SurfaceDrawContext::Make(rContext,
+        auto result = skgpu::v1::SurfaceDrawContext::Make2(rContext,
                                                           srcColorType,
                                                           std::move(colorSpace),
                                                           fit,
@@ -607,7 +607,7 @@ std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(GrRecordingContext* 
                (mode == SkTileMode::kDecal && sigmaY > kMaxSigma) ? 1 : 0;
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
-    auto rescaledSDC = skgpu::v1::SurfaceDrawContext::Make(
+    auto rescaledSDC = skgpu::v1::SurfaceDrawContext::Make2(
             srcCtx->recordingContext(),
             colorInfo.colorType(),
             colorInfo.refColorSpace(),

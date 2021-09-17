@@ -383,7 +383,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> draw_mipmap_into_new_rende
                                        SkBudgeted::kYes,
                                        GrProtected::kNo);
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(rContext,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make1(rContext,
                                                    colorType,
                                                    std::move(renderTarget),
                                                    nullptr,
@@ -445,7 +445,7 @@ DEF_GPUTEST(GrManyDependentsMipMappedTest, reporter, /* options */) {
         // dirty again until GrRenderTask::makeClosed().
         mipmapProxy->markMipmapsClean();
 
-        auto mipmapSDC = skgpu::v1::SurfaceDrawContext::Make(
+        auto mipmapSDC = skgpu::v1::SurfaceDrawContext::Make1(
             dContext.get(), colorType, mipmapProxy, nullptr, kTopLeft_GrSurfaceOrigin,
             SkSurfaceProps(), false);
 

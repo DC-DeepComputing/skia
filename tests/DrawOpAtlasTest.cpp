@@ -198,7 +198,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation, reporter, ctxInfo) 
     auto gpu = dContext->priv().getGpu();
     auto resourceProvider = dContext->priv().resourceProvider();
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make2(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {32, 32},
                                                    SkSurfaceProps());
 

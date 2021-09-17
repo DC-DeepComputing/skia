@@ -123,7 +123,7 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
                                GrSurfaceOrigin origin,
                                const SkSurfaceProps& surfaceProps,
                                InitContents init) {
-    auto sdc = SurfaceDrawContext::Make(rContext,
+    auto sdc = SurfaceDrawContext::Make1(rContext,
                                         colorType,
                                         std::move(proxy),
                                         std::move(colorSpace),
@@ -169,7 +169,7 @@ sk_sp<BaseDevice> Device::Make(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    auto sdc = SurfaceDrawContext::Make(rContext,
+    auto sdc = SurfaceDrawContext::Make2(rContext,
                                         SkColorTypeToGrColorType(ii.colorType()),
                                         ii.refColorSpace(),
                                         fit,
@@ -946,7 +946,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
                                  sk_sp<SkColorSpace> colorSpace,
                                  GrSurfaceOrigin origin,
                                  const SkSurfaceProps& props) {
-    auto sdc = SurfaceDrawContext::Make(fContext.get(), grColorType, std::move(newRTP),
+    auto sdc = SurfaceDrawContext::Make1(fContext.get(), grColorType, std::move(newRTP),
                                         std::move(colorSpace), origin, props);
     if (!sdc) {
         return false;
