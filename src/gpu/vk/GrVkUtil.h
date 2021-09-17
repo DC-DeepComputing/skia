@@ -197,6 +197,12 @@ bool GrInstallVkShaderModule(GrVkGpu* gpu,
  */
 bool GrVkFormatIsCompressed(VkFormat);
 
+GrVkImageInfo GrVkImageInfoFromSurfaceInfo(VkImage,
+                                           const GrVkAlloc&,
+                                           VkImageLayout,
+                                           uint32_t currentFamilyQueueIndex,
+                                           const GrVkSurfaceInfo&);
+
 #if defined(SK_DEBUG) || GR_TEST_UTILS
 static constexpr const char* GrVkFormatToStr(VkFormat vkFormat) {
     switch (vkFormat) {

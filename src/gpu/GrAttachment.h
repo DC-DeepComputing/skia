@@ -9,6 +9,7 @@
 #define GrAttachment_DEFINED
 
 #include "src/core/SkClipStack.h"
+#include "src/core/SkMipmap.h"
 #include "src/gpu/GrSurface.h"
 
 class GrRenderTarget;
@@ -35,7 +36,10 @@ public:
 
     UsageFlags supportedUsages() const { return fSupportedUsages; }
 
+    const GrSurfaceInfo& surfaceInfo() const { return fSurfaceInfo; }
+
     int numSamples() const { return fSurfaceInfo.numSamples(); }
+    uint32_t mipLevels() const { return fSurfaceInfo.numMipLevels(); }
 
     GrMipmapped mipmapped() const { return GrMipmapped(fSurfaceInfo.numMipLevels() > 1); }
 

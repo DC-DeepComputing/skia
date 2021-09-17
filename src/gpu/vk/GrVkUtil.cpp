@@ -154,3 +154,25 @@ bool GrVkFormatIsCompressed(VkFormat vkFormat) {
     }
     SkUNREACHABLE;
 }
+
+GrVkImageInfo GrVkImageInfoFromImageAndSpec(VkImage image,
+                                            const GrVkAlloc& alloc,
+                                            VkImageLayout layout,
+                                            uint32_t currentFamilyQueueIndex,
+                                            const GrVkSurfaceInfo& vkInfo) {
+    GrVkImageInfo info;
+    info.fImage = image;
+    info.fAlloc = alloc;
+    info.fImageTiling = vkInfo.fImageTiling;
+    info.fImageLayout = layout;
+    info.fFormat = vkInfo.fFormat;
+    info.fImageUsageFlags = vkInfo.fImageUsageFlags;
+    info.fSampleCount = vkInfo.fSampleCount;
+    info.fLevelCount = vkInfo.fLevelCount;
+    info.fCurrentQueueFamily = currentFamilyQueueIndex;
+    info.fProtected = vkInfo.fProtected;
+    info.fSharingMode = vkInfo.fSharingMode;
+
+    return info;
+}
+
