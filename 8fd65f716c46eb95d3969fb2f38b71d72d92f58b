@@ -33,6 +33,29 @@
       "message": "Two thoughts that I think you can address quickly to know if it\u0027s even reasonable:\n1. Can the allocSFC/SDC\u0027s be hidden in the cpp file and just be static functions? They only seem to be used in the make variants for now.\n2. Do we need v2 to inherit all the different ways of creating the SDCs? or can we try to make a single entry point that covers our use cases? While they aren\u0027t exactly the same right now, the make() functions have very similar implementations and I worry about copy-pasta bugs creeping in, etc. when tweaking the factories. ",
       "revId": "8fd65f716c46eb95d3969fb2f38b71d72d92f58b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2def74b2_592deb02",
+        "filename": "src/gpu/v2/SurfaceDrawContext_v2.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-17T14:06:07Z",
+      "side": 1,
+      "message": "Does this need to be public for the allocSDC functions? Should it just be a Make, or can we get rid of the static factories below if we\u0027re going to switch to using the alloc/makeSDC functions on the recording context?",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 46
+      },
+      "revId": "8fd65f716c46eb95d3969fb2f38b71d72d92f58b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
