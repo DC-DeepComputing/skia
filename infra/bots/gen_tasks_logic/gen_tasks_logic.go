@@ -755,7 +755,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 		}
 		if os == "Win10" && b.parts["model"] == "Golo" {
 			// ChOps-owned machines have Windows 10 v1709.
-			d["os"] = "Windows-10-16299"
+			d["os"] = "Windows-10-19043"
 		}
 		if os == "Mac10.14" && b.parts["model"] == "VMware7.1" {
 			// ChOps VMs are at a newer version of MacOS.
@@ -872,7 +872,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"IntelIris655":  "8086:3ea5-26.20.100.7463",
 					"RadeonHD7770":  "1002:683d-26.20.13031.18002",
 					"RadeonR9M470X": "1002:6646-26.20.13031.18002",
-					"QuadroP400":    "10de:1cb3-25.21.14.1678",
+					"QuadroP400":    "10de:1cb3-10.0.19041.868",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Win GPU mapping.", b.parts["cpu_or_gpu_value"])
@@ -885,7 +885,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"IntelHD2000":   "8086:0102",
 					"IntelHD405":    "8086:22b1",
 					"IntelIris640":  "8086:5926",
-					"QuadroP400":    "10de:1cb3-430.14",
+					"QuadroP400":    "10de:1cb3-30.0.14.7168",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Ubuntu GPU mapping.", b.parts["cpu_or_gpu_value"])
