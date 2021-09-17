@@ -163,6 +163,30 @@
       },
       "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c423daf_99b29062",
+        "filename": "include/gpu/mtl/GrMtlTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-17T16:41:29Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s necessary to add public ObjC headers. They\u0027re just enums so the mapping is pretty obvious.",
+      "parentUuid": "b87c18f0_544a46ab",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "e78d53717c12038d38cc3f8cfd6ad2e7c7c41571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
