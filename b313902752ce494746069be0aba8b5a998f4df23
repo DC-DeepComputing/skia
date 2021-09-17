@@ -16,6 +16,24 @@
       "message": "start unit test  SurfaceContextWritePixelsMipped\nWarning: ReadDataFilesInRegistry: Registry lookup failed to get layer manifest files.\n\n\nFAILURE: ../../../../../../skia/tests/ReadWritePixelsGpuTest.cpp:1236\tCT: kAlpha_8, Level 1, Unowned: 0. Error at 0, 0. Diff in floats:(0.000000, 0.000000, 0.000000, 0.396078) [SurfaceContextWritePixelsMipped, Dawn]\n\nseems to be unhappy about mipLevel set to 1",
       "revId": "b313902752ce494746069be0aba8b5a998f4df23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bee0ad99_1afd7527",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2021-09-17T23:13:52Z",
+      "side": 1,
+      "message": "Brain can you help cc some skia team members familiar with texture usage here could help take a look?\n\nThe point is wgpu::TextureViewDescriptor::mipLevelCount cannot be 0 anymore",
+      "parentUuid": "48711e7a_c88776a1",
+      "revId": "b313902752ce494746069be0aba8b5a998f4df23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
