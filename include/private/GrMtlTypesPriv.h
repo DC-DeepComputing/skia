@@ -9,6 +9,7 @@
 #define GrMtlTypesPriv_DEFINED
 
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/mtl/GrMtlTypes.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +49,26 @@
 #define GR_NORETAIN_BEGIN
 #define GR_NORETAIN_END
 #endif
+
+struct GrMtlTextureSpec {
+    GrMtlTextureSpec()
+            : fFormat(MTLPixelFormatInvalid)
+            , fUsage(MTLTextureUsageUnknown)
+            , fStorageMode(MTLStorageModeShared) {}
+    GrMtlTextureSpec(const GrMTLSurfaceInfo& info)
+            : fFormat(info.fFormat)
+            , fUsage(info.fUsage)
+            , fStorageMode(info.fStorageMode) {}
+
+    MTLPixelFormat fFormat;
+    MTLTextureUsage fUsage;
+    MTLStorageMode fStorageMode;
+};
+
+GrMtlSurfaceInfo GrMtlTextureSpecToSurfaceInfo(const GrMtlTextureSpec& mtlSpec,
+                                               uint32_t sampleCount,
+                                               uint32_t levelCount,
+                                               GrProtected isProtected);
 
 #endif  // __APPLE__
 
