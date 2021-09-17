@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d789e274_8fd14975",
+        "filename": "resources/sksl/errors/Ossfuzz38865.rts",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T14:15:29Z",
+      "side": 1,
+      "message": "If this is runtime-effect specific, it should probably go in runtime_errors.\nIf it\u0027s not, this should probably just be an .sksl file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 8
+      },
+      "revId": "2cbf8590be3be484aa72c294e9400d537d10f74d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95871cc4_cac118a5",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-17T14:15:29Z",
+      "side": 1,
+      "message": "Help me understand: what actually is expr here? Poison? Null? Does it make more sense to return expr or to return {}? Not directly asking for changes, just want to learn the new stuff better.",
+      "range": {
+        "startLine": 1508,
+        "startChar": 23,
+        "endLine": 1508,
+        "endChar": 25
+      },
+      "revId": "2cbf8590be3be484aa72c294e9400d537d10f74d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
