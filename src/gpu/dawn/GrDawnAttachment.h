@@ -31,8 +31,8 @@ protected:
 private:
     GrDawnAttachment(GrDawnGpu* gpu,
                      SkISize dimensions,
+                     const GrSurfaceInfo&,
                      UsageFlags supportedUsages,
-                     int samples,
                      wgpu::Texture texture,
                      wgpu::TextureView view);
 

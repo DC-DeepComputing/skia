@@ -35,9 +35,9 @@ public:
 
     UsageFlags supportedUsages() const { return fSupportedUsages; }
 
-    int numSamples() const { return fSampleCnt; }
+    int numSamples() const { return fSurfaceInfo.numSamples(); }
 
-    GrMipmapped mipmapped() const { return fMipmapped; }
+    GrMipmapped mipmapped() const { return GrMipmapped(fSurfaceInfo.numMipLevels() > 1); }
 
     bool hasPerformedInitialClear() const { return fHasPerformedInitialClear; }
     void markHasPerformedInitialClear() { fHasPerformedInitialClear = true; }
@@ -68,12 +68,11 @@ public:
                                   GrScratchKey* key);
 
 protected:
-    GrAttachment(GrGpu* gpu, SkISize dimensions, UsageFlags supportedUsages, int sampleCnt,
-                 GrMipmapped mipmapped, GrProtected isProtected)
-            : INHERITED(gpu, dimensions, isProtected)
-            , fSupportedUsages(supportedUsages)
-            , fSampleCnt(sampleCnt)
-            , fMipmapped(mipmapped) {}
+    GrAttachment(GrGpu* gpu, SkISize dimensions, const GrSurfaceInfo& info,
+                 UsageFlags supportedUsages)
+            : INHERITED(gpu, dimensions, info.isProtected())
+            , fSurfaceInfo(info)
+            , fSupportedUsages(supportedUsages) {}
 
 private:
     size_t onGpuMemorySize() const final;
@@ -89,9 +88,8 @@ private:
         return "Surface";
     }
 
+    GrSurfaceInfo fSurfaceInfo;
     UsageFlags fSupportedUsages;
-    int fSampleCnt;
-    GrMipmapped fMipmapped;
     bool fHasPerformedInitialClear = false;
 
     using INHERITED = GrSurface;

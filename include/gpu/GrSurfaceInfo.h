@@ -78,6 +78,16 @@ public:
             , fProtected(mockInfo.fProtected)
             , fMockSpec(mockInfo) {}
 
+    // This is a temporary ctor that is used as a default while we switch all the backends to using
+    // it. This allows us to at least store the shared info in a GrSurfaceInfo struct.
+    GrSurfaceInfo(uint32_t sampleCount, uint32_t levelCount, GrProtected isProtected)
+            : fBackend(GrBackendApi::kMock)
+            , fValid(false)
+            , fSampleCount(sampleCount)
+            , fLevelCount(levelCount)
+            , fProtected(isProtected)
+            , fMockSpec() {}
+
     ~GrSurfaceInfo();
     GrSurfaceInfo(const GrSurfaceInfo&) = default;
 

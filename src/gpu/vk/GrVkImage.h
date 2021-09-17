@@ -219,6 +219,7 @@ private:
 
     GrVkImage(GrVkGpu* gpu,
               SkISize dimensions,
+              const GrSurfaceInfo&,
               UsageFlags supportedUsages,
               const GrVkImageInfo&,
               sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
@@ -228,6 +229,7 @@ private:
 
     GrVkImage(GrVkGpu* gpu,
               SkISize dimensions,
+              const GrSurfaceInfo&,
               UsageFlags supportedUsages,
               const GrVkImageInfo&,
               sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,

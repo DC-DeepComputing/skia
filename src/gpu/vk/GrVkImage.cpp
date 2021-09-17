@@ -156,6 +156,7 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
             new GrBackendSurfaceMutableStateImpl(info.fImageLayout, info.fCurrentQueueFamily));
     return sk_sp<GrVkImage>(new GrVkImage(gpu,
                                           dimensions,
+                                          GrSurfaceInfo(sampleCnt, mipLevels, isProtected),
                                           attachmentUsages,
                                           info,
                                           std::move(mutableState),
@@ -184,20 +185,23 @@ sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
                                                         ? GrBackendObjectOwnership::kBorrowed
                                                         : GrBackendObjectOwnership::kOwned;
 
-    return sk_sp<GrVkImage>(new GrVkImage(gpu,
-                                          dimensions,
-                                          attachmentUsages,
-                                          info,
-                                          std::move(mutableState),
-                                          std::move(framebufferView),
-                                          std::move(textureView),
-                                          backendOwnership,
-                                          cacheable,
-                                          forSecondaryCB));
+    return sk_sp<GrVkImage>(
+            new GrVkImage(gpu,
+            dimensions,
+            GrSurfaceInfo(info.fSampleCount, info.fLevelCount, info.fProtected),
+            attachmentUsages,
+            info,
+            std::move(mutableState),
+            std::move(framebufferView),
+            std::move(textureView),
+            backendOwnership,
+            cacheable,
+            forSecondaryCB));
 }
 
 GrVkImage::GrVkImage(GrVkGpu* gpu,
                      SkISize dimensions,
+                     const GrSurfaceInfo& surfaceInfo,
                      UsageFlags supportedUsages,
                      const GrVkImageInfo& info,
                      sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
@@ -206,10 +210,8 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                      SkBudgeted budgeted)
         : GrAttachment(gpu,
                        dimensions,
-                       supportedUsages,
-                       info.fSampleCount,
-                       info.fLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
-                       info.fProtected)
+                       surfaceInfo,
+                       supportedUsages)
         , fInfo(info)
         , fInitialQueueFamily(info.fCurrentQueueFamily)
         , fMutableState(std::move(mutableState))
@@ -221,21 +223,20 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
 }
 
 GrVkImage::GrVkImage(GrVkGpu* gpu,
-                               SkISize dimensions,
-                               UsageFlags supportedUsages,
-                               const GrVkImageInfo& info,
-                               sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
-                               sk_sp<const GrVkImageView> framebufferView,
-                               sk_sp<const GrVkImageView> textureView,
-                               GrBackendObjectOwnership ownership,
-                               GrWrapCacheable cacheable,
-                               bool forSecondaryCB)
+                     SkISize dimensions,
+                     const GrSurfaceInfo& surfaceInfo,
+                     UsageFlags supportedUsages,
+                     const GrVkImageInfo& info,
+                     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
+                     sk_sp<const GrVkImageView> framebufferView,
+                     sk_sp<const GrVkImageView> textureView,
+                     GrBackendObjectOwnership ownership,
+                     GrWrapCacheable cacheable,
+                     bool forSecondaryCB)
         : GrAttachment(gpu,
                        dimensions,
-                       supportedUsages,
-                       info.fSampleCount,
-                       info.fLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
-                       info.fProtected)
+                       surfaceInfo,
+                       supportedUsages)
         , fInfo(info)
         , fInitialQueueFamily(info.fCurrentQueueFamily)
         , fMutableState(std::move(mutableState))
