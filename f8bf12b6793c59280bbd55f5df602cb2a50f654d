@@ -16,6 +16,52 @@
       "message": "PTAL.",
       "revId": "f8bf12b6793c59280bbd55f5df602cb2a50f654d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bb4c0a3_76e3bbf2",
+        "filename": "src/gpu/d3d/GrD3DGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T15:12:45Z",
+      "side": 1,
+      "message": "we normally name statics is_BGRA. Same with uav_compatible_format below.",
+      "range": {
+        "startLine": 1040,
+        "startChar": 12,
+        "endLine": 1040,
+        "endChar": 18
+      },
+      "revId": "f8bf12b6793c59280bbd55f5df602cb2a50f654d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f76640ae_914c5d48",
+        "filename": "src/gpu/d3d/GrD3DGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1085,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-17T15:12:45Z",
+      "side": 1,
+      "message": "Is this helper function really gaining us anything? It\u0027s only used in this one place where we\u0027re already branch between BGRA and sRGB. So like can\u0027t we just set the format to RGBA here? Or are the plans for expanded use where we don\u0027t already know the originalFormat?",
+      "range": {
+        "startLine": 1085,
+        "startChar": 33,
+        "endLine": 1085,
+        "endChar": 52
+      },
+      "revId": "f8bf12b6793c59280bbd55f5df602cb2a50f654d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
