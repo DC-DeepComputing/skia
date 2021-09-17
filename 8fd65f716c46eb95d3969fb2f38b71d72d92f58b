@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a08890ef_800c8074",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-17T22:58:27Z",
+      "side": 1,
+      "message": "1 is done\n2 is sorta done",
+      "parentUuid": "f7794d56_91252ff1",
+      "revId": "8fd65f716c46eb95d3969fb2f38b71d72d92f58b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2def74b2_592deb02",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-09-17T14:06:07Z",
       "side": 1,
       "message": "Does this need to be public for the allocSDC functions? Should it just be a Make, or can we get rid of the static factories below if we\u0027re going to switch to using the alloc/makeSDC functions on the recording context?",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 46
+      },
+      "revId": "8fd65f716c46eb95d3969fb2f38b71d72d92f58b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf70fd47_b6022df9",
+        "filename": "src/gpu/v2/SurfaceDrawContext_v2.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-17T22:58:27Z",
+      "side": 1,
+      "message": "Hidden behind a factory function. We\u0027re stuck with the factory functions on the SDCs for the cases where we actually need a utility SDC.",
+      "parentUuid": "2def74b2_592deb02",
       "range": {
         "startLine": 17,
         "startChar": 4,
