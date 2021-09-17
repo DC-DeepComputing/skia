@@ -390,6 +390,7 @@ config("warnings") {
       "-Winit-self",
       "-Wpointer-arith",
       "-Wsign-compare",
+      "-Wreorder",
       "-Wvla",
 
       "-Wno-deprecated-declarations",
