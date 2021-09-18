@@ -34,6 +34,46 @@
       "parentUuid": "48711e7a_c88776a1",
       "revId": "b313902752ce494746069be0aba8b5a998f4df23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cdaff4a_24a39ced",
+        "filename": "src/gpu/dawn/GrDawnProgramBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2021-09-18T00:48:27Z",
+      "side": 1,
+      "message": "nit: comment doesn\u0027t make sense without historical context: why would we use 0 mip levels? Could instead comment \"WGPU_MIP_LEVEL_COUNT_UNDEFINED means the view uses all mip levels.\"\n\nOr... maybe this is less clear, but you could alternatively write:\n\n if (...) {\n   viewDesc.mipLevelCount \u003d 1;\n }\n\nas the default is to use all levels.",
+      "revId": "b313902752ce494746069be0aba8b5a998f4df23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99502c89_6c25b416",
+        "filename": "src/gpu/dawn/GrDawnProgramBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2021-09-18T00:48:27Z",
+      "side": 1,
+      "message": "I don\u0027t know this code, but I think this is checking the number of mipmaps in the GrTexture but actually we are interested in the number of mipmaps expected by the GrSamplerState, because here we\u0027re creating a wgpu::TextureView into the GrTexture\u0027s wgpu::Texture, and the view may have a different number of mipmap levels than the texture.",
+      "range": {
+        "startLine": 491,
+        "startChar": 29,
+        "endLine": 491,
+        "endChar": 58
+      },
+      "revId": "b313902752ce494746069be0aba8b5a998f4df23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
