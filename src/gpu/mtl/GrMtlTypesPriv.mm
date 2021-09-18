@@ -20,7 +20,7 @@ GrMtlSurfaceInfo GrMtlTextureSpecToSurfaceInfo(const GrMtlTextureSpec& mtlSpec,
     // Mtl info
     info.fFormat = mtlSpec.fFormat;
     info.fUsage = mtlSpec.fUsage;
-    info.fStorageMode = mtlSpec.fStorageMode
+    info.fStorageMode = mtlSpec.fStorageMode;
 
     return info;
 }
