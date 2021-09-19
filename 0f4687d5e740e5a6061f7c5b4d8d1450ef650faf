@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f78d9c_8ccd0713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-19T21:57:04Z",
+      "side": 1,
+      "message": "This reland needs to wait on https://chromium-review.googlesource.com/c/chromium/src/+/3170713 to land in Chrome to guard their use of Vulkan.\n\nBut after that I believe all the other failures should now be fixed for the reland",
+      "revId": "0f4687d5e740e5a6061f7c5b4d8d1450ef650faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

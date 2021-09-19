@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "425bd985_0bb78dc4",
+        "filename": "src/gpu/GrAHardwareBufferImageGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-19T21:57:04Z",
+      "side": 0,
+      "message": "This use of vulkan needed to be guarded by SK_VULKAN now, but I realized we don\u0027t even use textureType anywhere so I just deleted this whole block.",
+      "range": {
+        "startLine": 107,
+        "startChar": 3,
+        "endLine": 110,
+        "endChar": 12
+      },
+      "revId": "b51994990bb4cded2da9efac353d15fc851bf159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
