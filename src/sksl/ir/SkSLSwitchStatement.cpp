@@ -10,14 +10,19 @@
 #include <forward_list>
 
 #include "include/private/SkTHash.h"
+#include "include/sksl/DSLCore.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLForStatement.h"
+#include "src/sksl/ir/SkSLIfStatement.h"
+#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
+#include "src/sksl/ir/SkSLVariable.h"
 
 namespace SkSL {
 
@@ -172,10 +177,10 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
                                                     StatementArray caseStatements,
                                                     std::shared_ptr<SymbolTable> symbolTable) {
     SkASSERT(caseValues.size() == caseStatements.size());
-    if (context.fConfig->strictES2Mode()) {
-        context.fErrors->error(offset, "switch statements are not supported");
-        return nullptr;
-    }
+//    if (context.fConfig->strictES2Mode()) {
+//        context.fErrors->error(offset, "switch statements are not supported");
+//        return nullptr;
+//    }
 
     value = context.fTypes.fInt->coerceExpression(std::move(value), context);
     if (!value) {
@@ -226,6 +231,118 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
 
     return SwitchStatement::Make(context, offset, isStatic, std::move(value), std::move(cases),
                                  std::move(symbolTable));
+}
+
+// Create a block of code which emulates a `switch` statement, using if statements inside a
+// single-iteration for loop. Useful for SkVM or non-ES3-compatible platforms.
+static std::unique_ptr<Statement> make_es2_mode_switch(const Context& context,
+                                                       int offset,
+                                                       bool isStatic,
+                                                       std::unique_ptr<Expression> value,
+                                                       StatementArray cases,
+                                                       std::shared_ptr<SymbolTable> symbolTable) {
+    using namespace dsl;
+    using ScratchVariable = Variable::ScratchVariable;
+
+    // Create an outer block.
+    AutoSymbolTable table(&symbolTable);
+    std::unique_ptr<Block> outerBlock = Block::Make(offset, StatementArray{}, symbolTable);
+
+    // Create scratch variable `switch_value` which stores the switch's test value.
+    ScratchVariable switchValue = Variable::MakeScratchVariable(context,
+                                                                "switch_value",
+                                                                context.fTypes.fInt.get(),
+                                                                Modifiers{},
+                                                                symbolTable.get(),
+                                                                std::move(value));
+    auto ValueVar = [&] {
+        return DSLExpression(VariableReference::Make(offset, switchValue.fVarSymbol));
+    };
+    outerBlock->children().push_back(std::move(switchValue.fVarDecl));
+
+    // Create scratch variable `switch_continue` which is used to rewrite `continue` statements.
+    ScratchVariable switchContinue = Variable::MakeScratchVariable(context,
+                                                                   "switch_continue",
+                                                                   context.fTypes.fBool.get(),
+                                                                   Modifiers{},
+                                                                   symbolTable.get(),
+                                                                   Bool(false).release());
+//    auto ContinueVar = [&] {
+//        return DSLExpression(VariableReference::Make(offset, switchContinue.fVarSymbol));
+//    };
+    outerBlock->children().push_back(std::move(switchContinue.fVarDecl));
+
+    // Create scratch variable `switch_fallthrough` which is set to true when cases fall through.
+    ScratchVariable switchFallthrough = Variable::MakeScratchVariable(context,
+                                                                      "switch_fallthrough",
+                                                                      context.fTypes.fBool.get(),
+                                                                      Modifiers{},
+                                                                      symbolTable.get(),
+                                                                      Bool(false).release());
+    auto FallthroughVar = [&] {
+        return DSLExpression(VariableReference::Make(offset, switchFallthrough.fVarSymbol));
+    };
+    outerBlock->children().push_back(std::move(switchFallthrough.fVarDecl));
+
+    // Create scratch variable `switch_loop_var` which is used to make a one-iteration loop.
+    ScratchVariable switchLoopVar = Variable::MakeScratchVariable(context,
+                                                                  "switch_loop_var",
+                                                                  context.fTypes.fInt.get(),
+                                                                  Modifiers{},
+                                                                  symbolTable.get(),
+                                                                  Int(0).release());
+    auto LoopVar = [&] {
+        return DSLExpression(VariableReference::Make(offset, switchLoopVar.fVarSymbol));
+    };
+
+    // Create a loop to wrap our switch cases (allowing `break` to eject).
+    std::unique_ptr<Block> innerBlockUniqPtr = Block::Make(offset, StatementArray{}, symbolTable);
+    Block* innerBlock = innerBlockUniqPtr.get();
+    outerBlock->children().push_back(ForStatement::Make(context,
+                                                        offset,
+                                                        std::move(switchLoopVar.fVarDecl),
+                                                        (LoopVar() < 1).release(),
+                                                        (LoopVar()++).release(),
+                                                        std::move(innerBlockUniqPtr),
+                                                        /*unrollInfo=*/nullptr,
+                                                        symbolTable));
+    bool firstCase = true;
+    for (std::unique_ptr<Statement>& c : cases) {
+        // We can extract everything out of the SwitchCase object, and don't need to clone.
+        SwitchCase& switchCase = c->as<SwitchCase>();
+        auto CaseVar    = [&] { return DSLExpression(std::move(switchCase.value())); };
+        auto SwitchStmt = [&] { return std::move(switchCase.statement()); };
+
+        // Fix up the block from the switch-case. It needs to be scoped, and continue statements
+        // need to be rewritten (since we have added a loop that didn't exist before).
+        Block& caseBlock = switchCase.statement()->as<Block>();
+        caseBlock.setIsScope(true);
+        //Analysis::RewriteContinueStatements();
+
+        // The default case. `default` must always be last, so we can just dump the code in.
+        // No additional checks are necessary.
+        if (!switchCase.value()) {
+            innerBlock->children().push_back(SwitchStmt());
+            continue;
+        }
+
+        // Tack on `switch_fallthrough = true;` at the end of the user code. (It'll be dead-stripped
+        // during optimization if it's unreachable.)
+        caseBlock.children().push_back(DSLStatement(FallthroughVar() = true).release());
+
+        // For the first case, emit `if (switch_value == 123) {...}`.
+        if (firstCase) {
+            innerBlock->children().push_back(If(ValueVar() == CaseVar(),
+                                                SwitchStmt()).release());
+            firstCase = false;
+            continue;
+        }
+
+        // For each remaining case, emit `if (switch_fallthrough || switch_value == 123) {...}`.
+        innerBlock->children().push_back(If(FallthroughVar() || (ValueVar() == CaseVar()),
+                                            SwitchStmt()).release());
+    }
+    return std::move(outerBlock);
 }
 
 std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
@@ -293,6 +410,12 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
                 return nullptr;
             }
         }
+    }
+
+    // On ES2 devices, we don't have a native switch instruction, but we can fake it.
+    if (context.fConfig->strictES2Mode()) {
+        return make_es2_mode_switch(context, offset, isStatic, std::move(value), std::move(cases),
+                                    std::move(symbolTable));
     }
 
     // The switch couldn't be optimized away; emit it normally.
