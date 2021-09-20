@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06267db6_79ddd07b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-20T17:56:15Z",
+      "side": 1,
+      "message": "Last Friday I broke Android roll few times trying to submit this CL. Apparently, Android roll machine has a different version of Clang that catches more problems than all our build machines. Eventually I had to take out externals/sktext completely to unblock the Android roll.\nThis is my attempt to submit it again. Notice, that it passed canary Android build (I am going to run it every time from now on) so there should not be more problems with Android roll (I think).",
+      "revId": "a943bf255175fbbf5f7ba10b92d2e9300b6191c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
