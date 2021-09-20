@@ -1032,7 +1032,7 @@ HRESULT SkFontMgr_DirectWrite::getByFamilyName(const WCHAR wideFamilyName[],
 sk_sp<SkTypeface> SkFontMgr_DirectWrite::onLegacyMakeTypeface(const char familyName[],
                                                               SkFontStyle style) const {
     SkTScopedComPtr<IDWriteFontFamily> fontFamily;
-    const DWriteStyle dwStyle(style);
+    DWriteStyle dwStyle(style);
     if (familyName) {
         SkSMallocWCHAR dwFamilyName;
         if (SUCCEEDED(sk_cstring_to_wchar(familyName, &dwFamilyName))) {
@@ -1059,9 +1059,36 @@ sk_sp<SkTypeface> SkFontMgr_DirectWrite::onLegacyMakeTypeface(const char familyN
              "Could not get default-default font family.");
     }
 
+    // Avoid simulations - as we do not want Windows controlled implicit
+    // simulations, but instead let Skia clients apply synthetic bolding or skew
+    // to SkFont.
     SkTScopedComPtr<IDWriteFont> font;
-    HRNM(fontFamily->GetFirstMatchingFont(dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &font),
-         "Could not get matching font.");
+
+    bool hasSimulations = true;
+    while (hasSimulations) {
+        SkTScopedComPtr<IDWriteFont> searchFont;
+        HRNM(fontFamily->GetFirstMatchingFont(
+                     dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &searchFont),
+             "Could not get matching font.");
+        DWRITE_FONT_SIMULATIONS simulations = searchFont->GetSimulations();
+        // If we still get simulations even though we're not asking for bold or
+        // italic, we can't help it and exit the loop.
+        hasSimulations = simulations != DWRITE_FONT_SIMULATIONS_NONE ||
+                         (dwStyle.fWeight == DWRITE_FONT_WEIGHT_REGULAR &&
+                          dwStyle.fSlant == DWRITE_FONT_STYLE_NORMAL);
+        if (!hasSimulations) {
+            font = std::move(searchFont);
+            break;
+        }
+        if (simulations & DWRITE_FONT_SIMULATIONS_BOLD) {
+            dwStyle.fWeight = DWRITE_FONT_WEIGHT_REGULAR;
+            continue;
+        }
+        if (simulations & DWRITE_FONT_SIMULATIONS_OBLIQUE) {
+            dwStyle.fSlant = DWRITE_FONT_STYLE_NORMAL;
+            continue;
+        }
+    }
 
     SkTScopedComPtr<IDWriteFontFace> fontFace;
     HRNM(font->CreateFontFace(&fontFace), "Could not create font face.");
