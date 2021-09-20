@@ -36,7 +36,12 @@ GrGLProgramDataManager::UniformManager::UniformManager(const GrUniformAggregator
                     u.count(),
                     location,
             });
-            location++;
+            // Arrays take up one location for each element of the array.
+            if (u.isArray()) {
+                location += u.count();
+            } else {
+                location++;
+            }
         }
     }
 }
@@ -173,9 +178,15 @@ GrGLint get_first_unused_uniform_location(
         const GrGLProgramDataManager::UniformInfoArray& samplers) {
     GrGLint id = -1;
     for (int i = 0; i < uniforms.count(); ++i) {
-        id = std::max(id, uniforms.item(i).fLocation);
+        int uid = uniforms.item(i).fLocation;
+        // Arrays take up one location for each element of the array.
+        if (uniforms.item(i).fVariable.isArray()) {
+            uid += uniforms.item(i).fVariable.getArrayCount() - 1;
+        }
+        id = std::max(uid, uniforms.item(i).fLocation);
     }
     for (int i = 0; i < samplers.count(); ++i) {
+        SkASSERT(!samplers.item(i).fVariable.isArray());
         id = std::max(id, samplers.item(i).fLocation);
     }
     return id + 1;

@@ -216,6 +216,8 @@ public:
             return static_cast<GrShaderFlags>(fVisibility);
         }
 
+        bool isArray() const { return fCount != GrShaderVar::kNonArray; }
+
         static constexpr bool CTypeCompatibleWithType(CType, GrSLType);
 
     private:
