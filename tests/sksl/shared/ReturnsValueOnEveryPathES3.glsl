@@ -53,72 +53,125 @@ bool after_while_loop_b() {
     return true;
 }
 bool switch_with_all_returns_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            return true;
-        case 2:
-            return true;
-        default:
-            return true;
+    {
+        int _0_switchValue = int(unknownInput);
+        bool _2_switchFallthrough = false;
+        for (int _3_switchLoop = 0;_3_switchLoop < 1; _3_switchLoop++) {
+            if (_0_switchValue == 1) {
+                return true;
+            }
+            if (_2_switchFallthrough || _0_switchValue == 2) {
+                return true;
+            }
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_only_default_b() {
-    switch (int(unknownInput)) {
-        default:
-            return true;
+    {
+        for (int _7_switchLoop = 0;_7_switchLoop < 1; _7_switchLoop++) {
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_fallthrough_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            return true;
-        case 2:
-        default:
-            return true;
+    {
+        int _8_switchValue = int(unknownInput);
+        bool _10_switchFallthrough = false;
+        for (int _11_switchLoop = 0;_11_switchLoop < 1; _11_switchLoop++) {
+            if (_8_switchValue == 1) {
+                return true;
+            }
+            if (_10_switchFallthrough || _8_switchValue == 2) {
+                _10_switchFallthrough = true;
+            }
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_fallthrough_twice_b() {
-    switch (int(unknownInput)) {
-        case 1:
-        case 2:
-        default:
-            return true;
+    {
+        int _12_switchValue = int(unknownInput);
+        bool _14_switchFallthrough = false;
+        for (int _15_switchLoop = 0;_15_switchLoop < 1; _15_switchLoop++) {
+            if (_12_switchValue == 1) {
+                _14_switchFallthrough = true;
+            }
+            if (_14_switchFallthrough || _12_switchValue == 2) {
+                _14_switchFallthrough = true;
+            }
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_with_break_in_loop_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            for (int x = 0;x <= 10; ++x) {
-                break;
+    {
+        int _16_switchValue = int(unknownInput);
+        bool _18_switchFallthrough = false;
+        for (int _19_switchLoop = 0;_19_switchLoop < 1; _19_switchLoop++) {
+            if (_16_switchValue == 1) {
+                for (int x = 0;x <= 10; ++x) {
+                    break;
+                }
+                _18_switchFallthrough = true;
             }
-        default:
-            return true;
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_with_continue_in_loop_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            for (int x = 0;x <= 10; ++x) {
-                continue;
+    {
+        int _20_switchValue = int(unknownInput);
+        bool _22_switchFallthrough = false;
+        for (int _23_switchLoop = 0;_23_switchLoop < 1; _23_switchLoop++) {
+            if (_20_switchValue == 1) {
+                for (int x = 0;x <= 10; ++x) {
+                    continue;
+                }
+                _22_switchFallthrough = true;
             }
-        default:
-            return true;
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_with_if_that_returns_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            if (unknownInput == 123.0) return true; else return true;
-        default:
-            return true;
+    {
+        int _24_switchValue = int(unknownInput);
+        for (int _27_switchLoop = 0;_27_switchLoop < 1; _27_switchLoop++) {
+            if (_24_switchValue == 1) {
+                if (unknownInput == 123.0) return true; else return true;
+            }
+            {
+                return true;
+            }
+        }
     }
 }
 bool switch_with_one_sided_if_then_fallthrough_b() {
-    switch (int(unknownInput)) {
-        case 1:
-            if (unknownInput == 123.0) return true;
-        default:
-            return true;
+    {
+        int _28_switchValue = int(unknownInput);
+        bool _30_switchFallthrough = false;
+        for (int _31_switchLoop = 0;_31_switchLoop < 1; _31_switchLoop++) {
+            if (_28_switchValue == 1) {
+                if (unknownInput == 123.0) return true;
+                _30_switchFallthrough = true;
+            }
+            {
+                return true;
+            }
+        }
     }
 }
 vec4 main() {
