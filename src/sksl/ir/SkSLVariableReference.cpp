@@ -14,11 +14,14 @@
 
 namespace SkSL {
 
-VariableReference::VariableReference(int offset, const Variable* variable, RefKind refKind)
-    : INHERITED(offset, kExpressionKind, &variable->type())
+VariableReference::VariableReference(int line, const Variable* variable, RefKind refKind)
+    : INHERITED(line, kExpressionKind, &variable->type())
     , fVariable(variable)
     , fRefKind(refKind) {
     SkASSERT(this->variable());
+    if (variable->name() == "sk_LastFragColor") {
+        SkASSERT(line != -1);
+    }
 }
 
 bool VariableReference::hasProperty(Property property) const {

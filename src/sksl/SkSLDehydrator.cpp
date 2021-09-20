@@ -122,18 +122,18 @@ void Dehydrator::write(skstd::string_view s) {
 
 void Dehydrator::write(String s) {
     auto found = fStrings.find(s);
-    int offset;
+    int line;
     if (found == fStrings.end()) {
-        offset = fStringBuffer.str().length() + HEADER_SIZE;
-        fStrings.insert({ s, offset });
+        line = fStringBuffer.str().length() + HEADER_SIZE;
+        fStrings.insert({ s, line });
         SkASSERT(s.length() <= 255);
         fStringBreaks.add(fStringBuffer.bytesWritten());
         fStringBuffer.write8(s.length());
         fStringBuffer.writeString(s);
     } else {
-        offset = found->second;
+        line = found->second;
     }
-    this->writeU16(offset);
+    this->writeU16(line);
 }
 
 void Dehydrator::write(const Symbol& s) {
