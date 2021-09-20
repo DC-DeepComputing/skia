@@ -13,11 +13,19 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     Outputs _out;
     (void)_out;
     float value = 0.0;
-    switch (int(_uniforms.unknownInput)) {
-        case 0:
-            value = 0.0;
-        case 1:
-            value = 1.0;
+    {
+        int _0_switchValue = int(_uniforms.unknownInput);
+        bool _2_switchFallthrough = false;
+        for (int _3_switchLoop = 0;_3_switchLoop < 1; _3_switchLoop++) {
+            if (_0_switchValue == 0) {
+                value = 0.0;
+                _2_switchFallthrough = true;
+            }
+            if (_2_switchFallthrough || _0_switchValue == 1) {
+                value = 1.0;
+                _2_switchFallthrough = true;
+            }
+        }
     }
     _out.sk_FragColor = float4(value);
     return _out;
