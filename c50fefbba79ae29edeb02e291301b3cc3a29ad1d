@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "947ed9f7_a457d15c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-20T14:54:22Z",
+      "side": 1,
+      "message": "I know this was reverted for GM issues, but I also wanted to point out that there were perf issues. The revert brought things back to the old times, so probably worth understanding:\n\n  https://perf.skia.org/e/?begin\u003d1631905627\u0026end\u003d1632146267\u0026keys\u003dXc362004913092aa5d1ddb653597aced6\u0026xbaroffset\u003d57217",
+      "revId": "c50fefbba79ae29edeb02e291301b3cc3a29ad1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
