@@ -7,7 +7,7 @@ half4 main(float2 coords) {
     if (false) {
         a++, b++, c++;
     }
-    for (int x=0; x<1; ++x) {
+    for (int x=0; x<1; x++) {
         break;
         increment(a, b, c);
     }
