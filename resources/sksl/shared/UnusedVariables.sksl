@@ -8,6 +8,7 @@ half4 main(float2 coords) {
         a++, b++, c++;
     }
     for (int x=0; x<1; ++x) {
+        b = c - 1;
         break;
         increment(a, b, c);
     }
