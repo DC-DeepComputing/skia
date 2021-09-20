@@ -16,6 +16,24 @@
       "message": "Started fresh -- and we\u0027re passing!",
       "revId": "ba29f156cbdbef328ad2e7d876e844be90fce8d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73972b75_75c2ced4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-20T18:17:15Z",
+      "side": 1,
+      "message": "GMs are looking good too",
+      "parentUuid": "de635f36_d24168d6",
+      "revId": "ba29f156cbdbef328ad2e7d876e844be90fce8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
