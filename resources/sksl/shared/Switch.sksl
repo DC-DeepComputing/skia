@@ -1,17 +1,15 @@
-uniform float unknownInput;
+uniform half4 colorGreen, colorRed;
 
-void main() {
+half4 main(float2 coords) {
     // Basic switch test.
-    half value;
-    switch (int(unknownInput)) {
+    switch (int(colorGreen.g)) {
         case 0:
-            value = 0.0;
-            break;
+            return colorRed;
+
         case 1:
-            value = 1.0;
-            break;
+            return colorGreen;
+
         default:
-            value = 2.0;
+            return colorRed;
     }
-    sk_FragColor = value.xxxx;
 }
