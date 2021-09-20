@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe0c5b4_736bd869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-20T22:58:34Z",
+      "side": 1,
+      "message": "Please fix\n\n ../../../../../../skia/src/sksl/dsl/DSLCore.cpp:241:39: error: declaration shadows a local variable [-Werror,-Wshadow]\n                 const SkSL::Variable* skslVar \u003d DSLWriter::Var(var);\n                                       ^\n ../../../../../../skia/src/sksl/dsl/DSLCore.cpp:233:31: note: previous declaration is here\n         const SkSL::Variable* skslVar \u003d DSLWriter::Var(var);\n                               ^\n 1 error generated.\n",
+      "revId": "334f42c4e2917683961dbe10a16f7939df1009bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
