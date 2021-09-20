@@ -10,15 +10,23 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], bool _frontFacing [[front
     Outputs _out;
     (void)_out;
     float x = 0.0;
-    switch (0) {
-        case 0:
-            x = 0.0;
-            if (x < 1.0) {
-                _out.sk_FragColor = float4(x);
-                break;
+    {
+        int _0_switchValue = 0;
+        bool _2_switchFallthrough = false;
+        for (int _3_switchLoop = 0;_3_switchLoop < 1; _3_switchLoop++) {
+            if (_0_switchValue == 0) {
+                x = 0.0;
+                if (x < 1.0) {
+                    _out.sk_FragColor = float4(x);
+                    break;
+                }
+                _2_switchFallthrough = true;
             }
-        case 1:
-            x = 1.0;
+            if (_2_switchFallthrough || _0_switchValue == 1) {
+                x = 1.0;
+                _2_switchFallthrough = true;
+            }
+        }
     }
     return _out;
 }
