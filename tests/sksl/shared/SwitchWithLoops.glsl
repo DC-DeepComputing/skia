@@ -30,6 +30,20 @@ bool loop_with_break_in_switch_bi(int x) {
     }
     return val == 20;
 }
+bool loop_with_continue_in_switch_bi(int x) {
+    int val = 0;
+    for (int i = 0;i < 10; ++i) {
+        switch (x) {
+            case 1:
+                ++val;
+                continue;
+            default:
+                return false;
+        }
+        ++val;
+    }
+    return val == 10;
+}
 vec4 main() {
     int x = int(colorGreen.y);
     int _0_val = 0;
@@ -43,5 +57,5 @@ vec4 main() {
         default:
             ++_0_val;
     }
-    return (_0_val == 2 && switch_with_continue_in_loop_bi(x)) && loop_with_break_in_switch_bi(x) ? colorGreen : colorRed;
+    return ((_0_val == 2 && switch_with_continue_in_loop_bi(x)) && loop_with_break_in_switch_bi(x)) && loop_with_continue_in_switch_bi(x) ? colorGreen : colorRed;
 }

@@ -29,8 +29,7 @@ bool loop_with_break_in_switch(int x) {
     }
     return val == 20;
 }
-/*
-// This function fails to compile on Radeon + GLSL.
+
 bool loop_with_continue_in_switch(int x) {
     int val = 0;
     for (int i=0; i<10; ++i) {
@@ -42,10 +41,11 @@ bool loop_with_continue_in_switch(int x) {
     }
     return val == 10;
 }
-*/
+
 half4 main(float2 coords) {
     int x = int(colorGreen.g);
     return (switch_with_break_in_loop(x) &&
             switch_with_continue_in_loop(x) &&
-            loop_with_break_in_switch(x)) ? colorGreen : colorRed;
+            loop_with_break_in_switch(x) &&
+            loop_with_continue_in_switch(x)) ? colorGreen : colorRed;
 }

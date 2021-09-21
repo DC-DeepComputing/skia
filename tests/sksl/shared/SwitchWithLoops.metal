@@ -38,6 +38,20 @@ bool loop_with_break_in_switch_bi(int x) {
     }
     return val == 20;
 }
+bool loop_with_continue_in_switch_bi(int x) {
+    int val = 0;
+    for (int i = 0;i < 10; ++i) {
+        switch (x) {
+            case 1:
+                ++val;
+                continue;
+            default:
+                return false;
+        }
+        ++val;
+    }
+    return val == 10;
+}
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
@@ -53,6 +67,6 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
         default:
             ++_0_val;
     }
-    _out.sk_FragColor = (_0_val == 2 && switch_with_continue_in_loop_bi(x)) && loop_with_break_in_switch_bi(x) ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor = ((_0_val == 2 && switch_with_continue_in_loop_bi(x)) && loop_with_break_in_switch_bi(x)) && loop_with_continue_in_switch_bi(x) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
