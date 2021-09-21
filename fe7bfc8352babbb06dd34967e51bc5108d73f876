@@ -16,6 +16,24 @@
       "message": "What fun, the one Android NativeFonts bot got removed with https://skia-review.googlesource.com/c/skia/+/448696 . So there is essentially zero coverage here. Opened https://bugs.chromium.org/p/skia/issues/detail?id\u003d12463 .",
       "revId": "fe7bfc8352babbb06dd34967e51bc5108d73f876",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7131b05_66f32b23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-09-21T16:06:32Z",
+      "side": 1,
+      "message": "I understand better coverage would be desirable, but any obstacles to landing that, though? I ran the GMs locally with this FT update and they look ok. This helps us in our diff testing against the CBDT/CBLC font, as we have a downstream app that renders COLRv1 to compare against CBDT.",
+      "parentUuid": "f95f6975_4ada7e35",
+      "revId": "fe7bfc8352babbb06dd34967e51bc5108d73f876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
