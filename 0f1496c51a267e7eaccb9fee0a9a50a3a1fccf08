@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458a0009_72de9bcc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-21T18:32:58Z",
+      "side": 1,
+      "message": "I like the comment (and most of the CL), but the names feel arbitrary. Can we use longer names that indicate the difference? rcp_fast vs. rcp_precise? (Or something along those lines)?",
+      "range": {
+        "startLine": 108,
+        "startChar": 5,
+        "endLine": 108,
+        "endChar": 18
+      },
+      "revId": "0f1496c51a267e7eaccb9fee0a9a50a3a1fccf08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
