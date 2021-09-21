@@ -16,6 +16,24 @@
       "message": "This means that it is possible for \"Nan \u003d\u003d NaN\" (at least sometimes, this was true before) and \"0 !\u003d -0\" (which is new). Also the strangeness of it being possible for an idx to be equal to a flt (which I suppose was true in the old code as well). While fixing possible UB, this UB is UB because it seems to be pointing out a more structural issue.\n\nIt looks like Keyframes are used by KeyframeAnimators (created by AnimatorBuilders). Since the reality is that ScalarKeyframeAnimator is the KeyframeAnimator subclass which uses the flt, can Keyframe be a base class with ScalarKeyframe and IndexKeyframe as subclasses? This would also require templating the KeyframeAnimator and AnimatorBuilder classes (on the Keyframe subclass to be used) but this seems fine since their subclasses already inherit from them and can just specify their Keyframes when inheriting.",
       "revId": "52c1d32c664fb94eddca59ec4ba4730c13ff8a5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c391ab84_4f776714",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-21T16:21:06Z",
+      "side": 1,
+      "message": "\u003e This means that it is possible for \"Nan \u003d\u003d NaN\" (at least sometimes, this was true before) and \"0 !\u003d -0\" (which is new). \n\nIndeed, but that should be ok because the equality test is used for keyframe deduping.  So false negatives for these edge cases are fine, it just means we\u0027ll be storing some extra values.  False positives for valid values would be bad, but I don\u0027t think that\u0027s possible.\n\n\u003e Also the strangeness of it being possible for an idx to be equal to a flt (which I suppose was true in the old code as well). While fixing possible UB, this UB is UB because it seems to be pointing out a more structural issue.\n\u003e \n\u003e It looks like Keyframes are used by KeyframeAnimators (created by AnimatorBuilders). Since the reality is that ScalarKeyframeAnimator is the KeyframeAnimator subclass which uses the flt, can Keyframe be a base class with ScalarKeyframe and IndexKeyframe as subclasses? This would also require templating the KeyframeAnimator and AnimatorBuilder classes (on the Keyframe subclass to be used) but this seems fine since their subclasses already inherit from them and can just specify their Keyframes when inheriting.\n\nAgreed in general.  The thing is we ended up with this strangeness after a couple of memory and code size optimization passes: initially the whole hierarchy was templated and later the common logic was moved into the non-templated base class in order to reduce code size.\n\nOne compromise to try is passing down explicit type information -- let me give that a shot... done.",
+      "parentUuid": "1cb85ce0_be397128",
+      "revId": "52c1d32c664fb94eddca59ec4ba4730c13ff8a5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
