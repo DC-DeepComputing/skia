@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4adf3a3f_425e7c17",
+        "filename": "experimental/graphite/include/gl/Config.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "I would be fine with just switching to SK_. The subsequent GL_ makes it easy enough to know it\u0027s for a GPU backend. I could also understand a more generalized macro name like SK_LOG_GPU_CALLS and we check that for any backend (obv a little less meaningful when the other backend calls fill up command buffers).\n\nI would also be okay with pruning this out entirely for now and deferring the problem.",
+      "parentUuid": "3f24dbb8_648adf68",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 11
+      },
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "acf61d5f_a979252e",
         "filename": "experimental/graphite/include/gl/Config.h",
         "patchSetId": 3

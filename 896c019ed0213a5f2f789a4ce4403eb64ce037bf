@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa994f05_2a169c63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "Caveat: if we are imminently switching to metal, a number of my suggested changes may not be worth it, and at the same time, we maybe shouldn\u0027t worry too much about the GL defines and macros since graphite may not even keep GL.\n\nThat being said, I think it would be nice when we do bring things over to try and convert defines and macros into actual constexprs or static functions unless we really need the preprocessor. My gut feeling is that GL backend has the most of these sorts of things because of its lengthy history, but we\u0027ve got a chance to use more modern C++ that I\u0027d like to take if possible.",
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ce9991b_efe48b11",
+        "filename": "bin/fetch-clang-format",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "is this necessary or a personal env change?",
+      "range": {
+        "startLine": 1,
+        "startChar": 21,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2885600e_c1176e00",
+        "filename": "experimental/graphite/include/gl/Extensions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "What do other\u0027s think of removing SK_APIs when we see them, so that we intentionally have to bring things back into the public API when the experiment is done?",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 29,
+        "endChar": 13
+      },
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e6359a4_49cf5e90",
+        "filename": "experimental/graphite/include/gl/Types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "What if we just prune this system out for now? In this early early sprint before the metal work starts, we can get away with assuming desktop gl",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 6
+      },
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f10d94d2_9953a0ab",
+        "filename": "experimental/graphite/include/gl/Types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "out of date",
+      "range": {
+        "startLine": 55,
+        "startChar": 70,
+        "endLine": 55,
+        "endChar": 80
+      },
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9f2e54_015e7a72",
+        "filename": "experimental/graphite/src/gl/Defines.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-21T18:39:10Z",
+      "side": 1,
+      "message": "Do we need to keep these as defines? Or could they be constexprs inside the namespace? That would let us dro pthe GR_GL_?",
+      "range": {
+        "startLine": 9,
+        "startChar": 8,
+        "endLine": 9,
+        "endChar": 32
+      },
+      "revId": "896c019ed0213a5f2f789a4ce4403eb64ce037bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
