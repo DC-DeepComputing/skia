@@ -1,0 +1,25 @@
+/*
+ * Copyright 2021 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_SDCTask_DEFINED
+#define skgpu_SDCTask_DEFINED
+
+#include "experimental/graphite/src/Task.h"
+
+namespace skgpu {
+
+class SDCTask : public Task {
+public:
+    SDCTask();
+    ~SDCTask() override;
+
+private:
+};
+
+} // namespace skgpu
+
+#endif // skgpu_Device_DEFINED
