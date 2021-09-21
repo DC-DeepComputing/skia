@@ -641,7 +641,8 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
 sk_sp<GrAttachment> GrResourceProvider::getDiscardableMSAAAttachment(SkISize dimensions,
                                                                      const GrBackendFormat& format,
                                                                      int sampleCnt,
-                                                                     GrProtected isProtected) {
+                                                                     GrProtected isProtected,
+                                                                     GrMemoryless memoryless) {
     ASSERT_SINGLE_OWNER
 
     SkASSERT(sampleCnt > 1);
@@ -673,7 +674,7 @@ sk_sp<GrAttachment> GrResourceProvider::getDiscardableMSAAAttachment(SkISize dim
         return msaaAttachment;
     }
     msaaAttachment = this->makeMSAAAttachment(dimensions, format, sampleCnt, isProtected,
-                                              GrMemoryless::kNo);
+                                              memoryless);
     if (msaaAttachment) {
         this->assignUniqueKeyToResource(key, msaaAttachment.get());
     }

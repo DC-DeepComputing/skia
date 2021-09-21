@@ -22,7 +22,7 @@ size_t GrAttachment::onGpuMemorySize() const {
     // the msaa and stencil attachments track their own size because they do get cached separately.
     // For all GrTexture* based things we will continue to to use the GrTexture* to report size and
     // the owned attachments will have no size and be uncached.
-    if (!(fSupportedUsages & UsageFlags::kTexture)) {
+    if (!(fSupportedUsages & UsageFlags::kTexture) && fMemoryless == GrMemoryless::kNo) {
         GrBackendFormat format = this->backendFormat();
         SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
 
