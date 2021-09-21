@@ -16,4 +16,6 @@ skia_graphite_sources = [
   "$_src/Device.cpp",
   "$_src/Device.h",
   "$_src/SkStuff.cpp",
+  "$_src/SkSurface_Graphite.cpp",
+  "$_src/SkSurface_Graphite.h",
 ]
