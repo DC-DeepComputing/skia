@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95f6975_4ada7e35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-21T13:37:03Z",
+      "side": 1,
+      "message": "What fun, the one Android NativeFonts bot got removed with https://skia-review.googlesource.com/c/skia/+/448696 . So there is essentially zero coverage here. Opened https://bugs.chromium.org/p/skia/issues/detail?id\u003d12463 .",
+      "revId": "fe7bfc8352babbb06dd34967e51bc5108d73f876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
