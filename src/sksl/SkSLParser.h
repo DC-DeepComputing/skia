@@ -17,7 +17,6 @@
 #include "src/sksl/SkSLASTFile.h"
 #include "src/sksl/SkSLASTNode.h"
 #include "src/sksl/SkSLLexer.h"
-#include "src/sksl/SkSLPosition.h"
 
 namespace SkSL {
 
@@ -52,8 +51,6 @@ public:
     std::unique_ptr<ASTFile> compilationUnit();
 
     skstd::string_view text(Token token);
-
-    Position position(Token token);
 
 private:
     static void InitLayoutMap();
@@ -107,7 +104,7 @@ private:
     bool expectIdentifier(Token* result);
 
     void error(Token token, String msg);
-    void error(int offset, String msg);
+    void error(int line, String msg);
     /**
      * Returns true if the 'name' identifier refers to a type name. For instance, isType("int") will
      * always return true.
@@ -304,7 +301,7 @@ private:
 
         Parser* fParser;
         Token fPushbackCheckpoint;
-        int32_t fLexerCheckpoint;
+        Lexer::Checkpoint fLexerCheckpoint;
         ForwardingErrorReporter fErrorReporter;
         ErrorReporter* fOldErrorReporter;
         bool fDone = false;
