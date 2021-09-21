@@ -15,7 +15,7 @@
 namespace SkSL {
 
 std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& context,
-                                                                int offset,
+                                                                int line,
                                                                 const FunctionDeclaration& function,
                                                                 std::unique_ptr<Statement> body,
                                                                 bool builtin) {
@@ -54,7 +54,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                     // issue, we can add normalization before each return statement.
                     if (fContext.fConfig->fKind == ProgramKind::kVertex && fFunction.isMain()) {
                         fContext.fErrors->error(
-                                stmt.fOffset,
+                                stmt.fLine,
                                 "early returns from vertex programs are not supported");
                     }
 
@@ -68,13 +68,13 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                         } else {
                             // Returning something from a function with a void return type.
                             returnStmt.setExpression(nullptr);
-                            fContext.fErrors->error(returnStmt.fOffset,
+                            fContext.fErrors->error(returnStmt.fLine,
                                                     "may not return a value from a void function");
                         }
                     } else {
                         if (this->functionReturnsValue()) {
                             // Returning nothing from a function with a non-void return type.
-                            fContext.fErrors->error(returnStmt.fOffset,
+                            fContext.fErrors->error(returnStmt.fLine,
                                                     "expected function to return '" +
                                                     fFunction.returnType().displayName() + "'");
                         }
@@ -98,13 +98,13 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                 }
                 case Statement::Kind::kBreak:
                     if (!fBreakableLevel) {
-                        fContext.fErrors->error(stmt.fOffset,
+                        fContext.fErrors->error(stmt.fLine,
                                                 "break statement must be inside a loop or switch");
                     }
                     break;
                 case Statement::Kind::kContinue:
                     if (!fContinuableLevel) {
-                        fContext.fErrors->error(stmt.fOffset,
+                        fContext.fErrors->error(stmt.fLine,
                                                 "continue statement must be inside a loop");
                     }
                     break;
@@ -131,11 +131,11 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
     Finalizer(context, function, &referencedIntrinsics).visitStatement(*body);
 
     if (Analysis::CanExitWithoutReturningValue(function, *body)) {
-        context.fErrors->error(function.fOffset, "function '" + function.name() +
+        context.fErrors->error(function.fLine, "function '" + function.name() +
                                                  "' can exit without returning a value");
     }
 
-    return std::make_unique<FunctionDefinition>(offset, &function, builtin, std::move(body),
+    return std::make_unique<FunctionDefinition>(line, &function, builtin, std::move(body),
                                                 std::move(referencedIntrinsics));
 }
 
