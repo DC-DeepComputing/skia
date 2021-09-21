@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78857d1c_95a5febb",
+        "filename": "experimental/graphite/include/gl/Config.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "Do we still want the GR_ prefixes here?",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 11
+      },
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acf61d5f_a979252e",
+        "filename": "experimental/graphite/include/gl/Config.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "I\u0027ve been tagging these with // skgpu_gl_Config_DEFINED but it is a chore",
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2790e258_259b3da8",
+        "filename": "experimental/graphite/include/gl/Extensions.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "2021? and LLC ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bed3eb0_114902c3",
+        "filename": "experimental/graphite/include/gl/Functions.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "Extra \u0027\\n\u0027 ?",
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2971382d_02bbac05",
+        "filename": "experimental/graphite/include/gl/Types.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "Same here ?",
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb758577_5cbc15c9",
+        "filename": "experimental/graphite/src/gl/Extensions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-21T17:46:58Z",
+      "side": 1,
+      "message": "Should all the static functions go in the anonymous namespace ?",
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
