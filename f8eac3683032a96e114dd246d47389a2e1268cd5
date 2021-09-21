@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f24dbb8_648adf68",
+        "filename": "experimental/graphite/include/gl/Config.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-21T17:58:40Z",
+      "side": 1,
+      "message": "So on all the macros I left the GR since they are no affected by namespaces or anything. I do think we need to distinguish our macros though so we could either leave them as GR_* (GR works for our old stuff as well a GRaphite), or change to SKGPU_* if we want.",
+      "parentUuid": "78857d1c_95a5febb",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 11
+      },
+      "revId": "f8eac3683032a96e114dd246d47389a2e1268cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "acf61d5f_a979252e",
         "filename": "experimental/graphite/include/gl/Config.h",
         "patchSetId": 3
