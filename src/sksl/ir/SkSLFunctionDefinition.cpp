@@ -12,6 +12,8 @@
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
 
+#include <forward_list>
+
 namespace SkSL {
 
 std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& context,
@@ -21,15 +23,16 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                                                                 bool builtin) {
     class Finalizer : public ProgramWriter {
     public:
-        Finalizer(const Context& context, const FunctionDeclaration& function,
+        Finalizer(const Context& context,
+                  const FunctionDeclaration& function,
                   IntrinsicSet* referencedIntrinsics)
-            : fContext(context)
-            , fFunction(function)
-            , fReferencedIntrinsics(referencedIntrinsics) {}
+                : fContext(context)
+                , fFunction(function)
+                , fReferencedIntrinsics(referencedIntrinsics) {}
 
         ~Finalizer() override {
-            SkASSERT(!fBreakableLevel);
-            SkASSERT(!fContinuableLevel);
+            SkASSERT(fBreakableLevel == 0);
+            SkASSERT(fContinuableLevel == std::forward_list<int>{0});
         }
 
         bool functionReturnsValue() const {
@@ -84,26 +87,28 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                 case Statement::Kind::kDo:
                 case Statement::Kind::kFor: {
                     ++fBreakableLevel;
-                    ++fContinuableLevel;
+                    ++fContinuableLevel.front();
                     bool result = INHERITED::visitStatement(stmt);
-                    --fContinuableLevel;
+                    --fContinuableLevel.front();
                     --fBreakableLevel;
                     return result;
                 }
                 case Statement::Kind::kSwitch: {
                     ++fBreakableLevel;
+                    fContinuableLevel.push_front(0);
                     bool result = INHERITED::visitStatement(stmt);
+                    fContinuableLevel.pop_front();
                     --fBreakableLevel;
                     return result;
                 }
                 case Statement::Kind::kBreak:
-                    if (!fBreakableLevel) {
+                    if (fBreakableLevel == 0) {
                         fContext.fErrors->error(stmt.fOffset,
                                                 "break statement must be inside a loop or switch");
                     }
                     break;
                 case Statement::Kind::kContinue:
-                    if (!fContinuableLevel) {
+                    if (fContinuableLevel.front() == 0) {
                         fContext.fErrors->error(stmt.fOffset,
                                                 "continue statement must be inside a loop");
                     }
@@ -121,8 +126,9 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         IntrinsicSet* fReferencedIntrinsics;
         // how deeply nested we are in breakable constructs (for, do, switch).
         int fBreakableLevel = 0;
-        // how deeply nested we are in continuable constructs (for, do).
-        int fContinuableLevel = 0;
+        // How deeply nested we are in continuable constructs (for, do).
+        // We keep a stack (via a forward_list) in order to disallow continue inside of a switch.
+        std::forward_list<int> fContinuableLevel{0};
 
         using INHERITED = ProgramWriter;
     };
