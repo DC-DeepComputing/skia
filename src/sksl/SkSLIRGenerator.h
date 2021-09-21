@@ -271,6 +271,7 @@ private:
     friend class AutoLoopLevel;
     friend class AutoSwitchLevel;
     friend class AutoDisableInline;
+    friend class AutoDSLSetup;
     friend class Compiler;
     friend class DSLParser;
     friend class dsl::DSLCore;

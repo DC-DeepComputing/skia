@@ -122,6 +122,23 @@ public:
     Context* fContext;
 };
 
+class AutoDSLSetup {
+public:
+    AutoDSLSetup(Compiler* compiler, ErrorReporter* errorReporter, Program& program) {
+        fSettings.fDSLUseMemoryPool = false;
+        dsl::Start(compiler, program.fConfig->fKind, fSettings);
+        dsl::SetErrorReporter(errorReporter);
+        dsl::DSLWriter::IRGenerator().fSymbolTable = program.fSymbols;
+    }
+
+    ~AutoDSLSetup() {
+        dsl::End();
+    }
+
+private:
+    ProgramSettings fSettings;
+};
+
 Compiler::Compiler(const ShaderCapsClass* caps)
         : fErrorReporter(this)
         , fContext(std::make_shared<Context>(fErrorReporter, *caps, fMangler))
@@ -852,11 +869,7 @@ bool Compiler::finalize(Program& program) {
 bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toSPIRV");
     AutoSource as(this, program.fSource->c_str());
-    ProgramSettings settings;
-    settings.fDSLUseMemoryPool = false;
-    dsl::Start(this, program.fConfig->fKind, settings);
-    dsl::SetErrorReporter(&fErrorReporter);
-    dsl::DSLWriter::IRGenerator().fSymbolTable = program.fSymbols;
+    AutoDSLSetup adsl(this, &fErrorReporter, program);
 #ifdef SK_ENABLE_SPIRV_VALIDATION
     StringStream buffer;
     SPIRVCodeGenerator cg(fContext.get(), &program, &buffer);
@@ -896,7 +909,6 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     SPIRVCodeGenerator cg(fContext.get(), &program, &out);
     bool result = cg.generateCode();
 #endif
-    dsl::End();
     return result;
 }
 
