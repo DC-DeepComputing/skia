@@ -16,6 +16,23 @@
       "message": "I suppose this is an ok compromise.",
       "revId": "bc8d7b83c518cadedd5cd8434179117104f8a1a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de860d15_2ebd95cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18284
+      },
+      "writtenOn": "2021-09-21T17:12:29Z",
+      "side": 1,
+      "message": "Just tested this locally on the problematic build that could repro this issue, and this works. Thanks for the quick fix!",
+      "revId": "bc8d7b83c518cadedd5cd8434179117104f8a1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
