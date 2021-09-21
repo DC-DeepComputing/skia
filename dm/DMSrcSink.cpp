@@ -2110,6 +2110,37 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+TBDSink::TBDSink() {}
+
+#if defined(SK_GPU_TBD)
+
+Result TBDSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkString* log) const {
+    sk_sp<SkSurface> surface;
+
+    SkImageInfo info = SkImageInfo::Make(src.size(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+
+    sk_sp<SkSurface> surface = MakeTBD(info);
+    if (!surface) {
+        return Result::Fatal("Could not create a surface.");
+    }
+    Result result = src.draw(direct, surface->getCanvas());
+    if (!result.isOk()) {
+        return result;
+    }
+    surface->flushAndSubmit();
+
+    this->readBack(surface.get(), dst);
+
+    return Result::Ok();
+}
+#else
+Result TBDSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const {
+    return Result::Fatal("TBD not enabled.");
+}
+#endif
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 // Handy for front-patching a Src.  Do whatever up-front work you need, then call draw_to_canvas(),
 // passing the Sink draw() arguments, a size, and a function draws into an SkCanvas.
 // Several examples below.
