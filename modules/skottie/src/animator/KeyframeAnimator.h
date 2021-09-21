@@ -36,8 +36,9 @@ struct Keyframe {
         };
 
         bool operator==(const Value& other) const {
-            return idx == other.idx
-                || flt == other.flt; // +/-0
+            static_assert(sizeof(*this) == sizeof(idx));
+            static_assert(sizeof(*this) == sizeof(flt));
+            return !memcmp(this, &other, sizeof(*this));
         }
         bool operator!=(const Value& other) const { return !((*this) == other); }
     };
