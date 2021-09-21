@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb85ce0_be397128",
+        "filename": "modules/skottie/src/animator/KeyframeAnimator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-21T15:24:30Z",
+      "side": 1,
+      "message": "This means that it is possible for \"Nan \u003d\u003d NaN\" (at least sometimes, this was true before) and \"0 !\u003d -0\" (which is new). Also the strangeness of it being possible for an idx to be equal to a flt (which I suppose was true in the old code as well). While fixing possible UB, this UB is UB because it seems to be pointing out a more structural issue.\n\nIt looks like Keyframes are used by KeyframeAnimators (created by AnimatorBuilders). Since the reality is that ScalarKeyframeAnimator is the KeyframeAnimator subclass which uses the flt, can Keyframe be a base class with ScalarKeyframe and IndexKeyframe as subclasses? This would also require templating the KeyframeAnimator and AnimatorBuilder classes (on the Keyframe subclass to be used) but this seems fine since their subclasses already inherit from them and can just specify their Keyframes when inheriting.",
+      "revId": "52c1d32c664fb94eddca59ec4ba4730c13ff8a5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
