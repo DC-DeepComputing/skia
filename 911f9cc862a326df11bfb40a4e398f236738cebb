@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dafa8ac_b0a76c92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-21T12:40:39Z",
+      "side": 1,
+      "message": "WIP, I\u0027m trying to see how it looks to go from FontMgr to Font without exposing Typeface",
+      "revId": "911f9cc862a326df11bfb40a4e398f236738cebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
