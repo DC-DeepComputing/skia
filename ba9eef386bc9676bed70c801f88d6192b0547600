@@ -22,6 +22,30 @@
       },
       "revId": "ba9eef386bc9676bed70c801f88d6192b0547600",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f571ff4_206c4f83",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-09-22T18:27:59Z",
+      "side": 1,
+      "message": "I wanted to keep the assert in Java, so we could easily throw a Java IllegalArgumentException from there. Don\u0027t think we need to check twice, but I can simplify the arguments and get rid of count.",
+      "parentUuid": "65c15304_92464e36",
+      "range": {
+        "startLine": 168,
+        "startChar": 88,
+        "endLine": 168,
+        "endChar": 98
+      },
+      "revId": "ba9eef386bc9676bed70c801f88d6192b0547600",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
