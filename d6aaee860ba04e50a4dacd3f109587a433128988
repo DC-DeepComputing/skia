@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c442fe8b_33fcabae",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-22T20:04:11Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be DSLWriter::Instance().fContext instead?",
+      "range": {
+        "startLine": 79,
+        "startChar": 54,
+        "endLine": 79,
+        "endChar": 85
+      },
+      "revId": "d6aaee860ba04e50a4dacd3f109587a433128988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
