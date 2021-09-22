@@ -46,6 +46,30 @@
       },
       "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61468a23_846d20e4",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-22T20:28:43Z",
+      "side": 0,
+      "message": "I guess I\u0027m not understanding your suggestion. The Offset function is currently in use, and only becomes unused due to the switchover from offset to line. How could this be landed first?\n\nThis is, as far as I can see, true of the other remaining real changes as well. They would break things in the absence of the offset-\u003eline change, and the offset-\u003eline change would be broken without them, so I don\u0027t see an obvious way to disentangle them.\n\nI should emphasize that this is not just \"changing the word offset to line\". We previously had *both* fields, and there were spots where just one or the other was filled in, so this is definitely not as simple as just doing a global find and replace.",
+      "parentUuid": "dd1e8d63_4958ba80",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

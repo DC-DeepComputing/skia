@@ -22,6 +22,30 @@
       },
       "revId": "7736d1b0eeb5ca71bc1aa9e80f393dc48cbce7c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82c36d62_075cabea",
+        "filename": "include/sksl/DSLVar.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-22T20:28:43Z",
+      "side": 1,
+      "message": "I wasn\u0027t saying there were no real changes left, just none that could be easily and obviously pulled out. If you just pull all of these various extra PositionInfo() arguments out as a separate standalone change, they break things. (I didn\u0027t test every individual instance separately, but all together they certainly don\u0027t work as-is.)",
+      "parentUuid": "76718db6_0edb9ab1",
+      "range": {
+        "startLine": 63,
+        "startChar": 36,
+        "endLine": 63,
+        "endChar": 50
+      },
+      "revId": "7736d1b0eeb5ca71bc1aa9e80f393dc48cbce7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
