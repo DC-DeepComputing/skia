@@ -527,7 +527,6 @@ protected:
 
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override {}
 
-
     bool isNoPixelsDevice() const override { return true; }
 
 private:

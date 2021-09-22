@@ -7,6 +7,7 @@
 
 #include "experimental/graphite/src/Device.h"
 
+#include "experimental/graphite/include/SkStuff.h"
 #include "experimental/graphite/src/SurfaceDrawContext.h"
 
 namespace skgpu {
@@ -23,6 +24,15 @@ sk_sp<Device> Device::Make(const SkImageInfo& ii) {
 Device::Device(sk_sp<SurfaceDrawContext> sdc)
     : SkBaseDevice(sdc->imageInfo(), SkSurfaceProps())
     , fSDC(std::move(sdc)) {
+}
+
+sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {
+    return MakeGraphite(ii);
+}
+
+bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
+    pm.erase(SK_ColorGREEN);
+    return true;
 }
 
 } // namespace skgpu
