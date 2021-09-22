@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b3ceb80_aa3e5425",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-22T18:16:48Z",
+      "side": 1,
+      "message": "Last thing distracting me from the graphite sprint 😊",
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
