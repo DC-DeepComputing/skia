@@ -16,6 +16,23 @@
       "message": "Hi! We\u0027re trying to add Abseil as a dependency to Dawn, but in order to do so we need to add Abseil as a third party dependency to Skia as well. I can see that adding Abseil to Skia was tried in the past and abandoned for unspecified reasons (https://skia-review.googlesource.com/c/skia/+/323158). Hopefully this does not run into whatever the problems were that prompted the Skia team to avoid the library, since only Dawn code will be calling into the library. If there are concerns we\u0027d love to work through them!\n\nThis patch was tested against https://dawn-review.googlesource.com/c/dawn/+/64600, as well as testing Chromium builds with both patches applied to ensure that Dawn will be able to roll cleanly once that CL lands, though this one would need to land first.",
       "revId": "a1c17af44ce8195831d75e865fbef062de9a25b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "049708fc_aea781f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-22T20:55:33Z",
+      "side": 1,
+      "message": "This looks okay. However, after this lands, we\u0027ll want to update the dawn-skia roller to also roll abseil transitively, just like we do for tint, jinja2, and markupsafe: https://skia.googlesource.com/buildbot/+/refs/heads/main/autoroll/config/dawn-skia.cfg\n",
+      "revId": "a1c17af44ce8195831d75e865fbef062de9a25b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
