@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55158dca_3c47479a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-22T19:38:21Z",
+      "side": 1,
+      "message": "The only \"real changes\" that I think are really separable from this are the switch API changes (done). Of the tiny fraction of this CL that is \"real\" changes, I don\u0027t see a reasonable way to pull it out and land it separately.",
+      "parentUuid": "ab315089_7ab72e5f",
+      "revId": "406e18a54007c6574da905aaa36c4675229d6464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e735d23_2d505f51",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-09-22T15:21:04Z",
       "side": 1,
       "message": "nit: indent",
+      "range": {
+        "startLine": 171,
+        "startChar": 26,
+        "endLine": 171,
+        "endChar": 33
+      },
+      "revId": "406e18a54007c6574da905aaa36c4675229d6464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e189116_b796692a",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-22T19:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e735d23_2d505f51",
       "range": {
         "startLine": 171,
         "startChar": 26,
