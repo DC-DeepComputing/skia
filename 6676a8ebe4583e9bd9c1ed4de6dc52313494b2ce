@@ -16,6 +16,23 @@
       "message": "We already have a fix in the pipeline: https://skia-review.googlesource.com/c/skia/+/451576",
       "revId": "6676a8ebe4583e9bd9c1ed4de6dc52313494b2ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a730daff_8454f8f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-22T14:19:08Z",
+      "side": 1,
+      "message": "Thanks for the fix, and notification. I had the same CMAKE problem.",
+      "revId": "6676a8ebe4583e9bd9c1ed4de6dc52313494b2ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
