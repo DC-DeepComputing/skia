@@ -34,15 +34,22 @@ void Start(SkSL::Compiler* compiler, ProgramKind kind) {
 }
 
 void Start(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(compiler, kind, settings,
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(),
+                                                       compiler, kind, settings,
                                                        compiler->moduleForProgramKind(kind),
+                                                       /*isModule=*/false));
+}
+
+void Start(SkSL::Context* context, ProgramKind kind, const ProgramSettings& settings) {
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(context, /*compiler=*/nullptr, kind,
+                                                       settings, /*module=*/skstd::nullopt,
                                                        /*isModule=*/false));
 }
 
 void StartModule(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings,
                  SkSL::ParsedModule module) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(compiler, kind, settings, module,
-                                                       /*isModule=*/true));
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(), compiler, kind,
+                                                       settings, module, /*isModule=*/true));
 }
 
 void End() {
