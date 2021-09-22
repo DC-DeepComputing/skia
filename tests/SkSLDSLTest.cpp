@@ -2061,7 +2061,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLRTAdjust, r, ctxInfo) {
 }
 
 DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLInlining, r, ctxInfo) {
-    AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared());
+    GrGpu* gpu = ctxInfo.directContext()->priv().getGpu();
+    AutoDSLContext context(gpu, no_mark_vars_declared());
     DSLParameter x(kFloat_Type, "x");
     DSLFunction sqr(kFloat_Type, "sqr", x);
     sqr.define(
@@ -2071,7 +2072,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLInlining, r, ctxInfo) {
         sk_FragColor() = (sqr(2), Half4(sqr(3)))
     );
     const char* source = "source test";
-    std::unique_ptr<SkSL::Program> program = ReleaseProgram(std::make_unique<SkSL::String>(source));
+    std::unique_ptr<SkSL::Program> program = ReleaseProgram(gpu->shaderCompiler(),
+                                                            std::make_unique<SkSL::String>(source));
     EXPECT_EQUAL(*program,
                  "layout(location = 0, index = 0, builtin = 10001) out half4 sk_FragColor;"
                  "layout(builtin = 17)in bool sk_Clockwise;"
@@ -2093,7 +2095,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLReleaseUnused, r, ctxInfo) {
 }
 
 DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLPrototypes, r, ctxInfo) {
-    AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), no_mark_vars_declared());
+    GrGpu* gpu = ctxInfo.directContext()->priv().getGpu();
+    AutoDSLContext context(gpu, no_mark_vars_declared());
     {
         DSLParameter x(kFloat_Type, "x");
         DSLFunction sqr(kFloat_Type, "sqr", x);
@@ -2123,7 +2126,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLPrototypes, r, ctxInfo) {
         EXPECT_EQUAL(*DSLWriter::ProgramElements()[2], "float sqr(float x) { return (x * x); }");
 
         const char* source = "source test";
-        std::unique_ptr<SkSL::Program> p = ReleaseProgram(std::make_unique<SkSL::String>(source));
+        std::unique_ptr<SkSL::Program> p = ReleaseProgram(gpu->shaderCompiler(),
+                                                          std::make_unique<SkSL::String>(source));
         EXPECT_EQUAL(*p,
             "layout (builtin = 17) in bool sk_Clockwise;"
             "float sqr(float x);"

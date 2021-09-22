@@ -50,9 +50,9 @@ class DSLVar;
  */
 class DSLWriter {
 public:
-    DSLWriter(SkSL::Context* context, SkSL::Compiler* compiler, SkSL::IRGenerator* irGenerator,
-              SkSL::ProgramKind kind, const SkSL::ProgramSettings& settings,
-              skstd::optional<SkSL::ParsedModule> module, bool isModule);
+    DSLWriter(SkSL::Context* context, SkSL::IRGenerator* irGenerator, SkSL::ProgramKind kind,
+              const SkSL::ProgramSettings& settings, skstd::optional<SkSL::ParsedModule> module,
+              bool isModule);
 
     ~DSLWriter();
 
@@ -60,11 +60,6 @@ public:
      * Returns true if the DSL has been started.
      */
     static bool IsActive();
-
-    /**
-     * Returns the Compiler used by DSL operations in the current thread.
-     */
-    static SkSL::Compiler& Compiler();
 
     /**
      * Returns the IRGenerator used by DSL operations in the current thread.
@@ -295,7 +290,6 @@ private:
     std::unique_ptr<SkSL::ProgramConfig> fConfig;
     std::unique_ptr<SkSL::ModifiersPool> fModifiersPool;
     SkSL::Context* fContext;
-    SkSL::Compiler* fCompiler;
     SkSL::IRGenerator* fIRGenerator;
     std::unique_ptr<Pool> fPool;
     SkSL::ProgramConfig* fOldConfig;

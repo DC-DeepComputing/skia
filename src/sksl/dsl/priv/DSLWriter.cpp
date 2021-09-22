@@ -29,20 +29,15 @@ namespace SkSL {
 
 namespace dsl {
 
-DSLWriter::DSLWriter(SkSL::Context* context, SkSL::Compiler* compiler,
-                     SkSL::IRGenerator* irGenerator, SkSL::ProgramKind kind,
+DSLWriter::DSLWriter(SkSL::Context* context, SkSL::IRGenerator* irGenerator, SkSL::ProgramKind kind,
                      const SkSL::ProgramSettings& settings,
                      skstd::optional<SkSL::ParsedModule> module, bool isModule)
     : fContext(context)
-    , fCompiler(compiler)
     , fIRGenerator(irGenerator)
     , fOldErrorReporter(*fContext->fErrors)
     , fSettings(settings)
     , fIsModule(isModule) {
     SkASSERT(fContext);
-    if (fCompiler) {
-        SkASSERT(fContext == fCompiler->fContext.get());
-    }
     if (fIRGenerator) {
         SkASSERT(fContext == &fIRGenerator->fContext);
     }
@@ -87,12 +82,6 @@ DSLWriter::~DSLWriter() {
     if (fPool) {
         fPool->detachFromThread();
     }
-}
-
-SkSL::Compiler& DSLWriter::Compiler() {
-    SkSL::Compiler* compiler = Instance().fCompiler;
-    SkASSERT(compiler);
-    return *compiler;
 }
 
 SkSL::IRGenerator& DSLWriter::IRGenerator() {
