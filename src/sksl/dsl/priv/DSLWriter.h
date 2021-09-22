@@ -12,7 +12,6 @@
 #include "include/core/SkStringView.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLStatement.h"
-#include "include/private/SkTOptional.h"
 #include "include/sksl/DSLExpression.h"
 #include "include/sksl/DSLStatement.h"
 #include "src/sksl/SkSLMangler.h"
@@ -51,8 +50,7 @@ class DSLVar;
 class DSLWriter {
 public:
     DSLWriter(SkSL::Context* context, SkSL::IRGenerator* irGenerator, SkSL::ProgramKind kind,
-              const SkSL::ProgramSettings& settings, skstd::optional<SkSL::ParsedModule> module,
-              bool isModule);
+              const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
 
     ~DSLWriter();
 

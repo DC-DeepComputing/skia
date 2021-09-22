@@ -40,13 +40,6 @@ void Start(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& se
                                                        /*isModule=*/false));
 }
 
-void Start(SkSL::Context* context, SkSL::IRGenerator* irGenerator, ProgramKind kind,
-           const ProgramSettings& settings) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(context, irGenerator, kind, settings,
-                                                       /*module=*/skstd::nullopt,
-                                                       /*isModule=*/false));
-}
-
 void StartModule(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings,
                  SkSL::ParsedModule module) {
     DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(),

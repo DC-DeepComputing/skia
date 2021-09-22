@@ -30,17 +30,15 @@ namespace SkSL {
 namespace dsl {
 
 DSLWriter::DSLWriter(SkSL::Context* context, SkSL::IRGenerator* irGenerator, SkSL::ProgramKind kind,
-                     const SkSL::ProgramSettings& settings,
-                     skstd::optional<SkSL::ParsedModule> module, bool isModule)
+                     const SkSL::ProgramSettings& settings, SkSL::ParsedModule module,
+                     bool isModule)
     : fContext(context)
     , fIRGenerator(irGenerator)
     , fOldErrorReporter(*fContext->fErrors)
     , fSettings(settings)
     , fIsModule(isModule) {
     SkASSERT(fContext);
-    if (fIRGenerator) {
-        SkASSERT(fContext == &fIRGenerator->fContext);
-    }
+    SkASSERT(fContext == &fIRGenerator->fContext);
 
     fOldModifiersPool = fContext->fModifiersPool;
 
@@ -61,16 +59,12 @@ DSLWriter::DSLWriter(SkSL::Context* context, SkSL::IRGenerator* irGenerator, SkS
     fContext->fConfig = fConfig.get();
     fContext->fErrors = &fDefaultErrorReporter;
 
-    if (fIRGenerator && module.has_value()) {
-        fIRGenerator->start(*module, isModule, &fProgramElements, &fSharedElements);
-    }
+    fIRGenerator->start(module, isModule, &fProgramElements, &fSharedElements);
 }
 
 DSLWriter::~DSLWriter() {
     if (SymbolTable()) {
-        if (fIRGenerator) {
-            fIRGenerator->finish();
-        }
+        fIRGenerator->finish();
         fProgramElements.clear();
     } else {
         // We should only be here with a null symbol table if ReleaseProgram was called
