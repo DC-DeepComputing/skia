@@ -69,6 +69,23 @@
       "message": "I\u0027m all for fixing the broken behavior first and then adding back any optimizations later if we need to.",
       "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "875d38b4_07f947fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8918
+      },
+      "writtenOn": "2021-09-22T15:48:26Z",
+      "side": 1,
+      "message": "If you are happy with this, can you submit it as I don\u0027t have permission?",
+      "revId": "190a497eabf268377d0e18d2a7ffe5b876b7786c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
