@@ -18,9 +18,7 @@ Surface_Graphite::Surface_Graphite(sk_sp<Device> device)
 
 Surface_Graphite::~Surface_Graphite() {}
 
-SkCanvas* Surface_Graphite::onNewCanvas() {
-    return nullptr;
-}
+SkCanvas* Surface_Graphite::onNewCanvas() { return new SkCanvas(fDevice); }
 
 sk_sp<SkSurface> Surface_Graphite::onNewSurface(const SkImageInfo&) {
     return nullptr;

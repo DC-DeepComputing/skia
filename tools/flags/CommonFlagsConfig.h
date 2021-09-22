@@ -63,11 +63,12 @@ public:
                            SkAlphaType               alphaType,
                            bool                      useStencilBuffers,
                            bool                      testThreading,
-                           int                       testPersistentCache,
+                           int                       testPersistentCache1,
                            bool                      testPrecompile,
-                           bool                      useDDLSink,
+                           bool                      useDDLSink1,
                            bool                      OOPRish,
                            bool                      reducedShaders,
+                           bool                      useGraphite,
                            SurfType);
 
     const SkCommandLineConfigGpu* asConfigGpu() const override { return this; }
@@ -78,11 +79,12 @@ public:
     SkColorType   getColorType() const { return fColorType; }
     SkAlphaType   getAlphaType() const { return fAlphaType; }
     bool          getTestThreading() const { return fTestThreading; }
-    int           getTestPersistentCache() const { return fTestPersistentCache; }
+    int           getTestPersistentCache1() const { return fTestPersistentCache1; }
     bool          getTestPrecompile() const { return fTestPrecompile; }
-    bool          getUseDDLSink() const { return fUseDDLSink; }
+    bool          getUseDDLSink1() const { return fUseDDLSink1; }
     bool          getOOPRish() const { return fOOPRish; }
     bool          getReducedShaders() const { return fReducedShaders; }
+    bool          getUseGraphite() const { return fUseGraphite; }
     SurfType      getSurfType() const { return fSurfType; }
 
 private:
@@ -93,11 +95,12 @@ private:
     SkColorType         fColorType;
     SkAlphaType         fAlphaType;
     bool                fTestThreading;
-    int                 fTestPersistentCache;
+    int                 fTestPersistentCache1;
     bool                fTestPrecompile;
-    bool                fUseDDLSink;
+    bool                fUseDDLSink1;
     bool                fOOPRish;
     bool                fReducedShaders;
+    bool                fUseGraphite;
     SurfType            fSurfType;
 };
 

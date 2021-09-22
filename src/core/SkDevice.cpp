@@ -375,9 +375,9 @@ bool SkBaseDevice::onWritePixels(const SkPixmap&, int, int) {
     return false;
 }
 
-bool SkBaseDevice::onReadPixels(const SkPixmap&, int x, int y) {
-    return false;
-}
+//bool SkBaseDevice::onReadPixels(const SkPixmap&, int x, int y) {
+//    return false;
+//}
 
 bool SkBaseDevice::accessPixels(SkPixmap* pmap) {
     SkPixmap tempStorage;
@@ -491,9 +491,9 @@ void SkBaseDevice::simplifyGlyphRunRSXFormAndRedraw(const SkGlyphRunList& glyphR
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSurface> SkBaseDevice::makeSurface(SkImageInfo const&, SkSurfaceProps const&) {
-    return nullptr;
-}
+//sk_sp<SkSurface> SkBaseDevice::makeSurface(SkImageInfo const&, SkSurfaceProps const&)
+//    return nullptr;
+//}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

@@ -346,7 +346,7 @@ protected:
 
     bool readPixels(const SkPixmap&, int x, int y);
 
-    virtual sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&);
+    virtual sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) = 0;
     virtual bool onPeekPixels(SkPixmap*) { return false; }
 
     /**
@@ -355,7 +355,7 @@ protected:
      *
      *  This is explicitly asserted in readPixels(), the public way to call this.
      */
-    virtual bool onReadPixels(const SkPixmap&, int x, int y);
+    virtual bool onReadPixels(const SkPixmap&, int x, int y) = 0;
 
     /**
      *  The caller is responsible for "pre-clipping" the src. The impl can assume that the src
@@ -526,7 +526,8 @@ protected:
                            const SkSamplingOptions&, const SkPaint&) override {}
 
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override {}
-
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override { return nullptr; }
+    bool onReadPixels(const SkPixmap&, int x, int y) override { return false; }
 
     bool isNoPixelsDevice() const override { return true; }
 

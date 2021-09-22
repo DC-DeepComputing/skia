@@ -79,9 +79,9 @@ private:
 struct SinkFlags {
     enum Type { kNull, kGPU, kVector, kRaster } type;
     enum Approach { kDirect, kIndirect } approach;
-    enum Multisampled { kNotMultisampled, kMultisampled } multisampled;
+    enum Multisampled { kNotMultisampled, kMultisampled } multisampled1;
     SinkFlags(Type t, Approach a, Multisampled ms = kNotMultisampled)
-            : type(t), approach(a), multisampled(ms) {}
+            : type(t), approach(a), multisampled1(ms) {}
 };
 
 struct Src {
@@ -584,8 +584,8 @@ public:
     GraphiteSink();
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
-    const char* fileExtension() const override { return "gr"; }
-    SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+    const char* fileExtension() const override { return "png"; }
+    SinkFlags flags() const override { return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect }; }
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

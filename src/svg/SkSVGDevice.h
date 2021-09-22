@@ -36,6 +36,9 @@ protected:
                   bool pathIsMutable = false) override;
 
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override { return nullptr; }
+    bool onReadPixels(const SkPixmap&, int x, int y) override { return false; }
+
     void drawVertices(const SkVertices*, SkBlendMode, const SkPaint&) override;
 
 private:

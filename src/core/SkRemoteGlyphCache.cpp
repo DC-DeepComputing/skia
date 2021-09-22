@@ -828,6 +828,8 @@ public:
                                        cinfo.fInfo.refColorSpace(), fDFTSupport);
     }
 
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override { return nullptr; }
+
 protected:
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override {
         #if SK_SUPPORT_GPU

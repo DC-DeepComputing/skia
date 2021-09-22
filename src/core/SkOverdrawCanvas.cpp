@@ -69,6 +69,7 @@ public:
         fPainter.drawForBitmapDevice(glyphRunList, paint, fOverdrawCanvas->getTotalMatrix(), this);
     }
 
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override { return nullptr; }
 private:
     SkCanvas* const fOverdrawCanvas;
     SkGlyphRunListPainter fPainter;

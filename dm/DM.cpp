@@ -944,14 +944,16 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
                      "GM tests will be skipped.\n", gpuConfig->getTag().c_str());
                 return nullptr;
             }
-            if (gpuConfig->getTestThreading()) {
-                SkASSERT(!gpuConfig->getTestPersistentCache());
+            if (gpuConfig->getUseGraphite()) {
+                return new GraphiteSink();
+            } else if (gpuConfig->getTestThreading()) {
+                SkASSERT(!gpuConfig->getTestPersistentCache1());
                 return new GPUThreadTestingSink(gpuConfig, grCtxOptions);
-            } else if (gpuConfig->getTestPersistentCache()) {
+            } else if (gpuConfig->getTestPersistentCache1()) {
                 return new GPUPersistentCacheTestingSink(gpuConfig, grCtxOptions);
             } else if (gpuConfig->getTestPrecompile()) {
                 return new GPUPrecompileTestingSink(gpuConfig, grCtxOptions);
-            } else if (gpuConfig->getUseDDLSink()) {
+            } else if (gpuConfig->getUseDDLSink1()) {
                 return new GPUDDLSink(gpuConfig, grCtxOptions);
             } else if (gpuConfig->getOOPRish()) {
                 return new GPUOOPRSink(gpuConfig, grCtxOptions);

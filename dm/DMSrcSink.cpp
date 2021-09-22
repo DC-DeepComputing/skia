@@ -917,7 +917,7 @@ bool ImageGenSrc::veto(SinkFlags flags) const {
     if (fIsGpu) {
         // MSAA runs tend to run out of memory and tests the same code paths as regular gpu configs.
         return flags.type != SinkFlags::kGPU || flags.approach != SinkFlags::kDirect ||
-               flags.multisampled == SinkFlags::kMultisampled;
+               flags.multisampled1 == SinkFlags::kMultisampled;
     }
 
     return flags.type != SinkFlags::kRaster || flags.approach != SinkFlags::kDirect;
@@ -1632,7 +1632,7 @@ Result GPUThreadTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStr
 GPUPersistentCacheTestingSink::GPUPersistentCacheTestingSink(const SkCommandLineConfigGpu* config,
                                                              const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions)
-    , fCacheType(config->getTestPersistentCache()) {}
+    , fCacheType(config->getTestPersistentCache1()) {}
 
 Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStream,
                                            SkString* log) const {
@@ -2134,8 +2134,10 @@ Result GraphiteSink::draw(const Src& src,
     }
     surface->flushAndSubmit();
 
-    // TODO: add readback step
-    //this->readBack(surface.get(), dst);
+    dst->allocPixels(surface->imageInfo());
+    if (!surface->readPixels(*dst, 0, 0)) {
+        return Result::Fatal("Could not readback from surface.");
+    }
 
     return Result::Ok();
 }
