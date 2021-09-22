@@ -28,8 +28,9 @@ void StartRuntimeShader(SkSL::Compiler* compiler) {
     settings.fAllowNarrowingConversions = true;
 }
 
-sk_sp<SkRuntimeEffect> EndRuntimeShader(SkRuntimeEffect::Options options) {
-    std::unique_ptr<SkSL::Program> program = ReleaseProgram();
+sk_sp<SkRuntimeEffect> EndRuntimeShader(SkSL::Compiler* compiler,
+                                        SkRuntimeEffect::Options options) {
+    std::unique_ptr<SkSL::Program> program = ReleaseProgram(compiler);
     SkRuntimeEffect::Result result;
     if (program) {
         result = SkRuntimeEffect::MakeForShader(std::move(program), options);

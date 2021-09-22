@@ -40,7 +40,7 @@ public:
     void end(bool expectSuccess = true) {
         SkRuntimeEffect::Options options;
         SkRuntimeEffectPriv::EnableFragCoord(&options);
-        sk_sp<SkRuntimeEffect> effect = EndRuntimeShader(options);
+        sk_sp<SkRuntimeEffect> effect = EndRuntimeShader(fCompiler.get(), options);
         REPORTER_ASSERT(fReporter, effect ? expectSuccess : !expectSuccess);
         if (effect) {
             fBuilder.init(std::move(effect));

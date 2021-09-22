@@ -34,22 +34,22 @@ void Start(SkSL::Compiler* compiler, ProgramKind kind) {
 }
 
 void Start(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(), compiler,
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(),
                                                        &compiler->irGenerator(), kind, settings,
                                                        compiler->moduleForProgramKind(kind),
                                                        /*isModule=*/false));
 }
 
-void Start(SkSL::Context* context, ProgramKind kind, const ProgramSettings& settings) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(context, /*compiler=*/nullptr,
-                                                       /*irGenerator=*/nullptr, kind, settings,
+void Start(SkSL::Context* context, SkSL::IRGenerator* irGenerator, ProgramKind kind,
+           const ProgramSettings& settings) {
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(context, irGenerator, kind, settings,
                                                        /*module=*/skstd::nullopt,
                                                        /*isModule=*/false));
 }
 
 void StartModule(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings,
                  SkSL::ParsedModule module) {
-    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(), compiler,
+    DSLWriter::SetInstance(std::make_unique<DSLWriter>(&compiler->context(),
                                                        &compiler->irGenerator(), kind, settings,
                                                        module, /*isModule=*/true));
 }
@@ -71,15 +71,15 @@ void SetErrorReporter(ErrorReporter* errorReporter) {
 
 class DSLCore {
 public:
-    static std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<String> source) {
+    static std::unique_ptr<SkSL::Program> ReleaseProgram(SkSL::Compiler* compiler,
+                                                         std::unique_ptr<String> source) {
         DSLWriter& instance = DSLWriter::Instance();
         SkSL::IRGenerator& ir = DSLWriter::IRGenerator();
-        SkSL::Compiler& compiler = DSLWriter::Compiler();
         IRGenerator::IRBundle bundle = ir.finish();
         Pool* pool = DSLWriter::Instance().fPool.get();
         auto result = std::make_unique<SkSL::Program>(std::move(source),
                                                       std::move(instance.fConfig),
-                                                      compiler.fContext,
+                                                      compiler->fContext,
                                                       std::move(bundle.fElements),
                                                       std::move(bundle.fSharedElements),
                                                       std::move(instance.fModifiersPool),
@@ -87,9 +87,9 @@ public:
                                                       std::move(instance.fPool),
                                                       bundle.fInputs);
         bool success = false;
-        if (!compiler.finalize(*result)) {
+        if (!compiler->finalize(*result)) {
             // Do not return programs that failed to compile.
-        } else if (!compiler.optimize(*result)) {
+        } else if (!compiler->optimize(*result)) {
             // Do not return programs that failed to optimize.
         } else {
             // We have a successful program!
@@ -332,8 +332,9 @@ public:
     }
 };
 
-std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<String> source) {
-    return DSLCore::ReleaseProgram(std::move(source));
+std::unique_ptr<SkSL::Program> ReleaseProgram(SkSL::Compiler* compiler,
+                                              std::unique_ptr<String> source) {
+    return DSLCore::ReleaseProgram(compiler, std::move(source));
 }
 
 DSLGlobalVar sk_FragColor() {
