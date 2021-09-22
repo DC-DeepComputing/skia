@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d98cce89_843199df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-09-22T19:59:02Z",
+      "side": 1,
+      "message": "I notice that this doesn\u0027t target specific device dimensions and will therefore just run on the typical Mac build machines.  Is that intentional?",
+      "revId": "bf759fa77a325d6d22d2cfe6241e8e75b6b43fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74a1918_b51b24bf",
+        "filename": "infra/bots/cfg.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-09-22T19:59:02Z",
+      "side": 1,
+      "message": "This is not currently necessary, since Build tasks don\u0027t upload results to Perf or Gold.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 15
+      },
+      "revId": "bf759fa77a325d6d22d2cfe6241e8e75b6b43fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
