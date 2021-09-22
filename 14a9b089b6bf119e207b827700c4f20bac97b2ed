@@ -16,6 +16,23 @@
       "message": "Could use a human +1 on this, according to Compliance Alert.",
       "revId": "14a9b089b6bf119e207b827700c4f20bac97b2ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aafb4530_7aaa1359",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-22T13:39:30Z",
+      "side": 1,
+      "message": "Thanks. I\u0027ve pushed back on the assigned bug since it was originally approved by a trusted robot.",
+      "revId": "14a9b089b6bf119e207b827700c4f20bac97b2ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
