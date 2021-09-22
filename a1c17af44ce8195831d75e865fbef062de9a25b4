@@ -33,6 +33,23 @@
       "message": "This looks okay. However, after this lands, we\u0027ll want to update the dawn-skia roller to also roll abseil transitively, just like we do for tint, jinja2, and markupsafe: https://skia.googlesource.com/buildbot/+/refs/heads/main/autoroll/config/dawn-skia.cfg\n",
       "revId": "a1c17af44ce8195831d75e865fbef062de9a25b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "963e231f_17fd38e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18289
+      },
+      "writtenOn": "2021-09-22T21:21:06Z",
+      "side": 1,
+      "message": "Thanks! And yes, I\u0027ll make sure that the roller gets updated.\n\nI keep forgetting that I don\u0027t have commit privileges on this repo. Could you hit the CQ button for me?",
+      "revId": "a1c17af44ce8195831d75e865fbef062de9a25b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
