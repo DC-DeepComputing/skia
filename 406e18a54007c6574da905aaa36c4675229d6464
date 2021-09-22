@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab315089_7ab72e5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-22T15:21:04Z",
+      "side": 1,
+      "message": "Would it be difficult to separate this CL out into the \"real changes\" and \"mechanical replacement of `offset` with `line`\"? Would make review a lot easier.",
+      "revId": "406e18a54007c6574da905aaa36c4675229d6464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e735d23_2d505f51",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-22T15:21:04Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 171,
+        "startChar": 26,
+        "endLine": 171,
+        "endChar": 33
+      },
+      "revId": "406e18a54007c6574da905aaa36c4675229d6464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
