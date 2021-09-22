@@ -39,6 +39,30 @@
       },
       "revId": "bf759fa77a325d6d22d2cfe6241e8e75b6b43fc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "485ab25a_26b87b3d",
+        "filename": "infra/bots/cfg.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-22T20:05:48Z",
+      "side": 1,
+      "message": "I would prefer to leave it in since we\u0027re going to start testing and uploading images ASAP.",
+      "parentUuid": "b74a1918_b51b24bf",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 15
+      },
+      "revId": "bf759fa77a325d6d22d2cfe6241e8e75b6b43fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
