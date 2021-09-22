@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16956501_2dc070ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-22T17:24:25Z",
+      "side": 1,
+      "message": "A very simple (and incorrect in some cases) implementation of a font resolution mechanism.\nBetter versions coming next...",
+      "revId": "36cfcde02d6e5bc7f6117ace0ebf739f33958bea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
