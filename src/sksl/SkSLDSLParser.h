@@ -70,7 +70,7 @@ public:
 
     PositionInfo position(Token token);
 
-    PositionInfo position(int offset);
+    PositionInfo position(int line);
 
 private:
     static void InitLayoutMap();
@@ -124,7 +124,7 @@ private:
     bool expectIdentifier(Token* result);
 
     void error(Token token, String msg);
-    void error(int offset, String msg);
+    void error(int line, String msg);
 
     SymbolTable& symbols() {
         return *dsl::CurrentSymbolTable();
@@ -325,7 +325,7 @@ private:
 
         DSLParser* fParser;
         Token fPushbackCheckpoint;
-        int32_t fLexerCheckpoint;
+        SkSL::Lexer::Checkpoint fLexerCheckpoint;
         ForwardingErrorReporter fErrorReporter;
         ErrorReporter* fOldErrorReporter;
         bool fOldEncounteredFatalError;
