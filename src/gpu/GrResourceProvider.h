@@ -307,7 +307,8 @@ public:
     sk_sp<GrAttachment> getDiscardableMSAAAttachment(SkISize dimensions,
                                                      const GrBackendFormat& format,
                                                      int sampleCnt,
-                                                     GrProtected isProtected);
+                                                     GrProtected isProtected,
+                                                     GrMemoryless memoryless = GrMemoryless::kNo);
 
     /**
      * Assigns a unique key to a resource. If the key is associated with another resource that
