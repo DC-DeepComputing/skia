@@ -42,7 +42,6 @@ public:
                 msg.data());
         REPORTER_ASSERT(fReporter, pos.line() == fLine,
                 "Line number mismatch: expected %d, but received %d\n", fLine, pos.line());
-        DSLWriter::Compiler().handleError(msg, pos);
         fMsg = nullptr;
     }
 

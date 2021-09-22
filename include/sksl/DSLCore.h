@@ -44,8 +44,12 @@ void Start(SkSL::Compiler* compiler, SkSL::ProgramKind kind = SkSL::ProgramKind:
 
 void Start(SkSL::Compiler* compiler, SkSL::ProgramKind kind, const SkSL::ProgramSettings& settings);
 
-/** Allows lightweight DSL use, but no declaring variables or making function calls. */
-void Start(SkSL::Context* context, ProgramKind kind, const ProgramSettings& settings);
+/**
+ * Allows lightweight DSL use on a preexisting program. IRGenerator is allowed to be null, but some
+ * functionality won't work (no declaring variables or making function calls).
+ */
+void Start(SkSL::Context* context, SkSL::IRGenerator* irGenerator, ProgramKind kind,
+           const ProgramSettings& settings);
 
 /**
  * Signals the end of DSL output. This must be called sometime between a call to Start() and the
@@ -59,7 +63,8 @@ void End();
  * sources, but when a DSL program is produced from parsed program text (as in DSLParser), it may be
  * important to retain it so that any skstd::string_views derived from it remain valid.
  */
-std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<SkSL::String> source = nullptr);
+std::unique_ptr<SkSL::Program> ReleaseProgram(SkSL::Compiler* compiler,
+                                              std::unique_ptr<SkSL::String> source = nullptr);
 
 /**
  * Returns the ErrorReporter which will be notified of any errors that occur during DSL calls. The
