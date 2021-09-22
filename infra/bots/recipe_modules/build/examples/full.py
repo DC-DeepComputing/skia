@@ -71,6 +71,7 @@ TEST_BUILDERS = [
   'Build-Mac-Clang-x86_64-Debug-ASAN',
   'Build-Mac-Clang-x86_64-Debug-CommandBuffer',
   'Build-Mac-Clang-x86_64-Debug-Metal',
+  "Build-Mac11-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-Graphite",
   'Build-Win-Clang-arm64-Release-Android',
   'Build-Win-Clang-x86-Debug-Exceptions',
   'Build-Win-Clang-x86_64-Debug-ANGLE',
