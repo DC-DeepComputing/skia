@@ -221,7 +221,7 @@ std::unique_ptr<Program> DSLParser::program() {
             case Token::Kind::TK_END_OF_FILE:
                 done = true;
                 if (!errorReporter->errorCount()) {
-                    result = dsl::ReleaseProgram(std::move(fText));
+                    result = dsl::ReleaseProgram(&fCompiler, std::move(fText));
                 }
                 break;
             case Token::Kind::TK_DIRECTIVE:

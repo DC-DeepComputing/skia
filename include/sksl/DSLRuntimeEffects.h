@@ -21,7 +21,8 @@ namespace dsl {
 
 void StartRuntimeShader(SkSL::Compiler* compiler);
 
-sk_sp<SkRuntimeEffect> EndRuntimeShader(SkRuntimeEffect::Options options = {});
+sk_sp<SkRuntimeEffect> EndRuntimeShader(SkSL::Compiler* compiler,
+                                        SkRuntimeEffect::Options options = {});
 
 #endif
 
