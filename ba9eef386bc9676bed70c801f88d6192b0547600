@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c15304_92464e36",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-22T14:59:06Z",
+      "side": 1,
+      "message": "Nit: we can skip this explicit arg and use GetArrayLength to fetch it from jglyphs (and assert it is equal to len(jglyphs)/2).",
+      "range": {
+        "startLine": 168,
+        "startChar": 88,
+        "endLine": 168,
+        "endChar": 98
+      },
+      "revId": "ba9eef386bc9676bed70c801f88d6192b0547600",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
