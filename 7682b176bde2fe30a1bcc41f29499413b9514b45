@@ -22,6 +22,30 @@
       },
       "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd1e8d63_4958ba80",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-22T20:02:51Z",
+      "side": 0,
+      "message": "I am suggesting that we land this sort of stuff first, then the search/replace of \"rename the world from fOffset to fLine\" separately.",
+      "parentUuid": "b13cb6df_ca993689",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
