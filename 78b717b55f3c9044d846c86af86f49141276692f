@@ -70,6 +70,30 @@
       },
       "revId": "78b717b55f3c9044d846c86af86f49141276692f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd00ab3_269fb8fc",
+        "filename": "modules/androidkit/src/Canvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-22T18:30:59Z",
+      "side": 1,
+      "message": "lgtm++",
+      "parentUuid": "f67237bb_01010963",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 9
+      },
+      "revId": "78b717b55f3c9044d846c86af86f49141276692f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
