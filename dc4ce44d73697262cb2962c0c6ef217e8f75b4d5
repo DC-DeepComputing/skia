@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c4af7a_cae16dda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T12:36:31Z",
+      "side": 1,
+      "message": "This was blocking the Android roll. I think the roller or build scripts just didn\u0027t like the one file with a space in the name (Generic Image).",
+      "revId": "dc4ce44d73697262cb2962c0c6ef217e8f75b4d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
