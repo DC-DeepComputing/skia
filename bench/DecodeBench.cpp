@@ -231,5 +231,5 @@ DEF_BENCH(return new BitmapDecodeBench("png_large"    /*1600x1600*/, "images/man
 DEF_BENCH(return new BitmapDecodeBench("png_medium"   /* 512x 512*/, "images/mandrill_512.png"));
 DEF_BENCH(return new BitmapDecodeBench("png_small"    /*  32x  32*/, "images/mandrill_32.png"));
 DEF_BENCH(return new BitmapDecodeBench("png_phonehub_connecting"   , "images/Connecting.png"));
-DEF_BENCH(return new BitmapDecodeBench("png_phonehub_generic_error", "images/Generic Error.png"));
+DEF_BENCH(return new BitmapDecodeBench("png_phonehub_generic_error", "images/Generic_Error.png"));
 DEF_BENCH(return new BitmapDecodeBench("png_phonehub_onboard"      , "images/Onboard.png"));
