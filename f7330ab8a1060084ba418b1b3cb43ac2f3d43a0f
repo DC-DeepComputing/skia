@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2238db_2a43120b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T20:21:08Z",
+      "side": 1,
+      "message": "Do we want a comment somwhere (not sure where, maybe in the rewrite code) that this is all heavily dependent on our prohibition against continue-in-switch ?",
+      "revId": "f7330ab8a1060084ba418b1b3cb43ac2f3d43a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
