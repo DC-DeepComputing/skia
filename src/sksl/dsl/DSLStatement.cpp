@@ -84,10 +84,11 @@ DSLPossibleStatement::~DSLPossibleStatement() {
 
 DSLStatement operator,(DSLStatement left, DSLStatement right) {
     StatementArray stmts;
+    int line = left.fStatement->fOffset;
     stmts.reserve_back(2);
     stmts.push_back(left.release());
     stmts.push_back(right.release());
-    return DSLStatement(SkSL::Block::MakeUnscoped(/*offset=*/-1, std::move(stmts)));
+    return DSLStatement(SkSL::Block::MakeUnscoped(line, std::move(stmts)));
 }
 
 } // namespace dsl
