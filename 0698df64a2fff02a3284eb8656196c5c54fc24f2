@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9fb0b13_8c4bafcf",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1564,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T19:54:14Z",
+      "side": 1,
+      "message": "This all looks like it works, and the pattern makes sense. However, I think you can avoid some bookkeeping (no need to put things in fSlots) by just keeping the fallthroughValue in a local skvm::I32:\n\n  skvm::I32 falseMask \u003d fBuilder-\u003esplat( 0);\n  skvm::I32 trueMask  \u003d fBuilder-\u003esplat(~0);\n  skvm::I32 fallThrough \u003d falseMask;\n  \n  ...\n  \n  skvm::I32 condition \u003d fallThrough | (i32(caseValue) \u003d\u003d i32(switchValue));\n  ScopeCondition caseBlock(this, condition);\n  \n  ..\n  \n  fallThrough \u003d trueValue;",
+      "range": {
+        "startLine": 1562,
+        "startChar": 0,
+        "endLine": 1564,
+        "endChar": 33
+      },
+      "revId": "0698df64a2fff02a3284eb8656196c5c54fc24f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
