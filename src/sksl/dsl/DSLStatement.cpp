@@ -55,8 +55,8 @@ DSLStatement::DSLStatement(DSLPossibleStatement stmt, PositionInfo pos) {
     } else {
         fStatement = SkSL::Nop::Make();
     }
-    if (pos.offset() != -1) {
-        fStatement->fOffset = pos.offset();
+    if (pos.line() != -1) {
+        fStatement->fLine = pos.line();
     }
 }
 
@@ -84,7 +84,7 @@ DSLPossibleStatement::~DSLPossibleStatement() {
 
 DSLStatement operator,(DSLStatement left, DSLStatement right) {
     StatementArray stmts;
-    int line = left.fStatement->fOffset;
+    int line = left.fStatement->fLine;
     stmts.reserve_back(2);
     stmts.push_back(left.release());
     stmts.push_back(right.release());
