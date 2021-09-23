@@ -68,6 +68,8 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 			sampleCount = 0
 		} else if b.os("ChromeOS") {
 			glPrefix = "gles"
+		} else if b.extraConfig("SwiftShader") {
+			glPrefix = "gles"
 		}
 
 		configs = append(configs, glPrefix, "srgb-"+glPrefix)
