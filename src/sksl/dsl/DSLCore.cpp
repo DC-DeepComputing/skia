@@ -133,11 +133,11 @@ public:
     }
 
     static DSLStatement Break(PositionInfo pos) {
-        return SkSL::BreakStatement::Make(pos.offset());
+        return SkSL::BreakStatement::Make(pos.line());
     }
 
     static DSLStatement Continue(PositionInfo pos) {
-        return SkSL::ContinueStatement::Make(pos.offset());
+        return SkSL::ContinueStatement::Make(pos.line());
     }
 
     static void Declare(const DSLModifiers& modifiers) {
@@ -158,7 +158,7 @@ public:
         for (DSLVar& v : vars) {
             statements.push_back(Declare(v, pos).release());
         }
-        return SkSL::Block::MakeUnscoped(/*offset=*/-1, std::move(statements));
+        return SkSL::Block::MakeUnscoped(pos.line(), std::move(statements));
     }
 
     static void Declare(DSLGlobalVar& var, PositionInfo pos) {
@@ -191,7 +191,7 @@ public:
     }
 
     static DSLStatement Discard(PositionInfo pos) {
-        return SkSL::DiscardStatement::Make(pos.offset());
+        return SkSL::DiscardStatement::Make(pos.line());
     }
 
     static DSLPossibleStatement Do(DSLStatement stmt, DSLExpression test) {
@@ -200,7 +200,7 @@ public:
 
     static DSLPossibleStatement For(DSLStatement initializer, DSLExpression test,
                                     DSLExpression next, DSLStatement stmt, PositionInfo pos) {
-        return ForStatement::Convert(DSLWriter::Context(), /*offset=*/-1,
+        return ForStatement::Convert(DSLWriter::Context(), pos.line(),
                                      initializer.releaseIfPossible(), test.releaseIfPossible(),
                                      next.releaseIfPossible(), stmt.release(),
                                      DSLWriter::SymbolTable());
@@ -225,14 +225,14 @@ public:
             if (baseType->isArray()) {
                 baseType = &baseType->componentType();
             }
-            DSLWriter::IRGenerator().checkVarDeclaration(/*offset=*/-1, field.fModifiers.fModifiers,
+            DSLWriter::IRGenerator().checkVarDeclaration(pos.line(), field.fModifiers.fModifiers,
                     baseType, Variable::Storage::kInterfaceBlock);
             GetErrorReporter().reportPendingErrors(field.fPosition);
             skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
                                                    &field.fType.skslType()));
         }
         const SkSL::Type* structType = DSLWriter::SymbolTable()->takeOwnershipOfSymbol(
-                SkSL::Type::MakeStructType(/*offset=*/-1, typeName, std::move(skslFields)));
+                SkSL::Type::MakeStructType(pos.line(), typeName, std::move(skslFields)));
         DSLType varType = arraySize > 0 ? Array(structType, arraySize) : DSLType(structType);
         DSLGlobalVar var(modifiers, varType, !varName.empty() ? varName : typeName);
         // Interface blocks can't be declared, so we always need to mark the var declared ourselves.
@@ -242,14 +242,14 @@ public:
         }
         const SkSL::Variable* skslVar = DSLWriter::Var(var);
         if (skslVar) {
-            auto intf = std::make_unique<SkSL::InterfaceBlock>(/*offset=*/-1,
+            auto intf = std::make_unique<SkSL::InterfaceBlock>(pos.line(),
                     *skslVar, typeName, varName, arraySize, DSLWriter::SymbolTable());
             DSLWriter::IRGenerator().scanInterfaceBlock(*intf);
             DSLWriter::ProgramElements().push_back(std::move(intf));
             if (varName.empty()) {
                 const std::vector<SkSL::Type::Field>& structFields = structType->fields();
                 for (size_t i = 0; i < structFields.size(); ++i) {
-                    DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(/*offset=*/-1,
+                    DSLWriter::SymbolTable()->add(std::make_unique<SkSL::Field>(pos.line(),
                                                                                 skslVar,
                                                                                 i));
                 }
@@ -261,7 +261,7 @@ public:
         return var;
     }
 
-    static DSLPossibleStatement Return(DSLExpression value, PositionInfo pos) {
+    static DSLStatement Return(DSLExpression value, PositionInfo pos) {
         // Note that because Return is called before the function in which it resides exists, at
         // this point we do not know the function's return type. We therefore do not check for
         // errors, or coerce the value to the correct type, until the return statement is actually
