@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92983a34_2a182686",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 3557,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-23T20:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d80d5199_e2dc01f1",
+      "range": {
+        "startLine": 3557,
+        "startChar": 43,
+        "endLine": 3557,
+        "endChar": 44
+      },
+      "revId": "f21fbd6ee464f219f8ac77235bb688b3ea15bad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4c89ff_b5df1ce3",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cafaa06f_d1bc1cf7",
+        "filename": "src/sksl/dsl/DSLStatement.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-23T20:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a4c89ff_b5df1ce3",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 40
+      },
+      "revId": "f21fbd6ee464f219f8ac77235bb688b3ea15bad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6663c6b_6fec690e",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-09-23T18:17:44Z",
       "side": 1,
       "message": "Up to you: you could store a Checkpoint directly here and then get/rewind would be trivial. Probably generates the same code either way.",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 17
+      },
+      "revId": "f21fbd6ee464f219f8ac77235bb688b3ea15bad0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d408b3_32423ab0",
+        "filename": "src/sksl/lex/Main.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-23T20:12:28Z",
+      "side": 1,
+      "message": "I had tried this, but it didn\u0027t feel like an improvement to have to do fPosition.fOffset/fLine everywhere.",
+      "parentUuid": "d6663c6b_6fec690e",
       "range": {
         "startLine": 94,
         "startChar": 4,
