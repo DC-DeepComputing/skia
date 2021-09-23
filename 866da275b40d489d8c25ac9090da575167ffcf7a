@@ -46,6 +46,30 @@
       },
       "revId": "866da275b40d489d8c25ac9090da575167ffcf7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaf225e2_b7509fe6",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-09-23T14:08:25Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "9edc2192_fe35d70b",
+      "range": {
+        "startLine": 283,
+        "startChar": 35,
+        "endLine": 283,
+        "endChar": 61
+      },
+      "revId": "866da275b40d489d8c25ac9090da575167ffcf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
