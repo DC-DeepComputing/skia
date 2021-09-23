@@ -781,7 +781,7 @@ bool Analysis::CheckProgramUnrolledSize(const Program& program) {
             // Report an error when main()'s flattened size is larger than our program limit.
             if (visitor.functionSize() > kProgramSizeLimit &&
                 element->as<FunctionDefinition>().declaration().isMain()) {
-                context.fErrors->error(/*offset=*/-1, "program is too large");
+                context.fErrors->error(/*line=*/-1, "program is too large");
             }
         }
     }
