@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8e32a6_df933380",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-23T16:16:32Z",
+      "side": 1,
+      "message": "PTAL (PS1-\u003ePS2). The perf issue was that we would rebind the stencil buffer to the FBO at the beginning of every render pass. Now it only does if the stencil buffer assigned to the FBO has changed.\n\nPS1-\u003ePS2: https://skia-review.googlesource.com/c/skia/+/450736/1..2",
+      "revId": "d6eb7e7bb5275313e4875d5e6395e457e3aaaa8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
