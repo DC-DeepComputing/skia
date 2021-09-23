@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b180c00c_48cb358c",
+        "filename": "bench/ShaderMaskFilterBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-23T19:28:35Z",
+      "side": 1,
+      "message": "We could just initialize fColor here directly. fOpaque is only used in the one ternary expression.",
+      "range": {
+        "startLine": 46,
+        "startChar": 29,
+        "endLine": 46,
+        "endChar": 44
+      },
+      "revId": "a0a8a89c52315d58c250487d3fb3017f574f965f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
