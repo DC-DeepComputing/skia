@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b49c6e4e_f213e536",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T18:53:28Z",
+      "side": 1,
+      "message": "This CL is old, but I\u0027m curious about it. This changes behavior on Mac, but *also* on iOS, right? The GPUFamily wasn\u0027t previously a union check, it was for a specific family, and now we\u0027ve substituted for a different family.",
+      "revId": "96cd8a0f71d012134008edb10aed85407380de58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
