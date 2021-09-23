@@ -22,6 +22,30 @@
       },
       "revId": "0698df64a2fff02a3284eb8656196c5c54fc24f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f8da2d9_db22d118",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1564,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T19:58:46Z",
+      "side": 1,
+      "message": "Nevermind, this misses out on masking off the writes to fallThrough.",
+      "parentUuid": "e9fb0b13_8c4bafcf",
+      "range": {
+        "startLine": 1562,
+        "startChar": 0,
+        "endLine": 1564,
+        "endChar": 33
+      },
+      "revId": "0698df64a2fff02a3284eb8656196c5c54fc24f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
