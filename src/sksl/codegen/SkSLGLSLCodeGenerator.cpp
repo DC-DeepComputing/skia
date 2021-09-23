@@ -1355,8 +1355,60 @@ void GLSLCodeGenerator::writeDoStatement(const DoStatement& d) {
 
 void GLSLCodeGenerator::writeSwitchStatement(const SwitchStatement& s) {
     if (fProgram.fConfig->strictES2Mode()) {
-        // TODO(skia:12450): write switch compatibility code
-        fContext.fErrors->error(s.fOffset, "switch statements are not supported");
+        String fallthroughVar = "_tmpSwitchFallthrough" + to_string(fVarCount++);
+        String valueVar = "_tmpSwitchValue" + to_string(fVarCount++);
+        String loopVar = "_tmpSwitchLoop" + to_string(fVarCount++);
+        this->write("int ");
+        this->write(valueVar);
+        this->write(" = ");
+        this->writeExpression(*s.value(), Precedence::kAssignment);
+        this->write(", ");
+        this->write(fallthroughVar);
+        this->writeLine(" = 0; ");
+        this->write("for (int ");
+        this->write(loopVar);
+        this->write(" = 0; ");
+        this->write(loopVar);
+        this->write(" < 1; ");
+        this->write(loopVar);
+        this->writeLine("++) {");
+        fIndentation++;
+
+        bool firstCase = true;
+        for (const std::unique_ptr<Statement>& stmt : s.cases()) {
+            const SwitchCase& c = stmt->as<SwitchCase>();
+            if (c.value()) {
+                this->write("if ((");
+                if (firstCase) {
+                    firstCase = false;
+                } else {
+                    this->write(fallthroughVar);
+                    this->write(" > 0) || (");
+                }
+                this->write(valueVar);
+                this->write(" == ");
+                this->writeExpression(*c.value(), Precedence::kEquality);
+                this->writeLine(")) {");
+                fIndentation++;
+
+                this->writeStatement(*c.statement());
+                this->finishLine();
+                this->write(fallthroughVar);
+                this->write(" = 1;");
+                this->writeLine();
+
+                fIndentation--;
+                this->writeLine("}");
+            } else {
+                // This is the default case. Since it's always last, we can just dump in the code.
+                this->writeStatement(*c.statement());
+                this->finishLine();
+            }
+        }
+
+        fIndentation--;
+        this->writeLine("}");
+        return;
     }
 
     this->write("switch (");
