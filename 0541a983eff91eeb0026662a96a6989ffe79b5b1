@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0822603_109d9f1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-23T15:27:00Z",
+      "side": 1,
+      "message": "Looks like the Android build system gets confused by the image file name with a space:\n\ncontinuous_instrumentation_tests continuous_instrumentation_tests_api_coverage continuous_native_tests device-tests platform_tests\nFAILED: ninja: \u0027external/skia/resources/images/Generic\u0027, needed by \u0027out/target/product/flame/obj/PACKAGING/platform_tests_intermediates/platform_tests.zip\u0027, missing and no known rule to make it\n20:24:01 ninja failed with: exit status 1\n\nAvery, can you try renaming \"Generic Error.png\" -\u003e \"Generic_Error.png\"?\n\n(+Derek in case this is something we want to support in the future)",
+      "revId": "0541a983eff91eeb0026662a96a6989ffe79b5b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
