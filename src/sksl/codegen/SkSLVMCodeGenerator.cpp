@@ -216,6 +216,7 @@ private:
     void writeVarDeclaration(const VarDeclaration& decl);
 
     Value writeStore(const Expression& lhs, const Value& rhs);
+    void  writeStore(SkSpan<size_t> slots, const Value& rhs);
 
     Value writeMatrixInverse2x2(const Value& m);
     Value writeMatrixInverse3x3(const Value& m);
@@ -1456,14 +1457,25 @@ Value SkVMGenerator::writeStore(const Expression& lhs, const Value& rhs) {
     // When we get here, 'slots' are all relative to the first slot holding 'var's storage
     const Variable& var = *expr->as<VariableReference>().variable();
     size_t varSlot = this->getSlot(var);
+    for (size_t& slot : slots) {
+        SkASSERT(slot < var.type().slotCount());
+        slot += varSlot;
+    }
+
+    // `slots` are now absolute indices into `fSlots`.
+    this->writeStore(SkMakeSpan(slots), rhs);
+    return rhs;
+}
+
+void SkVMGenerator::writeStore(SkSpan<size_t> slots, const Value& rhs) {
+    SkASSERT(rhs.slots() == slots.size());
+
     skvm::I32 mask = this->mask();
     for (size_t i = rhs.slots(); i --> 0;) {
-        SkASSERT(slots[i] < var.type().slotCount());
-        skvm::F32 curr = f32(fSlots[varSlot + slots[i]]),
+        skvm::F32 curr = f32(fSlots[slots[i]]),
                   next = f32(rhs[i]);
-        fSlots[varSlot + slots[i]] = select(mask, next, curr).id;
+        fSlots[slots[i]] = select(mask, next, curr).id;
     }
-    return rhs;
 }
 
 void SkVMGenerator::writeBlock(const Block& b) {
