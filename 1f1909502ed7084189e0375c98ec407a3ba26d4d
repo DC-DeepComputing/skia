@@ -16,6 +16,24 @@
       "message": "To reduce load on the tree?",
       "revId": "1f1909502ed7084189e0375c98ec407a3ba26d4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72991e3b_5f80671f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-23T18:33:39Z",
+      "side": 1,
+      "message": "Yeah. This bot is brand new (today), and I\u0027ve been just playing to see how long it\u0027s going to take. It\u0027s really to satisfy curiousity about performance, so running a bunch of redundant (colorspace) configs isn\u0027t critical yet. (Prior to this, nanobench was taking over an hour to run three configs).",
+      "parentUuid": "c3815c38_ea591310",
+      "revId": "1f1909502ed7084189e0375c98ec407a3ba26d4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
