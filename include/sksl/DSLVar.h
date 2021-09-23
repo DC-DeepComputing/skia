@@ -92,7 +92,7 @@ public:
     }
 
     DSLExpression field(skstd::string_view name) {
-        return DSLExpression(*this).field(name);
+        return DSLExpression(*this, PositionInfo()).field(name);
     }
 
     DSLPossibleExpression operator[](DSLExpression&& index);

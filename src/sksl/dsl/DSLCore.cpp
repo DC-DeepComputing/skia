@@ -129,7 +129,7 @@ public:
         int unused[] = {0, (static_cast<void>(argArray.push_back(args.release())), 0)...};
         static_cast<void>(unused);
 
-        return ir.call(/*offset=*/-1, ir.convertIdentifier(-1, name), std::move(argArray));
+        return ir.call(/*line=*/-1, ir.convertIdentifier(-1, name), std::move(argArray));
     }
 
     static DSLStatement Break(PositionInfo pos) {
@@ -208,7 +208,7 @@ public:
 
     static DSLPossibleStatement If(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse,
                                    bool isStatic) {
-        return IfStatement::Convert(DSLWriter::Context(), /*offset=*/-1, isStatic, test.release(),
+        return IfStatement::Convert(DSLWriter::Context(), /*line=*/-1, isStatic, test.release(),
                                     ifTrue.release(), ifFalse.releaseIfPossible());
     }
 
@@ -227,7 +227,6 @@ public:
             }
             DSLWriter::IRGenerator().checkVarDeclaration(pos.line(), field.fModifiers.fModifiers,
                     baseType, Variable::Storage::kInterfaceBlock);
-            GetErrorReporter().reportPendingErrors(field.fPosition);
             skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
                                                    &field.fType.skslType()));
         }
@@ -257,7 +256,6 @@ public:
                 AddToSymbolTable(var);
             }
         }
-        GetErrorReporter().reportPendingErrors(pos);
         return var;
     }
 
@@ -266,7 +264,7 @@ public:
         // this point we do not know the function's return type. We therefore do not check for
         // errors, or coerce the value to the correct type, until the return statement is actually
         // added to a function. (This is done in FunctionDefinition::Convert.)
-        return SkSL::ReturnStatement::Make(pos.offset(), value.releaseIfPossible());
+        return SkSL::ReturnStatement::Make(pos.line(), value.releaseIfPossible());
     }
 
     static DSLExpression Swizzle(DSLExpression base, SkSL::SwizzleComponent::Type a,
@@ -327,7 +325,7 @@ public:
     }
 
     static DSLPossibleStatement While(DSLExpression test, DSLStatement stmt) {
-        return ForStatement::ConvertWhile(DSLWriter::Context(), /*offset=*/-1, test.release(),
+        return ForStatement::ConvertWhile(DSLWriter::Context(), /*line=*/-1, test.release(),
                                           stmt.release(), DSLWriter::SymbolTable());
     }
 };
@@ -349,7 +347,7 @@ DSLExpression sk_Position() {
 }
 
 void AddExtension(skstd::string_view name, PositionInfo pos) {
-    DSLWriter::ProgramElements().push_back(std::make_unique<SkSL::Extension>(pos.offset(), name));
+    DSLWriter::ProgramElements().push_back(std::make_unique<SkSL::Extension>(pos.line(), name));
     DSLWriter::ReportErrors(pos);
 }
 
