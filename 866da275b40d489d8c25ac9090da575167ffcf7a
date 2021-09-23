@@ -22,6 +22,30 @@
       },
       "revId": "866da275b40d489d8c25ac9090da575167ffcf7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9edc2192_fe35d70b",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-09-23T14:06:35Z",
+      "side": 1,
+      "message": "Good catch.\n\nI\u0027ve just taken all the ChromeOS devices offline and will bring them backup online on the arm64 ones. So there won\u0027t be a need to directly target them.",
+      "parentUuid": "c296e007_08843c16",
+      "range": {
+        "startLine": 283,
+        "startChar": 35,
+        "endLine": 283,
+        "endChar": 61
+      },
+      "revId": "866da275b40d489d8c25ac9090da575167ffcf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
