@@ -16,6 +16,115 @@
       "message": "Last thing distracting me from the graphite sprint 😊",
       "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb12d7f_dfc03183",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-23T20:20:53Z",
+      "side": 1,
+      "message": "Do we still want these inside an anonymous namespace ?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 7
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b45966_1fd02b13",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-23T20:20:53Z",
+      "side": 1,
+      "message": "Dunno if it would be worthwhile for this to be a shared helper w/ the outputRelation computation above.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 9
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "905d1026_ceeb4183",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-23T20:20:53Z",
+      "side": 1,
+      "message": "extra words ?",
+      "range": {
+        "startLine": 312,
+        "startChar": 25,
+        "endLine": 312,
+        "endChar": 50
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ce3484a_d7bc1e82",
+        "filename": "src/effects/imagefilters/SkCropImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-23T20:20:53Z",
+      "side": 1,
+      "message": "rm ?",
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec25e93_6f428834",
+        "filename": "src/effects/imagefilters/SkCropImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-23T20:20:53Z",
+      "side": 1,
+      "message": "surplus to requirements ?",
+      "range": {
+        "startLine": 163,
+        "startChar": 87,
+        "endLine": 163,
+        "endChar": 92
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
