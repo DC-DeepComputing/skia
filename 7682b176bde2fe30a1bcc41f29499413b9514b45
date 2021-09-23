@@ -70,6 +70,30 @@
       },
       "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0089861c_d47d72ec",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-23T17:44:11Z",
+      "side": 0,
+      "message": "Ok, sorted out in chat. I think this is what we\u0027re looking for.",
+      "parentUuid": "61468a23_846d20e4",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "7682b176bde2fe30a1bcc41f29499413b9514b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
