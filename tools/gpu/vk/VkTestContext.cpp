@@ -73,7 +73,7 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeVulkan(fVk, options);
     }
 
@@ -117,7 +117,6 @@ private:
                       PFN_vkDestroyDebugReportCallbackEXT destroyCallback)
             : VkTestContext(backendContext, extensions, features, ownsContext, debugCallback,
                             destroyCallback) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}
