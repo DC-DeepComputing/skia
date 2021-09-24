@@ -16,6 +16,23 @@
       "message": "This should provide the hooks to connect it to Context. We\u0027ll still need to add skia_use_metal to the Graphite bots.",
       "revId": "76d729e151eb4a7aa8241fa5810190ed577a13a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da19e3b4_37880171",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:42:28Z",
+      "side": 1,
+      "message": "Maybe skgpu::mtl namespace ?",
+      "revId": "76d729e151eb4a7aa8241fa5810190ed577a13a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
