@@ -40,9 +40,15 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeDirect3D(fD3D, options);
     }
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override {
+        return nullptr;
+    }
+#endif
 
 protected:
     void teardown() override {
@@ -55,7 +61,6 @@ protected:
 private:
     D3DTestContextImpl(const GrD3DBackendContext& backendContext, bool ownsContext)
             : D3DTestContext(backendContext, ownsContext) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}

@@ -14,6 +14,8 @@
 
 GrDawnCaps::GrDawnCaps(const GrContextOptions& contextOptions) : INHERITED(contextOptions) {
     fMipmapSupport = true;
+    fFenceSyncSupport = true;
+
     fBufferMapThreshold = SK_MaxS32;  // FIXME: get this from Dawn?
     fShaderCaps.reset(new GrShaderCaps(contextOptions));
     fMaxTextureSize = fMaxRenderTargetSize = 8192; // FIXME

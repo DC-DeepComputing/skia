@@ -12,6 +12,10 @@
 
 #include "src/gpu/mtl/GrMtlUtil.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#endif
+
 #ifdef SK_METAL
 
 #import <Metal/Metal.h>
@@ -59,9 +63,15 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeMetal(fMtl, options);
     }
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override {
+        return Context::MakeMetal(fMtl);;
+    }
+#endif
 
 private:
     MtlTestContextImpl(const GrMtlBackendContext& mtl)
