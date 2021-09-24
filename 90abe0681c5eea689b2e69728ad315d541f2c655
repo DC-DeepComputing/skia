@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "222b5347_2a42525a",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T15:09:54Z",
+      "side": 1,
+      "message": "Nm, moving the destructor for Gpu into the cpp file works.",
+      "parentUuid": "2c80d2d2_8e211f89",
+      "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3af68007_60f268df",
