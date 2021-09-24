@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b249c51c_55e3460c",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T19:29:02Z",
+      "side": 1,
+      "message": "It\u0027s defined as sk_sp in our backends, but I\u0027m not seeing why it can\u0027t be u_p. I\u0027ll change it and if it needs to be changed back it\u0027s easy enough.",
+      "parentUuid": "044a25ff_b74fa69a",
+      "revId": "109e6c9683d105c7d82419e61af9de463547412f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eccb4eea_0136f07d",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2021-09-24T18:15:19Z",
       "side": 1,
       "message": "update",
+      "revId": "109e6c9683d105c7d82419e61af9de463547412f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c49a9347_cf7103bd",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T19:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eccb4eea_0136f07d",
       "revId": "109e6c9683d105c7d82419e61af9de463547412f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2021-09-24T18:15:19Z",
       "side": 1,
       "message": "Fix up",
+      "revId": "109e6c9683d105c7d82419e61af9de463547412f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75fc3328_756cf61a",
+        "filename": "experimental/graphite/src/ResourceProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T19:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e179333_d53d2e0c",
       "revId": "109e6c9683d105c7d82419e61af9de463547412f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
