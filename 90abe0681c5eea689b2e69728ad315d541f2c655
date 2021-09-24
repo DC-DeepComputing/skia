@@ -16,6 +16,40 @@
       "message": "PTAL",
       "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e0f3a9_a263f107",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T15:02:25Z",
+      "side": 1,
+      "message": "Can we just pre-declare Caps rather than include the header?",
+      "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af68007_60f268df",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T15:02:25Z",
+      "side": 1,
+      "message": "Given its planned role can this class be final?",
+      "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
