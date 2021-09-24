@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c239bd66_64185d59",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "Is this actually right for kPolygon_PointMode? Wouldn\u0027t we want to just make a single path and then draw that?",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8adc358e_b378582f",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "I would propose logging a warning and then drawing the original. It looks like we don\u0027t spec the behavior.",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e3fc5e_3fbd2aa0",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "wdyt about handling StrokeAndFill at the Device level so lower levels only ever see stroke or fill?",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdc8c8b4_aef678cf",
+        "filename": "experimental/graphite/src/RenderPassTask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80105600_416ae5f4",
+        "filename": "experimental/graphite/src/SurfaceDrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "SDC",
+      "range": {
+        "startLine": 56,
+        "startChar": 36,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf5c17bc_050a5f8f",
+        "filename": "experimental/graphite/src/SurfaceDrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-24T20:27:01Z",
+      "side": 1,
+      "message": "xtra space",
+      "range": {
+        "startLine": 27,
+        "startChar": 68,
+        "endLine": 27,
+        "endChar": 70
+      },
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
