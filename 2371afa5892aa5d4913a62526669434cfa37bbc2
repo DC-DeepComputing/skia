@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b04db19_1f48d231",
+        "filename": "src/sksl/dsl/DSLFunction.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-24T19:46:16Z",
+      "side": 1,
+      "message": "It took an embarrassingly long time to figure out that this was the line keeping everything from working :-(",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 41
+      },
+      "revId": "2371afa5892aa5d4913a62526669434cfa37bbc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
