@@ -430,7 +430,9 @@ void DSLParser::globalVarDeclarationEnd(PositionInfo pos, const dsl::DSLModifier
     if (!this->parseArrayDimensions(line, &type)) {
         return;
     }
-    this->parseInitializer(line, &initializer);
+    if (!this->parseInitializer(line, &initializer)) {
+        return;
+    }
     DSLGlobalVar first(mods, type, name, std::move(initializer), pos);
     Declare(first);
     AddToSymbolTable(first);
@@ -449,7 +451,7 @@ void DSLParser::globalVarDeclarationEnd(PositionInfo pos, const dsl::DSLModifier
             return;
         }
         DSLGlobalVar next(mods, type, this->text(identifierName), std::move(anotherInitializer),
-                this->position(line));
+                          this->position(line));
         Declare(next);
         AddToSymbolTable(next, this->position(identifierName));
     }
@@ -467,7 +469,9 @@ DSLStatement DSLParser::localVarDeclarationEnd(PositionInfo pos, const dsl::DSLM
     if (!this->parseArrayDimensions(line, &type)) {
         return {};
     }
-    this->parseInitializer(line, &initializer);
+    if (!this->parseInitializer(line, &initializer)) {
+        return {};
+    }
     DSLVar first(mods, type, name, std::move(initializer), pos);
     DSLStatement result = Declare(first);
     AddToSymbolTable(first);
@@ -486,7 +490,7 @@ DSLStatement DSLParser::localVarDeclarationEnd(PositionInfo pos, const dsl::DSLM
             return result;
         }
         DSLVar next(mods, type, this->text(identifierName), std::move(anotherInitializer),
-                this->position(line));
+                    this->position(line));
         DSLWriter::AddVarDeclaration(result, next);
         AddToSymbolTable(next, this->position(identifierName));
     }
