@@ -40,7 +40,7 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeDirect3D(fD3D, options);
     }
 
@@ -55,7 +55,6 @@ protected:
 private:
     D3DTestContextImpl(const GrD3DBackendContext& backendContext, bool ownsContext)
             : D3DTestContext(backendContext, ownsContext) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}

@@ -32,18 +32,8 @@ class TestContext : public SkNoncopyable {
 public:
     virtual ~TestContext();
 
-    bool fenceSyncSupport() const { return fFenceSupport; }
-
     bool gpuTimingSupport() const { return fGpuTimer != nullptr; }
     GpuTimer* gpuTimer() const { SkASSERT(fGpuTimer); return fGpuTimer.get(); }
-
-    bool getMaxGpuFrameLag(int *maxFrameLag) const {
-        if (!this->fenceSyncSupport()) {
-            return false;
-        }
-        *maxFrameLag = kMaxFrameLag;
-        return true;
-    }
 
     void makeNotCurrent() const;
     void makeCurrent() const;
@@ -62,7 +52,7 @@ public:
 
     virtual GrBackendApi backend() = 0;
 
-    virtual sk_sp<GrDirectContext> makeContext(const GrContextOptions&);
+    virtual sk_sp<GrDirectContext> makeContext1(const GrContextOptions&);
 
     /**
      * This will flush work to the GPU. Additionally, if the platform supports fence syncs, we will
@@ -70,7 +60,7 @@ public:
      * unfinished flushes active on the GPU at a time. If we have 2 outstanding flushes then we will
      * wait on the CPU until one has finished.
      */
-    void flushAndWaitOnSync(GrDirectContext* context);
+    void flushAndWaitOnSync1(GrDirectContext* context);
 
     /**
      * This notifies the context that we are deliberately testing abandoning
@@ -84,8 +74,6 @@ public:
     virtual void finish() = 0;
 
 protected:
-    bool fFenceSupport = false;
-
     std::unique_ptr<GpuTimer>  fGpuTimer;
 
     TestContext();
@@ -105,13 +93,6 @@ protected:
     virtual std::function<void()> onPlatformGetAutoContextRestore() const = 0;
 
 private:
-    enum {
-        kMaxFrameLag = 3
-    };
-
-    sk_sp<FlushFinishTracker> fFinishTrackers[kMaxFrameLag - 1];
-    int fCurrentFlushIdx = 0;
-
     using INHERITED = SkNoncopyable;
 };
 }  // namespace sk_gpu_test

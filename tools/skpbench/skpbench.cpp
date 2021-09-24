@@ -590,7 +590,7 @@ int main(int argc, char** argv) {
     if (!testCtx) {
         exitf(ExitErr::kSoftware, "testContext is null");
     }
-    if (!testCtx->fenceSyncSupport()) {
+    if (!ctx->priv().caps()->fenceSyncSupport()) {
         exitf(ExitErr::kUnavailable, "GPU does not support fence sync");
     }
 
