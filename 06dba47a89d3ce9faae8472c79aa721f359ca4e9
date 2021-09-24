@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d60caf_c6d793f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-24T18:00:46Z",
+      "side": 1,
+      "message": "This is a non-trivial change. It\u0027s been a long time since these rules were put in place. Thought experiments: Will any CPU image filters, color filters, etc... break badly if given colors with RGB\u003eA? I\u0027ll note that the lowp RP doesn\u0027t even have an implementation of unpremul().",
+      "revId": "06dba47a89d3ce9faae8472c79aa721f359ca4e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
