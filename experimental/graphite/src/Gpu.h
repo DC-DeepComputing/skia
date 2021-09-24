@@ -27,8 +27,9 @@ public:
 protected:
     Gpu();
 
-private:
     sk_sp<const Caps> fCaps;
+
+private:
 };
 
 } // namespace skgpu
