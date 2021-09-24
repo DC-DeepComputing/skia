@@ -68,11 +68,14 @@ void GrContextFactory::destroyContexts() {
         if (context.fTestContext) {
             restore = context.fTestContext->makeCurrentAndAutoRestore();
         }
-        if (!context.fGrContext->unique()) {
-            context.fGrContext->releaseResourcesAndAbandonContext();
+#ifdef SK_GRAPHITE_ENABLED
+#else
+        if (!context.fDirectContext->unique()) {
+            context.fDirectContext->releaseResourcesAndAbandonContext();
             context.fAbandoned = true;
         }
-        context.fGrContext->unref();
+        context.fDirectContext->unref();
+#endif
         delete context.fTestContext;
     }
     fContexts.reset();
@@ -90,7 +93,7 @@ void GrContextFactory::abandonContexts() {
                 auto restore = context.fTestContext->makeCurrentAndAutoRestore();
                 context.fTestContext->testAbandon();
             }
-            GrBackendApi api = context.fGrContext->backend();
+            GrBackendApi api = context.fBackend;
             bool requiresEarlyAbandon = api == GrBackendApi::kVulkan || api == GrBackendApi::kDawn;
             if (requiresEarlyAbandon) {
                 context.fGrContext->abandonContext();
@@ -314,9 +317,20 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
         grOptions.fReducedShaderVariations = true;
     }
     sk_sp<GrDirectContext> grCtx;
+    sk_sp<skgpu::Context> graphiteContext;
+#ifdef SK_GRAPHITE_ENABLED
     {
         auto restore = testCtx->makeCurrentAndAutoRestore();
-        grCtx = testCtx->makeContext(grOptions);
+        graphiteContext = testCtx->makeContext2();
+    }
+    if (!graphiteContext) {
+        return ContextInfo();
+    }
+
+#else
+    {
+        auto restore = testCtx->makeCurrentAndAutoRestore();
+        grCtx = testCtx->makeContext1(grOptions);
     }
     if (!grCtx) {
         return ContextInfo();
@@ -325,6 +339,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
     if (shareContext) {
         SkASSERT(grCtx->directContextID() != shareContext->directContextID());
     }
+#endif
 
     // We must always add new contexts by pushing to the back so that when we delete them we delete
     // them in reverse order in which they were made.
@@ -332,6 +347,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
     context.fBackend = backend;
     context.fTestContext = testCtx.release();
     context.fGrContext = SkRef(grCtx.get());
+    context.fGraphiteContext = graphiteContext;
     context.fType = type;
     context.fOverrides = overrides;
     context.fAbandoned = false;
@@ -339,7 +355,10 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
     context.fShareIndex = shareIndex;
     context.fOptions = grOptions;
     context.fTestContext->makeCurrent();
-    return ContextInfo(context.fType, context.fTestContext, context.fGrContext, context.fOptions);
+    return ContextInfo(context.fType,
+                       context.fTestContext,
+                       context.fGrContext,
+                       context.fOptions);
 }
 
 ContextInfo GrContextFactory::getContextInfo(ContextType type, ContextOverrides overrides) {

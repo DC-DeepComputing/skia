@@ -23,7 +23,7 @@ public:
 protected:
     ResourceProvider();
 
-    virtual std::unique_ptr<CommandBuffer> onCreateCommandBuffer() { return nullptr; }
+    virtual std::unique_ptr<CommandBuffer> onCreateCommandBuffer();
 
 private:
 };

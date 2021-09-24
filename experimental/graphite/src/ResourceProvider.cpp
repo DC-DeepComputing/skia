@@ -23,4 +23,8 @@ std::unique_ptr<CommandBuffer> ResourceProvider::createCommandBuffer() {
     return cb;
 }
 
+std::unique_ptr<CommandBuffer> onCreateCommandBuffer() {
+    return nullptr;
+}
+
 } // namespace skgpu

@@ -12,6 +12,10 @@
 
 #include "include/gpu/GrDirectContext.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#endif
+
 namespace {
 
 class MockTestContext : public sk_gpu_test::TestContext {
@@ -24,9 +28,15 @@ public:
     void testAbandon() override {}
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeMock(nullptr, options);
     }
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override {
+        return nullptr;
+    }
+#endif
 
 protected:
     void teardown() override {}

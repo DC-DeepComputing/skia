@@ -12,6 +12,8 @@
 #include "src/gpu/gl/GrGLUtil.h"
 #include "tools/gpu/TestContext.h"
 
+#include "experimental/graphite/include/Context.h"
+
 namespace sk_gpu_test {
 /**
  * An offscreen OpenGL context. Provides a GrGLInterface struct of function pointers for the context
@@ -69,7 +71,11 @@ public:
         }
     }
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override;
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override;
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override;
+#endif
 
 protected:
     GLTestContext();

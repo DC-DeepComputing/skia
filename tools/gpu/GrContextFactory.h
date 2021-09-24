@@ -158,8 +158,12 @@ private:
         GrContextOptions  fOptions;
         GrBackendApi      fBackend;
         TestContext*      fTestContext;
-        GrDirectContext*  fGrContext;
+#ifdef SK_GRAPHITE_ENABLED
+        sk_sp<Context>    fGraphiteContext;
+#else
+        GrDirectContext*  fDirectContext;
         GrDirectContext*  fShareContext;
+#endif
         uint32_t          fShareIndex;
 
         bool              fAbandoned;
