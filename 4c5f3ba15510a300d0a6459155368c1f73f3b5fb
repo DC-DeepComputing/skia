@@ -22,6 +22,30 @@
       },
       "revId": "4c5f3ba15510a300d0a6459155368c1f73f3b5fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cba7627_822b1e8d",
+        "filename": "bench/ShaderMaskFilterBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-24T16:04:20Z",
+      "side": 0,
+      "message": "Thanks for pointing this out. Fix is on the way.",
+      "parentUuid": "65b70cef_e5b80155",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 23
+      },
+      "revId": "4c5f3ba15510a300d0a6459155368c1f73f3b5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
