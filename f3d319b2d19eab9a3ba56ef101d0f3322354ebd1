@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afbc2f13_3348aae0",
+        "filename": "bench/ShaderMaskFilterBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-24T16:14:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62df7675_a46430c8",
+      "range": {
+        "startLine": 45,
+        "startChar": 47,
+        "endLine": 45,
+        "endChar": 65
+      },
+      "revId": "f3d319b2d19eab9a3ba56ef101d0f3322354ebd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c377649d_3d874e74",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-24T16:09:43Z",
       "side": 1,
       "message": "tiny nit: inconsistent indentation with neighboring member variables",
+      "range": {
+        "startLine": 73,
+        "startChar": 17,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "f3d319b2d19eab9a3ba56ef101d0f3322354ebd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08921e6c_9d1b146d",
+        "filename": "bench/ShaderMaskFilterBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-24T16:14:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c377649d_3d874e74",
       "range": {
         "startLine": 73,
         "startChar": 17,
