@@ -316,23 +316,13 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
         printf("error reading %s\n", data.fPath);
         abort();
     }
-    const String* source = fRootModule.fSymbols->takeOwnershipOfString(std::move(text));
-
     ParsedModule baseModule = {base, /*fIntrinsics=*/nullptr};
-    std::vector<std::unique_ptr<ProgramElement>> elements;
-    std::vector<const ProgramElement*> sharedElements;
-    dsl::StartModule(this, kind, settings, baseModule);
-    dsl::SetErrorReporter(&this->errorReporter());
-    AutoSource as(this, source->c_str());
-    IRGenerator::IRBundle ir = fIRGenerator->convertProgram(baseModule, /*isBuiltinCode=*/true,
-                                                            *source);
-    SkASSERT(ir.fSharedElements.empty());
-    LoadedModule module = { kind, std::move(ir.fSymbolTable), std::move(ir.fElements) };
+    LoadedModule module = DSLParser(this, settings, kind,
+            std::move(text)).module(std::move(baseModule));
     if (this->errorCount()) {
         printf("Unexpected errors: %s\n", this->fErrorText.c_str());
         SkDEBUGFAILF("%s %s\n", data.fPath, this->fErrorText.c_str());
     }
-    dsl::End();
 #else
     ProgramConfig config;
     config.fKind = kind;
@@ -449,7 +439,7 @@ std::unique_ptr<Program> Compiler::convertProgram(
 
 #if SKSL_DSL_PARSER
     settings.fDSLMangling = false;
-    return DSLParser(this, settings, kind, text).program();
+    return DSLParser(this, settings, kind, std::move(text)).program();
 #else
     auto textPtr = std::make_unique<String>(std::move(text));
     AutoSource as(this, textPtr->c_str());
