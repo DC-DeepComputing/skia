@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ae11ba_173353f3",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-24T20:48:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac0335b1_313910e5",
+      "range": {
+        "startLine": 320,
+        "startChar": 17,
+        "endLine": 321,
+        "endChar": 35
+      },
+      "revId": "65cfd81b548d720d5368dc9d41cf0f144b54e0b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99f79064_d7fa9c07",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-24T20:01:42Z",
       "side": 1,
       "message": "Idea, not for this CL: A lot of places that call dsl::Start *immediately* override the error reporter that DSLWriter sets. (The only exception I could see is GrGLSLProgramBuilder::emitAndInstallProcs).\n\nShould we just pass the error reporter into Start(Module)? That would boil this down to\n\nStartModule(..., \u0026fCompiler.errorReporter());\n\nAnd for places that like the default insta-fail behavior, they can pass null; or given that this isn\u0027t actually a common case, we could even require that they pass in a DefaultErrorReporter.",
+      "range": {
+        "startLine": 228,
+        "startChar": 3,
+        "endLine": 230,
+        "endChar": 36
+      },
+      "revId": "65cfd81b548d720d5368dc9d41cf0f144b54e0b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "702e96d4_896cdb99",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-24T20:48:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "99f79064_d7fa9c07",
       "range": {
         "startLine": 228,
         "startChar": 3,
