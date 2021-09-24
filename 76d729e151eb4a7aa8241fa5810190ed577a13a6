@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bf5dc4f_b2a2b5d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T20:17:17Z",
+      "side": 1,
+      "message": "This should provide the hooks to connect it to Context. We\u0027ll still need to add skia_use_metal to the Graphite bots.",
+      "revId": "76d729e151eb4a7aa8241fa5810190ed577a13a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
