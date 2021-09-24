@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f35325a8_8b2d2854",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-09-24T20:26:22Z",
+      "side": 1,
+      "message": "FYI, this is what the effect/samples look like:\n\nhttps://skottie.skia.org/2a10a2efa3ddd73ae343dcecb87465fe?h\u003d500\u0026w\u003d500\nhttps://skottie.skia.org/2ed668d21452998aa647692292207405?h\u003d500\u0026w\u003d500",
+      "revId": "0fc6a43af534779a4479e853849ebac3a7766c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
