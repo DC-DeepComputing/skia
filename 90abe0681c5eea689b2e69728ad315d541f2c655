@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c80d2d2_8e211f89",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T15:04:36Z",
+      "side": 1,
+      "message": "sk_sp\u003c\u003e doesn\u0027t like that -- it needs the complete class def.",
+      "parentUuid": "14e0f3a9_a263f107",
+      "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3af68007_60f268df",
         "filename": "experimental/graphite/src/Gpu.h",
         "patchSetId": 2
@@ -48,6 +66,24 @@
       "writtenOn": "2021-09-24T15:02:25Z",
       "side": 1,
       "message": "Given its planned role can this class be final?",
+      "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93006d92_1489ac36",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-24T15:04:36Z",
+      "side": 1,
+      "message": "We\u0027ll have to subclass it to store the platform-specific Device and Queue.",
+      "parentUuid": "3af68007_60f268df",
       "revId": "90abe0681c5eea689b2e69728ad315d541f2c655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
