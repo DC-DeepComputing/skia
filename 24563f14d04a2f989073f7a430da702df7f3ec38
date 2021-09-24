@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c00be8_1b6461a8",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-24T18:46:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fb12d7f_dfc03183",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 7
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73b45966_1fd02b13",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-09-23T20:20:53Z",
       "side": 1,
       "message": "Dunno if it would be worthwhile for this to be a shared helper w/ the outputRelation computation above.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 9
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "885703e4_5ccde1ad",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-24T18:46:47Z",
+      "side": 1,
+      "message": "I pulled both switches out into a helper that computes all 3 rects. It\u0027s not as clean to have 1 helper that can be reused between the input/output relations since 2 cases swap the use of make_inset and make_outset, and the amounts change by sign and magnitude.\n\nHaving it in 1 function at least keeps the draw_example() restricted to just the drawing logic.",
+      "parentUuid": "73b45966_1fd02b13",
       "range": {
         "startLine": 145,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f88333a0_c38750c3",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-24T18:46:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "905d1026_ceeb4183",
+      "range": {
+        "startLine": 312,
+        "startChar": 25,
+        "endLine": 312,
+        "endChar": 50
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ce3484a_d7bc1e82",
@@ -104,6 +176,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5559d07_d3548963",
+        "filename": "src/effects/imagefilters/SkCropImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-24T18:46:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ce3484a_d7bc1e82",
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eec25e93_6f428834",
@@ -117,6 +207,30 @@
       "writtenOn": "2021-09-23T20:20:53Z",
       "side": 1,
       "message": "surplus to requirements ?",
+      "range": {
+        "startLine": 163,
+        "startChar": 87,
+        "endLine": 163,
+        "endChar": 92
+      },
+      "revId": "24563f14d04a2f989073f7a430da702df7f3ec38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af0179d7_45094f92",
+        "filename": "src/effects/imagefilters/SkCropImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-24T18:46:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eec25e93_6f428834",
       "range": {
         "startLine": 163,
         "startChar": 87,
