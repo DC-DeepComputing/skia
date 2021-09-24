@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b7ab0c7_0b55652e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-24T17:39:55Z",
+      "side": 1,
+      "message": "The only changes between this and the first landing are minor rebases on the previous reland:\nhttps://skia-review.googlesource.com/c/skia/+/450736\n\nI ran all the Android GL Release try bots. No failures, no GM changes.\n",
+      "revId": "8a3b1e0cdb99c2bd899a950c3d993717d426a727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
