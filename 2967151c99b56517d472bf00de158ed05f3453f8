@@ -16,6 +16,24 @@
       "message": "Just so I\u0027m clear: When compiling runtime effects, switches are allowed now. Pipeline stage will emit them again (as switch). VM will handle them directly. Then, the backend will do whatever needs to happen, if we\u0027re on ES2, based on this CL. Right?",
       "revId": "2967151c99b56517d472bf00de158ed05f3453f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c9588ab_aa05afaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-24T18:12:17Z",
+      "side": 1,
+      "message": "That\u0027s exactly correct.",
+      "parentUuid": "b1adf237_c2d354a3",
+      "revId": "2967151c99b56517d472bf00de158ed05f3453f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
