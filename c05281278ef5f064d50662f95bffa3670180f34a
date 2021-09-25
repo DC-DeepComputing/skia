@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30136854_ddedeb2a",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-25T17:01:14Z",
+      "side": 1,
+      "message": "It is right, although I agree that it\u0027s kind of weird. It draws distinct line segments forming a polygon, vs. a stroked path of the polygon. This is very similar to what SkDraw does currently except that I updated it to use SkPathBuilder (and is also why it might be nice to move all of drawPoints up into SkCanvas).",
+      "parentUuid": "c239bd66_64185d59",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8adc358e_b378582f",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e2813e6_8000eec3",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-25T17:01:14Z",
+      "side": 1,
+      "message": "That\u0027s how it\u0027s set up now, where SDC only sees stroke or fill, unless you\u0027re meaning SkDevice::drawPath handles that split and skgpu::Device doesn\u0027t have to worry about it at all?\n\nI think as long as SkDevice subclasses are responsible for handling mask filters and path effects, skgpu::Device needs to resolve stroke-and-fill. But, I am quite liking the restricted API on SDC and think that if SkDevice were updated to reflect that as well, a lot of the core processing logic could be combined across GPU and CPU backends and move into SkCanvas or SkBaseDevice. For now, I\u0027ll leave it here but it can be revisited as we move graphite back into src.",
+      "parentUuid": "87e3fc5e_3fbd2aa0",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdc8c8b4_aef678cf",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-09-24T20:27:01Z",
       "side": 1,
       "message": "Fix",
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25745db9_ce29fffd",
+        "filename": "experimental/graphite/src/RenderPassTask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-25T17:01:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdc8c8b4_aef678cf",
       "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -92,6 +146,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3092ea54_ef262c20",
+        "filename": "experimental/graphite/src/SurfaceDrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-25T17:01:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80105600_416ae5f4",
+      "range": {
+        "startLine": 56,
+        "startChar": 36,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf5c17bc_050a5f8f",
@@ -105,6 +183,30 @@
       "writtenOn": "2021-09-24T20:27:01Z",
       "side": 1,
       "message": "xtra space",
+      "range": {
+        "startLine": 27,
+        "startChar": 68,
+        "endLine": 27,
+        "endChar": 70
+      },
+      "revId": "c05281278ef5f064d50662f95bffa3670180f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36c2f94a_e3cb5d73",
+        "filename": "experimental/graphite/src/SurfaceDrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-25T17:01:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf5c17bc_050a5f8f",
       "range": {
         "startLine": 27,
         "startChar": 68,
