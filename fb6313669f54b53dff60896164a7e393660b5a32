@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59331c2d_8b4f592c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-09-27T15:34:55Z",
+      "side": 1,
+      "message": "Tring rubber stamper to submit experimental code",
+      "revId": "fb6313669f54b53dff60896164a7e393660b5a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
