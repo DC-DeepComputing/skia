@@ -3313,3 +3313,9 @@ skia_executable("skia_c_api_example") {
   include_dirs = [ "." ]
   deps = [ ":skia" ]
 }
+
+skia_executable("subset_issue") {
+  sources = [ "subset_issue.cc" ]
+  include_dirs = [ "." ]
+  deps = [ ":skia" ]
+}

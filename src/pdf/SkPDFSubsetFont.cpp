@@ -100,7 +100,7 @@ static sk_sp<SkData> subset_harfbuzz(sk_sp<SkData> fontData,
         return nullptr;
     }
     hb_set_t* glyphs = hb_subset_input_glyph_set(input.get());
-    glyphUsage.getSetValues([&glyphs](unsigned gid) { hb_set_add(glyphs, gid);});
+    glyphUsage.getSetValues([&glyphs](unsigned gid) { hb_set_add(glyphs, gid); SkDebugf("adding gid: %d\n", gid);});
 
     HBFace subset = SkPDFHarfBuzzSubset<hb_subset_input_t*>::Make(input.get(), face.get());
     if (!subset) {
