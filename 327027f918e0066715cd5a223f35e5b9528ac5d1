@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2e9eee_618e3454",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-27T15:28:31Z",
+      "side": 1,
+      "message": "Straight reland other than a couple of merge conflicts.",
+      "revId": "327027f918e0066715cd5a223f35e5b9528ac5d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
