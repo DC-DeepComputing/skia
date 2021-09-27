@@ -761,7 +761,8 @@ void SkPDFDevice::drawGlyphRunAsPath(
         SkPath* fPath;
         SkPoint fOffset;
         const SkPoint* fPos;
-    } rec = {&path, offset, glyphRun.positions().data()};
+        bool missingPaths;
+    } rec = {&path, offset, glyphRun.positions().data(), false};
 
     font.getPaths(glyphRun.glyphsIDs().data(), glyphRun.glyphsIDs().size(),
                   [](const SkPath* path, const SkMatrix& mx, void* ctx) {
@@ -771,9 +772,29 @@ void SkPDFDevice::drawGlyphRunAsPath(
                           total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                               rec->fPos->fY + rec->fOffset.fY);
                           rec->fPath->addPath(*path, total);
+                      } else {
+                          rec->missingPaths = true;
                       }
                       rec->fPos += 1; // move to the next glyph's position
                   }, &rec);
+
+    // Not all paths are present, render glyphs normally
+    if (rec.missingPaths) {
+        // Non-bold font + default paint style stops recursion
+        SkFont unboldedFont = glyphRun.font();
+        unboldedFont.setEmbolden(false);
+        SkGlyphRun tmpGlyphRun(glyphRun, unboldedFont);
+        SkPaint defaultPaint;
+
+        if (this->localToDevice().hasPerspective()) {
+            SkAutoDeviceTransformRestore adr(this, SkMatrix::I());
+            this->internalDrawGlyphRun(tmpGlyphRun, offset, defaultPaint);
+        } else {
+            this->internalDrawGlyphRun(tmpGlyphRun, offset, defaultPaint);
+        }
+        return;
+    }
+
     this->internalDrawPath(this->cs(), this->localToDevice(), path, runPaint, true);
 
     SkFont transparentFont = glyphRun.font();
