@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9e6831_2e3d78cc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 3232,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-27T17:33:30Z",
+      "side": 1,
+      "message": "I don\u0027t think this does what you intended. Assuming you meant:\n  -b[i] \u003c\u003d a[i] \u0026\u0026 a[i] \u003c\u003d UINT16_MAX - b[i]",
+      "range": {
+        "startLine": 3232,
+        "startChar": 17,
+        "endLine": 3232,
+        "endChar": 51
+      },
+      "revId": "36eba0cf40d31cc65b48fa46207215e9fd8fcf47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
