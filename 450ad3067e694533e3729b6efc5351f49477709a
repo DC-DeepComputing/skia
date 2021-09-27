@@ -87,6 +87,30 @@
       },
       "revId": "450ad3067e694533e3729b6efc5351f49477709a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d61e906_13d9835f",
+        "filename": "modules/skottie/src/animator/VectorKeyframeAnimator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-09-27T19:34:51Z",
+      "side": 1,
+      "message": "I was thinking it could be useful in some instances (change the number of gradient stops?), but now that you brought it up I don\u0027t feel super confident that the code downstream would handle all cases correctly.  Let\u0027s keep your version.",
+      "parentUuid": "a2f92eb8_ad81c531",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 9
+      },
+      "revId": "450ad3067e694533e3729b6efc5351f49477709a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
