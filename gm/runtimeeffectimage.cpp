@@ -12,8 +12,35 @@
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/gpu/GrCaps.h"
+#include "src/gpu/GrColorInfo.h"
+#include "src/gpu/GrImageInfo.h"
+#include "src/gpu/GrRecordingContextPriv.h"
+#include "src/gpu/SurfaceFillContext.h"
+#include "src/image/SkImage_Gpu.h"
+#include "src/shaders/SkShaderBase.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+static sk_sp<SkImage> make_image(SkRuntimeShaderBuilder& builder,
+                                 SkCanvas* canvas,
+                                 const SkMatrix* localMatrix,
+                                 const SkImageInfo& resultInfo,
+                                 bool mipmapped) {
+    auto surf = canvas->makeSurface(resultInfo);
+    if (!surf) {
+        return nullptr;
+    }
+    sk_sp<SkShader> shader = builder.makeShader(localMatrix, /*isOpaque=*/false);
+    if (!shader) {
+        return nullptr;
+    }
+    SkPaint paint;
+    paint.setShader(std::move(shader));
+    paint.setBlendMode(SkBlendMode::kSrc);
+    surf->getCanvas()->drawPaint(paint);
+    return surf->makeImageSnapshot();
+}
 
 class RuntimeEffectImage : public skiagm::GM {
 public:
@@ -50,7 +77,6 @@ protected:
     }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
-        GrRecordingContext* rc = canvas->recordingContext();
         SkRuntimeShaderBuilder builder(fEffect);
         SkImageInfo info = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
@@ -80,45 +106,42 @@ protected:
             sk_sp<SkImage> image;
 
             // basic
-            image = builder.makeImage(rc, nullptr, info, false);
+            image = make_image(builder, canvas, /*localMatrix=*/nullptr, info, /*mipmapped=*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
             // local matrix
             SkMatrix lm = SkMatrix::RotateDeg(45, {50, 50});
             lm.preTranslate(10, 10);
-            image = builder.makeImage(rc, &lm, info, false);
+            image = make_image(builder, canvas, &lm, info, /*mipmapped=*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
-            // unpremul
-            if (rc) {
-                // use a uniform to make the effect output be unpremul so it looks the same as the
-                // premul case when drawn to the canvas.
-                builder.uniform("gAlphaType") = 1.f;
-                image = builder.makeImage(rc,
-                                          nullptr,
-                                          info.makeAlphaType(kUnpremul_SkAlphaType),
-                                          false);
-                builder.uniform("gAlphaType") = 0.f;
-                canvas->drawImage(image, 0, 0, nn, &aaPaint);
-                canvas->translate(105, 0);
-            } else {
-                // CPU doesn't yet support making kUnpremul images. Just draw the basic one again.
-                image = builder.makeImage(nullptr, nullptr, info, false);
-                canvas->drawImage(image, 0, 0, nn, &aaPaint);
-                canvas->translate(105, 0);
-            }
+            // use a uniform to make the effect output be unpremul so it looks the same as the
+            // premul case when drawn to the canvas.
+            builder.uniform("gAlphaType") = 1.f;
+            image = make_image(builder,
+                               canvas,
+                               /*localMatrix=*/nullptr,
+                               info.makeAlphaType(kUnpremul_SkAlphaType),
+                               /*mipmapped=*/false);
+            builder.uniform("gAlphaType") = 0.f;
+            canvas->drawImage(image, 0, 0, nn, &aaPaint);
+            canvas->translate(105, 0);
 
             // color space
             sk_sp<SkColorSpace> cs = SkColorSpace::MakeSRGB()->makeColorSpin();
-            image = builder.makeImage(rc, nullptr, info.makeColorSpace(std::move(cs)), false);
+            image = make_image(builder,
+                               canvas,
+                               /*localMatrix=*/nullptr,
+                               info.makeColorSpace(std::move(cs)),
+                               /*mipmapped=*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
             // mipmapped and different child
             builder.child("child") = imageShader;
-            image = builder.makeImage(rc, nullptr, info, true);
+            image = make_image(builder, canvas, /*localMatrix=*/nullptr, info, /*mipmapped=*/true);
             builder.child("child") = whiteShader;
             canvas->drawImage(image, 0, 0, mm, &aaPaint);
             canvas->translate(105, 0);
