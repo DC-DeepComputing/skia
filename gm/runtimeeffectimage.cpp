@@ -12,8 +12,77 @@
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/gpu/GrCaps.h"
+#include "src/gpu/GrColorInfo.h"
+#include "src/gpu/GrImageInfo.h"
+#include "src/gpu/GrRecordingContextPriv.h"
+#include "src/gpu/SurfaceFillContext.h"
+#include "src/image/SkImage_Gpu.h"
+#include "src/shaders/SkShaderBase.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+static sk_sp<SkImage> make_image(SkRuntimeShaderBuilder& builder,
+                                 GrRecordingContext* rContext,
+                                 const SkMatrix* localMatrix,
+                                 SkImageInfo resultInfo,
+                                 bool mipmapped) {
+    sk_sp<SkShader> shader = builder.makeShader(localMatrix, /*isOpaque=*/false);
+    if (!shader) {
+        return nullptr;
+    }
+    if (rContext) {
+#if SK_SUPPORT_GPU
+        if (!rContext->priv().caps()->mipmapSupport()) {
+            mipmapped = false;
+        }
+        auto fillContext = rContext->priv().makeSFC(resultInfo,
+                                                    SkBackingFit::kExact,
+                                                    /*sample count*/ 1,
+                                                    GrMipmapped(mipmapped));
+        if (!fillContext) {
+            return nullptr;
+        }
+
+        GrColorInfo grci(resultInfo.colorInfo());
+        GrFPArgs args(rContext, SkSimpleMatrixProvider(SkMatrix::I()), &grci);
+        std::unique_ptr<GrFragmentProcessor> fp = as_SB(shader)->asFragmentProcessor(args);
+        if (localMatrix) {
+            SkMatrix invLM;
+            if (!localMatrix->invert(&invLM)) {
+                return nullptr;
+            }
+            fillContext->fillWithFP(invLM, std::move(fp));
+        } else {
+            fillContext->fillWithFP(std::move(fp));
+        }
+        return sk_sp<SkImage>(new SkImage_Gpu(sk_ref_sp(rContext),
+                                              kNeedNewImageUniqueID,
+                                              fillContext->readSurfaceView(),
+                                              resultInfo.colorInfo()));
+#else
+        return nullptr;
+#endif
+    }
+    if (resultInfo.alphaType() == kUnpremul_SkAlphaType) {
+        // We don't have a good way of supporting this right now. In this case the runtime effect
+        // will produce a unpremul value. The shader generated from it is assumed to produce
+        // premul and RGB get pinned to A. Moreover, after the blend in premul the new dst is
+        // unpremul'ed, producing a double unpremul result.
+        return nullptr;
+    }
+    auto surf = SkSurface::MakeRaster(resultInfo);
+    if (!surf) {
+        return nullptr;
+    }
+    SkCanvas* canvas = surf->getCanvas();
+    SkTLazy<SkCanvas> tempCanvas;
+    SkPaint paint;
+    paint.setShader(std::move(shader));
+    paint.setBlendMode(SkBlendMode::kSrc);
+    canvas->drawPaint(paint);
+    return surf->makeImageSnapshot();
+}
 
 class RuntimeEffectImage : public skiagm::GM {
 public:
@@ -80,14 +149,14 @@ protected:
             sk_sp<SkImage> image;
 
             // basic
-            image = builder.makeImage(rc, nullptr, info, false);
+            image = make_image(builder, rc, /*matrix*/nullptr, info, /*mipmapped*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
             // local matrix
             SkMatrix lm = SkMatrix::RotateDeg(45, {50, 50});
             lm.preTranslate(10, 10);
-            image = builder.makeImage(rc, &lm, info, false);
+            image = make_image(builder, rc, /*matrix*/&lm, info, /*mipmapped*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
@@ -96,23 +165,26 @@ protected:
                 // use a uniform to make the effect output be unpremul so it looks the same as the
                 // premul case when drawn to the canvas.
                 builder.uniform("gAlphaType") = 1.f;
-                image = builder.makeImage(rc,
-                                          nullptr,
-                                          info.makeAlphaType(kUnpremul_SkAlphaType),
-                                          false);
+                image = make_image(builder,
+                                   rc,
+                                   nullptr,
+                                   info.makeAlphaType(kUnpremul_SkAlphaType),
+                                   false);
                 builder.uniform("gAlphaType") = 0.f;
                 canvas->drawImage(image, 0, 0, nn, &aaPaint);
                 canvas->translate(105, 0);
             } else {
                 // CPU doesn't yet support making kUnpremul images. Just draw the basic one again.
-                image = builder.makeImage(nullptr, nullptr, info, false);
+                image = make_image(builder, /*context*/nullptr, /*matrix*/nullptr, info,
+                                   /*mipmapped*/false);
                 canvas->drawImage(image, 0, 0, nn, &aaPaint);
                 canvas->translate(105, 0);
             }
 
             // color space
             sk_sp<SkColorSpace> cs = SkColorSpace::MakeSRGB()->makeColorSpin();
-            image = builder.makeImage(rc, nullptr, info.makeColorSpace(std::move(cs)), false);
+            image = make_image(builder, rc, /*matrix*/nullptr, info.makeColorSpace(std::move(cs)),
+                               /*mipmapped*/false);
             canvas->drawImage(image, 0, 0, nn, &aaPaint);
             canvas->translate(105, 0);
 
