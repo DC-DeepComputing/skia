@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14af179b_787c2234",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-27T17:59:23Z",
+      "side": 1,
+      "message": "With the correct assert, this still passes DM.",
+      "revId": "8d6bf11c51b0ff2394ac9eb281e588fae5fe6c8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
