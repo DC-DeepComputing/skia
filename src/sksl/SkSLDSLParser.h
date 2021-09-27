@@ -139,8 +139,6 @@ private:
 
     void declarations();
 
-    ASTNode::ID precision();
-
     SKSL_INT arraySize();
 
     void directive();
