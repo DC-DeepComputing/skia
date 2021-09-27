@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "574bde92_42aaa73a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-27T17:42:58Z",
+      "side": 1,
+      "message": "After b/199385287 Canary-Android could successfully upload this change- https://googleplex-android-review.googlesource.com/c/platform/external/skia/+/15923917\n\nNote the change in this CL between PS#1 and PS#2-\nI removed \"android-autoroll@skia-corp.google.com.iam.gserviceaccount.com\" from the OWNERS file.\n\nGoing to land this and then watch the Android roller.",
+      "revId": "aa07a7f29141f02c24aba297b4b46fb051818087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
