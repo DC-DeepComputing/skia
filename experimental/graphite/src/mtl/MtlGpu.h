@@ -13,6 +13,8 @@
 #include "include/gpu/mtl/GrMtlBackendContext.h"
 #include "include/ports/SkCFObject.h"
 
+#include "experimental/graphite/src/mtl/MtlCaps.h"
+
 #import <Metal/Metal.h>
 
 namespace skgpu::mtl {
@@ -24,8 +26,10 @@ public:
 
     id<MTLDevice> device() const { return fDevice.get(); }
 
+    const Caps& mtlCaps() const { return static_cast<const Caps&>(*this->caps()); }
+
 private:
-    Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>);
+    Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>, sk_sp<const Caps>);
 
     sk_cfp<id<MTLDevice>> fDevice;
     sk_cfp<id<MTLCommandQueue>> fQueue;
