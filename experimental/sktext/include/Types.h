@@ -43,7 +43,7 @@ enum class LineBreakType {
 
 enum class LogicalRunType {
     kText,
-    kLineBreak
+    kLineBreak,
 };
 
 enum class CodeUnitFlags : uint8_t {
@@ -103,9 +103,9 @@ public:
 
     bool contains(Range<T> range) const {
         if (leftToRight()) {
-            return range.fStart >= fStart && range.fEnd < fEnd;
+            return range.fStart >= fStart && range.fEnd <= fEnd;
         } else {
-            return range.fStart < fStart && range.fEnd >= fEnd;
+            return range.fStart <= fStart && range.fEnd >= fEnd;
         }
     }
 
@@ -198,6 +198,13 @@ public:
     virtual sk_sp<SkTypeface> operator[](size_t index) const = 0;
     virtual float fontSize() const = 0;
     virtual SkString locale() const = 0;
+    SkFont createFont(size_t index) const {
+        SkFont font(this->operator[](index), this->fontSize());
+        font.setEdging(SkFont::Edging::kAntiAlias);
+        font.setHinting(SkFontHinting::kSlight);
+        font.setSubpixel(true);
+        return font;
+    }
 };
 
 struct FontBlock {
@@ -222,11 +229,15 @@ struct FontBlock {
 };
 
 struct ResolvedFontBlock {
+    ResolvedFontBlock()
+        : textRange(EMPTY_RANGE)
+        , typeface(nullptr) { }
     ResolvedFontBlock(TextRange textRange, sk_sp<SkTypeface> typeface, SkScalar size, SkFontStyle fontStyle)
         : textRange(textRange)
         , typeface(typeface)
         , size(size)
         , style(fontStyle) { }
+    ~ResolvedFontBlock() = default;
 
     TextRange textRange;
     sk_sp<SkTypeface> typeface;
