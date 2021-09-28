@@ -1102,7 +1102,7 @@ sk_sp<GrDirectContext> GrDirectContext::MakeMetal(const GrMtlBackendContext& bac
 }
 
 sk_sp<GrDirectContext> GrDirectContext::MakeMetal(const GrMtlBackendContext& backendContext,
-                                                     const GrContextOptions& options) {
+                                                  const GrContextOptions& options) {
     sk_sp<GrDirectContext> direct(new GrDirectContext(GrBackendApi::kMetal, options));
 
     direct->fGpu = GrMtlTrampoline::MakeGpu(backendContext, options, direct.get());
