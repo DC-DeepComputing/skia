@@ -55,7 +55,6 @@ protected:
 private:
     D3DTestContextImpl(const GrD3DBackendContext& backendContext, bool ownsContext)
             : D3DTestContext(backendContext, ownsContext) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}
