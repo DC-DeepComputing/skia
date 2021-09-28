@@ -1,9 +1,13 @@
 // Copyright 2021 Google LLC.
 #include "experimental/sktext/include/Text.h"
-#include "experimental/sktext/src/LogicalRun.h"
-#include "experimental/sktext/src/VisualRun.h"
+#include "unicode/unorm2.h"
+#include "unicode/ustring.h"
+#include "unicode/uscript.h"
 #include <memory>
 #include <stack>
+#include "experimental/sktext/src/LogicalRun.h"
+#include "experimental/sktext/src/VisualRun.h"
+
 namespace skia {
 namespace text {
 UnicodeText::UnicodeText(std::unique_ptr<SkUnicode> unicode, SkSpan<uint16_t> utf16)
@@ -60,103 +64,111 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                             });
 }
 
-std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
-
-    auto fontResolvedText = std::make_unique<FontResolvedText>();
-
-    TextRange adjustedBlock(0, 0);
-    TextIndex index = 0;
-    for (auto& block : blocks) {
-
-        index += block.charCount;
-        adjustedBlock.fStart = adjustedBlock.fEnd;
-        adjustedBlock.fEnd = index;
-        if (adjustedBlock.fStart >= adjustedBlock.fEnd) {
-            // The last block adjustment went over the entire block
-            continue;
-        }
-
-        // Move the end of the block to the right until it's on the grapheme edge
-        while (adjustedBlock.fEnd < this->fText16.size() &&  !this->hasProperty(adjustedBlock.fEnd, CodeUnitFlags::kGraphemeStart)) {
-            ++adjustedBlock.fEnd;
-        }
-        SkASSERT(block.type == BlockType::kFontChain);
-        fontResolvedText->resolveChain(this, adjustedBlock, *block.chain);
-    }
-
-    std::sort(fontResolvedText->fResolvedFonts.begin(), fontResolvedText->fResolvedFonts.end(),
-              [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
-                return a.textRange.fStart < b.textRange.fStart;
-              });
-/*
-    SkDebugf("Resolved:\n");
-    for (auto& f : fontResolvedText->fResolvedFonts) {
-        SkDebugf("[%d:%d)\n", f.textRange.fStart, f.textRange.fEnd);
-    }
-*/
-    return std::move(fontResolvedText);
+static const UNormalizer2* getNormalizer() {
+    static SkOnce once;
+    static const UNormalizer2* normalizer;
+    once([]{
+        UErrorCode error = U_ZERO_ERROR;
+        normalizer = unorm2_getNFCInstance(&error);
+        SkASSERT(normalizer);
+    });
+    return normalizer;
 }
 
-bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
+bool UnicodeText::isControl(TextRange grapheme) const {
 
-    std::deque<TextRange> unresolvedTexts;
-    unresolvedTexts.push_back(textRange);
-    for (auto fontIndex = 0; fontIndex < fontChain.count(); ++fontIndex) {
-        auto typeface = fontChain[fontIndex];
+    if (grapheme.width() != 1) {
+        return false;
+    }
+    const char16_t* current = fText16.data() + grapheme.fStart;
+    const char16_t* end = current + grapheme.width();
+    SkUnichar unichar = SkUTF::NextUTF16((const uint16_t**)&current, (const uint16_t*)end);
+    return fUnicode->isControl(unichar);
+}
 
-        std::deque<TextRange> newUnresolvedTexts;
-        // Check all text range that have not been resolved yet
-        while (!unresolvedTexts.empty()) {
-            // Take the first unresolved
-            auto unresolvedText = unresolvedTexts.front();
-            unresolvedTexts.pop_front();
+bool UnicodeText::graphemeHasMarks(TextRange grapheme) const {
 
-            // Resolve font for the entire grapheme
-            auto start = newUnresolvedTexts.size();
-            unicodeText->forEachGrapheme(unresolvedText, [&](TextRange grapheme) {
-                auto count = typeface->textToGlyphs(unicodeText->getText16().data() + grapheme.fStart, grapheme.width() * 2, SkTextEncoding::kUTF16, nullptr, 0);
-                SkAutoTArray<SkGlyphID> glyphs(count);
-                typeface->textToGlyphs(unicodeText->getText16().data() + grapheme.fStart, grapheme.width() * 2, SkTextEncoding::kUTF16, glyphs.data(), count);
-                for (auto i = 0; i < count; ++i) {
-                    if (glyphs[i] == 0) {
-                        if (newUnresolvedTexts.empty() || newUnresolvedTexts.back().fEnd < grapheme.fStart) {
-                            // It's a new unresolved block
-                            newUnresolvedTexts.push_back(grapheme);
-                        } else {
-                            // Let's extend the last unresolved block
-                            newUnresolvedTexts.back().fEnd = grapheme.fEnd;
-                        }
-                        break;
-                    }
-                }
-            });
-            // Let's fill the resolved blocks with the current font
-            TextRange resolvedText(unresolvedText.fStart, unresolvedText.fStart);
-            for (auto newUnresolvedText : newUnresolvedTexts) {
-                if (start > 0) {
-                    --start;
-                    continue;
-                }
-                resolvedText.fEnd = newUnresolvedText.fStart;
-                if (resolvedText.width() > 0) {
-                    // Add another resolved block
-                    fResolvedFonts.emplace_back(resolvedText, typeface, fontChain.fontSize(), SkFontStyle::Normal());
-                }
-                resolvedText.fStart = newUnresolvedText.fEnd;
-            }
-            resolvedText.fEnd = unresolvedText.fEnd;
-            if (resolvedText.width() > 0) {
-                // Add the last resolved block
-                fResolvedFonts.emplace_back(resolvedText, typeface, fontChain.fontSize(), SkFontStyle::Normal());
-            }
+    std::vector<SkUnichar> codepoints = this->split(grapheme);
+    for (auto codepoint : codepoints) {
+        if ((u_charType(codepoint) & U_GC_MC_MASK) == 0) {
+            return false;
         }
+    }
+    return true;
+}
 
-        // Try the next font in chain
-        SkASSERT(unresolvedTexts.empty());
-        unresolvedTexts = std::move(newUnresolvedTexts);
+bool UnicodeText::decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b) const {
+    UChar decomposed[4]; // 2 + 2 max
+    UErrorCode error = U_ZERO_ERROR;
+    int len = unorm2_getRawDecomposition (getNormalizer(), ab, decomposed, 4, &error);
+    if (U_FAILURE (error) || len < 0) {
+        return false;
     }
 
-    return unresolvedTexts.empty();
+    len = u_countChar32 (decomposed, len);
+    auto start = (const uint16_t*)&decomposed[0];
+    auto end = (const uint16_t*)&decomposed[len];
+    if (len == 1)
+    {
+        auto base = SkUTF::NextUTF16(&start, end);
+        if (base != ab) {
+            *a = base;
+            *b = 0;
+        } else {
+            *a = base;
+        }
+    }
+    else if (len == 2)
+    {
+        *a = SkUTF::NextUTF16(&start, end);
+        *b = SkUTF::NextUTF16(&start, end);
+    }
+    return true;
+}
+
+std::vector<SkUnichar> UnicodeText::decompose(TextRange grapheme) const {
+
+    std::vector<SkUnichar> codepoints = this->split(grapheme);
+    std::vector<SkUnichar> result;
+
+    for (auto ab : codepoints) {
+        SkUnichar a, b;
+        if (!decomposeCodepoints(ab, &a, &b)) {
+            result.emplace_back(ab);
+        } else {
+            result.emplace_back(a);
+            result.emplace_back(b);
+        }
+    }
+    return result;
+}
+
+std::vector<SkUnichar> UnicodeText::split(TextRange grapheme) const {
+
+    std::vector<SkUnichar> result;
+    const char16_t* current = fText16.data() + grapheme.fStart;
+    const char16_t* end = current + grapheme.width();
+    while (current < end) {
+        SkUnichar unichar = SkUTF::NextUTF16((const uint16_t**)&current, (const uint16_t*)end);
+        result.emplace_back(unichar);
+    }
+
+    return result;
+}
+
+bool UnicodeText::composeCodepoints(SkSpan<SkUnichar> codepoints, SkUnichar* composed) const {
+
+    SkUnichar base = codepoints[0];
+    for (auto i = 1; i < codepoints.size(); ++i) {
+        auto mark = codepoints[i];
+        auto result = unorm2_composePair(getNormalizer(), base, mark);
+        if (result < 0) {
+            return false;
+        }
+        base = result;
+    }
+    *composed = base;
+    return true;
 }
 
 // Font iterator that finds all formatting marks
@@ -221,6 +233,95 @@ private:
     TextIndex fCurrentFontIndex;
     SkFont fCurrentFont;
 };
+
+void FontResolvedText::addUnresolved(TextRange text) {
+
+    std::sort(fResolvedFonts.begin(), fResolvedFonts.end(),
+              [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
+                    return a.textRange.fStart < b.textRange.fStart;
+              });
+
+    std::vector<ResolvedFontBlock> unresolved;
+    size_t previous = text.fStart;
+    for (auto& resolved : fResolvedFonts) {
+        if (previous < resolved.textRange.fStart) {
+            // This is the gap to fill
+            unresolved.emplace_back(TextRange(previous, resolved.textRange.fStart), resolved.typeface, resolved.size, resolved.style);
+        }
+        previous = resolved.textRange.fEnd;
+    }
+    if (previous < text.fEnd) {
+        auto resolved = fResolvedFonts.back();
+        unresolved.emplace_back(TextRange(previous, text.fEnd), resolved.typeface, resolved.size, resolved.style);
+    }
+/*
+    SkDebugf("Unresolved: ");
+    for (auto& u : unresolved) {
+        SkDebugf("[%d:%d)=%d ", u.textRange.fStart, u.textRange.fEnd, u.typeface->uniqueID());
+    }
+    SkDebugf("\n");
+*/
+    std::vector<ResolvedFontBlock> merged;
+    std::merge(fResolvedFonts.begin(), fResolvedFonts.end(),
+               unresolved.begin(), unresolved.end(),
+               std::back_inserter(merged),
+               [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
+                    return a.textRange.fStart < b.textRange.fStart;
+               });
+    std::swap(fResolvedFonts, merged);
+}
+
+// TODO: Merge two sorted arrays
+void FontResolvedText::reduceBlocks() {
+
+    std::sort(fResolvedFonts.begin(), fResolvedFonts.end(),
+              [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
+                    return a.textRange.fStart < b.textRange.fStart;
+              });
+
+    SkASSERT(!fResolvedFonts.empty());
+    ResolvedFontBlock* last = nullptr;
+    for (auto iter = fResolvedFonts.begin(); iter != fResolvedFonts.end(); ++iter) {
+        if (last == nullptr) {
+            last = &*iter;
+            continue;
+        }
+        SkASSERT(last->textRange.fEnd == iter->textRange.fStart);
+        if (last->typeface->uniqueID() == iter->typeface->uniqueID()) {
+            last->textRange.fEnd = iter->textRange.fEnd;
+            fResolvedFonts.erase(iter--);
+        } else {
+            last = &*iter;
+        }
+    }
+    int newCount = last - fResolvedFonts.data() + 1;
+    if (newCount != fResolvedFonts.size()) {
+        fResolvedFonts.resize(newCount);
+    }
+}
+
+void FontResolvedText::addResolved(TextRange unresolvedText, std::deque<TextRange> newUnresolvedTexts, size_t start, const FontChain& fontChain, size_t fontIndex) {
+    SkASSERT(fontChain.count() > fontIndex);
+    auto typeface = fontChain[fontIndex];
+    TextRange resolvedText(unresolvedText.fStart, unresolvedText.fStart);
+    for (auto newUnresolvedText : newUnresolvedTexts) {
+        if (start > 0) {
+            --start;
+            continue;
+        }
+        resolvedText.fEnd = newUnresolvedText.fStart;
+        if (resolvedText.width() > 0) {
+            // Add another resolved block
+            fResolvedFonts.emplace_back(resolvedText, typeface, fontChain.fontSize(), SkFontStyle::Normal());
+        }
+        resolvedText.fStart = newUnresolvedText.fEnd;
+    }
+    resolvedText.fEnd = unresolvedText.fEnd;
+    if (resolvedText.width() > 0) {
+        // Add the last resolved block
+        fResolvedFonts.emplace_back(resolvedText, typeface, fontChain.fontSize(), SkFontStyle::Normal());
+    }
+}
 
 std::unique_ptr<ShapedText> FontResolvedText::shape(UnicodeText* unicodeText,
                                                     TextDirection textDirection) {
@@ -338,11 +439,20 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
             clusters = spaces;
             continue;
         }
+
+        if (!SkScalarIsFinite(width)) {
+            // No wrapping - the endless line
+            clusters = Stretch(runIndex, &run);
+            line.moveTo(clusters);
+            continue;
+        }
+
         TextMetrics runMetrics(run.fFont);
 
         // Let's wrap the text
         GlyphRange clusterGlyphs;
         DirTextRange clusterText(EMPTY_RANGE, run.leftToRight());
+
         for (size_t glyphIndex = 0; glyphIndex < run.fPositions.size(); ++glyphIndex) {
             auto textIndex = run.fClusters[glyphIndex];
 
@@ -355,6 +465,9 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
                 line = empty;
                 spaces = empty;
                 clusters = empty;
+                continue;
+            } else if (textIndex == cluster.textRange().fStart) {
+                // Get the entire cluster at once
                 continue;
             }
 
@@ -385,10 +498,6 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
                 clusters = cluster;
                 // Whitespaces do not extend the line width so no wrapping
                 continue;
-            } else if (!SkScalarIsFinite(width)) {
-                // No wrapping - the endless line
-                clusters.moveTo(cluster);
-                continue;
             }
             // Now let's find out if we can add the cluster to the line
             auto currentWidth = line.width() + spaces.width() + clusters.width() + cluster.width();
@@ -415,6 +524,7 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
             clusterGlyphs.fStart = clusterGlyphs.fEnd;
             clusterText.fStart = clusterText.fEnd;
         }
+        cluster = Stretch();
     }
 
     // Deal with the last line
@@ -459,9 +569,15 @@ void ShapedText::addLine(WrappedText* wrappedText, SkUnicode* unicode, Stretch& 
     auto endRun = lineStretch.glyphEnd().runIndex();
     // Reorder and cut (if needed) runs so they fit the line
     auto visualOrder = std::move(this->getVisualOrder(unicode, startRun, endRun));
+
+    auto& currentLine = wrappedText->fVisualLines.emplace_back(lineStretch.textRange(), hardLineBreak, wrappedText->fActualSize.fHeight, visualOrder.size());
+    wrappedText->fActualSize.fHeight += lineStretch.textMetrics().height();
+    wrappedText->fActualSize.fWidth = lineStretch.width();
+    stretch.clean();
+    spaces.clean();
+
     // Walk through the line's runs in visual order
     auto firstRunIndex = startRun;
-    auto runStart = wrappedText->fVisualRuns.size();
     SkScalar runOffsetInLine = 0.0f;
     for (auto visualIndex : visualOrder) {
         auto& logicalRun = fLogicalRuns[firstRunIndex + visualIndex];
@@ -478,26 +594,19 @@ void ShapedText::addLine(WrappedText* wrappedText, SkUnicode* unicode, Stretch& 
         if (glyphSpaces > glyphStart) {
             auto textStart = isFirstRun ? lineStretch.textRange().fStart : logicalRun.fUtf16Range.fStart;
             auto textEnd = isLastRun ? lineStretch.textRange().fEnd : logicalRun.fUtf16Range.fEnd;
-            wrappedText->fVisualRuns.emplace_back(TextRange(textStart, textEnd),
-                                                  glyphSpaces - glyphStart,
-                                                  logicalRun.fFont,
-                                                  lineStretch.textMetrics().baseline(),
-                                                  SkPoint::Make(runOffsetInLine, wrappedText->fActualSize.fHeight),
-                                                  logicalRun.leftToRight(),
-                                                  SkSpan<SkPoint>(&logicalRun.fPositions[glyphStart], glyphSize + 1),
-                                                  SkSpan<SkGlyphID>(&logicalRun.fGlyphs[glyphStart], glyphSize),
-                                                  SkSpan<uint32_t>((uint32_t*)&logicalRun.fClusters[glyphStart], glyphSize + 1));
+            auto run = new VisualRun(TextRange(textStart, textEnd),
+                                     glyphSpaces - glyphStart,
+                                     logicalRun.fFont,
+                                     lineStretch.textMetrics().baseline(),
+                                     SkPoint::Make(runOffsetInLine, wrappedText->fActualSize.fHeight),
+                                     logicalRun.leftToRight(),
+                                     SkSpan<SkPoint>(&logicalRun.fPositions[glyphStart], glyphSize + 1),
+                                     SkSpan<SkGlyphID>(&logicalRun.fGlyphs[glyphStart], glyphSize),
+                                     SkSpan<uint32_t>((uint32_t*)&logicalRun.fClusters[glyphStart], glyphSize + 1));
+            currentLine.addRun(std::move(*run));
         }
         runOffsetInLine += logicalRun.calculateWidth(glyphStart, glyphEnd);
     }
-    auto runRange = wrappedText->fVisualRuns.size() == runStart
-                    ? SkSpan<VisualRun>(nullptr, 0)
-                    : SkSpan<VisualRun>(&wrappedText->fVisualRuns[runStart], wrappedText->fVisualRuns.size() - runStart);
-    wrappedText->fVisualLines.emplace_back(lineStretch.textRange(), hardLineBreak, wrappedText->fActualSize.fHeight, runRange);
-    wrappedText->fActualSize.fHeight += lineStretch.textMetrics().height();
-    wrappedText->fActualSize.fWidth = std::max(wrappedText->fActualSize.fWidth, lineStretch.width());
-    stretch.clean();
-    spaces.clean();
 }
 
 void WrappedText::format(TextAlign textAlign, TextDirection textDirection) {
@@ -525,7 +634,7 @@ void WrappedText::visit(Visitor* visitor) const {
         visitor->onBeginLine(lineIndex, line.text(), line.isHardBreak(), SkRect::MakeXYWH(0, verticalOffset, line.fActualWidth, line.fTextMetrics.height()));
         // Select the runs that are on the line
         size_t glyphCount = 0ul;
-        for (auto& run : line.fRuns) {
+        for (auto& run : line.fVisualRuns) {
             auto diff = line.fTextMetrics.above() - run.fTextMetrics.above();
             SkRect boundingRect = SkRect::MakeXYWH(line.fOffset.fX + run.fPositions[0].fX, line.fOffset.fY + diff, run.width(), run.fTextMetrics.height());
             visitor->onGlyphRun(run.fFont, run.dirTextRange(), boundingRect, run.trailingSpacesStart(),
@@ -582,9 +691,10 @@ void WrappedText::visit(UnicodeText* unicodeText, Visitor* visitor, PositionType
         visitor->onBeginLine(lineIndex, line.text(), line.isHardBreak(), SkRect::MakeXYWH(0, verticalOffset, line.fActualWidth, line.fTextMetrics.height()));
         RunIndex runIndex = 0ul;
         auto lineBlocks = WrappedText::limitBlocks(line.fText, SkSpan<TextIndex>(textBlocks.data(), textBlocks.size()));
-        for (auto& run : fVisualRuns) {
+        for (auto& run : line.fVisualRuns) {
             run.forEachTextBlockInGlyphRange(lineBlocks, [&](DirTextRange dirTextRange) {
-                GlyphRange glyphRange = this->textToGlyphs(unicodeText, positionType, runIndex, dirTextRange);
+                // TODO: Translate text range into glyph range (with all the appropriate adjustments)
+                GlyphRange glyphRange = this->textToGlyphs(unicodeText, positionType, lineIndex, runIndex, dirTextRange);
                 auto diff = line.fTextMetrics.above() - run.fTextMetrics.above();
                 SkRect boundingRect =
                         SkRect::MakeXYWH(line.fOffset.fX + run.fPositions[glyphRange.fStart].fX,
@@ -610,9 +720,11 @@ void WrappedText::visit(UnicodeText* unicodeText, Visitor* visitor, PositionType
 }
 
 // TODO: Implement more effective search
-GlyphRange WrappedText::textToGlyphs(UnicodeText* unicodeText, PositionType positionType, RunIndex runIndex, DirTextRange dirTextRange) const {
-    SkASSERT(runIndex < fVisualRuns.size());
-    auto& run = fVisualRuns[runIndex];
+GlyphRange WrappedText::textToGlyphs(UnicodeText* unicodeText, PositionType positionType, LineIndex lineIndex, RunIndex runIndex, DirTextRange dirTextRange) const {
+    SkASSERT(lineIndex < fVisualLines.size());
+    auto& line = fVisualLines[lineIndex];
+    SkASSERT(runIndex < line.fVisualRuns.size());
+    auto& run = line.fVisualRuns[runIndex];
     SkASSERT(run.fDirTextRange.contains(dirTextRange));
     GlyphRange glyphRange(0, run.size());
     for (GlyphIndex glyph = 0; glyph < run.size(); ++glyph) {
@@ -627,7 +739,6 @@ GlyphRange WrappedText::textToGlyphs(UnicodeText* unicodeText, PositionType posi
             }
         }
     }
-    SkASSERT(false);
     return glyphRange;
 }
 
@@ -640,10 +751,13 @@ std::unique_ptr<SelectableText> WrappedText::prepareToEdit(UnicodeText* unicodeT
             selectableText->fGlyphUnitProperties[index] = GlyphUnitFlags::kGraphemeClusterStart;
         }
     }
-    for (const auto& run : fVisualRuns) {
-        for (auto& cluster : run.fClusters) {
-            if (unicodeText->hasProperty(cluster, CodeUnitFlags::kGraphemeStart)) {
-                selectableText->fGlyphUnitProperties[cluster] = GlyphUnitFlags::kGraphemeClusterStart;
+    for (const auto& line : fVisualLines) {
+        for (const auto& run : line.fVisualRuns) {
+            for (auto& cluster : run.fClusters) {
+                if (unicodeText->hasProperty(cluster, CodeUnitFlags::kGraphemeStart)) {
+                    selectableText->fGlyphUnitProperties[cluster] =
+                            GlyphUnitFlags::kGraphemeClusterStart;
+                }
             }
         }
     }

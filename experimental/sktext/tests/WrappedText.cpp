@@ -25,6 +25,7 @@
 #include <string.h>
 #include <algorithm>
 #include <limits>
+#include <locale>
 #include <memory>
 #include <string>
 #include <utility>
@@ -98,7 +99,7 @@ UNIX_ONLY_TEST(SkText_WrappedText_Spaces, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
 
@@ -147,7 +148,7 @@ DEF_TEST(SkText_WrappedText_LongRTL, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 800.0f, 800.0f);
 
