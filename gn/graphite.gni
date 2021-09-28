@@ -48,6 +48,8 @@ skia_graphite_sources = [
 ]
 
 skia_graphite_mtl_sources = [
+  "$_include/Context.h",
+  "$_include/GraphiteTypes.h",
   "$_include/mtl/MtlBackendContext.h",
   "$_include/mtl/MtlTypes.h",
   "$_src/mtl/MtlCaps.h",
