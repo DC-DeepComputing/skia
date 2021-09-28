@@ -155,7 +155,6 @@ private:
     DawnTestContextImpl(std::unique_ptr<dawn_native::Instance> instance,
                         const wgpu::Device& device)
             : DawnTestContext(std::move(instance), device) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}
