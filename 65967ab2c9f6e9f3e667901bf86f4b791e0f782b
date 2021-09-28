@@ -16,6 +16,24 @@
       "message": "This is breaking the Android roll. See https://android-build.googleplex.com/builds/pending/P26353407/aosp_crosshatch-userdebug/latest/view/logs/build_error.log",
       "revId": "65967ab2c9f6e9f3e667901bf86f4b791e0f782b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d8d0c73_f89b9878",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-28T13:26:36Z",
+      "side": 1,
+      "message": "Thanks for the heads up, rolled back at http://review.skia.org/453317",
+      "parentUuid": "69512713_1dca2925",
+      "revId": "65967ab2c9f6e9f3e667901bf86f4b791e0f782b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
