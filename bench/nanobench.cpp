@@ -81,6 +81,7 @@ extern bool gSkVMJITViaDylib;
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/SkGr.h"
+#include "tools/gpu/FlushFinishTracker.h"
 #include "tools/gpu/GrContextFactory.h"
 
 using sk_gpu_test::ContextInfo;
@@ -238,15 +239,14 @@ struct GPUTarget : public Target {
         // Make sure we're done with whatever came before.
         this->contextInfo.testContext()->finish();
     }
+
     void endTiming() override {
-        if (this->contextInfo.testContext()) {
-            this->contextInfo.testContext()->flushAndWaitOnSync(contextInfo.directContext());
-        }
+        this->flushAndWaitOnSync(contextInfo.directContext());
     }
     void fence() override { this->contextInfo.testContext()->finish(); }
 
     bool needsFrameTiming(int* maxFrameLag) const override {
-        if (!this->contextInfo.testContext()->getMaxGpuFrameLag(maxFrameLag)) {
+        if (!this->getMaxGpuFrameLag(maxFrameLag)) {
             // Frame lag is unknown.
             *maxFrameLag = FLAGS_gpuFrameLag;
         }
@@ -265,7 +265,7 @@ struct GPUTarget : public Target {
         if (!this->surface) {
             return false;
         }
-        if (!this->contextInfo.testContext()->fenceSyncSupport()) {
+        if (!this->contextInfo.directContext()->priv().caps()->fenceSyncSupport()) {
             SkDebugf("WARNING: GL context for config \"%s\" does not support fence sync. "
                      "Timings might not be accurate.\n", this->config.name.c_str());
         }
@@ -279,6 +279,53 @@ struct GPUTarget : public Target {
         context->priv().printGpuStats();
         context->priv().printContextStats();
     }
+
+private:
+    enum {
+        kMaxFrameLag = 3
+    };
+    sk_sp<sk_gpu_test::FlushFinishTracker> fFinishTrackers[kMaxFrameLag - 1];
+    int fCurrentFlushIdx = 0;
+
+    bool getMaxGpuFrameLag(int *maxFrameLag) const {
+        if (!contextInfo.directContext()->priv().caps()->fenceSyncSupport()) {
+            return false;
+        }
+        *maxFrameLag = kMaxFrameLag;
+        return true;
+    }
+
+    /**
+     * This will flush work to the GPU. Additionally, if the platform supports fence syncs, we will
+     * add a finished callback to our flush call. We allow ourselves to have kMaxFrameLag number of
+     * unfinished flushes active on the GPU at a time. If we have 2 outstanding flushes then we will
+     * wait on the CPU until one has finished.
+     */
+    void flushAndWaitOnSync(GrDirectContext* context) {
+        TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+        SkASSERT(context);
+
+        if (fFinishTrackers[fCurrentFlushIdx]) {
+            fFinishTrackers[fCurrentFlushIdx]->waitTillFinished();
+        }
+
+        fFinishTrackers[fCurrentFlushIdx].reset(new sk_gpu_test::FlushFinishTracker(context));
+
+        // We add an additional ref to the current flush tracker here. This ref is owned by the
+        // finish callback on the flush call. The finish callback will unref the tracker when
+        // called.
+        fFinishTrackers[fCurrentFlushIdx]->ref();
+
+        GrFlushInfo flushInfo;
+        flushInfo.fFinishedProc = sk_gpu_test::FlushFinishTracker::FlushFinished;
+        flushInfo.fFinishedContext = fFinishTrackers[fCurrentFlushIdx].get();
+
+        context->flush(flushInfo);
+        context->submit();
+
+        fCurrentFlushIdx = (fCurrentFlushIdx + 1) % SK_ARRAY_COUNT(fFinishTrackers);
+    }
+
 };
 
 static double time(int loops, Benchmark* bench, Target* target) {

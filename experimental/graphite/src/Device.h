@@ -93,11 +93,9 @@ protected:
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
                      const SkSamplingOptions&, const SkPaint&) override {}
 
-    sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override { return nullptr; }
-    sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override { return nullptr; }
-    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override {
-        return nullptr;
-    }
+    sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
+    sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
+    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
 
 private:
     Device(sk_sp<SurfaceDrawContext>);
