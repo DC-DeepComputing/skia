@@ -58,7 +58,7 @@ DEF_TEST(SkText_ShapedText_LTR, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), sk_ref_sp<FontChain>(fontChain));
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto logicalRuns = shapedText->getLogicalRuns();
 
@@ -77,7 +77,7 @@ DEF_TEST(SkText_ShapedText_RTL, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kRtl, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto logicalRuns = shapedText->getLogicalRuns();
 
