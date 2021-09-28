@@ -1,0 +1,25 @@
+/*
+ * Copyright 2021 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_MtlBackendContext_DEFINED
+#define skgpu_MtlBackendContext_DEFINED
+
+#include "experimental/graphite/include/mtl/MtlTypes.h"
+
+namespace skgpu {
+
+// The BackendContext contains all of the base Metal objects needed by the MtlGpu. The assumption
+// is that the client will set these up and pass them to the MtlGpu constructor.
+struct SK_API MtlBackendContext {
+    sk_cfp<MTLHandle> fDevice;
+    sk_cfp<MTLHandle> fQueue;
+    sk_cfp<MTLHandle> fBinaryArchive;
+};
+
+} // namespace skgpu
+
+#endif // skgpu_MtlBackendContext_DEFINED
