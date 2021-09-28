@@ -10,6 +10,8 @@ sktext_public = [
 ]
 
 sktext_sources = [
+  "$_src/HarfbuzzFontResolver.cpp",
+  "$_src/IcuFontResolver.cpp",
   "$_src/Line.cpp",
   "$_src/LogicalRun.cpp",
   "$_src/Paint.cpp",
