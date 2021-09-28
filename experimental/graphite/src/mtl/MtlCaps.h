@@ -16,10 +16,28 @@ namespace skgpu::mtl {
 
 class Caps final : public skgpu::Caps {
 public:
-    Caps(id<MTLDevice>);
+    Caps(const id<MTLDevice>);
     ~Caps() final {}
 
 private:
+    void initGPUFamily(const id<MTLDevice>);
+
+    void initGrCaps(const id<MTLDevice>);
+    void initShaderCaps();
+    void initFormatTable();
+
+    enum class GPUFamily {
+        kMac,
+        kApple,
+    };
+    bool isMac() { return fGPUFamily == GPUFamily::kMac; }
+    bool isApple() { return fGPUFamily == GPUFamily::kApple; }
+    bool getGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* group);
+    bool getGPUFamilyFromFeatureSet(id<MTLDevice> device, GPUFamily* gpuFamily,
+                                    int* group);
+
+    GPUFamily fGPUFamily;
+    int fFamilyGroup;
 };
 
 } // namespace skgpu::mtl
