@@ -79,6 +79,7 @@ private:
     size_t fGlyphIndex;
 };
 
+class LogicalRun;
 class Stretch {
 public:
 
@@ -97,6 +98,8 @@ public:
         , fWidth(width)
         , fTextRange(textRange)
         , fTextMetrics(metrics) { }
+
+    Stretch(size_t runIndex, const LogicalRun* run);
 
     Stretch(const Stretch&) = default;
     Stretch(Stretch&&) = default;

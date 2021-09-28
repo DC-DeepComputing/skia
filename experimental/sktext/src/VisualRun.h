@@ -78,6 +78,24 @@ class VisualRun {
         } else {
             // Revert chunks
             std::vector<TextIndex> revertedChunks;
+/*
+            TextIndex currentIndex = fUtf16Range.fEnd;
+            TextRange textRange(fUtf16Range.fEnd, fUtf16Range.fEnd);
+            for (auto chunkIndex = textChunks.size(); chunkIndex > 0; --chunkIndex) {
+                auto currentTextChunk = textChunks[chunkIndex - 1];
+                if (currentIndex >= fUtf16Range.fStart) {
+                    break;
+                }
+                currentIndex -= currentTextChunk;
+                if (currentIndex < fUtf16Range.fStart) {
+                    continue;
+                }
+                textRange.fEnd = textRange.fStart;
+                textRange.fStart -= currentTextChunk;
+
+                callback(textRange);
+            }
+*/
         }
     }
 
@@ -97,28 +115,15 @@ class VisualRun {
 
 class VisualLine {
 public:
-    VisualLine(TextRange text, bool hardLineBreak, SkScalar verticalOffset, SkSpan<VisualRun> runs)
+    VisualLine(TextRange text, bool hardLineBreak, SkScalar verticalOffset, size_t runCount)
         : fText(text)
-        , fRuns(runs)
+        , fVisualRuns(runCount)
         , fTrailingSpaces(0, 0)
         , fOffset(SkPoint::Make(0, verticalOffset))
         , fActualWidth(0.0f)
         , fTextMetrics()
         , fIsHardBreak(hardLineBreak)
-        , fGlyphCount(0ul) {
-        // Calculate all the info
-        for (auto& run : fRuns) {
-            fTextMetrics.merge(run.textMetrics());
-            fActualWidth += run.width();  // What about trailing spaces?
-            if (run.trailingSpacesStart() == 0) {
-                // The entire run is trailing spaces, do not move the counter
-            } else {
-                // We can reset the trailing spaces counter
-                fTrailingSpaces.fStart = fTrailingSpaces.fEnd + run.trailingSpacesStart();
-            }
-            fTrailingSpaces.fEnd += run.size();
-        }
-    }
+        , fGlyphCount(0ul) { }
 
     SkScalar baseline() const { return fTextMetrics.baseline(); }
     TextRange text() const { return fText; }
@@ -126,13 +131,25 @@ public:
     bool isHardBreak() const { return fIsHardBreak; }
     size_t glyphCount() const { return fGlyphCount; }
 
-    bool isFirst(VisualRun* run) { return &fRuns.front() == run; }
-    bool isLast(VisualRun* run) { return &fRuns.back() == run; }
+    void addRun(VisualRun run) {
+        fTextMetrics.merge(run.textMetrics());
+        fActualWidth += run.width();  // What about trailing spaces?
+        if (run.trailingSpacesStart() == 0) {
+            // The entire run is trailing spaces, do not move the counter
+        } else {
+            // We can reset the trailing spaces counter
+            fTrailingSpaces.fStart = fTrailingSpaces.fEnd + run.trailingSpacesStart();
+        }
+        fTrailingSpaces.fEnd += run.size();
+        fVisualRuns.emplace_back(std::move(run));
+    }
+    bool isFirst(VisualRun* run) { return &fVisualRuns.front() == run; }
+    bool isLast(VisualRun* run) { return &fVisualRuns.back() == run; }
 private:
     friend class WrappedText;
     friend class VisualRun;
     TextRange fText;
-    SkSpan<VisualRun> fRuns;
+    SkTArray<VisualRun, true> fVisualRuns;
     GlyphRange fTrailingSpaces; // This is a zero-based index across the line
     SkPoint fOffset;            // For left/right/center formatting and for height
     SkScalar fActualWidth;

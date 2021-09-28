@@ -32,7 +32,7 @@ public:
 
         auto unicode = SkUnicode::Make();
         fUnicodeText = std::make_unique<UnicodeText>(std::move(unicode), SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-        fFontResolvedText = fUnicodeText->resolveFonts(fontBlocks);
+        auto fontResolvedText = fUnicodeText->resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(fFontBlocks.data(), 1), textDirection, std::locale().name().c_str());
         fShapedText = fFontResolvedText->shape(fUnicodeText.get(), DEFAULT_TEXT_DIRECTION);
         fWrappedText = fShapedText->wrap(fUnicodeText.get(), size.width(), size.height());
         fWrappedText->format(DEFAULT_TEXT_ALIGN, DEFAULT_TEXT_DIRECTION);
@@ -70,7 +70,7 @@ public:
 
         auto unicode = SkUnicode::Make();
         fUnicodeText = std::make_unique<UnicodeText>(std::move(unicode), SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-        fFontResolvedText = fUnicodeText->resolveFonts(fontBlocks);
+        auto fontResolvedText = fUnicodeText->resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(fFontBlocks.data(), 1), fTextDirection, std::locale().name().c_str());
         fShapedText = fFontResolvedText->shape(fUnicodeText.get(), fTextDirection);
         fWrappedText = fShapedText->wrap(fUnicodeText.get(), size.width(), size.height());
         fWrappedText->format(fTextAlign, fTextDirection);
@@ -96,7 +96,7 @@ public:
 
         auto unicode = SkUnicode::Make();
         fUnicodeText = std::make_unique<UnicodeText>(std::move(unicode), SkSpan<uint16_t>((uint16_t*)fText.data(), fText.size()));
-        fFontResolvedText = fUnicodeText->resolveFonts(fFontBlocks);
+        auto fontResolvedText = fUnicodeText->resolveFonts<IcuFontResolvedText>(SkSpan<FontBlock>(fFontBlocks.data(), 1), fTextDirection, std::locale().name().c_str());
         fShapedText = fFontResolvedText->shape(fUnicodeText.get(), fTextDirection);
         fWrappedText = fShapedText->wrap(fUnicodeText.get(), this->fRequiredSize.fWidth, this->fRequiredSize.fHeight);
         fWrappedText->format(fTextAlign, fTextDirection);
