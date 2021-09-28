@@ -343,6 +343,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.model("Spin513") {
 			// skbug.com/11876
 			skip("_ test _ Programs")
+            // skbug.com/12486
+			skip("_ test _ TestMockContext")
+			skip("_ test _ TestGpuRenderingContexts")
+			skip("_ test _ TestGpuAllContexts")
+			skip("_ test _ OverdrawSurface_Gpu")
 		}
 
 		if b.extraConfig("CommandBuffer") {
