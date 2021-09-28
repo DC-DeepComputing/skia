@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+    <!-- multiple combining diacritics in LTR -->
+    <br>
+    <text x="50" y="50" class="testTextRun" font-family="cursive">ab&#x030c;c&#x030c;&#x030c;</text>
+    <text x="200" y="50" class="testTextRun" font-family="serif">ab&#x030c;c&#x030c;&#x030c;</text>
+    <text x="350" y="50" class="testTextRun" font-family="sans-serif">ab&#x030c;c&#x030c;&#x030c;</text>
+    <!-- multiple combining diacritics in RTL -->
+    <br>
+    <text x="100" y="125" class="testTextRun" font-family="cursive" direction="rtl">&#8207;a&#8207;b&#x030c;&#8207;c&#x030c;&#x030c;</text>
+    <text x="250" y="125" class="testTextRun" font-family="serif" direction="rtl">&#8207;a&#8207;b&#x030c;&#8207;c&#x030c;&#x030c;</text>
+    <text x="400" y="125" class="testTextRun" font-family="sans-serif" direction="rtl">&#8207;a&#8207;b&#x030c;&#8207;c&#x030c;&#x030c;</text>
+    <!-- multiple combining diacritics on ligatures in LTR -->
+    <!-- MacOS has differences with multiple diacritics in cursive font family so this is skipped, see: https://crbug.com/669693. -->
+    <br>
+    <text x="50" y="200" class="testTextRun" font-family="cursive">fi&#x030c; ffi&#x030c;&#x030c;</text>
+    <text x="200" y="200" class="testTextRun" font-family="serif">fi&#x030c; ffi&#x030c;&#x030c;</text>
+    <text x="350" y="200" class="testTextRun" font-family="sans-serif">fi&#x030c; ffi&#x030c;&#x030c;</text>
+    <!-- combining diacritics on ligatures in mixed bidi runs -->
+    <br>
+    <text x="50" y="275" class="testTextRun" font-family="cursive">ff&#x030c;&#1600;&#1600;&#1604;&#1575;ff&#x030c;</text>
+    <text x="200" y="275" class="testTextRun" font-family="serif">ff&#x030c;&#1600;&#1600;&#1604;&#1575;ff&#x030c;</text>
+    <text x="350" y="275" class="testTextRun" font-family="sans-serif">ff&#x030c;&#1600;&#1600;&#1604;&#1575;ff&#x030c;</text>
+    <!-- combining diacritics which are wider than characters in mixed bidi runs -->
+    <br>
+    <text x="50" y="350" class="testTextRun" font-family="cursive"> &#x030c;&#64944;i&#819;</text>
+    <!-- Linux has differences with space width in the following two runs so a period is used as a workaround. -->
+    <text x="200" y="350" class="testTextRun" font-family="serif">.&#x030c;&#64944;i&#819;</text>
+    <text x="350" y="350" class="testTextRun" font-family="sans-serif">.&#x030c;&#64944;i&#819;</text>
+
+</body>
+</html>
