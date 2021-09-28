@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f30e32f_a8f3cd35",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-28T16:38:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b3dc1dc_52b7f65c",
+      "range": {
+        "startLine": 49,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 8
+      },
+      "revId": "567e64e78087ffe5c1473f0720d85038e6362acf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e9a10de_3dbb6765",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-28T16:29:53Z",
       "side": 1,
       "message": "include?",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 8
+      },
+      "revId": "567e64e78087ffe5c1473f0720d85038e6362acf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7940d7ed_3f24eb82",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-28T16:38:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e9a10de_3dbb6765",
       "range": {
         "startLine": 52,
         "startChar": 4,
