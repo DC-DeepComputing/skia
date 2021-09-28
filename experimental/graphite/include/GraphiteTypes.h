@@ -8,6 +8,8 @@
 #ifndef skgpu_GraphiteTypes_DEFINED
 #define skgpu_GraphiteTypes_DEFINED
 
+#include "include/core/SkTypes.h"
+
 namespace skgpu {
 
 /**
@@ -15,6 +17,14 @@ namespace skgpu {
  */
 enum class BackendApi : unsigned {
     kMetal,
+};
+
+/**
+ * Is the data protected on the GPU or not.
+ */
+enum class Protected : bool {
+    kNo = false,
+    kYes = true,
 };
 
 } // namespace skgpu
