@@ -11,9 +11,12 @@ namespace text {
 
 class VisualRun {
     public:
-    VisualRun(TextRange textRange, GlyphIndex trailingSpacesStart, const TextMetrics& metrics, SkScalar runOffsetInLine,
+    VisualRun(TextRange textRange, GlyphIndex trailingSpacesStart,
+              const SkFont& font, const TextMetrics& metrics,
+              SkScalar runOffsetInLine,
               SkSpan<SkPoint> positions, SkSpan<SkGlyphID> glyphs, SkSpan<uint32_t> clusters)
-        : fTextMetrics(metrics)
+        : fFont(font)
+        , fTextMetrics(metrics)
         , fUtf16Range(textRange)
         , fTrailingSpacesStart(trailingSpacesStart) {
         fPositions.reserve_back(positions.size());

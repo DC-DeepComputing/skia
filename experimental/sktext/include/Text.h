@@ -51,6 +51,12 @@ public:
     }
     bool isWhitespaces(TextRange range) const;
 
+    bool graphemeHasMarks(TextRange grapheme);
+    std::vector<SkUnichar> split(TextRange grapheme);
+    std::vector<SkUnichar> decomposeAndReorder(TextRange grapheme);
+    bool composeCodepoints(SkSpan<SkUnichar> codepoints, SkUnichar* composed);
+    bool decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b);
+
     SkUnicode* getUnicode() const { return fUnicode.get(); }
     SkSpan<const char16_t> getText16() const { return SkSpan<const char16_t>(fText16.data(), fText16.size()); }
 
@@ -100,12 +106,13 @@ public:
         @param textDirection  a starting text direction value
         @return               an object that contains the result of shaping operations
     */
-    virtual std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
+    std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
 
     FontResolvedText() = default;
     virtual ~FontResolvedText() = default;
 
     bool resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain);
+    bool graphemeCanBeResolved(UnicodeText* unicodeText, sk_sp<SkTypeface> typeface, TextRange grapheme);
     SkSpan<ResolvedFontBlock> resolvedFonts() { return SkSpan<ResolvedFontBlock>(fResolvedFonts.data(), fResolvedFonts.size()); }
 private:
     friend class UnicodeText;
@@ -137,7 +144,7 @@ public:
     void runInfo(const RunInfo&) override {}
     void commitRunInfo() override {}
     void commitLine() override {}
-    void commitRunBuffer(const RunInfo&) override {
+    void commitRunBuffer(const RunInfo& runInfo) override {
         fCurrentRun->commit();
         fLogicalRuns.emplace_back(std::move(*fCurrentRun));
         fRunGlyphStart += fCurrentRun->width();
@@ -198,6 +205,7 @@ public:
         @return               an object that contains a list of SkTextBlobs to draw on a canvas
     */
     std::unique_ptr<DrawableText> prepareToDraw(UnicodeText* unicodeText, PositionType positionType, SkSpan<TextIndex> blocks) const;
+    std::unique_ptr<DrawableText> prepareToDraw(UnicodeText* unicodeText) const;
     /** Aggregates all the data to navigate the text (move up, down, left, right),
         select some text near the cursor point, adjust all text position to word,
         grapheme cluster and such.
@@ -251,13 +259,13 @@ public:
     DrawableText() = default;
 
     void onGlyphRun(const SkFont& font,
-                            TextRange textRange,
-                            SkRect bounds,
-                            int trailingSpaces,
-                            int glyphCount,
-                            const uint16_t glyphs[],
-                            const SkPoint positions[],
-                            const TextIndex clusters[]) override {
+                    TextRange textRange,
+                    SkRect bounds,
+                    int trailingSpaces,
+                    int glyphCount,
+                    const uint16_t glyphs[],
+                    const SkPoint positions[],
+                    const TextIndex clusters[]) override {
         SkTextBlobBuilder builder;
         const auto& blobBuffer = builder.allocRunPos(font, SkToInt(glyphCount));
         sk_careful_memcpy(blobBuffer.glyphs, glyphs, glyphCount * sizeof(uint16_t));

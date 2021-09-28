@@ -103,9 +103,9 @@ public:
 
     bool contains(Range<T> range) const {
         if (leftToRight()) {
-            return range.fStart >= fStart && range.fEnd < fEnd;
+            return range.fStart >= fStart && range.fEnd <= fEnd;
         } else {
-            return range.fStart < fStart && range.fEnd >= fEnd;
+            return range.fStart <= fStart && range.fEnd >= fEnd;
         }
     }
 

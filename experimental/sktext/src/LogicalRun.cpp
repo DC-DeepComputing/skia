@@ -15,10 +15,10 @@ LogicalRun::LogicalRun(const SkShaper::RunHandler::RunInfo& info, TextIndex text
     , fRunOffset(glyphOffset)
     , fBidiLevel(info.fBidiLevel)
 {
+    fAdvance.fY = fTextMetrics.height();
     fGlyphs.push_back_n(info.glyphCount);
     fBounds.push_back_n(info.glyphCount);
     fPositions.push_back_n(info.glyphCount + 1);
-    fOffsets.push_back_n(info.glyphCount);
     fClusters.push_back_n(info.glyphCount + 1);
 }
 

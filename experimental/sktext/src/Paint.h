@@ -1,6 +1,7 @@
 // Copyright 2021 Google LLC.
 #ifndef Painter_DEFINED
 #define Painter_DEFINED
+#include <map>
 #include "experimental/sktext/include/Text.h"
 #include "experimental/sktext/include/Types.h"
 #include "include/core/SkCanvas.h"
@@ -52,6 +53,11 @@ namespace text {
                 }
             }
         }
+
+        MultipleFontChain(std::vector<sk_sp<SkTypeface>> tfs, SkScalar size, SkFontStyle fontStyle)
+                : fTypefaces(std::move(tfs))
+                , fSize(size)
+                , fFontStyle(fontStyle) { }
         size_t count() const override { return fTypefaces.size(); }
         sk_sp<SkTypeface> operator[](size_t index) const  override {
             SkASSERT(index < fTypefaces.size());
