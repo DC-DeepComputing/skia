@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8639f33a_29ae8e32",
+        "filename": "third_party/harfbuzz/roll-harfbuzz.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-28T17:35:51Z",
+      "side": 1,
+      "message": "A URL starts with `https:\u0027 -- which looks like a git trailer if it\u0027s in the last \u0027paragraph\u0027 of the commit message and there is nothing not trailer looking before it in the \u0027paragraph\u0027. So git automatically cleans up this \u0027badly formatted trailer\u0027 and ensures a single space after the \u0027:\u0027. Essentially the same way that such URLs are valid C++ when on their own line, since the part before the \u0027:\u0027 is considered a label and the \u0027//\u0027 introduces a comment. Even adding \u0027--no-post-rewrite --cleanup\u003dverbatim\u0027 doesn\u0027t seem to suppress this \u0027cleanup\u0027. This happens no matter how the commit message was provided, with \u0027-m\u0027 or \u0027--file\u003d-\u0027. However, it is possible to modify the trailer separator to something else unlikely to be used, by doing something like \u0027git -c trailer.separators\u003d~ commit ...\u0027.\n\nThis also explains why when the commit hook ran to add the Change-Id trailer a newline wasn\u0027t added, because there already was a \u0027https\u0027 trailer.\n\nSo annoying when all I want to do is drop some bytes into a thing but, surprise, the system is going to slightly alter those bytes sometimes in a non-obvious not well documented way.",
+      "revId": "fc61e044b2d8030a2c9019ec32ee78318da1ea88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
