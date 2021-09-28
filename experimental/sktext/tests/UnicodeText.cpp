@@ -49,7 +49,7 @@ namespace {
         }
         return true;
     }
-}
+} // namespace
 
 UNIX_ONLY_TEST(SkText_UnicodeText_Flags, reporter) {
     REPORTER_ASSERT(reporter, true);
