@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8ecb344_2c3f7e31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-09-28T19:09:22Z",
+      "side": 1,
+      "message": "We should probably have an AVX only bot, if we want to keep the distinction.",
+      "revId": "c196a9590532a1edb3d87e4ee003fa94c7e646c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
