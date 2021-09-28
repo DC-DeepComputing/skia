@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "177e1769_1637f86f",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-28T16:51:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e106dfe_de4599c6",
+      "range": {
+        "startLine": 22,
+        "startChar": 64,
+        "endLine": 22,
+        "endChar": 69
+      },
+      "revId": "3d90de6ec2b949eb81bba70df4f97b5dfc9400e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d5f3953_d272d14d",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-28T15:39:05Z",
       "side": 1,
       "message": "They could allocate some resources, right?",
+      "range": {
+        "startLine": 27,
+        "startChar": 62,
+        "endLine": 27,
+        "endChar": 83
+      },
+      "revId": "3d90de6ec2b949eb81bba70df4f97b5dfc9400e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf5a1d0_b0277406",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-28T16:51:29Z",
+      "side": 1,
+      "message": "You\u0027re right, this was out of date from the decision yesterday.",
+      "parentUuid": "7d5f3953_d272d14d",
       "range": {
         "startLine": 27,
         "startChar": 62,
