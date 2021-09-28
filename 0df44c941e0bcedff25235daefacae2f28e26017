@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e08cbe5_6cc7f7ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-28T21:03:50Z",
+      "side": 1,
+      "message": "Particular thing to look at: how the Caps are initialized. This is a blend of all three backends, but mostly derived from the latest one, D3D.",
+      "revId": "0df44c941e0bcedff25235daefacae2f28e26017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
