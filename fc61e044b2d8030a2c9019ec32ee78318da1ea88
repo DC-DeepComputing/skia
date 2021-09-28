@@ -34,6 +34,24 @@
       "parentUuid": "8639f33a_29ae8e32",
       "revId": "fc61e044b2d8030a2c9019ec32ee78318da1ea88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a0eadb_7f4ba6eb",
+        "filename": "third_party/harfbuzz/roll-harfbuzz.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-09-28T19:35:16Z",
+      "side": 1,
+      "message": "Turns out that adding \u0027git -c trailer.separators\u003d~ commit ...\u0027 did prevent the url being broken up, but this also means that the hook that adds the Change-Id trailer puts a \u0027~\u0027 at the *end* of the trailer for some reason (it still uses \u0027:\u0027 anyway). I\u0027m not sure what\u0027s going on here, so I\u0027m going to change this to just put a useless trailer at the end of the initial commit message to prevent re-interpretation of the actual message.",
+      "parentUuid": "00d08d05_b423885d",
+      "revId": "fc61e044b2d8030a2c9019ec32ee78318da1ea88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
