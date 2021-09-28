@@ -18,6 +18,7 @@
 
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkSpecialImage.h"
 
 namespace skgpu {
 
@@ -201,5 +202,17 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
         fSDC->fillPath(this->localToDevice44(), path, scissor, 0, 0, &shading);
     }
 }
+
+sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
+    return nullptr;
+}
+
+sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
+    return nullptr;
+}
+
+sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+        return nullptr;
+    }
 
 } // namespace skgpu

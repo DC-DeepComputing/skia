@@ -199,6 +199,8 @@ static SkString humanize(double ms) {
 }
 #define HUMANIZE(ms) humanize(ms).c_str()
 
+#include "tools/gpu/FlushFinishTracker.h"
+
 bool Target::init(SkImageInfo info, Benchmark* bench) {
     if (Benchmark::kRaster_Backend == config.backend) {
         this->surface = SkSurface::MakeRaster(info);
@@ -238,15 +240,53 @@ struct GPUTarget : public Target {
         // Make sure we're done with whatever came before.
         this->contextInfo.testContext()->finish();
     }
-    void endTiming() override {
-        if (this->contextInfo.testContext()) {
-            this->contextInfo.testContext()->flushAndWaitOnSync(contextInfo.directContext());
+
+    enum {
+        kMaxFrameLag = 3
+    };
+
+    sk_sp<sk_gpu_test::FlushFinishTracker> fFinishTrackers1[kMaxFrameLag - 1];
+    int fCurrentFlushIdx1 = 0;
+
+    bool getMaxGpuFrameLag(int *maxFrameLag) const {
+        if (!contextInfo.directContext()->priv().caps()->fenceSyncSupport()) {
+            return false;
         }
+        *maxFrameLag = kMaxFrameLag;
+        return true;
     }
-    void fence() override { this->contextInfo.testContext()->finish(); }
+
+    void flushAndWaitOnSync1(GrDirectContext* context) {
+        TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+        SkASSERT(context);
+
+        if (fFinishTrackers1[fCurrentFlushIdx1]) {
+            fFinishTrackers1[fCurrentFlushIdx1]->waitTillFinished();
+        }
+
+        fFinishTrackers1[fCurrentFlushIdx1].reset(new sk_gpu_test::FlushFinishTracker(context));
+
+        // We add an additional ref to the current flush tracker here. This ref is owned by the finish
+        // callback on the flush call. The finish callback will unref the tracker when called.
+        fFinishTrackers1[fCurrentFlushIdx1]->ref();
+
+        GrFlushInfo flushInfo;
+        flushInfo.fFinishedProc = sk_gpu_test::FlushFinishTracker::FlushFinished;
+        flushInfo.fFinishedContext = fFinishTrackers1[fCurrentFlushIdx1].get();
+
+        context->flush(flushInfo);
+        context->submit();
+
+        fCurrentFlushIdx1 = (fCurrentFlushIdx1 + 1) % SK_ARRAY_COUNT(fFinishTrackers1);
+    }
+
+    void endTiming() override {
+        this->flushAndWaitOnSync1(contextInfo.directContext());
+    }
+    void fence1() override { this->contextInfo.testContext()->finish(); }
 
     bool needsFrameTiming(int* maxFrameLag) const override {
-        if (!this->contextInfo.testContext()->getMaxGpuFrameLag(maxFrameLag)) {
+        if (!this->getMaxGpuFrameLag(maxFrameLag)) {
             // Frame lag is unknown.
             *maxFrameLag = FLAGS_gpuFrameLag;
         }
@@ -265,7 +305,7 @@ struct GPUTarget : public Target {
         if (!this->surface) {
             return false;
         }
-        if (!this->contextInfo.testContext()->fenceSyncSupport()) {
+        if (!this->contextInfo.directContext()->priv().caps()->fenceSyncSupport()) {
             SkDebugf("WARNING: GL context for config \"%s\" does not support fence sync. "
                      "Timings might not be accurate.\n", this->config.name.c_str());
         }
@@ -429,7 +469,7 @@ static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag)
         loops = clamp_loops(loops);
 
         // Make sure we're not still timing our calibration.
-        target->fence();
+        target->fence1();
     } else {
         loops = detect_forever_loops(loops);
     }

@@ -171,34 +171,9 @@ bool GLTestContext::isValid() const {
 #endif
 }
 
-static bool fence_is_supported(const GLTestContext* ctx) {
-#ifdef SK_GL
-    if (kGL_GrGLStandard == ctx->gl()->fStandard) {
-        if (GrGLGetVersion(ctx->gl()) < GR_GL_VER(3, 2) &&
-            !ctx->gl()->hasExtension("GL_ARB_sync")) {
-            return false;
-        }
-        return true;
-    } else {
-        if (ctx->gl()->hasExtension("GL_APPLE_sync")) {
-            return true;
-        } else if (ctx->gl()->hasExtension("GL_NV_fence")) {
-            return true;
-        } else if (GrGLGetVersion(ctx->gl()) >= GR_GL_VER(3, 0)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-#else
-    return false;
-#endif
-}
-
 void GLTestContext::init(sk_sp<const GrGLInterface> gl) {
     fGLInterface = std::move(gl);
     fOriginalGLInterface = fGLInterface;
-    fFenceSupport = fence_is_supported(this);
     fGpuTimer = GLGpuTimer::MakeIfSupported(this);
 #ifndef SK_GL
     fWasInitialized = true;
@@ -249,12 +224,18 @@ void GLTestContext::overrideVersion(const char* version, const char* shadingLang
 #endif
 };
 
-sk_sp<GrDirectContext> GLTestContext::makeContext(const GrContextOptions& options) {
+sk_sp<GrDirectContext> GLTestContext::makeContext1(const GrContextOptions& options) {
 #ifdef SK_GL
     return GrDirectContext::MakeGL(fGLInterface, options);
 #else
     return nullptr;
 #endif
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+sk_sp<skgpu::Context> GLTestContext::makeContext2() {
+    return nullptr;
+}
+#endif
 
 }  // namespace sk_gpu_test

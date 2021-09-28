@@ -13,6 +13,10 @@
 #include "include/gpu/vk/GrVkExtensions.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#endif
+
 namespace {
 
 #define ACQUIRE_VK_PROC(name, device)                                               \
@@ -73,9 +77,15 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeVulkan(fVk, options);
     }
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override {
+        return skgpu::Context::MakeVulkan(fVk);
+    }
+#endif
 
 protected:
 #define ACQUIRE_VK_PROC_LOCAL(name, inst)                                            \
@@ -117,7 +127,6 @@ private:
                       PFN_vkDestroyDebugReportCallbackEXT destroyCallback)
             : VkTestContext(backendContext, extensions, features, ownsContext, debugCallback,
                             destroyCallback) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}

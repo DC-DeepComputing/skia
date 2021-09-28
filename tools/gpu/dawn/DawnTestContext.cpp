@@ -142,9 +142,15 @@ public:
 
     void finish() override {}
 
-    sk_sp<GrDirectContext> makeContext(const GrContextOptions& options) override {
+    sk_sp<GrDirectContext> makeContext1(const GrContextOptions& options) override {
         return GrDirectContext::MakeDawn(fDevice, options);
     }
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<skgpu::Context> makeContext2() override {
+        return nullptr;
+    }
+#endif
 
 protected:
     void teardown() override {
@@ -155,7 +161,6 @@ private:
     DawnTestContextImpl(std::unique_ptr<dawn_native::Instance> instance,
                         const wgpu::Device& device)
             : DawnTestContext(std::move(instance), device) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}

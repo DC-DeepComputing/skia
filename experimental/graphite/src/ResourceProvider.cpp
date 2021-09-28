@@ -24,6 +24,10 @@ std::unique_ptr<CommandBuffer> ResourceProvider::createCommandBuffer() {
     return cb;
 }
 
+std::unique_ptr<CommandBuffer> onCreateCommandBuffer() {
+    return nullptr;
+}
+
 Pipeline* ResourceProvider::findOrCreatePipeline(const PipelineDesc& desc) {
     // TODO: look through cache for matching pipeline
 
