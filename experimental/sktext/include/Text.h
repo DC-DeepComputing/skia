@@ -51,6 +51,12 @@ public:
     }
     bool isWhitespaces(TextRange range) const;
 
+    bool graphemeHasMarks(TextRange grapheme);
+    std::vector<SkUnichar> split(TextRange grapheme);
+    std::vector<SkUnichar> decomposeAndReorder(TextRange grapheme);
+    bool composeCodepoints(SkSpan<SkUnichar> codepoints, SkUnichar* composed);
+    bool decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b);
+
     SkUnicode* getUnicode() const { return fUnicode.get(); }
     SkSpan<const char16_t> getText16() const { return SkSpan<const char16_t>(fText16.data(), fText16.size()); }
 
@@ -100,12 +106,13 @@ public:
         @param textDirection  a starting text direction value
         @return               an object that contains the result of shaping operations
     */
-    virtual std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
+    std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
 
     FontResolvedText() = default;
     virtual ~FontResolvedText() = default;
 
     bool resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain);
+    bool graphemeCanBeResolved(UnicodeText* unicodeText, sk_sp<SkTypeface> typeface, TextRange grapheme);
     SkSpan<ResolvedFontBlock> resolvedFonts() { return SkSpan<ResolvedFontBlock>(fResolvedFonts.data(), fResolvedFonts.size()); }
 private:
     friend class UnicodeText;

@@ -22,6 +22,7 @@ class LogicalRun {
     }
 
     TextRange getTextRange() const { return fUtf16Range; }
+    SkGlyphID getGlyph(GlyphIndex index) const { return fGlyphs[index]; }
 
     SkScalar calculateWidth(GlyphRange glyphRange) const {
         SkASSERT(glyphRange.fStart <= glyphRange.fEnd && glyphRange.fEnd < fPositions.size());

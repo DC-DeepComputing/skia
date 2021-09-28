@@ -1,9 +1,13 @@
 // Copyright 2021 Google LLC.
 #include "experimental/sktext/include/Text.h"
-#include "experimental/sktext/src/LogicalRun.h"
-#include "experimental/sktext/src/VisualRun.h"
+#include "unicode/unorm2.h"
+#include "unicode/ustring.h"
+#include "unicode/uscript.h"
 #include <memory>
 #include <stack>
+#include "experimental/sktext/src/LogicalRun.h"
+#include "experimental/sktext/src/VisualRun.h"
+
 namespace skia {
 namespace text {
 UnicodeText::UnicodeText(std::unique_ptr<SkUnicode> unicode, SkSpan<uint16_t> utf16)
@@ -68,6 +72,17 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                             });
 }
 
+static const UNormalizer2* getNormalizer() {
+    static SkOnce once;
+    static const UNormalizer2* normalizer;
+    once([]{
+        UErrorCode error = U_ZERO_ERROR;
+        normalizer = unorm2_getNFCInstance(&error);
+        SkASSERT(normalizer);
+    });
+    return normalizer;
+}
+
 std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
 
     auto fontResolvedText = std::make_unique<FontResolvedText>();
@@ -105,6 +120,92 @@ std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> bl
     return std::move(fontResolvedText);
 }
 
+bool UnicodeText::graphemeHasMarks(TextRange grapheme) {
+
+    std::vector<SkUnichar> codepoints = this->split(grapheme);
+    for (auto codepoint : codepoints) {
+        if (u_charType(codepoint) & U_GC_MC_MASK == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool UnicodeText::decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b) {
+    UChar decomposed[4]; // 2 + 2 max
+    UErrorCode error = U_ZERO_ERROR;
+    int len = unorm2_getRawDecomposition (getNormalizer(), ab, decomposed, 4, &error);
+    if (U_FAILURE (error) || len < 0) {
+        return false;
+    }
+
+    len = u_countChar32 (decomposed, len);
+    auto start = (const uint16_t*)&decomposed[0];
+    auto end = (const uint16_t*)&decomposed[len];
+    if (len == 1)
+    {
+        auto base = SkUTF::NextUTF16(&start, end);
+        if (base != ab) {
+            *a = base;
+            *b = 0;
+        } else {
+            *a = base;
+        }
+    }
+    else if (len == 2)
+    {
+        *a = SkUTF::NextUTF16(&start, end);
+        *b = SkUTF::NextUTF16(&start, end);
+    }
+    return true;
+}
+
+// TODO: Reorder
+std::vector<SkUnichar> UnicodeText::decomposeAndReorder(TextRange grapheme) {
+
+    std::vector<SkUnichar> codepoints = this->split(grapheme);
+    std::vector<SkUnichar> result;
+
+    for (auto ab : codepoints) {
+        SkUnichar a, b;
+        if (!decomposeCodepoints(ab, &a, &b)) {
+            result.emplace_back(ab);
+        } else {
+            result.emplace_back(a);
+            result.emplace_back(b);
+        }
+    }
+    return result;
+}
+
+std::vector<SkUnichar> UnicodeText::split(TextRange grapheme) {
+
+    std::vector<SkUnichar> result;
+    const char16_t* current = fText16.data() + grapheme.fStart;
+    const char16_t* end = current + grapheme.width();
+    while (current < end) {
+        SkUnichar unichar = SkUTF::NextUTF16((const uint16_t**)&current, (const uint16_t*)end);
+        result.emplace_back(unichar);
+    }
+
+    return result;
+}
+
+bool UnicodeText::composeCodepoints(SkSpan<SkUnichar> codepoints, SkUnichar* composed) {
+
+    SkUnichar base = codepoints[0];
+    for (auto i = 1; i < codepoints.size(); ++i) {
+        auto mark = codepoints[i];
+        auto result = unorm2_composePair(getNormalizer(), base, mark);
+        if (result < 0) {
+            return false;
+        }
+        base = result;
+    }
+    *composed = base;
+    return true;
+}
+
 bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
 
     std::deque<TextRange> unresolvedTexts;
@@ -125,19 +226,27 @@ bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRang
                 auto count = typeface->textToGlyphs(unicodeText->getText16().data() + grapheme.fStart, grapheme.width() * 2, SkTextEncoding::kUTF16, nullptr, 0);
                 SkAutoTArray<SkGlyphID> glyphs(count);
                 typeface->textToGlyphs(unicodeText->getText16().data() + grapheme.fStart, grapheme.width() * 2, SkTextEncoding::kUTF16, glyphs.data(), count);
+                bool resolved = true;
                 for (auto i = 0; i < count; ++i) {
                     if (glyphs[i] == 0) {
-                        if (newUnresolvedTexts.empty() || newUnresolvedTexts.back().fEnd < grapheme.fStart) {
-                            // It's a new unresolved block
-                            newUnresolvedTexts.push_back(grapheme);
-                        } else {
-                            // Let's extend the last unresolved block
-                            newUnresolvedTexts.back().fEnd = grapheme.fEnd;
-                        }
+                        resolved = false;
                         break;
                     }
                 }
+                if (!resolved) {
+                    // Grapheme is not resolved but it can have resolved canonically equivalent form
+                    if (graphemeCanBeResolved(unicodeText, typeface, grapheme)) {
+                        // Keep going
+                    } else if (newUnresolvedTexts.empty() || newUnresolvedTexts.back().fEnd < grapheme.fStart) {
+                        // It's a new unresolved block
+                        newUnresolvedTexts.push_back(grapheme);
+                    } else {
+                        // Let's extend the last unresolved block
+                        newUnresolvedTexts.back().fEnd = grapheme.fEnd;
+                    }
+                }
             });
+
             // Let's fill the resolved blocks with the current font
             TextRange resolvedText(unresolvedText.fStart, unresolvedText.fStart);
             for (auto newUnresolvedText : newUnresolvedTexts) {
@@ -165,6 +274,49 @@ bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRang
     }
 
     return unresolvedTexts.empty();
+}
+
+bool FontResolvedText::graphemeCanBeResolved(UnicodeText* unicodeText, sk_sp<SkTypeface> typeface, TextRange grapheme) {
+    if (!unicodeText->graphemeHasMarks(grapheme)) {
+        return false;
+    }
+    std::vector<SkUnichar> codepoints = unicodeText->decomposeAndReorder(grapheme);
+    for (auto i = 1ul; i < codepoints.size(); ++i) {
+        auto baseRange = SkSpan<SkUnichar>(codepoints.data(), i + 1);
+
+        // Check if it's good decomposed
+        bool resolved = true;
+        for (auto j = 0; j <= i; ++j) {
+            if (typeface->unicharToGlyph(codepoints[j]) == 0) {
+                resolved = false;
+                break;
+            }
+        }
+        if (!resolved) {
+            // Check if it's good composed
+            SkUnichar baseCodepoint;
+            if (!unicodeText->composeCodepoints(baseRange, &baseCodepoint)) {
+                continue;
+            }
+            if (typeface->unicharToGlyph(baseCodepoint) == 0) {
+                continue;
+            }
+            resolved = true;
+        }
+
+        // We managed to resolved codepoints so far; let's check the rest
+        for (auto j = i + 1; j < codepoints.size(); ++j) {
+            if (typeface->unicharToGlyph(codepoints[j]) == 0) {
+                resolved = false;
+                break;
+            }
+        }
+
+        if (resolved) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Font iterator that finds all formatting marks
