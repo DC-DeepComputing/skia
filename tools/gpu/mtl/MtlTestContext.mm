@@ -66,7 +66,6 @@ public:
 private:
     MtlTestContextImpl(const GrMtlBackendContext& mtl)
             : INHERITED(mtl) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}

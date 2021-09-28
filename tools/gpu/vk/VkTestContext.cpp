@@ -117,7 +117,6 @@ private:
                       PFN_vkDestroyDebugReportCallbackEXT destroyCallback)
             : VkTestContext(backendContext, extensions, features, ownsContext, debugCallback,
                             destroyCallback) {
-        fFenceSupport = true;
     }
 
     void onPlatformMakeNotCurrent() const override {}
