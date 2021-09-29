@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e8b649d_be425998",
+        "filename": "include/sksl/DSLType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T14:10:05Z",
+      "side": 1,
+      "message": "tiny tiny nit: with a name like `checkXyz`, as a new reader I\u0027d probably expect it to return a bool for whether the type is legal or not. `reportIllegalTypes` (or something else entirely) might be a better indicator of what this thing does. Not really a big deal for a private method though.",
+      "range": {
+        "startLine": 171,
+        "startChar": 9,
+        "endLine": 171,
+        "endChar": 19
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbe57af9_fd8a7603",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T14:10:05Z",
+      "side": 1,
+      "message": "A little quirky to qualify SkSL:: throughout the rest of the function but not here.",
+      "range": {
+        "startLine": 30,
+        "startChar": 23,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749e83a6_17d50a1b",
+        "filename": "tests/SkSLDSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T14:10:05Z",
+      "side": 1,
+      "message": "Let\u0027s test a private type too ($genType) ?",
+      "range": {
+        "startLine": 2154,
+        "startChar": 0,
+        "endLine": 2154,
+        "endChar": 5
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
