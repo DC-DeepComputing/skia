@@ -3608,8 +3608,8 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // https://skbug.com/11152
     if (ctxInfo.renderer() == GrGLRenderer::kAdreno615 ||
         ctxInfo.renderer() == GrGLRenderer::kAdreno620) {
-        fMSFBOType = kNone_MSFBOType;
-        fMSAAResolvesAutomatically = false;
+        //fMSFBOType = kNone_MSFBOType;
+        //fMSAAResolvesAutomatically = false;
     }
 
 #ifndef SK_BUILD_FOR_IOS
@@ -4234,8 +4234,8 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // GL_VENDOR:   "Qualcomm"
     // GL_RENDERER: "Adreno (TM) 330"
     // GL_VERSION:  "OpenGL ES 3.0 V@127.0 AU@  (GIT@I96aee987eb)"
-    if (ctxInfo.renderer() == GrGLRenderer::kAdreno3xx &&
-        ctxInfo.driver()   == GrGLDriver::kQualcomm) {
+    if (// ctxInfo.renderer() == GrGLRenderer::kAdreno3xx &&
+           ctxInfo.driver()   == GrGLDriver::kQualcomm) {
         fBindTexture0WhenChangingTextureFBOMultisampleCount = true;
     }
 }
