@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a64f93_427cbb74",
+        "filename": "src/sksl/SkSLIRGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T22:02:41Z",
+      "side": 0,
+      "message": "Just so I understand the plan, what does our end state look like?\nIs all this stuff eventually moving to DSLWriter too?",
+      "range": {
+        "startLine": 629,
+        "startChar": 1,
+        "endLine": 641,
+        "endChar": 28
+      },
+      "revId": "8c7467c44066efcb094163b6b421f1e636614eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
