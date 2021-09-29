@@ -154,19 +154,21 @@ public:
     template<typename... Args>
     static DSLExpression Construct(DSLType type, DSLVarBase& var, Args&&... args) {
         DSLExpression argArray[] = {var, args...};
-        return Construct(type, SkMakeSpan(argArray));
+        return Construct(type, SkMakeSpan(argArray), PositionInfo());
     }
 
     template<typename... Args>
     static DSLExpression Construct(DSLType type, DSLExpression expr, Args&&... args) {
         DSLExpression argArray[] = {std::move(expr), std::move(args)...};
-        return Construct(type, SkMakeSpan(argArray));
+        return Construct(type, SkMakeSpan(argArray), PositionInfo());
     }
 
-    static DSLExpression Construct(DSLType type, SkSpan<DSLExpression> argArray);
+    static DSLExpression Construct(DSLType type, SkSpan<DSLExpression> argArray, PositionInfo pos);
 
 private:
     const SkSL::Type& skslType() const;
+
+    void reportIllegalTypes(PositionInfo pos) const;
 
     const SkSL::Type* fSkSLType = nullptr;
 
@@ -175,6 +177,7 @@ private:
     friend DSLType Array(const DSLType& base, int count, PositionInfo pos);
     friend DSLType Struct(skstd::string_view name, SkSpan<DSLField> fields, PositionInfo pos);
     friend class DSLCore;
+    friend class DSLField;
     friend class DSLFunction;
     friend class DSLVarBase;
     friend class DSLWriter;
@@ -231,7 +234,9 @@ public:
         : fModifiers(modifiers)
         , fType(type)
         , fName(name)
-        , fPosition(pos) {}
+        , fPosition(pos) {
+        type.reportIllegalTypes(pos);
+    }
 
 private:
     DSLModifiers fModifiers;
