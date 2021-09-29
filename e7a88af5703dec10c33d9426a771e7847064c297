@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7105eb8_6c804862",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T13:57:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efc0db13_4d230ee0",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "e7a88af5703dec10c33d9426a771e7847064c297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49723b19_ba960901",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "add63e5c_6ab9b6e1",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T13:57:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49723b19_ba960901",
+      "revId": "e7a88af5703dec10c33d9426a771e7847064c297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55f95826_d404e5a3",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-09-29T13:20:24Z",
       "side": 1,
       "message": "skgpu::mtl::BackendContext",
+      "range": {
+        "startLine": 14,
+        "startChar": 34,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "e7a88af5703dec10c33d9426a771e7847064c297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d98160c_812841d6",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T13:57:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55f95826_d404e5a3",
       "range": {
         "startLine": 14,
         "startChar": 34,
