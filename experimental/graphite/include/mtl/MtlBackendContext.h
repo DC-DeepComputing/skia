@@ -10,6 +10,8 @@
 
 #include "experimental/graphite/include/mtl/MtlTypes.h"
 
+#include <CoreFoundation/CoreFoundation.h>
+
 namespace skgpu::mtl {
 
 // The BackendContext contains all of the base Metal objects needed by the MtlGpu. The assumption
