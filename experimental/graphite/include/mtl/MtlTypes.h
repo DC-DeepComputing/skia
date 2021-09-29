@@ -10,21 +10,8 @@
 
 #include "include/ports/SkCFObject.h"
 
-///////////////////////////////////////////////////////////////////////////////
-
-#ifdef __APPLE__
-
 #include <CoreFoundation/CoreFoundation.h>
 #include <TargetConditionals.h>
-
-#if TARGET_OS_SIMULATOR
-#define SK_API_AVAILABLE_CA_METAL_LAYER SK_API_AVAILABLE(macos(10.11), ios(13.0))
-#else  // TARGET_OS_SIMULATOR
-#define SK_API_AVAILABLE_CA_METAL_LAYER SK_API_AVAILABLE(macos(10.11), ios(8.0))
-#endif  // TARGET_OS_SIMULATOR
-
-#endif // __APPLE__
-
 
 namespace skgpu::mtl {
 
@@ -34,6 +21,18 @@ namespace skgpu::mtl {
 using PixelFormat = unsigned int;
 using TextureUsage = unsigned int;
 using StorageMode = unsigned int;
+
+///////////////////////////////////////////////////////////////////////////////
+
+#ifdef __APPLE__
+
+#include <TargetConditionals.h>
+
+#if TARGET_OS_SIMULATOR
+#define SK_API_AVAILABLE_CA_METAL_LAYER SK_API_AVAILABLE(macos(10.11), ios(13.0))
+#else  // TARGET_OS_SIMULATOR
+#define SK_API_AVAILABLE_CA_METAL_LAYER SK_API_AVAILABLE(macos(10.11), ios(8.0))
+#endif  // TARGET_OS_SIMULATOR
 
 struct TextureInfo {
     uint32_t fSampleCount = 1;
@@ -45,6 +44,8 @@ struct TextureInfo {
     TextureUsage fUsage = 0;       // MTLTextureUsage fUsage = MTLTextureUsageUnknown;
     StorageMode fStorageMode = 0;  // MTLStorageMode fStorageMode = MTLStorageModeShared;
 };
+
+#endif // __APPLE__
 
 } // namespace skgpu::mtl
 
