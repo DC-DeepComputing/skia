@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe24e01_c0ea0b0b",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T14:06:11Z",
+      "side": 1,
+      "message": "Where is this defined?",
+      "revId": "2f5010ad34c1dcc16e10a353ccbac984cd0ca4cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
