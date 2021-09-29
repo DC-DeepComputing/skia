@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "728a8bbf_e96e9b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-09-29T16:46:30Z",
+      "side": 1,
+      "message": "See below delta compared to the original landing. I added a workaround for Adreno 3xx.\n\nhttps://skia-review.googlesource.com/c/skia/+/452724/1..5",
+      "revId": "b3122c84080999b578d9dc3bb79329e86e16d29c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
