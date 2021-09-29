@@ -72,3 +72,8 @@ JetBrains <*@jetbrains.com>
 Vibe Inc <*@vibe.us>
 Scene Group Ltd. <*@scenegroup.co>
 LG Electronics <*@lge.com>
+
+# Trusted service accounts.
+Skia Swarming Bots SA <*@skia-swarming-bots.iam.gserviceaccount.com>
+Skia Public SA <*@skia-public.iam.gserviceaccount.com>
+ChOps SA <*@chops-service-accounts.iam.gserviceaccount.com>
