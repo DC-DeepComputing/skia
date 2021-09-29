@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59743cbb_8f4b2361",
+        "filename": "experimental/graphite/include/mtl/MtlBackendContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T15:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ce8c7dc_cbe1537c",
+      "range": {
+        "startLine": 18,
+        "startChar": 11,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "99232027a6863529abdf661ed8ed04e618e56a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2fa0f06_331806aa",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-29T14:14:32Z",
       "side": 1,
       "message": "Should be landing soon.",
+      "range": {
+        "startLine": 21,
+        "startChar": 21,
+        "endLine": 21,
+        "endChar": 58
+      },
+      "revId": "99232027a6863529abdf661ed8ed04e618e56a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6f1e57_a4a3fabb",
+        "filename": "experimental/graphite/src/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T15:51:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c2fa0f06_331806aa",
       "range": {
         "startLine": 21,
         "startChar": 21,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49df72db_ef747978",
+        "filename": "tools/graphite/mtl/MtlTestContext.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T15:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5cf7776_4a5d395b",
+      "range": {
+        "startLine": 26,
+        "startChar": 19,
+        "endLine": 26,
+        "endChar": 30
+      },
+      "revId": "99232027a6863529abdf661ed8ed04e618e56a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc0f83ff_d4ce9ab1",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-09-29T14:14:32Z",
       "side": 1,
       "message": "I wish there were a cleaner way to do this with std::move, but with the type conversion I don\u0027t think there is. Maybe change \u0027device\u0027 and \u0027queue\u0027 to be sk_cfp\u003cCFTypeRef\u003e?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 68
+      },
+      "revId": "99232027a6863529abdf661ed8ed04e618e56a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe0df15_d06aa56a",
+        "filename": "tools/graphite/mtl/MtlTestContext.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T15:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc0f83ff_d4ce9ab1",
       "range": {
         "startLine": 43,
         "startChar": 0,
