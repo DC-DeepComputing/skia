@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e85a81_5565905c",
+        "filename": "experimental/graphite/src/mtl/MtlTrampoline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T20:49:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5868eed_7aba0f7c",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "7cf31f43845ad3d19a9c6cd25c71b72f8a9dbd16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78f1431f_655bf9c9",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-29T20:32:23Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "7cf31f43845ad3d19a9c6cd25c71b72f8a9dbd16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6428a1_2706cd71",
+        "filename": "experimental/graphite/src/mtl/MtlTrampoline.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T20:49:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78f1431f_655bf9c9",
       "range": {
         "startLine": 2,
         "startChar": 3,
