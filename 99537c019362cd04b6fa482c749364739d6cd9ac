@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad9fc86e_2e4b2305",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T20:17:47Z",
+      "side": 1,
+      "message": "I\u0027m a little confused for two reasons:\n- The class is named \"BuiltinVariableScanner\", not \"DSLBuiltinVariableScanner\"\n- Since everything still builds, this implies that you didn\u0027t need friendship anyway?",
+      "range": {
+        "startLine": 187,
+        "startChar": 22,
+        "endLine": 187,
+        "endChar": 47
+      },
+      "revId": "99537c019362cd04b6fa482c749364739d6cd9ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
