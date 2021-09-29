@@ -16,6 +16,29 @@
       "message": "PTAL.",
       "revId": "652f6a29de85f67029f9ba13e170491e16bf1f11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ff7b1c2_d291c81d",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T16:24:04Z",
+      "side": 1,
+      "message": "These have to be static because they refer to the GPUFamily enum, which is private to Caps.",
+      "range": {
+        "startLine": 35,
+        "startChar": 1,
+        "endLine": 38,
+        "endChar": 0
+      },
+      "revId": "652f6a29de85f67029f9ba13e170491e16bf1f11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
