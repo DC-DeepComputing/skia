@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bedde80_25d60e61",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-29T13:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c89cbc7c_4b9c8466",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 6
+      },
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b1d976e_f4bbacc3",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-29T13:15:44Z",
       "side": 1,
       "message": "Gr?",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fdb0e76_70b4e7a8",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-29T13:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b1d976e_f4bbacc3",
       "range": {
         "startLine": 62,
         "startChar": 8,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61f65fd7_37029663",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-29T13:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cabdcd89_04cbe387",
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9153336e_5d75e8c3",
@@ -77,6 +143,24 @@
       "writtenOn": "2021-09-29T13:15:44Z",
       "side": 1,
       "message": "Does this match the definition ?",
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "165695e5_ceae6874",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-09-29T13:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9153336e_5d75e8c3",
       "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
