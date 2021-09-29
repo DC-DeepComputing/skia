@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2728fa5c_b7cac89a",
+        "filename": "src/sksl/SkSLBuiltinVariableScanner.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T22:14:18Z",
+      "side": 1,
+      "message": "idea, not for this CL: SkSLAnalysis.cpp is 1700 lines long. Should we break it up into a bunch of small files like this one, and have an analysis/ directory? Based on the fact that you didn\u0027t put this code in SkSLAnalysis, were you already thinking along these lines?",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd26d0a2_6093c7d7",
+        "filename": "src/sksl/SkSLBuiltinVariableScanner.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T22:14:18Z",
+      "side": 1,
+      "message": "Most things in Analysis are just freestanding functions and their reliance on ProgramVisitor is just an implementation detail in the cpp that doesn\u0027t leak out into the header. I\u0027d recommend that pattern here too. One function prototype compiles way faster than a subclass, and doesn\u0027t require every #includer of the SkSLBuiltinVariableScanner.h to be rebuilt if SkSLAnalysis.h is changed.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3179e67_bd1d8b15",
         "filename": "src/sksl/SkSLIRGenerator.h",
         "patchSetId": 4
