@@ -22,6 +22,30 @@
       },
       "revId": "a462cb72c6d34e03084d9fe20e0ca7baec46e8ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cb7945_6904e4f3",
+        "filename": "AUTHORS",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-29T19:02:22Z",
+      "side": 1,
+      "message": "That is correct, I can use an explicit list.\nI was just following what PRESUBMIT.py does right now. This also trims 2 other cloud projects from that list (skia-corp and skia-buildbots).",
+      "parentUuid": "65b3b7da_2a5c46e1",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "a462cb72c6d34e03084d9fe20e0ca7baec46e8ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
