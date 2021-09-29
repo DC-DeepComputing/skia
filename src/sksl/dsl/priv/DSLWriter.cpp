@@ -54,6 +54,10 @@ DSLWriter::DSLWriter(SkSL::Compiler* compiler, SkSL::ProgramKind kind,
     fConfig->fSettings = settings;
     fCompiler->fContext->fConfig = fConfig.get();
     fCompiler->fContext->fErrors = &fDefaultErrorReporter;
+    fCompiler->fContext->fIntrinsics = module.fIntrinsics.get();
+    if (fCompiler->fContext->fIntrinsics) {
+        fCompiler->fContext->fIntrinsics->resetAlreadyIncluded();
+    }
 
     fCompiler->fIRGenerator->start(module, isModule, &fProgramElements, &fSharedElements);
 }
