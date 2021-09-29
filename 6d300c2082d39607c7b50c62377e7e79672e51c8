@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d6edf8_d92b72ee",
+        "filename": "include/sksl/DSLType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-29T20:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e8b649d_be425998",
+      "range": {
+        "startLine": 171,
+        "startChar": 9,
+        "endLine": 171,
+        "endChar": 19
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbe57af9_fd8a7603",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6450177b_fc43041a",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-29T20:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbe57af9_fd8a7603",
+      "range": {
+        "startLine": 30,
+        "startChar": 23,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "749e83a6_17d50a1b",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-09-29T14:10:05Z",
       "side": 1,
       "message": "Let\u0027s test a private type too ($genType) ?",
+      "range": {
+        "startLine": 2154,
+        "startChar": 0,
+        "endLine": 2154,
+        "endChar": 5
+      },
+      "revId": "6d300c2082d39607c7b50c62377e7e79672e51c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba827db_eec2df78",
+        "filename": "tests/SkSLDSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-29T20:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "749e83a6_17d50a1b",
       "range": {
         "startLine": 2154,
         "startChar": 0,
