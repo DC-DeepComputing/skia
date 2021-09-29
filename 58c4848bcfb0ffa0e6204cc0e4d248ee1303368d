@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be5f9777_8a2d9c86",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:42:11Z",
+      "side": 1,
+      "message": "Just a note that we need the associated TestContext.",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 9
+      },
+      "revId": "58c4848bcfb0ffa0e6204cc0e4d248ee1303368d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd3b1f7f_40cf3b9d",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:42:11Z",
+      "side": 1,
+      "message": "Missing \u0027}\u0027?",
+      "range": {
+        "startLine": 68,
+        "startChar": 10,
+        "endLine": 68,
+        "endChar": 11
+      },
+      "revId": "58c4848bcfb0ffa0e6204cc0e4d248ee1303368d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "000f0cc1_d5a257f3",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:42:11Z",
+      "side": 1,
+      "message": "This can go, it was only needed with ARC.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 6
+      },
+      "revId": "58c4848bcfb0ffa0e6204cc0e4d248ee1303368d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6222c52a_e92893b2",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:42:11Z",
+      "side": 1,
+      "message": "This can be outside the __APPLE__ ifdef, it\u0027s to guard the use of \u003cTargetConditionals.h\u003e",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "58c4848bcfb0ffa0e6204cc0e4d248ee1303368d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
