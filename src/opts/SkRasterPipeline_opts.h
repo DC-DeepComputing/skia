@@ -3229,9 +3229,14 @@ SI I16 scaled_mult(I16 a, I16 b) {
 SI I16 constrained_add(I16 a, U16 b) {
     for (size_t i = 0; i < N; i++) {
         // Ensure that a + b is on the interval [0, UINT16_MAX]
-        SkASSERT(-b[i] <= a[i] && a[i] <= UINT16_MAX - b[i]);
+        int ia = a[i],
+            ib = b[i];
+        // Use 65535 here because fuchsia's compiler evaluates UINT16_MAX - ib, which is
+        // 65536U - ib, as an uint32_t instead of an int32_t. This was forcing ia to be
+        // interpreted as an uint32_t.
+        SkASSERT(-ib <= ia && ia <= 65535 - ib);
     }
-    U16 answer = (U16)a + b;
+    U16 answer = b + a;
     return (I16)answer;
 }
 
