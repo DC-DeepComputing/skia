@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3179e67_bd1d8b15",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-29T22:10:13Z",
+      "side": 1,
+      "message": "Eliminate",
+      "range": {
+        "startLine": 33,
+        "startChar": 10,
+        "endLine": 33,
+        "endChar": 35
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
