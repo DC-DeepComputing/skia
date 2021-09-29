@@ -25,7 +25,6 @@
 
 #endif // __APPLE__
 
-
 namespace skgpu::mtl {
 
 /**
@@ -34,6 +33,9 @@ namespace skgpu::mtl {
 using PixelFormat = unsigned int;
 using TextureUsage = unsigned int;
 using StorageMode = unsigned int;
+using Handle = const void*;
+
+///////////////////////////////////////////////////////////////////////////////
 
 struct TextureInfo {
     uint32_t fSampleCount = 1;
