@@ -15,10 +15,10 @@ namespace skgpu::mtl {
 /**
  * Declares typedefs for Metal types used in Graphite cpp code
  */
-using MTLPixelFormat = unsigned int;
-using MTLTextureUsage = unsigned int;
-using MTLStorageMode = unsigned int;
-using MTLHandle = const void*;
+using PixelFormat = unsigned int;
+using TextureUsage = unsigned int;
+using StorageMode = unsigned int;
+using Handle = const void*;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -38,9 +38,9 @@ struct TextureInfo {
 
     // Since we aren't in an Obj-C header we can't directly use Mtl types here. Each of these can
     // cast to their mapped Mtl types list below.
-    MTLPixelFormat fFormat = 0;       // MTLPixelFormat fFormat = MTLPixelFormatInvalid;
-    MTLTextureUsage fUsage = 0;       // MTLTextureUsage fUsage = MTLTextureUsageUnknown;
-    MTLStorageMode fStorageMode = 0;  // MTLStorageMode fStorageMode = MTLStorageModeShared;
+    PixelFormat fFormat = 0;       // MTLPixelFormat fFormat = MTLPixelFormatInvalid;
+    TextureUsage fUsage = 0;       // MTLTextureUsage fUsage = MTLTextureUsageUnknown;
+    StorageMode fStorageMode = 0;  // MTLStorageMode fStorageMode = MTLStorageModeShared;
 };
 
 #endif // __APPLE__
