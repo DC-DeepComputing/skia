@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65b3b7da_2a5c46e1",
+        "filename": "AUTHORS",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-09-29T19:00:24Z",
+      "side": 1,
+      "message": "I\u0027m not sure we should allow these service accounts in general.  There are probably only three or four which actually need access, right?",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "a462cb72c6d34e03084d9fe20e0ca7baec46e8ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
