@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ac0f158_1bb2d5aa",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:19:55Z",
+      "side": 1,
+      "message": "I\u0027ve done the same in other classes -- I\u0027ll do a separate pass for that.",
+      "parentUuid": "4df3c558_d5d16e01",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 20,
+        "endChar": 18
+      },
+      "revId": "40de1ed60ba3326c9a9d04b2cf993978721fc4eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc9e3f57_8fa4c388",
         "filename": "experimental/graphite/src/mtl/MtlCaps.h",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2021-09-29T14:14:05Z",
       "side": 1,
       "message": "Just bc I don\u0027t really know what\u0027s going on here, should these two \u0027device\u0027s be const too?",
+      "revId": "40de1ed60ba3326c9a9d04b2cf993978721fc4eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f28500e_9e718412",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-29T14:19:55Z",
+      "side": 1,
+      "message": "These are helper functions -- they could be class static or in an anonymous namespace instead. I\u0027ll tweak this as well on a later pass.",
+      "parentUuid": "bc9e3f57_8fa4c388",
       "revId": "40de1ed60ba3326c9a9d04b2cf993978721fc4eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
