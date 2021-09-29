@@ -30,6 +30,7 @@
 namespace SkSL {
 
 namespace dsl {
+    class DSLBuiltinVariableScanner;
     class DSLCore;
     class DSLFunction;
     class DSLVar;
@@ -41,58 +42,6 @@ class FunctionCall;
 class StructDefinition;
 struct ParsedModule;
 struct Swizzle;
-
-/**
- * Intrinsics are passed between the Compiler and the IRGenerator using IRIntrinsicMaps.
- */
-class IRIntrinsicMap {
-public:
-    IRIntrinsicMap(IRIntrinsicMap* parent) : fParent(parent) {}
-
-    void insertOrDie(String key, std::unique_ptr<ProgramElement> element) {
-        SkASSERT(fIntrinsics.find(key) == fIntrinsics.end());
-        fIntrinsics[key] = Intrinsic{std::move(element), false};
-    }
-
-    const ProgramElement* find(const String& key) {
-        auto iter = fIntrinsics.find(key);
-        if (iter == fIntrinsics.end()) {
-            return fParent ? fParent->find(key) : nullptr;
-        }
-        return iter->second.fIntrinsic.get();
-    }
-
-    // Only returns an intrinsic that isn't already marked as included, and then marks it.
-    const ProgramElement* findAndInclude(const String& key) {
-        auto iter = fIntrinsics.find(key);
-        if (iter == fIntrinsics.end()) {
-            return fParent ? fParent->findAndInclude(key) : nullptr;
-        }
-        if (iter->second.fAlreadyIncluded) {
-            return nullptr;
-        }
-        iter->second.fAlreadyIncluded = true;
-        return iter->second.fIntrinsic.get();
-    }
-
-    void resetAlreadyIncluded() {
-        for (auto& pair : fIntrinsics) {
-            pair.second.fAlreadyIncluded = false;
-        }
-        if (fParent) {
-            fParent->resetAlreadyIncluded();
-        }
-    }
-
-private:
-    struct Intrinsic {
-        std::unique_ptr<ProgramElement> fIntrinsic;
-        bool fAlreadyIncluded = false;
-    };
-
-    std::unordered_map<String, Intrinsic> fIntrinsics;
-    IRIntrinsicMap* fParent = nullptr;
-};
 
 /**
  * Performs semantic analysis on an abstract syntax tree (AST) and produces the corresponding
@@ -198,7 +147,6 @@ private:
 
     bool setRefKind(Expression& expr, VariableReference::RefKind kind);
     void copyIntrinsicIfNeeded(const FunctionDeclaration& function);
-    void findAndDeclareBuiltinVariables();
 
     // Runtime effects (and the interpreter, which uses the same CPU runtime) require adherence to
     // the strict rules from The OpenGL ES Shading Language Version 1.00. (Including Appendix A).
@@ -221,8 +169,6 @@ private:
     Program::Inputs fInputs;
 
     std::shared_ptr<SymbolTable> fSymbolTable = nullptr;
-    // Symbols which have definitions in the include files.
-    IRIntrinsicMap* fIntrinsics = nullptr;
     std::unordered_set<const Type*> fDefinedStructs;
     std::vector<std::unique_ptr<ProgramElement>>* fProgramElements = nullptr;
     std::vector<const ProgramElement*>*           fSharedElements = nullptr;
@@ -238,6 +184,7 @@ private:
     friend class AutoDisableInline;
     friend class Compiler;
     friend class DSLParser;
+    friend class dsl::DSLBuiltinVariableScanner;
     friend class dsl::DSLCore;
     friend class dsl::DSLFunction;
     friend class dsl::DSLVar;

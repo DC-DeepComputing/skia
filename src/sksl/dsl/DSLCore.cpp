@@ -10,6 +10,7 @@
 #include "include/private/SkSLDefines.h"
 #include "include/sksl/DSLSymbols.h"
 #include "include/sksl/DSLVar.h"
+#include "src/sksl/SkSLBuiltinVariableScanner.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLIRGenerator.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
@@ -66,6 +67,11 @@ public:
         DSLWriter& instance = DSLWriter::Instance();
         SkSL::IRGenerator& ir = DSLWriter::IRGenerator();
         SkSL::Compiler& compiler = DSLWriter::Compiler();
+        // Variables defined in the pre-includes need their declaring elements added to the program
+        if (!ir.fIsBuiltinCode && compiler.context().fIntrinsics) {
+            BuiltinVariableScanner::FindAndDeclareBuiltinVariables(DSLWriter::Context(),
+                    DSLWriter::GetProgramConfig()->fKind, DSLWriter::SharedElements());
+        }
         IRGenerator::IRBundle bundle = ir.finish();
         Pool* pool = DSLWriter::Instance().fPool.get();
         auto result = std::make_unique<SkSL::Program>(std::move(source),

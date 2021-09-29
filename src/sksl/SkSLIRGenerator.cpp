@@ -225,7 +225,8 @@ void IRGenerator::appendRTAdjustFixupToVertexMain(const FunctionDeclaration& dec
         ProgramKind::kVertex == this->programKind()) {
         // ... append a line to the end of the function body which fixes up sk_Position.
         const Variable* skPerVertex = nullptr;
-        if (const ProgramElement* perVertexDecl = fIntrinsics->find(Compiler::PERVERTEX_NAME)) {
+        if (const ProgramElement* perVertexDecl =
+                fContext.fIntrinsics->find(Compiler::PERVERTEX_NAME)) {
             SkASSERT(perVertexDecl->is<SkSL::InterfaceBlock>());
             skPerVertex = &perVertexDecl->as<SkSL::InterfaceBlock>().variable();
         }
@@ -386,7 +387,8 @@ std::unique_ptr<Expression> IRGenerator::convertIdentifier(int line, skstd::stri
 }
 
 void IRGenerator::copyIntrinsicIfNeeded(const FunctionDeclaration& function) {
-    if (const ProgramElement* found = fIntrinsics->findAndInclude(function.description())) {
+    if (const ProgramElement* found =
+            fContext.fIntrinsics->findAndInclude(function.description())) {
         const FunctionDefinition& original = found->as<FunctionDefinition>();
 
         // Sort the referenced intrinsics into a consistent order; otherwise our output will become
@@ -421,7 +423,7 @@ std::unique_ptr<Expression> IRGenerator::call(int line,
         if (function.intrinsicKind() == k_dFdy_IntrinsicKind) {
             fInputs.fUseFlipRTUniform = true;
         }
-        if (!fIsBuiltinCode && fIntrinsics) {
+        if (!fIsBuiltinCode && fContext.fIntrinsics) {
             this->copyIntrinsicIfNeeded(function);
         }
     }
@@ -554,74 +556,6 @@ std::unique_ptr<Expression> IRGenerator::convertSwizzle(std::unique_ptr<Expressi
     return Swizzle::Convert(fContext, std::move(base), fields);
 }
 
-void IRGenerator::findAndDeclareBuiltinVariables() {
-    class BuiltinVariableScanner : public ProgramVisitor {
-    public:
-        BuiltinVariableScanner(IRGenerator* generator) : fGenerator(generator) {}
-
-        void addDeclaringElement(const String& name) {
-            // If this is the *first* time we've seen this builtin, findAndInclude will return
-            // the corresponding ProgramElement.
-            if (const ProgramElement* decl = fGenerator->fIntrinsics->findAndInclude(name)) {
-                SkASSERT(decl->is<GlobalVarDeclaration>() || decl->is<SkSL::InterfaceBlock>());
-                fNewElements.push_back(decl);
-            }
-        }
-
-        bool visitProgramElement(const ProgramElement& pe) override {
-            if (pe.is<FunctionDefinition>()) {
-                const FunctionDefinition& funcDef = pe.as<FunctionDefinition>();
-                // We synthesize writes to sk_FragColor if main() returns a color, even if it's
-                // otherwise unreferenced. Check main's return type to see if it's half4.
-                if (funcDef.declaration().isMain() &&
-                    funcDef.declaration().returnType() == *fGenerator->fContext.fTypes.fHalf4) {
-                    fPreserveFragColor = true;
-                }
-            }
-            return INHERITED::visitProgramElement(pe);
-        }
-
-        bool visitExpression(const Expression& e) override {
-            if (e.is<VariableReference>() && e.as<VariableReference>().variable()->isBuiltin()) {
-                this->addDeclaringElement(String(e.as<VariableReference>().variable()->name()));
-            }
-            return INHERITED::visitExpression(e);
-        }
-
-        IRGenerator* fGenerator;
-        std::vector<const ProgramElement*> fNewElements;
-        bool fPreserveFragColor = false;
-
-        using INHERITED = ProgramVisitor;
-        using INHERITED::visitProgramElement;
-    };
-
-    BuiltinVariableScanner scanner(this);
-    SkASSERT(fProgramElements);
-    for (auto& e : *fProgramElements) {
-        scanner.visitProgramElement(*e);
-    }
-
-    if (scanner.fPreserveFragColor) {
-        // main() returns a half4, so make sure we don't dead-strip sk_FragColor.
-        scanner.addDeclaringElement(Compiler::FRAGCOLOR_NAME);
-    }
-
-    switch (this->programKind()) {
-        case ProgramKind::kFragment:
-            // Vulkan requires certain builtin variables be present, even if they're unused. At one
-            // time, validation errors would result if sk_Clockwise was missing. Now, it's just
-            // (Adreno) driver bugs that drop or corrupt draws if they're missing.
-            scanner.addDeclaringElement("sk_Clockwise");
-            break;
-        default:
-            break;
-    }
-
-    fSharedElements->insert(
-            fSharedElements->begin(), scanner.fNewElements.begin(), scanner.fNewElements.end());
-}
-
 void IRGenerator::start(const ParsedModule& base,
                         bool isBuiltinCode,
                         std::vector<std::unique_ptr<ProgramElement>>* elements,
@@ -629,10 +563,6 @@ void IRGenerator::start(const ParsedModule& base,
     fProgramElements = elements;
     fSharedElements = sharedElements;
     fSymbolTable = base.fSymbols;
-    fIntrinsics = base.fIntrinsics.get();
-    if (fIntrinsics) {
-        fIntrinsics->resetAlreadyIncluded();
-    }
     fIsBuiltinCode = isBuiltinCode;
 
     fInputs = {};
@@ -693,11 +623,6 @@ void IRGenerator::start(const ParsedModule& base,
 }
 
 IRGenerator::IRBundle IRGenerator::finish() {
-    // Variables defined in the pre-includes need their declaring elements added to the program
-    if (!fIsBuiltinCode && fIntrinsics) {
-        this->findAndDeclareBuiltinVariables();
-    }
-
     return IRBundle{std::move(*fProgramElements),
                     std::move(*fSharedElements),
                     std::move(fSymbolTable),
