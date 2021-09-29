@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89cbc7c_4b9c8466",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T13:15:44Z",
+      "side": 1,
+      "message": "Gr?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 6
+      },
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b1d976e_f4bbacc3",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T13:15:44Z",
+      "side": 1,
+      "message": "Gr?",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cabdcd89_04cbe387",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T13:15:44Z",
+      "side": 1,
+      "message": "// skgpu_TextureInfo_DEFINED ?",
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9153336e_5d75e8c3",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-09-29T13:15:44Z",
+      "side": 1,
+      "message": "Does this match the definition ?",
+      "revId": "cc1ee3099484e70be5108012d35a077b90adc63f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
