@@ -36,6 +36,8 @@ skia_sksl_sources = [
   "$_src/sksl/SkSLAnalysis.h",
   "$_src/sksl/SkSLBuiltinTypes.cpp",
   "$_src/sksl/SkSLBuiltinTypes.h",
+  "$_src/sksl/SkSLBuiltinVariableScanner.cpp",
+  "$_src/sksl/SkSLBuiltinVariableScanner.h",
   "$_src/sksl/SkSLCompiler.cpp",
   "$_src/sksl/SkSLCompiler.h",
   "$_src/sksl/SkSLConstantFolder.cpp",
