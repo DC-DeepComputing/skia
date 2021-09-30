@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a57321_57668e1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-30T20:19:36Z",
+      "side": 1,
+      "message": "That\u0027s a good point, UBSAN might not like accesses through the inactive member, and that\u0027s basically what these swizzles amount to. I do like the `xyzw(foo)` approach. It\u0027s easy to read/write and lets Vec be very simple.",
+      "parentUuid": "6579714e_e1c12041",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb63b87_7718216c",
