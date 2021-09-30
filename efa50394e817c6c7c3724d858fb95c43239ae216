@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0863bbc_443385b1",
+        "filename": "src/sksl/SkSLIntrinsicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-30T13:30:29Z",
+      "side": 1,
+      "message": "Crap, I have evidently forgotten what year it is. I\u0027ll roll the date updates into the next CL.",
+      "parentUuid": "ec2cb9ab_c80821d4",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "efa50394e817c6c7c3724d858fb95c43239ae216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3102486_6a95f921",
