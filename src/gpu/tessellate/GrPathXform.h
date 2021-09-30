@@ -29,9 +29,9 @@ public:
     GrPathXform& operator=(const SkMatrix& m) {
         SkASSERT(!m.hasPerspective());
         // Duplicate the matrix in float4.xy and float4.zw so we can map two points at once.
-        fScale = {m.getScaleX(), m.getScaleY(), m.getScaleX(), m.getScaleY()};
-        fSkew = {m.getSkewX(), m.getSkewY(), m.getSkewX(), m.getSkewY()};
-        fTrans = {m.getTranslateX(), m.getTranslateY(), m.getTranslateX(), m.getTranslateY()};
+        fScale = float2(m.getScaleX(), m.getScaleY()).xyxy;
+        fSkew = float2(m.getSkewX(), m.getSkewY()).xyxy;
+        fTrans = float2(m.getTranslateX(), m.getTranslateY()).xyxy;
         return *this;
     }
 

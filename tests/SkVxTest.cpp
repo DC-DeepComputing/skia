@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+// Uncomment this line to test the scalar implementation.
+// #define SKNX_NO_SIMD
+
 #include "include/private/SkVx.h"
 #include "tests/Test.h"
 
@@ -165,6 +168,59 @@ DEF_TEST(SkVx, r) {
     }
 }
 
+#define CHECK_EQ(A,B) \
+    REPORTER_ASSERT(r, all((A) == (B))); \
+
+#define CHECK2(F,A,B,Z,...) \
+    CHECK_EQ(F(A, B.Z), F(A, skvx::shuffle<__VA_ARGS__>(B))) \
+    CHECK_EQ(F(A.Z, B), F(skvx::shuffle<__VA_ARGS__>(A), B)) \
+    CHECK_EQ(F(A.Z, B.Z), F(A, B).Z) \
+    CHECK_EQ(F(A.Z, B.x), F(skvx::shuffle<__VA_ARGS__>(A), B.x)) \
+    CHECK_EQ(F(A.x, B.Z), F(A.x, skvx::shuffle<__VA_ARGS__>(B))) \
+
+#define CHECK1(F,A,Z,...) \
+    CHECK_EQ(F(A.Z), F(skvx::shuffle<__VA_ARGS__>(A))) \
+    CHECK_EQ(F(A.Z), F(A).Z); \
+
+#define CHECK_ASSIGN(OP,A,B,Z,...) \
+    { \
+        auto result = A; \
+        result OP B.Z; \
+        auto expected = A; \
+        expected OP skvx::shuffle<__VA_ARGS__>(B); \
+        REPORTER_ASSERT(r, all(result == expected)); \
+    } \
+
+#define CHECK_SWIZZLE(A,B,Z,...) \
+    CHECK2(skvx::operator+,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator-,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator*,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator/,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator^,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator&,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator|,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator==,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator!=,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator<=,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator>=,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator<,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::operator>,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::min,A,B,Z,__VA_ARGS__) \
+    CHECK2(skvx::max,A,B,Z,__VA_ARGS__) \
+    CHECK1(!,A,Z,__VA_ARGS__) \
+    CHECK1(-,A,Z,__VA_ARGS__) \
+    CHECK1(~,A,Z,__VA_ARGS__) \
+    CHECK_EQ(A.Z << 3, (A << 3).Z) \
+    CHECK_EQ(A.Z >> 1, (A >> 1).Z) \
+    CHECK_ASSIGN(+=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(-=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(*=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(/=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(^=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(&=,A,B,Z,__VA_ARGS__) \
+    CHECK_ASSIGN(|=,A,B,Z,__VA_ARGS__) \
+    CHECK_EQ(skvx::cast<double>(A.Z), skvx::cast<double>(A).Z) \
+
 DEF_TEST(SkVx_xy, r) {
     float2 f = float2(1,2);
     REPORTER_ASSERT(r, all(f == float2{1,2}));
@@ -179,6 +235,24 @@ DEF_TEST(SkVx_xy, r) {
     f[1] = 6;
     REPORTER_ASSERT(r, f.y == 6);
     REPORTER_ASSERT(r, all(f == float2(8,6)));
+    f = f.yx;
+    REPORTER_ASSERT(r, all(f == float2(6,8)));
+    REPORTER_ASSERT(r, skvx::bit_pun<SkPoint>(f) == SkPoint::Make(6,8));
+    SkPoint p;
+    f.store(&p);
+    REPORTER_ASSERT(r, p == SkPoint::Make(6,8));
+    f.yx.store(&p);
+    REPORTER_ASSERT(r, p == SkPoint::Make(8,6));
+    REPORTER_ASSERT(r, all(f.xyxy == float4(6,8,6,8)));
+    REPORTER_ASSERT(r, all(f.xyxy == float4(f,f)));
+    REPORTER_ASSERT(r, all(skvx::join(f,f) == f.xyxy));
+    REPORTER_ASSERT(r, all(skvx::join(f.yx,f) == float4(f.y,f.x,f)));
+    REPORTER_ASSERT(r, all(skvx::join(f.yx,f) == float4(f.yx,f.x,f.y)));
+    REPORTER_ASSERT(r, all(skvx::join(f,f.yx) == float4(f.x,f.y,f.yx)));
+    REPORTER_ASSERT(r, all(skvx::join(f.yx,f.yx) == float4(f.yx,f.yx)));
+
+    int2 a={13,14}, b={21,27};
+    CHECK_SWIZZLE(a, b, yx, 1,0)
 }
 
 DEF_TEST(SkVx_xyzw, r) {
@@ -206,4 +280,49 @@ DEF_TEST(SkVx_xyzw, r) {
     f[3] = 3;
     REPORTER_ASSERT(r, f.w == 3);
     REPORTER_ASSERT(r, all(f == float4(0,1,2,3)));
+    REPORTER_ASSERT(r, all(f.yxwz.lo == f.yx));
+    REPORTER_ASSERT(r, all(f.yxwz.hi == f.wz));
+    REPORTER_ASSERT(r, all(f.zwxy.lo.lo == f.z));
+    REPORTER_ASSERT(r, all(f.zwxy.lo.hi == f.w));
+    REPORTER_ASSERT(r, all(f.zwxy.hi.lo == f.x));
+    REPORTER_ASSERT(r, all(f.zwxy.hi.hi == f.y));
+    REPORTER_ASSERT(r, f.yxwz.lo.lo.val == f.y);
+    REPORTER_ASSERT(r, f.yxwz.lo.hi.val == f.x);
+    REPORTER_ASSERT(r, f.yxwz.hi.lo.val == f.w);
+    REPORTER_ASSERT(r, f.yxwz.hi.hi.val == f.z);
+
+    int4 a={13,14,15,16}, b={21,27,33,39};
+    CHECK_SWIZZLE(a, b, zwxy, 2,3,0,1)
+    CHECK_SWIZZLE(a, b, yxwz, 1,0,3,2)
+    CHECK_SWIZZLE(a, b, xyxy, 0,1,0,1)
+    CHECK_SWIZZLE(a, b, zwzw, 2,3,2,3)
+
+    f = {1.2f, 2.3f, 4.5f, 6.7f};
+    CHECK_EQ(skvx::ceil(f.zwxy), skvx::ceil(f).zwxy)
+    CHECK_EQ(skvx::floor(f.yxwz), skvx::floor(f).yxwz)
+    CHECK_EQ(skvx::trunc(f.xyxy), skvx::trunc(f).xyxy)
+    CHECK_EQ(skvx::round(f.zwzw), skvx::round(f).zwzw)
+    CHECK_EQ(skvx::sqrt(f.yxwz), skvx::sqrt(f).yxwz)
+    CHECK_EQ(skvx::abs(f.yx), skvx::abs(f).yx)
+    CHECK_EQ(skvx::fract(f.wz), skvx::fract(f).wz)
+    CHECK_EQ(skvx::fma(f.zwxy, f.zwxy, f.zwxy), skvx::fma(f,f,f).zwxy)
+
+    REPORTER_ASSERT(r, all(skvx::naive_if_then_else(int2(0,~0),
+                                                    float4(0,1,2,3).wz,
+                                                    float4(4,5,6,7).xy) == float2(4,2)));
+    REPORTER_ASSERT(r, all(skvx::if_then_else(int2(0,~0),
+                                              float4(0,1,2,3).wz,
+                                              float4(4,5,6,7).xy) == float2(4,2)));
+    REPORTER_ASSERT(r, all(skvx::naive_if_then_else(int2(0,~0).xyxy,
+                                                    float4(0,1,2,3).zwxy,
+                                                    float4(4,5,6,7)) == float4(4,3,6,1)));
+    REPORTER_ASSERT(r, all(skvx::if_then_else(int2(0,~0).xyxy,
+                                              float4(0,1,2,3).zwxy,
+                                              float4(4,5,6,7)) == float4(4,3,6,1)));
+
+    REPORTER_ASSERT(r, all(skvx::pin(float4(0,1,2,3).yxwz,
+                                     float2(1).xyxy,
+                                     float2(2).xyxy) == float4(1,1,2,2)));
+
+f.yx = f.yx;  // HALP!! This should not be allowed! It does a POD-copy of the swizzle's storage :'(
 }
