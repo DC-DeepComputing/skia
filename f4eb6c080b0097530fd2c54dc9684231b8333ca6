@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a3f8c47_04b67989",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-30T18:00:25Z",
+      "side": 1,
+      "message": "How hard is it to use the same pattern we\u0027re using in the graphite backend itself? eg: You already added a separate MetalGraphite_BackendType, so clone the Mac WindowContext files for a new MacGraphite set, and not need the Type?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 6
+      },
+      "revId": "f4eb6c080b0097530fd2c54dc9684231b8333ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cf650eb_1694ee61",
         "filename": "tools/sk_app/WindowContext.h",
         "patchSetId": 3
@@ -14,6 +37,30 @@
       "writtenOn": "2021-09-30T17:16:33Z",
       "side": 1,
       "message": "I\u0027m not sure about this union -- I hit a couple of cases where it was checking whether fContext was null then trying to call a GrDirectContext method on the skgpu::Context object. I can guard against those but would like to get your opinion.",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 9
+      },
+      "revId": "f4eb6c080b0097530fd2c54dc9684231b8333ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074f92bd_c6bed65a",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-30T18:00:25Z",
+      "side": 1,
+      "message": "Might be safer to just make these two separate fields (only one should ever be non-null, right?)",
+      "parentUuid": "7cf650eb_1694ee61",
       "range": {
         "startLine": 77,
         "startChar": 4,
