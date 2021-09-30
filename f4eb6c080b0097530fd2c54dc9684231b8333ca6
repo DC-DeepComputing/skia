@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cf650eb_1694ee61",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-30T17:16:33Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this union -- I hit a couple of cases where it was checking whether fContext was null then trying to call a GrDirectContext method on the skgpu::Context object. I can guard against those but would like to get your opinion.",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 9
+      },
+      "revId": "f4eb6c080b0097530fd2c54dc9684231b8333ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
