@@ -33,7 +33,7 @@ public:
 protected:
     static NSURL* CacheURL();
 
-    MetalWindowContext(const DisplayParams&);
+    MetalWindowContext(const DisplayParams&, Type type);
     // This should be called by subclass constructor. It is also called when window/display
     // parameters change. This will in turn call onInitializeContext().
     void initializeContext();

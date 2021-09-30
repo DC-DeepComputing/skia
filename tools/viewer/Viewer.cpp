@@ -227,6 +227,11 @@ static sk_app::Window::BackendType get_backend_type(const char* str) {
     if (0 == strcmp(str, "mtl")) {
         return sk_app::Window::kMetal_BackendType;
     } else
+#ifdef SK_GRAPHITE_ENABLED
+    if (0 == strcmp(str, "grmtl")) {
+        return sk_app::Window::kMetalGraphite_BackendType;
+    } else
+#endif
 #endif
 #ifdef SK_DIRECT3D
     if (0 == strcmp(str, "d3d")) {
@@ -1881,6 +1886,11 @@ void Viewer::drawImGui() {
 #if defined(SK_METAL)
                 ImGui::SameLine();
                 ImGui::RadioButton("Metal", &newBackend, sk_app::Window::kMetal_BackendType);
+#if defined(SK_GRAPHITE_ENABLED)
+                ImGui::SameLine();
+                ImGui::RadioButton("Metal (Graphite)", &newBackend,
+                                   sk_app::Window::kMetal_BackendType);
+#endif
 #endif
 #if defined(SK_DIRECT3D)
                 ImGui::SameLine();

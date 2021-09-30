@@ -19,7 +19,7 @@ namespace {
 
 class MetalWindowContext_mac : public MetalWindowContext {
 public:
-    MetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    MetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&, Type type);
 
     ~MetalWindowContext_mac() override;
 
@@ -35,8 +35,9 @@ private:
 };
 
 MetalWindowContext_mac::MetalWindowContext_mac(const MacWindowInfo& info,
-                                               const DisplayParams& params)
-    : INHERITED(params)
+                                               const DisplayParams& params,
+                                               Type type)
+    : INHERITED(params, type)
     , fMainView(info.fMainView) {
 
     // any config code here (particularly for msaa)?
@@ -97,8 +98,9 @@ namespace sk_app {
 namespace window_context_factory {
 
 std::unique_ptr<WindowContext> MakeMetalForMac(const MacWindowInfo& info,
-                                               const DisplayParams& params) {
-    std::unique_ptr<WindowContext> ctx(new MetalWindowContext_mac(info, params));
+                                               const DisplayParams& params,
+                                               WindowContext::Type type) {
+    std::unique_ptr<WindowContext> ctx(new MetalWindowContext_mac(info, params, type));
     if (!ctx->isValid()) {
         return nullptr;
     }
