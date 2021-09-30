@@ -34,6 +34,7 @@ bool FuzzSKSL2Pipeline(sk_sp<SkData> bytes) {
         }
 
         void defineFunction(const char* /*decl*/, const char* /*body*/, bool /*isMain*/) override {}
+        void declareFunction(const char* /*decl*/, bool /*isMain*/) override {}
         void defineStruct(const char* /*definition*/) override {}
         void declareGlobal(const char* /*declaration*/) override {}
 
