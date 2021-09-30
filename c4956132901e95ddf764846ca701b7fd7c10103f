@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1586acd9_04bc080a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 4109,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-09-30T19:57:29Z",
+      "side": 1,
+      "message": "I was going to ask where this went, then I realized it\u0027s now on the previous line. Maybe move this part of the comment?",
+      "range": {
+        "startLine": 4108,
+        "startChar": 38,
+        "endLine": 4109,
+        "endChar": 52
+      },
+      "revId": "c4956132901e95ddf764846ca701b7fd7c10103f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
