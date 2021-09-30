@@ -52,7 +52,8 @@ std::unique_ptr<WindowContext> MakeDawnMTLForMac(const MacWindowInfo&, const Dis
 #endif
 
 #ifdef SK_METAL
-std::unique_ptr<WindowContext> MakeMetalForMac(const MacWindowInfo&, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeMetalForMac(const MacWindowInfo&, const DisplayParams&,
+                                               WindowContext::Type);
 #endif
 
 }  // namespace window_context_factory

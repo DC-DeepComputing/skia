@@ -17,13 +17,18 @@
 #include "src/image/SkImage_Base.h"
 #include "tools/sk_app/MetalWindowContext.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/mtl/MtlBackendContext.h"
+#endif
+
 using sk_app::DisplayParams;
 using sk_app::MetalWindowContext;
 
 namespace sk_app {
 
-MetalWindowContext::MetalWindowContext(const DisplayParams& params)
-        : WindowContext(params)
+MetalWindowContext::MetalWindowContext(const DisplayParams& params, Type type)
+        : WindowContext(params, type)
         , fValid(false)
         , fDrawableHandle(nil) {
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
@@ -79,27 +84,50 @@ void MetalWindowContext::initializeContext() {
     }
 #endif
 
-    GrMtlBackendContext backendContext = {};
-    backendContext.fDevice.retain((GrMTLHandle)fDevice.get());
-    backendContext.fQueue.retain((GrMTLHandle)fQueue.get());
-#if GR_METAL_SDK_VERSION >= 230
-    if (@available(macOS 11.0, iOS 14.0, *)) {
-        backendContext.fBinaryArchive.retain((__bridge GrMTLHandle)fPipelineArchive);
-    }
+    if (fType == Type::kGanesh) {
+        GrMtlBackendContext backendContext = {};
+        backendContext.fDevice.retain((GrMTLHandle)fDevice.get());
+        backendContext.fQueue.retain((GrMTLHandle)fQueue.get());
+    #if GR_METAL_SDK_VERSION >= 230
+        if (@available(macOS 11.0, iOS 14.0, *)) {
+            backendContext.fBinaryArchive.retain((__bridge GrMTLHandle)fPipelineArchive);
+        }
+    #endif
+        fContext = GrDirectContext::MakeMetal(backendContext, fDisplayParams.fGrContextOptions);
+        if (!fContext && fDisplayParams.fMSAASampleCount > 1) {
+            fDisplayParams.fMSAASampleCount /= 2;
+            this->initializeContext();
+            return;
+        }
+#ifdef SK_GRAPHITE_ENABLED
+    } else {
+        SkASSERT(fType == Type::kGraphite);
+        skgpu::mtl::BackendContext backendContext = {};
+        backendContext.fDevice.retain((GrMTLHandle)fDevice.get());
+        backendContext.fQueue.retain((GrMTLHandle)fQueue.get());
+        fGraphiteContext = skgpu::Context::MakeMetal(backendContext);
+        // TODO
+//        if (!fGraphiteContext && fDisplayParams.fMSAASampleCount > 1) {
+//            fDisplayParams.fMSAASampleCount /= 2;
+//            this->initializeContext();
+//            return;
+//        }
 #endif
-    fContext = GrDirectContext::MakeMetal(backendContext, fDisplayParams.fGrContextOptions);
-    if (!fContext && fDisplayParams.fMSAASampleCount > 1) {
-        fDisplayParams.fMSAASampleCount /= 2;
-        this->initializeContext();
-        return;
     }
 }
 
 void MetalWindowContext::destroyContext() {
-    if (fContext) {
+    if (fType == Type::kGanesh && fContext) {
         // in case we have outstanding refs to this (lua?)
         fContext->abandonContext();
         fContext.reset();
+#ifdef SK_GRAPHITE_ENABLED
+    } else if (fGraphiteContext) {
+        SkASSERT(fType == Type::kGraphite);
+        // TODO?
+        //fGraphiteContext->abandonContext();
+        fGraphiteContext.reset();
+#endif
     }
 
     this->onDestroyContext();
@@ -118,7 +146,7 @@ void MetalWindowContext::destroyContext() {
 
 sk_sp<SkSurface> MetalWindowContext::getBackbufferSurface() {
     sk_sp<SkSurface> surface;
-    if (fContext) {
+    if (fType == Type::kGanesh && fContext) {
         if (fDisplayParams.fDelayDrawableAcquisition) {
             surface = SkSurface::MakeFromCAMetalLayer(fContext.get(),
                                                       (__bridge GrMTLHandle)fMetalLayer,
@@ -146,6 +174,14 @@ sk_sp<SkSurface> MetalWindowContext::getBackbufferSurface() {
 
             fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
         }
+#ifdef SK_GRAPHITE_ENABLED
+    } else {
+        id<CAMetalDrawable> currentDrawable = [fMetalLayer nextDrawable];
+
+        // TODO: set up surface here
+
+        fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
+#endif
     }
 
     return surface;
