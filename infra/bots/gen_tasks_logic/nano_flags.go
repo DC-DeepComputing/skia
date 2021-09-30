@@ -58,7 +58,7 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 			// Nexus7 (Tegra3) does not support MSAA.
 			// MSAA is disabled on Pixel3a (https://b.corp.google.com/issues/143074513).
 			// MSAA is disabled on Pixel5 (https://skbug.com/11152).
-			if b.os("iOS") || b.model("Nexus7", "Pixel3a", "Pixel5") {
+			if b.os("iOS") || b.model("Nexus7") {
 				sampleCount = 0
 			}
 		} else if b.matchGpu("AppleM1") {
