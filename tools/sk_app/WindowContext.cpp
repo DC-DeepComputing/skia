@@ -9,12 +9,16 @@
 
 #include "include/gpu/GrDirectContext.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#endif
+
 namespace sk_app {
 
-WindowContext::WindowContext(const DisplayParams& params)
-        : fDisplayParams(params)
-        , fSampleCount(1)
-        , fStencilBits(0) {}
+WindowContext::WindowContext(const DisplayParams& params,
+                             Type contextType)
+        : fType(contextType)
+        , fDisplayParams(params) {}
 
 WindowContext::~WindowContext() {}
 
