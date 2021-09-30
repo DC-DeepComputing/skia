@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6579714e_e1c12041",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-09-30T20:17:27Z",
+      "side": 1,
+      "message": "This seems pretty heavy handed to me, and would be more a fan of just having functions in the skvx namespace for vec\u003c2,t\u003e and vec\u003c4,t\u003e that wrap shuffle\u003c\u003e with hard-coded swizzles.  With function name resolution, we ought to just write xyzw(foo) or similar. Could also define swizzles within Vec\u003c4,T\u003e so it would be foo.xyzw() but in either case, I don\u0027t think it hurts readability compared to foo.xyzw and I don\u0027t need to reason about the template magic.\n\nI also am wondering how much we need to worry about union member lifetime? Or does that not really apply in this context because all the unions are dense and based on the same base type?",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb63b87_7718216c",
