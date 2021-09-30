@@ -8,6 +8,81 @@
 #include "experimental/sktext/src/LogicalRun.h"
 #include "experimental/sktext/src/VisualRun.h"
 
+namespace {
+bool isRTL(SkScriptIterator::ScriptID scriptId) {
+    switch (scriptId)
+    {
+        /* Unicode-1.1 additions */
+        case USCRIPT_ARABIC:
+        case USCRIPT_HEBREW:
+
+        /* Unicode-3.0 additions */
+        case USCRIPT_SYRIAC:
+        case USCRIPT_THAANA:
+
+        /* Unicode-4.0 additions */
+        case USCRIPT_CYPRIOT:
+
+        /* Unicode-4.1 additions */
+        case USCRIPT_KHAROSHTHI:
+
+        /* Unicode-5.0 additions */
+        case USCRIPT_PHOENICIAN:
+        case USCRIPT_NKO:
+
+        /* Unicode-5.1 additions */
+        case USCRIPT_LYDIAN:
+
+        /* Unicode-5.2 additions */
+        case USCRIPT_AVESTAN:
+        case USCRIPT_IMPERIAL_ARAMAIC:
+        case USCRIPT_INSCRIPTIONAL_PAHLAVI:
+        case USCRIPT_INSCRIPTIONAL_PARTHIAN:
+        case USCRIPT_OLD_SOUTH_ARABIAN:
+        //case USCRIPT_OLD_TURKIC:
+        case USCRIPT_SAMARITAN:
+
+        /* Unicode-6.0 additions */
+        case USCRIPT_MANDAIC:
+
+        /* Unicode-6.1 additions */
+        case USCRIPT_MEROITIC_CURSIVE:
+        case USCRIPT_MEROITIC_HIEROGLYPHS:
+
+        /* Unicode-7.0 additions */
+        case USCRIPT_MANICHAEAN:
+        //case USCRIPT_MENDE_KIKAKUI:
+        case USCRIPT_NABATAEAN:
+        case USCRIPT_OLD_NORTH_ARABIAN:
+        case USCRIPT_PALMYRENE:
+        case USCRIPT_PSALTER_PAHLAVI:
+
+        /* Unicode-8.0 additions */
+        case USCRIPT_HATRAN:
+
+        /* Unicode-9.0 additions */
+        case USCRIPT_ADLAM:
+
+        /* Unicode-11.0 additions */
+        case USCRIPT_HANIFI_ROHINGYA:
+        case USCRIPT_OLD_SOGDIAN:
+        case USCRIPT_SOGDIAN:
+
+        /* Unicode-12.0 additions */
+        case USCRIPT_ELYMAIC:
+
+        /* Unicode-13.0 additions */
+        case USCRIPT_CHORASMIAN:
+        case USCRIPT_YEZIDI:
+
+            return true;
+
+        default:
+            return false;
+    }
+}
+}
+
 namespace skia {
 namespace text {
 UnicodeText::UnicodeText(std::unique_ptr<SkUnicode> unicode, SkSpan<uint16_t> utf16)
@@ -131,6 +206,11 @@ bool UnicodeText::graphemeHasMarks(TextRange grapheme) {
     return true;
 }
 
+bool UnicodeText::mirrorCodepoint(SkUnichar codepoint, SkUnichar* mirror) {
+    *mirror = u_charMirror(codepoint);
+    return codepoint != *mirror;
+}
+
 bool UnicodeText::decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b) {
     UChar decomposed[4]; // 2 + 2 max
     UErrorCode error = U_ZERO_ERROR;
@@ -160,8 +240,7 @@ bool UnicodeText::decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b) 
     return true;
 }
 
-// TODO: Reorder
-std::vector<SkUnichar> UnicodeText::decomposeAndReorder(TextRange grapheme) {
+std::vector<SkUnichar> UnicodeText::decompose(TextRange grapheme) {
 
     std::vector<SkUnichar> codepoints = this->split(grapheme);
     std::vector<SkUnichar> result;
@@ -276,11 +355,30 @@ bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRang
     return unresolvedTexts.empty();
 }
 
+// We do not aim for correct shaping here; we operate on unicode codepoints only, not looking into glyphs.
+// All we need is to find out if the typeface can draw all the codepoints in the grapheme or not
 bool FontResolvedText::graphemeCanBeResolved(UnicodeText* unicodeText, sk_sp<SkTypeface> typeface, TextRange grapheme) {
     if (!unicodeText->graphemeHasMarks(grapheme)) {
         return false;
     }
-    std::vector<SkUnichar> codepoints = unicodeText->decomposeAndReorder(grapheme);
+
+    std::vector<SkUnichar> codepoints = unicodeText->decompose(grapheme);
+
+    auto size = codepoints.size();
+    for (auto i = 0u; i < size; ++i) {
+        auto codepoint = codepoints[i];
+        SkScriptIterator::ScriptID scriptID;
+        if (!unicodeText->getUnicode()->makeScriptIterator()->getScript(codepoint, &scriptID)) {
+            return false;
+        }
+        if (::isRTL(scriptID)) {
+            SkUnichar mirror;
+            if (unicodeText->mirrorCodepoint(codepoint, &mirror)) {
+                // The order does not really matter as long as we have a mirrored codepoint, too
+                codepoints.emplace_back(mirror);
+            }
+        }
+    }
     for (auto i = 1ul; i < codepoints.size(); ++i) {
         auto baseRange = SkSpan<SkUnichar>(codepoints.data(), i + 1);
 

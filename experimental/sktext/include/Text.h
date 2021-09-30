@@ -53,9 +53,10 @@ public:
 
     bool graphemeHasMarks(TextRange grapheme);
     std::vector<SkUnichar> split(TextRange grapheme);
-    std::vector<SkUnichar> decomposeAndReorder(TextRange grapheme);
+    std::vector<SkUnichar> decompose(TextRange grapheme);
     bool composeCodepoints(SkSpan<SkUnichar> codepoints, SkUnichar* composed);
     bool decomposeCodepoints(SkUnichar ab, SkUnichar* a, SkUnichar* b);
+    bool mirrorCodepoint(SkUnichar codepoint, SkUnichar* mirror);
 
     SkUnicode* getUnicode() const { return fUnicode.get(); }
     SkSpan<const char16_t> getText16() const { return SkSpan<const char16_t>(fText16.data(), fText16.size()); }
