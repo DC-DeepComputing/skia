@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "306c4a54_3d6b9daa",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-30T18:08:45Z",
+      "side": 1,
+      "message": "The type was added to manage the union, so we know what is the valid entry. If I split them, then maybe I can get by without it.",
+      "parentUuid": "8a3f8c47_04b67989",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 6
+      },
+      "revId": "f4eb6c080b0097530fd2c54dc9684231b8333ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cf650eb_1694ee61",
         "filename": "tools/sk_app/WindowContext.h",
         "patchSetId": 3
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "Might be safer to just make these two separate fields (only one should ever be non-null, right?)",
       "parentUuid": "7cf650eb_1694ee61",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 9
+      },
+      "revId": "f4eb6c080b0097530fd2c54dc9684231b8333ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10ba983_c35ca18a",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-09-30T18:08:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "074f92bd_c6bed65a",
       "range": {
         "startLine": 77,
         "startChar": 4,
