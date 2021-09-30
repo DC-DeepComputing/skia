@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57a4fe74_45caa7bb",
+        "filename": "src/sksl/transform/SkSLTransform.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-30T16:24:41Z",
+      "side": 1,
+      "message": "This looks like a namespace to me... SkSLAnalysis currently does this same thing of declaring a struct that\u0027s really a namespace, but there\u0027s no advantage to it afaics.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "d7f6705a30a3fb000fb1525780cfc549708625d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
