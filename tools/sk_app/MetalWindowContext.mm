@@ -17,6 +17,11 @@
 #include "src/image/SkImage_Base.h"
 #include "tools/sk_app/MetalWindowContext.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/mtl/MtlBackendContext.h"
+#endif
+
 using sk_app::DisplayParams;
 using sk_app::MetalWindowContext;
 
@@ -118,34 +123,32 @@ void MetalWindowContext::destroyContext() {
 
 sk_sp<SkSurface> MetalWindowContext::getBackbufferSurface() {
     sk_sp<SkSurface> surface;
-    if (fContext) {
-        if (fDisplayParams.fDelayDrawableAcquisition) {
-            surface = SkSurface::MakeFromCAMetalLayer(fContext.get(),
-                                                      (__bridge GrMTLHandle)fMetalLayer,
-                                                      kTopLeft_GrSurfaceOrigin, fSampleCount,
-                                                      kBGRA_8888_SkColorType,
-                                                      fDisplayParams.fColorSpace,
-                                                      &fDisplayParams.fSurfaceProps,
-                                                      &fDrawableHandle);
-        } else {
-            id<CAMetalDrawable> currentDrawable = [fMetalLayer nextDrawable];
+    if (fDisplayParams.fDelayDrawableAcquisition) {
+        surface = SkSurface::MakeFromCAMetalLayer(fContext.get(),
+                                                  (__bridge GrMTLHandle)fMetalLayer,
+                                                  kTopLeft_GrSurfaceOrigin, fSampleCount,
+                                                  kBGRA_8888_SkColorType,
+                                                  fDisplayParams.fColorSpace,
+                                                  &fDisplayParams.fSurfaceProps,
+                                                  &fDrawableHandle);
+    } else {
+        id<CAMetalDrawable> currentDrawable = [fMetalLayer nextDrawable];
 
-            GrMtlTextureInfo fbInfo;
-            fbInfo.fTexture.retain(currentDrawable.texture);
+        GrMtlTextureInfo fbInfo;
+        fbInfo.fTexture.retain(currentDrawable.texture);
 
-            GrBackendRenderTarget backendRT(fWidth,
-                                            fHeight,
-                                            fSampleCount,
-                                            fbInfo);
+        GrBackendRenderTarget backendRT(fWidth,
+                                        fHeight,
+                                        fSampleCount,
+                                        fbInfo);
 
-            surface = SkSurface::MakeFromBackendRenderTarget(fContext.get(), backendRT,
-                                                             kTopLeft_GrSurfaceOrigin,
-                                                             kBGRA_8888_SkColorType,
-                                                             fDisplayParams.fColorSpace,
-                                                             &fDisplayParams.fSurfaceProps);
+        surface = SkSurface::MakeFromBackendRenderTarget(fContext.get(), backendRT,
+                                                         kTopLeft_GrSurfaceOrigin,
+                                                         kBGRA_8888_SkColorType,
+                                                         fDisplayParams.fColorSpace,
+                                                         &fDisplayParams.fSurfaceProps);
 
-            fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
-        }
+        fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
     }
 
     return surface;
