@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1428e93_c14963e1",
+        "filename": "src/sksl/SkSLBuiltinVariableScanner.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-30T16:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2728fa5c_b7cac89a",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd26d0a2_6093c7d7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cc01c0d_a904c176",
+        "filename": "src/sksl/SkSLBuiltinVariableScanner.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-30T16:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd26d0a2_6093c7d7",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3179e67_bd1d8b15",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-09-29T22:10:13Z",
       "side": 1,
       "message": "Eliminate",
+      "range": {
+        "startLine": 33,
+        "startChar": 10,
+        "endLine": 33,
+        "endChar": 35
+      },
+      "revId": "bd02e1ef6f018a615efebbc3fdedce45b565e3d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0abc08d6_addb567d",
+        "filename": "src/sksl/SkSLIRGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-30T16:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3179e67_bd1d8b15",
       "range": {
         "startLine": 33,
         "startChar": 10,
