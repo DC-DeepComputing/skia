@@ -43,17 +43,30 @@
 #endif
 
 // ... and all standalone functions must be static.  Please use these helpers:
-#define SI    static inline
-#define SIT   template <       typename T> SI
-#define SIN   template <int N            > SI
-#define SINT  template <int N, typename T> SI
-#define SINTU template <int N, typename T, typename U, \
-                        typename=std::enable_if_t<std::is_convertible<U,T>::value>> SI
+#define SI      static inline
+#define SIT     template <typename T> SI
+#define SITZ    template <typename T, int... Z> SI
+#define SITZZ   template <typename T, int... Z0, int... Z1> SI
+#define SITZZZ  template <typename T, int... Z0, int... Z1, int... Z2> SI
+#define SIN     template <int N> SI
+#define SINZ    template <int N, int... Z> SI
+#define SINZZZ  template <int N, int... Z0, int... Z1, int... Z2> SI
+#define SINT    template <int N, typename T> SI
+#define SINTZ   template <int N, typename T, int... Z> SI
+#define SINTSZ  template <int N, typename T, int S, int... Z> SI
+#define SINTZZ  template <int N, typename T, int... Z0, int... Z1> SI
+#define SINTZZZ template <int N, typename T, int... Z0, int... Z1, int... Z2> SI
+#define SINTU template   <int N, typename T, typename U, \
+                          typename=std::enable_if_t<std::is_convertible<U,T>::value>> SI
+#define SINTZU template  <int N, typename T, int... Z, typename U, \
+                          typename=std::enable_if_t<std::is_convertible<U,T>::value>> SI
 
 namespace skvx {
 
 // All Vec have the same simple memory layout, the same as `T vec[N]`.
-template <int N, typename T> struct Vec;
+// A swizzle, if present, is represented as [SizeOfRawStorage, SwizzleIndices...]
+// e.g., float2.xyxy would be Vec<4,float, 2, 0,1,0,1>
+template <int N, typename T, int... Z/*Swizzle*/> struct Vec;
 
 template <int N, typename T> struct alignas(N*sizeof(T)) VecBase {
     static_assert((N & (N-1)) == 0,        "N must be a power of 2.");
@@ -100,7 +113,7 @@ template <int N, typename T> struct alignas(N*sizeof(T)) VecBase {
     }
 };
 
-template <int N, typename T> struct Vec : public VecBase<N,T> {
+template <int N, typename T> struct Vec<N,T> : public VecBase<N,T> {
     SKVX_ALWAYS_INLINE Vec() = default;
     // Vec<N,T>{1} should hit the initializer list constructor, yielding {1,0,0,...}.
     SKVX_ALWAYS_INLINE Vec(std::initializer_list<T> xs) : VecBase<N,T>(std::move(xs)) {}
@@ -131,30 +144,30 @@ struct Vec<4,T> : public VecBase<4,T> {
         w = d;
     }
 
-    template <typename A, typename B, typename C,
+    template <typename A, int... Z, typename B, typename C,
               typename=std::enable_if_t<std::is_convertible<A,T>::value &&
                                         std::is_convertible<B,T>::value &&
                                         std::is_convertible<C,T>::value>>
-    SKVX_ALWAYS_INLINE Vec(Vec<2,A> a, B b, C c) {
+    SKVX_ALWAYS_INLINE Vec(Vec<2,A,Z...> a, B b, C c) {
         xy = a;
         z = b;
         w = c;
     }
 
-    template <typename A, typename B, typename C,
+    template <typename A, typename B, typename C, int... Z,
               typename=std::enable_if_t<std::is_convertible<A,T>::value &&
                                         std::is_convertible<B,T>::value &&
                                         std::is_convertible<C,T>::value>>
-    SKVX_ALWAYS_INLINE Vec(A a, B b, Vec<2,C> c) {
+    SKVX_ALWAYS_INLINE Vec(A a, B b, Vec<2,C,Z...> c) {
         x = a;
         y = b;
         zw = c;
     }
 
-    template <typename A, typename B,
+    template <typename A, int... Z0, typename B, int... Z1,
               typename=std::enable_if_t<std::is_convertible<A,T>::value &&
                                         std::is_convertible<B,T>::value>>
-    SKVX_ALWAYS_INLINE Vec(Vec<2,A> a, Vec<2,B> b) {
+    SKVX_ALWAYS_INLINE Vec(Vec<2,A,Z0...> a, Vec<2,B,Z1...> b) {
         xy = a;
         zw = b;
     }
@@ -164,6 +177,12 @@ struct Vec<4,T> : public VecBase<4,T> {
         struct { Vec<2,T> xy, zw; };
         struct { T x, y, z, w; };
         T vals[4];
+        Vec<4,T, 4, 2,3,0,1> zwxy;
+        Vec<4,T, 4, 1,0,3,2> yxwz;
+        Vec<4,T, 4, 0,1,0,1> xyxy;
+        Vec<4,T, 4, 2,3,2,3> zwzw;
+        Vec<2,T, 4, 1,0>     yx;
+        Vec<2,T, 4, 3,2>     wz;
     };
 };
 
@@ -186,6 +205,8 @@ struct Vec<2,T> : public VecBase<2,T> {
         struct { Vec<1,T> lo, hi; };
         struct { T x, y; };
         T vals[2];
+        Vec<2,T, 2, 1,0>     yx;
+        Vec<4,T, 2, 0,1,0,1> xyxy;
     };
 };
 
@@ -214,17 +235,76 @@ struct Vec<1,T> {
     }
 };
 
+// 4-component swizzle.
+template <int N, typename T, int S, int Z0, int Z1, int Z2, int Z3>
+struct Vec<N,T,S,Z0,Z1,Z2,Z3> {
+    static_assert(N == 4, "The swizzle length must match N");
+
+    SKVX_ALWAYS_INLINE operator Vec<N,T>() const { return apply_swizzle(*this); }
+    SKVX_ALWAYS_INLINE void store(void* ptr) const { apply_swizzle(*this).store(ptr); }
+
+    union {
+        T unswizzledStorage[S];
+        Vec<2,T, S, Z0, Z1> lo;
+        Vec<2,T, S, Z2, Z3> hi;
+    };
+};
+
+// 2-component swizzle.
+template <int N, typename T, int S, int Z0, int Z1>
+struct Vec<N,T,S,Z0,Z1> {
+    static_assert(N == 2, "The swizzle length must match N");
+
+    SKVX_ALWAYS_INLINE operator Vec<N,T>() const { return apply_swizzle(*this); }
+    SKVX_ALWAYS_INLINE void store(void* ptr) const { apply_swizzle(*this).store(ptr); }
+
+    union {
+        T unswizzledStorage[S];
+        Vec<1,T, S, Z0> lo;
+        Vec<1,T, S, Z1> hi;
+    };
+};
+
+// 1-component swizzle.
+template <int N, typename T, int S, int Z0>
+struct Vec<N,T,S,Z0> {
+    static_assert(N == 1, "The swizzle length must match N");
+
+    union {
+        T unswizzledStorage[S];
+        struct {
+            T pad[Z0];
+            T val;
+        };
+    };
+};
+
+template <typename T>
+struct is_swizzled_vec {
+    constexpr static bool value = false;
+};
+
+template <int N, typename T, int S, int... Z>
+struct is_swizzled_vec<Vec<N,T,S,Z...>> {
+    constexpr static bool value = true;
+};
+
 // Ideally we'd only use bit_pun(), but until this file is always built as C++17 with constexpr if,
 // we'll sometimes find need to use unchecked_bit_pun().  Please do check the call sites yourself!
+//
+// We don't allow bit puns on swizzled vectors because the vector is not actually stored as swizzled
+// in memory; it gets swizzled when accessed.
 template <typename D, typename S>
-SI D unchecked_bit_pun(const S& s) {
+SI std::enable_if_t<!is_swizzled_vec<S>::value, D> unchecked_bit_pun(const S& s) {
     D d;
     memcpy(&d, &s, sizeof(D));
     return d;
 }
 
+// We don't allow bit puns on swizzled vectors because the vector is not actually stored as swizzled
+// in memory; it gets swizzled when accessed.
 template <typename D, typename S>
-SI D bit_pun(const S& s) {
+SI std::enable_if_t<!is_swizzled_vec<S>::value, D> bit_pun(const S& s) {
     static_assert(sizeof(D) == sizeof(S), "");
     return unchecked_bit_pun<D>(s);
 }
@@ -236,7 +316,7 @@ template <> struct Mask<double> { using type = int64_t; };
 template <typename T> using M = typename Mask<T>::type;
 
 // Join two Vec<N,T> into one Vec<2N,T>.
-SINT Vec<2*N,T> join(const Vec<N,T>& lo, const Vec<N,T>& hi) {
+SINTZZ Vec<2*N,T> join(const Vec<N,T,Z0...>& lo, const Vec<N,T,Z1...>& hi) {
     Vec<2*N,T> v;
     v.lo = lo;
     v.hi = hi;
@@ -271,55 +351,55 @@ SINT Vec<2*N,T> join(const Vec<N,T>& lo, const Vec<N,T>& hi) {
         SI Vec<4,float> to_vec(VExt<4,float> v) { return bit_pun<Vec<4,float>>(v); }
     #endif
 
-    SINT VExt<N,T> to_vext(const Vec<N,T>& v) { return bit_pun<VExt<N,T>>(v); }
-    SINT Vec <N,T> to_vec(const VExt<N,T>& v) { return bit_pun<Vec <N,T>>(v); }
+    SINTZ VExt<N,T> to_vext(const Vec<N,T,Z...>& v) { return bit_pun<VExt<N,T>>(apply_swizzle(v)); }
+    SINT Vec <N,T> to_vec(const VExt<N,T>& v) { return bit_pun<Vec<N,T>>(v); }
 
-    SINT Vec<N,T> operator+(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator+(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) + to_vext(y));
     }
-    SINT Vec<N,T> operator-(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator-(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) - to_vext(y));
     }
-    SINT Vec<N,T> operator*(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator*(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) * to_vext(y));
     }
-    SINT Vec<N,T> operator/(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator/(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) / to_vext(y));
     }
 
-    SINT Vec<N,T> operator^(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator^(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) ^ to_vext(y));
     }
-    SINT Vec<N,T> operator&(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator&(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) & to_vext(y));
     }
-    SINT Vec<N,T> operator|(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator|(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return to_vec<N,T>(to_vext(x) | to_vext(y));
     }
 
-    SINT Vec<N,T> operator!(const Vec<N,T>& x) { return to_vec<N,T>(!to_vext(x)); }
-    SINT Vec<N,T> operator-(const Vec<N,T>& x) { return to_vec<N,T>(-to_vext(x)); }
-    SINT Vec<N,T> operator~(const Vec<N,T>& x) { return to_vec<N,T>(~to_vext(x)); }
+    SINTZ Vec<N,T> operator!(const Vec<N,T,Z...>& x) { return to_vec<N,T>(!to_vext(x)); }
+    SINTZ Vec<N,T> operator-(const Vec<N,T,Z...>& x) { return to_vec<N,T>(-to_vext(x)); }
+    SINTZ Vec<N,T> operator~(const Vec<N,T,Z...>& x) { return to_vec<N,T>(~to_vext(x)); }
 
-    SINT Vec<N,T> operator<<(const Vec<N,T>& x, int k) { return to_vec<N,T>(to_vext(x) << k); }
-    SINT Vec<N,T> operator>>(const Vec<N,T>& x, int k) { return to_vec<N,T>(to_vext(x) >> k); }
+    SINTZ Vec<N,T> operator<<(const Vec<N,T,Z...>& x, int k){ return to_vec<N,T>(to_vext(x) << k); }
+    SINTZ Vec<N,T> operator>>(const Vec<N,T,Z...>& x, int k){ return to_vec<N,T>(to_vext(x) >> k); }
 
-    SINT Vec<N,M<T>> operator==(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator==(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) == to_vext(y));
     }
-    SINT Vec<N,M<T>> operator!=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator!=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) != to_vext(y));
     }
-    SINT Vec<N,M<T>> operator<=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator<=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) <= to_vext(y));
     }
-    SINT Vec<N,M<T>> operator>=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator>=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) >= to_vext(y));
     }
-    SINT Vec<N,M<T>> operator< (const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator< (const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) <  to_vext(y));
     }
-    SINT Vec<N,M<T>> operator> (const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator> (const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return bit_pun<Vec<N,M<T>>>(to_vext(x) >  to_vext(y));
     }
 
@@ -329,128 +409,142 @@ SINT Vec<2*N,T> join(const Vec<N,T>& lo, const Vec<N,T>& hi) {
     // We'll implement things portably with N==1 scalar implementations and recursion onto them.
 
     // N == 1 scalar implementations.
-    SIT Vec<1,T> operator+(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val + y.val; }
-    SIT Vec<1,T> operator-(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val - y.val; }
-    SIT Vec<1,T> operator*(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val * y.val; }
-    SIT Vec<1,T> operator/(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val / y.val; }
+    SITZZ Vec<1,T> operator+(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val + y.val;
+    }
+    SITZZ Vec<1,T> operator-(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val - y.val;
+    }
+    SITZZ Vec<1,T> operator*(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val * y.val;
+    }
+    SITZZ Vec<1,T> operator/(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val / y.val;
+    }
 
-    SIT Vec<1,T> operator^(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val ^ y.val; }
-    SIT Vec<1,T> operator&(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val & y.val; }
-    SIT Vec<1,T> operator|(const Vec<1,T>& x, const Vec<1,T>& y) { return x.val | y.val; }
+    SITZZ Vec<1,T> operator^(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val ^ y.val;
+    }
+    SITZZ Vec<1,T> operator&(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val & y.val;
+    }
+    SITZZ Vec<1,T> operator|(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
+        return x.val | y.val;
+    }
 
-    SIT Vec<1,T> operator!(const Vec<1,T>& x) { return !x.val; }
-    SIT Vec<1,T> operator-(const Vec<1,T>& x) { return -x.val; }
-    SIT Vec<1,T> operator~(const Vec<1,T>& x) { return ~x.val; }
+    SITZ Vec<1,T> operator!(const Vec<1,T,Z...>& x) { return !x.val; }
+    SITZ Vec<1,T> operator-(const Vec<1,T,Z...>& x) { return -x.val; }
+    SITZ Vec<1,T> operator~(const Vec<1,T,Z...>& x) { return ~x.val; }
 
-    SIT Vec<1,T> operator<<(const Vec<1,T>& x, int k) { return x.val << k; }
-    SIT Vec<1,T> operator>>(const Vec<1,T>& x, int k) { return x.val >> k; }
+    SITZ Vec<1,T> operator<<(const Vec<1,T,Z...>& x, int k) { return x.val << k; }
+    SITZ Vec<1,T> operator>>(const Vec<1,T,Z...>& x, int k) { return x.val >> k; }
 
-    SIT Vec<1,M<T>> operator==(const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator==(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val == y.val ? ~0 : 0;
     }
-    SIT Vec<1,M<T>> operator!=(const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator!=(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val != y.val ? ~0 : 0;
     }
-    SIT Vec<1,M<T>> operator<=(const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator<=(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val <= y.val ? ~0 : 0;
     }
-    SIT Vec<1,M<T>> operator>=(const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator>=(const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val >= y.val ? ~0 : 0;
     }
-    SIT Vec<1,M<T>> operator< (const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator< (const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val <  y.val ? ~0 : 0;
     }
-    SIT Vec<1,M<T>> operator> (const Vec<1,T>& x, const Vec<1,T>& y) {
+    SITZZ Vec<1,M<T>> operator> (const Vec<1,T,Z0...>& x, const Vec<1,T,Z1...>& y) {
         return x.val >  y.val ? ~0 : 0;
     }
 
     // Recurse on lo/hi down to N==1 scalar implementations.
-    SINT Vec<N,T> operator+(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator+(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo + y.lo, x.hi + y.hi);
     }
-    SINT Vec<N,T> operator-(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator-(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo - y.lo, x.hi - y.hi);
     }
-    SINT Vec<N,T> operator*(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator*(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo * y.lo, x.hi * y.hi);
     }
-    SINT Vec<N,T> operator/(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator/(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo / y.lo, x.hi / y.hi);
     }
 
-    SINT Vec<N,T> operator^(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator^(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo ^ y.lo, x.hi ^ y.hi);
     }
-    SINT Vec<N,T> operator&(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator&(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo & y.lo, x.hi & y.hi);
     }
-    SINT Vec<N,T> operator|(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,T> operator|(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo | y.lo, x.hi | y.hi);
     }
 
-    SINT Vec<N,T> operator!(const Vec<N,T>& x) { return join(!x.lo, !x.hi); }
-    SINT Vec<N,T> operator-(const Vec<N,T>& x) { return join(-x.lo, -x.hi); }
-    SINT Vec<N,T> operator~(const Vec<N,T>& x) { return join(~x.lo, ~x.hi); }
+    SINTZ Vec<N,T> operator!(const Vec<N,T,Z...>& x) { return join(!x.lo, !x.hi); }
+    SINTZ Vec<N,T> operator-(const Vec<N,T,Z...>& x) { return join(-x.lo, -x.hi); }
+    SINTZ Vec<N,T> operator~(const Vec<N,T,Z...>& x) { return join(~x.lo, ~x.hi); }
 
-    SINT Vec<N,T> operator<<(const Vec<N,T>& x, int k) { return join(x.lo << k, x.hi << k); }
-    SINT Vec<N,T> operator>>(const Vec<N,T>& x, int k) { return join(x.lo >> k, x.hi >> k); }
+    SINTZ Vec<N,T> operator<<(const Vec<N,T,Z...>& x, int k) { return join(x.lo << k, x.hi << k); }
+    SINTZ Vec<N,T> operator>>(const Vec<N,T,Z...>& x, int k) { return join(x.lo >> k, x.hi >> k); }
 
-    SINT Vec<N,M<T>> operator==(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator==(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo == y.lo, x.hi == y.hi);
     }
-    SINT Vec<N,M<T>> operator!=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator!=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo != y.lo, x.hi != y.hi);
     }
-    SINT Vec<N,M<T>> operator<=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator<=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo <= y.lo, x.hi <= y.hi);
     }
-    SINT Vec<N,M<T>> operator>=(const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator>=(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo >= y.lo, x.hi >= y.hi);
     }
-    SINT Vec<N,M<T>> operator< (const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator< (const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo <  y.lo, x.hi <  y.hi);
     }
-    SINT Vec<N,M<T>> operator> (const Vec<N,T>& x, const Vec<N,T>& y) {
+    SINTZZ Vec<N,M<T>> operator> (const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
         return join(x.lo >  y.lo, x.hi >  y.hi);
     }
 #endif
 
 // Scalar/vector operations splat the scalar to a vector.
-SINTU Vec<N,T>    operator+ (U x, const Vec<N,T>& y) { return Vec<N,T>(x) +  y; }
-SINTU Vec<N,T>    operator- (U x, const Vec<N,T>& y) { return Vec<N,T>(x) -  y; }
-SINTU Vec<N,T>    operator* (U x, const Vec<N,T>& y) { return Vec<N,T>(x) *  y; }
-SINTU Vec<N,T>    operator/ (U x, const Vec<N,T>& y) { return Vec<N,T>(x) /  y; }
-SINTU Vec<N,T>    operator^ (U x, const Vec<N,T>& y) { return Vec<N,T>(x) ^  y; }
-SINTU Vec<N,T>    operator& (U x, const Vec<N,T>& y) { return Vec<N,T>(x) &  y; }
-SINTU Vec<N,T>    operator| (U x, const Vec<N,T>& y) { return Vec<N,T>(x) |  y; }
-SINTU Vec<N,M<T>> operator==(U x, const Vec<N,T>& y) { return Vec<N,T>(x) == y; }
-SINTU Vec<N,M<T>> operator!=(U x, const Vec<N,T>& y) { return Vec<N,T>(x) != y; }
-SINTU Vec<N,M<T>> operator<=(U x, const Vec<N,T>& y) { return Vec<N,T>(x) <= y; }
-SINTU Vec<N,M<T>> operator>=(U x, const Vec<N,T>& y) { return Vec<N,T>(x) >= y; }
-SINTU Vec<N,M<T>> operator< (U x, const Vec<N,T>& y) { return Vec<N,T>(x) <  y; }
-SINTU Vec<N,M<T>> operator> (U x, const Vec<N,T>& y) { return Vec<N,T>(x) >  y; }
+SINTZU Vec<N,T>    operator+ (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) +  y; }
+SINTZU Vec<N,T>    operator- (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) -  y; }
+SINTZU Vec<N,T>    operator* (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) *  y; }
+SINTZU Vec<N,T>    operator/ (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) /  y; }
+SINTZU Vec<N,T>    operator^ (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) ^  y; }
+SINTZU Vec<N,T>    operator& (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) &  y; }
+SINTZU Vec<N,T>    operator| (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) |  y; }
+SINTZU Vec<N,M<T>> operator==(U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) == y; }
+SINTZU Vec<N,M<T>> operator!=(U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) != y; }
+SINTZU Vec<N,M<T>> operator<=(U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) <= y; }
+SINTZU Vec<N,M<T>> operator>=(U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) >= y; }
+SINTZU Vec<N,M<T>> operator< (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) <  y; }
+SINTZU Vec<N,M<T>> operator> (U x, const Vec<N,T,Z...>& y) { return Vec<N,T>(x) >  y; }
 
-SINTU Vec<N,T>    operator+ (const Vec<N,T>& x, U y) { return x +  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator- (const Vec<N,T>& x, U y) { return x -  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator* (const Vec<N,T>& x, U y) { return x *  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator/ (const Vec<N,T>& x, U y) { return x /  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator^ (const Vec<N,T>& x, U y) { return x ^  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator& (const Vec<N,T>& x, U y) { return x &  Vec<N,T>(y); }
-SINTU Vec<N,T>    operator| (const Vec<N,T>& x, U y) { return x |  Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator==(const Vec<N,T>& x, U y) { return x == Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator!=(const Vec<N,T>& x, U y) { return x != Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator<=(const Vec<N,T>& x, U y) { return x <= Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator>=(const Vec<N,T>& x, U y) { return x >= Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator< (const Vec<N,T>& x, U y) { return x <  Vec<N,T>(y); }
-SINTU Vec<N,M<T>> operator> (const Vec<N,T>& x, U y) { return x >  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator+ (const Vec<N,T,Z...>& x, U y) { return x +  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator- (const Vec<N,T,Z...>& x, U y) { return x -  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator* (const Vec<N,T,Z...>& x, U y) { return x *  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator/ (const Vec<N,T,Z...>& x, U y) { return x /  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator^ (const Vec<N,T,Z...>& x, U y) { return x ^  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator& (const Vec<N,T,Z...>& x, U y) { return x &  Vec<N,T>(y); }
+SINTZU Vec<N,T>    operator| (const Vec<N,T,Z...>& x, U y) { return x |  Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator==(const Vec<N,T,Z...>& x, U y) { return x == Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator!=(const Vec<N,T,Z...>& x, U y) { return x != Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator<=(const Vec<N,T,Z...>& x, U y) { return x <= Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator>=(const Vec<N,T,Z...>& x, U y) { return x >= Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator< (const Vec<N,T,Z...>& x, U y) { return x <  Vec<N,T>(y); }
+SINTZU Vec<N,M<T>> operator> (const Vec<N,T,Z...>& x, U y) { return x >  Vec<N,T>(y); }
 
-SINT Vec<N,T>& operator+=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x + y); }
-SINT Vec<N,T>& operator-=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x - y); }
-SINT Vec<N,T>& operator*=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x * y); }
-SINT Vec<N,T>& operator/=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x / y); }
-SINT Vec<N,T>& operator^=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x ^ y); }
-SINT Vec<N,T>& operator&=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x & y); }
-SINT Vec<N,T>& operator|=(Vec<N,T>& x, const Vec<N,T>& y) { return (x = x | y); }
+SINTZ Vec<N,T>& operator+=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x + y); }
+SINTZ Vec<N,T>& operator-=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x - y); }
+SINTZ Vec<N,T>& operator*=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x * y); }
+SINTZ Vec<N,T>& operator/=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x / y); }
+SINTZ Vec<N,T>& operator^=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x ^ y); }
+SINTZ Vec<N,T>& operator&=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x & y); }
+SINTZ Vec<N,T>& operator|=(Vec<N,T>& x, const Vec<N,T,Z...>& y) { return (x = x | y); }
 
 SINTU Vec<N,T>& operator+=(Vec<N,T>& x, U y) { return (x = x + Vec<N,T>(y)); }
 SINTU Vec<N,T>& operator-=(Vec<N,T>& x, U y) { return (x = x - Vec<N,T>(y)); }
@@ -468,38 +562,47 @@ SINT Vec<N,T>& operator>>=(Vec<N,T>& x, int bits) { return (x = x >> bits); }
 // Clang can reason about naive_if_then_else() and optimize through it better
 // than if_then_else(), so it's sometimes useful to call it directly when we
 // think an entire expression should optimize away, e.g. min()/max().
-SINT Vec<N,T> naive_if_then_else(const Vec<N,M<T>>& cond, const Vec<N,T>& t, const Vec<N,T>& e) {
-    return bit_pun<Vec<N,T>>(( cond & bit_pun<Vec<N, M<T>>>(t)) |
-                             (~cond & bit_pun<Vec<N, M<T>>>(e)) );
+SINTZZZ Vec<N,T> naive_if_then_else(const Vec<N,M<T>,Z0...>& cond,
+                                    const Vec<N,T,Z1...>& t,
+                                    const Vec<N,T,Z2...>& e) {
+    return bit_pun<Vec<N,T>>(( cond & bit_pun<Vec<N, M<T>>>(apply_swizzle(t))) |
+                             (~cond & bit_pun<Vec<N, M<T>>>(apply_swizzle(e))) );
 }
 
-SIT Vec<1,T> if_then_else(const Vec<1,M<T>>& cond, const Vec<1,T>& t, const Vec<1,T>& e) {
+SITZZZ Vec<1,T> if_then_else(const Vec<1,M<T>,Z0...>& cond,
+                             const Vec<1,T,Z1...>& t,
+                             const Vec<1,T,Z2...>& e) {
     // In practice this scalar implementation is unlikely to be used.  See next if_then_else().
-    return bit_pun<Vec<1,T>>(( cond & bit_pun<Vec<1, M<T>>>(t)) |
-                             (~cond & bit_pun<Vec<1, M<T>>>(e)) );
+    return bit_pun<Vec<1,T>>(( cond & bit_pun<Vec<1, M<T>>>(apply_swizzle(t))) |
+                             (~cond & bit_pun<Vec<1, M<T>>>(apply_swizzle(e))) );
 }
-SINT Vec<N,T> if_then_else(const Vec<N,M<T>>& cond, const Vec<N,T>& t, const Vec<N,T>& e) {
+SINTZZZ Vec<N,T> if_then_else(const Vec<N,M<T>,Z0...>& cond,
+                              const Vec<N,T,Z1...>& t,
+                              const Vec<N,T,Z2...>& e) {
     // Specializations inline here so they can generalize what types the apply to.
     // (This header is used in C++14 contexts, so we have to kind of fake constexpr if.)
 #if defined(__AVX2__)
     if /*constexpr*/ (N*sizeof(T) == 32) {
-        return unchecked_bit_pun<Vec<N,T>>(_mm256_blendv_epi8(unchecked_bit_pun<__m256i>(e),
-                                                              unchecked_bit_pun<__m256i>(t),
-                                                              unchecked_bit_pun<__m256i>(cond)));
+        return unchecked_bit_pun<Vec<N,T>>(_mm256_blendv_epi8(
+                unchecked_bit_pun<__m256i>(apply_swizzle(e)),
+                unchecked_bit_pun<__m256i>(apply_swizzle(t)),
+                unchecked_bit_pun<__m256i>(apply_swizzle(cond))));
     }
 #endif
 #if defined(__SSE4_1__)
     if /*constexpr*/ (N*sizeof(T) == 16) {
-        return unchecked_bit_pun<Vec<N,T>>(_mm_blendv_epi8(unchecked_bit_pun<__m128i>(e),
-                                                           unchecked_bit_pun<__m128i>(t),
-                                                           unchecked_bit_pun<__m128i>(cond)));
+        return unchecked_bit_pun<Vec<N,T>>(_mm_blendv_epi8(
+                unchecked_bit_pun<__m128i>(apply_swizzle(e)),
+                unchecked_bit_pun<__m128i>(apply_swizzle(t)),
+                unchecked_bit_pun<__m128i>(apply_swizzle(cond))));
     }
 #endif
 #if defined(__ARM_NEON)
     if /*constexpr*/ (N*sizeof(T) == 16) {
-        return unchecked_bit_pun<Vec<N,T>>(vbslq_u8(unchecked_bit_pun<uint8x16_t>(cond),
-                                                    unchecked_bit_pun<uint8x16_t>(t),
-                                                    unchecked_bit_pun<uint8x16_t>(e)));
+        return unchecked_bit_pun<Vec<N,T>>(vbslq_u8(
+                unchecked_bit_pun<uint8x16_t>(apply_swizzle(cond)),
+                unchecked_bit_pun<uint8x16_t>(apply_swizzle(t)),
+                unchecked_bit_pun<uint8x16_t>(apply_swizzle(e))));
     }
 #endif
     // Recurse for large vectors to try to hit the specializations above.
@@ -547,11 +650,11 @@ SINT bool all(const Vec<N,T>& x) {
 
 // cast() Vec<N,S> to Vec<N,D>, as if applying a C-cast to each lane.
 // TODO: implement with map()?
-template <typename D, typename S>
-SI Vec<1,D> cast(const Vec<1,S>& src) { return (D)src.val; }
+template <typename D, typename S, int... Z>
+SI Vec<1,D> cast(const Vec<1,S,Z...>& src) { return (D)src.val; }
 
-template <typename D, int N, typename S>
-SI Vec<N,D> cast(const Vec<N,S>& src) {
+template <typename D, int N, typename S, int... Z>
+SI Vec<N,D> cast(const Vec<N,S,Z...>& src) {
 #if !defined(SKNX_NO_SIMD) && defined(__clang__)
     return to_vec(__builtin_convertvector(to_vext(src), VExt<N,D>));
 #else
@@ -565,17 +668,21 @@ SIT  T max(const Vec<1,T>& x) { return x.val; }
 SINT T min(const Vec<N,T>& x) { return std::min(min(x.lo), min(x.hi)); }
 SINT T max(const Vec<N,T>& x) { return std::max(max(x.lo), max(x.hi)); }
 
-SINT Vec<N,T> min(const Vec<N,T>& x, const Vec<N,T>& y) { return naive_if_then_else(y < x, y, x); }
-SINT Vec<N,T> max(const Vec<N,T>& x, const Vec<N,T>& y) { return naive_if_then_else(x < y, y, x); }
+SINTZZ Vec<N,T> min(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
+    return naive_if_then_else(y < x, y, x);
+}
+SINTZZ Vec<N,T> max(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& y) {
+    return naive_if_then_else(x < y, y, x);
+}
 
-SINTU Vec<N,T> min(const Vec<N,T>& x, U y) { return min(x, Vec<N,T>(y)); }
-SINTU Vec<N,T> max(const Vec<N,T>& x, U y) { return max(x, Vec<N,T>(y)); }
-SINTU Vec<N,T> min(U x, const Vec<N,T>& y) { return min(Vec<N,T>(x), y); }
-SINTU Vec<N,T> max(U x, const Vec<N,T>& y) { return max(Vec<N,T>(x), y); }
+SINTZU Vec<N,T> min(const Vec<N,T,Z...>& x, U y) { return min(x, Vec<N,T>(y)); }
+SINTZU Vec<N,T> max(const Vec<N,T,Z...>& x, U y) { return max(x, Vec<N,T>(y)); }
+SINTZU Vec<N,T> min(U x, const Vec<N,T,Z...>& y) { return min(Vec<N,T>(x), y); }
+SINTZU Vec<N,T> max(U x, const Vec<N,T,Z...>& y) { return max(Vec<N,T>(x), y); }
 
 // pin matches the logic of SkTPin, which is important when NaN is involved. It always returns
 // values in the range lo..hi, and if x is NaN, it returns lo.
-SINT Vec<N,T> pin(const Vec<N,T>& x, const Vec<N,T>& lo, const Vec<N,T>& hi) {
+SINTZZZ Vec<N,T> pin(const Vec<N,T,Z0...>& x, const Vec<N,T,Z1...>& lo, const Vec<N,T,Z2...>& hi) {
     return max(lo, min(x, hi));
 }
 
@@ -594,6 +701,14 @@ SI Vec<sizeof...(Ix),T> shuffle(const Vec<N,T>& x) {
 #else
     return { x[Ix]... };
 #endif
+}
+
+SINT const Vec<N,T>& apply_swizzle(const Vec<N,T>& v) {
+    return v;
+}
+
+SINTSZ Vec<N,T> apply_swizzle(const Vec<N,T,S,Z...>& v) {
+    return shuffle<Z...>(Vec<S,T>::Load(v.unswizzledStorage));
 }
 
 // Call map(fn, x) for a vector with fn() applied to each lane of x, { fn(x[0]), fn(x[1]), ... },
@@ -622,18 +737,18 @@ auto map(Fn&& fn, const Vec<N,T>& first, const Rest&... rest) {
     return map(std::make_index_sequence<N>{}, fn, first,rest...);
 }
 
-SIN Vec<N,float>  ceil(const Vec<N,float>& x) { return map( ceilf, x); }
-SIN Vec<N,float> floor(const Vec<N,float>& x) { return map(floorf, x); }
-SIN Vec<N,float> trunc(const Vec<N,float>& x) { return map(truncf, x); }
-SIN Vec<N,float> round(const Vec<N,float>& x) { return map(roundf, x); }
-SIN Vec<N,float>  sqrt(const Vec<N,float>& x) { return map( sqrtf, x); }
-SIN Vec<N,float>   abs(const Vec<N,float>& x) { return map( fabsf, x); }
-SIN Vec<N,float>   fma(const Vec<N,float>& x,
-                       const Vec<N,float>& y,
-                       const Vec<N,float>& z) {
+SINZ Vec<N,float>  ceil(const Vec<N,float,Z...>& x) { return map( ceilf, apply_swizzle(x)); }
+SINZ Vec<N,float> floor(const Vec<N,float,Z...>& x) { return map(floorf, apply_swizzle(x)); }
+SINZ Vec<N,float> trunc(const Vec<N,float,Z...>& x) { return map(truncf, apply_swizzle(x)); }
+SINZ Vec<N,float> round(const Vec<N,float,Z...>& x) { return map(roundf, apply_swizzle(x)); }
+SINZ Vec<N,float>  sqrt(const Vec<N,float,Z...>& x) { return map( sqrtf, apply_swizzle(x)); }
+SINZ Vec<N,float>   abs(const Vec<N,float,Z...>& x) { return map( fabsf, apply_swizzle(x)); }
+SINZZZ Vec<N,float> fma(const Vec<N,float,Z0...>& x,
+                        const Vec<N,float,Z1...>& y,
+                        const Vec<N,float,Z2...>& z) {
     // I don't understand why Clang's codegen is terrible if we write map(fmaf, x,y,z) directly.
     auto fn = [](float x, float y, float z) { return fmaf(x,y,z); };
-    return map(fn, x,y,z);
+    return map(fn, apply_swizzle(x), apply_swizzle(y), apply_swizzle(z));
 }
 
 SI Vec<1,int> lrint(const Vec<1,float>& x) {
@@ -654,7 +769,7 @@ SIN Vec<N,int> lrint(const Vec<N,float>& x) {
                 lrint(x.hi));
 }
 
-SIN Vec<N,float> fract(const Vec<N,float>& x) { return x - floor(x); }
+SINZ Vec<N,float> fract(const Vec<N,float,Z...>& x) { return x - floor(x); }
 
 // The default logic for to_half/from_half is borrowed from skcms,
 // and assumes inputs are finite and treat/flush denorm half floats as/to zero.
@@ -768,11 +883,21 @@ SIN Vec<N,uint8_t> approx_scale(const Vec<N,uint8_t>& x, const Vec<N,uint8_t>& y
 
 }  // namespace skvx
 
-#undef SINTU
-#undef SINT
-#undef SIN
-#undef SIT
 #undef SI
+#undef SIT
+#undef SITZ
+#undef SITZZ
+#undef SITZZZ
+#undef SIN
+#undef SINZ
+#undef SINZZZ
+#undef SINT
+#undef SINTZ
+#undef SINTSZ
+#undef SINTZZ
+#undef SINTZZZ
+#undef SINTU
+#undef SINTZU
 #undef SKVX_ALWAYS_INLINE
 
 #endif//SKVX_DEFINED
