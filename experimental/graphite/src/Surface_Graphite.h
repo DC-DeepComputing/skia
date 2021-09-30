@@ -26,7 +26,7 @@ public:
     void onCopyOnWrite(ContentChangeMode) override;
 
 private:
-    sk_sp<Device> fDevice;
+    sk_sp<Device>  fDevice;
 };
 
 } // namespace skgpu

@@ -1802,6 +1802,8 @@ if (skia_enable_tools) {
     if (skia_enable_graphite) {
       sources += [ "tools/graphite/GraphiteTestContext.h" ]
       sources += [ "tools/graphite/GraphiteTestContext.cpp" ]
+      sources += [ "tools/graphite/ContextFactory.h" ]
+      sources += [ "tools/graphite/ContextFactory.cpp" ]
       if (skia_use_metal) {
         sources += [ "tools/graphite/mtl/GraphiteMtlTestContext.h" ]
         sources += [ "tools/graphite/mtl/MtlTestContext.mm" ]
