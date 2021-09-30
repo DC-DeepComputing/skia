@@ -370,13 +370,23 @@ static bool is_commamd_buffer(const char* rendererString, const char* versionStr
             0 == strcmp(kChromium, suffix)));
 }
 
+#include <sys/system_properties.h>
+
 static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStandard standard,
                                                                         GrGLVendor vendor,
                                                                         const char* vendorString,
                                                                         const char* rendererString,
                                                                         const char* versionString) {
+    SkDebugf("GL_VERSION:  \"%s\"\n"
+             "GL_RENDERER: \"%s\"\n"
+             "GL_VENDOR:   \"%s\"\n", versionString, rendererString, vendorString);
     SkASSERT(rendererString);
     SkASSERT(versionString);
+    char osVersion[PROP_VALUE_MAX+1] = {};
+    int osVersionLength = __system_property_get("ro.build.version.release", osVersion);
+    if (osVersionLength > 0) {
+        SkDebugf("OS Ver: \"%s\"\n", osVersion);
+    }
 
     GrGLDriver driver               = GrGLDriver::kUnknown;
     GrGLDriverVersion driverVersion = GR_GL_DRIVER_UNKNOWN_VER;
