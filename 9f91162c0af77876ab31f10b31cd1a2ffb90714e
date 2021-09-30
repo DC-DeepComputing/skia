@@ -22,6 +22,30 @@
       },
       "revId": "9f91162c0af77876ab31f10b31cd1a2ffb90714e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c37ce99_17388027",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-09-30T13:11:55Z",
+      "side": 1,
+      "message": "Yes, it\u0027s still used in PostUploadHook",
+      "parentUuid": "032fd4b6_a94faefb",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 22
+      },
+      "revId": "9f91162c0af77876ab31f10b31cd1a2ffb90714e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
