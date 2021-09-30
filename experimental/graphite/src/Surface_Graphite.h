@@ -12,11 +12,12 @@
 
 namespace skgpu {
 
+class Context;
 class Device;
 
 class Surface_Graphite final : public SkSurface_Base {
 public:
-    Surface_Graphite(sk_sp<Device>);
+    Surface_Graphite(sk_sp<Context>, sk_sp<Device>);
     ~Surface_Graphite() override;
 
     SkCanvas* onNewCanvas() override;
@@ -26,7 +27,8 @@ public:
     void onCopyOnWrite(ContentChangeMode) override;
 
 private:
-    sk_sp<Device> fDevice;
+    sk_sp<Context> fContext;
+    sk_sp<Device>  fDevice;
 };
 
 } // namespace skgpu
