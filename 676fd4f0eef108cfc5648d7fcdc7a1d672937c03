@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9774445_662fdb3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-09-30T19:55:41Z",
+      "side": 1,
+      "message": "Is there a plan to block gl_ in the future (maybe by restricting it to modules)?",
+      "revId": "676fd4f0eef108cfc5648d7fcdc7a1d672937c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
