@@ -36,6 +36,7 @@
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
+#include "src/sksl/transform/SkSLProgramWriter.h"
 #include "src/utils/SkBitSet.h"
 
 #include <fstream>
