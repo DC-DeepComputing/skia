@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a6af32a_daee0f06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-09-30T21:49:47Z",
+      "side": 1,
+      "message": "Allows us to expand our After Effects Object models to support compositions that are included as precomp layers!",
+      "revId": "590ccb723e8cce728bd1ae7c2090613ebcd51176",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
