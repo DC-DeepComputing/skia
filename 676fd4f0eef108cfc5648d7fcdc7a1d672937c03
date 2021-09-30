@@ -16,6 +16,24 @@
       "message": "Is there a plan to block gl_ in the future (maybe by restricting it to modules)?",
       "revId": "676fd4f0eef108cfc5648d7fcdc7a1d672937c03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7da6270_1905b6f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-09-30T19:58:14Z",
+      "side": 1,
+      "message": "There isn\u0027t a plan, but it\u0027s still a bug that we allow it.\n\nLimiting it to modules won\u0027t even be sufficient as we use it in the generated code too (otherwise its presence in the module wouldn\u0027t be useful). It\u0027s the only place I\u0027ve seen where we deliberately don\u0027t abstract away a GL name. My initial thought process was we\u0027d make a sk_Foo equivalent like we do for every other gl_ thing. But I haven\u0027t really thought too hard about it yet.",
+      "parentUuid": "f9774445_662fdb3a",
+      "revId": "676fd4f0eef108cfc5648d7fcdc7a1d672937c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
