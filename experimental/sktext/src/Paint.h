@@ -76,6 +76,7 @@ namespace text {
     class Paint : public Visitor {
     public:
         void paint(SkCanvas* canvas, SkPoint xy, UnicodeText* unicodeText, WrappedText* wrappedText, SkSpan<DecoratedBlock> decoratedBlocks);
+        void paintDetailed(SkCanvas* canvas, SkPoint xy, UnicodeText* unicodeText, WrappedText* wrappedText, SkSpan<DecoratedBlock> decoratedBlocks);
         // Simplification (using default font manager, default font family and default everything possible)
         static bool drawText(std::u16string text, SkCanvas* canvas, SkScalar x, SkScalar y);
         static bool drawText(std::u16string text, SkCanvas* canvas, SkScalar width);
@@ -91,12 +92,14 @@ namespace text {
                              SkSize reqSize, SkScalar x, SkScalar y);
 
     private:
-        static std::unique_ptr<WrappedText> layout(std::u16string text,
+        static std::unique_ptr<WrappedText> layout(UnicodeText* unicodeText,
+                                                   std::u16string text,
                                                    TextDirection textDirection, TextAlign textAlign,
                                                    SkSize reqSize,
                                                    SkSpan<FontBlock> fontBlocks);
 
-        void onGlyphRun(const SkFont& font,
+        void onGlyphRun(size_t chunkIndex,
+                        const SkFont& font,
                         TextRange textRange,
                         SkRect boundingRect,
                         int trailingSpacesStart,
@@ -104,14 +107,13 @@ namespace text {
                         const uint16_t glyphs[],
                         const SkPoint positions[],
                         const TextIndex clusters[]) override;
-
-        // We guarantee that the text range will be inside one of the decorated blocks
-        DecoratedBlock findDecoratedBlock(TextRange textRange);
+        void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) override;
 
         SkCanvas* fCanvas;
         SkPoint fXY;
-        SkSpan<FontBlock> fFontBlocks;
+        SkPoint fLineOffset;
         SkSpan<DecoratedBlock> fDecoratedBlocks;
+        SkTArray<size_t> fChunks;
     };
 }  // namespace text
 } // namespace skia

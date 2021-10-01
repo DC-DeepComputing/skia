@@ -39,19 +39,25 @@ namespace text {
             return false;
         }
 
-        auto formattedText = Paint::layout(std::move(text), textDirection, textAlign, reqSize, SkSpan<FontBlock>(&fontBlock, 1));
+        auto unicodeText = std::make_unique<UnicodeText>(SkUnicode::Make(), SkSpan<uint16_t>((uint16_t*)text.data(), text.size()));
+        auto formattedText = Paint::layout(unicodeText.get(), std::move(text), textDirection, textAlign, reqSize, SkSpan<FontBlock>(&fontBlock, 1));
         if (formattedText == nullptr) {
             return false;
         }
 
         DecoratedBlock decoratedBlock(textSize, foreground, background);
         Paint paint;
-        paint.paint(canvas, SkPoint::Make(x, y), nullptr, formattedText.get(), SkSpan<DecoratedBlock>(&decoratedBlock, 1));
+        paint.paint(canvas, SkPoint::Make(x, y), unicodeText.get(), formattedText.get(), SkSpan<DecoratedBlock>(&decoratedBlock, 1));
 
         return true;
     }
 
-    void Paint::onGlyphRun(const SkFont& font,
+    void Paint::onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) {
+        fLineOffset = SkPoint::Make(0, lineMetrics.baseline() + bounds.top());
+    }
+
+    void Paint::onGlyphRun(size_t chunkIndex,
+                           const SkFont& font,
                            TextRange textRange,
                            SkRect boundingRect,
                            int trailingSpacesStart,
@@ -60,51 +66,50 @@ namespace text {
                            const SkPoint positions[],
                            const TextIndex clusters[]) {
 
-        DecoratedBlock decoratedBlock = findDecoratedBlock(textRange);
-
         SkTextBlobBuilder builder;
         const auto& blobBuffer = builder.allocRunPos(font , SkToInt(glyphCount));
         sk_careful_memcpy(blobBuffer.glyphs, glyphs, glyphCount * sizeof(uint16_t));
         sk_careful_memcpy(blobBuffer.points(), positions, glyphCount * sizeof(SkPoint));
         auto blob = builder.make();
+
+        auto found = WrappedText::findChunk(SkSpan<size_t>(fChunks.data(), fChunks.size()), textRange);
+        auto& decoratedBlock = fDecoratedBlocks[found];
         if (!decoratedBlock.backgroundPaint.nothingToDraw()) {
             boundingRect.offset(fXY.fX, fXY.fY);
             fCanvas->drawRect(boundingRect, decoratedBlock.backgroundPaint);
         }
-        fCanvas->drawTextBlob(blob, fXY.fX, fXY.fY, decoratedBlock.foregroundPaint);
+        fCanvas->drawTextBlob(blob, fXY.fX, fXY.fY + fLineOffset.fY, decoratedBlock.foregroundPaint);
     }
 
-    std::unique_ptr<WrappedText> Paint::layout(std::u16string text,
+    std::unique_ptr<WrappedText> Paint::layout(
+                                       UnicodeText* unicodeText,
+                                       std::u16string text,
                                        TextDirection textDirection, TextAlign textAlign,
                                        SkSize reqSize,
                                        SkSpan<FontBlock> fontBlocks) {
-        auto unicode = SkUnicode::Make();
-        auto unicodeText = std::make_unique<UnicodeText>(std::move(unicode), SkSpan<uint16_t>((uint16_t*)text.data(), text.size()));
         auto fontResolvedText = unicodeText->resolveFonts(fontBlocks);
-        auto shapedText = fontResolvedText->shape(unicodeText.get(), TextDirection::kLtr);
-        auto wrappedText = shapedText->wrap(unicodeText.get(), reqSize.width(), reqSize.height());
+        auto shapedText = fontResolvedText->shape(unicodeText, textDirection);
+        auto wrappedText = shapedText->wrap(unicodeText, reqSize.width(), reqSize.height());
         wrappedText->format(textAlign, textDirection);
         return wrappedText;
     }
 
-    DecoratedBlock Paint::findDecoratedBlock(TextRange textRange) {
-        TextIndex start = 0;
-        for (auto& block : fDecoratedBlocks) {
-            if (start + block.charCount <= textRange.fStart) {
-                start += block.charCount;
-                continue;
-            } else if (start >= textRange.fEnd) {
-                break;
-            }
-            return block;
+    void Paint::paintDetailed(SkCanvas* canvas, SkPoint xy, UnicodeText* unicodeText, WrappedText* wrappedText, SkSpan<DecoratedBlock> decoratedBlocks) {
+        fDecoratedBlocks = decoratedBlocks;
+        fCanvas = canvas;
+        fXY = xy;
+
+        fChunks.resize(decoratedBlocks.size());
+        size_t index = 0;
+        for (size_t i = 0; i < decoratedBlocks.size(); ++i) {
+            index += decoratedBlocks[i].charCount;
+            fChunks[i] = index;
         }
-        return DecoratedBlock(0, SkPaint(), SkPaint());
+
+        wrappedText->visit(unicodeText, this, PositionType::kGraphemeCluster, SkSpan<size_t>(fChunks.data(), fChunks.size()));
     }
 
     void Paint::paint(SkCanvas* canvas, SkPoint xy, UnicodeText* unicodeText, WrappedText* wrappedText, SkSpan<DecoratedBlock> decoratedBlocks) {
-        fCanvas = canvas;
-        fXY = xy;
-        fDecoratedBlocks = decoratedBlocks;
 
         SkTArray<size_t> chunks;
         chunks.resize(decoratedBlocks.size());
@@ -113,11 +118,17 @@ namespace text {
             index += decoratedBlocks[i].charCount;
             chunks[i] = index;
         }
+        auto drawableText = wrappedText->prepareToDraw(unicodeText, PositionType::kGraphemeCluster, SkSpan<size_t>(chunks.data(), chunks.size()));
 
-        if (chunks.size() == 1) {
-            wrappedText->visit( this);
-        } else {
-            wrappedText->visit(unicodeText, this, PositionType::kGraphemeCluster, SkSpan<size_t>(chunks.data(), chunks.size()));
+        auto textBlobs = drawableText->getTextBlobs();
+        auto textBlocks = drawableText->getChunkIndexes();
+        auto baseLines = drawableText->getBaselines();
+        for (auto index = 0; index < textBlobs.size(); ++index) {
+            auto& textBlob = textBlobs[index];
+            auto textBlock = textBlocks[index];
+            auto decoratedBlock = decoratedBlocks[textBlock];
+            auto baseLine = baseLines[index];
+            canvas->drawTextBlob(textBlob, xy.fX, xy.fY + baseLine, decoratedBlock.foregroundPaint);
         }
     }
 

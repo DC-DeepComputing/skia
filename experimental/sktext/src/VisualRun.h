@@ -13,12 +13,14 @@ class VisualRun {
     public:
     VisualRun(TextRange textRange, GlyphIndex trailingSpacesStart,
               const SkFont& font, const TextMetrics& metrics,
+              bool leftToRight,
               SkScalar runOffsetInLine,
               SkSpan<SkPoint> positions, SkSpan<SkGlyphID> glyphs, SkSpan<uint32_t> clusters)
         : fFont(font)
         , fTextMetrics(metrics)
         , fUtf16Range(textRange)
-        , fTrailingSpacesStart(trailingSpacesStart) {
+        , fTrailingSpacesStart(trailingSpacesStart)
+        , fLeftToRight(leftToRight) {
         fPositions.reserve_back(positions.size());
         runOffsetInLine -= positions[0].fX;
         for (auto& pos : positions) {
@@ -47,8 +49,7 @@ class VisualRun {
     SkScalar width() const { return fAdvance.fX; }
     SkScalar firstGlyphPosition() const { return fPositions[0].fX; }
 
-    bool leftToRight() const { return fBidiLevel % 2 == 0; }
-    uint8_t bidiLevel() const { return fBidiLevel; }
+    bool leftToRight() const { return fLeftToRight; }
     size_t size() const { return fGlyphs.size(); }
     TextMetrics textMetrics() const { return fTextMetrics; }
     GlyphIndex trailingSpacesStart() const { return fTrailingSpacesStart; }
@@ -59,7 +60,8 @@ class VisualRun {
         if (this->leftToRight()) {
             TextIndex currentIndex = 0;
             TextRange textRange(fUtf16Range.fStart, fUtf16Range.fStart);
-            for (auto currentTextChunk : textChunks) {
+            for (auto chunkIndex = 0; chunkIndex < textChunks.size(); ++chunkIndex) {
+                auto currentTextChunk = textChunks[chunkIndex];
                 if (currentIndex >= fUtf16Range.fEnd) {
                     break;
                 }
@@ -71,11 +73,26 @@ class VisualRun {
                 textRange.fEnd += currentTextChunk;
                 textRange.fEnd = std::min(fUtf16Range.fEnd, textRange.fEnd);
 
-                callback(textRange);
+                callback(chunkIndex, textRange);
             }
         } else {
-            // TODO: Implement RTL
-            SkASSERT(false);
+            TextIndex currentIndex = fUtf16Range.fEnd;
+            TextRange textRange(fUtf16Range.fEnd, fUtf16Range.fEnd);
+            for (auto chunkIndex = textChunks.size(); chunkIndex > 0; --chunkIndex) {
+                auto currentTextChunk = textChunks[chunkIndex - 1];
+                if (currentIndex >= fUtf16Range.fStart) {
+                    break;
+                }
+                currentIndex -= currentTextChunk;
+                if (currentIndex < fUtf16Range.fStart) {
+                    continue;
+                }
+                textRange.fEnd = textRange.fStart;
+                textRange.fStart -= currentTextChunk;
+                //textRange.fStart = std::min(fUtf16Range.fStart, textRange.fStart);
+
+                callback(chunkIndex, textRange);
+            }
         }
     }
 
@@ -85,7 +102,6 @@ class VisualRun {
     TextMetrics fTextMetrics;
 
     SkVector fAdvance;
-    SkShaper::RunHandler::Range fUtf8Range;
     TextRange fUtf16Range;
     TextIndex fRunStart;
     SkScalar  fRunOffset;
@@ -93,7 +109,7 @@ class VisualRun {
     SkSTArray<128, SkPoint, true> fPositions;
     SkSTArray<128, TextIndex, true> fClusters;
     GlyphIndex fTrailingSpacesStart;
-    uint8_t fBidiLevel;
+    bool fLeftToRight;
 };
 
 class VisualLine {

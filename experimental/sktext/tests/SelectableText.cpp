@@ -71,7 +71,7 @@ struct TestRun {
 
 class TestVisitor : public Visitor {
 public:
-    void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds) override {
+    void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) override {
         SkASSERT(fTestLines.size() == index);
         fTestLines.push_back({ index, lineText, hardBreak, bounds, EMPTY_RANGE, Range<RunIndex>(fTestRuns.size(), fTestRuns.size()), 0 });
     }
@@ -81,7 +81,8 @@ public:
         fTestLines.back().runRange.fEnd = fTestRuns.size();
         fTestLines.back().glyphCount = glyphCount;
     }
-    void onGlyphRun(const SkFont& font,
+    void onGlyphRun(size_t chunkIndex,
+                    const SkFont& font,
                     TextRange textRange,        // Currently we make sure that the run edges are the grapheme cluster edges
                     SkRect bounds,              // bounds contains the physical boundaries of the run
                     int trailingSpaces,         // Depending of TextDirection it goes right to the end (LTR) or left to the start (RTL)

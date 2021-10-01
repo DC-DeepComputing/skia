@@ -178,9 +178,10 @@ private:
 class Visitor {
 public:
     virtual ~Visitor() = default;
-    virtual void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds) { }
+    virtual void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) { }
     virtual void onEndLine(size_t index, TextRange lineText, GlyphRange trailingSpaces, size_t glyphCount) { }
-    virtual void onGlyphRun(const SkFont& font,
+    virtual void onGlyphRun(size_t chunkIndex,
+                            const SkFont& font,
                             TextRange textRange,        // Currently we make sure that the run edges are the grapheme cluster edges
                             SkRect bounds,              // bounds contains the physical boundaries of the run
                             int trailingSpaces,         // Depending of TextDirection it goes right to the end (LTR) or left to the start (RTL)
@@ -240,6 +241,19 @@ public:
     */
     void visit(UnicodeText* unicodeText, Visitor* visitor, PositionType positionType, SkSpan<TextIndex> blocks) const;
 
+    static size_t findChunk(SkSpan<TextIndex> blocks, TextRange textRange) {
+        for (auto blockIndex = 0ul; blockIndex < blocks.size(); ++blockIndex) {
+            auto block = blocks[blockIndex];
+            if (block <= textRange.fStart) {
+                continue;
+            } else if (block >= textRange.fEnd) {
+                return EMPTY_INDEX;
+            }
+            return blockIndex;
+        }
+        return EMPTY_INDEX;
+    }
+
 private:
     friend class ShapedText;
     WrappedText() : fActualSize(SkSize::MakeEmpty()), fAligned(TextAlign::kNothing) { }
@@ -258,7 +272,11 @@ class DrawableText : public Visitor {
 public:
     DrawableText() = default;
 
-    void onGlyphRun(const SkFont& font,
+    void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) override {
+        fBaseLine = lineMetrics.baseline();
+    }
+    void onGlyphRun(size_t chunkIndex,
+                    const SkFont& font,
                     TextRange textRange,
                     SkRect bounds,
                     int trailingSpaces,
@@ -271,10 +289,17 @@ public:
         sk_careful_memcpy(blobBuffer.glyphs, glyphs, glyphCount * sizeof(uint16_t));
         sk_careful_memcpy(blobBuffer.points(), positions, glyphCount * sizeof(SkPoint));
         fTextBlobs.emplace_back(builder.make());
+        fChunkIndexes.emplace_back(chunkIndex);
+        fBaseLines.emplace_back(fBaseLine);
     }
-    std::vector<sk_sp<SkTextBlob>>& getTextBlobs() { return fTextBlobs; }
+    SkSpan<sk_sp<SkTextBlob>> getTextBlobs() { return SkSpan<sk_sp<SkTextBlob>>(fTextBlobs.data(), fTextBlobs.size()); }
+    SkSpan<size_t> getChunkIndexes() { return SkSpan<size_t>(fChunkIndexes.data(), fChunkIndexes.size()); }
+    SkSpan<SkScalar> getBaselines()  { return SkSpan<SkScalar>(fBaseLines.data(), fBaseLines.size()); }
 private:
     std::vector<sk_sp<SkTextBlob>> fTextBlobs;
+    std::vector<size_t> fChunkIndexes;
+    std::vector<SkScalar> fBaseLines;
+    SkScalar fBaseLine;
 };
 
 struct Position {
@@ -348,10 +373,11 @@ public:
         return (fGlyphUnitProperties[index] & flag) == flag;
     }
 
-    void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds) override;
+    void onBeginLine(size_t index, TextRange lineText, bool hardBreak, SkRect bounds, const TextMetrics& lineMetrics) override;
     void onEndLine(size_t index, TextRange lineText, GlyphRange trailingSpaces, size_t glyphCount) override;
 
-    void onGlyphRun(const SkFont& font,
+    void onGlyphRun(size_t chunkIndex,
+                    const SkFont& font,
                     TextRange textRange,
                     SkRect bounds,
                     int trailingSpaces,
