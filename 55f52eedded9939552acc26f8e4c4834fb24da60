@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b207182d_e3a9af00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T18:32:40Z",
+      "side": 1,
+      "message": "Adding bsalomon@ for API OWNERS because brianosman@ is OOO",
+      "revId": "55f52eedded9939552acc26f8e4c4834fb24da60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
