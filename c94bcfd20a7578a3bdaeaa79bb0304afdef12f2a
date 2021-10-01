@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "506cd43b_207dc697",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:12:05Z",
+      "side": 1,
+      "message": "Unfortunately, we don\u0027t have SkASSERT in this header. It\u0027s meant to be compilable outside of Skia.",
+      "parentUuid": "0721a196_73829b42",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 1
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5bd45ae4_b8cf8747",
         "filename": "include/private/SkVx.h",
         "patchSetId": 4
@@ -85,6 +109,30 @@
       "writtenOn": "2021-10-01T13:35:26Z",
       "side": 1,
       "message": "This might be slightly more efficient as\n\nmemset(0 over all vals)\nmemcpy(xs into vals)\n\nCompilers can make memsetting zero over a known small size into extraordinarily efficient code.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 41
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1283de5c_19d82f29",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:12:05Z",
+      "side": 1,
+      "message": "I agree, but I would also like to preserve old functionality as much as possible. A change like this might belong in its own CL.",
+      "parentUuid": "5bd45ae4_b8cf8747",
       "range": {
         "startLine": 166,
         "startChar": 0,
