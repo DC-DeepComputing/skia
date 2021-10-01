@@ -144,6 +144,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0e4df33_510eef60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T13:19:37Z",
+      "side": 1,
+      "message": "Go to \"https://en.cppreference.com/w/cpp/language/union\" and take a look at \"Member lifetime.\" Unions in C++ are basically a way to overlay multiple objects onto the same space in memory, like std::variant. The optimizer is allowed to assume that an access to an inactive member is UB. Unfortunately, this is actually different from the rules in C; C allows type-punning via union and C++ explicitly does not.\n\nThere is a small loophole in the C++ rule; if two union members are both structs, and the beginning part of the structs share the same layout, you can access the \"common\" part of the struct via either member. However, this doesn\u0027t seem to apply here because there aren\u0027t structs (even though there is common layout).\n\nI think Michael\u0027s approach will still work if the accessors return references:\n\n  xy(myFloat4) \u003d p;  // OK to assign into ref\n  vals(myFloat4)     // accessor returns array\n\nThis wouldn\u0027t work for assigning to a non-contiguous swizzle unless the accessors actually returned a fancy proxy object (probably not worth it)\n\n  yx(myFloat4) \u003d p;  // Not without shenanigans",
+      "parentUuid": "af25873a_fd57fe87",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
