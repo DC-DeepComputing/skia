@@ -526,6 +526,49 @@ static void check(skiatest::Reporter* r,
     check_codec_image_generator(r, codecDigest, info, path, supportsIncomplete);
 }
 
+DEF_TEST(BadTransferFn, r) {
+    skcms_TransferFunction modifiedSrgb = SkNamedTransferFn::kSRGB;
+    modifiedSrgb.d = 2.0f;
+
+    auto cs = SkColorSpace::MakeRGB(modifiedSrgb, SkNamedGamut::kSRGB);
+    if (!cs) {
+        REPORTER_ASSERT(r, "failed to create color space!");
+        return;
+    }
+
+    if (cs->isSRGB()) {
+        REPORTER_ASSERT(r, "created SRGB!");
+        return;
+    }
+
+    auto info = SkImageInfo::MakeN32Premul(100, 100, cs);
+    SkBitmap bm;
+    bm.allocPixels(info);
+
+    bm.eraseColor(SK_ColorBLUE);
+
+    SkFILEWStream outStream("b198155681.jpg");
+    if (!SkJpegEncoder::Encode(&outStream, bm.pixmap(), {})) {
+        ERRORF(r, "failed to encode!");
+    }
+
+    auto data = SkJpegEncoder::Encode(nullptr, bm.asImage().get(), {});
+    if (!data) {
+        ERRORF(r, "failedto encode 2!");
+        return;
+    }
+
+    auto codec = SkCodec::MakeFromData(std::move(data));
+    if (!codec) {
+        ERRORF(r, "failed to decode!");
+        return;
+    }
+
+    if (codec->getInfo().colorSpace()->isSRGB()) {
+        ERRORF(r, "decoded SRGB!");
+    }
+}
+
 DEF_TEST(Codec_wbmp, r) {
     check(r, "images/mandrill.wbmp", SkISize::Make(512, 512), true, false, true);
 }
