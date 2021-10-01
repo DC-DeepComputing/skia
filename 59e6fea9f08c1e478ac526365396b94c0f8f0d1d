@@ -198,6 +198,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ad5d37c_b28ac80b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-01T16:34:54Z",
+      "side": 1,
+      "message": "Some more reading: https://en.cppreference.com/w/cpp/types/is_standard_layout. If these unions and their components are standard layout, I think it is not UB (\"If a standard-layout union holds two or more standard-layout structs, it is permitted to inspect the common initial part of them.\").  But I don\u0027t have enough of an intuition to know if they are standard layout, or if they are standard, what the common initial part is (since in our case, we need the common sequence to be the entire struct).",
+      "parentUuid": "f4615089_ea7e48da",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
