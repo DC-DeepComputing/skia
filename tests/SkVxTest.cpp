@@ -164,3 +164,46 @@ DEF_TEST(SkVx, r) {
         REPORTER_ASSERT(r, all(skvx::from_half(hs) == fs));
     }
 }
+
+DEF_TEST(SkVx_xy, r) {
+    float2 f = float2(1,2);
+    REPORTER_ASSERT(r, all(f == float2{1,2}));
+    REPORTER_ASSERT(r, f.x == 1);
+    REPORTER_ASSERT(r, f.y == 2);
+    f.y = 9;
+    REPORTER_ASSERT(r, all(f == float2{1,9}));
+    f.x = 0;
+    REPORTER_ASSERT(r, all(f == float2(0,9)));
+    f[0] = 8;
+    REPORTER_ASSERT(r, f.x == 8);
+    f[1] = 6;
+    REPORTER_ASSERT(r, f.y == 6);
+    REPORTER_ASSERT(r, all(f == float2(8,6)));
+}
+
+DEF_TEST(SkVx_xyzw, r) {
+    float4 f = float4{1,2,3,4};
+    REPORTER_ASSERT(r, all(f == float4(1,2,3,4)));
+    REPORTER_ASSERT(r, all(f == float4(1,2,float2(3,4))));
+    REPORTER_ASSERT(r, all(f == float4(float2(1,2),3,4)));
+    REPORTER_ASSERT(r, all(f == float4(float2(1,2),float2(3,4))));
+    f.xy = float2(9,8);
+    REPORTER_ASSERT(r, all(f == float4(9,8,3,4)));
+    f.zw.x = 7;
+    f.zw.y = 6;
+    REPORTER_ASSERT(r, all(f == float4(9,8,7,6)));
+    f.x = 5;
+    f.y = 4;
+    f.z = 3;
+    f.w = 2;
+    REPORTER_ASSERT(r, all(f == float4(5,4,3,2)));
+    f[0] = 0;
+    REPORTER_ASSERT(r, f.x == 0);
+    f[1] = 1;
+    REPORTER_ASSERT(r, f.y == 1);
+    f[2] = 2;
+    REPORTER_ASSERT(r, f.z == 2);
+    f[3] = 3;
+    REPORTER_ASSERT(r, f.w == 3);
+    REPORTER_ASSERT(r, all(f == float4(0,1,2,3)));
+}
