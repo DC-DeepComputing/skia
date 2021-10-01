@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad92fcda_298b115a",
+        "filename": "src/sksl/analysis/SkSLProgramVisitor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T18:45:18Z",
+      "side": 1,
+      "message": "Unfortunately gives me \"incomplete type \u0027SkSL::ProgramWriterTypes\u0027 named in nested name specifier\".",
+      "parentUuid": "a8a48e49_b12c4a94",
+      "revId": "def422650287a9c2e29c9907dfd46b555d321e53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b65e3985_d43bf2c1",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-01T13:55:05Z",
       "side": 1,
       "message": "Can this be removed?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 34
+      },
+      "revId": "def422650287a9c2e29c9907dfd46b555d321e53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fedaaa1_a48d9128",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T18:45:18Z",
+      "side": 1,
+      "message": "No, this class calls Analysis::CanExitWithoutReturningValue.",
+      "parentUuid": "b65e3985_d43bf2c1",
       "range": {
         "startLine": 8,
         "startChar": 0,
