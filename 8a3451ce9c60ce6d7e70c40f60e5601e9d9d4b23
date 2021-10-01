@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a49d903d_2752b080",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T20:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e9fa7c1_ffaf140c",
+      "range": {
+        "startLine": 321,
+        "startChar": 33,
+        "endLine": 321,
+        "endChar": 62
+      },
+      "revId": "8a3451ce9c60ce6d7e70c40f60e5601e9d9d4b23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28d59eea_e291d3c1",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-01T18:44:41Z",
       "side": 1,
       "message": "DSLWriter::SymbolTable()",
+      "range": {
+        "startLine": 326,
+        "startChar": 16,
+        "endLine": 326,
+        "endChar": 53
+      },
+      "revId": "8a3451ce9c60ce6d7e70c40f60e5601e9d9d4b23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cef8f6f_8c4010e2",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T20:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28d59eea_e291d3c1",
       "range": {
         "startLine": 326,
         "startChar": 16,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c21d9c7_615a8874",
+        "filename": "src/sksl/dsl/DSLExpression.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T20:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2179fe40_b3c114d3",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 1
+      },
+      "revId": "8a3451ce9c60ce6d7e70c40f60e5601e9d9d4b23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61459e21_6f47af88",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-10-01T18:44:41Z",
       "side": 1,
       "message": "This throws away `pos`... `DSLFunction::eval` is structured differently and preserves `pos`.",
+      "range": {
+        "startLine": 124,
+        "startChar": 11,
+        "endLine": 124,
+        "endChar": 70
+      },
+      "revId": "8a3451ce9c60ce6d7e70c40f60e5601e9d9d4b23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fea7c04_8b1103d8",
+        "filename": "src/sksl/dsl/DSLFunction.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-01T20:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61459e21_6f47af88",
       "range": {
         "startLine": 124,
         "startChar": 11,
