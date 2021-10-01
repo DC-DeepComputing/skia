@@ -83,7 +83,9 @@ static bool check_parameters(const Context& context,
     for (auto& param : parameters) {
         IRGenerator::CheckModifiers(context, param->fLine, param->modifiers(),
                                     Modifiers::kConst_Flag | Modifiers::kIn_Flag |
-                                    Modifiers::kOut_Flag, /*permittedLayoutFlags=*/0);
+                                    Modifiers::kOut_Flag | Modifiers::kHighp_Flag |
+                                    Modifiers::kMediump_Flag | Modifiers::kLowp_Flag,
+                                    /*permittedLayoutFlags=*/0);
         const Type& type = param->type();
         // Only the (builtin) declarations of 'sample' are allowed to have shader/colorFilter or FP
         // parameters. You can pass other opaque types to functions safely; this restriction is

@@ -41,14 +41,14 @@ static const Type* find_type(skstd::string_view name, PositionInfo pos) {
     return &result;
 }
 
-static const Type* find_type(skstd::string_view name, const Modifiers& modifiers,
+static const Type* find_type(skstd::string_view name, Modifiers* modifiers,
         PositionInfo pos) {
     const Type* type = find_type(name, pos);
     if (!type) {
         return nullptr;
     }
-    const Type* result = type->applyPrecisionQualifiers(DSLWriter::Context(), modifiers,
-            DSLWriter::SymbolTable().get(), /*line=*/-1);
+    const Type* result = type->applyPrecisionQualifiers(
+            DSLWriter::Context(), modifiers, DSLWriter::SymbolTable().get(), /*line=*/-1);
     DSLWriter::ReportErrors(pos);
     return result;
 }
@@ -56,8 +56,8 @@ static const Type* find_type(skstd::string_view name, const Modifiers& modifiers
 DSLType::DSLType(skstd::string_view name)
         : fSkSLType(find_type(name, PositionInfo())) {}
 
-DSLType::DSLType(skstd::string_view name, const DSLModifiers& modifiers, PositionInfo position)
-        : fSkSLType(find_type(name, modifiers.fModifiers, position)) {}
+DSLType::DSLType(skstd::string_view name, DSLModifiers* modifiers, PositionInfo position)
+        : fSkSLType(find_type(name, &modifiers->fModifiers, position)) {}
 
 bool DSLType::isBoolean() const {
     return this->skslType().isBoolean();
