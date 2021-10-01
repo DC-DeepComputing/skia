@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af25873a_fd57fe87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-01T12:43:51Z",
+      "side": 1,
+      "message": "The standards rules on unions are fairly strict: After you write to one member of a union (the active member), that\u0027s the only member you\u0027re allowed to read from, until you write to another (and change which member is active). Essentially, using unions to do type-casting (or presumably, the kind of renaming that\u0027s happening here) is forbidden. The compiler can\u0027t really enforce that statically, but UBSAN checks for it at runtime.",
+      "parentUuid": "4b3fee0f_4da06c38",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb63b87_7718216c",
