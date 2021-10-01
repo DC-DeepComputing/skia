@@ -10,6 +10,8 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 
+#include "include/ports/SkCFObject.h"
+
 #import <Metal/Metal.h>
 
 namespace skgpu::mtl {
@@ -20,6 +22,7 @@ public:
     ~CommandBuffer() override {}
 
 private:
+    sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
 };
 
 } // namespace skgpu::mtl
