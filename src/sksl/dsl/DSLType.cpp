@@ -216,8 +216,18 @@ const SkSL::Type& DSLType::skslType() const {
     }
 }
 
-DSLExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
-    return DSLWriter::Construct(type.skslType(), std::move(argArray));
+DSLPossibleExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
+    SkSL::ExpressionArray skslArgs;
+    skslArgs.reserve_back(argArray.size());
+
+    for (DSLExpression& arg : argArray) {
+        if (!arg.hasValue()) {
+            return DSLPossibleExpression(nullptr);
+        }
+        skslArgs.push_back(arg.release());
+    }
+    return SkSL::Constructor::Convert(DSLWriter::Context(), /*line=*/-1, type.skslType(),
+            std::move(skslArgs));
 }
 
 DSLType Array(const DSLType& base, int count, PositionInfo pos) {
