@@ -270,6 +270,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68488889_3a1ec0ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T19:43:51Z",
+      "side": 1,
+      "message": "Does that mean this would be valid??\n\n    union {\n        struct { Vec\u003c2,T\u003e lo, hi; };\n        struct { Vec\u003c2,T\u003e xy, zw; };\n        struct { T x, y, z, w; };\n        struct { T vals[4]; };\n    };\n    \nPatchset 5 removes the vals[] array though..",
+      "parentUuid": "26f8227f_3d6dce70",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
