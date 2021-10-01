@@ -180,6 +180,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c290c246_c6fd580a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T16:11:26Z",
+      "side": 1,
+      "message": "\"When active member of a union is switched by an assignment expression of the form E1 \u003d E2 that uses either the built-in assignment operator or a trivial assignment operator, for each union member X that appears in the member access and array subscript subexpressions of E1 that is not a class with non-trivial or deleted default constructors, if modification of X would have undefined behavior under type aliasing rules, an object of the type of X is implicitly created in the nominated storage\"\n\nIs it just me, or is that really hard to read?\n\n\"for each union member X that appears in the member access and array subscript subexpressions of E1 that is not a class with non-trivial or deleted default constructors\"\n\nI *think* that means every field here, because of the double negative, and they\u0027re all POD?\n\n\"if modification of X would have undefined behavior under type aliasing rules\"\n\nIs this not true? They are all different representations of the same array of T.",
+      "parentUuid": "f4615089_ea7e48da",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
