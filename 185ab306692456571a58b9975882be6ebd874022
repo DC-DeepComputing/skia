@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33a6ab1b_4ffc2bba",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-01T15:04:52Z",
+      "side": 1,
+      "message": "I don\u0027t have any strong reasons to change it. SKGPU_ replacing GR_ seems reasonable to me.",
+      "parentUuid": "68cf80ad_aa05bbbc",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 6
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdd0fd09_998790e3",
         "filename": "experimental/graphite/src/Texture.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-01T14:36:07Z",
       "side": 1,
       "message": "Should we return the flags here or would it be better to have individual querries for each usage (i.e. supportsColorAttachment()/canBeColorAttachment())?",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 67
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3eb7e44_4d4c1215",
+        "filename": "experimental/graphite/src/Texture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-01T15:04:52Z",
+      "side": 1,
+      "message": "Again, this seems fine to me.",
+      "parentUuid": "bdd0fd09_998790e3",
       "range": {
         "startLine": 29,
         "startChar": 4,
