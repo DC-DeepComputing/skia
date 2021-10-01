@@ -70,6 +70,60 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "290d5611_e5c5851c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Done. Love it!",
+      "parentUuid": "50899fee_80f988e3",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3fee0f_4da06c38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Cleaned up the template specializations.\n\nThe next CL is a bit magical, but in this one there\u0027s no template swizzle twiddling to define x,y,z,w and xy,zw -- just good old fashioned union packing. I also like that they\u0027re assignable:\n\n  float4.xy \u003d p;\n  \n... And that along with the union, we can also access the underlying array now:\n\n  foo(float4.vals)\n\n\u003e\u003e I also am wondering how much we need to worry about union member lifetime?\n\nNot at all. These are just super old fashioned POD C enums being used exactly as the language intended.\n\n\u003e\u003e UBSAN might not like accesses through the inactive member\n\nI\u0027ll run the bot and see. Does UBSAN not like unions? What is the inactive member?",
+      "parentUuid": "f9a57321_57668e1c",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f5d90b_66c78211",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50899fee_80f988e3",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb63b87_7718216c",
@@ -83,6 +137,30 @@
       "writtenOn": "2021-09-30T17:58:12Z",
       "side": 1,
       "message": "Could these go up at the top of the class with the other two static_asserts?",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 21
+      },
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a19d204d_44e1e67d",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Unfortunately Vec isn\u0027t fully defined yet at the top of the class.",
+      "parentUuid": "fcb63b87_7718216c",
       "range": {
         "startLine": 76,
         "startChar": 8,
@@ -116,6 +194,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f70022f_0e3d44a9",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b86d1c1b_e38c0490",
+      "range": {
+        "startLine": 78,
+        "startChar": 20,
+        "endLine": 78,
+        "endChar": 23
+      },
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ed3cb81_98cbe409",
@@ -129,6 +231,30 @@
       "writtenOn": "2021-09-30T17:58:12Z",
       "side": 1,
       "message": "`static_cast\u003cVec\u003cN,T\u003e*\u003e(this)` shows up a lot, how about a helper function?\n\n    asVec().lo \u003d ...\n    asVec().hi \u003d ...",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 36
+      },
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ddca164_724f1c5d",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T03:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ed3cb81_98cbe409",
       "range": {
         "startLine": 80,
         "startChar": 8,
