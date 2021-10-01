@@ -163,7 +163,7 @@ public:
         return Construct(type, SkMakeSpan(argArray));
     }
 
-    static DSLExpression Construct(DSLType type, SkSpan<DSLExpression> argArray);
+    static DSLExpression Construct(DSLType type, SkSpan<DSLExpression> rawArgs);
 
 private:
     const SkSL::Type& skslType() const;
