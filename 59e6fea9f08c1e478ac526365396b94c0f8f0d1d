@@ -288,6 +288,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fe240a0_2d562d07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T19:48:08Z",
+      "side": 1,
+      "message": "I can\u0027t see anything that goes against the rules at https://en.cppreference.com/w/cpp/named_req/StandardLayoutType",
+      "parentUuid": "68488889_3a1ec0ad",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
