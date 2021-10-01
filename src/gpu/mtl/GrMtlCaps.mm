@@ -285,7 +285,13 @@ bool GrMtlCaps::canCopyAsResolve(MTLPixelFormat dstFormat, int dstSampleCount,
 }
 
 bool GrMtlCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                 const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                                 const SkIRect& srcRect, const SkIRect& dstRect) const {
+    // TODO: Can Mtl blits or resolves perform scaling?
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        return false;
+    }
+    SkIPoint dstPoint = dstRect.topLeft();
+
     int dstSampleCnt = 1;
     int srcSampleCnt = 1;
     if (const GrRenderTargetProxy* rtProxy = dst->asRenderTargetProxy()) {

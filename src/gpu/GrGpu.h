@@ -343,13 +343,16 @@ public:
                             size_t offset);
 
     // Called to perform a surface to surface copy. Fallbacks to issuing a draw from the src to dst
-    // take place at higher levels and this function implement faster copy paths. The rect
-    // and point are pre-clipped. The src rect and implied dst rect are guaranteed to be within the
+    // take place at higher levels and this function implement faster copy paths. The src and dst
+    // rects are pre-clipped. The src rect and dst rect are guaranteed to be within the
     // src/dst bounds and non-empty. They must also be in their exact device space coords, including
     // already being transformed for origin if need be. If canDiscardOutsideDstRect is set to true
     // then we don't need to preserve any data on the dst surface outside of the copy.
+    //
+    // Backends may or may not support src and dst rects with differing dimensions. This can assume
+    // that GrCaps.canCopySurface() returned true for these surfaces and rects.
     bool copySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                     const SkIPoint& dstPoint);
+                     const SkIRect& dstRect, GrSamplerState::Filter filter);
 
     // Returns a GrOpsRenderPass which OpsTasks send draw commands to instead of directly
     // to the Gpu object. The 'bounds' rect is the content rect of the renderTarget.
@@ -774,6 +777,12 @@ private:
     // overridden by backend specific derived class to perform the copy surface
     virtual bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
                                const SkIPoint& dstPoint) = 0;
+    // by default does no copy and returns false; GPUs that can do scaled copies should override
+    // it and do copies in the same scenarios where their caps report that the copy is possible.
+    virtual bool onCopyScaledSurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
+                                     const SkIRect& dstRect, GrSamplerState::Filter filter) {
+        return false;
+    }
 
     virtual GrOpsRenderPass* onGetOpsRenderPass(
             GrRenderTarget* renderTarget,
