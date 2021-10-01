@@ -11,6 +11,8 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 
+#include "experimental/graphite/include/GraphiteTypes.h"
+
 #include <vector>
 
 class SkPath;
@@ -40,19 +42,27 @@ public:
 
     // TODO: need color/depth clearing functions (so DCL will probably need those too)
 
-    void fillPath(const SkM44& localToDevice,
-                  const SkPath& path,
-                  const SkIRect& scissor,
-                  uint16_t sortZ,
-                  uint16_t testZ,
-                  const PaintParams* paint);
+    void stencilAndFillPath(const SkM44& localToDevice,
+                            const SkPath& path,
+                            const SkIRect& scissor,
+                            BufferIndex colorDepthSortIndex,
+                            BufferIndex stencilSortIndex,
+                            ZValue depth,
+                            const PaintParams* paint);
+
+    void fillConvexPath(const SkM44& localToDevice,
+                        const SkPath& path,
+                        const SkIRect& scissor,
+                        BufferIndex colorDepthSortIndex,
+                        ZValue depth,
+                        const PaintParams* paint);
 
     void strokePath(const SkM44& localToDevice,
                     const SkPath& path,
                     const StrokeParams& stroke,
                     const SkIRect& scissor,
-                    uint16_t sortZ,
-                    uint16_t testZ,
+                    BufferIndex colorDepthSortIndex,
+                    ZValue depth,
                     const PaintParams* paint);
 
     // Ends the current DrawList being accumulated by the SDC, converting it into an optimized and
