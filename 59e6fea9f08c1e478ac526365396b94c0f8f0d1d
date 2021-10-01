@@ -216,6 +216,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40a01170_163384a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T16:36:55Z",
+      "side": 1,
+      "message": "Standard layout or not, they are not *structs*. The carve-out is specifically for structs. Their intent might have been broader, but unfortunately as written arrays don\u0027t qualify.",
+      "parentUuid": "8ad5d37c_b28ac80b",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
