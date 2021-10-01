@@ -234,6 +234,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35109393_e0b368c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T16:42:01Z",
+      "side": 1,
+      "message": "Only the array isn\u0027t a struct:\n\n    union {\n        struct { Vec\u003c2,T\u003e lo, hi; };\n        struct { Vec\u003c2,T\u003e xy, zw; };\n        struct { T x, y, z, w; };\n        T vals[4];\n    };\n    \nIs it possible that this qualifies then?\n\n    union {\n        struct { Vec\u003c2,T\u003e lo, hi; };\n        struct { Vec\u003c2,T\u003e xy, zw; };\n        struct { T x, y, z, w; };\n    };",
+      "parentUuid": "40a01170_163384a1",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
