@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c5e3434_61c14cd3",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-01T15:10:56Z",
+      "side": 1,
+      "message": "There is \"include/private/SkBitmaskEnum.h\" and you can see an example of how it\u0027s setup here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/skui/ModifierKey.h;l\u003d20?q\u003dis_bitmask_enum\u0026sq\u003d\u0026ss\u003dchromium%2Fchromium%2Fsrc and how that enum is then used in code: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/sk_app/mac/Window_mac.mm;drc\u003d7bb0ff05cec57ee2252b4c2e7b4a8782b84205b3;l\u003d249\n\nIMO this is pretty readable and would be nice to standardize on that vs. using macros. That being said, I am not sure if there are limitations to this approach that the macros are better able to handle.",
+      "parentUuid": "68cf80ad_aa05bbbc",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 6
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdd0fd09_998790e3",
         "filename": "experimental/graphite/src/Texture.h",
         "patchSetId": 1
@@ -84,6 +108,30 @@
       "writtenOn": "2021-10-01T15:04:52Z",
       "side": 1,
       "message": "Again, this seems fine to me.",
+      "parentUuid": "bdd0fd09_998790e3",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 67
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8d64efd_80d1ac92",
+        "filename": "experimental/graphite/src/Texture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-01T15:10:56Z",
+      "side": 1,
+      "message": "My preference would be to return the individual queries, or have both. Most places probably want the query and will be more readable if the bitmask \u0026 is hidden. On the other hand, having access to the full flags could be useful in cases where you want to ensure two textures have the exact same set of usages.",
       "parentUuid": "bdd0fd09_998790e3",
       "range": {
         "startLine": 29,
