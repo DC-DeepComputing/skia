@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89ddc9a8_1a5952f4",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T13:35:26Z",
+      "side": 1,
+      "message": "Consider \n    SkASSERT(xs.size() \u003c N);\n    \nI don\u0027t know why the original implementation used min() but it seems unexpected and accident-prone to allow an arbitrary length initializer_list and then just lop it off in the middle.",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 1
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bd45ae4_b8cf8747",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T13:35:26Z",
+      "side": 1,
+      "message": "This might be slightly more efficient as\n\nmemset(0 over all vals)\nmemcpy(xs into vals)\n\nCompilers can make memsetting zero over a known small size into extraordinarily efficient code.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 41
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
