@@ -54,11 +54,97 @@ namespace skvx {
 
 // All Vec have the same simple memory layout, the same as `T vec[N]`.
 template <int N, typename T>
-struct alignas(N*sizeof(T)) Vec {
-    static_assert((N & (N-1)) == 0,        "N must be a power of 2.");
-    static_assert(sizeof(T) >= alignof(T), "What kind of crazy T is this?");
+struct alignas(N*sizeof(T)) Vec;
 
-    Vec<N/2,T> lo, hi;
+template <int N, typename T> struct VecStorage {
+    union {
+        struct { Vec<N/2,T> lo, hi; };
+        struct { T vals[N]; };
+    };
+};
+
+template <typename T> struct VecStorage<4,T> {
+    VecStorage() = default;
+
+    template <typename A, typename B, typename C, typename D,
+              typename=std::enable_if_t<std::is_convertible<A,T>::value &&
+                                        std::is_convertible<B,T>::value &&
+                                        std::is_convertible<C,T>::value &&
+                                        std::is_convertible<D,T>::value>>
+    SKVX_ALWAYS_INLINE VecStorage(A a, B b, C c, D d) {
+        x = a;
+        y = b;
+        z = c;
+        w = d;
+    }
+
+    template <typename A, typename B, typename C,
+              typename=std::enable_if_t<std::is_convertible<A,T>::value &&
+                                        std::is_convertible<B,T>::value &&
+                                        std::is_convertible<C,T>::value>>
+    SKVX_ALWAYS_INLINE VecStorage(Vec<2,A> a, B b, C c) {
+        xy = a;
+        z = b;
+        w = c;
+    }
+
+    template <typename A, typename B, typename C,
+              typename=std::enable_if_t<std::is_convertible<A,T>::value &&
+                                        std::is_convertible<B,T>::value &&
+                                        std::is_convertible<C,T>::value>>
+    SKVX_ALWAYS_INLINE VecStorage(A a, B b, Vec<2,C> c) {
+        x = a;
+        y = b;
+        zw = c;
+    }
+
+    template <typename A, typename B,
+              typename=std::enable_if_t<std::is_convertible<A,T>::value &&
+                                        std::is_convertible<B,T>::value>>
+    SKVX_ALWAYS_INLINE VecStorage(Vec<2,A> a, Vec<2,B> b) {
+        xy = a;
+        zw = b;
+    }
+
+    union {
+        struct { Vec<2,T> lo, hi; };
+        struct { Vec<2,T> xy, zw; };
+        struct { T x, y, z, w; };
+        struct { T vals[4]; };
+    };
+};
+
+template <typename T> struct VecStorage<2,T> {
+    VecStorage() = default;
+
+    // Specific constructor for 2-element vectors.
+    template <typename A, typename B,
+              typename=std::enable_if_t<std::is_convertible<A,T>::value &&
+                                        std::is_convertible<B,T>::value>>
+    SKVX_ALWAYS_INLINE VecStorage(A a, B b) {
+        x = a;
+        y = b;
+    }
+
+    union {
+        struct { Vec<1,T> lo, hi; };
+        struct { T x, y; };
+        struct { T vals[2]; };
+    };
+};
+
+template <typename T> struct VecStorage<1,T> {
+    union {
+        struct { T val; };
+        struct { T x; };
+        struct { T vals[1]; };
+    };
+};
+
+template <int N, typename T>
+struct alignas(N*sizeof(T)) Vec : public VecStorage<N,T> {
+    static_assert((N & (N-1)) == 0,        "N must be a power of 2.");
+    static_assert(sizeof(T) >= alignof(T), "Very unexpected type traits: sizeof(T) < alignof(T)");
 
     // Methods belong here in the class declaration of Vec only if:
     //   - they must be here, like constructors or operator[];
@@ -68,52 +154,31 @@ struct alignas(N*sizeof(T)) Vec {
     SKVX_ALWAYS_INLINE Vec() = default;
 
     template <typename U, typename=std::enable_if_t<std::is_convertible<U,T>::value>>
-    SKVX_ALWAYS_INLINE
-    Vec(U x) : lo(x), hi(x) {}
+    SKVX_ALWAYS_INLINE Vec(U u) {
+        for (int i = 0; i < N; ++i) {
+            this->vals[i] = u;
+        }
+    }
 
     SKVX_ALWAYS_INLINE Vec(std::initializer_list<T> xs) {
-        T vals[N] = {0};
+        static_assert(sizeof(Vec) == N*sizeof(T),  "Vec must be tightly packed.");
+        static_assert(alignof(Vec) == N*sizeof(T), "Vec alignment must support fast loads.");
+        T vals[N] = {};
         memcpy(vals, xs.begin(), std::min(xs.size(), (size_t)N)*sizeof(T));
-
-        lo = Vec<N/2,T>::Load(vals +   0);
-        hi = Vec<N/2,T>::Load(vals + N/2);
+        memcpy(this, &vals, sizeof(Vec));
     }
 
-    SKVX_ALWAYS_INLINE T  operator[](int i) const { return i < N/2 ? lo[i] : hi[i-N/2]; }
-    SKVX_ALWAYS_INLINE T& operator[](int i)       { return i < N/2 ? lo[i] : hi[i-N/2]; }
+    using VecStorage<N,T>::VecStorage;
 
-    SKVX_ALWAYS_INLINE static Vec Load(const void* ptr) {
-        Vec v;
-        memcpy(&v, ptr, sizeof(Vec));
+    SKVX_ALWAYS_INLINE T operator[](int i) const { return this->vals[i]; }
+    SKVX_ALWAYS_INLINE T& operator[](int i) { return this->vals[i]; }
+
+    SKVX_ALWAYS_INLINE void store(void* ptr) const { memcpy(ptr, this, sizeof(Vec)); }
+
+    SKVX_ALWAYS_INLINE static Vec<N,T> Load(const void* ptr) {
+        Vec<N,T> v;
+        memcpy(&v, ptr, sizeof(Vec<N,T>));
         return v;
-    }
-    SKVX_ALWAYS_INLINE void store(void* ptr) const {
-        memcpy(ptr, this, sizeof(Vec));
-    }
-};
-
-template <typename T>
-struct Vec<1,T> {
-    T val;
-
-    SKVX_ALWAYS_INLINE Vec() = default;
-
-    template <typename U, typename=std::enable_if_t<std::is_convertible<U,T>::value>>
-    SKVX_ALWAYS_INLINE
-    Vec(U x) : val(x) {}
-
-    SKVX_ALWAYS_INLINE Vec(std::initializer_list<T> xs) : val(xs.size() ? *xs.begin() : 0) {}
-
-    SKVX_ALWAYS_INLINE T  operator[](int) const { return val; }
-    SKVX_ALWAYS_INLINE T& operator[](int)       { return val; }
-
-    SKVX_ALWAYS_INLINE static Vec Load(const void* ptr) {
-        Vec v;
-        memcpy(&v, ptr, sizeof(Vec));
-        return v;
-    }
-    SKVX_ALWAYS_INLINE void store(void* ptr) const {
-        memcpy(ptr, this, sizeof(Vec));
     }
 };
 
