@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42f18f4e_8959d70e",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-01T16:34:44Z",
+      "side": 1,
+      "message": "leaving as is for now. But we can continue to discuss and easily change things since there aren\u0027t many uses yet.",
+      "parentUuid": "9c5e3434_61c14cd3",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 6
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdd0fd09_998790e3",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "My preference would be to return the individual queries, or have both. Most places probably want the query and will be more readable if the bitmask \u0026 is hidden. On the other hand, having access to the full flags could be useful in cases where you want to ensure two textures have the exact same set of usages.",
       "parentUuid": "bdd0fd09_998790e3",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 67
+      },
+      "revId": "185ab306692456571a58b9975882be6ebd874022",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70bd8569_e420bcb7",
+        "filename": "experimental/graphite/src/Texture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-01T16:34:44Z",
+      "side": 1,
+      "message": "Okay so I think having all the flags will be useful so I\u0027ll keep that as is. I\u0027m fine with adding the individual querries, but I\u0027m going to leave those out until callers want them and then we can add then.",
+      "parentUuid": "b8d64efd_80d1ac92",
       "range": {
         "startLine": 29,
         "startChar": 4,
