@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afdc2b5e_af755a4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:39:41Z",
+      "side": 1,
+      "message": "lgtm, with a few comments for consideration",
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4624929f_3c7b1bda",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:39:41Z",
+      "side": 1,
+      "message": "As a code reader, \"ZValue zValue;\" doesn\u0027t tell me as much as \"uint16_t zValue;\"\n\nThe latter tells me it\u0027s a z value *and* that it\u0027s a uint16_t.",
+      "range": {
+        "startLine": 148,
+        "startChar": 6,
+        "endLine": 148,
+        "endChar": 12
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8be2511_365ceecd",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:39:41Z",
+      "side": 1,
+      "message": "Just so you are aware, there is a third algorithm for drawing paths via inner triangulation. This is the method we will need to use when the path is large and simple enough.",
+      "range": {
+        "startLine": 206,
+        "startChar": 14,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce74f975_ac0cbb76",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:39:41Z",
+      "side": 1,
+      "message": "My $.02:\n\n\"uint16_t depth\" is more descriptive to me than a potentially mysterious \"ZValue\" type.",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "831fa106_b4ebda74",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-01T23:39:41Z",
+      "side": 1,
+      "message": "With the inner trianglation algorithm, there will be a \"kFillInnerTris\" pass.",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
