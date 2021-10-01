@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a48e49_b12c4a94",
+        "filename": "src/sksl/analysis/SkSLProgramVisitor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T13:55:05Z",
+      "side": 1,
+      "message": "No idea if this will work or not, but can you avoid copy-pasting this workaround into ProgramWriter if you add a forward declaration here?\n\n    struct ProgramWriterTypes;\n    extern template class TProgramVisitor\u003cProgramWriterTypes\u003e;\n\nFeels a shame to be forced to include this workaround twice. But if my idea doesn\u0027t work, nbd.",
+      "revId": "def422650287a9c2e29c9907dfd46b555d321e53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b65e3985_d43bf2c1",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T13:55:05Z",
+      "side": 1,
+      "message": "Can this be removed?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 34
+      },
+      "revId": "def422650287a9c2e29c9907dfd46b555d321e53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
