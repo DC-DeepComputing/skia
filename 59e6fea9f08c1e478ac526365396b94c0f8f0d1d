@@ -252,6 +252,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26f8227f_3d6dce70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-01T16:56:56Z",
+      "side": 1,
+      "message": "Actually yeah, assuming lo and hi are laid out just as contiguous T\u0027s, that seems like it would be valid.",
+      "parentUuid": "35109393_e0b368c2",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
