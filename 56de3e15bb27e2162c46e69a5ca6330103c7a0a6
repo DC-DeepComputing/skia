@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d88096f3_5f4c31ce",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-03T15:02:35Z",
+      "side": 1,
+      "message": "I was planning on having that distinction handled internally in the DrawList-\u003eDrawPass conversion. stencilAndFillPath() is separate from fillConvexPath() because it can enforce requiring a separate stencil ordering index, which fillConvexPath doesn\u0027t require at all.\n\nIn terms of using that stencil ordering index, either a single pass of stencil with wedges, vs. two passes of stencil\u0027ed curves and stencil\u0027ed inner triangles, the stencil ordering constraint should be the same (the two stencil passes for a given path need to happen before the cover step, and need to not conflict with other path draws, but interactions between the 2 stencil passes is fine, right?).",
+      "parentUuid": "e8be2511_365ceecd",
+      "range": {
+        "startLine": 206,
+        "startChar": 14,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce74f975_ac0cbb76",
         "filename": "experimental/graphite/src/DrawList.h",
         "patchSetId": 3
@@ -89,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6c405d8_ba3dc6e5",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-03T15:02:35Z",
+      "side": 1,
+      "message": "That is a good point. I was hedging my bets and thinking we might need a wrapper that makes it easy to move between uint16_t, 24-bit, or a float value, and also wanted to differentiate it from the uint16_t that stored the buffer sort indices for the draw. But \"ZValue depth\" or \"ZValue zvalue\" is not very meaningful at all. Would you be okay with something like \"Depth writeValue\" so that it\u0027s clear it goes into the depth buffer and is also what the draw uses when writing to the depth buffer?\n\nOn a similar note, I am now questioning my choice of name for BufferIndex. It could be easily misinterpreted as an index into a multi-render target setup, whereas it is really value to sort on. Maybe just BufferSortIndex? BufferConstraint? wdyt?",
+      "parentUuid": "ce74f975_ac0cbb76",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "831fa106_b4ebda74",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 3
@@ -100,6 +148,30 @@
       "writtenOn": "2021-10-01T23:39:41Z",
       "side": 1,
       "message": "With the inner trianglation algorithm, there will be a \"kFillInnerTris\" pass.",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caa3f626_cc08b446",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-03T15:02:35Z",
+      "side": 1,
+      "message": "I think I should rename DrawType to DrawCategory or DrawOrder. It\u0027s meant to be only a few bits that are higher than the actual pipeline index so that we can guarantee subpasses for a given path are ordered correctly. The subpasses would already have different pipelines and thus pipeline indices, but we need to enforce that the stenciling happens before the covering/filling.\n\nI had separated stencilcurves from stenciltris because it provided a convenient way to identify what subpass a given SortKey was representing, without having to inspect the pipeline. I had imagined (could be proven wrong) that the other types of inspection that need to be done (e.g. primitive, vs. convex fill, vs. cover rect) will be readily apparent by just looking at the original DrawList command the SortKey points back to.\n\nThat being said, that actually means that kDepthOnly and kDirect are not particularly useful distinctions. Anything that\u0027s depth-only will already have its ordering preserved by the color-depth buffer index in the key. I think what I should do is replace kDepthOnly with kFillTris, and rename kDirect to kFillCurves.  That way we can still enforce ordering between the N stencil passes for a draw, and the N fill passes for a draw, and have easy reflection on a SortKey to know if it\u0027s doing the inner triangles or the tessellation step.",
+      "parentUuid": "831fa106_b4ebda74",
       "range": {
         "startLine": 21,
         "startChar": 4,
