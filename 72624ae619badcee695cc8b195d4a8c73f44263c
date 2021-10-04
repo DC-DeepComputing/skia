@@ -33,6 +33,47 @@
       "message": "Chrome flag landed in https://chromium-review.googlesource.com/c/chromium/src/+/3198176",
       "revId": "72624ae619badcee695cc8b195d4a8c73f44263c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00c3c746_779f1f3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-04T17:51:13Z",
+      "side": 1,
+      "message": "I think the easiest way to land this now is to revert this Chromium flag for now, commit this change and let it roll into Chromium (which should be a no-op), then re-land this flag with the new expectations.",
+      "parentUuid": "29ca476e_36ead508",
+      "revId": "72624ae619badcee695cc8b195d4a8c73f44263c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5856a97_ceb9b2ad",
+        "filename": "src/ports/SkFontMgr_win_dw.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1204,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-04T17:51:13Z",
+      "side": 1,
+      "message": "Note that this debug string and the one above were purposefully different to ensure that when they are seen there is exactly one place in the code with that string (which helps when code move around dues to changes). It doesn\u0027t matter all that much here, but something to keep in mind.",
+      "range": {
+        "startLine": 1204,
+        "startChar": 10,
+        "endLine": 1204,
+        "endChar": 36
+      },
+      "revId": "72624ae619badcee695cc8b195d4a8c73f44263c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
