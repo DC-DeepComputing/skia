@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a13663_310381ef",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T19:31:44Z",
+      "side": 1,
+      "message": "This could be private now, but there\u0027s no real compelling reason to hide it.",
+      "range": {
+        "startLine": 198,
+        "startChar": 17,
+        "endLine": 198,
+        "endChar": 34
+      },
+      "revId": "a7cd45eb92769df84825c175aae5fa16b1fc0ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
