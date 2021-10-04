@@ -16,6 +16,23 @@
       "message": "This is now ready for review. The previous patchset had the Gold results as expected, i.e. in fontmgr_iter GM the fallback drawCharacter() calls (using a Japanese character) resulted in looking equal, and only used real available regular or bold typefaces, none of them appeared in synthetic italic.\n",
       "revId": "72624ae619badcee695cc8b195d4a8c73f44263c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ca476e_36ead508",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-10-04T13:40:25Z",
+      "side": 1,
+      "message": "Chrome flag landed in https://chromium-review.googlesource.com/c/chromium/src/+/3198176",
+      "revId": "72624ae619badcee695cc8b195d4a8c73f44263c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
