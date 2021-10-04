@@ -22,6 +22,30 @@
       },
       "revId": "ffc0fa4b0472a28758498f52ab06fd316fab6d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93e52797_517685e3",
+        "filename": "src/sksl/ir/SkSLConstructorArrayCast.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T14:57:15Z",
+      "side": 1,
+      "message": "This logic does seem to be repeated a lot, I can definitely get behind factoring it out to a common place.\nWe might also want to disallow private types (currently caught via Type::containsPrivateFields) so it could make sense to lump those in too. I\u0027ll see what happens today with a ctor of $genType.",
+      "parentUuid": "bcdacdc9_a8b9d686",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 69
+      },
+      "revId": "ffc0fa4b0472a28758498f52ab06fd316fab6d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
