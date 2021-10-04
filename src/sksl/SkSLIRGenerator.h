@@ -119,23 +119,17 @@ private:
                                                      std::unique_ptr<Expression> arraySize,
                                                      std::unique_ptr<Expression> value,
                                                      Variable::Storage storage);
-
-    std::unique_ptr<Expression> call(int line,
-                                     std::unique_ptr<Expression> function,
-                                     ExpressionArray arguments);
-    std::unique_ptr<Expression> call(int line,
-                                     const FunctionDeclaration& function,
-                                     ExpressionArray arguments);
-    CoercionCost callCost(const FunctionDeclaration& function,
-                          const ExpressionArray& arguments) const;
-    const FunctionDeclaration* findBestFunctionForCall(
-            const std::vector<const FunctionDeclaration*>& functions,
-            const ExpressionArray& arguments) const;
+    CoercionCost coercionCost(const Expression& expr, const Type& type);
+    bool containsConstantZero(Expression& expr);
+    bool dividesByZero(Operator op, Expression& right);
+    std::unique_ptr<Extension> convertExtension(int line, skstd::string_view name);
+    std::unique_ptr<Expression> convertField(std::unique_ptr<Expression> base,
+                                             skstd::string_view field);
     void scanInterfaceBlock(SkSL::InterfaceBlock& intf);
     /** Appends sk_Position fixup to the bottom of main() if this is a vertex program. */
     void appendRTAdjustFixupToVertexMain(const FunctionDeclaration& decl, Block* body);
 
-    void copyIntrinsicIfNeeded(const FunctionDeclaration& function);
+    bool setRefKind(Expression& expr, VariableReference::RefKind kind);
 
     // Runtime effects (and the interpreter, which uses the same CPU runtime) require adherence to
     // the strict rules from The OpenGL ES Shading Language Version 1.00. (Including Appendix A).
