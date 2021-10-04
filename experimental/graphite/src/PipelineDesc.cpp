@@ -9,10 +9,7 @@
 
 namespace skgpu {
 
-PipelineDesc::PipelineDesc() {
-}
-
-PipelineDesc::~PipelineDesc() {
+RenderPipelineDesc::RenderPipelineDesc() {
 }
 
 } // namespace skgpu

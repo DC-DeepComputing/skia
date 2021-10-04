@@ -10,17 +10,24 @@
 
 #include "experimental/graphite/src/Pipeline.h"
 
+#include "include/ports/SkCFObject.h"
+
 #import <Metal/Metal.h>
 
 namespace skgpu::mtl {
 
-class Pipeline final : public skgpu::Pipeline {
+class RenderPipeline final : public skgpu::RenderPipeline {
 public:
-    Pipeline();
-    ~Pipeline() override {}
+    static sk_sp<RenderPipeline> Make() {
+        return sk_sp<RenderPipeline>(new RenderPipeline());
+    }
+    ~RenderPipeline() override {}
 
 private:
+    RenderPipeline();
 };
+
+// TODO: add ComputePipeline
 
 } // namespace skgpu::mtl
 
