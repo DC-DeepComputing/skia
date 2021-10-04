@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d87310f_056279c3",
+        "filename": "include/sksl/DSLExpression.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T16:31:03Z",
+      "side": 1,
+      "message": "For `releaseIfPossible` (although afaics this method could just be public?)",
+      "range": {
+        "startLine": 175,
+        "startChar": 17,
+        "endLine": 175,
+        "endChar": 24
+      },
+      "revId": "0d6390dbead906721f8a9d205ae1f96377e5516f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
