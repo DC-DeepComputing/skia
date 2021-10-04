@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcdacdc9_a8b9d686",
+        "filename": "src/sksl/ir/SkSLConstructorArrayCast.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-04T14:42:28Z",
+      "side": 1,
+      "message": "Not for this CL, but seeing this repeated makes me think: Do we have other types that we will want to disallow based on other conditions (maybe based on program kind)? That seems possible, in which case we could centralize this logic:\n\n  SkASSERT(type.isAllowed(context));\n\n... then just put the ES2 checks (and any others) in that spot.",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 69
+      },
+      "revId": "ffc0fa4b0472a28758498f52ab06fd316fab6d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
