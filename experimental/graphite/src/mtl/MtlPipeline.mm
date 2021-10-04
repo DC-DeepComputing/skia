@@ -9,7 +9,7 @@
 
 namespace skgpu::mtl {
 
-Pipeline::Pipeline() {
+RenderPipeline::RenderPipeline() {
 }
 
 } // namespace skgpu::mtl

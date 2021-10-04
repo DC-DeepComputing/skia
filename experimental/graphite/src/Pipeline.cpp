@@ -9,10 +9,10 @@
 
 namespace skgpu {
 
-Pipeline::Pipeline() {
+RenderPipeline::RenderPipeline() {
 }
 
-Pipeline::~Pipeline() {
+RenderPipeline::~RenderPipeline() {
 }
 
 } // namespace skgpu

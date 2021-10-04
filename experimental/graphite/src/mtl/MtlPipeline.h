@@ -14,13 +14,15 @@
 
 namespace skgpu::mtl {
 
-class Pipeline final : public skgpu::Pipeline {
+class RenderPipeline final : public skgpu::RenderPipeline {
 public:
-    Pipeline();
-    ~Pipeline() override {}
+    RenderPipeline();
+    ~RenderPipeline() override {}
 
 private:
 };
+
+// TODO: add ComputePipeline
 
 } // namespace skgpu::mtl
 
