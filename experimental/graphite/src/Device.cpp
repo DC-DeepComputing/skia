@@ -9,8 +9,8 @@
 
 #include "experimental/graphite/include/Context.h"
 #include "experimental/graphite/include/SkStuff.h"
+#include "experimental/graphite/src/DrawContext.h"
 #include "experimental/graphite/src/DrawList.h"
-#include "experimental/graphite/src/SurfaceDrawContext.h"
 
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
@@ -24,7 +24,7 @@
 namespace skgpu {
 
 sk_sp<Device> Device::Make(sk_sp<Context> context, const SkImageInfo& ii) {
-    sk_sp<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(ii);
+    sk_sp<DrawContext> sdc = DrawContext::Make(ii);
     if (!sdc) {
         return nullptr;
     }
@@ -32,11 +32,11 @@ sk_sp<Device> Device::Make(sk_sp<Context> context, const SkImageInfo& ii) {
     return sk_sp<Device>(new Device(std::move(context), std::move(sdc)));
 }
 
-Device::Device(sk_sp<Context> context, sk_sp<SurfaceDrawContext> sdc)
+Device::Device(sk_sp<Context> context, sk_sp<DrawContext> sdc)
         : SkBaseDevice(sdc->imageInfo(), SkSurfaceProps())
         , fContext(std::move(context))
-        , fSDC(std::move(sdc)) {
-    SkASSERT(SkToBool(fSDC));
+        , fDC(std::move(sdc)) {
+    SkASSERT(SkToBool(fDC));
 }
 
 SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
@@ -196,14 +196,14 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
             // FIXME: This doesn't work if the shading requires local coords...
             SkPath devicePath = path.makeTransform(this->localToDevice());
             stroke.fWidth = 1.f;
-            fSDC->strokePath(SkM44(), devicePath, stroke, scissor, 0, 0, &shading);
+            fDC->strokePath(SkM44(), devicePath, stroke, scissor, 0, 0, &shading);
         } else {
-            fSDC->strokePath(this->localToDevice44(), path, stroke, scissor, 0, 0, &shading);
+            fDC->strokePath(this->localToDevice44(), path, stroke, scissor, 0, 0, &shading);
         }
     } else if (path.isConvex()) {
-        fSDC->fillConvexPath(this->localToDevice44(), path, scissor, 0, 0, &shading);
+        fDC->fillConvexPath(this->localToDevice44(), path, scissor, 0, 0, &shading);
     } else {
-        fSDC->stencilAndFillPath(this->localToDevice44(), path, scissor, 0, 0, 0, &shading);
+        fDC->stencilAndFillPath(this->localToDevice44(), path, scissor, 0, 0, 0, &shading);
     }
 }
 
