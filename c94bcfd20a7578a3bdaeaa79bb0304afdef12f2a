@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0601fcf_78ed19c2",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T18:01:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "506cd43b_207dc697",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 1
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bd45ae4_b8cf8747",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "I agree, but I would also like to preserve old functionality as much as possible. A change like this might belong in its own CL.",
       "parentUuid": "5bd45ae4_b8cf8747",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 41
+      },
+      "revId": "c94bcfd20a7578a3bdaeaa79bb0304afdef12f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c92a50a4_c5abf380",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T18:01:17Z",
+      "side": 1,
+      "message": "AFAICS this would be functionality-preserving, but making the change in a separate CL is totally fine",
+      "parentUuid": "1283de5c_19d82f29",
       "range": {
         "startLine": 166,
         "startChar": 0,
