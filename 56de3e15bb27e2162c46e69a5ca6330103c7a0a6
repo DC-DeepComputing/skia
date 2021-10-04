@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee74428_b63899eb",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T17:29:16Z",
+      "side": 1,
+      "message": "I\u0027ve removed ZValue as an alias and will use uint16_t directly until we need more (if ever).",
+      "parentUuid": "4624929f_3c7b1bda",
+      "range": {
+        "startLine": 148,
+        "startChar": 6,
+        "endLine": 148,
+        "endChar": 12
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8be2511_365ceecd",
@@ -135,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dd90029_0a418bae",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T17:29:16Z",
+      "side": 1,
+      "message": "sticking with uint16_t depth for now",
+      "parentUuid": "d6c405d8_ba3dc6e5",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "831fa106_b4ebda74",
@@ -172,6 +220,30 @@
       "side": 1,
       "message": "I think I should rename DrawType to DrawCategory or DrawOrder. It\u0027s meant to be only a few bits that are higher than the actual pipeline index so that we can guarantee subpasses for a given path are ordered correctly. The subpasses would already have different pipelines and thus pipeline indices, but we need to enforce that the stenciling happens before the covering/filling.\n\nI had separated stencilcurves from stenciltris because it provided a convenient way to identify what subpass a given SortKey was representing, without having to inspect the pipeline. I had imagined (could be proven wrong) that the other types of inspection that need to be done (e.g. primitive, vs. convex fill, vs. cover rect) will be readily apparent by just looking at the original DrawList command the SortKey points back to.\n\nThat being said, that actually means that kDepthOnly and kDirect are not particularly useful distinctions. Anything that\u0027s depth-only will already have its ordering preserved by the color-depth buffer index in the key. I think what I should do is replace kDepthOnly with kFillTris, and rename kDirect to kFillCurves.  That way we can still enforce ordering between the N stencil passes for a draw, and the N fill passes for a draw, and have easy reflection on a SortKey to know if it\u0027s doing the inner triangles or the tessellation step.",
       "parentUuid": "831fa106_b4ebda74",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05a42f86_23df1134",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T17:29:16Z",
+      "side": 1,
+      "message": "Updated this to be DrawStage { kStencilCurves, kStencilTris, kFillCurves, kFillTris }",
+      "parentUuid": "caa3f626_cc08b446",
       "range": {
         "startLine": 21,
         "startChar": 4,
