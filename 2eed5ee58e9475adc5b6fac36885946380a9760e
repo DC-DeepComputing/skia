@@ -33,6 +33,24 @@
       "message": "Is all that red just from ToT? I don\u0027t see how your change would have affected any of it.",
       "revId": "2eed5ee58e9475adc5b6fac36885946380a9760e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "362e7ddf_b53733b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-04T16:39:49Z",
+      "side": 1,
+      "message": "Yeah looks like a bad SkSL change landed and was reverted.",
+      "parentUuid": "d31456c3_dcf88df5",
+      "revId": "2eed5ee58e9475adc5b6fac36885946380a9760e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
