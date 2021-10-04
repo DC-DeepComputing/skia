@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a993c8_dc8edb60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-04T17:47:47Z",
+      "side": 1,
+      "message": "After much poking about with perf and looking through the history of this, raster pipeline has already been used to replace what it is faster at. The remaining bits of Sk4xXfermode blending left are the bits that are faster. The raster pipeline is fast and very consistently so. However, it appears that the issue may be how much inlining can be done. Some of the Sk4x routines, like clear and plus, can be inlined and optimized to death. The other interesting part is that raster pipeline must check for edges (spin-up, spin-down) inside the load and store routines and these checks cannot be lifted out of the loop.\n\nThere doesn\u0027t appear to be any real logical difference between what raster pipeline and the Sk4x opts are doing here. The Sk4x opts are essentially what one would get if dumping the rater pipeline stages for each xfer mode for a specific architecture and then letting the compiler have a go at each one, effectively just doing lots of inlining.\n\nEssentially, raster pipeline assembles pipelines at runtime by assembling function pointers; Sk4x assembles pipleines at compile time by assembling code through template specialization. The actual awkwardness (and the reason to propose removing these opts at all) is that they aren\u0027t actually the same. It would be really nice to have a way to generically have raster pipeline produce compile time optimizable code and then allow the user to select for which architectures opts should be generated. The one thing which would be required to change in raster pipeline would be to make \"uniforms\" (like the src, dst, alpha) parameterizable somehow (currently those pointers are baked into the raster pipeline).\n\nTypical perf results:\nOld           New\n0.11 ±  5%    0.27 ±  4%  155%  blendmicro_sprite_SrcOut\n0.10 ±  8%    0.27 ±  4%  161%  blendmicro_sprite_SrcIn\n0.10 ±  0%    0.27 ±  3%  163%  blendmicro_sprite_DstIn\n0.10 ±  6%    0.27 ±  6%  163%  blendmicro_sprite_DstOut\n0.10 ±  1%    0.29 ±  4%  179%  blendmicro_sprite_DstOver\n0.09 ±  3%    0.27 ±  6%  204%  blendmicro_sprite_Modulate\n0.09 ±  8%    0.30 ±  3%  212%  blendmicro_sprite_Screen\n0.05 ±  4%    0.25 ±  5%  441%  blendmicro_sprite_Clear\n0.04 ±  2%    0.26 ±  4%  528%  blendmicro_sprite_Plus",
+      "revId": "be09f8adfda96959aa1d26f32a4bb95722433adc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
