@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "befd1ad0_ce0a394d",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T18:19:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "55c68897_25f93fef",
+      "range": {
+        "startLine": 206,
+        "startChar": 14,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce74f975_ac0cbb76",
@@ -316,6 +340,30 @@
       "side": 1,
       "message": "Got it. So for inner triangulation, descriptive names would look like:\n\n1) stencil curves and breadcrumb triangles\n2) draw or stencil inner triangulation\n3) draw curve convex hulls and breadcrumb triangles\n\nFor middle out triangulation:\n\n1) stencil curves\n2) stencil middle-out inner fan\n3) draw path bounding box\n\nFor wedges:\n\n1) stencil wedges\n2) draw path bounding box\n\nFor convex:\n\n1) draw wedges\n\n\nWhat if we just reserve a range of indices, and each algorithm can define its own internal names for these indices?",
       "parentUuid": "caa3f626_cc08b446",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "828e64c4_dac0bf87",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T18:19:58Z",
+      "side": 1,
+      "message": "Landed as-is, but I can definitely see moving this direction once the algorithms are integrated.",
+      "parentUuid": "81e3b40b_d3b8b2f0",
       "range": {
         "startLine": 21,
         "startChar": 4,
