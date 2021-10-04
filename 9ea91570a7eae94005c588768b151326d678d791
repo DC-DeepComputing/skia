@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b35a664_82939c4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-04T19:05:50Z",
+      "side": 1,
+      "message": "just a mild suggestion, it\u0027s your code do as you like!",
+      "parentUuid": "724e41bd_33c0a87a",
+      "revId": "9ea91570a7eae94005c588768b151326d678d791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa891bf1_72ee65d8",
