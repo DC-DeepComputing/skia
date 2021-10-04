@@ -22,6 +22,30 @@
       },
       "revId": "9a46a6f2690a033e340097715aa4071a5db8b049",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62cf5ab4_7d6e7e5e",
+        "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-04T19:16:39Z",
+      "side": 1,
+      "message": "This isn\u0027t a render-only color attachment. Everything we make internally is always shader readable (otherwise why did we internally make a surface).",
+      "parentUuid": "2ceb2cfd_77639117",
+      "range": {
+        "startLine": 34,
+        "startChar": 23,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "revId": "9a46a6f2690a033e340097715aa4071a5db8b049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
