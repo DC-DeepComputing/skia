@@ -46,6 +46,30 @@
       },
       "revId": "ffc0fa4b0472a28758498f52ab06fd316fab6d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97bd55eb_fc911d13",
+        "filename": "src/sksl/ir/SkSLConstructorArrayCast.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-04T19:34:51Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/455661.\n\nI experimented with adding checks for `type.isPrivate` in these asserts as well, but that caused weird failures related to literals that failed coercion. ($intLiteral and $floatLiteral are private types due to the leading $.) If we want to investigate that further, it\u0027ll make more sense as its own CL, and it\u0027s doesn\u0027t seem compelling enough to warrant the extra time.",
+      "parentUuid": "93e52797_517685e3",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 69
+      },
+      "revId": "ffc0fa4b0472a28758498f52ab06fd316fab6d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
