@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "320ddb0a_05da7807",
+        "filename": "experimental/graphite/src/Pipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a928a6bb_88eca0e2",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ef5c4e8_72702371",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-10-04T19:24:44Z",
       "side": 1,
       "message": "Do we actually need this here ?",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e4189cd_510d69ac",
+        "filename": "experimental/graphite/src/Pipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ef5c4e8_72702371",
       "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "677f2787_be77c26c",
+        "filename": "experimental/graphite/src/PipelineDesc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fbdd364_666e5170",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d1f9bf8_309bbba2",
@@ -82,6 +136,42 @@
       "writtenOn": "2021-10-04T19:24:44Z",
       "side": 1,
       "message": "Do we want to do anything cute here with a tuple or an SkSpan?",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95fa6097_f3e66a33",
+        "filename": "experimental/graphite/src/PipelineDesc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "I\u0027m not sure what you have in mind -- I\u0027ve added a comment to look at it later.",
+      "parentUuid": "5d1f9bf8_309bbba2",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b61ab9d0_3dc72ff0",
+        "filename": "experimental/graphite/src/PipelineDesc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d1f9bf8_309bbba2",
       "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -103,6 +193,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c14429ea_3e93ce67",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "deb04dad_86230660",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee6c8018_7f62177b",
@@ -116,6 +224,24 @@
       "writtenOn": "2021-10-04T19:24:44Z",
       "side": 1,
       "message": "Do we want to rename this file to be MtlRenderPipeline.h ?",
+      "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db001d5a_354793d6",
+        "filename": "experimental/graphite/src/mtl/MtlPipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-04T19:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee6c8018_7f62177b",
       "revId": "c9774af56adddbc189cec78c2dcf788874458aa1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
