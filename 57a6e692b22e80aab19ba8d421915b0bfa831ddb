@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d12f1a57_d25ee115",
+        "filename": "experimental/graphite/src/RenderPipelineDesc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-04T20:01:36Z",
+      "side": 1,
+      "message": "I guess this depends on what else needs to be fleshed out, but can this be a private static constexpr?",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 51
+      },
+      "revId": "57a6e692b22e80aab19ba8d421915b0bfa831ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
