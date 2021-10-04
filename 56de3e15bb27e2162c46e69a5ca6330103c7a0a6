@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55c68897_25f93fef",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-04T17:58:51Z",
+      "side": 1,
+      "message": "The \"inner triangulation\" algorithm is different. It\u0027s 3 passes:\n\n1) Stencil the curves (and breadcrumb triangles)\n\n2) Triangulate the inner fan (not with middle out triangulation, but using GrTriangulator) and draw those triangles directly to the framebuffer. (See https://github.com/google/skia/blob/main/src/gpu/ops/PathInnerTriangulateOp.cpp#L280 )\n\n3) Draw the curves (by drawing convex hulls around their control points) and breadcrumb triangles\n\nThat being said, \"stencil then cover\" is still a decent name for this algorithm, and we can still batch paths that don\u0027t overlap when using inner triangulation, so we could always decide further down the line whether to use wedges, middle out triangles and curves, OR \"inner triangulation\"",
+      "parentUuid": "d88096f3_5f4c31ce",
+      "range": {
+        "startLine": 206,
+        "startChar": 14,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce74f975_ac0cbb76",
         "filename": "experimental/graphite/src/DrawList.h",
         "patchSetId": 3
@@ -173,6 +197,30 @@
       "side": 1,
       "message": "sticking with uint16_t depth for now",
       "parentUuid": "d6c405d8_ba3dc6e5",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f24452f_db2dd409",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-04T17:58:51Z",
+      "side": 1,
+      "message": "I also think it\u0027s OK if our internal representation of depth values has more bits than what\u0027s on the GPU. We will have to decide at runtime anyway whether we have 16, 24, or 32 depth bits. Why not use uint32_t? We will definitely use DEPTH24_STENCIL8, so I think 16 bits on the CPU side isn\u0027t enough.\n\nI also think it\u0027s not a good idea to use floats for depth. That requires us to set up a depth range that allocates fractional values between integers (wasting the fractional values we don\u0027t use), and the discrete fractional values in fp32 won\u0027t correlate with our depth range (which I believe is fixed point). Especially with a 16-bit depth buffer I think we need to make use of every discrete value in the range.\n\nHave we thought about how to handle when we need more depth values than fit in the depth buffer? Can we insert a sort barrier, restart the counter, and clear depth in between?",
+      "parentUuid": "9dd90029_0a418bae",
       "range": {
         "startLine": 73,
         "startChar": 28,
@@ -243,6 +291,30 @@
       "writtenOn": "2021-10-04T17:29:16Z",
       "side": 1,
       "message": "Updated this to be DrawStage { kStencilCurves, kStencilTris, kFillCurves, kFillTris }",
+      "parentUuid": "caa3f626_cc08b446",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "56de3e15bb27e2162c46e69a5ca6330103c7a0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e3b40b_d3b8b2f0",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-04T17:58:51Z",
+      "side": 1,
+      "message": "Got it. So for inner triangulation, descriptive names would look like:\n\n1) stencil curves and breadcrumb triangles\n2) draw or stencil inner triangulation\n3) draw curve convex hulls and breadcrumb triangles\n\nFor middle out triangulation:\n\n1) stencil curves\n2) stencil middle-out inner fan\n3) draw path bounding box\n\nFor wedges:\n\n1) stencil wedges\n2) draw path bounding box\n\nFor convex:\n\n1) draw wedges\n\n\nWhat if we just reserve a range of indices, and each algorithm can define its own internal names for these indices?",
       "parentUuid": "caa3f626_cc08b446",
       "range": {
         "startLine": 21,
