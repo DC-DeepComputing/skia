@@ -375,8 +375,7 @@ std::unique_ptr<Expression> IRGenerator::convertIdentifier(int line, skstd::stri
                                      FieldAccess::OwnerKind::kAnonymousInterfaceBlock);
         }
         case Symbol::Kind::kType: {
-            const Type* t = &result->as<Type>();
-            return std::make_unique<TypeReference>(fContext, line, t);
+            return TypeReference::Convert(fContext, line, &result->as<Type>());
         }
         case Symbol::Kind::kExternal: {
             const ExternalFunction* r = &result->as<ExternalFunction>();
@@ -479,11 +478,10 @@ std::unique_ptr<Expression> IRGenerator::call(int line,
                                               std::unique_ptr<Expression> functionValue,
                                               ExpressionArray arguments) {
     switch (functionValue->kind()) {
-        case Expression::Kind::kTypeReference:
-            return Constructor::Convert(fContext,
-                                        line,
-                                        functionValue->as<TypeReference>().value(),
-                                        std::move(arguments));
+        case Expression::Kind::kTypeReference: {
+            const Type& type = functionValue->as<TypeReference>().value();
+            return Constructor::Convert(fContext, line, type, std::move(arguments));
+        }
         case Expression::Kind::kExternalFunctionReference: {
             const ExternalFunction& f = functionValue->as<ExternalFunctionReference>().function();
             int count = f.callParameterCount();
