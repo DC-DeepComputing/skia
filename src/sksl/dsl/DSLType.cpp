@@ -15,6 +15,20 @@ namespace SkSL {
 
 namespace dsl {
 
+static bool report_illegal_types(const Context& context, const SkSL::Type* type, PositionInfo pos) {
+    if (!context.fConfig->fIsBuiltinCode) {
+        if (type->isPrivate()) {
+            context.fErrors->error("type '" + String(type->name()) + "' is private", pos);
+            return true;
+        }
+        if (!type->isAllowedInES2(context)) {
+            context.fErrors->error("type '" + String(type->name()) + "' is not supported", pos);
+            return true;
+        }
+    }
+    return false;
+}
+
 static const SkSL::Type* find_type(skstd::string_view name, PositionInfo pos) {
     const Symbol* symbol = (*DSLWriter::SymbolTable())[name];
     if (!symbol) {
@@ -27,7 +41,11 @@ static const SkSL::Type* find_type(skstd::string_view name, PositionInfo pos) {
                 name.data()), pos);
         return nullptr;
     }
-    return &symbol->as<SkSL::Type>();
+    const SkSL::Type* type = &symbol->as<SkSL::Type>();
+    if (report_illegal_types(DSLWriter::Context(), type, pos)) {
+        return nullptr;
+    }
+    return type;
 }
 
 static const SkSL::Type* find_type(skstd::string_view name, Modifiers* modifiers,
@@ -205,31 +223,10 @@ const SkSL::Type& DSLType::skslType() const {
     }
 }
 
-bool DSLType::reportIllegalTypes(PositionInfo pos) const {
-    if (!DSLWriter::IsModule()) {
-        const SkSL::Type* type = &this->skslType();
-        if (type->isPrivate()) {
-            DSLWriter::ReportError("type '" + String(type->name()) + "' is private", pos);
-            return true;
-        }
-        if (!type->isAllowedInES2(DSLWriter::Context())) {
-            DSLWriter::ReportError("type '" + String(type->name()) + "' is not supported", pos);
-            return true;
-        }
-    }
-    return false;
-}
-
 DSLPossibleExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
     SkSL::ExpressionArray skslArgs;
     skslArgs.reserve_back(argArray.size());
 
-    if (type.reportIllegalTypes(PositionInfo())) {
-        for (DSLExpression& arg : argArray) {
-            arg.releaseIfPossible();
-        }
-        return DSLPossibleExpression(nullptr);
-    }
     for (DSLExpression& arg : argArray) {
         if (!arg.hasValue()) {
             return DSLPossibleExpression(nullptr);
