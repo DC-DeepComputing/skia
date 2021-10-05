@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae6f8cc_9b2b07d9",
+        "filename": "src/sksl/dsl/priv/DSLWriter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-05T20:24:48Z",
+      "side": 1,
+      "message": "Isn\u0027t this in FunctionDefinition::Convert::Finalizer?",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 1
+      },
+      "revId": "6cb4c0c4c0166cbdb6a8c3841d4e922f36b2dcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

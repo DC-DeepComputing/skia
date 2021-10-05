@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc6c04a_a82ecacb",
+        "filename": "src/sksl/dsl/DSLExpression.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-05T20:24:48Z",
+      "side": 0,
+      "message": "I added the Bug: line to the CL description.",
+      "range": {
+        "startLine": 193,
+        "startChar": 26,
+        "endLine": 193,
+        "endChar": 41
+      },
+      "revId": "04b0e0187ea24d364300ec14f42a2eb0a9200086",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
