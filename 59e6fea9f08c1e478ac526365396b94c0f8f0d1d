@@ -324,6 +324,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9186e8a4_b2913a69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-05T14:10:02Z",
+      "side": 1,
+      "message": "I can\u0027t poke holes in it, but I do have a gut concern about how it may impact the auto vectorization. Chris, have you looked at the compiled results to confirm that it still vectorizes?\n\nIn general, I also am having concerns about the readability and maintainability of this approach and, in particular, the follow-up CL that adds the CLs. This is a lot of template magic and border line hard-to-reason-about spec dependent work. Static functions or member functions that just called shuffle\u003c\u003e seem almost as user friendly as the fields but are much more straight forward to implement.\n\nI\u0027m happy to be overridden if others prefer this approach, but that\u0027s where I\u0027ve landed while mulling on this change.",
+      "parentUuid": "6c408ed0_5ca54547",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
