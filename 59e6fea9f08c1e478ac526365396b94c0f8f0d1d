@@ -342,6 +342,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ee2ce21_dbb7f94c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-05T16:52:46Z",
+      "side": 1,
+      "message": "Agreed. I also have concerns about auto vectorization and illegal C++ code. I\u0027ll convert to the preferred C++ style of methods and references. I\u0027ll cry a little inside every time I type \"()\" after a swizzle, but at least we will never wonder when it might break or whether we are slowing down the build. New plan:\n\nfloat4.x()\nfloat4.xy()\nfloat4.zwxy()",
+      "parentUuid": "9186e8a4_b2913a69",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
