@@ -10,19 +10,20 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkM44.h"
 #include "include/private/SkTPin.h"
+#include "modules/skottie/src/PathAdapter.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/text/RangeSelector.h"
 #include "modules/skottie/src/text/TextAnimator.h"
 #include "modules/sksg/include/SkSGDraw.h"
 #include "modules/sksg/include/SkSGGroup.h"
 #include "modules/sksg/include/SkSGPaint.h"
+#include "modules/sksg/include/SkSGPath.h"
 #include "modules/sksg/include/SkSGRect.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
 #include "modules/sksg/include/SkSGText.h"
 #include "modules/sksg/include/SkSGTransform.h"
 
-namespace skottie {
-namespace internal {
+namespace skottie::internal {
 
 sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
                                      const AnimationBuilder* abuilder,
@@ -55,7 +56,14 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
     //           "g": 1,     // Anchor Point Grouping
     //           "a": {...}  // Grouping Alignment
     //         },
-    //    "p": {}  // "path options" (TODO)
+    //    "p": { // "path options"
+    //           "a": 0,
+    //           "f": {},
+    //           "l": {},
+    //           "m": 1,   // mask index
+    //           "p": 1,
+    //           "r": 0
+    //         }
     // },
 
     const skjson::ObjectValue* jt = jlayer["t"];
@@ -100,6 +108,43 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
             }
         }
     }
+
+    // Text path
+    const auto attach_path_node = [&](const skjson::ObjectValue* jpath) -> sk_sp<sksg::Path> {
+        if (!jpath) {
+            return nullptr;
+        }
+
+        const auto mask_index = ParseDefault((*jpath)["m"], std::numeric_limits<size_t>::max());
+        const skjson::ArrayValue* jmasks = jlayer["masksProperties"];
+        if (!jmasks || mask_index >= jmasks->size()) {
+            abuilder->log(Logger::Level::kWarning, jpath,
+                          "Ignoring invalid text path index: %d", mask_index);
+            return nullptr;
+        }
+
+        const skjson::ObjectValue* mask = (*jmasks)[mask_index];
+        if (!mask) {
+            return nullptr;
+        }
+
+        auto path_adapter = PathAdapter::Make((*mask)["pt"], *abuilder);
+        if (!path_adapter) {
+            return nullptr;
+        }
+        adapter->attachDiscardableAdapter(path_adapter);
+
+        adapter->bind(*abuilder, (*jpath)["f"], &adapter->fPathFMargin);
+        adapter->bind(*abuilder, (*jpath)["l"], &adapter->fPathLMargin);
+
+        // TODO: these appear to be animatable in AE, but not in json
+        adapter->fPathPerpendicular = ParseDefault((*jpath)["p"], 1.0f);
+        adapter->fPathReverse       = ParseDefault((*jpath)["r"], 0.0f);
+
+        return path_adapter->node();
+    };
+
+    adapter->fPathNode = attach_path_node((*jt)["p"]);
 
     abuilder->dispatchTextProperty(adapter);
 
@@ -549,5 +594,4 @@ void TextAdapter::adjustLineProps(const TextAnimator::ModulatorBuffer& buf,
     }
 }
 
-} // namespace internal
-} // namespace skottie
+} // namespace skottie::internal

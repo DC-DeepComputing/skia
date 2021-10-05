@@ -20,6 +20,7 @@
 #include "modules/skottie/include/ExternalLayer.h"
 #include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skottie/src/Composition.h"
+#include "modules/skottie/src/PathAdapter.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
@@ -145,6 +146,10 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachOpacity(const skjson::ObjectValu
     }
 
     return adapter->node();
+}
+
+sk_sp<sksg::Path> AnimationBuilder::attachPath(const skjson::Value& jpath) const {
+    return this->attachDiscardableAdapter<PathAdapter>(jpath, *this);
 }
 
 sk_sp<sksg::RenderNode> AnimationBuilder::attachBlendMode(const skjson::ObjectValue& jobject,

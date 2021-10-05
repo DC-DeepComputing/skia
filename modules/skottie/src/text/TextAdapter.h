@@ -22,6 +22,7 @@ class BlurImageFilter;
 class Group;
 template <typename T>
 class Matrix;
+class Path;
 } // namespace sksg
 
 namespace skottie {
@@ -107,8 +108,14 @@ private:
         mutable TextValue fPrevValue;
     };
 
-    TextValueTracker fText;
-    Vec2Value        fGroupingAlignment = {0,0};
+    TextValueTracker  fText;
+    Vec2Value         fGroupingAlignment = {0,0};
+
+    sk_sp<sksg::Path> fPathNode;
+    ScalarValue       fPathFMargin       = 0,
+                      fPathLMargin       = 0,
+                      fPathPerpendicular = 0,
+                      fPathReverse       = 0;
 
     bool             fHasBlurAnimator     : 1,
                      fRequiresAnchorPoint : 1;
