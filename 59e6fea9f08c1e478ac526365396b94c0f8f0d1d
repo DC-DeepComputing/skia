@@ -360,6 +360,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d04d2386_93f1fa28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-05T16:59:49Z",
+      "side": 1,
+      "message": "Be advised: we looked at making the full complement of swizzle functions for DSL and it was thousands of lines of auto-generated code. We eventually decided against it.\nOur space was much bigger than yours though, because we allowed repeated components and 0/1 constant components.",
+      "parentUuid": "9ee2ce21_dbb7f94c",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcb63b87_7718216c",
         "filename": "include/private/SkVx.h",
         "patchSetId": 2
