@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53f7f81_474ce63a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-05T15:58:26Z",
+      "side": 1,
+      "message": "Looks like GN is working properly with Flutter with this change, PTAL.",
+      "revId": "e99d3192e61ff3d72fc270f4f2346b3757564934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
