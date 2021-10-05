@@ -1631,6 +1631,11 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
 
     *initialState = set_initial_texture_params(this->glInterface(), GR_GL_TEXTURE_2D);
 
+    // Set KHR Debug label.
+    if (this->glCaps().debugSupport()) {
+        const char* label = "Skia";
+        this->glInterface()->fFunctions.fObjectLabel(GR_GL_TEXTURE, id, -1, label);
+    }
     return id;
 }
 
@@ -1690,6 +1695,11 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         }
     }
     if (success) {
+        // Set KHR Debug label.
+        if (this->glCaps().debugSupport()) {
+            const char* label = "Skia";
+            this->glInterface()->fFunctions.fObjectLabel(GR_GL_TEXTURE, id, -1, label);
+        }
         return id;
     }
     GL_CALL(DeleteTextures(1, &id));
