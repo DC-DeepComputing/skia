@@ -290,6 +290,14 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = []string{"dawn"}
 		}
 
+		// Graphite bot *only* runs the grmtl config
+		if b.extraConfig("Graphite") {
+		    // Oddly enough yuv420_odd_dim_repeat doesn't crash
+			skip("_", "gm", "_", "yuv420_odd_dim")
+			skip("_", "gm", "_", "encode-alpha-jpeg")
+			configs = []string{"grmtl"}
+		}
+
 		// ANGLE bot *only* runs the angle configs
 		if b.extraConfig("ANGLE") {
 			configs = []string{"angle_d3d11_es2",
@@ -564,8 +572,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		removeFromArgs("colorImage")
 	}
 
-	if b.matchExtraConfig("DDL", "PDF") {
-		// The DDL and PDF bots just render the large skps and the gms
+	if b.matchExtraConfig("DDL", "PDF", "Graphite") {
+		// The DDL, PDF and Graphite bots just render the large skps and the gms
 		removeFromArgs("tests")
 		removeFromArgs("image")
 		removeFromArgs("colorImage")
