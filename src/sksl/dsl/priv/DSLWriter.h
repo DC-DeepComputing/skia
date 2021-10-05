@@ -246,6 +246,8 @@ public:
         return Instance().fSettings.fDSLMarkVarsDeclared;
     }
 
+    static void CopyIntrinsicIfNeeded(const FunctionDeclaration& function);
+
     /**
      * Forwards any pending errors to the DSL ErrorReporter.
      */
