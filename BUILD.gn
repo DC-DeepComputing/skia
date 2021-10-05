@@ -1357,6 +1357,9 @@ skia_component("skia") {
   }
 
   if (is_mac) {
+    public += [
+      "include/ports/SkCFObject.h",
+    ]
     sources += [
       "src/ports/SkDebug_stdio.cpp",
       "src/ports/SkImageEncoder_CG.cpp",
@@ -1369,6 +1372,9 @@ skia_component("skia") {
   }
 
   if (is_ios) {
+    public += [
+      "include/ports/SkCFObject.h",
+    ]
     sources += [
       "src/ports/SkDebug_stdio.cpp",
       "src/ports/SkImageEncoder_CG.cpp",
