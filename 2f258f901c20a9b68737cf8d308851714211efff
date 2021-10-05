@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ac951a_a2f1efd0",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-05T20:21:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30daa1d1_cb7800d6",
+      "range": {
+        "startLine": 875,
+        "startChar": 16,
+        "endLine": 875,
+        "endChar": 56
+      },
+      "revId": "2f258f901c20a9b68737cf8d308851714211efff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5972e05_9bdbda66",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-10-05T14:53:42Z",
       "side": 1,
       "message": "This gives us side effects outside of the FunctionCall. As much as possible, I\u0027d like IRNodes to avoid making changes outside of their own IRNode; it makes program generation a lot easier to reason about. I also want to avoid IRNodes calling back into DSLWriter if possible--keeping the dependency graph lines going in one direction also helps us humans deal with cognitive load when reasoning about behavior :)\n\nBrian and I happened to both be here today and so we noodled through this problem a bit. We think it might be possible to do these things in the function finalization pass. That would make it so we wouldn\u0027t need to rely on DSLWriter at all inside FunctionCall. We could sort that out in its own CL and then this code would be side-effect-free. What do you think?\n\n(Technically, to play devil\u0027s advocate, this moves the side effects into FunctionDefinition::Convert::Finalizer--it doesn\u0027t get rid of them entirely. Still though, I think we have a more natural expectation that function finalization will cause big changes to happen, whereas just assembling a FunctionCall expression feels like it should be simple and idempotent.)",
+      "range": {
+        "startLine": 945,
+        "startChar": 0,
+        "endLine": 953,
+        "endChar": 0
+      },
+      "revId": "2f258f901c20a9b68737cf8d308851714211efff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f439d44_d48b3aa5",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-05T20:21:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5972e05_9bdbda66",
       "range": {
         "startLine": 945,
         "startChar": 0,
