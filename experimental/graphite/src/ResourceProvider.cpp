@@ -9,6 +9,7 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/RenderPipeline.h"
+#include "experimental/graphite/src/Texture.h"
 
 namespace skgpu {
 
@@ -57,5 +58,10 @@ RenderPipeline* ResourceProvider::RenderPipelineCache::refPipeline(
     }
     return (*entry)->fPipeline.get();
 }
+
+sk_sp<Texture> ResourceProvider::findOrCreateTexture(SkISize dimensions, const TextureInfo& info) {
+    return this->createTexture(dimensions, info);
+}
+
 
 } // namespace skgpu

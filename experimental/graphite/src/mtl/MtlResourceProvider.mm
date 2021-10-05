@@ -9,6 +9,7 @@
 
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
+#include "experimental/graphite/src/mtl/MtlTexture.h"
 
 namespace skgpu::mtl {
 
@@ -23,5 +24,11 @@ const Gpu* ResourceProvider::mtlGpu() {
 std::unique_ptr<skgpu::CommandBuffer> ResourceProvider::createCommandBuffer() {
     return CommandBuffer::Make(this->mtlGpu()->queue());
 }
+
+sk_sp<skgpu::Texture> ResourceProvider::createTexture(SkISize dimensions,
+                                                      const skgpu::TextureInfo& info) {
+    return Texture::Make(fGpu, dimensions, info);
+}
+
 
 } // namespace skgpu::mtl
