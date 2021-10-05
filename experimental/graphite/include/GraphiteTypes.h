@@ -140,8 +140,6 @@ enum class Protected : bool {
     kYes = true,
 };
 
-
-
 } // namespace skgpu
 
 #endif // skgpu_GraphiteTypes_DEFINED

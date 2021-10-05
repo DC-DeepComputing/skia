@@ -28,6 +28,8 @@ public:
     std::unique_ptr<skgpu::CommandBuffer> createCommandBuffer() override;
 
 private:
+    sk_sp<skgpu::Texture> createTexture(SkISize, const skgpu::TextureInfo&) override;
+
     const Gpu* fGpu;
 };
 

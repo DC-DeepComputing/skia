@@ -9,6 +9,7 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/Pipeline.h"
+#include "experimental/graphite/src/Texture.h"
 
 namespace skgpu {
 
@@ -27,5 +28,10 @@ Pipeline* ResourceProvider::findOrCreatePipeline(const PipelineDesc& desc) {
 
     return pso;
 }
+
+sk_sp<Texture> ResourceProvider::findOrCreateTexture(SkISize dimensions, const TextureInfo& info) {
+    return this->createTexture(dimensions, info);
+}
+
 
 } // namespace skgpu
