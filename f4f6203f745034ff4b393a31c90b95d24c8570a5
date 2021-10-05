@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ba2329_d22e0252",
+        "filename": "tests/sksl/errors/PrivateTypes.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-05T17:07:01Z",
+      "side": 0,
+      "message": "Removing this error is actually an improvement (the $mat line above is the real issue)",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 42
+      },
+      "revId": "f4f6203f745034ff4b393a31c90b95d24c8570a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
