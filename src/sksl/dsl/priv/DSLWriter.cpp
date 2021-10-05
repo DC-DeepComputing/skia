@@ -252,6 +252,36 @@ void DSLWriter::MarkDeclared(DSLVarBase& var) {
     var.fDeclared = true;
 }
 
+void DSLWriter::CopyIntrinsicIfNeeded(const FunctionDeclaration& function) {
+    if (const ProgramElement* found =
+            Context().fIntrinsics->findAndInclude(function.description())) {
+        const FunctionDefinition& original = found->as<FunctionDefinition>();
+
+        // Sort the referenced intrinsics into a consistent order; otherwise our output will become
+        // non-deterministic.
+        std::vector<const FunctionDeclaration*> intrinsics(original.referencedIntrinsics().begin(),
+                                                           original.referencedIntrinsics().end());
+        std::sort(intrinsics.begin(), intrinsics.end(),
+                  [](const FunctionDeclaration* a, const FunctionDeclaration* b) {
+                      if (a->isBuiltin() != b->isBuiltin()) {
+                          return a->isBuiltin() < b->isBuiltin();
+                      }
+                      if (a->fLine != b->fLine) {
+                          return a->fLine < b->fLine;
+                      }
+                      if (a->name() != b->name()) {
+                          return a->name() < b->name();
+                      }
+                      return a->description() < b->description();
+                  });
+        for (const FunctionDeclaration* f : intrinsics) {
+            CopyIntrinsicIfNeeded(*f);
+        }
+
+        IRGenerator().fSharedElements->push_back(found);
+    }
+}
+
 void DSLWriter::ReportErrors(PositionInfo pos) {
     GetErrorReporter().reportPendingErrors(pos);
 }
