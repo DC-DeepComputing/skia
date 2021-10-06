@@ -23,7 +23,8 @@ sk_sp<skgpu::Gpu> Gpu::Make(const BackendContext& context) {
 Gpu::Gpu(sk_cfp<id<MTLDevice>> device, sk_cfp<id<MTLCommandQueue>> queue, sk_sp<const Caps> caps)
     : skgpu::Gpu(std::move(caps))
     , fDevice(std::move(device))
-    , fQueue(std::move(queue)) {
+    , fQueue(std::move(queue))
+    , fResourceProvider(this) {
 }
 
 Gpu::~Gpu() {

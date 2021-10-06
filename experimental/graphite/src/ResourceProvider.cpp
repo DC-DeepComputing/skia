@@ -14,23 +14,24 @@
 namespace skgpu {
 
 ResourceProvider::ResourceProvider(const Gpu* gpu) : fGpu(gpu) {
+    fRenderPipelineCache.reset(new RenderPipelineCache(this));
 }
 
 ResourceProvider::~ResourceProvider() {
     fRenderPipelineCache.release();
 }
 
-RenderPipeline* ResourceProvider::findOrCreateRenderPipeline(const RenderPipelineDesc& desc) {
+sk_sp<RenderPipeline> ResourceProvider::findOrCreateRenderPipeline(const RenderPipelineDesc& desc) {
     return fRenderPipelineCache->refPipeline(desc);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct ResourceProvider::RenderPipelineCache::Entry {
-    Entry(RenderPipeline* pipeline)
-            : fPipeline(pipeline) {}
+    Entry(sk_sp<RenderPipeline> pipeline)
+            : fPipeline(std::move(pipeline)) {}
 
-    std::unique_ptr<RenderPipeline> fPipeline;
+    sk_sp<RenderPipeline> fPipeline;
 };
 
 ResourceProvider::RenderPipelineCache::RenderPipelineCache(ResourceProvider* resourceProvider)
@@ -45,18 +46,19 @@ void ResourceProvider::RenderPipelineCache::release() {
     fMap.reset();
 }
 
-RenderPipeline* ResourceProvider::RenderPipelineCache::refPipeline(
+sk_sp<RenderPipeline> ResourceProvider::RenderPipelineCache::refPipeline(
         const RenderPipelineDesc& desc) {
     std::unique_ptr<Entry>* entry = fMap.find(desc);
 
     if (!entry) {
-        RenderPipeline* pipeline = fResourceProvider->onCreateRenderPipeline(desc);
+        sk_sp<RenderPipeline> pipeline = fResourceProvider->onCreateRenderPipeline(desc);
         if (!pipeline) {
+            SkDebugf("wtf\n");
            return nullptr;
         }
-        entry = fMap.insert(desc, std::unique_ptr<Entry>(new Entry(pipeline)));
+        entry = fMap.insert(desc, std::unique_ptr<Entry>(new Entry(std::move(pipeline))));
     }
-    return (*entry)->fPipeline.get();
+    return (*entry)->fPipeline;
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(SkISize dimensions, const TextureInfo& info) {

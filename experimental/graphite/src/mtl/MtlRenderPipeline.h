@@ -10,16 +10,28 @@
 
 #include "experimental/graphite/src/RenderPipeline.h"
 
+#include "include/ports/SkCFObject.h"
+
 #import <Metal/Metal.h>
 
+namespace skgpu {
+class RenderPipeline;
+class RenderPipelineDesc;
+} // namespace skgpu
+
 namespace skgpu::mtl {
+class Gpu;
 
 class RenderPipeline final : public skgpu::RenderPipeline {
 public:
-    RenderPipeline();
+    static sk_sp<RenderPipeline> Make(const Gpu*, const skgpu::RenderPipelineDesc&);
     ~RenderPipeline() override {}
 
 private:
+    RenderPipeline(sk_cfp<id<MTLRenderPipelineState>> pso)
+        : fPipelineState(std::move(pso)) {}
+
+    sk_cfp<id<MTLRenderPipelineState>> fPipelineState;
 };
 
 } // namespace skgpu::mtl

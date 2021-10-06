@@ -25,14 +25,14 @@ public:
     virtual ~ResourceProvider();
 
     virtual std::unique_ptr<CommandBuffer> createCommandBuffer() { return nullptr; }
-    RenderPipeline* findOrCreateRenderPipeline(const RenderPipelineDesc&);
+    sk_sp<RenderPipeline> findOrCreateRenderPipeline(const RenderPipelineDesc&);
 
     sk_sp<Texture> findOrCreateTexture(SkISize, const TextureInfo&);
 
 protected:
     ResourceProvider(const Gpu* gpu);
 
-    virtual RenderPipeline* onCreateRenderPipeline(const RenderPipelineDesc&) {
+    virtual sk_sp<RenderPipeline> onCreateRenderPipeline(const RenderPipelineDesc&) {
         return nullptr;
     }
 
@@ -47,7 +47,7 @@ private:
         ~RenderPipelineCache();
 
         void release();
-        RenderPipeline* refPipeline(const RenderPipelineDesc&);
+        sk_sp<RenderPipeline> refPipeline(const RenderPipelineDesc&);
 
     private:
         struct Entry;

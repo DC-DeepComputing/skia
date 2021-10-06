@@ -14,6 +14,7 @@
 
 #include "experimental/graphite/include/mtl/MtlBackendContext.h"
 #include "experimental/graphite/src/mtl/MtlCaps.h"
+#include "experimental/graphite/src/mtl/MtlResourceProvider.h"
 
 #import <Metal/Metal.h>
 
@@ -34,6 +35,9 @@ private:
 
     sk_cfp<id<MTLDevice>> fDevice;
     sk_cfp<id<MTLCommandQueue>> fQueue;
+
+    // should be in base class as std::unique_ptr?
+    ResourceProvider fResourceProvider;
 };
 
 } // namespace skgpu::mtl
