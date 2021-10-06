@@ -63,6 +63,30 @@
       },
       "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2d0dd70_0ef0156d",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-06T23:42:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "20fe0832_1af60b34",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
