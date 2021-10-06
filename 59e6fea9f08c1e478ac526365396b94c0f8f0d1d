@@ -376,6 +376,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2b2e712_ee89bf86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T22:27:53Z",
+      "side": 1,
+      "message": "I\u0027m only adding swizzles that can be done in 1 cycle on NEON. That will help guide us in setting up data that can swizzled efficiently, if necessary.\n\nDone",
+      "parentUuid": "d04d2386_93f1fa28",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47e1b4bd_cfb4fc86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T22:27:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d04d2386_93f1fa28",
+      "revId": "59e6fea9f08c1e478ac526365396b94c0f8f0d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb63b87_7718216c",
