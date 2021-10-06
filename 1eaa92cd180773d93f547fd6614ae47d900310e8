@@ -16,6 +16,29 @@
       "message": "Patch 12 is ready to go on my end. PTAL",
       "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb66018a_69a2df57",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-06T22:49:15Z",
+      "side": 1,
+      "message": "Could we create a SkVxScalarTest.cpp file to do this automatically?\n\n#define SKNX_NO_SIMD\n#include \"tests/SkVxTest.cpp\"\n\nWe might also need to do some token-pasting trick to make the test names distinct, or the linker might be upset.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
