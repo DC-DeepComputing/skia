@@ -51,11 +51,19 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
     //            }
     //        ]
     //    },
-    //    "m": { // "more options"
+    //    "m": { // more options
     //           "g": 1,     // Anchor Point Grouping
     //           "a": {...}  // Grouping Alignment
     //         },
-    //    "p": {}  // "path options" (TODO)
+    //    "p": { // path options
+    //           "a": 0,   // force alignment
+    //           "f": {},  // first margin
+    //           "l": {},  // last margin
+    //           "m": 1,   // mask index
+    //           "p": 1,   // perpendicular
+    //           "r": 0    // reverse path
+    //         }
+
     // },
 
     const skjson::ObjectValue* jt = jlayer["t"];
@@ -100,6 +108,42 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
             }
         }
     }
+
+    // Optional text path
+    const auto attach_path = [&](const skjson::ObjectValue* jpath) -> std::unique_ptr<ShapeValue> {
+        if (!jpath) {
+            return nullptr;
+        }
+
+        // the actual path is identified as an index in the layer mask stack
+        const auto mask_index = ParseDefault((*jpath)["m"], std::numeric_limits<size_t>::max());
+        const skjson::ArrayValue* jmasks = jlayer["masksProperties"];
+        if (!jmasks || mask_index >= jmasks->size()) {
+            abuilder->log(Logger::Level::kWarning, jpath,
+                          "Ignoring invalid text path index: %d", mask_index);
+            return nullptr;
+        }
+
+        const skjson::ObjectValue* mask = (*jmasks)[mask_index];
+        if (!mask) {
+            return nullptr;
+        }
+
+        auto path = std::make_unique<ShapeValue>();
+        adapter->bind(*abuilder, (*mask)["pt"], path.get());
+        adapter->bind(*abuilder, (*jpath)["f"], &adapter->fPathFMargin);
+        adapter->bind(*abuilder, (*jpath)["l"], &adapter->fPathLMargin);
+
+        // TODO: these appear to be animatable in AE, but not in json
+        adapter->fPathForceAlign    = ParseDefault((*jpath)["a"], 0.0f);
+        adapter->fPathPerpendicular = ParseDefault((*jpath)["p"], 1.0f);
+        adapter->fPathReverse       = ParseDefault((*jpath)["r"], 0.0f);
+
+        static_cast<SkPath>(*path).dump();
+        return path;
+    };
+
+    adapter->fPath = attach_path((*jt)["p"]);
 
     abuilder->dispatchTextProperty(adapter);
 
