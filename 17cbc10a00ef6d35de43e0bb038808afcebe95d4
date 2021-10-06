@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "128eb70e_ae8fc68f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-06T15:27:58Z",
+      "side": 1,
+      "message": "Taking the matrix in this function (and storing it in fMatrixStorage) is just in service of the assert in update, right? On line 372, old.hasPerspective() should also be equivalent to fUsePersp, correct? (And that\u0027s actually the more important equivalence, as that impacts which stage we added).\n\nSo: Does it make sense to remove the newly added matrix parameter here, and change 372 to just assert that fUsePersp \u003d\u003d matrix.hasPerspective() ?",
+      "range": {
+        "startLine": 358,
+        "startChar": 8,
+        "endLine": 358,
+        "endChar": 36
+      },
+      "revId": "17cbc10a00ef6d35de43e0bb038808afcebe95d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
