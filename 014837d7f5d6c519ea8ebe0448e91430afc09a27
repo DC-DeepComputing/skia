@@ -22,6 +22,30 @@
       },
       "revId": "014837d7f5d6c519ea8ebe0448e91430afc09a27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1925f41b_83a99b6f",
+        "filename": "experimental/graphite/src/mtl/MtlUtils.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-06T19:05:56Z",
+      "side": 1,
+      "message": "In our min spec, yes. I\u0027ll figure out how to let developers know our minimum supported target then come back and remove this.",
+      "parentUuid": "3c6a7247_23da8749",
+      "range": {
+        "startLine": 64,
+        "startChar": 14,
+        "endLine": 64,
+        "endChar": 54
+      },
+      "revId": "014837d7f5d6c519ea8ebe0448e91430afc09a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
