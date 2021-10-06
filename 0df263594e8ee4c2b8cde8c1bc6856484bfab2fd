@@ -43,6 +43,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f6d5f03_8882c2ad",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T13:54:33Z",
+      "side": 1,
+      "message": "Yep - I was thinking this too. If Shape just is whatever it is when it was created then it seems like things would get simpler.",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8910963_2f5c2d2e",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T13:54:33Z",
+      "side": 1,
+      "message": "Do we really want to allow writeable access to the internal types ?!",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a22885c2_d51ac492",
         "filename": "experimental/graphite/src/geom/Shape.h",
         "patchSetId": 1
