@@ -32,7 +32,7 @@ public:
 protected:
     ResourceProvider(const Gpu* gpu);
 
-    virtual RenderPipeline* onCreateRenderPipeline(const RenderPipelineDesc&) {
+    virtual sk_sp<RenderPipeline> onCreateRenderPipeline(const RenderPipelineDesc&) {
         return nullptr;
     }
 

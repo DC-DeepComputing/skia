@@ -11,11 +11,13 @@
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 #include "experimental/graphite/src/mtl/MtlTexture.h"
 
+#include "experimental/graphite/src/RenderPipelineDesc.h"
+#include "experimental/graphite/src/mtl/MtlRenderPipeline.h"
+
 namespace skgpu::mtl {
 
 ResourceProvider::ResourceProvider(const skgpu::Gpu* gpu)
-    : skgpu::ResourceProvider(gpu) {
-}
+    : skgpu::ResourceProvider(gpu) {}
 
 const Gpu* ResourceProvider::mtlGpu() {
     return static_cast<const Gpu*>(fGpu);
@@ -23,6 +25,11 @@ const Gpu* ResourceProvider::mtlGpu() {
 
 std::unique_ptr<skgpu::CommandBuffer> ResourceProvider::createCommandBuffer() {
     return CommandBuffer::Make(this->mtlGpu()->queue());
+}
+
+sk_sp<skgpu::RenderPipeline> ResourceProvider::onCreateRenderPipeline(
+            const RenderPipelineDesc& desc) {
+    return RenderPipeline::Make(this->mtlGpu(), desc);
 }
 
 sk_sp<skgpu::Texture> ResourceProvider::createTexture(SkISize dimensions,

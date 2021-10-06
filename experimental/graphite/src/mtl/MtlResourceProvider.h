@@ -30,6 +30,7 @@ public:
 private:
     const Gpu* mtlGpu();
 
+    sk_sp<skgpu::RenderPipeline> onCreateRenderPipeline(const RenderPipelineDesc&) override;
     sk_sp<skgpu::Texture> createTexture(SkISize, const skgpu::TextureInfo&) override;
 };
 
