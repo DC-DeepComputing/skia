@@ -16,6 +16,24 @@
       "message": "nit: line break @100",
       "revId": "200050f29101f4a69ac5a31423b87c3320d28bae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb89511b_f885abb3",
+        "filename": "modules/skottie/src/Composition.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-10-06T17:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c35c1ee_98514383",
+      "revId": "200050f29101f4a69ac5a31423b87c3320d28bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
