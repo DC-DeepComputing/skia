@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c227dc_df17f386",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-06T13:26:12Z",
+      "side": 1,
+      "message": "LGTM assuming include is fixed.",
+      "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0944054_c5794b86",
@@ -14,6 +31,29 @@
       "writtenOn": "2021-10-06T13:23:24Z",
       "side": 1,
       "message": "Just GraphiteTypes.h ?",
+      "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96e66796_8dab1f2c",
+        "filename": "experimental/graphite/src/mtl/MtlUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-06T13:26:12Z",
+      "side": 1,
+      "message": "Nit: change",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 39
+      },
       "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
