@@ -37,6 +37,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f737d86_432b8ee0",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T13:26:28Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c92834_7d9e9b24",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T13:26:28Z",
+      "side": 1,
+      "message": "Can we live w/o this include ?",
+      "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83ae9af9_46c07da4",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T13:26:28Z",
+      "side": 1,
+      "message": "Will we ever have a protected depth/stencil texture ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 58,
+        "endLine": 30,
+        "endChar": 67
+      },
+      "revId": "df336208c20315d06834e6dee89fe4b436f28d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96e66796_8dab1f2c",
         "filename": "experimental/graphite/src/mtl/MtlUtils.mm",
         "patchSetId": 1
