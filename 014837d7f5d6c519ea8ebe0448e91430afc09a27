@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6a7247_23da8749",
+        "filename": "experimental/graphite/src/mtl/MtlUtils.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-06T18:58:57Z",
+      "side": 1,
+      "message": "will this always be available?",
+      "range": {
+        "startLine": 64,
+        "startChar": 14,
+        "endLine": 64,
+        "endChar": 54
+      },
+      "revId": "014837d7f5d6c519ea8ebe0448e91430afc09a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
