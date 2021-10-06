@@ -224,6 +224,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e78382d1_7abaddbe",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "Have removed the polygon type for now.",
+      "parentUuid": "65518fc3_ae86029a",
+      "range": {
+        "startLine": 31,
+        "startChar": 31,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "679b45ab_2498d626",

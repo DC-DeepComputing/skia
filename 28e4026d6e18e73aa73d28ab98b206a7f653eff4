@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86636417_ba98ee12",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "oops, I meant to delete that after I removed mutability",
+      "parentUuid": "b3d7af81_220837af",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dad787df_f51d5e72",
@@ -69,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c850c9_8c0f4b02",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "polygon type deleted",
+      "parentUuid": "dad787df_f51d5e72",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be22efe4_f4f4e4e0",
@@ -82,6 +118,30 @@
       "writtenOn": "2021-10-06T18:28:10Z",
       "side": 1,
       "message": "Update this part ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 71
+      },
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d554bebd_5eacc1f3",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be22efe4_f4f4e4e0",
       "range": {
         "startLine": 23,
         "startChar": 20,
@@ -115,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "714ae380_eb10ce24",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "I think it\u0027s still fine, since it\u0027s saying Shape does not simplify when you call setRRect() and it could have been a rect instead.",
+      "parentUuid": "a14270a0_58d20af6",
+      "range": {
+        "startLine": 56,
+        "startChar": 60,
+        "endLine": 58,
+        "endChar": 38
+      },
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5d71d2b_74143c59",
@@ -128,6 +212,24 @@
       "writtenOn": "2021-10-06T18:28:10Z",
       "side": 1,
       "message": "Don\u0027t know if we care about setting \u0027fVertexCount\u0027 back to 0 here.",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff87d44f_b53615f0",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T19:30:46Z",
+      "side": 1,
+      "message": "polygons removed.",
+      "parentUuid": "c5d71d2b_74143c59",
       "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
