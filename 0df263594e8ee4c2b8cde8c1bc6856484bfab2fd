@@ -3,6 +3,92 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3873e673_c5cf9cf0",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T14:30:15Z",
+      "side": 1,
+      "message": "I guess, why doesn\u0027t this just return the number of vertices required if it can be a polygon of \u003c kMaxVertexCount vertices and 0 otherwise?",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfa9d198_aa0f9057",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T14:30:15Z",
+      "side": 1,
+      "message": "anonymous namespace ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 5,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e07ec420_a9bf19a0",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T14:30:15Z",
+      "side": 1,
+      "message": "or too big",
+      "range": {
+        "startLine": 101,
+        "startChar": 24,
+        "endLine": 101,
+        "endChar": 30
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0abd177f_abfc815c",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T14:30:15Z",
+      "side": 1,
+      "message": "doesn\u0027t",
+      "range": {
+        "startLine": 121,
+        "startChar": 86,
+        "endLine": 121,
+        "endChar": 92
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "679b45ab_2498d626",
         "filename": "experimental/graphite/src/geom/Shape.h",
         "patchSetId": 1
