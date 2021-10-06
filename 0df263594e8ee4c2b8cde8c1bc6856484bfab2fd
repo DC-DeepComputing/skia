@@ -89,6 +89,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7bf6779_a0ea16d1",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T17:15:39Z",
+      "side": 1,
+      "message": "Does this have to mean convex? Couldn\u0027t we check: \"shape.type() \u003d\u003d kPolygon \u0026\u0026 shape.convex()\"?\n\nI\u0027m also wondering what\u0027s the advantage of having a polygon in particular? Is it avoiding the malloc in building SkPath? What if we just had the ability to store paths locally that had 6 points or less?",
+      "range": {
+        "startLine": 31,
+        "startChar": 31,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "679b45ab_2498d626",
         "filename": "experimental/graphite/src/geom/Shape.h",
         "patchSetId": 1
@@ -146,6 +169,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "efabcef0_92e47014",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T17:15:39Z",
+      "side": 1,
+      "message": "I vote to delete this now. Lots of little checks like this are what slowly kills our performance in Ganesh. If you want us to handle something like a rect, call drawRect.",
+      "parentUuid": "1f6d5f03_8882c2ad",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8910963_2f5c2d2e",
         "filename": "experimental/graphite/src/geom/Shape.h",
         "patchSetId": 1
@@ -157,6 +198,24 @@
       "writtenOn": "2021-10-06T13:54:33Z",
       "side": 1,
       "message": "Do we really want to allow writeable access to the internal types ?!",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3cb862_25c57bea",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T17:15:39Z",
+      "side": 1,
+      "message": "Agreed. I would keep this as simple as possible for starters.",
+      "parentUuid": "b8910963_2f5c2d2e",
       "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
