@@ -16,6 +16,120 @@
       "message": "ptal",
       "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3faf4758_e431faed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "ray",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3d7af81_220837af",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "Intentionally here ?",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dad787df_f51d5e72",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "wdyt about disallowing \u0027fVertexCount \u003d\u003d 0\u0027 ?",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be22efe4_f4f4e4e0",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "Update this part ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 71
+      },
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a14270a0_58d20af6",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "update ?",
+      "range": {
+        "startLine": 56,
+        "startChar": 60,
+        "endLine": 58,
+        "endChar": 38
+      },
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5d71d2b_74143c59",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-06T18:28:10Z",
+      "side": 1,
+      "message": "Don\u0027t know if we care about setting \u0027fVertexCount\u0027 back to 0 here.",
+      "revId": "28e4026d6e18e73aa73d28ab98b206a7f653eff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
