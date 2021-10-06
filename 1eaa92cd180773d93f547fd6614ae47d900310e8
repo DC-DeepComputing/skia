@@ -39,6 +39,30 @@
       },
       "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20fe0832_1af60b34",
+        "filename": "tests/SkVxTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-06T23:06:22Z",
+      "side": 1,
+      "message": "I\u0027m not sure if there\u0027s a need. We already have bots that define SKNX_NO_SIMD, so both modes get tested on the waterfall.",
+      "parentUuid": "eb66018a_69a2df57",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1eaa92cd180773d93f547fd6614ae47d900310e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
