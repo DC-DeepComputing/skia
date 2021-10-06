@@ -16,6 +16,29 @@
       "message": "PTAL.",
       "revId": "9671e04b7f809de0dd8b3818d7b7815220815694",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "293a66c6_9ce83881",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-06T18:13:40Z",
+      "side": 1,
+      "message": "We have to create ResourceProvider here because we need a pointer to the Gpu object to pass in. Should we follow the same pattern for Caps, i.e. create it in the constructor rather than Make?",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 56
+      },
+      "revId": "9671e04b7f809de0dd8b3818d7b7815220815694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
