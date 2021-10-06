@@ -39,6 +39,30 @@
       },
       "revId": "07cebf3c43484fbbb183fcfaf1c7664afac44c2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773a2780_89955119",
+        "filename": "src/gpu/effects/GrSkSLFP.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-06T14:20:16Z",
+      "side": 1,
+      "message": "We don\u0027t need its value, but we need its type! This specifies the T for our template.\nI\u0027ll comment out /*val*/.",
+      "parentUuid": "715d751e_132af2c9",
+      "range": {
+        "startLine": 366,
+        "startChar": 32,
+        "endLine": 366,
+        "endChar": 45
+      },
+      "revId": "07cebf3c43484fbbb183fcfaf1c7664afac44c2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
