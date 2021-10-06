@@ -54,6 +54,7 @@ EffectBuilder::EffectBuilderT EffectBuilder::findBuilder(const skjson::ObjectVal
         { "ADBE Tritone"                , &EffectBuilder::attachTritoneEffect            },
         { "ADBE Venetian Blinds"        , &EffectBuilder::attachVenetianBlindsEffect     },
         { "CC Sphere"                   , &EffectBuilder::attachSphereEffect             },
+        { "CC Toner"                    , &EffectBuilder::attachThresholdEffect          },
     };
 
     const skjson::StringValue* mn = jeffect["mn"];
