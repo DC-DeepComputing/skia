@@ -188,8 +188,8 @@ class DefaultFlavor(object):
 
     if 'ASAN' in extra_tokens:
       os = self.m.vars.builder_cfg.get('os', '')
-      if 'Mac' in os or 'Win' in os:
-        # Mac and Win don't support detect_leaks.
+      if 'Win' in os:
+        # Windows don't support detect_leaks.
         env['ASAN_OPTIONS'] = 'symbolize=1'
       else:
         env['ASAN_OPTIONS'] = 'symbolize=1 detect_leaks=1'
