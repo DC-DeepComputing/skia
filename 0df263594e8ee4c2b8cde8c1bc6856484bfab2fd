@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a57270_162aad40",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "this is deleted since it was only used by simplify(), but I like that approach so will remember it if we bring simplification back.",
+      "parentUuid": "3873e673_c5cf9cf0",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfa9d198_aa0f9057",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-06T14:30:15Z",
       "side": 1,
       "message": "anonymous namespace ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 5,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "872137af_6793281c",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfa9d198_aa0f9057",
       "range": {
         "startLine": 74,
         "startChar": 5,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "363cc2e8_0952c1a2",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e07ec420_a9bf19a0",
+      "range": {
+        "startLine": 101,
+        "startChar": 24,
+        "endLine": 101,
+        "endChar": 30
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0abd177f_abfc815c",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35fe9277_94622c3c",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "n/a",
+      "parentUuid": "0abd177f_abfc815c",
+      "range": {
+        "startLine": 121,
+        "startChar": 86,
+        "endLine": 121,
+        "endChar": 92
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7bf6779_a0ea16d1",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-10-06T17:15:39Z",
       "side": 1,
       "message": "Does this have to mean convex? Couldn\u0027t we check: \"shape.type() \u003d\u003d kPolygon \u0026\u0026 shape.convex()\"?\n\nI\u0027m also wondering what\u0027s the advantage of having a polygon in particular? Is it avoiding the malloc in building SkPath? What if we just had the ability to store paths locally that had 6 points or less?",
+      "range": {
+        "startLine": 31,
+        "startChar": 31,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65518fc3_ae86029a",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "To answer your first question about does it have to be convex: no, but I found it simpler to implement. If kPolygon could be non-convex, Shape would either need to cache the result of convexity tests, or kPolygon would be the only type whose convexity has to be re-computed (since SkPath already caches it, and the other types are always convex).\n\nThe main reason I thought a polygon would be useful is that several use cases only really make sense when we know it\u0027s a polygon: HW clip planes, drawing the BSP-split quads for skia_renderer, and potentially tighter covering geometry for path rendering. \n\nIt\u0027s not the easiest to extract and clean up the path data from SkPath (this issue goes away when SkPaths are immutable and we could have SkPathBuilder do a lot of clean up for us). So for now it seemed valuable to be able to check once high up and then keep the simplified data. I suppose we could consider it being an inlined path, but it\u0027s unlikely it could be very big since there\u0027s only 12 floats to work with.\n\nThere is also potential down the road that we tweak the kPolygon type based on how we end up using it, for instance, it might become kPerspectiveQuad and only store 4 (x,y,w)\u0027s so that a device-space quadrilateral can be defined w/o a transform similar to GrQuad.",
+      "parentUuid": "a7bf6779_a0ea16d1",
       "range": {
         "startLine": 31,
         "startChar": 31,
@@ -150,6 +264,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04339979_959e6ffe",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "explicitly deleted the move operator and ctor.",
+      "parentUuid": "679b45ab_2498d626",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e99ae67a_f1597bf4",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abf97753_9481063d",
+      "range": {
+        "startLine": 52,
+        "startChar": 34,
+        "endLine": 52,
+        "endChar": 39
+      },
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f6d5f03_8882c2ad",
@@ -180,6 +336,24 @@
       "writtenOn": "2021-10-06T17:15:39Z",
       "side": 1,
       "message": "I vote to delete this now. Lots of little checks like this are what slowly kills our performance in Ganesh. If you want us to handle something like a rect, call drawRect.",
+      "parentUuid": "1f6d5f03_8882c2ad",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef42cdd2_7f849544",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "per offline discussion, I have completely removed the simplify functions. They can either be added back, or owned by Device/Canvas.",
       "parentUuid": "1f6d5f03_8882c2ad",
       "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -216,6 +390,24 @@
       "side": 1,
       "message": "Agreed. I would keep this as simple as possible for starters.",
       "parentUuid": "b8910963_2f5c2d2e",
+      "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5e8bbc4_6fd58530",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-06T17:28:31Z",
+      "side": 1,
+      "message": "removed mutability.",
+      "parentUuid": "9f3cb862_25c57bea",
       "revId": "0df263594e8ee4c2b8cde8c1bc6856484bfab2fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
