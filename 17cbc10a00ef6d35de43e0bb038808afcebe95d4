@@ -22,6 +22,30 @@
       },
       "revId": "17cbc10a00ef6d35de43e0bb038808afcebe95d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ca35971_b8893544",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-06T16:04:52Z",
+      "side": 1,
+      "message": "I\u0027m actually trying to get SkImageStageUpdater and SkTransformShader closer together. I think in the next CL, I can make this a sub class of SkTransformShader.\n\nMy overall aim is to remove the onAppendUpdatableStages machinery.",
+      "parentUuid": "128eb70e_ae8fc68f",
+      "range": {
+        "startLine": 358,
+        "startChar": 8,
+        "endLine": 358,
+        "endChar": 36
+      },
+      "revId": "17cbc10a00ef6d35de43e0bb038808afcebe95d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
