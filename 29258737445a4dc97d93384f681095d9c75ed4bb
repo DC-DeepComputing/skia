@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc9415e0_08afd2b3",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-07T14:52:31Z",
+      "side": 1,
+      "message": "Actually, saving the vector looks cleaner. Changed it",
+      "parentUuid": "78f84fc8_488dd1e8",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 38
+      },
+      "revId": "29258737445a4dc97d93384f681095d9c75ed4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4937ae5d_a6c2457a",
