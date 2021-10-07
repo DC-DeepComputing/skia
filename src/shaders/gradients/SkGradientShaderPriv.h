@@ -78,6 +78,7 @@ protected:
     bool onAsLuminanceColor(SkColor*) const override;
 
     bool onAppendStages(const SkStageRec&) const override;
+    SkUpdatableShader* onUpdatableShader(SkArenaAlloc* alloc) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dstCS,
@@ -132,6 +133,12 @@ public:
     SkTileMode getTileMode() const { return fTileMode; }
 
 private:
+    class TransformShader;
+    skvm::Color makeProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local,
+                            skvm::Color paint, const SkMatrixProvider&, const SkMatrix* localM,
+                            const SkColorInfo& dstCS, skvm::Uniforms* uniforms,
+                            SkArenaAlloc* alloc, const TransformShader* updater) const;
+    bool doStages(const SkStageRec& rec, const TransformShader* updater) const;
     // Reserve inline space for up to 4 stops.
     inline static constexpr size_t kInlineStopCount   = 4;
     inline static constexpr size_t kInlineStorageSize = (sizeof(SkColor4f) + sizeof(SkScalar))

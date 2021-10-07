@@ -130,7 +130,7 @@ private:
                            const SkMatrix& ctmInverse,
                            const SkPoint* dev2,
                            const SkPoint3* dev3,
-                           SkArenaAlloc* outerAlloc) const;
+                           SkArenaAlloc* alloc) const;
 
     void drawPath(const SkPath&,
                   const SkPaint&,

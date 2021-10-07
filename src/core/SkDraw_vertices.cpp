@@ -308,7 +308,7 @@ extern bool gUseSkVMBlitter;
 void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode,
                                const SkPaint& paint, const SkMatrix& ctmInverse,
                                const SkPoint* dev2, const SkPoint3* dev3,
-                               SkArenaAlloc* outerAlloc) const {
+                               SkArenaAlloc* alloc) const {
     SkVerticesPriv info(vertices->priv());
 
     const int vertexCount = info.vertexCount();
@@ -351,146 +351,47 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices, SkBlendMode blendMode
     const bool usePerspective = ctm.hasPerspective();
     // No colors are changing and no texture coordinates are changing, so no updates between
     // triangles are needed. Use SkVM to blit the triangles.
-    if (gUseSkVMBlitter) {
-        SkUpdatableShader* texCoordShader = nullptr;
-        if (texCoords && texCoords != positions) {
-            texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
-            shader = texCoordShader;
-        }
-
-        SkTriColorShader* colorShader = nullptr;
-        SkPMColor4f* dstColors = nullptr;
-        if (colors) {
-            colorShader = outerAlloc->make<SkTriColorShader>(
-                    compute_is_opaque(colors, vertexCount), usePerspective);
-            dstColors = convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc);
-            if (shader) {
-                shader = outerAlloc->make<SkShader_Blend>(
-                        blendMode, sk_ref_sp(colorShader), sk_ref_sp(shader));
-            } else {
-                shader = colorShader;
-            }
-        }
-
-        SkPaint shaderPaint{paint};
-        shaderPaint.setShader(sk_ref_sp(shader));
-        if (auto blitter = SkVMBlitter::Make(
-                fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
-            while (vertProc(&state)) {
-                SkMatrix localM;
-                if (texCoordShader && !(texture_to_matrix(state, positions, texCoords, &localM)
-                                        && texCoordShader->update(SkMatrix::Concat(ctm, localM)))) {
-                    continue;
-                }
-
-                if (colorShader && !colorShader->update(ctmInverse, positions, dstColors,state.f0,
-                                                        state.f1, state.f2)) {
-                    continue;
-                }
-
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
-            }
-            return;
-        }
+    SkUpdatableShader* texCoordShader = nullptr;
+    if (texCoords && texCoords != positions) {
+        texCoordShader = as_SB(shader)->updatableShader(alloc);
+        shader = texCoordShader;
     }
 
-    SkTriColorShader* triShader = nullptr;
-    SkPMColor4f*  dstColors = nullptr;
-
+    SkTriColorShader* colorShader = nullptr;
+    SkPMColor4f* dstColors = nullptr;
     if (colors) {
-        dstColors = convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc);
-        triShader = outerAlloc->make<SkTriColorShader>(compute_is_opaque(colors, vertexCount),
-                                                      usePerspective);
+        colorShader = alloc->make<SkTriColorShader>(
+                compute_is_opaque(colors, vertexCount), usePerspective);
+        dstColors = convert_colors(colors, vertexCount, fDst.colorSpace(), alloc);
         if (shader) {
-            shader = outerAlloc->make<SkShader_Blend>(blendMode,
-                                                      sk_ref_sp(triShader), sk_ref_sp(shader));
+            shader = alloc->make<SkShader_Blend>(
+                    blendMode, sk_ref_sp(colorShader), sk_ref_sp(shader));
         } else {
-            shader = triShader;
+            shader = colorShader;
         }
     }
 
-    SkPaint shaderPaint(paint);
+    SkPaint shaderPaint{paint};
     shaderPaint.setShader(sk_ref_sp(shader));
-
-    if (!texCoords) {    // only tricolor shader
-        if (auto blitter = SkCreateRasterPipelineBlitter(
-                fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader())) {
-            while (vertProc(&state)) {
-                if (triShader &&
-                    !triShader->update(ctmInverse, positions, dstColors,
-                                       state.f0, state.f1, state.f2)) {
-                    continue;
-                }
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
-            }
-        }
-        return;
-    }
-
-    SkRasterPipeline pipeline(outerAlloc);
-    SkStageRec rec = {
-            &pipeline,
-            outerAlloc,
-            fDst.colorType(),
-            fDst.colorSpace(),
-            shaderPaint,
-            nullptr,
-            *fMatrixProvider
-    };
-    if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
-        bool isOpaque = shader->isOpaque();
-        if (triShader) {
-            isOpaque = false;   // unless we want to walk all the colors, and see if they are
-                                // all opaque (and the blend mode will keep them that way
-        }
-
-        // Positions as texCoords? The local matrix is always identity, so update once
-        if (texCoords == positions) {
-            if (!updater->update(ctm)) {
-                return;
-            }
-        }
-
-        if (auto blitter = SkCreateRasterPipelineBlitter(
-                fDst, shaderPaint, pipeline, isOpaque, outerAlloc, fRC->clipShader())) {
-            while (vertProc(&state)) {
-                if (triShader && !triShader->update(ctmInverse, positions, dstColors,
-                                                    state.f0, state.f1, state.f2)) {
-                    continue;
-                }
-
-                SkMatrix localM;
-                if ((texCoords == positions) ||
-                    (texture_to_matrix(state, positions, texCoords, &localM) &&
-                     updater->update(SkMatrix::Concat(ctm, localM)))) {
-                    fill_triangle(state, blitter, *fRC, dev2, dev3);
-                }
-            }
-        }
-    } else {
-        // must rebuild pipeline for each triangle, to pass in the computed ctm
+    SkBlitter* blitter = gUseSkVMBlitter
+                       ? SkVMBlitter::Make(fDst, shaderPaint, *fMatrixProvider, alloc,
+                                           this->fRC->clipShader())
+                       : SkCreateRasterPipelineBlitter(fDst, shaderPaint, *fMatrixProvider,
+                                                       alloc, this->fRC->clipShader());
+    if (blitter) {
         while (vertProc(&state)) {
-            if (triShader && !triShader->update(ctmInverse, positions, dstColors,
-                                                state.f0, state.f1, state.f2)) {
+            SkMatrix localM;
+            if (texCoordShader && !(texture_to_matrix(state, positions, texCoords, &localM)
+                                    && texCoordShader->update(SkMatrix::Concat(ctm, localM)))) {
                 continue;
             }
 
-            SkSTArenaAlloc<2048> innerAlloc;
-
-            const SkMatrixProvider* matrixProvider = fMatrixProvider;
-            SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
-            if (texCoords && (texCoords != positions)) {
-                SkMatrix localM;
-                if (!texture_to_matrix(state, positions, texCoords, &localM)) {
-                    continue;
-                }
-                matrixProvider = preConcatMatrixProvider.init(*matrixProvider, localM);
+            if (colorShader && !colorShader->update(ctmInverse, positions, dstColors,state.f0,
+                                                    state.f1, state.f2)) {
+                continue;
             }
 
-            if (auto blitter = SkCreateRasterPipelineBlitter(
-                    fDst, shaderPaint, *matrixProvider, &innerAlloc, this->fRC->clipShader())) {
-                fill_triangle(state, blitter, *fRC, dev2, dev3);
-            }
+            fill_triangle(state, blitter, *fRC, dev2, dev3);
         }
     }
 }

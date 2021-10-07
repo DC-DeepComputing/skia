@@ -36,7 +36,7 @@ public:
     bool update(const SkMatrix& ctm) const override;
     bool onAppendStages(const SkStageRec& rec) const override;
 
-private:
+protected:
     const SkShaderBase& fShader;
     mutable SkScalar fMatrixStorage[9];
     mutable skvm::Uniform fMatrix;

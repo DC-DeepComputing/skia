@@ -60,7 +60,7 @@ private:
             const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
             skvm::Uniforms* uniforms, const TransformShader* coordShader, SkArenaAlloc*) const;
 
-    bool doStages(const SkStageRec&, TransformShader* = nullptr) const;
+    bool doStages(const SkStageRec&, const TransformShader* = nullptr) const;
 
     sk_sp<SkImage>          fImage;
     const SkSamplingOptions fSampling;

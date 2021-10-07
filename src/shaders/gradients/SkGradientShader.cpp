@@ -17,6 +17,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/shaders/SkTransformShader.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
 #include "src/shaders/gradients/SkGradientShaderPriv.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
@@ -275,21 +276,75 @@ static void init_stop_pos(
     add_stop_color(ctx, stop, Fs, Bs);
 }
 
+class SkGradientShaderBase::TransformShader : public SkTransformShader {
+public:
+    explicit TransformShader(const SkGradientShaderBase& shader, const SkMatrix& ptsToUnit)
+            : SkTransformShader{shader}
+            , fGradientShader{shader}
+            , fPtsToUnit{&ptsToUnit} {}
+
+    skvm::Color onProgram(skvm::Builder* b,
+                          skvm::Coord device, skvm::Coord local, skvm::Color color,
+                          const SkMatrixProvider& matrices, const SkMatrix* localM,
+                          const SkColorInfo& dst,
+                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        return fGradientShader.makeProgram(
+                b, device, local, color, matrices, localM, dst, uniforms, alloc, this);
+    }
+
+    bool onAppendStages(const SkStageRec &rec) const override {
+        return fGradientShader.doStages(rec, this);
+    }
+
+    bool update(const SkMatrix& ctm) const override {
+        if (SkMatrix matrix; this->computeTotalInverse(ctm, nullptr, &matrix)) {
+            matrix.postConcat(*fPtsToUnit);
+            if (!fProcessingAsPerspective) {
+                SkASSERT(!matrix.hasPerspective());
+                if (matrix.hasPerspective()) {
+                    return false;
+                }
+            }
+            //matrix.normalizePerspective();
+            matrix.get9(fMatrixStorage);
+            return true;
+        }
+        return false;
+    }
+
+private:
+    const SkGradientShaderBase& fGradientShader;
+    const SkMatrix* fPtsToUnit;
+};
+
 bool SkGradientShaderBase::onAppendStages(const SkStageRec& rec) const {
+    return this->doStages(rec, nullptr);
+}
+
+SkUpdatableShader* SkGradientShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
+    return alloc->make<TransformShader>(*this, fPtsToUnit);
+}
+
+bool SkGradientShaderBase::doStages(const SkStageRec& rec, const TransformShader* updater) const {
     SkRasterPipeline* p = rec.fPipeline;
     SkArenaAlloc* alloc = rec.fAlloc;
     SkRasterPipeline_DecalTileCtx* decal_ctx = nullptr;
+
 
     SkMatrix matrix;
     if (!this->computeTotalInverse(rec.fMatrixProvider.localToDevice(), rec.fLocalM, &matrix)) {
         return false;
     }
-    matrix.postConcat(fPtsToUnit);
-
-    SkRasterPipeline_<256> postPipeline;
 
     p->append(SkRasterPipeline::seed_shader);
-    p->append_matrix(alloc, matrix);
+    if (updater) {
+        updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
+    } else {
+        matrix.postConcat(fPtsToUnit);
+        p->append_matrix(alloc, matrix);
+    }
+
+    SkRasterPipeline_<256> postPipeline;
     this->appendGradientStages(alloc, p, &postPipeline);
 
     switch(fTileMode) {
@@ -422,18 +477,32 @@ bool SkGradientShaderBase::onAppendStages(const SkStageRec& rec) const {
 
 skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
                                             skvm::Coord device, skvm::Coord local,
-                                            skvm::Color /*paint*/,
+                                            skvm::Color paint,
                                             const SkMatrixProvider& mats, const SkMatrix* localM,
                                             const SkColorInfo& dstInfo,
                                             skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    return this->makeProgram(
+            p, device, local, paint, mats, localM, dstInfo, uniforms, alloc, nullptr);
+}
+
+skvm::Color SkGradientShaderBase::makeProgram(skvm::Builder* p,
+                                              skvm::Coord device, skvm::Coord local,
+                                              skvm::Color /*paint*/,
+                                              const SkMatrixProvider& mats, const SkMatrix* localM,
+                                              const SkColorInfo& dstInfo,
+                                              skvm::Uniforms* uniforms, SkArenaAlloc* alloc,
+                                              const TransformShader* updater) const {
     SkMatrix inv;
     if (!this->computeTotalInverse(mats.localToDevice(), localM, &inv)) {
         return {};
     }
-    inv.postConcat(fPtsToUnit);
-    inv.normalizePerspective();
-
-    local = SkShaderBase::ApplyMatrix(p, inv, local, uniforms);
+    if (updater) {
+        local = updater->applyMatrix(p, mats.localToDevice(), local, uniforms);
+    } else {
+        inv.postConcat(fPtsToUnit);
+        inv.normalizePerspective();
+        local = SkShaderBase::ApplyMatrix(p, inv, local, uniforms);
+    }
 
     skvm::I32 mask = p->splat(~0);
     skvm::F32 t = this->transformT(p,uniforms, local, &mask);

@@ -46,6 +46,8 @@ protected:
 
     SkImage* onIsAImage(SkMatrix* matrix, SkTileMode* mode) const override;
 
+    SkUpdatableShader* onUpdatableShader(SkArenaAlloc* alloc) const override;
+
     bool onAppendStages(const SkStageRec&) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,

@@ -41,7 +41,9 @@ static sk_sp<SkShader> make_shader1(SkScalar shaderScale) {
         SK_ColorMAGENTA, SK_ColorBLUE, SK_ColorYELLOW,
     };
     const SkPoint pts[] = {{kShaderSize / 4, 0}, {3 * kShaderSize / 4, kShaderSize}};
-    const SkMatrix localMatrix = SkMatrix::Scale(shaderScale, shaderScale);
+    //const SkMatrix localMatrix = SkMatrix::Scale(shaderScale, shaderScale);
+    const SkMatrix localMatrix = SkMatrix::I();
+
 
     sk_sp<SkShader> grad = SkGradientShader::MakeLinear(pts, colors, nullptr,
                                                         SK_ARRAY_COUNT(colors),
@@ -50,9 +52,11 @@ static sk_sp<SkShader> make_shader1(SkScalar shaderScale) {
     // Throw in a couple of local matrix wrappers for good measure.
     return shaderScale == 1
         ? grad
-        : sk_make_sp<SkLocalMatrixShader>(
+        : grad;
+
+        /*sk_make_sp<SkLocalMatrixShader>(
               sk_make_sp<SkLocalMatrixShader>(std::move(grad), SkMatrix::Translate(-10, 0)),
-              SkMatrix::Translate(10, 0));
+              SkMatrix::Translate(10, 0));*/
 }
 
 static sk_sp<SkShader> make_shader2() {
@@ -183,6 +187,11 @@ protected:
                             bool fHasTexs;
                         } kAttrs[] = {{true, false}, {false, true}, {true, true}};
                         for (auto attrs : kAttrs) {
+                            if (attrs.fHasColors && !attrs.fHasTexs){
+                                canvas->translate(40, 0);
+                                continue;
+                            }
+
                             paint.setShader(shader);
                             paint.setColorFilter(cf);
                             paint.setAlphaf(alpha);

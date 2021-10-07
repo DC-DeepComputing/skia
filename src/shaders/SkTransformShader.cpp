@@ -72,6 +72,17 @@ bool SkTransformShader::update(const SkMatrix& ctm) const {
 }
 
 bool SkTransformShader::onAppendStages(const SkStageRec& rec) const {
-    // TODO
-    return false;
+    this->appendMatrix(rec.fMatrixProvider.localToDevice(), rec.fPipeline);
+    SkSimpleMatrixProvider matrixProvider{SkMatrix::I()};
+    const SkStageRec newRec = {
+            rec.fPipeline,
+            rec.fAlloc,
+            rec.fDstColorType,
+            rec.fDstCS,
+            rec.fPaint,
+            rec.fLocalM,
+            matrixProvider
+    };
+
+    return fShader.appendStages(newRec);
 }

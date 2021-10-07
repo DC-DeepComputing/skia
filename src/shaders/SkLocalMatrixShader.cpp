@@ -65,6 +65,10 @@ SkImage* SkLocalMatrixShader::onIsAImage(SkMatrix* outMatrix, SkTileMode* mode) 
     return image;
 }
 
+SkUpdatableShader* SkLocalMatrixShader::onUpdatableShader(SkArenaAlloc* alloc) const {
+    return as_SB(fProxyShader)->updatableShader(alloc);
+}
+
 bool SkLocalMatrixShader::onAppendStages(const SkStageRec& rec) const {
     SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
     if (rec.fLocalM) {
