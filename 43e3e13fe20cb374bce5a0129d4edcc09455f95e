@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "329f810e_d986bff5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-10-07T20:12:15Z",
+      "side": 1,
+      "message": "E.g. https://skottie.skia.org/b21a10162675969e642043dbb398643b?h\u003d500\u0026w\u003d500 should render like this: https://imgur.com/a/G3HQYnr",
+      "revId": "43e3e13fe20cb374bce5a0129d4edcc09455f95e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
