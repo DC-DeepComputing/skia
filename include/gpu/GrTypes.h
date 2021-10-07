@@ -58,69 +58,93 @@ class SkSurface;
     friend X operator &(X a, T b); \
 
 /**
- * Wraps a C++11 enum that we use as a bitfield, and enables a limited amount of
- * masking with type safety. Instantiated with the ~ operator.
+ * Wraps a C++11 enum that we use as flags, and enables masking with type safety.
  */
-template<typename TFlags> class GrTFlagsMask {
+template<typename E>
+class GrFlagsEnum {
 public:
-    constexpr explicit GrTFlagsMask(TFlags value) : GrTFlagsMask(static_cast<int>(value)) {}
-    constexpr explicit GrTFlagsMask(int value) : fValue(value) {}
-    constexpr int value() const { return fValue; }
+    SK_ALWAYS_INLINE constexpr explicit GrFlagsEnum(E flag) : GrFlagsEnum((int)flag) {}
+    SK_ALWAYS_INLINE constexpr explicit GrFlagsEnum(int value) : fValue(value) {}
+
+    SK_ALWAYS_INLINE constexpr operator E() const { return (E)fValue; }
+    SK_ALWAYS_INLINE constexpr operator bool() const { return fValue; }
+
+    SK_ALWAYS_INLINE constexpr GrFlagsEnum operator~() { return GrFlagsEnum(~fValue); }
+
+    SK_ALWAYS_INLINE constexpr GrFlagsEnum operator|(GrFlagsEnum flags) {
+        return GrFlagsEnum(fValue | flags.fValue);
+    }
+
+    SK_ALWAYS_INLINE constexpr GrFlagsEnum operator&(GrFlagsEnum flags) {
+        return GrFlagsEnum(fValue & flags.fValue);
+    }
+
+    SK_ALWAYS_INLINE constexpr GrFlagsEnum operator^(GrFlagsEnum flags) {
+        return GrFlagsEnum(fValue ^ flags.fValue);
+    }
+
+    SK_ALWAYS_INLINE GrFlagsEnum& operator|=(E flag) { return (*this = *this | GrFlagsEnum(flag)); }
+    SK_ALWAYS_INLINE GrFlagsEnum& operator&=(E flag) { return (*this = *this & GrFlagsEnum(flag)); }
+    SK_ALWAYS_INLINE GrFlagsEnum& operator^=(E flag) { return (*this = *this & GrFlagsEnum(flag)); }
+
+    SK_ALWAYS_INLINE GrFlagsEnum& operator|=(GrFlagsEnum flags) { return (*this = *this | flags); }
+    SK_ALWAYS_INLINE GrFlagsEnum& operator&=(GrFlagsEnum flags) { return (*this = *this & flags); }
+    SK_ALWAYS_INLINE GrFlagsEnum& operator^=(GrFlagsEnum flags) { return (*this = *this & flags); }
+
 private:
-    const int fValue;
+    int fValue;
 };
 
-/**
- * Defines bitwise operators that make it possible to use an enum class as a
- * basic bitfield.
- */
-#define GR_MAKE_BITFIELD_CLASS_OPS(X) \
-    SK_MAYBE_UNUSED constexpr GrTFlagsMask<X> operator~(X a) { \
-        return GrTFlagsMask<X>(~static_cast<int>(a)); \
-    } \
-    SK_MAYBE_UNUSED constexpr X operator|(X a, X b) { \
-        return static_cast<X>(static_cast<int>(a) | static_cast<int>(b)); \
-    } \
-    SK_MAYBE_UNUSED inline X& operator|=(X& a, X b) { \
-        return (a = a | b); \
-    } \
-    SK_MAYBE_UNUSED constexpr bool operator&(X a, X b) { \
-        return SkToBool(static_cast<int>(a) & static_cast<int>(b)); \
-    } \
-    SK_MAYBE_UNUSED constexpr GrTFlagsMask<X> operator|(GrTFlagsMask<X> a, GrTFlagsMask<X> b) { \
-        return GrTFlagsMask<X>(a.value() | b.value()); \
-    } \
-    SK_MAYBE_UNUSED constexpr GrTFlagsMask<X> operator|(GrTFlagsMask<X> a, X b) { \
-        return GrTFlagsMask<X>(a.value() | static_cast<int>(b)); \
-    } \
-    SK_MAYBE_UNUSED constexpr GrTFlagsMask<X> operator|(X a, GrTFlagsMask<X> b) { \
-        return GrTFlagsMask<X>(static_cast<int>(a) | b.value()); \
-    } \
-    SK_MAYBE_UNUSED constexpr X operator&(GrTFlagsMask<X> a, GrTFlagsMask<X> b) { \
-        return static_cast<X>(a.value() & b.value()); \
-    } \
-    SK_MAYBE_UNUSED constexpr X operator&(GrTFlagsMask<X> a, X b) { \
-        return static_cast<X>(a.value() & static_cast<int>(b)); \
-    } \
-    SK_MAYBE_UNUSED constexpr X operator&(X a, GrTFlagsMask<X> b) { \
-        return static_cast<X>(static_cast<int>(a) & b.value()); \
-    } \
-    SK_MAYBE_UNUSED inline X& operator&=(X& a, GrTFlagsMask<X> b) { \
-        return (a = a & b); \
-    } \
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator|(E a, GrFlagsEnum<E> b) {
+    return GrFlagsEnum<E>(a) | b;
+}
 
-#define GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(X) \
-    friend constexpr GrTFlagsMask<X> operator ~(X); \
-    friend constexpr X operator |(X, X); \
-    friend X& operator |=(X&, X); \
-    friend constexpr bool operator &(X, X); \
-    friend constexpr GrTFlagsMask<X> operator|(GrTFlagsMask<X>, GrTFlagsMask<X>); \
-    friend constexpr GrTFlagsMask<X> operator|(GrTFlagsMask<X>, X); \
-    friend constexpr GrTFlagsMask<X> operator|(X, GrTFlagsMask<X>); \
-    friend constexpr X operator&(GrTFlagsMask<X>, GrTFlagsMask<X>); \
-    friend constexpr X operator&(GrTFlagsMask<X>, X); \
-    friend constexpr X operator&(X, GrTFlagsMask<X>); \
-    friend X& operator &=(X&, GrTFlagsMask<X>)
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator|(GrFlagsEnum<E> b, E a) {
+    return a | GrFlagsEnum<E>(b);
+}
+
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator&(E a, GrFlagsEnum<E> b) {
+    return GrFlagsEnum<E>(a) & b;
+}
+
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator&(GrFlagsEnum<E> b, E a) {
+    return a & GrFlagsEnum<E>(b);
+}
+
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator^(E a, GrFlagsEnum<E> b) {
+    return GrFlagsEnum<E>(a) ^ b;
+}
+
+template<typename E>
+GrFlagsEnum<E> SK_ALWAYS_INLINE constexpr operator^(GrFlagsEnum<E> b, E a) {
+    return a ^ GrFlagsEnum<E>(b);
+}
+
+/**
+ * Defines functions that make it possible to use bitwise operators on an enum class.
+ */
+#define GR_MAKE_BITFIELD_CLASS_OPS(E) \
+    SK_MAYBE_UNUSED constexpr GrFlagsEnum<E> operator~(E flag) { return ~GrFlagsEnum<E>(flag); } \
+    SK_MAYBE_UNUSED constexpr GrFlagsEnum<E> operator|(E a, E b) { return GrFlagsEnum<E>(a) | b; } \
+    SK_MAYBE_UNUSED constexpr GrFlagsEnum<E> operator&(E a, E b) { return GrFlagsEnum<E>(a) & b; } \
+    SK_MAYBE_UNUSED constexpr GrFlagsEnum<E> operator^(E a, E b) { return GrFlagsEnum<E>(a) ^ b; } \
+    SK_MAYBE_UNUSED inline E& operator|=(E& a, E b) { return (a = a | b); } \
+    SK_MAYBE_UNUSED inline E& operator&=(E& a, E b) { return (a = a & b); } \
+    SK_MAYBE_UNUSED inline E& operator^=(E& a, E b) { return (a = a ^ b); } \
+
+#define GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(E) \
+    friend constexpr GrFlagsEnum<E> operator~(E); \
+    friend constexpr GrFlagsEnum<E> operator|(E, E); \
+    friend constexpr GrFlagsEnum<E> operator&(E, E); \
+    friend constexpr GrFlagsEnum<E> operator^(E, E); \
+    friend E& operator|=(E&, E); \
+    friend E& operator&=(E&, E); \
+    friend E& operator^=(E&, E); \
 
 ///////////////////////////////////////////////////////////////////////////////
 

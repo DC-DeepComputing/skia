@@ -124,8 +124,8 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     }
 
     // Don't actually enable new dynamic state on ops that already have lots of verbs.
-    constexpr static GrTFlagsMask<ShaderFlags> kDynamicStatesMask(ShaderFlags::kDynamicStroke |
-                                                                  ShaderFlags::kDynamicColor);
+    constexpr static ShaderFlags kDynamicStatesMask = ShaderFlags::kDynamicStroke |
+                                                      ShaderFlags::kDynamicColor;
     ShaderFlags neededDynamicStates = combinedFlags & kDynamicStatesMask;
     if (neededDynamicStates != ShaderFlags::kNone) {
         if (!this->shouldUseDynamicStates(neededDynamicStates) ||
