@@ -351,7 +351,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
                                                    const SkMatrixProvider& viewMatrix,
                                                    const SkGlyphRunList& glyphRunList,
                                                    const SkPaint& paint) {
-    SkMatrix drawMatrix(viewMatrix.localToDevice());
+    SkMatrix drawMatrix = viewMatrix.drawTextBlobHint().value_or(viewMatrix.localToDevice());
     drawMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
     GrSDFTControl control =

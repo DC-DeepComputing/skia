@@ -1827,10 +1827,42 @@ public:
         @param x      horizontal offset applied to blob
         @param y      vertical offset applied to blob
         @param paint  blend, color, stroking, and so on, used to draw
+        @param hint   an option hint matrix for locating glyph in cache
 
         example: https://fiddle.skia.org/c/@Canvas_drawTextBlob
     */
-    void drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y, const SkPaint& paint);
+    void drawTextBlob(const SkTextBlob* blob,
+                      SkScalar x,
+                      SkScalar y,
+                      const SkPaint& paint,
+                      const SkMatrix* hint);
+
+    /** Draws SkTextBlob blob at (x, y), using clip, SkMatrix, and SkPaint paint.
+
+        blob contains glyphs, their positions, and paint attributes specific to text:
+        SkTypeface, SkPaint text size, SkPaint text scale x,
+        SkPaint text skew x, SkPaint::Align, SkPaint::Hinting, anti-alias, SkPaint fake bold,
+        SkPaint font embedded bitmaps, SkPaint full hinting spacing, LCD text, SkPaint linear text,
+        and SkPaint subpixel text.
+
+        SkTextEncoding must be set to SkTextEncoding::kGlyphID.
+
+        Elements of paint: anti-alias, SkBlendMode, color including alpha,
+        SkColorFilter, SkPaint dither, SkMaskFilter, SkPathEffect, SkShader, and
+        SkPaint::Style; apply to blob. If SkPaint contains SkPaint::kStroke_Style:
+        SkPaint miter limit, SkPaint::Cap, SkPaint::Join, and SkPaint stroke width;
+        apply to SkPath created from blob.
+
+        @param blob   glyphs, positions, and their paints' text size, typeface, and so on
+        @param x      horizontal offset applied to blob
+        @param y      vertical offset applied to blob
+        @param paint  blend, color, stroking, and so on, used to draw
+
+        example: https://fiddle.skia.org/c/@Canvas_drawTextBlob
+    */
+    void drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y, const SkPaint& paint) {
+        drawTextBlob(blob, x, y, paint, nullptr);
+    }
 
     /** Draws SkTextBlob blob at (x, y), using clip, SkMatrix, and SkPaint paint.
 
@@ -1851,7 +1883,7 @@ public:
         @param paint  blend, color, stroking, and so on, used to draw
     */
     void drawTextBlob(const sk_sp<SkTextBlob>& blob, SkScalar x, SkScalar y, const SkPaint& paint) {
-        this->drawTextBlob(blob.get(), x, y, paint);
+        this->drawTextBlob(blob.get(), x, y, paint, nullptr);
     }
 
     /** Draws SkPicture picture, using clip and SkMatrix.

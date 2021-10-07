@@ -10,6 +10,7 @@
 
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/private/SkTOptional.h"
 
 class SkMatrixProvider {
 public:
@@ -27,6 +28,7 @@ public:
     // call localToDevice, and operate on SkMatrix.
     const SkMatrix& localToDevice() const { return fLocalToDevice33; }
     const SkM44& localToDevice44() const { return fLocalToDevice; }
+    const skstd::optional<SkMatrix>& drawTextBlobHint() const { return fDrawTextBlobHint; }
 
     virtual bool getLocalToMarker(uint32_t id, SkM44* localToMarker) const = 0;
 
@@ -37,6 +39,7 @@ private:
 
     SkM44    fLocalToDevice;
     SkMatrix fLocalToDevice33;  // Cached SkMatrix version of above, for legacy usage
+    skstd::optional<SkMatrix> fDrawTextBlobHint;
 };
 
 class SkOverrideDeviceMatrixProvider : public SkMatrixProvider {
