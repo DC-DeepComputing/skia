@@ -135,8 +135,7 @@ static constexpr int kMaxUnrolledIntervalCount = 8;
 static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int intervalCount,
                                                                     const SkPMColor4f* scale,
                                                                     const SkPMColor4f* bias,
-                                                                    SkRect thresholds1_7,
-                                                                    SkRect thresholds9_13) {
+                                                                    const float* thresholds) {
     SkASSERT(intervalCount >= 1 && intervalCount <= 8);
 
     static SkOnce                 once[kMaxUnrolledIntervalCount];
@@ -150,15 +149,15 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
         // For low interval counts, the extra components are ignored in the shader, but the uniform
         // simplification is worth it. It is assumed thresholds are provided in increasing value,
         // mapped as:
-        //  - thresholds1_7.x = boundary between (0,1) and (2,3) -> 1_2
+        //  - thresholds[0].x = boundary between (0,1) and (2,3) -> 1_2
         //  -              .y = boundary between (2,3) and (4,5) -> 3_4
         //  -              .z = boundary between (4,5) and (6,7) -> 5_6
         //  -              .w = boundary between (6,7) and (8,9) -> 7_8
-        //  - thresholds9_13.x = boundary between (8,9) and (10,11) -> 9_10
-        //  -               .y = boundary between (10,11) and (12,13) -> 11_12
-        //  -               .z = boundary between (12,13) and (14,15) -> 13_14
-        //  -               .w = unused
-        sksl.append("uniform half4 thresholds1_7, thresholds9_13;");
+        //  - thresholds[1].x = boundary between (8,9) and (10,11) -> 9_10
+        //  -              .y = boundary between (10,11) and (12,13) -> 11_12
+        //  -              .z = boundary between (12,13) and (14,15) -> 13_14
+        //  -              .w = unused
+        sksl.appendf("uniform half4 thresholds[%d];", kMaxUnrolledIntervalCount / 4);
 
         // With the current hardstop detection threshold of 0.00024, the maximum scale and bias
         // values will be on the order of 4k (since they divide by dt). That is well outside the
@@ -169,40 +168,41 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
         // Explicit binary search for the proper interval that t falls within. The interval
         // count checks are constant expressions, which are then optimized to the minimal number
         // of branches for the specific interval count.
+        static_assert(kMaxUnrolledIntervalCount == 8);
         sksl.appendf(R"(
         half4 main(float2 coord) {
             half t = half(coord.x);
             float4 s, b;
-            // thresholds1_7.w is mid point for intervals (0,7) and (8,15)
-            if (%d <= 4 || t < thresholds1_7.w) {
-                // thresholds1_7.y is mid point for intervals (0,3) and (4,7)
-                if (%d <= 2 || t < thresholds1_7.y) {
-                    // thresholds1_7.x is mid point for intervals (0,1) and (2,3)
-                    if (%d <= 1 || t < thresholds1_7.x) {
+            // thresholds[0].w is mid point for intervals (0,7) and (8,15)
+            if (%d <= 4 || t < thresholds[0].w) {
+                // thresholds[0].y is mid point for intervals (0,3) and (4,7)
+                if (%d <= 2 || t < thresholds[0].y) {
+                    // thresholds[0].x is mid point for intervals (0,1) and (2,3)
+                    if (%d <= 1 || t < thresholds[0].x) {
                         %s s = scale[0]; b = bias[0];
                     } else {
                         %s s = scale[1]; b = bias[1];
                     }
                 } else {
-                    // thresholds1_7.z is mid point for intervals (4,5) and (6,7)
-                    if (%d <= 3 || t < thresholds1_7.z) {
+                    // thresholds[0].z is mid point for intervals (4,5) and (6,7)
+                    if (%d <= 3 || t < thresholds[0].z) {
                         %s s = scale[2]; b = bias[2];
                     } else {
                         %s s = scale[3]; b = bias[3];
                     }
                 }
             } else {
-                // thresholds9_13.y is mid point for intervals (8,11) and (12,15)
-                if (%d <= 6 || t < thresholds9_13.y) {
-                    // thresholds9_13.x is mid point for intervals (8,9) and (10,11)
-                    if (%d <= 5 || t < thresholds9_13.x) {
+                // thresholds[1].y is mid point for intervals (8,11) and (12,15)
+                if (%d <= 6 || t < thresholds[1].y) {
+                    // thresholds[1].x is mid point for intervals (8,9) and (10,11)
+                    if (%d <= 5 || t < thresholds[1].x) {
                         %s s = scale[4]; b = bias[4];
                     } else {
                         %s s = scale[5]; b = bias[5];
                     }
                 } else {
-                    // thresholds9_13.z is mid point for intervals (12,13) and (14,15)
-                    if (%d <= 7 || t < thresholds9_13.z) {
+                    // thresholds[1].z is mid point for intervals (12,13) and (14,15)
+                    if (%d <= 7 || t < thresholds[1].z) {
                         %s s = scale[6]; b = bias[6];
                     } else {
                         %s s = scale[7]; b = bias[7];
@@ -232,12 +232,12 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
         effects[intervalCount - 1] = std::move(result.effect);
     });
 
-    return GrSkSLFP::Make(effects[intervalCount - 1], "UnrolledBinaryColorizer",
-                          /*inputFP=*/nullptr, GrSkSLFP::OptFlags::kNone,
-                          "thresholds1_7", thresholds1_7,
-                          "thresholds9_13", thresholds9_13,
-                          "scale", SkMakeSpan(scale, intervalCount),
-                          "bias", SkMakeSpan(bias, intervalCount));
+    return GrSkSLFP::Make(
+            effects[intervalCount - 1], "UnrolledBinaryColorizer",
+            /*inputFP=*/nullptr, GrSkSLFP::OptFlags::kNone,
+            "thresholds", SkMakeSpan((const SkV4*)thresholds, kMaxUnrolledIntervalCount / 4),
+            "scale", SkMakeSpan(scale, intervalCount),
+            "bias", SkMakeSpan(bias, intervalCount));
 }
 
 static std::unique_ptr<GrFragmentProcessor> make_unrolled_binary_colorizer(
@@ -257,7 +257,7 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_binary_colorizer(
     // after the dst color space is applied, it limits our ability to cache their values.
     SkPMColor4f scales[kMaxUnrolledIntervalCount];
     SkPMColor4f biases[kMaxUnrolledIntervalCount];
-    SkScalar thresholds[kMaxUnrolledIntervalCount] = { 0 };
+    SkScalar thresholds[kMaxUnrolledIntervalCount] = {};
 
     int intervalCount = 0;
 
@@ -290,10 +290,7 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_binary_colorizer(
         intervalCount++;
     }
 
-    SkRect thresholds1_7  = {thresholds[0], thresholds[1], thresholds[2], thresholds[3]},
-           thresholds9_13 = {thresholds[4], thresholds[5], thresholds[6], 0.0};
-
-    return make_unrolled_colorizer(intervalCount, scales, biases, thresholds1_7, thresholds9_13);
+    return make_unrolled_colorizer(intervalCount, scales, biases, thresholds);
 }
 
 // Analyze the shader's color stops and positions and chooses an appropriate colorizer to represent
