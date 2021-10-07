@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d1b16e8_c7957ade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-07T18:54:01Z",
+      "side": 1,
+      "message": "FYI: I long ago tried a quick experiment to wire up sk_LastFragColor in Metal. This was without checking if it would work, or if the pipeline requested it. On top of that, I don\u0027t think it worked, at all. So probably not helpful. 😜",
+      "revId": "844d1ee4f586cc28734a826cabc2ea18035b432e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
