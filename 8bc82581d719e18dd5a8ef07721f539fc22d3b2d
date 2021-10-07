@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c81d6b7b_7b087859",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-07T20:01:34Z",
+      "side": 1,
+      "message": "Let me know what you think. I\u0027m hoping this can be the work horse for the reordering logic.\n\n(Even though we might come up against some cases that require BSP subdivision, I think the leaf nodes of the BSP should still be a relatively large number of Rects to call \"intersects()\" on)",
+      "revId": "8bc82581d719e18dd5a8ef07721f539fc22d3b2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
