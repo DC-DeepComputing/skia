@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccc826f5_691750dd",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-07T21:34:44Z",
+      "side": 1,
+      "message": "Updated as discussed offline",
+      "parentUuid": "f2eaa677_97d91492",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 71
+      },
+      "revId": "889a72b6943f8f5742b56da47a4600d1b867cc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec38b340_14d52f35",
