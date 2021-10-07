@@ -2457,7 +2457,7 @@ void Viewer::drawImGui() {
 
                         SkReadBuffer reader(data->data(), data->size());
                         entry.fShaderType = GrPersistentCacheUtils::GetType(&reader);
-                        GrPersistentCacheUtils::UnpackCachedShaders(&reader, entry.fShader,
+                        GrPersistentCacheUtils::UnpackCachedShaders(&reader, entry.fShader1,
                                                                     entry.fInputs,
                                                                     kGrShaderTypeCount);
                     };
@@ -2558,8 +2558,8 @@ void Viewer::drawImGui() {
                             ImGui::TextWrapped("%s", entry.fKeyDescription.c_str());
                             ImGui::TreePop();
                         }
-                        stringBox("##VP", &entry.fShader[kVertex_GrShaderType]);
-                        stringBox("##FP", &entry.fShader[kFragment_GrShaderType]);
+                        stringBox("##VP", &entry.fShader1[kVertex_GrShaderType]);
+                        stringBox("##FP", &entry.fShader1[kFragment_GrShaderType]);
                         ImGui::TreePop();
                     }
                 }
@@ -2580,11 +2580,11 @@ void Viewer::drawImGui() {
                     fPersistentCache.reset();
                     ctx->priv().getGpu()->resetShaderCacheForTesting();
                     for (auto& entry : fCachedShaders) {
-                        SkSL::String backup = entry.fShader[kFragment_GrShaderType];
+                        SkSL::String backup = entry.fShader1[kFragment_GrShaderType];
                         if (entry.fHovered) {
                             // The hovered item (if any) gets a special shader to make it
                             // identifiable.
-                            SkSL::String& fragShader = entry.fShader[kFragment_GrShaderType];
+                            SkSL::String& fragShader = entry.fShader1[kFragment_GrShaderType];
                             switch (entry.fShaderType) {
                                 case SkSetFourByteTag('S', 'K', 'S', 'L'): {
                                     fragShader = build_sksl_highlight_shader();
@@ -2603,12 +2603,12 @@ void Viewer::drawImGui() {
                         }
 
                         auto data = GrPersistentCacheUtils::PackCachedShaders(entry.fShaderType,
-                                                                              entry.fShader,
+                                                                              entry.fShader1,
                                                                               entry.fInputs,
                                                                               kGrShaderTypeCount);
                         fPersistentCache.store(*entry.fKey, *data, entry.fKeyDescription);
 
-                        entry.fShader[kFragment_GrShaderType] = backup;
+                        entry.fShader1[kFragment_GrShaderType] = backup;
                     }
                 }
             }
@@ -2700,8 +2700,8 @@ void Viewer::dumpShadersToResources() {
     }
 
     std::sort(shaders.begin(), shaders.end(), [](const CachedShader* a, const CachedShader* b) {
-        return std::tie(a->fShader[kFragment_GrShaderType], a->fShader[kVertex_GrShaderType]) <
-               std::tie(b->fShader[kFragment_GrShaderType], b->fShader[kVertex_GrShaderType]);
+        return std::tie(a->fShader1[kFragment_GrShaderType], a->fShader1[kVertex_GrShaderType]) <
+               std::tie(b->fShader1[kFragment_GrShaderType], b->fShader1[kVertex_GrShaderType]);
     });
 
     // Make the resources/sksl/SlideName/ directory.
@@ -2718,7 +2718,7 @@ void Viewer::dumpShadersToResources() {
         SkString vertPath = SkStringPrintf("%s/Vertex_%02d.vert", directory.c_str(), index);
         FILE* vertFile = sk_fopen(vertPath.c_str(), kWrite_SkFILE_Flag);
         if (vertFile) {
-            const SkSL::String& vertText = entry->fShader[kVertex_GrShaderType];
+            const SkSL::String& vertText = entry->fShader1[kVertex_GrShaderType];
             SkAssertResult(sk_fwrite(vertText.c_str(), vertText.size(), vertFile));
             sk_fclose(vertFile);
         } else {
@@ -2728,7 +2728,7 @@ void Viewer::dumpShadersToResources() {
         SkString fragPath = SkStringPrintf("%s/Fragment_%02d.frag", directory.c_str(), index);
         FILE* fragFile = sk_fopen(fragPath.c_str(), kWrite_SkFILE_Flag);
         if (fragFile) {
-            const SkSL::String& fragText = entry->fShader[kFragment_GrShaderType];
+            const SkSL::String& fragText = entry->fShader1[kFragment_GrShaderType];
             SkAssertResult(sk_fwrite(fragText.c_str(), fragText.size(), fragFile));
             sk_fclose(fragFile);
         } else {
