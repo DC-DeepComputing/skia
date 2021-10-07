@@ -341,6 +341,7 @@ void SurfaceDrawContext::drawGlyphRunListNoCache(const GrClip* clip,
         // Make and add the text ops.
         fGlyphPainter.processGlyphRun(glyphRun,
                                       drawMatrix,
+                                      drawMatrix,
                                       paint,
                                       control,
                                       &painter);
@@ -351,7 +352,10 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
                                                    const SkMatrixProvider& viewMatrix,
                                                    const SkGlyphRunList& glyphRunList,
                                                    const SkPaint& paint) {
-    SkMatrix drawMatrix(viewMatrix.localToDevice());
+    SkMatrix hintMatrix = viewMatrix.drawTextBlobHint().value_or(viewMatrix.localToDevice());
+    hintMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
+
+    SkMatrix drawMatrix = viewMatrix.localToDevice();
     drawMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
     GrSDFTControl control =
@@ -362,7 +366,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
                                                  paint,
                                                  fSurfaceProps,
                                                  this->colorInfo(),
-                                                 drawMatrix,
+                                                 hintMatrix,
                                                  control);
 
     sk_sp<GrTextBlob> blob;
@@ -371,7 +375,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
         blob = textBlobCache->find(key);
     }
 
-    if (blob == nullptr || !blob->canReuse(paint, drawMatrix)) {
+    if (blob == nullptr || !blob->canReuse(paint, hintMatrix)) {
         if (blob != nullptr) {
             // We have to remake the blob because changes may invalidate our masks.
             // TODO we could probably get away with reuse most of the time if the pointer is unique,
@@ -379,7 +383,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
             textBlobCache->remove(blob.get());
         }
 
-        blob = GrTextBlob::Make(glyphRunList, paint, drawMatrix, control, &fGlyphPainter);
+        blob = GrTextBlob::Make(glyphRunList, paint, drawMatrix, hintMatrix, control, &fGlyphPainter);
 
         if (canCache) {
             blob->addKey(key);
