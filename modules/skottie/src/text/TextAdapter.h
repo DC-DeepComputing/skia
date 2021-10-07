@@ -107,11 +107,15 @@ private:
         mutable TextValue fPrevValue;
     };
 
-    TextValueTracker fText;
-    Vec2Value        fGroupingAlignment = {0,0};
+    TextValueTracker          fText;
+    Vec2Value                 fGroupingAlignment = {0,0};
 
-    bool             fHasBlurAnimator     : 1,
-                     fRequiresAnchorPoint : 1;
+    // Optional text path.
+    struct PathDesc;
+    std::unique_ptr<PathDesc> fPathDesc;
+
+    bool                      fHasBlurAnimator     : 1,
+                              fRequiresAnchorPoint : 1;
 };
 
 } // namespace internal
