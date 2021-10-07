@@ -997,7 +997,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
                                         const SkMatrix& deviceMatrix,
                                         SkScalerContextRec* rec,
                                         SkScalerContextEffects* effects) {
-    SkASSERT(!deviceMatrix.hasPerspective());
+    // SkASSERT(!deviceMatrix.hasPerspective());
 
     sk_bzero(rec, sizeof(SkScalerContextRec));
 

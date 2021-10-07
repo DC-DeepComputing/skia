@@ -89,6 +89,7 @@ public:
     // callbacks will be called.
     void processGlyphRun(const SkGlyphRun& glyphRun,
                          const SkMatrix& drawMatrix,
+                         const SkMatrix& hintMatrix,
                          const SkPaint& drawPaint,
                          const GrSDFTControl& control,
                          SkGlyphRunPainterInterface* process,
