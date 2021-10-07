@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51c7aa06_812cefc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T17:03:53Z",
+      "side": 1,
+      "message": "Thanks John, this reads much nicer! Will the two half4 threshold uniforms be converted to a uniform half[8] next?",
+      "revId": "637275224b4c1a2951c31dd40469e4db17c57d1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
