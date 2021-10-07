@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2eaa677_97d91492",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-07T15:35:44Z",
+      "side": 1,
+      "message": "I strongly dislike \"sknonstd::Any(flags \u0026 kFlag)\", but what would you think about modifying SkBitmaskEnum so that it returns a wrapped type that converts implicitly to bool?",
+      "parentUuid": "12e782c2_914b027b",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 71
+      },
+      "revId": "889a72b6943f8f5742b56da47a4600d1b867cc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec38b340_14d52f35",
         "filename": "include/gpu/GrTypes.h",
         "patchSetId": 4
