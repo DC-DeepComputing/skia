@@ -16,6 +16,69 @@
       "message": "This is ready to land. Anybody brave enough to +1?",
       "revId": "81dd9a5a9c23a5971eab1fe095afb7fba28960b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c7ff83_8f22083f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T18:51:01Z",
+      "side": 1,
+      "message": "almost ready, just a few more thoughts :)",
+      "revId": "81dd9a5a9c23a5971eab1fe095afb7fba28960b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb42f42c_a535ecf2",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T18:51:01Z",
+      "side": 1,
+      "message": "VecMethods is a weird name to me since there aren\u0027t that many methods it defines. I\u0027d maybe keep calling it VecBase or VecCommon?",
+      "range": {
+        "startLine": 74,
+        "startChar": 28,
+        "endLine": 74,
+        "endChar": 38
+      },
+      "revId": "81dd9a5a9c23a5971eab1fe095afb7fba28960b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "136b83ef_48f59c43",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T18:51:01Z",
+      "side": 1,
+      "message": "Since VecMethods defines load and store, could they also define this operator[]?\n\nIf so, then Vec\u003c4\u003e and Vec\u003c2\u003e wouldn\u0027t need to overload it and their x/y/z/w() functions could just be implemented as this[0], this[1], etc. instead of walking a path through the hi\u0027s/lo\u0027s.",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 89
+      },
+      "revId": "81dd9a5a9c23a5971eab1fe095afb7fba28960b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
