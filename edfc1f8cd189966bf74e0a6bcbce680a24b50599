@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10b5dac8_aa3b9ed9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13495
+      },
+      "writtenOn": "2021-10-07T20:21:56Z",
+      "side": 1,
+      "message": "Putting it in the CompositionBuilder constructor doesn\u0027t work since it needs to be alive throughout any use of CompositionBuilder. One option is to make it a member variable but it seems to fit most naturally outside.",
+      "revId": "edfc1f8cd189966bf74e0a6bcbce680a24b50599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
