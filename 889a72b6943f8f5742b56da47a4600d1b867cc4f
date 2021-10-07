@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce7a9ce_15d1bc2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T14:42:21Z",
+      "side": 1,
+      "message": "For the graphtie",
+      "revId": "889a72b6943f8f5742b56da47a4600d1b867cc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12e782c2_914b027b",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T14:42:21Z",
+      "side": 1,
+      "message": "If we can implicitly convert back to E, and the macros handle the explicit conversion from E to FlagsEnum for the user, this is essentially equivalent to what\u0027s provided in include/private/SkBitmaskEnum.h. I think the only difference is that, right now, SkBitmaskEnum uses \u0027Any\u0027 to explicitly turn into a bool, but if that\u0027s the only thing then I would rather we we use that and not have this replication.\n\nI would keep the SKGPU_MAKE_FLAGS_ENUM macro but define it to be:\n\n   #define SKGPU_MAKE_FLAGS_ENUM(E) \\\n      namespace ::sknonstd { template \u003c\u003e struct is_bitmask_enum\u003cE\u003e : std::true_type {}; }",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 71
+      },
+      "revId": "889a72b6943f8f5742b56da47a4600d1b867cc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec38b340_14d52f35",
+        "filename": "include/gpu/GrTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-07T14:42:21Z",
+      "side": 1,
+      "message": "Since we\u0027re not being as heavy handed on changes to v1, I like the readability of this vs. the old macros/template so am fine with it. I think it\u0027d be too much effort to try and move all of v1 over to SkBitmaskEnum, but I think it\u0027s a reasonable goal to keep graphite on one representation.",
+      "range": {
+        "startLine": 64,
+        "startChar": 6,
+        "endLine": 64,
+        "endChar": 18
+      },
+      "revId": "889a72b6943f8f5742b56da47a4600d1b867cc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
