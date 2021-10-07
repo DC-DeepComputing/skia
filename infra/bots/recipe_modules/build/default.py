@@ -97,6 +97,7 @@ def compile_fn(api, checkout_root, out_dir):
 
   cc, cxx, ccache = None, None, None
   extra_cflags = []
+  extra_cflags_cc = []
   extra_ldflags = []
   args = {'werror': 'true'}
   env = {}
@@ -314,6 +315,12 @@ def compile_fn(api, checkout_root, out_dir):
     args['skia_ios_profile'] = '"%s"' % api.vars.workdir.join(
         'provisioning_profile_ios',
         'Upstream_Testing_Provisioning_Profile.mobileprovision')
+  if 'CPP14' in extra_tokens:
+     # Compile Skia with C++14 but warnings about C++17 features disabled.
+     # crbug.com/1257145
+     extra_cflags_cc.append('-std=c++14')
+     extra_cflags_cc.append('-Wno-c++17-extensions')
+
   if compiler == 'Clang' and 'Win' in os:
     args['clang_win'] = '"%s"' % api.vars.workdir.join('clang_win')
     extra_cflags.append('-DPLACEHOLDER_clang_win_version=%s' %
@@ -346,6 +353,8 @@ def compile_fn(api, checkout_root, out_dir):
       args[k] = '"%s"' % v
   if extra_cflags:
     args['extra_cflags'] = repr(extra_cflags).replace("'", '"')
+  if extra_cflags_cc:
+    args['extra_cflags_cc'] = repr(extra_cflags_cc).replace("'", '"')
   if extra_ldflags:
     args['extra_ldflags'] = repr(extra_ldflags).replace("'", '"')
 

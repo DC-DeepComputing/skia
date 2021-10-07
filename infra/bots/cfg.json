@@ -17,7 +17,8 @@
     "V1andV2",
     "V2only",
     "Valgrind",
-    "WasmGMTests"
+    "WasmGMTests",
+    "CPP14"
   ],
   "service_account_canary": "skia-canary@skia-swarming-bots.iam.gserviceaccount.com",
   "service_account_compile": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com",

@@ -11,6 +11,9 @@
    },
   {"name": "Build-Debian10-GCC-x86_64-Release-NoGPU_Docker"},
   {"name": "Build-Debian10-GCC-x86_64-Release-Shared_Docker"},
+  {"name": "Build-Debian10-Clang-x86_64-Release-CPP14",
+   "cq_config": {}
+   },
   {"name": "Build-Debian10-Clang-arm-Debug-Android",
    "cq_config": {}
    },
