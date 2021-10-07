@@ -59,6 +59,7 @@ public:
         size_t firstChar,
         SkScalar heightMultiplier,
         bool useHalfLeading,
+        SkScalar baselineShift,
         size_t index,
         SkScalar shiftX);
     Run(const Run&) = default;
@@ -97,6 +98,7 @@ public:
     size_t index() const { return fIndex; }
     SkScalar heightMultiplier() const { return fHeightMultiplier; }
     bool useHalfLeading() const { return fUseHalfLeading; }
+    SkScalar baselineShift() const { return fBaselineShift; }
     PlaceholderStyle* placeholderStyle() const;
     bool isPlaceholder() const { return fPlaceholderIndex != std::numeric_limits<size_t>::max(); }
     size_t clusterIndex(size_t pos) const { return fClusterIndexes[pos]; }
@@ -193,6 +195,7 @@ private:
     SkFontMetrics fFontMetrics;
     const SkScalar fHeightMultiplier;
     const bool fUseHalfLeading;
+    const SkScalar fBaselineShift;
     SkScalar fCorrectAscent;
     SkScalar fCorrectDescent;
     SkScalar fCorrectLeading;
@@ -438,7 +441,7 @@ public:
 
     SkScalar runTop(const Run* run, LineMetricStyle ascentStyle) const {
         return fLeading / 2 - fAscent +
-          (ascentStyle == LineMetricStyle::Typographic ? run->ascent() : run->correctAscent()) + delta();
+          (ascentStyle == LineMetricStyle::Typographic ? run->ascent() : run->correctAscent()) + delta() + run->baselineShift();
     }
 
     SkScalar height() const {

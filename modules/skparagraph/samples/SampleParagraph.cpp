@@ -3611,6 +3611,97 @@ protected:
 private:
     using INHERITED = Sample;
 };
+
+// Baseline shift
+class ParagraphView63 : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphView63"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle roboto;
+        roboto.setColor(SK_ColorBLACK);
+        roboto.setFontFamilies({SkString("Roboto")});
+        roboto.setFontSize(20.0f);
+
+        TextStyle assyrian;
+        assyrian.setColor(SK_ColorRED);
+        assyrian.setFontFamilies({SkString("Assyrian")});
+        assyrian.setFontSize(40.0f);
+
+        assyrian.setDecorationStyle(TextDecorationStyle::kSolid);
+        assyrian.setDecoration(TextDecoration::kUnderline);
+        assyrian.setDecorationColor(SK_ColorBLUE);
+
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(roboto);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+
+        roboto.setBaselineShift(0.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Normal");
+
+        assyrian.setBaselineShift(-20.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Up20");
+
+        roboto.setBaselineShift(-40.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Up40");
+
+        assyrian.setBaselineShift(-60.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Up60");
+
+        roboto.setBaselineShift(-40.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Up40");
+
+        assyrian.setBaselineShift(-20.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Up20");
+
+        roboto.setBaselineShift(-0.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Normal\n");
+
+        assyrian.setBaselineShift(20.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Down20");
+
+        roboto.setBaselineShift(40.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Down40");
+
+        assyrian.setBaselineShift(60.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Down60");
+
+        roboto.setBaselineShift(40.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Down40");
+
+        assyrian.setBaselineShift(20.0f);
+        builder.pushStyle(assyrian);
+        builder.addText("Down20");
+
+        roboto.setBaselineShift(0.0f);
+        builder.pushStyle(roboto);
+        builder.addText("Normal");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(SK_ScalarInfinity);
+        paragraph->paint(canvas, 0, 0);
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3674,3 +3765,4 @@ DEF_SAMPLE(return new ParagraphView59();)
 DEF_SAMPLE(return new ParagraphView60();)
 DEF_SAMPLE(return new ParagraphView61();)
 DEF_SAMPLE(return new ParagraphView62();)
+DEF_SAMPLE(return new ParagraphView63();)
