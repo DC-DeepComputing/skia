@@ -2322,8 +2322,11 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID glyphs[], const SkRSXform x
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
-void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
-                            const SkPaint& paint) {
+void SkCanvas::drawTextBlob(const SkTextBlob* blob,
+                            SkScalar x,
+                            SkScalar y,
+                            const SkPaint& paint,
+                            const SkMatrix* hint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     RETURN_ON_NULL(blob);
     RETURN_ON_FALSE(blob->bounds().makeOffset(x, y).isFinite());
@@ -2340,7 +2343,9 @@ void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
         RETURN_ON_FALSE(r.fGlyphCount <= glyphsLeft);
         totalGlyphCount += r.fGlyphCount;
     }
+    this->topDevice()->setDrawTextBlobHint(hint);
     this->onDrawTextBlob(blob, x, y, paint);
+    this->topDevice()->setDrawTextBlobHint(nullptr);
 }
 
 void SkCanvas::onDrawVerticesObject(const SkVertices* vertices, SkBlendMode bmode,

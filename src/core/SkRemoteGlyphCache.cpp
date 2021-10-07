@@ -843,6 +843,7 @@ protected:
         for (auto& glyphRun : glyphRunList) {
             fPainter.processGlyphRun(glyphRun,
                                      drawMatrix,
+                                     drawMatrix,
                                      paint,
                                      control,
                                      nullptr,
