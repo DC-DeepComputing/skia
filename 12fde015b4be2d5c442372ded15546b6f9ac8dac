@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee082e9b_4bd12552",
+        "filename": "src/sksl/SkSLThreadContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-07T14:19:24Z",
+      "side": 1,
+      "message": "Remove \"DSL\"? (and below)",
+      "range": {
+        "startLine": 122,
+        "startChar": 45,
+        "endLine": 122,
+        "endChar": 48
+      },
+      "revId": "12fde015b4be2d5c442372ded15546b6f9ac8dac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
