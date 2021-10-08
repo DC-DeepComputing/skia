@@ -229,6 +229,9 @@ public:
     virtual ~SkWStream();
     SkWStream() {}
 
+    // Required until C++17 copy elision
+    SkWStream(SkWStream&&) = default;
+
     /** Called to write bytes to a SkWStream. Returns true on success
         @param buffer the address of at least size bytes to be written to the stream
         @param size The number of bytes in buffer to write to the stream
@@ -285,6 +288,9 @@ private:
 class SK_API SkNullWStream : public SkWStream {
 public:
     SkNullWStream() : fBytesWritten(0) {}
+
+    // Required until C++17 copy elision
+    SkNullWStream(SkNullWStream&&) = default;
 
     bool write(const void* , size_t n) override { fBytesWritten += n; return true; }
     void flush() override {}
