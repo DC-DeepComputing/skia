@@ -68,47 +68,10 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                             });
 }
 
-std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
-
-    auto fontResolvedText = std::make_unique<FontResolvedText>();
-
-    TextRange adjustedBlock(0, 0);
-    TextIndex index = 0;
-    for (auto& block : blocks) {
-
-        index += block.charCount;
-        adjustedBlock.fStart = adjustedBlock.fEnd;
-        adjustedBlock.fEnd = index;
-        if (adjustedBlock.fStart >= adjustedBlock.fEnd) {
-            // The last block adjustment went over the entire block
-            continue;
-        }
-
-        // Move the end of the block to the right until it's on the grapheme edge
-        while (adjustedBlock.fEnd < this->fText16.size() &&  !this->hasProperty(adjustedBlock.fEnd, CodeUnitFlags::kGraphemeStart)) {
-            ++adjustedBlock.fEnd;
-        }
-        SkASSERT(block.type == BlockType::kFontChain);
-        fontResolvedText->resolveChain(this, adjustedBlock, *block.chain);
-    }
-
-    std::sort(fontResolvedText->fResolvedFonts.begin(), fontResolvedText->fResolvedFonts.end(),
-              [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
-                return a.textRange.fStart < b.textRange.fStart;
-              });
-/*
-    SkDebugf("Resolved:\n");
-    for (auto& f : fontResolvedText->fResolvedFonts) {
-        SkDebugf("[%d:%d)\n", f.textRange.fStart, f.textRange.fEnd);
-    }
-*/
-    return std::move(fontResolvedText);
-}
-
-bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
+bool DummyFontResolvedText::resolveChain(UnicodeText* unicodeText, SkSpan<const char16_t> text, TextDirection textDirection, const char* locale, const FontChain& fontChain) {
 
     std::deque<TextRange> unresolvedTexts;
-    unresolvedTexts.push_back(textRange);
+    unresolvedTexts.emplace_back(0, text.size());
     for (auto fontIndex = 0; fontIndex < fontChain.count(); ++fontIndex) {
         auto typeface = fontChain[fontIndex];
 

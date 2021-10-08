@@ -58,7 +58,7 @@ DEF_TEST(SkText_FontResolution1, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), sk_ref_sp<FontChain>(fontChain));
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<HarfbuzzFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
 
     auto resolvedFonts = fontResolvedText->resolvedFonts();
 
@@ -78,7 +78,7 @@ DEF_TEST(SkText_FontResolution3, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), sk_ref_sp<FontChain>(fontChain));
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<HarfbuzzFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
 
     auto resolvedFonts = fontResolvedText->resolvedFonts();
 

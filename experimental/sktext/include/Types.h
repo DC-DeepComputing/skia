@@ -198,6 +198,13 @@ public:
     virtual sk_sp<SkTypeface> operator[](size_t index) const = 0;
     virtual float fontSize() const = 0;
     virtual SkString locale() const = 0;
+    SkFont createFont(size_t index) const {
+        SkFont font(this->operator[](index), this->fontSize());
+        font.setEdging(SkFont::Edging::kAntiAlias);
+        font.setHinting(SkFontHinting::kSlight);
+        font.setSubpixel(true);
+        return font;
+    }
 };
 
 struct FontBlock {
