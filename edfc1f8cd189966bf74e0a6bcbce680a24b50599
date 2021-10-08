@@ -33,6 +33,23 @@
       "message": "Tested the failing presubmit tests (except the ones that were already broken).\n\nhttp://sponge2/326916f3-f39e-4587-8b59-0e7e86c74aa8\nhttp://sponge2/a073aa47-1f7e-4a42-a051-c54bb471ed8d\nhttp://sponge2/c142d38f-b982-4307-9101-007b88d3017a",
       "revId": "edfc1f8cd189966bf74e0a6bcbce680a24b50599",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8da68937_49b3df4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9707
+      },
+      "writtenOn": "2021-10-08T17:44:58Z",
+      "side": 1,
+      "message": "Thanks for double-checking the g3 targets and adding the links for reference!",
+      "revId": "edfc1f8cd189966bf74e0a6bcbce680a24b50599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
