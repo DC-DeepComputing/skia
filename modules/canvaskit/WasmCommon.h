@@ -40,9 +40,9 @@ using WASMPointerU16 = uintptr_t;
 using WASMPointerU32 = uintptr_t;
 using WASMPointer = uintptr_t;
 
-#define SPECIALIZE_JSARRAYTYPE(type, name)                  \
-    template <> struct JSArrayType<type> {                  \
-        static constexpr const char* const gName = name;    \
+#define SPECIALIZE_JSARRAYTYPE(type, name)                         \
+    template <> struct JSArrayType<type> {                         \
+        inline static constexpr const char* const gName = name;    \
     }
 
 template <typename T> struct JSArrayType {};
