@@ -1629,6 +1629,12 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
 
     this->bindTextureToScratchUnit(GR_GL_TEXTURE_2D, id);
 
+    // Set KHR Debug label.
+    if (this->glCaps().debugSupport()) {
+        const char* label = "Skia";
+        this->glInterface()->fFunctions.fObjectLabel(GR_GL_TEXTURE, id, -1, label);
+    }
+
     *initialState = set_initial_texture_params(this->glInterface(), GR_GL_TEXTURE_2D);
 
     return id;
@@ -1651,6 +1657,12 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
     }
 
     this->bindTextureToScratchUnit(target, id);
+
+    // Set KHR Debug label.
+    if (this->glCaps().debugSupport()) {
+        const char* label = "Skia";
+        this->glInterface()->fFunctions.fObjectLabel(GR_GL_TEXTURE, id, -1, label);
+    }
 
     if (GrRenderable::kYes == renderable && this->glCaps().textureUsageSupport()) {
         // provides a hint about how this texture will be used
