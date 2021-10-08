@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba809af6_75e7738c",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "I think I like \"Rect\" better. I think Rect is a subset of all things that could be considered \"Bounds\" and therefore more specific. I also think that the association with SkRect actually helps people already familiar with Skia understand the purpose and functionality.\n\nI actually wouldn\u0027t mind using this class on \"Shape\" and other places inside of Graphite that use rects. WDYT? I could see the fast intersection logic being useful for tightening clip bounds and draw rects, etc.",
+      "parentUuid": "0ccc5acb_50330b91",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07d96d63_2f6e3dd1",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-08T00:08:54Z",
       "side": 1,
       "message": "I know we use \u0027Make\u0027 for so many things, but SkPath,SkM44, and SkMatrix have started dropping it and I think it tends to read better. \n\nWDYT about being static Rect::LTRB, XYWH, and WH?\n\nI would also be ok with keeping LTRB as the name for both the 4 float and the 2 float2 variations. Same for XYWH and TopLeftSize-\u003eXYWH, and Size(float2) -\u003e WH(float2). \n\nMakeTopLeftBotRight just eats up so much of the precious line space 😊",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cd6cdf6_34b8d6a7",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Good idea! Done.",
+      "parentUuid": "07d96d63_2f6e3dd1",
       "range": {
         "startLine": 31,
         "startChar": 4,
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-08T00:08:54Z",
       "side": 1,
       "message": "I\u0027d be okay with this being an explicit Rect() ctor.",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9aff0c_68efbb2f",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Agreed. Done.",
+      "parentUuid": "0c405168_c8c70e3e",
       "range": {
         "startLine": 49,
         "startChar": 3,
@@ -118,6 +190,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13f0689b_1481dd7c",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "So skvx::any() is a template function, right?\n\nI wouldn\u0027t think it possible to access them without \"skvx::\" because all these functions are defined inside the skvx namespace. (I\u0027ll double check when I write the test.)\n\nWe could add some \"using\" declarations in skgpu, but I think it\u0027s important to keep these methods explicitly inside skvx:: because min/max/sqrt/ceil/floor/etc. all have different non-vector implementations.",
+      "parentUuid": "2f155a8b_a1aed440",
+      "range": {
+        "startLine": 64,
+        "startChar": 44,
+        "endLine": 64,
+        "endChar": 50
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c67e150a_dbc18f1d",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "I think that gets a little tricky.\n\nWhat if w\u003d\u003d0 and h\u003c0? Do we count that as empty or negative?\n\nFor emptiness, and depending on their specific needs, I think it would be more clear for the caller to check:\n\n  any(rect.size() \u003d\u003d 0)\n  all(rect.size() \u003d\u003d 0)",
+      "parentUuid": "1ec8ac7b_4e46075a",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 26
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c650d9a_4ce008da",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 2
@@ -129,6 +249,30 @@
       "writtenOn": "2021-10-08T00:08:54Z",
       "side": 1,
       "message": "// computes (l,t) - (r,b)\n?",
+      "range": {
+        "startLine": 74,
+        "startChar": 30,
+        "endLine": 74,
+        "endChar": 54
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47680e4e_52d05461",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c650d9a_4ce008da",
       "range": {
         "startLine": 74,
         "startChar": 30,
@@ -164,6 +308,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "42ad80cb_48282ef7",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Good point.\n\nWhen we\u0027re paranoid enough about performance, we can always make a \"ComplementRect(Rect(pt,pt))\" and call intersects().",
+      "parentUuid": "37c6b3b9_064c0d77",
+      "range": {
+        "startLine": 82,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 53
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cbf98e7c_1d15a262",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 2
@@ -175,6 +343,30 @@
       "writtenOn": "2021-10-08T00:08:54Z",
       "side": 1,
       "message": "clever :)",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 94,
+        "endChar": 60
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc4a11bb_2cba9652",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Yes! Herb was the one who realized all this math gets really vectorizable if you just store r and b negative.",
+      "parentUuid": "cbf98e7c_1d15a262",
       "range": {
         "startLine": 93,
         "startChar": 9,
@@ -198,6 +390,30 @@
       "writtenOn": "2021-10-08T00:08:54Z",
       "side": 1,
       "message": "+ inset?",
+      "range": {
+        "startLine": 95,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 71
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7ea324_16c122a6",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T17:41:27Z",
+      "side": 1,
+      "message": "Derp",
+      "parentUuid": "1016a582_2b14c7b0",
       "range": {
         "startLine": 95,
         "startChar": 4,
