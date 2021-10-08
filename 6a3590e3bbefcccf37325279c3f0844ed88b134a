@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e3189a_444fe8ea",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T19:45:46Z",
+      "side": 1,
+      "message": "Maybe we could make Rect a template class then, and have a helper like:\n\n    SkiaRectEquivalent\u003cint\u003e::type -\u003e SkIRect\n    SkiaRectEquivalent\u003cfloat\u003e::type -\u003e SkRect\n    \nAlso a Rect::cast\u003cU\u003e method:\n\n    template\u003ctypename U\u003e Rect\u003cU\u003e cast() { return fVals.cast\u003cU\u003e(); }\n    \nThen we could convert like\n\n    rect.roundOut().cast\u003cint\u003e();\n    irect.cast\u003cfloat\u003e();",
+      "parentUuid": "7f0eb36a_cf282cbb",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07d96d63_2f6e3dd1",
@@ -308,6 +332,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "916fcd72_b9cc6fce",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T19:45:46Z",
+      "side": 1,
+      "message": "You\u0027re right! I\u0027m trying to figure out why this works, but it seems better.",
+      "parentUuid": "c19252c7_c929f55f",
+      "range": {
+        "startLine": 64,
+        "startChar": 44,
+        "endLine": 64,
+        "endChar": 50
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c650d9a_4ce008da",
@@ -392,6 +440,30 @@
       "side": 1,
       "message": "Good point.\n\nWhen we\u0027re paranoid enough about performance, we can always make a \"ComplementRect(Rect(pt,pt))\" and call intersects().",
       "parentUuid": "37c6b3b9_064c0d77",
+      "range": {
+        "startLine": 82,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 53
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3faa8f9_be25e6ac",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T19:45:46Z",
+      "side": 1,
+      "message": "I just realized that \"contains\" and \"intersects\" have different functionality -- \"\u003c\u003d\" vs \"\u003c\"\n\n(An empty rect on the border will return true for contains() and false for intersects())\n\nConsidering that, it\u0027s probably best to actually construct an empty rect and call the one you need, depending on how you want the border case to be handled.",
+      "parentUuid": "42ad80cb_48282ef7",
       "range": {
         "startLine": 82,
         "startChar": 8,
