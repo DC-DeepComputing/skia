@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f340935e_37326b36",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b5b116c_c6862acd",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "026e0888_06b05ef0",
@@ -65,6 +83,24 @@
       "writtenOn": "2021-10-07T19:07:16Z",
       "side": 1,
       "message": "// Duotone",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7180a93_93047133",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "026e0888_06b05ef0",
       "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -86,6 +122,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "324e62b2_79aa6423",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc86ab22_d19dcf98",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4c0d61c_1d5627e6",
@@ -103,6 +157,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa3fa3a7_b047bbd1",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4c0d61c_1d5627e6",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "979ee6ca_df5c812c",
@@ -116,6 +188,24 @@
       "writtenOn": "2021-10-07T19:07:16Z",
       "side": 1,
       "message": "// Solid",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde41dec_495b9a25",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "979ee6ca_df5c812c",
       "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -143,6 +233,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "774bfd01_7ab1266c",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6f2fb0b_6717db23",
+      "range": {
+        "startLine": 82,
+        "startChar": 16,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ed72a62_881e4755",
@@ -160,6 +274,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99eb7f92_e5169780",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ed72a62_881e4755",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30a2fc73_7ce3fc21",
@@ -173,6 +305,24 @@
       "writtenOn": "2021-10-07T19:07:16Z",
       "side": 1,
       "message": "Scalars are not initialized by default, and technically bind can fail leaving it uninitialized.  Let\u0027s make it \u003d 0 or something.",
+      "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54f9f9b_15268315",
+        "filename": "modules/skottie/src/effects/CCToner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-08T16:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30a2fc73_7ce3fc21",
       "revId": "6378fe9b69eec307ef893166b5c240428a82a3e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
