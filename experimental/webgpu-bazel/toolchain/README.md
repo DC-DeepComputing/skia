@@ -1,0 +1,1 @@
+Followed the example of https://github.com/s0l0ist/bazel-emscripten
