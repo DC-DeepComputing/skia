@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a6964ba_dbd2984b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-08T15:50:54Z",
+      "side": 1,
+      "message": "That flag puts Skia on Vulkan for composite and OOP-R. WebGPU gets translated to Vulkan. I guess Chrome doesn\u0027t support using WebGPU on Vulkan on Linux when the rest of the stack is on GL.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 36
+      },
+      "revId": "5802fb22dcb9301ee5dbf906e25734c94d5bb00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
