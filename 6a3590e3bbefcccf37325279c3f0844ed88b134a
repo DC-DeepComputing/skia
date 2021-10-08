@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0eb36a_cf282cbb",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:21:51Z",
+      "side": 1,
+      "message": "Okay, I\u0027m fine with leaving it as Rect. \n\nI agree that Shape should be updated to use geom::Rect and I plan on relying on geom::Rect for the bounds and clip business. I may add a variation called geom::PixelRect that uses int4\u0027s but is used when you absolutely have to refer to pixels (e.g. a scissor).",
+      "parentUuid": "ba809af6_75e7738c",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07d96d63_2f6e3dd1",
@@ -231,6 +255,54 @@
         "startChar": 9,
         "endLine": 64,
         "endChar": 26
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0888dd2d_c04291b4",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:21:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c67e150a_dbc18f1d",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 26
+      },
+      "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c19252c7_c929f55f",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:21:51Z",
+      "side": 1,
+      "message": "So I think it was that skvx::any etc. aren\u0027t variadic but skvx::shuffle is, and that was what let name resolution work. Whatever the underlying reason, code in GrQuadUtils.cpp only need skvx for shuffle calls. That was at the global namespace though, so I don\u0027t know if skgpu::geom -\u003e skvx:: complicates it. Still worth trying in a bit, though.",
+      "parentUuid": "13f0689b_1481dd7c",
+      "range": {
+        "startLine": 64,
+        "startChar": 44,
+        "endLine": 64,
+        "endChar": 50
       },
       "revId": "6a3590e3bbefcccf37325279c3f0844ed88b134a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
