@@ -34,6 +34,7 @@ public:
         @param textDirection  a starting text direction value
         @return               an object that contains the result of shaping operations
     */
+    template <class Resolver>
     std::unique_ptr<FontResolvedText> resolveFonts(SkSpan<FontBlock> blocks);
 
     UnicodeText(std::unique_ptr<SkUnicode> unicode, SkSpan<uint16_t> utf16);
@@ -100,16 +101,42 @@ public:
         @param textDirection  a starting text direction value
         @return               an object that contains the result of shaping operations
     */
-    virtual std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
+    virtual std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection) = 0;
 
     FontResolvedText() = default;
     virtual ~FontResolvedText() = default;
 
-    bool resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain);
     SkSpan<ResolvedFontBlock> resolvedFonts() { return SkSpan<ResolvedFontBlock>(fResolvedFonts.data(), fResolvedFonts.size()); }
-private:
+protected:
     friend class UnicodeText;
     SkTArray<ResolvedFontBlock, true> fResolvedFonts;
+};
+
+class DummyFontResolvedText : public FontResolvedText {
+public:
+    std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection) override;
+private:
+    bool resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain);
+};
+
+class HarfbuzzFontResolvedText : public FontResolvedText {
+public:
+    std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection) override;
+private:
+    bool trySingleFont(SkUnicode* unicode,
+                       SkSpan<const char16_t> context,
+                       const SkFont& font,
+                       const char* locale,
+                       bool leftToRight) const;
+    template<typename Callback>
+    bool harfbuzz(SkSpan<const char16_t> context,
+                  TextRange text,
+                  const SkBidiIterator::Level bidi,
+                  const char* language,
+                  const SkFourByteTag script,
+                  const SkFont& font,
+                  Callback callback) const;
+    std::vector<TextRange> fUnresolvedText;
 };
 
 class WrappedText;

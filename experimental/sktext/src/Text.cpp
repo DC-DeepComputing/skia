@@ -68,9 +68,10 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                             });
 }
 
+template <class DummyFontResolvedText>
 std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
 
-    auto fontResolvedText = std::make_unique<FontResolvedText>();
+    auto fontResolvedText = std::make_unique<DummyFontResolvedText>();
 
     TextRange adjustedBlock(0, 0);
     TextIndex index = 0;
@@ -105,7 +106,7 @@ std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> bl
     return std::move(fontResolvedText);
 }
 
-bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
+bool DummyFontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
 
     std::deque<TextRange> unresolvedTexts;
     unresolvedTexts.push_back(textRange);
