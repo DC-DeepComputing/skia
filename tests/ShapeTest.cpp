@@ -1,0 +1,15 @@
+/*
+ * Copyright 2021 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "tests/Test.h"
+
+#include "experimental/graphite/src/geom/Shape.h"
+
+DEF_GRAPHITE_TEST(ShapeTest, reporter) {
+    skgpu::geom::Shape s;
+    REPORTER_ASSERT(reporter, s.type() == skgpu::geom::Shape::Type::kEmpty);
+}
