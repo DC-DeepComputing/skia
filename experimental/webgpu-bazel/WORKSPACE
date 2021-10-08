@@ -1,0 +1,5 @@
+workspace(name = "bazel_webgpu_example")
+
+load("//src:deps.bzl", "load_emsdk_files")
+
+load_emsdk_files()
