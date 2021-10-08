@@ -86,6 +86,9 @@ private:
     friend class GLSLPipelineDynamicStateTestProcessor;
     using INHERITED = GrGeometryProcessor;
 };
+
+constexpr GrGeometryProcessor::Attribute PipelineDynamicStateTestProcessor::kAttributes[2];
+
 }  // anonymous namespace
 
 std::unique_ptr<GrGeometryProcessor::ProgramImpl>

@@ -1567,6 +1567,8 @@ public:
     };
 };
 
+constexpr FT_Outline_Funcs SkFTGeometrySink::Funcs;
+
 bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
     SkFTGeometrySink sink{path};
     FT_Error err = FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink);
