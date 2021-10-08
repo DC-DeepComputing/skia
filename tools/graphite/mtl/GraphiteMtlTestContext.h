@@ -14,7 +14,7 @@
 
 #include "experimental/graphite/include/mtl/MtlBackendContext.h"
 
-namespace sk_graphite_test::mtl {
+namespace skiatest::graphite::mtl {
 
 class TestContext : public GraphiteTestContext {
 public:
@@ -36,7 +36,7 @@ protected:
     skgpu::mtl::BackendContext fMtl;
 };
 
-}  // namespace sk_graphite_test::mtl
+}  // namespace skiatest::graphite::mtl
 
 #endif // SK_METAL
 

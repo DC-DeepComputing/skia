@@ -23,6 +23,8 @@ public:
     static sk_sp<Context> MakeMetal(const skgpu::mtl::BackendContext&);
 #endif
 
+    void flushAndSubmit(bool syncCpu = false) {}
+
 protected:
     Context(sk_sp<Gpu>);
 
@@ -33,4 +35,3 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_Context_DEFINED
-
