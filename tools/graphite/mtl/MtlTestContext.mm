@@ -14,7 +14,7 @@
 
 #import <Metal/Metal.h>
 
-namespace sk_graphite_test::mtl {
+namespace skiatest::graphite::mtl {
 
 std::unique_ptr<GraphiteTestContext> TestContext::Make() {
     sk_cfp<id<MTLDevice>> device;
