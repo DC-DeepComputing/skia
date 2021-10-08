@@ -74,15 +74,14 @@ namespace text {
         fCanvas->drawTextBlob(blob, fXY.fX, fXY.fY, decoratedBlock.foregroundPaint);
     }
 
-    std::unique_ptr<WrappedText> Paint::layout(std::u16string text,
+    std::unique_ptr<WrappedText> Paint::layout(std::u16string utf16,
                                        TextDirection textDirection, TextAlign textAlign,
                                        SkSize reqSize,
                                        SkSpan<FontBlock> fontBlocks) {
-        auto unicode = SkUnicode::Make();
-        auto unicodeText = std::make_unique<UnicodeText>(std::move(unicode), SkSpan<uint16_t>((uint16_t*)text.data(), text.size()));
-        auto fontResolvedText = unicodeText->resolveFonts(fontBlocks);
-        auto shapedText = fontResolvedText->shape(unicodeText.get(), TextDirection::kLtr);
-        auto wrappedText = shapedText->wrap(unicodeText.get(), reqSize.width(), reqSize.height());
+        UnicodeText unicodeText(SkUnicode::Make(), SkSpan<uint16_t>((uint16_t*)utf16.data(), utf16.size()));
+        auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(fontBlocks, TextDirection::kLtr, std::locale().name().c_str());
+        auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
+        auto wrappedText = shapedText->wrap(&unicodeText, reqSize.width(), reqSize.height());
         wrappedText->format(textAlign, textDirection);
         return wrappedText;
     }

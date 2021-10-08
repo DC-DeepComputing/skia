@@ -68,47 +68,10 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                             });
 }
 
-std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
-
-    auto fontResolvedText = std::make_unique<FontResolvedText>();
-
-    TextRange adjustedBlock(0, 0);
-    TextIndex index = 0;
-    for (auto& block : blocks) {
-
-        index += block.charCount;
-        adjustedBlock.fStart = adjustedBlock.fEnd;
-        adjustedBlock.fEnd = index;
-        if (adjustedBlock.fStart >= adjustedBlock.fEnd) {
-            // The last block adjustment went over the entire block
-            continue;
-        }
-
-        // Move the end of the block to the right until it's on the grapheme edge
-        while (adjustedBlock.fEnd < this->fText16.size() &&  !this->hasProperty(adjustedBlock.fEnd, CodeUnitFlags::kGraphemeStart)) {
-            ++adjustedBlock.fEnd;
-        }
-        SkASSERT(block.type == BlockType::kFontChain);
-        fontResolvedText->resolveChain(this, adjustedBlock, *block.chain);
-    }
-
-    std::sort(fontResolvedText->fResolvedFonts.begin(), fontResolvedText->fResolvedFonts.end(),
-              [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
-                return a.textRange.fStart < b.textRange.fStart;
-              });
-/*
-    SkDebugf("Resolved:\n");
-    for (auto& f : fontResolvedText->fResolvedFonts) {
-        SkDebugf("[%d:%d)\n", f.textRange.fStart, f.textRange.fEnd);
-    }
-*/
-    return std::move(fontResolvedText);
-}
-
-bool FontResolvedText::resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain) {
+bool DummyFontResolvedText::resolveChain(UnicodeText* unicodeText, SkSpan<const char16_t> text, TextDirection textDirection, const char* locale, const FontChain& fontChain) {
 
     std::deque<TextRange> unresolvedTexts;
-    unresolvedTexts.push_back(textRange);
+    unresolvedTexts.emplace_back(0, text.size());
     for (auto fontIndex = 0; fontIndex < fontChain.count(); ++fontIndex) {
         auto typeface = fontChain[fontIndex];
 
@@ -334,6 +297,12 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
     Stretch cluster;
     for (size_t runIndex = 0; runIndex < this->fLogicalRuns.size(); ++runIndex ) {
         auto& run = this->fLogicalRuns[runIndex];
+        if (!SkScalarIsFinite(width)) {
+            // No wrapping - the endless line
+            clusters = Stretch(runIndex, &run);
+            line.moveTo(clusters);
+            continue;
+        }
         if (run.getRunType() == LogicalRunType::kLineBreak) {
             // This is the end of the word, the end of the line
             if (!clusters.isEmpty()) {
@@ -347,11 +316,9 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
             cluster = Stretch();
             continue;
         }
-        TextMetrics runMetrics(run.fFont);
-        if (!run.leftToRight()) {
-            cluster.setTextRange({ run.fUtf16Range.fStart, run.fUtf16Range.fEnd});
-        }
+
         // Let's wrap the text
+        TextMetrics runMetrics(run.fFont);
         for (size_t glyphIndex = 0; glyphIndex < run.fPositions.size(); ++glyphIndex) {
             auto textIndex = run.fClusters[glyphIndex];
             if (cluster.textRange() == EMPTY_RANGE) {
@@ -361,11 +328,15 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
                 spaces = cluster;
                 clusters = cluster;
                 continue;
+            } else if (textIndex == cluster.textRange().fStart) {
+                // Get the entire cluster at once
+                continue;
             }
             // The entire cluster belongs to a single run
             SkASSERT(cluster.glyphStart().runIndex() == runIndex);
             auto clusterWidth = run.calculateWidth(cluster.glyphStartIndex(), glyphIndex);
             cluster.finish(glyphIndex, textIndex, clusterWidth);
+
             auto isSoftLineBreak = unicodeText->isSoftLineBreak(cluster.textStart());
             auto isWhitespaces = unicodeText->isWhitespaces(cluster.textRange());
             auto isEndOfText = run.leftToRight() ? textIndex == run.fUtf16Range.fEnd : textIndex == run.fUtf16Range.fStart;
@@ -380,10 +351,6 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
                 spaces.moveTo(cluster);
                 clusters = cluster;
                 // Whitespaces do not extend the line width so no wrapping
-                continue;
-            } else if (!SkScalarIsFinite(width)) {
-                // No wrapping - the endless line
-                clusters.moveTo(cluster);
                 continue;
             }
             // Now let's find out if we can add the cluster to the line
@@ -409,6 +376,7 @@ std::unique_ptr<WrappedText> ShapedText::wrap(UnicodeText* unicodeText, float wi
             clusters.moveTo(cluster);
             cluster = Stretch(GlyphPos(runIndex, glyphIndex), textIndex, runMetrics);
         }
+        cluster = Stretch();
     }
     // Deal with the last line
     if (!clusters.isEmpty()) {
@@ -473,6 +441,7 @@ void ShapedText::addLine(WrappedText* wrappedText, SkUnicode* unicode, Stretch& 
             auto textEnd = isLastRun ? lineStretch.textRange().fEnd : logicalRun.fUtf16Range.fEnd;
             wrappedText->fVisualRuns.emplace_back(TextRange(textStart, textEnd),
                                                   glyphSpaces - glyphStart,
+                                                  logicalRun.fFont,
                                                   logicalRun.fTextMetrics,
                                                   runOffsetInLine,
                                                   SkSpan<SkPoint>(&logicalRun.fPositions[glyphStart], glyphSize + 1),
@@ -578,13 +547,18 @@ GlyphRange WrappedText::textToGlyphs(UnicodeText* unicodeText, PositionType posi
             }
         }
     }
-    SkASSERT(false);
     return glyphRange;
 }
 
 std::unique_ptr<DrawableText> WrappedText::prepareToDraw(UnicodeText* unicodeText, PositionType positionType, SkSpan<TextIndex> blocks) const {
     auto drawableText = std::make_unique<DrawableText>();
     this->visit(unicodeText, drawableText.get(), positionType, blocks);
+    return std::move(drawableText);
+}
+
+std::unique_ptr<DrawableText> WrappedText::prepareToDraw(UnicodeText* unicodeText) const {
+    auto drawableText = std::make_unique<DrawableText>();
+    this->visit(drawableText.get());
     return std::move(drawableText);
 }
 

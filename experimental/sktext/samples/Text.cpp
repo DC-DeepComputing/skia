@@ -166,10 +166,114 @@ private:
     std::unique_ptr<SkUnicode> fUnicode;
 };
 
+class Zalgo {
+    private:
+    std::u16string COMBINING_DOWN = u"\u0316\u0317\u0318\u0319\u031c\u031d\u031e\u031f\u0320\u0324\u0325\u0326\u0329\u032a\u032b\u032c\u032d\u032e\u032f\u0330\u0331\u0332\u0333\u0339\u033a\u033b\u033c\u0345\u0347\u0348\u0349\u034d\u034e\u0353\u0354\u0355\u0356\u0359\u035a\u0323";
+    std::u16string COMBINING_UP = u"\u030d\u030e\u0304\u0305\u033f\u0311\u0306\u0310\u0352\u0357\u0351\u0307\u0308\u030a\u0342\u0343\u0344\u034a\u034b\u034c\u0303\u0302\u030c\u0350\u0300\u0301\u030b\u030f\u0312\u0313\u0314\u033d\u0309\u0363\u0364\u0365\u0366\u0367\u0368\u0369\u036a\u036b\u036c\u036d\u036e\u035b\u0346\u031a";
+    std::u16string COMBINING_MIDDLE = u"\u0315\u031b\u0340\u0341\u0358\u0321\u0322\u0327\u0328\u0334\u0335\u0336\u034f\u035c\u035d\u035e\u035f\u0360\u0362\u0338\u0337\u0361\u0489";
+
+    std::u16string randomMarks(std::u16string& combiningMarks) {
+        std::u16string result;
+        auto num = std::rand() % (combiningMarks.size() / 1);
+        for (size_t i = 0; i < num; ++i) {
+            auto index = std::rand() % combiningMarks.size();
+            result += combiningMarks[index];
+        }
+        return result;
+    }
+
+public:
+    std::u16string zalgo(std::string victim) {
+        std::u16string result;
+        for (auto& c : victim) {
+            result += c;
+            result += randomMarks(COMBINING_UP);
+            result += randomMarks(COMBINING_MIDDLE);
+            result += randomMarks(COMBINING_DOWN);
+        }
+        return result;
+    }
+};
+
+class TextSample_Zalgo : public Sample {
+public:
+    TextSample_Zalgo() {
+        fFontChain = sk_sp<TrivialFontChain>(new TrivialFontChain("Roboto", 100.0f, SkFontStyle::Normal()));
+        fForeground.setColor(SkColors::kBlack);
+    }
+
+    SkString name() override { return SkString("TextSample_Zalgo"); }
+
+    bool onAnimate(double nanos) override {
+        if (++fIndex > fLimit) {
+            fRedraw = true;
+            fIndex = 0;
+        } else {
+            fRepeat = true;
+        }
+        return true;
+    }
+
+    void onDrawContent(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+
+        if (fFontChain->empty()) return;
+
+        if (fRedraw || fDrawableText == nullptr) {
+            Zalgo zalgo;
+            auto utf16 = zalgo.zalgo("SkText");
+            //utf16 = u"S̸̨̢̧̪̱̞͖̲͚̳̯̻̫̙̤̭͇̝̦̠͕̘̣͉̮̼͉̥͓̩̮͉̟͍̙̪͊ͩ̏͂̈́ͬ̑̏͒̉̓͋͗ͦ͌ͮͨ́̚̚͘͢͢͢͝͞ͅͅk̸̨̡̛̬̙̇͗̋̊͐̑͆ͩͫͥ̏͑͂̂͊̑̔̿̅͗ͩ̿͛̎̏̒ͪ̆ͣ̏ͨ̊͝Tͫ́ͥ̇̔ͣ̓̄͑̆̆̐͐͞͏̵̴͜҉̫̞̜̻̜̩̱̰̟̮̝̺̜̭̬̞̬̗̺͈̬͎͙̗̱ͅęͪ̓ͨ͑̊̃̌̐̀͑͌̇͗̈͒̄ͫ̉́̐ͩ͋̑͊̽͑̄ͥ̔̇̏͛̎ͨ̏ͧ̒̄̊̚x̶̢̎͊ͤͬ̎̏͊͗̊ͣ̔̽̈́ͪ̎͌ͨ̈̿̓̑͋̎̎͒ͨͪ͗ͩ̚̚̚͢͟͢͡҉̶̴͡͡҉̸͏҉̹t̓ͮ̅̎̕͡͏̷̵̵̷̡̖̫̦̻̘̺̙̬̮͕̭͎̟̬͙͔̻̙͚̼͓̺̗͓͈͇̲̮̫̩͜͜͢͝ͅ";
+            UnicodeText unicodeText(SkUnicode::Make(),
+                                    SkSpan<uint16_t>((uint16_t*)utf16.data(), utf16.size()));
+            if (!unicodeText.getUnicode()) return;
+            auto utf8 = unicodeText.getUnicode()->convertUtf16ToUtf8(utf16);
+            SkDebugf(">>> %s <<<\n", utf8.c_str());
+            FontBlock fontBlock(utf16.size(), fFontChain);
+            auto fontResolvedText = unicodeText.resolveFonts<HarfbuzzFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
+            auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
+            auto runs = shapedText->getLogicalRuns();
+            fForeground.setColor(SK_ColorBLACK);
+            size_t unresolved = 0;
+            for (auto& run : runs) {
+                for (auto i = 0; i < run.size(); ++i) {
+                    if (run.getGlyph(i) == 0) {
+                        ++unresolved;
+                    }
+                }
+            }
+
+            if (unresolved) {
+                fForeground.setColor(SK_ColorRED);
+                SkDebugf(">>> unresolved: %d <<<\n", unresolved);
+            }
+
+            auto wrappedText = shapedText->wrap(&unicodeText, SK_ScalarInfinity, SK_ScalarInfinity);
+            wrappedText->format(TextAlign::kLeft, TextDirection::kLtr);
+            DecoratedBlock decoratedBlock(utf16.size(), fForeground, SkPaint(SkColors::kLtGray));
+            TextIndex chunks[1];
+            fDrawableText = wrappedText->prepareToDraw(&unicodeText, PositionType::kGraphemeCluster, SkSpan<TextIndex>(&chunks[0], 1));
+            fRedraw = false;
+        }
+
+        auto textBlobs = fDrawableText->getTextBlobs();
+        for (auto& textBLob : textBlobs) {
+            canvas->drawTextBlob(textBLob, this->width() / 2, this->height() / 2, SkPaint(SkColors::kBlack));
+        }
+    }
+private:
+    bool fRedraw = true;
+    bool fRepeat = false;
+    size_t fIndex = 0;
+    size_t fLimit = 500;
+    std::unique_ptr<DrawableText> fDrawableText;
+    sk_sp<TrivialFontChain> fFontChain;
+    SkPaint fForeground;
+    using INHERITED = Sample;
+};
 }  // namespace
 
 DEF_SAMPLE(return new TextSample_HelloWorld();)
 DEF_SAMPLE(return new TextSample_Align_Dir();)
 DEF_SAMPLE(return new TextSample_LongLTR();)
 DEF_SAMPLE(return new TextSample_LongRTL();)
-
+DEF_SAMPLE(return new TextSample_Zalgo();)

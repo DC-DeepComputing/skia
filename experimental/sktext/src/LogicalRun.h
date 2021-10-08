@@ -13,7 +13,7 @@ class LogicalRun {
     public:
     LogicalRun(const SkShaper::RunHandler::RunInfo& info, TextIndex textStart, SkScalar glyphOffset);
     SkShaper::RunHandler::Buffer newRunBuffer() {
-        return {fGlyphs.data(), fPositions.data(), fOffsets.data(), fClusters.data(), {0.0f, 0.0f} };
+        return {fGlyphs.data(), fPositions.data(), nullptr, fClusters.data(), {0.0f, 0.0f} };
     }
     void commit() {
         fFont.getBounds(fGlyphs.data(), fGlyphs.size(), fBounds.data(), nullptr);
@@ -22,6 +22,8 @@ class LogicalRun {
     }
 
     TextRange getTextRange() const { return fUtf16Range; }
+    SkGlyphID getGlyph(GlyphIndex index) const { return fGlyphs[index]; }
+    const TextMetrics getTextMetrics() const { return fTextMetrics; }
 
     SkScalar calculateWidth(GlyphRange glyphRange) const {
         SkASSERT(glyphRange.fStart <= glyphRange.fEnd && glyphRange.fEnd < fPositions.size());
@@ -76,7 +78,6 @@ class LogicalRun {
     SkScalar  fRunOffset;
     SkSTArray<128, SkGlyphID, true> fGlyphs;
     SkSTArray<128, SkPoint, true> fPositions;
-    SkSTArray<128, SkPoint, true> fOffsets;
     SkSTArray<128, uint32_t, true> fClusters;
     SkSTArray<128, SkRect, true> fBounds;
 
