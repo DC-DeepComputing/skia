@@ -49,7 +49,7 @@ private:
 template <typename T, SkSVGValue::Type ValueType>
 class SkSVGWrapperValue final : public SkSVGValue {
 public:
-    static constexpr Type TYPE = ValueType;
+    inline static constexpr Type TYPE = ValueType;
 
     explicit SkSVGWrapperValue(const T& v)
         : INHERITED(ValueType)
