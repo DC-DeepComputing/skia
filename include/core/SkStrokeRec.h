@@ -31,7 +31,7 @@ public:
         kStrokeAndFill_Style
     };
 
-    static constexpr int kStyleCount = kStrokeAndFill_Style + 1;
+    inline static constexpr int kStyleCount = kStrokeAndFill_Style + 1;
 
     Style getStyle() const;
     SkScalar getWidth() const { return fWidth; }

@@ -22,7 +22,7 @@
 class SK_API SkYUVAInfo {
 public:
     enum YUVAChannels { kY, kU, kV, kA, kLast = kA };
-    static constexpr int kYUVAChannelCount = static_cast<int>(YUVAChannels::kLast + 1);
+    inline static constexpr int kYUVAChannelCount = static_cast<int>(YUVAChannels::kLast + 1);
 
     struct YUVALocation;  // For internal use.
     using YUVALocations = std::array<YUVALocation, kYUVAChannelCount>;
@@ -91,7 +91,7 @@ public:
         kCentered,
     };
 
-    static constexpr int kMaxPlanes = 4;
+    inline static constexpr int kMaxPlanes = 4;
 
     /** ratio of Y/A values to U/V values in x and y. */
     static std::tuple<int, int> SubsamplingFactors(Subsampling);

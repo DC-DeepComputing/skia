@@ -66,7 +66,7 @@ public:
              ResetTimestamp currTimestamp);
 
 private:
-    static constexpr ResetTimestamp kExpiredTimestamp = 0;
+    inline static constexpr ResetTimestamp kExpiredTimestamp = 0;
 
     SamplerOverriddenState fSamplerOverriddenState;
     NonsamplerState fNonsamplerState;

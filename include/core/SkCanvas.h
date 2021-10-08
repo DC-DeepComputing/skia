@@ -2340,8 +2340,8 @@ private:
     sk_sp<SkMarkerStack> fMarkerStack;
 
     // the first N recs that can fit here mean we won't call malloc
-    static constexpr int kMCRecSize      = 96; // most recent measurement
-    static constexpr int kMCRecCount     = 32; // common depth for save/restores
+    inline static constexpr int kMCRecSize      = 96; // most recent measurement
+    inline static constexpr int kMCRecCount     = 32; // common depth for save/restores
 
     intptr_t fMCRecStorage[kMCRecSize * kMCRecCount / sizeof(intptr_t)];
 

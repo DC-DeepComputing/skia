@@ -342,25 +342,25 @@ public:
     /** SkMatrix organizes its values in row-major order. These members correspond to
         each value in SkMatrix.
     */
-    static constexpr int kMScaleX = 0; //!< horizontal scale factor
-    static constexpr int kMSkewX  = 1; //!< horizontal skew factor
-    static constexpr int kMTransX = 2; //!< horizontal translation
-    static constexpr int kMSkewY  = 3; //!< vertical skew factor
-    static constexpr int kMScaleY = 4; //!< vertical scale factor
-    static constexpr int kMTransY = 5; //!< vertical translation
-    static constexpr int kMPersp0 = 6; //!< input x perspective factor
-    static constexpr int kMPersp1 = 7; //!< input y perspective factor
-    static constexpr int kMPersp2 = 8; //!< perspective bias
+    inline static constexpr int kMScaleX = 0; //!< horizontal scale factor
+    inline static constexpr int kMSkewX  = 1; //!< horizontal skew factor
+    inline static constexpr int kMTransX = 2; //!< horizontal translation
+    inline static constexpr int kMSkewY  = 3; //!< vertical skew factor
+    inline static constexpr int kMScaleY = 4; //!< vertical scale factor
+    inline static constexpr int kMTransY = 5; //!< vertical translation
+    inline static constexpr int kMPersp0 = 6; //!< input x perspective factor
+    inline static constexpr int kMPersp1 = 7; //!< input y perspective factor
+    inline static constexpr int kMPersp2 = 8; //!< perspective bias
 
     /** Affine arrays are in column-major order to match the matrix used by
         PDF and XPS.
     */
-    static constexpr int kAScaleX = 0; //!< horizontal scale factor
-    static constexpr int kASkewY  = 1; //!< vertical skew factor
-    static constexpr int kASkewX  = 2; //!< horizontal skew factor
-    static constexpr int kAScaleY = 3; //!< vertical scale factor
-    static constexpr int kATransX = 4; //!< horizontal translation
-    static constexpr int kATransY = 5; //!< vertical translation
+    inline static constexpr int kAScaleX = 0; //!< horizontal scale factor
+    inline static constexpr int kASkewY  = 1; //!< vertical skew factor
+    inline static constexpr int kASkewX  = 2; //!< horizontal skew factor
+    inline static constexpr int kAScaleY = 3; //!< vertical scale factor
+    inline static constexpr int kATransX = 4; //!< horizontal translation
+    inline static constexpr int kATransY = 5; //!< vertical translation
 
     /** Returns one matrix value. Asserts if index is out of range and SK_DEBUG is
         defined.
@@ -1829,25 +1829,25 @@ private:
 
         This bit will be set on identity matrices
     */
-    static constexpr int kRectStaysRect_Mask = 0x10;
+    inline static constexpr int kRectStaysRect_Mask = 0x10;
 
     /** Set if the perspective bit is valid even though the rest of
         the matrix is Unknown.
     */
-    static constexpr int kOnlyPerspectiveValid_Mask = 0x40;
+    inline static constexpr int kOnlyPerspectiveValid_Mask = 0x40;
 
-    static constexpr int kUnknown_Mask = 0x80;
+    inline static constexpr int kUnknown_Mask = 0x80;
 
-    static constexpr int kORableMasks = kTranslate_Mask |
-                                        kScale_Mask |
-                                        kAffine_Mask |
-                                        kPerspective_Mask;
+    inline static constexpr int kORableMasks = kTranslate_Mask |
+                                               kScale_Mask |
+                                               kAffine_Mask |
+                                               kPerspective_Mask;
 
-    static constexpr int kAllMasks = kTranslate_Mask |
-                                     kScale_Mask |
-                                     kAffine_Mask |
-                                     kPerspective_Mask |
-                                     kRectStaysRect_Mask;
+    inline static constexpr int kAllMasks = kTranslate_Mask |
+                                            kScale_Mask |
+                                            kAffine_Mask |
+                                            kPerspective_Mask |
+                                            kRectStaysRect_Mask;
 
     SkScalar        fMat[9];
     mutable int32_t fTypeMask;

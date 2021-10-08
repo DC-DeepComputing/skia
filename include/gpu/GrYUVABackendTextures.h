@@ -18,7 +18,7 @@
  */
 class SK_API GrYUVABackendTextureInfo {
 public:
-    static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
+    inline static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
 
     /** Default GrYUVABackendTextureInfo is invalid. */
     GrYUVABackendTextureInfo() = default;

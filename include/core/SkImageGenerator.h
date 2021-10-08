@@ -166,7 +166,7 @@ public:
                                                              sk_sp<SkColorSpace>);
 
 protected:
-    static constexpr int kNeedNewImageUniqueID = 0;
+    inline static constexpr int kNeedNewImageUniqueID = 0;
 
     SkImageGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
 

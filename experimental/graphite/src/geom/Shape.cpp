@@ -76,7 +76,7 @@ bool Shape::convex(bool simpleFill) const {
 SkRect Shape::bounds() const {
     // Bounds where left == bottom or top == right can indicate a line or point shape. We return
     // inverted bounds for a truly empty shape.
-    static constexpr SkRect kInverted = SkRect::MakeLTRB(1, 1, -1, -1);
+    inline static constexpr SkRect kInverted = SkRect::MakeLTRB(1, 1, -1, -1);
     switch (fType) {
         case Type::kEmpty:   return kInverted;
         case Type::kRect:    return fRect.makeSorted();

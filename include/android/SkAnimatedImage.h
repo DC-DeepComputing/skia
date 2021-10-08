@@ -60,7 +60,7 @@ public:
      * Returned by decodeNextFrame and currentFrameDuration if the animation
      * is not running.
      */
-    static constexpr int kFinished = -1;
+    inline static constexpr int kFinished = -1;
 
     /**
      *  Decode the next frame.
