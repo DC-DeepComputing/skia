@@ -135,6 +135,11 @@ Compiler::Compiler(const ShaderCapsClass* caps)
     fIRGenerator = std::make_unique<IRGenerator>(fContext.get());
 }
 
+constexpr const char Compiler::FRAGCOLOR_NAME[];
+constexpr const char Compiler::RTADJUST_NAME[];
+constexpr const char Compiler::PERVERTEX_NAME[];
+constexpr const char Compiler::POISON_TAG[];
+
 Compiler::~Compiler() {}
 
 #define TYPE(t) fContext->fTypes.f ## t .get()

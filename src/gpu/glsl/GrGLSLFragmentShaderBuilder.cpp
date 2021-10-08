@@ -12,6 +12,8 @@
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
 
+constexpr const char GrGLSLFragmentShaderBuilder::kDstColorName[];
+
 GrGLSLFragmentShaderBuilder::GrGLSLFragmentShaderBuilder(GrGLSLProgramBuilder* program)
         : GrGLSLShaderBuilder(program) {}
 
