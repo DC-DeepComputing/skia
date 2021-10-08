@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55125e65_3bf763a3",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-08T20:24:50Z",
+      "side": 1,
+      "message": "Changed to Vec4.",
+      "parentUuid": "d6aca373_f7d2f324",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 11
+      },
+      "revId": "17956ac3b0d3006f1e74e6fdc39ee5432f9a4dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f19db836_d60f3b0e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-08T19:17:05Z",
       "side": 1,
       "message": "can we fix this loop in this CL to red from offset + i?",
+      "range": {
+        "startLine": 348,
+        "startChar": 12,
+        "endLine": 353,
+        "endChar": 13
+      },
+      "revId": "17956ac3b0d3006f1e74e6fdc39ee5432f9a4dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "142f7b75_34fc5340",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-08T20:24:50Z",
+      "side": 1,
+      "message": "I\u0027ll send out a followup shortly.",
+      "parentUuid": "f19db836_d60f3b0e",
       "range": {
         "startLine": 348,
         "startChar": 12,
