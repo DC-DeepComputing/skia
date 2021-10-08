@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e46c5ec_767ae893",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:17:05Z",
+      "side": 0,
+      "message": "from chatting offline, I think you assessment of this was correct. It should be looping over i \u003d 0 to count -1, and then adding offset to positions when computing dt.",
+      "range": {
+        "startLine": 337,
+        "startChar": 12,
+        "endLine": 337,
+        "endChar": 47
+      },
+      "revId": "71ad4d8647cf2f22c8fc7d48fa6af6a7b0a7ec67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
