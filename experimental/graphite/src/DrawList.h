@@ -22,6 +22,8 @@ struct SkIRect;
 
 namespace skgpu {
 
+namespace geom { class Shape; }
+
 // Forward declarations that capture the intermediate state lying between public Skia types and
 // the direct GPU representation.
 struct PaintParams;
@@ -65,8 +67,13 @@ public:
     // sense for it to compute these dependent values and provide them here. Storing the scale
     // factor per draw command is low overhead, but unsure about storing 2 matrices per command.
 
+    // NOTE: All path rendering functions, e.g. [fill|stroke|...]Path() that take a geom::Shape
+    // draw using the same underlying techniques regardless of the shape's type. If a Shape has
+    // a type matching a simpler primitive technique or coverage AA, the caller must explicitly
+    // invoke it to use that rendering algorithms.
+
     void stencilAndFillPath(const SkM44& localToDevice,
-                            const SkPath& path,
+                            const geom::Shape& shape,
                             const SkIRect& scissor, // TBD: expand this to one xformed rrect clip?
                             CompressedPaintersOrder colorDepthOrder,
                             CompressedPaintersOrder stencilOrder,
@@ -74,14 +81,14 @@ public:
                             const PaintParams* paint) {}
 
     void fillConvexPath(const SkM44& localToDevice,
-                        const SkPath& path,
+                        const geom::Shape& shape,
                         const SkIRect& scissor,
                         CompressedPaintersOrder colorDepthOrder,
                         uint16_t depth,
                         const PaintParams* paint) {}
 
     void strokePath(const SkM44& localToDevice,
-                    const SkPath& path,
+                    const geom::Shape& shape,
                     const StrokeParams& stroke,
                     const SkIRect& scissor,
                     CompressedPaintersOrder colorDepthOrder,
