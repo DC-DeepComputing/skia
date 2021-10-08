@@ -7,10 +7,13 @@
 
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 
+#include "experimental/graphite/src/mtl/MtlGpu.h"
+
 namespace skgpu::mtl {
 
-std::unique_ptr<CommandBuffer> CommandBuffer::Make(id<MTLCommandQueue> queue) {
+std::unique_ptr<CommandBuffer> CommandBuffer::Make(const Gpu* gpu) {
     sk_cfp<id<MTLCommandBuffer>> cmdBuffer;
+    id<MTLCommandQueue> queue = gpu->queue();
     if (@available(macOS 11.0, iOS 14.0, tvOS 14.0, *)) {
         sk_cfp<MTLCommandBufferDescriptor*> desc([[MTLCommandBufferDescriptor alloc] init]);
         (*desc).retainedReferences = NO;
@@ -33,5 +36,23 @@ std::unique_ptr<CommandBuffer> CommandBuffer::Make(id<MTLCommandQueue> queue) {
 
     return std::unique_ptr<CommandBuffer>(new CommandBuffer(std::move(cmdBuffer)));
 }
+
+bool CommandBuffer::commit(bool waitUntilCompleted) {
+    // TODO: end any encoding
+    [(*fCommandBuffer) commit];
+    if (waitUntilCompleted) {
+        [(*fCommandBuffer) waitUntilCompleted];
+    }
+
+    // TODO: better error reporting
+    if ((*fCommandBuffer).status == MTLCommandBufferStatusError) {
+        NSString* description = (*fCommandBuffer).error.localizedDescription;
+        const char* errorString = [description UTF8String];
+        SkDebugf("Error submitting command buffer: %s\n", errorString);
+    }
+
+    return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
+}
+
 
 } // namespace skgpu::mtl

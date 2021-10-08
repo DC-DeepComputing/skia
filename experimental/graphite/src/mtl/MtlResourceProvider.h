@@ -25,7 +25,7 @@ public:
     ResourceProvider(const skgpu::Gpu* gpu);
     ~ResourceProvider() override {}
 
-    std::unique_ptr<skgpu::CommandBuffer> createCommandBuffer() override;
+    std::unique_ptr<skgpu::CommandBuffer> onCreateCommandBuffer() override;
 
 private:
     const Gpu* mtlGpu();

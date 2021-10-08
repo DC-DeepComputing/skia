@@ -14,6 +14,7 @@ namespace skgpu {
 
 class Caps;
 class ResourceProvider;
+class CommandBuffer;
 
 class Gpu : public SkRefCnt {
 public:
@@ -27,12 +28,24 @@ public:
 
     ResourceProvider* resourceProvider() const { return fResourceProvider.get(); }
 
+    /**
+     * Submit command buffer to GPU and track completion
+     */
+    enum class SyncQueue {
+        kForce,
+        kSkip
+    };
+    bool submit(CommandBuffer*, SyncQueue);
+
 protected:
     Gpu(sk_sp<const Caps>);
 
     std::unique_ptr<ResourceProvider> fResourceProvider;
 
 private:
+    virtual bool onSubmit(CommandBuffer*, SyncQueue) { return false; }
+    void checkForFinishedCommandBuffers();
+
     sk_sp<const Caps> fCaps;
 };
 

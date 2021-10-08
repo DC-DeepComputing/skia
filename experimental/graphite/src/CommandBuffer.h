@@ -9,13 +9,20 @@
 #define skgpu_CommandBuffer_DEFINED
 
 namespace skgpu {
+class Gpu;
 
 class CommandBuffer {
 public:
     virtual ~CommandBuffer() {}
 
+    bool hasWork() { return fHasWork; }
+    virtual bool isFinished() { return false; }
+    virtual void forceSync(const Gpu*) {}
+
 protected:
     CommandBuffer();
+
+    bool fHasWork = false;
 
 private:
 };

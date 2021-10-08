@@ -21,6 +21,35 @@ ResourceProvider::~ResourceProvider() {
     fRenderPipelineCache.release();
 }
 
+CommandBuffer* ResourceProvider::createCommandBuffer() {
+    std::unique_ptr<CommandBuffer> cmdBuffer = this->onCreateCommandBuffer();
+    if (!cmdBuffer) {
+        // TODO: we need error reporting
+        return nullptr;
+    }
+
+    fActiveCommandBuffers.push_back(std::move(cmdBuffer));
+    return fActiveCommandBuffers.end()->get();
+}
+
+void ResourceProvider::checkCommandBuffers() {
+    for (int i = fActiveCommandBuffers.count()-1; fActiveCommandBuffers.count() && i >= 0; --i) {
+        std::unique_ptr<CommandBuffer>& cmdBuffer = fActiveCommandBuffers[i];
+        if (cmdBuffer->isFinished()) {
+            // TODO: call finished procs?
+            fActiveCommandBuffers.removeShuffle(i);
+            // TODO: recycle if possible
+        }
+    }
+}
+
+void ResourceProvider::forceSyncCommandBuffers() {
+    for (int i = fActiveCommandBuffers.count()-1; fActiveCommandBuffers.count() && i >= 0; --i) {
+        std::unique_ptr<CommandBuffer>& cmdBuffer = fActiveCommandBuffers[i];
+        cmdBuffer->forceSync(fGpu);
+    }
+}
+
 RenderPipeline* ResourceProvider::findOrCreateRenderPipeline(const RenderPipelineDesc& desc) {
     return fRenderPipelineCache->refPipeline(desc);
 }
