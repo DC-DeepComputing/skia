@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0038528_f0bcf89e",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-08T18:44:10Z",
+      "side": 1,
+      "message": "Have you checked that the above code does not produce the correct instruction for ARM? Does the above code produce efficient code for Intel?",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 784,
+        "endChar": 21
+      },
+      "revId": "8fa6dbffff50b35f225837e7ff9d24f1f428a1d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5b4c28c_5066e3cd",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-08T18:44:10Z",
+      "side": 1,
+      "message": "I think you left upper bracketing FP_Contract in the GrFX code.",
+      "range": {
+        "startLine": 868,
+        "startChar": 0,
+        "endLine": 870,
+        "endChar": 6
+      },
+      "revId": "8fa6dbffff50b35f225837e7ff9d24f1f428a1d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
