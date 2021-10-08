@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052d9093_3644b0db",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:33:14Z",
+      "side": 0,
+      "message": "This is now handled by just drawing twice using the same depth value so that where the stroke and fill paths overlap, only one gets to shade it. This should be the same and have a lot less CPU overhead compared to computing the outset on the CPU.\n\nThe exception would be for rects + miter joins, rects + round joins, or rrects with circular corners, but even then it\u0027s a pretty rare case so I like the simplicity of always just draw a stroke and a fill.",
+      "range": {
+        "startLine": 169,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 15
+      },
+      "revId": "cd2f207a2e3f94e6f71d16bb49d2056ca7aff436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d09e63_21c95672",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:33:14Z",
+      "side": 1,
+      "message": "drawPaint/drawAtlas(?)/drawVertices all specify this upfront, and drawShape() adds it when it applies the mask filter.",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644c48c8_574637c5",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:33:14Z",
+      "side": 1,
+      "message": "drawPaint/drawAtlas/drawVertices/drawImage all specify this, and drawShape() adds it when it applies the path effect.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c11dd9d0_c06d0d89",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:33:14Z",
+      "side": 1,
+      "message": "drawPaint uses this directly, and drawShape() uses it when it rewrites hairlines into a device-space draw with a stroke width of 1.",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfbcd99d_8709a71f",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-08T19:33:14Z",
+      "side": 1,
+      "message": "this isn\u0027t actually implemented yet, but I wanted to make a beach head.",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
