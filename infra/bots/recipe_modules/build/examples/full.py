@@ -59,6 +59,7 @@ TEST_BUILDERS = [
   'Build-Debian10-Clang-x86_64-Release-Static',
   'Build-Debian10-Clang-x86_64-Release-SwiftShader',
   'Build-Debian10-Clang-x86_64-Release-Vulkan',
+  'Build-Debian10-Clang-x86_64-Release-CPP14',
   'Build-Debian10-EMCC-asmjs-Debug-PathKit',
   'Build-Debian10-EMCC-asmjs-Release-PathKit',
   'Build-Debian10-EMCC-wasm-Debug-CanvasKit',
