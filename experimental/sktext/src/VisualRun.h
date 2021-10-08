@@ -11,9 +11,12 @@ namespace text {
 
 class VisualRun {
     public:
-    VisualRun(TextRange textRange, GlyphIndex trailingSpacesStart, const TextMetrics& metrics, SkScalar runOffsetInLine,
+    VisualRun(TextRange textRange, GlyphIndex trailingSpacesStart,
+              const SkFont& font, const TextMetrics& metrics,
+              SkScalar runOffsetInLine,
               SkSpan<SkPoint> positions, SkSpan<SkGlyphID> glyphs, SkSpan<uint32_t> clusters)
-        : fTextMetrics(metrics)
+        : fFont(font)
+        , fTextMetrics(metrics)
         , fUtf16Range(textRange)
         , fTrailingSpacesStart(trailingSpacesStart) {
         fPositions.reserve_back(positions.size());
@@ -71,8 +74,23 @@ class VisualRun {
                 callback(textRange);
             }
         } else {
-            // TODO: Implement RTL
-            SkASSERT(false);
+            TextIndex currentIndex = fUtf16Range.fEnd;
+            TextRange textRange(fUtf16Range.fEnd, fUtf16Range.fEnd);
+            for (auto chunkIndex = textChunks.size(); chunkIndex > 0; --chunkIndex) {
+                auto currentTextChunk = textChunks[chunkIndex - 1];
+                if (currentIndex >= fUtf16Range.fStart) {
+                    break;
+                }
+                currentIndex -= currentTextChunk;
+                if (currentIndex < fUtf16Range.fStart) {
+                    continue;
+                }
+                textRange.fEnd = textRange.fStart;
+                textRange.fStart -= currentTextChunk;
+                //textRange.fStart = std::min(fUtf16Range.fStart, textRange.fStart);
+
+                callback(textRange);
+            }
         }
     }
 

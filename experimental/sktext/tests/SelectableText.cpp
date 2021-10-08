@@ -111,7 +111,7 @@ DEF_TEST(SkText_SelectableText_Bounds, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
     auto selectableText = wrappedText->prepareToEdit(&unicodeText);
@@ -159,7 +159,7 @@ DEF_TEST(SkText_SelectableText_Navigation_FirstLast, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
     auto selectableText = wrappedText->prepareToEdit(&unicodeText);
@@ -201,7 +201,7 @@ DEF_TEST(SkText_SelectableText_ScanRightByGraphemeClusters, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
     auto selectableText = wrappedText->prepareToEdit(&unicodeText);
@@ -242,7 +242,7 @@ DEF_TEST(SkText_SelectableText_ScanLeftByGraphemeClusters, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
     auto selectableText = wrappedText->prepareToEdit(&unicodeText);
@@ -283,7 +283,7 @@ DEF_TEST(SkText_SelectableText_Navigation_UpDown, reporter) {
     if (!unicodeText.getUnicode()) return;
 
     FontBlock fontBlock(utf16.size(), fontChain);
-    auto fontResolvedText = unicodeText.resolveFonts(SkSpan<FontBlock>(&fontBlock, 1));
+    auto fontResolvedText = unicodeText.resolveFonts<DummyFontResolvedText>(SkSpan<FontBlock>(&fontBlock, 1), TextDirection::kLtr, std::locale().name().c_str());
     auto shapedText = fontResolvedText->shape(&unicodeText, TextDirection::kLtr);
     auto wrappedText = shapedText->wrap(&unicodeText, 440.0f, 500.0f);
     auto selectableText = wrappedText->prepareToEdit(&unicodeText);

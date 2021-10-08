@@ -34,7 +34,43 @@ public:
         @param textDirection  a starting text direction value
         @return               an object that contains the result of shaping operations
     */
-    std::unique_ptr<FontResolvedText> resolveFonts(SkSpan<FontBlock> blocks);
+    template <class Resolver>
+    std::unique_ptr<FontResolvedText> resolveFonts(SkSpan<FontBlock> blocks, TextDirection textDirection, const char* locale) {
+        auto fontResolvedText = std::make_unique<Resolver>();
+
+        TextRange adjustedBlock(0, 0);
+        TextIndex index = 0;
+        for (auto& block : blocks) {
+
+            index += block.charCount;
+            adjustedBlock.fStart = adjustedBlock.fEnd;
+            adjustedBlock.fEnd = index;
+            if (adjustedBlock.fStart >= adjustedBlock.fEnd) {
+                // The last block adjustment went over the entire block
+                continue;
+            }
+
+            // Move the end of the block to the right until it's on the grapheme edge
+            while (adjustedBlock.fEnd < this->fText16.size() &&  !this->hasProperty(adjustedBlock.fEnd, CodeUnitFlags::kGraphemeStart)) {
+                ++adjustedBlock.fEnd;
+            }
+            SkASSERT(block.type == BlockType::kFontChain);
+            SkSpan<char16_t> adjustedText(fText16.data() + adjustedBlock.fStart, adjustedBlock.width());
+            fontResolvedText->resolveChain(this, adjustedText, textDirection, locale, *block.chain);
+        }
+
+        std::sort(fontResolvedText->fResolvedFonts.begin(), fontResolvedText->fResolvedFonts.end(),
+                  [](const ResolvedFontBlock& a, const ResolvedFontBlock& b) {
+                    return a.textRange.fStart < b.textRange.fStart;
+                  });
+    /*
+        SkDebugf("Resolved:\n");
+        for (auto& f : fontResolvedText->fResolvedFonts) {
+            SkDebugf("[%d:%d)\n", f.textRange.fStart, f.textRange.fEnd);
+        }
+    */
+        return std::move(fontResolvedText);
+    }
 
     UnicodeText(std::unique_ptr<SkUnicode> unicode, SkSpan<uint16_t> utf16);
     UnicodeText(std::unique_ptr<SkUnicode> unicode, const SkString& utf8);
@@ -78,6 +114,20 @@ public:
         }
     }
 
+    TextIndex adjustToGraphemeEdge(TextIndex textIndex, bool left) {
+        if (left) {
+            while (textIndex > 0 && !hasProperty(textIndex, CodeUnitFlags::kGraphemeStart)) {
+                --textIndex;
+            }
+            return textIndex;
+        } else {
+            while (textIndex < fText16.size() && !hasProperty(textIndex, CodeUnitFlags::kGraphemeStart)) {
+                ++textIndex;
+            }
+            return textIndex;
+        }
+    }
+
 private:
     void initialize(SkSpan<uint16_t> utf16);
 
@@ -101,15 +151,43 @@ public:
         @return               an object that contains the result of shaping operations
     */
     virtual std::unique_ptr<ShapedText> shape(UnicodeText* unicodeText, TextDirection textDirection);
+    virtual bool resolveChain(UnicodeText* unicodeText, SkSpan<const char16_t> text, TextDirection textDirection, const char* locale, const FontChain& fontChain) = 0;
 
     FontResolvedText() = default;
     virtual ~FontResolvedText() = default;
 
-    bool resolveChain(UnicodeText* unicodeText, TextRange textRange, const FontChain& fontChain);
     SkSpan<ResolvedFontBlock> resolvedFonts() { return SkSpan<ResolvedFontBlock>(fResolvedFonts.data(), fResolvedFonts.size()); }
-private:
+protected:
     friend class UnicodeText;
     SkTArray<ResolvedFontBlock, true> fResolvedFonts;
+};
+
+class DummyFontResolvedText : public FontResolvedText {
+public:
+    ~DummyFontResolvedText() override = default;
+    bool resolveChain(UnicodeText* unicodeText, SkSpan<const char16_t> text, TextDirection textDirection, const char* locale, const FontChain& fontChain) override;
+};
+
+class HarfbuzzFontResolvedText : public FontResolvedText {
+public:
+    ~HarfbuzzFontResolvedText() override = default;
+    bool resolveChain(UnicodeText* unicodeText, SkSpan<const char16_t> text, TextDirection textDirection, const char* locale, const FontChain& fontChain) override;
+private:
+
+    bool trySingleFont(SkUnicode* unicode,
+                       SkSpan<const char16_t> context,
+                       const SkFont& font,
+                       const char* locale,
+                       bool leftToRight) const;
+    template<typename Callback>
+    bool harfbuzz(SkSpan<const char16_t> context,
+                  TextRange text,
+                  const SkBidiIterator::Level bidi,
+                  const char* language,
+                  const SkFourByteTag script,
+                  const SkFont& font,
+                  Callback callback) const;
+    std::vector<TextRange> fUnresolvedText;
 };
 
 class WrappedText;
@@ -198,6 +276,7 @@ public:
         @return               an object that contains a list of SkTextBlobs to draw on a canvas
     */
     std::unique_ptr<DrawableText> prepareToDraw(UnicodeText* unicodeText, PositionType positionType, SkSpan<TextIndex> blocks) const;
+    std::unique_ptr<DrawableText> prepareToDraw(UnicodeText* unicodeText) const;
     /** Aggregates all the data to navigate the text (move up, down, left, right),
         select some text near the cursor point, adjust all text position to word,
         grapheme cluster and such.
