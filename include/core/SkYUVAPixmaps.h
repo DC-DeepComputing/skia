@@ -25,7 +25,7 @@ class GrImageContext;
  */
 class SK_API SkYUVAPixmapInfo {
 public:
-    static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
+    inline static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
 
     using PlaneConfig  = SkYUVAInfo::PlaneConfig;
     using Subsampling  = SkYUVAInfo::Subsampling;
@@ -42,7 +42,7 @@ public:
 
         kLast = kUnorm10_Unorm2
     };
-    static constexpr int kDataTypeCnt = static_cast<int>(DataType::kLast) + 1;
+    inline static constexpr int kDataTypeCnt = static_cast<int>(DataType::kLast) + 1;
 
     class SK_API SupportedDataTypes {
     public:

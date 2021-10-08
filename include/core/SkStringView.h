@@ -23,7 +23,7 @@ public:
     using iterator = const_pointer;
     using const_iterator = iterator;
     using size_type = size_t;
-    static constexpr size_type npos = size_type(-1);
+    inline static constexpr size_type npos = size_type(-1);
 
     constexpr string_view()
         : fData(nullptr)

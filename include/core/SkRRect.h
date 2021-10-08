@@ -415,7 +415,7 @@ public:
     */
     bool isValid() const;
 
-    static constexpr size_t kSizeInMemory = 12 * sizeof(SkScalar);
+    inline static constexpr size_t kSizeInMemory = 12 * sizeof(SkScalar);
 
     /** Writes SkRRect to buffer. Writes kSizeInMemory bytes, and returns
         kSizeInMemory, the number of bytes written.

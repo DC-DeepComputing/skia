@@ -607,17 +607,17 @@ public:
     size_t readFromMemory(const void* buffer, size_t length);
 
 private:
-    static constexpr int kOpCount = kReplace_Op + 1;
+    inline static constexpr int kOpCount = kReplace_Op + 1;
 
     // T
     // [B N L R S]
     // S
-    static constexpr int kRectRegionRuns = 7;
+    inline static constexpr int kRectRegionRuns = 7;
 
     struct RunHead;
 
     static RunHead* emptyRunHeadPtr() { return (SkRegion::RunHead*) -1; }
-    static constexpr RunHead* kRectRunHeadPtr = nullptr;
+    inline static constexpr RunHead* kRectRunHeadPtr = nullptr;
 
     // allocate space for count runs
     void allocateRuns(int count);

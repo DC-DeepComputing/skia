@@ -32,7 +32,7 @@ struct SkFontParameters {
             // Set this axis to be remain hidden in user interfaces.
             void setHidden(bool hidden) { flags = hidden ? (flags | HIDDEN) : (flags & ~HIDDEN); }
         private:
-            static constexpr uint16_t HIDDEN = 0x0001;
+            inline static constexpr uint16_t HIDDEN = 0x0001;
             // Attributes for a font axis.
             uint16_t flags;
         };

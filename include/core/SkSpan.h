@@ -67,7 +67,7 @@ public:
     }
 
 private:
-    static constexpr size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
+    inline static constexpr size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
     T* fPtr;
     size_t fSize;
 };

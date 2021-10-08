@@ -53,7 +53,7 @@ public:
      *  this many bytes, or by implementing rewind() to be able to rewind()
      *  after reading this many bytes.
      */
-    static constexpr size_t MinBufferedBytesNeeded() { return 32; }
+    inline static constexpr size_t MinBufferedBytesNeeded() { return 32; }
 
     /**
      *  Error codes for various SkCodec methods.
@@ -611,11 +611,11 @@ public:
     //   is independent.
     // - Options::fPriorFrame set to this value means no (relevant) prior frame
     //   is residing in dst's memory.
-    static constexpr int kNoFrame = -1;
+    inline static constexpr int kNoFrame = -1;
 
     // This transitional definition was added in August 2018, and will eventually be removed.
 #ifdef SK_LEGACY_SKCODEC_NONE_ENUM
-    static constexpr int kNone = kNoFrame;
+    inline static constexpr int kNone = kNoFrame;
 #endif
 
     /**
@@ -707,7 +707,7 @@ public:
      */
     std::vector<FrameInfo> getFrameInfo();
 
-    static constexpr int kRepetitionCountInfinite = -1;
+    inline static constexpr int kRepetitionCountInfinite = -1;
 
     /**
      *  Return the number of times to repeat, if this image is animated. This number does not
