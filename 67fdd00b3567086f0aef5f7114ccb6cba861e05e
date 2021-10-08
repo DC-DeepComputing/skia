@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7c8da28_17110c05",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "Is this needed if the paint doesn\u0027t have local coordinates?\n\nWe should avoid special handling eventually if the paint doesn\u0027t have local coords, but I\u0027m wondering if the right spot to do that is here or further down the stack.",
+      "range": {
+        "startLine": 74,
+        "startChar": 55,
+        "endLine": 74,
+        "endChar": 83
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c677ccee_14f8e2c8",
         "filename": "experimental/graphite/src/Device.cpp",
         "patchSetId": 3
@@ -26,6 +49,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13ab4a42_64ac109f",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "I dislike SkStrokeRec.\n\nI wonder if we can reconsider making our own StrokeRec.\n\n- fResScale is hacky, takes up space, and as you said, we should use the matrix cache instead. Tessellation doesn\u0027t use fResScale anyway.\n- The packed values aren\u0027t performant.\n- We can save space by representing join and miter limit in a single float.\n\nCould we instead put kStroke and kFill on the DrawFlags? Then our new SkStrokeRec would really just be the actual stroke params.",
+      "range": {
+        "startLine": 140,
+        "startChar": 42,
+        "endLine": 140,
+        "endChar": 68
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e01767_d6ccbd70",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "This isn\u0027t necessary; tessellation handles hairline strokes natively. Can we delete Shape::makeTransform() if we quit doing this?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 5
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7beacfe1_19eb398c",
         "filename": "experimental/graphite/src/Device.cpp",
         "patchSetId": 3
@@ -42,6 +111,29 @@
         "startChar": 56,
         "endLine": 177,
         "endChar": 57
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2113f29_3575b573",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "Could we put kStroke and kFill here? SkStrokeRec isn\u0027t well suited to this device, and then we wouldn\u0027t need to depend on it for the draw style.",
+      "range": {
+        "startLine": 115,
+        "startChar": 15,
+        "endLine": 115,
+        "endChar": 24
       },
       "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -84,6 +176,30 @@
       "side": 1,
       "message": "Add these 3 as comments in the code ?",
       "parentUuid": "95d09e63_21c95672",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0adbb68c_b182b01a",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "+1 to that :-)",
+      "parentUuid": "8f02e27c_de458a9d",
       "range": {
         "startLine": 117,
         "startChar": 8,
@@ -142,6 +258,70 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc9333dc_f64c45fc",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "I was thrown off by the name here. I think it needs a comment, or maybe a different name, but I can\u0027t think of a better one.\n\n  // The shape\u0027s input coordinates are in post-transform device space, meaning we need to apply the inverse view matrix to local coordinates.",
+      "parentUuid": "c11dd9d0_c06d0d89",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb4e1a4_fc215530",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "Nice :)",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 31
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7eeb7c_5f618f89",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "New line?",
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfbcd99d_8709a71f",
         "filename": "experimental/graphite/src/Device.h",
         "patchSetId": 3
@@ -158,6 +338,53 @@
         "startChar": 4,
         "endLine": 135,
         "endChar": 19
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a1d30f_090e0eb6",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "I\u0027m assuming the device itself holds the clip state for this method?\n\nCan we make a way for this to modify the shape? E.g., rect clipped by rect can intersect to an unclipped rect.",
+      "parentUuid": "cfbcd99d_8709a71f",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff59418_3d8a4d78",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-08T22:14:40Z",
+      "side": 1,
+      "message": "Is it possible to not add this? I\u0027d really prefer to never transform shapes",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 44
       },
       "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
