@@ -325,6 +325,11 @@ metal_tests_sources = [
   "$_tests/MtlCopySurfaceTest.mm",
 ]
 
+graphite_tests_sources = [
+  "$_tests/CapsTest.cpp",
+  "$_tests/ShapeTest.cpp",
+]
+
 pathops_tests_sources = [
   "$_tests/PathOpsAngleIdeas.cpp",
   "$_tests/PathOpsAngleTest.cpp",
