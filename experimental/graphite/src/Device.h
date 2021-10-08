@@ -8,12 +8,21 @@
 #ifndef skgpu_Device_DEFINED
 #define skgpu_Device_DEFINED
 
+#include "experimental/graphite/include/GraphiteTypes.h"
+
 #include "src/core/SkDevice.h"
+
+class SkStrokeRec;
 
 namespace skgpu {
 
 class Context;
 class DrawContext;
+
+namespace geom { class Shape; }
+
+struct PaintParams;
+struct StrokeParams;
 
 class Device final : public SkBaseDevice  {
 public:
@@ -101,11 +110,35 @@ protected:
     sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
 
 private:
+    // Certain draw functions have fixed styles or do not support all effect types.
+    // The drawShape() bottleneck uses these flags to recurse w/o making new SkPaints.
+    enum class DrawFlags : unsigned {
+        kNone             = 0b000,
+        kIgnoreMaskFilter = 0b001,
+        kIgnorePathEffect = 0b010,
+        kDeviceSpaceShape = 0b100,
+    };
+    SKGPU_DECL_MASK_OPS_FRIENDS(DrawFlags);
+
     Device(sk_sp<Context>, sk_sp<DrawContext>);
+
+    // Handles applying path effects, mask filters, stroke-and-fill styles, and hairlines.
+    // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec.
+    void drawShape(const geom::Shape&,
+                   const SkPaint&,
+                   const SkStrokeRec&,
+                   Mask<DrawFlags> = DrawFlags::kNone);
+    // Determines most optimal painters order for a draw of the given shape and style, and
+    // returns the scissor to apply when drawing. This also records the draw's bounds to any
+    // clip elements that affect it so that they are recorded when popped off the stack.
+    std::pair<CompressedPaintersOrder, SkIRect>
+    applyClipToDraw(const SkM44&, const geom::Shape&, const SkStrokeRec&);
 
     sk_sp<Context> fContext;
     sk_sp<DrawContext> fDC;
 };
+
+SKGPU_MAKE_MASK_OPS(Device::DrawFlags)
 
 } // namespace skgpu
 
