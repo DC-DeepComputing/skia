@@ -33,6 +33,23 @@
       "message": "fyi -- very suggestive (to me) of the value of starting a builder api for skottiedom...\n\nImagine I write a gm for text-on-path...\nThen I send those draw calls to a translator/adaptor, that sends them to a Builder,\nwhich outputs a skottie, which draws.\n\nNow I can compare the original gm output with the skottie output.",
       "revId": "8f20448e82da7ee15a0e10b8424d985b0e6213bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce7f66a3_5660c454",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-08T14:26:52Z",
+      "side": 1,
+      "message": "The code itself lgtm, though I haven\u0027t actually looked at the output. As always, I\u0027m assuming this does what AE does.\n\nSince this doesn\u0027t do glyph warping I assume that a tight inner curve causes the tops of the glyphs to get close or overlap (and alternately on an outside curve to spread far apart).",
+      "revId": "8f20448e82da7ee15a0e10b8424d985b0e6213bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
