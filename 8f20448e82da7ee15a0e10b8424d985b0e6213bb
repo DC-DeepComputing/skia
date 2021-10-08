@@ -50,6 +50,24 @@
       "message": "The code itself lgtm, though I haven\u0027t actually looked at the output. As always, I\u0027m assuming this does what AE does.\n\nSince this doesn\u0027t do glyph warping I assume that a tight inner curve causes the tops of the glyphs to get close or overlap (and alternately on an outside curve to spread far apart).",
       "revId": "8f20448e82da7ee15a0e10b8424d985b0e6213bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19ddb8dd_efcdedf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-08T15:09:28Z",
+      "side": 1,
+      "message": "\u003e Since this doesn\u0027t do glyph warping I assume that a tight inner curve causes the tops of the glyphs to get close or overlap (and alternately on an outside curve to spread far apart).\n\nIndeed, and that\u0027s even more obvious when applied to paragraphs, as lines are offset along perpendiculars.  Yes, paragraph-on-path is a thing in AE, will tackle it next :)",
+      "parentUuid": "ce7f66a3_5660c454",
+      "revId": "8f20448e82da7ee15a0e10b8424d985b0e6213bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
