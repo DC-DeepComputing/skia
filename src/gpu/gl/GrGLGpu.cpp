@@ -2193,7 +2193,11 @@ void GrGLGpu::flushRenderTarget(GrGLRenderTarget* target, bool useMultisampleFBO
     this->didWriteToSurface(target, kTopLeft_GrSurfaceOrigin, nullptr);
 }
 
+#include "src/core/SkScopeExit.h"
+
 void GrGLGpu::flushRenderTargetNoColorWrites(GrGLRenderTarget* target, bool useMultisampleFBO) {
+    gLogCallsGL = true;
+    SkScopeExit sexit([&]{gLogCallsGL = false;});
     SkASSERT(target);
     GrGpuResource::UniqueID rtID = target->uniqueID();
     if (fHWBoundRenderTargetUniqueID != rtID || fHWBoundFramebufferIsMSAA != useMultisampleFBO) {
