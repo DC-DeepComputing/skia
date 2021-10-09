@@ -293,8 +293,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// Graphite bot *only* runs the grmtl config
 		if b.extraConfig("Graphite") {
 			if b.extraConfig("ASAN") {
-			    // skbug.com/12507 (Neon UB during JPEG compression on M1 ASAN Graphite bot)
-				skip("_", "gm", "_", "yuv420_odd_dim")  // Oddly enough yuv420_odd_dim_repeat doesn't crash
+				// skbug.com/12507 (Neon UB during JPEG compression on M1 ASAN Graphite bot)
+				skip("_", "gm", "_", "yuv420_odd_dim") // Oddly enough yuv420_odd_dim_repeat doesn't crash
 				skip("_", "gm", "_", "encode-alpha-jpeg")
 				skip("_", "gm", "_", "encode")
 				skip("_", "gm", "_", "jpg-color-cube")
@@ -357,7 +357,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.model("Spin513") {
 			// skbug.com/11876
 			skip("_ test _ Programs")
-            // skbug.com/12486
+			// skbug.com/12486
 			skip("_ test _ TestMockContext")
 			skip("_ test _ TestGpuRenderingContexts")
 			skip("_ test _ TestGpuAllContexts")
@@ -634,7 +634,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("vkddl gm _ compressed_textures")
 	}
 
-	if b.model("TecnoSpark3Pro") {
+	if b.model("TecnoSpark3Pro", "Wembley") {
 		// skbug.com/9421
 		skip("_ test _ InitialTextureClear")
 	}
@@ -921,12 +921,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("_", "tests", "_", "SkSLVectorToMatrixCast_GPU") // skia:12179
 	}
 
-	if ((b.extraConfig("Vulkan") && b.isLinux() && b.matchGpu("Intel")) ||
-        (b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)"))) {
+	if (b.extraConfig("Vulkan") && b.isLinux() && b.matchGpu("Intel")) ||
+		(b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)")) {
 		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU") // skia:12465
 	}
 
-	if (b.gpu("Tegra3")) { // Tegra3 fails to compile break stmts inside a for loop (skia:12477)
+	if b.gpu("Tegra3") { // Tegra3 fails to compile break stmts inside a for loop (skia:12477)
 		skip("_", "tests", "_", "SkSLSwitch_GPU")
 		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU")
 		skip("_", "tests", "_", "SkSLSwitchWithFallthrough_GPU")
@@ -989,7 +989,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~Programs") // skia:7849
 	}
 
-	if b.model("TecnoSpark3Pro") {
+	if b.model("TecnoSpark3Pro", "Wembley") {
 		// skia:9814
 		match = append(match, "~Programs")
 		match = append(match, "~ProcessorCloneTest")
