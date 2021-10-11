@@ -72,6 +72,9 @@ extern bool gUseSkVMBlitter;
 extern bool gSkVMAllowJIT;
 extern bool gSkVMJITViaDylib;
 
+double gVMBlitterNS = 0;
+double gRPBlitterNS = 0;
+
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
 
