@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e893fec_20a45180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-11T19:01:24Z",
+      "side": 1,
+      "message": "Leandro, could you review the Bazel parts? If you are curious, you can look at the earlier patchsets to see the alternate impl for comparison.\n\nBrian, could you (or a delegate of your choosing) look at bindings.cpp and index.html? You\u0027ll notice a lot of similarity to https://skia-review.googlesource.com/c/skia/+/457316 Full confession on the C++ side, I\u0027m still not super familiar with the WebGPU lingo, but managed to whoops my way into this demo.\n\nhttps://screencast.googleplex.com/cast/NTY0NzA4ODc5ODkyNDgwMHxhNWZhOTQ5Yy03Mw",
+      "revId": "b5ba21dddb444c35bee6d7f5cfccce41d19f762f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
