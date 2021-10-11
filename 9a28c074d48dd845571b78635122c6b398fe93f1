@@ -33,6 +33,40 @@
       "message": "FYI: Canary-G3 is not creating new CLs because something is down in borg-land. Filed skbug.com/12520 to investigate.",
       "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ab06edc_5890c649",
+        "filename": "modules/skparagraph/src/ParagraphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T14:40:55Z",
+      "side": 1,
+      "message": "Is this getHalfLeading addition here a bugfix? If so, can we do that in a separate CL?",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09c7b66_4364f620",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T14:40:55Z",
+      "side": 1,
+      "message": "In same separate fHalfLeading CL?",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
