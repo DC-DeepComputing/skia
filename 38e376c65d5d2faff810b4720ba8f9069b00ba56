@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d68a11de_a54c7d99",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-11T16:43:12Z",
+      "side": 1,
+      "message": "Did you mean fp_contract?",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "38e376c65d5d2faff810b4720ba8f9069b00ba56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "509fcb23_df5828c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-11T16:43:12Z",
+      "side": 1,
+      "message": "Did this fix a regression, or can you see it using fma now in the codegen?\n\nI know mtklein was very opposed to using fp_contract in skvx, which is actually why I put this method in a GPU-backend file originally. His argument was that it would cause different behavior on different platforms, but coming from the GPU side, I\u0027m OK with that.",
+      "revId": "38e376c65d5d2faff810b4720ba8f9069b00ba56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
