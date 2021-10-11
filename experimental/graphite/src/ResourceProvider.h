@@ -24,7 +24,10 @@ class ResourceProvider {
 public:
     virtual ~ResourceProvider();
 
-    std::unique_ptr<CommandBuffer> createCommandBuffer();
+    CommandBuffer* createCommandBuffer();
+    void checkCommandBuffers();
+    void forceSyncCommandBuffers();
+
     RenderPipeline* findOrCreateRenderPipeline(const RenderPipelineDesc&);
 
     sk_sp<Texture> findOrCreateTexture(SkISize, const TextureInfo&);
@@ -38,6 +41,9 @@ private:
     virtual std::unique_ptr<CommandBuffer> onCreateCommandBuffer() = 0;
     virtual std::unique_ptr<RenderPipeline> onCreateRenderPipeline(const RenderPipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
+
+    // TODO: track command pools instead (Metal would have class that just creates/owns a cmdbuffer)
+    SkSTArray<4, std::unique_ptr<CommandBuffer> , true> fActiveCommandBuffers;
 
     class RenderPipelineCache {
     public:

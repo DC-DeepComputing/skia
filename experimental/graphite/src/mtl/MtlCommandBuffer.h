@@ -25,6 +25,19 @@ public:
     static std::unique_ptr<CommandBuffer> Make(const Gpu*);
     ~CommandBuffer() override {}
 
+    bool isFinished() override {
+        return (*fCommandBuffer).status == MTLCommandBufferStatusCompleted ||
+               (*fCommandBuffer).status == MTLCommandBufferStatusError;
+
+    }
+    void forceSync(const skgpu::Gpu*) override {
+        // TODO: it's not clear what do to if status is Enqueued. Commit and then wait?
+        if ((*fCommandBuffer).status == MTLCommandBufferStatusCommitted) {
+            [(*fCommandBuffer) waitUntilCompleted];
+        }
+    }
+    bool commit(bool waitUntilCompleted);
+
 private:
     CommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
         : fCommandBuffer(std::move(cmdBuffer)) {}

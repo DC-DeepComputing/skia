@@ -37,4 +37,22 @@ std::unique_ptr<CommandBuffer> CommandBuffer::Make(const Gpu* gpu) {
     return std::unique_ptr<CommandBuffer>(new CommandBuffer(std::move(cmdBuffer)));
 }
 
+bool CommandBuffer::commit(bool waitUntilCompleted) {
+    // TODO: end any encoding
+    [(*fCommandBuffer) commit];
+    if (waitUntilCompleted) {
+        [(*fCommandBuffer) waitUntilCompleted];
+    }
+
+    // TODO: better error reporting
+    if ((*fCommandBuffer).status == MTLCommandBufferStatusError) {
+        NSString* description = (*fCommandBuffer).error.localizedDescription;
+        const char* errorString = [description UTF8String];
+        SkDebugf("Error submitting command buffer: %s\n", errorString);
+    }
+
+    return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
+}
+
+
 } // namespace skgpu::mtl
