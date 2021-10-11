@@ -9,6 +9,7 @@
 #define skgpu_MtlCommandBuffer_DEFINED
 
 #include "experimental/graphite/src/CommandBuffer.h"
+#include "experimental/graphite/src/GpuWorkSubmission.h"
 
 #include <memory>
 
@@ -20,10 +21,23 @@
 namespace skgpu::mtl {
 class Gpu;
 
-class CommandBuffer final : public skgpu::CommandBuffer {
+class CommandBuffer final : public skgpu::CommandBuffer, public skgpu::GpuWorkSubmission {
 public:
-    static std::unique_ptr<CommandBuffer> Make(const Gpu*);
+    static sk_sp<CommandBuffer> Make(const Gpu*);
     ~CommandBuffer() override {}
+
+    bool isFinished() override {
+        return (*fCommandBuffer).status == MTLCommandBufferStatusCompleted ||
+               (*fCommandBuffer).status == MTLCommandBufferStatusError;
+
+    }
+    void waitUntilFinished(const skgpu::Gpu*) override {
+        // TODO: it's not clear what do to if status is Enqueued. Commit and then wait?
+        if ((*fCommandBuffer).status == MTLCommandBufferStatusCommitted) {
+            [(*fCommandBuffer) waitUntilCompleted];
+        }
+    }
+    bool commit(bool waitUntilCompleted);
 
 private:
     CommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
