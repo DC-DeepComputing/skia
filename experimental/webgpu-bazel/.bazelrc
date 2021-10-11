@@ -1,0 +1,3 @@
+# Disable sandbox environment because emsdk caches files by writing to
+# home directory.
+build:wasm --spawn_strategy=local
