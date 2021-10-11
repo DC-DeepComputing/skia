@@ -46,6 +46,8 @@
 bool gSkVMAllowJIT{false};
 bool gSkVMJITViaDylib{false};
 
+bool gSkVMInterpreterUsed{false};
+
 #if defined(SKVM_JIT)
     #if defined(SK_BUILD_FOR_WIN)
         #include "src/core/SkLeanWindows.h"
@@ -2627,6 +2629,7 @@ namespace skvm {
         }
     #endif
 
+        gSkVMInterpreterUsed = true;
         // So we'll sometimes use the interpreter here even if later calls will use the JIT.
         SkOpts::interpret_skvm(fImpl->instructions.data(), (int)fImpl->instructions.size(),
                                this->nregs(), this->loop(), fImpl->strides.data(),
