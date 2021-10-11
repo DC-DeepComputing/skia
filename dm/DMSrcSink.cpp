@@ -2121,6 +2121,25 @@ GraphiteSink::GraphiteSink() {}
 
 #ifdef SK_GRAPHITE_ENABLED
 
+namespace {
+
+// For the sprint Graphite only handles:
+//    solid colors with src or srcOver
+//    repeated or clamped linear gradients with src or srcOver
+void precompile(skgpu::Context* context) {
+    skgpu::ShaderCombo c1 { { skgpu::GradientCombo({ SkShader::kNone_GradientType },
+                                                   { SkTileMode::kRepeat }) },
+                            { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+    context->preCompile(c1);
+
+    skgpu::ShaderCombo c2 { { skgpu::GradientCombo({ SkShader::kLinear_GradientType },
+                                                   { SkTileMode::kRepeat, SkTileMode::kClamp }) },
+                            { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+    context->preCompile(c2);
+}
+
+} // anonymous namespace
+
 Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
@@ -2131,6 +2150,8 @@ Result GraphiteSink::draw(const Src& src,
 
     sk_graphite_test::ContextFactory factory;
     auto [_, context] = factory.getContextInfo(ContextType::kMetal);
+
+    precompile(context.get());
 
     sk_sp<SkSurface> surface = MakeGraphite(std::move(context), ii);
     if (!surface) {
