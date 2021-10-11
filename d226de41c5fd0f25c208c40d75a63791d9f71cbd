@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aee61bb_344acbdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T20:32:49Z",
+      "side": 1,
+      "message": "I find this sort of change really difficult to review and I keep referring to the matrix at https://stackoverflow.com/questions/24342941/what-are-the-rules-for-automatic-generation-of-move-operations and checking which special members already existed to figure out what the actual change is. It\u0027s really difficult to tell if this is going to start making copies of things.",
+      "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab69a109_45b00b68",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T20:32:49Z",
+      "side": 1,
+      "message": "I suppose I could go poke around myself to find out, but I\u0027m currently curious what needs this (especially since this seems to be the only \u0027include/core\u0027 file to be changed).",
+      "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -16,6 +16,23 @@
       "message": "So basically, Chrome wants us back on C++14 because they\u0027re dragging their own feet. Seems they\u0027re working on NaCl for some reason ( https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1106311 ) which seems pretty far along. Though I don\u0027t understand why, or what still uses it.",
       "revId": "9f24b45ac672eac2c39b9a961cada8ab0d072935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08fdea34_39f91cdc",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T20:32:49Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure this \u0027default\u0027 actually turns into a \u0027delete\u0027 since there is no way to move a mutex (at least there should never be). Anyhow, just surprising that this works.",
+      "revId": "9f24b45ac672eac2c39b9a961cada8ab0d072935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ae2b0d_be06db55",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T20:32:49Z",
+      "side": 0,
+      "message": "What happened to this \u0027operator\u003d\u0027 ? It should be at least \u0027\u003d default\u0027 which in this case should actually mean \u0027delete\u0027.",
+      "revId": "90a66821f0babce02d9a2f970659bb9a3f857f50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
