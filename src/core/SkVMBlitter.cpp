@@ -14,6 +14,7 @@
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
+#include "src/core/SkCycles.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
@@ -23,6 +24,10 @@
 #include "src/shaders/SkColorFilterShader.h"
 
 #include <cinttypes>
+
+uint64_t gVMBlitterCycles = 0;
+uint64_t gVMBlitterScanlines = 0;
+uint64_t gVMPixels = 0;
 
 namespace {
 
@@ -645,9 +650,17 @@ void SkVMBlitter::blitH(int x, int y, int w) {
     }
     this->updateUniforms(x+w, y);
     if (const void* sprite = this->isSprite(x,y)) {
+        gVMBlitterScanlines += 1;
+        gVMPixels += w;
+        auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+        gVMBlitterCycles += SkCycles::Now() - before;
     } else {
+        gVMBlitterScanlines += 1;
+        gVMPixels += w;
+        auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
+        gVMBlitterCycles += SkCycles::Now() - before;
     }
 }
 
@@ -655,7 +668,10 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
     if (fBlitAntiH.empty()) {
         fBlitAntiH = this->buildProgram(Coverage::UniformF);
     }
+    auto before = SkCycles::Now();
     for (int16_t run = *runs; run > 0; run = *runs) {
+        gVMBlitterScanlines += 1;
+        gVMPixels += run;
         this->updateUniforms(x+run, y);
         const float covF = *cov * (1/255.0f);
         if (const void* sprite = this->isSprite(x,y)) {
@@ -666,6 +682,32 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         x    += run;
         runs += run;
         cov  += run;
+    }
+    gVMBlitterCycles += SkCycles::Now() - before;
+}
+
+void SkVMBlitter::blitRect(int x, int y, int width, int height) {
+    if (fBlitH.empty()) {
+        fBlitH = this->buildProgram(Coverage::Full);
+    }
+    if (const void* sprite = this->isSprite(x,y)) {
+        gVMBlitterScanlines += height;
+        gVMPixels += width * height;
+        auto before = SkCycles::Now();
+        for (; y < height; y++) {
+            this->updateUniforms(x+width, y);
+            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+        }
+        gVMBlitterCycles += SkCycles::Now() - before;
+    } else {
+        gVMBlitterScanlines += height;
+        gVMPixels += width * height;
+        auto before = SkCycles::Now();
+        for (; y < height; y++) {
+            this->updateUniforms(x+width, y);
+            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y));
+        }
+        gVMBlitterCycles += SkCycles::Now() - before;
     }
 }
 
@@ -702,6 +744,9 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
 
     SkASSERT(program);
     if (program) {
+        gVMBlitterScanlines += clip.height();
+        gVMPixels += clip.width() * clip.height();
+        auto before = SkCycles::Now();
         for (int y = clip.top(); y < clip.bottom(); y++) {
              int x = clip.left(),
                  w = clip.width();
@@ -728,6 +773,7 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
                 }
             }
         }
+        gVMBlitterCycles += SkCycles::Now() - before;
     }
 }
 
@@ -758,3 +804,4 @@ SkVMBlitter* SkVMBlitter::Make(const SkPixmap& device,
             SkSimpleMatrixProvider{SkMatrix{}}, std::move(clip), &ok);
     return ok ? blitter : nullptr;
 }
+

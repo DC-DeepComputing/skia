@@ -646,7 +646,7 @@ SkBlitter* SkBlitterClipper::apply(SkBlitter* blitter, const SkRegion* clip,
 bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
                                  const SkPaint& paint,
                                  const SkMatrix& matrix) {
-    if (gSkForceRasterPipelineBlitter) {
+    if (gSkForceRasterPipelineBlitter || gUseSkVMBlitter) {
         return false;
     }
 #if defined(SK_FORCE_RASTER_PIPELINE_BLITTER)
@@ -748,24 +748,28 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
         paint.writable()->setDither(false);
     }
 
-    if (gUseSkVMBlitter) {
+    if (0 && gUseSkVMBlitter) {
         if (auto blitter = SkVMBlitter::Make(device, *paint, matrixProvider,
                                              alloc, clipShader)) {
             return blitter;
         }
+        SK_ABORT("Oh No!!!");
     }
 
     // Same basic idea used a few times: try SkRP, then try SkVM, then give up with a null-blitter.
     // (Setting gUseSkVMBlitter is the only way we prefer SkVM over SkRP at the moment.)
     auto create_SkRP_or_SkVMBlitter = [&]() -> SkBlitter* {
-        if (auto blitter = SkCreateRasterPipelineBlitter(device, *paint, matrixProvider,
-                                                         alloc, clipShader)) {
-            return blitter;
+        if (!gUseSkVMBlitter) {
+            if (auto blitter = SkCreateRasterPipelineBlitter(device, *paint, matrixProvider,
+                                                             alloc, clipShader)) {
+                return blitter;
+            }
         }
         if (auto blitter = SkVMBlitter::Make(device, *paint, matrixProvider,
                                              alloc, clipShader)) {
             return blitter;
         }
+        SK_ABORT("Oh No!");
         return alloc->make<SkNullBlitter>();
     };
 
