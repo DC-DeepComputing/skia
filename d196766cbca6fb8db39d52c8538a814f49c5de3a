@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4998daad_94d22da5",
+        "filename": "site/docs/dev/tools/debugger.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-11T18:30:47Z",
+      "side": 1,
+      "message": "nit: infrastructure repository",
+      "range": {
+        "startLine": 180,
+        "startChar": 70,
+        "endLine": 180,
+        "endChar": 78
+      },
+      "revId": "d196766cbca6fb8db39d52c8538a814f49c5de3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
