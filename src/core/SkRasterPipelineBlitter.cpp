@@ -15,11 +15,16 @@
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkCycles.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkUtils.h"
 #include "src/shaders/SkShaderBase.h"
+
+uint64_t gRPBlitterCycles = 0;
+uint64_t gRPBlitterScanlines = 0;
+uint64_t gRPPixels = 0;
 
 class SkRasterPipelineBlitter final : public SkBlitter {
 public:
@@ -39,6 +44,7 @@ public:
     {}
 
     void blitH     (int x, int y, int w)                            override;
+    void blitHNoCounting     (int x, int y, int w);
     void blitAntiH (int x, int y, const SkAlpha[], const int16_t[]) override;
     void blitAntiH2(int x, int y, U8CPU a0, U8CPU a1)               override;
     void blitAntiV2(int x, int y, U8CPU a0, U8CPU a1)               override;
@@ -329,7 +335,11 @@ void SkRasterPipelineBlitter::blitH(int x, int y, int w) {
 
 void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
     if (fMemset2D) {
+        gRPBlitterScanlines += h;
+        gRPPixels += w * h;
+        auto before = SkCycles::Now();
         fMemset2D(&fDst, x,y, w,h, fMemsetColor);
+        gRPBlitterCycles += SkCycles::Now() - before;
         return;
     }
 
@@ -362,7 +372,49 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
         fBlitRect = p.compile();
     }
 
+    gRPBlitterScanlines += h;
+    gRPPixels += w * h;
+    auto before = SkCycles::Now();
     fBlitRect(x,y,w,h);
+    gRPBlitterCycles += SkCycles::Now() - before;
+}
+
+void SkRasterPipelineBlitter::blitHNoCounting(int x, int y, int w) {
+    if (fMemset2D) {
+        fMemset2D(&fDst, x,y, w,1, fMemsetColor);
+        return;
+    }
+
+    if (!fBlitRect) {
+        SkRasterPipeline p(fAlloc);
+        p.extend(fColorPipeline);
+        p.append_gamut_clamp_if_normalized(fDst.info());
+        if (fBlend == SkBlendMode::kSrcOver
+            && (fDst.info().colorType() == kRGBA_8888_SkColorType ||
+                fDst.info().colorType() == kBGRA_8888_SkColorType)
+            && !fDst.colorSpace()
+            && fDst.info().alphaType() != kUnpremul_SkAlphaType
+            && fDitherRate == 0.0f) {
+            if (fDst.info().colorType() == kBGRA_8888_SkColorType) {
+                p.append(SkRasterPipeline::swap_rb);
+            }
+            this->append_clip_scale(&p);
+            p.append(SkRasterPipeline::srcover_rgba_8888, &fDstPtr);
+        } else {
+            if (fBlend != SkBlendMode::kSrc) {
+                this->append_load_dst(&p);
+                SkBlendMode_AppendStages(fBlend, &p);
+                this->append_clip_lerp(&p);
+            } else if (fClipShaderBuffer) {
+                this->append_load_dst(&p);
+                this->append_clip_lerp(&p);
+            }
+            this->append_store(&p);
+        }
+        fBlitRect = p.compile();
+    }
+
+    fBlitRect(x,y,w,1);
 }
 
 void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const int16_t runs[]) {
@@ -386,18 +438,23 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
         fBlitAntiH = p.compile();
     }
 
+    auto before = SkCycles::Now();
     for (int16_t run = *runs; run > 0; run = *runs) {
+        gRPBlitterScanlines += 1;
+        gRPPixels += run;
         switch (*aa) {
             case 0x00:                       break;
-            case 0xff: this->blitH(x,y,run); break;
+            case 0xff:this->blitHNoCounting(x,y,run); break;
             default:
                 fCurrentCoverage = *aa * (1/255.0f);
+
                 fBlitAntiH(x,y,run,1);
         }
         x    += run;
         runs += run;
         aa   += run;
     }
+    gRPBlitterCycles += SkCycles::Now() - before;
 }
 
 void SkRasterPipelineBlitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
@@ -543,5 +600,9 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     }
 
     SkASSERT(blitter);
+    gRPBlitterScanlines += clip.height();
+    gRPPixels += clip.width() * clip.height();
+    auto before = SkCycles::Now();
     (*blitter)(clip.left(),clip.top(), clip.width(),clip.height());
+    gRPBlitterCycles += SkCycles::Now() - before;
 }
