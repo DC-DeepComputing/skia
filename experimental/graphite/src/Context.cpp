@@ -9,12 +9,57 @@
 
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/Gpu.h"
+#include "include/core/SkPaint.h"
 
 #ifdef SK_METAL
 #include "experimental/graphite/src/mtl/MtlTrampoline.h"
 #endif
 
+#include "include/effects/SkGradientShader.h"
+
 namespace skgpu {
+
+namespace {
+
+// TODO: Repurpose to assemble SkSL.
+void expand(const ShaderCombo& c) {
+    SkPoint pts[2] = { { -100, -100 }, { 100, 100 } };
+    SkColor colors[2] = { SK_ColorRED, SK_ColorGREEN };
+
+    for (auto bm : c.fBlendModes) {
+        for (auto& gradCombo : c.fGradients) {
+            for (auto gradType : gradCombo.fTypes) {
+                for (auto tm: gradCombo.fTileModes) {
+                    sk_sp<SkShader> grad;
+                    switch (gradType) {
+                        case SkShader::kNone_GradientType:
+                        case SkShader::kColor_GradientType:
+                            break;
+                        case SkShader::kLinear_GradientType:
+                            grad = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, tm);
+                            break;
+                        case SkShader::kRadial_GradientType:
+                            grad = SkGradientShader::MakeRadial({0, 0}, 100, colors, nullptr, 2, tm);
+                            break;
+                        case SkShader::kSweep_GradientType:
+                            grad = SkGradientShader::MakeSweep(0, 0, colors, nullptr, 2);
+                            break;
+                        case SkShader::kConical_GradientType:
+                            grad = SkGradientShader::MakeTwoPointConical({100, 100}, 100,
+                                                                         {-100, -100}, 100,
+                                                                         colors, nullptr, 2, tm);
+                            break;
+                    }
+                    SkPaint p;
+                    p.setShader(std::move(grad));
+                    p.setBlendMode(bm);
+                }
+            }
+        }
+    }
+}
+
+} // anonymous namespace
 
 Context::Context(sk_sp<Gpu> gpu) : fGpu(std::move(gpu)) {}
 Context::~Context() {}
@@ -29,5 +74,9 @@ sk_sp<Context> Context::MakeMetal(const mtl::BackendContext& backendContext) {
     return sk_sp<Context>(new Context(std::move(gpu)));
 }
 #endif
+
+void Context::preCompile(const ShaderCombo& c) {
+    expand(c);
+}
 
 } // namespace skgpu

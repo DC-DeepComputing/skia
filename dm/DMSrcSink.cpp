@@ -2132,6 +2132,14 @@ Result GraphiteSink::draw(const Src& src,
     sk_graphite_test::ContextFactory factory;
     auto [_, context] = factory.getContextInfo(ContextType::kMetal);
 
+    skgpu::ShaderCombo c1 { { skgpu::GradientCombo({ SkShader::kNone_GradientType }, { SkTileMode::kRepeat }) },
+                            { SkBlendMode::kSrcOver } };
+    context->preCompile(c1);
+    skgpu::ShaderCombo c2 { { skgpu::GradientCombo({ SkShader::kLinear_GradientType },
+                                                 { SkTileMode::kRepeat, SkTileMode::kClamp }) },
+                            { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+    context->preCompile(c2);
+
     sk_sp<SkSurface> surface = MakeGraphite(std::move(context), ii);
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
