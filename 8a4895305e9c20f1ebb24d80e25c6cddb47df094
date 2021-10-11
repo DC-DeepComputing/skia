@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa8af7aa_7726d69f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-11T12:48:11Z",
+      "side": 1,
+      "message": "We are going to have to solve this once we add a 2nd backend so might as well do it right here. In Ganesh we filled in these unions with a MockFoo that was always compiled. We could do that again here (Just make a dummy mock::TextureSpec that we can fill out later), or just like add a char or something to the union.",
+      "revId": "8a4895305e9c20f1ebb24d80e25c6cddb47df094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
