@@ -15,11 +15,7 @@
 #include "include/private/SkEncodedInfo.h"
 #include "src/codec/SkColorTable.h"
 
-#ifdef SK_PRINT_CODEC_MESSAGES
-    #define SkCodecPrintf SkDebugf
-#else
-    #define SkCodecPrintf(...)
-#endif
+#define SkCodecPrintf SkDebugf
 
 // Defined in SkCodec.cpp
 bool sk_select_xform_format(SkColorType colorType, bool forColorTable,

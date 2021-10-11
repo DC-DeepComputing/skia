@@ -1062,6 +1062,67 @@ DEF_TEST(Codec_jpeg_rewind, r) {
     REPORTER_ASSERT(r, SkCodec::kIncompleteInput == result);
 }
 
+DEF_TEST(Codec_jpeg_incomplete_progressive, r) {
+    const char* path = "images/grayscale.jpg";
+    auto data = GetResourceAsData(path);
+    if (!data) return;
+
+    auto codec = SkCodec::MakeFromData(data);
+    if (!codec) {
+        ERRORF(r, "Failed to create SkCodec from %s!", path);
+        return;
+    }
+
+    SkBitmap bm;
+    bm.allocPixels(codec->getInfo());
+    auto result = codec->getPixels(bm.pixmap());
+    if (result != SkCodec::kSuccess) {
+        ERRORF(r, "Failed to decode %s with error %s!", path, SkCodec::ResultToString(result));
+        return;
+    }
+
+    {
+        // For testing
+        SkFILEWStream good("good.png");
+        if (!SkEncodeImage(&good, bm, SkEncodedImageFormat::kPNG, 100)) {
+            ERRORF(r, "Failed to encode good image!");
+        }
+    }
+
+    // Reset the bitmap to decode again.
+    const auto goodDigest = md5(bm);
+
+    // Remove the final marker, so that all data is available, but jpeg_start_decompress returns
+    // false.
+    data = SkData::MakeSubset(data.get(), 0, data->size() - 2);
+    codec = SkCodec::MakeFromData(std::move(data));
+    if (!codec) {
+        ERRORF(r, "Failed to create SkCodec from %s with only %lu bytes!", path, data->size());
+        return;
+    }
+
+    bm.allocPixels(codec->getInfo());
+    result = codec->getPixels(bm.pixmap());
+
+#if 0
+    // FIXME: Not sure what the right return value should be here.
+    if (result != SkCodec::kSuccess) {
+        ERRORF(r, "Failed to decode %s with error %s!", path, SkCodec::ResultToString(result));
+        return;
+    }
+#endif
+
+    {
+        // For testing. This image is all black - we didn't decode anything!
+        // See https://bugs.chromium.org/p/skia/issues/detail?id=12511#c6
+        SkFILEWStream bad("bad.png");
+        if (!SkEncodeImage(&bad, bm, SkEncodedImageFormat::kPNG, 100)) {
+            ERRORF(r, "Failed to encode bad image!");
+        }
+    }
+    compare_to_good_digest(r, goodDigest, bm);
+}
+
 static void check_color_xform(skiatest::Reporter* r, const char* path) {
     std::unique_ptr<SkAndroidCodec> codec(SkAndroidCodec::MakeFromStream(GetResourceAsStream(path)));
 

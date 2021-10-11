@@ -540,9 +540,9 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
         return fDecoderMgr->returnFailure("setjmp", kInvalidInput);
     }
 
-    if (!jpeg_start_decompress(dinfo)) {
-        return fDecoderMgr->returnFailure("startDecompress", kInvalidInput);
-    }
+    // The return value is only useful for a suspending data source. Even if this returns false,
+    // there may be partial (or even complete, minus the final marker) image data.
+    (void) jpeg_start_decompress(dinfo);
 
     // The recommended output buffer height should always be 1 in high quality modes.
     // If it's not, we want to know because it means our strategy is not optimal.
