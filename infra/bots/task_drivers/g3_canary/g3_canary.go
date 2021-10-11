@@ -20,6 +20,7 @@ import (
 	"go.skia.org/infra/go/gcs"
 	"go.skia.org/infra/go/gcs/gcsclient"
 	"go.skia.org/infra/go/httputils"
+	"go.skia.org/infra/go/metrics2"
 	"go.skia.org/infra/go/skerr"
 	"go.skia.org/infra/go/sklog"
 	"go.skia.org/infra/task_driver/go/lib/auth_steps"
@@ -162,6 +163,10 @@ func waitForCanaryRoll(parentCtx context.Context, taskFileName, taskStoragePath 
 	stdout := td.NewLogStream(ctx, "stdout", td.SeverityInfo)
 	// Lets add the roll link only once to step data.
 	addedRollLinkStepData := false
+	// Used to alert when there are infra failures in skia_try_service.
+	infraFailuresCounter := metrics2.GetCounter("g3_canary_infra_failures", nil)
+	// For TESTING. REMOVE.
+	infraFailuresCounter.Inc(1)
 	for {
 		// Read task status from storage.
 		contents, err := gcsClient.GetFileContents(ctx, taskFileName)
@@ -199,6 +204,7 @@ func waitForCanaryRoll(parentCtx context.Context, taskFileName, taskStoragePath 
 			if task.Error == "" {
 				return td.FailStep(ctx, fmt.Errorf("Run failed with: %s", task.Error))
 			} else {
+				infraFailuresCounter.Inc(1)
 				// Use a general purpose error message.
 				return td.FailStep(ctx, errors.New(InfraFailureErrorMsg))
 			}
