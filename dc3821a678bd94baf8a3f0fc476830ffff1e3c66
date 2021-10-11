@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0d382f_dd6aed20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-11T16:42:49Z",
+      "side": 1,
+      "message": "Thanks! I agree that we should land this as I\u0027m not sure there is much to be gained from a texture-based solution. There are just not many real-world examples of interesting gradients with hundreds of stops. (On the other hand, that might be a self-fulfilling prophecy since we had iffy results with them, but it still seems unlikely to come up.)",
+      "parentUuid": "663c2de9_49b18f28",
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19cbc987_922eee53",
