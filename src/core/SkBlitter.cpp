@@ -753,6 +753,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
                                              alloc, clipShader)) {
             return blitter;
         }
+        SK_ABORT("Oh No!!!");
     }
 
     // Same basic idea used a few times: try SkRP, then try SkVM, then give up with a null-blitter.
@@ -766,6 +767,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
                                              alloc, clipShader)) {
             return blitter;
         }
+        SK_ABORT("Oh No!");
         return alloc->make<SkNullBlitter>();
     };
 
