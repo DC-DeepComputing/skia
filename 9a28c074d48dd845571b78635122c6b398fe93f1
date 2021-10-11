@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8edb0b23_28145e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-10-11T13:15:41Z",
+      "side": 1,
+      "message": "JetBrains and Jetpack team from Google asked for this feature.\nThe good with would be to substitute SkFont with a new type that contains all the style attributes that affect the font in SkParagraph (instead of passing and maintaining them separately). \nI don\u0027t want to increase the coude churn until we switch but next time something like that comes up - I will have to do it the right way.",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
