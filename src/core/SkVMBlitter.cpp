@@ -14,6 +14,7 @@
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
+#include "src/core/SkCycles.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
@@ -23,6 +24,8 @@
 #include "src/shaders/SkColorFilterShader.h"
 
 #include <cinttypes>
+
+uint64_t gVMBlitterCycles = 0;
 
 namespace {
 
@@ -645,9 +648,13 @@ void SkVMBlitter::blitH(int x, int y, int w) {
     }
     this->updateUniforms(x+w, y);
     if (const void* sprite = this->isSprite(x,y)) {
+        auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+        gVMBlitterCycles += SkCycles::Now() - before;
     } else {
+        auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
+        gVMBlitterCycles += SkCycles::Now() - before;
     }
 }
 
@@ -659,9 +666,13 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         this->updateUniforms(x+run, y);
         const float covF = *cov * (1/255.0f);
         if (const void* sprite = this->isSprite(x,y)) {
+            auto before = SkCycles::Now();
             fBlitAntiH.eval(run, fUniforms.buf.data(), fDevice.addr(x,y), sprite, &covF);
+            gVMBlitterCycles += SkCycles::Now() - before;
         } else {
+            auto before = SkCycles::Now();
             fBlitAntiH.eval(run, fUniforms.buf.data(), fDevice.addr(x,y), &covF);
+            gVMBlitterCycles += SkCycles::Now() - before;
         }
         x    += run;
         runs += run;
@@ -712,19 +723,27 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
             if (program == &fBlitMask3D) {
                 size_t plane = mask.computeImageSize();
                 if (const void* sprite = this->isSprite(x,y)) {
+                    auto before = SkCycles::Now();
                     program->eval(w, fUniforms.buf.data(), dptr, sprite, mptr + 1*plane
                                                                        , mptr + 2*plane
                                                                        , mptr + 0*plane);
+                    gVMBlitterCycles += SkCycles::Now() - before;
                 } else {
+                    auto before = SkCycles::Now();
                     program->eval(w, fUniforms.buf.data(), dptr, mptr + 1*plane
                                                                , mptr + 2*plane
                                                                , mptr + 0*plane);
+                    gVMBlitterCycles += SkCycles::Now() - before;
                 }
             } else {
                 if (const void* sprite = this->isSprite(x,y)) {
+                    auto before = SkCycles::Now();
                     program->eval(w, fUniforms.buf.data(), dptr, sprite, mptr);
+                    gVMBlitterCycles += SkCycles::Now() - before;
                 } else {
+                    auto before = SkCycles::Now();
                     program->eval(w, fUniforms.buf.data(), dptr, mptr);
+                    gVMBlitterCycles += SkCycles::Now() - before;
                 }
             }
         }

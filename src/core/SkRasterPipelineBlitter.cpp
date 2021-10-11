@@ -15,11 +15,14 @@
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkCycles.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkUtils.h"
 #include "src/shaders/SkShaderBase.h"
+
+uint64_t gRPBlitterCycles = 0;
 
 class SkRasterPipelineBlitter final : public SkBlitter {
 public:
@@ -362,7 +365,9 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
         fBlitRect = p.compile();
     }
 
+    auto before = SkCycles::Now();
     fBlitRect(x,y,w,h);
+    gRPBlitterCycles += SkCycles::Now() - before;
 }
 
 void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const int16_t runs[]) {
@@ -392,7 +397,9 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
             case 0xff: this->blitH(x,y,run); break;
             default:
                 fCurrentCoverage = *aa * (1/255.0f);
+                auto before = SkCycles::Now();
                 fBlitAntiH(x,y,run,1);
+                gRPBlitterCycles += SkCycles::Now() - before;
         }
         x    += run;
         runs += run;
@@ -543,5 +550,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     }
 
     SkASSERT(blitter);
+    auto before = SkCycles::Now();
     (*blitter)(clip.left(),clip.top(), clip.width(),clip.height());
+    gRPBlitterCycles += SkCycles::Now() - before;
 }
