@@ -8,6 +8,7 @@
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 
 #include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 #include "experimental/graphite/src/mtl/MtlResourceProvider.h"
 
 namespace skgpu::mtl {
@@ -26,9 +27,17 @@ Gpu::Gpu(sk_cfp<id<MTLDevice>> device, sk_cfp<id<MTLCommandQueue>> queue, sk_sp<
     , fDevice(std::move(device))
     , fQueue(std::move(queue)) {
     fResourceProvider.reset(new ResourceProvider(this));
+
+    sk_sp<skgpu::CommandBuffer> cb = this->resourceProvider()->createCommandBuffer();
+    this->submit(cb, SyncToCpu::kYes);
 }
 
 Gpu::~Gpu() {
+}
+
+bool Gpu::onSubmit(sk_sp<skgpu::CommandBuffer> commandBuffer, SyncToCpu sync) {
+    CommandBuffer* mtlCmdBuffer = static_cast<CommandBuffer*>(commandBuffer.get());
+    return mtlCmdBuffer->commit(sync == SyncToCpu::kYes);
 }
 
 } // namespace skgpu::mtl
