@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a324d8c_d6178e35",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:48:56Z",
+      "side": 1,
+      "message": "The most reliable and clean way to tell if a command buffer is finished in Metal, is to ask the command buffer itself, i.e. commandBuffer.status \u003d\u003d MTLCommandBufferStatusCompleted. Trying to use a MTLSharedEvent (the equivalent of a vkFence) led to a lot of issues. I notice that GrVkCommandBuffer.cpp has a fence inside it (and an isFinished() call, btw) -- couldn\u0027t all the command buffers submitted together shared a pointer to the same fence?\n\nThat said, for Vulkan maybe it does make more sense to have vkCommandPool/vkCommandBuffer recycling be based on a shared fence. In that case it might be better to have each backend have its own way to manage command buffers, rather than force an abstraction that doesn\u0027t work well for any of them. Vulkan has command pools which Metal doesn\u0027t have, for example.",
+      "parentUuid": "02a29fb1_1609409a",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 47
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d933637d_eae00744",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 2
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eecd15b4_135ef65a",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:48:56Z",
+      "side": 1,
+      "message": "In that case it\u0027s not clear to me how to handle the case where we submit an empty command buffer with SyncSubmission::kYes. We have to cycle through something to manage the command buffers in flight and there are no fences to wait on in Metal -- the wait command is a MTLCommandBuffer method.\n\nAgain, maybe this is another place where it doesn\u0027t make sense to have shared code.",
+      "parentUuid": "d933637d_eae00744",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 41
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "418cba1f_11e34c85",
         "filename": "experimental/graphite/src/Gpu.h",
         "patchSetId": 2
@@ -77,6 +125,54 @@
       "writtenOn": "2021-10-11T14:51:39Z",
       "side": 1,
       "message": "I wonder if we can have better more generic names here. Maybe something like:\n\nenum class SyncSubmission[ToCpu] {\n   kYes,\n   kNo,\n}",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 13
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f91c96_b0722501",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:48:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "418cba1f_11e34c85",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 13
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad059f77_57d6d125",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:48:56Z",
+      "side": 1,
+      "message": "That\u0027s a little long -- maybe SyncToCpu?",
+      "parentUuid": "418cba1f_11e34c85",
       "range": {
         "startLine": 34,
         "startChar": 4,
