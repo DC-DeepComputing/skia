@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f2de124_dcb531ec",
+        "filename": "experimental/graphite/include/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:04:52Z",
+      "side": 1,
+      "message": "Do we still need this? I thought we were going to use CommandBuffers and control submission/syncing through them.",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "e319985ea054f31db5e8ef558888d42c7ea8e5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b47bf86_4c2b9b06",
+        "filename": "experimental/graphite/src/ContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:04:52Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s necessary to change anything in this CL, but for other testing (command buffer and pipeline generation, e.g.) I\u0027ll probably want access to Gpu directly.",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 9
+      },
+      "revId": "e319985ea054f31db5e8ef558888d42c7ea8e5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb88297b_59c47f76",
+        "filename": "gn/tests.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T15:04:52Z",
+      "side": 1,
+      "message": "There\u0027s nothing to distinguish these as Graphite-only tests. Maybe a tests/graphite directory?",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 26
+      },
+      "revId": "e319985ea054f31db5e8ef558888d42c7ea8e5f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
