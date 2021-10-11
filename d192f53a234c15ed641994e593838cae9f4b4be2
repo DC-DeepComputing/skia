@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c44ba953_1653f3c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-11T15:15:48Z",
+      "side": 1,
+      "message": "This is an attempt at exposing interface type classes (meant to be implemented by the client) in JetSki. If this looks good, this will be how I implement Visitor as well.\nhttps://docs.google.com/document/d/1RnHIg9FoxVRvAFaKiawH90Zo5m5Ud7MqKa4XcVbLQ_k/edit?resourcekey\u003d0-VNd9SLHHFf7hwji4mrCX7g#",
+      "revId": "d192f53a234c15ed641994e593838cae9f4b4be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
