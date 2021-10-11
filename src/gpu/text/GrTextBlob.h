@@ -214,6 +214,7 @@ public:
     static sk_sp<GrTextBlob> Make(const SkGlyphRunList& glyphRunList,
                                   const SkPaint& paint,
                                   const SkMatrix& drawMatrix,
+                                  const SkMatrix& hintMatrix,
                                   const GrSDFTControl& control,
                                   SkGlyphRunListPainter* painter);
 

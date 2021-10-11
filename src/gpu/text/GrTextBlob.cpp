@@ -1516,6 +1516,7 @@ GrTextBlob::~GrTextBlob() = default;
 sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                                    const SkPaint& paint,
                                    const SkMatrix& drawMatrix,
+                                   const SkMatrix& hintMatrix,
                                    const GrSDFTControl& control,
                                    SkGlyphRunListPainter* painter) {
     // The difference in alignment from the per-glyph data to the SubRun;
@@ -1540,12 +1541,8 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                             GrTextBlob(bytesNeededForSubRun, drawMatrix, initialLuminance)};
 
     for (auto& glyphRun : glyphRunList) {
-        painter->processGlyphRun(glyphRun,
-                                 drawMatrix,
-                                 paint,
-                                 control,
-                                 blob.get(),
-                                 "GrTextBlob");
+        painter->processGlyphRun(
+                glyphRun, drawMatrix, hintMatrix, paint, control, blob.get(), "GrTextBlob");
     }
 
     return blob;

@@ -71,6 +71,14 @@ void SkBaseDevice::setGlobalCTM(const SkM44& ctm) {
     fLocalToDevice33 = fLocalToDevice.asM33();
 }
 
+void SkBaseDevice::setDrawTextBlobHint(const SkMatrix* hint) {
+    if (hint) {
+        fDrawTextBlobHint = *hint;
+    } else {
+        fDrawTextBlobHint.reset();
+    }
+}
+
 bool SkBaseDevice::isPixelAlignedToGlobal() const {
     // pixelAligned is set to the identity + integer translation of the device-to-global matrix.
     // If they are equal then the device is by definition pixel aligned.

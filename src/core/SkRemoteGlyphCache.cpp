@@ -841,12 +841,8 @@ protected:
         SkMatrix drawMatrix = this->localToDevice();
         drawMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
         for (auto& glyphRun : glyphRunList) {
-            fPainter.processGlyphRun(glyphRun,
-                                     drawMatrix,
-                                     paint,
-                                     control,
-                                     nullptr,
-                                     "Cache Diff");
+            fPainter.processGlyphRun(
+                    glyphRun, drawMatrix, drawMatrix, paint, control, nullptr, "Cache Diff");
         }
         #endif  // SK_SUPPORT_GPU
     }

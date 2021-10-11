@@ -230,6 +230,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
 #if SK_SUPPORT_GPU
 void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
                                             const SkMatrix& drawMatrix,
+                                            const SkMatrix& hintMatrix,
                                             const SkPaint& runPaint,
                                             const GrSDFTControl& control,
                                             SkGlyphRunPainterInterface* process,
@@ -247,12 +248,12 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
     fRejects.setSource(glyphRun.source());
     const SkFont& runFont = glyphRun.font();
 
-    GrSDFTControl::DrawingType drawingType = control.drawingType(runFont, runPaint, drawMatrix);
+    GrSDFTControl::DrawingType drawingType = control.drawingType(runFont, runPaint, hintMatrix);
 
     if (drawingType == GrSDFTControl::kSDFT) {
         // Process SDFT - This should be the .009% case.
         const auto& [strikeSpec, minScale, maxScale] =
-                SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, drawMatrix, control);
+                SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, hintMatrix, control);
 
         #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
             msg.appendf("  SDFT case:\n%s", strikeSpec.dump().c_str());
@@ -279,9 +280,20 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
 
     if (drawingType != GrSDFTControl::kPath && !fRejects.source().empty()) {
         // Process masks including ARGB - this should be the 99.99% case.
+        bool canUseDeviceMasks = drawMatrix == hintMatrix;
+        if (!canUseDeviceMasks) {
+            SkMatrix invertHintMatrix;
+            if (hintMatrix.invert(&invertHintMatrix)) {
+                auto matrix = drawMatrix * invertHintMatrix;
+                if ((matrix.getType() & ~SkMatrix::kTranslate_Mask) == 0) {
+                    canUseDeviceMasks = true;
+                }
+            }
+        }
+        fprintf(stderr, "EEE canUseDeviceMasks=%d @ %d %d\n", canUseDeviceMasks, __LINE__, getpid());
 
         SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
-                runFont, runPaint, fDeviceProps, fScalerContextFlags, drawMatrix);
+                runFont, runPaint, fDeviceProps, fScalerContextFlags, hintMatrix);
 
         #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
             msg.appendf("  Mask case:\n%s", strikeSpec.dump().c_str());
@@ -289,7 +301,12 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
 
         SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(fStrikeCache);
 
-        fDrawable.startGPUDevice(fRejects.source(), drawMatrix, strike->roundingSpec());
+        // XXX: test hintMatirx with drawHinMatrix, and try to use DirectMaskSunRun.
+        if (canUseDeviceMasks) {
+            fDrawable.startGPUDevice(fRejects.source(), drawMatrix, strike->roundingSpec());
+        } else {
+            fDrawable.startSource(fRejects.source());
+        }
         #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
             msg.appendf("    glyphs:(x,y):\n      %s\n", fDrawable.dumpInput().c_str());
         #endif
@@ -299,7 +316,12 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
         if (process && !fDrawable.drawableIsEmpty()) {
             // processDeviceMasks must be called even if there are no glyphs to make sure runs
             // are set correctly.
-            process->processDeviceMasks(fDrawable.drawable(), strikeSpec);
+            // XXX: test hintMatirx with drawHinMatrix, and try to use DirectMaskSunRun.
+            if (canUseDeviceMasks) {
+                process->processDeviceMasks(fDrawable.drawable(), strikeSpec);
+            } else {
+                process->processSourceMasks(fDrawable.drawable(), strikeSpec);
+            }
         }
     }
 

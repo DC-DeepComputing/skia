@@ -333,17 +333,15 @@ void SurfaceDrawContext::drawGlyphRunListNoCache(const GrClip* clip,
     const SkPoint drawOrigin = glyphRunList.origin();
     SkMatrix drawMatrix = viewMatrix.localToDevice();
     drawMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+    SkMatrix hintMatrix = viewMatrix.drawTextBlobHint().value_or(viewMatrix.localToDevice());
+    hintMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
     GrSubRunAllocator* const alloc = this->subRunAlloc();
 
     for (auto& glyphRun : glyphRunList) {
         GrSubRunNoCachePainter painter{this, alloc, clip, viewMatrix, glyphRunList, paint};
 
         // Make and add the text ops.
-        fGlyphPainter.processGlyphRun(glyphRun,
-                                      drawMatrix,
-                                      paint,
-                                      control,
-                                      &painter);
+        fGlyphPainter.processGlyphRun(glyphRun, drawMatrix, hintMatrix, paint, control, &painter);
     }
 }
 
@@ -351,19 +349,18 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
                                                    const SkMatrixProvider& viewMatrix,
                                                    const SkGlyphRunList& glyphRunList,
                                                    const SkPaint& paint) {
-    SkMatrix drawMatrix(viewMatrix.localToDevice());
+    SkMatrix hintMatrix = viewMatrix.drawTextBlobHint().value_or(viewMatrix.localToDevice());
+    hintMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
+
+    SkMatrix drawMatrix = viewMatrix.localToDevice();
     drawMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
     GrSDFTControl control =
             this->recordingContext()->priv().getSDFTControl(
                     this->surfaceProps().isUseDeviceIndependentFonts());
 
-    auto [canCache, key] = GrTextBlob::Key::Make(glyphRunList,
-                                                 paint,
-                                                 fSurfaceProps,
-                                                 this->colorInfo(),
-                                                 drawMatrix,
-                                                 control);
+    auto [canCache, key] = GrTextBlob::Key::Make(
+            glyphRunList, paint, fSurfaceProps, this->colorInfo(), hintMatrix, control);
 
     sk_sp<GrTextBlob> blob;
     GrTextBlobCache* textBlobCache = fContext->priv().getTextBlobCache();
@@ -371,7 +368,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
         blob = textBlobCache->find(key);
     }
 
-    if (blob == nullptr || !blob->canReuse(paint, drawMatrix)) {
+    if (blob == nullptr || !blob->canReuse(paint, hintMatrix)) {
         if (blob != nullptr) {
             // We have to remake the blob because changes may invalidate our masks.
             // TODO we could probably get away with reuse most of the time if the pointer is unique,
@@ -379,7 +376,8 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
             textBlobCache->remove(blob.get());
         }
 
-        blob = GrTextBlob::Make(glyphRunList, paint, drawMatrix, control, &fGlyphPainter);
+        blob = GrTextBlob::Make(
+                glyphRunList, paint, drawMatrix, hintMatrix, control, &fGlyphPainter);
 
         if (canCache) {
             blob->addKey(key);

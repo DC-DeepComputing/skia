@@ -190,6 +190,7 @@ public:
         fLocalToDevice33 = fLocalToDevice.asM33();
     }
     void setGlobalCTM(const SkM44& ctm);
+    void setDrawTextBlobHint(const SkMatrix* hint);
     virtual void validateDevBounds(const SkIRect&) {}
 
     virtual bool android_utils_clipWithStencil() { return false; }
