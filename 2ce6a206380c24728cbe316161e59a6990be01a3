@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e620a676_ae0c88b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-11T14:40:56Z",
+      "side": 1,
+      "message": "I could submit this as is, but would like your thoughts on whether this is the right direction.",
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
