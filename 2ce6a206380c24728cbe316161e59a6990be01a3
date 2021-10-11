@@ -16,6 +16,52 @@
       "message": "I could submit this as is, but would like your thoughts on whether this is the right direction.",
       "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a29fb1_1609409a",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-11T14:49:54Z",
+      "side": 1,
+      "message": "I assume this is to check if the command buffer is done on the gpu? I\u0027m torn about whether this should be a query on the command buffer or if we should move the idea of waiting on a fence higher up in Graphite.\n\nLike do we ask if a CB is done? Or do we ask if a fence has been flagged and have CBs connected to that fence? If we start producing multiple CBs on threads and submitting them in one batch then I think tracking a fence abstraction makes more sense.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 47
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d933637d_eae00744",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-11T14:49:54Z",
+      "side": 1,
+      "message": "Where did we decide we wanted the submit call to be? Was it:\ngpu-\u003esubmit(CommandBuffer*) or commandBuffer-\u003esubmit(/*either pass in gpu or has it stored internally*/)?\n\nRegardless the sync should be connected to the submit and not a stand alone thing on a command buffer. And since you have the submit on Gpu right now, I feel like this should just be deleted?",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 41
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
