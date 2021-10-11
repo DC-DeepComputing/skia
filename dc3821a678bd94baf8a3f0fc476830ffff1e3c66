@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45d7eb83_71e1990d",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-11T16:38:22Z",
+      "side": 1,
+      "message": "Good catch, the +3 doesn\u0027t add anything (assuming the \"groups of four\" invariant is upheld). Done.",
+      "parentUuid": "19cbc987_922eee53",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 49
+      },
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "022efeab_bf58027c",
@@ -54,6 +78,54 @@
       "writtenOn": "2021-10-11T15:07:31Z",
       "side": 1,
       "message": "Will loopCount \u003d\u003d 0 come up in practice? When loopCount is 0, intervalChunks \u003d 1, so intervalCount has to be 4 but that should be able to go to the unrolled binary colorizer, right?\n\nOr no, looking at the factory, it looks like binary search is preferred all the time if the caps support it. Can we add a comment up here to that effect? When I was reading through at first I had had it in my head that this would only kick in between 16 and 128, but kicking in \u003c 128 makes more sense from a reducing shader POV.",
+      "range": {
+        "startLine": 301,
+        "startChar": 17,
+        "endLine": 301,
+        "endChar": 23
+      },
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2618cfa_3b2a84b5",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-11T16:38:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "022efeab_bf58027c",
+      "range": {
+        "startLine": 301,
+        "startChar": 17,
+        "endLine": 301,
+        "endChar": 23
+      },
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb7c2ee0_fe6d4c49",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-11T16:38:22Z",
+      "side": 1,
+      "message": "Done:\n\n+        // Note that this colorizer is also designed to handle the case of exactly 4 intervals (a\n+        // single chunk). In this case, the binary search for-loop will optimize away entirely, as\n+        // it can be proven to execute zero times. We also optimize away the calculation of `4 *\n+        // chunk` near the end via an @if statement, as the result will always be in chunk 0.",
+      "parentUuid": "022efeab_bf58027c",
       "range": {
         "startLine": 301,
         "startChar": 17,
