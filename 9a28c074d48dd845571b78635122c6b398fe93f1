@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb2dbb7c_4ad729c6",
+        "filename": "modules/skparagraph/src/ParagraphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T18:26:55Z",
+      "side": 1,
+      "message": "That\u0027s fine an all, but these changes should really go in another CL, since they\u0027re logically unrelated.",
+      "parentUuid": "0739473d_2da7c3fd",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e09c7b66_4364f620",
         "filename": "modules/skparagraph/src/TextStyle.cpp",
         "patchSetId": 4
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "There was a change done by Flutter people some time ago. I code reviewed it and missed a couple of places.",
       "parentUuid": "e09c7b66_4364f620",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744fb534_18d4fc52",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T18:26:55Z",
+      "side": 1,
+      "message": "That\u0027s fine an all, but these changes should really go in another CL, since they\u0027re logically unrelated.",
+      "parentUuid": "a4cf94e1_70df4db1",
       "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
