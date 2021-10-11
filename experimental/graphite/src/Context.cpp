@@ -14,7 +14,56 @@
 #include "experimental/graphite/src/mtl/MtlTrampoline.h"
 #endif
 
+// TODO: these are only included to play with shader combinations
+#include "include/core/SkPaint.h"
+#include "include/effects/SkGradientShader.h"
+
 namespace skgpu {
+
+namespace {
+
+// TODO: Going forward this will change into:
+//    a method that takes a single combination and builds the SkSL (i.e., buildSKSL(combo))
+//    a method that extracts a combination from an SkPaint (i.e., extractCombo(SkPaint))
+// buildSKSL will have to collect the number of uniforms and their types required by the SkSL
+// extractCombo will have to collect the actual uniforms
+void expand(const ShaderCombo& c) {
+    SkPoint pts[2] = { { -100, -100 }, { 100, 100 } };
+    SkColor colors[2] = { SK_ColorRED, SK_ColorGREEN };
+
+    for (auto bm : c.fBlendModes) {
+        for (auto& gradCombo : c.fGradients) {
+            for (auto gradType : gradCombo.fTypes) {
+                for (auto tm: gradCombo.fTileModes) {
+                    sk_sp<SkShader> g;
+                    switch (gradType) {
+                        case GradientCombo::GradientType::kNone:
+                            break;
+                        case GradientCombo::GradientType::kLinear:
+                            g = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, tm);
+                            break;
+                        case GradientCombo::GradientType::kRadial:
+                            g = SkGradientShader::MakeRadial({0, 0}, 100, colors, nullptr, 2, tm);
+                            break;
+                        case GradientCombo::GradientType::kSweep:
+                            g = SkGradientShader::MakeSweep(0, 0, colors, nullptr, 2);
+                            break;
+                        case GradientCombo::GradientType::kConical:
+                            g = SkGradientShader::MakeTwoPointConical({100, 100}, 100,
+                                                                      {-100, -100}, 100,
+                                                                      colors, nullptr, 2, tm);
+                            break;
+                    }
+                    SkPaint p;
+                    p.setShader(std::move(g));
+                    p.setBlendMode(bm);
+                }
+            }
+        }
+    }
+}
+
+} // anonymous namespace
 
 Context::Context(sk_sp<Gpu> gpu) : fGpu(std::move(gpu)) {}
 Context::~Context() {}
@@ -29,5 +78,9 @@ sk_sp<Context> Context::MakeMetal(const mtl::BackendContext& backendContext) {
     return sk_sp<Context>(new Context(std::move(gpu)));
 }
 #endif
+
+void Context::preCompile(const ShaderCombo& c) {
+    expand(c);
+}
 
 } // namespace skgpu
