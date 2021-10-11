@@ -16,6 +16,29 @@
       "message": "This is an attempt at exposing interface type classes (meant to be implemented by the client) in JetSki. If this looks good, this will be how I implement Visitor as well.\nhttps://docs.google.com/document/d/1RnHIg9FoxVRvAFaKiawH90Zo5m5Ud7MqKa4XcVbLQ_k/edit?resourcekey\u003d0-VNd9SLHHFf7hwji4mrCX7g#",
       "revId": "d192f53a234c15ed641994e593838cae9f4b4be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca0e754b_e04c3a1d",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-11T16:52:23Z",
+      "side": 1,
+      "message": "I seem to recall this sort of lookup is kind of expensive, and there\u0027s a pattern where the jclass/jmethodID are only initialized once.\n\nDerek may know the details, but I think it\u0027s something along the lines of\n\n  namespace {\n    static jmethodID gMethodCount;\n    ...\n  }\n  \n  int register_androidkit_FontChain(...) {\n    ...\n    gMethodCount \u003d env-\u003eGetMethodID(clazz, \"count\", \"()I\");\n    ...\n  }\n\nThen here you can just call the method directly:\n\n  return fEnv-\u003eCallIntMethod(fFontChainImpl, gMethodCount);",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "d192f53a234c15ed641994e593838cae9f4b4be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
