@@ -18,6 +18,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bcaa434_8a0c7971",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T21:00:10Z",
+      "side": 1,
+      "message": "Yep, I know.",
+      "parentUuid": "8aee61bb_344acbdd",
+      "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee6902d_3e335b84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T21:00:10Z",
+      "side": 1,
+      "message": "+brianosman@ for the SkSLConstructorSplat change. That has a pretty deep inheritance chain and adding move cons all the way up seemed undesirable. So instead just changed the static factory in SkSLConstantFolder into a new constructor for SkSLConstructorSplat.",
+      "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab69a109_45b00b68",
@@ -31,6 +66,24 @@
       "writtenOn": "2021-10-11T20:32:49Z",
       "side": 1,
       "message": "I suppose I could go poke around myself to find out, but I\u0027m currently curious what needs this (especially since this seems to be the only \u0027include/core\u0027 file to be changed).",
+      "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd6e3c9_8af60b3b",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T21:00:10Z",
+      "side": 1,
+      "message": "This is required by the addition of SkNullWStream(SkNullWStream\u0026\u0026), which in turn was required by code in \nSkSharingSerialContext::collectNonTextureImagesFromPicture:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/SkSharingProc.cpp;l\u003d32?q\u003dSkSharingSerialContext::collectNonTextureImagesFromPicture\u0026ss\u003dchromium\n\nBut stopping to consider that for a sec it obviously can and should be rewritten as:\n\n SkNullWStream ns;\n\nwhich no longer needs to copy.\n \n (Done)",
+      "parentUuid": "ab69a109_45b00b68",
       "revId": "d226de41c5fd0f25c208c40d75a63791d9f71cbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

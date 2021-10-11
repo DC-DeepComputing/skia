@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c999802f_86e21c1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T21:00:10Z",
+      "side": 1,
+      "message": "Yeah I back tracked it to the same issue but didn\u0027t push on that aspect (that is what\u0027s blocking nacl or why nacl is needed).",
+      "parentUuid": "175b1d94_0f26b017",
+      "revId": "9f24b45ac672eac2c39b9a961cada8ab0d072935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08fdea34_39f91cdc",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Oh, missed that the member is an SkMutex\u0026 and not an SkMutex. So could be moved but not assigned anyway, though still nice to state the intent explicitly. (Leave the move assignment operator explicitly default of delete.)",
       "parentUuid": "08fdea34_39f91cdc",
+      "revId": "9f24b45ac672eac2c39b9a961cada8ab0d072935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "113546b5_4decddfb",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T21:00:10Z",
+      "side": 1,
+      "message": "Right, the removal of the assignment \u003d delete was not intentional. Restored.",
+      "parentUuid": "ad1c1d5f_61b19ecc",
       "revId": "9f24b45ac672eac2c39b9a961cada8ab0d072935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
