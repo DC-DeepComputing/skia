@@ -257,7 +257,7 @@ private:
         SkString            fKeyDescription;
 
         SkFourByteTag         fShaderType;
-        SkSL::String          fShader[kGrShaderTypeCount];
+        SkSL::String          fShader1[kGrShaderTypeCount];
         SkSL::Program::Inputs fInputs[kGrShaderTypeCount];
     };
 
