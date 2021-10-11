@@ -766,6 +766,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
                                              alloc, clipShader)) {
             return blitter;
         }
+        SK_ABORT("Oh No!");
         return alloc->make<SkNullBlitter>();
     };
 
