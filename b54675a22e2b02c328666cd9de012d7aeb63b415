@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f0e72b_7acd9431",
+        "filename": "experimental/graphite/include/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-11T17:37:13Z",
+      "side": 1,
+      "message": "nit: You probably want to std::move() these into the members.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 37
+      },
+      "revId": "b54675a22e2b02c328666cd9de012d7aeb63b415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98175955_bc922c83",
+        "filename": "experimental/graphite/include/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-11T17:37:13Z",
+      "side": 1,
+      "message": "Maybe it\u0027s overkill for the sprint, but I feel like there\u0027s something between this and Gradient. (Is this \"Shader\" as in \"a GPU fragment shader that we will build\", or as in \"an SkShader\"?).\n\nI read it as the latter, so I think this particular thing ought to be called PaintCombo instead - and ShaderCombo would be the thing that can hold a Gradient, solid color, etc... Though if everything we support fits in GradientCombo today, then that\u0027s probably okay. Ignore my rambling - we can hold off on tweaking until we have a more thorough list of all the axes.",
+      "range": {
+        "startLine": 33,
+        "startChar": 7,
+        "endLine": 33,
+        "endChar": 18
+      },
+      "revId": "b54675a22e2b02c328666cd9de012d7aeb63b415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067e6e37_672a403a",
+        "filename": "experimental/graphite/src/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-11T17:37:13Z",
+      "side": 1,
+      "message": "Per our discussion - I think we want to go the other way - feed the top-level Combo object (or a single combination) to something that builds the SkSL. Similarly, have a method that takes an SkPaint and turns it back into the classifying parameters.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "b54675a22e2b02c328666cd9de012d7aeb63b415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
