@@ -62,6 +62,29 @@
       },
       "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "418cba1f_11e34c85",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-11T14:51:39Z",
+      "side": 1,
+      "message": "I wonder if we can have better more generic names here. Maybe something like:\n\nenum class SyncSubmission[ToCpu] {\n   kYes,\n   kNo,\n}",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 13
+      },
+      "revId": "2ce6a206380c24728cbe316161e59a6990be01a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
