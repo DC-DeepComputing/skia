@@ -16,6 +16,23 @@
       "message": "We are going to have to solve this once we add a 2nd backend so might as well do it right here. In Ganesh we filled in these unions with a MockFoo that was always compiled. We could do that again here (Just make a dummy mock::TextureSpec that we can fill out later), or just like add a char or something to the union.",
       "revId": "8a4895305e9c20f1ebb24d80e25c6cddb47df094",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb622f9c_2c277620",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-11T12:52:48Z",
+      "side": 1,
+      "message": "Additionally I am also fine with leaving this as is (without your change) and failing to compile. We could say you shouldn\u0027t be including TextureInfo.h if you don\u0027t have at least one valid gpu backend enabled. We just then have to make sure the file doesn\u0027t get included unconditionally in normal Sk files. This may mean actually using SK_SUPPORT_GPU in headers like SkSurface and SkImage which we don\u0027t currently use today. But personally I\u0027m fine with that.",
+      "revId": "8a4895305e9c20f1ebb24d80e25c6cddb47df094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
