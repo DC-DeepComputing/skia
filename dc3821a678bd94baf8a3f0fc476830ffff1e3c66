@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663c2de9_49b18f28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-11T15:07:31Z",
+      "side": 1,
+      "message": "Very exciting! I like this approach, and think we should get this out the door before pursuing any sort of advanced texture bilerp that could have unbounded color stops.",
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19cbc987_922eee53",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-11T15:07:31Z",
+      "side": 1,
+      "message": "Given the assert that invervalCount\u00263 \u003d\u003d 0, isn\u0027t this equivalent to \"intervalCount / 4\"?",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 49
+      },
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "022efeab_bf58027c",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-11T15:07:31Z",
+      "side": 1,
+      "message": "Will loopCount \u003d\u003d 0 come up in practice? When loopCount is 0, intervalChunks \u003d 1, so intervalCount has to be 4 but that should be able to go to the unrolled binary colorizer, right?\n\nOr no, looking at the factory, it looks like binary search is preferred all the time if the caps support it. Can we add a comment up here to that effect? When I was reading through at first I had had it in my head that this would only kick in between 16 and 128, but kicking in \u003c 128 makes more sense from a reducing shader POV.",
+      "range": {
+        "startLine": 301,
+        "startChar": 17,
+        "endLine": 301,
+        "endChar": 23
+      },
+      "revId": "dc3821a678bd94baf8a3f0fc476830ffff1e3c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
