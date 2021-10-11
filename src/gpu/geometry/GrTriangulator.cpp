@@ -891,10 +891,12 @@ bool GrTriangulator::splitEdge(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     if (c.sweep_lt(v->fPoint, edge->fTop->fPoint)) {
         top = v;
         bottom = edge->fTop;
+        //winding *= -1;
         this->setTop(edge, v, activeEdges, current, c);
     } else if (c.sweep_lt(edge->fBottom->fPoint, v->fPoint)) {
         top = edge->fBottom;
         bottom = v;
+        //winding *= -1;
         this->setBottom(edge, v, activeEdges, current, c);
     } else {
         top = v;
