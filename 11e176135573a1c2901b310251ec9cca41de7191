@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f00a0e98_f316a559",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-11T19:00:24Z",
+      "side": 1,
+      "message": "I don\u0027t think this will come up, given the callers that specify the primitive mode, but some places check for the # of FPs to know if the paint is a constant color and choose to do something like a native clear. In this case that could be misleading since the primitive colors could be varying; I think that is already guarded by the nature of the callers, but to me it helps point out the awkwardness of how primitive color is handled right now and it would be nice if we could identify a good \"flow\" for all these color sources.",
+      "range": {
+        "startLine": 486,
+        "startChar": 12,
+        "endLine": 486,
+        "endChar": 65
+      },
+      "revId": "11e176135573a1c2901b310251ec9cca41de7191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
