@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d8fcd5f4_0b429ff6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-11T17:38:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d68a11de_a54c7d99",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "38e376c65d5d2faff810b4720ba8f9069b00ba56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "509fcb23_df5828c7",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-11T16:43:12Z",
       "side": 1,
       "message": "Did this fix a regression, or can you see it using fma now in the codegen?\n\nI know mtklein was very opposed to using fp_contract in skvx, which is actually why I put this method in a GPU-backend file originally. His argument was that it would cause different behavior on different platforms, but coming from the GPU side, I\u0027m OK with that.",
+      "revId": "38e376c65d5d2faff810b4720ba8f9069b00ba56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1be67b_e78d4acf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-11T17:38:12Z",
+      "side": 1,
+      "message": "My main goal is to preserve the behavior of approx_acos when it was copied from GrVx, and remove it from GRVx where it has no affect. I\u0027m fine with approx_acos being different from machine to machine.",
+      "parentUuid": "509fcb23_df5828c7",
       "revId": "38e376c65d5d2faff810b4720ba8f9069b00ba56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
