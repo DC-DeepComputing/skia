@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "573351c2_cad0fe63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-11T20:57:44Z",
+      "side": 1,
+      "message": "base-\u003ePS3 will show the results of the new GM before the fix was in. An example is https://gold.skia.org/img/images/0131e885f8c50f7096c06a48b6394e25.png\n\nPS6 has the fix so we shouldn\u0027t see anything like that in the gold diffs. The expected result is https://gold.skia.org/img/images/5faca2b714ce42ca67941dfe0ebeb87d.png\n\nBecause of the bump in verb limit there are a lot of gold diffs from other path rendering skps/gms. This shouldn\u0027t cause any layout tests because it will actually better represent what chrome would have drawn. I will be curious to see how the performance needle moves, and whether the original reasons for chrome to bump up to 100 still hold.",
+      "revId": "d1f04b10781132bc9850c783f43ad04fd62cf8d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
