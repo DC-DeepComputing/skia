@@ -33,6 +33,24 @@
       "message": "Do we have a bot that check this? If not should we have one?",
       "revId": "048ca675bcad438c70b69bcb199b7d261bbdeec5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6ebcd22_6f5f3418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-11T14:21:33Z",
+      "side": 1,
+      "message": "The next change (which addresses the remaining types of warning/errors) makes all of our clang build bots compile this way.",
+      "parentUuid": "b15e1eeb_3e6a9b27",
+      "revId": "048ca675bcad438c70b69bcb199b7d261bbdeec5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
