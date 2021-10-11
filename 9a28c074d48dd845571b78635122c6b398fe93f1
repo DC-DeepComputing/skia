@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0739473d_2da7c3fd",
+        "filename": "modules/skparagraph/src/ParagraphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-10-11T18:23:02Z",
+      "side": 1,
+      "message": "There was a change done by Flutter people some time ago. I code reviewed it and missed a couple of places.",
+      "parentUuid": "3ab06edc_5890c649",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e09c7b66_4364f620",
@@ -65,6 +83,24 @@
       "writtenOn": "2021-10-11T14:40:55Z",
       "side": 1,
       "message": "In same separate fHalfLeading CL?",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4cf94e1_70df4db1",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-10-11T18:23:02Z",
+      "side": 1,
+      "message": "There was a change done by Flutter people some time ago. I code reviewed it and missed a couple of places.",
+      "parentUuid": "e09c7b66_4364f620",
       "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
