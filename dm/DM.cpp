@@ -962,6 +962,9 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
             }
         }
     }
+    if (const SkCommandLineConfigGpu* graphiteConfig = config->asConfigGraphite()) {
+        return new GraphiteSink();
+    }
     if (const SkCommandLineConfigSvg* svgConfig = config->asConfigSvg()) {
         int pageIndex = svgConfig->getPageIndex();
         return new SVGSink(pageIndex);

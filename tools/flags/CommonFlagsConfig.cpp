@@ -492,7 +492,6 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&           tag,
                                                bool                      useDDLSink,
                                                bool                      OOPRish,
                                                bool                      reducedShaders,
-                                               bool                      useGraphite,
                                                SurfType                  surfType)
         : SkCommandLineConfig(tag, SkString("gpu"), viaParts)
         , fContextType(contextType)
@@ -507,7 +506,6 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&           tag,
         , fUseDDLSink(useDDLSink)
         , fOOPRish(OOPRish)
         , fReducedShaders(reducedShaders)
-        , fUseGraphite(useGraphite)
         , fSurfType(surfType) {
     if (!useStencilBuffers) {
         fContextOverrides |= ContextOverrides::kAvoidStencilBuffers;
@@ -595,6 +593,28 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&           
                                       surfType);
 }
 
+SkCommandLineConfigGpu* parse_command_line_config_graphite(const SkString&           tag,
+                                                           const SkTArray<SkString>& vias,
+                                                           const SkString&           options) {
+    SkCommandLineConfigGpu::ContextType contextType         = GrContextFactory::kGL_ContextType;
+    SkColorType                         colorType           = kRGBA_8888_SkColorType;
+    SkAlphaType                         alphaType           = kPremul_SkAlphaType;
+
+    bool            parseSucceeded = false;
+    ExtendedOptions extendedOptions(options, &parseSucceeded);
+    if (!parseSucceeded) {
+        return nullptr;
+    }
+
+    bool validOptions = extendedOptions.get_option_gpu_color("color", &colorType, &alphaType);
+
+    return new SkCommandLineConfigGraphite(tag,
+                                           vias,
+                                           contextType,
+                                           colorType,
+                                           alphaType);
+}
+
 SkCommandLineConfigSvg::SkCommandLineConfigSvg(const SkString&           tag,
                                                const SkTArray<SkString>& viaParts,
                                                int                       pageIndex)
@@ -667,6 +687,9 @@ void ParseConfigs(const CommandLineFlags::StringArray& configs,
         SkCommandLineConfig* parsedConfig = nullptr;
         if (extendedBackend.equals("gpu")) {
             parsedConfig = parse_command_line_config_gpu(tag, vias, extendedOptions);
+        }
+        if (extendedBackend.equals("graphite")) {
+            parsedConfig = parse_command_line_config_graphite(tag, vias, extendedOptions);
         }
         if (extendedBackend.equals("svg")) {
             parsedConfig = parse_command_line_config_svg(tag, vias, extendedOptions);
