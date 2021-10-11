@@ -33,6 +33,23 @@
       "message": "It looks like SrcOver is not slower, so this should be fine.",
       "revId": "be09f8adfda96959aa1d26f32a4bb95722433adc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f547e5_92c3baae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-11T19:24:36Z",
+      "side": 1,
+      "message": "Alas, in the case of Plus (since it was the biggest unexpected outlier I took a look into it) the Sk4x version does `s.saturatedAdd(d)` which turns directly into a single _mm_adds_epu8 (paddusb) instruction, while raster pipeline\u0027s plus is `min(s+d, 255)` which turns into many more instructions. However, the actual plus implementation isn\u0027t the hotspot in the raster pipeline.\n\nThe Sk4x version knows that it is written against SkPMColor and so is just load some SkPMColors, so this nice instruction (SkXfermode only works on SkPMColor), and the directly store it. On the other hand raster pipeline is more generic. Even though we do get the lowp raster pipeline the part taking the most time is the loads and stores and packing and unpacking the r, g, b, a lanes (and working in U16 instead of directly with the U8 data).\n\nThe overhead of getting the data in and out of the raster pipeline isn\u0027t usually all that bad, since the original idea was to build up a substantial pipeline. However, the overhead is high compared to doing a single actual manipulation stage in the pipeline (just the xfermode).\n\nAfter digging through some perf stall events, I don\u0027t know that the difference is really memory access patterns or stalls. Both the opts and raster pipeline keep above 2 instructions per clock on my machine, so even though there are memory stalls recorded the CPU does keep moving.",
+      "revId": "be09f8adfda96959aa1d26f32a4bb95722433adc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
