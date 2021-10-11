@@ -72,6 +72,11 @@ extern bool gUseSkVMBlitter;
 extern bool gSkVMAllowJIT;
 extern bool gSkVMJITViaDylib;
 
+extern uint64_t gVMBlitterCycles;
+extern uint64_t  gVMBlitterScanlines;
+extern uint64_t gRPBlitterCycles;
+extern uint64_t gRPBlitterScanlines;
+
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
 
@@ -281,6 +286,11 @@ struct GPUTarget : public Target {
     }
 };
 
+static uint64_t gVMBlitterCyclesCapture;
+static uint64_t gVMBlitterScanlinesCapture;
+static uint64_t gRPBlitterCyclesCapture;
+static uint64_t gRPBlitterScanlinesCapture;
+
 static double time(int loops, Benchmark* bench, Target* target) {
     SkCanvas* canvas = target->getCanvas();
     if (canvas) {
@@ -289,7 +299,15 @@ static double time(int loops, Benchmark* bench, Target* target) {
     bench->preDraw(canvas);
     double start = now_ms();
     canvas = target->beginTiming(canvas);
+    gVMBlitterCycles = 0;
+    gVMBlitterScanlines = 0;
+    gRPBlitterCycles = 0;
+    gRPBlitterScanlines = 0;
     bench->draw(loops, canvas);
+    gVMBlitterCyclesCapture = gVMBlitterCycles;
+    gVMBlitterScanlinesCapture = gVMBlitterScanlines;
+    gRPBlitterCyclesCapture = gRPBlitterCycles;
+    gRPBlitterScanlinesCapture = gRPBlitterScanlines;
     target->endTiming();
     double elapsed = now_ms() - start;
     bench->postDraw(canvas);
@@ -1410,11 +1428,15 @@ int main(int argc, char** argv) {
                 if (configs.count() == 1) {
                     config = ""; // Only print the config if we run the same bench on more than one.
                 }
-                SkDebugf("%4d/%-4dMB\t%s\t%s\n"
+                SkDebugf("%4d/%-4dMB\t%s\t%s  "
                          , sk_tools::getCurrResidentSetSizeMB()
                          , sk_tools::getMaxResidentSetSizeMB()
                          , bench->getUniqueName()
                          , config);
+                SkDebugf("VM cycles: %llu scanlines: %llu  ",
+                         gVMBlitterCyclesCapture, gVMBlitterScanlinesCapture);
+                SkDebugf("RP cycles: %llu scanlines: %llu\n",
+                         gRPBlitterCyclesCapture, gRPBlitterScanlinesCapture);
             } else if (FLAGS_quiet) {
                 const char* mark = " ";
                 const double stddev_percent =
@@ -1492,6 +1514,9 @@ int main(int argc, char** argv) {
     log.endObject(); // results
     log.endObject(); // root
     log.flush();
+
+    //SkDebugf("VM cycles: %llu scanlines: %llu  ", gVMBlitterCycles, gVMBlitterScanlines);
+    //SkDebugf("RP cycles: %llu scanlines: %llu\n", gRPBlitterCycles, gRPBlitterScanlines);
 
     return 0;
 }
