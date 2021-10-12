@@ -431,7 +431,10 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_binary_colorizer(const 
 // Analyze the shader's color stops and positions and chooses an appropriate colorizer to represent
 // the gradient.
 static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* colors,
-        const SkScalar* positions, int count, bool premul, const GrFPArgs& args) {
+                                                           const SkScalar* positions,
+                                                           int count,
+                                                           bool premul,
+                                                           const GrFPArgs& args) {
     // If there are hard stops at the beginning or end, the first and/or last color should be
     // ignored by the colorizer since it should only be used in a clamped border color. By detecting
     // and removing these stops at the beginning, it makes optimizing the remaining color stops
@@ -444,26 +447,15 @@ static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* co
 
     int offset = 0;
     if (bottomHardStop) {
-        offset += 1;
+        offset++;
         count--;
     }
     if (topHardStop) {
         count--;
     }
 
-    // Two remaining colors means a single interval from 0 to 1
-    // (but it may have originally been a 3 or 4 color gradient with 1-2 hard stops at the ends)
-    if (count == 2) {
-        return make_single_interval_colorizer(colors[offset], colors[offset + 1]);
-    }
-
     const GrShaderCaps* caps = args.fContext->priv().caps()->shaderCaps();
     auto intervalsExceedPrecisionLimit = [&]() -> bool {
-        // The remaining analytic colorizers use scale*t+bias, and the scale/bias values can become
-        // quite large when thresholds are close (but still outside the hardstop limit). If float
-        // isn't 32-bit, output can be incorrect if the thresholds are too close together. However,
-        // the analytic shaders are higher quality, so they can be used with lower precision
-        // hardware when the thresholds are not ill-conditioned.
         if (!caps->floatIs32Bits()) {
             // Could run into problems. Check if thresholds are close together (with a limit of .01,
             // so that scales will be less than 100, which leaves 4 decimals of precision on
@@ -479,8 +471,6 @@ static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* co
     };
 
     auto makeDualIntervalColorizer = [&]() -> std::unique_ptr<GrFragmentProcessor> {
-        // The dual-interval colorizer uses the same principles as the binary-search colorizer, but
-        // is limited to exactly 2 intervals.
         if (count == 3) {
             // Must be a dual interval gradient, where the middle point is at offset+1 and the
             // two intervals share the middle color stop.
@@ -489,7 +479,7 @@ static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* co
                                                 positions[offset + 1]);
         }
         if (count == 4 && SkScalarNearlyEqual(positions[offset + 1],
-                                                     positions[offset + 2])) {
+                                              positions[offset + 2])) {
             // Two separate intervals that join at the same threshold position
             return make_dual_interval_colorizer(colors[offset], colors[offset + 1],
                                                 colors[offset + 2], colors[offset + 3],
@@ -499,34 +489,49 @@ static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* co
         return nullptr;
     };
 
+    auto makeAnalyticColorizer = [&](int intervalLimit, auto makeBinaryColorizer)
+                                        -> std::unique_ptr<GrFragmentProcessor> {
+        if (count > intervalLimit) {
+            return nullptr;
+        }
+        // Two remaining colors means a single interval from 0 to 1 (although it may have originally
+        // been a 3 or 4 color gradient with 1-2 hard stops at the ends).
+        if (count == 2) {
+            return make_single_interval_colorizer(colors[offset], colors[offset + 1]);
+        }
+        // The remaining analytic colorizers use scale*t+bias, and the scale/bias values can become
+        // quite large when thresholds are close (but still outside the hardstop limit). If float
+        // isn't 32-bit, output can be incorrect if the thresholds are too close together. However,
+        // the analytic shaders are higher quality, so they can be used with lower precision
+        // hardware when the thresholds are not ill-conditioned.
+        if (intervalsExceedPrecisionLimit()) {
+            return nullptr;
+        }
+        // The dual-interval colorizer uses the same principles as the binary-search colorizer, but
+        // is limited to exactly 2 intervals.
+        if (std::unique_ptr<GrFragmentProcessor> colorizer = makeDualIntervalColorizer()) {
+            return colorizer;
+        }
+        // Try to create the full n-way binary search colorizer.
+        return makeBinaryColorizer(colors + offset, positions + offset, count);
+    };
+
+    std::unique_ptr<GrFragmentProcessor> colorizer;
     if (caps->nonconstantArrayIndexSupport()) {
         // Attempt to create an analytic colorizer that uses a binary-search loop.
-        if ((count <= kMaxLoopingColorCount) && !intervalsExceedPrecisionLimit()) {
-            std::unique_ptr<GrFragmentProcessor> colorizer = makeDualIntervalColorizer();
-            if (colorizer) {
-                return colorizer;
-            }
-            colorizer = make_looping_binary_colorizer(colors + offset, positions + offset, count);
-            if (colorizer) {
-                return colorizer;
-            }
-        }
+        colorizer = makeAnalyticColorizer(kMaxLoopingColorCount, make_looping_binary_colorizer);
     } else {
         // Attempt to create an analytic colorizer that conforms to ES2 loop limitations.
-        if ((count <= kMaxUnrolledColorCount) && !intervalsExceedPrecisionLimit()) {
-            std::unique_ptr<GrFragmentProcessor> colorizer = makeDualIntervalColorizer();
-            if (colorizer) {
-                return colorizer;
-            }
-            colorizer = make_unrolled_binary_colorizer(colors + offset, positions + offset, count);
-            if (colorizer) {
-                return colorizer;
-            }
-        }
+        colorizer = makeAnalyticColorizer(kMaxUnrolledColorCount, make_unrolled_binary_colorizer);
     }
 
-    // Otherwise fall back to a rasterized gradient sampled by a texture, which can handle
-    // arbitrary gradients. (This has limited sampling resolution, and always blurs hard-stops.)
+    if (colorizer) {
+        return colorizer;
+    }
+
+    // We weren't able to make an analytic colorizer, so fall back to a rasterized gradient sampled
+    // by a texture, which can handle arbitrary gradients. (This has limited sampling resolution,
+    // and always blurs hard-stops.)
     return make_textured_colorizer(colors + offset, positions + offset, count, premul, args);
 }
 
