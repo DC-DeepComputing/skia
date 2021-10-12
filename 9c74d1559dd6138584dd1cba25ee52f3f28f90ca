@@ -22,6 +22,30 @@
       },
       "revId": "9c74d1559dd6138584dd1cba25ee52f3f28f90ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74ba880_2f152f0e",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T13:40:06Z",
+      "side": 1,
+      "message": "Well, avoiding `intervalsExceedPrecisionLimit` for a high-count gradient is a win because it\u0027s linear-time on the number of positions. But it\u0027s also a rare case and getting rarer, because it only applies to GPUs which don\u0027t have 32-bit floats.\n\nIt might be possible to restructure this more cleanly, though. I\u0027ll think it over.",
+      "parentUuid": "b91004fe_e636a4c0",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 5
+      },
+      "revId": "9c74d1559dd6138584dd1cba25ee52f3f28f90ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
