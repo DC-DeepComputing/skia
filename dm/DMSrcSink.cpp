@@ -2117,20 +2117,24 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-GraphiteSink::GraphiteSink() {}
-
 #ifdef SK_GRAPHITE_ENABLED
+
+GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
+        : fContextType(config->getContextType())
+        , fColorType(config->getColorType())
+        , fAlphaType(config->getAlphaType())
+        , fTestPrecompile(config->getTestPrecompile())
+        , fReducedShaders(config->getReducedShaders()) {
+}
 
 Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
-    using ContextType = skiatest::graphite::ContextFactory::ContextType;
-
-    SkImageInfo ii = SkImageInfo::Make(src.size(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType);
 
     skiatest::graphite::ContextFactory factory;
-    auto [_, context] = factory.getContextInfo(ContextType::kMetal);
+    auto [_, context] = factory.getContextInfo(fContextType);
 
     sk_sp<SkSurface> surface = MakeGraphite(std::move(context), ii);
     if (!surface) {
@@ -2148,10 +2152,6 @@ Result GraphiteSink::draw(const Src& src,
     }
 
     return Result::Ok();
-}
-#else
-Result GraphiteSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const {
-    return Result::Fatal("Graphite not enabled.");
 }
 #endif
 
