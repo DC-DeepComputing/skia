@@ -93,6 +93,30 @@
       },
       "revId": "88d4cf19bdd8e6a29ecd478e2a049fba815d9eb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ef93497_4e0fc81a",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T15:59:18Z",
+      "side": 1,
+      "message": "After offline discussion this makes more sense. Done.",
+      "parentUuid": "21b7ddbc_24cd870e",
+      "range": {
+        "startLine": 40,
+        "startChar": 38,
+        "endLine": 40,
+        "endChar": 47
+      },
+      "revId": "88d4cf19bdd8e6a29ecd478e2a049fba815d9eb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
