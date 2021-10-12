@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "010183dc_ca47f7ef",
+        "filename": "tests/sksl/errors/OverflowParamArraySize.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T18:48:07Z",
+      "side": 1,
+      "message": "At present, when the parser\u0027s intLiteral() call returns an out of bounds value, we substitute in zero, so we get this extra error. Not sure if changing this could have crazy ripple effects.",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 37
+      },
+      "revId": "a55b07c1053b4469ab3b887f683247e800606dc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
