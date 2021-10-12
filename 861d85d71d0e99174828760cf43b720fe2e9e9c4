@@ -16,6 +16,24 @@
       "message": "Any progress on this? I would love to remove our need to use the legacy SwiftShader GL.",
       "revId": "861d85d71d0e99174828760cf43b720fe2e9e9c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d59e3f9e_7e6522c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-12T16:54:06Z",
+      "side": 1,
+      "message": "No progress. I\u0027ve been on paternity leave and now am highly focused on Graphite. Can we have a VC some time about how to move forward? I\u0027m feeling pretty out of my area with this CL.",
+      "parentUuid": "4797505a_d473d348",
+      "revId": "861d85d71d0e99174828760cf43b720fe2e9e9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
