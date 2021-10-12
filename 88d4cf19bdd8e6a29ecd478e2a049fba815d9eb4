@@ -45,6 +45,54 @@
       },
       "revId": "88d4cf19bdd8e6a29ecd478e2a049fba815d9eb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ea32c6d_de4e87c1",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T14:04:10Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "77202878_70417090",
+      "range": {
+        "startLine": 40,
+        "startChar": 16,
+        "endLine": 40,
+        "endChar": 36
+      },
+      "revId": "88d4cf19bdd8e6a29ecd478e2a049fba815d9eb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21b7ddbc_24cd870e",
+        "filename": "experimental/graphite/src/Gpu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T14:04:10Z",
+      "side": 1,
+      "message": "It doesn\u0027t feel quite right to me -- Context doesn\u0027t need to call checkForFinishedWork() unless it wants to sync, but it needs to be called after every submit to clean up old submissions. Maybe a separate syncToCpu() call, which syncs against the most recently added submission?",
+      "parentUuid": "1a6ede2b_1d11c68a",
+      "range": {
+        "startLine": 40,
+        "startChar": 38,
+        "endLine": 40,
+        "endChar": 47
+      },
+      "revId": "88d4cf19bdd8e6a29ecd478e2a049fba815d9eb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
