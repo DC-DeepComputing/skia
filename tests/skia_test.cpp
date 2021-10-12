@@ -121,7 +121,7 @@ public:
         if (reporter.fError) {
             fStatus->reportFailure();
         }
-        fStatus->endTest(fTest.name, !reporter.fError, elapsed, reporter.fTestCount);
+        fStatus->endTest(fTest.fName, !reporter.fError, elapsed, reporter.fTestCount);
   }
 
 private:
@@ -221,7 +221,7 @@ int main(int argc, char** argv) {
     int toRun = 0;
 
     for (const Test& test : TestRegistry::Range()) {
-        if (should_run(test.name, test.needsGpu)) {
+        if (should_run(test.fName, test.fNeedsGpu)) {
             toRun++;
         }
         total++;
@@ -237,9 +237,9 @@ int main(int argc, char** argv) {
     Status status(toRun);
 
     for (const Test& test : TestRegistry::Range()) {
-        if (!should_run(test.name, test.needsGpu)) {
+        if (!should_run(test.fName, test.fNeedsGpu)) {
             ++skipCount;
-        } else if (test.needsGpu) {
+        } else if (test.fNeedsGpu) {
             gpuTests.push_back(&test);
         } else {
             cpuTests.add(SkTestRunnable(test, &status));
