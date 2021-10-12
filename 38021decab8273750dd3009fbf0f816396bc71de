@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "177254c1_253392bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T20:26:58Z",
+      "side": 1,
+      "message": "per offline discussion, switched back to using SkStrokeRec for style override internal to Device. SkstrokeRec is convenient for representing fills, hairlines, strokes, and stroke-and-fills in a single object. Once Device splits stroke-and-fills into two distinct operations and merges strokes and hairlines together, the more limited StrokeParams makes sense for DrawContext and lower level APIs.",
+      "revId": "38021decab8273750dd3009fbf0f816396bc71de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
