@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f11d0e8_fce0b620",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T15:33:16Z",
+      "side": 1,
+      "message": "Reading through the rest of the CL, it seems that other places in the code expect this to always succeed, but I\u0027m not sure if it would be challenging to make them null-aware. (It doesn\u0027t look that hard at first glance, but the reality could be more subtle.)",
+      "parentUuid": "6e2dd1a7_84e5ee47",
+      "range": {
+        "startLine": 37,
+        "startChar": 91,
+        "endLine": 37,
+        "endChar": 92
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fa11b92_500b60de",
         "filename": "src/sksl/ir/SkSLVariable.cpp",
         "patchSetId": 2
