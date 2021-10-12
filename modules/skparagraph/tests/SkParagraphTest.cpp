@@ -50,9 +50,12 @@ struct GrContextOptions;
 #define TestCanvasHeight 600
 
 #define DEF_TEST_DISABLED(name, reporter) \
-static void test_##name(skiatest::Reporter* reporter, const GrContextOptions&); \
-skiatest::TestRegistry name##TestRegistry(skiatest::Test(#name, false, test_##name)); \
-void test_##name(skiatest::Reporter* reporter, const GrContextOptions&) { /* SkDebugf("Disabled:"#name "\n"); */ } \
+static void test_##name(skiatest::Reporter* reporter, const GrContextOptions&);             \
+skiatest::TestRegistry name##TestRegistry(                                                  \
+        skiatest::Test(#name, /*gpu*/ false, /*graphite*/ false, test_##name));             \
+void test_##name(skiatest::Reporter* reporter, const GrContextOptions&) {                   \
+        /* SkDebugf("Disabled:"#name "\n"); */                                              \
+}                                                                                           \
 void disabled_##name(skiatest::Reporter* reporter, const GrContextOptions&)
 
 using namespace skia::textlayout;

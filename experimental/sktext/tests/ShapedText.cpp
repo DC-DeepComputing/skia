@@ -40,7 +40,8 @@ struct GrContextOptions;
 #undef DEF_TEST
 #define DEF_TEST(name, reporter)                                                          \
     static void test_##name(skiatest::Reporter* reporter, const GrContextOptions&);       \
-    skiatest::TestRegistry name##TestRegistry(skiatest::Test(#name, false, test_##name)); \
+    skiatest::TestRegistry name##TestRegistry(                                            \
+            skiatest::Test(#name, /*gpu*/ false, /*graphite*/ false, test_##name));       \
     void test_##name(skiatest::Reporter* reporter, const GrContextOptions&) {             \
         /* SkDebugf("Disabled:"#name "\n"); */                                            \
     }                                                                                     \
