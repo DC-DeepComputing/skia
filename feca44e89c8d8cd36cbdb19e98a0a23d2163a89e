@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f1b42d8_db857713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-12T14:33:28Z",
+      "side": 1,
+      "message": "Ok. I tried this out in the blur code, and the x86_64 code is best without hand specialization, but the hand code for ARM shows a slight improvement.\n\nSo, this has been validated now, and is ready to go.",
+      "revId": "feca44e89c8d8cd36cbdb19e98a0a23d2163a89e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
