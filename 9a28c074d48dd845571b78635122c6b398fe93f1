@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dae8d12a_bb8ec733",
+        "filename": "modules/skparagraph/src/ParagraphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-10-12T13:57:24Z",
+      "side": 1,
+      "message": "Done,",
+      "parentUuid": "bb2dbb7c_4ad729c6",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e09c7b66_4364f620",
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "That\u0027s fine an all, but these changes should really go in another CL, since they\u0027re logically unrelated.",
       "parentUuid": "a4cf94e1_70df4db1",
+      "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc4e33c0_8d7dfdf5",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-10-12T13:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "744fb534_18d4fc52",
       "revId": "9a28c074d48dd845571b78635122c6b398fe93f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
