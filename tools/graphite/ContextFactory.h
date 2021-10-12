@@ -29,18 +29,13 @@ public:
     class ContextInfo {
     public:
         ContextInfo() = default;
-        ContextInfo(ContextInfo&& other)
-           : fType(other.fType)
-           , fTestContext(std::move(other.fTestContext))
-           , fContext(std::move(other.fContext)) {
-        }
-
+        ContextInfo(ContextInfo&& other);
         ~ContextInfo() = default;
 
         ContextFactory::ContextType type() const { return fType; }
 
         skgpu::Context* context() const { return fContext.get(); }
-        sk_sp<skgpu::Context> refContext() const { return fContext; }
+        sk_sp<skgpu::Context> refContext() const;
         GraphiteTestContext* testContext() const { return fTestContext.get(); }
 
     private:
@@ -48,11 +43,7 @@ public:
 
         ContextInfo(ContextFactory::ContextType type,
                     std::unique_ptr<GraphiteTestContext> testContext,
-                    sk_sp<skgpu::Context> context)
-            : fType(type)
-            , fTestContext(std::move(testContext))
-            , fContext(std::move(context)) {
-        }
+                    sk_sp<skgpu::Context> context);
 
         ContextType                          fType = ContextType::kMock;
         std::unique_ptr<GraphiteTestContext> fTestContext;

@@ -944,9 +944,7 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
                      "GM tests will be skipped.\n", gpuConfig->getTag().c_str());
                 return nullptr;
             }
-            if (gpuConfig->getUseGraphite()) {
-                return new GraphiteSink();
-            } else if (gpuConfig->getTestThreading()) {
+            if (gpuConfig->getTestThreading()) {
                 SkASSERT(!gpuConfig->getTestPersistentCache());
                 return new GPUThreadTestingSink(gpuConfig, grCtxOptions);
             } else if (gpuConfig->getTestPersistentCache()) {
@@ -961,6 +959,9 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
                 return new GPUSink(gpuConfig, grCtxOptions);
             }
         }
+    }
+    if (const SkCommandLineConfigGraphite* graphiteConfig = config->asConfigGraphite()) {
+        return new GraphiteSink(graphiteConfig);
     }
     if (const SkCommandLineConfigSvg* svgConfig = config->asConfigSvg()) {
         int pageIndex = svgConfig->getPageIndex();
