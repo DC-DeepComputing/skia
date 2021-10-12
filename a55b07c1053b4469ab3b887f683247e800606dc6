@@ -22,6 +22,30 @@
       },
       "revId": "a55b07c1053b4469ab3b887f683247e800606dc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9e4bd3_03be8da4",
+        "filename": "tests/sksl/errors/OverflowParamArraySize.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-12T21:04:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "010183dc_ca47f7ef",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 37
+      },
+      "revId": "a55b07c1053b4469ab3b887f683247e800606dc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
