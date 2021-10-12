@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db899be4_d32cccc7",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "With how I had defined kDeviceSpaceShape, it was needed because the Shape passed into drawShape() is defined in device space, but you\u0027re right that if the paint doesn\u0027t have local coords then there\u0027d be no need to map with the inverse matrix to get those local coords (which I was planning to handle further down the stack).\n\nI have since moved back to older version of drawPaint that computes a covering rect in local space, which gives us the local coords and keeps all the draws in the same coord space.",
+      "parentUuid": "d7c8da28_17110c05",
+      "range": {
+        "startLine": 74,
+        "startChar": 55,
+        "endLine": 74,
+        "endChar": 83
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c677ccee_14f8e2c8",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-08T21:30:40Z",
       "side": 1,
       "message": "rectForPoint? pointRect ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 19,
+        "endLine": 105,
+        "endChar": 22
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "534313b5_83db541c",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Went with pointRect.",
+      "parentUuid": "c677ccee_14f8e2c8",
       "range": {
         "startLine": 105,
         "startChar": 19,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d790cdb_d9b22483",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "The updated CL has style as part of the DrawFlags, but keeping that in sync with the updated path effects does get a little trickier since we have to convert to SkStrokeRec to apply, and then convert back to flags + StrokeParams if it succeeds.\n\nLet me know if you think it\u0027s acceptable, or want me to explore other representations.",
+      "parentUuid": "13ab4a42_64ac109f",
+      "range": {
+        "startLine": 140,
+        "startChar": 42,
+        "endLine": 140,
+        "endChar": 68
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37e01767_d6ccbd70",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-10-08T22:14:40Z",
       "side": 1,
       "message": "This isn\u0027t necessary; tessellation handles hairline strokes natively. Can we delete Shape::makeTransform() if we quit doing this?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 5
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "601af512_71c4d946",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "I had not realized tessellation handled hairlines natively, I had misremembered/thought Ganesh\u0027s tessellating op basically did this transform when it made an op for a hairline.\n\nBut if it handles hairlines natively, then getting rid of this makes the DrawFlags and flow within drawShape a lot simpler (makeTransform goes away and kDeviceSpaceShape goes away since drawPaint can be implemented without it).",
+      "parentUuid": "37e01767_d6ccbd70",
       "range": {
         "startLine": 164,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3162a6b_891d4862",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7beacfe1_19eb398c",
+      "range": {
+        "startLine": 177,
+        "startChar": 56,
+        "endLine": 177,
+        "endChar": 57
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2113f29_3575b573",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-10-08T22:14:40Z",
       "side": 1,
       "message": "Could we put kStroke and kFill here? SkStrokeRec isn\u0027t well suited to this device, and then we wouldn\u0027t need to depend on it for the draw style.",
+      "range": {
+        "startLine": 115,
+        "startChar": 15,
+        "endLine": 115,
+        "endChar": 24
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d41deb_e9d5d064",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "PS 4 kStroke and kFill, so let me know what you think.",
+      "parentUuid": "e2113f29_3575b573",
       "range": {
         "startLine": 115,
         "startChar": 15,
@@ -210,6 +354,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0e4b96_00a6ae71",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0adbb68c_b182b01a",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "644c48c8_574637c5",
@@ -223,6 +391,30 @@
       "writtenOn": "2021-10-08T19:33:14Z",
       "side": 1,
       "message": "drawPaint/drawAtlas/drawVertices/drawImage all specify this, and drawShape() adds it when it applies the path effect.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f39c157_6000ca7f",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "644c48c8_574637c5",
       "range": {
         "startLine": 118,
         "startChar": 8,
@@ -282,6 +474,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "df1d472b_8b96b3d4",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "This can actually be removed since hairlines won\u0027t need it and we can construct a local-space rect that covers the device clip bounds for drawpaint. The benefit there is that automatically has the right local coords, too.",
+      "parentUuid": "cc9333dc_f64c45fc",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 26
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "afb4e1a4_fc215530",
         "filename": "experimental/graphite/src/Device.h",
         "patchSetId": 3
@@ -316,6 +532,24 @@
       "writtenOn": "2021-10-08T22:14:40Z",
       "side": 1,
       "message": "New line?",
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0054e89_d0766488",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a7eeb7c_5f618f89",
       "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -367,6 +601,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79b752b9_368a1cfe",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "Yeah the Device will either hold the clip state or encapsulate it in some ClipStack class that I need to bring over still.\n\nFor now I want to hold off on doing any shape modification like this. I think it\u0027s most beneficial if it means that any analytic clip element doesn\u0027t need to apply at all, but if we have that super restricted (for now just a scissor) it\u0027s probably not worth it.\n\nI could see the CPU overhead of computing the intersection shapes taking up more time over N draws than the cost of drawing the clip once. If we get to doing 1 analytic rect, or 1 analytic rrect + clipping planes for a quality or non-dmsaa triggering POV, then the equation might change. I don\u0027t think it would be hard to adjust this function to modify the shape though.",
+      "parentUuid": "b4a1d30f_090e0eb6",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eff59418_3d8a4d78",
@@ -380,6 +638,30 @@
       "writtenOn": "2021-10-08T22:14:40Z",
       "side": 1,
       "message": "Is it possible to not add this? I\u0027d really prefer to never transform shapes",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 44
+      },
+      "revId": "67fdd00b3567086f0aef5f7114ccb6cba861e05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ae6d790_db59e575",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-12T16:34:43Z",
+      "side": 1,
+      "message": "I\u0027ll delete it for now. This was currently only used for hairlines, which don\u0027t need to be transformed if the DC accepts them. The clip stack may still transform axis-aligned rects/rrects so that they are always in the same coordinate space for combining together, but we shall see. Maybe that will be fast enough to check on the fly with the matrix cache.\n\nAnd if we do add those, they are simple enough that we can just construct a new Shape directly without adding a function like this.",
+      "parentUuid": "eff59418_3d8a4d78",
       "range": {
         "startLine": 99,
         "startChar": 4,
