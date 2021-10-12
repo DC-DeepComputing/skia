@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4797505a_d473d348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2021-10-12T14:08:52Z",
+      "side": 1,
+      "message": "Any progress on this? I would love to remove our need to use the legacy SwiftShader GL.",
+      "revId": "861d85d71d0e99174828760cf43b720fe2e9e9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
