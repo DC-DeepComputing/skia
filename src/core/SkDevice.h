@@ -342,6 +342,12 @@ protected:
     // (avoiding a copy for performance, at the expense of safety). Default returns null.
     virtual sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false);
 
+    // Can return null if unable to perform scaling as part of the copy, even if snapSpecial() w/o
+    // scaling would succeed.
+    virtual sk_sp<SkSpecialImage> snapScaledSpecial(const SkIRect& subset, const SkISize& dstDims) {
+        return nullptr;
+    }
+
     virtual void setImmutable() {}
 
     bool readPixels(const SkPixmap&, int x, int y);

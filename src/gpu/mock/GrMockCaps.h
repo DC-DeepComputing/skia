@@ -148,7 +148,7 @@ public:
 private:
     bool onSurfaceSupportsWritePixels(const GrSurface*) const override { return true; }
     bool onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                          const SkIRect& srcRect, const SkIPoint& dstPoint) const override {
+                          const SkIRect& srcRect, const SkIRect& dstRect) const override {
         return true;
     }
     GrBackendFormat onGetDefaultBackendFormat(GrColorType ct) const override {

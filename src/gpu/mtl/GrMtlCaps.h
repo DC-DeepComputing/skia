@@ -116,7 +116,7 @@ private:
 
     bool onSurfaceSupportsWritePixels(const GrSurface*) const override;
     bool onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                          const SkIRect& srcRect, const SkIPoint& dstPoint) const override;
+                          const SkIRect& srcRect, const SkIRect& dstRect) const override;
     GrBackendFormat onGetDefaultBackendFormat(GrColorType) const override;
     bool onAreColorTypeAndFormatCompatible(GrColorType, const GrBackendFormat&) const override;
 

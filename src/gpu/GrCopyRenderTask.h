@@ -9,18 +9,19 @@
 #define GrCopyRenderTask_DEFINED
 
 #include "src/gpu/GrRenderTask.h"
+#include "src/gpu/GrSamplerState.h"
 
 class GrCopyRenderTask final : public GrRenderTask {
 public:
     /**
-     * Copies pixels from srcRect in src to SkIRect::MakePtSize(dstPoint, srcRect.dimensions) in
-     * dst. The src/dst share a common origin.
+     * Copies pixels from srcRect in src to dstRect in dst. The src/dst share a common origin.
      */
     static sk_sp<GrRenderTask> Make(GrDrawingManager*,
                                     sk_sp<GrSurfaceProxy> src,
                                     SkIRect srcRect,
                                     sk_sp<GrSurfaceProxy> dst,
-                                    SkIPoint dstPoint,
+                                    SkIRect dstRect,
+                                    GrSamplerState::Filter filter,
                                     GrSurfaceOrigin);
 
 private:
@@ -28,7 +29,8 @@ private:
                      sk_sp<GrSurfaceProxy> src,
                      SkIRect srcRect,
                      sk_sp<GrSurfaceProxy> dst,
-                     SkIPoint dstPoint,
+                     SkIRect dstRect,
+                     GrSamplerState::Filter filter,
                      GrSurfaceOrigin);
 
     void onMakeSkippable() override { fSrc.reset(); }
@@ -48,9 +50,9 @@ private:
 
     sk_sp<GrSurfaceProxy> fSrc;
     SkIRect fSrcRect;
-    SkIPoint fDstPoint;
+    SkIRect fDstRect;
+    GrSamplerState::Filter fFilter;
     GrSurfaceOrigin fOrigin;
 };
 
 #endif
-

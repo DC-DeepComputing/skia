@@ -97,8 +97,12 @@ bool GrD3DCaps::canCopyAsResolve(DXGI_FORMAT dstFormat, int dstSampleCnt,
 }
 
 bool GrD3DCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                 const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                                 const SkIRect& srcRect, const SkIRect& dstRect) const {
     if (src->isProtected() == GrProtected::kYes && dst->isProtected() != GrProtected::kYes) {
+        return false;
+    }
+    // TODO: Can a resolve or copy texture scale?
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
         return false;
     }
 

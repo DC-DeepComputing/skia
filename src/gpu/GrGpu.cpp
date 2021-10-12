@@ -393,7 +393,7 @@ sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t size, GrGpuBufferType intendedType
 }
 
 bool GrGpu::copySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                        const SkIPoint& dstPoint) {
+                        const SkIRect& dstRect, GrSamplerState::Filter filter) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     SkASSERT(dst && src);
     SkASSERT(!src->framebufferOnly());
@@ -404,7 +404,11 @@ bool GrGpu::copySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
 
     this->handleDirtyContext();
 
-    return this->onCopySurface(dst, src, srcRect, dstPoint);
+    if (srcRect.width() == dstRect.width() && srcRect.height() == dstRect.height()) {
+        return this->onCopySurface(dst, src, srcRect, dstRect.topLeft());
+    } else {
+        return this->onCopyScaledSurface(dst, src, srcRect, dstRect, filter);
+    }
 }
 
 bool GrGpu::readPixels(GrSurface* surface,

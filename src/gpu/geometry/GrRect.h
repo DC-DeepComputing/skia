@@ -97,58 +97,84 @@ static inline void GrMapRectPoints(const SkRect& inRect, const SkRect& outRect,
 }
 
 /**
- * Clips the srcRect and the dstPoint to the bounds of the srcSize and dstSize respectively. Returns
- * true if the srcRect and dstRect intersect the srcRect and dst rect (dstPoint with srcRect
- * width/height). Returns false otherwise. The clipped values are returned in clippedSrcRect and
- * clippedDstPoint.
+ * Clips the srcRect and the dstRect to the bounds of the srcSize and dstSize respectively. Returns
+ * true if the clipped src and dst rects remain non-empty. The clipped rects preserve the aspect
+ * ratio of the original src and dst rects even if one or both extended outside the src and dst
+ * dimensions. This means that src and dst rects that have the same dimensions will still have the
+ * same (but possibly clipped) width and heights as each other.
+ *
+ * The clipped values are returned in clippedSrcRect and clippedDstPoint. Returns false if the src
+ * rect or dst rect are entirely clipped out of their dimensions.
  */
-static inline bool GrClipSrcRectAndDstPoint(const SkISize& dstSize,
+static inline bool GrClipSrcRectAndDstRect(const SkISize& dstSize,
                                             const SkISize& srcSize,
                                             const SkIRect& srcRect,
-                                            const SkIPoint& dstPoint,
+                                            const SkIRect& dstRect,
                                             SkIRect* clippedSrcRect,
-                                            SkIPoint* clippedDstPoint) {
-    *clippedSrcRect = srcRect;
-    *clippedDstPoint = dstPoint;
-
-    // clip the left edge to src and dst bounds, adjusting dstPoint if necessary
-    if (clippedSrcRect->fLeft < 0) {
-        clippedDstPoint->fX -= clippedSrcRect->fLeft;
-        clippedSrcRect->fLeft = 0;
-    }
-    if (clippedDstPoint->fX < 0) {
-        clippedSrcRect->fLeft -= clippedDstPoint->fX;
-        clippedDstPoint->fX = 0;
+                                            SkIRect* clippedDstRect) {
+    if (srcRect.isEmpty() || dstRect.isEmpty()) {
+        return false;
     }
 
-    // clip the top edge to src and dst bounds, adjusting dstPoint if necessary
-    if (clippedSrcRect->fTop < 0) {
-        clippedDstPoint->fY -= clippedSrcRect->fTop;
-        clippedSrcRect->fTop = 0;
+    SkRect srcF = SkRect::Make(srcRect);
+    SkRect dstF = SkRect::Make(dstRect);
+
+    float sx = dstF.width() / srcF.width();
+    float sy = dstF.height() / srcF.height();
+
+    // clip the src edges to src dimensions, adjusting dst accordingly
+    if (srcF.fLeft < 0.f) {
+        dstF.fLeft -= srcF.fLeft * sx;
+        srcF.fLeft = 0.f;
     }
-    if (clippedDstPoint->fY < 0) {
-        clippedSrcRect->fTop -= clippedDstPoint->fY;
-        clippedDstPoint->fY = 0;
+    if (srcF.fTop < 0.f) {
+        dstF.fTop -= srcF.fTop * sy;
+        srcF.fTop = 0.f;
+    }
+    if (srcF.fRight > srcSize.width()) {
+        dstF.fRight -= (srcF.fRight - srcSize.width()) * sx;
+        srcF.fRight = srcSize.width();
+    }
+    if (srcF.fBottom > srcSize.height()) {
+        dstF.fBottom -= (srcF.fBottom - srcSize.height()) * sy;
+        srcF.fBottom = srcSize.height();
     }
 
-    // clip the right edge to the src and dst bounds.
-    if (clippedSrcRect->fRight > srcSize.width()) {
-        clippedSrcRect->fRight = srcSize.width();
+    // clip the adjusted dst edges to dst dimensions, adjusting src accordingly
+    sx = 1.f / sx;
+    sy = 1.f / sy;
+    if (dstF.fLeft < 0.f) {
+        srcF.fLeft -= dstF.fLeft * sx;
+        dstF.fLeft = 0.f;
     }
-    if (clippedDstPoint->fX + clippedSrcRect->width() > dstSize.width()) {
-        clippedSrcRect->fRight = clippedSrcRect->fLeft + dstSize.width() - clippedDstPoint->fX;
+    if (dstF.fTop < 0.f) {
+        srcF.fTop -= dstF.fTop * sy;
+        dstF.fTop = 0.f;
     }
-
-    // clip the bottom edge to the src and dst bounds.
-    if (clippedSrcRect->fBottom > srcSize.height()) {
-        clippedSrcRect->fBottom = srcSize.height();
+    if (dstF.fRight > dstSize.width()) {
+        srcF.fRight -= (dstF.fRight - dstSize.width()) * sx;
+        dstF.fRight = dstSize.width();
     }
-    if (clippedDstPoint->fY + clippedSrcRect->height() > dstSize.height()) {
-        clippedSrcRect->fBottom = clippedSrcRect->fTop + dstSize.height() - clippedDstPoint->fY;
+    if (dstF.fBottom > dstSize.height()) {
+        srcF.fBottom -= (dstF.fBottom - dstSize.height()) * sy;
+        dstF.fBottom = dstSize.height();
     }
 
     // The above clipping steps may have inverted the rect if it didn't intersect either the src or
     // dst bounds.
-    return !clippedSrcRect->isEmpty();
+    if (srcF.isEmpty() || dstF.isEmpty()) {
+        return false;
+    }
+
+    *clippedSrcRect = srcF.roundOut();
+    *clippedDstRect = dstF.roundOut();
+
+    // before rounding, the clipped src and dst should match the original aspect ratio
+    SkASSERT(SkScalarNearlyEqual(srcF.width() / dstF.width(), sx));
+    SkASSERT(SkScalarNearlyEqual(srcF.height() / dstF.height(), sy));
+    // after rounding, they should still be within the target dimensions
+    SkASSERT(SkIRect::MakeSize(srcSize).contains(*clippedSrcRect));
+    SkASSERT(SkIRect::MakeSize(dstSize).contains(*clippedDstRect));
+    return true;
 }
 #endif

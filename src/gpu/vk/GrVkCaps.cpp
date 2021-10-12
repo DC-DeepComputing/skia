@@ -196,8 +196,12 @@ bool GrVkCaps::canCopyAsResolve(VkFormat dstFormat, int dstSampleCnt, bool dstHa
 }
 
 bool GrVkCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                                const SkIRect& srcRect, const SkIRect& dstRect) const {
     if (src->isProtected() == GrProtected::kYes && dst->isProtected() != GrProtected::kYes) {
+        return false;
+    }
+    // TODO: vulkan blits support scaling, so we could return true in some situations
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
         return false;
     }
 

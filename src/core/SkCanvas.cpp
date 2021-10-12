@@ -882,21 +882,39 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
     } else {
         // We need to produce a temporary image that is equivalent to 'src' but transformed to
         // a coordinate space compatible with the image filter
-
-        // TODO: If the srcToIntermediate is scale+translate, can we use the framebuffer blit
-        // extensions to handle doing the copy and scale at the same time?
-
         SkASSERT(compat == DeviceCompatibleWithFilter::kUnknown);
         SkRect srcRect;
         if (!SkMatrixPriv::InverseMapRect(srcToIntermediate, &srcRect,
                                           SkRect::Make(SkIRect(requiredInput)))) {
             return;
         }
+        if (!srcRect.intersect(SkRect::MakeIWH(srcDims.width(), srcDims.height()))) {
+            return;
+        }
+        // TODO: Share with skif::Mapping's round-out for SkIRect transforms.
+        auto stableRoundOut = [](const SkRect& r) { return r.makeInset(1e-3f, 1e-3f).roundOut(); };
+        SkIRect srcSubset = stableRoundOut(srcRect);
 
-        SkIRect srcSubset = srcRect.roundOut();
-        sk_sp<SkSpecialImage> srcImage;
-        if (srcSubset.intersect(SkIRect::MakeSize(srcDims)) &&
-            (srcImage = src->snapSpecial(srcSubset))) {
+        if (srcToIntermediate.isScaleTranslate()) {
+            // The transform is from srcRect to requiredInput, but srcRect may have been reduced
+            // to the src dimensions, so map srcSubset back to the intermediate space to get the
+            // appropriate scaled dimensions for snapScaledSpecial.
+            skif::LayerSpace<SkIRect> requiredSubset(
+                    stableRoundOut(srcToIntermediate.mapRect(srcRect)));
+            filterInput = src->snapScaledSpecial(srcSubset,
+                                                 {requiredSubset.width(), requiredSubset.height()});
+            if (filterInput) {
+                // TODO: Like the non-intermediate case, we need to apply the image origin
+                mapping.applyOrigin(requiredSubset.topLeft());
+            } // else fall through and apply transform using a draw
+        }
+
+        if (!filterInput) {
+            sk_sp<SkSpecialImage> srcImage = src->snapSpecial(srcSubset);
+            if (!srcImage) {
+                return;
+            }
+
             // Make a new surface and draw 'srcImage' into it with the srcToIntermediate transform
             // to produce the final input image for the filter
             SkBaseDevice::CreateInfo info(make_layer_info(src->imageInfo(), requiredInput.width(),

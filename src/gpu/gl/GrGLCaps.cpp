@@ -3326,7 +3326,7 @@ bool GrGLCaps::canCopyAsBlit(GrGLFormat dstFormat, int dstSampleCnt,
                              GrGLFormat srcFormat, int srcSampleCnt,
                              const GrTextureType* srcTypeIfTexture,
                              const SkRect& srcBounds, bool srcBoundsExact,
-                             const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                             const SkIRect& srcRect, const SkIRect& dstRect) const {
     auto blitFramebufferFlags = fBlitFramebufferFlags;
     if (!this->canFormatBeFBOColorAttachment(dstFormat) ||
         !this->canFormatBeFBOColorAttachment(srcFormat)) {
@@ -3342,6 +3342,21 @@ bool GrGLCaps::canCopyAsBlit(GrGLFormat dstFormat, int dstSampleCnt,
 
     if (GrGLCaps::kNoSupport_BlitFramebufferFlag & blitFramebufferFlags) {
         return false;
+    }
+
+    if (dstSampleCnt > 1 && dstSampleCnt != srcSampleCnt) {
+        // Regardless of support-level, all blits require src and dst sample counts to match if
+        // the dst is MSAA.
+        return false;
+    }
+
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        // Even when the blit can scale contents, it's only valid for non-MSAA framebuffers that we
+        // can write directly to.
+        if ((GrGLCaps::kNoScalingOrMirroring_BlitFramebufferFlag & blitFramebufferFlags) ||
+            this->useDrawInsteadOfAllRenderTargetWrites() || srcSampleCnt > 1) {
+            return false;
+        }
     }
 
     if (GrGLCaps::kResolveMustBeFull_BlitFrambufferFlag & blitFramebufferFlags) {
@@ -3373,7 +3388,7 @@ bool GrGLCaps::canCopyAsBlit(GrGLFormat dstFormat, int dstSampleCnt,
 
     if (GrGLCaps::kRectsMustMatchForMSAASrc_BlitFramebufferFlag & blitFramebufferFlags) {
         if (srcSampleCnt > 1) {
-            if (dstPoint.fX != srcRect.fLeft || dstPoint.fY != srcRect.fTop) {
+            if (dstRect != srcRect) {
                 return false;
             }
         }
@@ -3400,7 +3415,7 @@ static bool has_msaa_render_buffer(const GrSurfaceProxy* surf, const GrGLCaps& g
 }
 
 bool GrGLCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                                const SkIRect& srcRect, const SkIRect& dstRect) const {
     int dstSampleCnt = 0;
     int srcSampleCnt = 0;
     if (const GrRenderTargetProxy* rtProxy = dst->asRenderTargetProxy()) {
@@ -3430,12 +3445,16 @@ bool GrGLCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy*
 
     auto dstFormat = dst->backendFormat().asGLFormat();
     auto srcFormat = src->backendFormat().asGLFormat();
-    return this->canCopyTexSubImage(dstFormat, has_msaa_render_buffer(dst, *this), dstTexTypePtr,
-                                    srcFormat, has_msaa_render_buffer(src, *this), srcTexTypePtr) ||
-           this->canCopyAsBlit(dstFormat, dstSampleCnt, dstTexTypePtr, srcFormat, srcSampleCnt,
+
+    // Only copyAsBlit() can handle the scaling at the moment
+    bool copyScales = srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height();
+    return this->canCopyAsBlit(dstFormat, dstSampleCnt, dstTexTypePtr, srcFormat, srcSampleCnt,
                                srcTexTypePtr, src->getBoundsRect(), src->priv().isExact(), srcRect,
-                               dstPoint) ||
-           this->canCopyAsDraw(dstFormat, SkToBool(srcTex));
+                               dstRect) ||
+           (!copyScales &&
+            (this->canCopyTexSubImage(dstFormat, has_msaa_render_buffer(dst, *this), dstTexTypePtr,
+                                      srcFormat, has_msaa_render_buffer(src, *this), srcTexTypePtr) ||
+             this->canCopyAsDraw(dstFormat, SkToBool(srcTex))));
 }
 
 GrCaps::DstCopyRestrictions GrGLCaps::getDstCopyRestrictions(const GrRenderTargetProxy* src,

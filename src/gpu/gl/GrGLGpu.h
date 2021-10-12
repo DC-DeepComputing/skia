@@ -355,6 +355,8 @@ private:
 
     bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
                        const SkIPoint& dstPoint) override;
+    bool onCopyScaledSurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
+                             const SkIRect& dstRect, GrSamplerState::Filter filter) override;
 
     // binds texture unit in GL
     void setTextureUnit(int unitIdx);
@@ -383,7 +385,7 @@ private:
     void copySurfaceAsCopyTexSubImage(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
                                       const SkIPoint& dstPoint);
     bool copySurfaceAsBlitFramebuffer(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                                      const SkIPoint& dstPoint);
+                                      const SkIRect& dstRect, GrSamplerState::Filter filter);
 
     class ProgramCache : public GrThreadSafePipelineBuilder {
     public:

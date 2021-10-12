@@ -728,14 +728,47 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
             return nullptr;
         }
         // Since this copied only the requested subset, the special image wrapping the proxy no
-        // longer needs the original subset.
-        finalSubset = SkIRect::MakeSize(view.dimensions());
+        // longer needs the original subset's origin (still restrict to its dimensions in case the
+        // approximate fit proxy extends beyond the requested dimensions).
+        finalSubset = SkIRect::MakeSize({subset.width(), subset.height()});
     }
 
     GrColorType ct = SkColorTypeToGrColorType(this->imageInfo().colorType());
 
     return SkSpecialImage::MakeDeferredFromGpu(fContext.get(),
                                                finalSubset,
+                                               kNeedNewImageUniqueID_SpecialImage,
+                                               std::move(view),
+                                               ct,
+                                               this->imageInfo().refColorSpace(),
+                                               this->surfaceProps());
+}
+
+sk_sp<SkSpecialImage> Device::snapScaledSpecial(const SkIRect& subset, const SkISize& dstDims) {
+     ASSERT_SINGLE_OWNER
+
+    auto sdc = fSurfaceDrawContext.get();
+
+    // If we are wrapping a vulkan secondary command buffer, then we can't snap off a special image
+    // since it would require us to make a copy of the underlying VkImage which we don't have access
+    // to. Additionaly we can't stop and start the render pass that is used with the secondary
+    // command buffer.
+    if (sdc->wrapsVkSecondaryCB()) {
+        return nullptr;
+    }
+
+    SkASSERT(sdc->asSurfaceProxy());
+
+    auto scaledContext = sdc->rescale(sdc->imageInfo().makeDimensions(dstDims),
+                                      sdc->origin(),
+                                      subset,
+                                      RescaleGamma::kSrc,
+                                      RescaleMode::kLinear);
+    auto view = scaledContext->readSurfaceView();
+    GrColorType ct = SkColorTypeToGrColorType(this->imageInfo().colorType());
+
+    return SkSpecialImage::MakeDeferredFromGpu(fContext.get(),
+                                               SkIRect::MakeSize(dstDims),
                                                kNeedNewImageUniqueID_SpecialImage,
                                                std::move(view),
                                                ct,
