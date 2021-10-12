@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7fc8c0_37ae7bcc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-12T18:26:47Z",
+      "side": 1,
+      "message": "Would it be useful to add an \u003c!-- Inspired by \u003cURL\u003e. --\u003e comment in index.html for reference?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 6
+      },
+      "revId": "5756670f1f11756932a68258c817a0430e4094d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d59c78_f9d5669b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-12T18:26:47Z",
+      "side": 1,
+      "message": "This is really exciting stuff!",
+      "revId": "5756670f1f11756932a68258c817a0430e4094d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "868512d3_dd94cf44",
+        "filename": "experimental/webgpu-bazel/WORKSPACE",
+        "patchSetId": 16
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-12T18:26:47Z",
+      "side": 1,
+      "message": "Nit: dangling parenthesis",
+      "range": {
+        "startLine": 15,
+        "startChar": 68,
+        "endLine": 15,
+        "endChar": 69
+      },
+      "revId": "5756670f1f11756932a68258c817a0430e4094d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
