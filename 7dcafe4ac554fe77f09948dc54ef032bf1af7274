@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b7ff982_476a1761",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-12T22:01:18Z",
+      "side": 1,
+      "message": "As above, I\u0027m not convinced that bailing on non-fatal errors is the right approach.",
+      "parentUuid": "3cd00df6_95ce70c2",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 14
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9135c05c_b691db29",
         "filename": "src/sksl/ir/SkSLVarDeclarations.h",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2021-10-12T15:32:01Z",
       "side": 1,
       "message": "No other Statement has an ErrorCheck function... we should definitely have a comment explaining why this is necessary and what it does.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 61
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35064de4_a995f3d3",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-12T22:01:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9135c05c_b691db29",
       "range": {
         "startLine": 48,
         "startChar": 0,
@@ -113,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37099ea1_15834669",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-12T22:01:18Z",
+      "side": 1,
+      "message": "Returning null here results in significantly worse error reporting in several tests. Some of that could be dealt with (e.g. we get a bunch of unknown identifier errors after failing to create the variable, which we could avoid by adding a poison entry to the symbol table...) but that seems like a lot of work just to get right back to where we started.\n\nI think we may have a philosophical difference here. I am not opposed to returning nodes even in the face of errors, as long as the error was incidental and doesn\u0027t mean we don\u0027t understand how to handle this object. Even if we e.g. spot an incorrect modifier on a variable, we still know how to create it, and I don\u0027t think an incidental error like that means we should just stop dead and punt on the rest of the program (which is largely where returning null leaves us).\n\nDoing your best and continuing to process as much as you can even in the face of errors is standard behavior for a compiler. I don\u0027t think our policy should be \"any error whatsoever automatically means you should return null\".",
+      "parentUuid": "8f11d0e8_fce0b620",
+      "range": {
+        "startLine": 37,
+        "startChar": 91,
+        "endLine": 37,
+        "endChar": 92
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fa11b92_500b60de",
         "filename": "src/sksl/ir/SkSLVariable.cpp",
         "patchSetId": 2
@@ -124,6 +196,30 @@
       "writtenOn": "2021-10-12T15:27:00Z",
       "side": 1,
       "message": "nullptr",
+      "range": {
+        "startLine": 45,
+        "startChar": 19,
+        "endLine": 45,
+        "endChar": 21
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b897bf28_0a374edf",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-12T22:01:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fa11b92_500b60de",
       "range": {
         "startLine": 45,
         "startChar": 19,
@@ -147,6 +243,30 @@
       "writtenOn": "2021-10-12T15:27:00Z",
       "side": 1,
       "message": "Please add Variable::Make for consistency. AFAICS it only needs to assert that only sk_FragColor is used in location 0/index 0.",
+      "range": {
+        "startLine": 49,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c003da34_d2af8f8e",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-12T22:01:18Z",
+      "side": 1,
+      "message": "I added Make, but I skipped the assert since (as things stand) this is a non-fatal error and Convert is delegating to it.",
+      "parentUuid": "29e61abd_0b7593a2",
       "range": {
         "startLine": 49,
         "startChar": 11,
