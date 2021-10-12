@@ -2117,7 +2117,13 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-GraphiteSink::GraphiteSink() {}
+GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
+    : fContextType(config->getContextType())
+    , fColorType(config->getColorType())
+    , fAlphaType(config->getAlphaType())
+    , fTestPrecompile(config->getTestPrecompile())
+    , fReducedShaders(config->getReducedShaders()) {
+}
 
 #ifdef SK_GRAPHITE_ENABLED
 
@@ -2125,12 +2131,10 @@ Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
-    using ContextType = skiatest::graphite::ContextFactory::ContextType;
-
-    SkImageInfo ii = SkImageInfo::Make(src.size(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType);
 
     skiatest::graphite::ContextFactory factory;
-    auto [_, context] = factory.getContextInfo(ContextType::kMetal);
+    auto [_, context] = factory.getContextInfo(fContextType);
 
     sk_sp<SkSurface> surface = MakeGraphite(std::move(context), ii);
     if (!surface) {
