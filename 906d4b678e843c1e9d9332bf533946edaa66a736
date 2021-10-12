@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0950323c_e73a2d49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T00:00:11Z",
+      "side": 1,
+      "message": "build_intervals could return *2* if the gradient had the same stop repeated several times. We now make sure to have at least 4 stops if we\u0027re going to use the looping colorizer.",
+      "revId": "906d4b678e843c1e9d9332bf533946edaa66a736",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
