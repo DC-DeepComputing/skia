@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd35e95_871470c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-12T17:13:39Z",
+      "side": 1,
+      "message": "A few quick changes in https://skia-review.googlesource.com/c/skia/+/457136/6..7\n\nPTAL",
+      "revId": "cfed173a7a99ce82628d5283b578e150232c490c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
