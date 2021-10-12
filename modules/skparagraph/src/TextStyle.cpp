@@ -98,6 +98,7 @@ bool TextStyle::equalsByFonts(const TextStyle& that) const {
            nearlyEqual(fLetterSpacing, that.fLetterSpacing) &&
            nearlyEqual(fWordSpacing, that.fWordSpacing) &&
            nearlyEqual(fHeight, that.fHeight) &&
+           nearlyEqual(fHalfLeading, that.fHalfLeading) &&
            nearlyEqual(fBaselineShift, that.fBaselineShift) &&
            nearlyEqual(fFontSize, that.fFontSize) &&
            fLocale == that.fLocale;
