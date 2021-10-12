@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32865e2f_de958cb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-12T20:46:40Z",
+      "side": 1,
+      "message": "This is just a simple reland. I had to revert the underlying CL, and this was inflight and landed just after the underlying was reverted.",
+      "revId": "2adb9510bf068818eef57afa5837f013d23f3f37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
