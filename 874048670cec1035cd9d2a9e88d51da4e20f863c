@@ -46,6 +46,30 @@
       },
       "revId": "874048670cec1035cd9d2a9e88d51da4e20f863c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "499589b4_6db216c9",
+        "filename": "src/core/SkZip.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-12T13:54:22Z",
+      "side": 1,
+      "message": "Yeah, it just generates a use of C++17 extended feature warning which we\u0027re suppressing many of (e.g. every place we use structured binding). We couldn\u0027t do it if it were in include/ rather than src/.",
+      "parentUuid": "39c301f3_43d35293",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 49
+      },
+      "revId": "874048670cec1035cd9d2a9e88d51da4e20f863c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
