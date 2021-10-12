@@ -729,7 +729,7 @@ public:
     }
 
     Vec<4, uint32_t> divide(const Vec<4, uint32_t>& numerator) const {
-    #if defined(__SSE2__)
+    #if 1 && defined(__SSE2__)
         auto d = _mm_set1_epi32(fDivisorFactor);
         auto n = unchecked_bit_pun<__m128i>(numerator);
         auto v20 = unchecked_bit_pun<Vec<4, uint32_t>>(_mm_mul_epu32(n, d));
