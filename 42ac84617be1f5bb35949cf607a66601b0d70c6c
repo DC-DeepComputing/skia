@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b9aaa94_2cccd829",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T19:40:33Z",
+      "side": 1,
+      "message": "This type name is a little confusing -- for a moment I thought it was the buffer used to transfer data to a GPU-resident buffer than (essentially) a boolean value. I almost feel like we want to use memory type here but maybe that\u0027s exposing too much to the client.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04a3cbca_fe10deaf",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T19:40:33Z",
+      "side": 1,
+      "message": "I would add a Caps check instead -- kApple GPU family vs kMac. I\u0027m pretty sure M1 will want to use Shared.",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 35,
+        "endChar": 23
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07dfdd69_8c524e64",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T19:40:33Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is needed on M1, but doesn\u0027t hurt to keep it for now. I can verify when I get a moment.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 58
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c464a0b3_517d6e9d",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-12T19:40:33Z",
+      "side": 1,
+      "message": "Again, maybe check the storageMode to see if we need to use didModifyRange.",
+      "range": {
+        "startLine": 78,
+        "startChar": 7,
+        "endLine": 78,
+        "endChar": 23
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
