@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7347de36_74a4a99b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-12T16:23:39Z",
+      "side": 1,
+      "message": "lgtm + one assert",
+      "revId": "188313bcf886dec4848fe336ee1210e6b9cbad15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee225eb7_a57e82cd",
+        "filename": "experimental/graphite/src/Gpu.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-12T16:23:39Z",
+      "side": 1,
+      "message": "after this loop can we add an assert to make sure our sync waiting on the back works:\nSkASSERT(sync \u003d\u003d SyncToCpu::kNo || !fOutstandingSubmissions.front());",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "188313bcf886dec4848fe336ee1210e6b9cbad15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
