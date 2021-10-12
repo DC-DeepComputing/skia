@@ -38,8 +38,12 @@ void Start(SkSL::Compiler* compiler, ProgramKind kind) {
 }
 
 void Start(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings) {
-    ThreadContext::SetInstance(std::make_unique<ThreadContext>(compiler, kind, settings,
-            compiler->moduleForProgramKind(kind), /*isModule=*/false));
+    const ParsedModule& module = compiler->moduleForProgramKind(kind);
+    ThreadContext::SetInstance(std::make_unique<ThreadContext>(compiler, kind, settings, module,
+            /*isModule=*/false));
+    ThreadContext::RTAdjustData& rtAdjust = ThreadContext::RTAdjustState();
+    rtAdjust.fVar = nullptr;
+    rtAdjust.fInterfaceBlock = nullptr;
 }
 
 void StartModule(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings,

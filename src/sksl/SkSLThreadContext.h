@@ -41,6 +41,15 @@ class DSLWriter;
  */
 class ThreadContext {
 public:
+    struct RTAdjustData {
+        // Points to a standalone sk_RTAdjust variable, if one exists.
+        const Variable* fVar = nullptr;
+        // Points to the interface block containing an sk_RTAdjust field, if one exists.
+        const Variable* fInterfaceBlock = nullptr;
+        // If fInterfaceBlock is non-null, contains the index of the sk_RTAdjust field within it.
+        int fFieldIndex;
+    };
+
     ThreadContext(SkSL::Compiler* compiler,  SkSL::ProgramKind kind,
               const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
 
@@ -114,6 +123,11 @@ public:
      * given modifiers.
      */
     static const SkSL::Modifiers* Modifiers(const SkSL::Modifiers& modifiers);
+
+    /**
+     * Returns a struct containing information about the RTAdjust variable.
+     */
+    static RTAdjustData& RTAdjustState();
 
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
     /**
@@ -195,6 +209,7 @@ private:
     ErrorReporter& fOldErrorReporter;
     ProgramSettings fSettings;
     Mangler fMangler;
+    RTAdjustData fRTAdjust;
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
     struct StackFrame {
         GrFragmentProcessor::ProgramImpl* fProcessor;
