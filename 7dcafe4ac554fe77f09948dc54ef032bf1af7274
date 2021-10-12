@@ -185,6 +185,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e062446_95a62600",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T22:34:30Z",
+      "side": 1,
+      "message": "I\u0027m not sure my objections are philosophical per se--I just spent a fair lot of time after the DSLParser switchover, cleaning up very real fuzzer bugs that came from creating Expressions and Statements that don\u0027t honor their invariants. If we insert an Expression into the Program that doesn\u0027t make sense, there are tons of assertions buried throughout SkSL that we can trip up on. Trying to fix these up ad hoc did not work; the fuzzer would just find another way. The real fix was to not return bad expressions.\n\nThe constant folder and function-call optimizer, in particular, deeply rely on being given expressions that make sense. They were written to assume that they would be given valid Expressions, because that\u0027s always been our policy up until now. They assert on some invariants, but this isn\u0027t exhaustive and it would be hard to write it in an exhaustive way. These errors are hard to find via normal testing because you need to explicitly make nonsense expressions and see what breaks, and we can\u0027t exhaustively write every nonsense expression. And they are almost impossible to find by reasoning about the code normally, because we generally don\u0027t reason about \"what if this expression happened to be broken in some fundamental way\" when we think through our logic. So it falls to the fuzzer to find these bugs, which is a dangerous way to live. From that perspective maybe I am philosophical, but if so, it is only because the fuzzer has trained me to be a philosopher :)",
+      "parentUuid": "37099ea1_15834669",
+      "range": {
+        "startLine": 37,
+        "startChar": 91,
+        "endLine": 37,
+        "endChar": 92
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fa11b92_500b60de",
         "filename": "src/sksl/ir/SkSLVariable.cpp",
         "patchSetId": 2

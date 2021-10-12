@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "762a06b6_67ab5360",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-12T22:34:30Z",
+      "side": 1,
+      "message": "This is great, thanks! I like how it ties into use cases. Feels like at its core, this is shared functionality between Field (InterfaceBlocks) and VarDeclaration. Not sure if there is a better place than here, at least not at the moment.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "4e233f2054773a148bc9b90efb7de600f705ffdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
