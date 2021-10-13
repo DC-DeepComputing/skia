@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebb62245_2162437a",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-13T13:10:57Z",
+      "side": 1,
+      "message": "Can you all expand on what you mean by memory type here? All the backends have a pretty different sense on how they enumerate their memory types and what each means in terms of performance. Personally I feel like its best for the uses of buffers to describe how they intend to use the buffer and then we get the correct memory.\n\nMichael how do you expect a buffer pool to use memory type?",
+      "parentUuid": "f1dabe97_367ab87b",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
