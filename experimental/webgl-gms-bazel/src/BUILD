@@ -1,0 +1,175 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@emsdk//emscripten_toolchain:wasm_rules.bzl", "wasm_cc_binary")
+
+BASE_LINKOPTS = [
+    #"-flto",  # https://github.com/emscripten-core/emsdk/issues/807
+    "--bind",  # Compiles the source code using the Embind bindings to connect C/C++ and JavaScript
+    "-sALLOW_MEMORY_GROWTH",
+    "-sUSE_PTHREADS=0",  # Disable pthreads
+    "-sMODULARIZE",
+    "-sEXPORT_NAME=InitWasmGMTests",
+    "-sDISABLE_EXCEPTION_CATCHING",  # Disable all exception catching
+    "-sNODEJS_CATCH_EXIT=0",  # We don't have a 'main' so disable exit() catching
+    "-sWASM",
+    "-sMAX_WEBGL_VERSION=2",
+    "--pre-js",
+    "experimental/webgl-gms-bazel/src/gm_interface.js",
+]
+
+RELEASE_OPTS = [
+    "--closure 1",  # Run the closure compiler
+    "-sASSERTIONS=0",  # Turn off assertions
+]
+
+DEBUG_OPTS = [
+    "--closure 0",  # Do not use closure
+    "-sASSERTIONS",  # Turn on assertions
+    "-sGL_ASSERTIONS",
+]
+
+config_setting(
+    name = "release_opts",
+    values = {"compilation_mode": "opt"},
+)
+
+config_setting(
+    name = "debug_opts",
+    values = {"compilation_mode": "dbg"},
+)
+
+cc_library(
+    name = "skia-core",
+    srcs = [
+        "//include:private-hdrs",
+        "//include:third-party-skcms-hdrs",
+        "//include:third-party-vulkan-hdrs",
+        "//src:codec-hdrs",
+        "//src:codec-srcs",
+        "//src:core-hdrs",
+        "//src:core-srcs",
+        "//src:effects-hdrs",
+        "//src:effects-srcs",
+        "//src:gpu-hdrs",
+        "//src:gpu-srcs",
+        "//src:gpu-webgl",
+        "//src:image-hdrs",
+        "//src:image-srcs",
+        "//src:images-hdrs",
+        "//src:images-srcs",
+        "//src:opts-hdrs",
+        "//src:pathops-hdrs",
+        "//src:pathops-srcs",
+        "//src:sfnt-hdrs",
+        "//src:sfnt-srcs",
+        "//src:shaders-hdrs",
+        "//src:shaders-srcs",
+        "//src:sksl-hdrs",
+        "//src:sksl-srcs",
+        "//src:utils-hdrs",
+        "//src:utils-srcs",
+        "//third_party:skcms",
+    ],
+    hdrs = [
+        "//include:codec-hdrs",
+        "//include:config-hdrs",
+        "//include:core-hdrs",
+        "//include:effects-hdrs",
+        "//include:encode-hdrs",
+        "//include:gpu-hdrs",
+        "//include:pathops-hdrs",
+        "//include:ports-hdrs",
+        "//include:sksl-hdrs",
+        "//include:utils-hdrs",
+    ],
+    local_defines = [
+        "SK_GL",
+        "SK_USE_WEBGL",
+    ],
+    textual_hdrs = ["//src:sksl-txts"],
+    deps = ["//third_party:libjpeg-turbo"],
+)
+
+cc_library(
+    name = "hash_and_encode",
+    srcs = [
+        "//tools:hash_and_encode",
+        "//tools:hdrs",
+    ],
+    copts = [
+        "-Ithird_party/externals/libpng/",
+        "-Ithird_party/libpng/",
+    ],
+    deps = [
+        ":skia-core",
+        "//third_party:libpng",
+    ],
+)
+
+cc_library(
+    name = "gms",
+    srcs = [
+        "//gm:gms",
+        "//gm:srcs",
+        "//tools:hdrs",
+        "//tools:srcs",
+    ],
+    hdrs = [
+        "//gm:hdrs",
+    ],
+    textual_hdrs = ["//tools:txts"],
+    deps = [":skia-core"],
+)
+
+cc_library(
+    name = "tests",
+    srcs = [
+        "//tests:srcs",
+        "//tools:hdrs",
+        "//tools:srcs",
+    ],
+    hdrs = [
+        "//tests:hdrs",
+    ],
+    local_defines = [
+        "GR_TEST_UTILS",
+    ],
+    textual_hdrs = ["//tools:txts"],
+    deps = [":skia-core"],
+)
+
+cc_binary(
+    name = "gm-bindings",
+    srcs = [
+        "gm_bindings.cpp",
+        "//gm:gms",  # Required for the registry to work
+        "//modules/canvaskit:hdrs",
+        "//src/ports:default_global_init",
+        "//src/ports:empty_factory",
+        "//src/ports:malloc",
+        "//src/ports:skia_image_generator",
+        "//src/ports:stdio",
+    ],
+    additional_linker_inputs = ["gm_interface.js"],
+    linkopts = select({
+        ":debug_opts": BASE_LINKOPTS + DEBUG_OPTS,
+        ":release_opts": BASE_LINKOPTS + RELEASE_OPTS,
+        "//conditions:default": BASE_LINKOPTS + RELEASE_OPTS,
+    }),
+    local_defines = [
+        "SK_GL",
+        "SK_USE_WEBGL",
+    ],
+    # This target won't build successfully on its own because of missing emscripten
+    # headers etc. Therefore, we hide it from wildcards.
+    tags = ["manual"],
+    deps = [
+        ":gms",
+        ":hash_and_encode",
+        ":tests",
+    ],
+)
+
+wasm_cc_binary(
+    name = "gm-bindings-wasm",
+    cc_target = ":gm-bindings",
+)
