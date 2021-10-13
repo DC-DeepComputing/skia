@@ -511,19 +511,32 @@ void draw_image(GrRecordingContext* rContext,
                                        image.imageInfo().colorInfo(),
                                        sdc->colorInfo());
     if (image.isAlphaOnly()) {
-        fp = GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kDstIn);
+        if (const auto* shader = as_SB(paint.getShader())) {
+            auto shaderFP = shader->asFragmentProcessor(
+                    GrFPArgs(rContext, matrixProvider, &sdc->colorInfo()));
+            if (!shaderFP) {
+                return;
+            }
+            fp = GrBlendFragmentProcessor::Make(
+                    std::move(fp), std::move(shaderFP), SkBlendMode::kDstIn);
+        } else {
+            // This takes the input (paint) color, premultiplies it, then multiplies by the texture
+            fp = GrFragmentProcessor::MakeInputPremulAndMulByOutput(std::move(fp));
+        }
+
     } else {
-        fp = GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kSrcIn);
+        // If the paint color isn't opaque, then scale the shader's output by input (paint) alpha.
+        // No need to do this if the paint color is opaque.
+        // TODO(skia:11942): Move this alpha modulation to paint-conversion. This won't need to do
+        // anything.
+        if (!paint.getColor4f().isOpaque()) {
+            fp = GrFragmentProcessor::MulChildByInputAlpha(std::move(fp));
+        }
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaintWithTexture(rContext,
-                                     sdc->colorInfo(),
-                                     paint,
-                                     matrixProvider,
-                                     std::move(fp),
-                                     image.isAlphaOnly(),
-                                     &grPaint)) {
+    if (!SkPaintToGrPaintReplaceShader(
+                rContext, sdc->colorInfo(), paint, matrixProvider, std::move(fp), &grPaint)) {
         return;
     }
 
