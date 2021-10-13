@@ -21,7 +21,7 @@
 #include "src/gpu/tessellate/PathWedgeTessellator.h"
 #include "src/gpu/tessellate/shaders/GrPathTessellationShader.h"
 
-using PathFlags = skgpu::tess::TessellationPathFlags;
+using PathFlags = skgpu::v1::TessellationPathRenderer::FillPathFlags;
 
 namespace {
 
@@ -137,8 +137,11 @@ void PathStencilCoverOp::prePreparePrograms(const GrTessellationShader::ProgramA
 
     // We transform paths on the CPU. This allows for better batching.
     const SkMatrix& shaderMatrix = SkMatrix::I();
+    auto pipelineFlags = (fPathFlags & PathFlags::kWireframe)
+            ? GrPipeline::InputFlags::kWireframe
+            : GrPipeline::InputFlags::kNone;
     const GrPipeline* stencilPipeline = GrPathTessellationShader::MakeStencilOnlyPipeline(
-            args, fAAType, fPathFlags, appliedClip.hardClip());
+            args, fAAType, appliedClip.hardClip(), pipelineFlags);
     const GrUserStencilSettings* stencilSettings = GrPathTessellationShader::StencilPathSettings(
                     GrFillRuleForPathFillType(this->pathFillType()));
 
