@@ -72,8 +72,8 @@ extern bool gUseSkVMBlitter;
 extern bool gSkVMAllowJIT;
 extern bool gSkVMJITViaDylib;
 
-double gVMBlitterNS = 0;
-double gRPBlitterNS = 0;
+extern uint64_t gVMBlitterCycles;
+extern uint64_t gRPBlitterCycles;
 
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
@@ -1495,6 +1495,9 @@ int main(int argc, char** argv) {
     log.endObject(); // results
     log.endObject(); // root
     log.flush();
+
+    SkDebugf("Total VM cycles: %llu\n", gVMBlitterCycles);
+    SkDebugf("Total RP cycles: %llu\n", gRPBlitterCycles);
 
     return 0;
 }
