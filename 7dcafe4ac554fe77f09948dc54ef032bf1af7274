@@ -443,6 +443,30 @@
       },
       "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71432aa7_0f58961c",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T14:37:58Z",
+      "side": 1,
+      "message": "Maybe I was on the wrong patchset? Now I\u0027m looking at it and it\u0027s totally fine. My bad.",
+      "parentUuid": "6428b7e2_b716fcde",
+      "range": {
+        "startLine": 49,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
