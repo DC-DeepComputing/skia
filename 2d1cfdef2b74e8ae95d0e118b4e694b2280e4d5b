@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b84027_e77cb175",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:16:21Z",
+      "side": 1,
+      "message": "I think you\u0027ll need to update Device_V2.h and experimental/graphite/src/Device.h for this new signature. In both cases there\u0027s no implementation to worry about, but I\u0027m not sure their respective bots are on the CQ.",
+      "revId": "2d1cfdef2b74e8ae95d0e118b4e694b2280e4d5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51d7019f_7dd2db35",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:16:21Z",
+      "side": 1,
+      "message": "Do you know of any benchmarks around atlases? I would be curious if we drawVertices is actually any worse, in which case we could remove drawAtlas from SkDevice entirely, and delete the AtlasOp from v1.",
+      "range": {
+        "startLine": 874,
+        "startChar": 25,
+        "endLine": 874,
+        "endChar": 34
+      },
+      "revId": "2d1cfdef2b74e8ae95d0e118b4e694b2280e4d5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
