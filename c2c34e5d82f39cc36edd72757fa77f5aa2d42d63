@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "343bae23_8acdbff0",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-13T17:55:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb6b9444_22f972b4",
+      "range": {
+        "startLine": 50,
+        "startChar": 23,
+        "endLine": 50,
+        "endChar": 24
+      },
+      "revId": "c2c34e5d82f39cc36edd72757fa77f5aa2d42d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b237d10_65b92340",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bb2c6ab_b82dae82",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-13T17:55:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b237d10_65b92340",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 6
+      },
+      "revId": "c2c34e5d82f39cc36edd72757fa77f5aa2d42d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e15b393_f8a6e40d",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-13T14:44:08Z",
       "side": 1,
       "message": "Didn\u0027t the RTAdjustData ctor already set these to null? Can we just remove this?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 39
+      },
+      "revId": "c2c34e5d82f39cc36edd72757fa77f5aa2d42d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "284b7d85_823ecb31",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-13T17:55:42Z",
+      "side": 1,
+      "message": "Good catch. I transferred the initialization over from IRGenerator::start() without considering that we were guaranteed to be on a freshly created instance.",
+      "parentUuid": "8e15b393_f8a6e40d",
       "range": {
         "startLine": 44,
         "startChar": 0,
