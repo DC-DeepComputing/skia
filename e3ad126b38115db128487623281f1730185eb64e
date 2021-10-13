@@ -16,6 +16,24 @@
       "message": "It appears this used to be in `namespace ToolUtils {`. Can we stick this in some sort of namespace? Seems a strange thing to stick at the top level.",
       "revId": "e3ad126b38115db128487623281f1730185eb64e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f70bbe4_d344fe23",
+        "filename": "bench/BigPath.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-13T20:03:23Z",
+      "side": 1,
+      "message": "Done. Made up new namespace BenchUtils.",
+      "parentUuid": "6d36e07f_ac576747",
+      "revId": "e3ad126b38115db128487623281f1730185eb64e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
