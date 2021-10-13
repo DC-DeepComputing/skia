@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e319d56_bb027091",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T14:09:36Z",
+      "side": 1,
+      "message": "Ack, if this is just maintaining existing behavior I\u0027m OK with it.",
+      "parentUuid": "9b7ff982_476a1761",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 14
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9135c05c_b691db29",
@@ -363,6 +387,30 @@
       "side": 1,
       "message": "I added Make, but I skipped the assert since (as things stand) this is a non-fatal error and Convert is delegating to it.",
       "parentUuid": "29e61abd_0b7593a2",
+      "range": {
+        "startLine": 49,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5f12ba_2c481486",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T14:09:36Z",
+      "side": 1,
+      "message": "This still doesn\u0027t use Make, but if we don\u0027t want to use the standard Convert/Make semantics (returns errors/asserts) then I\u0027m not sure we want to do this anyway. Having them exist but mean something different isn\u0027t really a win.",
+      "parentUuid": "c003da34_d2af8f8e",
       "range": {
         "startLine": 49,
         "startChar": 11,
