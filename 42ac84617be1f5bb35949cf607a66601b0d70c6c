@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de0b26f5_2a433ad9",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-13T15:26:06Z",
+      "side": 1,
+      "message": "That enum seems reasonable, maybe just PrioritizeGpuReads? (buffer is implied, I think)",
+      "parentUuid": "44f5264a_b1819646",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
