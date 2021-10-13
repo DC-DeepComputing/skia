@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c3d8900_82fd07ac",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T18:15:51Z",
+      "side": 1,
+      "message": "To match graphite\u0027s conventions, this should be skgpu_tess_WangsFormula_DEFINED.",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b298c231_918a6e59",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T18:15:51Z",
+      "side": 1,
+      "message": "These function names don\u0027t follow Skia\u0027s public static func naming conventions, which should be capitalized and camel case. Since we\u0027re renaming things now, can we make them consistent?\n\nI would be okay with WangsFormulaLengthTerm(...), but think my most preferred would actually have a nested namespace of just `namespace Wangs { }` that these functions are in, and name them `LengthTermPow2 or Root4` etc.\n\nIt may also make sense to have it be a `class Wangs {}` with static functions, so that we can have some functions be private, like root4 or nextlog4 (unless those get called elsewhere as well).",
+      "range": {
+        "startLine": 32,
+        "startChar": 37,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
