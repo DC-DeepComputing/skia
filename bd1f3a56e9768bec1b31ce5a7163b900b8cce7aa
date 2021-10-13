@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97f0a55_5215e8bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T22:05:54Z",
+      "side": 1,
+      "message": "Everything LGTM--do you have any plans for the bool return? AFAICS it\u0027s not actually used anywhere yet.",
+      "revId": "bd1f3a56e9768bec1b31ce5a7163b900b8cce7aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f063a81f_12170ca0",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T22:05:54Z",
+      "side": 1,
+      "message": "tiny nit: */",
+      "range": {
+        "startLine": 119,
+        "startChar": 5,
+        "endLine": 119,
+        "endChar": 9
+      },
+      "revId": "bd1f3a56e9768bec1b31ce5a7163b900b8cce7aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
