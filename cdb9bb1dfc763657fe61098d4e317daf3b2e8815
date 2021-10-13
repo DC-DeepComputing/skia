@@ -16,6 +16,24 @@
       "message": "Do we also want --nocpu for the Graphite bot, or is it already included somewhere?",
       "revId": "cdb9bb1dfc763657fe61098d4e317daf3b2e8815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79be5ce5_dd534277",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-13T17:14:23Z",
+      "side": 1,
+      "message": "Yep - that is already added bc \"GPU\" is in the name of the Graphite bots.",
+      "parentUuid": "1bbd2908_fd1845bc",
+      "revId": "cdb9bb1dfc763657fe61098d4e317daf3b2e8815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
