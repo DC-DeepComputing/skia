@@ -18,6 +18,8 @@ namespace skgpu {
 
 class ContextPriv;
 class Gpu;
+class Recorder;
+class Recording;
 namespace mtl { struct BackendContext; }
 
 struct ShaderCombo {
@@ -52,6 +54,11 @@ public:
     static sk_sp<Context> MakeMetal(const skgpu::mtl::BackendContext&);
 #endif
 
+    sk_sp<Recorder> createRecorder();
+
+    void playback(std::unique_ptr<Recording>);
+    void submit();
+
     void preCompile(const PaintCombo&);
 
     // Provides access to functions that aren't part of the public API.
@@ -64,6 +71,7 @@ protected:
 private:
     friend class ContextPriv;
 
+    std::vector<std::unique_ptr<Recording>> fRecordings;
     sk_sp<Gpu> fGpu;
 };
 
