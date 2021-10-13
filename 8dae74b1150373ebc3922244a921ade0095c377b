@@ -16,6 +16,29 @@
       "message": "I\u0027m not quite sure why your tryjob passed, but the tree stayed sad.",
       "revId": "8dae74b1150373ebc3922244a921ade0095c377b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b25b7b9_9a6861a8",
+        "filename": "modules/canvaskit/gm_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-13T18:31:10Z",
+      "side": 1,
+      "message": "Why do we need these extra parens?",
+      "range": {
+        "startLine": 76,
+        "startChar": 36,
+        "endLine": 76,
+        "endChar": 37
+      },
+      "revId": "8dae74b1150373ebc3922244a921ade0095c377b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
