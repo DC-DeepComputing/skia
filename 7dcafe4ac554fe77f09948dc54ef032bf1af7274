@@ -255,6 +255,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd8a3a8_10fee30f",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-13T14:07:57Z",
+      "side": 1,
+      "message": "Ack. Yes, I later re-read your original post and noticed you mentioned poison, but I was sitting in hockey at the time and couldn\u0027t comment from my phone, then I forgot to mention it later :) \n\nI am okay with this if it is behavior-neutral, since that addresses my true concern (giving the fuzzer more space to explore edge-case brokenness scares me). Some of the previous DSL variable handling code gave malformed Expressions a longer lifespan, which is what caused the fuzzing issues earlier.\n\nI do think there\u0027s probably value in exploring Poison for busted symbols but that\u0027d be something we could explore separately and there\u0027s no guarantee it\u0027s universally an improvement. We may find it causes as many problems as it solves.",
+      "parentUuid": "d0ab7b22_1060cfa8",
+      "range": {
+        "startLine": 37,
+        "startChar": 91,
+        "endLine": 37,
+        "endChar": 92
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fa11b92_500b60de",
