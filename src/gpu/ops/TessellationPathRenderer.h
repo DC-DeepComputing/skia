@@ -23,6 +23,13 @@ class TessellationPathRenderer final : public PathRenderer {
 public:
     static bool IsSupported(const GrCaps&);
 
+    // We send these flags to the internal path filling Ops to control how a path gets rendered.
+    enum class FillPathFlags {
+        kNone        = 0,
+        kStencilOnly = (1 << 0),
+        kWireframe   = (1 << 1)
+    };
+
     const char* name() const override { return "Tessellation"; }
 
 private:
@@ -31,6 +38,8 @@ private:
     bool onDrawPath(const DrawPathArgs&) override;
     void onStencilPath(const StencilPathArgs&) override;
 };
+
+GR_MAKE_BITFIELD_CLASS_OPS(TessellationPathRenderer::FillPathFlags)
 
 } // namespace skgpu::v1
 
