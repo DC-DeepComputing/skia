@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/tessellate/GrStrokeHardwareTessellator.h"
+#include "src/gpu/tessellate/StrokeHardwareTessellator.h"
 
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkPathPriv.h"
@@ -14,9 +14,13 @@
 #include "src/gpu/GrVx.h"
 #include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/geometry/GrWangsFormula.h"
-#include "src/gpu/tessellate/GrCullTest.h"
+#include "src/gpu/tessellate/CullTest.h"
 
-namespace {
+#if SK_GPU_V1
+#include "src/gpu/GrOpFlushState.h"
+#endif
+
+namespace skgpu::tess {
 
 static float num_combined_segments(float numParametricSegments, float numRadialSegments) {
     // The first and last edges are shared by both the parametric and radial sets of edges, so
@@ -44,7 +48,7 @@ static grvx::float2 pow4(grvx::float2 x) {
 
 class PatchWriter {
 public:
-    using ShaderFlags = GrStrokeTessellator::ShaderFlags;
+    using ShaderFlags = StrokeTessellator::ShaderFlags;
 
     enum class JoinType {
         kMiter = SkPaint::kMiter_Join,
@@ -62,7 +66,7 @@ public:
             // Subtract 2 because the tessellation shader chops every cubic at two locations, and
             // each chop has the potential to introduce an extra segment.
             , fMaxTessellationSegments(target->caps().shaderCaps()->maxTessellationSegments() - 2)
-            , fParametricPrecision(GrStrokeTolerances::CalcParametricPrecision(matrixMaxScale)) {
+            , fParametricPrecision(StrokeTolerances::CalcParametricPrecision(matrixMaxScale)) {
     }
 
     // This is the precision value, adjusted for the view matrix, to use with Wang's formulas when
@@ -626,7 +630,7 @@ private:
     }
 
     const ShaderFlags fShaderFlags;
-    const GrCullTest fCullTest;
+    const CullTest fCullTest;
     GrVertexChunkBuilder fChunkBuilder;
 
     // The maximum number of tessellation segments the hardware can emit for a single patch.
@@ -702,20 +706,18 @@ SK_ALWAYS_INLINE static bool cubic_has_cusp(const SkPoint p[4]) {
            (!(skvx::all(p0 == p1) || skvx::all(p2 == p3)) || (a == 0 && b == 0 && c == 0));
 }
 
-}  // namespace
-
-GrStrokeHardwareTessellator::GrStrokeHardwareTessellator(const GrShaderCaps& shaderCaps,
-                                                         ShaderFlags shaderFlags,
-                                                         const SkMatrix& viewMatrix,
-                                                         PathStrokeList* pathStrokeList,
-                                                         std::array<float,2> matrixMinMaxScales,
-                                                         const SkRect& strokeCullBounds)
-        : GrStrokeTessellator(shaderCaps, GrStrokeTessellationShader::Mode::kHardwareTessellation,
-                              shaderFlags, SkNextLog2(shaderCaps.maxTessellationSegments()),
-                              viewMatrix, pathStrokeList, matrixMinMaxScales, strokeCullBounds) {
+StrokeHardwareTessellator::StrokeHardwareTessellator(const GrShaderCaps& shaderCaps,
+                                                     ShaderFlags shaderFlags,
+                                                     const SkMatrix& viewMatrix,
+                                                     PathStrokeList* pathStrokeList,
+                                                     std::array<float,2> matrixMinMaxScales,
+                                                     const SkRect& strokeCullBounds)
+        : StrokeTessellator(shaderCaps, GrStrokeTessellationShader::Mode::kHardwareTessellation,
+                            shaderFlags, SkNextLog2(shaderCaps.maxTessellationSegments()),
+                            viewMatrix, pathStrokeList, matrixMinMaxScales, strokeCullBounds) {
 }
 
-void GrStrokeHardwareTessellator::prepare(GrMeshDrawTarget* target, int totalCombinedVerbCnt) {
+void StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target, int totalCombinedVerbCnt) {
     using JoinType = PatchWriter::JoinType;
 
     // Over-allocate enough patches for 1 in 4 strokes to chop and for 8 extra caps.
@@ -729,16 +731,16 @@ void GrStrokeHardwareTessellator::prepare(GrMeshDrawTarget* target, int totalCom
     if (!fShader.hasDynamicStroke()) {
         // Strokes are static. Calculate tolerances once.
         const SkStrokeRec& stroke = fPathStrokeList->fStroke;
-        float localStrokeWidth = GrStrokeTolerances::GetLocalStrokeWidth(fMatrixMinMaxScales.data(),
-                                                                         stroke.getWidth());
-        float numRadialSegmentsPerRadian = GrStrokeTolerances::CalcNumRadialSegmentsPerRadian(
+        float localStrokeWidth = StrokeTolerances::GetLocalStrokeWidth(fMatrixMinMaxScales.data(),
+                                                                       stroke.getWidth());
+        float numRadialSegmentsPerRadian = StrokeTolerances::CalcNumRadialSegmentsPerRadian(
                 patchWriter.parametricPrecision(), localStrokeWidth);
         patchWriter.updateTolerances(numRadialSegmentsPerRadian, stroke.getJoin());
     }
 
     // Fast SIMD queue that buffers up values for "numRadialSegmentsPerRadian". Only used when we
     // have dynamic strokes.
-    GrStrokeToleranceBuffer toleranceBuffer(patchWriter.parametricPrecision());
+    StrokeToleranceBuffer toleranceBuffer(patchWriter.parametricPrecision());
 
     for (PathStrokeList* pathStroke = fPathStrokeList; pathStroke; pathStroke = pathStroke->fNext) {
         const SkStrokeRec& stroke = pathStroke->fStroke;
@@ -898,13 +900,12 @@ void GrStrokeHardwareTessellator::prepare(GrMeshDrawTarget* target, int totalCom
 }
 
 #if SK_GPU_V1
-#include "src/gpu/GrOpFlushState.h"
-
-void GrStrokeHardwareTessellator::draw(GrOpFlushState* flushState) const {
+void StrokeHardwareTessellator::draw(GrOpFlushState* flushState) const {
     for (const auto& vertexChunk : fPatchChunks) {
         flushState->bindBuffers(nullptr, nullptr, vertexChunk.fBuffer);
         flushState->draw(vertexChunk.fCount, vertexChunk.fBase);
     }
 }
-
 #endif
+
+}  // namespace skgpu::tess
