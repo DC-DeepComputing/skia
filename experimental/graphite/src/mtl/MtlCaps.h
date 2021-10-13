@@ -29,6 +29,9 @@ public:
                                                          uint32_t sampleCount,
                                                          Protected) override;
 
+    bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
+    bool isApple()const  { return fGPUFamily == GPUFamily::kApple; }
+
 private:
     void initGPUFamily(const id<MTLDevice>);
 
@@ -40,8 +43,6 @@ private:
         kMac,
         kApple,
     };
-    bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
-    bool isApple()const  { return fGPUFamily == GPUFamily::kApple; }
     static bool GetGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* group);
     static bool GetGPUFamilyFromFeatureSet(id<MTLDevice> device, GPUFamily* gpuFamily,
                                            int* group);
