@@ -16,6 +16,24 @@
       "message": "Why not keep the name the same and put into the ToolUtils namespace? Using the namespace is nice because it makes it super obvious this isn\u0027t a top level thing that should generally be used.",
       "revId": "81f3174a182df7820f514045b1b1c60cb91429c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074a4d56_792f41ec",
+        "filename": "tools/flags/CommonFlagsFontMgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-13T20:20:01Z",
+      "side": 1,
+      "message": "WDYT of a new namespace called CommonFlags? If you like that, I can update the other CommonFlag cpp files to use that as well. \"FromCommonFlags\" was used there, but a namespace should obviate that.",
+      "parentUuid": "c1fda806_7d73e9f2",
+      "revId": "81f3174a182df7820f514045b1b1c60cb91429c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
