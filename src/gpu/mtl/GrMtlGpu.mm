@@ -357,12 +357,7 @@ bool GrMtlGpu::uploadToTexture(GrMtlTexture* tex,
 
 
     // offset value must be a multiple of the destination texture's pixel size in bytes
-#ifdef SK_BUILD_FOR_MAC
-    static const size_t kMinAlignment = 4;
-#else
-    static const size_t kMinAlignment = 1;
-#endif
-    size_t alignment = std::max(bpp, kMinAlignment);
+    size_t alignment = std::max(bpp, this->mtlCaps().getMinBufferAlignment());
     GrStagingBufferManager::Slice slice = fStagingBufferManager.allocateStagingBufferSlice(
             combinedBufferSize, alignment);
     if (!slice.fBuffer) {
@@ -406,9 +401,9 @@ bool GrMtlGpu::uploadToTexture(GrMtlTexture* tex,
         currentHeight = std::max(1, currentHeight/2);
         SkDEBUGCODE(layerHeight = currentHeight);
     }
-#ifdef SK_BUILD_FOR_MAC
-    [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, combinedBufferSize)];
-#endif
+    if (this->mtlCaps().isMac()) {
+        [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, combinedBufferSize)];
+    }
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     [blitCmdEncoder popDebugGroup];
 #endif
@@ -458,12 +453,7 @@ bool GrMtlGpu::clearTexture(GrMtlTexture* tex, size_t bpp, uint32_t levelMask) {
     }
     SkASSERT(combinedBufferSize > 0 && !individualMipOffsets.empty());
 
-#ifdef SK_BUILD_FOR_MAC
-    static const size_t kMinAlignment = 4;
-#else
-    static const size_t kMinAlignment = 1;
-#endif
-    size_t alignment = std::max(bpp, kMinAlignment);
+    size_t alignment = std::max(bpp, this->mtlCaps().getMinBufferAlignment());
     GrStagingBufferManager::Slice slice = fStagingBufferManager.allocateStagingBufferSlice(
             combinedBufferSize, alignment);
     if (!slice.fBuffer) {
@@ -678,9 +668,9 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
         levelDimensions = {std::max(1, levelDimensions.width() /2),
                            std::max(1, levelDimensions.height()/2)};
     }
-#ifdef SK_BUILD_FOR_MAC
-    [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, dataSize)];
-#endif
+    if (this->mtlCaps().isMac()) {
+        [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, dataSize)];
+    }
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     [blitCmdEncoder popDebugGroup];
 #endif
@@ -935,12 +925,7 @@ bool GrMtlGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
     // Reuse the same buffer for all levels. Should be ok since we made the row bytes tight.
     combinedBufferSize = bytesPerPixel*backendTexture.width()*backendTexture.height();
 
-#ifdef SK_BUILD_FOR_MAC
-    static const size_t kMinAlignment = 4;
-#else
-    static const size_t kMinAlignment = 1;
-#endif
-    size_t alignment = std::max(bytesPerPixel, kMinAlignment);
+    size_t alignment = std::max(bytesPerPixel, this->mtlCaps().getMinBufferAlignment());
     GrStagingBufferManager::Slice slice = fStagingBufferManager.allocateStagingBufferSlice(
             combinedBufferSize, alignment);
     if (!slice.fBuffer) {
@@ -994,9 +979,9 @@ bool GrMtlGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
         levelDimensions = {std::max(1, levelDimensions.width() / 2),
                            std::max(1, levelDimensions.height() / 2)};
     }
-#ifdef SK_BUILD_FOR_MAC
-    [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, combinedBufferSize)];
-#endif
+    if (this->mtlCaps().isMac()) {
+        [mtlBuffer->mtlBuffer() didModifyRange: NSMakeRange(slice.fOffset, combinedBufferSize)];
+    }
     [blitCmdEncoder popDebugGroup];
 
     if (finishedCallback) {
@@ -1045,12 +1030,8 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
                                               mipMapped == GrMipmapped::kYes);
     SkASSERT(individualMipOffsets.count() == numMipLevels);
 
-#ifdef SK_BUILD_FOR_MAC
-    static const size_t kMinAlignment = 4;
-#else
-    static const size_t kMinAlignment = 1;
-#endif
-    size_t alignment = std::max(SkCompressedBlockSize(compression), kMinAlignment);
+    size_t alignment = std::max(SkCompressedBlockSize(compression),
+                                this->mtlCaps().getMinBufferAlignment());
     GrStagingBufferManager::Slice slice =
             fStagingBufferManager.allocateStagingBufferSlice(combinedBufferSize, alignment);
     if (!slice.fBuffer) {
@@ -1094,9 +1075,9 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
         levelDimensions = {std::max(1, levelDimensions.width() / 2),
                            std::max(1, levelDimensions.height() / 2)};
     }
-#ifdef SK_BUILD_FOR_MAC
-    [mtlBuffer->mtlBuffer() didModifyRange:NSMakeRange(slice.fOffset, combinedBufferSize)];
-#endif
+    if (this->mtlCaps().isMac()) {
+        [mtlBuffer->mtlBuffer() didModifyRange:NSMakeRange(slice.fOffset, combinedBufferSize)];
+    }
     [blitCmdEncoder popDebugGroup];
 
     if (finishedCallback) {
@@ -1506,10 +1487,10 @@ bool GrMtlGpu::readOrTransferPixels(GrSurface* surface,
                   destinationOffset: offset
              destinationBytesPerRow: rowBytes
            destinationBytesPerImage: imageBytes];
-#ifdef SK_BUILD_FOR_MAC
-    // Sync GPU data back to the CPU
-    [blitCmdEncoder synchronizeResource: transferBuffer];
-#endif
+    if (this->mtlCaps().isMac()) {
+        // Sync GPU data back to the CPU
+        [blitCmdEncoder synchronizeResource: transferBuffer];
+    }
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     [blitCmdEncoder popDebugGroup];
 #endif
