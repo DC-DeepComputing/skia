@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "847b8c91_830c50cd",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-13T17:31:36Z",
+      "side": 1,
+      "message": "Updated to match recent change in Ganesh",
+      "parentUuid": "8defce03_b6ff1797",
+      "range": {
+        "startLine": 38,
+        "startChar": 27,
+        "endLine": 38,
+        "endChar": 56
+      },
+      "revId": "516a2f7c46ab8cee5a1ca0be13f31ff4f87c4816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bff827d4_f3909685",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-13T15:35:00Z",
       "side": 1,
       "message": "Also only available in the Mac SDK.",
+      "range": {
+        "startLine": 80,
+        "startChar": 18,
+        "endLine": 80,
+        "endChar": 32
+      },
+      "revId": "516a2f7c46ab8cee5a1ca0be13f31ff4f87c4816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f621349_a77c34c8",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-13T17:31:36Z",
+      "side": 1,
+      "message": "same",
+      "parentUuid": "bff827d4_f3909685",
       "range": {
         "startLine": 80,
         "startChar": 18,
