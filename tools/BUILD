@@ -1,0 +1,49 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "hdrs",
+    srcs = glob([
+        "Registry.h",
+        "Resources.h",
+        "ToolUtils.h",
+        "ResourceFactory.h",
+        "fonts/TestFontMgr.h",
+        "fonts/TestTypeface.h",
+        "flags/CommandLineFlags.h",
+        "gpu/**/*.h",
+    ]),
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "Resources.cpp",
+        "ToolUtils.cpp",
+        "flags/CommandLineFlags.cpp",
+        "fonts/TestFontMgr.cpp",
+        "fonts/TestTypeface.cpp",
+        "fonts/ToolUtilsFont.cpp",
+        "gpu/FlushFinishTracker.cpp",
+        "gpu/GrContextFactory.cpp",
+        "gpu/TestContext.cpp",
+        "gpu/gl/GLTestContext.cpp",
+    ],
+)
+
+filegroup(
+    name = "txts",
+    srcs = [
+        "fonts/test_font_index.inc",
+        "fonts/test_font_monospace.inc",
+        "fonts/test_font_sans_serif.inc",
+        "fonts/test_font_serif.inc",
+    ],
+)
+
+filegroup(
+    name = "hash_and_encode",
+    srcs = [
+        "HashAndEncode.cpp",
+        "HashAndEncode.h",
+    ],
+)
