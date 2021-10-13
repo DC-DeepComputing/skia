@@ -14,7 +14,9 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
+#include "include/ports/SkTypeface_win.h"
 #include "include/private/SkChecksum.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkSpinlock.h"
@@ -886,7 +888,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> images;
-    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
+    if (!CollectImages(FLAGS_images, &images)) {
         return false;
     }
 
@@ -895,7 +897,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> colorImages;
-    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
+    if (!CollectImages(FLAGS_colorImages, &colorImages)) {
         return false;
     }
 
@@ -1431,14 +1433,14 @@ static void gather_tests() {
         if (!in_shard()) {
             continue;
         }
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
+        if (CommandLineFlags::ShouldSkip(FLAGS_match, test.name)) {
             continue;
         }
-        if (test.fNeedsGpu && FLAGS_gpu) {
+        if (test.needsGpu && FLAGS_gpu) {
             gSerialTests->push_back(test);
         } else if (test.fNeedsGraphite && FLAGS_graphite) {
             gSerialTests->push_back(test);
-        } else if (!test.fNeedsGpu && !test.fNeedsGraphite && FLAGS_cpu) {
+        } else if (!test.needsGpu && !test.fNeedsGraphite && FLAGS_cpu) {
             gParallelTests->push_back(test);
         }
     }
@@ -1455,16 +1457,16 @@ static void run_test(skiatest::Test test, const GrContextOptions& grCtxOptions) 
         bool verbose() const override { return FLAGS_veryVerbose; }
     } reporter;
 
-    if (!FLAGS_dryRun && !should_skip("_", "tests", "_", test.fName)) {
+    if (!FLAGS_dryRun && !should_skip("_", "tests", "_", test.name)) {
         AutoreleasePool pool;
         GrContextOptions options = grCtxOptions;
         test.modifyGrContextOptions(&options);
 
-        skiatest::ReporterContext ctx(&reporter, SkString(test.fName));
-        start("unit", "test", "", test.fName);
+        skiatest::ReporterContext ctx(&reporter, SkString(test.name));
+        start("unit", "test", "", test.name);
         test.run(&reporter, options);
     }
-    done("unit", "test", "", test.fName);
+    done("unit", "test", "", test.name);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -1486,8 +1488,8 @@ int main(int argc, char** argv) {
     setbuf(stdout, nullptr);
     setup_crash_handler();
 
-    CommonFlags::SetDefaultFontMgr();
-    CommonFlags::SetAnalyticAA();
+    ToolUtils::SetDefaultFontMgr();
+    SetAnalyticAAFromCommonFlags();
 
     gSkForceRasterPipelineBlitter = FLAGS_forceRasterPipeline;
     gUseSkVMBlitter               = FLAGS_skvm;
@@ -1503,7 +1505,7 @@ int main(int argc, char** argv) {
     }
 
     GrContextOptions grCtxOptions;
-    CommonFlags::SetCtxOptions(&grCtxOptions);
+    SetCtxOptionsFromCommonFlags(&grCtxOptions);
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
 
