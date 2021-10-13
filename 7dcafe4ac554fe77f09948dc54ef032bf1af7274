@@ -419,6 +419,30 @@
       },
       "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6428b7e2_b716fcde",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-13T14:20:07Z",
+      "side": 1,
+      "message": "I don\u0027t follow - Convert is delegating to Make, so what do you mean \"This still doesn\u0027t use Make\"?\n\nOf course I understand that the pattern is different with respect to the one minor non-fatal error, but it still follows the pattern in every other respect.",
+      "parentUuid": "4b5f12ba_2c481486",
+      "range": {
+        "startLine": 49,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
