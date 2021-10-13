@@ -16,7 +16,7 @@
 #include "src/gpu/tessellate/PathCurveTessellator.h"
 #include "src/gpu/tessellate/shaders/GrPathTessellationShader.h"
 
-using PathFlags = skgpu::tess::TessellationPathFlags;
+using PathFlags = skgpu::v1::TessellationPathRenderer::FillPathFlags;
 
 namespace {
 
@@ -229,8 +229,11 @@ void PathInnerTriangulateOp::prePreparePrograms(const GrTessellationShader::Prog
     // Create a pipeline for stencil passes if needed.
     const GrPipeline* pipelineForStencils = nullptr;
     if (forceRedbookStencilPass || !isLinear) {  // Curves always get stencilled.
+        auto pipelineFlags = (fPathFlags & PathFlags::kWireframe)
+                ? GrPipeline::InputFlags::kWireframe
+                : GrPipeline::InputFlags::kNone;
         pipelineForStencils = GrPathTessellationShader::MakeStencilOnlyPipeline(
-                args, fAAType, fPathFlags, appliedClip.hardClip());
+                args, fAAType, appliedClip.hardClip(), pipelineFlags);
     }
 
     // Create a pipeline for fill passes if needed.
