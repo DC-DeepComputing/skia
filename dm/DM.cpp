@@ -14,7 +14,9 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
+#include "include/ports/SkTypeface_win.h"
 #include "include/private/SkChecksum.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkSpinlock.h"
@@ -886,7 +888,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> images;
-    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
+    if (!CollectImages(FLAGS_images, &images)) {
         return false;
     }
 
@@ -895,7 +897,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> colorImages;
-    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
+    if (!CollectImages(FLAGS_colorImages, &colorImages)) {
         return false;
     }
 
@@ -1486,8 +1488,8 @@ int main(int argc, char** argv) {
     setbuf(stdout, nullptr);
     setup_crash_handler();
 
-    CommonFlags::SetDefaultFontMgr();
-    CommonFlags::SetAnalyticAA();
+    ToolUtils::SetDefaultFontMgr();
+    SetAnalyticAAFromCommonFlags();
 
     gSkForceRasterPipelineBlitter = FLAGS_forceRasterPipeline;
     gUseSkVMBlitter               = FLAGS_skvm;
@@ -1503,7 +1505,7 @@ int main(int argc, char** argv) {
     }
 
     GrContextOptions grCtxOptions;
-    CommonFlags::SetCtxOptions(&grCtxOptions);
+    SetCtxOptionsFromCommonFlags(&grCtxOptions);
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
 
