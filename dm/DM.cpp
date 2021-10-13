@@ -466,7 +466,7 @@ static bool in_shard() {
 
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
-    if (in_shard() && FLAGS_src.contains(tag) &&
+    if (in_shard() && FLAGS_src.contains(tag) && false &&
         !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
         TaggedSrc& s = gSrcs->push_back();
         s.reset(src.release());
@@ -1432,6 +1432,9 @@ static void gather_tests() {
             continue;
         }
         if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
+            continue;
+        }
+        if (!strstr(test.fName, "DMSAA_dual_source_blend")) {
             continue;
         }
         if (test.fNeedsGpu && FLAGS_gpu) {
