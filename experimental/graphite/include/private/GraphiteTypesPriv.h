@@ -26,6 +26,27 @@ enum class DepthStencilType {
     kDepthStencil,
 };
 
+/**
+ * What a GPU buffer will be used for
+ */
+enum class BufferType {
+    kVertex,
+    kIndex,
+    kXferCpuToGpu,
+    kXferGpuToCpu,
+    kUniform,
+};
+static const int kBufferTypeCount = static_cast<int>(BufferType::kUniform) + 1;
+
+/**
+ * Will a GPU buffer's data be read once (or a couple times) on the GPU before being overwritten on
+ * the CPU. Or will the data be kept around for many GPU reads.
+ */
+enum class TransientGpuBuffer : bool {
+    kNo = false,
+    kYes = true,
+};
+
 } // namespace skgpu
 
 #endif // skgpu_GraphiteTypesPriv_DEFINED
