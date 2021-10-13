@@ -10,7 +10,7 @@
 
 namespace skgpu {
 
-class Recording {
+class Recording final {
 public:
     Recording();
     ~Recording();
@@ -22,4 +22,3 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_Recording_DEFINED
-

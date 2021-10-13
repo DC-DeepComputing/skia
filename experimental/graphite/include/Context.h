@@ -18,6 +18,8 @@ namespace skgpu {
 
 class ContextPriv;
 class Gpu;
+class Recorder;
+class Recording;
 namespace mtl { struct BackendContext; }
 
 struct ShaderCombo {
@@ -51,6 +53,11 @@ public:
 #ifdef SK_METAL
     static sk_sp<Context> MakeMetal(const skgpu::mtl::BackendContext&);
 #endif
+
+    sk_sp<Recorder> createRecorder();
+
+    void playback(std::unique_ptr<Recording>);
+    void submit();
 
     void preCompile(const PaintCombo&);
 
