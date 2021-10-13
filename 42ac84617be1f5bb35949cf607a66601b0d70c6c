@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "462f0d7e_e945bc11",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T14:10:05Z",
+      "side": 1,
+      "message": "Hmm, all the use cases I can think of are actually captured by the BufferType and transient-ness. I had thought (w/o really knowing the details) that if there was a common memory type representation that was a bit more nuanced than transient-ness, it wouldn\u0027t hurt (e.g. static, stream, dynamic). But if there isn\u0027t a unified representation that makes sense across all backends, then I\u0027m fine with this level of detail.\n\nHowever, I do agree with Jim that the current type name is a little misleading, or easy to misinterpret. To me TransientGpuBuffer makes me think the value is actually a buffer. What if we renamed it MemoryType, and it had values kTransient and k[GPU?]Persistent?",
+      "parentUuid": "ebb62245_2162437a",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
