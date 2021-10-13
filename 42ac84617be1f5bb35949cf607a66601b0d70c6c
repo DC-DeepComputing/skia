@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4045827b_c7e2a3be",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:34:16Z",
+      "side": 1,
+      "message": "okay, that makes sense to me. Maybe just PrioritizeGpuReads? I think Buffer is pretty clear from the context and keeps it a little shorter then.\n\n[edit] - I wrote this almost the same time as Jim\u0027s but forgot to actually submit the comment. I\u0027m glad we came up with the same name :)",
+      "parentUuid": "44f5264a_b1819646",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
