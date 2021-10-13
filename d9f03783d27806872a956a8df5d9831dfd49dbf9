@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff445add_4eae2ce1",
+        "filename": "dm/DMSrcSink.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T13:01:47Z",
+      "side": 1,
+      "message": "Is this option necessary? I\u0027ve just assumed that graphite was reduced shaders by default.",
+      "range": {
+        "startLine": 599,
+        "startChar": 4,
+        "endLine": 599,
+        "endChar": 32
+      },
+      "revId": "d9f03783d27806872a956a8df5d9831dfd49dbf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d811d5e_e1356bf9",
+        "filename": "tests/Test.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T13:01:47Z",
+      "side": 1,
+      "message": "I think given the style of the other variables in test, we just match it and go with \u0027needsGraphite\u0027?",
+      "range": {
+        "startLine": 86,
+        "startChar": 9,
+        "endLine": 86,
+        "endChar": 23
+      },
+      "revId": "d9f03783d27806872a956a8df5d9831dfd49dbf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b6e78a9_ab006b0c",
+        "filename": "tools/flags/CommonFlagsConfig.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T13:01:47Z",
+      "side": 1,
+      "message": "see other note, maybe not needed?",
+      "range": {
+        "startLine": 141,
+        "startChar": 24,
+        "endLine": 141,
+        "endChar": 39
+      },
+      "revId": "d9f03783d27806872a956a8df5d9831dfd49dbf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
