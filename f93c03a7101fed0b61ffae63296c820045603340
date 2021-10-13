@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b61ee50c_273635bd",
+        "filename": "src/gpu/tessellate/CullTest.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41b03c92_b5bbbd94",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0295ac5a_96b369ac",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_MiddleOutPolygonTriangulator_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c0f0667_33806ef1",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0295ac5a_96b369ac",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "786182de_8dddd621",
+        "filename": "src/gpu/tessellate/PathCurveTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3927127c_94fd5f4b",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a553ab07_d68966bb",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_PathCurveTessellator_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35fdd765_1d290eb4",
+        "filename": "src/gpu/tessellate/PathCurveTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a553ab07_d68966bb",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -86,6 +158,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b950405f_99f67502",
+        "filename": "src/gpu/tessellate/PathTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "854c2f9b_b3f0dff5",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f94a26d5_ca854372",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "Same question here about an anonymous namespace",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "462ae61c_99209ed7",
+        "filename": "src/gpu/tessellate/PathWedgeTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f94a26d5_ca854372",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -120,6 +228,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1250beb9_99617648",
+        "filename": "src/gpu/tessellate/PathWedgeTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b108805e_3d57a008",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5a2f6e8_eec47711",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_PathXform_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d48086_df91df3d",
+        "filename": "src/gpu/tessellate/PathXform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5a2f6e8_eec47711",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -154,6 +298,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6c40ff5_07ef559f",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76fdf5f4_9bf90443",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee4c379e_f7aff20d",
@@ -167,6 +329,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_StrokeFixedCountTessellator_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "261363ff_e5f5e7f3",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee4c379e_f7aff20d",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -188,6 +368,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6dfd63_feacc5e1",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9186ecdc_05140dc8",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a9955f3_db149b76",
@@ -201,6 +399,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_StrokeHardwareTessellator_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "730c8ab5_52ab0fe5",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a9955f3_db149b76",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -222,6 +438,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da586e1_a3472859",
+        "filename": "src/gpu/tessellate/StrokeIterator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fea22799_4a996138",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dae6824f_d0b9dd6d",
@@ -235,6 +469,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "// tessellate_StrokeTessellator_DEFINED ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8e0d873_37a37f2c",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae6824f_d0b9dd6d",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -256,6 +508,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dcc60c8_b675b7ef",
+        "filename": "src/gpu/tessellate/TessTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4876843d_009b6fec",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5928e1ff_fb963465",
@@ -273,6 +543,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40fe0d63_bb07e6c3",
+        "filename": "src/gpu/tessellate/VectorXform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5928e1ff_fb963465",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "622e551b_00cdf8b6",
@@ -286,6 +574,24 @@
       "writtenOn": "2021-10-13T13:55:00Z",
       "side": 1,
       "message": "Shouldn\u0027t this just be using skgpu::tess, not in it ?",
+      "revId": "f93c03a7101fed0b61ffae63296c820045603340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc45efb2_d8d4d5bd",
+        "filename": "tests/CullTestTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T16:13:36Z",
+      "side": 1,
+      "message": "I assume either way is usually fine, but I prefer to put tests in the skgpu namespace. If they aren\u0027t, there can sometimes be naming collisions with the global namespace (e.g., with skpu::Rect and ::Rect from MacTypes.h)",
+      "parentUuid": "622e551b_00cdf8b6",
       "revId": "f93c03a7101fed0b61ffae63296c820045603340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
