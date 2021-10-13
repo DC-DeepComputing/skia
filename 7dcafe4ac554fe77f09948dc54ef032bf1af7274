@@ -233,6 +233,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d0ab7b22_1060cfa8",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-13T13:57:42Z",
+      "side": 1,
+      "message": "I alluded to poison earlier with my \"adding a poison entry to the symbol table\" comment. The issue is that we currently have poison expressions, but not poison symbols, and even if we add poison symbols, we would still be changing error handling behavior in other ways which might turn out to not be desirable.\n\nTo be clear: this CL does not (intentionally, at least) change behavior at all. We are already returning variables/vardecls after reporting these errors; IRGenerator has been doing this for years without complaint. All I\u0027m doing is moving the code to a new home.",
+      "parentUuid": "404a9bd2_8d834a37",
+      "range": {
+        "startLine": 37,
+        "startChar": 91,
+        "endLine": 37,
+        "endChar": 92
+      },
+      "revId": "7dcafe4ac554fe77f09948dc54ef032bf1af7274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fa11b92_500b60de",
         "filename": "src/sksl/ir/SkSLVariable.cpp",
         "patchSetId": 2
