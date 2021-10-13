@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44f5264a_b1819646",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-13T14:16:11Z",
+      "side": 1,
+      "message": "Yeah total fine with finding a better name. I don\u0027t like using MemoryType as the class name though because that suggests the caller is requesting a specific memory type. In reality the caller is just expressing that they want to prioritize reading the buffer on the GPU over anything else. But this can actually be done with different memory types depending on the platform. For example, on Vulkan we will use a GPU_ONLY memory type on desktop, but on mobile we use the regular cpu and gpu accessible memory type. The reason being there is no performance difference on mobile gpus for the memory reads, so by using the cpu_gpu one we save having to do the extra gpu copy.\n\nenum class PrioritizeGpuBufferReads : bool {\n   kNo,\n   kYes,\n}",
+      "parentUuid": "462f0d7e_e945bc11",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
