@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1dabe97_367ab87b",
+        "filename": "experimental/graphite/src/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T12:54:04Z",
+      "side": 1,
+      "message": "Assuming that there\u0027s a reasonable memory type that covers the different backends, I think it could be useful for clients of Buffer to know about the memory type.\n\nThe really high level clients are already going to go through a writer-like interface, and that could hide the memory type. But a buffer pool or sub-allocator could find it useful IMO",
+      "parentUuid": "2b9aaa94_2cccd829",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "42ac84617be1f5bb35949cf607a66601b0d70c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a3cbca_fe10deaf",
         "filename": "experimental/graphite/src/mtl/MtlBuffer.mm",
         "patchSetId": 2
