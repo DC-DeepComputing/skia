@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bbd2908_fd1845bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:10:55Z",
+      "side": 1,
+      "message": "Do we also want --nocpu for the Graphite bot, or is it already included somewhere?",
+      "revId": "cdb9bb1dfc763657fe61098d4e317daf3b2e8815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
