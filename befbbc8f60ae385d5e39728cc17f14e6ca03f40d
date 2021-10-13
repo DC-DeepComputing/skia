@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c58fc7c_ba0f4277",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T22:31:53Z",
+      "side": 1,
+      "message": "The directory is named \"src/gpu/tessellate\", and since this seems to based on the file name here I thought it made sense to match the name of the directory structure?\n\nEither way, I\u0027m thinking of renaming skgpu::tess to just tessellate:: and then it will match the directory name. Thoughts there? Do you mind if we land this as-is and I rename the namespace later?",
+      "parentUuid": "8c3d8900_82fd07ac",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b298c231_918a6e59",
         "filename": "src/gpu/tessellate/WangsFormula.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-13T18:15:51Z",
       "side": 1,
       "message": "These function names don\u0027t follow Skia\u0027s public static func naming conventions, which should be capitalized and camel case. Since we\u0027re renaming things now, can we make them consistent?\n\nI would be okay with WangsFormulaLengthTerm(...), but think my most preferred would actually have a nested namespace of just `namespace Wangs { }` that these functions are in, and name them `LengthTermPow2 or Root4` etc.\n\nIt may also make sense to have it be a `class Wangs {}` with static functions, so that we can have some functions be private, like root4 or nextlog4 (unless those get called elsewhere as well).",
+      "range": {
+        "startLine": 32,
+        "startChar": 37,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0802defd_a9abb057",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-13T22:31:53Z",
+      "side": 1,
+      "message": "The more math-y methods that have their own namespace can use a lower_case_with_underscores convention (like skvx::), and there\u0027s also sk_bit_cast, sk_malloc, etc. Since these are math formulas more than procedures I personally prefer the lower case names. Would you consider letting having us leave it? I like the look of \"wangs_formula::cubic_log2\" better than \"wangs_formula::CubicLog2\".\n\nI put it in a skgpu::tess::wangs_formula namespace because code outside of here does use nextlog16. I\u0027m tempted to just do \"::wangs_formula\" at global scope though (not skgpu::tess::wangs_formula). Thoughts?",
+      "parentUuid": "b298c231_918a6e59",
       "range": {
         "startLine": 32,
         "startChar": 37,
