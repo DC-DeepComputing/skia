@@ -26,12 +26,9 @@
 #include "src/core/SkFontMgrPriv.h"
 #include "src/core/SkFontPriv.h"
 #include "tools/ToolUtils.h"
-#include "tools/flags/CommandLineFlags.h"
-#include "tools/fonts/TestFontMgr.h"
 
 #include <cmath>
 #include <cstring>
-#include <memory>
 
 namespace ToolUtils {
 
@@ -371,16 +368,17 @@ void create_tetra_normal_map(SkBitmap* bm, const SkIRect& dst) {
     }
 }
 
-#if !defined(__clang__) && defined(_MSC_VER)
-// MSVC takes ~2 minutes to compile this function with optimization.
-// We don't really care to wait that long for this function.
-#pragma optimize("", off)
-#endif
-SkPath make_big_path() {
-    SkPathBuilder path;
-#include "BigPathBench.inc"  // IWYU pragma: keep
-    return path.detach();
-}
+// FIXME(kjlubick)
+//#if !defined(__clang__) && defined(_MSC_VER)
+//// MSVC takes ~2 minutes to compile this function with optimization.
+//// We don't really care to wait that long for this function.
+//#pragma optimize("", off)
+//#endif
+//SkPath make_big_path() {
+//    SkPathBuilder path;
+//#include "BigPathBench.inc"  // IWYU pragma: keep
+//    return path.detach();
+//}
 
 bool copy_to(SkBitmap* dst, SkColorType dstColorType, const SkBitmap& src) {
     SkPixmap srcPM;
@@ -483,23 +481,24 @@ sk_sp<SkSurface> makeSurface(SkCanvas*             canvas,
     return surf;
 }
 
-static DEFINE_bool(nativeFonts, true,
-                   "If true, use native font manager and rendering. "
-                   "If false, fonts will draw as portably as possible.");
-#if defined(SK_BUILD_FOR_WIN)
-    static DEFINE_bool(gdi, false,
-                       "Use GDI instead of DirectWrite for font rendering.");
-#endif
-
-void SetDefaultFontMgr() {
-    if (!FLAGS_nativeFonts) {
-        gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
-    }
-#if defined(SK_BUILD_FOR_WIN)
-    if (FLAGS_gdi) {
-        gSkFontMgr_DefaultFactory = &SkFontMgr_New_GDI;
-    }
-#endif
-}
+// FIXME(kjlubick)
+//static DEFINE_bool(nativeFonts, true,
+//                   "If true, use native font manager and rendering. "
+//                   "If false, fonts will draw as portably as possible.");
+//#if defined(SK_BUILD_FOR_WIN)
+//    static DEFINE_bool(gdi, false,
+//                       "Use GDI instead of DirectWrite for font rendering.");
+//#endif
+//
+//void SetDefaultFontMgr() {
+//    if (!FLAGS_nativeFonts) {
+//        gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
+//    }
+//#if defined(SK_BUILD_FOR_WIN)
+//    if (FLAGS_gdi) {
+//        gSkFontMgr_DefaultFactory = &SkFontMgr_New_GDI;
+//    }
+//#endif
+//}
 
 }  // namespace ToolUtils

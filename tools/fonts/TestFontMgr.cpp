@@ -33,6 +33,7 @@ public:
         sk_sp<SkTypeface> fTypeface;
         SkFontStyle       fStyle;
         const char*       fStyleName;
+
     };
 
     int count() override { return fTypefaces.size(); }
