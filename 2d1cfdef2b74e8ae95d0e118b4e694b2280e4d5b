@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f889f0b3_50dc574a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:25:32Z",
+      "side": 1,
+      "message": "Missing experimental/src/Device.h update? graphite and v2 are still different things in the code base :/",
+      "parentUuid": "7afa1eee_53a8e967",
+      "revId": "2d1cfdef2b74e8ae95d0e118b4e694b2280e4d5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51d7019f_7dd2db35",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I actually tried this in the past, and the results were mixed (mobile benefited from the bespoke atlas drawing support, which I think cuts down on memory bandwidth to do all the vertex construction and uploading):\n\n  https://skia-review.googlesource.com/c/skia/+/203053",
       "parentUuid": "51d7019f_7dd2db35",
+      "range": {
+        "startLine": 874,
+        "startChar": 25,
+        "endLine": 874,
+        "endChar": 34
+      },
+      "revId": "2d1cfdef2b74e8ae95d0e118b4e694b2280e4d5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "193a9ae4_96451f14",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-13T17:25:32Z",
+      "side": 1,
+      "message": "Ok, good to know.",
+      "parentUuid": "90613e5b_87ef551e",
       "range": {
         "startLine": 874,
         "startChar": 25,
