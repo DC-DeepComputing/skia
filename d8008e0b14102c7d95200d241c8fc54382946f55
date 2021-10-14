@@ -22,6 +22,30 @@
       },
       "revId": "d8008e0b14102c7d95200d241c8fc54382946f55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44fbbe83_8fb7ef2a",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-14T14:23:02Z",
+      "side": 1,
+      "message": "In fact, add \"ProgramKind::kVertex \u003d\u003d context.fConfig-\u003efKind\" as well, and you\u0027ve actually made the code even clearer.",
+      "parentUuid": "54f6e471_1b6eed5a",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 33
+      },
+      "revId": "d8008e0b14102c7d95200d241c8fc54382946f55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
