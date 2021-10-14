@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f6e471_1b6eed5a",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-14T14:21:45Z",
+      "side": 1,
+      "message": "This works and is fine, but I wonder if it makes more sense to use `function.isMain()` here.\n\nThat would kill two birds with one stone since we\u0027re already checking `decl.isMain()` inside the fixup code (which could be removed), and sidesteps the rehydrator-limitations concern (we wouldn\u0027t ever rehydrate the main function).",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 33
+      },
+      "revId": "d8008e0b14102c7d95200d241c8fc54382946f55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
