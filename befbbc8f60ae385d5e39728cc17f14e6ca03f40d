@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf5d2dc_80154eff",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-14T13:57:42Z",
+      "side": 1,
+      "message": "Sorry, you\u0027re right, it should match the directory first if the directory and namespaces aren\u0027t in sync.\n\nWe can land this as-is or rename now; I figure it\u0027s the same amount of work, right? The final namespace will depend on what you think of my other comment I suppose.",
+      "parentUuid": "3c58fc7c_ba0f4277",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b298c231_918a6e59",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "The more math-y methods that have their own namespace can use a lower_case_with_underscores convention (like skvx::), and there\u0027s also sk_bit_cast, sk_malloc, etc. Since these are math formulas more than procedures I personally prefer the lower case names. Would you consider letting having us leave it? I like the look of \"wangs_formula::cubic_log2\" better than \"wangs_formula::CubicLog2\".\n\nI put it in a skgpu::tess::wangs_formula namespace because code outside of here does use nextlog16. I\u0027m tempted to just do \"::wangs_formula\" at global scope though (not skgpu::tess::wangs_formula). Thoughts?",
       "parentUuid": "b298c231_918a6e59",
+      "range": {
+        "startLine": 32,
+        "startChar": 37,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd145f58_b86c3217",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-14T13:57:42Z",
+      "side": 1,
+      "message": "Ok, mathy functions as lower_case_with_underscores is a good counter example, so I\u0027ll withdraw that request 😊\n\nI also prefer ::wangs_formula to skgpu::tess::wangs_formula. I\u0027d be okay with skgpu::wangs_formula as well since it\u0027s probably only used by the GPU backend, but the default path renderer, aa linearizing path renderer, and triangulating path renderer all use Wang\u0027s formula. That\u0027s why it had originally been moved out of the v1/tess work and into geom/\n\nIf we\u0027re making src/gpu/tessellate be something independent of v1 and more represent math and types that just know how to tessellate and/or triangulate curves, then I think having WangsFormula.h there is okay. But like your change to remove skgpu::geom namespace from the types in experimental/graphite/src/geom, having ::tess:: part of the namespace probably doesn\u0027t give us much.",
+      "parentUuid": "0802defd_a9abb057",
       "range": {
         "startLine": 32,
         "startChar": 37,
