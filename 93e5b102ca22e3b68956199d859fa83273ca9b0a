@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ef3b312_edd0be89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-14T19:08:52Z",
+      "side": 1,
+      "message": "From Brian Ho\u0027s telemetry runs, this helped improve smoothness on backdrop blur on ChromeOS by about 5-10%. SkiaRenderer is still behind by another 10% to GLRenderer on that device, but another CL that allows copies to scale directly to the result closes that gap completely. Both CLs are necessary to match performance (and also then matches the same GPU work that GLRenderer is doing too).",
+      "revId": "93e5b102ca22e3b68956199d859fa83273ca9b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
