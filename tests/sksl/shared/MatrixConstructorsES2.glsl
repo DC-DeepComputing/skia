@@ -5,8 +5,8 @@ uniform vec4 colorRed;
 uniform mat2 testMatrix2x2;
 vec4 main() {
     vec4 f4 = vec4(testMatrix2x2);
-    bool ok = mat2(f4.xyz, 4.0) == mat2(1.0, 2.0, 3.0, 4.0);
-    ok = ok && mat3(f4.xy, f4.zw, f4, f4.x) == mat3(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0);
-    ok = ok && mat4(f4.xyz, f4.wxy, f4.zwxy, f4.zw, f4) == mat4(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
+    bool ok = mat2(f4.xyz, f4.w) == mat2(1.0, 2.0, 3.0, 4.0);
+    ok = ok && mat3(f4.xy, f4.zw, f4.x, f4.y, f4.z, f4.w, f4.x) == mat3(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0);
+    ok = ok && mat4(f4.x, f4.yzw, f4.xyz, f4.wxyz, f4.wx, f4.yz, f4.w) == mat4(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
     return ok ? colorGreen : colorRed;
 }
