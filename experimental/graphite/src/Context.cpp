@@ -8,7 +8,10 @@
 #include "experimental/graphite/include/Context.h"
 
 #include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/Gpu.h"
+#include "experimental/graphite/src/Recorder.h"
+#include "experimental/graphite/src/Recording.h"
 
 #ifdef SK_METAL
 #include "experimental/graphite/src/mtl/MtlTrampoline.h"
@@ -78,6 +81,23 @@ sk_sp<Context> Context::MakeMetal(const mtl::BackendContext& backendContext) {
     return sk_sp<Context>(new Context(std::move(gpu)));
 }
 #endif
+
+
+sk_sp<Recorder> Context::createRecorder() {
+    return sk_make_sp<Recorder>(sk_ref_sp(this));
+}
+
+void Context::insertRecording(std::unique_ptr<Recording> recording) {
+    fRecordings.emplace_back(std::move(recording));
+}
+
+void Context::submit(SyncToCpu syncToCpu) {
+    for (auto& r : fRecordings) {
+        fGpu->submit((r->fCommandBuffer));
+    }
+
+    fGpu->checkForFinishedWork(syncToCpu);
+}
 
 void Context::preCompile(const PaintCombo& c) {
     expand(c);
