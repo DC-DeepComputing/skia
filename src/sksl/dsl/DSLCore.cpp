@@ -80,7 +80,7 @@ public:
         auto result = std::make_unique<SkSL::Program>(std::move(source),
                                                       std::move(instance.fConfig),
                                                       compiler.fContext,
-                                                      std::move(bundle.fElements),
+                                                      std::move(ThreadContext::ProgramElements()),
                                                       std::move(bundle.fSharedElements),
                                                       std::move(instance.fModifiersPool),
                                                       std::move(bundle.fSymbolTable),
