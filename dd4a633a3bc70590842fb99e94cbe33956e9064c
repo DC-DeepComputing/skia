@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35adbe7d_6479db37",
+        "filename": "experimental/graphite/src/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-14T19:55:24Z",
+      "side": 1,
+      "message": "double \u0027(\u0027s?",
+      "range": {
+        "startLine": 99,
+        "startChar": 17,
+        "endLine": 99,
+        "endChar": 18
+      },
+      "revId": "dd4a633a3bc70590842fb99e94cbe33956e9064c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
