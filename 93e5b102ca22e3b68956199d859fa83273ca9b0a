@@ -16,6 +16,29 @@
       "message": "From Brian Ho\u0027s telemetry runs, this helped improve smoothness on backdrop blur on ChromeOS by about 5-10%. SkiaRenderer is still behind by another 10% to GLRenderer on that device, but another CL that allows copies to scale directly to the result closes that gap completely. Both CLs are necessary to match performance (and also then matches the same GPU work that GLRenderer is doing too).",
       "revId": "93e5b102ca22e3b68956199d859fa83273ca9b0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8537e177_9def0319",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-14T19:56:08Z",
+      "side": 1,
+      "message": "Maybe add 1.0f here too to skip a hop ?",
+      "range": {
+        "startLine": 662,
+        "startChar": 50,
+        "endLine": 662,
+        "endChar": 51
+      },
+      "revId": "93e5b102ca22e3b68956199d859fa83273ca9b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
