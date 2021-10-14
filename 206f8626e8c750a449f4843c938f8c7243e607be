@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9589e80d_3c250239",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-14T13:07:02Z",
+      "side": 1,
+      "message": "naming nit: let\u0027s follow the convention Derek suggested\n\n  gFontChain_countMethodID;\n  ...",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55848aa2_1a4fe003",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-14T13:07:02Z",
+      "side": 1,
+      "message": "I think we trust SkText not to access indices \u003e\u003d count, but let\u0027s assert\n\n  SkASSERT(index \u003c this-\u003ecount());",
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "024cac4c_cf09bf79",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-14T13:07:02Z",
+      "side": 1,
+      "message": "Technically we cannot prevent implementors from returning null fonts.  Rather than crash here, we can punt to SkText:\n\n  if (!font) {\n    return nullptr;\n  }",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99f404f7_4ce591ab",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-14T13:07:02Z",
+      "side": 1,
+      "message": "FontChain is ref-counted, unref instead:\n\n  SkSafeUnref(reinterpret_cast\u003cFontChainAdapter*\u003e(native_FontChain));",
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6915ff06_68903894",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-14T13:07:02Z",
+      "side": 1,
+      "message": "If any of these is NULL, we should return JNI_ERR.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 78
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
