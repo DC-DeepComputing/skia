@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45e4bfe9_f21c1374",
+        "filename": "experimental/graphite/include/SkStuff.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-14T19:15:11Z",
+      "side": 1,
+      "message": "I get the reasoning here since we need to keep Surfaces connected to a single Recorder so they\u0027re not shared, but not going to lie this looks weird to me passing in a Recorder to created an object. Don\u0027t really have a suggestion however.",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 52
+      },
+      "revId": "bf88e7b6fc416cb3f90064dc087102421ef9c7e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af7fc56_b7dc9f6f",
+        "filename": "experimental/graphite/src/Context.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-14T19:15:11Z",
+      "side": 1,
+      "message": "So we definitely want Gru::submit to take an array of command buffers. For now Jim just wrote it as a single command buffer because we didn\u0027t think we\u0027d have multiple yet. I say we add a TODO here to make an array of command buffers and add an assert that we currently only have one recording. That way once we try to use two Recordings we\u0027ll know we have to update the call here.",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 97,
+        "endChar": 5
+      },
+      "revId": "bf88e7b6fc416cb3f90064dc087102421ef9c7e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
