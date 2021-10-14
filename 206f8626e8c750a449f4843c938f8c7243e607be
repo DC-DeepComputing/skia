@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6b906b_bac8d9d6",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-14T18:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9589e80d_3c250239",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55848aa2_1a4fe003",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-14T13:07:02Z",
       "side": 1,
       "message": "I think we trust SkText not to access indices \u003e\u003d count, but let\u0027s assert\n\n  SkASSERT(index \u003c this-\u003ecount());",
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aa3412b_f6d92d29",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-14T18:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55848aa2_1a4fe003",
       "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32676c64_b63fa64d",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-14T18:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "024cac4c_cf09bf79",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99f404f7_4ce591ab",
@@ -81,6 +147,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7c849d2_c3e54295",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-14T18:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99f404f7_4ce591ab",
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6915ff06_68903894",
@@ -94,6 +178,30 @@
       "writtenOn": "2021-10-14T13:07:02Z",
       "side": 1,
       "message": "If any of these is NULL, we should return JNI_ERR.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 78
+      },
+      "revId": "206f8626e8c750a449f4843c938f8c7243e607be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a903df85_e8dcfde9",
+        "filename": "modules/androidkit/src/FontChainAdapter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-14T18:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6915ff06_68903894",
       "range": {
         "startLine": 67,
         "startChar": 0,
