@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f07fe9_eb08db99",
+        "filename": "src/gpu/tessellate/WangsFormula.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-14T16:55:34Z",
+      "side": 1,
+      "message": "Let\u0027s do it in a follow-on CL.",
+      "parentUuid": "0cf5d2dc_80154eff",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "befbbc8f60ae385d5e39728cc17f14e6ca03f40d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b298c231_918a6e59",
