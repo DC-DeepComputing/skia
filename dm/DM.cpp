@@ -889,7 +889,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> images;
-    if (!CollectImages(FLAGS_images, &images)) {
+    if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
         return false;
     }
 
@@ -898,7 +898,7 @@ static bool gather_srcs() {
     }
 
     SkTArray<SkString> colorImages;
-    if (!CollectImages(FLAGS_colorImages, &colorImages)) {
+    if (!CommonFlags::CollectImages(FLAGS_colorImages, &colorImages)) {
         return false;
     }
 
@@ -1490,7 +1490,7 @@ int main(int argc, char** argv) {
     setup_crash_handler();
 
     CommonFlags::SetDefaultFontMgr();
-    SetAnalyticAAFromCommonFlags();
+    CommonFlags::SetAnalyticAA();
 
     gSkForceRasterPipelineBlitter = FLAGS_forceRasterPipeline;
     gUseSkVMBlitter               = FLAGS_skvm;
@@ -1506,7 +1506,7 @@ int main(int argc, char** argv) {
     }
 
     GrContextOptions grCtxOptions;
-    SetCtxOptionsFromCommonFlags(&grCtxOptions);
+    CommonFlags::SetCtxOptions(&grCtxOptions);
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
 

@@ -394,10 +394,10 @@ int main(int argc, char** argv) {
 
     initializeEventTracingForTools();
     CommonFlags::SetDefaultFontMgr();
-    SetAnalyticAAFromCommonFlags();
+    CommonFlags::SetAnalyticAA();
 
     GrContextOptions baseOptions;
-    SetCtxOptionsFromCommonFlags(&baseOptions);
+    CommonFlags::SetCtxOptions(&baseOptions);
     baseOptions.fReducedShaderVariations = FLAGS_reducedshaders;
 
     sk_gpu_test::MemoryCache memoryCache;
