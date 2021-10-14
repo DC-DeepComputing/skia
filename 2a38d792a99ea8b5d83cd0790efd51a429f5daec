@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932de9c5_1718eb27",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1633,
+      "author": {
+        "id": 8986
+      },
+      "writtenOn": "2021-10-14T16:39:53Z",
+      "side": 1,
+      "message": "Skia folks, will debugSupport generally be turned on? \n\nIf so, we should consider adding a new ANGLE API that lets labeling APIs go through without all of the other functionality in debugSupport.",
+      "range": {
+        "startLine": 1633,
+        "startChar": 8,
+        "endLine": 1633,
+        "endChar": 37
+      },
+      "revId": "2a38d792a99ea8b5d83cd0790efd51a429f5daec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b6d215_9764541f",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1636,
+      "author": {
+        "id": 8986
+      },
+      "writtenOn": "2021-10-14T16:39:53Z",
+      "side": 1,
+      "message": "Consider putting this code into a helper function in the class and call it from both callsites you added.",
+      "range": {
+        "startLine": 1632,
+        "startChar": 0,
+        "endLine": 1636,
+        "endChar": 5
+      },
+      "revId": "2a38d792a99ea8b5d83cd0790efd51a429f5daec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
