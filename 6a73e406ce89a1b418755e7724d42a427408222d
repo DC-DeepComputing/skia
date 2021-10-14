@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3912f775_60d1c0a2",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-14T18:43:14Z",
+      "side": 1,
+      "message": "While I was in this method I noticed we were calling ThreadContext statics too often and accessing some things inconsistently, so I went ahead and cleaned it up.",
+      "revId": "6a73e406ce89a1b418755e7724d42a427408222d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
