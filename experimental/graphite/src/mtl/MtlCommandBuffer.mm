@@ -7,7 +7,10 @@
 
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 
+#include "experimental/graphite/src/mtl/MtlBuffer.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
+#include "experimental/graphite/src/mtl/MtlTexture.h"
+#include "include/core/SkRect.h"
 
 namespace skgpu::mtl {
 
@@ -34,7 +37,7 @@ sk_sp<CommandBuffer> CommandBuffer::Make(const Gpu* gpu) {
      (*cmdBuffer).label = @"CommandBuffer::Make";
 #endif
 
-    return sk_sp<CommandBuffer>(new CommandBuffer(std::move(cmdBuffer)));
+    return sk_sp<CommandBuffer>(new CommandBuffer(gpu, std::move(cmdBuffer)));
 }
 
 bool CommandBuffer::commit() {
@@ -51,5 +54,68 @@ bool CommandBuffer::commit() {
     return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
 }
 
+static bool check_max_blit_width(int widthInPixels) {
+    if (widthInPixels > 32767) {
+        SkASSERT(false); // surfaces should not be this wide anyway
+        return false;
+    }
+    return true;
+}
+
+id<MTLBlitCommandEncoder> CommandBuffer::getBlitCommandEncoder() {
+    if (fActiveBlitCommandEncoder) {
+        return fActiveBlitCommandEncoder.get();
+    }
+
+    // We retain here because the encoder is set to autorelease (not alloc or copy)
+    fActiveBlitCommandEncoder =
+            sk_ret_cfp<id<MTLBlitCommandEncoder>>([*fCommandBuffer blitCommandEncoder]);
+
+    return fActiveBlitCommandEncoder.get();
+}
+
+void CommandBuffer::copyTextureToBuffer(sk_sp<skgpu::Texture> texture,
+                                        SkIRect srcRect,
+                                        sk_sp<skgpu::Buffer> buffer,
+                                        size_t bufferOffset,
+                                        size_t bufferRowBytes) {
+    SkASSERT(!fInRenderPass);
+
+    if (!check_max_blit_width(srcRect.width())) {
+        return;
+    }
+
+    id<MTLTexture> mtlTexture = static_cast<Texture*>(texture.get())->mtlTexture();
+    id<MTLBuffer> mtlBuffer = static_cast<Buffer*>(buffer.get())->mtlBuffer();
+
+    id<MTLBlitCommandEncoder> blitCmdEncoder = this->getBlitCommandEncoder();
+
+#ifdef SK_ENABLE_MTL_DEBUG_INFO
+    [blitCmdEncoder pushDebugGroup:@"readOrTransferPixels"];
+#endif
+    [blitCmdEncoder copyFromTexture: mtlTexture
+                        sourceSlice: 0
+                        sourceLevel: 0
+                       sourceOrigin: MTLOriginMake(srcRect.left(), srcRect.top(), 0)
+                         sourceSize: MTLSizeMake(srcRect.width(), srcRect.height(), 1)
+                           toBuffer: mtlBuffer
+                  destinationOffset: bufferOffset
+             destinationBytesPerRow: bufferRowBytes
+           destinationBytesPerImage: bufferRowBytes * srcRect.height()];
+
+#ifdef SK_BUILD_FOR_MAC
+    if (fGpu->mtlCaps().isMac()) {
+        // Sync GPU data back to the CPU
+        [blitCmdEncoder synchronizeResource: mtlBuffer];
+    }
+#endif
+#ifdef SK_ENABLE_MTL_DEBUG_INFO
+    [blitCmdEncoder popDebugGroup];
+#endif
+
+    // TODO: Save ref the Texture, Buffer, and any mtl objects on the command buffer
+
+    fHasWork = true;
+}
 
 } // namespace skgpu::mtl

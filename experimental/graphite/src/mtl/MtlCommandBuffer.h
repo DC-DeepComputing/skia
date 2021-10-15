@@ -39,11 +39,22 @@ public:
     }
     bool commit();
 
+    void copyTextureToBuffer(sk_sp<skgpu::Texture>,
+                             SkIRect srcRect,
+                             sk_sp<skgpu::Buffer>,
+                             size_t bufferOffset,
+                             size_t bufferRowBytes) override;
+
 private:
-    CommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
-        : fCommandBuffer(std::move(cmdBuffer)) {}
+    CommandBuffer(const Gpu* gpu, sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
+        : fGpu(gpu), fCommandBuffer(std::move(cmdBuffer)) {}
+
+    id<MTLBlitCommandEncoder> getBlitCommandEncoder();
+
+    const Gpu* fGpu;
 
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
+    sk_cfp<id<MTLBlitCommandEncoder>> fActiveBlitCommandEncoder;
 };
 
 } // namespace skgpu::mtl
