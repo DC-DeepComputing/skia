@@ -33,6 +33,24 @@
       "message": "lgtm, but I don\u0027t want to trigger auto submit with the canary failures. Are these understood?",
       "revId": "a00d406d9a026395c2d9162c5e43195c55e45e08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec916218_c86285e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-15T23:29:32Z",
+      "side": 1,
+      "message": "Android has been having infra issues, and the chromium layout test appears unrelated (corrupt jpeg unit test).",
+      "parentUuid": "d313bbc9_044cd1a4",
+      "revId": "a00d406d9a026395c2d9162c5e43195c55e45e08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
