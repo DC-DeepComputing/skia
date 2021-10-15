@@ -57,6 +57,35 @@ enum class PrioritizeGpuReads : bool {
     kYes = true,
 };
 
+/**
+ * This enum is used to specify the load operation to be used when a RenderPass begins execution
+ */
+enum class LoadOp {
+    kLoad,
+    kClear,
+    kDiscard,
+};
+
+/**
+ * This enum is used to specify the store operation to be used when a RenderPass ends execution.
+ */
+enum class StoreOp {
+    kStore,
+    kDiscard,
+};
+
+
+/**
+ * Geometric primitives used for drawing.
+ */
+enum class PrimitiveType : uint8_t {
+    kTriangles,
+    kTriangleStrip,
+    kPoints,
+    kLines,          // 1 pix wide only
+    kLineStrip,      // 1 pix wide only
+};
+
 } // namespace skgpu
 
 #endif // skgpu_GraphiteTypesPriv_DEFINED
