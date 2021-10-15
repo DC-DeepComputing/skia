@@ -256,6 +256,7 @@ private:
     Mangler fMangler;
     Inliner fInliner;
     std::unique_ptr<IRGenerator> fIRGenerator;
+    std::shared_ptr<SymbolTable> fSymbolTable;
 
     String fErrorText;
 
