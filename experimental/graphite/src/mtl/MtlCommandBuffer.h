@@ -10,16 +10,20 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/GpuWorkSubmission.h"
+// TODO: get rid of this?
+#include "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h"
 
 #include <memory>
 
 #include "include/core/SkTypes.h"
 #include "include/ports/SkCFObject.h"
+#include "include/private/SkTArray.h"
 
 #import <Metal/Metal.h>
 
 namespace skgpu::mtl {
 class Gpu;
+class RenderCommandEncoder;
 
 class CommandBuffer final : public skgpu::CommandBuffer {
 public:
@@ -43,7 +47,15 @@ private:
     CommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
         : fCommandBuffer(std::move(cmdBuffer)) {}
 
+    void beginRenderPass(const RenderPassDesc&) override;
+    void endRenderPass() override;
+
+    void setRenderPipeline(const RenderPipeline*) override;
+    void drawPrimitives(PrimitiveType, size_t vertexOffset, unsigned int vertexCount) override;
+
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
+    sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
+
 };
 
 } // namespace skgpu::mtl

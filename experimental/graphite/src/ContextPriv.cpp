@@ -16,4 +16,8 @@ const Caps* ContextPriv::caps() {
     return fContext->fGpu->caps();
 }
 
+Gpu* ContextPriv::gpu() {
+    return fContext->fGpu.get();
+}
+
 } // namespace skgpu
