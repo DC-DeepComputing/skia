@@ -53,15 +53,10 @@ public:
     IRGenerator(const Context* context);
 
     struct IRBundle {
-        std::vector<std::unique_ptr<ProgramElement>> fElements;
-        std::vector<const ProgramElement*>           fSharedElements;
-        std::shared_ptr<SymbolTable>                 fSymbolTable;
-        Program::Inputs                              fInputs;
+        Program::Inputs fInputs;
     };
 
-    void start(const ParsedModule& base,
-               std::vector<std::unique_ptr<ProgramElement>>* elements,
-               std::vector<const ProgramElement*>* sharedElements);
+    void start(std::shared_ptr<SymbolTable>& symbols);
 
     /**
      * If externalFunctions is supplied, those values are registered in the symbol table of the
@@ -76,14 +71,6 @@ public:
     ProgramKind programKind() const { return fContext.fConfig->fKind; }
 
     ErrorReporter& errorReporter() const { return *fContext.fErrors; }
-
-    std::shared_ptr<SymbolTable>& symbolTable() {
-        return fSymbolTable;
-    }
-
-    void setSymbolTable(std::shared_ptr<SymbolTable>& symbolTable) {
-        fSymbolTable = symbolTable;
-    }
 
     std::unique_ptr<Expression> convertIdentifier(int line, skstd::string_view identifier);
 
@@ -112,10 +99,7 @@ private:
 
     Program::Inputs fInputs;
 
-    std::shared_ptr<SymbolTable> fSymbolTable = nullptr;
     std::unordered_set<const Type*> fDefinedStructs;
-    std::vector<std::unique_ptr<ProgramElement>>* fProgramElements = nullptr;
-    std::vector<const ProgramElement*>*           fSharedElements = nullptr;
 
     friend class AutoSymbolTable;
     friend class AutoLoopLevel;
