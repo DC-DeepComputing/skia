@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7a14e59_817a0ceb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-15T15:04:08Z",
+      "side": 1,
+      "message": "Looks nice and clean, I was worried based on your chat earlier!",
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "068353b2_b2bc2e9c",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-15T15:04:08Z",
+      "side": 1,
+      "message": "Should probably have a comment explaining that this is not the root symbol table, but corresponds to the symbol table of the block currently being compiled (I feel like this wouldn\u0027t be obvious to a casual reader)",
+      "range": {
+        "startLine": 259,
+        "startChar": 33,
+        "endLine": 259,
+        "endChar": 45
+      },
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a4578f2_b37dddbe",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-15T15:04:08Z",
+      "side": 1,
+      "message": "not anymore! :)",
+      "range": {
+        "startLine": 91,
+        "startChar": 55,
+        "endLine": 91,
+        "endChar": 66
+      },
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
