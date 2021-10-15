@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "363c09ba_83645131",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T23:37:37Z",
+      "side": 1,
+      "message": "Sorry I had thought I sent out these comments earlier today",
+      "revId": "2a38d792a99ea8b5d83cd0790efd51a429f5daec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "932de9c5_1718eb27",
@@ -26,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "997f7018_1f86d052",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1635,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T23:37:37Z",
+      "side": 1,
+      "message": "You can just use the macro GL_CALL here.\n\nGL_CALL(ObjectLable(GR_GL_TEXTURE, id, -1, label));\n\nin a static function you may actually need:\nGR_GL_CALL(interface, ObjectLable(GR_GL_TEXTURE, id, -1, label));",
+      "range": {
+        "startLine": 1635,
+        "startChar": 8,
+        "endLine": 1635,
+        "endChar": 82
+      },
+      "revId": "2a38d792a99ea8b5d83cd0790efd51a429f5daec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79b6d215_9764541f",
         "filename": "src/gpu/gl/GrGLGpu.cpp",
         "patchSetId": 2
@@ -37,6 +77,30 @@
       "writtenOn": "2021-10-14T16:39:53Z",
       "side": 1,
       "message": "Consider putting this code into a helper function in the class and call it from both callsites you added.",
+      "range": {
+        "startLine": 1632,
+        "startChar": 0,
+        "endLine": 1636,
+        "endChar": 5
+      },
+      "revId": "2a38d792a99ea8b5d83cd0790efd51a429f5daec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f0410f_aa5b442d",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1636,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T23:37:37Z",
+      "side": 1,
+      "message": "Yeah add this as a static helper in this file",
+      "parentUuid": "79b6d215_9764541f",
       "range": {
         "startLine": 1632,
         "startChar": 0,
