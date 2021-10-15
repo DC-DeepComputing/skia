@@ -52,7 +52,6 @@ ThreadContext::ThreadContext(SkSL::Compiler* compiler, SkSL::ProgramKind kind,
 
 ThreadContext::~ThreadContext() {
     if (SymbolTable()) {
-        fCompiler->fIRGenerator->finish();
         fCompiler->fSymbolTable = nullptr;
         fProgramElements.clear();
     } else {
@@ -73,14 +72,6 @@ SkSL::IRGenerator& ThreadContext::IRGenerator() {
 
 SkSL::Context& ThreadContext::Context() {
     return Compiler().context();
-}
-
-SkSL::ProgramSettings& ThreadContext::Settings() {
-    return Context().fConfig->fSettings;
-}
-
-SkSL::Program::Inputs& ThreadContext::Inputs() {
-    return IRGenerator().fInputs;
 }
 
 std::shared_ptr<SkSL::SymbolTable>& ThreadContext::SymbolTable() {
