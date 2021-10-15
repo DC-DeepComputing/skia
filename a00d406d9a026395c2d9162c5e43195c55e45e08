@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15181966_54e2563d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-15T17:19:32Z",
+      "side": 1,
+      "message": "I decided to have Skia go back to the old default (to fix Flutter regressions) vs. adjusting Flutter\u0027s build to be non-default. The new bug 12547 captures the eventual plan, but I think it\u0027ll be easier to bring chrome back into the fold vs. finding a value that works for every other client.",
+      "revId": "a00d406d9a026395c2d9162c5e43195c55e45e08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
