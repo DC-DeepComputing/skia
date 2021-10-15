@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aebf08a8_d69957c0",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-15T21:31:29Z",
+      "side": 1,
+      "message": "Where do you use this?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eba20980_65d4780f",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 1
@@ -31,6 +54,24 @@
       "writtenOn": "2021-10-15T20:31:35Z",
       "side": 1,
       "message": "So in Ganesh we call a stopEncoders() here. But I don\u0027t think we\u0027ll need that. We will explicitly call endRenderPass which should end the render encoder. So I don\u0027t think there should be anything to close. Additionally, all calls that may need a blitCommandEncoder should be asserting they are not in a render pass.",
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa3eb5f_653ff9e0",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-15T21:31:29Z",
+      "side": 1,
+      "message": "That sounds right to me.",
+      "parentUuid": "eba20980_65d4780f",
       "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -60,6 +101,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce1bbd02_802a7d6f",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-15T21:31:29Z",
+      "side": 1,
+      "message": "Yes, that should be right.",
+      "parentUuid": "302ccb5b_603f7c47",
+      "range": {
+        "startLine": 70,
+        "startChar": 6,
+        "endLine": 70,
+        "endChar": 83
+      },
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b25c4a9_402fd4a0",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 1
@@ -71,6 +136,30 @@
       "writtenOn": "2021-10-15T20:31:35Z",
       "side": 1,
       "message": "I think we\u0027ll want to land your resource tracking change before landing this so we can add those correctly here.",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 116,
+        "endChar": 84
+      },
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7de85526_016f04a2",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-15T21:31:29Z",
+      "side": 1,
+      "message": "I\u0027ve set up the CL for that. It looks like you\u0027ll have to write an SkRefCnt-derived wrapper for MTLBlitCommandEncoder -- it doesn\u0027t seem like the sk_cfp\u003cid\u003e-based tracking will work (it\u0027s balking at casting sk_cfp\u003cid\u003cMTLBlitCommandEncoder\u003e\u003e to sk_cfp\u003cid\u003e). Everything else (Texture, Buffer, RenderPipeline, the future RenderCommandEncoder) will be wrapped anyway.",
+      "parentUuid": "3b25c4a9_402fd4a0",
       "range": {
         "startLine": 116,
         "startChar": 4,
