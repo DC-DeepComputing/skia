@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "982a98e7_fdea484c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-15T15:31:54Z",
+      "side": 1,
+      "message": "Well, most of the time and frustration was spent trying to move it into ThreadContext, which I had to abandon as non-viable. Then even when I attempted this much simpler change, I got several assertion errors.\n\nThe main problem here was (naturally) completely stupid once I caught it, but the mistake just didn\u0027t jump out at me when looking over the diffs. Removing the SymbolTable from IRBundle and IRGenerator::finish() meant that I had of course also removed the std::move(fSymbolTable) - and therefore also removed the side effect of nulling it out. Nulling it out turned out to be important.",
+      "parentUuid": "f7a14e59_817a0ceb",
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "068353b2_b2bc2e9c",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e433762_7eeafc16",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-15T15:31:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "068353b2_b2bc2e9c",
+      "range": {
+        "startLine": 259,
+        "startChar": 33,
+        "endLine": 259,
+        "endChar": 45
+      },
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4578f2_b37dddbe",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-10-15T15:04:08Z",
       "side": 1,
       "message": "not anymore! :)",
+      "range": {
+        "startLine": 91,
+        "startChar": 55,
+        "endLine": 91,
+        "endChar": 66
+      },
+      "revId": "2ec972e846401c674d4c12bf980e65560337e91f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27c5890d_b214cc66",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-15T15:31:54Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "5a4578f2_b37dddbe",
       "range": {
         "startLine": 91,
         "startChar": 55,
