@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3465e1aa_9e972ed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T20:31:35Z",
+      "side": 1,
+      "message": "Just wanted to send this out to you to get feedback. I think we need your resource tracking changes to land first so I can handle them correctly in this change.",
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eba20980_65d4780f",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T20:31:35Z",
+      "side": 1,
+      "message": "So in Ganesh we call a stopEncoders() here. But I don\u0027t think we\u0027ll need that. We will explicitly call endRenderPass which should end the render encoder. So I don\u0027t think there should be anything to close. Additionally, all calls that may need a blitCommandEncoder should be asserting they are not in a render pass.",
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "302ccb5b_603f7c47",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T20:31:35Z",
+      "side": 1,
+      "message": "no idea if this is true in the new system or not",
+      "range": {
+        "startLine": 70,
+        "startChar": 6,
+        "endLine": 70,
+        "endChar": 83
+      },
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b25c4a9_402fd4a0",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-15T20:31:35Z",
+      "side": 1,
+      "message": "I think we\u0027ll want to land your resource tracking change before landing this so we can add those correctly here.",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 116,
+        "endChar": 84
+      },
+      "revId": "135dc27f67de962258ff913094e0d49d1e7e0f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
