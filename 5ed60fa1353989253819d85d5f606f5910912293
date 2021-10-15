@@ -22,6 +22,30 @@
       },
       "revId": "5ed60fa1353989253819d85d5f606f5910912293",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a697e3_c93cb979",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-15T23:31:36Z",
+      "side": 1,
+      "message": "per offline discussion, added comments to remind me to add asserts when the actual impl is put in a cpp file (allowing header to only have to forward declare Transform)",
+      "parentUuid": "74523c91_f86aeb86",
+      "range": {
+        "startLine": 76,
+        "startChar": 7,
+        "endLine": 76,
+        "endChar": 13
+      },
+      "revId": "5ed60fa1353989253819d85d5f606f5910912293",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
