@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bddaa9e_c83e434a",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-18T22:29:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16b34b1d_e189b3be",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cd54b1b_cca50203",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-18T19:47:27Z",
       "side": 1,
       "message": "unique_ptr?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 9
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef03d505_0d7a12d7",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-18T22:29:41Z",
+      "side": 1,
+      "message": "That just makes it hard for the \"addNonIntersecting\" pattern where fLo might split itself:\n\n  fLo \u003d fLo-\u003eaddNonIntersecting(rect);\n  \nI figured this is small enough that a couple deletes in the destructor would be fine enough. Do you have thoughts on a different way to handle the \"add\" method?",
+      "parentUuid": "6cd54b1b_cca50203",
       "range": {
         "startLine": 59,
         "startChar": 4,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50f7d766_6a21dc03",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-18T22:29:41Z",
+      "side": 1,
+      "message": "Thank you for pointing that out, I did not know that max() would compile to 3 instructions on SSE.\n\nThis here is not the innermost loop so I\u0027m ok with 3 instructions. The code that needs hyper optimization is LeafNode::intersects.\n\nYou\u0027re also making me think about how we need to handle NaN and Inf. I might need to add either asserts or tests and handlers.",
+      "parentUuid": "856eea56_4c7c902f",
+      "range": {
+        "startLine": 127,
+        "startChar": 28,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a3d83a8_4c5f67fb",
         "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
         "patchSetId": 1
@@ -83,6 +155,30 @@
       "writtenOn": "2021-10-18T19:47:27Z",
       "side": 1,
       "message": "Why confuse a coordinate with this rect? Can it be rect.vals()[0]? Or why not:\nusing Rect \u003d SkVm\u003c4, float\u003e?",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 35
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2bcd20f_f1c4dcef",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-18T22:29:41Z",
+      "side": 1,
+      "message": "Done.\n\nI do like leaving it as a Rect instead of a vector because that makes it more clear that the right and bottom coords are negated.",
+      "parentUuid": "8a3d83a8_4c5f67fb",
       "range": {
         "startLine": 129,
         "startChar": 20,
