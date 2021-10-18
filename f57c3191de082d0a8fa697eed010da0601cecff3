@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5ba10c8_aa29623f",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-18T19:53:58Z",
+      "side": 1,
+      "message": "I figured I would keep it around for now in case we change our minds.\n\nFor Graphite, my real question was if we should delete the kMetal layout.",
+      "parentUuid": "5566fe2c_5155a2a2",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce99ad9e_2cf1abe5",
         "filename": "experimental/graphite/src/UniformDataManager.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-18T18:17:54Z",
       "side": 1,
       "message": "should we just use std::vector here instead of depend on skia types?",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 38,
+        "endChar": 0
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1891a0_5628c928",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-18T19:53:58Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ce99ad9e_2cf1abe5",
       "range": {
         "startLine": 36,
         "startChar": 3,
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-18T18:17:54Z",
       "side": 1,
       "message": "should we just use std::vector here instead of depend on skia types?",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 12
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45335633_bb73ec63",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-18T19:53:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4abfcfb9_323636c0",
       "range": {
         "startLine": 60,
         "startChar": 4,
