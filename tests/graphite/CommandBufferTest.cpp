@@ -19,8 +19,10 @@
 
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
-#define CAPTURE_COMMANDBUFFER 0
+#define CAPTURE_COMMANDBUFFER 1
 #endif
+
+using namespace skgpu;
 
 /*
  * This is to test the various pieces of the CommandBuffer interface.
@@ -34,7 +36,33 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 #endif
     auto commandBuffer = gpu->resourceProvider()->createCommandBuffer();
 
-    // add test commands here
+    {
+        SkISize textureSize = { 1024, 768 };
+#ifdef SK_METAL
+        skgpu::mtl::TextureInfo mtlTextureInfo = {
+            1,
+            1,
+            70,     // MTLPixelFormatRGBA8Unorm
+            0x0005, // MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead
+            2,      // MTLStorageModePrivate
+        };
+        TextureInfo textureInfo(mtlTextureInfo);
+#endif
+
+        sk_sp<Texture> texture = gpu->resourceProvider()->findOrCreateTexture(textureSize,
+                                                                              textureInfo);
+        RenderPassDesc renderPassDesc = {};
+        renderPassDesc.fColorAttachment.fTexture = texture.get();
+        renderPassDesc.fColorAttachment.fLoadOp = LoadOp::kClear;
+        renderPassDesc.fColorAttachment.fStoreOp = StoreOp::kStore;
+        renderPassDesc.fClearColor = { 1, 0, 0, 1 };
+
+        commandBuffer->beginRenderPass(renderPassDesc);
+
+        // add test commands here
+
+        commandBuffer->endRenderPass();
+    }
 
     bool result = gpu->submit(commandBuffer);
     REPORTER_ASSERT(reporter, result);
