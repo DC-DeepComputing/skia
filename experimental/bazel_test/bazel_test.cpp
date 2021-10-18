@@ -3,6 +3,7 @@
 #include <png.h>
 
 int main(int argc, char** argv) {
-    return png_access_version_number() == 10637
+    //printf("%d\n", png_access_version_number());
+    return png_access_version_number() == 10638
         ? 0 : 1;
 }
