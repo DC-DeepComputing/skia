@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5566fe2c_5155a2a2",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-18T18:17:54Z",
+      "side": 1,
+      "message": "do we even need this if we\u0027re just going to back in 140 for everything?",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce99ad9e_2cf1abe5",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-18T18:17:54Z",
+      "side": 1,
+      "message": "should we just use std::vector here instead of depend on skia types?",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 38,
+        "endChar": 0
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4abfcfb9_323636c0",
+        "filename": "experimental/graphite/src/UniformDataManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-18T18:17:54Z",
+      "side": 1,
+      "message": "should we just use std::vector here instead of depend on skia types?",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 12
+      },
+      "revId": "f57c3191de082d0a8fa697eed010da0601cecff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
