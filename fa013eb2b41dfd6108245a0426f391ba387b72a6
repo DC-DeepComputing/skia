@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a31e6e43_a0b4dffb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-10-18T13:08:19Z",
+      "side": 1,
+      "message": "Rendered test: https://imgur.com/a/RLAlOjh",
+      "revId": "fa013eb2b41dfd6108245a0426f391ba387b72a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5295056d_cd76cb8c",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-10-18T13:08:19Z",
+      "side": 1,
+      "message": "I just realized these are constant for a given shader instance, and should be passed as uniforms instead of computed on the fly.  Will do that in a separate CL.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 61
+      },
+      "revId": "fa013eb2b41dfd6108245a0426f391ba387b72a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
