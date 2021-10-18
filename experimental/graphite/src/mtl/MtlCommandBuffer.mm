@@ -8,6 +8,7 @@
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 
 #include "experimental/graphite/src/mtl/MtlGpu.h"
+#include "experimental/graphite/src/mtl/MtlTexture.h"
 
 namespace skgpu::mtl {
 
@@ -49,6 +50,66 @@ bool CommandBuffer::commit() {
     }
 
     return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
+}
+
+void CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
+    SkASSERT(!fActiveRenderCommandEncoder);
+
+    auto& colorInfo = renderPassDesc.fColorAttachment;
+    auto& stencilDepthInfo = renderPassDesc.fStencilDepthAttachment;
+
+    const static MTLLoadAction mtlLoadAction[] {
+        MTLLoadActionLoad,
+        MTLLoadActionClear,
+        MTLLoadActionDontCare
+    };
+    static_assert((int)LoadOp::kLoad == 0);
+    static_assert((int)LoadOp::kClear == 1);
+    static_assert((int)LoadOp::kDiscard == 2);
+    SkASSERT(colorInfo.fLoadOp <= LoadOp::kDiscard);
+    SkASSERT(stencilDepthInfo.fLoadOp <= LoadOp::kDiscard);
+
+    const static MTLStoreAction mtlStoreAction[] {
+        MTLStoreActionStore,
+        MTLStoreActionDontCare
+    };
+    static_assert((int)StoreOp::kStore == 0);
+    static_assert((int)StoreOp::kDiscard == 1);
+    SkASSERT(colorInfo.fStoreOp <= StoreOp::kDiscard);
+    SkASSERT(stencilDepthInfo.fStoreOp <= StoreOp::kDiscard);
+
+    sk_cfp<MTLRenderPassDescriptor*> descriptor([[MTLRenderPassDescriptor alloc] init]);
+    // Set up color attachment.
+    auto colorAttachment = (*descriptor).colorAttachments[0];
+    Texture* colorTexture = (Texture*)colorInfo.fTexture;
+    colorAttachment.texture = colorTexture->mtlTexture();
+    const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
+    colorAttachment.clearColor =
+            MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+    colorAttachment.loadAction = mtlLoadAction[static_cast<int>(colorInfo.fLoadOp)];
+    colorAttachment.storeAction = mtlStoreAction[static_cast<int>(colorInfo.fStoreOp)];
+
+    // TODO:
+    // * setup resolve
+    // * set up stencil and depth
+
+    fActiveRenderCommandEncoder = RenderCommandEncoder::Make(
+                        [(*fCommandBuffer) renderCommandEncoderWithDescriptor:descriptor.get()]);
+
+    if (colorTexture) {
+        this->trackResource(sk_ref_sp(colorTexture));
+    }
+    this->trackResource(fActiveRenderCommandEncoder);
+
+    if (colorInfo.fStoreOp == StoreOp::kStore) {
+        fHasWork = true;
+    }
+}
+
+void CommandBuffer::endRenderPass() {
+    SkASSERT(fActiveRenderCommandEncoder);
+    fActiveRenderCommandEncoder->endEncoding();
+    fActiveRenderCommandEncoder.reset();
 }
 
 } // namespace skgpu::mtl
