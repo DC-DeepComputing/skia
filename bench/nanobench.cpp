@@ -75,6 +75,7 @@ extern bool gSkVMJITViaDylib;
 extern uint64_t gVMBlitterCycles;
 extern uint64_t gVMBlitterScanlines;
 extern uint64_t gVMPixels;
+extern bool gSkVMInterpreterUsed;
 extern uint64_t gRPBlitterCycles;
 extern uint64_t gRPBlitterScanlines;
 extern uint64_t gRPPixels;
@@ -291,6 +292,8 @@ struct GPUTarget : public Target {
 static uint64_t gVMBlitterCyclesCapture;
 static uint64_t gVMBlitterScanlinesCapture;
 static uint64_t gVMPixelsCapture;
+static bool gSkVmInterpreterUsedCapture;
+
 static uint64_t gRPBlitterCyclesCapture;
 static uint64_t gRPBlitterScanlinesCapture;
 static uint64_t gRPPixelsCapture;
@@ -306,6 +309,7 @@ static double time(int loops, Benchmark* bench, Target* target) {
     gVMBlitterCycles = 0;
     gVMBlitterScanlines = 0;
     gVMPixels = 0;
+    gSkVMInterpreterUsed = false;
     gRPBlitterCycles = 0;
     gRPBlitterScanlines = 0;
     gRPPixels = 0;
@@ -313,6 +317,7 @@ static double time(int loops, Benchmark* bench, Target* target) {
     gVMBlitterCyclesCapture = gVMBlitterCycles;
     gVMBlitterScanlinesCapture = gVMBlitterScanlines;
     gVMPixelsCapture = gVMPixels;
+    gSkVmInterpreterUsedCapture = gSkVMInterpreterUsed;
     gRPBlitterCyclesCapture = gRPBlitterCycles;
     gRPBlitterScanlinesCapture = gRPBlitterScanlines;
     gRPPixelsCapture = gRPPixels;
@@ -1441,8 +1446,9 @@ int main(int argc, char** argv) {
                          , sk_tools::getMaxResidentSetSizeMB()
                          , bench->getUniqueName()
                          , config);
-                SkDebugf("VM cycles: %llu scanlines: %llu pixels: %llu ",
-                         gVMBlitterCyclesCapture, gVMBlitterScanlinesCapture, gVMPixelsCapture);
+                SkDebugf("VM cycles: %llu scanlines: %llu pixels: %llu %d ",
+                         gVMBlitterCyclesCapture, gVMBlitterScanlinesCapture, gVMPixelsCapture,
+                         gSkVmInterpreterUsedCapture);
                 SkDebugf("RP cycles: %llu scanlines: %llu pixels: %llu\n",
                          gRPBlitterCyclesCapture, gRPBlitterScanlinesCapture, gRPPixelsCapture);
             } else if (FLAGS_quiet) {
