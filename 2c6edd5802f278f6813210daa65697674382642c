@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7569a48f_ed121f86",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-18T21:02:39Z",
+      "side": 1,
+      "message": "These commented out sections require knowing how many sampler/texture/buffer values we might have associated with a draw.",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 7
+      },
+      "revId": "2c6edd5802f278f6813210daa65697674382642c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
