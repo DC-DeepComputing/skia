@@ -125,11 +125,11 @@ void writeCPP(const DFA& dfa, const char* lexer, const char* token, const char* 
         separator = ", ";
     }
     out << "\n};\n";
-    out << "static const State kTransitions[" << dfa.fTransitions.size() << "]["
-                                              << states << "] = {\n";
-    for (size_t c = 0; c < dfa.fTransitions.size(); ++c) {
+    out << "static const State kTransitions[" << states << "]["
+                                              << dfa.fTransitions.size() << "] = {\n";
+    for (size_t j = 0; j < states; ++j) {
         out << "    {";
-        for (size_t j = 0; j < states; ++j) {
+        for (size_t c = 0; c < dfa.fTransitions.size(); ++c) {
             if ((size_t) c < dfa.fTransitions.size() && j < dfa.fTransitions[c].size()) {
                 out << " " << dfa.fTransitions[c][j] << ",";
             } else {
@@ -151,6 +151,7 @@ void writeCPP(const DFA& dfa, const char* lexer, const char* token, const char* 
     }
     out << " };\n";
     out << "\n";
+
 
     out << token << " " << lexer << "::next() {";
     out << R"(
@@ -175,7 +176,7 @@ void writeCPP(const DFA& dfa, const char* lexer, const char* token, const char* 
         if (c <= 8 || c >= )" << dfa.fCharMappings.size() << R"() {
             c = INVALID_CHAR;
         }
-        State newState = kTransitions[kMappings[c]][state];
+        State newState = kTransitions[state][kMappings[c]];
         if (!newState) {
             break;
         }
