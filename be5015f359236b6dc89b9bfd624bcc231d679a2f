@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5026e648_d4f1e1d0",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-18T18:53:37Z",
+      "side": 1,
+      "message": "style nit: we use \"set_khr_debug_label\" for our local static functions",
+      "range": {
+        "startLine": 1615,
+        "startChar": 12,
+        "endLine": 1615,
+        "endChar": 28
+      },
+      "revId": "be5015f359236b6dc89b9bfd624bcc231d679a2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
