@@ -10,6 +10,7 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/GpuWorkSubmission.h"
+#include "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h"
 
 #include <memory>
 
@@ -43,7 +44,11 @@ private:
     CommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer)
         : fCommandBuffer(std::move(cmdBuffer)) {}
 
+    void beginRenderPass(const RenderPassDesc&) override;
+    void endRenderPass() override;
+
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
+    sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
 };
 
 } // namespace skgpu::mtl
