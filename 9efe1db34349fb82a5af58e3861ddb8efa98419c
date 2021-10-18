@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a16e868_5bb35ed7",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-18T17:33:39Z",
+      "side": 1,
+      "message": "(for a followup CL) This should probably migrate somewhere else. It doesn\u0027t really belong here AFAICS. If it doesn\u0027t have a home it can live in DSLWriter, or get its own file, or something?",
+      "range": {
+        "startLine": 450,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 92
+      },
+      "revId": "9efe1db34349fb82a5af58e3861ddb8efa98419c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8556535f_1ceeb0da",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-18T17:33:39Z",
+      "side": 1,
+      "message": "Care to give this the GLSL forward declaration treatment?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 0
+      },
+      "revId": "9efe1db34349fb82a5af58e3861ddb8efa98419c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

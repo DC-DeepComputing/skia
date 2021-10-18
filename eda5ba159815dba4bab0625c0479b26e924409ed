@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de5df276_87f53f48",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-18T17:33:39Z",
+      "side": 0,
+      "message": "😍 fantastic",
+      "range": {
+        "startLine": 20,
+        "startChar": 47,
+        "endLine": 45,
+        "endChar": 46
+      },
+      "revId": "eda5ba159815dba4bab0625c0479b26e924409ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
