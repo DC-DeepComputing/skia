@@ -16,6 +16,24 @@
       "message": "This gets a basic clear working. PTAL.",
       "revId": "c0af302cff21028a1db02644d90cecced6fdcb81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "163de3ac_e534ed37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-18T21:04:47Z",
+      "side": 1,
+      "message": "FYI, the RenderCommandEncoder.h file is copied pretty much as-is from the Ganesh Metal backend, other than the commented-out sections.",
+      "parentUuid": "8ed4f50c_b41544f3",
+      "revId": "c0af302cff21028a1db02644d90cecced6fdcb81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
