@@ -13,4 +13,8 @@ Gpu* ContextPriv::gpu() {
     return fContext->fGpu.get();
 }
 
+Gpu* ContextPriv::gpu() {
+    return fContext->fGpu.get();
+}
+
 } // namespace skgpu
