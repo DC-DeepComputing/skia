@@ -30,6 +30,7 @@
     #include <llvm/IR/IRBuilder.h>
     #include <llvm/IR/Verifier.h>
     #include <llvm/Support/TargetSelect.h>
+    #include <llvm/Support/Host.h>
 
     // Platform-specific intrinsics got their own files in LLVM 10.
     #if __has_include(<llvm/IR/IntrinsicsX86.h>)
@@ -2510,7 +2511,8 @@ namespace skvm {
                                n, args);
     }
 
-#if defined(SKVM_LLVM)
+    #if defined(SKVM_LLVM)
+    // -- SKVM_LLVM --------------------------------------------------------------------------------
     void Program::setupLLVM(const std::vector<OptimizedInstruction>& instructions,
                             const char* debug_name) {
         auto ctx = std::make_unique<llvm::LLVMContext>();
@@ -2559,17 +2561,18 @@ namespace skvm {
                        *i8    = llvm::Type::getInt8Ty (*ctx),
                        *i16   = llvm::Type::getInt16Ty(*ctx),
                        *f32   = llvm::Type::getFloatTy(*ctx),
-                       *I1    = scalar ? i1    : llvm::VectorType::get(i1 , K  ),
-                       *I8    = scalar ? i8    : llvm::VectorType::get(i8 , K  ),
-                       *I16   = scalar ? i16   : llvm::VectorType::get(i16, K  ),
-                       *I32   = scalar ? i32   : llvm::VectorType::get(i32, K  ),
-                       *F32   = scalar ? f32   : llvm::VectorType::get(f32, K  );
+                       *I1    = scalar ? i1    : llvm::VectorType::get(i1 , K, false  ),
+                       *I8    = scalar ? i8    : llvm::VectorType::get(i8 , K, false  ),
+                       *I16   = scalar ? i16   : llvm::VectorType::get(i16, K, false  ),
+                       *I32   = scalar ? i32   : llvm::VectorType::get(i32, K, false  ),
+                       *F32   = scalar ? f32   : llvm::VectorType::get(f32, K, false  );
 
             auto I  = [&](llvm::Value* v) { return b->CreateBitCast(v, I32  ); };
             auto F  = [&](llvm::Value* v) { return b->CreateBitCast(v, F32  ); };
 
             auto S = [&](llvm::Type* dst, llvm::Value* v) { return b->CreateSExt(v, dst); };
 
+            llvm::Type* vt = nullptr;
             switch (llvm::Type* t = nullptr; op) {
                 default:
                     SkDebugf("can't llvm %s (%d)\n", name(op), op);
@@ -2594,39 +2597,42 @@ namespace skvm {
                 case Op::load32: t = I32; goto load;
                 load: {
                     llvm::Value* ptr = b->CreateBitCast(args[immA], t->getPointerTo());
-                    vals[i] = b->CreateZExt(b->CreateAlignedLoad(ptr, 1), I32);
+                    vals[i] = b->CreateZExt(
+                            b->CreateAlignedLoad(t, ptr, llvm::MaybeAlign{1}), I32);
                 } break;
 
 
                 case Op::splat: vals[i] = llvm::ConstantInt::get(I32, immA); break;
 
                 case Op::uniform32: {
-                    llvm::Value* ptr = b->CreateBitCast(b->CreateConstInBoundsGEP1_32(nullptr,
-                                                                                      args[immA],
-                                                                                      immB),
-                                                        i32->getPointerTo());
-                    llvm::Value* val = b->CreateZExt(b->CreateAlignedLoad(ptr, 1), i32);
+                    llvm::Value* ptr = b->CreateBitCast(
+                            b->CreateConstInBoundsGEP1_32(i8, args[immA], immB),
+                            i32->getPointerTo());
+                    llvm::Value* val = b->CreateZExt(
+                            b->CreateAlignedLoad(i32, ptr, llvm::MaybeAlign{1}), i32);
                     vals[i] = I32->isVectorTy() ? b->CreateVectorSplat(K, val)
                                                 : val;
                 } break;
 
-                case Op::gather8:  t = i8 ; goto gather;
-                case Op::gather16: t = i16; goto gather;
-                case Op::gather32: t = i32; goto gather;
+                case Op::gather8:  t = i8 ; vt = I8; goto gather;
+                case Op::gather16: t = i16; vt = I16; goto gather;
+                case Op::gather32: t = i32; vt = I32; goto gather;
                 gather: {
                     // Our gather base pointer is immB bytes off of uniform immA.
                     llvm::Value* base =
-                        b->CreateLoad(b->CreateBitCast(b->CreateConstInBoundsGEP1_32(nullptr,
-                                                                                     args[immA],
-                                                                                     immB),
-                                                       t->getPointerTo()->getPointerTo()));
+                        b->CreateLoad(b->CreateBitCast(
+                                b->CreateConstInBoundsGEP1_32(i8, args[immA],immB),
+                                t->getPointerTo()->getPointerTo()));
 
-                    llvm::Value* ptr = b->CreateInBoundsGEP(nullptr, base, vals[x]);
+                    llvm::Value* ptr = b->CreateInBoundsGEP(t, base, vals[x]);
                     llvm::Value* gathered;
                     if (ptr->getType()->isVectorTy()) {
-                        gathered = b->CreateMaskedGather(ptr, 1);
+                        gathered = b->CreateMaskedGather(
+                                vt,
+                                ptr,
+                                llvm::Align{1});
                     } else {
-                        gathered = b->CreateAlignedLoad(ptr, 1);
+                        gathered = b->CreateAlignedLoad(vt, ptr, llvm::MaybeAlign{1});
                     }
                     vals[i] = b->CreateZExt(gathered, I32);
                 } break;
@@ -2638,7 +2644,7 @@ namespace skvm {
                     llvm::Value* val = b->CreateTrunc(vals[x], t);
                     llvm::Value* ptr = b->CreateBitCast(args[immA],
                                                         val->getType()->getPointerTo());
-                    vals[i] = b->CreateAlignedStore(val, ptr, 1);
+                    vals[i] = b->CreateAlignedStore(val, ptr, llvm::MaybeAlign{1});
                 } break;
 
                 case Op::bit_and:   vals[i] = b->CreateAnd(vals[x], vals[y]); break;
@@ -2719,7 +2725,8 @@ namespace skvm {
                     // Using b->CreateIntrinsic(..., {}, {...}) to avoid name mangling.
                     if (scalar) {
                         // cvtss2si is float x4 -> int, ignoring input lanes 1,2,3.  ¯\_(ツ)_/¯
-                        llvm::Value* v = llvm::UndefValue::get(llvm::VectorType::get(f32, 4));
+                        llvm::Value* v = llvm::UndefValue::get(
+                                llvm::VectorType::get(f32, 4, false));
                         v = b->CreateInsertElement(v, F(vals[x]), (uint64_t)0);
                         vals[i] = b->CreateIntrinsic(llvm::Intrinsic::x86_sse_cvtss2si, {}, {v});
                     } else {
@@ -2799,8 +2806,13 @@ namespace skvm {
 
             // Each arg ptr += K
             for (size_t i = 0; i < fImpl->strides.size(); i++) {
+                auto ttt = args[i]->getType()->getContainedType(0);
+                auto ts = ttt->getIntegerBitWidth();
                 llvm::Value* arg_next
-                    = b.CreateConstInBoundsGEP1_32(nullptr, args[i], K*fImpl->strides[i]);
+                    = b.CreateConstInBoundsGEP1_32(
+                            llvm::Type::getInt8Ty (*ctx),
+                            args[i],
+                            K*fImpl->strides[i]);
                 args[i]->addIncoming(arg_next, loopK);
             }
             b.CreateBr(testK);
@@ -2848,10 +2860,11 @@ namespace skvm {
             llvm::Value* n_next = b.CreateSub(n, b.getInt32(1));
             n->addIncoming(n_next, loop1);
 
-            // Each arg ptr += K
+            // Each arg ptr += 1
             for (size_t i = 0; i < fImpl->strides.size(); i++) {
                 llvm::Value* arg_next
-                    = b.CreateConstInBoundsGEP1_32(nullptr, args[i], fImpl->strides[i]);
+                    = b.CreateConstInBoundsGEP1_32(
+                            llvm::Type::getInt8Ty (*ctx), args[i], fImpl->strides[i]);
                 args[i]->addIncoming(arg_next, loop1);
             }
             b.CreateBr(test1);
@@ -2901,7 +2914,7 @@ namespace skvm {
             });
         }
     }
-#endif
+    #endif  // SKVM_LLVM
 
     void Program::waitForLLVM() const {
     #if defined(SKVM_LLVM)
