@@ -1,0 +1,55 @@
+load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_toolchain_suite(
+    name = "clang_suite",
+    toolchains = {
+        "k8|clang": ":clang_toolchain",
+    },
+)
+
+filegroup(name = "empty")
+
+filegroup(
+    name = "clang-binaries",
+    srcs = [
+        "ar_trampoline.sh",
+        "clang_trampoline.sh",
+        "lld_trampoline.sh",
+        "@clang_and_llvm_linux//:bin",
+    ],
+)
+
+filegroup(
+    name = "all-toolchain-files",
+    srcs = [
+        ":clang-binaries",
+        "@amd64_libc-cross//:include",
+        "@amd64_libc-cross//:lib",
+        "@linux_libc//:include",
+        #"@amd64_libc//:include",
+        "@clang_and_llvm_linux//:include",
+    ],
+)
+
+load(":clang_toolchain_config.bzl", "provide_clang_toolchain_config")
+
+provide_clang_toolchain_config(
+    name = "clang_toolchain_config",
+    binary_locations = "@clang_and_llvm_linux//:bin",
+)
+
+cc_toolchain(
+    name = "clang_toolchain",
+    all_files = ":all-toolchain-files",
+    ar_files = ":clang-binaries",
+    compiler_files = ":all-toolchain-files",
+    dwp_files = ":empty",
+    linker_files = ":all-toolchain-files",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":clang_toolchain_config",
+    toolchain_identifier = "clang-toolchain",
+)
