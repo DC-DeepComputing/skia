@@ -61,6 +61,12 @@ public:
     AI float4 ltrb() const { return NegateBotRight(fVals); }
     AI float4 vals() const { return fVals; }  // [left, top, -right, -bot].
 
+    AI SkRect asSkRect() const {
+        SkRect r;
+        this->ltrb().store(&r);
+        return r;
+    }
+
     AI bool isEmptyOrNegative() const {
         return any(fVals.xy() + fVals.zw() >= 0);  // == ([l-r, r-b] >= 0) == ([w, h] <= 0)
     }
@@ -86,6 +92,7 @@ public:
 
     AI bool intersects(ComplementRect comp) const { return all(fVals < comp.fVals); }
     AI bool contains(Rect rect) const { return all(fVals <= rect.fVals); }
+    AI bool contains(float2 point) const { return all(fVals <= float4(point, -point)); }
 
     // Some operations may return a negative or empty rect. Operations on a rect that either is
     // negative or empty, while well-defined, might not give the intended result. It is the caller's
@@ -97,8 +104,9 @@ public:
     AI Rect makeOutset(float outset) const { return fVals - outset; }
     AI Rect makeOutset(float2 outset) const { return fVals - outset.xyxy(); }
     AI Rect makeOffset(float2 offset) const { return fVals + float4(offset, -offset); }
-    AI Rect makeJoin(Rect rect) const { return min(fVals, rect.fVals); }
+    AI Rect makeJoin(const Rect& rect) const { return min(fVals, rect.fVals); }
     AI Rect makeIntersect(const Rect& rect) const { return max(fVals, rect.fVals); }
+    AI Rect makeSorted() const { return min(fVals, -fVals.zwxy()); }
 
     AI Rect& roundIn() { return *this = this->makeRoundIn(); }
     AI Rect& roundOut() { return *this = this->makeRoundOut(); }
@@ -107,8 +115,9 @@ public:
     AI Rect& outset(float outset) { return *this = this->makeOutset(outset); }
     AI Rect& outset(float2 outset) { return *this = this->makeOutset(outset); }
     AI Rect& offset(float2 offset) { return *this = this->makeOffset(offset); }
-    AI Rect& join(Rect rect) { return *this = this->makeJoin(rect); }
-    AI Rect& intersect(Rect& rect) { return *this = this->makeIntersect(rect); }
+    AI Rect& join(const Rect& rect) { return *this = this->makeJoin(rect); }
+    AI Rect& intersect(const Rect& rect) { return *this = this->makeIntersect(rect); }
+    AI Rect& sort() { return *this = this->makeSorted(); }
 
 private:
     AI static float4 NegateBotRight(float4 vals) {  // Returns [vals.xy, -vals.zw].
