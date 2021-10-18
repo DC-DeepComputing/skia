@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16b34b1d_e189b3be",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-18T19:47:27Z",
+      "side": 1,
+      "message": "Since class is final, I don\u0027t think this is needed.",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd54b1b_cca50203",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-18T19:47:27Z",
+      "side": 1,
+      "message": "unique_ptr?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 9
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "856eea56_4c7c902f",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-18T19:47:27Z",
+      "side": 1,
+      "message": "Since you are using floats, this does not produce a single instruction on Intel, but uses compare, AND and OR. If you want the single instruction you need to encode it specially, and ensure that there are no NaN\u0027s because on intel max(x, NaN) is x.",
+      "range": {
+        "startLine": 127,
+        "startChar": 28,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a3d83a8_4c5f67fb",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-18T19:47:27Z",
+      "side": 1,
+      "message": "Why confuse a coordinate with this rect? Can it be rect.vals()[0]? Or why not:\nusing Rect \u003d SkVm\u003c4, float\u003e?",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 35
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
