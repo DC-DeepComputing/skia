@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea976c09_b0541ac7",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-18T23:14:30Z",
+      "side": 1,
+      "message": "Added NaN and Infinity handling/testing.",
+      "parentUuid": "50f7d766_6a21dc03",
+      "range": {
+        "startLine": 127,
+        "startChar": 28,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "1d524b1bfd2e4e6a529456f400ab1128b45543d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a3d83a8_4c5f67fb",
