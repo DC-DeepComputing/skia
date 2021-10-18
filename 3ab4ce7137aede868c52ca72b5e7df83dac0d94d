@@ -56,6 +56,30 @@
       },
       "revId": "3ab4ce7137aede868c52ca72b5e7df83dac0d94d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "383befd8_dc8aa5ff",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-18T13:33:09Z",
+      "side": 1,
+      "message": "I added releaseResources mainly for the TRACE call, so it seems good to call it here for that as well.",
+      "parentUuid": "30de8377_697b90df",
+      "range": {
+        "startLine": 20,
+        "startChar": 7,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "3ab4ce7137aede868c52ca72b5e7df83dac0d94d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
