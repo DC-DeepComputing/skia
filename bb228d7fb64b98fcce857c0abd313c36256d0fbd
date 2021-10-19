@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55c3b1ee_6d3932b7",
+        "filename": "modules/skottie/src/effects/DirectionalBlur.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T20:34:53Z",
+      "side": 1,
+      "message": "You should double-check against AE, but IIRC they are offset -90 degree from Skia.  So I think we need something like\n\n  const auto rot \u003d fDirection - 90;\n\nthen use that for the matrix ops.",
+      "range": {
+        "startLine": 40,
+        "startChar": 64,
+        "endLine": 40,
+        "endChar": 74
+      },
+      "revId": "bb228d7fb64b98fcce857c0abd313c36256d0fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c60b75e_9802c60a",
+        "filename": "modules/skottie/src/effects/DirectionalBlur.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T20:34:53Z",
+      "side": 1,
+      "message": "nit: line break @100",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 139
+      },
+      "revId": "bb228d7fb64b98fcce857c0abd313c36256d0fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f13704_f5471dcd",
+        "filename": "modules/skottie/src/effects/DirectionalBlur.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T20:34:53Z",
+      "side": 1,
+      "message": "nit: std::move(filter)",
+      "range": {
+        "startLine": 43,
+        "startChar": 41,
+        "endLine": 43,
+        "endChar": 47
+      },
+      "revId": "bb228d7fb64b98fcce857c0abd313c36256d0fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
