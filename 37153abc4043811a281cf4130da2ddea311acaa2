@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c38f385b_b6b0b119",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T16:06:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "534335af_6e9cf74e",
+      "revId": "37153abc4043811a281cf4130da2ddea311acaa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46cdbdcf_18f01581",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-19T14:18:06Z",
       "side": 1,
       "message": "Add comment.\n// splittableSize \u003d {r - l, b - t}",
+      "range": {
+        "startLine": 151,
+        "startChar": 15,
+        "endLine": 151,
+        "endChar": 29
+      },
+      "revId": "37153abc4043811a281cf4130da2ddea311acaa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25d11b17_b5b24ded",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T16:06:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46cdbdcf_18f01581",
       "range": {
         "startLine": 151,
         "startChar": 15,
