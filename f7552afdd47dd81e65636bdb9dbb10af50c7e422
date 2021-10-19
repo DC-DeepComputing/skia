@@ -309,6 +309,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b696695_cc2c8810",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T20:14:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cc64a1a_ff801d02",
+      "range": {
+        "startLine": 44,
+        "startChar": 40,
+        "endLine": 44,
+        "endChar": 48
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53070b8a_e3dcc0e1",
