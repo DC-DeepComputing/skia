@@ -1,8 +1,13 @@
 cc_test(
     name = "bazel_test",
-    srcs = [
-        "tools/bazel_test.cc",
-    ],
-    deps = ["@libpng//:libpng"],
     size = "small",
+    srcs = [
+        "//experimental/bazel_test:srcs",
+    ],
+    #    defines = [
+    #        "_LIBCPP_PROVIDES_DEFAULT_RUNE_TABLE",
+    #        "_LIBCPP_HAS_MUSL_LIBC",
+    #    ],
+    #linkstatic = True,
+    deps = ["//third_party:libpng"],
 )
