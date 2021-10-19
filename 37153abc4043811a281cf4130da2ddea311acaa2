@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "534335af_6e9cf74e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-19T14:18:06Z",
+      "side": 1,
+      "message": "I think you can add an SkArenaAlloc to the IntersectionTree, and have it deal with all the allocation. You would have to pass the alloc down the tree for the addNonIntersectingRect call.",
+      "revId": "37153abc4043811a281cf4130da2ddea311acaa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46cdbdcf_18f01581",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-19T14:18:06Z",
+      "side": 1,
+      "message": "Add comment.\n// splittableSize \u003d {r - l, b - t}",
+      "range": {
+        "startLine": 151,
+        "startChar": 15,
+        "endLine": 151,
+        "endChar": 29
+      },
+      "revId": "37153abc4043811a281cf4130da2ddea311acaa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
