@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce9666c9_36ce5a25",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T23:23:31Z",
+      "side": 1,
+      "message": "See l240. The prevDrawOrder implicitly encodes whether or not the new draw overlaps anything at all. If all draws are non-overlapping, then the Device can be drawn directly into its parent w/o instantiating its target or resolving an image.\n\nAdditionally, in a follow-up CL, I\u0027m going to create a helper struct that aggregates the color/depth order, the clip order, the stencil order, and the depth value. This will make the DrawContext function args easier, allows the opacity detection to move to when we create the SortKeys, and lets the SortKeys choose between the clip order and the color/depth order for the stencil step of transparent draws (where right now, that combines them into a single value and the renderer couldn\u0027t recover the clip order for the stencil step).\n\nTo your other questions, we will want a separate order for stencils; it will likely be a list of IntersectionTrees. This isn\u0027t implemented yet (see l228).",
+      "parentUuid": "b78fd5ac_c4aa0af9",
+      "range": {
+        "startLine": 208,
+        "startChar": 28,
+        "endLine": 208,
+        "endChar": 41
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "528545a8_07ed3c72",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f7cc61_d9405d09",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T23:23:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "528545a8_07ed3c72",
+      "range": {
+        "startLine": 164,
+        "startChar": 35,
+        "endLine": 164,
+        "endChar": 52
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "200dee64_52041854",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-19T22:25:03Z",
       "side": 1,
       "message": "This will cause memory alignment issues since Rect requires 16 bytes of alignment (float4), and pre C++17, vector\u003c\u003e only gives you 8 byte alignment.\n\nMaybe this needs https://skia-review.googlesource.com/c/skia/+/260997 ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2635d186_158ed142",
+        "filename": "experimental/graphite/src/geom/BoundsManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T23:23:31Z",
+      "side": 1,
+      "message": "ah, good to know. This can just use SkTBlockList then.",
+      "parentUuid": "200dee64_52041854",
       "range": {
         "startLine": 105,
         "startChar": 4,
