@@ -83,6 +83,14 @@ extern bool gSkVMJITViaDylib;
 #include "src/gpu/SkGr.h"
 #include "tools/gpu/GrContextFactory.h"
 
+#include "third_party/perfetto/perfetto.h"
+
+PERFETTO_DEFINE_CATEGORIES(
+    perfetto::Category("nanobench")
+        .SetDescription("Events from nanobench"));
+
+PERFETTO_TRACK_EVENT_STATIC_STORAGE();
+
 using sk_gpu_test::ContextInfo;
 using sk_gpu_test::GrContextFactory;
 using sk_gpu_test::TestContext;
@@ -1266,6 +1274,13 @@ int main(int argc, char** argv) {
     BenchmarkStream benchStream;
     log.beginObject("results");
     AutoreleasePool pool;
+
+    perfetto::TracingInitArgs args;
+    args.backends |= perfetto::kInProcessBackend;
+    args.backends |= perfetto::kSystemBackend;
+    perfetto::Tracing::Initialize(args);
+    perfetto::TrackEvent::Register();
+
     while (Benchmark* b = benchStream.next()) {
         std::unique_ptr<Benchmark> bench(b);
         if (CommandLineFlags::ShouldSkip(FLAGS_match, bench->getUniqueName())) {
@@ -1281,6 +1296,7 @@ int main(int argc, char** argv) {
             if (!target) {
                 continue;
             }
+
 
             // During HWUI output this canvas may be nullptr.
             SkCanvas* canvas = target->getCanvas();
@@ -1298,6 +1314,7 @@ int main(int argc, char** argv) {
             if (FLAGS_purgeBetweenBenches) {
                 SkGraphics::PurgeAllCaches();
             }
+
 
             TRACE_EVENT2("skia", "Benchmark", "name", TRACE_STR_COPY(bench->getUniqueName()),
                                               "config", TRACE_STR_COPY(config));
@@ -1325,6 +1342,8 @@ int main(int argc, char** argv) {
                     pool.drain();
                 } while (now_ms() < stop);
             }
+
+            TRACE_EVENT("nanobench", perfetto::StaticString(SkStringPrintf("Test:%s Config:%s", bench->getUniqueName() , config).c_str()));
 
             if (FLAGS_ms) {
                 samples.reset();
@@ -1374,6 +1393,7 @@ int main(int argc, char** argv) {
             // Building stats.plot often shows up in profiles,
             // so skip building it when we're not going to print it anyway.
             const bool want_plot = !FLAGS_quiet && !FLAGS_ms;
+
 
             Stats stats(samples, want_plot);
             log.beginObject(config);
