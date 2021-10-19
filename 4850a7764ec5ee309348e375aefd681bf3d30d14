@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec189f32_1261feec",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-19T14:08:11Z",
+      "side": 1,
+      "message": "Ohhh I just realized after I sent that you mean does the CB move or copy the attachments out of the Desc. I would say move. I don\u0027t think there will be a good reason for now to keep the Desc\u0027s valid and cached.",
+      "parentUuid": "d6298acd_acb36977",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c68f0d1a_00d68acb",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 8
