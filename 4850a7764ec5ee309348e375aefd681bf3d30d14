@@ -380,6 +380,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c21c4af2_443a5496",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:45:56Z",
+      "side": 1,
+      "message": "I missed the rest of that comment -- I\u0027ve added in the array size check.",
+      "parentUuid": "e20540d1_2cf03be4",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8357eeab_11586503",
