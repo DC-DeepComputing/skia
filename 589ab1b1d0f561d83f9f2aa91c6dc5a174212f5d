@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c95ce6_0e649919",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-19T16:44:57Z",
+      "side": 1,
+      "message": "did you want this on as default?",
+      "range": {
+        "startLine": 22,
+        "startChar": 30,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "589ab1b1d0f561d83f9f2aa91c6dc5a174212f5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
