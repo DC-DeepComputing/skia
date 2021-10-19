@@ -34,6 +34,7 @@ EffectBuilder::EffectBuilderT EffectBuilder::findBuilder(const skjson::ObjectVal
         { "ADBE Black&White"            , &EffectBuilder::attachBlackAndWhiteEffect      },
         { "ADBE Brightness & Contrast 2", &EffectBuilder::attachBrightnessContrastEffect },
         { "ADBE Corner Pin"             , &EffectBuilder::attachCornerPinEffect          },
+        { "ADBE Motion Blur"            , &EffectBuilder::attachDirectionalBlurEffect    },
         { "ADBE Displacement Map"       , &EffectBuilder::attachDisplacementMapEffect    },
         { "ADBE Drop Shadow"            , &EffectBuilder::attachDropShadowEffect         },
         { "ADBE Easy Levels2"           , &EffectBuilder::attachEasyLevelsEffect         },
