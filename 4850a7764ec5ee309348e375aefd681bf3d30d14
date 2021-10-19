@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6298acd_acb36977",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-19T14:06:51Z",
+      "side": 1,
+      "message": "I\u0027m not really sure what you mean by take ownership vs take a ref. From the command buffers POV aren\u0027t those the same thing. And I say yes it will. Now eventually the ref it takes probably won\u0027t be a normal ref but some sort of command buffer ref, but that should be opaque to the outside world which will still pass in an sk_sp.\n\nNow if your question is whether the call of this copies or moves the sk_sp, I think its dependent on whats going above. I would ideally say move, but I\u0027m not sure if draw calls going into this render pass will ever want pointers to the attachments or not.",
+      "parentUuid": "135fa5b1_0dbbc14e",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c68f0d1a_00d68acb",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 8
