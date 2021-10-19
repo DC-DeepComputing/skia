@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1087ecd1_a9214a07",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T02:06:06Z",
+      "side": 1,
+      "message": "SkMatrixPriv calls this \"InverseMapRect\".\n\nWhat do you think of \"inverseMapRect\" or \"unmapRect\"?",
+      "range": {
+        "startLine": 46,
+        "startChar": 16,
+        "endLine": 46,
+        "endChar": 30
+      },
+      "revId": "743dcbcd300e7af44ab790f0574a5376f60c66c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
