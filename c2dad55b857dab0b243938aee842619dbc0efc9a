@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e1d7b59_e689591c",
+        "filename": "modules/skottie/src/effects/DirectionalBlur.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T20:05:01Z",
+      "side": 1,
+      "message": "Also no move here, since we\u0027re still using layer below.",
+      "range": {
+        "startLine": 58,
+        "startChar": 70,
+        "endLine": 58,
+        "endChar": 86
+      },
+      "revId": "c2dad55b857dab0b243938aee842619dbc0efc9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86103689_ccdc8d4b",
         "filename": "modules/skottie/src/effects/Effects.cpp",
         "patchSetId": 1
