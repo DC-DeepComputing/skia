@@ -83,6 +83,12 @@ extern bool gSkVMJITViaDylib;
 #include "src/gpu/SkGr.h"
 #include "tools/gpu/GrContextFactory.h"
 
+#include "third_party/perfetto/perfetto.h"
+
+PERFETTO_DEFINE_CATEGORIES(
+    perfetto::Category("nanobench")
+        .SetDescription("Events from nanobench"));
+
 using sk_gpu_test::ContextInfo;
 using sk_gpu_test::GrContextFactory;
 using sk_gpu_test::TestContext;
@@ -1266,11 +1272,17 @@ int main(int argc, char** argv) {
     BenchmarkStream benchStream;
     log.beginObject("results");
     AutoreleasePool pool;
+
+    perfetto::TracingInitArgs args;
+    args.backends |= perfetto::kSystemBackend;
+    perfetto::Tracing::Initialize(args);
+
     while (Benchmark* b = benchStream.next()) {
         std::unique_ptr<Benchmark> bench(b);
         if (CommandLineFlags::ShouldSkip(FLAGS_match, bench->getUniqueName())) {
             continue;
         }
+        TRACE_EVENT("nanobench", perfetto::StaticString(bench->getUniqueName()));
 
         if (!configs.empty()) {
             log.beginBench(bench->getUniqueName(), bench->getSize().fX, bench->getSize().fY);
