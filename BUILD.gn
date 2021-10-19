@@ -2211,8 +2211,15 @@ if (skia_enable_tools) {
     }
   }
 
+  test_lib("perfetto") {
+    sources = [ "third_party/perfetto/perfetto.cc" ]
+  }
+
   test_app("nanobench") {
-    sources = [ "bench/nanobench.cpp" ]
+    sources = [
+       "bench/nanobench.cpp",
+        "third_party/perfetto/perfetto.cc"
+        ]
     deps = [
       ":bench",
       ":common_flags_aa",
