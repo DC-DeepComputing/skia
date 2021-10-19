@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b78fd5ac_c4aa0af9",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T22:25:03Z",
+      "side": 1,
+      "message": "Why do we find the prevDrawOrder for opaque objects? I thought those didn\u0027t matter.\n\nAnd do we want different orders for color/depth and stencil? Will there be a separate bounds manager for stencils?",
+      "range": {
+        "startLine": 208,
+        "startChar": 28,
+        "endLine": 208,
+        "endChar": 41
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528545a8_07ed3c72",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T22:25:03Z",
+      "side": 1,
+      "message": "This name makes me think the field is a rect. What about fColorDepthBoundsManager?",
+      "range": {
+        "startLine": 164,
+        "startChar": 35,
+        "endLine": 164,
+        "endChar": 52
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "200dee64_52041854",
+        "filename": "experimental/graphite/src/geom/BoundsManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T22:25:03Z",
+      "side": 1,
+      "message": "This will cause memory alignment issues since Rect requires 16 bytes of alignment (float4), and pre C++17, vector\u003c\u003e only gives you 8 byte alignment.\n\nMaybe this needs https://skia-review.googlesource.com/c/skia/+/260997 ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
