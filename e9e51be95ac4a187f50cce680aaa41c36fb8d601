@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac62af4a_161aa5e6",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-19T20:31:00Z",
+      "side": 1,
+      "message": "Would an externals/libpng/*.c glob work here? Same below.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5c35dd_735531c6",
+        "filename": "toolchain/build_toolchain.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-19T20:31:00Z",
+      "side": 1,
+      "message": "Maybe say usr/include/..., or ./usr/include/..., or ${PWD}/usr/include/..., or some such, to emphasize that this does not affect system-wide files (here and below).",
+      "range": {
+        "startLine": 49,
+        "startChar": 42,
+        "endLine": 49,
+        "endChar": 43
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c10b7ab_d2fc3329",
+        "filename": "toolchain/clang_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-19T20:31:00Z",
+      "side": 1,
+      "message": "Is there a link we could include here to explain why these are necessary? Alternatively, could you summarize how you arrived at these flags?",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 46
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
