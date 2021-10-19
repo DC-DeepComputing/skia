@@ -83,6 +83,14 @@ extern bool gSkVMJITViaDylib;
 #include "src/gpu/SkGr.h"
 #include "tools/gpu/GrContextFactory.h"
 
+#include "third_party/perfetto/perfetto.h"
+
+PERFETTO_DEFINE_CATEGORIES(
+    perfetto::Category("nanobench")
+        .SetDescription("Events from nanobench"));
+
+PERFETTO_TRACK_EVENT_STATIC_STORAGE();
+
 using sk_gpu_test::ContextInfo;
 using sk_gpu_test::GrContextFactory;
 using sk_gpu_test::TestContext;
@@ -1266,11 +1274,19 @@ int main(int argc, char** argv) {
     BenchmarkStream benchStream;
     log.beginObject("results");
     AutoreleasePool pool;
+
+    perfetto::TracingInitArgs args;
+    args.backends |= perfetto::kInProcessBackend;
+    args.backends |= perfetto::kSystemBackend;
+    perfetto::Tracing::Initialize(args);
+    perfetto::TrackEvent::Register();
+
     while (Benchmark* b = benchStream.next()) {
         std::unique_ptr<Benchmark> bench(b);
         if (CommandLineFlags::ShouldSkip(FLAGS_match, bench->getUniqueName())) {
             continue;
         }
+        TRACE_EVENT_BEGIN("nanobench", perfetto::StaticString(bench->getUniqueName()));
 
         if (!configs.empty()) {
             log.beginBench(bench->getUniqueName(), bench->getSize().fX, bench->getSize().fY);
@@ -1279,6 +1295,7 @@ int main(int argc, char** argv) {
         for (int i = 0; i < configs.count(); ++i) {
             Target* target = is_enabled(b, configs[i]);
             if (!target) {
+                TRACE_EVENT_END("nanobench");
                 continue;
             }
 
@@ -1291,6 +1308,7 @@ int main(int argc, char** argv) {
                          , bench->getUniqueName()
                          , config);
                 if (FLAGS_dryRun) {
+                    TRACE_EVENT_END("nanobench");
                     continue;
                 }
             }
@@ -1313,6 +1331,7 @@ int main(int argc, char** argv) {
             if (kFailedLoops == loops) {
                 // Can't be timed.  A warning note has already been printed.
                 cleanup_run(target);
+                TRACE_EVENT_END("nanobench");
                 continue;
             }
 
@@ -1374,6 +1393,8 @@ int main(int argc, char** argv) {
             // Building stats.plot often shows up in profiles,
             // so skip building it when we're not going to print it anyway.
             const bool want_plot = !FLAGS_quiet && !FLAGS_ms;
+
+            TRACE_EVENT_END("nanobench");
 
             Stats stats(samples, want_plot);
             log.beginObject(config);
