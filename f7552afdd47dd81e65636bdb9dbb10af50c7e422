@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb45ee93_9254d4ed",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T14:51:24Z",
+      "side": 1,
+      "message": "I also think of a Rect as a closed set, so the distinction between contains and intersect isn\u0027t clear to me either. Maybe understanding the use case for an open set test would help.",
+      "parentUuid": "8e36f7aa_f863c22c",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 20
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "009422e4_6ced713b",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 1
