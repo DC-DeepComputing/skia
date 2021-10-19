@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b50bcd6_810558e4",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b221bfe9_13b2fbdb",
+      "range": {
+        "startLine": 107,
+        "startChar": 21,
+        "endLine": 107,
+        "endChar": 33
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d71aab5_c5d2d57d",
@@ -108,6 +132,30 @@
       "writtenOn": "2021-10-19T02:02:56Z",
       "side": 1,
       "message": "Nice!! I\u0027m glad this worked out to a single min.\n\nAlso, as herb@ pointed out, skvx doesn\u0027t use the SSE min instruction because its NaN behavior is defined differently than skvx\u0027s. On SSE this will compile to a \u003c and a blend instead. Maybe we should consider making sure the SSE min gets used at some point if we can work out the NaN behavior.",
+      "range": {
+        "startLine": 109,
+        "startChar": 12,
+        "endLine": 109,
+        "endChar": 22
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a183006a_f1d5851e",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0d71aab5_c5d2d57d",
       "range": {
         "startLine": 109,
         "startChar": 12,
@@ -235,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67eb82e4_a7dcd6ff",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "This was mostly relevant in GrShape because of its simplification API where an SkRect that was \"empty\" because it was an axis-aligned line (w \u003d 0 or h \u003d 0) or a point (w \u003d 0 \u0026 h \u003d 0) needed to simplify to a kLine or kPoint type, but an SkRect that was actually negative with r \u003c l or b \u003c t would simplify straight to kEmpty.\n\nThis was to keep bounds of kEmpty distinct from the bounds that a line or point might then return. I don\u0027t think there\u0027s much value at this point so I\u0027ll just have it return {0,0,0,0}.",
+      "parentUuid": "2c33aec6_344b5ddb",
+      "range": {
+        "startLine": 74,
+        "startChar": 56,
+        "endLine": 74,
+        "endChar": 95
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "467ce804_e82a52e0",
@@ -248,6 +320,30 @@
       "writtenOn": "2021-10-19T02:02:56Z",
       "side": 1,
       "message": "I would probably say to not sort in the kRect case. It costs time, and if you give us a negative rect, your fault. Can we sort in the kLine case only?\n\n(Note that we don\u0027t call makeSorted() from conservativeContains())",
+      "range": {
+        "startLine": 76,
+        "startChar": 34,
+        "endLine": 76,
+        "endChar": 52
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8120e642_35e9b23f",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467ce804_e82a52e0",
       "range": {
         "startLine": 76,
         "startChar": 34,
@@ -283,6 +379,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cf0a0b50_35dff1de",
+        "filename": "experimental/graphite/src/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cfab54c_27a3c8fd",
+      "range": {
+        "startLine": 40,
+        "startChar": 10,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "96f7cf89_6ef89a2c",
         "filename": "tests/graphite/RectTest.cpp",
         "patchSetId": 1
@@ -294,6 +414,30 @@
       "writtenOn": "2021-10-19T02:02:56Z",
       "side": 1,
       "message": "Sorry, I gave you a conflict here with my last CL",
+      "range": {
+        "startLine": 90,
+        "startChar": 20,
+        "endLine": 90,
+        "endChar": 37
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "556b5c43_d435be68",
+        "filename": "tests/graphite/RectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:51:51Z",
+      "side": 1,
+      "message": "not if mine lands first ;)",
+      "parentUuid": "96f7cf89_6ef89a2c",
       "range": {
         "startLine": 90,
         "startChar": 20,
