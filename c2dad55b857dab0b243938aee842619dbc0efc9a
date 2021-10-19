@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86103689_ccdc8d4b",
+        "filename": "modules/skottie/src/effects/Effects.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T19:50:31Z",
+      "side": 1,
+      "message": "These need to be sorted alphabetically, \u0027cause we binary-search below.",
+      "revId": "c2dad55b857dab0b243938aee842619dbc0efc9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
