@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b535e18d_47789ed6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-19T15:55:29Z",
+      "side": 1,
+      "message": "So: This CL tickled some image-draw shaders in the tiniest way, causing Adreno6xx devices to start failing the DMSAA_dual_source_blend_disable unit test. I\u0027ve expanded the workaround we added to cover those (only the 620 and 640 on our tree were affected, 615 and 630 were fine).\n\nAfter talking with Brian, though - we\u0027re tempted to just disable dual source blending on all of these devices (all of Qualcomm, even?) - there\u0027s another bug that\u0027s even more serious, and all of these devices should have FB fetch anyway.",
+      "revId": "8438ad28a64461ee5c69a29bd589f77d8945ca95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
