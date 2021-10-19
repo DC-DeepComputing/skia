@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae6f0228_8446b856",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b9d2f24_e26e32d3",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c68f0d1a_00d68acb",
@@ -145,6 +169,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05bed445_a2a7f7c2",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "I\u0027ll just make it use AttachmentDesc, and Metal and Dawn can pull out what they need.",
+      "parentUuid": "c68f0d1a_00d68acb",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e341ab08_af6672a2",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 8
@@ -156,6 +204,30 @@
       "writtenOn": "2021-10-19T13:09:21Z",
       "side": 1,
       "message": "sk_sp?",
+      "range": {
+        "startLine": 28,
+        "startChar": 3,
+        "endLine": 28,
+        "endChar": 29
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23bf651e_ce678265",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e341ab08_af6672a2",
       "range": {
         "startLine": 28,
         "startChar": 3,
@@ -219,6 +291,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce8de6d7_021580b1",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f00a218b_4f1f5b80",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7e54f76_abc98c12",
@@ -266,6 +356,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20540d1_2cf03be4",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "I copied them from MtlOpsRenderPass -- removed.",
+      "parentUuid": "8ed067a1_780da792",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8357eeab_11586503",
@@ -279,6 +393,30 @@
       "writtenOn": "2021-10-18T22:51:34Z",
       "side": 1,
       "message": "Same question here",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 61
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fdc3f3a_ed8b16d8",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8357eeab_11586503",
       "range": {
         "startLine": 79,
         "startChar": 0,
@@ -306,6 +444,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b90f09e_9c430610",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fdc946c_c07de4c4",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4a7356e_5c40fc9e",
@@ -323,6 +479,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79903637_8614c0b1",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4a7356e_5c40fc9e",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18985c9b_adc41334",
@@ -336,6 +510,24 @@
       "writtenOn": "2021-10-18T22:51:34Z",
       "side": 1,
       "message": "// #define ?",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f02dba0_91393f25",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18985c9b_adc41334",
       "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

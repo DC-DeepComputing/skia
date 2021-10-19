@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95892c72_a9dc2528",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T15:36:39Z",
+      "side": 1,
+      "message": "Added this to fix a leak.",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 10
+      },
+      "revId": "bb2e6277b04ff577c67a674dcd4b5b0517e349e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
