@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8782b736_f1919340",
+        "filename": "modules/skottie/src/effects/DirectionalBlur.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-19T20:29:37Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "7e1d7b59_e689591c",
+      "range": {
+        "startLine": 58,
+        "startChar": 70,
+        "endLine": 58,
+        "endChar": 86
+      },
+      "revId": "c2dad55b857dab0b243938aee842619dbc0efc9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86103689_ccdc8d4b",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-19T19:50:31Z",
       "side": 1,
       "message": "These need to be sorted alphabetically, \u0027cause we binary-search below.",
+      "revId": "c2dad55b857dab0b243938aee842619dbc0efc9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd167cb2_3fc3b87b",
+        "filename": "modules/skottie/src/effects/Effects.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-19T20:29:37Z",
+      "side": 1,
+      "message": "This was key, I added a comment for anyone else who tries to prototype effects.",
+      "parentUuid": "86103689_ccdc8d4b",
       "revId": "c2dad55b857dab0b243938aee842619dbc0efc9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
