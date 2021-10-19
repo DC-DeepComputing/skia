@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7963cfa5_07b3942d",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T17:59:05Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t get the reason for intersect(pt) to return false from a theoretic standpoint, unless it\u0027s just there to allow the user to choose?\n\nMy reasoning is that if you have two side-by-side rects with a shared edge, intersects() is false:\n\n  e.g. - ltrb\u003d[0,0,1,1] and ltrb\u003d[1,0,2,1]\n  \nThey have a shared edge, but they do not intersect. If you shrink the rect on the right infinitesimally small, intersects() is still false. So if you continue shrinking it all the way to empty, I think intersects should continue to be false. Conversely, contains() returns true if there is a shared edge.\n\nYou can see this distinction in their implementations -- intersects() already uses \u003c and contains uses \u003c\u003d. If you call intersects and/or contains with an empty point-rect today, they will have the same behavior I described previously. Being able to choose different edge behaviors based on which one you call is mostly just a perk on top of how these methods are already defined. (This is why there is a disclaimer on this class saying \"We never check for empty! Look how the methods are defined and think about what that means if you want to use an empty or negative rect!\")\n\nI think all this ambiguity is an argument in favor of not providing point containment methods, and instead requiring the caller to create empty rects explicitly and think about what they\u0027re doing. Can we add a Rect::Point() factory?\n\n(Plus I think it would be confusing if methods with the same name behaved differently depending on whether you used the point overload or the rect overload with an empty rect.)",
+      "parentUuid": "fb45ee93_9254d4ed",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 20
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "009422e4_6ced713b",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 1
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "b221bfe9_13b2fbdb",
+      "range": {
+        "startLine": 107,
+        "startChar": 21,
+        "endLine": 107,
+        "endChar": 33
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d7b44bb_bfdb6818",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T17:59:05Z",
+      "side": 1,
+      "message": "Good find. Yes, I\u0027m apparently still in that const\u0026 habit too. I like this better as a non-ref!",
+      "parentUuid": "7b50bcd6_810558e4",
       "range": {
         "startLine": 107,
         "startChar": 21,
@@ -274,6 +322,30 @@
       "side": 1,
       "message": "This is conservative in that we might return false when some points are actually contained by a complex/non-concave path, but we can\u0027t use a bounds test because that would return true for points that aren\u0027t actually in the shape.\n\nThis is used for the clip stack when it\u0027s testing bounds against shapes where the coordinate systems are different (test each transformed corner of the bounds of 1 shape vs. the full other shape, if all 4 are in then the real shape contains the transformed 1st shape\u0027s bounds and we can simplify).",
       "parentUuid": "53070b8a_e3dcc0e1",
+      "range": {
+        "startLine": 46,
+        "startChar": 39,
+        "endLine": 46,
+        "endChar": 40
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2f94cb3_03390aba",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-19T17:59:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d8b19798_ab5dc288",
       "range": {
         "startLine": 46,
         "startChar": 39,
