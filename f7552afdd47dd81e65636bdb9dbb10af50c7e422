@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3333eaa6_9c2ed369",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T20:12:01Z",
+      "side": 1,
+      "message": "I see, so given that example and thinking about empty, I think Rect is consistent with a closed set model of a rectangle. In the example [0,0,1,1] and [1,0,2,1], makeIntersect() would return [1,0,1,1], which is what I\u0027d expect for intersecting at the edge only. For clients that don\u0027t care, [1,0,1,1] returns true from isEmptyOrNegative() so would then \"not intersect\" unless they wanted to do more in-depth checks to check for line/point-only intersection, which is easy enough to identify because l\u003d\u003dr and/or t\u003d\u003db in those cases.\n\nPut another way, it means that the current implementation of Rect::intersects() is equivalent to !this-\u003emakeIntersect(r).isEmptyOrNegative().\n\nAnd the \u003c\u003d that Rect::contains() uses is also consistent with a closed set; it also means that the current contains(x,y) implementation is identical to contains(Rect::Point(x,y)). I\u0027m fine with adding a Point factory and dropping the point contains.",
+      "parentUuid": "7963cfa5_07b3942d",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 20
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "009422e4_6ced713b",
