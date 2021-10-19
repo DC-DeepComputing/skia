@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a4a87d_11967358",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-10-19T18:31:17Z",
+      "side": 1,
+      "message": "Annoyingly, in software and with desktop GPUs half \u003d\u003d float.  The problem only occurs on mobile devices, which I presume actually use half precision for halfs.\n\nIs the takeaway here to always use floats in effects, to avoid surprises, or are there best practices for when to use one over the other?",
+      "revId": "e259d50c3adbf525bf0fced31984ce1107633910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
