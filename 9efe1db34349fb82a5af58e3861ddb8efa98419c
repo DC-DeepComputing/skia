@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2cbdb35_3ad7418b",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-19T13:16:54Z",
+      "side": 1,
+      "message": "I considered a lot of places for it, as there\u0027s no obvious home for it - there\u0027s no Identifier class to stick a Convert method into the way we did with the other Convert methods.\n\nDSLWriter seems, to me, to be a fairly arbitrary home, as this method doesn\u0027t have anything in particular to do with DSL. Compiler seems like a more natural home for the feature of converting identifiers to expressions, but I don\u0027t feel strongly about it if you guys disagree.",
+      "parentUuid": "6a16e868_5bb35ed7",
+      "range": {
+        "startLine": 450,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 92
+      },
+      "revId": "9efe1db34349fb82a5af58e3861ddb8efa98419c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8556535f_1ceeb0da",
         "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-18T17:33:39Z",
       "side": 1,
       "message": "Care to give this the GLSL forward declaration treatment?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 0
+      },
+      "revId": "9efe1db34349fb82a5af58e3861ddb8efa98419c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "379d57df_f8ff5a69",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-10-19T13:16:54Z",
+      "side": 1,
+      "message": "I\u0027ll hit it in a followup.",
+      "parentUuid": "8556535f_1ceeb0da",
       "range": {
         "startLine": 22,
         "startChar": 0,
