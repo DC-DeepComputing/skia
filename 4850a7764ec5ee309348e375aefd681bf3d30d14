@@ -131,6 +131,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f00a218b_4f1f5b80",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-19T13:55:18Z",
+      "side": 1,
+      "message": "I think if you move the ctor and dtor to cpp the compiler will be happy without include",
+      "parentUuid": "4eab140f_579aaa0d",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7e54f76_abc98c12",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 8
