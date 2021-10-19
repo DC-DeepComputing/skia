@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e36f7aa_f863c22c",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:40:55Z",
+      "side": 1,
+      "message": "I suppose the fact that I think about this differently from both you and SkRect is an argument to let the caller choose, but here\u0027s how I\u0027ve thought Rect contains/intersect should behave:\n\nA Rect represents a closed set of points, so any point on its edge is still part of the edge. A point query is equivalent to Rect::Point(p) where it\u0027s width and height are 0 (not different from your model here). However, if Rect is considered a closed set, then both contains(pt) and intersect(pt) should return true for points on the edges.\n\nConversely, if we consider Rect to be an open set, then points on the edge to not belong to the Rect and both contains(pt) and intersect(pt) should return false for points on the edges.\n\nI don\u0027t get the reason for intersect(pt) to return false from a theoretic standpoint, unless it\u0027s just there to allow the user to choose?\n\n\nGoing back to SkRect\u0027s behavior, it\u0027s contains(pt) seems to be motivated by SkIRect\u0027s contains implementation. But SkIRect explicitly states that an integer point is equivalent to a 1x1 SkIRect, so SkIRect not containing points on the right/bottom edge makes sense. For SkRect where a point is 0x0, that logic doesn\u0027t transfer as well. However, SkRect also returns false for contains/intersect if either SkRect is empty. This means that a point as a 0x0 rect can never be contained in anything, even if it\u0027s ltrb values are inside the other SkRect. So I agree that SkRect tries to give you the wrong answer 😜",
+      "parentUuid": "1ce26795_ae8adc11",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 20
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "009422e4_6ced713b",
         "filename": "experimental/graphite/src/geom/Rect.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-19T02:02:56Z",
       "side": 1,
       "message": "Since these are always inline and the Rect should live in a vector register, I intentionally avoided using refs. Same for float2 and float4. Do you see perf improvements from using a ref instead?",
+      "range": {
+        "startLine": 107,
+        "startChar": 21,
+        "endLine": 107,
+        "endChar": 33
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b221bfe9_13b2fbdb",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:40:55Z",
+      "side": 1,
+      "message": "I didn\u0027t measure anything, I was just making it consistent with makeIntersect(). I noticed the mismatch in args because Rect::intersect() takes a Rect\u0026 and Rect::join() takes a Rect. I was getting build errors trying to pass a temporary Rect into intersect.\n\nHowever, I think we could just go the other direction and have join, intersect, makeJoin, and makeIntersect all take Rect. They\u0027d be consistent and work with temporaries. I\u0027m still in a habit of by default passing things in with const\u0026 :/",
+      "parentUuid": "009422e4_6ced713b",
       "range": {
         "startLine": 107,
         "startChar": 21,
@@ -95,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5cc64a1a_ff801d02",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:40:55Z",
+      "side": 1,
+      "message": "This is used for clip simplification primarily. In that use case, we want points exactly on the edge to be considered contained, which wasn\u0027t actually what we got when using SkRect::contains.",
+      "parentUuid": "3cfbdbab_0b3ca8a9",
+      "range": {
+        "startLine": 44,
+        "startChar": 40,
+        "endLine": 44,
+        "endChar": 48
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53070b8a_e3dcc0e1",
         "filename": "experimental/graphite/src/geom/Shape.cpp",
         "patchSetId": 1
@@ -106,6 +178,30 @@
       "writtenOn": "2021-10-19T02:02:56Z",
       "side": 1,
       "message": "Is this fast? Why not path.getBounds().contains() so we don\u0027t have to wonder?\n\n(Also note that SkRect::contains has weird behavior at the edge conditions. I\u0027d maybe convert it to a Rect 😬)",
+      "range": {
+        "startLine": 46,
+        "startChar": 39,
+        "endLine": 46,
+        "endChar": 40
+      },
+      "revId": "f7552afdd47dd81e65636bdb9dbb10af50c7e422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b19798_ab5dc288",
+        "filename": "experimental/graphite/src/geom/Shape.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:40:55Z",
+      "side": 1,
+      "message": "This is conservative in that we might return false when some points are actually contained by a complex/non-concave path, but we can\u0027t use a bounds test because that would return true for points that aren\u0027t actually in the shape.\n\nThis is used for the clip stack when it\u0027s testing bounds against shapes where the coordinate systems are different (test each transformed corner of the bounds of 1 shape vs. the full other shape, if all 4 are in then the real shape contains the transformed 1st shape\u0027s bounds and we can simplify).",
+      "parentUuid": "53070b8a_e3dcc0e1",
       "range": {
         "startLine": 46,
         "startChar": 39,

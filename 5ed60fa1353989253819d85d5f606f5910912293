@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1034540b_3a538113",
+        "filename": "experimental/graphite/src/geom/Rect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-19T13:40:55Z",
+      "side": 0,
+      "message": "I think this can go away actually and just take Rect, and then it would also fix the issues that I encountered that caused me to switch functions to take const Rect\u0026 instead.",
+      "range": {
+        "startLine": 111,
+        "startChar": 27,
+        "endLine": 111,
+        "endChar": 28
+      },
+      "revId": "5ed60fa1353989253819d85d5f606f5910912293",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
