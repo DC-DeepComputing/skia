@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "135fa5b1_0dbbc14e",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T13:52:08Z",
+      "side": 1,
+      "message": "I had thought that, but wasn\u0027t sure. If I make it an sk_sp, do you think the command buffer takes ownership, or does it take a ref? My inclination is that it takes ownership, but I don\u0027t know if we intend on reusing these RenderPassDesc structs in any way.",
+      "parentUuid": "83753c69_a7c06a38",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c68f0d1a_00d68acb",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 8
@@ -83,6 +107,24 @@
       "writtenOn": "2021-10-18T22:51:34Z",
       "side": 1,
       "message": "Do we actually need this include here ?",
+      "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eab140f_579aaa0d",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-19T13:52:08Z",
+      "side": 1,
+      "message": "Unfortunately, it seems so. Otherwise it gives a rather obscure error in SkRefCnt, which is only fixed by adding includes to files that don\u0027t even use the Encoder. There\u0027s something about instantiating that object that the compiler doesn\u0027t like.",
+      "parentUuid": "80a98455_64e673ac",
       "revId": "4850a7764ec5ee309348e375aefd681bf3d30d14",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
