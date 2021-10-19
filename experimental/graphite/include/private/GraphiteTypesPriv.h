@@ -125,6 +125,23 @@ enum class CType : unsigned {
     kLast = kSkMatrix
 };
 
+/**
+ * This enum is used to specify the load operation to be used when a RenderPass begins execution
+ */
+enum class LoadOp {
+    kLoad,
+    kClear,
+    kDiscard,
+};
+
+/**
+ * This enum is used to specify the store operation to be used when a RenderPass ends execution.
+ */
+enum class StoreOp {
+    kStore,
+    kDiscard,
+};
+
 } // namespace skgpu
 
 #endif // skgpu_GraphiteTypesPriv_DEFINED
