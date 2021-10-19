@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7de76a2b_69479f1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-19T20:37:02Z",
+      "side": 1,
+      "message": "Also, let\u0027s add that test json under resources/skottie/.",
+      "revId": "bb228d7fb64b98fcce857c0abd313c36256d0fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55c3b1ee_6d3932b7",
