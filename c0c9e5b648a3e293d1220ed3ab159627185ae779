@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b47535c_9416d03b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-20T14:19:51Z",
+      "side": 1,
+      "message": "I can\u0027t see any reason to keep these secret.",
+      "revId": "c0c9e5b648a3e293d1220ed3ab159627185ae779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
