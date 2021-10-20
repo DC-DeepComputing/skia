@@ -46,6 +46,30 @@
       },
       "revId": "f3f2e758203218d54222f184473b1f6d519044f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6dec7c1_422129be",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-20T14:59:48Z",
+      "side": 1,
+      "message": "I\u0027m only doing it to develop individual components and run their unit tests and benchmarks. It\u0027s not very meaningful to build without a backend, but until we have a non-metal backend, it\u0027s actually not possible to build with a backend except on Mac.",
+      "parentUuid": "e3953b62_7c49bb0f",
+      "range": {
+        "startLine": 52,
+        "startChar": 74,
+        "endLine": 52,
+        "endChar": 85
+      },
+      "revId": "f3f2e758203218d54222f184473b1f6d519044f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
