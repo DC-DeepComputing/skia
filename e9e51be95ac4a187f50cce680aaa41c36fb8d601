@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee4cc2b_b4d5bae3",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-20T20:23:18Z",
+      "side": 1,
+      "message": "No. These file lists are taken from BUILD.gn. Attempting to bring in a glob brings in too many extra files (e.g. the ones for SIMD/NEON support).",
+      "parentUuid": "ac62af4a_161aa5e6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d5c35dd_735531c6",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07553c6_8dfcf6d4",
+        "filename": "toolchain/build_toolchain.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-20T20:23:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d5c35dd_735531c6",
+      "range": {
+        "startLine": 49,
+        "startChar": 42,
+        "endLine": 49,
+        "endChar": 43
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c10b7ab_d2fc3329",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-10-19T20:31:00Z",
       "side": 1,
       "message": "Is there a link we could include here to explain why these are necessary? Alternatively, could you summarize how you arrived at these flags?",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 46
+      },
+      "revId": "e9e51be95ac4a187f50cce680aaa41c36fb8d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6db604e7_e0f9c5a9",
+        "filename": "toolchain/clang_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-20T20:23:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c10b7ab_d2fc3329",
       "range": {
         "startLine": 225,
         "startChar": 0,
