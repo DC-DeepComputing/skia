@@ -90,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38b69ff2_98c59762",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T19:42:52Z",
+      "side": 1,
+      "message": "Agreed on the draw* names. My plan is to add draw() for now to support the new test case, and then add the remainder of them with some test cases for those as well.",
+      "parentUuid": "fe2997e7_2e0dd2be",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 23
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0499fc32_54a77570",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 2
@@ -148,6 +172,30 @@
       "side": 1,
       "message": "I\u0027m all for descriptive enums vs. booleans, but isn\u0027t whether or not it succeeded identical to whether or not it added work in this case? Or is there nuance I\u0027m missing?",
       "parentUuid": "d9719f81_004bf68b",
+      "range": {
+        "startLine": 76,
+        "startChar": 12,
+        "endLine": 76,
+        "endChar": 16
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85a7c29d_6fae4167",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T19:42:52Z",
+      "side": 1,
+      "message": "Thinking about it more, I don\u0027t think a return value is necessary. We\u0027ll have ASSERTs if there are serious cases where the operation would have failed, so there\u0027s no real state to report. The base class can set fHasWork regardless.",
+      "parentUuid": "01570ddb_0c910d4a",
       "range": {
         "startLine": 76,
         "startChar": 12,
