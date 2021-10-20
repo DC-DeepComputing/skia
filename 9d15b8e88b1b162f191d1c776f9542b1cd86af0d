@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a07534_28ce9060",
+        "filename": "experimental/graphite/src/geom/IntersectionTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-20T16:31:37Z",
+      "side": 1,
+      "message": "Can you add a static assert so that kMaxRectsInList * sizeof(float) % sizeof(float4) \u003d\u003d 0",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 50
+      },
+      "revId": "9d15b8e88b1b162f191d1c776f9542b1cd86af0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
