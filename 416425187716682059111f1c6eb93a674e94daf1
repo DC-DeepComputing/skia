@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb23f2a1_1afbf8fd",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-20T18:29:08Z",
+      "side": 1,
+      "message": "Do we need these? At a higher level, points and lines are always turned into oriented rects or rrects based on the stroke cap and stroke width. We could consider pushing hairline points/lines to a dedicated renderer that knows how to take advantage of these primitives, but that\u0027s a slope I\u0027ve been trying to avoid.",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 39
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ee3c52a_cb89f13d",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 2
@@ -31,6 +54,30 @@
       "writtenOn": "2021-10-20T17:47:40Z",
       "side": 1,
       "message": "drawPrimitive seems very metal like to me. I wonder if we should just copy the api for draw calls we have on GrOpsRenderPass (maybe some will be unneeded in Graphite):\ndraw\ndrawIndexed\ndrawInstanced\ndrawIndexedInstanced\ndrawIndirect\ndrawIndexedIndirect\ndrawIndexPattern",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 23
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe2997e7_2e0dd2be",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-20T18:29:08Z",
+      "side": 1,
+      "message": "Quickly reviewing the tessellation path renderer, filled paths would need drawIndexedInstanced and stroking would need drawInstanced. I would bet the triangle rendering would need draw() or drawIndexed().  For now we should only do what\u0027s needed.",
+      "parentUuid": "5ee3c52a_cb89f13d",
       "range": {
         "startLine": 62,
         "startChar": 9,
@@ -77,6 +124,30 @@
       "writtenOn": "2021-10-20T17:47:40Z",
       "side": 1,
       "message": "Just looking at this api it wouldn\u0027t be obvious to me making a new subclass that the return here is whether it has work or not. I would have thought this was whether it succeeded or failed for some reason.\n\nMaybe we should make this an explicit protected enum in CB:\nenum class AddedWork : bool {\n   kNo \u003d false,\n   kYes \u003d true,\n   }",
+      "range": {
+        "startLine": 76,
+        "startChar": 12,
+        "endLine": 76,
+        "endChar": 16
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01570ddb_0c910d4a",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-20T18:29:08Z",
+      "side": 1,
+      "message": "I\u0027m all for descriptive enums vs. booleans, but isn\u0027t whether or not it succeeded identical to whether or not it added work in this case? Or is there nuance I\u0027m missing?",
+      "parentUuid": "d9719f81_004bf68b",
       "range": {
         "startLine": 76,
         "startChar": 12,
