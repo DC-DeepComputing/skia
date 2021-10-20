@@ -8,8 +8,8 @@
 #ifndef GrVertexWriter_DEFINED
 #define GrVertexWriter_DEFINED
 
+#include "include/private/SkNx.h"
 #include "include/private/SkTemplates.h"
-#include "src/gpu/GrColor.h"
 #include "src/gpu/geometry/GrQuad.h"
 #include <type_traits>
 
@@ -66,11 +66,16 @@ struct GrVertexWriter {
     template <typename T>
     struct Skip {};
 
+    template <typename T>
+    inline static void* WriteValue(void* dst, const T& val) {
+        static_assert(std::is_pod<T>::value, "");
+        memcpy(dst, &val, sizeof(T));
+        return SkTAddOffset<void>(dst, sizeof(T));
+    }
+
     template <typename T, typename... Args>
     void write(const T& val, const Args&... remainder) {
-        static_assert(std::is_pod<T>::value, "");
-        memcpy(fPtr, &val, sizeof(T));
-        fPtr = SkTAddOffset<void>(fPtr, sizeof(T));
+        fPtr = WriteValue(fPtr, val);
         this->write(remainder...);
     }
 
@@ -79,17 +84,6 @@ struct GrVertexWriter {
         static_assert(std::is_pod<T>::value, "");
         memcpy(fPtr, val, N * sizeof(T));
         fPtr = SkTAddOffset<void>(fPtr, N * sizeof(T));
-        this->write(remainder...);
-    }
-
-    template <typename... Args>
-    void write(const GrVertexColor& color, const Args&... remainder) {
-        this->write(color.fColor[0]);
-        if (color.fWideColor) {
-            this->write(color.fColor[1]);
-            this->write(color.fColor[2]);
-            this->write(color.fColor[3]);
-        }
         this->write(remainder...);
     }
 

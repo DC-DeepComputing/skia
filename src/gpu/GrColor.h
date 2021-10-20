@@ -16,6 +16,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkHalf.h"
+#include "src/gpu/GrVertexWriter.h"
 
 /**
  * GrColor is 4 bytes for R, G, B, A, in a specific order defined below. Whether the color is
@@ -115,5 +116,16 @@ private:
     uint32_t fColor[4];
     bool     fWideColor;
 };
+
+template<>
+inline void* GrVertexWriter::WriteValue<GrVertexColor>(void* dst, const GrVertexColor& color) {
+    dst = WriteValue(dst, color.fColor[0]);
+    if (color.fWideColor) {
+        dst = WriteValue(dst, color.fColor[1]);
+        dst = WriteValue(dst, color.fColor[2]);
+        dst = WriteValue(dst, color.fColor[3]);
+    }
+    return dst;
+}
 
 #endif
