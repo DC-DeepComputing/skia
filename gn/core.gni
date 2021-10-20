@@ -464,6 +464,7 @@ skia_core_sources = [
   "$_src/shaders/SkTransformShader.h",
 
   # private
+  "$_include/private/SkAlignedAlloc.h",
   "$_include/private/SkChecksum.h",
   "$_include/private/SkColorData.h",
   "$_include/private/SkDeque.h",

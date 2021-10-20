@@ -13,8 +13,8 @@ namespace skgpu {
 
 class SimpleIntersectionTree {
 public:
-    bool add(SkRect rect) {
-        for (const SkRect& r : fRects) {
+    bool add(Rect rect) {
+        for (const Rect& r : fRects) {
             if (r.intersects(rect)) {
                 return false;
             }
@@ -24,7 +24,7 @@ public:
     }
 
 private:
-    std::vector<SkRect> fRects;
+    SkTArray<Rect> fRects;
 };
 
 #define CHECK(A) REPORTER_ASSERT(reporter, A)
@@ -39,10 +39,7 @@ DEF_GRAPHITE_TEST(skgpu_IntersectionTree, reporter) {
                                    rand.nextRangeF(0, 500),
                                    rand.nextRangeF(0, 70),
                                    rand.nextRangeF(0, 70));
-            CHECK(tree.add(rect) == simpleTree.add({rect.left(),
-                                                   rect.top(),
-                                                   rect.right(),
-                                                   rect.bot()}));
+            CHECK(tree.add(rect) == simpleTree.add(rect));
         }
     }
     {
@@ -53,10 +50,7 @@ DEF_GRAPHITE_TEST(skgpu_IntersectionTree, reporter) {
                                    rand.nextRangeF(0, 500),
                                    rand.nextRangeF(0, 200),
                                    rand.nextRangeF(0, 200));
-            CHECK(tree.add(rect) == simpleTree.add({rect.left(),
-                                                   rect.top(),
-                                                   rect.right(),
-                                                   rect.bot()}));
+            CHECK(tree.add(rect) == simpleTree.add(rect));
         }
     }
     {
