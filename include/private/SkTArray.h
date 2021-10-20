@@ -10,6 +10,7 @@
 
 #include "include/core/SkMath.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkAlignedAlloc.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkSafe32.h"
 #include "include/private/SkTLogic.h"
@@ -124,7 +125,7 @@ public:
             fItemArray[i].~T();
         }
         if (fOwnMemory) {
-            sk_free(fItemArray);
+            sk_aligned_free<alignof(T)>(fItemArray);
         }
     }
 
@@ -467,7 +468,7 @@ private:
             fItemArray = nullptr;
         } else {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
-            fItemArray = (T*)sk_malloc_throw((size_t)fAllocCount, sizeof(T));
+            fItemArray = (T*)sk_aligned_alloc<alignof(T)>((size_t)fAllocCount, sizeof(T));
         }
         fOwnMemory = true;
         fReserved = false;
@@ -482,7 +483,7 @@ private:
         fReserved = false;
         if (count > preallocCount) {
             fAllocCount = std::max(count, kMinHeapAllocCount);
-            fItemArray = (T*)sk_malloc_throw(fAllocCount, sizeof(T));
+            fItemArray = (T*)sk_aligned_alloc<alignof(T)>(fAllocCount, sizeof(T));
             fOwnMemory = true;
         } else {
             fAllocCount = preallocCount;
@@ -566,10 +567,10 @@ private:
 
         fAllocCount = SkToU32(Sk64_pin_to_s32(newAllocCount));
         SkASSERT(fAllocCount >= newCount);
-        T* newItemArray = (T*)sk_malloc_throw((size_t)fAllocCount, sizeof(T));
+        T* newItemArray = (T*)sk_aligned_alloc<alignof(T)>((size_t)fAllocCount, sizeof(T));
         this->move(newItemArray);
         if (fOwnMemory) {
-            sk_free(fItemArray);
+            sk_aligned_free<alignof(T)>(fItemArray);
         }
         fItemArray = newItemArray;
         fOwnMemory = true;
