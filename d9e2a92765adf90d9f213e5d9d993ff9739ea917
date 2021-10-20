@@ -68,6 +68,23 @@
       "parentUuid": "3be4d388_b3a8feb0",
       "revId": "d9e2a92765adf90d9f213e5d9d993ff9739ea917",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9ca9d71_78125f81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5649
+      },
+      "writtenOn": "2021-10-20T15:12:02Z",
+      "side": 1,
+      "message": "totally reasonable -- I think we just wrote the generic version first, and never when back to apply the (obvious) quick-checks.",
+      "revId": "d9e2a92765adf90d9f213e5d9d993ff9739ea917",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
