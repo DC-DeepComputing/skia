@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfd8a7a4_3fef9e19",
+        "filename": "tools/sk_app/MetalWindowContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-20T20:48:39Z",
+      "side": 1,
+      "message": "Previously, code was trying to set this field to nil, but it was actually nulling out the fMainView field of the window.",
+      "range": {
+        "startLine": 56,
+        "startChar": 32,
+        "endLine": 56,
+        "endChar": 48
+      },
+      "revId": "35fc94fe3f8a30581f8bbc390d7022e9ae4f737f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
