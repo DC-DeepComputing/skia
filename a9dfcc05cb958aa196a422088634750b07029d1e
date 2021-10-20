@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e87649_2f435bb2",
+        "filename": "resources/skottie/skottie-directional-blur",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-20T18:20:40Z",
+      "side": 1,
+      "message": "nit: missing .json file extension",
+      "revId": "a9dfcc05cb958aa196a422088634750b07029d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
