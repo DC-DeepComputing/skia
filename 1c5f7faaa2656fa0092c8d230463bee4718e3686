@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8f8ee7_8fde09f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-20T18:11:57Z",
+      "side": 1,
+      "message": "Unfortunately, you are correct. You aren\u0027t allowed to specialize a member function. I\u0027m totally open to alternatives though. Crazy thought -- what about something cout style?\n\n  vertexWriter \u003c\u003c point \u003c\u003c color \u003c\u003c coord;",
+      "parentUuid": "0353b8a8_2631b8c7",
+      "revId": "1c5f7faaa2656fa0092c8d230463bee4718e3686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5f95ec8_3186b4fb",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-20T17:37:26Z",
       "side": 1,
       "message": "Remove this?",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "1c5f7faaa2656fa0092c8d230463bee4718e3686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc96d11_7d4fba2c",
+        "filename": "src/gpu/GrVertexWriter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-20T18:11:57Z",
+      "side": 1,
+      "message": "Done. Thank you",
+      "parentUuid": "a5f95ec8_3186b4fb",
       "range": {
         "startLine": 69,
         "startChar": 26,
