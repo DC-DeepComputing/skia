@@ -11,6 +11,7 @@
 #include "experimental/graphite/src/mtl/MtlBuffer.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 #include "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h"
+#include "experimental/graphite/src/mtl/MtlRenderPipeline.h"
 #include "experimental/graphite/src/mtl/MtlTexture.h"
 #include "include/core/SkRect.h"
 
@@ -178,6 +179,50 @@ void CommandBuffer::copyTextureToBuffer(sk_sp<skgpu::Texture> texture,
     this->trackResource(std::move(buffer));
 
     fHasWork = true;
+}
+
+bool CommandBuffer::onSetRenderPipeline(sk_sp<skgpu::RenderPipeline>& renderPipeline) {
+    SkASSERT(fActiveRenderCommandEncoder);
+    if (!fActiveRenderCommandEncoder) {
+        return false;
+    }
+
+    id<MTLRenderPipelineState> pipelineState =
+            static_cast<RenderPipeline*>(renderPipeline.get())->mtlPipelineState();
+    fActiveRenderCommandEncoder->setRenderPipelineState(pipelineState);
+
+    return true;
+}
+
+static MTLPrimitiveType graphite_to_mtl_primitive(PrimitiveType primitiveType) {
+    const static MTLPrimitiveType mtlPrimitiveType[] {
+        MTLPrimitiveTypeTriangle,
+        MTLPrimitiveTypeTriangleStrip,
+        MTLPrimitiveTypePoint,
+        MTLPrimitiveTypeLine,
+        MTLPrimitiveTypeLineStrip
+    };
+    static_assert((int)PrimitiveType::kTriangles == 0);
+    static_assert((int)PrimitiveType::kTriangleStrip == 1);
+    static_assert((int)PrimitiveType::kPoints == 2);
+    static_assert((int)PrimitiveType::kLines == 3);
+    static_assert((int)PrimitiveType::kLineStrip == 4);
+
+    SkASSERT(primitiveType <= PrimitiveType::kLineStrip);
+    return mtlPrimitiveType[static_cast<int>(primitiveType)];
+}
+
+bool CommandBuffer::onDrawPrimitives(PrimitiveType type, size_t vertexStart,
+                                     unsigned int vertexCount) {
+    SkASSERT(fActiveRenderCommandEncoder);
+    if (!fActiveRenderCommandEncoder) {
+        return false;
+    }
+
+    auto mtlPrimitiveType = graphite_to_mtl_primitive(type);
+
+    fActiveRenderCommandEncoder->drawPrimitives(mtlPrimitiveType, vertexStart, vertexCount);
+    return true;
 }
 
 } // namespace skgpu::mtl

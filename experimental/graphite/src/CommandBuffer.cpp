@@ -7,6 +7,8 @@
 
 #include "experimental/graphite/src/CommandBuffer.h"
 
+#include "experimental/graphite/include/private/GraphiteTypesPriv.h"
+#include "experimental/graphite/src/RenderPipeline.h"
 #include "src/core/SkTraceEvent.h"
 
 namespace skgpu {
@@ -17,6 +19,13 @@ void CommandBuffer::releaseResources() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     fTrackedResources.reset();
+}
+
+void CommandBuffer::setRenderPipeline(sk_sp<RenderPipeline> renderPipeline) {
+    if (onSetRenderPipeline(renderPipeline)) {
+        trackResource(std::move(renderPipeline));
+        fHasWork = true;
+    }
 }
 
 } // namespace skgpu
