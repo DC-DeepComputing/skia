@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9689a4a8_4452c140",
+        "filename": "experimental/graphite/src/mtl/MtlBlitCommandEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T12:53:54Z",
+      "side": 1,
+      "message": "This should be Mac-only.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "8daf209dab45951c2a27809b6c7474baa3fe6af5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
