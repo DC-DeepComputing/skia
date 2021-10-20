@@ -22,6 +22,30 @@
       },
       "revId": "8daf209dab45951c2a27809b6c7474baa3fe6af5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83238c4b_4883e48c",
+        "filename": "experimental/graphite/src/mtl/MtlBlitCommandEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-20T13:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9689a4a8_4452c140",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "8daf209dab45951c2a27809b6c7474baa3fe6af5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
