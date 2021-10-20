@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d30dc3e2_d806edec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T17:31:11Z",
+      "side": 1,
+      "message": "PTAL. I would like to change to the \u003ccommand\u003e/on\u003ccommand\u003e pattern in the CommandBuffer methods, and have the CommandBuffer base class handle both fHasWork, and resource tracking, and the derived class do only the platform-specific work.",
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908f5bac_144774e7",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T17:31:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this pattern here. I think it should assert, but I\u0027m not sure if we should try to not crash in a Release build.",
+      "range": {
+        "startLine": 185,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 5
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
