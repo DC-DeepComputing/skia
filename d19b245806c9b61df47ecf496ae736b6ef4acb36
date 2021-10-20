@@ -188,6 +188,30 @@
       },
       "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "558ffbca_67a0d598",
+        "filename": "experimental/graphite/src/geom/BoundsManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-20T13:03:33Z",
+      "side": 1,
+      "message": "In this case SkTBlockList will perform better because it doesn\u0027t have to move data when it resizes. SkTBlockList is the fastest collection Skia has *if* you don\u0027t need random access.",
+      "parentUuid": "fdf753b2_d55956c6",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
