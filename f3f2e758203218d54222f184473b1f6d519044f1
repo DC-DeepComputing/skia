@@ -22,6 +22,30 @@
       },
       "revId": "f3f2e758203218d54222f184473b1f6d519044f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3953b62_7c49bb0f",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T13:00:22Z",
+      "side": 1,
+      "message": "The thinking is that as the other platforms are added, we\u0027ll add their initializers for the textureInfo and then call this platform-independently. I can tweak it so it will compile without Metal, but I don\u0027t know how meaningful it is to build Graphite without a backend.",
+      "parentUuid": "cdd69e88_36f4a046",
+      "range": {
+        "startLine": 52,
+        "startChar": 74,
+        "endLine": 52,
+        "endChar": 85
+      },
+      "revId": "f3f2e758203218d54222f184473b1f6d519044f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
