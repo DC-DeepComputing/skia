@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b6ef05_cf12fa02",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-20T02:55:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ce9666c9_36ce5a25",
+      "range": {
+        "startLine": 208,
+        "startChar": 28,
+        "endLine": 208,
+        "endChar": 41
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "528545a8_07ed3c72",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "ah, good to know. This can just use SkTBlockList then.",
       "parentUuid": "200dee64_52041854",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "d19b245806c9b61df47ecf496ae736b6ef4acb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdf753b2_d55956c6",
+        "filename": "experimental/graphite/src/geom/BoundsManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-20T02:55:05Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/461376",
+      "parentUuid": "2635d186_158ed142",
       "range": {
         "startLine": 105,
         "startChar": 4,
