@@ -27,7 +27,7 @@ protected:
     }
 
     void onDelayedSetup() final {
-        SkTArray<SkRect> rects;
+        SkTArray<Rect> rects;
         this->gatherRects(&rects);
         fRectCount = rects.count();
         fRects = fAlignedAllocator.makeArray<Rect>(fRectCount);
@@ -38,7 +38,7 @@ protected:
         fRectBufferB = fAlignedAllocator.makeArray<Rect>(fRectCount);
     }
 
-    virtual void gatherRects(SkTArray<SkRect>* rects) = 0;
+    virtual void gatherRects(SkTArray<Rect>* rects) = 0;
 
     void onDraw(int loops, SkCanvas*) final {
         for (int i = 0; i < loops; ++i) {
@@ -84,13 +84,13 @@ public:
     }
 
 private:
-    void gatherRects(SkTArray<SkRect>* rects) override {
+    void gatherRects(SkTArray<Rect>* rects) override {
         SkRandom rand;
         for (int i = 0; i < fNumRandomRects; ++i) {
-            rects->push_back(SkRect::MakeXYWH(rand.nextRangeF(0, 2000),
-                                              rand.nextRangeF(0, 2000),
-                                              rand.nextRangeF(0, 70),
-                                              rand.nextRangeF(0, 70)));
+            rects->push_back(Rect::XYWH(rand.nextRangeF(0, 2000),
+                                        rand.nextRangeF(0, 2000),
+                                        rand.nextRangeF(0, 70),
+                                        rand.nextRangeF(0, 70)));
         }
     }
 
@@ -120,7 +120,7 @@ private:
         return IntersectionTreeBench::isSuitableFor(backend);
     }
 
-    void gatherRects(SkTArray<SkRect>* rects) override {
+    void gatherRects(SkTArray<Rect>* rects) override {
         if (FLAGS_intersectionTreeFile.isEmpty()) {
             return;
         }
@@ -134,8 +134,8 @@ private:
                 return;  // Goes to convex renderer.
             }
             int numVerbs = path.countVerbs();
-            SkRect drawBounds = matrix.mapRect(path.getBounds());
-            float gpuFragmentWork = drawBounds.height() * drawBounds.width();
+            Rect drawBounds = matrix.mapRect(path.getBounds());
+            float gpuFragmentWork = drawBounds.area();
             float cpuTessellationWork = numVerbs * SkNextLog2(numVerbs);  // N log N.
             constexpr static float kCpuWeight = 512;
             constexpr static float kMinNumPixelsToTriangulate = 256 * 256;
