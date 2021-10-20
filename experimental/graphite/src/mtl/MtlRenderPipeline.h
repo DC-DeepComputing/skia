@@ -25,7 +25,7 @@ class Gpu;
 
 class RenderPipeline final : public skgpu::RenderPipeline {
 public:
-    static std::unique_ptr<RenderPipeline> Make(const Gpu*, const skgpu::RenderPipelineDesc&);
+    static sk_sp<RenderPipeline> Make(const Gpu*, const skgpu::RenderPipelineDesc&);
     ~RenderPipeline() override {}
 
 private:

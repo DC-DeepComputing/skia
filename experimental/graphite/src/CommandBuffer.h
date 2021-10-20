@@ -17,6 +17,7 @@ struct SkIRect;
 namespace skgpu {
 class Buffer;
 class Gpu;
+class RenderPipeline;
 class Texture;
 
 struct AttachmentDesc {
@@ -50,11 +51,17 @@ public:
     virtual void beginRenderPass(const RenderPassDesc&) = 0;
     virtual void endRenderPass() = 0;
 
+    void setRenderPipeline(sk_sp<RenderPipeline> renderPipeline);
+
     virtual void copyTextureToBuffer(sk_sp<Texture>,
                                      SkIRect srcRect,
                                      sk_sp<Buffer>,
                                      size_t bufferOffset,
                                      size_t bufferRowBytes) = 0;
+
+    void drawPrimitives(PrimitiveType type, size_t vertexStart,unsigned int vertexCount) {
+        fHasWork = onDrawPrimitives(type, vertexStart, vertexCount);
+    }
 
 protected:
     CommandBuffer();
@@ -64,12 +71,15 @@ protected:
     }
     void releaseResources();
 
+    virtual bool onSetRenderPipeline(sk_sp<RenderPipeline>&) = 0;
+
+    virtual bool onDrawPrimitives(PrimitiveType, size_t vertexStart, unsigned int vertexCount) = 0;
+
     bool fHasWork = false;
 
 private:
     inline static constexpr int kInitialTrackedResourcesCount = 32;
     SkSTArray<kInitialTrackedResourcesCount, sk_sp<SkRefCnt>> fTrackedResources;
-
 };
 
 } // namespace skgpu

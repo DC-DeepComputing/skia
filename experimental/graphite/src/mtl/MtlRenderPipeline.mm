@@ -13,8 +13,7 @@
 
 namespace skgpu::mtl {
 
-std::unique_ptr<RenderPipeline> RenderPipeline::Make(const Gpu* gpu,
-                                                     const skgpu::RenderPipelineDesc&) {
+sk_sp<RenderPipeline> RenderPipeline::Make(const Gpu* gpu, const skgpu::RenderPipelineDesc&) {
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
 
     // Temp pipeline for now that just fills the viewport with red
@@ -67,7 +66,7 @@ std::unique_ptr<RenderPipeline> RenderPipeline::Make(const Gpu* gpu,
     sk_cfp<id<MTLRenderPipelineState>> pso(
             [gpu->device() newRenderPipelineStateWithDescriptor:psoDescriptor.get()
                                                           error:&error]);
-    return std::unique_ptr<RenderPipeline>(new RenderPipeline(std::move(pso)));
+    return sk_sp<RenderPipeline>(new RenderPipeline(std::move(pso)));
 }
 
 } // namespace skgpu::mtl

@@ -53,7 +53,13 @@ private:
     void beginRenderPass(const RenderPassDesc&) override;
     void endRenderPass() override;
 
+    bool onSetRenderPipeline(sk_sp<RenderPipeline>&) override { return true; }
+
     BlitCommandEncoder* getBlitCommandEncoder();
+
+    bool onDrawPrimitives(PrimitiveType, size_t vertexStart, unsigned int vertexCount) override {
+        return true;
+    }
 
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
     sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
