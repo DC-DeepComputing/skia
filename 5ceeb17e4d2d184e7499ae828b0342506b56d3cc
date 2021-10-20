@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e40d06c2_0283ebfa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T21:02:20Z",
+      "side": 1,
+      "message": "This will allow buffers to be set for draws in the command buffer.",
+      "revId": "5ceeb17e4d2d184e7499ae828b0342506b56d3cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
