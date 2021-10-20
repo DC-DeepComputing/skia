@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0353b8a8_2631b8c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-20T17:37:26Z",
+      "side": 1,
+      "message": "I don\u0027t love how we\u0027re doing two levels of dispatch (write\u003c\u003e and then WriteValue\u003c\u003e) - I guess we can\u0027t specialize the non-static template externally (without declaring it first)? Is there something special about the static template method that makes that work?",
+      "revId": "1c5f7faaa2656fa0092c8d230463bee4718e3686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5f95ec8_3186b4fb",
+        "filename": "src/gpu/GrVertexWriter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-20T17:37:26Z",
+      "side": 1,
+      "message": "Remove this?",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "1c5f7faaa2656fa0092c8d230463bee4718e3686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
