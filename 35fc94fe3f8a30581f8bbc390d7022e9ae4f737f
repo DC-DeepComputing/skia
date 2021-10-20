@@ -22,6 +22,30 @@
       },
       "revId": "35fc94fe3f8a30581f8bbc390d7022e9ae4f737f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1451c464_09613bbe",
+        "filename": "tools/sk_app/MetalWindowContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-20T20:50:24Z",
+      "side": 1,
+      "message": "*headsmack*",
+      "parentUuid": "bfd8a7a4_3fef9e19",
+      "range": {
+        "startLine": 56,
+        "startChar": 32,
+        "endLine": 56,
+        "endChar": 48
+      },
+      "revId": "35fc94fe3f8a30581f8bbc390d7022e9ae4f737f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
