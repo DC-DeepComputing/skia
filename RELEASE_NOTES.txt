@@ -2,6 +2,15 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 97
+------------
+  * Added basic support for vulkan DRM modifiers. All of these are treated as read only textures
+    internally (versus querying specific modifier support). Clients can either pass a flag to Vulkan
+    GrBackendFormat to say it uses modifiers or pass the VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT
+    to a GrBackendTexture via the GrVkImageInfo struct.
+
+* * *
+
 Milestone 95
 ------------
   * Minimum supported iOS raised from 8 to 11. Skia may build back to iOS 9 but versions older
