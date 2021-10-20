@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5771ded9_f10551a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-20T20:48:14Z",
+      "side": 1,
+      "message": "I\u0027ve got more coming to take care of the GLSL generation stuff / include, too.",
+      "revId": "fd64c5fd2fefb69745f485269952f41c725cea34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
