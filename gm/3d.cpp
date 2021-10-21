@@ -58,10 +58,22 @@ static void do_draw(SkCanvas* canvas, SkColor color) {
     canvas->drawRect({-100, -100, 100, 100}, paint);
 }
 
+#include <iostream>
+
+using namespace std;
+
+void sayHello(int *a) {
+  cout << "Hello from 3d.cpp!" << endl;
+  cout << "Printing from an array: " << a[11] << endl;
+}
+
 /*
  *  Test calling drawables w/ translate and matrices
  */
 DEF_SIMPLE_GM(sk3d_simple, real_canvas, 300, 300) {
+    int a[10];
+    sayHello(a);
+
     do_draw(real_canvas, 0xFFFF0000);
 
     SkPictureRecorder recorder;
