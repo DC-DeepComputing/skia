@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff8cd02a_7a3a9ad9",
+        "filename": "src/gpu/GrCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-21T19:05:22Z",
+      "side": 0,
+      "message": "Unused.",
+      "revId": "2d1207acb9599d163045926234b9a80c19b20df9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5797fb83_20e4efb1",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-21T19:05:22Z",
+      "side": 0,
+      "message": "This was the only use of standaloneCaps. Made it local, to further simplify SkSLUtil.h.",
+      "revId": "2d1207acb9599d163045926234b9a80c19b20df9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
