@@ -53,6 +53,10 @@ private:
     void beginRenderPass(const RenderPassDesc&) override;
     void endRenderPass() override;
 
+    void onSetRenderPipeline(sk_sp<skgpu::RenderPipeline>&) override;
+
+    void onDraw(PrimitiveType type, unsigned int vertexCount, unsigned int vertexStart) override;
+
     BlitCommandEncoder* getBlitCommandEncoder();
 
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
