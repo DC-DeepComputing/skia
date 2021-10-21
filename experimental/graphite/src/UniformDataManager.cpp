@@ -13,13 +13,11 @@
 static_assert(sizeof(int32_t) == 4);
 static_assert(sizeof(float) == 4);
 
-static constexpr int kNonArray = 0;
-
 namespace skgpu {
 
 //////////////////////////////////////////////////////////////////////////////
 
-UniformDataManager::UniformManager::UniformManager(Layout layout) : fLayout(layout) {}
+UniformManager::UniformManager(Layout layout) : fLayout(layout) {}
 
 template<typename BaseType>
 static constexpr size_t tight_vec_size(int vecLength) {
@@ -69,7 +67,7 @@ struct Rules140 {
      * that for single (non-array) scalars or vectors we don't require a stride.
      */
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == kNonArray);
+        SkASSERT(count >= 1 || count == Uniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
         if (Cols != 1) {
@@ -104,7 +102,7 @@ struct Rules140 {
 template<typename BaseType, int RowsOrVecLength = 1, int Cols = 1>
 struct Rules430 {
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == kNonArray);
+        SkASSERT(count >= 1 || count == Uniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
 
@@ -128,7 +126,7 @@ struct Rules430 {
 template<typename BaseType, int RowsOrVecLength = 1, int Cols = 1>
 struct RulesMetal {
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == kNonArray);
+        SkASSERT(count >= 1 || count == Uniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
         if (Cols != 1) {
@@ -148,17 +146,17 @@ template<template<typename BaseType, int RowsOrVecLength, int Cols> class Rules>
 class Writer {
 private:
     template<typename BaseType, int RowsOrVecLength = 1, int Cols = 1>
-    static void Write(void *dst, int n, const BaseType v[]) {
+    static void Write(void *dst, int n, const BaseType src[]) {
         if (dst) {
             size_t stride = Rules<BaseType, RowsOrVecLength, Cols>::Stride(n);
-            n = (n == kNonArray) ? 1 : n;
+            n = (n == Uniform::kNonArray) ? 1 : n;
             n *= Cols;
             if (stride == RowsOrVecLength * sizeof(BaseType)) {
-                std::memcpy(dst, v, n * stride);
+                std::memcpy(dst, src, n * stride);
             } else {
                 for (int i = 0; i < n; ++i) {
-                    std::memcpy(dst, v, RowsOrVecLength * sizeof(BaseType));
-                    v += RowsOrVecLength;
+                    std::memcpy(dst, src, RowsOrVecLength * sizeof(BaseType));
+                    src += RowsOrVecLength;
                     dst = SkTAddOffset<void>(dst, stride);
                 }
             }
@@ -186,56 +184,61 @@ private:
     }
 
 public:
-    static void WriteUniform(SLType type, CType ctype, void *d, int n, const void *v) {
-        SkASSERT(d);
-        SkASSERT(n >= 1 || n == kNonArray);
+    static void WriteUniform(SLType type,
+                             CType ctype,
+                             void *dest,
+                             uint32_t* offset,
+                             int n,
+                             const void *src) {
+        SkASSERT(dest);
+        SkASSERT(n >= 1 || n == Uniform::kNonArray);
         switch (type) {
             case SLType::kInt:
-                return Write<int32_t>(d, n, static_cast<const int32_t *>(v));
+                return Write<int32_t>(dest, n, static_cast<const int32_t *>(src));
 
             case SLType::kInt2:
-                return Write<int32_t, 2>(d, n, static_cast<const int32_t *>(v));
+                return Write<int32_t, 2>(dest, n, static_cast<const int32_t *>(src));
 
             case SLType::kInt3:
-                return Write<int32_t, 3>(d, n, static_cast<const int32_t *>(v));
+                return Write<int32_t, 3>(dest, n, static_cast<const int32_t *>(src));
 
             case SLType::kInt4:
-                return Write<int32_t, 4>(d, n, static_cast<const int32_t *>(v));
+                return Write<int32_t, 4>(dest, n, static_cast<const int32_t *>(src));
 
             case SLType::kHalf:
             case SLType::kFloat:
-                return Write<float>(d, n, static_cast<const float *>(v));
+                return Write<float>(dest, n, static_cast<const float *>(src));
 
             case SLType::kHalf2:
             case SLType::kFloat2:
-                return Write<float, 2>(d, n, static_cast<const float *>(v));
+                return Write<float, 2>(dest, n, static_cast<const float *>(src));
 
             case SLType::kHalf3:
             case SLType::kFloat3:
-                return Write<float, 3>(d, n, static_cast<const float *>(v));
+                return Write<float, 3>(dest, n, static_cast<const float *>(src));
 
             case SLType::kHalf4:
             case SLType::kFloat4:
-                return Write<float, 4>(d, n, static_cast<const float *>(v));
+                return Write<float, 4>(dest, n, static_cast<const float *>(src));
 
             case SLType::kHalf2x2:
             case SLType::kFloat2x2:
-                return Write<float, 2, 2>(d, n, static_cast<const float *>(v));
+                return Write<float, 2, 2>(dest, n, static_cast<const float *>(src));
 
             case SLType::kHalf3x3:
             case SLType::kFloat3x3: {
                 switch (ctype) {
                     case CType::kDefault:
-                        return Write<float, 3, 3>(d, n, static_cast<const float *>(v));
+                        return Write<float, 3, 3>(dest, n, static_cast<const float *>(src));
                     case CType::kSkMatrix:
-                        return WriteSkMatrices(d, n, static_cast<const SkMatrix *>(v));
+                        return WriteSkMatrices(dest, n, static_cast<const SkMatrix *>(src));
                 }
                 SkUNREACHABLE;
             }
 
             case SLType::kHalf4x4:
             case SLType::kFloat4x4:
-                return Write<float, 4, 4>(d, n, static_cast<const float *>(v));
+                return Write<float, 4, 4>(dest, n, static_cast<const float *>(src));
 
             default:
                 SK_ABORT("Unexpected uniform type");
@@ -243,8 +246,10 @@ public:
     }
 };
 
-bool UniformDataManager::UniformManager::writeUniforms(/*const GrProgramInfo &info,*/
-                                                       void *buffer) {
+bool UniformManager::writeUniforms(SkSpan<Uniform> uniforms,
+                                   const void** srcs,
+                                   uint32_t* offsets,
+                                   void *dst) {
     decltype(&Writer<Rules140>::WriteUniform) write;
     switch (fLayout) {
         case Layout::kStd140:
@@ -259,34 +264,12 @@ bool UniformDataManager::UniformManager::writeUniforms(/*const GrProgramInfo &in
     }
 
     bool wrote = false;
-
-    {
-        // TODO: loop over the GrProgramInfo replacement, writing uniforms.
-        int src = 22;
-        int dst[2];
-        write(SLType::kInt, CType::kDefault, &dst, kNonArray, &src);
+    for (int i = 0; i < uniforms.size(); ++i) {
+        write(uniforms[i].type(), CType::kDefault, &offsets[i], dst, uniforms[i].count(), srcs[i]);
         wrote = true;
     }
 
     return wrote;
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-UniformDataManager::UniformDataManager(Layout layout,
-                                       uint32_t uniformCount,
-                                       uint32_t uniformSize)
-        : fUniformSize(uniformSize)
-        , fUniformsDirty(false)
-        , fUniformManager(layout) {
-    fUniformData.reset(uniformSize);
-    fUniforms.reserve(uniformCount);
-}
-
-void UniformDataManager::setUniforms(/*const GrProgramInfo &info*/) {
-    if (fUniformManager.writeUniforms(/*info,*/ fUniformData.get())) {
-        this->markDirty();
-    }
 }
 
 } // namespace skgpu
