@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98c565b8_dfc13fd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-21T19:15:00Z",
+      "side": 1,
+      "message": "Glad to jettison shared_ptrs if we don\u0027t use them!",
+      "revId": "483abdb6547c8292e718b42559a542d969974838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
