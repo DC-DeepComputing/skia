@@ -360,8 +360,6 @@ function fontMgrTests(CK: CanvasKit) {
     const fm2 = CK.FontMgr.FromData(buff1, buff2);
     fm.countFamilies();
     fm.getFamilyName(0);
-
-    const tf = fm.MakeTypefaceFromData(buff1); // $ExpectType Typeface
 }
 
 function globalTests(CK: CanvasKit, path?: Path) {

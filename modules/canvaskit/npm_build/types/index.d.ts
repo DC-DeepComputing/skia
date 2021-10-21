@@ -1763,12 +1763,6 @@ export interface FontMgr extends EmbindObject<FontMgr> {
      * @param index
      */
     getFamilyName(index: number): string;
-
-    /**
-     * Create a typeface for the specified bytes and return it.
-     * @param fontData
-     */
-    MakeTypefaceFromData(fontData: ArrayBuffer): Typeface;
 }
 
 /**
