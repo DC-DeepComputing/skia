@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e427c99_b278dc5e",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-21T14:12:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb23f2a1_1afbf8fd",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 39
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ee3c52a_cb89f13d",
@@ -162,6 +186,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9e3a0d5_3579330c",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-21T14:12:30Z",
+      "side": 1,
+      "message": "Done. One other question: vertexCount first or vertexStart (or baseVertex)? I prefer to have the offset first, i.e. start here and then count off. However, I can also see the argument to matching the old interface.",
+      "parentUuid": "a7f75c65_8ca2a3c5",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 23
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0499fc32_54a77570",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 2
@@ -173,6 +221,30 @@
       "writtenOn": "2021-10-20T17:47:40Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 63,
+        "startChar": 19,
+        "endLine": 63,
+        "endChar": 22
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d3c090_4b76173f",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-21T14:12:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0499fc32_54a77570",
       "range": {
         "startLine": 63,
         "startChar": 19,
@@ -254,6 +326,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55a4f846_4e7e5de2",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-21T14:12:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85a7c29d_6fae4167",
+      "range": {
+        "startLine": 76,
+        "startChar": 12,
+        "endLine": 76,
+        "endChar": 16
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "908f5bac_144774e7",
@@ -291,6 +387,30 @@
       "side": 1,
       "message": "To get into the bad state would mean there is a bug in Graphite itself that is going to be independent of client supplied data or calls. So I think the ASSERT by itself should be sufficient and if that leads to a crash in release I think thats better so we know about it. Like if we hit this case and return \"gracefully\" we\u0027ll just keep hitting it over and over again and not drawing anything for unknown reasons.",
       "parentUuid": "908f5bac_144774e7",
+      "range": {
+        "startLine": 185,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 5
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a9b1ec5_da25872d",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-21T14:12:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6f5e188_7ceb8e01",
       "range": {
         "startLine": 185,
         "startChar": 4,
