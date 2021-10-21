@@ -3890,7 +3890,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         ctxInfo.renderer() == GrGLRenderer::kAdreno630 ||
         ctxInfo.renderer() == GrGLRenderer::kAdreno640 ||
         ctxInfo.renderer() == GrGLRenderer::kAdreno6xx_other) {
-        shaderCaps->fInBlendModesFailRandomlyForAllZeroVec = true;
+        //shaderCaps->fInBlendModesFailRandomlyForAllZeroVec = true;
     }
 
     // The Adreno 5xx and 6xx produce incorrect results when comparing a pair of matrices.
