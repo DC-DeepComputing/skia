@@ -84,6 +84,8 @@ static inline uint64_t SkPMColor4f_toFP16(const SkPMColor4f& color) {
     return halfColor;
 }
 
+struct GrVertexWriter;
+
 /**
  * GrVertexColor is a helper for writing colors to a vertex attribute. It stores either GrColor
  * or four half-float channels, depending on the wideColor parameter. GrVertexWriter will write
@@ -110,7 +112,7 @@ public:
     size_t size() const { return fWideColor ? 16 : 4; }
 
 private:
-    friend struct GrVertexWriter;
+    template<typename T> friend GrVertexWriter& operator<<(GrVertexWriter&, const T&);
 
     uint32_t fColor[4];
     bool     fWideColor;
