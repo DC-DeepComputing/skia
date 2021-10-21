@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa38a905_b4c84547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-21T14:01:57Z",
+      "side": 1,
+      "message": "Hey this is a quick CL I put together to show what I\u0027m thinking for in terms of the buffer manager class. It isn\u0027t ready for a real full review, it definitely doesn\u0027t compile since there are no Writer classes yet. I just wanted to really get your opinions on the API and how I\u0027m doing things.\n\nSaying all that feel free to review/comment on any obvious errors in the logic/code :)",
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315e9816_05744bb7",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-21T14:01:57Z",
+      "side": 1,
+      "message": "I was trying to come up with a clever way to make this little struct more opaque to the draws themselves and only the CommandBuffer class would actually be able to extract the real buffer and offset from them. However, we would still need a way for higher up code to at least know if they have the same buffer \"id\" or not. This can all be done with make things private and friending certain things and having a public \"void* getID() { return fBuffer; }. Additionally draws will need to know their offset into the vertex/index buffer since these are typically params passed into the draw itself and not the bind.\n\nBut a lot of this seems like overkill just to make sure the draws don\u0027t try to access to buffer themselves. What do you all think here. I\u0027m open to any suggestions.",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 1
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "335e3e4d_2e2b7353",
+        "filename": "experimental/graphite/src/DrawBufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-21T14:01:57Z",
+      "side": 1,
+      "message": "So I am trying to avoid the CommandBuffers having to take lots of extra refs on the same buffers. Like we could instead take refs during bindBuffer calls. This probably is okay for vertex/index calls since we generally bind a buffer once at offset 0, and then the draw calls themselves offset into the buffer. So there would only be 1 call to bind per buffer and thus only one ref taken. Currently how things are setup (in Ganesh) for uniforms we would end up binding the uniform multiple times at different offsets because all the shaders offset their uniforms relative to a buffer logically starting at 0.\n\nSo using this approach just makes all the buffers go through the same system, but does have the side effects of being uglier and requiring a public call on CommandBuffer just to pass in refs.",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 56
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
