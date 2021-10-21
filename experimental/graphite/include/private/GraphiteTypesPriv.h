@@ -148,6 +148,13 @@ enum class StoreOp : uint8_t {
 };
 inline static constexpr int kStoreOpCount = (int)(StoreOp::kLast) + 1;
 
+// Struct returned by the DrawBufferManager that can be passed into bind buffer calls on the
+// CommandBuffer.
+BindBufferInfo {
+    Buffer* fBuffer = nullptr;
+    size_t fOffset = 0;
+}
+
 } // namespace skgpu
 
 #endif // skgpu_GraphiteTypesPriv_DEFINED

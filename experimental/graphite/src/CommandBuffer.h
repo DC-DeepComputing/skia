@@ -56,12 +56,13 @@ public:
                                      size_t bufferOffset,
                                      size_t bufferRowBytes) = 0;
 
-protected:
-    CommandBuffer();
-
     void trackResource(sk_sp<SkRefCnt> resource) {
         fTrackedResources.push_back(std::move(resource));
     }
+
+protected:
+    CommandBuffer();
+
     void releaseResources();
 
     bool fHasWork = false;
