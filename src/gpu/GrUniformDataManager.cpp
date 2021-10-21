@@ -46,8 +46,7 @@ void GrUniformDataManager::setv(UniformHandle u, int arrayCount, const void* v) 
     void* buffer = this->getBufferPtrAndMarkDirty(uni);
     if constexpr (N == 4) {
         memcpy(buffer, v, arrayCount * 16);
-    }
-    else {
+    } else {
         for (int i = 0; i < arrayCount; ++i) {
             memcpy(buffer, v, N * 4);
             buffer = static_cast<char*>(buffer) + 16;
