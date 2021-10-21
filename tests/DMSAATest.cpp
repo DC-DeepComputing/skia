@@ -14,11 +14,15 @@
 #include "src/gpu/GrStyle.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
+namespace {
+
 static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_SkPixelGeometry);
 static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
 constexpr static int w=10, h=10;
+
+}
 
 static void draw_paint_with_aa(skgpu::v1::SurfaceDrawContext* sdc,
                                const SkPMColor4f& color,
