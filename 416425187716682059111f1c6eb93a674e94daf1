@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7f75c65_8ca2a3c5",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-21T13:03:58Z",
+      "side": 1,
+      "message": "I\u0027d vote for passing in the primitive type.",
+      "parentUuid": "bd47cbe1_3d668d08",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 23
+      },
+      "revId": "416425187716682059111f1c6eb93a674e94daf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0499fc32_54a77570",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 2
