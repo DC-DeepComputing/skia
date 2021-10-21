@@ -5,77 +5,34 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_UniformDataManager_DEFINED
-#define skgpu_UniformDataManager_DEFINED
+#ifndef skgpu_UniformManager_DEFINED
+#define skgpu_UniformManager_DEFINED
 
-#include <vector>
 #include "experimental/graphite/include/private/GraphiteTypesPriv.h"
-#include "src/core/SkAutoMalloc.h"
+#include "experimental/graphite/src/Uniform.h"
+#include "include/core/SkSpan.h"
 
 namespace skgpu {
 
-/**
- * Used to store uniforms for a program in a CPU buffer that can be uploaded to a UBO.
- */
-class UniformDataManager {
+enum class Layout {
+    kStd140,
+    kStd430,
+    kMetal, /** This is our own self-imposed layout we use for Metal. */
+};
+
+class UniformManager {
 public:
-    enum class Layout {
-        kStd140,
-        kStd430,
-        kMetal, /** This is our own self-imposed layout we use for Metal. */
-    };
+    UniformManager(Layout layout);
 
-    struct NewUniform {
-        size_t indexInProcessor = ~0;
-        SLType type = SLType::kVoid;
-        int count = 0;
-        uint32_t offset = 0;
-    };
-
-    UniformDataManager(Layout layout,
-                       uint32_t uniformCount,
-                       uint32_t uniformSize);
-
-    // For the uniform data to be dirty so that we will reupload on the next use.
-    void markDirty() { fUniformsDirty = true; }
-
-    // TODO: replace GrProgramInfo w/ something more generic
-    void setUniforms(/*const GrProgramInfo &info*/);
-
-protected:
-    struct Uniform {
-        uint32_t fOffset;
-        SkDEBUGCODE(
-                SLType fType;
-                int fArrayCount;
-        );
-    };
-
-    uint32_t fUniformSize;
-
-    std::vector<Uniform> fUniforms;
-
-    mutable SkAutoMalloc fUniformData;
-    mutable bool fUniformsDirty;
+    uint32_t writeUniforms(SkSpan<const Uniform> definitions,
+                           void** srcs,
+                           uint32_t* offsets,
+                           void *dst);
 
 private:
-    class UniformManager {
-    public:
-        UniformManager(Layout layout);
-
-        // TODO: replace GrProgramInfo w/ something more generic
-        bool writeUniforms(/*const GrProgramInfo &info,*/ void *buffer);
-
-    private:
-        using ProgramUniforms = std::vector<std::vector<NewUniform>>;
-
-        ProgramUniforms fUniforms;
-        Layout fLayout;
-    };
-
-    UniformManager fUniformManager;
+    Layout fLayout;
 };
 
 } // namespace skgpu
 
-#endif // skgpu_UniformDataManager_DEFINED
+#endif // skgpu_UniformManager_DEFINED
