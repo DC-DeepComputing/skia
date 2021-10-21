@@ -19,7 +19,7 @@
 
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
-#define CAPTURE_COMMANDBUFFER 0
+#define CAPTURE_COMMANDBUFFER 1
 #endif
 
 using namespace skgpu;
@@ -60,7 +60,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     commandBuffer->beginRenderPass(renderPassDesc);
 
-    // add test commands here
+    RenderPipelineDesc pipelineDesc;
+    auto renderPipeline = gpu->resourceProvider()->findOrCreateRenderPipeline(pipelineDesc);
+    commandBuffer->setRenderPipeline(std::move(renderPipeline));
+    commandBuffer->draw(PrimitiveType::kTriangleStrip, 4, 0);
 
     commandBuffer->endRenderPass();
 
