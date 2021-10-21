@@ -285,7 +285,7 @@ extern StandaloneShaderCaps standaloneCaps;
 #else
 
 using ShaderCapsClass = GrShaderCaps;
-using ShaderCapsPointer = sk_sp<GrShaderCaps>;
+using ShaderCapsPointer = std::unique_ptr<GrShaderCaps>;
 
 #endif  // defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
 
