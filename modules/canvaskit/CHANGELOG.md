@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Type Changes (index.d.ts)
+ - `Surface.requestAnimationFrame` and `Surface.drawOnce` are properly documented.
+
 ## [0.30.0] - 2021-09-15
 
 ### Removed

@@ -881,6 +881,12 @@ function surfaceTests(CK: CanvasKit, gl?: WebGLRenderingContext) {
         alphaType: CK.AlphaType.Premul,
         colorSpace: CK.ColorSpace.SRGB,
     });
+
+    const drawFrame = (canvas: Canvas) => {
+        canvas.clear([0, 0, 0, 0]);
+    };
+    surfaceFour.requestAnimationFrame(drawFrame);
+    surfaceFour.drawOnce(drawFrame);
 }
 
 function textBlobTests(CK: CanvasKit, font?: Font, path?: Path) {
