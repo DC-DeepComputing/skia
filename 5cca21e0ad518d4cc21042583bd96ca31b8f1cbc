@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a934f6_6fcfc08e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-21T16:07:32Z",
+      "side": 1,
+      "message": "PS3 shows a completed CQ run (as well as some debug Adreno6xx devices). No problems.",
+      "revId": "5cca21e0ad518d4cc21042583bd96ca31b8f1cbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
