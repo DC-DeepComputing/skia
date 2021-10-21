@@ -20,7 +20,7 @@ static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_Sk
 static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
-constexpr static int kWidth=10, kHeight=10;
+constexpr static int w=10, h=10;
 
 }
 
@@ -30,8 +30,8 @@ static void draw_paint_with_aa(skgpu::v1::SurfaceDrawContext* sdc,
     GrPaint paint;
     paint.setColor4f(color);
     paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
-    sdc->drawRect(nullptr, std::move(paint), GrAA::kYes, SkMatrix::I(),
-                  SkRect::MakeIWH(kWidth, kHeight), nullptr);
+    sdc->drawRect(nullptr, std::move(paint), GrAA::kYes, SkMatrix::I(), SkRect::MakeIWH(w, h),
+                  nullptr);
 }
 
 static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
@@ -39,7 +39,7 @@ static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
                                   SkBlendMode blendMode) {
     // drawVertices should always trigger dmsaa, but draw something non-rectangular just to be 100%
     // certain.
-    static const SkPoint kVertices[3] = {{-.5f,-.5f}, {kWidth * 2.1f, 0}, {0, kHeight * 2.1f}};
+    static const SkPoint kVertices[3] = {{-.5f,-.5f}, {w * 2.1f, 0}, {0, h * 2.1f}};
     SkVertices::Builder builder(SkVertices::kTriangles_VertexMode, 3, 0, 0);
     memcpy(builder.positions(), kVertices, sizeof(kVertices));
     auto vertices = builder.detach();
@@ -64,12 +64,12 @@ static void check_sdc_color(skiatest::Reporter* reporter,
                             skgpu::v1::SurfaceDrawContext* sdc,
                             GrDirectContext* ctx,
                             const SkPMColor4f& color) {
-    auto info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(w, h, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
     GrPixmap pixmap = GrPixmap::Allocate(info);
     sdc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
-    for (int y = 0; y < kHeight; ++y) {
-        for (int x = 0; x < kWidth; ++x) {
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
             if (!fuzzy_equals(pix, color)) {
                 ERRORF(reporter, "SDC color mismatch.\n"
                                  "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
@@ -87,8 +87,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                          nullptr) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
-                                                   SkBackingFit::kApprox, {kWidth, kHeight},
-                                                   kDMSAAProps);
+                                                   SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
     draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
@@ -118,8 +117,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read, &sk_gpu_test::GrContextFactory::IsRende
                          reporter, ctxInfo, require_dst_reads) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
-                                                   SkBackingFit::kApprox, {kWidth, kHeight},
-                                                   kDMSAAProps);
+                                                   SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
     draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
@@ -142,8 +140,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
                          require_dst_reads) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
-                                                   SkBackingFit::kApprox, {kWidth, kHeight},
-                                                   kDMSAAProps);
+                                                   SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
     draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
@@ -167,8 +164,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
                          require_dst_reads) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
-                                                   SkBackingFit::kApprox, {kWidth, kHeight},
-                                                   kDMSAAProps);
+                                                   SkBackingFit::kApprox, {w, h}, kDMSAAProps);
 
     // Initialize the texture and dmsaa attachment with transparent.
     draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
