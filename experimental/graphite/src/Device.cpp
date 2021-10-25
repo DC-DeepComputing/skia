@@ -202,14 +202,14 @@ void Device::drawShape(const Shape& shape,
     }
 
     DrawOrder order(fCurrentDepth.next());
-    ClipResult clip = this->applyClipToDraw(localToDevice, shape, style, order.depth());
-    if (clip.fDrawBounds.isEmptyNegativeOrNaN()) {
+    auto [clip, clipOrder] = this->applyClipToDraw(localToDevice, shape, style, order.depth());
+    if (clip.drawBounds().isEmptyNegativeOrNaN()) {
         // Clipped out, so don't record anything
         return;
     }
 
     // A draw's order always depends on the clips that must be drawn before it
-    order.dependsOn(clip.fOrder);
+    order.dependsOn(clipOrder);
 
     auto blendMode = paint.asBlendMode();
     PaintParams shading{paint.getColor4f(),
@@ -221,7 +221,7 @@ void Device::drawShape(const Shape& shape,
     // also lets Device easily track whether or not there are any overlapping draws.
     const bool opaque = is_opaque(shading);
     CompressedPaintersOrder prevDraw =
-            fColorDepthBoundsManager->getMostRecentDraw(clip.fDrawBounds);
+            fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
     if (!opaque) {
         order.dependsOn(prevDraw);
     }
@@ -231,7 +231,7 @@ void Device::drawShape(const Shape& shape,
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
         // TODO: If DC supports stroked primitives, Device could choose one of those based on shape
         StrokeParams stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-        fDC->strokePath(localToDevice, shape, stroke, clip.fScissor, order, &shading);
+        fDC->strokePath(localToDevice, shape, stroke, clip, order, &shading);
     }
     if (styleType == SkStrokeRec::kFill_Style ||
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
@@ -240,10 +240,10 @@ void Device::drawShape(const Shape& shape,
         // TODO: Route all filled shapes to stencil-and-cover for the sprint; convex will draw
         // correctly but uses an unnecessary stencil step.
         // if (shape.convex()) {
-        //     fDC->fillConvexPath(localToDevice, shape, clip.fScissor, order, &shading);
+        //     fDC->fillConvexPath(localToDevice, shape, clip, order, &shading);
         // } else {
             order.usesStencil(fMaxStencilIndex.next());
-            fDC->stencilAndFillPath(localToDevice, shape, clip.fScissor, order, &shading);
+            fDC->stencilAndFillPath(localToDevice, shape, clip, order, &shading);
         // }
     }
 
@@ -262,10 +262,10 @@ void Device::drawShape(const Shape& shape,
     fDrawsOverlap |= (prevDraw != DrawOrder::kNoIntersection);
 }
 
-Device::ClipResult Device::applyClipToDraw(const Transform& localToDevice,
-                                           const Shape& shape,
-                                           const SkStrokeRec& style,
-                                           PaintersDepth z) {
+std::pair<Clip, CompressedPaintersOrder> Device::applyClipToDraw(const Transform& localToDevice,
+                                                                 const Shape& shape,
+                                                                 const SkStrokeRec& style,
+                                                                 PaintersDepth z) {
     SkIRect scissor = this->devClipBounds();
 
     Rect drawBounds = shape.bounds();
@@ -283,11 +283,11 @@ Device::ClipResult Device::applyClipToDraw(const Transform& localToDevice,
     drawBounds.intersect(SkRect::Make(scissor));
     if (drawBounds.isEmptyNegativeOrNaN()) {
         // Trivially clipped out, so return now
-        return {scissor, drawBounds, DrawOrder::kNoIntersection};
+        return {{drawBounds, scissor}, DrawOrder::kNoIntersection};
     }
 
     // TODO: iterate the clip stack and accumulate draw bounds into clip usage
-    return {scissor, drawBounds, DrawOrder::kNoIntersection};
+    return {{drawBounds, scissor}, DrawOrder::kNoIntersection};
 }
 
 void Device::flushPendingWorkToRecorder() {
