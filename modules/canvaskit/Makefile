@@ -121,3 +121,17 @@ docker-compile:
 typecheck:
 	echo "Make sure you've run cd npm_build && npm ci recently"
 	cd npm_build && npm run dtslint
+
+bazel_gms_release:
+	bazel build :gm-bindings-wasm --compilation_mode opt --jobs 10
+	- rm -rf build/
+	mkdir build
+	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
+	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.wasm build/gm-bindings.wasm
+
+bazel_gms_debug:
+	bazel build :gm-bindings-wasm --compilation_mode dbg --jobs 10
+	- rm -rf build/
+	mkdir build
+	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
+	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.wasm build/gm-bindings.wasm
