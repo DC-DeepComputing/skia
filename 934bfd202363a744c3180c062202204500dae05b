@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b369fac5_2cfbdea8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T18:44:35Z",
+      "side": 1,
+      "message": "the red bots are inherited from an out-of-date parent dry run; but since rebasing has \"no code changes\" to this CL, the list isn\u0027t reset.",
+      "revId": "934bfd202363a744c3180c062202204500dae05b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
