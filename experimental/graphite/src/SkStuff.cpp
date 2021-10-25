@@ -11,12 +11,12 @@
 #include "experimental/graphite/src/Recorder.h"
 #include "experimental/graphite/src/Surface_Graphite.h"
 
-sk_sp<SkSurface> MakeGraphite(sk_sp<skgpu::Recorder> recorder, const SkImageInfo& ii) {
+std::unique_ptr<SkSurface> MakeGraphite(sk_sp<skgpu::Recorder> recorder, const SkImageInfo& ii) {
 
     sk_sp<skgpu::Device> device = skgpu::Device::Make(std::move(recorder), ii);
     if (!device) {
         return nullptr;
     }
 
-    return sk_make_sp<skgpu::Surface_Graphite>(std::move(device));
+    return std::make_unique<skgpu::Surface_Graphite>(std::move(device));
 }

@@ -390,6 +390,6 @@ void SkRecorder::onResetClip() {
     this->append<SkRecords::ResetClip>();
 }
 
-sk_sp<SkSurface> SkRecorder::onNewSurface(const SkImageInfo&, const SkSurfaceProps&) {
+std::unique_ptr<SkSurface> SkRecorder::onNewSurface(const SkImageInfo&, const SkSurfaceProps&) {
     return nullptr;
 }

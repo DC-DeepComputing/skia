@@ -163,10 +163,10 @@ protected:
         sk_bzero(fBuffer, fBufferSize);
 
         SkImageInfo info = SkImageInfo::MakeN32Premul(W, H);
-        sk_sp<SkSurface> surf0(SkSurface::MakeRasterDirect(info, fBuffer, RB));
-        sk_sp<SkSurface> surf1(SkSurface::MakeRaster(info));
-        sk_sp<SkSurface> surf2(SkSurface::MakeRenderTarget(canvas->recordingContext(),
-                                                           SkBudgeted::kNo, info));
+        std::unique_ptr<SkSurface> surf0 = SkSurface::MakeRasterDirect(info, fBuffer, RB);
+        std::unique_ptr<SkSurface> surf1 = SkSurface::MakeRaster(info);
+        std::unique_ptr<SkSurface> surf2 = SkSurface::MakeRenderTarget(canvas->recordingContext(),
+                                                                       SkBudgeted::kNo, info);
 
         test_surface(canvas, surf0.get(), true);
         canvas->translate(80, 0);

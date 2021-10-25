@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
     SkVideoEncoder encoder;
 
     GrDirectContext* grctx = nullptr;
-    sk_sp<SkSurface> surf;
+    std::unique_ptr<SkSurface> surf;
     sk_sp<SkData> data;
 
     const auto info = SkImageInfo::MakeN32Premul(dim);

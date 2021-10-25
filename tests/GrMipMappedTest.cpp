@@ -67,7 +67,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest, reporter, ctxInfo) {
             sk_sp<GrTextureProxy> proxy;
             sk_sp<SkImage> image;
             if (renderable == GrRenderable::kYes) {
-                sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(
+                std::unique_ptr<SkSurface> surface = SkSurface::MakeFromBackendTexture(
                         dContext,
                         mbet->texture(),
                         kTopLeft_GrSurfaceOrigin,
@@ -293,7 +293,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrImageSnapshotMipMappedTest, reporter, ctxIn
     for (auto willUseMips : {false, true}) {
         for (auto isWrapped : {false, true}) {
             GrMipmapped mipmapped = willUseMips ? GrMipmapped::kYes : GrMipmapped::kNo;
-            sk_sp<SkSurface> surface;
+            std::unique_ptr<SkSurface> surface;
             SkImageInfo info =
                     SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
             if (isWrapped) {
@@ -343,7 +343,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(Gr1x1TextureMipMappedTest, reporter, ctxInfo)
 
     // Make surface to draw into
     SkImageInfo info = SkImageInfo::MakeN32(16, 16, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(dContext,
+                                                                     SkBudgeted::kNo,
+                                                                     info);
 
     // Make 1x1 raster bitmap
     SkBitmap bmp;

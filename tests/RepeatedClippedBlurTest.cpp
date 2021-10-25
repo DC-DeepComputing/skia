@@ -30,7 +30,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest, reporter, ctxInfo) {
     const SkImageInfo ii = SkImageInfo::Make(1024, 600, kRGBA_8888_SkColorType,
                                              kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> dst(SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii));
+    std::unique_ptr<SkSurface> dst = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii);
     if (!dst) {
         ERRORF(reporter, "Could not create surfaces for repeated clipped blur test.");
         return;
@@ -64,9 +64,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest, reporter, ctxInfo) {
         SkImageInfo screenII = SkImageInfo::Make(1024, 600, kRGBA_8888_SkColorType,
                                                  kPremul_SkAlphaType);
 
-        sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kYes,
-                                                         screenII, 1, kTopLeft_GrSurfaceOrigin,
-                                                         nullptr);
+        std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(dContext,
+                                                                   SkBudgeted::kYes,
+                                                                   screenII,
+                                                                   1,
+                                                                   kTopLeft_GrSurfaceOrigin,
+                                                                   nullptr);
         SkCanvas* c = s->getCanvas();
 
         c->drawImageRect(bigImg, SkRect::MakeWH(1024, 600), SkSamplingOptions());

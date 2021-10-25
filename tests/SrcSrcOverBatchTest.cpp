@@ -22,9 +22,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SrcSrcOverBatchTest, reporter, ctxInfo) {
     const SkImageInfo ii = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
                                              kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo,
-                                                         ii, 0, kTopLeft_GrSurfaceOrigin,
-                                                         nullptr));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx,
+                                                                     SkBudgeted::kNo,
+                                                                     ii,
+                                                                     0,
+                                                                     kTopLeft_GrSurfaceOrigin,
+                                                                     nullptr);
 
     auto canvas = surface->getCanvas();
 

@@ -26,7 +26,7 @@ const SkISize   kSize = SkISize::Make(100, 100);
 const SkIRect kSubset = SkIRect::MakeLTRB(25, 25, 75, 75);
 const SkRect    kDest = SkRect::MakeXYWH(10, 10, 100, 100);
 
-sk_sp<SkImage> make_mask(const sk_sp<SkSurface>& surface) {
+sk_sp<SkImage> make_mask(std::unique_ptr<SkSurface> surface) {
     ToolUtils::draw_checkerboard(surface->getCanvas(), 0x80808080, 0x00000000, 5);
     return surface->makeImageSnapshot();
 }
@@ -59,9 +59,9 @@ const MakerT makers[] = {
 
     // SkImage_Gpu
     [](SkCanvas* c, const SkImageInfo& info) -> sk_sp<SkImage> {
-        sk_sp<SkSurface> surface;
+       std::unique_ptr<SkSurface> surface;
         surface = SkSurface::MakeRenderTarget(c->recordingContext(), SkBudgeted::kNo, info);
-        return make_mask(surface ? surface : SkSurface::MakeRaster(info));
+        return make_mask(surface ? std::move(surface) : SkSurface::MakeRaster(info));
     },
 
     // SkImage_Lazy

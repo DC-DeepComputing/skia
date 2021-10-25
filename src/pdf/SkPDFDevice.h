@@ -106,7 +106,7 @@ public:
     const SkMatrix& initialTransform() const { return fInitialTransform; }
 
 protected:
-    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
+    std::unique_ptr<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
 
     void drawAnnotation(const SkRect&, const char key[], SkData* value) override;
 

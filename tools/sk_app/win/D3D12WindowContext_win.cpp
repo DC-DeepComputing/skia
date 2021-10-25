@@ -43,7 +43,7 @@ public:
         return fDevice.get() != nullptr;
     }
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
     void swapBuffers() override;
 
     void resize(int width, int height) override;
@@ -56,7 +56,7 @@ private:
     gr_cp<ID3D12CommandQueue> fQueue;
     gr_cp<IDXGISwapChain3> fSwapChain;
     gr_cp<ID3D12Resource> fBuffers[kNumFrames];
-    sk_sp<SkSurface> fSurfaces[kNumFrames];
+    std::unique_ptr<SkSurface> fSurfaces[kNumFrames];
 
     // Synchronization objects.
     unsigned int fBufferIndex;
@@ -178,7 +178,7 @@ void D3D12WindowContext::destroyContext() {
     fDevice.reset(nullptr);
 }
 
-sk_sp<SkSurface> D3D12WindowContext::getBackbufferSurface() {
+SkSurface* D3D12WindowContext::getBackbufferSurface() {
     // Update the frame index.
     const UINT64 currentFenceValue = fFenceValues[fBufferIndex];
     fBufferIndex = fSwapChain->GetCurrentBackBufferIndex();
@@ -192,7 +192,7 @@ sk_sp<SkSurface> D3D12WindowContext::getBackbufferSurface() {
     // Set the fence value for the next frame.
     fFenceValues[fBufferIndex] = currentFenceValue + 1;
 
-    return fSurfaces[fBufferIndex];
+    return fSurfaces[fBufferIndex].get();
 }
 
 void D3D12WindowContext::swapBuffers() {

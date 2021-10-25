@@ -260,7 +260,7 @@ static void init(Source* source, const skiatest::Test& test) {
 
 static sk_sp<SkImage> draw_with_cpu(std::function<bool(SkCanvas*)> draw,
                                     SkImageInfo info) {
-    if (sk_sp<SkSurface> surface = SkSurface::MakeRaster(info)) {
+    if (std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info)) {
         if (draw(surface->getCanvas())) {
             return surface->makeImageSnapshot();
         }
@@ -321,7 +321,7 @@ static sk_sp<SkImage> draw_with_gpu(std::function<bool(SkCanvas*)> draw,
                                : 0;
     SkSurfaceProps props(flags, kRGB_H_SkPixelGeometry);
 
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
 
     switch (surfaceType) {
         case SurfaceType::kDefault:

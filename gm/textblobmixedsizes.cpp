@@ -102,7 +102,7 @@ protected:
 
     void onDraw(SkCanvas* inputCanvas) override {
         SkCanvas* canvas = inputCanvas;
-        sk_sp<SkSurface> surface;
+        std::unique_ptr<SkSurface> surface;
         if (fUseDFT) {
             // Create a new Canvas to enable DFT
             auto ctx = inputCanvas->recordingContext();

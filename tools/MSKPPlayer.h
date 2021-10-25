@@ -105,10 +105,10 @@ private:
     // Playback state of layer: the last command index drawn to it and the SkSurface with contents.
     struct LayerState {
         size_t fCurrCmd = -1;
-        sk_sp<SkSurface> fSurface;
+        std::unique_ptr<SkSurface> fSurface;
     };
 
-    static sk_sp<SkSurface> MakeSurfaceForLayer(const LayerCmds&, SkCanvas* rootCanvas);
+    static std::unique_ptr<SkSurface> MakeSurfaceForLayer(const LayerCmds&, SkCanvas* rootCanvas);
 
     void collectReferencedLayers(const LayerCmds& layer, std::vector<int>*) const;
 

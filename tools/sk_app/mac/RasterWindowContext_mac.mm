@@ -32,7 +32,7 @@ public:
 
     ~RasterWindowContext_mac() override;
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    std::unique_ptr<SkSurface> getBackbufferSurface() override;
 
     void onSwapBuffers() override;
 
@@ -45,7 +45,7 @@ private:
     NSView*              fMainView;
     NSOpenGLContext*     fGLContext;
     NSOpenGLPixelFormat* fPixelFormat;
-    sk_sp<SkSurface>     fBackbufferSurface;
+    SkBitmap             fBackbuffer;
 
     using INHERITED = GLWindowContext;
 };
@@ -146,24 +146,23 @@ sk_sp<const GrGLInterface> RasterWindowContext_mac::onInitializeContext() {
     // make the offscreen image
     SkImageInfo info = SkImageInfo::Make(fWidth, fHeight, fDisplayParams.fColorType,
                                          kPremul_SkAlphaType, fDisplayParams.fColorSpace);
-    fBackbufferSurface = SkSurface::MakeRaster(info);
+    fBackbuffer.allocPixels(info, 0);
     return GrGLMakeNativeInterface();
 }
 
-sk_sp<SkSurface> RasterWindowContext_mac::getBackbufferSurface() { return fBackbufferSurface; }
+std::unique_ptr<SkSurface> RasterWindowContext_mac::getBackbufferSurface() {
+    return SkSurface::MakeRasterDirect(fBackbuffer.pixmap(), &fDisplayParams.fSurfaceProps);
+}
 
 void RasterWindowContext_mac::onSwapBuffers() {
-    if (fBackbufferSurface) {
-        // We made/have an off-screen surface. Get the contents as an SkImage:
-        sk_sp<SkImage> snapshot = fBackbufferSurface->makeImageSnapshot();
+    SkASSERT(fBackbuffer.pixelRef());
 
-        sk_sp<SkSurface> gpuSurface = INHERITED::getBackbufferSurface();
-        SkCanvas* gpuCanvas = gpuSurface->getCanvas();
-        gpuCanvas->drawImage(snapshot, 0, 0);
-        gpuCanvas->flush();
+    std::unique_ptr<SkSurface> gpuSurface = INHERITED::getBackbufferSurface();
+    SkCanvas* gpuCanvas = gpuSurface->getCanvas();
+    gpuCanvas->drawBitmap(fBackbuffer, 0, 0);
+    gpuCanvas->flush();
 
-        [fGLContext flushBuffer];
-    }
+    [fGLContext flushBuffer];
 }
 
 void RasterWindowContext_mac::resize(int w, int h) {

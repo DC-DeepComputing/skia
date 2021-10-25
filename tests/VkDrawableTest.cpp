@@ -153,8 +153,9 @@ public:
 
         // Draw to an offscreen target so that we end up with a mix of "real" secondary command
         // buffers and the imported secondary command buffer.
-        sk_sp<SkSurface> surf = SkSurface::MakeRenderTarget(td->fDContext, SkBudgeted::kYes,
-                                                            bufferInfo);
+        std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(td->fDContext,
+                                                                      SkBudgeted::kYes,
+                                                                      bufferInfo);
         surf->getCanvas()->clear(SK_ColorRED);
 
         SkRect dstRect = SkRect::MakeXYWH(3*td->fWidth/4, 0, td->fWidth/4, td->fHeight);
@@ -227,8 +228,12 @@ void draw_drawable_test(skiatest::Reporter* reporter,
 
     const SkImageInfo ii = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
                                              kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo,
-                                                         ii, 0, kTopLeft_GrSurfaceOrigin, nullptr));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(dContext,
+                                                                     SkBudgeted::kNo,
+                                                                     ii,
+                                                                     0,
+                                                                     kTopLeft_GrSurfaceOrigin,
+                                                                     nullptr);
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorBLUE);
 

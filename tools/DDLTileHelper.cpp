@@ -109,7 +109,7 @@ void DDLTileHelper::TileData::precompile(GrDirectContext* direct) {
     }
 }
 
-sk_sp<SkSurface> DDLTileHelper::TileData::makeWrappedTileDest(GrRecordingContext* rContext) {
+std::unique_ptr<SkSurface> DDLTileHelper::TileData::makeWrappedTileDest(GrRecordingContext* rContext) {
     SkASSERT(fCallbackContext && fCallbackContext->promiseImageTexture());
 
     auto promiseImageTexture = fCallbackContext->promiseImageTexture();

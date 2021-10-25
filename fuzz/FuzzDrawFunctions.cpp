@@ -94,7 +94,7 @@ static void init_bitmap(Fuzz* fuzz, SkBitmap* bmp) {
     }
 }
 
-static void init_surface(Fuzz* fuzz, sk_sp<SkSurface>* s) {
+static void init_surface(Fuzz* fuzz, std::unique_ptr<SkSurface>* s) {
     uint8_t x, y;
     fuzz->nextRange(&x, 1, kMaxX);
     fuzz->nextRange(&y, 1, kMaxY);
@@ -111,7 +111,7 @@ static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
     SkFont font(typeface);
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     char text[kTxtLen];
@@ -155,7 +155,7 @@ static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
 static void fuzz_drawCircle(Fuzz* fuzz) {
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     SkScalar a, b, c;
@@ -166,7 +166,7 @@ static void fuzz_drawCircle(Fuzz* fuzz) {
 static void fuzz_drawLine(Fuzz* fuzz) {
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     SkScalar a, b, c, d;
@@ -177,7 +177,7 @@ static void fuzz_drawLine(Fuzz* fuzz) {
 static void fuzz_drawRect(Fuzz* fuzz) {
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     SkScalar a, b, c, d;
@@ -198,7 +198,7 @@ static void fuzz_drawRect(Fuzz* fuzz) {
 static void fuzz_drawPath(Fuzz* fuzz) {
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     // TODO(kjlubick): put the ability to fuzz a path in shared file, with
@@ -249,7 +249,7 @@ static void fuzz_drawPath(Fuzz* fuzz) {
 static void fuzz_drawImage(Fuzz* fuzz) {
     SkPaint p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
     SkBitmap bmp;
     init_bitmap(fuzz, &bmp);
@@ -277,7 +277,7 @@ static void fuzz_drawImage(Fuzz* fuzz) {
 static void fuzz_drawPaint(Fuzz* fuzz) {
     SkPaint l, p;
     init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     init_surface(fuzz, &surface);
 
     surface->getCanvas()->drawPaint(p);

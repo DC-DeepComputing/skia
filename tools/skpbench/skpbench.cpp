@@ -251,7 +251,7 @@ static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync&
 }
 
 static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext, GrDirectContext *dContext,
-                              sk_sp<SkSurface> dstSurface, SkPicture* inputPicture,
+                              SkSurface* dstSurface, SkPicture* inputPicture,
                               std::vector<Sample>* samples) {
     using clock = std::chrono::high_resolution_clock;
     const Sample::duration sampleDuration = std::chrono::milliseconds(FLAGS_sampleMs);
@@ -599,7 +599,7 @@ int main(int argc, char** argv) {
     SkImageInfo info = SkImageInfo::Make(
             width, height, config->getColorType(), config->getAlphaType(), config->refColorSpace());
     SkSurfaceProps props(config->getSurfaceFlags(), kRGB_H_SkPixelGeometry);
-    sk_sp<SkSurface> surface =
+    std::unique_ptr<SkSurface> surface =
         SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, config->getSamples(), &props);
     if (!surface) {
         exitf(ExitErr::kUnavailable, "failed to create %ix%i render target for config %s",
@@ -621,7 +621,7 @@ int main(int argc, char** argv) {
     }
     if (!FLAGS_gpuClock) {
         if (FLAGS_ddl) {
-            run_ddl_benchmark(testCtx, ctx, surface, skp.get(), &samples);
+            run_ddl_benchmark(testCtx, ctx, surface.get(), skp.get(), &samples);
         } else if (!mskp) {
             auto s = std::make_unique<StaticSkp>(skp);
             run_benchmark(ctx, surface.get(), s.get(), &samples);

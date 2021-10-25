@@ -35,7 +35,7 @@ struct Target {
     virtual ~Target() { }
 
     const Config config;
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
 
     /** Called once per target, immediately before any timing or drawing. */
     virtual void setup() { }

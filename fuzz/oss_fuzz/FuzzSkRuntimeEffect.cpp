@@ -52,7 +52,7 @@ static bool FuzzSkRuntimeEffect_Once(sk_sp<SkData> bytes, const SkRuntimeEffect:
     SkPaint paint;
     paint.setShader(std::move(shader));
 
-    sk_sp<SkSurface> s = SkSurface::MakeRasterN32Premul(128, 128);
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRasterN32Premul(128, 128);
     if (!s) {
         return false;
     }

@@ -49,7 +49,7 @@
         return;
     }
     CGSize size = [self drawableSize];
-    sk_sp<SkSurface> surface = SkMtkViewToSurface(self, fDContext);
+    std::unique_ptr<SkSurface> surface = SkMtkViewToSurface(self, fDContext);
     if (!surface) {
         NSLog(@"error: no sksurface");
         return;

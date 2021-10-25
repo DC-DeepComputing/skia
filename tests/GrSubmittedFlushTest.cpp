@@ -30,7 +30,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest, reporter, ctxInfo) {
     auto ctx = ctxInfo.directContext();
 
     SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
     SkCanvas* canvas = surface->getCanvas();
 
     canvas->clear(SK_ColorGREEN);

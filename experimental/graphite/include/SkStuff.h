@@ -18,6 +18,6 @@ namespace skgpu {
 }
 
 // TODO: Should be in SkSurface.h
-sk_sp<SkSurface> MakeGraphite(sk_sp<skgpu::Recorder>, const SkImageInfo&);
+std::unique_ptr<SkSurface> MakeGraphite(sk_sp<skgpu::Recorder>, const SkImageInfo&);
 
 #endif // SkStuff_DEFINED

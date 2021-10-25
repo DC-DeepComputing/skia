@@ -1516,7 +1516,7 @@ void Viewer::drawSlide(SkSurface* surface) {
     // ... in any raster mode, because the window surface is actually GL
     // ... in any color managed mode, because we always make the window surface with no color space
     // ... or if the user explicitly requested offscreen rendering
-    sk_sp<SkSurface> offscreenSurface = nullptr;
+    std::unique_ptr<SkSurface> offscreenSurface = nullptr;
     if (kPerspective_Fake == fPerspectiveMode ||
         fShowZoomWindow ||
         Window::kRaster_BackendType == fBackendType ||

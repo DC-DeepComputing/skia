@@ -28,7 +28,7 @@ public:
 
     virtual ~WindowContext();
 
-    virtual sk_sp<SkSurface> getBackbufferSurface() = 0;
+    virtual SkSurface* getBackbufferSurface() = 0;
 
     virtual void swapBuffers() = 0;
 

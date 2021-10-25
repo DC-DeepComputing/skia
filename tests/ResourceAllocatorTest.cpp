@@ -317,8 +317,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest, reporter, ctxInfo) {
 static void draw(GrRecordingContext* rContext) {
     SkImageInfo ii = SkImageInfo::Make(1024, 1024, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
-                                                     ii, 1, kTopLeft_GrSurfaceOrigin, nullptr);
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(rContext,
+                                                               SkBudgeted::kYes,
+                                                               ii,
+                                                               1,
+                                                               kTopLeft_GrSurfaceOrigin,
+                                                               nullptr);
 
     SkCanvas* c = s->getCanvas();
 

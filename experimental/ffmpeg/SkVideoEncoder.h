@@ -77,7 +77,7 @@ private:
     int64_t         fCurrentPTS, fDeltaPTS;
 
     // Lazily allocated, iff the client has called beginFrame() for a given recording session.
-    sk_sp<SkSurface> fSurface;
+    std::unique_ptr<SkSurface> fSurface;
 
 };
 

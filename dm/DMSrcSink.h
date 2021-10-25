@@ -410,7 +410,7 @@ public:
     }
 
 protected:
-    sk_sp<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
+    std::unique_ptr<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
     bool readBack(SkSurface*, SkBitmap* dst) const;
 
 private:
@@ -485,7 +485,7 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
 
 private:
-    Result ooprDraw(const Src&, sk_sp<SkSurface> dstSurface, GrDirectContext*) const;
+    Result ooprDraw(const Src&, SkSurface* dstSurface, GrDirectContext*) const;
 
     using INHERITED = GPUSink;
 };
@@ -506,7 +506,7 @@ public:
 
 private:
     Result ddlDraw(const Src&,
-                   sk_sp<SkSurface> dstSurface,
+                   SkSurface* dstSurface,
                    SkTaskGroup* recordingTaskGroup,
                    SkTaskGroup* gpuTaskGroup,
                    sk_gpu_test::TestContext* gpuTestCtx,

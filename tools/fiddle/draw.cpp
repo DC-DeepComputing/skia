@@ -38,19 +38,20 @@ void draw(SkCanvas* canvas) {
                                                       nullptr);
 
         constexpr int kSampleCnt = 0;
-        sk_sp<SkSurface> tmp2 = SkSurface::MakeFromBackendTexture(
-                                                            dContext,
-                                                            backEndTextureRenderTarget->texture(),
-                                                            kTopLeft_GrSurfaceOrigin,
-                                                            kSampleCnt,
-                                                            kRGBA_8888_SkColorType,
-                                                            nullptr, nullptr);
+        std::unique_ptr<SkSurface> tmp2 = SkSurface::MakeFromBackendTexture(
+                dContext,
+                backEndTextureRenderTarget->texture(),
+                kTopLeft_GrSurfaceOrigin,
+                kSampleCnt,
+                kRGBA_8888_SkColorType,
+                nullptr, nullptr);
 
         // Note: this surface should only be renderable (i.e., not textureable)
-        sk_sp<SkSurface> tmp3 = SkSurface::MakeFromBackendRenderTarget(dContext,
-                                                                       backEndRenderTarget,
-                                                                       kTopLeft_GrSurfaceOrigin,
-                                                                       kRGBA_8888_SkColorType,
-                                                                       nullptr, nullptr);
+        std::unique_ptr<SkSurface> tmp3 = SkSurface::MakeFromBackendRenderTarget(
+                dContext,
+                backEndRenderTarget,
+                kTopLeft_GrSurfaceOrigin,
+                kRGBA_8888_SkColorType,
+                nullptr, nullptr);
     }
 }

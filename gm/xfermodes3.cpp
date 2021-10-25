@@ -128,7 +128,7 @@ private:
      * than the layer. Because the clip will contain the layer's bounds, no draws will be full-RT.
      * So explicitly create a temporary canvas with dimensions exactly the layer size.
      */
-    sk_sp<SkSurface> makeTempSurface(SkCanvas* baseCanvas, int w, int h) {
+    std::unique_ptr<SkSurface> makeTempSurface(SkCanvas* baseCanvas, int w, int h) {
         SkImageInfo baseInfo = baseCanvas->imageInfo();
         SkImageInfo info = SkImageInfo::Make(w, h, baseInfo.colorType(), baseInfo.alphaType(),
                                              baseInfo.refColorSpace());

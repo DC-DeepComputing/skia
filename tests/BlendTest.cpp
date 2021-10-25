@@ -124,11 +124,12 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(ES2BlendWithNoTexture, reporter, ctxInfo) 
         GrSurfaceOrigin origin = testCase.fOrigin;
 
         // BGRA forces a framebuffer blit on ES2.
-        sk_sp<SkSurface> surface = sk_gpu_test::MakeBackendRenderTargetSurface(context,
-                                                                               kDimensions,
-                                                                               origin,
-                                                                               sampleCnt,
-                                                                               kColorType);
+        std::unique_ptr<SkSurface> surface = sk_gpu_test::MakeBackendRenderTargetSurface(
+                context,
+                kDimensions,
+                origin,
+                sampleCnt,
+                kColorType);
 
         if (!surface && sampleCnt > 1) {
             // Some platforms don't support MSAA.

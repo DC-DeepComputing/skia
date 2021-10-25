@@ -89,7 +89,7 @@ private:
     sk_sp<GrRecordingContext>                   fContext;
     sk_sp<GrRenderTargetProxy>                  fTargetProxy;
     sk_sp<SkDeferredDisplayList::LazyProxyData> fLazyProxyData;
-    sk_sp<SkSurface>                            fSurface;
+    std::unique_ptr<SkSurface>                  fSurface;
 #endif
 };
 

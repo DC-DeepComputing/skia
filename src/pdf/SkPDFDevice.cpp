@@ -979,7 +979,7 @@ void SkPDFDevice::drawFormXObject(SkPDFIndirectReference xObject, SkDynamicMemor
     content->writeText(" Do\n");
 }
 
-sk_sp<SkSurface> SkPDFDevice::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+std::unique_ptr<SkSurface> SkPDFDevice::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
     return SkSurface::MakeRaster(info, &props);
 }
 

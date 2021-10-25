@@ -160,7 +160,7 @@ static void compare_blobs(const SkBitmap& expected, const SkBitmap& actual,
     }
 }
 
-sk_sp<SkSurface> MakeSurface(int width, int height, GrRecordingContext* rContext) {
+std::unique_ptr<SkSurface> MakeSurface(int width, int height, GrRecordingContext* rContext) {
     const SkImageInfo info =
             SkImageInfo::Make(width, height, kN32_SkColorType, kPremul_SkAlphaType);
     return SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info);

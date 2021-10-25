@@ -18,14 +18,15 @@ void draw(SkCanvas* canvas) {
          return;
     }
 
-    sk_sp<SkSurface> gpuSurface = SkSurface::MakeFromBackendTexture(direct,
-                                                                    backEndTexture,
-                                                                    kTopLeft_GrSurfaceOrigin,
-                                                                    0,
-                                                                    kRGBA_8888_SkColorType,
-                                                                    nullptr,
-                                                                    nullptr,
-                                                                    nullptr);
+    std::unique_ptr<SkSurface> gpuSurface = SkSurface::MakeFromBackendTexture(
+            direct,
+            backEndTexture,
+            kTopLeft_GrSurfaceOrigin,
+            0,
+            kRGBA_8888_SkColorType,
+            nullptr,
+            nullptr,
+            nullptr);
     auto surfaceCanvas = gpuSurface->getCanvas();
     surfaceCanvas->drawString("GPU rocks!", 20, 40, font, paint);
     sk_sp<SkImage> image(gpuSurface->makeImageSnapshot());

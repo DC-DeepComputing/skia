@@ -12,7 +12,7 @@
 #include "include/core/SkSurface.h"
 
 class GrMipMapBench: public Benchmark {
-    sk_sp<SkSurface> fSurface;
+    std::unique_ptr<SkSurface> fSurface;
     SkString fName;
     const int fW, fH;
 

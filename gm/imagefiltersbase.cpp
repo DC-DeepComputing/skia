@@ -262,7 +262,7 @@ private:
     static sk_sp<SkImage> create_atlas_image(SkCanvas* canvas) {
         static constexpr SkSize kSize = {64, 64};
         SkImageInfo atlasInfo = SkImageInfo::MakeN32Premul(kSize.fWidth, kSize.fHeight);
-        sk_sp<SkSurface> atlasSurface(ToolUtils::makeSurface(canvas, atlasInfo));
+        std::unique_ptr<SkSurface> atlasSurface = ToolUtils::makeSurface(canvas, atlasInfo);
         SkCanvas* atlasCanvas = atlasSurface->getCanvas();
 
         SkPaint atlasPaint;

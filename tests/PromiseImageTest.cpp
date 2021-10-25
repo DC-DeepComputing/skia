@@ -154,7 +154,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTest, reporter, ctxInfo) {
                                                           &promiseChecker));
 
     SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
     SkCanvas* canvas = surface->getCanvas();
 
     canvas->drawImage(refImg, 0, 0);
@@ -244,7 +244,9 @@ DEF_GPUTEST(PromiseImageTextureShutdown, reporter, ctxInfo) {
 
             SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType,
                                                  kPremul_SkAlphaType);
-            sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
+            std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx,
+                                                                             SkBudgeted::kNo,
+                                                                             info);
             SkCanvas* canvas = surface->getCanvas();
 
             PromiseTextureChecker promiseChecker(mbet->texture(), reporter, false);
@@ -288,7 +290,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache, reporter, ctxIn
 
     SkImageInfo info =
             SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(dContext,
+                                                                     SkBudgeted::kNo,
+                                                                     info);
     SkCanvas* canvas = surface->getCanvas();
 
     PromiseTextureChecker promiseChecker(backendTex, reporter, false);
@@ -384,7 +388,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill, reporter, ctxInfo) {
                                                           &counts));
 
     SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(dContext,
+                                                                     SkBudgeted::kNo,
+                                                                     info);
     SkCanvas* canvas = surface->getCanvas();
     // Draw the image a few different ways.
     canvas->drawImage(refImg, 0, 0);

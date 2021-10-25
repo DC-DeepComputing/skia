@@ -100,7 +100,7 @@ Here is an example program that uses the C api.  To try it out, get the file
         sk_canvas_t* canvas = sk_surface_get_canvas(surface);
         draw(canvas);
         emit_png("skia-c-example.png", surface);
-        sk_surface_unref(surface);
+        sk_surface_delete(surface);
         return 0;
     }
 

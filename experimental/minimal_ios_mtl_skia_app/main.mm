@@ -59,7 +59,7 @@ static void draw_example(SkSurface* surface, const SkPaint& paint, double rotati
     float rotation = (float)(180 * 1e-9 * SkTime::GetNSecs());
 
     // Create surface:
-    sk_sp<SkSurface> surface = SkMtkViewToSurface(view, [self grContext]);
+    std::unique_ptr<SkSurface> surface = SkMtkViewToSurface(view, [self grContext]);
     if (!surface) {
         NSLog(@"error: no sksurface");
         return;

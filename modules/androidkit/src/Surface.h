@@ -40,7 +40,7 @@ public:
     }
 
 protected:
-    sk_sp<SkSurface> fSurface;
+    std::unique_ptr<SkSurface> fSurface;
 };
 
 class WindowSurface final : public Surface {

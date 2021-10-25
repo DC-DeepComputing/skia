@@ -296,7 +296,7 @@ static void draw_dag(SkCanvas* canvas, sk_sp<SkImageFilter> filter,
     // provided CTM during draw_node calls.
     FilterNode dag = build_dag(ctm, rect, filter.get());
 
-    sk_sp<SkSurface> nodeSurface =
+    std::unique_ptr<SkSurface> nodeSurface =
             canvas->makeSurface(canvas->imageInfo().makeDimensions(surfaceSize));
     draw_dag(canvas, nodeSurface.get(), dag);
 

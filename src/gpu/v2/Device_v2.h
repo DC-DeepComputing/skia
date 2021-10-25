@@ -128,7 +128,7 @@ protected:
     /* snapSpecial() */
     sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
     /* setImmutable */
-    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
+    std::unique_ptr<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
     /* onPeekPixels */
     bool onReadPixels(const SkPixmap&, int x, int y) override;
     bool onWritePixels(const SkPixmap&, int x, int y) override;

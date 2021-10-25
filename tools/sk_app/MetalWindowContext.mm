@@ -116,8 +116,8 @@ void MetalWindowContext::destroyContext() {
     fDevice.reset();
 }
 
-sk_sp<SkSurface> MetalWindowContext::getBackbufferSurface() {
-    sk_sp<SkSurface> surface;
+SkSurface* MetalWindowContext::getBackbufferSurface() {
+    std::unique_ptr<SkSurface> surface;
     if (fContext) {
         if (fDisplayParams.fDelayDrawableAcquisition) {
             surface = SkSurface::MakeFromCAMetalLayer(fContext.get(),
@@ -148,7 +148,7 @@ sk_sp<SkSurface> MetalWindowContext::getBackbufferSurface() {
         }
     }
 
-    return surface;
+    return surface.get();
 }
 
 void MetalWindowContext::swapBuffers() {

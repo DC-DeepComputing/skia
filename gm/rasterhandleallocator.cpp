@@ -60,7 +60,7 @@ public:
     SkiaAllocator() {}
 
     bool allocHandle(const SkImageInfo& info, Rec* rec) override {
-        sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
         if (!surface) {
             return false;
         }
@@ -68,7 +68,7 @@ public:
         SkPixmap pixmap;
         canvas->peekPixels(&pixmap);
 
-        rec->fReleaseProc = [](void* pixels, void* ctx){ SkSafeUnref((SkSurface*)ctx); };
+        rec->fReleaseProc = [](void* pixels, void* ctx){ delete (SkSurface*)ctx; };
         rec->fReleaseCtx = surface.release();
         rec->fPixels = pixmap.writable_addr();
         rec->fRowBytes = pixmap.rowBytes();

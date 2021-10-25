@@ -1499,8 +1499,8 @@ Result GPUSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkStri
     return this->onDraw(src, dst, dstStream, log, fBaseContextOptions);
 }
 
-sk_sp<SkSurface> GPUSink::createDstSurface(GrDirectContext* context, SkISize size) const {
-    sk_sp<SkSurface> surface;
+std::unique_ptr<SkSurface> GPUSink::createDstSurface(GrDirectContext* context, SkISize size) const {
+    std::unique_ptr<SkSurface> surface;
 
     SkImageInfo info = SkImageInfo::Make(size, fColorType, fAlphaType, fColorSpace);
     SkSurfaceProps props(fSurfaceFlags, kRGB_H_SkPixelGeometry);
@@ -1564,7 +1564,7 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         return Result::Skip("Src too large to create a texture.\n");
     }
 
-    sk_sp<SkSurface> surface = this->createDstSurface(direct, src.size());
+    std::unique_ptr<SkSurface> surface = this->createDstSurface(direct, src.size());
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
     }
@@ -1726,7 +1726,7 @@ GPUOOPRSink::GPUOOPRSink(const SkCommandLineConfigGpu* config, const GrContextOp
 }
 
 Result GPUOOPRSink::ooprDraw(const Src& src,
-                             sk_sp<SkSurface> dstSurface,
+                             SkSurface* dstSurface,
                              GrDirectContext* context) const {
     SkSurfaceCharacterization dstCharacterization;
     SkAssertResult(dstSurface->characterize(&dstCharacterization));
@@ -1766,12 +1766,12 @@ Result GPUOOPRSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* lo
 
     SkASSERT(context->priv().getGpu());
 
-    sk_sp<SkSurface> surface = this->createDstSurface(context, src.size());
+    std::unique_ptr<SkSurface> surface = this->createDstSurface(context, src.size());
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
     }
 
-    Result result = this->ooprDraw(src, surface, context);
+    Result result = this->ooprDraw(src, surface.get(), context);
     if (!result.isOk()) {
         return result;
     }
@@ -1797,7 +1797,7 @@ GPUDDLSink::GPUDDLSink(const SkCommandLineConfigGpu* config, const GrContextOpti
 }
 
 Result GPUDDLSink::ddlDraw(const Src& src,
-                           sk_sp<SkSurface> dstSurface,
+                           SkSurface* dstSurface,
                            SkTaskGroup* recordingTaskGroup,
                            SkTaskGroup* gpuTaskGroup,
                            sk_gpu_test::TestContext* gpuTestCtx,
@@ -1931,12 +1931,12 @@ Result GPUDDLSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log
     // Make sure 'mainCtx' is current
     mainTestCtx->makeCurrent();
 
-    sk_sp<SkSurface> surface = this->createDstSurface(mainCtx, src.size());
+    std::unique_ptr<SkSurface> surface = this->createDstSurface(mainCtx, src.size());
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
     }
 
-    Result result = this->ddlDraw(src, surface, &recordingTaskGroup, &gpuTaskGroup,
+    Result result = this->ddlDraw(src, surface.get(), &recordingTaskGroup, &gpuTaskGroup,
                                   mainTestCtx, mainCtx);
     if (!result.isOk()) {
         return result;
@@ -2170,7 +2170,7 @@ Result GraphiteSink::draw(const Src& src,
     dst->allocPixels(ii);
 
     {
-        sk_sp<SkSurface> surface = MakeGraphite(recorder, ii);
+        std::unique_ptr<SkSurface> surface = MakeGraphite(recorder, ii);
         if (!surface) {
             return Result::Fatal("Could not create a surface.");
         }

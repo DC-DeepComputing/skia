@@ -101,7 +101,7 @@ private:
 
 // Create a 'width' x 'height' SkSurface that matches the colorType of 'canvas' as
 // best we can
-static sk_sp<SkSurface> make_color_matching_surface(SkCanvas* canvas, int width, int height,
+static std::unique_ptr<SkSurface> make_color_matching_surface(SkCanvas* canvas, int width, int height,
                                                     SkAlphaType at) {
 
     SkColorType ct = canvas->imageInfo().colorType();
@@ -143,7 +143,7 @@ protected:
 
         canvas->concat(matrix);
 
-        sk_sp<SkSurface> surface(make_color_matching_surface(canvas, WIDTH, HEIGHT,
+        std::unique_ptr<SkSurface> surface(make_color_matching_surface(canvas, WIDTH, HEIGHT,
                                                              kPremul_SkAlphaType));
         if (!surface) {
             *errorMsg = "make_color_matching_surface failed";

@@ -19,13 +19,14 @@ static void test(SkCanvas* canvas) {
 }
 
 DEF_TEST(skbug5221, r) {
-    sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::MakeN32Premul(256, 256)));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(SkImageInfo::MakeN32Premul(256, 256));
     test(surface->getCanvas());
 }
 
 DEF_GPUTEST_FOR_ALL_CONTEXTS(skbug5221_GPU, r, contextInfo) {
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(
-            contextInfo.directContext(), SkBudgeted::kYes,
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType)));
+    auto info = SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(contextInfo.directContext(),
+                                                                     SkBudgeted::kYes,
+                                                                     info);
     test(surface->getCanvas());
 }

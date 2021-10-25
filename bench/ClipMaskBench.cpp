@@ -18,9 +18,9 @@
 #include "include/core/SkSurface.h"
 
 class RasterTileBench : public Benchmark {
-    sk_sp<SkSurface> fSurf;
-    SkPath           fPath;
-    SkString       fName;
+    std::unique_ptr<SkSurface> fSurf;
+    SkPath                     fPath;
+    SkString                   fName;
 public:
     RasterTileBench() : fName("rastertile") {
         int W = 2014 * 20;

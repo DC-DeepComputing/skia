@@ -94,14 +94,14 @@ static void test_premul_alpha_roundtrip(skiatest::Reporter* reporter, SkSurface*
 DEF_TEST(PremulAlphaRoundTrip, reporter) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
 
-    sk_sp<SkSurface> surf(SkSurface::MakeRaster(info));
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRaster(info);
 
     test_premul_alpha_roundtrip(reporter, surf.get());
 }
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu, reporter, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
 
-    sk_sp<SkSurface> surf(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
-                                                      SkBudgeted::kNo, info));
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
+                                                                  SkBudgeted::kNo, info);
     test_premul_alpha_roundtrip(reporter, surf.get());
 }

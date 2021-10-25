@@ -167,8 +167,12 @@ public:
             : SkImageGenerator(info)
             , fRContext(SkRef(rContext)) {
 
-        sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, info, 0,
-                                                             kTopLeft_GrSurfaceOrigin, nullptr));
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(rContext,
+                                                                         SkBudgeted::kYes,
+                                                                         info,
+                                                                         0,
+                                                                         kTopLeft_GrSurfaceOrigin,
+                                                                         nullptr);
         if (surface) {
             surface->getCanvas()->clear(0);
             surface->getCanvas()->translate(-100, -100);

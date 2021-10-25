@@ -19,7 +19,7 @@ class RasterWindowContext_android : public RasterWindowContext {
 public:
     RasterWindowContext_android(ANativeWindow*, const DisplayParams& params);
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    std::unique_ptr<SkSurface> getBackbufferSurface() override;
     void swapBuffers() override;
 
     bool isValid() override { return SkToBool(fNativeWindow); }
@@ -28,9 +28,8 @@ public:
 
 private:
     void setBuffersGeometry();
-    sk_sp<SkSurface> fBackbufferSurface = nullptr;
     ANativeWindow* fNativeWindow = nullptr;
-    ANativeWindow_Buffer fBuffer;
+    ANativeWindow_Buffer fBuffer = nullptr;
     ARect fBounds;
 
     using INHERITED = RasterWindowContext;
@@ -71,24 +70,23 @@ void RasterWindowContext_android::resize(int w, int h) {
     this->setBuffersGeometry();
 }
 
-sk_sp<SkSurface> RasterWindowContext_android::getBackbufferSurface() {
-    if (nullptr == fBackbufferSurface) {
+std::unique_ptr<SkSurface> RasterWindowContext_android::getBackbufferSurface() {
+    if (!fBuffer) {
         ANativeWindow_lock(fNativeWindow, &fBuffer, &fBounds);
-        const int bytePerPixel = fBuffer.format == WINDOW_FORMAT_RGB_565 ? 2 : 4;
-        SkImageInfo info = SkImageInfo::Make(fWidth, fHeight,
-                                             fDisplayParams.fColorType,
-                                             kPremul_SkAlphaType,
-                                             fDisplayParams.fColorSpace);
-        fBackbufferSurface = SkSurface::MakeRasterDirect(
-                info, fBuffer.bits, fBuffer.stride * bytePerPixel, nullptr);
     }
-    return fBackbufferSurface;
+    const int bytePerPixel = fBuffer.format == WINDOW_FORMAT_RGB_565 ? 2 : 4;
+    SkImageInfo info = SkImageInfo::Make(fWidth, fHeight,
+                                         fDisplayParams.fColorType,
+                                         kPremul_SkAlphaType,
+                                         fDisplayParams.fColorSpace);
+    return SkSurface::MakeRasterDirect(info, fBuffer.bits, fBuffer.stride * bytePerPixel,
+                                       &fDisplayParams.fSurfaceProps);
 }
 
 
 void RasterWindowContext_android::swapBuffers() {
     ANativeWindow_unlockAndPost(fNativeWindow);
-    fBackbufferSurface.reset(nullptr);
+    fBuffer = nullptr;
 }
 }  // anonymous namespace
 

@@ -211,11 +211,11 @@ sk_sp<SkImage> SkSurface::makeImageSnapshot(const SkIRect& srcBounds) {
     }
 }
 
-sk_sp<SkSurface> SkSurface::makeSurface(const SkImageInfo& info) {
+std::unique_ptr<SkSurface> SkSurface::makeSurface(const SkImageInfo& info) {
     return asSB(this)->onNewSurface(info);
 }
 
-sk_sp<SkSurface> SkSurface::makeSurface(int width, int height) {
+std::unique_ptr<SkSurface> SkSurface::makeSurface(int width, int height) {
     return this->makeSurface(this->imageInfo().makeWH(width, height));
 }
 
@@ -365,7 +365,7 @@ protected:
     SkCanvas* onNewCanvas() override {
         return new SkNoDrawCanvas(this->width(), this->height());
     }
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo& info) override {
+    std::unique_ptr<SkSurface> onNewSurface(const SkImageInfo& info) override {
         return MakeNull(info.width(), info.height());
     }
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subsetOrNull) override { return nullptr; }
@@ -374,28 +374,28 @@ protected:
     void onCopyOnWrite(ContentChangeMode) override {}
 };
 
-sk_sp<SkSurface> SkSurface::MakeNull(int width, int height) {
+std::unique_ptr<SkSurface> SkSurface::MakeNull(int width, int height) {
     if (width < 1 || height < 1) {
         return nullptr;
     }
-    return sk_sp<SkSurface>(new SkNullSurface(width, height));
+    return std::unique_ptr<SkSurface>(new SkNullSurface(width, height));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 #if !SK_SUPPORT_GPU
 
-sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext*, SkBudgeted, const SkImageInfo&,
+std::unique_ptr<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext*, SkBudgeted, const SkImageInfo&,
                                              int, GrSurfaceOrigin, const SkSurfaceProps*, bool) {
     return nullptr;
 }
 
-sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext*, const SkSurfaceCharacterization&,
+std::unique_ptr<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext*, const SkSurfaceCharacterization&,
                                              SkBudgeted) {
     return nullptr;
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext*, const GrBackendTexture&,
+std::unique_ptr<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext*, const GrBackendTexture&,
                                                    GrSurfaceOrigin origin, int sampleCnt,
                                                    SkColorType, sk_sp<SkColorSpace>,
                                                    const SkSurfaceProps*,
@@ -403,7 +403,7 @@ sk_sp<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext*, const Gr
     return nullptr;
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromBackendRenderTarget(GrRecordingContext*,
+std::unique_ptr<SkSurface> SkSurface::MakeFromBackendRenderTarget(GrRecordingContext*,
                                                         const GrBackendRenderTarget&,
                                                         GrSurfaceOrigin origin,
                                                         SkColorType,

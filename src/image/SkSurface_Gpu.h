@@ -29,7 +29,7 @@ public:
                                  ReleaseContext) override;
 
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    std::unique_ptr<SkSurface> onNewSurface(const SkImageInfo&) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     void onAsyncRescaleAndReadPixels(const SkImageInfo& info, const SkIRect& srcRect,

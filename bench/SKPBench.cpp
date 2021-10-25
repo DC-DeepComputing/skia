@@ -29,12 +29,6 @@ SKPBench::SKPBench(const char* name, const SkPicture* pic, const SkIRect& clip, 
     fUniqueName.printf("%s_%.2g", name, scale);  // Scale makes this unqiue for perf.skia.org traces.
 }
 
-SKPBench::~SKPBench() {
-    for (int i = 0; i < fSurfaces.count(); ++i) {
-        fSurfaces[i]->unref();
-    }
-}
-
 const char* SKPBench::onGetName() {
     return fName.c_str();
 }

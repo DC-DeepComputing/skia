@@ -26,7 +26,7 @@
 #import <QuartzCore/CAMetalLayer.h>
 #import <MetalKit/MetalKit.h>
 
-sk_sp<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
+std::unique_ptr<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
                                                  GrMTLHandle layer,
                                                  GrSurfaceOrigin origin,
                                                  int sampleCnt,
@@ -96,7 +96,7 @@ sk_sp<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
     return sk_make_sp<SkSurface_Gpu>(std::move(device));
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromMTKView(GrRecordingContext* rContext,
+std::unique_ptr<SkSurface> SkSurface::MakeFromMTKView(GrRecordingContext* rContext,
                                             GrMTLHandle view,
                                             GrSurfaceOrigin origin,
                                             int sampleCnt,

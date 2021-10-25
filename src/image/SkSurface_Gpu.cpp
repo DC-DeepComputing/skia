@@ -96,7 +96,7 @@ GrBackendRenderTarget SkSurface_Gpu::onGetBackendRenderTarget(BackendHandleAcces
 
 SkCanvas* SkSurface_Gpu::onNewCanvas() { return new SkCanvas(fDevice); }
 
-sk_sp<SkSurface> SkSurface_Gpu::onNewSurface(const SkImageInfo& info) {
+std::unique_ptr<SkSurface> SkSurface_Gpu::onNewSurface(const SkImageInfo& info) {
     GrSurfaceProxyView targetView = fDevice->readSurfaceView();
     int sampleCount = targetView.asRenderTargetProxy()->numSamples();
     GrSurfaceOrigin origin = targetView.origin();
@@ -388,7 +388,7 @@ bool SkSurface_Gpu::onDraw(sk_sp<const SkDeferredDisplayList> ddl, SkIPoint offs
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext,
+std::unique_ptr<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext,
                                              const SkSurfaceCharacterization& c,
                                              SkBudgeted budgeted) {
     if (!rContext || !c.isValid()) {
@@ -412,7 +412,7 @@ sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    sk_sp<SkSurface> result = sk_make_sp<SkSurface_Gpu>(std::move(device));
+    auto result = std::make_unique<SkSurface_Gpu>(std::move(device));
 #ifdef SK_DEBUG
     if (result) {
         SkASSERT(result->isCompatible(c));
@@ -449,7 +449,7 @@ static bool validate_backend_texture(const GrCaps* caps, const GrBackendTexture&
     return true;
 }
 
-sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext, SkBudgeted budgeted,
+std::unique_ptr<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext, SkBudgeted budgeted,
                                              const SkImageInfo& info, int sampleCount,
                                              GrSurfaceOrigin origin, const SkSurfaceProps* props,
                                              bool shouldCreateWithMips) {
@@ -470,10 +470,10 @@ sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext, SkBud
     if (!device) {
         return nullptr;
     }
-    return sk_make_sp<SkSurface_Gpu>(std::move(device));
+    return std::make_unique<SkSurface_Gpu>(std::move(device));
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext* rContext,
+std::unique_ptr<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext* rContext,
                                                    const GrBackendTexture& tex,
                                                    GrSurfaceOrigin origin,
                                                    int sampleCnt,
@@ -513,7 +513,7 @@ sk_sp<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    return sk_make_sp<SkSurface_Gpu>(std::move(device));
+    return std::make_unique<SkSurface_Gpu>(std::move(device));
 }
 
 bool SkSurface_Gpu::onReplaceBackendTexture(const GrBackendTexture& backendTexture,
@@ -592,7 +592,7 @@ bool validate_backend_render_target(const GrCaps* caps, const GrBackendRenderTar
     return true;
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromBackendRenderTarget(GrRecordingContext* rContext,
+std::unique_ptr<SkSurface> SkSurface::MakeFromBackendRenderTarget(GrRecordingContext* rContext,
                                                         const GrBackendRenderTarget& rt,
                                                         GrSurfaceOrigin origin,
                                                         SkColorType colorType,
@@ -629,11 +629,11 @@ sk_sp<SkSurface> SkSurface::MakeFromBackendRenderTarget(GrRecordingContext* rCon
         return nullptr;
     }
 
-    return sk_make_sp<SkSurface_Gpu>(std::move(device));
+    return std::make_unique<SkSurface_Gpu>(std::move(device));
 }
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
-sk_sp<SkSurface> SkSurface::MakeFromAHardwareBuffer(GrDirectContext* dContext,
+std::unique_ptr<SkSurface> SkSurface::MakeFromAHardwareBuffer(GrDirectContext* dContext,
                                                     AHardwareBuffer* hardwareBuffer,
                                                     GrSurfaceOrigin origin,
                                                     sk_sp<SkColorSpace> colorSpace,
@@ -676,7 +676,7 @@ sk_sp<SkSurface> SkSurface::MakeFromAHardwareBuffer(GrDirectContext* dContext,
         SkColorType colorType =
                 GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
 
-        sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(dContext, backendTexture,
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeFromBackendTexture(dContext, backendTexture,
                 origin, 0, colorType, std::move(colorSpace), surfaceProps, deleteImageProc,
                 deleteImageCtx);
 

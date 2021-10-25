@@ -14,8 +14,12 @@ void draw(SkCanvas* ) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(3, 3);
     const size_t rowBytes = info.minRowBytes();
     void* pixels = sk_malloc_throw(info.computeByteSize(rowBytes));
-    sk_sp<SkSurface> surface(SkSurface::MakeRasterDirectReleaseProc(info, pixels, rowBytes,
-            release_direct_surface_storage, pixels));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterDirectReleaseProc(
+            info,
+            pixels,
+            rowBytes,
+            release_direct_surface_storage,
+            pixels);
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorWHITE);
     SkPMColor* colorPtr = (SkPMColor*) pixels;

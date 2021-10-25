@@ -345,7 +345,7 @@ protected:
 
     bool readPixels(const SkPixmap&, int x, int y);
 
-    virtual sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&);
+    virtual std::unique_ptr<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&);
     virtual bool onPeekPixels(SkPixmap*) { return false; }
 
     /**

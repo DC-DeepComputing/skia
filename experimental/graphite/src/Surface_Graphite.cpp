@@ -23,7 +23,7 @@ Surface_Graphite::~Surface_Graphite() {}
 
 SkCanvas* Surface_Graphite::onNewCanvas() { return new SkCanvas(fDevice); }
 
-sk_sp<SkSurface> Surface_Graphite::onNewSurface(const SkImageInfo& ii) {
+std::unique_ptr<SkSurface> Surface_Graphite::onNewSurface(const SkImageInfo& ii) {
     return MakeGraphite(fDevice->refRecorder(), ii);
 }
 

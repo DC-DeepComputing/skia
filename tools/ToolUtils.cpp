@@ -465,7 +465,7 @@ bool equal_pixels(const SkImage* a, const SkImage* b) {
     return imga->peekPixels(&pm0) && imgb->peekPixels(&pm1) && equal_pixels(pm0, pm1);
 }
 
-sk_sp<SkSurface> makeSurface(SkCanvas*             canvas,
+std::unique_ptr<SkSurface> makeSurface(SkCanvas*             canvas,
                              const SkImageInfo&    info,
                              const SkSurfaceProps* props) {
     auto surf = canvas->makeSurface(info, props);

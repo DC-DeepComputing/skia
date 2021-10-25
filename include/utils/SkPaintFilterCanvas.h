@@ -86,7 +86,7 @@ protected:
                                const SkSamplingOptions&,const SkPaint*, SrcRectConstraint) override;
 
     // Forwarded to the wrapped canvas.
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps&) override;
+    std::unique_ptr<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps&) override;
     bool onPeekPixels(SkPixmap* pixmap) override;
     bool onAccessTopLayerPixels(SkPixmap* pixmap) override;
     SkImageInfo onImageInfo() const override;

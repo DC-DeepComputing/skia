@@ -23,7 +23,7 @@
 #include "include/private/SkMalloc.h"
 #include "tools/ToolUtils.h"
 
-static sk_sp<SkSurface> make_surface(SkCanvas* root, int N, int padLeft, int padTop,
+static std::unique_ptr<SkSurface> make_surface(SkCanvas* root, int N, int padLeft, int padTop,
                                      int padRight, int padBottom) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(N + padLeft + padRight, N + padTop + padBottom);
     return ToolUtils::makeSurface(root, info);

@@ -445,7 +445,7 @@ bool MSKPPlayer::playFrame(SkCanvas* canvas, int i) {
     return true;
 }
 
-sk_sp<SkSurface> MSKPPlayer::MakeSurfaceForLayer(const LayerCmds& layer, SkCanvas* rootCanvas) {
+std::unique_ptr<SkSurface> MSKPPlayer::MakeSurfaceForLayer(const LayerCmds& layer, SkCanvas* rootCanvas) {
     // Assume layer has same surface props and info as this (mskp doesn't currently record this
     // data).
     SkSurfaceProps props;

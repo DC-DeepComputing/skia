@@ -51,13 +51,14 @@ public:
 
     virtual sk_sp<SkImage> importHardwareBufferForRead(skiatest::Reporter* reporter,
                                                        AHardwareBuffer* buffer) = 0;
-    virtual sk_sp<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
-                                                          AHardwareBuffer* buffer) = 0;
+    virtual std::unique_ptr<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
+                                                                    AHardwareBuffer* buffer) = 0;
 
     virtual void doClientSync() = 0;
-    virtual bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter, sk_sp<SkSurface>) = 0;
+    virtual bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
+                                                std::unique_ptr<SkSurface>) = 0;
     virtual bool importAndWaitOnSemaphore(skiatest::Reporter* reporter, int fdHandle,
-                                          sk_sp<SkSurface>) = 0;
+                                          std::unique_ptr<SkSurface>) = 0;
 
     virtual void makeCurrent() = 0;
 
@@ -101,13 +102,14 @@ public:
 
     sk_sp<SkImage> importHardwareBufferForRead(skiatest::Reporter* reporter,
                                                AHardwareBuffer* buffer) override;
-    sk_sp<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
-                                                  AHardwareBuffer* buffer) override;
+    std::unique_ptr<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
+                                                            AHardwareBuffer* buffer) override;
 
     void doClientSync() override;
-    bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter, sk_sp<SkSurface>) override;
+    bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
+                                        std::unique_ptr<SkSurface>) override;
     bool importAndWaitOnSemaphore(skiatest::Reporter* reporter, int fdHandle,
-                                  sk_sp<SkSurface>) override;
+                                  std::unique_ptr<SkSurface>) override;
 
     void makeCurrent() override { fGLCtx->makeCurrent(); }
 
@@ -281,8 +283,8 @@ sk_sp<SkImage> EGLTestHelper::importHardwareBufferForRead(skiatest::Reporter* re
     return image;
 }
 
-sk_sp<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter* reporter,
-                                                             AHardwareBuffer* buffer) {
+std::unique_ptr<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter* reporter,
+                                                                       AHardwareBuffer* buffer) {
     if (!this->importHardwareBuffer(reporter, buffer)) {
         return nullptr;
     }
@@ -294,12 +296,13 @@ sk_sp<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter*
     GrBackendTexture backendTex(DEV_W, DEV_H, GrMipmapped::kNo, textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
-    sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(fDirectContext,
-                                                                 backendTex,
-                                                                 kTopLeft_GrSurfaceOrigin,
-                                                                 0,
-                                                                 kRGBA_8888_SkColorType,
-                                                                 nullptr, nullptr);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeFromBackendTexture(
+            fDirectContext,
+            backendTex,
+            kTopLeft_GrSurfaceOrigin,
+            0,
+            kRGBA_8888_SkColorType,
+            nullptr, nullptr);
 
     if (!surface) {
         ERRORF(reporter, "Failed to make wrapped GL SkSurface");
@@ -310,7 +313,7 @@ sk_sp<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter*
 }
 
 bool EGLTestHelper::flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
-                                                      sk_sp<SkSurface> surface) {
+                                                   std::unique_ptr<SkSurface> surface) {
     EGLDisplay eglDisplay = eglGetCurrentDisplay();
     EGLSyncKHR eglsync = fEGLCreateSyncKHR(eglDisplay, EGL_SYNC_NATIVE_FENCE_ANDROID, nullptr);
     if (EGL_NO_SYNC_KHR == eglsync) {
@@ -332,7 +335,7 @@ bool EGLTestHelper::flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
 }
 
 bool EGLTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, int fdHandle,
-                                             sk_sp<SkSurface> surface) {
+                                             std::unique_ptr<SkSurface> surface) {
     EGLDisplay eglDisplay = eglGetCurrentDisplay();
     EGLint attr[] = {
         EGL_SYNC_NATIVE_FENCE_FD_ANDROID, fdHandle,
@@ -443,15 +446,16 @@ public:
         fDirectContext->submit(true);
     }
 
-    bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter, sk_sp<SkSurface>) override;
+    bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
+                                        std::unique_ptr<SkSurface>) override;
     bool importAndWaitOnSemaphore(skiatest::Reporter* reporter, int fdHandle,
-                                  sk_sp<SkSurface>) override;
+                                  std::unique_ptr<SkSurface>) override;
 
     sk_sp<SkImage> importHardwareBufferForRead(skiatest::Reporter* reporter,
                                                AHardwareBuffer* buffer) override;
 
-    sk_sp<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
-                                                  AHardwareBuffer* buffer) override;
+    std::unique_ptr<SkSurface> importHardwareBufferForWrite(skiatest::Reporter* reporter,
+                                                            AHardwareBuffer* buffer) override;
 
     void makeCurrent() override {}
 
@@ -826,7 +830,7 @@ sk_sp<SkImage> VulkanTestHelper::importHardwareBufferForRead(skiatest::Reporter*
 }
 
 bool VulkanTestHelper::flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
-                                                      sk_sp<SkSurface> surface) {
+                                                      std::unique_ptr<SkSurface> surface) {
     surface->flushAndSubmit();
     surface.reset();
     GrBackendSemaphore semaphore;
@@ -926,7 +930,7 @@ bool VulkanTestHelper::exportSemaphore(skiatest::Reporter* reporter,
 }
 
 bool VulkanTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, int fdHandle,
-                                                sk_sp<SkSurface> surface) {
+                                                std::unique_ptr<SkSurface> surface) {
     VkSemaphoreCreateInfo semaphoreInfo;
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     semaphoreInfo.pNext = nullptr;
@@ -963,8 +967,9 @@ bool VulkanTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, in
     return true;
 }
 
-sk_sp<SkSurface> VulkanTestHelper::importHardwareBufferForWrite(skiatest::Reporter* reporter,
-                                                                AHardwareBuffer* buffer) {
+std::unique_ptr<SkSurface> VulkanTestHelper::importHardwareBufferForWrite(
+        skiatest::Reporter* reporter,
+        AHardwareBuffer* buffer) {
     GrVkImageInfo imageInfo;
     if (!this->importHardwareBuffer(reporter, buffer, true, &imageInfo)) {
         return nullptr;
@@ -972,12 +977,12 @@ sk_sp<SkSurface> VulkanTestHelper::importHardwareBufferForWrite(skiatest::Report
 
     GrBackendTexture backendTex(DEV_W, DEV_H, imageInfo);
 
-    sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(fDirectContext.get(),
-                                                                 backendTex,
-                                                                 kTopLeft_GrSurfaceOrigin,
-                                                                 0,
-                                                                 kRGBA_8888_SkColorType,
-                                                                 nullptr, nullptr);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeFromBackendTexture(fDirectContext.get(),
+                                                                           backendTex,
+                                                                           kTopLeft_GrSurfaceOrigin,
+                                                                           0,
+                                                                           kRGBA_8888_SkColorType,
+                                                                           nullptr, nullptr);
 
     if (!surface.get()) {
         ERRORF(reporter, "Failed to create wrapped Vulkan SkSurface");
@@ -1196,7 +1201,8 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
 
     } else {
         srcHelper->makeCurrent();
-        sk_sp<SkSurface> surface = srcHelper->importHardwareBufferForWrite(reporter, buffer);
+        std::unique_ptr<SkSurface> surface = srcHelper->importHardwareBufferForWrite(reporter,
+                                                                                     buffer);
 
         if (!surface) {
             cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
@@ -1253,10 +1259,10 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
                                               kPremul_SkAlphaType, nullptr);
 
-    sk_sp<SkSurface> dstSurf = SkSurface::MakeRenderTarget(direct,
-                                                           SkBudgeted::kNo, imageInfo, 0,
-                                                           kTopLeft_GrSurfaceOrigin,
-                                                           nullptr, false);
+    std::unique_ptr<SkSurface> dstSurf = SkSurface::MakeRenderTarget(direct,
+                                                                     SkBudgeted::kNo, imageInfo, 0,
+                                                                     kTopLeft_GrSurfaceOrigin,
+                                                                     nullptr, false);
     if (!dstSurf.get()) {
         ERRORF(reporter, "Failed to create destination SkSurface");
         wrappedImage.reset();

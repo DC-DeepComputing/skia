@@ -13,7 +13,7 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "tests/Test.h"
 
-static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
+static SkBitmap read_pixels(const std::unique_ptr<SkSurface>& surface, SkColor initColor) {
     SkBitmap bmp;
     bmp.allocN32Pixels(surface->width(), surface->height());
     bmp.eraseColor(initColor);
@@ -23,7 +23,7 @@ static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
     return bmp;
 }
 
-static sk_sp<SkSurface> make_surface(GrRecordingContext* rContext) {
+static std::unique_ptr<SkSurface> make_surface(GrRecordingContext* rContext) {
     SkImageInfo info = SkImageInfo::Make(50, 50, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     return SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info, 4,
                                        kBottomLeft_GrSurfaceOrigin, nullptr);

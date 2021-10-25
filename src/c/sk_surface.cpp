@@ -392,8 +392,8 @@ sk_surface_t* sk_surface_new_raster_direct(const sk_imageinfo_t* cinfo, void* pi
     return (sk_surface_t*)SkSurface::MakeRasterDirect(*info, pixels, rowBytes, &surfProps).release();
 }
 
-void sk_surface_unref(sk_surface_t* csurf) {
-    SkSafeUnref((SkSurface*)csurf);
+void sk_surface_delete(sk_surface_t* csurf) {
+    delete (SkSurface*)csurf;
 }
 
 sk_canvas_t* sk_surface_get_canvas(sk_surface_t* csurf) {

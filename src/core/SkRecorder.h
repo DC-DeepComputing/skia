@@ -117,7 +117,7 @@ public:
                                const SkSamplingOptions&, const SkPaint*,
                                SrcRectConstraint) override;
 
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps&) override;
+    std::unique_ptr<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps&) override;
 
     void flushMiniRecorder();
 

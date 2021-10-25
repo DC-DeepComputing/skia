@@ -344,7 +344,7 @@ public:
         return true;
     }
 
-    bool checkImage(skiatest::Reporter* reporter, sk_sp<SkSurface> s) {
+    bool checkImage(skiatest::Reporter* reporter, const std::unique_ptr<SkSurface>& s) {
         SkBitmap actual;
 
         actual.allocPixels(default_ii(kImageWH));
@@ -372,9 +372,9 @@ public:
     }
 
     bool checkImage(skiatest::Reporter* reporter, sk_sp<SkDeferredDisplayList> ddl) {
-        sk_sp<SkSurface> tmp = SkSurface::MakeRenderTarget(fDContext,
-                                                           SkBudgeted::kNo,
-                                                           default_ii(kImageWH));
+        std::unique_ptr<SkSurface> tmp = SkSurface::MakeRenderTarget(fDContext,
+                                                                     SkBudgeted::kNo,
+                                                                     default_ii(kImageWH));
         if (!tmp) {
             return false;
         }
@@ -409,7 +409,7 @@ private:
     GrDirectContext* fDContext = nullptr;
     GrThreadSafeCache::IsNewerBetter fIsNewerBetter;
 
-    sk_sp<SkSurface> fDst;
+    std::unique_ptr<SkSurface> fDst;
     std::unique_ptr<SkDeferredDisplayListRecorder> fRecorder1;
     std::unique_ptr<SkDeferredDisplayListRecorder> fRecorder2;
 };

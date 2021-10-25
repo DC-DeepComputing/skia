@@ -64,7 +64,7 @@ public:
     // already been mapped from the content rect by the non-virtual asImage().
     virtual sk_sp<SkImage> onAsImage(const SkIRect* subset) const = 0;
 
-    virtual sk_sp<SkSurface> onMakeTightSurface(
+    virtual std::unique_ptr<SkSurface> onMakeTightSurface(
             SkColorType colorType, const SkColorSpace* colorSpace,
             const SkISize& size, SkAlphaType at) const = 0;
 
@@ -118,7 +118,7 @@ sk_sp<SkSpecialSurface> SkSpecialImage::makeSurface(
     return as_SIB(this)->onMakeSurface(colorType, colorSpace, size, at, props);
 }
 
-sk_sp<SkSurface> SkSpecialImage::makeTightSurface(
+std::unique_ptr<SkSurface> SkSpecialImage::makeTightSurface(
         SkColorType colorType, const SkColorSpace* colorSpace, const SkISize& size,
         SkAlphaType at) const {
     return as_SIB(this)->onMakeTightSurface(colorType, colorSpace, size, at);
@@ -252,7 +252,7 @@ public:
         return fBitmap.asImage();
     }
 
-sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
+    std::unique_ptr<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
                                         const SkISize& size, SkAlphaType at) const override {
         // Ignore the requested color type, the raster backend currently only supports N32
         colorType = kN32_SkColorType;   // TODO: find ways to allow f16
@@ -438,7 +438,7 @@ public:
         return wrap_proxy_in_image(fContext, fView, this->colorType(), fAlphaType, fColorSpace);
     }
 
-    sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
+    std::unique_ptr<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
                                         const SkISize& size, SkAlphaType at) const override {
         // TODO (michaelludwig): Why does this ignore colorType but onMakeSurface doesn't ignore it?
         //    Once makeTightSurface() goes away, should this type overriding behavior be moved into

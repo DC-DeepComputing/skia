@@ -19,7 +19,7 @@ struct TimingSample : public Sample {
     SkString name() override { return SkString("Timing"); }
 
     void onOnceBeforeDraw() override {
-        sk_sp<SkSurface> surf = SkSurface::MakeRasterN32Premul(W,H);
+        std::unique_ptr<SkSurface> surf = SkSurface::MakeRasterN32Premul(W,H);
         surf->getCanvas()->drawString("abc", 2,H-4, SkFont{}, SkPaint{});
         fImg = surf->makeImageSnapshot();
     }
@@ -66,7 +66,7 @@ struct TimingSample : public Sample {
 
         // Draw each pixel into offscreen, timing each draw.
         SkImageInfo info = canvas->imageInfo().makeWH(1024,1024);
-        if (sk_sp<SkSurface> offscreen = canvas->makeSurface(info)) {
+        if (std::unique_ptr<SkSurface> offscreen = canvas->makeSurface(info)) {
             min = +INFINITY;
             max = -INFINITY;
             for (int y = 0; y < H; y++)

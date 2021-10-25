@@ -122,8 +122,9 @@ static void test_image(const sk_sp<SkSpecialImage>& img, skiatest::Reporter* rep
         REPORTER_ASSERT(reporter, isGPUBacked != !!tightImg->peekPixels(&tmpPixmap));
     }
     {
-        sk_sp<SkSurface> tightSurf(img->makeTightSurface(kN32_SkColorType, img->getColorSpace(),
-                                                         subset.size()));
+        std::unique_ptr<SkSurface> tightSurf = img->makeTightSurface(kN32_SkColorType,
+                                                                     img->getColorSpace(),
+                                                                     subset.size());
 
         REPORTER_ASSERT(reporter, tightSurf->width() == subset.width());
         REPORTER_ASSERT(reporter, tightSurf->height() == subset.height());

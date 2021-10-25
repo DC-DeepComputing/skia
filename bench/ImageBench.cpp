@@ -56,9 +56,9 @@ protected:
     }
 
 private:
-    SkString                fName;
-    sk_sp<SkImage>   fImage;
-    sk_sp<SkSurface> fRasterSurface;
+    SkString                   fName;
+    sk_sp<SkImage>             fImage;
+    std::unique_ptr<SkSurface> fRasterSurface;
 
     using INHERITED = Benchmark;
 };

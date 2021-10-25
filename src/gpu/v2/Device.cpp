@@ -335,7 +335,7 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
     return nullptr;
 }
 
-sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii,
+std::unique_ptr<SkSurface> Device::makeSurface(const SkImageInfo& ii,
                                      const SkSurfaceProps& props) {
     ASSERT_SINGLE_OWNER
     return nullptr;

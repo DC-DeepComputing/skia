@@ -55,9 +55,10 @@ DEF_GPUTEST(VkYCbcrSampler_DrawImageWithYcbcrSampler, reporter, options) {
         return;
     }
 
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(
-            testHelper.directContext(), SkBudgeted::kNo,
-            SkImageInfo::Make(kImageWidth, kImageHeight, kN32_SkColorType, kPremul_SkAlphaType));
+    auto info = SkImageInfo::Make(kImageWidth, kImageHeight, kN32_SkColorType, kPremul_SkAlphaType);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(testHelper.directContext(),
+                                                                     SkBudgeted::kNo,
+                                                                     info);
     if (!surface) {
         ERRORF(reporter, "Failed to create target SkSurface");
         return;

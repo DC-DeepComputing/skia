@@ -250,7 +250,7 @@ sk_sp<SkData> Request::getJsonOpsTask() {
 
 sk_sp<SkData> Request::getJsonInfo(int n) {
     // drawTo
-    sk_sp<SkSurface> surface(this->createCPUSurface());
+    std::unique_ptr<SkSurface> surface(this->createCPUSurface());
     SkCanvas* canvas = surface->getCanvas();
 
     // TODO this is really slow and we should cache the matrix and clip

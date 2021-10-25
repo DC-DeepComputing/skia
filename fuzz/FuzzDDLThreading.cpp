@@ -95,7 +95,7 @@ private:
     Fuzz* fFuzz = nullptr;
     GrDirectContext* fContext = nullptr;
     SkAutoTArray<PromiseImageInfo> fPromiseImages{kPromiseImageCount};
-    sk_sp<SkSurface> fSurface;
+    std::unique_ptr<SkSurface> fSurface;
     SkSurfaceCharacterization fSurfaceCharacterization;
     std::unique_ptr<SkExecutor> fGpuExecutor = SkExecutor::MakeFIFOThreadPool(1, false);
     std::unique_ptr<SkExecutor> fRecordingExecutor =

@@ -915,7 +915,9 @@ static void test_cross_context_image(skiatest::Reporter* reporter, const GrConte
         }
 
         SkImageInfo info = SkImageInfo::MakeN32Premul(128, 128);
-        sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, info);
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(dContext,
+                                                                         SkBudgeted::kNo,
+                                                                         info);
         if (!surface) {
             ERRORF(reporter, "SkSurface::MakeRenderTarget failed for %s.", testName);
             continue;
@@ -1200,7 +1202,7 @@ DEF_TEST(Image_ColorSpace, r) {
     image = bitmap.asImage();
     REPORTER_ASSERT(r, SkColorSpace::Equals(rec2020.get(), image->colorSpace()));
 
-    sk_sp<SkSurface> surface = SkSurface::MakeRaster(
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(
             SkImageInfo::MakeN32Premul(SkISize::Make(10, 10)));
     image = surface->makeImageSnapshot();
     REPORTER_ASSERT(r, nullptr == image->colorSpace());
@@ -1346,7 +1348,7 @@ DEF_TEST(ImageScalePixels, reporter) {
 
     // Test raster image
     SkImageInfo info = SkImageInfo::MakeN32Premul(1, 1);
-    sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
     surface->getCanvas()->clear(red);
     sk_sp<SkImage> rasterImage = surface->makeImageSnapshot();
     test_scale_pixels(reporter, rasterImage.get(), pmRed);
@@ -1362,8 +1364,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageScalePixels_Gpu, reporter, ctxInfo) {
     const SkColor red = SK_ColorRED;
 
     SkImageInfo info = SkImageInfo::MakeN32Premul(16, 16);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
-                                                           SkBudgeted::kNo, info);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
+                                                                     SkBudgeted::kNo, info);
     surface->getCanvas()->clear(red);
     sk_sp<SkImage> gpuImage = surface->makeImageSnapshot();
     test_scale_pixels(reporter, gpuImage.get(), pmRed);

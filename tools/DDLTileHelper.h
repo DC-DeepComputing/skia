@@ -76,7 +76,7 @@ public:
         static void DeleteBackendTexture(GrDirectContext*, TileData*);
 
     private:
-        sk_sp<SkSurface> makeWrappedTileDest(GrRecordingContext* context);
+        std::unique_ptr<SkSurface> makeWrappedTileDest(GrRecordingContext* context);
 
         sk_sp<PromiseImageCallbackContext> refCallbackContext() { return fCallbackContext; }
 
@@ -93,7 +93,7 @@ public:
         // after 'fDisplayList' has been flushed (bc it owns the proxy the DDL's destination
         // trampoline points at).
         // TODO: fix the ref-order so we don't need 'fTileSurface' here
-        sk_sp<SkSurface>              fTileSurface;
+        std::unique_ptr<SkSurface>    fTileSurface;
 
         sk_sp<SkDeferredDisplayList>  fDisplayList;
     };

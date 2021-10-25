@@ -21,7 +21,7 @@ class RasterWindowContext_win : public RasterWindowContext {
 public:
     RasterWindowContext_win(HWND, const DisplayParams&);
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
     void swapBuffers() override;
     bool isValid() override { return SkToBool(fWnd); }
     void resize(int w, int h) override;
@@ -29,7 +29,7 @@ public:
 
 protected:
     SkAutoMalloc fSurfaceMemory;
-    sk_sp<SkSurface> fBackbufferSurface;
+    std::unique_ptr<SkSurface> fBackbufferSurface;
     HWND fWnd;
 
 private:
@@ -72,7 +72,7 @@ void RasterWindowContext_win::resize(int w, int h) {
     fBackbufferSurface = SkSurface::MakeRasterDirect(info, pixels, sizeof(uint32_t) * w);
 }
 
-sk_sp<SkSurface> RasterWindowContext_win::getBackbufferSurface() { return fBackbufferSurface; }
+SkSurface* RasterWindowContext_win::getBackbufferSurface() { return fBackbufferSurface.get(); }
 
 void RasterWindowContext_win::swapBuffers() {
     BITMAPINFO* bmpInfo = reinterpret_cast<BITMAPINFO*>(fSurfaceMemory.get());

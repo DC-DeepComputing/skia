@@ -67,7 +67,7 @@ void DawnWindowContext::destroyContext() {
     fDevice = nullptr;
 }
 
-sk_sp<SkSurface> DawnWindowContext::getBackbufferSurface() {
+SkSurface* DawnWindowContext::getBackbufferSurface() {
     GrDawnRenderTargetInfo rtInfo;
     rtInfo.fTextureView = fSwapChain.GetCurrentTextureView();
     rtInfo.fFormat = fSwapChainFormat;
@@ -80,7 +80,7 @@ sk_sp<SkSurface> DawnWindowContext::getBackbufferSurface() {
                                                       fDisplayParams.fColorType,
                                                       fDisplayParams.fColorSpace,
                                                       &fDisplayParams.fSurfaceProps);
-    return fSurface;
+    return fSurface.get();
 }
 
 void DawnWindowContext::swapBuffers() {

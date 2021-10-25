@@ -284,7 +284,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Canvas_makeSurface
     */
-    sk_sp<SkSurface> makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
+    std::unique_ptr<SkSurface> makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
 
     /** Returns GPU context of the GPU surface associated with SkCanvas.
 
@@ -2174,7 +2174,7 @@ public:
 
 protected:
     // default impl defers to getDevice()->newSurface(info)
-    virtual sk_sp<SkSurface> onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props);
+    virtual std::unique_ptr<SkSurface> onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props);
 
     // default impl defers to its device
     virtual bool onPeekPixels(SkPixmap* pixmap);

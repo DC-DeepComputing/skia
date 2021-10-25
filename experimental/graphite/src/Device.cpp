@@ -65,7 +65,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     return Make(fRecorder, info.fInfo).release();
 }
 
-sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {
+std::unique_ptr<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {
     return MakeGraphite(fRecorder, ii);
 }
 

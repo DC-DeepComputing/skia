@@ -624,7 +624,7 @@ sk_sp<SkSpecialImage> SkBitmapDevice::snapSpecial(const SkIRect& bounds, bool fo
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSurface> SkBitmapDevice::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+std::unique_ptr<SkSurface> SkBitmapDevice::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
     return SkSurface::MakeRaster(info, &props);
 }
 
