@@ -36,8 +36,8 @@ void CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
     }
 }
 
-void CommandBuffer::setRenderPipeline(sk_sp<RenderPipeline> renderPipeline) {
-    this->onSetRenderPipeline(renderPipeline);
+void CommandBuffer::bindRenderPipeline(sk_sp<RenderPipeline> renderPipeline) {
+    this->onBindRenderPipeline(renderPipeline);
     this->trackResource(std::move(renderPipeline));
     fHasWork = true;
 }

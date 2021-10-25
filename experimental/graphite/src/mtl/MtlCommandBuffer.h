@@ -47,13 +47,13 @@ private:
     void onBeginRenderPass(const RenderPassDesc&) override;
     void endRenderPass() override;
 
-    void onSetRenderPipeline(sk_sp<skgpu::RenderPipeline>&) override;
+    void onBindRenderPipeline(const sk_sp<skgpu::RenderPipeline>&) override;
 
     void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) override;
 
-    void onCopyTextureToBuffer(sk_sp<skgpu::Texture>,
+    void onCopyTextureToBuffer(const sk_sp<skgpu::Texture>&,
                                SkIRect srcRect,
-                               sk_sp<skgpu::Buffer>,
+                               const sk_sp<skgpu::Buffer>&,
                                size_t bufferOffset,
                                size_t bufferRowBytes) override;
 
