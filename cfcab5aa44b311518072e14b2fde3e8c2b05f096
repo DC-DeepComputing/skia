@@ -140,6 +140,30 @@
       },
       "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c372f3_352f77de",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T20:46:10Z",
+      "side": 1,
+      "message": "\u003e\u003e Is StencilFan the triangle-only vertex shader that renders the middle-out triangulation of the path\u0027s inner vertices?\n\nYep. Also agreed with the 3-step plan. lgtm",
+      "parentUuid": "575b055e_e88180cc",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
