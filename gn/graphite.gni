@@ -42,6 +42,7 @@ skia_graphite_sources = [
   "$_src/Recorder.h",
   "$_src/Recording.cpp",
   "$_src/Recording.h",
+  "$_src/Renderer.h",
   "$_src/RenderPassTask.cpp",
   "$_src/RenderPassTask.h",
   "$_src/RenderPipeline.cpp",
@@ -72,6 +73,7 @@ skia_graphite_sources = [
   "$_src/geom/Shape.h",
   "$_src/geom/Transform.cpp",
   "$_src/geom/Transform_graphite.h",
+  "$_src/render/StrokeAndFillPathRenderer.cpp"
 ]
 
 skia_graphite_mtl_sources = [
