@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24ea37b_5153a599",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T21:02:15Z",
+      "side": 1,
+      "message": "was this supposed to be a newline?",
+      "range": {
+        "startLine": 75,
+        "startChar": 83,
+        "endLine": 75,
+        "endChar": 87
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b59279_98f0de72",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T21:02:15Z",
+      "side": 1,
+      "message": "I think this is a little hard to read because I don\u0027t know that clip.fOrder is a CompressedPaintersOrder. Can we rename fOrder to fPaintersOrder? Or maybe \"order.dependsOnPaintersOrder()\"",
+      "range": {
+        "startLine": 202,
+        "startChar": 10,
+        "endLine": 202,
+        "endChar": 19
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0634c522_a39d541d",
+        "filename": "experimental/graphite/src/DrawOrder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T21:02:15Z",
+      "side": 1,
+      "message": "Is the purpose of this template just for type safety between PaintersDepth and DisjointStencilIndex? I\u0027m wondering where this can be an issue, and if we could also use something like more specific function names in cases where these might be accidentally mixed up.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 27
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a582b28e_d443fb55",
+        "filename": "experimental/graphite/src/DrawOrder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T21:02:15Z",
+      "side": 1,
+      "message": "usesStencil() seems like a question that should return bool when I read. What about dependsOnStencil() to match above?",
+      "range": {
+        "startLine": 148,
+        "startChar": 15,
+        "endLine": 148,
+        "endChar": 26
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
