@@ -11,6 +11,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 
+#include "experimental/graphite/src/DrawList.h"
 #include "experimental/graphite/src/DrawOrder.h"
 
 #include <vector>
@@ -21,12 +22,9 @@ class BoundsManager;
 class Shape;
 class Transform;
 
-class DrawList;
 class DrawPass;
 class Task;
-
-struct PaintParams;
-struct StrokeParams;
+class TextureProxy;
 
 /**
  * DrawContext records draw commands into a specific Surface, via a general task graph
@@ -34,13 +32,17 @@ struct StrokeParams;
  */
 class DrawContext final : public SkRefCnt {
 public:
-    static sk_sp<DrawContext> Make(const SkImageInfo&);
+    static sk_sp<DrawContext> Make(sk_sp<TextureProxy> target,
+                                   sk_sp<SkColorSpace> colorSpace,
+                                   SkColorType colorType,
+                                   SkAlphaType alphaType);
 
     ~DrawContext() override;
 
-    const SkImageInfo& imageInfo() { return fImageInfo; }
+    const SkImageInfo&  imageInfo() const { return fImageInfo;    }
+    const TextureProxy* target()    const { return fTarget.get(); }
 
-    int pendingDrawCount() const { return fPendingDraws->count(); }
+    int pendingDrawCount() const { return fPendingDraws->drawCount(); }
 
     // TODO: need color/depth clearing functions (so DCL will probably need those too)
 
@@ -86,8 +88,9 @@ public:
     sk_sp<Task> snapRenderPassTask(const BoundsManager* occlusionCuller);
 
 private:
-    DrawContext(const SkImageInfo&);
+    DrawContext(sk_sp<TextureProxy>, const SkImageInfo&);
 
+    sk_sp<TextureProxy> fTarget;
     SkImageInfo fImageInfo;
 
     // Stores the most immediately recorded draws into the SDC's surface. This list is mutable and
