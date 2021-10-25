@@ -37,7 +37,7 @@ using AAMode = skgpu::v1::DashOp::AAMode;
 static const int kAAModeCnt = static_cast<int>(skgpu::v1::DashOp::AAMode::kCoverageWithMSAA) + 1;
 #endif
 
-namespace skgpu::v1::DashOp {
+namespace skgpu::v1::DashOp {  // namespace DashOp
 
 namespace {
 
