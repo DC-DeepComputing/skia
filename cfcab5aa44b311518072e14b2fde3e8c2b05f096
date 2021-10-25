@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7b53ab3_c46c3e3b",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-25T20:07:08Z",
+      "side": 1,
+      "message": "Maybe add some notes here about future plans to share buffers between RenderSteps?",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 25
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
