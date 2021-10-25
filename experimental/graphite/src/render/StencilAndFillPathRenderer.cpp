@@ -20,8 +20,9 @@ public:
     ~StencilWedgesRenderStep() override {}
 
     const char* name()            const override { return "stencil-wedges"; }
-    bool        requiresStencil() const override { return true; }
-    bool        requiresMSAA()    const override { return true; }
+    bool        requiresStencil() const override { return true;  }
+    bool        requiresMSAA()    const override { return true;  }
+    bool        performsShading() const override { return false; }
 
 private:
 };
@@ -35,8 +36,9 @@ public:
     ~FillBoundsRenderStep() override {}
 
     const char* name()            const override { return "fill-bounds"; }
-    bool        requiresStencil() const override { return true; }
+    bool        requiresStencil() const override { return true;  }
     bool        requiresMSAA()    const override { return false; }
+    bool        performsShading() const override { return false; }
 
 private:
 };
