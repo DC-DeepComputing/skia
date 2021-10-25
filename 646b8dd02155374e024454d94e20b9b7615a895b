@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ee0e011_40936931",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-25T22:22:42Z",
+      "side": 1,
+      "message": "const Buffer*?",
+      "range": {
+        "startLine": 90,
+        "startChar": 37,
+        "endLine": 90,
+        "endChar": 51
+      },
+      "revId": "646b8dd02155374e024454d94e20b9b7615a895b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
