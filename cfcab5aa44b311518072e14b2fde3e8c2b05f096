@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a95300b9_077e11f9",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T20:39:26Z",
+      "side": 1,
+      "message": "Done, noted it in the TODOs list for Renderstep.",
+      "parentUuid": "f7b53ab3_c46c3e3b",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 25
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f0ecd8a_fba98786",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6c8d65_4e9109f1",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T20:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f0ecd8a_fba98786",
+      "range": {
+        "startLine": 90,
+        "startChar": 47,
+        "endLine": 90,
+        "endChar": 48
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fedf3e3_ba6c5044",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-25T20:10:18Z",
       "side": 1,
       "message": "Why not just do\n\nStencilFanRenderStep?\n\nIt will be fast to implement, and we need it for the non-wedge case anyway:\n\n StencilFan\n StencilCurves\n FillBounds\n \n(For a sprint to get pixels on the screen, we can just do StencilFan, FillBounds)",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "575b055e_e88180cc",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T20:39:26Z",
+      "side": 1,
+      "message": "Is StencilFan the triangle-only vertex shader that renders the middle-out triangulation of the path\u0027s inner vertices?\n\nI had figured a two step algorithm would be simplest, and this was written before the decision today to just flatten the paths at first. Presumably, with flattening, if we first test a bbox renderer (which will just be FillBounds), then add StencilFan (which will be flattened paths), and then add StencilCurves to get the full path rendering?\n\nI\u0027ve updated the classes in here to be StencilFanRenderStep, StencilCurvesRenderStep, and FillBoundsRenderStep. The 2 stencil steps are commented out and the renderer only does bounds filing for now. Then we can implement the other two steps as we have time.",
+      "parentUuid": "5fedf3e3_ba6c5044",
       "range": {
         "startLine": 16,
         "startChar": 6,
