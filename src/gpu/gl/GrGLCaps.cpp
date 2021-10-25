@@ -4107,6 +4107,8 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
             ctxInfo.driver() == GrGLDriver::kIntel && GR_IS_GR_GL_ES(ctxInfo.standard());
 #endif
 
+    formatWorkarounds->fDisableBGRATextureStorageForIntelWindowsES = true;
+
     // On the Intel Iris 6100, interacting with LUM16F seems to confuse the driver. After
     // writing to/reading from a LUM16F texture reads from/writes to other formats behave
     // erratically.
