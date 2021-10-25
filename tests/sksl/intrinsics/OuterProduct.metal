@@ -39,8 +39,8 @@ thread bool operator!=(const float2x2 left, const float2x2 right) {
     return !(left == right);
 }
 
-template <int C, int R>
-matrix<float, C, R> outerProduct(const vec<float, R> a, const vec<float, C> b) {
+template <typename T, int C, int R>
+matrix<T, C, R> outerProduct(const vec<T, R> a, const vec<T, C> b) {
     matrix<float, C, R> result;
     for (int c = 0; c < C; ++c) {
         result[c] = a * b[c];
