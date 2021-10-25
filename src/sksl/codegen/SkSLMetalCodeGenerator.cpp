@@ -148,7 +148,7 @@ void MetalCodeGenerator::writeExpression(const Expression& expr, Precedence pare
             this->writeAnyConstructor(expr.asAnyConstructor(), "{", "}", parentPrecedence);
             break;
         case Expression::Kind::kConstructorArrayCast:
-            this->writeExpression(*expr.as<ConstructorArrayCast>().argument(), parentPrecedence);
+            this->writeConstructorArrayCast(expr.as<ConstructorArrayCast>(), parentPrecedence);
             break;
         case Expression::Kind::kConstructorCompound:
             this->writeConstructorCompound(expr.as<ConstructorCompound>(), parentPrecedence);
@@ -1155,6 +1155,42 @@ void MetalCodeGenerator::writeConstructorCompound(const ConstructorCompound& c,
     } else {
         fContext.fErrors->error(c.fLine, "unsupported compound constructor");
     }
+}
+
+void MetalCodeGenerator::writeConstructorArrayCast(const ConstructorArrayCast& c,
+                                                   Precedence parentPrecedence) {
+    int arraySize = c.type().columns();
+    const Type& inType = c.argument()->type().componentType();
+    const Type& outType = c.type().componentType();
+    String inTypeName = this->typeName(inType);
+    String outTypeName = this->typeName(outType);
+
+    String name = "array_of_" + to_string(arraySize) + "x_" + outTypeName + "_from_" + inTypeName;
+    if (fHelpers.find(name) == fHelpers.end()) {
+        fHelpers.insert(name);
+
+        fExtraFunctions.printf(R"(
+array<%s, %d> %s(thread const array<%s, %d>& x) {
+    return array<%s, %d>{)",
+                               outTypeName.c_str(), arraySize,
+                               name.c_str(),
+                               inTypeName.c_str(), arraySize,
+                               outTypeName.c_str(), arraySize);
+
+        const char* separator = "";
+        for (int index = 0; index < arraySize; ++index) {
+            fExtraFunctions.printf("%s%s(x[%d])", separator, outTypeName.c_str(), index);
+            separator = ", ";
+        }
+        fExtraFunctions.printf(R"(};
+}
+)");
+    }
+
+    this->write(name);
+    this->write("(");
+    this->writeExpression(*c.argument(), Precedence::kSequence);
+    this->write(")");
 }
 
 String MetalCodeGenerator::getVectorFromMat2x2ConstructorHelper(const Type& matrixType) {
