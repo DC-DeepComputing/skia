@@ -11,8 +11,11 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkShader.h"
-
+#include "include/private/SkTOptional.h"
+#include "src/core/SkTBlockList.h"
 #include "experimental/graphite/src/DrawOrder.h"
+#include "experimental/graphite/src/geom/Shape.h"
+#include "experimental/graphite/src/geom/Transform_graphite.h"
 
 #include <limits>
 
@@ -21,13 +24,72 @@ struct SkIRect;
 
 namespace skgpu {
 
-class Shape;
-class Transform;
+class Renderer;
 
-// Forward declarations that capture the intermediate state lying between public Skia types and
-// the direct GPU representation.
-struct PaintParams;
-struct StrokeParams;
+// TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
+// back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
+// PaintParams is not required as an intermediate representation.
+// NOTE: Only represents the shading state of an SkPaint. Style and complex effects (mask filters,
+// image filters, path effects) must be handled higher up. AA is not tracked since everything is
+// assumed to be anti-aliased.
+class PaintParams {
+public:
+    PaintParams(const SkColor4f& color,
+                SkBlendMode blendMode,
+                sk_sp<SkShader> shader)
+            : fColor(color)
+            , fBlendMode(blendMode)
+            , fShader(std::move(shader)) {}
+
+    PaintParams(const PaintParams&) = default;
+
+    SkColor4f   color()     const { return fColor;        }
+    SkBlendMode blendMode() const { return fBlendMode;    }
+    SkShader*   shader()    const { return fShader.get(); }
+
+private:
+    SkColor4f       fColor;
+    SkBlendMode     fBlendMode;
+    sk_sp<SkShader> fShader; // For now only use SkShader::asAGradient() when converting to GPU
+    // TODO: Will also store ColorFilter, custom Blender, dither, and any extra shader from an
+    // active clipShader().
+};
+
+// NOTE: Only represents the stroke or hairline styles; stroke-and-fill must be handled higher up.
+class StrokeParams {
+public:
+    StrokeParams() : fHalfWidth(0.f), fJoinLimit(0.f), fCap(SkPaint::kButt_Cap) {}
+    StrokeParams(float width,
+                 float miterLimit,
+                 SkPaint::Join join,
+                 SkPaint::Cap cap)
+            : fHalfWidth(std::max(0.f, 0.5f * width))
+            , fJoinLimit(join == SkPaint::kMiter_Join ? std::max(0.f, miterLimit) :
+                         (join == SkPaint::kBevel_Join ? 0.f : -1.f))
+            , fCap(cap) {}
+
+    StrokeParams(const StrokeParams&) = default;
+
+    bool isMiterJoin() const { return fJoinLimit > 0.f;  }
+    bool isBevelJoin() const { return fJoinLimit == 0.f; }
+    bool isRoundJoin() const { return fJoinLimit < 0.f;  }
+
+    float         halfWidth()  const { return fHalfWidth;                }
+    float         width()      const { return 2.f * fHalfWidth;          }
+    float         miterLimit() const { return std::max(0.f, fJoinLimit); }
+    SkPaint::Cap  cap()        const { return fCap;                      }
+    SkPaint::Join join()       const {
+        return fJoinLimit > 0.f ? SkPaint::kMiter_Join :
+               (fJoinLimit == 0.f ? SkPaint::kBevel_Join : SkPaint::kRound_Join);
+    }
+
+private:
+    float        fHalfWidth; // >0: relative to transform; ==0: hairline, 1px in device space
+    float        fJoinLimit; // >0: miter join; ==0: bevel join; <0: round join
+    SkPaint::Cap fCap;
+};
+
+// TBD: Separate DashParams extracted from an SkDashPathEffect? Or folded into StrokeParams?
 
 /**
  * A DrawList represents a collection of drawing commands (and related clip/shading state) in
@@ -81,26 +143,20 @@ public:
                             const Shape& shape,
                             const SkIRect& scissor, // TBD: expand this to one xformed rrect clip?
                             DrawOrder ordering,
-                            const PaintParams* paint) {
-        // TODO: Implement this and assert localToDevice.valid()
-    }
+                            const PaintParams* paint);
 
     void fillConvexPath(const Transform& localToDevice,
                         const Shape& shape,
                         const SkIRect& scissor,
                         DrawOrder ordering,
-                        const PaintParams* paint) {
-        // TODO: Implement this and assert localToDevice.valid()
-    }
+                        const PaintParams* paint);
 
     void strokePath(const Transform& localToDevice,
                     const Shape& shape,
                     const StrokeParams& stroke,
                     const SkIRect& scissor,
                     DrawOrder ordering,
-                    const PaintParams* paint) {
-        // TODO: Implement this and assert localToDevice.valid()
-    }
+                    const PaintParams* paint);
 
     // TODO: fill[R]Rect, stroke[R]Rect (will need to support per-edge aa and arbitrary quads)
     //       fillImage (per-edge aa and arbitrary quad, only if this fast path is required)
@@ -108,55 +164,34 @@ public:
     //       dash[R]Rect(only if general dashPath isn't viable)
     //       dashLine(only if general or rrect version aren't viable)
 
-    int count() const { return 0; }
+    int drawCount() const { return fDraws.count(); }
+    int renderStepCount() const { return fRenderStepCount; }
 
 private:
-    // TODO: actually implement this, probably stl for now but will likely need something that
-    // is allocation efficient. Should also explore having 1 vector of commands, vs. parallel
-    // vectors of various fields.
+    friend class DrawPass;
+
+    struct Draw {
+        const Renderer&  fRenderer;  // Statically defined by function that recorded the Draw
+        const Transform& fTransform; // Points to a transform in fTransforms
+
+        Shape     fShape;
+        Rect      fBounds; // Tight bounds of draw, already including scissor
+        SkIRect   fScissor;
+        DrawOrder fOrder;
+
+        skstd::optional<PaintParams>  fPaintParams; // Not present implies depth-only draw
+        skstd::optional<StrokeParams> fStrokeParams; // Not present implies fill
+    };
+
+    // The returned Transform reference remains valid for the lifetime of the DrawList.
+    const Transform& deduplicateTransform(const Transform&);
+
+    SkTBlockList<Transform, 16> fTransforms;
+    SkTBlockList<Draw, 16>      fDraws;
+
+    // Running total of RenderSteps for all draws, assuming nothing is culled
+    int fRenderStepCount;
 };
-
-// TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
-// back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
-// PaintParams is not required as an intermediate representation.
-// NOTE: Only represents the shading state of an SkPaint. Style and complex effects (mask filters,
-// image filters, path effects) must be handled higher up. AA is not tracked since everything is
-// assumed to be anti-aliased.
-struct PaintParams {
-    SkColor4f       fColor;
-    SkBlendMode     fBlendMode;
-    sk_sp<SkShader> fShader; // For now only use SkShader::asAGradient() when converting to GPU
-    // TODO: Will also store ColorFilter, custom Blender, dither, and any extra shader from an
-    // active clipShader().
-};
-
-// NOTE: Only represents the stroke or hairline styles; stroke-and-fill must be handled higher up.
-struct StrokeParams {
-    float        fHalfWidth;  // >0: relative to transform; ==0: hairline, 1px in device space
-    float        fJoinLimit; // >0: miter join; ==0: bevel join; <0: round join
-    SkPaint::Cap fCap;
-
-    StrokeParams() : fHalfWidth(0.f), fJoinLimit(0.f), fCap(SkPaint::kButt_Cap) {}
-    StrokeParams(float width, float miterLimit, SkPaint::Join join, SkPaint::Cap cap)
-            : fHalfWidth(std::max(0.f, 0.5f * width))
-            , fJoinLimit(join == SkPaint::kMiter_Join ? std::max(0.f, miterLimit) :
-                         (join == SkPaint::kBevel_Join ? 0.f : -1.f))
-            , fCap(cap) {}
-    StrokeParams(const StrokeParams&) = default;
-
-    bool isMiterJoin() const { return fJoinLimit > 0.f; }
-    bool isBevelJoin() const { return fJoinLimit == 0.f; }
-    bool isRoundJoin() const { return fJoinLimit < 0.f; }
-
-    float width() const { return 2.f * fHalfWidth; }
-    float miterLimit() const { return std::max(0.f, fJoinLimit); }
-    SkPaint::Join join() const {
-        return fJoinLimit > 0.f ? SkPaint::kMiter_Join :
-               (fJoinLimit == 0.f ? SkPaint::kBevel_Join : SkPaint::kRound_Join);
-    }
-};
-
-// TBD: Separate DashParams extracted from an SkDashPathEffect? Or folded into StrokeParams?
 
 } // namespace skgpu
 
