@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc3d4e47_dd0803ac",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T17:56:16Z",
+      "side": 1,
+      "message": "Could we just have a function like `bool sameBuffer(const BindBufferInfo\u0026 b) const` that checks fBuffer, and CommandBuffer gets to be friended?\n\nOffset does seem necessary, but you can\u0027t do too much ill if you\u0027re not able to get at the buffer. I think this is fine for now.",
+      "parentUuid": "315e9816_05744bb7",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 1
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "335e3e4d_2e2b7353",
         "filename": "experimental/graphite/src/DrawBufferManager.h",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2021-10-21T14:01:57Z",
       "side": 1,
       "message": "So I am trying to avoid the CommandBuffers having to take lots of extra refs on the same buffers. Like we could instead take refs during bindBuffer calls. This probably is okay for vertex/index calls since we generally bind a buffer once at offset 0, and then the draw calls themselves offset into the buffer. So there would only be 1 call to bind per buffer and thus only one ref taken. Currently how things are setup (in Ganesh) for uniforms we would end up binding the uniform multiple times at different offsets because all the shaders offset their uniforms relative to a buffer logically starting at 0.\n\nSo using this approach just makes all the buffers go through the same system, but does have the side effects of being uglier and requiring a public call on CommandBuffer just to pass in refs.",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 56
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1861e031_11bc72e0",
+        "filename": "experimental/graphite/src/DrawBufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-25T17:56:16Z",
+      "side": 1,
+      "message": "I don\u0027t necessarily have a better approach now, and don\u0027t think it should hold anything up at this stage of the sprint, but fwiw, \"passUsedBuffersToCommandBuffer\" did not give me the impression that it would unmap the buffers or clear fUsedBuffers.  Maybe \"moveToCommandBuffer\" or transfer?\n\nI am willing to except some awkward lifecycle management APIs in situations like this where we know there are lots of draws referring to the same buffer, so we could either transfer ownership once like this, or for every draw, which is just redundant.\n\nI would expect we\u0027ll want something similar for textures, if we have to have the render passes tracking their textures already for layout changes.",
+      "parentUuid": "335e3e4d_2e2b7353",
       "range": {
         "startLine": 28,
         "startChar": 4,
