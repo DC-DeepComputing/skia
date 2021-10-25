@@ -22,6 +22,52 @@
       },
       "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0ecd8a_fba98786",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T20:10:18Z",
+      "side": 1,
+      "message": "I think I might prefer these to be pointers since the intent is that they will continue stay alive after the function call returns.",
+      "range": {
+        "startLine": 90,
+        "startChar": 47,
+        "endLine": 90,
+        "endChar": 48
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fedf3e3_ba6c5044",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-25T20:10:18Z",
+      "side": 1,
+      "message": "Why not just do\n\nStencilFanRenderStep?\n\nIt will be fast to implement, and we need it for the non-wedge case anyway:\n\n StencilFan\n StencilCurves\n FillBounds\n \n(For a sprint to get pixels on the screen, we can just do StencilFan, FillBounds)",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "cfcab5aa44b311518072e14b2fde3e8c2b05f096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
