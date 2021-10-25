@@ -36,9 +36,15 @@ void CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
     }
 }
 
-void CommandBuffer::setRenderPipeline(sk_sp<RenderPipeline> renderPipeline) {
-    this->onSetRenderPipeline(renderPipeline);
+void CommandBuffer::bindRenderPipeline(sk_sp<RenderPipeline> renderPipeline) {
+    this->onBindRenderPipeline(renderPipeline);
     this->trackResource(std::move(renderPipeline));
+    fHasWork = true;
+}
+
+void CommandBuffer::bindUniformBuffer(sk_sp<Buffer> uniformBuffer, size_t offset) {
+    this->onBindUniformBuffer(uniformBuffer, offset);
+    this->trackResource(std::move(uniformBuffer));
     fHasWork = true;
 }
 
