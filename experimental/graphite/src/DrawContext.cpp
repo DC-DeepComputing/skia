@@ -83,11 +83,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(const BoundsManager* occlusionCuller
         return nullptr;
     }
 
-    // TBD: Record automatically into task graph? If so, why return a value? If not, then caller
-    // will need to actually record the task.
-    auto task = RenderPassTask::Make(std::move(fTail), std::move(fDrawPasses));
-    fTail = task;
-    return std::move(task);
+    return RenderPassTask::Make(std::move(fDrawPasses));
 }
 
 } // namespace skgpu
