@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5636d53_a3425955",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-25T21:07:19Z",
+      "side": 1,
+      "message": "should the factory be taking in the bounds? I\u0027m worries add this here temporarily it will get forgotten and not updated. I would suggest passing the bounds into the Make call and have a TODO in the caller to get the real bounds and apssin gin 0,0,0,0 for now",
+      "range": {
+        "startLine": 151,
+        "startChar": 69,
+        "endLine": 151,
+        "endChar": 81
+      },
+      "revId": "61485ac245cc467fa08eb322c5ee46012ca1e950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
