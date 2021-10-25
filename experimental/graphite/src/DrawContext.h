@@ -40,6 +40,8 @@ public:
 
     const SkImageInfo& imageInfo() { return fImageInfo; }
 
+    int pendingDrawCount() const { return fPendingDraws->count(); }
+
     // TODO: need color/depth clearing functions (so DCL will probably need those too)
 
     void stencilAndFillPath(const Transform& localToDevice,
