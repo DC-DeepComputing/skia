@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd926aef_f192eb5e",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-25T21:00:07Z",
+      "side": 1,
+      "message": "If MaxDraws is 10 and we\u0027ve already recored 9 draws. Then we can still support numNewDraws of 1.\n\nDid you maybe change the meaning of this function at some point to mean the opposite?\n\navailableDraws \u003d MaxDraws - drawCount;\nneedsFlush \u003d numNewDraws \u003e availableDraws;",
+      "range": {
+        "startLine": 304,
+        "startChar": 59,
+        "endLine": 304,
+        "endChar": 61
+      },
+      "revId": "7d48848e978fb9b98924a0d45b96423574939271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
