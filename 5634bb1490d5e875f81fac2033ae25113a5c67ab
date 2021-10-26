@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc9a40fb_d3a32763",
+        "filename": "src/gpu/VertexWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T16:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "088a543f_97d1ec6e",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 33
+      },
+      "revId": "5634bb1490d5e875f81fac2033ae25113a5c67ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d18a2db3_f817266a",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-10-26T15:55:19Z",
       "side": 1,
       "message": "Could we:\n\n  template\u003ctypename T\u003e friend VertexWriter\u0026 skgpu::operator\u003c\u003c(VertexWriter\u0026, const T\u0026);\n  \nInstead of using this method from those operators? I imagine we want to eventually delete this method, right?",
+      "range": {
+        "startLine": 47,
+        "startChar": 5,
+        "endLine": 47,
+        "endChar": 15
+      },
+      "revId": "5634bb1490d5e875f81fac2033ae25113a5c67ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "846f21cb_53ec497d",
+        "filename": "src/gpu/VertexWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T16:15:13Z",
+      "side": 1,
+      "message": "Yup and I actually did that in the follow on CL because I didn\u0027t want to add the ptr() getter to the other writers. So I\u0027m going to land this as is, and the vertex writer will get updated in the next CL",
+      "parentUuid": "d18a2db3_f817266a",
       "range": {
         "startLine": 47,
         "startChar": 5,
