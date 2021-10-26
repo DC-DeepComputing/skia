@@ -16,6 +16,92 @@
       "message": "Added the necessary TextureProxy creation, PTAL.",
       "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7767ee4_3947e8a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T21:50:39Z",
+      "side": 1,
+      "message": "a few nits, but lgtm",
+      "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80b1365_2e17f82a",
+        "filename": "experimental/graphite/include/SkStuff.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T21:50:39Z",
+      "side": 1,
+      "message": "Is this needed here?",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08dfb36c_35a136bc",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T21:50:39Z",
+      "side": 1,
+      "message": "for readability, \"/*levelCount\u003d*/1\"",
+      "range": {
+        "startLine": 46,
+        "startChar": 81,
+        "endLine": 46,
+        "endChar": 82
+      },
+      "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae2a439_333b7d32",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T21:50:39Z",
+      "side": 1,
+      "message": "don\u0027t need the SkToBool here",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 18
+      },
+      "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
