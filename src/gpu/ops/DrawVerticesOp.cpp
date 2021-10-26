@@ -405,7 +405,7 @@ void DrawVerticesOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
     int firstVertex = 0;
     VertexWriter verts{
             target->makeVertexSpace(vertexStride, fVertexCount, &vertexBuffer, &firstVertex)};
-    if (!verts.fPtr) {
+    if (!verts) {
         SkDebugf("Could not allocate vertices\n");
         return;
     }
