@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c49d8b_f161477a",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T00:29:39Z",
+      "side": 1,
+      "message": "yep :)",
+      "parentUuid": "a24ea37b_5153a599",
+      "range": {
+        "startLine": 75,
+        "startChar": 83,
+        "endLine": 75,
+        "endChar": 87
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b59279_98f0de72",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-25T21:02:15Z",
       "side": 1,
       "message": "I think this is a little hard to read because I don\u0027t know that clip.fOrder is a CompressedPaintersOrder. Can we rename fOrder to fPaintersOrder? Or maybe \"order.dependsOnPaintersOrder()\"",
+      "range": {
+        "startLine": 202,
+        "startChar": 10,
+        "endLine": 202,
+        "endChar": 19
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c47ecc62_f21bd2bf",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T00:29:39Z",
+      "side": 1,
+      "message": "I like that! updated to dependsOnPaintersOrder\n\nI\u0027m not renaming clip.fOrder for now just because I have a follow-up CL that actual changes the return type. The scissor and draw bounds move to a type shared by DrawList and the order is returned as part of a pair, so \u0027fOrder\u0027 goes away entirely.",
+      "parentUuid": "84b59279_98f0de72",
       "range": {
         "startLine": 202,
         "startChar": 10,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c561612d_82bc8378",
+        "filename": "experimental/graphite/src/DrawOrder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T00:29:39Z",
+      "side": 1,
+      "message": "For type safety between PaintersDepth, DisjointStencilIndex, and CompressedPaintersOrder.\n\nI think function names could help, but I really wanted security in preventing them from being mismatched. If they are all uint16_t\u0027s and you pass in 3 of them and accidentally swizzle them around, it might not be obvious to spot and could lead to hard to replicate bugs because the draw will be sorted incorrectly.\n\nThis all should compile down to just 16-bits of storage and the \u0027using\u0027s make it so that actual use cases don\u0027t really care about the Sequence template parameter.",
+      "parentUuid": "0634c522_a39d541d",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 27
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a582b28e_d443fb55",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-10-25T21:02:15Z",
       "side": 1,
       "message": "usesStencil() seems like a question that should return bool when I read. What about dependsOnStencil() to match above?",
+      "range": {
+        "startLine": 148,
+        "startChar": 15,
+        "endLine": 148,
+        "endChar": 26
+      },
+      "revId": "2e4f657d145b29c68531e8479f94a8948227e610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79959b3b_419b1e45",
+        "filename": "experimental/graphite/src/DrawOrder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T00:29:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a582b28e_d443fb55",
       "range": {
         "startLine": 148,
         "startChar": 15,
