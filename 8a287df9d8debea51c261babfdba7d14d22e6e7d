@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a44497_fff22854",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-26T19:45:03Z",
+      "side": 1,
+      "message": "I tested this locally and saw low-bit diffs on 10 gms, plus it completely fixed the normal-map w/paint alpha GM I created the other day. Obviously waiting for gold and layout tests (may need to guard this) to decide for sure, but I think this is the right direction. I suspect there\u0027s some performance delta here, but there are so many interconnected knobs that it\u0027s hard to know exactly what\u0027s going to happen.",
+      "revId": "8a287df9d8debea51c261babfdba7d14d22e6e7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
