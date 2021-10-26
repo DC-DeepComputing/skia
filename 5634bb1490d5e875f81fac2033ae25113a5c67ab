@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1da1988_926489d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-26T15:55:19Z",
+      "side": 1,
+      "message": "lgtm % one typo",
+      "revId": "5634bb1490d5e875f81fac2033ae25113a5c67ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "088a543f_97d1ec6e",
+        "filename": "src/gpu/VertexWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-26T15:55:19Z",
+      "side": 1,
+      "message": "write* ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 33
+      },
+      "revId": "5634bb1490d5e875f81fac2033ae25113a5c67ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d18a2db3_f817266a",
+        "filename": "src/gpu/VertexWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-26T15:55:19Z",
+      "side": 1,
+      "message": "Could we:\n\n  template\u003ctypename T\u003e friend VertexWriter\u0026 skgpu::operator\u003c\u003c(VertexWriter\u0026, const T\u0026);\n  \nInstead of using this method from those operators? I imagine we want to eventually delete this method, right?",
+      "range": {
+        "startLine": 47,
+        "startChar": 5,
+        "endLine": 47,
+        "endChar": 15
+      },
+      "revId": "5634bb1490d5e875f81fac2033ae25113a5c67ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
