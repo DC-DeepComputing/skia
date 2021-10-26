@@ -122,6 +122,13 @@ public:
      */
     bool isBaselineSnap() const { return SkToBool(fFlags & kBaselineSnap_PrivFlag); }
 
+    /** Returns true if the underlying typeface is a COLRv0 or COLRv1 font which may use the 0xFFFF
+        foreground color palette index.
+
+        @return  this font may need to use the foreground color
+    */
+    bool needsForegroundColor() const;
+
     /** Sets whether to always hint glyphs.
         If forceAutoHinting is set, instructs the font manager to always hint glyphs.
 

@@ -142,6 +142,13 @@ bool SkFont::hasSomeAntiAliasing() const {
         || edging == SkFont::Edging::kSubpixelAntiAlias;
 }
 
+bool SkFont::needsForegroundColor() const {
+  if (!getTypeface())
+    return false;
+
+  return getTypeface()->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0;
+}
+
 SkGlyphID SkFont::unicharToGlyph(SkUnichar uni) const {
     return this->getTypefaceOrDefault()->unicharToGlyph(uni);
 }
