@@ -11,6 +11,7 @@
 #include "experimental/graphite/src/DrawContext.h"
 #include "experimental/graphite/src/DrawList.h"
 #include "experimental/graphite/src/Recorder.h"
+#include "experimental/graphite/src/TextureProxy.h"
 #include "experimental/graphite/src/geom/BoundsManager.h"
 #include "experimental/graphite/src/geom/Shape.h"
 #include "experimental/graphite/src/geom/Transform_graphite.h"
@@ -37,7 +38,11 @@ bool is_opaque(const PaintParams& paint) {
 } // anonymous namespace
 
 sk_sp<Device> Device::Make(sk_sp<Recorder> recorder, const SkImageInfo& ii) {
-    sk_sp<DrawContext> dc = DrawContext::Make(ii);
+    // TODO: Make TextureProxy and TextureInfo compatible with ii
+    sk_sp<DrawContext> dc = DrawContext::Make(nullptr,
+                                              ii.refColorSpace(),
+                                              ii.colorType(),
+                                              ii.alphaType());
     if (!dc) {
         return nullptr;
     }
