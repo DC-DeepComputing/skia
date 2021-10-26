@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91e08aa3_1f8f8961",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T23:47:55Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "4f615096_b8aa8b32",
+      "range": {
+        "startLine": 186,
+        "startChar": 33,
+        "endLine": 186,
+        "endChar": 39
+      },
+      "revId": "4a5dfb2a498b0f4c99fa68b86c26629ab4a93f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b792ded9_4e5eac63",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd96cbb_dea0afbf",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T23:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b792ded9_4e5eac63",
+      "range": {
+        "startLine": 239,
+        "startChar": 16,
+        "endLine": 239,
+        "endChar": 26
+      },
+      "revId": "4a5dfb2a498b0f4c99fa68b86c26629ab4a93f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1e187b8_528ad3d0",
@@ -94,6 +142,30 @@
       "writtenOn": "2021-10-26T22:44:02Z",
       "side": 1,
       "message": "Does this need to be a ref?",
+      "range": {
+        "startLine": 251,
+        "startChar": 46,
+        "endLine": 251,
+        "endChar": 62
+      },
+      "revId": "4a5dfb2a498b0f4c99fa68b86c26629ab4a93f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca05c55f_9858688a",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T23:47:55Z",
+      "side": 1,
+      "message": "nope, just blindly copy pasted for templated version.",
+      "parentUuid": "b1e187b8_528ad3d0",
       "range": {
         "startLine": 251,
         "startChar": 46,
