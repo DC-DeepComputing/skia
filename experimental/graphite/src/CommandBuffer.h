@@ -54,6 +54,8 @@ public:
 
     void setRenderPipeline(sk_sp<RenderPipeline> renderPipeline);
 
+    void bindUniformBuffer(sk_sp<Buffer>, size_t bufferOffset);
+
     void copyTextureToBuffer(sk_sp<Texture>,
                              SkIRect srcRect,
                              sk_sp<Buffer>,
@@ -84,6 +86,8 @@ private:
     void releaseResources();
 
     virtual void onSetRenderPipeline(sk_sp<RenderPipeline>&) = 0;
+
+    virtual void onBindUniformBuffer(const Buffer*, size_t bufferOffset) = 0;
 
     virtual void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) = 0;
 

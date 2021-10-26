@@ -49,6 +49,8 @@ private:
 
     void onSetRenderPipeline(sk_sp<skgpu::RenderPipeline>&) override;
 
+    void onBindUniformBuffer(const skgpu::Buffer*, size_t offset) override;
+
     void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) override;
 
     void onCopyTextureToBuffer(sk_sp<skgpu::Texture>,
