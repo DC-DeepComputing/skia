@@ -131,6 +131,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(std::unique_ptr<DrawList> draws,
     bool requiresMSAA = false;
     Rect passBounds = Rect::InfiniteInverted();
 
+    std::vector<RenderPipelineDesc> pipelines;
+    // std::vector<BindBufferInfo> shadingUniforms;
+    // std::vector<BindBufferInfo> geomUniforms;
+
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount()); // will not exceed but may use less with occluded draws
 
@@ -146,17 +150,18 @@ std::unique_ptr<DrawPass> DrawPass::Make(std::unique_ptr<DrawList> draws,
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember 'shadingIndex' for re-use on any RenderStep that does shading.
-        int shadingIndex = 0;
+        int shadingIndex = 0; // shadingUniforms.size() - 1, assuming no de-duplication for now.
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
             const RenderStep* const step = draw.fRenderer.steps()[stepIndex];
 
             // TODO ask step to generate a pipeline description based on the above shading code, and
             // have pipelineIndex point to that description in the accumulated list of descs
-            int pipelineIndex = 0;
+            // This indexes into the 'pipelines'
+            int pipelineIndex = (int) pipelines.size() - 1;
             // TODO step writes out geometry uniforms and have geomIndex point to that buffer data,
             // providing shape, transform, scissor, and paint depth to RenderStep
-            int geometryIndex = 0;
+            int geometryIndex = 0; // geomUniforms.size() - 1
 
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
             keys.push_back({&draw, stepIndex, pipelineIndex, geometryIndex,
@@ -181,6 +186,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(std::unique_ptr<DrawList> draws,
     int lastShadingUniforms = -1;
     int lastGeometryUniforms = -1;
     SkIRect lastScissor = SkIRect::MakeSize(target->dimensions());
+
+    std::vector<Command> commands;
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = *key.draw();
         const RenderStep* const step = draw.fRenderer.steps()[key.renderStep()];
@@ -190,9 +197,15 @@ std::unique_ptr<DrawPass> DrawPass::Make(std::unique_ptr<DrawList> draws,
         // to determine if the active draw can be updated to include the new vertices, or if it has
         // to be ended and a new one begun for this step. In addition to checking this state, must
         // also check if pipeline, uniform, scissor etc. would require the active draw to end.
+        const bool drawIsExtendable = false;   // check buffer id, offset, primitive type
+        drawIsExtendable &= (key.pipeline() == lastPipeline && key.geometryUniforms() == lastGeometryUniforms && key.shadingUniforms() != lastShadingUniforms && draw.fClip.scissor() != lastScissor);
+        if (!drawIsExtendable) {
+            commands.push_back({DrawPrimitive(), CommandType::kDraw});
+            // current draw = init to what the step wants
+        }
 
         if (key.pipeline() != lastPipeline) {
-            // TODO: Look up pipeline description from key's index and record binding it
+            commands.push_back({BindPipeline(pipelines[key.pipeline()]), CommandType::kBindPipeline});
             lastPipeline = key.pipeline();
             lastShadingUniforms = -1;
             lastGeometryUniforms = -1;
@@ -200,22 +213,23 @@ std::unique_ptr<DrawPass> DrawPass::Make(std::unique_ptr<DrawList> draws,
         if (key.geometryUniforms() != lastGeometryUniforms) {
             // TODO: Look up uniform buffer binding info corresponding to key's index and record it
             lastGeometryUniforms = key.geometryUniforms();
+            commands.push_back({BindBuffer(geometryUniforms[key.geometryUniforms()]), CommandType::kBindUniforms);
         }
         if (key.shadingUniforms() != lastShadingUniforms) {
             // TODO: As above, but for shading uniforms (assuming we have two descriptor
             // sets for the different uniform sources).)
             lastShadingUniforms = key.shadingUniforms();
+            commands.push_back({BindBuffer(shadingUniforms[key.shadingUniforms()]), CommandType::kBindUniforms);
         }
 
         if (draw.fClip.scissor() != lastScissor) {
-            // TODO: Record new scissor rectangle
+            commands.push_back({SetScissor(draw.fClip.scissor()), CommandType::kScissor});
         }
-
-        // TODO: Write vertex and index data for the draw step
     }
 
     // if (currentDraw) {
         // TODO: End the current draw if it has pending vertices
+        // commands.push_back({DrawPrimitive(), CommandTYpe::kDraw});
     // }
 
     passBounds.roundOut();
