@@ -250,8 +250,8 @@ void SkPaintFilterCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[], int c
     }
 }
 
-sk_sp<SkSurface> SkPaintFilterCanvas::onNewSurface(const SkImageInfo& info,
-                                                   const SkSurfaceProps& props) {
+SK_SURF_SP SkPaintFilterCanvas::onNewSurface(const SkImageInfo& info,
+                                             const SkSurfaceProps& props) {
     return this->proxy()->makeSurface(info, &props);
 }
 

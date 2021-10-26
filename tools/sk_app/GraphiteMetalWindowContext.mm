@@ -79,8 +79,8 @@ void GraphiteMetalWindowContext::destroyContext() {
     fDevice.reset();
 }
 
-sk_sp<SkSurface> GraphiteMetalWindowContext::getBackbufferSurface() {
-    sk_sp<SkSurface> surface;
+SkSurface* GraphiteMetalWindowContext::getBackbufferSurface() {
+    std::unique_ptr<SkSurface> surface;
     id<CAMetalDrawable> currentDrawable = [fMetalLayer nextDrawable];
 
     // TODO
@@ -100,7 +100,7 @@ sk_sp<SkSurface> GraphiteMetalWindowContext::getBackbufferSurface() {
 
     fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
 
-    return surface;
+    return surface.get();
 }
 
 void GraphiteMetalWindowContext::swapBuffers() {

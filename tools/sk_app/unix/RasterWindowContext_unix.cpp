@@ -18,14 +18,14 @@ class RasterWindowContext_xlib : public RasterWindowContext {
 public:
     RasterWindowContext_xlib(Display*, XWindow, int width, int height, const DisplayParams&);
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    std::unique_ptr<SkSurface> getBackbufferSurface() override;
     void swapBuffers() override;
     bool isValid() override { return SkToBool(fWindow); }
     void resize(int  w, int h) override;
     void setDisplayParams(const DisplayParams& params) override;
 
 protected:
-    sk_sp<SkSurface> fBackbufferSurface;
+    SkBitmap fBackbuffer;
     Display* fDisplay;
     XWindow  fWindow;
     GC       fGC;
@@ -54,17 +54,15 @@ void RasterWindowContext_xlib::setDisplayParams(const DisplayParams& params) {
 void RasterWindowContext_xlib::resize(int  w, int h) {
     SkImageInfo info = SkImageInfo::Make(w, h, fDisplayParams.fColorType, kPremul_SkAlphaType,
                                          fDisplayParams.fColorSpace);
-    fBackbufferSurface = SkSurface::MakeRaster(info, &fDisplayParams.fSurfaceProps);
-
+    fBackbuffer.allocPixels(info, 0);
 }
 
-sk_sp<SkSurface> RasterWindowContext_xlib::getBackbufferSurface() { return fBackbufferSurface; }
+std::unique_ptr<SkSurface> RasterWindowContext_xlib::getBackbufferSurface() {
+    return SkSurface::MakeRasterDirect(fBackbuffer.pixmap(), &fDisplayParams.fSurfaceProps);
+}
 
 void RasterWindowContext_xlib::swapBuffers() {
-    SkPixmap pm;
-    if (!fBackbufferSurface->peekPixels(&pm)) {
-        return;
-    }
+    SkPixmap pm = fBackbuffer.pixmap();
     int bitsPerPixel = pm.info().bytesPerPixel() * 8;
     XImage image;
     memset(&image, 0, sizeof(image));

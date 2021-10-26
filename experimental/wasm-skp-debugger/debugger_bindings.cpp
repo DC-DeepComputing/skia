@@ -213,7 +213,7 @@ class SkpDebugPlayer {
     }
 
     // Return the command list in JSON representation as a string
-    std::string jsonCommandList(sk_sp<SkSurface> surface) {
+    std::string jsonCommandList(std::unique_ptr<SkSurface> surface) {
       SkDynamicMemoryWStream stream;
       SkJSONWriter writer(&stream, SkJSONWriter::Mode::kFast);
       writer.beginObject(); // root
@@ -489,7 +489,8 @@ sk_sp<GrDirectContext> MakeGrContext(EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
     return GrDirectContext::MakeGL(interface);
 }
 
-sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int width, int height) {
+std::unique_ptr<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext,
+                                                 int width, int height) {
     glClearColor(0, 0, 0, 0);
     glClearStencil(0);
     glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -508,30 +509,29 @@ sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int widt
 
     GrBackendRenderTarget target(width, height, 0, 8, info);
 
-    sk_sp<SkSurface> surface(SkSurface::MakeFromBackendRenderTarget(dContext.get(), target,
+    std::unique_ptr<SkSurface> surface= SkSurface::MakeFromBackendRenderTarget(
+            dContext.get(), target,
                                                                     kBottomLeft_GrSurfaceOrigin,
                                                                     colorType, nullptr, nullptr));
     return surface;
 }
 
-sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, int height) {
+std::unique_ptr<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, int height) {
     SkImageInfo info = SkImageInfo::MakeN32(width, height, SkAlphaType::kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
-                             info, 0,
-                             kBottomLeft_GrSurfaceOrigin,
-                             nullptr, true));
-    return surface;
+    return SkSurface::MakeRenderTarget(dContext.get(),
+                                       SkBudgeted::kYes,
+                                       info, 0,
+                                       kBottomLeft_GrSurfaceOrigin,
+                                       nullptr, true);
 }
 
-sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageInfo sii) {
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
-                             toSkImageInfo(sii), 0,
-                             kBottomLeft_GrSurfaceOrigin,
-                             nullptr, true));
-    return surface;
+std::unique_ptr<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageInfo sii) {
+    return SkSurface::MakeRenderTarget(dContext.get(),
+                                       SkBudgeted::kYes,
+                                       toSkImageInfo(sii), 0,
+                                       kBottomLeft_GrSurfaceOrigin,
+                                       nullptr, true);
 }
 #endif
 
@@ -604,14 +604,14 @@ EMSCRIPTEN_BINDINGS(my_module) {
   constant("TRANSPARENT", (JSColor) SK_ColorTRANSPARENT);
   function("_getRasterDirectSurface", optional_override([](const SimpleImageInfo ii,
                                                            uintptr_t /* uint8_t*  */ pPtr,
-                                                           size_t rowBytes)->sk_sp<SkSurface> {
+                                                           size_t rowBytes)->std::unique_ptr<SkSurface> {
     uint8_t* pixels = reinterpret_cast<uint8_t*>(pPtr);
     SkImageInfo imageInfo = toSkImageInfo(ii);
     SkDebugf("Made raster direct surface.\n");
     return SkSurface::MakeRasterDirect(imageInfo, pixels, rowBytes, nullptr);
   }), allow_raw_pointers());
   class_<SkSurface>("SkSurface")
-    .smart_ptr<sk_sp<SkSurface>>("sk_sp<SkSurface>")
+    .smart_ptr<std::unique_ptr<SkSurface>>("std::unique_ptr<SkSurface>")
     .function("width", &SkSurface::width)
     .function("height", &SkSurface::height)
     .function("_flush", optional_override([](SkSurface& self) {
@@ -636,9 +636,9 @@ EMSCRIPTEN_BINDINGS(my_module) {
     function("setCurrentContext", &emscripten_webgl_make_context_current);
     function("MakeGrContext", &MakeGrContext);
     function("MakeOnScreenGLSurface", &MakeOnScreenGLSurface);
-    function("MakeRenderTarget", select_overload<sk_sp<SkSurface>(
+    function("MakeRenderTarget", select_overload<std::unique_ptr<SkSurface>(
       sk_sp<GrDirectContext>, int, int)>(&MakeRenderTarget));
-    function("MakeRenderTarget", select_overload<sk_sp<SkSurface>(
+    function("MakeRenderTarget", select_overload<std::unique_ptr<SkSurface>(
       sk_sp<GrDirectContext>, SimpleImageInfo)>(&MakeRenderTarget));
     constant("gpu", true);
   #endif

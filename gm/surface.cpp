@@ -44,9 +44,9 @@ static sk_sp<SkShader> make_shader() {
     return SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
 }
 
-static sk_sp<SkSurface> make_surface(GrRecordingContext* ctx,
-                                     const SkImageInfo& info,
-                                     SkPixelGeometry geo) {
+static std::unique_ptr<SkSurface> make_surface(GrRecordingContext* ctx,
+                                               const SkImageInfo& info,
+                                               SkPixelGeometry geo) {
     SkSurfaceProps props(0, geo);
     if (ctx) {
         return SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, 0, &props);
@@ -180,7 +180,9 @@ enum SurfaceType {
 };
 }
 
-static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, SurfaceType type) {
+static std::unique_ptr<SkSurface> make_surface(const SkImageInfo& ii,
+                                               SkCanvas* canvas,
+                                               SurfaceType type) {
     GrDirectContext* direct = GrAsDirectContext(canvas->recordingContext());
     switch (type) {
         case kManaged:
@@ -199,7 +201,7 @@ static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, Su
     return nullptr;
 }
 
-using MakeSurfaceFn = std::function<sk_sp<SkSurface>(const SkImageInfo&)>;
+using MakeSurfaceFn = std::function<std::unique_ptr<SkSurface>(const SkImageInfo&)>;
 
 #define DEF_BASIC_SURFACE_TEST(name, canvas, main, W, H)            \
     DEF_SIMPLE_GM(name, canvas, W, H) {                             \
@@ -240,7 +242,7 @@ using MakeSurfaceFn = std::function<sk_sp<SkSurface>(const SkImageInfo&)>;
 
 DEF_SURFACE_TESTS(copy_on_write_retain, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
-    sk_sp<SkSurface> surf = make(info);
+    std::unique_ptr<SkSurface> surf = make(info);
 
     surf->getCanvas()->clear(SK_ColorRED);
     // its important that image survives longer than the next draw, so the surface will see
@@ -259,7 +261,7 @@ DEF_SURFACE_TESTS(copy_on_write_retain, canvas, 256, 256) {
 // Like copy_on_write_retain but draws the snapped image back to the surface it was snapped from.
 DEF_SURFACE_TESTS(copy_on_write_retain2, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
-    sk_sp<SkSurface> surf = make(info);
+    std::unique_ptr<SkSurface> surf = make(info);
 
     surf->getCanvas()->clear(SK_ColorBLUE);
     // its important that image survives longer than the next draw, so the surface will see
@@ -278,7 +280,7 @@ DEF_SURFACE_TESTS(copy_on_write_retain2, canvas, 256, 256) {
 
 DEF_SURFACE_TESTS(simple_snap_image, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
-    sk_sp<SkSurface> surf = make(info);
+    std::unique_ptr<SkSurface> surf = make(info);
 
     surf->getCanvas()->clear(SK_ColorRED);
     sk_sp<SkImage> image = surf->makeImageSnapshot();
@@ -289,7 +291,7 @@ DEF_SURFACE_TESTS(simple_snap_image, canvas, 256, 256) {
 // Like simple_snap_image but the surface dies before the image.
 DEF_SURFACE_TESTS(simple_snap_image2, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
-    sk_sp<SkSurface> surf = make(info);
+    std::unique_ptr<SkSurface> surf = make(info);
 
     surf->getCanvas()->clear(SK_ColorRED);
     sk_sp<SkImage> image = surf->makeImageSnapshot();
@@ -300,7 +302,7 @@ DEF_SURFACE_TESTS(simple_snap_image2, canvas, 256, 256) {
 
 DEF_SURFACE_TESTS(copy_on_write_savelayer, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
-    sk_sp<SkSurface> surf = make(info);
+    std::unique_ptr<SkSurface> surf = make(info);
     surf->getCanvas()->clear(SK_ColorRED);
     // its important that image survives longer than the next draw, so the surface will see
     // an outstanding image, and have to decide if it should retain or discard those pixels

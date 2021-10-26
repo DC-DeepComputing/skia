@@ -236,7 +236,7 @@ struct CachedImageInfo {
         };
     }
 
-    sk_sp<SkImage> makeImage(sk_sp<SkSurface> surf, const SkPicture* pict) const {
+    sk_sp<SkImage> makeImage(SK_SURF_SP surf, const SkPicture* pict) const {
         if (!surf) {
             return nullptr;
         }

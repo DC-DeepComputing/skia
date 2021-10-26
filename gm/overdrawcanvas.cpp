@@ -32,7 +32,7 @@ static const SkColor kOverdrawColors[6] = {
 DEF_SIMPLE_GM_BG(overdraw_canvas,       canvas, WIDTH, HEIGHT, SK_ColorWHITE) {
     // Set up the overdraw canvas.
     SkImageInfo offscreenInfo = SkImageInfo::MakeA8(WIDTH, HEIGHT);
-    sk_sp<SkSurface> offscreen = SkSurface::MakeRaster(offscreenInfo);
+    std::unique_ptr<SkSurface> offscreen = SkSurface::MakeRaster(offscreenInfo);
     auto c = offscreen->getCanvas();
 
     SkOverdrawCanvas overdrawCanvas(c);

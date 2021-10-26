@@ -76,14 +76,14 @@ static void test_blend(skiatest::Reporter* r, SkSurface* surface) {
 
 DEF_TEST(SkRuntimeBlender_CPU, r) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(/*width=*/1, /*height=*/1);
-    sk_sp<SkSurface> surface(SkSurface::MakeRaster(info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
 
     test_blend(r, surface.get());
 }
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeBlender_GPU, r, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(/*width=*/1, /*height=*/1);
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
-                                                         SkBudgeted::kNo, info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
+                                                                     SkBudgeted::kNo, info);
     test_blend(r, surface.get());
 }

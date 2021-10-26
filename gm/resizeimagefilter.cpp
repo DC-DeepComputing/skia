@@ -93,7 +93,7 @@ protected:
         this->draw(canvas, srcRect, deviceSize, samplings[3], nullptr);
 
         {
-            sk_sp<SkSurface> surface(SkSurface::MakeRasterN32Premul(16, 16));
+            std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(16, 16);
             SkCanvas* surfaceCanvas = surface->getCanvas();
             surfaceCanvas->clear(0x000000);
             {

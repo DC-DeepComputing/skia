@@ -22,7 +22,9 @@ static void configure_glkview_for_skia(GLKView* view) {
     [view setDrawableStencilFormat:GLKViewDrawableStencilFormat8];
 }
 
-static sk_sp<SkSurface> make_gl_surface(GrDirectContext* dContext, int width, int height) {
+static std::unique_ptr<SkSurface> make_gl_surface(GrDirectContext* dContext,
+                                                  int width,
+                                                  int height) {
     static constexpr int kStencilBits = 8;
     static constexpr int kSampleCount = 1;
     static const SkSurfaceProps surfaceProps;
@@ -83,7 +85,7 @@ static sk_sp<SkSurface> make_gl_surface(GrDirectContext* dContext, int width, in
         NSLog(@"Error: GrDirectContext missing.\n");
         return;
     }
-    if (sk_sp<SkSurface> surface = make_gl_surface(fDContext, width, height)) {
+    if (std::unique_ptr<SkSurface> surface = make_gl_surface(fDContext, width, height)) {
         [viewController draw:rect
                         toCanvas:(surface->getCanvas())
                         atSize:CGSize{(CGFloat)width, (CGFloat)height}];

@@ -322,7 +322,8 @@ bool read_should_succeed(const SkIRect& srcRect, const SkImageInfo& dstInfo,
     return SkIRect::Intersects(srcRect, DEV_RECT) && SkImageInfoValidConversion(dstInfo, srcInfo);
 }
 
-static void test_readpixels(skiatest::Reporter* reporter, const sk_sp<SkSurface>& surface,
+static void test_readpixels(skiatest::Reporter* reporter,
+                            const std::unique_ptr<SkSurface>& surface,
                             const SkImageInfo& surfaceInfo) {
     SkCanvas* canvas = surface->getCanvas();
     fill_src_canvas(canvas);

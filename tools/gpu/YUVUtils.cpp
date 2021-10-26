@@ -156,7 +156,7 @@ MakeYUVAPlanesAsA8(SkImage* src,
     std::array<sk_sp<SkImage>, 4> planes;
     for (int i = 0; i < n; ++i) {
         SkImageInfo info = SkImageInfo::MakeA8(dims[i]);
-        sk_sp<SkSurface> surf;
+        std::unique_ptr<SkSurface> surf;
         if (rContext) {
             surf = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, info, 1, nullptr);
         } else {

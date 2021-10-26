@@ -170,8 +170,10 @@ static sk_sp<SkDeferredDisplayList> make_ddl(Fuzz* fuzz, GrDirectContext* dConte
     return r.detach();
 }
 
-static sk_sp<SkSurface> make_surface(Fuzz* fuzz, GrDirectContext* dContext, const SkImageInfo& ii,
-                                     GrSurfaceOrigin origin) {
+static std::unique_ptr<SkSurface> make_surface(Fuzz* fuzz,
+                                               GrDirectContext* dContext,
+                                               const SkImageInfo& ii,
+                                               GrSurfaceOrigin origin) {
     SkBudgeted budgeted;
     fuzz->nextEnum(&budgeted, SkBudgeted::kYes);
     SkSurfaceProps surfaceProps = gen_fuzzed_surface_props(fuzz);
@@ -180,11 +182,11 @@ static sk_sp<SkSurface> make_surface(Fuzz* fuzz, GrDirectContext* dContext, cons
     return surface;
 }
 
-static bool draw_ddl(sk_sp<SkSurface> surface, sk_sp<SkDeferredDisplayList> ddl) {
+static bool draw_ddl(std::unique_ptr<SkSurface> surface, sk_sp<SkDeferredDisplayList> ddl) {
     return surface->draw(std::move(ddl));
 }
 
-using SurfaceAndChar = std::tuple<sk_sp<SkSurface>, SkSurfaceCharacterization>;
+using SurfaceAndChar = std::tuple<std::unique_ptr<SkSurface>, SkSurfaceCharacterization>;
 static SurfaceAndChar create_surface_and_characterization(Fuzz* fuzz, GrDirectContext* dContext,
                                                           SkColorType surfaceType,
                                                           GrSurfaceOrigin origin) {
@@ -198,7 +200,7 @@ static SurfaceAndChar create_surface_and_characterization(Fuzz* fuzz, GrDirectCo
     if (!surface) {
         return {};
     }
-    return {surface, c};
+    return {std::move(surface), c};
 }
 
 DEF_FUZZ(CreateDDL, fuzz) {

@@ -48,7 +48,9 @@ static void basic_test(skiatest::Reporter* reporter, GrRecordingContext* rContex
     // We start off with the raster image being all red.
     sk_sp<SkImage> img = SkMakeImageFromRasterBitmap(bm, kNever_SkCopyPixelsMode);
 
-    sk_sp<SkSurface> gpuSurface = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, ii);
+    std::unique_ptr<SkSurface> gpuSurface = SkSurface::MakeRenderTarget(rContext,
+                                                                        SkBudgeted::kYes,
+                                                                        ii);
     SkCanvas* canvas = gpuSurface->getCanvas();
 
     // w/o pinning - the gpu draw always reflects the current state of the underlying bitmap

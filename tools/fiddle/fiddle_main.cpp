@@ -107,7 +107,7 @@ static void dump_output(const sk_sp<SkData>& data,
     }
 }
 
-static sk_sp<SkData> encode_snapshot(const sk_sp<SkSurface>& surface) {
+static sk_sp<SkData> encode_snapshot(const std::unique_ptr<SkSurface>& surface) {
     sk_sp<SkImage> img(surface->makeImageSnapshot());
     return img ? img->encodeToData() : nullptr;
 }

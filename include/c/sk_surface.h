@@ -55,7 +55,7 @@ SK_API sk_surface_t* sk_surface_new_raster_direct(const sk_imageinfo_t*,
     sk_surface_t and any pixel memory it may be managing.  New
     sk_surface_t are created with a reference count of 1.
 */
-SK_API void sk_surface_unref(sk_surface_t*);
+SK_API void sk_surface_delete(sk_surface_t*);
 
 /**
  *  Return the canvas associated with this surface. Note: the canvas is owned by the surface,

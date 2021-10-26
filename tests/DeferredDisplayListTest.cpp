@@ -222,7 +222,7 @@ public:
     }
 
     // Create the surface with the current set of parameters
-    sk_sp<SkSurface> make(GrDirectContext* dContext) const {
+    std::unique_ptr<SkSurface> make(GrDirectContext* dContext) const {
         const SkSurfaceCharacterization c = this->createCharacterization(dContext);
 
 #ifdef SK_GL
@@ -241,10 +241,13 @@ public:
                 return nullptr;
             }
 
-            sk_sp<SkSurface> result = SkSurface::MakeFromBackendRenderTarget(dContext, backendRT,
-                                                                             fOrigin, fColorType,
-                                                                             fColorSpace,
-                                                                             &fSurfaceProps);
+            std::unique_ptr<SkSurface> result =SkSurface::MakeFromBackendRenderTarget(
+                    dContext,
+                    backendRT,
+                    fOrigin,
+                    fColorType,
+                    fColorSpace,
+                    &fSurfaceProps);
             SkASSERT(result->isCompatible(c));
             return result;
         }
@@ -255,7 +258,7 @@ public:
             return nullptr;
         }
 
-        sk_sp<SkSurface> surface;
+        std::unique_ptr<SkSurface> surface;
         if (fIsTextureable) {
             surface = sk_gpu_test::MakeBackendTextureSurface(dContext,
                                                              {fWidth, fHeight},
@@ -397,7 +400,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         SkAssertResult(ddl);
 
         // The DDL should draw into an SkSurface created with the same parameters
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             return;
         }
@@ -415,7 +418,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
             continue;
         }
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             continue;
         }
@@ -429,7 +432,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     {
         const SurfaceParameters params(dContext);
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
 
         size_t maxResourceBytes = dContext->getResourceCacheLimit();
 
@@ -461,7 +464,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         SurfaceParameters params(dContext);
         params.disableTextureability();
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (s) {
             REPORTER_ASSERT(reporter, !s->draw(ddl)); // bc the DDL was made w/ textureability
 
@@ -473,7 +476,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     {
         SkImageInfo ii = SkImageInfo::MakeN32(64, 64, kOpaque_SkAlphaType);
 
-        sk_sp<SkSurface> rasterSurface = SkSurface::MakeRaster(ii);
+        std::unique_ptr<SkSurface> rasterSurface = SkSurface::MakeRaster(ii);
         SkSurfaceCharacterization c;
         REPORTER_ASSERT(reporter, !rasterSurface->characterize(&c));
     }
@@ -482,7 +485,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     {
         SurfaceParameters params(dContext);
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             return;
         }
@@ -509,7 +512,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     {
         SurfaceParameters params(dContext);
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             return;
         }
@@ -550,7 +553,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     {
         SurfaceParameters params(dContext);
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             return;
         }
@@ -588,7 +591,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         // FBO0 characterization
         params.disableTextureability();
 
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         if (!s) {
             return;
         }
@@ -652,7 +655,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest, reporter, ct
     };
 
     SkSurfaceCharacterization characterizations[4];
-    sk_sp<SkSurface> surfaces[4];
+    std::unique_ptr<SkSurface> surfaces[4];
 
     int index = 0;
     for (bool isFBO0 : { true, false }) {
@@ -750,7 +753,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLNonTextureabilityTest, reporter, ctxInfo) 
             params.setVkRTInputAttachmentSupport(true);
         }
 
-        sk_sp<SkSurface> s = params.make(context);
+        std::unique_ptr<SkSurface> s = params.make(context);
         if (!s) {
             continue;
         }
@@ -770,7 +773,7 @@ static void test_make_render_target(skiatest::Reporter* reporter,
         const SkSurfaceCharacterization c = params.createCharacterization(dContext);
 
         if (!c.isValid()) {
-            sk_sp<SkSurface> tmp = params.make(dContext);
+            std::unique_ptr<SkSurface> tmp = params.make(dContext);
             // If we couldn't characterize the surface we shouldn't be able to create it either
             REPORTER_ASSERT(reporter, !tmp);
             return;
@@ -779,7 +782,7 @@ static void test_make_render_target(skiatest::Reporter* reporter,
 
     const SkSurfaceCharacterization c = params.createCharacterization(dContext);
     {
-        sk_sp<SkSurface> s = params.make(dContext);
+        std::unique_ptr<SkSurface> s = params.make(dContext);
         REPORTER_ASSERT(reporter, s);
         if (!s) {
             REPORTER_ASSERT(reporter, !c.isValid());
@@ -797,7 +800,7 @@ static void test_make_render_target(skiatest::Reporter* reporter,
 
     // Make an SkSurface from scratch
     {
-        sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(dContext, c, SkBudgeted::kYes);
+        std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(dContext, c, SkBudgeted::kYes);
         REPORTER_ASSERT(reporter, s);
         REPORTER_ASSERT(reporter, s->isCompatible(c));
     }
@@ -859,7 +862,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest, reporter, ctxInfo) {
 
     SurfaceParameters params(dContext);
 
-    sk_sp<SkSurface> s = params.make(dContext);
+    std::unique_ptr<SkSurface> s = params.make(dContext);
     if (!s) {
         return;
     }
@@ -898,7 +901,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLInvalidRecorder, reporter, ctxInfo) {
 
     {
         SkImageInfo ii = SkImageInfo::MakeN32Premul(32, 32);
-        sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii);
+        std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kNo, ii);
 
         SkSurfaceCharacterization characterization;
         SkAssertResult(s->characterize(&characterization));
@@ -1046,7 +1049,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush, reporter, ctxInfo) {
     auto context = ctxInfo.directContext();
 
     SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
 
     SkSurfaceCharacterization characterization;
     SkAssertResult(s->characterize(&characterization));
@@ -1115,7 +1118,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo) {
     auto context = ctxInfo.directContext();
 
     SkImageInfo ii = SkImageInfo::MakeN32Premul(32, 32);
-    sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
 
     SkBitmap bitmap;
     bitmap.allocPixels(ii);
@@ -1178,7 +1181,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest, reporter, ctxInfo) {
     auto context = ctxInfo.directContext();
 
     SkImageInfo ii = SkImageInfo::MakeN32Premul(32, 32);
-    sk_sp<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
 
     SkSurfaceCharacterization characterization;
     SkAssertResult(s->characterize(&characterization));

@@ -11,7 +11,7 @@ void draw(SkCanvas* canvas) {
          canvas->drawString("GPU only!", 20, 40, font, paint);
          return;
     }
-    sk_sp<SkSurface> gpuSurface = SkSurface::MakeRenderTarget(
+    std::unique_ptr<SkSurface> gpuSurface = SkSurface::MakeRenderTarget(
             context, SkBudgeted::kYes, SkImageInfo::MakeN32Premul(64, 64));
     SkSurfaceCharacterization characterization;
     if (!gpuSurface->characterize(&characterization)) {

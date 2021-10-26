@@ -21,7 +21,7 @@ class DawnWindowContext : public WindowContext {
 public:
     DawnWindowContext(const DisplayParams&, wgpu::TextureFormat swapChainFormat);
     ~DawnWindowContext() override;
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
     void swapBuffers() override;
     bool isValid() override { return SkToBool(fDevice.Get()); }
 
@@ -41,7 +41,7 @@ protected:
     virtual DawnSwapChainImplementation createSwapChainImplementation( int width, int height,
         const DisplayParams& params) = 0;
 
-    sk_sp<SkSurface>              fSurface;
+    std::unique_ptr<SkSurface>    fSurface;
     DawnSwapChainImplementation   fSwapChainImplementation;
     wgpu::TextureFormat           fSwapChainFormat;
     wgpu::SwapChain               fSwapChain;

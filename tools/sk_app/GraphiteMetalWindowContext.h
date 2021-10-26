@@ -21,7 +21,7 @@ namespace sk_app {
 
 class GraphiteMetalWindowContext : public WindowContext {
 public:
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
 
     bool isValid() override { return fValid; }
 

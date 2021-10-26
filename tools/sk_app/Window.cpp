@@ -79,7 +79,7 @@ void Window::onPaint() {
     if (!fIsActive) {
         return;
     }
-    sk_sp<SkSurface> backbuffer = fWindowContext->getBackbufferSurface();
+    SkSurface* backbuffer = fWindowContext->getBackbufferSurface();
     if (backbuffer == nullptr) {
         printf("no backbuffer!?\n");
         // TODO: try recreating testcontext
@@ -90,7 +90,7 @@ void Window::onPaint() {
 
     // draw into the canvas of this surface
     this->visitLayers([](Layer* layer) { layer->onPrePaint(); });
-    this->visitLayers([=](Layer* layer) { layer->onPaint(backbuffer.get()); });
+    this->visitLayers([=](Layer* layer) { layer->onPaint(backbuffer); });
 
     backbuffer->flushAndSubmit();
 

@@ -84,7 +84,7 @@ public:
     }
 
 private:
-    PNGSink(sk_sp<SkSurface> surface, const SkMatrix& scale_matrix)
+    PNGSink(std::unique_ptr<SkSurface> surface, const SkMatrix& scale_matrix)
         : fSurface(std::move(surface)) {
         fSurface->getCanvas()->concat(scale_matrix);
     }
@@ -112,7 +112,7 @@ private:
             && SkPngEncoder::Encode(stream.get(), pixmap, options);
     }
 
-    const sk_sp<SkSurface> fSurface;
+    const std::unique_ptr<SkSurface> fSurface;
 };
 
 class SKPSink final : public Sink {
@@ -158,7 +158,7 @@ public:
     }
 
 private:
-    NullSink(sk_sp<SkSurface> surface, const SkMatrix& scale_matrix)
+    NullSink(std::unique_ptr<SkSurface> surface, const SkMatrix& scale_matrix)
         : fSurface(std::move(surface)) {
         fSurface->getCanvas()->concat(scale_matrix);
     }
@@ -173,7 +173,7 @@ private:
         return true;
     }
 
-    const sk_sp<SkSurface> fSurface;
+    const std::unique_ptr<SkSurface> fSurface;
 };
 
 static std::vector<std::promise<sk_sp<SkImage>>> gMP4Frames;
@@ -198,7 +198,7 @@ struct MP4Sink final : public Sink {
         return false;
     }
 
-    const sk_sp<SkSurface> fSurface;
+    const std::unique_ptr<SkSurface> fSurface;
 };
 
 class Logger final : public skottie::Logger {

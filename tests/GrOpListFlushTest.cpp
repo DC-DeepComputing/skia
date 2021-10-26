@@ -32,11 +32,15 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount, reporter, ctxInfo) {
 
     SkImageInfo imageInfo = SkImageInfo::Make(1000, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surface1 = SkSurface::MakeRenderTarget(context, SkBudgeted::kYes, imageInfo);
+    std::unique_ptr<SkSurface> surface1 = SkSurface::MakeRenderTarget(context,
+                                                                      SkBudgeted::kYes,
+                                                                      imageInfo);
     if (!surface1) {
         return;
     }
-    sk_sp<SkSurface> surface2 = SkSurface::MakeRenderTarget(context, SkBudgeted::kYes, imageInfo);
+    std::unique_ptr<SkSurface> surface2 = SkSurface::MakeRenderTarget(context,
+                                                                      SkBudgeted::kYes,
+                                                                      imageInfo);
     if (!surface2) {
         return;
     }

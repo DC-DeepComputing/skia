@@ -343,7 +343,7 @@ static sk_sp<SkSpecialSurface> create_empty_special_surface(GrRecordingContext* 
     }
 }
 
-static sk_sp<SkSurface> create_surface(GrRecordingContext* rContext, int width, int height) {
+static std::unique_ptr<SkSurface> create_surface(GrRecordingContext* rContext, int width, int height) {
     const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
     if (rContext) {
         return SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info);
@@ -1674,7 +1674,7 @@ DEF_TEST(ImageFilterBlurLargeImage, reporter) {
 }
 
 static void test_make_with_filter(skiatest::Reporter* reporter, GrRecordingContext* rContext) {
-    sk_sp<SkSurface> surface(create_surface(rContext, 192, 128));
+    std::unique_ptr<SkSurface> surface = create_surface(rContext, 192, 128);
     surface->getCanvas()->clear(SK_ColorRED);
     SkPaint bluePaint;
     bluePaint.setColor(SK_ColorBLUE);
@@ -1751,9 +1751,9 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Gpu, reporter, ctxI
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageFilterHugeBlur_Gpu, reporter, ctxInfo) {
 
-    sk_sp<SkSurface> surf(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
-                                                      SkBudgeted::kNo,
-                                                      SkImageInfo::MakeN32Premul(100, 100)));
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
+                                                                  SkBudgeted::kNo,
+                                                                  SkImageInfo::MakeN32Premul(100, 100));
 
 
     SkCanvas* canvas = surf->getCanvas();
@@ -1762,10 +1762,10 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageFilterHugeBlur_Gpu, reporter, ctxInfo) {
 }
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(XfermodeImageFilterCroppedInput_Gpu, reporter, ctxInfo) {
-    sk_sp<SkSurface> surf(SkSurface::MakeRenderTarget(
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(
             ctxInfo.directContext(),
             SkBudgeted::kNo,
-            SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType)));
+            SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
 
     test_xfermode_cropped_input(surf.get(), reporter);
 }

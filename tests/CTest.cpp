@@ -53,7 +53,7 @@ static void shader_test(skiatest::Reporter* reporter) {
     sk_canvas_draw_paint(canvas, paint);
 
     sk_paint_delete(paint);
-    sk_surface_unref(surface);
+    sk_surface_delete(surface);
     sk_imageinfo_delete(info);
 }
 
@@ -81,7 +81,7 @@ static void test_c(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, 0x80404040 == pixel[0]);
 
     sk_paint_delete(paint);
-    sk_surface_unref(surface);
+    sk_surface_delete(surface);
     sk_imageinfo_delete(info);
 }
 

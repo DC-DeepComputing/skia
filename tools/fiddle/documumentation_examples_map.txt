@@ -755,7 +755,7 @@ virtual bool isClipRect() const;
 
 [Canvas_makeSurface]
 SkCanvas
-sk_sp<SkSurface> makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
+std::unique_ptr<SkSurface> makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
 
 [Canvas_peekPixels]
 SkCanvas
@@ -3892,43 +3892,43 @@ SkRegion
 
 [Surface_MakeFromBackendTexture]
 SkSurface
-static sk_sp<SkSurface> MakeFromBackendTexture(GrContext* context, const GrBackendTexture& backendTexture, GrSurfaceOrigin origin, int sampleCnt, SkColorType colorType, sk_sp<SkColorSpace> colorSpace, const SkSurfaceProps* surfaceProps);
+static std::unique_ptr<SkSurface> MakeFromBackendTexture(GrContext* context, const GrBackendTexture& backendTexture, GrSurfaceOrigin origin, int sampleCnt, SkColorType colorType, sk_sp<SkColorSpace> colorSpace, const SkSurfaceProps* surfaceProps);
 
 [Surface_MakeNull]
 SkSurface
-static sk_sp<SkSurface> MakeNull(int width, int height);
+static std::unique_ptr<SkSurface> MakeNull(int width, int height);
 
 [Surface_MakeRaster_2]
 SkSurface
-static sk_sp<SkSurface> MakeRaster(const SkImageInfo& imageInfo, const SkSurfaceProps* props = nullptr);
+static std::unique_ptr<SkSurface> MakeRaster(const SkImageInfo& imageInfo, const SkSurfaceProps* props = nullptr);
 
 [Surface_MakeRaster]
 SkSurface
-static sk_sp<SkSurface> MakeRaster(const SkImageInfo& imageInfo, size_t rowBytes, const SkSurfaceProps* surfaceProps);
+static std::unique_ptr<SkSurface> MakeRaster(const SkImageInfo& imageInfo, size_t rowBytes, const SkSurfaceProps* surfaceProps);
 
 [Surface_MakeRasterDirect]
 SkSurface
-static sk_sp<SkSurface> MakeRasterDirect(const SkImageInfo& imageInfo, void* pixels, size_t rowBytes, const SkSurfaceProps* surfaceProps = nullptr);
+static std::unique_ptr<SkSurface> MakeRasterDirect(const SkImageInfo& imageInfo, void* pixels, size_t rowBytes, const SkSurfaceProps* surfaceProps = nullptr);
 
 [Surface_MakeRasterDirectReleaseProc]
 SkSurface
-static sk_sp<SkSurface> MakeRasterDirectReleaseProc(const SkImageInfo& imageInfo, void* pixels, size_t rowBytes, void (*releaseProc) (void* pixels, void* context) , void* context, const SkSurfaceProps* surfaceProps = nullptr);
+static std::unique_ptr<SkSurface> MakeRasterDirectReleaseProc(const SkImageInfo& imageInfo, void* pixels, size_t rowBytes, void (*releaseProc) (void* pixels, void* context) , void* context, const SkSurfaceProps* surfaceProps = nullptr);
 
 [Surface_MakeRasterN32Premul]
 SkSurface
-static sk_sp<SkSurface> MakeRasterN32Premul(int width, int height, const SkSurfaceProps* surfaceProps = nullptr);
+static std::unique_ptr<SkSurface> MakeRasterN32Premul(int width, int height, const SkSurfaceProps* surfaceProps = nullptr);
 
 [Surface_MakeRenderTarget_3]
 SkSurface
-static sk_sp<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo);
+static std::unique_ptr<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo);
 
 [Surface_MakeRenderTarget]
 SkSurface
-static sk_sp<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo, int sampleCount, GrSurfaceOrigin surfaceOrigin, const SkSurfaceProps* surfaceProps, bool shouldCreateWithMips = false);
+static std::unique_ptr<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo, int sampleCount, GrSurfaceOrigin surfaceOrigin, const SkSurfaceProps* surfaceProps, bool shouldCreateWithMips = false);
 
 [Surface_MakeRenderTarget_2]
 SkSurface
-static sk_sp<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo, int sampleCount, const SkSurfaceProps* props);
+static std::unique_ptr<SkSurface> MakeRenderTarget(GrContext* context, SkBudgeted budgeted, const SkImageInfo& imageInfo, int sampleCount, const SkSurfaceProps* props);
 
 [Surface_characterize]
 SkSurface
@@ -3964,7 +3964,7 @@ sk_sp<SkImage> makeImageSnapshot(const SkIRect& bounds);
 
 [Surface_makeSurface]
 SkSurface
-sk_sp<SkSurface> makeSurface(const SkImageInfo& imageInfo);
+std::unique_ptr<SkSurface> makeSurface(const SkImageInfo& imageInfo);
 
 [Surface_notifyContentWillChange]
 SkSurface

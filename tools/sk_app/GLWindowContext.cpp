@@ -54,8 +54,8 @@ void GLWindowContext::destroyContext() {
     this->onDestroyContext();
 }
 
-sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
-    if (nullptr == fSurface) {
+SkSurface* GLWindowContext::getBackbufferSurface() {
+    if (!fSurface) {
         if (fContext) {
             GrGLint buffer;
             GR_GL_CALL(fBackendContext.get(), GetIntegerv(GR_GL_FRAMEBUFFER_BINDING, &buffer));
@@ -78,7 +78,7 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
         }
     }
 
-    return fSurface;
+    return fSurface.get();
 }
 
 void GLWindowContext::swapBuffers() {

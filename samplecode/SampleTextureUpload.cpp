@@ -26,8 +26,8 @@ class TextureUploadSample : public Sample {
     int fTileRows = 8;
     int fTileCols = 8;
 
-    sk_sp<SkSurface> fBlueSurface;
-    sk_sp<SkSurface> fGraySurface;
+    std::unique_ptr<SkSurface> fBlueSurface;
+    std::unique_ptr<SkSurface> fGraySurface;
 
     class RenderTargetTexture : public SkRefCnt {
     public:
@@ -43,14 +43,14 @@ class TextureUploadSample : public Sample {
             return fSurface->makeImageSnapshot();
         }
 
-        void uploadRasterSurface(sk_sp<SkSurface> rasterSurface) {
+        void uploadRasterSurface(SkSurface* rasterSurface) {
             SkPixmap pixmap;
             rasterSurface->peekPixels(&pixmap);
             fSurface->writePixels(pixmap, 0, 0);
         }
 
     private:
-        sk_sp<SkSurface> fSurface;
+        std::unique_ptr<SkSurface> fSurface;
         sk_sp<SkImage> fCachedImage;
     };
 
@@ -80,8 +80,8 @@ class TextureUploadSample : public Sample {
         return false;
     }
 
-    sk_sp<SkSurface> getFilledRasterSurface(SkColor color, int size) {
-        sk_sp<SkSurface> surface(SkSurface::MakeRasterN32Premul(size, size));
+    std::unique_ptr<SkSurface> getFilledRasterSurface(SkColor color, int size) {
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(size, size);
         SkCanvas* canvas = surface->getCanvas();
         canvas->clear(color);
         return surface;
@@ -119,8 +119,8 @@ class TextureUploadSample : public Sample {
             // needing refresh.
             int textureCount = fTileRows * fTileCols;
             for (int i = 0; i < textureCount; i++) {
-                fTextures[i]->uploadRasterSurface(i == fActiveTileIndex ? fBlueSurface
-                                                                        : fGraySurface);
+                fTextures[i]->uploadRasterSurface(i == fActiveTileIndex ? fBlueSurface.get()
+                                                                        : fGraySurface.get());
             }
 
             // Scale grid.

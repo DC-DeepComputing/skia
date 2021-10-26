@@ -192,7 +192,7 @@ bool SkDeferredDisplayListRecorder::init() {
         return false;
     }
 
-    fSurface = sk_make_sp<SkSurface_Gpu>(std::move(device));
+    fSurface = SK_SURF_SP(new SkSurface_Gpu(std::move(device)));
     return SkToBool(fSurface.get());
 }
 

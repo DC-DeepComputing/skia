@@ -27,7 +27,7 @@ class VulkanWindowContext : public WindowContext {
 public:
     ~VulkanWindowContext() override;
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
     void swapBuffers() override;
 
     bool isValid() override { return fDevice != VK_NULL_HANDLE; }
@@ -109,7 +109,7 @@ private:
     uint32_t               fImageCount;
     VkImage*               fImages;         // images in the swapchain
     VkImageLayout*         fImageLayouts;   // layouts of these images when not color attachment
-    sk_sp<SkSurface>*      fSurfaces;       // surfaces client renders to (may not be based on rts)
+    std::unique_ptr<SkSurface>*      fSurfaces;       // surfaces client renders to (may not be based on rts)
     BackbufferInfo*        fBackbuffers;
     uint32_t               fCurrentBackbufferIndex;
 };

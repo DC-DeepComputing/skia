@@ -72,7 +72,7 @@ private:
 
     sk_sp<SkPicture> fPicture;
     sk_gpu_test::GrContextFactory* fContextFactory;
-    sk_sp<SkSurface> fSurface;
+    std::unique_ptr<SkSurface> fSurface;
     bool fGPUEnabled;
     bool fOverdraw;
     int fColorMode;

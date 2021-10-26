@@ -14,6 +14,9 @@
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/core/SkTypes.h"
 
+// temporary
+#include "include/core/SkSurface.h"
+
 class GrBackendFormat;
 class GrBackendTexture;
 class GrRecordingContext;
@@ -89,7 +92,7 @@ private:
     sk_sp<GrRecordingContext>                   fContext;
     sk_sp<GrRenderTargetProxy>                  fTargetProxy;
     sk_sp<SkDeferredDisplayList::LazyProxyData> fLazyProxyData;
-    sk_sp<SkSurface>                            fSurface;
+    SK_SURF_SP                                  fSurface;
 #endif
 };
 

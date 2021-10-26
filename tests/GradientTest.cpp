@@ -344,7 +344,7 @@ static void test_clamping_overflow(skiatest::Reporter*) {
 
     p.setShader(SkGradientShader::MakeLinear(pts1, colors, nullptr, 2, SkTileMode::kClamp));
 
-    sk_sp<SkSurface> surface(SkSurface::MakeRasterN32Premul(50, 50));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(50, 50);
     surface->getCanvas()->scale(100, 100);
     surface->getCanvas()->drawPaint(p);
 
@@ -365,7 +365,7 @@ static void test_degenerate_linear(skiatest::Reporter*) {
     };
 
     p.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp));
-    sk_sp<SkSurface> surface(SkSurface::MakeRasterN32Premul(50, 50));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(50, 50);
     surface->getCanvas()->drawPaint(p);
 
     // Passes if we don't trigger asserts.
@@ -491,10 +491,11 @@ static void test_linear_fuzzer(skiatest::Reporter*) {
 
     for (const SkColorSpace* colorSpace : colorSpaces) {
 
-        sk_sp<SkSurface> surface = SkSurface::MakeRaster(SkImageInfo::Make(100, 100,
-                                                                           kN32_SkColorType,
-                                                                           kPremul_SkAlphaType,
-                                                                           sk_ref_sp(colorSpace)));
+        auto info = SkImageInfo::Make(100, 100,
+                                      kN32_SkColorType,
+                                      kPremul_SkAlphaType,
+                                      sk_ref_sp(colorSpace));
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
         SkCanvas* canvas = surface->getCanvas();
 
         for (const auto& config : gConfigs) {
@@ -548,7 +549,7 @@ static void test_sweep_fuzzer(skiatest::Reporter*) {
         },
     };
 
-    sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(100, 100);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(100, 100);
     SkCanvas* canvas = surface->getCanvas();
     SkPaint paint;
 

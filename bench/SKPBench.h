@@ -22,7 +22,6 @@ class SKPBench : public Benchmark {
 public:
     SKPBench(const char* name, const SkPicture*, const SkIRect& devClip, SkScalar scale,
              bool doLooping);
-    ~SKPBench() override;
 
     int calculateLoops(int defaultLoops) const override {
         return fDoLooping ? defaultLoops : 1;
@@ -44,7 +43,7 @@ protected:
     virtual void drawPicture();
 
     const SkPicture* picture() const { return fPic.get(); }
-    const SkTArray<sk_sp<SkSurface>>& surfaces() const { return fSurfaces; }
+    const SkTArray<std::unique_ptr<SkSurface>>& surfaces() const { return fSurfaces; }
     const SkTDArray<SkIRect>& tileRects() const { return fTileRects; }
 
 private:
@@ -54,7 +53,7 @@ private:
     SkString fName;
     SkString fUniqueName;
 
-    SkTArray<sk_sp<SkSurface>> fSurfaces;   // for MultiPictureDraw
+    SkTArray<std::unique_ptr<SkSurface>> fSurfaces;   // for MultiPictureDraw
     SkTDArray<SkIRect> fTileRects;     // for MultiPictureDraw
 
     const bool fDoLooping;

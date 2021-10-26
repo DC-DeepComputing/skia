@@ -504,7 +504,7 @@ DEF_TEST(EmbossPerlinCrash, reporter) {
     p.setMaskFilter(SkEmbossMaskFilter::Make(1, light));
     p.setShader(SkPerlinNoiseShader::MakeFractalNoise(1.0f, 1.0f, 2, 0.0f));
 
-    sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(100, 100);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(100, 100);
     surface->getCanvas()->drawPaint(p);
 }
 
@@ -547,7 +547,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BlurMaskBiggerThanDest, reporter, ctxInfo) {
 
     SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> dst(SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii));
+    std::unique_ptr<SkSurface> dst = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
     if (!dst) {
         ERRORF(reporter, "Could not create surface for test.");
         return;

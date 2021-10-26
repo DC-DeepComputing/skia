@@ -23,13 +23,13 @@
 #include "tools/gpu/GrContextFactory.h"
 #include "tools/gpu/vk/VkTestHelper.h"
 
-static sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
-                                                   skiatest::Reporter* reporter,
-                                                   bool textureable = true) {
+static std::unique_ptr<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
+                                                             skiatest::Reporter* reporter,
+                                                              bool textureable = true) {
     const int kW = 8;
     const int kH = 8;
     SkSurfaceProps surfaceProps = SkSurfaceProps(0, kRGB_H_SkPixelGeometry);
-    sk_sp<SkSurface> surface;
+    std::unique_ptr<SkSurface> surface;
     if (textureable) {
         surface = sk_gpu_test::MakeBackendTextureSurface(dContext,
                                                          {kW, kH},

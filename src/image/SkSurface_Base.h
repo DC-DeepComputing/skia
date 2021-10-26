@@ -37,7 +37,7 @@ public:
      */
     virtual SkCanvas* onNewCanvas() = 0;
 
-    virtual sk_sp<SkSurface> onNewSurface(const SkImageInfo&) = 0;
+    virtual SK_SURF_SP onNewSurface(const SkImageInfo&) = 0;
 
     /**
      *  Allocate an SkImage that represents the current contents of the surface.

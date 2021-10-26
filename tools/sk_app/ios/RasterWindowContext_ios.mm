@@ -40,7 +40,7 @@ public:
 
     ~RasterWindowContext_ios() override;
 
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    std::unique_ptr<SkSurface> getBackbufferSurface() override;
 
     void onSwapBuffers() override;
 
@@ -50,13 +50,13 @@ public:
     void resize(int w, int h) override;
 
 private:
-    sk_app::Window_ios*  fWindow;
-    UIViewController*    fViewController;
-    RasterView*          fRasterView;
-    EAGLContext*         fGLContext;
-    GLuint               fFramebuffer;
-    GLuint               fRenderbuffer;
-    sk_sp<SkSurface>     fBackbufferSurface;
+    sk_app::Window_ios* fWindow;
+    UIViewController*   fViewController;
+    RasterView*         fRasterView;
+    EAGLContext*        fGLContext;
+    GLuint              fFramebuffer;
+    GLuint              fRenderbuffer;
+    SkBitmap            fBackbuffer;
 
     using INHERITED = GLWindowContext;
 };
@@ -142,7 +142,7 @@ sk_sp<const GrGLInterface> RasterWindowContext_ios::onInitializeContext() {
     // make the offscreen image
     SkImageInfo info = SkImageInfo::Make(fWidth, fHeight, fDisplayParams.fColorType,
                                          kPremul_SkAlphaType, fDisplayParams.fColorSpace);
-    fBackbufferSurface = SkSurface::MakeRaster(info);
+    fBackbuffer.allocPixels(info, 0);
     return GrGLMakeNativeInterface();
 }
 
@@ -154,22 +154,20 @@ void RasterWindowContext_ios::onDestroyContext() {
     fGLContext = nil;
 }
 
-sk_sp<SkSurface> RasterWindowContext_ios::getBackbufferSurface() {
-    return fBackbufferSurface;
+std::unique_ptr<SkSurface> RasterWindowContext_ios::getBackbufferSurface() {
+    return SkSurface::MakeRasterDirect(fBackbuffer.pixmap(), &fDisplayParams.fSurfaceProps);
 }
 
 void RasterWindowContext_ios::onSwapBuffers() {
-    if (fBackbufferSurface) {
-        // We made/have an off-screen surface. Get the contents as an SkImage:
-        sk_sp<SkImage> snapshot = fBackbufferSurface->makeImageSnapshot();
+    SkASSERT(fBackbuffer.pixelRef());
 
-        sk_sp<SkSurface> gpuSurface = INHERITED::getBackbufferSurface();
-        SkCanvas* gpuCanvas = gpuSurface->getCanvas();
-        gpuCanvas->drawImage(snapshot, 0, 0);
-        gpuCanvas->flush();
-        glBindRenderbuffer(GL_RENDERBUFFER, fRenderbuffer);
-        [fGLContext presentRenderbuffer:GL_RENDERBUFFER];
-    }
+    std::unique_ptr<SkSurface> gpuSurface = INHERITED::getBackbufferSurface();
+    SkCanvas* gpuCanvas = gpuSurface->getCanvas();
+    gpuCanvas->drawBitmap(fBackbuffer, 0, 0);
+    gpuCanvas->flush();
+
+    glBindRenderbuffer(GL_RENDERBUFFER, fRenderbuffer);
+    [fGLContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 void RasterWindowContext_ios::resize(int w, int h) {

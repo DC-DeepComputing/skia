@@ -217,9 +217,9 @@ Java_org_skia_skottie_SkottieAnimation_nDrawFrame(JNIEnv *env, jclass clazz,
 
     SkSurfaceProps props(0, kUnknown_SkPixelGeometry);
 
-    sk_sp<SkSurface> renderTarget(SkSurface::MakeFromBackendRenderTarget(
+    std::unique_ptr<SkSurface> renderTarget = SkSurface::MakeFromBackendRenderTarget(
             dContext, backendRT, kBottomLeft_GrSurfaceOrigin, colorType,
-            nullptr, &props));
+            nullptr, &props);
 
     auto canvas = renderTarget->getCanvas();
     canvas->clear(backgroundColor);

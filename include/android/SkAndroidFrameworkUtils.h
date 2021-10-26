@@ -38,7 +38,7 @@ public:
 
     static void SafetyNetLog(const char*);
 
-    static sk_sp<SkSurface> getSurfaceFromCanvas(SkCanvas* canvas);
+    static SK_SURF_SP getSurfaceFromCanvas(SkCanvas* canvas);
 
     static int SaveBehind(SkCanvas* canvas, const SkRect* subset);
 

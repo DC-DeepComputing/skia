@@ -148,14 +148,14 @@ static void test_permutations(skiatest::Reporter* r,
 
 static void test_cpu(skiatest::Reporter* r, const char* testFile) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
-    sk_sp<SkSurface> surface(SkSurface::MakeRaster(info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
 
     test_permutations(r, surface.get(), testFile, /*worksInES2=*/true);
 }
 
 static void test_gpu(skiatest::Reporter* r, GrDirectContext* ctx, const char* testFile) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
 
     test_permutations(r, surface.get(), testFile, /*worksInES2=*/true);
 }
@@ -166,7 +166,7 @@ static void test_es3(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
     }
     // ES3-only tests never run on the CPU, because SkVM lacks support for many non-ES2 features.
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info);
 
     test_permutations(r, surface.get(), testFile, /*worksInES2=*/false);
 }

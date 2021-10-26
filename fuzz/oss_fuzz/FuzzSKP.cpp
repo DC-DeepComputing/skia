@@ -19,8 +19,8 @@ void FuzzSKP(sk_sp<SkData> bytes) {
         SkDebugf("[terminated] Couldn't decode as a picture.\n");
         return;
     }
-    sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(kCanvasSize.width(),
-                                                              kCanvasSize.height());
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRasterN32Premul(kCanvasSize.width(),
+                                                                        kCanvasSize.height());
     surface->getCanvas()->drawPicture(pic);
     pic->approximateBytesUsed();
     pic->approximateOpCount();

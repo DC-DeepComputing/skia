@@ -119,9 +119,9 @@ class SrcModeGM : public skiagm::GM {
         }
     }
 
-    static sk_sp<SkSurface> compat_surface(SkCanvas* canvas, const SkISize& size) {
+    static std::unique_ptr<SkSurface> compat_surface(SkCanvas* canvas, const SkISize& size) {
         SkImageInfo info = SkImageInfo::MakeN32Premul(size);
-        sk_sp<SkSurface> surface = canvas->makeSurface(info);
+        std::unique_ptr<SkSurface> surface = canvas->makeSurface(info);
         if (nullptr == surface) {
             // picture canvas will return null, so fall-back to raster
             surface = SkSurface::MakeRaster(info);

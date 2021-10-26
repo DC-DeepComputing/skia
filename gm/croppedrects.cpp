@@ -38,7 +38,7 @@ private:
     SkISize onISize() override { return SkISize::Make(500, 500); }
 
     void onOnceBeforeDraw() override {
-        sk_sp<SkSurface> srcSurface = SkSurface::MakeRasterN32Premul(500, 500);
+        std::unique_ptr<SkSurface> srcSurface = SkSurface::MakeRasterN32Premul(500, 500);
         SkCanvas* srcCanvas = srcSurface->getCanvas();
 
         srcCanvas->clear(SK_ColorRED);

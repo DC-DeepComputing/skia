@@ -26,14 +26,14 @@
 #import <QuartzCore/CAMetalLayer.h>
 #import <MetalKit/MetalKit.h>
 
-sk_sp<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
-                                                 GrMTLHandle layer,
-                                                 GrSurfaceOrigin origin,
-                                                 int sampleCnt,
-                                                 SkColorType colorType,
-                                                 sk_sp<SkColorSpace> colorSpace,
-                                                 const SkSurfaceProps* surfaceProps,
-                                                 GrMTLHandle* drawable) {
+SK_SURF_SP SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
+                                           GrMTLHandle layer,
+                                           GrSurfaceOrigin origin,
+                                           int sampleCnt,
+                                           SkColorType colorType,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* surfaceProps,
+                                           GrMTLHandle* drawable) {
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
 
     CAMetalLayer* metalLayer = (__bridge CAMetalLayer*)layer;
@@ -96,13 +96,13 @@ sk_sp<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
     return sk_make_sp<SkSurface_Gpu>(std::move(device));
 }
 
-sk_sp<SkSurface> SkSurface::MakeFromMTKView(GrRecordingContext* rContext,
-                                            GrMTLHandle view,
-                                            GrSurfaceOrigin origin,
-                                            int sampleCnt,
-                                            SkColorType colorType,
-                                            sk_sp<SkColorSpace> colorSpace,
-                                            const SkSurfaceProps* surfaceProps) {
+SK_SURF_SP SkSurface::MakeFromMTKView(GrRecordingContext* rContext,
+                                      GrMTLHandle view,
+                                      GrSurfaceOrigin origin,
+                                      int sampleCnt,
+                                      SkColorType colorType,
+                                      sk_sp<SkColorSpace> colorSpace,
+                                      const SkSurfaceProps* surfaceProps) {
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
 
     MTKView* mtkView = (__bridge MTKView*)view;

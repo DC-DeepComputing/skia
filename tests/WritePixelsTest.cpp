@@ -435,9 +435,12 @@ static void test_write_pixels(skiatest::Reporter* reporter,
                               int sampleCnt) {
     const SkImageInfo ii = SkImageInfo::MakeN32Premul(DEV_W, DEV_H);
     for (auto& origin : { kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin }) {
-        sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(rContext,
-                                                             SkBudgeted::kNo, ii, sampleCnt,
-                                                             origin, nullptr));
+        std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(rContext,
+                                                                         SkBudgeted::kNo,
+                                                                         ii,
+                                                                         sampleCnt,
+                                                                         origin,
+                                                                         nullptr);
         if (surface) {
             test_write_pixels(reporter, surface.get(), ii);
         }
@@ -482,16 +485,16 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WritePixelsNonTextureMSAA_Gpu, reporter, ctxI
     test_write_pixels_non_texture(reporter, ctxInfo.directContext(), 4);
 }
 
-static sk_sp<SkSurface> create_surf(GrRecordingContext* rContext, int width, int height) {
+static std::unique_ptr<SkSurface> create_surf(GrRecordingContext* rContext, int width, int height) {
     const SkImageInfo ii = SkImageInfo::Make(width, height,
                                              kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surf = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, ii);
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, ii);
     surf->flushAndSubmit();
     return surf;
 }
 
-static sk_sp<SkImage> upload(const sk_sp<SkSurface>& surf, SkColor color) {
+static sk_sp<SkImage> upload(std::unique_ptr<SkSurface> surf, SkColor color) {
     const SkImageInfo smII = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bm;
     bm.allocPixels(smII);
@@ -524,7 +527,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WritePixelsPendingIO, reporter, ctxInfo) {
     const SkImageInfo halfII = SkImageInfo::Make(kHalfSize, kFullSize,
                                                  kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> dest = SkSurface::MakeRenderTarget(context, SkBudgeted::kYes, fullII);
+    std::unique_ptr<SkSurface> dest = SkSurface::MakeRenderTarget(context, SkBudgeted::kYes, fullII);
 
     {
         // Seed the resource cached with a scratch texture that will be reused by writePixels
@@ -540,8 +543,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WritePixelsPendingIO, reporter, ctxInfo) {
     }
 
     // Create the surfaces and flush them to ensure there is no lingering pendingIO
-    sk_sp<SkSurface> leftSurf = create_surf(context, kHalfSize, kFullSize);
-    sk_sp<SkSurface> rightSurf = create_surf(context, kHalfSize, kFullSize);
+    std::unique_ptr<SkSurface> leftSurf = create_surf(context, kHalfSize, kFullSize);
+    std::unique_ptr<SkSurface> rightSurf = create_surf(context, kHalfSize, kFullSize);
 
     sk_sp<SkImage> leftImg = upload(std::move(leftSurf), kLeftColor);
     dest->getCanvas()->drawImage(std::move(leftImg), 0, 0);

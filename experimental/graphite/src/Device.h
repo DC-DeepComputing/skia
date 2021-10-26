@@ -63,7 +63,7 @@ protected:
     // route to drawPath, drawRect, or drawVertices as desired.
 
     // Pixel management
-    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
+    std::unique_ptr<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
     SkBaseDevice* onCreateDevice(const CreateInfo&, const SkPaint*) override;
 
     bool onReadPixels(const SkPixmap&, int x, int y) override;

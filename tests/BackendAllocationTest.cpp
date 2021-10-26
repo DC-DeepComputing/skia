@@ -79,12 +79,13 @@ void test_wrapping(GrDirectContext* dContext,
     }
 
     if (GrRenderable::kYes == renderable && dContext->colorTypeSupportedAsSurface(skColorType)) {
-        sk_sp<SkSurface> surf = SkSurface::MakeFromBackendTexture(dContext,
-                                                                  mbet->texture(),
-                                                                  kTopLeft_GrSurfaceOrigin,
-                                                                  0,
-                                                                  skColorType,
-                                                                  nullptr, nullptr);
+        std::unique_ptr<SkSurface> surf = SkSurface::MakeFromBackendTexture(dContext,
+                                                                            mbet->texture(),
+                                                                            kTopLeft_GrSurfaceOrigin,
+                                                                            0,
+                                                                            skColorType,
+                                                                            nullptr,
+                                                                            nullptr);
         if (!surf) {
             ERRORF(reporter, "Couldn't make SkSurface from backendTexture for %s\n",
                    ToolUtils::colortype_name(skColorType));

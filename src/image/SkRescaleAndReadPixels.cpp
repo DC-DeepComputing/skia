@@ -62,7 +62,7 @@ void SkRescaleAndReadPixels(SkBitmap bmp,
     };
     SkSamplingOptions sampling = rescaling_to_sampling(rescaleMode);
 
-    sk_sp<SkSurface> tempSurf;
+    SK_SURF_SP tempSurf;
     sk_sp<SkImage> srcImage;
     int srcX = srcRect.fLeft;
     int srcY = srcRect.fTop;

@@ -569,7 +569,7 @@ static void async_callback(void* c, std::unique_ptr<const SkImage::AsyncReadResu
 };
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels, reporter, ctxInfo) {
-    using Surface = sk_sp<SkSurface>;
+    using Surface = std::unique_ptr<SkSurface>;
     auto reader = std::function<GpuReadSrcFn<Surface>>(
             [](const Surface& surface, const SkIPoint& offset, const SkPixmap& pixels) {
                 auto direct = surface->recordingContext()->asDirectContext();

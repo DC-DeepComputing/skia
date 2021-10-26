@@ -20,7 +20,7 @@ public:
     SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef>, const SkSurfaceProps*);
 
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    SK_SURF_SP onNewSurface(const SkImageInfo&) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     void onDraw(SkCanvas*, SkScalar, SkScalar, const SkSamplingOptions&, const SkPaint*) override;
@@ -78,7 +78,7 @@ SkSurface_Raster::SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef> pr
 
 SkCanvas* SkSurface_Raster::onNewCanvas() { return new SkCanvas(fBitmap, this->props()); }
 
-sk_sp<SkSurface> SkSurface_Raster::onNewSurface(const SkImageInfo& info) {
+SK_SURF_SP SkSurface_Raster::onNewSurface(const SkImageInfo& info) {
     return SkSurface::MakeRaster(info, &this->props());
 }
 
@@ -150,7 +150,7 @@ void SkSurface_Raster::onCopyOnWrite(ContentChangeMode mode) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSurface> SkSurface::MakeRasterDirectReleaseProc(const SkImageInfo& info, void* pixels,
+SK_SURF_SP SkSurface::MakeRasterDirectReleaseProc(const SkImageInfo& info, void* pixels,
         size_t rb, void (*releaseProc)(void* pixels, void* context), void* context,
         const SkSurfaceProps* props) {
     if (nullptr == releaseProc) {
@@ -163,16 +163,16 @@ sk_sp<SkSurface> SkSurface::MakeRasterDirectReleaseProc(const SkImageInfo& info,
         return nullptr;
     }
 
-    return sk_make_sp<SkSurface_Raster>(info, pixels, rb, releaseProc, context, props);
+    return SK_SURF_SP(new SkSurface_Raster(info, pixels, rb, releaseProc, context, props));
 }
 
-sk_sp<SkSurface> SkSurface::MakeRasterDirect(const SkImageInfo& info, void* pixels, size_t rowBytes,
-                                             const SkSurfaceProps* props) {
+SK_SURF_SP SkSurface::MakeRasterDirect(const SkImageInfo& info, void* pixels, size_t rowBytes,
+                                        const SkSurfaceProps* props) {
     return MakeRasterDirectReleaseProc(info, pixels, rowBytes, nullptr, nullptr, props);
 }
 
-sk_sp<SkSurface> SkSurface::MakeRaster(const SkImageInfo& info, size_t rowBytes,
-                                       const SkSurfaceProps* props) {
+SK_SURF_SP SkSurface::MakeRaster(const SkImageInfo& info, size_t rowBytes,
+                                 const SkSurfaceProps* props) {
     if (!SkSurfaceValidateRasterInfo(info)) {
         return nullptr;
     }
@@ -184,10 +184,10 @@ sk_sp<SkSurface> SkSurface::MakeRaster(const SkImageInfo& info, size_t rowBytes,
     if (rowBytes) {
         SkASSERT(pr->rowBytes() == rowBytes);
     }
-    return sk_make_sp<SkSurface_Raster>(info, std::move(pr), props);
+    return SK_SURF_SP(new SkSurface_Raster(info, std::move(pr), props));
 }
 
-sk_sp<SkSurface> SkSurface::MakeRasterN32Premul(int width, int height,
-                                                const SkSurfaceProps* surfaceProps) {
+SK_SURF_SP SkSurface::MakeRasterN32Premul(int width, int height,
+                                          const SkSurfaceProps* surfaceProps) {
     return MakeRaster(SkImageInfo::MakeN32Premul(width, height), surfaceProps);
 }

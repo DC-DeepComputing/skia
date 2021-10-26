@@ -19,6 +19,9 @@
 #include "src/gpu/GrSurfaceProxyView.h"
 #endif
 
+// temporary
+#include "include/core/SkSurface.h"
+
 class GrRecordingContext;
 class GrTextureProxy;
 class SkBitmap;
@@ -106,10 +109,10 @@ public:
      * TODO (michaelludwig) - This is only used by SkTileImageFilter, which appears should be
      * updated to work correctly with subsets and then makeTightSurface() can go away entirely.
      */
-    sk_sp<SkSurface> makeTightSurface(SkColorType colorType,
-                                      const SkColorSpace* colorSpace,
-                                      const SkISize& size,
-                                      SkAlphaType at = kPremul_SkAlphaType) const;
+    SK_SURF_SP makeTightSurface(SkColorType colorType,
+                                const SkColorSpace* colorSpace,
+                                const SkISize& size,
+                                SkAlphaType at = kPremul_SkAlphaType) const;
 
     /**
      * Extract a subset of this special image and return it as a special image.

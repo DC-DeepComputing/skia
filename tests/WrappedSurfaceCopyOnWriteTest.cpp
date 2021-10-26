@@ -35,18 +35,18 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite, reporter, ctxInfo) {
         return sk_gpu_test::GetTextureImageProxy(img.get(), dContext)->uniqueID();
     };
 
-    auto surfaceProxyID = [&](const sk_sp<SkSurface>& surf) {
+    auto surfaceProxyID = [&](const std::unique_ptr<SkSurface>& surf) {
         GrRenderTargetProxy* rtp = SkCanvasPriv::TopDeviceTargetProxy(surf->getCanvas());
         return rtp->uniqueID();
     };
 
-    sk_sp<SkSurface> surf = makeDirectBackendSurface();
+    std::unique_ptr<SkSurface> surf = makeDirectBackendSurface();
     surf->getCanvas()->clear(SkColor4f{1, 0, 0, 1});
     sk_sp<SkImage> img = surf->makeImageSnapshot();
     // Initially they share
     REPORTER_ASSERT(reporter, surfaceProxyID(surf) == imageProxyID(img));
     // Using the image on the direct context shouldn't affect sharing.
-    sk_sp<SkSurface> surf2 = makeDirectBackendSurface();
+    std::unique_ptr<SkSurface> surf2 = makeDirectBackendSurface();
     surf2->getCanvas()->drawImage(img, 0, 0);
     REPORTER_ASSERT(reporter, surfaceProxyID(surf) == imageProxyID(img));
     // Modifying the original surface should trigger using the copy proxy.

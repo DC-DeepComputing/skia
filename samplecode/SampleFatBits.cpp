@@ -131,8 +131,8 @@ private:
     sk_sp<SkShader>     fShader0;
     sk_sp<SkShader>     fShader1;
     sk_sp<SkShader>     fShader;
-    sk_sp<SkSurface>    fMinSurface;
-    sk_sp<SkSurface>    fMaxSurface;
+    std::unique_ptr<SkSurface>    fMinSurface;
+    std::unique_ptr<SkSurface>    fMaxSurface;
 
     void setupPaint(SkPaint* paint) {
         bool aa = this->getAA();

@@ -80,7 +80,7 @@ public:
             sk_sp<SkColorSpace> gty = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                                             greenToYellow);
             SkImageInfo info = SkImageInfo::MakeN32Premul(100, 100, std::move(gty));
-            sk_sp<SkSurface> surface(SkSurface::MakeRaster(info));
+            std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
             surface->getCanvas()->drawRect(SkRect::MakeWH(fTileSize, fTileSize), paint);
         }
 

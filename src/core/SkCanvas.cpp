@@ -1239,14 +1239,14 @@ void SkCanvas::internalRestore() {
     this->validateClip();
 }
 
-sk_sp<SkSurface> SkCanvas::makeSurface(const SkImageInfo& info, const SkSurfaceProps* props) {
+SK_SURF_SP SkCanvas::makeSurface(const SkImageInfo& info, const SkSurfaceProps* props) {
     if (nullptr == props) {
         props = &fProps;
     }
     return this->onNewSurface(info, *props);
 }
 
-sk_sp<SkSurface> SkCanvas::onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+SK_SURF_SP SkCanvas::onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
     return this->baseDevice()->makeSurface(info, props);
 }
 

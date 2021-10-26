@@ -178,8 +178,8 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
 
     SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
                                               kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo,
-                                                           imageInfo);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo,
+                                                                     imageInfo);
     REPORTER_ASSERT(reporter, surface);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -250,8 +250,10 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
         return;
     }
 
-    sk_sp<SkSurface> surface = SkSurface::MakeFromAHardwareBuffer(context, buffer, surfaceOrigin,
-                                                                  nullptr, nullptr);
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeFromAHardwareBuffer(context,
+                                                                            buffer,
+                                                                            surfaceOrigin,
+                                                                            nullptr, nullptr);
     if (!surface) {
         ERRORF(reporter, "Failed to make SkSurface.");
         cleanup_resources(buffer);

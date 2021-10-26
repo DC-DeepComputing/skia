@@ -19,7 +19,7 @@ void draw(SkCanvas* canvas) {
     canvas->drawRect({0, 215, 320, 230}, grayPaint);
     canvas->drawRect({0, 230, 320, 250}, SkPaint());
 
-    sk_sp<SkSurface> surf;
+    std::unique_ptr<SkSurface> surf;
     auto ii = SkImageInfo::Make(650, 480, kARGB_4444_SkColorType, kPremul_SkAlphaType);
     if (canvas->recordingContext() && !forceRaster) {
         surf = SkSurface::MakeRenderTarget(canvas->recordingContext(), SkBudgeted::kNo, ii);

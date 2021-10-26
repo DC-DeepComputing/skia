@@ -43,16 +43,16 @@ static void release_direct_surface_storage(void* pixels, void* context) {
     SkASSERT(pixels == context);
     sk_free(pixels);
 }
-static sk_sp<SkSurface> create_surface(SkAlphaType at = kPremul_SkAlphaType,
-                                       SkImageInfo* requestedInfo = nullptr) {
+static std::unique_ptr<SkSurface> create_surface(SkAlphaType at = kPremul_SkAlphaType,
+                                                 SkImageInfo* requestedInfo = nullptr) {
     const SkImageInfo info = SkImageInfo::MakeN32(10, 10, at);
     if (requestedInfo) {
         *requestedInfo = info;
     }
     return SkSurface::MakeRaster(info);
 }
-static sk_sp<SkSurface> create_direct_surface(SkAlphaType at = kPremul_SkAlphaType,
-                                              SkImageInfo* requestedInfo = nullptr) {
+static std::unique_ptr<SkSurface> create_direct_surface(SkAlphaType at = kPremul_SkAlphaType,
+                                                        SkImageInfo* requestedInfo = nullptr) {
     const SkImageInfo info = SkImageInfo::MakeN32(10, 10, at);
     if (requestedInfo) {
         *requestedInfo = info;
@@ -63,18 +63,18 @@ static sk_sp<SkSurface> create_direct_surface(SkAlphaType at = kPremul_SkAlphaTy
                                                   release_direct_surface_storage,
                                                   storage);
 }
-static sk_sp<SkSurface> create_gpu_surface(GrRecordingContext* rContext,
-                                           SkAlphaType at = kPremul_SkAlphaType,
-                                           SkImageInfo* requestedInfo = nullptr) {
+static std::unique_ptr<SkSurface> create_gpu_surface(GrRecordingContext* rContext,
+                                                     SkAlphaType at = kPremul_SkAlphaType,
+                                                     SkImageInfo* requestedInfo = nullptr) {
     const SkImageInfo info = SkImageInfo::MakeN32(10, 10, at);
     if (requestedInfo) {
         *requestedInfo = info;
     }
     return SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info);
 }
-static sk_sp<SkSurface> create_gpu_scratch_surface(GrRecordingContext* rContext,
-                                                   SkAlphaType at = kPremul_SkAlphaType,
-                                                   SkImageInfo* requestedInfo = nullptr) {
+static std::unique_ptr<SkSurface> create_gpu_scratch_surface(GrRecordingContext* rContext,
+                                                             SkAlphaType at = kPremul_SkAlphaType,
+                                                             SkImageInfo* requestedInfo = nullptr) {
     const SkImageInfo info = SkImageInfo::MakeN32(10, 10, at);
     if (requestedInfo) {
         *requestedInfo = info;
@@ -212,7 +212,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrContext_maxSurfaceSamplesForColorType, repo
 }
 
 static void test_canvas_peek(skiatest::Reporter* reporter,
-                             sk_sp<SkSurface>& surface,
+                             std::unique_ptr<SkSurface>& surface,
                              const SkImageInfo& requestInfo,
                              bool expectPeekSuccess) {
     const SkColor color = SK_ColorRED;
@@ -253,7 +253,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceCanvasPeek_Gpu, reporter, ctxInfo) {
     }
 }
 
-static void test_snapshot_alphatype(skiatest::Reporter* reporter, const sk_sp<SkSurface>& surface,
+static void test_snapshot_alphatype(skiatest::Reporter* reporter,
+                                    const std::unique_ptr<SkSurface>& surface,
                                     SkAlphaType expectedAlphaType) {
     REPORTER_ASSERT(reporter, surface);
     if (surface) {
@@ -371,7 +372,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendHandleAccessIDs_Gpu, reporter, 
 // No CPU test.
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu, reporter, ctxInfo) {
     auto direct = ctxInfo.directContext();
-    sk_sp<SkSurface> surface = create_gpu_surface(direct, kPremul_SkAlphaType, nullptr);
+    std::unique_ptr<SkSurface> surface = create_gpu_surface(direct, kPremul_SkAlphaType, nullptr);
     if (!surface) {
         return;
     }
@@ -386,7 +387,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu, reporter, ctxInf
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendAccessAbandoned_Gpu, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
-    sk_sp<SkSurface> surface = create_gpu_surface(dContext, kPremul_SkAlphaType, nullptr);
+    std::unique_ptr<SkSurface> surface = create_gpu_surface(dContext, kPremul_SkAlphaType, nullptr);
     if (!surface) {
         return;
     }
@@ -564,7 +565,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfacepeekTexture_Gpu, reporter, ctxInfo) {
     }
 }
 
-static SkBudgeted is_budgeted(const sk_sp<SkSurface>& surf) {
+static SkBudgeted is_budgeted(const std::unique_ptr<SkSurface>& surf) {
     SkSurface_Gpu* gsurf = (SkSurface_Gpu*)surf.get();
 
     GrRenderTargetProxy* proxy = gsurf->getDevice()->targetProxy();
@@ -677,7 +678,7 @@ DEF_TEST(surface_rowbytes, reporter) {
 }
 
 DEF_TEST(surface_raster_zeroinitialized, reporter) {
-    sk_sp<SkSurface> s(SkSurface::MakeRasterN32Premul(100, 100));
+    std::unique_ptr<SkSurface> s = SkSurface::MakeRasterN32Premul(100, 100);
     SkPixmap pixmap;
     REPORTER_ASSERT(reporter, s->peekPixels(&pixmap));
 
@@ -688,9 +689,9 @@ DEF_TEST(surface_raster_zeroinitialized, reporter) {
     }
 }
 
-static sk_sp<SkSurface> create_gpu_surface_backend_texture(GrDirectContext* dContext,
-                                                           int sampleCnt,
-                                                           const SkColor4f& color) {
+static std::unique_ptr<SkSurface> create_gpu_surface_backend_texture(GrDirectContext* dContext,
+                                                                     int sampleCnt,
+                                                                     const SkColor4f& color) {
     // On Pixel and Pixel2XL's with Adreno 530 and 540s, setting width and height to 10s reliably
     // triggers what appears to be a driver race condition where the 10x10 surface from the
     // OverdrawSurface_gpu test is reused(?) for this surface created by the SurfacePartialDraw_gpu
@@ -735,9 +736,10 @@ static bool supports_readpixels(const GrCaps* caps, SkSurface* surface) {
     return caps->surfaceSupportsReadPixels(rt) == GrCaps::SurfaceReadPixelsSupport::kSupported;
 }
 
-static sk_sp<SkSurface> create_gpu_surface_backend_render_target(GrDirectContext* dContext,
-                                                                 int sampleCnt,
-                                                                 const SkColor4f& color) {
+static std::unique_ptr<SkSurface> create_gpu_surface_backend_render_target(
+        GrDirectContext* dContext,
+        int sampleCnt,
+        const SkColor4f& color) {
     const int kWidth = 10;
     const int kHeight = 10;
 
@@ -835,8 +837,9 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu, reporter, ctxInfo) {
     }
 }
 
-static void test_surface_draw_partially(
-    skiatest::Reporter* reporter, sk_sp<SkSurface> surface, SkColor origColor) {
+static void test_surface_draw_partially(skiatest::Reporter* reporter,
+                                        const std::unique_ptr<SkSurface>& surface,
+                                        SkColor origColor) {
     const int kW = surface->width();
     const int kH = surface->height();
     SkPaint paint;
@@ -923,7 +926,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu, reporter, ctxI
     for (bool useTexture : {false, true}) {
         sk_sp<sk_gpu_test::ManagedBackendTexture> mbet;
         GrBackendRenderTarget backendRT;
-        sk_sp<SkSurface> surface;
+        std::unique_ptr<SkSurface> surface;
 
         ReleaseChecker releaseChecker;
         GrSurfaceOrigin texOrigin = kBottomLeft_GrSurfaceOrigin;
@@ -1126,13 +1129,13 @@ static void test_overdraw_surface(skiatest::Reporter* r, SkSurface* surface) {
 }
 
 DEF_TEST(OverdrawSurface_Raster, r) {
-    sk_sp<SkSurface> surface = create_surface();
+    std::unique_ptr<SkSurface> surface = create_surface();
     test_overdraw_surface(r, surface.get());
 }
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(OverdrawSurface_Gpu, r, ctxInfo) {
     auto context = ctxInfo.directContext();
-    sk_sp<SkSurface> surface = create_gpu_surface(context);
+    std::unique_ptr<SkSurface> surface = create_gpu_surface(context);
     test_overdraw_surface(r, surface.get());
 }
 

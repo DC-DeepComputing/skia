@@ -29,6 +29,9 @@
 #include "include/private/SkDeque.h"
 #include "include/private/SkMacros.h"
 
+// temporary
+#include "include/core/SkSurface.h"
+
 #include <cstring>
 #include <memory>
 #include <vector>
@@ -284,7 +287,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Canvas_makeSurface
     */
-    sk_sp<SkSurface> makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
+    SK_SURF_SP makeSurface(const SkImageInfo& info, const SkSurfaceProps* props = nullptr);
 
     /** Returns GPU context of the GPU surface associated with SkCanvas.
 
@@ -2174,7 +2177,7 @@ public:
 
 protected:
     // default impl defers to getDevice()->newSurface(info)
-    virtual sk_sp<SkSurface> onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props);
+    virtual SK_SURF_SP onNewSurface(const SkImageInfo& info, const SkSurfaceProps& props);
 
     // default impl defers to its device
     virtual bool onPeekPixels(SkPixmap* pixmap);

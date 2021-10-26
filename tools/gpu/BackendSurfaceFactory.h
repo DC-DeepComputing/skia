@@ -19,7 +19,7 @@ class SkSurfaceProps;
 
 namespace sk_gpu_test {
 
-sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
+std::unique_ptr<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            const SkImageInfo&,
                                            GrSurfaceOrigin,
                                            int sampleCnt,
@@ -27,7 +27,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            GrProtected = GrProtected::kNo,
                                            const SkSurfaceProps* = nullptr);
 
-sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
+std::unique_ptr<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            SkISize,
                                            GrSurfaceOrigin,
                                            int sampleCnt,
@@ -38,14 +38,14 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            const SkSurfaceProps* = nullptr);
 
 /** Creates an SkSurface backed by a non-textureable render target. */
-sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
+std::unique_ptr<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
                                                 const SkImageInfo&,
                                                 GrSurfaceOrigin,
                                                 int sampleCnt,
                                                 GrProtected = GrProtected::kNo,
                                                 const SkSurfaceProps* = nullptr);
 
-sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
+std::unique_ptr<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
                                                 SkISize,
                                                 GrSurfaceOrigin,
                                                 int sampleCnt,

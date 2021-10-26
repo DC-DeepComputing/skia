@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+//#define SK_LEGACY_SURFACE_REF_CNT
+
 #ifndef SkSurface_DEFINED
 #define SkSurface_DEFINED
 
@@ -12,8 +14,13 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
-
 #include "include/gpu/GrTypes.h"
+
+#ifdef SK_LEGACY_SURFACE_REF_CNT
+#include "include/core/SkRefCnt.h"
+#endif
+
+#include <memory>
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
 #include <android/hardware_buffer.h>
@@ -35,6 +42,13 @@ class GrDirectContext;
 class GrRecordingContext;
 class GrRenderTarget;
 
+
+#ifdef SK_LEGACY_SURFACE_REF_CNT
+using SK_SURF_SP = sk_sp<SkSurface>;
+#else
+using SK_SURF_SP = std::unique_ptr<SkSurface>;
+#endif
+
 /** \class SkSurface
     SkSurface is responsible for managing the pixels that a canvas draws into. The pixels can be
     allocated either in CPU memory (a raster surface) or on the GPU (a GrRenderTarget surface).
@@ -43,8 +57,13 @@ class GrRenderTarget;
     SkSurface always has non-zero dimensions. If there is a request for a new surface, and either
     of the requested dimensions are zero, then nullptr will be returned.
 */
-class SK_API SkSurface : public SkRefCnt {
+class SK_API SkSurface
+#ifdef SK_LEGACY_SURFACE_REF_CNT
+    : public SkRefCnt
+#endif
+{
 public:
+    virtual ~SkSurface() = default;
 
     /** Allocates raster SkSurface. SkCanvas returned by SkSurface draws directly into pixels.
 
@@ -67,12 +86,12 @@ public:
                              may be nullptr
         @return              SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRasterDirect(const SkImageInfo& imageInfo, void* pixels,
-                                             size_t rowBytes,
-                                             const SkSurfaceProps* surfaceProps = nullptr);
+    static SK_SURF_SP MakeRasterDirect(const SkImageInfo& imageInfo, void* pixels,
+                                       size_t rowBytes,
+                                       const SkSurfaceProps* surfaceProps = nullptr);
 
-    static sk_sp<SkSurface> MakeRasterDirect(const SkPixmap& pm,
-                                             const SkSurfaceProps* props = nullptr) {
+    static SK_SURF_SP MakeRasterDirect(const SkPixmap& pm,
+                                       const SkSurfaceProps* props = nullptr) {
         return MakeRasterDirect(pm.info(), pm.writable_addr(), pm.rowBytes(), props);
     }
 
@@ -100,10 +119,13 @@ public:
                              may be nullptr
         @return              SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRasterDirectReleaseProc(const SkImageInfo& imageInfo, void* pixels,
-                                    size_t rowBytes,
-                                    void (*releaseProc)(void* pixels, void* context),
-                                    void* context, const SkSurfaceProps* surfaceProps = nullptr);
+    static SK_SURF_SP MakeRasterDirectReleaseProc(
+            const SkImageInfo& imageInfo,
+            void* pixels,
+            size_t rowBytes,
+            void (*releaseProc)(void* pixels, void* context),
+            void* context,
+            const SkSurfaceProps* surfaceProps = nullptr);
 
     /** Allocates raster SkSurface. SkCanvas returned by SkSurface draws directly into pixels.
         Allocates and zeroes pixel memory. Pixel memory size is imageInfo.height() times
@@ -125,8 +147,8 @@ public:
                              may be nullptr
         @return              SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRaster(const SkImageInfo& imageInfo, size_t rowBytes,
-                                       const SkSurfaceProps* surfaceProps);
+    static SK_SURF_SP MakeRaster(const SkImageInfo& imageInfo, size_t rowBytes,
+                                 const SkSurfaceProps* surfaceProps);
 
     /** Allocates raster SkSurface. SkCanvas returned by SkSurface draws directly into pixels.
         Allocates and zeroes pixel memory. Pixel memory size is imageInfo.height() times
@@ -144,8 +166,8 @@ public:
                           may be nullptr
         @return           SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRaster(const SkImageInfo& imageInfo,
-                                       const SkSurfaceProps* props = nullptr) {
+    static SK_SURF_SP MakeRaster(const SkImageInfo& imageInfo,
+                                 const SkSurfaceProps* props = nullptr) {
         return MakeRaster(imageInfo, 0, props);
     }
 
@@ -167,7 +189,7 @@ public:
                              fonts; may be nullptr
         @return              SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRasterN32Premul(int width, int height,
+    static SK_SURF_SP MakeRasterN32Premul(int width, int height,
                                                 const SkSurfaceProps* surfaceProps = nullptr);
 
     /** Caller data passed to RenderTarget/TextureReleaseProc; may be nullptr. */
@@ -206,14 +228,14 @@ public:
         @param releaseContext      state passed to textureReleaseProc
         @return                    SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeFromBackendTexture(GrRecordingContext* context,
-                                                   const GrBackendTexture& backendTexture,
-                                                   GrSurfaceOrigin origin, int sampleCnt,
-                                                   SkColorType colorType,
-                                                   sk_sp<SkColorSpace> colorSpace,
-                                                   const SkSurfaceProps* surfaceProps,
-                                                   TextureReleaseProc textureReleaseProc = nullptr,
-                                                   ReleaseContext releaseContext = nullptr);
+    static SK_SURF_SP MakeFromBackendTexture(GrRecordingContext* context,
+                                              const GrBackendTexture& backendTexture,
+                                              GrSurfaceOrigin origin, int sampleCnt,
+                                              SkColorType colorType,
+                                              sk_sp<SkColorSpace> colorSpace,
+                                              const SkSurfaceProps* surfaceProps,
+                                              TextureReleaseProc textureReleaseProc = nullptr,
+                                              ReleaseContext releaseContext = nullptr);
 
     /** Wraps a GPU-backed buffer into SkSurface. Caller must ensure backendRenderTarget
         is valid for the lifetime of returned SkSurface.
@@ -240,14 +262,14 @@ public:
         @param releaseContext           state passed to releaseProc
         @return                         SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeFromBackendRenderTarget(GrRecordingContext* context,
-                                                const GrBackendRenderTarget& backendRenderTarget,
-                                                GrSurfaceOrigin origin,
-                                                SkColorType colorType,
-                                                sk_sp<SkColorSpace> colorSpace,
-                                                const SkSurfaceProps* surfaceProps,
-                                                RenderTargetReleaseProc releaseProc = nullptr,
-                                                ReleaseContext releaseContext = nullptr);
+    static SK_SURF_SP MakeFromBackendRenderTarget(GrRecordingContext* context,
+                                                  const GrBackendRenderTarget& backendRenderTarget,
+                                                  GrSurfaceOrigin origin,
+                                                  SkColorType colorType,
+                                                  sk_sp<SkColorSpace> colorSpace,
+                                                  const SkSurfaceProps* surfaceProps,
+                                                  RenderTargetReleaseProc releaseProc = nullptr,
+                                                  ReleaseContext releaseContext = nullptr);
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
     /** Private.
@@ -269,11 +291,11 @@ public:
                                fonts; may be nullptr
         @return                created SkSurface, or nullptr
     */
-    static sk_sp<SkSurface> MakeFromAHardwareBuffer(GrDirectContext* context,
-                                                    AHardwareBuffer* hardwareBuffer,
-                                                    GrSurfaceOrigin origin,
-                                                    sk_sp<SkColorSpace> colorSpace,
-                                                    const SkSurfaceProps* surfaceProps);
+    static SK_SURF_SP MakeFromAHardwareBuffer(GrDirectContext* context,
+                                              AHardwareBuffer* hardwareBuffer,
+                                              GrSurfaceOrigin origin,
+                                              sk_sp<SkColorSpace> colorSpace,
+                                              const SkSurfaceProps* surfaceProps);
 #endif
 
 #ifdef SK_METAL
@@ -296,15 +318,15 @@ public:
                                instantiated; may not be nullptr
         @return                created SkSurface, or nullptr
      */
-    static sk_sp<SkSurface> MakeFromCAMetalLayer(GrRecordingContext* context,
-                                                 GrMTLHandle layer,
-                                                 GrSurfaceOrigin origin,
-                                                 int sampleCnt,
-                                                 SkColorType colorType,
-                                                 sk_sp<SkColorSpace> colorSpace,
-                                                 const SkSurfaceProps* surfaceProps,
-                                                 GrMTLHandle* drawable)
-                                                 SK_API_AVAILABLE_CA_METAL_LAYER;
+    static SK_SURF_SP MakeFromCAMetalLayer(GrRecordingContext* context,
+                                           GrMTLHandle layer,
+                                           GrSurfaceOrigin origin,
+                                           int sampleCnt,
+                                           SkColorType colorType,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* surfaceProps,
+                                           GrMTLHandle* drawable)
+                                           SK_API_AVAILABLE_CA_METAL_LAYER;
 
     /** Creates SkSurface from MTKView.
         Returned SkSurface takes a reference on the MTKView. The ref on the layer will be
@@ -323,14 +345,14 @@ public:
                                fonts; may be nullptr
         @return                created SkSurface, or nullptr
      */
-    static sk_sp<SkSurface> MakeFromMTKView(GrRecordingContext* context,
-                                            GrMTLHandle mtkView,
-                                            GrSurfaceOrigin origin,
-                                            int sampleCnt,
-                                            SkColorType colorType,
-                                            sk_sp<SkColorSpace> colorSpace,
-                                            const SkSurfaceProps* surfaceProps)
-                                            SK_API_AVAILABLE(macos(10.11), ios(9.0));
+    static SK_SURF_SP MakeFromMTKView(GrRecordingContext* context,
+                                      GrMTLHandle mtkView,
+                                      GrSurfaceOrigin origin,
+                                      int sampleCnt,
+                                      SkColorType colorType,
+                                      sk_sp<SkColorSpace> colorSpace,
+                                      const SkSurfaceProps* surfaceProps)
+                                      SK_API_AVAILABLE(macos(10.11), ios(9.0));
 #endif
 
     /** Returns SkSurface on GPU indicated by context. Allocates memory for
@@ -359,11 +381,13 @@ public:
         @param shouldCreateWithMips  hint that SkSurface will host mip map images
         @return                      SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
-                                             const SkImageInfo& imageInfo,
-                                             int sampleCount, GrSurfaceOrigin surfaceOrigin,
-                                             const SkSurfaceProps* surfaceProps,
-                                             bool shouldCreateWithMips = false);
+    static SK_SURF_SP MakeRenderTarget(GrRecordingContext* context,
+                                       SkBudgeted budgeted,
+                                       const SkImageInfo& imageInfo,
+                                       int sampleCount,
+                                       GrSurfaceOrigin surfaceOrigin,
+                                       const SkSurfaceProps* surfaceProps,
+                                       bool shouldCreateWithMips = false);
 
     /** Returns SkSurface on GPU indicated by context. Allocates memory for
         pixels, based on the width, height, and SkColorType in SkImageInfo.  budgeted
@@ -386,9 +410,11 @@ public:
                             fonts; may be nullptr
         @return             SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
-                                             const SkImageInfo& imageInfo, int sampleCount,
-                                             const SkSurfaceProps* surfaceProps) {
+    static SK_SURF_SP MakeRenderTarget(GrRecordingContext* context,
+                                       SkBudgeted budgeted,
+                                       const SkImageInfo& imageInfo,
+                                       int sampleCount,
+                                       const SkSurfaceProps* surfaceProps) {
         return MakeRenderTarget(context, budgeted, imageInfo, sampleCount,
                                 kBottomLeft_GrSurfaceOrigin, surfaceProps);
     }
@@ -406,8 +432,9 @@ public:
                           of raster surface; width, or height, or both, may be zero
         @return           SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
-                                             const SkImageInfo& imageInfo) {
+    static SK_SURF_SP MakeRenderTarget(GrRecordingContext* context,
+                                       SkBudgeted budgeted,
+                                       const SkImageInfo& imageInfo) {
         if (!imageInfo.width() || !imageInfo.height()) {
             return nullptr;
         }
@@ -422,9 +449,9 @@ public:
         @param characterization  description of the desired SkSurface
         @return                  SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
-                                             const SkSurfaceCharacterization& characterization,
-                                             SkBudgeted budgeted);
+    static SK_SURF_SP MakeRenderTarget(GrRecordingContext* context,
+                                       const SkSurfaceCharacterization& characterization,
+                                       SkBudgeted budgeted);
 
     /** Is this surface compatible with the provided characterization?
 
@@ -446,7 +473,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Surface_MakeNull
     */
-    static sk_sp<SkSurface> MakeNull(int width, int height);
+    static SK_SURF_SP MakeNull(int width, int height);
 
     /** Returns pixel count in each row; may be zero or greater.
 
@@ -583,12 +610,12 @@ public:
 
         example: https://fiddle.skia.org/c/@Surface_makeSurface
     */
-    sk_sp<SkSurface> makeSurface(const SkImageInfo& imageInfo);
+    SK_SURF_SP makeSurface(const SkImageInfo& imageInfo);
 
     /** Calls makeSurface(ImageInfo) with the same ImageInfo as this surface, but with the
      *  specified width and height.
      */
-    sk_sp<SkSurface> makeSurface(int width, int height);
+    SK_SURF_SP makeSurface(int width, int height);
 
     /** Returns SkImage capturing SkSurface contents. Subsequent drawing to SkSurface contents
         are not captured. SkImage allocation is accounted for if SkSurface was created with

@@ -15,7 +15,7 @@
 
 namespace sk_gpu_test {
 
-sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
+std::unique_ptr<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                            const SkImageInfo& ii,
                                            GrSurfaceOrigin origin,
                                            int sampleCnt,
@@ -46,7 +46,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                              mbet->releaseContext());
 }
 
-sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
+std::unique_ptr<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                            SkISize dimensions,
                                            GrSurfaceOrigin origin,
                                            int sampleCnt,
@@ -59,7 +59,8 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
     return MakeBackendTextureSurface(
             dContext, ii, origin, sampleCnt, mipMapped, isProtected, props);
 }
-sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
+
+std::unique_ptr<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
                                                 const SkImageInfo& ii,
                                                 GrSurfaceOrigin origin,
                                                 int sampleCnt,
@@ -92,7 +93,7 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
             dContext, bert, origin, ii.colorType(), ii.refColorSpace(), props, proc, rc);
 }
 
-sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
+std::unique_ptr<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
                                                 SkISize dimensions,
                                                 GrSurfaceOrigin origin,
                                                 int sampleCnt,

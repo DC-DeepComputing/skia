@@ -825,7 +825,7 @@ static int find_or_append(SkTArray<sk_sp<T>>& array, T* obj) {
     return array.count() - 1;
 }
 
-sk_sp<SkSurface> SkPictureRecord::onNewSurface(const SkImageInfo& info, const SkSurfaceProps&) {
+SK_SURF_SP SkPictureRecord::onNewSurface(const SkImageInfo& info, const SkSurfaceProps&) {
     return nullptr;
 }
 

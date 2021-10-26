@@ -106,7 +106,7 @@ static void iterate_dir(const char* directory, const std::function<void(const ch
 
 DEF_TEST(SkSL_ES2Conformance_Pass_CPU, r) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(1, 1);
-    sk_sp<SkSurface> surface(SkSurface::MakeRaster(info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRaster(info);
 
     iterate_dir("sksl/es2_conformance/pass/", [&](const char* path) {
         test_expect_pass(r, surface.get(), path);
@@ -115,8 +115,8 @@ DEF_TEST(SkSL_ES2Conformance_Pass_CPU, r) {
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkSL_ES2Conformance_Pass_GPU, r, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(1, 1);
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
-                                                         SkBudgeted::kNo, info));
+    std::unique_ptr<SkSurface> surface = SkSurface::MakeRenderTarget(ctxInfo.directContext(),
+                                                                     SkBudgeted::kNo, info);
     iterate_dir("sksl/es2_conformance/pass/", [&](const char* path) {
         test_expect_pass(r, surface.get(), path);
     });

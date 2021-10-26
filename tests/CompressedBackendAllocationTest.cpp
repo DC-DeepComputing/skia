@@ -62,11 +62,11 @@ static void check_compressed_mipmaps(GrRecordingContext* rContext, sk_sp<SkImage
     SkImageInfo readbackSurfaceII = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType,
                                                       kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surf = SkSurface::MakeRenderTarget(rContext,
-                                                        SkBudgeted::kNo,
-                                                        readbackSurfaceII, 1,
-                                                        kTopLeft_GrSurfaceOrigin,
-                                                        nullptr);
+    std::unique_ptr<SkSurface> surf = SkSurface::MakeRenderTarget(rContext,
+                                                                  SkBudgeted::kNo,
+                                                                  readbackSurfaceII, 1,
+                                                                  kTopLeft_GrSurfaceOrigin,
+                                                                  nullptr);
     if (!surf) {
         return;
     }

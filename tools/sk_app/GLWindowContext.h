@@ -20,7 +20,7 @@ namespace sk_app {
 
 class GLWindowContext : public WindowContext {
 public:
-    sk_sp<SkSurface> getBackbufferSurface() override;
+    SkSurface* getBackbufferSurface() override;
 
     bool isValid() override { return SkToBool(fBackendContext.get()); }
 
@@ -45,7 +45,7 @@ protected:
     virtual void onSwapBuffers() = 0;
 
     sk_sp<const GrGLInterface> fBackendContext;
-    sk_sp<SkSurface>           fSurface;
+    std::unique_ptr<SkSurface>           fSurface;
 };
 
 }   // namespace sk_app

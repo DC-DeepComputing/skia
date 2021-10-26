@@ -346,7 +346,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
 
     // set up initial image layouts and create surfaces
     fImageLayouts = new VkImageLayout[fImageCount];
-    fSurfaces = new sk_sp<SkSurface>[fImageCount];
+    fSurfaces = new std::unique_ptr<SkSurface>[fImageCount];
     for (uint32_t i = 0; i < fImageCount; ++i) {
         fImageLayouts[i] = VK_IMAGE_LAYOUT_UNDEFINED;
 
@@ -484,7 +484,7 @@ VulkanWindowContext::BackbufferInfo* VulkanWindowContext::getAvailableBackbuffer
     return backbuffer;
 }
 
-sk_sp<SkSurface> VulkanWindowContext::getBackbufferSurface() {
+SkSurface* VulkanWindowContext::getBackbufferSurface() {
     BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
     SkASSERT(backbuffer);
 
@@ -535,7 +535,7 @@ sk_sp<SkSurface> VulkanWindowContext::getBackbufferSurface() {
 
     surface->wait(1, &beSemaphore);
 
-    return sk_ref_sp(surface);
+    return surface;
 }
 
 void VulkanWindowContext::swapBuffers() {

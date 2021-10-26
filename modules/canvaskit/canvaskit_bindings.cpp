@@ -153,7 +153,7 @@ sk_sp<GrDirectContext> MakeGrContext()
     return GrDirectContext::MakeGL(interface);
 }
 
-sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int width, int height,
+std::unique_ptr<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int width, int height,
                                        sk_sp<SkColorSpace> colorSpace) {
     // WebGL should already be clearing the color and stencil buffers, but do it again here to
     // ensure Skia receives them in the expected state.
@@ -176,29 +176,26 @@ sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int widt
     const auto colorSettings = ColorSettings(colorSpace);
     info.fFormat = colorSettings.pixFormat;
     GrBackendRenderTarget target(width, height, sampleCnt, stencil, info);
-    sk_sp<SkSurface> surface(SkSurface::MakeFromBackendRenderTarget(dContext.get(), target,
+    return SkSurface::MakeFromBackendRenderTarget(dContext.get(), target,
         kBottomLeft_GrSurfaceOrigin, colorSettings.colorType, colorSpace, nullptr));
-    return surface;
 }
 
-sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, int height) {
+std::unique_ptr<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, int height) {
     SkImageInfo info = SkImageInfo::MakeN32(width, height, SkAlphaType::kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
-                             info, 0,
-                             kBottomLeft_GrSurfaceOrigin,
-                             nullptr, true));
-    return surface;
+    return SkSurface::MakeRenderTarget(dContext.get(),
+                                       SkBudgeted::kYes,
+                                       info, 0,
+                                       kBottomLeft_GrSurfaceOrigin,
+                                       nullptr, true);
 }
 
-sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageInfo sii) {
-    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
-                             toSkImageInfo(sii), 0,
-                             kBottomLeft_GrSurfaceOrigin,
-                             nullptr, true));
-    return surface;
+std::unique_ptr<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageInfo sii) {
+     return SkSurface::MakeRenderTarget(dContext.get(),
+                                        SkBudgeted::kYes,
+                                        toSkImageInfo(sii), 0,
+                                        kBottomLeft_GrSurfaceOrigin,
+                                        nullptr, true));
 }
 #endif
 
@@ -717,8 +714,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
 #ifdef SK_GL
     function("_MakeGrContext", &MakeGrContext);
     function("_MakeOnScreenGLSurface", &MakeOnScreenGLSurface);
-    function("_MakeRenderTargetWH", select_overload<sk_sp<SkSurface>(sk_sp<GrDirectContext>, int, int)>(&MakeRenderTarget));
-    function("_MakeRenderTargetII", select_overload<sk_sp<SkSurface>(sk_sp<GrDirectContext>, SimpleImageInfo)>(&MakeRenderTarget));
+    function("_MakeRenderTargetWH", select_overload<std::unique_ptr<SkSurface>(sk_sp<GrDirectContext>, int, int)>(&MakeRenderTarget));
+    function("_MakeRenderTargetII", select_overload<std::unique_ptr<SkSurface>(sk_sp<GrDirectContext>, SimpleImageInfo)>(&MakeRenderTarget));
 
     constant("gpu", true);
 #endif
@@ -1072,7 +1069,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             SkMatrix m = self.getTotalMatrix();
             m.get9(nineMatrixValues);
         }))
-        .function("_makeSurface", optional_override([](SkCanvas& self, SimpleImageInfo sii)->sk_sp<SkSurface> {
+        .function("_makeSurface", optional_override([](SkCanvas& self, SimpleImageInfo sii)->std::unique_ptr<SkSurface> {
             return self.makeSurface(toSkImageInfo(sii), nullptr);
         }), allow_raw_pointers())
         .function("markCTM", optional_override([](SkCanvas& self, std::string marker) {
@@ -1759,10 +1756,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
 #endif
 
     class_<SkSurface>("Surface")
-        .smart_ptr<sk_sp<SkSurface>>("sk_sp<Surface>")
+        .smart_ptr<std::unique_ptr<SkSurface>>("std::unique_ptr<Surface>")
         .class_function("_makeRasterDirect", optional_override([](const SimpleImageInfo ii,
                                                                   WASMPointerU8 pPtr,
-                                                                  size_t rowBytes)->sk_sp<SkSurface> {
+                                                                  size_t rowBytes)->std::unique_ptr<SkSurface> {
             uint8_t* pixels = reinterpret_cast<uint8_t*>(pPtr);
             SkImageInfo imageInfo = toSkImageInfo(ii);
             return SkSurface::MakeRasterDirect(imageInfo, pixels, rowBytes, nullptr);
@@ -1804,7 +1801,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             }
             return self.makeImageSnapshot(*bounds);
         }))
-        .function("_makeSurface", optional_override([](SkSurface& self, SimpleImageInfo sii)->sk_sp<SkSurface> {
+        .function("_makeSurface", optional_override([](SkSurface& self, SimpleImageInfo sii)->std::unique_ptr<SkSurface> {
             return self.makeSurface(toSkImageInfo(sii));
         }), allow_raw_pointers())
 #ifdef SK_GL

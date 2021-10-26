@@ -12,7 +12,7 @@
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
 
-sk_sp<SkSurface> SkMtkViewToSurface(MTKView* mtkView, GrRecordingContext* rContext) {
+std::unique_ptr<SkSurface> SkMtkViewToSurface(MTKView* mtkView, GrRecordingContext* rContext) {
     if (!rContext ||
         MTLPixelFormatDepth32Float_Stencil8 != [mtkView depthStencilPixelFormat] ||
         MTLPixelFormatBGRA8Unorm != [mtkView colorPixelFormat]) {

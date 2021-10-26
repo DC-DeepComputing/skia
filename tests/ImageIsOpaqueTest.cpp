@@ -16,7 +16,8 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
-static void check_isopaque(skiatest::Reporter* reporter, const sk_sp<SkSurface>& surface,
+static void check_isopaque(skiatest::Reporter* reporter,
+                           const std::unique_ptr<SkSurface>& surface,
                            bool expectedOpaque) {
     sk_sp<SkImage> image(surface->makeImageSnapshot());
     REPORTER_ASSERT(reporter, image->isOpaque() == expectedOpaque);

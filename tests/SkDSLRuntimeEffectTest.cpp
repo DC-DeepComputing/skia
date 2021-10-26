@@ -27,7 +27,7 @@ using namespace SkSL::dsl;
 
 class DSLTestEffect {
 public:
-    DSLTestEffect(skiatest::Reporter* r, sk_sp<SkSurface> surface)
+    DSLTestEffect(skiatest::Reporter* r, std::unique_ptr<SkSurface> surface)
         : fReporter(r)
         , fCaps(SkSL::ShaderCapsFactory::Standalone())
         , fCompiler(std::make_unique<SkSL::Compiler>(fCaps.get()))
@@ -104,19 +104,19 @@ private:
     skiatest::Reporter*             fReporter;
     SkSL::ShaderCapsPointer         fCaps;
     std::unique_ptr<SkSL::Compiler> fCompiler;
-    sk_sp<SkSurface>                fSurface;
+    std::unique_ptr<SkSurface>      fSurface;
     SkTLazy<SkRuntimeShaderBuilder> fBuilder;
 };
 
 static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext* rContext) {
     SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = rContext
+    std::unique_ptr<SkSurface> surface = rContext
                                     ? SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info)
                                     : SkSurface::MakeRaster(info);
     REPORTER_ASSERT(r, surface);
     using float4 = std::array<float, 4>;
     using int4 = std::array<int, 4>;
-    DSLTestEffect effect(r, surface);
+    DSLTestEffect effect(r, std::move(surface));
 
     // Local coords
     {

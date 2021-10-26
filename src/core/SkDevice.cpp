@@ -490,7 +490,7 @@ void SkBaseDevice::simplifyGlyphRunRSXFormAndRedraw(const SkGlyphRunList& glyphR
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSurface> SkBaseDevice::makeSurface(SkImageInfo const&, SkSurfaceProps const&) {
+SK_SURF_SP SkBaseDevice::makeSurface(SkImageInfo const&, SkSurfaceProps const&) {
     return nullptr;
 }
 

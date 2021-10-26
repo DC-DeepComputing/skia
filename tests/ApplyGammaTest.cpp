@@ -117,7 +117,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ApplyGamma, reporter, ctxInfo) {
     float error = context->priv().caps()->shaderCaps()->halfIs32Bits() ? 0.5f : 1.2f;
 
     for (auto toSRGB : { false, true }) {
-        sk_sp<SkSurface> dst(SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii));
+        std::unique_ptr<SkSurface> dst = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo, ii);
 
         if (!dst) {
             ERRORF(reporter, "Could not create surfaces for copy surface test.");

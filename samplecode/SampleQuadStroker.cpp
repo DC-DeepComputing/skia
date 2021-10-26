@@ -88,7 +88,7 @@ static void getContourCounts(const SkPath& path, SkTArray<int>* contourCounts) {
     }
 }
 
-static void erase(const sk_sp<SkSurface>& surface) {
+static void erase(const std::unique_ptr<SkSurface>& surface) {
     SkCanvas* canvas = surface->getCanvas();
     if (canvas) {
         canvas->clear(SK_ColorTRANSPARENT);
@@ -122,8 +122,8 @@ class QuadStrokerView : public Sample {
     SkRect fBounds;
     SkMatrix fMatrix, fInverse;
     sk_sp<SkShader> fShader;
-    sk_sp<SkSurface> fMinSurface;
-    sk_sp<SkSurface> fMaxSurface;
+    std::unique_ptr<SkSurface> fMinSurface;
+    std::unique_ptr<SkSurface> fMaxSurface;
     StrokeTypeButton fCubicButton;
     StrokeTypeButton fConicButton;
     StrokeTypeButton fQuadButton;
