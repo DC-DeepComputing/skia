@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c6894c4_8e0adeb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-10-26T14:49:14Z",
+      "side": 1,
+      "message": "PTAL, if this is a viable approach, I can add at some COLRv1 tests for this to the COLRv1 GM. Locally tested for COLRv0 and a COLRv1 font with a PaintSolid fill that had the 0xFFFF foreground color palette index.",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42bc7f26_d77591ae",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-10-26T14:49:14Z",
+      "side": 1,
+      "message": "Placed here in order to avoid adding non essential public API on SkFont.",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
