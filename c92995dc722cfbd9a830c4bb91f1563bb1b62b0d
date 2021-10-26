@@ -16,6 +16,24 @@
       "message": "My thinking is that this change (OverrideInput) inhibits batching for these cases (shader on the paint with non-opaque paint alpha). It also disables coverage-as-alpha. Many of our existing helper FPs had that side effect, including OverrideInput and - by extension - MulChildByInputAlpha.\n\nBut we instead wrapped this with the helper FP I described in the comment above, batching would work (no more uniform color - ops could continue to turn paint color into vertex color). I\u0027m not sure about coverage-as-alpha, though - honestly, after seeing how many shaders were/are *always* returning FPs that don\u0027t allow it (but often accidentally, because of wrapper FPs), I wonder:\n  - How often it triggers?\n  - How often would it be legal, and we\u0027re incorrectly disabling it?\n  - How important is it to preserve it in this code path (shader + paint alpha)?",
       "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f28e989_fcc18833",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-26T20:23:56Z",
+      "side": 1,
+      "message": "I\u0027m wondering if the shader could return it\u0027s implementation FP without worrying about disabling coverage as alpha and then change the condition on line 472 to be\n if (paintAlpha !\u003d 1.0f \u0026\u0026 !paintFP-\u003ecompatibleWithCoverageAsAlpha()) {\n \nIOW, does having the compatibleWithCoverageAsAlpha() also mean it\u0027s ok to pre-apply paint alpha rather than post-apply it? It seems like it should since that\u0027s what we do with coverage when we use the optimization. And then we\u0027d skip the extra alpha application of the shader and be able to batch opaque and non-opaque draws that share the same shader (and also slightly simplify the SkShader::asFragmentProcessor() implementations).",
+      "parentUuid": "3e3f7f53_445f6f0f",
+      "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
