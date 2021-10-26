@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "affb6f5b_91d79ad5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-26T13:26:53Z",
+      "side": 1,
+      "message": "This seems fine. Wondering if we can write these helpers as:\n\ntemplate \u003cint N\u003e\narray\u003chalf, N\u003e array_of_half_from_float(thread const array\u003cfloat, N\u003e x) {\n  array\u003chalf, N\u003e result;\n  for (int i \u003d 0; i \u003c N; ++i) {\n    result[i] \u003d half(x[i]);\n  }\n  return result;\n}\n\n... so that we only need to emit one per type-combo?",
+      "revId": "ca49c02049c500471cc20593bae8daf8926a8ffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
