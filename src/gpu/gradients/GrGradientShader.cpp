@@ -31,6 +31,7 @@ static const SkScalar kLowPrecisionIntervalLimit = 0.01f;
 static const int kMaxNumCachedGradientBitmaps = 32;
 static const int kGradientTextureSize = 256;
 
+// Add another comment here.
 // NOTE: signature takes raw pointers to the color/pos arrays and a count to make it easy for
 // MakeColorizer to transparently take care of hard stops at the end points of the gradient.
 static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(const SkPMColor4f* colors,
