@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1529fb41_0094ff06",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-26T16:19:26Z",
+      "side": 1,
+      "message": "Due to clips and blend modes, drawing transparent isn\u0027t always the same as drawing nothing. If you really want to skip the draw it should actually be skipped (end up returning false from `colrv1_configure_skpaint` and then skipping that draw). If we want a \u0027sane\u0027 default, then maybe opaque black. If we want to show off that the font is invalid, maybe opaque magenta. These last two are just picking what the value of all unspecified values are.\n\nThat being said, the font is invalid, so whatever is fine, I guess. It depends on if there needs to be any forward compatibility or not (though I\u0027m guessing not).",
+      "revId": "4c44c7355fc40f5e370b5a5aa84c28d16f14daea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
