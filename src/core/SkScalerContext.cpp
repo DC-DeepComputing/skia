@@ -36,6 +36,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+namespace {
+
+bool fontNeedsForeGroundColor(const SkFont& font) {
+  if (!font.getTypeface())
+    return false;
+
+  return font.getTypeface()->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0;
+}
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 #ifdef SK_DEBUG
     #define DUMP_RECx
 #endif
@@ -1112,6 +1125,10 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     }
     if (font.isBaselineSnap()) {
         flags |= SkScalerContext::kBaselineSnap_Flag;
+    }
+    if (fontNeedsForeGroundColor(font)) {
+        flags |= SkScalerContext::kNeedsForegroundColor_Flag;
+        rec->fForegroundColor = paint.getColor();
     }
     rec->fFlags = SkToU16(flags);
 
