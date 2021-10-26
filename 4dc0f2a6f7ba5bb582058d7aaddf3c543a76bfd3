@@ -22,6 +22,30 @@
       },
       "revId": "4dc0f2a6f7ba5bb582058d7aaddf3c543a76bfd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a68841_5d942df2",
+        "filename": "experimental/graphite/src/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-26T20:11:22Z",
+      "side": 1,
+      "message": "I thought metal treatment of float3 was also different than other backends? We have special case handling for float3 elsewhere, see https://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLMemoryLayout.h;l\u003d113;drc\u003dc9145f3402df5eadead20b2a94cf3c3966988008\n\nI can see the appeal of \"one function does it all!\" but I don\u0027t think that\u0027s actually possible without putting in edge cases (like SkSLMemoryLayout does here)\n\n\u003c\u003cIf need be we could have a helper when we record all uniforms that that changes kHalfs to kFloat if we don\u0027t support kHalf\u003e\u003e\n\nThis won\u0027t work right if the SkSL is still written with halfs everywhere. If I could just pass the uniforms as floats but use half in the shader\u0027s code, I would honestly be fine with that, but it doesn\u0027t work. You quickly run into issues where the different type breaks things. (For instance, you can\u0027t pass a half pointer--aka inout parameter in SkSL--to a function that takes a float pointer.)\n\nGLSL and Vk are somewhat loosely typed (everything\u0027s a float! your math can be \"relaxed\" or not) but Metal is pretty strict on types.",
+      "parentUuid": "72870b36_0cb0acd6",
+      "range": {
+        "startLine": 260,
+        "startChar": 16,
+        "endLine": 260,
+        "endChar": 44
+      },
+      "revId": "4dc0f2a6f7ba5bb582058d7aaddf3c543a76bfd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
