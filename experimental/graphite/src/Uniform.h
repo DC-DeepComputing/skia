@@ -45,7 +45,8 @@ public:
 
 private:
     uint32_t    fType    : 6;
-    uint32_t    fCount   : 26;
+    uint32_t    fCount   : 10; // was 8
+//    unsigned    fPadding : 32 - (6 + 10);
 #ifdef SK_DEBUG
     const char* fName;
 #endif

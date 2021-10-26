@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "experimental/graphite/src/UniformManager.h"
+#include "experimental/graphite/src/UniformDataManager.h"
 #include "include/core/SkMatrix.h"
 #include "include/private/SkTemplates.h"
 
@@ -253,7 +253,6 @@ public:
     }
 };
 
-#ifdef SK_DEBUG
 // To determine whether a current offset is aligned, we can just 'and' the lowest bits with the
 // alignment mask. A value of 0 means aligned, any other value is how many bytes past alignment we
 // are. This works since all alignments are powers of 2. The mask is always (alignment - 1).
@@ -439,7 +438,6 @@ static uint32_t get_ubo_aligned_offset(uint32_t* currentOffset,
     }
     return uniformOffset;
 }
-#endif // SK_DEBUG
 
 uint32_t UniformManager::writeUniforms(SkSpan<const Uniform> uniforms,
                                        void** srcs,
@@ -458,37 +456,36 @@ uint32_t UniformManager::writeUniforms(SkSpan<const Uniform> uniforms,
             break;
     }
 
-#ifdef SK_DEBUG
     uint32_t curUBOOffset = 0;
     uint32_t curUBOMaxAlignment = 0;
-#endif // SK_DEBUG
 
-    uint32_t offset = 0;
+    uint32_t offset2 = 0;
 
     for (int i = 0; i < (int) uniforms.size(); ++i) {
         const Uniform& u = uniforms[i];
 
-#ifdef SK_DEBUG
-        uint32_t debugOffset = get_ubo_aligned_offset(&curUBOOffset,
-                                                      &curUBOMaxAlignment,
-                                                      u.type(),
-                                                      u.count());
-#endif // SK_DEBUG
+        uint32_t offset = get_ubo_aligned_offset(&curUBOOffset,
+                                                 &curUBOMaxAlignment,
+                                                 u.type(),
+                                                 u.count());
 
         uint32_t bytesWritten = write(u.type(),
                                       CType::kDefault,
                                       dst,
                                       u.count(),
                                       srcs ? srcs[i] : nullptr);
-        SkASSERT(debugOffset == offset);
+        SkASSERT(offset == offset2);
 
         if (offsets) {
-            offsets[i] = offset;
+            offsets[i] = offset2;
         }
-        offset += bytesWritten;
+        offset2 += bytesWritten;
     }
 
-    return offset;
+//    uint32_t bufferSize = buffer_size(fUniformHandler.fCurrentUBOOffset,
+//                                      fUniformHandler.fCurrentUBOMaxAlignment);
+
+    return offset2;
 }
 
 } // namespace skgpu
