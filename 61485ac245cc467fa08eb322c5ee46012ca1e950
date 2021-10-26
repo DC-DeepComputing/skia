@@ -22,6 +22,30 @@
       },
       "revId": "61485ac245cc467fa08eb322c5ee46012ca1e950",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da7b10e_4d9ba34e",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T00:51:08Z",
+      "side": 1,
+      "message": "since the bounds are computable from the properties of each Draw in the DrawList (added to DrawList in https://skia-review.googlesource.com/c/skia/+/462886) and then used in https://skia-review.googlesource.com/c/skia/+/462887, I was planning on having it get built up as the DrawList was converted to DrawPass.\n\nIt is something that could be accumulated as draws are recorded into the DrawList and just always be available as a getter on DrawList. I don\u0027t feel super strongly.",
+      "parentUuid": "c5636d53_a3425955",
+      "range": {
+        "startLine": 151,
+        "startChar": 69,
+        "endLine": 151,
+        "endChar": 81
+      },
+      "revId": "61485ac245cc467fa08eb322c5ee46012ca1e950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
