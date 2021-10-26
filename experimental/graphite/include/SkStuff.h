@@ -14,6 +14,7 @@ struct SkImageInfo;
 class SkSurface;
 
 namespace skgpu {
+    class Context;
     class Recorder;
 }
 
