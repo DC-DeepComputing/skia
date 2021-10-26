@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05fd5b15_7dbec7ec",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-26T01:21:02Z",
+      "side": 1,
+      "message": "Looks like we\u0027ll need to actually make a TextureProxy for DrawContext::Make to succeed, so that device returns non-null so that the graphite SkSurface is successful so that tests pass.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 65
+      },
+      "revId": "6a512e779e41c1ab11753016d110c79812d57a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
