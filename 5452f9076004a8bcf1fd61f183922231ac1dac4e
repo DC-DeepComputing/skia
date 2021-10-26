@@ -33,6 +33,40 @@
       "message": "Placed here in order to avoid adding non essential public API on SkFont.",
       "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d441fa65_0ef741b6",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-26T15:46:50Z",
+      "side": 1,
+      "message": "Note that the font data itself will not be available when creating the SkScalerContextRec in the Chromium GPU process (which is why a bunch of tests failed). This is due to how oopr works with text rendering, and why the RawDraw proposal cannot possibly be made to work within the current security setup in Chromium. So we cannot know there if there was any given table or not (unless that was passed in some other way and then passed in here).",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "066c2fbf_d2e2cac3",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-26T15:46:50Z",
+      "side": 1,
+      "message": "Note that these are already almost the bits you want, and are in fact already used in the COLRv0 implementation in SkScalerContext_win_dw.cpp (and see comment there). This is probably the value to tweak, though the name might want to be changed to fColor.",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
