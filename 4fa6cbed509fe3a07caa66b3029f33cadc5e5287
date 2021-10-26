@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e79451f8_f64102bd",
+        "filename": "experimental/graphite/include/private/GraphiteTypesPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T18:18:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dc3d4e47_dd0803ac",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 1
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "335e3e4d_2e2b7353",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "I don\u0027t necessarily have a better approach now, and don\u0027t think it should hold anything up at this stage of the sprint, but fwiw, \"passUsedBuffersToCommandBuffer\" did not give me the impression that it would unmap the buffers or clear fUsedBuffers.  Maybe \"moveToCommandBuffer\" or transfer?\n\nI am willing to except some awkward lifecycle management APIs in situations like this where we know there are lots of draws referring to the same buffer, so we could either transfer ownership once like this, or for every draw, which is just redundant.\n\nI would expect we\u0027ll want something similar for textures, if we have to have the render passes tracking their textures already for layout changes.",
       "parentUuid": "335e3e4d_2e2b7353",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 56
+      },
+      "revId": "4fa6cbed509fe3a07caa66b3029f33cadc5e5287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "210159d6_bebb1f4f",
+        "filename": "experimental/graphite/src/DrawBufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T18:18:40Z",
+      "side": 1,
+      "message": "renamed to transferToCommandBuffer.",
+      "parentUuid": "1861e031_11bc72e0",
       "range": {
         "startLine": 28,
         "startChar": 4,
