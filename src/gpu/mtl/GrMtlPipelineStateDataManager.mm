@@ -53,19 +53,9 @@ static void copy_uniforms(void* dest, const void* src, int numUniforms, GrSLType
         case kFloat2_GrSLType:
         case kFloat3_GrSLType:
         case kFloat4_GrSLType:
-        case kHalf_GrSLType:
-        case kHalf2_GrSLType:
-        case kHalf3_GrSLType:
-        case kHalf4_GrSLType:
-        case kShort_GrSLType:
-        case kShort2_GrSLType:
-        case kShort3_GrSLType:
-        case kShort4_GrSLType:
             memcpy(dest, src, numUniforms * 4);
             break;
 
-/*
-        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
         case kHalf_GrSLType:
         case kHalf2_GrSLType:
         case kHalf3_GrSLType:
@@ -89,7 +79,7 @@ static void copy_uniforms(void* dest, const void* src, int numUniforms, GrSLType
             }
             break;
         }
-*/
+
         default:
             SkUNREACHABLE;
     }

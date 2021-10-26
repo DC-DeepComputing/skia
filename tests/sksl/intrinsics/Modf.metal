@@ -2,13 +2,13 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    float4 colorGreen;
-    float4 colorRed;
+    half4 colorGreen;
+    half4 colorRed;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 float _skOutParamHelper0_modf(float _var0, thread float4& whole) {
     float _var1;
@@ -37,18 +37,18 @@ float4 _skOutParamHelper3_modf(float4 _var0, thread float4& whole) {
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
-    float4 value = float4(2.5, -2.5, 8.0, -0.125);
-    const float4 expectedWhole = float4(2.0, -2.0, 8.0, 0.0);
-    const float4 expectedFraction = float4(0.5, -0.5, 0.0, -0.125);
+    float4 value = float4(2.5f, -2.5f, 8.0f, -0.125f);
+    const float4 expectedWhole = float4(2.0f, -2.0f, 8.0f, 0.0f);
+    const float4 expectedFraction = float4(0.5f, -0.5f, 0.0f, -0.125f);
     bool4 ok = bool4(false);
     float4 whole;
     float4 fraction;
     fraction.x =     _skOutParamHelper0_modf(value.x, whole);
-    ok.x = whole.x == 2.0 && fraction.x == 0.5;
+    ok.x = whole.x == 2.0f && fraction.x == 0.5f;
     fraction.xy =     _skOutParamHelper1_modf(value.xy, whole);
-    ok.y = all(whole.xy == float2(2.0, -2.0)) && all(fraction.xy == float2(0.5, -0.5));
+    ok.y = all(whole.xy == float2(2.0f, -2.0f)) && all(fraction.xy == float2(0.5f, -0.5f));
     fraction.xyz =     _skOutParamHelper2_modf(value.xyz, whole);
-    ok.z = all(whole.xyz == float3(2.0, -2.0, 8.0)) && all(fraction.xyz == float3(0.5, -0.5, 0.0));
+    ok.z = all(whole.xyz == float3(2.0f, -2.0f, 8.0f)) && all(fraction.xyz == float3(0.5f, -0.5f, 0.0f));
     fraction =     _skOutParamHelper3_modf(value, whole);
     ok.w = all(whole == expectedWhole) && all(fraction == expectedFraction);
     _out.sk_FragColor = all(ok) ? _uniforms.colorGreen : _uniforms.colorRed;
