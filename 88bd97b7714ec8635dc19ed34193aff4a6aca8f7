@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34aca146_069432ca",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-10-26T18:14:11Z",
+      "side": 1,
+      "message": "Does this make //bazel/libpng.bazel redundant? If so, can it be deleted?",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 49,
+        "endChar": 18
+      },
+      "revId": "88bd97b7714ec8635dc19ed34193aff4a6aca8f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
