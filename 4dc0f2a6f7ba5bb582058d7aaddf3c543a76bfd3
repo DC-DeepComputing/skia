@@ -46,6 +46,30 @@
       },
       "revId": "4dc0f2a6f7ba5bb582058d7aaddf3c543a76bfd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9134f71f_49a9fddd",
+        "filename": "experimental/graphite/src/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-26T21:04:18Z",
+      "side": 1,
+      "message": "Removed _mtl_ from function name",
+      "parentUuid": "76a68841_5d942df2",
+      "range": {
+        "startLine": 260,
+        "startChar": 16,
+        "endLine": 260,
+        "endChar": 44
+      },
+      "revId": "4dc0f2a6f7ba5bb582058d7aaddf3c543a76bfd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
