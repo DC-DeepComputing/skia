@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eefb9aed_b1a1bdd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-10-26T16:13:25Z",
+      "side": 1,
+      "message": "Thanks for the review and feedback. A question below.",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42bc7f26_d77591ae",
@@ -48,6 +65,24 @@
       "writtenOn": "2021-10-26T15:46:50Z",
       "side": 1,
       "message": "Note that the font data itself will not be available when creating the SkScalerContextRec in the Chromium GPU process (which is why a bunch of tests failed). This is due to how oopr works with text rendering, and why the RawDraw proposal cannot possibly be made to work within the current security setup in Chromium. So we cannot know there if there was any given table or not (unless that was passed in some other way and then passed in here).",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ef0bcb1_b371b473",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2021-10-26T16:13:25Z",
+      "side": 1,
+      "message": "Would you have any suggestions for where and from where an indication that the cache entry is dependent on foreground color should be passed in?",
+      "parentUuid": "d441fa65_0ef741b6",
       "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
