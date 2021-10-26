@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e82c0bab_97b119e7",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T00:22:11Z",
+      "side": 1,
+      "message": "Yeah this mostly just matches the style we\u0027ve used for sk_sp\u0027s throughout Skia. So for consistency we should use it here to. I think the main argument is that passing in the raw pointer is a stronger suggestion that the function should not ref the object (since we try to only ref things via sk_sps).\n\nNot really a good additional argument, but each of these functions just ends up call the .get() anyways immediately. So it\u0027s not like we are doing any extra work calling the get to pass in the pointer.",
+      "parentUuid": "4e368aa8_bb60fa85",
+      "range": {
+        "startLine": 86,
+        "startChar": 38,
+        "endLine": 86,
+        "endChar": 66
+      },
+      "revId": "026863b2622db4154ee79d50d294f8cccd14bc62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2a1d58a_8ba2b233",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 1
