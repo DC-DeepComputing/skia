@@ -394,7 +394,7 @@ void MetalCodeGenerator::writeFunctionCall(const FunctionCall& c) {
 }
 
 static constexpr char kInverse2x2[] = R"(
-template <typename T>
+template <typename T>  // CAUSE MERGE CONFLICT IN G3_CANARY
 matrix<T, 2, 2> mat2_inverse(matrix<T, 2, 2> m) {
     return matrix<T, 2, 2>(m[1][1], -m[0][1], -m[1][0], m[0][0]) * (1/determinant(m));
 }
