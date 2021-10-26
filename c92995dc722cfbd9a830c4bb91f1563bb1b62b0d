@@ -34,6 +34,24 @@
       "parentUuid": "3e3f7f53_445f6f0f",
       "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184cc6e4_f936369b",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-26T20:47:01Z",
+      "side": 1,
+      "message": "I don\u0027t think that works by itself (this is where I get really confused about how the stars happen to align today). For opaque paints, the coverage needs to get folded in somewhere. It\u0027s true that the primitive FPs used by shaders seem to (maybe as an accidental holdover from when they did the modulation themselves) return compatible-with-coverage-as-alpha to mean that they are compatible - assuming that something else is going to come along and do that modulation. But the texture FP (for example), just returns the texture color. So unless we add a DstIn (or similar) here, it\u0027s never going to fold in the (pre-folded into color-alpha) coverage.\n\nToday (in a variety of code paths and ways), it happens to work because when we do things like MulChildByInputAlpha, we also disable coverage-as-alpha. Even stranger (to me), is I realized that MulChildByInputAlpha (which we used heavily) included an instance of OverrideInput where the color was always white, but was using a uniform to do it. I guess that allowed batching, but seems like it could have always been using the baked-in version, too.",
+      "parentUuid": "1f28e989_fcc18833",
+      "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
