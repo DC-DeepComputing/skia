@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b649da_1f842107",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-26T21:29:29Z",
+      "side": 1,
+      "message": "Added the necessary TextureProxy creation, PTAL.",
+      "revId": "e904b6764d41ca86dc07e6956f6dbe91815fb199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
