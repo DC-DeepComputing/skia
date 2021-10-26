@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72870b36_0cb0acd6",
+        "filename": "experimental/graphite/src/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-26T20:03:34Z",
+      "side": 1,
+      "message": "So reading more about the 16 extensions other APIs have, I believe that if they are actually using 16 bit floats than they should have the same alignment rules as metal. The std 140 layout that we use in vulkan and d3d says \"A Scalar of size N has a scalar alignment of N\". So a float16 should have an alignment of 2 (i.e 0x1) just like metal.\n\nI think we should leave the function as generic for all backends and just have the correct rules like you have done. The decision to have a kFloat or kHalf uniform should be done higher up. Ideally this would be when an actual shader is emitting its uniforms. If need be we could have a helper when we record all uniforms that that changes kHalfs to kFloat if we don\u0027t support kHalf",
+      "range": {
+        "startLine": 260,
+        "startChar": 16,
+        "endLine": 260,
+        "endChar": 44
+      },
+      "revId": "4dc0f2a6f7ba5bb582058d7aaddf3c543a76bfd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
