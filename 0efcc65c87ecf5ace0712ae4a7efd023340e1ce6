@@ -16,6 +16,24 @@
       "message": "LGTM, but I think someone else should review it as well.",
       "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c895f2a_fb8d13a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-27T20:31:44Z",
+      "side": 1,
+      "message": "In fact, someone else has to, since because I did the merge I\u0027m counted as an \"uploader\".",
+      "parentUuid": "7ab59633_16c70ab3",
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
