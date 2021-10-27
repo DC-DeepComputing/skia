@@ -52,6 +52,24 @@
       "parentUuid": "1f28e989_fcc18833",
       "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23626ae2_0e6dedc6",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-27T13:30:43Z",
+      "side": 1,
+      "message": "Ah right, we would have to do the dst-in thing unconditionally. As implemented it would always disable the coverage-as-alpha optimization b/c of OverrideInput. \n\nI\u0027d assume useUniform\u003dtrue was an accident.\n\nI think I\u0027ve convinced myself there is low likelihood of significant regression with this even if maybe in theory we could do better.",
+      "parentUuid": "184cc6e4_f936369b",
+      "revId": "c92995dc722cfbd9a830c4bb91f1563bb1b62b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
