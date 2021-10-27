@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "193b5cda_62d8ae6d",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-27T15:48:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "636716a2_c1ab28c3",
+      "range": {
+        "startLine": 341,
+        "startChar": 1,
+        "endLine": 342,
+        "endChar": 40
+      },
+      "revId": "46847878da23f2bbfaa8421f092c5403c7462640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4812cd3d_042cfcbc",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ecb9c13_796aa27a",
+        "filename": "src/gpu/tessellate/Tessellation.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-27T15:48:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4812cd3d_042cfcbc",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "46847878da23f2bbfaa8421f092c5403c7462640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "512017e3_9477f48e",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-10-27T00:17:46Z",
       "side": 1,
       "message": "Ha jumping the gun by a couple months here",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "46847878da23f2bbfaa8421f092c5403c7462640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab1111c_677c642f",
+        "filename": "src/gpu/tessellate/Tessellation.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-10-27T15:48:22Z",
+      "side": 1,
+      "message": "Dates are hard.",
+      "parentUuid": "512017e3_9477f48e",
       "range": {
         "startLine": 2,
         "startChar": 16,
