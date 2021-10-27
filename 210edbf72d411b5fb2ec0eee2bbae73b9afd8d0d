@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e604f53_c7922e26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-27T18:53:38Z",
+      "side": 1,
+      "message": "I left flush() and flushAndSubmit() in because there wasn\u0027t any GPU related types in their declarations, and I thought there would be a smaller chance of breaking things. If you want, we can banish those too (but probably in a future CL that\u0027s easier to revert).",
+      "revId": "210edbf72d411b5fb2ec0eee2bbae73b9afd8d0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
