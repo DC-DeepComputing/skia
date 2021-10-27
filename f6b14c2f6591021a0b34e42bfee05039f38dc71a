@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df20a87_118c3e29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-10-27T17:42:13Z",
+      "side": 1,
+      "message": "These are logically const, so the conversion is trivial.",
+      "revId": "f6b14c2f6591021a0b34e42bfee05039f38dc71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
