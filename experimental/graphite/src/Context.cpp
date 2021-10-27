@@ -27,7 +27,7 @@ namespace {
 // From MtlToy
 struct FragmentUniforms {
     vector_float2 startPos;
-    vector_float2 endPos;
+    vector_float2 endPos; // COMMENT
 
     vector_float4 color0;
     vector_float4 color1;
