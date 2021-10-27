@@ -11,8 +11,10 @@
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/Gpu.h"
+#include "experimental/graphite/src/ProgramCache.h"
 #include "experimental/graphite/src/Recorder.h"
 #include "experimental/graphite/src/Recording.h"
+#include "experimental/graphite/src/UniformCache.h"
 
 #ifdef SK_METAL
 #include "experimental/graphite/src/mtl/MtlTrampoline.h"
@@ -82,7 +84,12 @@ void expand(const PaintCombo& c) {
 
 } // anonymous namespace
 
-Context::Context(sk_sp<Gpu> gpu) : fGpu(std::move(gpu)) {}
+Context::Context(sk_sp<Gpu> gpu)
+    : fGpu(std::move(gpu))
+    , fProgramCache(new ProgramCache)
+    , fUniformCache(new UniformCache) {
+}
+
 Context::~Context() {}
 
 #ifdef SK_METAL
