@@ -33,8 +33,33 @@ DEF_TEST(SkSLGLSLTestbed, r) {
     test(r,
          *SkSL::ShaderCapsFactory::Default(),
          R"__SkSL__(
-             void main() {
-                 sk_FragColor = half4(0);
-             }
+// Expect 8 errors
+
+const int intMin         = -2147483648;
+const int intMinMinusOne = -2147483649; // error
+const int intMax         = 2147483647;
+const int intMaxPlusOne  = 2147483648;  // error
+
+void main() {
+    ushort4 us4 = ushort4(-1,     // error
+                          0,
+                          65535,
+                          65536); // error
+
+    short4 s4 = short4(-32768,
+                       -32769, // error
+                       32768,  // error
+                       32767);
+
+    int4 i4 = int4(intMin,
+                   intMinMinusOne,
+                   intMax,
+                   intMaxPlusOne);  // error
+
+    uint4 ui4 = uint4(intMin,          // error
+                      intMinMinusOne,
+                      intMax,
+                      intMaxPlusOne);
+}
          )__SkSL__");
 }
