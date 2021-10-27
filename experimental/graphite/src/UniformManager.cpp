@@ -447,7 +447,7 @@ static uint32_t get_ubo_aligned_offset(uint32_t* currentOffset,
                                        uint32_t* maxAlignment,
                                        SLType type,
                                        int arrayCount) {
-    uint32_t alignmentMask = sltype_to_alignment_mask(type);
+    uint32_t alignmentMask = sltype_to_mtl_alignment_mask(type);
     if (alignmentMask > *maxAlignment) {
         *maxAlignment = alignmentMask;
     }

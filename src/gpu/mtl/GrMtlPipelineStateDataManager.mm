@@ -7,6 +7,7 @@
 
 #include "src/gpu/mtl/GrMtlPipelineStateDataManager.h"
 
+#include "include/private/SkHalf.h"
 #include "src/gpu/mtl/GrMtlBuffer.h"
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
@@ -16,6 +17,12 @@
 #endif
 
 GR_NORETAIN_BEGIN
+
+// ensure that these types are the sizes the uniform data is expecting
+static_assert(sizeof(int32_t) == 4);
+static_assert(sizeof(float) == 4);
+static_assert(sizeof(short) == 2);
+static_assert(sizeof(SkHalf) == 2);
 
 GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(const UniformInfoArray& uniforms,
                                                              uint32_t uniformSize)
@@ -36,73 +43,260 @@ GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(const UniformInfoAr
     }
 }
 
-void GrMtlPipelineStateDataManager::set1iv(UniformHandle u,
-                                           int arrayCount,
-                                           const int32_t v[]) const {
+static void copy_uniforms(void* dest, const void* src, int numUniforms, GrSLType uniformType) {
+    switch (uniformType) {
+        case kInt_GrSLType:
+        case kInt2_GrSLType:
+        case kInt3_GrSLType:
+        case kInt4_GrSLType:
+        case kFloat_GrSLType:
+        case kFloat2_GrSLType:
+        case kFloat3_GrSLType:
+        case kFloat4_GrSLType:
+        case kFloat2x2_GrSLType:
+        case kFloat3x3_GrSLType:
+        case kFloat4x4_GrSLType:
+        case kHalf_GrSLType:
+        case kHalf2_GrSLType:
+        case kHalf3_GrSLType:
+        case kHalf4_GrSLType:
+        case kHalf2x2_GrSLType:
+        case kHalf3x3_GrSLType:
+        case kHalf4x4_GrSLType:
+        case kShort_GrSLType:
+        case kShort2_GrSLType:
+        case kShort3_GrSLType:
+        case kShort4_GrSLType:
+            memcpy(dest, src, numUniforms * 4);
+            break;
+
+/*
+        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
+        case kHalf_GrSLType:
+        case kHalf2_GrSLType:
+        case kHalf3_GrSLType:
+        case kHalf4_GrSLType:
+        case kHalf2x2_GrSLType:
+        case kHalf3x3_GrSLType:
+        case kHalf4x4_GrSLType: {
+            const float* floatBits = static_cast<const float*>(src);
+            SkHalf* halfBits = static_cast<SkHalf*>(dest);
+            while (numUniforms-- > 0) {
+                *halfBits++ = SkFloatToHalf(*floatBits++);
+            }
+            break;
+        }
+
+        case kShort_GrSLType:
+        case kShort2_GrSLType:
+        case kShort3_GrSLType:
+        case kShort4_GrSLType: {
+            const int32_t* intBits = static_cast<const int32_t*>(src);
+            short* shortBits = static_cast<short*>(dest);
+            while (numUniforms-- > 0) {
+                *shortBits++ = (short)(*intBits++);
+            }
+            break;
+        }
+*/
+        default:
+            SkUNREACHABLE;
+    }
+}
+
+template <int N, GrSLType FullType, GrSLType HalfType>
+void GrMtlPipelineStateDataManager::set(UniformHandle u, const void* v) const {
     const Uniform& uni = fUniforms[u.toIndex()];
-    SkASSERT(uni.fType == kInt_GrSLType || uni.fType == kShort_GrSLType);
+    SkASSERT(uni.fType == FullType || uni.fType == HalfType);
+    SkASSERT(GrShaderVar::kNonArray == uni.fArrayCount);
+    void* buffer = this->getBufferPtrAndMarkDirty(uni);
+    copy_uniforms(buffer, v, N, uni.fType);
+}
+
+template <int N, GrSLType FullType, GrSLType HalfType>
+void GrMtlPipelineStateDataManager::setv(UniformHandle u, int arrayCount, const void* v) const {
+    const Uniform& uni = fUniforms[u.toIndex()];
+    SkASSERT(uni.fType == FullType || uni.fType == HalfType);
     SkASSERT(arrayCount > 0);
     SkASSERT(arrayCount <= uni.fArrayCount ||
              (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
 
     void* buffer = this->getBufferPtrAndMarkDirty(uni);
-    memcpy(buffer, v, arrayCount * sizeof(int32_t));
+    if constexpr (N == 4) {
+        copy_uniforms(buffer, v, arrayCount * 4, uni.fType);
+    } else {
+        constexpr int stride = (N == 3) ? 4 :
+                               (N == 2) ? 2 :
+                                          1;
+        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
+//      const int uniformSize = (uni.fType == FullType) ? 4 : 2;
+        const int uniformSize = 4;
+
+        for (int i = 0; i < arrayCount; ++i) {
+            copy_uniforms(buffer, v, N, uni.fType);
+            buffer = static_cast<char*>(buffer) + (stride * uniformSize);
+            v = static_cast<const char*>(v) + (N * 4);
+        }
+    }
+}
+
+template <int N, GrSLType FullType, GrSLType HalfType>
+void GrMtlPipelineStateDataManager::setmv(UniformHandle u,
+                                          int arrayCount,
+                                          const float matrices[]) const {
+    const Uniform& uni = fUniforms[u.toIndex()];
+    SkASSERT(uni.fType == kFloat2x2_GrSLType + (N - 2) ||
+             uni.fType == kHalf2x2_GrSLType + (N - 2));
+    SkASSERT(arrayCount > 0);
+    SkASSERT(arrayCount <= uni.fArrayCount ||
+             (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
+
+    void* buffer = this->getBufferPtrAndMarkDirty(uni);
+    if constexpr (N == 2) {
+        copy_uniforms(buffer, matrices, arrayCount * 4, uni.fType);
+    } else if constexpr (N == 4) {
+        copy_uniforms(buffer, matrices, arrayCount * 16, uni.fType);
+    } else {
+        constexpr int stride = 4;
+        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
+//      const int uniformSize = (uni.fType == FullType) ? 4 : 2;
+        const int uniformSize = 4;
+
+        for (int i = 0; i < arrayCount; ++i) {
+            const float* matrix = &matrices[N * N * i];
+            for (int j = 0; j < N; ++j) {
+                copy_uniforms(buffer, &matrix[j * N], N, uni.fType);
+                buffer = static_cast<char*>(buffer) + (stride * uniformSize);
+            }
+        }
+    }
+}
+
+void GrMtlPipelineStateDataManager::set1i(UniformHandle u, int32_t i0) const {
+    this->set<1, kInt_GrSLType, kShort_GrSLType>(u, &i0);
+}
+
+void GrMtlPipelineStateDataManager::set1iv(UniformHandle u,
+                                  int arrayCount,
+                                  const int32_t v[]) const {
+    this->setv<1, kInt_GrSLType, kShort_GrSLType>(u, arrayCount, v);
+}
+
+void GrMtlPipelineStateDataManager::set1f(UniformHandle u, float v0) const {
+    this->set<1, kFloat_GrSLType, kHalf_GrSLType>(u, &v0);
 }
 
 void GrMtlPipelineStateDataManager::set1fv(UniformHandle u,
-                                           int arrayCount,
-                                           const float v[]) const {
-    const Uniform& uni = fUniforms[u.toIndex()];
-    SkASSERT(uni.fType == kFloat_GrSLType || uni.fType == kHalf_GrSLType);
-    SkASSERT(arrayCount > 0);
-    SkASSERT(arrayCount <= uni.fArrayCount ||
-             (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
+                                  int arrayCount,
+                                  const float v[]) const {
+    this->setv<1, kFloat_GrSLType, kHalf_GrSLType>(u, arrayCount, v);
+}
 
-    void* buffer = this->getBufferPtrAndMarkDirty(uni);
-    memcpy(buffer, v, arrayCount * sizeof(float));
+void GrMtlPipelineStateDataManager::set2i(UniformHandle u, int32_t i0, int32_t i1) const {
+    int32_t v[2] = { i0, i1 };
+    this->set<2, kInt2_GrSLType, kShort2_GrSLType>(u, v);
 }
 
 void GrMtlPipelineStateDataManager::set2iv(UniformHandle u,
-                                           int arrayCount,
-                                           const int32_t v[]) const {
-    const Uniform& uni = fUniforms[u.toIndex()];
-    SkASSERT(uni.fType == kInt2_GrSLType || uni.fType == kShort2_GrSLType);
-    SkASSERT(arrayCount > 0);
-    SkASSERT(arrayCount <= uni.fArrayCount ||
-             (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
+                                  int arrayCount,
+                                  const int32_t v[]) const {
+    this->setv<2, kInt2_GrSLType, kShort2_GrSLType>(u, arrayCount, v);
+}
 
-    void* buffer = this->getBufferPtrAndMarkDirty(uni);
-    memcpy(buffer, v, arrayCount * 2 * sizeof(int32_t));
+void GrMtlPipelineStateDataManager::set2f(UniformHandle u, float v0, float v1) const {
+    float v[2] = { v0, v1 };
+    this->set<2, kFloat2_GrSLType, kHalf2_GrSLType>(u, v);
 }
 
 void GrMtlPipelineStateDataManager::set2fv(UniformHandle u,
-                                           int arrayCount,
-                                           const float v[]) const {
-    const Uniform& uni = fUniforms[u.toIndex()];
-    SkASSERT(uni.fType == kFloat2_GrSLType || uni.fType == kHalf2_GrSLType);
-    SkASSERT(arrayCount > 0);
-    SkASSERT(arrayCount <= uni.fArrayCount ||
-             (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
+                                  int arrayCount,
+                                  const float v[]) const {
+    this->setv<2, kFloat2_GrSLType, kHalf2_GrSLType>(u, arrayCount, v);
+}
 
-    void* buffer = this->getBufferPtrAndMarkDirty(uni);
-    memcpy(buffer, v, arrayCount * 2 * sizeof(float));
+void GrMtlPipelineStateDataManager::set3i(UniformHandle u,
+                                 int32_t i0,
+                                 int32_t i1,
+                                 int32_t i2) const {
+    int32_t v[3] = { i0, i1, i2 };
+    this->set<3, kInt3_GrSLType, kShort3_GrSLType>(u, v);
+}
+
+void GrMtlPipelineStateDataManager::set3iv(UniformHandle u,
+                                  int arrayCount,
+                                  const int32_t v[]) const {
+    this->setv<3, kInt3_GrSLType, kShort3_GrSLType>(u, arrayCount, v);
+}
+
+void GrMtlPipelineStateDataManager::set3f(UniformHandle u, float v0, float v1, float v2) const {
+    float v[3] = { v0, v1, v2 };
+    this->set<3, kFloat3_GrSLType, kHalf3_GrSLType>(u, v);
+}
+
+void GrMtlPipelineStateDataManager::set3fv(UniformHandle u,
+                                  int arrayCount,
+                                  const float v[]) const {
+    this->setv<3, kFloat3_GrSLType, kHalf3_GrSLType>(u, arrayCount, v);
+}
+
+void GrMtlPipelineStateDataManager::set4i(UniformHandle u,
+                                 int32_t i0,
+                                 int32_t i1,
+                                 int32_t i2,
+                                 int32_t i3) const {
+    int32_t v[4] = { i0, i1, i2, i3 };
+    this->set<4, kInt4_GrSLType, kShort4_GrSLType>(u, v);
+}
+
+void GrMtlPipelineStateDataManager::set4iv(UniformHandle u,
+                                  int arrayCount,
+                                  const int32_t v[]) const {
+    this->setv<4, kInt4_GrSLType, kShort4_GrSLType>(u, arrayCount, v);
+}
+
+void GrMtlPipelineStateDataManager::set4f(UniformHandle u,
+                                 float v0,
+                                 float v1,
+                                 float v2,
+                                 float v3) const {
+    float v[4] = { v0, v1, v2, v3 };
+    this->set<4, kFloat4_GrSLType, kHalf4_GrSLType>(u, v);
+}
+
+void GrMtlPipelineStateDataManager::set4fv(UniformHandle u,
+                                  int arrayCount,
+                                  const float v[]) const {
+    this->setv<4, kFloat4_GrSLType, kHalf4_GrSLType>(u, arrayCount, v);
 }
 
 void GrMtlPipelineStateDataManager::setMatrix2f(UniformHandle u, const float matrix[]) const {
-    this->setMatrix2fv(u, 1, matrix);
+    this->setmv<2, kFloat2x2_GrSLType, kHalf2x2_GrSLType>(u, 1, matrix);
+}
+
+void GrMtlPipelineStateDataManager::setMatrix3f(UniformHandle u, const float matrix[]) const {
+    this->setmv<3, kFloat3x3_GrSLType, kHalf3x3_GrSLType>(u, 1, matrix);
+}
+
+void GrMtlPipelineStateDataManager::setMatrix4f(UniformHandle u, const float matrix[]) const {
+    this->setmv<4, kFloat4x4_GrSLType, kHalf4x4_GrSLType>(u, 1, matrix);
 }
 
 void GrMtlPipelineStateDataManager::setMatrix2fv(UniformHandle u,
                                                  int arrayCount,
-                                                 const float m[]) const {
-    const Uniform& uni = fUniforms[u.toIndex()];
-    SkASSERT(uni.fType == kFloat2x2_GrSLType || uni.fType == kHalf2x2_GrSLType);
-    SkASSERT(arrayCount > 0);
-    SkASSERT(arrayCount <= uni.fArrayCount ||
-             (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
+                                                 const float matrix[]) const {
+    this->setmv<2, kFloat2x2_GrSLType, kHalf2x2_GrSLType>(u, arrayCount, matrix);
+}
 
-    void* buffer = this->getBufferPtrAndMarkDirty(uni);
-    memcpy(buffer, m, arrayCount * 4 * sizeof(float));
+void GrMtlPipelineStateDataManager::setMatrix3fv(UniformHandle u,
+                                                 int arrayCount,
+                                                 const float matrix[]) const {
+    this->setmv<3, kFloat3x3_GrSLType, kHalf3x3_GrSLType>(u, arrayCount, matrix);
+}
+
+void GrMtlPipelineStateDataManager::setMatrix4fv(UniformHandle u,
+                                                 int arrayCount,
+                                                 const float matrix[]) const {
+    this->setmv<4, kFloat4x4_GrSLType, kHalf4x4_GrSLType>(u, arrayCount, matrix);
 }
 
 void GrMtlPipelineStateDataManager::uploadAndBindUniformBuffers(
