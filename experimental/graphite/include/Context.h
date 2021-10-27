@@ -15,6 +15,7 @@
 #include "include/core/SkTileMode.h"
 
 #include "experimental/graphite/include/GraphiteTypes.h"
+#include "experimental/graphite/src/UniformCache.h"
 
 namespace skgpu {
 
@@ -75,6 +76,7 @@ private:
 
     std::vector<std::unique_ptr<Recording>> fRecordings;
     sk_sp<Gpu> fGpu;
+    UniformCache fUniformCache;
 };
 
 } // namespace skgpu

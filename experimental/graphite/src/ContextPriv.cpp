@@ -13,4 +13,8 @@ Gpu* ContextPriv::gpu() {
     return fContext->fGpu.get();
 }
 
+UniformCache* ContextPriv::uniformCache() {
+    return &fContext->fUniformCache;
+}
+
 } // namespace skgpu

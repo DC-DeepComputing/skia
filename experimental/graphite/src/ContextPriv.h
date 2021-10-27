@@ -20,6 +20,7 @@ class Gpu;
 class ContextPriv {
 public:
     Gpu* gpu();
+    UniformCache* uniformCache();
 
 private:
     friend class Context; // to construct/copy this type.
