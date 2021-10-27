@@ -39,7 +39,7 @@ public:
     void set4iv(UniformHandle, int arrayCount, const int32_t v[]) const override;
     void set4f(UniformHandle, float, float, float, float) const override;
     void set4fv(UniformHandle, int arrayCount, const float v[]) const override;
-    // matrices are column-major, the first two upload a single matrix, the latter two upload
+    // matrices are column-major, the first three upload a single matrix, the latter three upload
     // arrayCount matrices into a uniform array.
     void setMatrix2f(UniformHandle, const float matrix[]) const override;
     void setMatrix3f(UniformHandle, const float matrix[]) const override;
