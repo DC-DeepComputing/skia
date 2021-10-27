@@ -165,3 +165,9 @@ void GrGLExtensions::dumpJSON(SkJSONWriter* writer) const {
 #else
 void GrGLExtensions::dumpJSON(SkJSONWriter* writer) const { }
 #endif
+
+void GrGLExtensions::dump() const {
+    for (int i = 0; i < fStrings.count(); ++i) {
+        SkDebugf("%s ", fStrings[i].c_str());
+    }
+}
