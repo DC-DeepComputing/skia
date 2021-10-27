@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb730ff_06ce7176",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-27T16:57:38Z",
+      "side": 1,
+      "message": "I think you can remove this...",
+      "revId": "d57e50be5daabde5a9abe7a88ba0c1d9d540145d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb9893d_d6971a07",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-27T16:57:38Z",
+      "side": 1,
+      "message": "... and this (the PromiseImageTexture stuff is only used in GPU-enabled methods here, right?)",
+      "revId": "d57e50be5daabde5a9abe7a88ba0c1d9d540145d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
