@@ -2,13 +2,13 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    float4 colorGreen;
-    float4 colorRed;
+    half4 colorGreen;
+    half4 colorRed;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 float2x2 float2x2_from_float3x3(float3x3 x0) {
     return float2x2(float2(x0[0].xy), float2(x0[1].xy));
@@ -28,19 +28,19 @@ float4x4 float4x4_from_float3x3(float3x3 x0) {
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
-    float result = 0.0;
-    float2x2 a = float2x2_from_float3x3(float3x3(1.0));
+    float result = 0.0f;
+    float2x2 a = float2x2_from_float3x3(float3x3(1.0f));
     result += a[0].x;
-    float2x2 b = float2x2_from_float4x4(float4x4(1.0));
+    float2x2 b = float2x2_from_float4x4(float4x4(1.0f));
     result += b[0].x;
-    float3x3 c = float3x3_from_float4x4(float4x4(1.0));
+    float3x3 c = float3x3_from_float4x4(float4x4(1.0f));
     result += c[0].x;
-    float3x3 d = float3x3_from_float2x2(float2x2(1.0));
+    float3x3 d = float3x3_from_float2x2(float2x2(1.0f));
     result += d[0].x;
-    float4x4 e = float4x4_from_float3x3(float3x3_from_float2x2(float2x2(1.0)));
+    float4x4 e = float4x4_from_float3x3(float3x3_from_float2x2(float2x2(1.0f)));
     result += e[0].x;
-    float2x2 f = float2x2_from_float3x3(float3x3_from_float4x4(float4x4(1.0)));
+    float2x2 f = float2x2_from_float3x3(float3x3_from_float4x4(float4x4(1.0f)));
     result += f[0].x;
-    _out.sk_FragColor = result == 6.0 ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor = result == 6.0f ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }

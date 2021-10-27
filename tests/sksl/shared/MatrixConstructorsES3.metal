@@ -2,14 +2,14 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    float4 colorGreen;
-    float4 colorRed;
+    half4 colorGreen;
+    half4 colorRed;
     float2x2 testMatrix2x2;
 };
 struct Inputs {
 };
 struct Outputs {
-    float4 sk_FragColor [[color(0)]];
+    half4 sk_FragColor [[color(0)]];
 };
 
 thread bool operator==(const float2x3 left, const float2x3 right);
@@ -89,11 +89,11 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     Outputs _out;
     (void)_out;
     float4 f4 = float4_from_float2x2(_uniforms.testMatrix2x2);
-    bool ok = float2x3_from_float4_float2(f4, f4.xy) == float2x3(float3(1.0, 2.0, 3.0), float3(4.0, 1.0, 2.0));
-    ok = ok && float2x4_from_float3_float4_float(f4.xyz, f4.wxyz, f4.w) == float2x4(float4(1.0, 2.0, 3.0, 4.0), float4(1.0, 2.0, 3.0, 4.0));
-    ok = ok && float3x3_from_float2_float2_float4_float(f4.xy, f4.zw, f4, f4.x) == float3x3(float3(1.0, 2.0, 3.0), float3(4.0, 1.0, 2.0), float3(3.0, 4.0, 1.0));
-    ok = ok && float4x2_from_float3_float4_float(f4.xyz, f4.wxyz, f4.w) == float4x2(float2(1.0, 2.0), float2(3.0, 4.0), float2(1.0, 2.0), float2(3.0, 4.0));
-    ok = ok && float4x3_from_float_float4_float4_float3(f4.x, f4.yzwx, f4.yzwx, f4.yzw) == float4x3(float3(1.0, 2.0, 3.0), float3(4.0, 1.0, 2.0), float3(3.0, 4.0, 1.0), float3(2.0, 3.0, 4.0));
+    bool ok = float2x3_from_float4_float2(f4, f4.xy) == float2x3(float3(1.0f, 2.0f, 3.0f), float3(4.0f, 1.0f, 2.0f));
+    ok = ok && float2x4_from_float3_float4_float(f4.xyz, f4.wxyz, f4.w) == float2x4(float4(1.0f, 2.0f, 3.0f, 4.0f), float4(1.0f, 2.0f, 3.0f, 4.0f));
+    ok = ok && float3x3_from_float2_float2_float4_float(f4.xy, f4.zw, f4, f4.x) == float3x3(float3(1.0f, 2.0f, 3.0f), float3(4.0f, 1.0f, 2.0f), float3(3.0f, 4.0f, 1.0f));
+    ok = ok && float4x2_from_float3_float4_float(f4.xyz, f4.wxyz, f4.w) == float4x2(float2(1.0f, 2.0f), float2(3.0f, 4.0f), float2(1.0f, 2.0f), float2(3.0f, 4.0f));
+    ok = ok && float4x3_from_float_float4_float4_float3(f4.x, f4.yzwx, f4.yzwx, f4.yzw) == float4x3(float3(1.0f, 2.0f, 3.0f), float3(4.0f, 1.0f, 2.0f), float3(3.0f, 4.0f, 1.0f), float3(2.0f, 3.0f, 4.0f));
     _out.sk_FragColor = ok ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }

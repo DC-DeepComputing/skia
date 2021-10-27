@@ -7,6 +7,7 @@
 
 #include "src/gpu/mtl/GrMtlPipelineStateDataManager.h"
 
+#include "include/private/SkHalf.h"
 #include "src/gpu/mtl/GrMtlBuffer.h"
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlRenderCommandEncoder.h"
@@ -21,6 +22,7 @@ GR_NORETAIN_BEGIN
 static_assert(sizeof(int32_t) == 4);
 static_assert(sizeof(float) == 4);
 static_assert(sizeof(short) == 2);
+static_assert(sizeof(SkHalf) == 2);
 
 GrMtlPipelineStateDataManager::GrMtlPipelineStateDataManager(const UniformInfoArray& uniforms,
                                                              uint32_t uniformSize)
@@ -54,22 +56,9 @@ static void copy_uniforms(void* dest, const void* src, int numUniforms, GrSLType
         case kFloat2x2_GrSLType:
         case kFloat3x3_GrSLType:
         case kFloat4x4_GrSLType:
-        case kHalf_GrSLType:
-        case kHalf2_GrSLType:
-        case kHalf3_GrSLType:
-        case kHalf4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
-        case kShort_GrSLType:
-        case kShort2_GrSLType:
-        case kShort3_GrSLType:
-        case kShort4_GrSLType:
             memcpy(dest, src, numUniforms * 4);
             break;
 
-/*
-        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
         case kHalf_GrSLType:
         case kHalf2_GrSLType:
         case kHalf3_GrSLType:
@@ -96,7 +85,7 @@ static void copy_uniforms(void* dest, const void* src, int numUniforms, GrSLType
             }
             break;
         }
-*/
+
         default:
             SkUNREACHABLE;
     }
@@ -121,14 +110,12 @@ void GrMtlPipelineStateDataManager::setv(UniformHandle u, int arrayCount, const 
 
     void* buffer = this->getBufferPtrAndMarkDirty(uni);
     if constexpr (N == 4) {
-        copy_uniforms(buffer, v, arrayCount * 4, uni.fType);
+        copy_uniforms(buffer, v, arrayCount * N, uni.fType);
     } else {
         constexpr int stride = (N == 3) ? 4 :
                                (N == 2) ? 2 :
                                           1;
-        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
-//      const int uniformSize = (uni.fType == FullType) ? 4 : 2;
-        const int uniformSize = 4;
+        const int uniformSize = (uni.fType == FullType) ? 4 : 2;
 
         for (int i = 0; i < arrayCount; ++i) {
             copy_uniforms(buffer, v, N, uni.fType);
@@ -156,9 +143,7 @@ void GrMtlPipelineStateDataManager::setmv(UniformHandle u,
         copy_uniforms(buffer, matrices, arrayCount * 16, uni.fType);
     } else {
         constexpr int stride = 4;
-        // TODO(skia:12339): Enable this once MetalCodeGenerator supports half-precision types.
-//      const int uniformSize = (uni.fType == FullType) ? 4 : 2;
-        const int uniformSize = 4;
+        const int uniformSize = (uni.fType == FullType) ? 4 : 2;
 
         for (int i = 0; i < arrayCount; ++i) {
             const float* matrix = &matrices[N * N * i];
