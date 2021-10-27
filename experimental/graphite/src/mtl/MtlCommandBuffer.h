@@ -48,8 +48,10 @@ private:
     void endRenderPass() override;
 
     void onBindRenderPipeline(const skgpu::RenderPipeline*) override;
-
     void onBindUniformBuffer(const skgpu::Buffer*, size_t offset) override;
+    void onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
+                             const skgpu::Buffer* instanceBuffer) override;
+    void onBindIndexBuffer(const skgpu::Buffer* indexBuffer, size_t offset) override;
 
     void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) override;
 
@@ -65,6 +67,9 @@ private:
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
     sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
     sk_sp<BlitCommandEncoder> fActiveBlitCommandEncoder;
+
+    id<MTLBuffer> fCurrentIndexBuffer;
+    size_t fCurrentIndexBufferOffset = 0;
 
     const Gpu* fGpu;
 };

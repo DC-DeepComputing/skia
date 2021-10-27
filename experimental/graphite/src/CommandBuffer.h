@@ -56,8 +56,9 @@ public:
     // Can only be used within renderpasses
     //---------------------------------------------------------------
     void bindRenderPipeline(sk_sp<RenderPipeline> renderPipeline);
-
     void bindUniformBuffer(sk_sp<Buffer>, size_t bufferOffset);
+    void bindVertexBuffers(sk_sp<Buffer> vertexBuffer, sk_sp<Buffer> instanceBuffer);
+    void bindIndexBuffer(sk_sp<Buffer> indexBuffer, size_t bufferOffset);
 
     void draw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) {
         this->onDraw(type, vertexStart, vertexCount);
@@ -86,8 +87,9 @@ private:
     virtual void onBeginRenderPass(const RenderPassDesc&) = 0;
 
     virtual void onBindRenderPipeline(const RenderPipeline*) = 0;
-
     virtual void onBindUniformBuffer(const Buffer*, size_t bufferOffset) = 0;
+    virtual void onBindVertexBuffers(const Buffer* vertexBuffer, const Buffer* instanceBuffer) = 0;
+    virtual void onBindIndexBuffer(const Buffer* indexBuffer, size_t bufferOffset) = 0;
 
     virtual void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) = 0;
 
