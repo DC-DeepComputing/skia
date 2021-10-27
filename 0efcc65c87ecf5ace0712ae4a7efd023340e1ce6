@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ab59633_16c70ab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-27T20:30:34Z",
+      "side": 1,
+      "message": "LGTM, but I think someone else should review it as well.",
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
