@@ -77,7 +77,7 @@ void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
     programInfo.pipeline().setDstTextureUniforms(fDataManager, &fBuiltinUniformHandles);
     fXPImpl->setData(fDataManager, programInfo.pipeline().getXferProcessor());
 
-    fDataManager.resetDirtyBits();
+    fDataManager.setDirtyBits();
 
 #ifdef SK_DEBUG
     if (programInfo.isStencilEnabled()) {
