@@ -77,11 +77,13 @@ private:
     uint32_t fLevelCount = 0;
     Protected fProtected = Protected::kNo;
 
+#if defined(SK_METAL)
     union {
 #ifdef SK_METAL
         mtl::TextureSpec fMtlSpec;
 #endif
     };
+#endif
 };
 
 }  // namespace skgpu
