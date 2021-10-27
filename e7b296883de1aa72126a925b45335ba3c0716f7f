@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21c21250_a0f3cec5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-27T13:55:24Z",
+      "side": 1,
+      "message": "To make the chromium dance simpler, I\u0027ve split the CL into two parts. This just changes paint conversion (guarded by the define I\u0027m adding). Once chromium is switched, it becomes safe to land part 2 (where shader FP conversion assumes opaque input).",
+      "revId": "e7b296883de1aa72126a925b45335ba3c0716f7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
