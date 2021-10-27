@@ -8,6 +8,12 @@ Milestone 96
     This makes it easier to use a hierarchy of SkSL shaders where intermediate values do not
     represent colors but are, for example, non-color inputs to a lighting model.
     http://review.skia.org/452558
+  * The following functions and methods are not defined in SkImage when SK_SUPPORT_GPU is 0:
+    MakeTextureFromCompressed, MakeFromTexture, MakeFromCompressedTexture,
+    MakeCrossContextFromPixmap, MakeFromAdoptedTexture, MakeFromYUVATextures,
+    MakeFromYUVAPixmaps, MakePromiseTexture, MakePromiseYUVATexture, MakeBackendTextureFromSkImage,
+    flush, flushAndSubmit, getBackendTexture, makeTextureImage.
+    These were all no-ops anyway when just the CPU backend was compiled in.
 
 Milestone 95
 ------------
