@@ -68,6 +68,24 @@
       "parentUuid": "51a20f79_28f983fb",
       "revId": "838150102d0783923c09cebdc9deda1caa087568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef29e4a3_a86e1e6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-10-27T16:53:57Z",
+      "side": 1,
+      "message": "Oh good point, that would totally work to. The DrawContext can easily hold on to the Recorder (if it\u0027s not already) and then just access the buffer manager off of it while writing data for each draw/render step combo.",
+      "parentUuid": "f6310865_9caa14ca",
+      "revId": "838150102d0783923c09cebdc9deda1caa087568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
