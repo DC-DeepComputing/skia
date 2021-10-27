@@ -44,6 +44,10 @@ public:
     // Makes an int literal of the specified type.
     static std::unique_ptr<Literal> MakeInt(int line, SKSL_INT value, const Type* type) {
         SkASSERT(type->isInteger());
+        SkASSERTF(value >= type->minimumValue(), "Value %lld does not fit in type %s",
+                                                 value, type->description().c_str());
+        SkASSERTF(value <= type->maximumValue(), "Value %lld does not fit in type %s",
+                                                 value, type->description().c_str());
         return std::make_unique<Literal>(line, value, type);
     }
 
