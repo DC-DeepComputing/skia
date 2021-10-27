@@ -22,6 +22,9 @@ public:
     Gpu* gpu();
     const Gpu* gpu() const;
 
+    ProgramCache* programCache();
+    UniformCache* uniformCache();
+
 private:
     friend class Context; // to construct/copy this type.
 

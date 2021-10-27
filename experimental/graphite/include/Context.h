@@ -20,8 +20,10 @@ namespace skgpu {
 
 class ContextPriv;
 class Gpu;
+class ProgramCache;
 class Recorder;
 class Recording;
+class UniformCache;
 namespace mtl { struct BackendContext; }
 
 struct ShaderCombo {
@@ -75,6 +77,8 @@ private:
 
     std::vector<std::unique_ptr<Recording>> fRecordings;
     sk_sp<Gpu> fGpu;
+    std::unique_ptr<ProgramCache> fProgramCache;
+    std::unique_ptr<UniformCache> fUniformCache;
 };
 
 } // namespace skgpu
