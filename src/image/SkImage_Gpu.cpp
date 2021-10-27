@@ -331,7 +331,7 @@ void SkImage_Gpu::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                               RescaleGamma rescaleGamma,
                                               RescaleMode rescaleMode,
                                               ReadPixelsCallback callback,
-                                              ReadPixelsContext context) {
+                                              ReadPixelsContext context) const {
     auto dContext = fContext->asDirectContext();
     if (!dContext) {
         // DDL TODO: buffer up the readback so it occurs when the DDL is drawn?
@@ -354,7 +354,7 @@ void SkImage_Gpu::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpac
                                                     RescaleGamma rescaleGamma,
                                                     RescaleMode rescaleMode,
                                                     ReadPixelsCallback callback,
-                                                    ReadPixelsContext context) {
+                                                    ReadPixelsContext context) const {
     auto dContext = fContext->asDirectContext();
     if (!dContext) {
         // DDL TODO: buffer up the readback so it occurs when the DDL is drawn?

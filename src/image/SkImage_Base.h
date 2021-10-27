@@ -65,7 +65,7 @@ public:
                                              RescaleGamma,
                                              RescaleMode,
                                              ReadPixelsCallback,
-                                             ReadPixelsContext);
+                                             ReadPixelsContext) const;
     /**
      * Default implementation does a rescale/read/yuv conversion and then calls the callback.
      */
@@ -76,7 +76,7 @@ public:
                                                    RescaleGamma,
                                                    RescaleMode,
                                                    ReadPixelsCallback,
-                                                   ReadPixelsContext);
+                                                   ReadPixelsContext) const;
 
     virtual GrImageContext* context() const { return nullptr; }
 

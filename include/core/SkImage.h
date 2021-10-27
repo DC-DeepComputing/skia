@@ -921,7 +921,7 @@ public:
                                    RescaleGamma rescaleGamma,
                                    RescaleMode rescaleMode,
                                    ReadPixelsCallback callback,
-                                   ReadPixelsContext context);
+                                   ReadPixelsContext context) const;
 
     /**
         Similar to asyncRescaleAndReadPixels but performs an additional conversion to YUV. The
@@ -959,7 +959,7 @@ public:
                                          RescaleGamma rescaleGamma,
                                          RescaleMode rescaleMode,
                                          ReadPixelsCallback callback,
-                                         ReadPixelsContext context);
+                                         ReadPixelsContext context) const;
 
     /** Copies SkImage to dst, scaling pixels to fit dst.width() and dst.height(), and
         converting pixels to match dst.colorType() and dst.alphaType(). Returns true if
