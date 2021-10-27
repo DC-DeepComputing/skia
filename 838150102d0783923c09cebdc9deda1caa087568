@@ -50,6 +50,24 @@
       "message": "still lgtm, one thing I realized while starting to flesh out the DrawPass details is that it will likely need to hold on to the DrawBufferManager for its whole life, since it\u0027ll be used to fill in data during DrawPass::Make() and then need to be transferred to the CommandBuffer when the DrawPass is executed by the RenderPassTask.",
       "revId": "838150102d0783923c09cebdc9deda1caa087568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6310865_9caa14ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-27T16:50:11Z",
+      "side": 1,
+      "message": "Hmm I guess I was thinking the Recorder would be the thing to own the DrawBufferManager",
+      "parentUuid": "51a20f79_28f983fb",
+      "revId": "838150102d0783923c09cebdc9deda1caa087568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
