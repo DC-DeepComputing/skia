@@ -16,6 +16,23 @@
       "message": "This is now cleaned up and compiling. Please take another look.",
       "revId": "838150102d0783923c09cebdc9deda1caa087568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa7a35ec_936ad745",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-27T15:42:54Z",
+      "side": 1,
+      "message": "ping",
+      "revId": "838150102d0783923c09cebdc9deda1caa087568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
