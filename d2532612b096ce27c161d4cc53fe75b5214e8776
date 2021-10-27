@@ -33,6 +33,46 @@
       "message": "Also, not that for this sort of thing (like the existing draw into a null surface layer if the layer allocation fails) we might someday want a callback to let the user know that a draw failed, if they care. (Like Chromium could try to butter bar a \u0027drawing incomplete do to lack of resources\u0027 or something.)",
       "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8621bde6_d648400f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-27T19:29:39Z",
+      "side": 1,
+      "message": "+1 for CPU stuff",
+      "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a817e8_74a1baae",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-10-27T19:29:39Z",
+      "side": 1,
+      "message": "These don\u0027t line up with layer-\u003efDevice.get()",
+      "range": {
+        "startLine": 1231,
+        "startChar": 42,
+        "endLine": 1234,
+        "endChar": 82
+      },
+      "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
