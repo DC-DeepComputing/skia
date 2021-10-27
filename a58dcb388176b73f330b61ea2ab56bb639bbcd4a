@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4abf8d18_b5b19454",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-10-27T13:31:20Z",
+      "side": 1,
+      "message": "Also, just a heads up that Michael is OOO until Monday.",
+      "revId": "a58dcb388176b73f330b61ea2ab56bb639bbcd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
