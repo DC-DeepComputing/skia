@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1121cca_ec631b92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-27T18:51:24Z",
+      "side": 1,
+      "message": "Greg because of the private change to SkCanvas.h, gpu stuff, and behavior change; Herb for CPU side stuff; and Michael because I think he touched this area the most recently and made layer allocation failure a no-draw.",
+      "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
