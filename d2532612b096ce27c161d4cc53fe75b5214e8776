@@ -16,6 +16,23 @@
       "message": "Greg because of the private change to SkCanvas.h, gpu stuff, and behavior change; Herb for CPU side stuff; and Michael because I think he touched this area the most recently and made layer allocation failure a no-draw.",
       "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012c4e17_4575fc7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-27T18:53:46Z",
+      "side": 1,
+      "message": "Also, not that for this sort of thing (like the existing draw into a null surface layer if the layer allocation fails) we might someday want a callback to let the user know that a draw failed, if they care. (Like Chromium could try to butter bar a \u0027drawing incomplete do to lack of resources\u0027 or something.)",
+      "revId": "d2532612b096ce27c161d4cc53fe75b5214e8776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
