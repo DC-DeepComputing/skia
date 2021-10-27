@@ -80,10 +80,10 @@ DEF_GRAPHITE_TEST(UniformTest, reporter) {
                 auto [ p, expectedNumUniforms ] = create_paint(expected);
                 auto [ actual, uniforms] = ExtractCombo(p);
                 SkASSERT(expected == actual);
-                SkASSERT(expectedNumUniforms == uniforms->fCount);
-                for (int i = 0; i < uniforms->fCount; ++i) {
-                    SkASSERT(uniforms->fOffsets[i] >= 0 &&
-                             uniforms->fOffsets[i] < uniforms->fDataSize);
+                SkASSERT(expectedNumUniforms == uniforms->count());
+                for (int i = 0; i < uniforms->count(); ++i) {
+                    SkASSERT(uniforms->offset(i) >= 0 &&
+                             uniforms->offset(i) < uniforms->dataSize());
                 }
             }
         }
