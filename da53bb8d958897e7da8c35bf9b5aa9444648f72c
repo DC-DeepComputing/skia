@@ -16,6 +16,24 @@
       "message": "This is bad. SkTo* does not assert at runtime, but To* does. We need the asserts.",
       "revId": "da53bb8d958897e7da8c35bf9b5aa9444648f72c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba38a575_37aa6098",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-28T18:22:26Z",
+      "side": 1,
+      "message": "To clarify, SkTo* does not assert in Debug, but it turns out that To* only asserted in Debug as well (well, when NDEBUG). For some of this it is important to assert things even in release I think. However, I think everything is checked, so maybe this is ok?",
+      "parentUuid": "37b77981_908a0172",
+      "revId": "da53bb8d958897e7da8c35bf9b5aa9444648f72c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
