@@ -16,6 +16,24 @@
       "message": "Ugh. This has somehow made skslc not compile correctly. Investigating now.",
       "revId": "65a726bb4948ed662ca06302b57b5a2ddb81d4fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eed829e_c67c6de5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-10-28T21:18:11Z",
+      "side": 1,
+      "message": "This is also breaking the Android build. See https://android-build.googleplex.com/builds/pending/P27131354/aosp_crosshatch-userdebug/latest/view/logs/build_error.log\n\nGIFMovie.cpp is referencing sk_memset32, which moved to SkOpts.h",
+      "parentUuid": "bf4d176f_998b304f",
+      "revId": "65a726bb4948ed662ca06302b57b5a2ddb81d4fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
