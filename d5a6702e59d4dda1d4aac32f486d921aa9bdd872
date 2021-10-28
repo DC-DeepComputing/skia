@@ -33,6 +33,23 @@
       "message": "New direction/purpose still lgtm",
       "revId": "d5a6702e59d4dda1d4aac32f486d921aa9bdd872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ecb1ba_d982b752",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-28T17:21:45Z",
+      "side": 1,
+      "message": "still lgtm",
+      "revId": "d5a6702e59d4dda1d4aac32f486d921aa9bdd872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
