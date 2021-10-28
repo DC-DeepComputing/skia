@@ -16,6 +16,23 @@
       "message": "This warning was also not on by default in Clang. I suspect that Skia would only build with it enabled in the context of Angle, and the flag is getting removed there too: https://chromium-review.googlesource.com/c/angle/angle/+/3250885 (so maybe we should land this after that).",
       "revId": "a08cb61760bb40dcb9b4b418b729132def3831f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d633e985_754356e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6025
+      },
+      "writtenOn": "2021-10-28T12:30:44Z",
+      "side": 1,
+      "message": "Hm, skia doesn\u0027t enable this warning. So with old clang things won\u0027t build with this patch, and with new clang it only builds with it. So even if skia only wants to build with chromium\u0027s clang this means we\u0027d have to land this at the same time as a roll.\n\nI think it\u0027s better to land https://reviews.llvm.org/D112704 and then only land this CL well after the clang change is in.",
+      "revId": "a08cb61760bb40dcb9b4b418b729132def3831f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
