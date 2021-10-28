@@ -1885,7 +1885,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
             //     ES 2.0: the extension makes BGRA an external format but not an internal format.
             //     ES 3.0: the extension explicitly states GL_BGRA8 is not a valid internal format
             //             for glTexImage (just for glTexStorage).
-            bgraTexImageFormat = GR_GL_RGBA;
+            bgraTexImageFormat = GR_GL_RGBA;  // Comment for testing
         }
 
         // TexStorage requires using a sized internal format and BGRA8 is only supported if we have
