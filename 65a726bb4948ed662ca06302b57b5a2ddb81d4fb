@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf4d176f_998b304f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-28T18:46:31Z",
+      "side": 1,
+      "message": "Ugh. This has somehow made skslc not compile correctly. Investigating now.",
+      "revId": "65a726bb4948ed662ca06302b57b5a2ddb81d4fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
