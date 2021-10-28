@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08051c3e_a56a868a",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-28T21:22:23Z",
+      "side": 1,
+      "message": "I assume this is referring to the uniformData being an sk_sp? I agree that there is no need to return the UniformData here or inside ExtractCombo. cache-\u003efindOrCreate should just return the uniform id.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 69
+      },
+      "revId": "2ab79cb895f9518cac6160d3431c2d1cbcaa397c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9784eaa0_c39fe774",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-28T21:22:23Z",
+      "side": 1,
+      "message": "100",
+      "range": {
+        "startLine": 174,
+        "startChar": 100,
+        "endLine": 174,
+        "endChar": 101
+      },
+      "revId": "2ab79cb895f9518cac6160d3431c2d1cbcaa397c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
