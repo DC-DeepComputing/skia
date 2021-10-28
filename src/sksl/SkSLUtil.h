@@ -17,9 +17,9 @@
 
 #ifndef SKSL_STANDALONE
 #include "include/core/SkTypes.h"
-#include "include/private/GrTypesPriv.h"
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrContextOptions.h"
+#include "include/private/GrTypesPriv.h"
 #include "src/gpu/GrShaderCaps.h"
 #endif // SK_SUPPORT_GPU
 #endif // SKSL_STANDALONE
