@@ -276,7 +276,8 @@ sk_sp<RenderPipeline> RenderPipeline::Make(const Gpu* gpu, const skgpu::RenderPi
         SkDebugf("Errors:\n%s", error.debugDescription.UTF8String);
         return nullptr;
     }
-    return sk_sp<RenderPipeline>(new RenderPipeline(std::move(pso)));
+    return sk_sp<RenderPipeline>(new RenderPipeline(std::move(pso), desc.vertexStride(),
+                                                    desc.instanceStride()));
 }
 
 } // namespace skgpu::mtl
