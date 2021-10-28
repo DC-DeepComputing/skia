@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "193693ed_95879b8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-28T16:44:02Z",
+      "side": 1,
+      "message": "Ah, took me a second to realize how this failed. I was thinking that the result was bad, but it\u0027s actually the original literal (which we coerce before applying the operator). Yikes.",
+      "revId": "0ff0db57b5f53fc916f8a0ffc3252551dd393fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
