@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e790ff72_d01317f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6245
+      },
+      "writtenOn": "2021-10-28T12:05:32Z",
+      "side": 1,
+      "message": "This warning was also not on by default in Clang. I suspect that Skia would only build with it enabled in the context of Angle, and the flag is getting removed there too: https://chromium-review.googlesource.com/c/angle/angle/+/3250885 (so maybe we should land this after that).",
+      "revId": "a08cb61760bb40dcb9b4b418b729132def3831f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
