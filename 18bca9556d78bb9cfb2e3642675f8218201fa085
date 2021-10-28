@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "840a2714_c87e8d00",
+        "filename": "include/core/SkPromiseImageTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-28T14:09:15Z",
+      "side": 1,
+      "message": "Thanks for the explanation. I included SkTypes directly before the define.",
+      "parentUuid": "d78e99bd_f9d2f6a5",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "18bca9556d78bb9cfb2e3642675f8218201fa085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8de42259_8b51b711",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-28T13:48:44Z",
       "side": 1,
       "message": "Similar setup here - I\u0027d make sure to always include at least the class header before guarding the rest of the file.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "18bca9556d78bb9cfb2e3642675f8218201fa085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be34de2_9fa23908",
+        "filename": "src/core/SkPromiseImageTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-10-28T14:09:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8de42259_8b51b711",
       "range": {
         "startLine": 8,
         "startChar": 0,
