@@ -51,8 +51,18 @@ private:
     void onBindUniformBuffer(const skgpu::Buffer*, size_t offset) override;
     void onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
                              const skgpu::Buffer* instanceBuffer) override;
+    void onBindIndexBuffer(const skgpu::Buffer* indexBuffer, size_t offset) override;
 
-    void onDraw(PrimitiveType type, unsigned int vertexStart, unsigned int vertexCount) override;
+    void onDraw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount) override;
+    void onDrawIndexed(PrimitiveType type, unsigned int baseIndex, unsigned int indexCount,
+                       uint16_t minIndexValue, uint16_t maxIndexValue,
+                       unsigned int baseVertex) override;
+    void onDrawInstanced(PrimitiveType type,
+                         unsigned int baseVertex, unsigned int vertexCount,
+                         unsigned int baseInstance, unsigned int instanceCount) override;
+    void onDrawIndexedInstanced(PrimitiveType type, unsigned int baseIndex,
+                                unsigned int indexCount, unsigned int baseVertex,
+                                unsigned int baseInstance, unsigned int instanceCount) override;
 
     void onCopyTextureToBuffer(const skgpu::Texture*,
                                SkIRect srcRect,
@@ -66,6 +76,9 @@ private:
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
     sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
     sk_sp<BlitCommandEncoder> fActiveBlitCommandEncoder;
+
+    id<MTLBuffer> fCurrentIndexBuffer;
+    size_t fCurrentIndexBufferOffset = 0;
 
     const Gpu* fGpu;
 };
