@@ -44,9 +44,10 @@ public:
 
     PaintParams(const PaintParams&) = default;
 
-    SkColor4f   color()     const { return fColor;        }
-    SkBlendMode blendMode() const { return fBlendMode;    }
-    SkShader*   shader()    const { return fShader.get(); }
+    SkColor4f color() const { return fColor; }
+    SkBlendMode blendMode() const { return fBlendMode; }
+    SkShader* shader() const { return fShader.get(); }
+    sk_sp<SkShader> refShader() const { return fShader; }
 
 private:
     SkColor4f       fColor;
