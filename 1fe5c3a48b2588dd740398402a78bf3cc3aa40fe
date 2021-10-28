@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05134316_f6d66bfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T13:59:32Z",
+      "side": 1,
+      "message": "Caches have been moved to the Recorder",
+      "revId": "1fe5c3a48b2588dd740398402a78bf3cc3aa40fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
