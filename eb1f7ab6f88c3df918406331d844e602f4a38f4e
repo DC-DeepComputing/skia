@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f1516d7_0cee657e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "Can we make this work with a hacked test?  E.g. https://skottie.skia.org/000a9deb6e9394be23f2bb71910547fa?e\u003dtrue\u0026h\u003d500\u0026w\u003d500",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ab1a0f_f03bb023",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "return child-\u003erevalidate(...);",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 22
+      },
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e0df148_7733b8bb",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "Need to fetch the shader code also, then skip the first prop in the loop below.",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eca0b8c5_4e9d9848",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "This will bind to the local |uniformValue|, which goes out of scope.  We prolly want something like\n\n  fUniforms.push_back(std::make_tuple(uniformName-\u003etoString(),\n                                      VectorValue()));\n  this-\u003ebind(abuilder, (*jprop)[\"v\"], std::get\u003c1\u003e(fUniforms.back()));\n  \nBut that\u0027s bad, because bind() grabs the address of the target VectorValue, which may change if fUniforms reallocates as it grows.\n\nSo we either need two passes or we could allocate VectorValues dynamically:\n\n  std::vector\u003cstd::tuple\u003cSkString, std::unique_ptr\u003cVectorValue\u003e\u003e\u003e fUniforms;\n  \n  ..\n  fUniforms.push_back(std::make_tuple(uniformName-\u003etoString(),\n                                      std::make_unique\u003cVectorValue\u003e()));\n  this-\u003ebind(abuilder, (*jprop)[\"v\"], std::get\u003c1\u003e(fUniforms.back()).get());",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b381fed7_e197337a",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "The sksl string is constant, we should build the runtime effect upfront (ctor) and cache.",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5823f45_fccc9cc9",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "Log and bail:\n\n  abuilder.log(Logger::Level::kError, nullptr, \"Failed to parse SkSL shader: %s\",\n               result.errorText.c_str());\n  return nullptr;",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500c3ba2_7cbf8386",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-28T15:10:06Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to store the SkSL string, we can immediately build and SkRuntimeEffect from it and store that instead.",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
