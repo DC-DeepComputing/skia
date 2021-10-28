@@ -5,10 +5,9 @@
  * found in the LICENSE file.
  */
 
+#if SK_SUPPORT_GPU
 #include "include/core/SkPromiseImageTexture.h"
 #include "src/core/SkMessageBus.h"
-
-#if SK_SUPPORT_GPU
 
 std::atomic<uint32_t> SkPromiseImageTexture::gUniqueID{1};
 
@@ -43,6 +42,6 @@ SkTArray<GrUniqueKey> SkPromiseImageTexture::testingOnly_uniqueKeysToInvalidate(
     }
     return results;
 }
-#endif
+#endif // GR_TEST_UTILS
 
-#endif
+#endif // SK_SUPPORT_GPU
