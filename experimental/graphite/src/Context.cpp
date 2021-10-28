@@ -82,7 +82,10 @@ void expand(const PaintCombo& c) {
 
 } // anonymous namespace
 
-Context::Context(sk_sp<Gpu> gpu) : fGpu(std::move(gpu)) {}
+Context::Context(sk_sp<Gpu> gpu)
+    : fGpu(std::move(gpu)) {
+}
+
 Context::~Context() {}
 
 #ifdef SK_METAL

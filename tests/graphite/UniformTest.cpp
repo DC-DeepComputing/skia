@@ -7,7 +7,9 @@
 
 #include "tests/Test.h"
 
+#include "experimental/graphite/src/ContextPriv.h"
 #include "experimental/graphite/src/ContextUtils.h"
+#include "experimental/graphite/src/UniformCache.h"
 #include "include/core/SkPaint.h"
 #include "include/effects/SkGradientShader.h"
 
@@ -54,8 +56,10 @@ std::tuple<SkPaint, int> create_paint(skgpu::Combination combo) {
 
 } // anonymous namespace
 
-DEF_GRAPHITE_TEST(UniformTest, reporter) {
+DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
     using namespace skgpu;
+
+    UniformCache cache;
 
     for (auto s : { ShaderCombo::ShaderType::kNone,
                     ShaderCombo::ShaderType::kLinearGradient,
@@ -78,13 +82,13 @@ DEF_GRAPHITE_TEST(UniformTest, reporter) {
                 expected.fBlendMode = bm;
 
                 auto [ p, expectedNumUniforms ] = create_paint(expected);
-                auto [ actual, uniforms] = ExtractCombo(p);
-                SkASSERT(expected == actual);
-                SkASSERT(expectedNumUniforms == uniforms->fCount);
-                for (int i = 0; i < uniforms->fCount; ++i) {
-                    SkASSERT(uniforms->fOffsets[i] >= 0 &&
-                             uniforms->fOffsets[i] < uniforms->fDataSize);
+                auto [ actual, ud] = ExtractCombo(&cache, p);
+                REPORTER_ASSERT(reporter, expected == actual);
+                REPORTER_ASSERT(reporter, expectedNumUniforms == ud->count());
+                for (int i = 0; i < ud->count(); ++i) {
+                    REPORTER_ASSERT(reporter, ud->offset(i) >= 0 && ud->offset(i) < ud->dataSize());
                 }
+                REPORTER_ASSERT(reporter, ud->id() != UniformData::kInvalidUniformID);
             }
         }
     }
