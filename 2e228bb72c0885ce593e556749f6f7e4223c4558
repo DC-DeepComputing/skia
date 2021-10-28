@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c59a7542_4c3224fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-28T03:03:22Z",
+      "side": 1,
+      "message": "Gotta love how HWUI has skia/src/* and skia/include/private on the include path for like everything.",
+      "revId": "2e228bb72c0885ce593e556749f6f7e4223c4558",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
