@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b9d0c1_eceb1e06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-28T17:27:17Z",
+      "side": 1,
+      "message": "No tests add yet because we\u0027ll just fail everything since we do have the code to make a recording/commandbuffer yet. But once we have those wires hooked in I\u0027ll get some more direct tests of the read pixels (plus I imagine our other tests will indirectly test it as well)",
+      "revId": "bf0ec5edd9772a0e0ad0973e04d24fd74b922601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
