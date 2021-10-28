@@ -16,6 +16,24 @@
       "message": "meta level question: In ganesh we track the last bound vertex/index buffers so that we don\u0027t rebind them. Do we need or want that for Graphite? Or will the fact that we are doing more tracking/making the bind calls of buffers higher up and outside of individual draws, mean that we should be hitting cases where we try to bind the same buffer twice?",
       "revId": "7f618361d0277469988441d5514b861250ac5055",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ccd01f5_fe2e1a04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-28T20:37:50Z",
+      "side": 1,
+      "message": "In the Metal case, the RenderCommandEncoder does that checking. That\u0027s why I didn\u0027t add it at the CommandBuffer level (also there\u0027s no setIndexBuffer call -- it\u0027s an argument to the draw call). I\u0027d expect we\u0027d have less duplication at the higher level as well though.",
+      "parentUuid": "89e8f6da_cbc07a24",
+      "revId": "7f618361d0277469988441d5514b861250ac5055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
