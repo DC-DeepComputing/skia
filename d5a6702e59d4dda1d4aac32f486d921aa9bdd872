@@ -16,6 +16,23 @@
       "message": "Okay changed the intent of this CL to just add a new NoGpu build for Graphite so that Graphite tests can continue to use the required Gpu build. Let me know if any objections to the new change.",
       "revId": "d5a6702e59d4dda1d4aac32f486d921aa9bdd872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ad62639_546823a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T17:14:16Z",
+      "side": 1,
+      "message": "New direction/purpose still lgtm",
+      "revId": "d5a6702e59d4dda1d4aac32f486d921aa9bdd872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
