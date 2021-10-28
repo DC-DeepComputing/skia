@@ -16,6 +16,24 @@
       "message": "Right now, I\u0027d be unpacking each value in the VectorValue (float vector) and converting it into the correct type. Is there a better way to go about this without knowing what type the uniform should be (either float, float2, half, etc.)?",
       "revId": "38c38576e0471f09a4f387542d06fb036d482371",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efe6a08d_16c7d94c",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-28T14:16:08Z",
+      "side": 1,
+      "message": "You can get metadata about the uniform by calling result.effect-\u003efindUniform(name.c_str())\n\nThat gives you a pointer to a struct that describes the uniform (SkRuntimeEffect::Uniform), including the expected type and count (if it\u0027s an array).\n\nIt *might* be easier to skip the Builder here, too (not sure). It\u0027s really just taking care of wrangling all the uniform data into the right order, then calling effect-\u003emakeShader() under the hood. effect-\u003emakeShader() takes an SkData with all of the uniform data packed together. The Uniform struct you can get above includes the offset into that data blob where each uniform\u0027s data should go.",
+      "parentUuid": "0f34c0f9_4119a282",
+      "revId": "38c38576e0471f09a4f387542d06fb036d482371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
