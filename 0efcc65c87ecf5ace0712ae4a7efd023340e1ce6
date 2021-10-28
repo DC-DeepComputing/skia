@@ -34,6 +34,109 @@
       "parentUuid": "7ab59633_16c70ab3",
       "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54728b14_e1ad9f2f",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T15:52:08Z",
+      "side": 1,
+      "message": "I would say - separate",
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f53dd322_039a6a5b",
+        "filename": "experimental/graphite/src/DrawList.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T15:52:08Z",
+      "side": 1,
+      "message": "Would this be better on the Recorder?",
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff32a663_aaf27a65",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T15:52:08Z",
+      "side": 1,
+      "message": "clarify?",
+      "range": {
+        "startLine": 28,
+        "startChar": 76,
+        "endLine": 28,
+        "endChar": 81
+      },
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4228f3e1_973a9973",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T15:52:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 31,
+        "startChar": 43,
+        "endLine": 31,
+        "endChar": 63
+      },
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6185e44_de8cf79c",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-28T15:52:08Z",
+      "side": 1,
+      "message": "fwiw, as currently planned, the ProgramCache and UniformCache are stored on the Recorder so the program and uniformData keys should be valid for a given Recording. I don\u0027t think that will actually buy us anything though.",
+      "range": {
+        "startLine": 42,
+        "startChar": 82,
+        "endLine": 43,
+        "endChar": 65
+      },
+      "revId": "0efcc65c87ecf5ace0712ae4a7efd023340e1ce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
