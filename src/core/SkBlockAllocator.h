@@ -8,9 +8,10 @@
 #ifndef SkBlockAllocator_DEFINED
 #define SkBlockAllocator_DEFINED
 
-#include "include/private/GrTypesPriv.h"
+#include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "src/core/SkASAN.h"
+#include "src/core/SkUtils.h"
 
 #include <memory>  // std::unique_ptr
 #include <cstddef> // max_align_t
@@ -509,12 +510,12 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Template and inline implementations
 
-GR_MAKE_BITFIELD_OPS(SkBlockAllocator::ReserveFlags)
+SK_MAKE_BITFIELD_OPS(SkBlockAllocator::ReserveFlags)
 
 template<size_t Align, size_t Padding>
 constexpr size_t SkBlockAllocator::BlockOverhead() {
-    static_assert(GrAlignTo(kDataStart + Padding, Align) >= sizeof(Block));
-    return GrAlignTo(kDataStart + Padding, Align);
+    static_assert(SkAlignTo(kDataStart + Padding, Align) >= sizeof(Block));
+    return SkAlignTo(kDataStart + Padding, Align);
 }
 
 template<size_t Align, size_t Padding>
@@ -562,7 +563,7 @@ SkBlockAllocator::ByteRange SkBlockAllocator::allocate(size_t size) {
     static constexpr int kBlockOverhead = (int) BlockOverhead<Align, Padding>();
 
     // Ensures 'offset' and 'end' calculations will be valid
-    static_assert((kMaxAllocationSize + GrAlignTo(MaxBlockSize<Align, Padding>(), Align))
+    static_assert((kMaxAllocationSize + SkAlignTo(MaxBlockSize<Align, Padding>(), Align))
                         <= (size_t) std::numeric_limits<int32_t>::max());
     // Ensures size + blockOverhead + addBlock's alignment operations will be valid
     static_assert(kMaxAllocationSize + kBlockOverhead + ((1 << 12) - 1) // 4K align for large blocks
