@@ -68,6 +68,24 @@
       "parentUuid": "2c19456f_bd293fe2",
       "revId": "a08cb61760bb40dcb9b4b418b729132def3831f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d048abd5_b3147f91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-28T16:08:38Z",
+      "side": 1,
+      "message": "We also have lots of users who may not necessarily keep their version of Clang up to date. I\u0027m not sure when it would be considered safe to remove this, but we should definitely wait a little while for the dust to settle.",
+      "parentUuid": "4abd2a2d_9407e951",
+      "revId": "a08cb61760bb40dcb9b4b418b729132def3831f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
