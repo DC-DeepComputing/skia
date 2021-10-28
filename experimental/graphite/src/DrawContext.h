@@ -40,6 +40,7 @@ public:
     ~DrawContext() override;
 
     const SkImageInfo&  imageInfo() const { return fImageInfo;    }
+    TextureProxy* target()                { return fTarget.get(); }
     const TextureProxy* target()    const { return fTarget.get(); }
 
     int pendingDrawCount() const { return fPendingDraws->count(); }
