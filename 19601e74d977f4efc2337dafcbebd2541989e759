@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9707fc4b_9e0f6e74",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-28T17:48:07Z",
+      "side": 1,
+      "message": "Instead of a strange extra four indent, I\u0027d prefer the { to go on a line by itself, something like\n\n    if (blah ||\n        blah ||\n        blah)\n    {\n        return;\n    }\n    \nIt just makes it easier to see where the predicate part of the \u0027if\u0027 ends since it shouldn\u0027t have a block out there.",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 12
+      },
+      "revId": "19601e74d977f4efc2337dafcbebd2541989e759",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
