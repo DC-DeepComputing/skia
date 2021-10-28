@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e8f6da_cbc07a24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-28T19:57:08Z",
+      "side": 1,
+      "message": "meta level question: In ganesh we track the last bound vertex/index buffers so that we don\u0027t rebind them. Do we need or want that for Graphite? Or will the fact that we are doing more tracking/making the bind calls of buffers higher up and outside of individual draws, mean that we should be hitting cases where we try to bind the same buffer twice?",
+      "revId": "7f618361d0277469988441d5514b861250ac5055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
