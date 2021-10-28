@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f34c0f9_4119a282",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-28T13:08:56Z",
+      "side": 1,
+      "message": "Right now, I\u0027d be unpacking each value in the VectorValue (float vector) and converting it into the correct type. Is there a better way to go about this without knowing what type the uniform should be (either float, float2, half, etc.)?",
+      "revId": "38c38576e0471f09a4f387542d06fb036d482371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
