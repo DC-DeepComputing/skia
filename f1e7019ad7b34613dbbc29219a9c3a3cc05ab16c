@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "306fe5c1_dcab4670",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-10-29T14:53:24Z",
+      "side": 1,
+      "message": "From my Android canaries, I\u0027m 99% sure this lets me re-land the change to how paint-alpha is applied.",
+      "revId": "f1e7019ad7b34613dbbc29219a9c3a3cc05ab16c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
