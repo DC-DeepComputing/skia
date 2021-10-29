@@ -307,6 +307,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a34bd0d_2ac71b77",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T20:26:33Z",
+      "side": 1,
+      "message": "Right, and because we\u0027re in a constructor there\u0027s no good way to bail other than return early - which still constructs the adapter but leaves fEffect default-initialized (aka nullptr).\n\nThen below we pass fEffect to SkRuntimeShaderBuilder, which may or may not explode with a nullptr effect.  Looks like it does crash.\n\nEssentially fEffect \u003d\u003d nullptr is the signal that initialization failed and we should abort all other calls.",
+      "parentUuid": "1f430758_ca73d94b",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ef4a586_e1db6530",
         "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
         "patchSetId": 4
