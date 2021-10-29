@@ -46,6 +46,30 @@
       },
       "revId": "ef5c468a158d0b0629e42a8ac08cbcc738915931",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddbb4e0b_4cf8dc88",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1305,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-10-29T19:38:39Z",
+      "side": 0,
+      "message": "Done at http://review.skia.org/465393",
+      "parentUuid": "151806c0_ab9fbd37",
+      "range": {
+        "startLine": 1305,
+        "startChar": 18,
+        "endLine": 1305,
+        "endChar": 27
+      },
+      "revId": "ef5c468a158d0b0629e42a8ac08cbcc738915931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
