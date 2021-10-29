@@ -16,6 +16,23 @@
       "message": "The intersection",
       "revId": "2c92bf586c3473bd6f802b19798bf2176e59d234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ceba889_97182531",
+        "filename": "tests/graphite/UniformTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-29T20:08:04Z",
+      "side": 1,
+      "message": "I would just delete this. I don\u0027t think it buys us anything.",
+      "revId": "2c92bf586c3473bd6f802b19798bf2176e59d234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
