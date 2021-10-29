@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b79c2fb_ae95702a",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-29T18:50:17Z",
+      "side": 0,
+      "message": "I would have thought setting empty here would have meant there is no clip and thus accept everything? Is this not what empty means? If it is, does that means there was a bug in the code which was doing the clip rejection?",
+      "range": {
+        "startLine": 44,
+        "startChar": 53,
+        "endLine": 44,
+        "endChar": 70
+      },
+      "revId": "527d12771957a8f1cb35252c23b671cde7ea6b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

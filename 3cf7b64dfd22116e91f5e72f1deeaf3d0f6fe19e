@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e6a474_a90eea11",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-29T18:50:17Z",
+      "side": 1,
+      "message": "can we put this in an anonymous namespace down where this is used? Or since it only looks to be used in one function just make a lambda in the function inself?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "3cf7b64dfd22116e91f5e72f1deeaf3d0f6fe19e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cca59c_dbdaba5c",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-29T18:50:17Z",
+      "side": 1,
+      "message": "some how the draw has become null here with you change?",
+      "range": {
+        "startLine": 232,
+        "startChar": 37,
+        "endLine": 232,
+        "endChar": 49
+      },
+      "revId": "3cf7b64dfd22116e91f5e72f1deeaf3d0f6fe19e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9170a4f8_754d9778",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-29T18:50:17Z",
+      "side": 1,
+      "message": "There was also talk on recording a uniform bind operation on the drawpass itself. Similar for vertex/index binds they will live outside the draw calls themselves. So how ever we record those bind operations would store the bufferInfos I think.",
+      "range": {
+        "startLine": 256,
+        "startChar": 14,
+        "endLine": 257,
+        "endChar": 91
+      },
+      "revId": "3cf7b64dfd22116e91f5e72f1deeaf3d0f6fe19e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab691a04_54c6ac10",
+        "filename": "experimental/graphite/src/Recorder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-10-29T18:50:17Z",
+      "side": 1,
+      "message": "Can we also add to this comment that we then need to call fDrawBufferManager::transferBuffers() to pass the buffers to the command buffer.",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 58
+      },
+      "revId": "3cf7b64dfd22116e91f5e72f1deeaf3d0f6fe19e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
