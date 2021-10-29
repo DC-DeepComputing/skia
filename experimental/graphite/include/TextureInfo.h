@@ -78,6 +78,7 @@ private:
     Protected fProtected = Protected::kNo;
 
     union {
+        struct{} fMockSpec;
 #ifdef SK_METAL
         mtl::TextureSpec fMtlSpec;
 #endif

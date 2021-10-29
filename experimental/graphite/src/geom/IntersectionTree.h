@@ -13,6 +13,8 @@
 
 namespace skgpu {
 
+enum class IntersectionTree_SplitType : bool;
+
 // Maintains a collection of non-overlapping rectangles.
 //
 // add() either adds the given rect to the collection, or returns false if it intersected with a
@@ -42,11 +44,7 @@ private:
         virtual Node* addNonIntersecting(Rect, SkArenaAlloc*) = 0;
     };
 
-    enum class SplitType : bool {
-        kX,
-        kY
-    };
-
+    using SplitType = IntersectionTree_SplitType;
     template<SplitType kSplitType> class TreeNode;
     class LeafNode;
 
