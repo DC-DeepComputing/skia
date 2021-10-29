@@ -91,6 +91,30 @@
       },
       "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2275a44a_4dc95acb",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-10-29T18:36:48Z",
+      "side": 1,
+      "message": "If tan_* is infinite that means that the skew along the * axis is infinite which means nothing should ever be drawn. Everything except the points right on the axis will be skewed off to infinity so there will be no area covered in any finite pixel region. In general nothing should get drawn, which is what I think happens.",
+      "parentUuid": "dd4731be_a02f1977",
+      "range": {
+        "startLine": 703,
+        "startChar": 19,
+        "endLine": 703,
+        "endChar": 24
+      },
+      "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
