@@ -34,6 +34,24 @@
       "parentUuid": "0f34c0f9_4119a282",
       "revId": "38c38576e0471f09a4f387542d06fb036d482371",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bd5fbc1_67739986",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T20:14:26Z",
+      "side": 1,
+      "message": "Good to know. For now, we\u0027ll stick with the builder, but it probably will be easier to dump it. Leaving as is for now while we test simple shaders.",
+      "parentUuid": "efe6a08d_16c7d94c",
+      "revId": "38c38576e0471f09a4f387542d06fb036d482371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
