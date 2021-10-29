@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3461cb4_4403be67",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2021-10-29T16:37:41Z",
+      "side": 1,
+      "message": "2021 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ab744b_cbf58ce5",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2021-10-29T16:37:41Z",
+      "side": 1,
+      "message": "nit: \"if\"",
+      "range": {
+        "startLine": 524,
+        "startChar": 40,
+        "endLine": 524,
+        "endChar": 42
+      },
+      "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5994e87_d2cbd9d4",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2021-10-29T16:37:41Z",
+      "side": 1,
+      "message": "nit: Should this be \" is\"? (unsure)",
+      "range": {
+        "startLine": 562,
+        "startChar": 63,
+        "endLine": 562,
+        "endChar": 65
+      },
+      "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4731be_a02f1977",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2021-10-29T16:37:41Z",
+      "side": 1,
+      "message": "|tan_x| may be infinite. I see other users of SkDegreesToRadians are checking SkScalarIsFinite(x) after. What happens when it does?",
+      "range": {
+        "startLine": 703,
+        "startChar": 19,
+        "endLine": 703,
+        "endChar": 24
+      },
+      "revId": "691a794bee2dd8fdfd0974cc86775abb745c060d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
