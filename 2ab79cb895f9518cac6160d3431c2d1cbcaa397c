@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e2a3b69_b9c16a41",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-29T13:32:10Z",
+      "side": 1,
+      "message": "Yep - as of right now I don\u0027t think there is any use case for actually getting the UniformData or ProgramInfo and, if that holds, they could revert to being unique_ptrs.",
+      "parentUuid": "08051c3e_a56a868a",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 69
+      },
+      "revId": "2ab79cb895f9518cac6160d3431c2d1cbcaa397c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9784eaa0_c39fe774",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-28T21:22:23Z",
       "side": 1,
       "message": "100",
+      "range": {
+        "startLine": 174,
+        "startChar": 100,
+        "endLine": 174,
+        "endChar": 101
+      },
+      "revId": "2ab79cb895f9518cac6160d3431c2d1cbcaa397c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d03fdf70_ef27da49",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-29T13:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9784eaa0_c39fe774",
       "range": {
         "startLine": 174,
         "startChar": 100,
