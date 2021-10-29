@@ -1,0 +1,186 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b284abd_bea3f277",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "Since the json is essentially user input, we can\u0027t trust anything about it (always think there\u0027s a fuzzer producing this data... because there actually is one :)\n\n  if (jprops.size() \u003c 1) {\n      return;\n  }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10cc161_9b46e96f",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "Ditto\n\n  if (!jSkSL) {\n      return;\n  }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "615bbc2d_3dbfafc7",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "Ditto\n\n  if (!jShader) {\n      return;\n  }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "591bc058_d674d82a",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "nit: std::move(result.effect)",
+      "range": {
+        "startLine": 76,
+        "startChar": 18,
+        "endLine": 76,
+        "endChar": 31
+      },
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19dd65b7_7035202d",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "size_t i instead of casting jprops.size()",
+      "range": {
+        "startLine": 79,
+        "startChar": 13,
+        "endLine": 79,
+        "endChar": 16
+      },
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b015bfc5_c3afbfec",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "untrusted json\n\n  if (!jprop) { continue; }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9efe6af_f179e514",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "same\n\n  if (!uniformName) { continue; }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4229fc8_6efdc255",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "sksl parsing can fail, we should check here:\n\n  if (!fEffect) {\n      return nullptr;\n  }",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ef4a586_e1db6530",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "nit: seems cleaner to construct directly\n\n  SkRuntimeShaderBuilder builder(fEffect);",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3520481e_69d851ca",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T19:55:43Z",
+      "side": 1,
+      "message": "const auto\u0026 name",
+      "revId": "e5ada32ebd44f4ab308064d63e653a8dac31c13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
