@@ -22,6 +22,30 @@
       },
       "revId": "527d12771957a8f1cb35252c23b671cde7ea6b80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4aab99_04f396e3",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-10-29T19:37:41Z",
+      "side": 0,
+      "message": "afaict a wide open clip maps to a kRect ClipType while everything clipped out maps to kEmpty.\n\nAdditionally, SkCanvas::isClipEmpty returns true when nothing will be drawn.",
+      "parentUuid": "7b79c2fb_ae95702a",
+      "range": {
+        "startLine": 44,
+        "startChar": 53,
+        "endLine": 44,
+        "endChar": 70
+      },
+      "revId": "527d12771957a8f1cb35252c23b671cde7ea6b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
