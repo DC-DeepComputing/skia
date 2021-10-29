@@ -88,6 +88,11 @@ bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
     return true;
 }
 
+SkIRect Device::onDevClipBounds() const {
+    auto target = fDC->target();
+    return SkIRect::MakeSize(target->dimensions());
+}
+
 void Device::drawPaint(const SkPaint& paint) {
     SkRect deviceBounds = SkRect::Make(this->devClipBounds());
     // TODO: Should be able to get the inverse from the matrix cache
