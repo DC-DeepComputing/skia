@@ -60,6 +60,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc55997c_2041e487",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-10-29T13:31:09Z",
+      "side": 1,
+      "message": "Also, just realized: toString() converts any json value to its JSON string representation -- so in this case you\u0027d get the quoted name, which is not what we want.  \n\nUse this to get the actual/raw string:\n\n  SkString(uniformName-\u003ebegin(), uniformName-\u003esize());",
+      "range": {
+        "startLine": 74,
+        "startChar": 48,
+        "endLine": 74,
+        "endChar": 71
+      },
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eca0b8c5_4e9d9848",
         "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
         "patchSetId": 2
