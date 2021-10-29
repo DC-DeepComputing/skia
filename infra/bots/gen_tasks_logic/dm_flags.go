@@ -809,12 +809,16 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("serialize-8888", "gm", "_", test)
 	}
 
-	// It looks like we skip these only for out-of-memory concerns.
+	// We skip these to avoid out-of-memory failures.
 	if b.matchOs("Win", "Android") {
 		for _, test := range []string{"verylargebitmap", "verylarge_picture_image"} {
 			skip("serialize-8888", "gm", "_", test)
 		}
 	}
+    if b.model("iPhone6") {
+        skip("_", "gm", "_", "verylargebitmap")
+        skip("_", "gm", "_", "verylarge_picture_image")
+    }
 	if b.matchOs("Mac") && b.cpu() {
 		// skia:6992
 		skip("pic-8888", "gm", "_", "encode-platform")
