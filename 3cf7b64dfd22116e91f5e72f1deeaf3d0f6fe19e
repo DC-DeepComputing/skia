@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdcee9e2_be5d6a26",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-10-29T19:02:08Z",
+      "side": 1,
+      "message": "Need to init fDraw here as well.",
+      "range": {
+        "startLine": 90,
+        "startChar": 61,
+        "endLine": 90,
+        "endChar": 62
+      },
+      "revId": "3cf7b64dfd22116e91f5e72f1deeaf3d0f6fe19e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07cca59c_dbdaba5c",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 7
