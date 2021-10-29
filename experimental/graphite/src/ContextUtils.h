@@ -62,6 +62,7 @@ public:
     }
     char* data() { return fData; }
     size_t dataSize() const { return fDataSize; }
+    void setBufferInfo()
 
 private:
     UniformData(int count,
