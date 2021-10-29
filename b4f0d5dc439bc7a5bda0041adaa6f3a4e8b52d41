@@ -33,6 +33,24 @@
       "message": "Sounds good to me with the VMWare name change. Any particular reason for this other than just rebalancing load?",
       "revId": "b4f0d5dc439bc7a5bda0041adaa6f3a4e8b52d41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db4b3c5_78918a2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2021-10-29T21:15:47Z",
+      "side": 1,
+      "message": "ChOps is looking to tear down the VMs once we are fully migrated onto the Macminis.",
+      "parentUuid": "552a7c7b_02ec4f98",
+      "revId": "b4f0d5dc439bc7a5bda0041adaa6f3a4e8b52d41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
