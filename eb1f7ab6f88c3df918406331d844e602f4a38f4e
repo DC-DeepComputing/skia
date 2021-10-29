@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6725e7d3_f7008857",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "That\u0027s the idea, but I didn\u0027t have time to make it, so thanks!",
+      "parentUuid": "7f1516d7_0cee657e",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4ab1a0f_f03bb023",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-10-28T15:10:06Z",
       "side": 1,
       "message": "return child-\u003erevalidate(...);",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 22
+      },
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d4f1fe_11f5fd67",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4ab1a0f_f03bb023",
       "range": {
         "startLine": 29,
         "startChar": 0,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5a42890_235fbdd1",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e0df148_7733b8bb",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc55997c_2041e487",
@@ -71,6 +131,30 @@
       "writtenOn": "2021-10-29T13:31:09Z",
       "side": 1,
       "message": "Also, just realized: toString() converts any json value to its JSON string representation -- so in this case you\u0027d get the quoted name, which is not what we want.  \n\nUse this to get the actual/raw string:\n\n  SkString(uniformName-\u003ebegin(), uniformName-\u003esize());",
+      "range": {
+        "startLine": 74,
+        "startChar": 48,
+        "endLine": 74,
+        "endChar": 71
+      },
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93b96ac9_56551103",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "cc55997c_2041e487",
       "range": {
         "startLine": 74,
         "startChar": 48,
@@ -98,6 +182,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a8bf97c_dde6c139",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Done, after a bit of debugging, changed later accessors to const references per our conversation.",
+      "parentUuid": "eca0b8c5_4e9d9848",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b381fed7_e197337a",
@@ -111,6 +213,24 @@
       "writtenOn": "2021-10-28T15:10:06Z",
       "side": 1,
       "message": "The sksl string is constant, we should build the runtime effect upfront (ctor) and cache.",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4083da9_b5ca9b44",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b381fed7_e197337a",
       "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +252,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81637625_e11743d4",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5823f45_fccc9cc9",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "500c3ba2_7cbf8386",
@@ -145,6 +283,24 @@
       "writtenOn": "2021-10-28T15:10:06Z",
       "side": 1,
       "message": "I don\u0027t think we need to store the SkSL string, we can immediately build and SkRuntimeEffect from it and store that instead.",
+      "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff6b6b2c_8d09cf35",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-10-29T16:01:54Z",
+      "side": 1,
+      "message": "We get the shader after setting uniforms on each sync(), so I don\u0027t think we can save that afaik. Stored the builder instead.",
+      "parentUuid": "500c3ba2_7cbf8386",
       "revId": "eb1f7ab6f88c3df918406331d844e602f4a38f4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
