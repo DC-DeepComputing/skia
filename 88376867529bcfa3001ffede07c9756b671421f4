@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b43ece_8417b3df",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2021-10-29T13:38:24Z",
+      "side": 1,
+      "message": "It looks like \u0027fDraw\u0027 isn\u0027t initialized anywhere (including the constructor), so it looks like we\u0027re returning uninitialized memory to be treated as a pointer here.",
+      "revId": "88376867529bcfa3001ffede07c9756b671421f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
