@@ -13,9 +13,14 @@
 
 namespace skgpu {
 
+enum class IntersectionTree_SplitType : bool {
+    kX,
+    kY
+};
+
 // BSP node. Space is partitioned by an either vertical or horizontal line. Note that if a rect
 // straddles the partition line, it will need to go on both sides of the tree.
-template<IntersectionTree::SplitType kSplitType>
+template<IntersectionTree_SplitType kSplitType>
 class IntersectionTree::TreeNode final : public Node {
 public:
     TreeNode(float splitCoord, Node* lo, Node* hi)
