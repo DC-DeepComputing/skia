@@ -13,6 +13,7 @@
 namespace skgpu {
 
 class Gpu;
+class ResourceProvider;
 
 /** Class that adds methods to Context that are only intended for use internal to Skia.
     This class is purely a privileged window into Context. It should never have additional
