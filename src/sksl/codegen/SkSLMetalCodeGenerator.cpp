@@ -108,7 +108,7 @@ String MetalCodeGenerator::typeName(const Type& type) {
                                   to_string(type.rows());
 
         case Type::TypeKind::kSampler:
-            return "texture2d<float>"; // FIXME - support other texture types
+            return "texture2d<half>"; // FIXME - support other texture types
 
         default:
             // We currently only support full-precision types in MSL to avoid type coercion issues.
@@ -547,6 +547,7 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
     const ExpressionArray& arguments = c.arguments();
     switch (kind) {
         case k_sample_IntrinsicKind: {
+            this->write("float4(");
             this->writeExpression(*arguments[0], Precedence::kSequence);
             this->write(".sample(");
             this->writeExpression(*arguments[0], Precedence::kSequence);
@@ -564,6 +565,7 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
                 this->writeExpression(*arguments[1], Precedence::kSequence);
                 this->write(")");
             }
+            this->write(")");
             return true;
         }
         case k_mod_IntrinsicKind: {
@@ -1861,7 +1863,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                         fContext.fErrors->error(decls.fLine, "Unsupported texture dimensions");
                         return false;
                     }
-                    this->write(", texture2d<float> ");
+                    this->write(", texture2d<half> ");
                     this->writeName(var.var().name());
                     this->write("[[texture(");
                     this->write(to_string(var.var().modifiers().fLayout.fBinding));

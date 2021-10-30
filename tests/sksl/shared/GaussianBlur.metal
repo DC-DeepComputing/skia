@@ -19,7 +19,7 @@ struct uniformBuffer {
 };
 struct Globals {
     constant uniformBuffer* _anonInterface0;
-    texture2d<float> uTextureSampler_0_Stage1;
+    texture2d<half> uTextureSampler_0_Stage1;
     sampler uTextureSampler_0_Stage1Smplr;
 };
 float4 MatrixEffect_Stage1_c0_c0_h4h4f2(thread Globals& _globals, float4 _input, float2 _coords) {
@@ -30,14 +30,14 @@ float4 MatrixEffect_Stage1_c0_c0_h4h4f2(thread Globals& _globals, float4 _input,
     _2_subsetCoord.y = _1_inCoord.y;
     float2 _3_clampedCoord;
     _3_clampedCoord = _2_subsetCoord;
-    float4 _4_textureColor = _globals.uTextureSampler_0_Stage1.sample(_globals.uTextureSampler_0_Stage1Smplr, _3_clampedCoord * _globals._anonInterface0->unorm_Stage1_c0_c0_c0.zw);
+    float4 _4_textureColor = float4(_globals.uTextureSampler_0_Stage1.sample(_globals.uTextureSampler_0_Stage1Smplr, _3_clampedCoord * _globals._anonInterface0->unorm_Stage1_c0_c0_c0.zw));
     float _5_snappedX = floor(_1_inCoord.x + 0.0010000000474974513) + 0.5;
     if (_5_snappedX < _globals._anonInterface0->usubset_Stage1_c0_c0_c0.x || _5_snappedX > _globals._anonInterface0->usubset_Stage1_c0_c0_c0.z) {
         _4_textureColor = _globals._anonInterface0->uborder_Stage1_c0_c0_c0;
     }
     return _4_textureColor;
 }
-fragment Outputs fragmentMain(Inputs _in [[stage_in]], texture2d<float> uTextureSampler_0_Stage1[[texture(0)]], sampler uTextureSampler_0_Stage1Smplr[[sampler(0)]], constant uniformBuffer& _anonInterface0 [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
+fragment Outputs fragmentMain(Inputs _in [[stage_in]], texture2d<half> uTextureSampler_0_Stage1[[texture(0)]], sampler uTextureSampler_0_Stage1Smplr[[sampler(0)]], constant uniformBuffer& _anonInterface0 [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Globals _globals{&_anonInterface0, uTextureSampler_0_Stage1, uTextureSampler_0_Stage1Smplr};
     (void)_globals;
     Outputs _out;
