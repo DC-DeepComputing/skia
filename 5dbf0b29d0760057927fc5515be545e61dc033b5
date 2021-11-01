@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f906a5_5da9b112",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-01T15:41:38Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "5dbf0b29d0760057927fc5515be545e61dc033b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908eb157_93c64089",
+        "filename": "resources/skottie/skottie-sksleffect.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-01T15:41:38Z",
+      "side": 1,
+      "message": "Remove this one, the other test has corrected uniform names.",
+      "revId": "5dbf0b29d0760057927fc5515be545e61dc033b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
