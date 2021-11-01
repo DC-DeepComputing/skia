@@ -7,6 +7,9 @@
 
 #include "experimental/graphite/src/Renderer.h"
 
+#include "experimental/graphite/src/geom/Shape.h"
+#include "src/gpu/BufferWriter.h"
+
 namespace skgpu {
 
 namespace {
@@ -60,6 +63,25 @@ public:
     bool        requiresStencil() const override { return false; }
     bool        requiresMSAA()    const override { return false; }
     bool        performsShading() const override { return true;  }
+
+    size_t requiredVertexSpace(const Shape&) const override {
+        // For now we are just drawing triangles on the bounds of the draws. So we will have 4 vertices
+        // and each vertex will be a float2 for position.
+        // TODO: Use real vertices
+        return 8 * sizeof(float);
+    }
+
+    size_t requiredIndexSpace(const Shape&) const override {
+        return 0;
+    }
+
+    void fillInVertexAndIndexBuffer(VertexWriter vertexWriter,
+                                    IndexWriter indexWriter,
+                                    const Shape& shape) const override {
+        // TODO: Don't just draw the bounds. Use real vertex information
+        vertexWriter.writeQuad(VertexWriter::TriStripFromRect(shape.bounds().asSkRect()));
+    }
+
 
 private:
 };
