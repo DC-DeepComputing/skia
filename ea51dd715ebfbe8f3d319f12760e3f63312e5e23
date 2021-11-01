@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb772c5f_b4815710",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-01T17:33:25Z",
+      "side": 1,
+      "message": "Going ahead and landing this - Chrome has switched the flag, so the cleanup can commence.",
+      "revId": "ea51dd715ebfbe8f3d319f12760e3f63312e5e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
