@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7f97ceb_60533b06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-01T18:14:38Z",
+      "side": 1,
+      "message": "lgtm, just a naming discussion.",
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a434d31e_992617cc",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-01T18:14:38Z",
+      "side": 1,
+      "message": "I will not be surprised if this needs to be reworked when the TODO on l271 is handled, but this captures the intent well so I\u0027m happy to land it as is.",
+      "range": {
+        "startLine": 254,
+        "startChar": 8,
+        "endLine": 269,
+        "endChar": 9
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81b0cb47_0720536f",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-01T18:14:38Z",
+      "side": 1,
+      "message": "wdyt about writeVertices for a shorter name?",
+      "range": {
+        "startLine": 34,
+        "startChar": 17,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb88f794_03e5f5fe",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-01T18:14:38Z",
+      "side": 1,
+      "message": "I don\u0027t know if this needs to be a TODO. The FillBoundsRenderStep is actually just meant to draw 2 triangles that cover the shape\u0027s bounds. I think, as long as we add (later on) the view matrix as a uniform to handle the vertex shader transform, this works as intended.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 58
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b288a855_871d1338",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-01T18:14:38Z",
+      "side": 1,
+      "message": "Same here, for this RenderStep, the shape bounds is the real vertex data.\n\nEventually, when we handle render steps for strokes, we will likely need to pass in the stroke params. Other fill path render steps might generate triangles that cover inner content or only cover the convex patches, in which case their vertex writing will be a lot more complicated, but stencilAndFill has a very simple fillBounds step.",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 72
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
