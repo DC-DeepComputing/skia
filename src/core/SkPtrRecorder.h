@@ -127,7 +127,7 @@ private:
  */
 class SkRefCntSet : public SkTPtrSet<SkRefCnt*> {
 public:
-    virtual ~SkRefCntSet();
+    ~SkRefCntSet() override;
 
 protected:
     // overrides
