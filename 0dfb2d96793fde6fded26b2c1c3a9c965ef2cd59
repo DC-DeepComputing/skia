@@ -22,6 +22,30 @@
       },
       "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7642fe85_2588c580",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-01T20:08:45Z",
+      "side": 0,
+      "message": "Looks like it\u0027s still used on line 628.",
+      "parentUuid": "c25cd225_d1b8491c",
+      "range": {
+        "startLine": 644,
+        "startChar": 52,
+        "endLine": 644,
+        "endChar": 70
+      },
+      "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
