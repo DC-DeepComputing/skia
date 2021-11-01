@@ -103,4 +103,32 @@ static SK_ALWAYS_INLINE Dst sk_bit_cast(const Src& src) {
     return sk_unaligned_load<Dst>(&src);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Defines overloaded bitwise operators to make it easier to use an enum as a
+ * bitfield.
+ */
+#define SK_MAKE_BITFIELD_OPS(X) \
+    inline X operator |(X a, X b) { \
+        return (X) (+a | +b); \
+    } \
+    inline X& operator |=(X& a, X b) { \
+        return (a = a | b); \
+    } \
+    inline X operator &(X a, X b) { \
+        return (X) (+a & +b); \
+    } \
+    inline X& operator &=(X& a, X b) { \
+        return (a = a & b); \
+    } \
+    template <typename T> \
+    inline X operator &(T a, X b) { \
+        return (X) (+a & +b); \
+    } \
+    template <typename T> \
+    inline X operator &(X a, T b) { \
+        return (X) (+a & +b); \
+    } \
+
 #endif

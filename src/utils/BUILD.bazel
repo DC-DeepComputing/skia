@@ -1,0 +1,92 @@
+package(default_visibility = ["//visibility:private"])
+
+filegroup(
+    name = "core-hdrs",
+    srcs = [
+        "SkBitSet.h",
+        "SkCallableTraits.h",
+        "SkCanvasStack.h",
+        "SkCharToGlyphCache.h",
+        "SkClipStackUtils.h",
+        "SkDashPathPriv.h",
+        "SkFloatToDecimal.h",
+        "SkFloatUtils.h",
+        "SkMatrix22.h",
+        "SkMultiPictureDocument.h",
+        "SkMultiPictureDocumentPriv.h",
+        "SkOSPath.h",
+        "SkPatchUtils.h",
+        "SkPolyUtils.h",
+        "SkShadowTessellator.h",
+        "SkUTF.h",
+    ],
+)
+
+filegroup(
+    name = "core-srcs",
+    srcs = [
+        "SkAnimCodecPlayer.cpp",
+        "SkBase64.cpp",
+        "SkCamera.cpp",
+        "SkCanvasStack.cpp",
+        "SkCanvasStateUtils.cpp",
+        "SkCharToGlyphCache.cpp",
+        "SkClipStackUtils.cpp",
+        "SkCustomTypeface.cpp",
+        "SkDashPath.cpp",
+        "SkEventTracer.cpp",
+        "SkFloatToDecimal.cpp",
+        "SkMatrix22.cpp",
+        "SkMultiPictureDocument.cpp",
+        "SkNWayCanvas.cpp",
+        "SkNullCanvas.cpp",
+        "SkOSPath.cpp",
+        "SkOrderedFontMgr.cpp",
+        "SkPaintFilterCanvas.cpp",
+        "SkParse.cpp",
+        "SkParseColor.cpp",
+        "SkParsePath.cpp",
+        "SkPatchUtils.cpp",
+        "SkPolyUtils.cpp",
+        "SkShadowTessellator.cpp",
+        "SkShadowUtils.cpp",
+        "SkTextUtils.cpp",
+        "SkUTF.cpp",
+    ],
+)
+
+filegroup(
+    name = "json-hdrs",
+    srcs = [
+        "SkJSON.h",
+        "SkJSONWriter.h",
+        "SkShaperJSONWriter.h",
+    ],
+)
+
+filegroup(
+    name = "json-srcs",
+    srcs = [
+        "SkJSON.cpp",
+        "SkJSONWriter.cpp",
+        "SkShaperJSONWriter.cpp",
+    ],
+)
+
+# TODO(kjlubick) add selects here to allow opting in or out of things like JSON
+
+filegroup(
+    name = "hdrs",
+    srcs = [
+        ":core-hdrs",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        ":core-srcs",
+    ],
+    visibility = ["//:__subpackages__"],
+)

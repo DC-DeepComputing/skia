@@ -9,6 +9,7 @@
 #include "include/gpu/GrDirectContext.h"
 
 #include "include/core/SkTraceMemoryDump.h"
+#include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrContextThreadSafeProxy.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkTaskGroup.h"
@@ -20,11 +21,11 @@
 #include "src/gpu/GrDrawingManager.h"
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/GrResourceProvider.h"
+#include "src/gpu/GrSemaphore.h"
 #include "src/gpu/GrShaderUtils.h"
 #include "src/gpu/GrThreadSafePipelineBuilder.h"
 #include "src/gpu/SurfaceContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
-#include "src/gpu/mock/GrMockGpu.h"
 #include "src/gpu/text/GrAtlasManager.h"
 #include "src/gpu/text/GrStrikeCache.h"
 #include "src/image/SkImage_GpuBase.h"
@@ -55,6 +56,9 @@ public:
 #endif
 #ifdef SK_DAWN
 #include "src/gpu/dawn/GrDawnGpu.h"
+#endif
+#if GR_TEST_UTILS
+#include "src/gpu/mock/GrMockGpu.h"
 #endif
 #include <memory>
 
@@ -1057,6 +1061,7 @@ sk_sp<GrDirectContext> GrDirectContext::MakeGL(sk_sp<const GrGLInterface> glInte
 #endif
 
 /*************************************************************************************************/
+#if GR_TEST_UTILS
 sk_sp<GrDirectContext> GrDirectContext::MakeMock(const GrMockOptions* mockOptions) {
     GrContextOptions defaultOptions;
     return MakeMock(mockOptions, defaultOptions);
@@ -1073,6 +1078,7 @@ sk_sp<GrDirectContext> GrDirectContext::MakeMock(const GrMockOptions* mockOption
 
     return direct;
 }
+#endif //GR_TEST_UTILS
 
 #ifdef SK_VULKAN
 /*************************************************************************************************/

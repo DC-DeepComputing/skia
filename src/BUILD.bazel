@@ -1,0 +1,18 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "gpu-webgl",
+    srcs = glob(
+        [
+            "gpu/gl/**/*.h",
+            "gpu/gl/*.cpp",
+            "gpu/gl/builders/*.cpp",
+            "gpu/gl/webgl/*.cpp",
+            "gpu/v1/*.cpp",
+            "gpu/v1/*.h",
+        ],
+        exclude = [
+            "gpu/gl/GrGLMakeNativeInterface_none.cpp",
+        ],
+    ),
+)

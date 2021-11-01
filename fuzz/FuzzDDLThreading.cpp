@@ -6,18 +6,16 @@
  */
 
 #include "fuzz/Fuzz.h"
-#include "fuzz/FuzzCommon.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkPromiseImageTexture.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkDeque.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkThreadID.h"
