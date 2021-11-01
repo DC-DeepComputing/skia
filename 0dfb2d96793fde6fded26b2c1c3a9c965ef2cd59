@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c25cd225_d1b8491c",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T19:57:52Z",
+      "side": 0,
+      "message": "do we still need this enum value? Is there any other connected code we can remove?",
+      "range": {
+        "startLine": 644,
+        "startChar": 52,
+        "endLine": 644,
+        "endChar": 70
+      },
+      "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
