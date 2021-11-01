@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f7f2491_0ab9e202",
+        "filename": "resources/skottie/skottie-threshold-effect.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-01T16:03:34Z",
+      "side": 0,
+      "message": "wait, you\u0027re changing the wrong test :)",
+      "revId": "52aee23ded9105ed42b5c148ebbc297e93dcc96a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
