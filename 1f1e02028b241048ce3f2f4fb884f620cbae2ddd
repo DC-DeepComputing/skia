@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1282338_879920db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-01T20:15:12Z",
+      "side": 1,
+      "message": "Chromium isn\u0027t happy about this. I\u0027m a bit puzzled though - the Mac builders are failing with Vulkan errors... Should a Vulkan build work on Mac? Is it the build that\u0027s holding something wrong?",
+      "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
