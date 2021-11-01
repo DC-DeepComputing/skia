@@ -1,0 +1,40 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "gpu-hdrs",
+    srcs = glob([
+        "gpu/**/*.h",
+    ]),
+)
+
+filegroup(
+    name = "gpu-srcs",
+    srcs = glob([
+        "gpu/*.cpp",
+        "gpu/effects/*.cpp",
+        "gpu/geometry/*.cpp",
+        "gpu/glsl/*.cpp",
+        "gpu/gradients/*.cpp",
+        "gpu/mock/*.cpp",
+        "gpu/ops/*.cpp",
+        "gpu/tessellate/**/*.cpp",
+        "gpu/text/*.cpp",
+    ]),
+)
+
+filegroup(
+    name = "gpu-webgl",
+    srcs = glob(
+        [
+            "gpu/gl/**/*.h",
+            "gpu/gl/*.cpp",
+            "gpu/gl/builders/*.cpp",
+            "gpu/gl/webgl/*.cpp",
+            "gpu/v1/*.cpp",
+            "gpu/v1/*.h",
+        ],
+        exclude = [
+            "gpu/gl/GrGLMakeNativeInterface_none.cpp",
+        ],
+    ),
+)

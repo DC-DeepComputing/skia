@@ -24,12 +24,6 @@
 #include "src/core/SkUtils.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/sksl/SkSLAnalysis.h"
-#include "src/sksl/SkSLCompiler.h"
-#include "src/sksl/SkSLUtil.h"
-#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/ir/SkSLFunctionDefinition.h"
-#include "src/sksl/ir/SkSLVarDeclarations.h"
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrRecordingContext.h"
@@ -45,9 +39,16 @@
 
 #include <algorithm>
 
+#ifdef SK_ENABLE_SKSL
+
 using ChildType = SkRuntimeEffect::ChildType;
 
-#ifdef SK_ENABLE_SKSL
+#include "src/sksl/SkSLAnalysis.h"
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+#include "src/sksl/ir/SkSLFunctionDefinition.h"
+#include "src/sksl/ir/SkSLVarDeclarations.h"
 
 namespace SkSL {
 class SharedCompiler {
