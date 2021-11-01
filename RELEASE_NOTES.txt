@@ -14,6 +14,9 @@ Milestone 97
     MakeFromYUVAPixmaps, MakePromiseTexture, MakePromiseYUVATexture, MakeBackendTextureFromSkImage,
     flush, flushAndSubmit, getBackendTexture, makeTextureImage.
     These were all no-ops anyway when just the CPU backend was compiled in.
+  * GrBackendSemaphore only includes methods that match the GPU backend that Skia was compiled for.
+    For example, initVulkan and vkSemaphore are not defined unless the Vulkan backend is compiled
+    into Skia.
 
 * * *
 
