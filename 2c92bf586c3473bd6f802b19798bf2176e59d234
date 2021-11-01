@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "263eed2a_6c85fc6e",
+        "filename": "experimental/graphite/include/TextureInfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-01T18:00:03Z",
+      "side": 1,
+      "message": "True, but the same \"this union doesn\u0027t declare anything\" warning happens here any time one builds without SK_METAL (for example, with just SK_VULKAN). Adding a zero sized \"mock\" to this to suppress the warning seems fine I guess, but is also covering for the rest of the cases as well.",
+      "parentUuid": "37fff4ce_0861449e",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 21
+      },
+      "revId": "2c92bf586c3473bd6f802b19798bf2176e59d234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ceba889_97182531",
         "filename": "tests/graphite/UniformTest.cpp",
         "patchSetId": 1
@@ -54,6 +78,24 @@
       "writtenOn": "2021-10-29T20:08:04Z",
       "side": 1,
       "message": "I would just delete this. I don\u0027t think it buys us anything.",
+      "revId": "2c92bf586c3473bd6f802b19798bf2176e59d234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c57d814b_42eb6e81",
+        "filename": "tests/graphite/UniformTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-01T18:00:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ceba889_97182531",
       "revId": "2c92bf586c3473bd6f802b19798bf2176e59d234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
