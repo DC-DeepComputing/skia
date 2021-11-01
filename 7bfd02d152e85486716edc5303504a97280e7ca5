@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f732ff_105bcf29",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-01T20:49:28Z",
+      "side": 1,
+      "message": "I think you want to remove the \" s\".",
+      "range": {
+        "startLine": 650,
+        "startChar": 66,
+        "endLine": 650,
+        "endChar": 68
+      },
+      "revId": "7bfd02d152e85486716edc5303504a97280e7ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
