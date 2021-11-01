@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba31a0d_4c7ba570",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-01T17:32:26Z",
+      "side": 1,
+      "message": "Is this supposed to be `ctm` ? For that matter, are we supposed to be passing `ic`, rather than nullptr? What are the semantics here?",
+      "range": {
+        "startLine": 29,
+        "startChar": 42,
+        "endLine": 29,
+        "endChar": 55
+      },
+      "revId": "c01a3c6a7eb3793d9c1caad9eaedcc99bf2ca444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
