@@ -1,0 +1,68 @@
+package(default_visibility = ["//visibility:private"])
+
+filegroup(
+    name = "core-hdrs",
+    srcs = [
+        "SkImage_Base.h",
+        "SkImage_Lazy.h",
+        "SkReadPixelsRec.h",
+        "SkRescaleAndReadPixels.h",
+        "SkSurface_Base.h",
+    ],
+)
+
+filegroup(
+    name = "core-srcs",
+    srcs = [
+        "SkImage.cpp",
+        "SkImage_Lazy.cpp",
+        "SkImage_Raster.cpp",
+        "SkRescaleAndReadPixels.cpp",
+        "SkSurface.cpp",
+        "SkSurface_Raster.cpp",
+    ],
+)
+
+filegroup(
+    name = "gpu-hdrs",
+    srcs = [
+        "SkImage_Gpu.h",
+        "SkImage_GpuBase.h",
+        "SkImage_GpuYUVA.h",
+        "SkSurface_Gpu.h",
+    ],
+)
+
+filegroup(
+    name = "gpu-srcs",
+    srcs = [
+        "SkImage_Gpu.cpp",
+        "SkImage_GpuBase.cpp",
+        "SkImage_GpuYUVA.cpp",
+        "SkSurface_Gpu.cpp",
+    ],
+)
+
+filegroup(
+    name = "hdrs",
+    srcs = [":core-hdrs"] + select({
+        "//bazel/common_config_settings:webgl_gpu": [
+            ":gpu-hdrs",
+        ],
+        "//bazel/common_config_settings:no_gpu": [],
+        "//conditions:default": [],
+    }),
+    visibility = ["//:__subpackages__"],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [":core-srcs"] + select({
+        "//bazel/common_config_settings:webgl_gpu": [
+            ":gpu-srcs",
+        ],
+        "//bazel/common_config_settings:no_gpu": [],
+        "//conditions:default": [],
+    }),
+    visibility = ["//:__subpackages__"],
+)

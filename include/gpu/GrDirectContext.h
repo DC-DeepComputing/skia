@@ -106,8 +106,10 @@ public:
     static sk_sp<GrDirectContext> MakeDawn(const wgpu::Device&);
 #endif
 
+#if GR_TEST_UTILS
     static sk_sp<GrDirectContext> MakeMock(const GrMockOptions*, const GrContextOptions&);
     static sk_sp<GrDirectContext> MakeMock(const GrMockOptions*);
+#endif
 
     ~GrDirectContext() override;
 

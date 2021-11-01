@@ -11,6 +11,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/sksl/DSL.h"
 
+#ifdef SK_ENABLE_SKSL
 namespace SkSL {
 
 class Compiler;
@@ -28,5 +29,7 @@ sk_sp<SkRuntimeEffect> EndRuntimeShader(SkRuntimeEffect::Options options = {});
 } // namespace dsl
 
 } // namespace SkSL
+
+#endif // SK_ENABLE_SKSL
 
 #endif

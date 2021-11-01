@@ -1,0 +1,48 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "hdrs",
+    srcs = [
+        "SkBitmapProcShader.h",
+        "SkColorFilterShader.h",
+        "SkColorShader.h",
+        "SkComposeShader.h",
+        "SkEmptyShader.h",
+        "SkImageShader.h",
+        "SkLocalMatrixShader.h",
+        "SkPictureShader.h",
+        "SkShaderBase.h",
+        "SkTransformShader.h",
+        "gradients/Sk4fGradientBase.h",
+        "gradients/Sk4fGradientPriv.h",
+        "gradients/Sk4fLinearGradient.h",
+        "gradients/SkGradientShaderPriv.h",
+        "gradients/SkLinearGradient.h",
+        "gradients/SkRadialGradient.h",
+        "gradients/SkSweepGradient.h",
+        "gradients/SkTwoPointConicalGradient.h",
+    ],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "SkBitmapProcShader.cpp",
+        "SkColorFilterShader.cpp",
+        "SkColorShader.cpp",
+        "SkComposeShader.cpp",
+        "SkImageShader.cpp",
+        "SkLocalMatrixShader.cpp",
+        "SkPerlinNoiseShader.cpp",
+        "SkPictureShader.cpp",
+        "SkShader.cpp",
+        "SkTransformShader.cpp",
+        "gradients/Sk4fGradientBase.cpp",
+        "gradients/Sk4fLinearGradient.cpp",
+        "gradients/SkGradientShader.cpp",
+        "gradients/SkLinearGradient.cpp",
+        "gradients/SkRadialGradient.cpp",
+        "gradients/SkSweepGradient.cpp",
+        "gradients/SkTwoPointConicalGradient.cpp",
+    ],
+)

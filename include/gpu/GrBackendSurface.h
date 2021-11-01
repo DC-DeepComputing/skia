@@ -11,11 +11,14 @@
 #include "include/gpu/GrBackendSurfaceMutableState.h"
 #include "include/gpu/GrSurfaceInfo.h"
 #include "include/gpu/GrTypes.h"
+#include "include/private/GrTypesPriv.h"
 #ifdef SK_GL
 #include "include/gpu/gl/GrGLTypes.h"
 #include "include/private/GrGLTypesPriv.h"
 #endif
+#if GR_TEST_UTILS
 #include "include/gpu/mock/GrMockTypes.h"
+#endif
 #ifdef SK_VULKAN
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/private/GrVkTypesPriv.h"
@@ -114,9 +117,10 @@ public:
     }
 #endif
 
+#if GR_TEST_UTILS
     static GrBackendFormat MakeMock(GrColorType colorType, SkImage::CompressionType compression,
                                     bool isStencilFormat = false);
-
+#endif
     bool operator==(const GrBackendFormat& that) const;
     bool operator!=(const GrBackendFormat& that) const { return !(*this == that); }
 
@@ -293,10 +297,12 @@ public:
                      const GrDawnTextureInfo& dawnInfo);
 #endif
 
+#if GR_TEST_UTILS
     GrBackendTexture(int width,
                      int height,
                      GrMipmapped,
                      const GrMockTextureInfo& mockInfo);
+#endif
 
     GrBackendTexture(const GrBackendTexture& that);
 
@@ -361,9 +367,11 @@ public:
     // Get the GrBackendFormat for this texture (or an invalid format if this is not valid).
     GrBackendFormat getBackendFormat() const;
 
+#if GR_TEST_UTILS
     // If the backend API is Mock, copies a snapshot of the GrMockTextureInfo struct into the passed
     // in pointer and returns true. Otherwise returns false if the backend API is not Mock.
     bool getMockTextureInfo(GrMockTextureInfo*) const;
+#endif
 
     // If the client changes any of the mutable backend of the GrBackendTexture they should call
     // this function to inform Skia that those values have changed. The backend API specific state
@@ -435,7 +443,9 @@ private:
 #ifdef SK_VULKAN
         GrVkBackendSurfaceInfo fVkInfo;
 #endif
+#if GR_TEST_UTILS
         GrMockTextureInfo fMockInfo;
+#endif
 #ifdef SK_DIRECT3D
         GrD3DBackendSurfaceInfo fD3DInfo;
 #endif
@@ -498,11 +508,13 @@ public:
                           const GrD3DTextureResourceInfo& d3dInfo);
 #endif
 
+#if GR_TEST_UTILS
     GrBackendRenderTarget(int width,
                           int height,
                           int sampleCnt,
                           int stencilBits,
                           const GrMockRenderTargetInfo& mockInfo);
+#endif
 
     ~GrBackendRenderTarget();
 
@@ -559,9 +571,11 @@ public:
     // Get the GrBackendFormat for this render target (or an invalid format if this is not valid).
     GrBackendFormat getBackendFormat() const;
 
+#if GR_TEST_UTILS
     // If the backend API is Mock, copies a snapshot of the GrMockTextureInfo struct into the passed
     // in pointer and returns true. Otherwise returns false if the backend API is not Mock.
     bool getMockRenderTargetInfo(GrMockRenderTargetInfo*) const;
+#endif
 
     // If the client changes any of the mutable backend of the GrBackendTexture they should call
     // this function to inform Skia that those values have changed. The backend API specific state
@@ -623,7 +637,9 @@ private:
 #ifdef SK_VULKAN
         GrVkBackendSurfaceInfo fVkInfo;
 #endif
+#if GR_TEST_UTILS
         GrMockRenderTargetInfo fMockInfo;
+#endif
 #ifdef SK_DIRECT3D
         GrD3DBackendSurfaceInfo fD3DInfo;
 #endif
