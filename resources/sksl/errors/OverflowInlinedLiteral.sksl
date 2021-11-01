@@ -1,0 +1,15 @@
+short cast_int_to_short(int x) {
+    return short(x);
+}
+int cast_float_to_int(float x) {
+    return int(x);
+}
+short negate_short(short x) {
+    return -x;
+}
+void main() {
+    cast_int_to_short(99999);
+    cast_float_to_int(5000000000.0);
+    negate_short(-32768);
+}
+
