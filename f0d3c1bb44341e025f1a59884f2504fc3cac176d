@@ -16,6 +16,23 @@
       "message": "Hey. I can\u0027t submit this CL even though it is in experimental. Can you +1 it?\n",
       "revId": "f0d3c1bb44341e025f1a59884f2504fc3cac176d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8755dc3_bbe2deab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-01T16:59:44Z",
+      "side": 1,
+      "message": "You needed to add RubberStamper as a reviewer, which will apply Bot-Commit+1. That should let you submit it (You don\u0027t need to apply Code-Review+1, that won\u0027t work)",
+      "revId": "f0d3c1bb44341e025f1a59884f2504fc3cac176d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
