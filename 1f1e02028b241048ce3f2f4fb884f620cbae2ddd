@@ -16,6 +16,24 @@
       "message": "Chromium isn\u0027t happy about this. I\u0027m a bit puzzled though - the Mac builders are failing with Vulkan errors... Should a Vulkan build work on Mac? Is it the build that\u0027s holding something wrong?",
       "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3c63ed2_25b940dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-01T20:50:22Z",
+      "side": 1,
+      "message": "I wouldn\u0027t expect them to be building Vulkan on mac, but I\u0027m also not clear on how they expect vulkan types to be declared/defined. +egdaniel, who knows more about this than anyone.",
+      "parentUuid": "b1282338_879920db",
+      "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
