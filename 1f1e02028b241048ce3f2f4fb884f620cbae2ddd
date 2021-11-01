@@ -34,6 +34,24 @@
       "parentUuid": "b1282338_879920db",
       "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f942f44_fb98bfcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T21:00:54Z",
+      "side": 1,
+      "message": "This is definitely a Chrome bug. They are failing on a vulkan type VkSemaphore which is not a Skia type. In that same file you can see they guard the inclusion of the Vulkan header, https://source.chromium.org/chromium/chromium/src/+/main:components/viz/common/gpu/vulkan_context_provider.h;l\u003d16;drc\u003dfd8802b593110ea18a97ef044f8a40dd24a622ec. They were getting lucky that Skia happen to be including the vulkan header for them.",
+      "parentUuid": "f3c63ed2_25b940dd",
+      "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
