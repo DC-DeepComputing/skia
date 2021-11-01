@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cb62e47_22ae5451",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T20:02:52Z",
+      "side": 1,
+      "message": "yeah I imagined it would change. But as you said just wanted to sketch out the general concept of what we\u0027d want to do",
+      "parentUuid": "a434d31e_992617cc",
+      "range": {
+        "startLine": 254,
+        "startChar": 8,
+        "endLine": 269,
+        "endChar": 9
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81b0cb47_0720536f",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-01T18:14:38Z",
       "side": 1,
       "message": "wdyt about writeVertices for a shorter name?",
+      "range": {
+        "startLine": 34,
+        "startChar": 17,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cd4d7a4_7ba1e6ec",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T20:02:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81b0cb47_0720536f",
       "range": {
         "startLine": 34,
         "startChar": 17,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54b9d97b_940f0153",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T20:02:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb88f794_03e5f5fe",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 58
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b288a855_871d1338",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-11-01T18:14:38Z",
       "side": 1,
       "message": "Same here, for this RenderStep, the shape bounds is the real vertex data.\n\nEventually, when we handle render steps for strokes, we will likely need to pass in the stroke params. Other fill path render steps might generate triangles that cover inner content or only cover the convex patches, in which case their vertex writing will be a lot more complicated, but stencilAndFill has a very simple fillBounds step.",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 72
+      },
+      "revId": "1577f304cf713e4bc3b461b0fd2fe7a067c00da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f286c43_ac19f6a7",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-01T20:02:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b288a855_871d1338",
       "range": {
         "startLine": 81,
         "startChar": 8,
