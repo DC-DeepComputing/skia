@@ -28,7 +28,7 @@ class RenderNode;
  */
 class Animator : public SkRefCnt {
 public:
-    virtual ~Animator();
+    ~Animator() override;
     Animator(const Animator&) = delete;
     Animator& operator=(const Animator&) = delete;
 
