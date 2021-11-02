@@ -16,6 +16,24 @@
       "message": "There\u0027s a chance this undoes the one low-bit layout test change, so I kicked off the chromium canary. Locally, it seems to undo some of the low bit GM diffs from the previous version. It also restores all of the performance that I lost on motionmark_leaves.",
       "revId": "5ef62e9d726d55a1a066c819ae7b4fd8ae0893bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3249bebd_f24445a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-02T20:37:56Z",
+      "side": 1,
+      "message": "Early results on the canary show that the single layout test diff will be undone by this approach. So I\u0027ve reverted the flag-flip on the chromium side. That will resolve the performance bug, and make it easier to land this CL without ANOTHER guard flag. Then when I land this version, it should sail through with no new perf regressions.",
+      "parentUuid": "73be1ebc_ec49ded4",
+      "revId": "5ef62e9d726d55a1a066c819ae7b4fd8ae0893bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
