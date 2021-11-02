@@ -14,6 +14,9 @@ Milestone 97
     MakeFromYUVAPixmaps, MakePromiseTexture, MakePromiseYUVATexture, MakeBackendTextureFromSkImage,
     flush, flushAndSubmit, getBackendTexture, makeTextureImage.
     These were all no-ops anyway when just the CPU backend was compiled in.
+  * SkTypeface gained a new getter function glyphMaskNeedsCurrentColor() which is implemented
+    by the library. This getter is needed for determining whether the strike cache
+    needs separate entries per paint foreground color in the case of COLR/CPAL fonts.
 
 * * *
 
