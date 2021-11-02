@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa4d7973_2a37ca8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-02T13:32:56Z",
+      "side": 1,
+      "message": "lgtm, just want an extra test",
+      "revId": "82e68588607234ed8a8f061bff0b4692ed85973e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06fffb0b_1bcbf6b8",
+        "filename": "src/sksl/ir/SkSLConstructorScalarCast.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-02T13:32:56Z",
+      "side": 1,
+      "message": "My read is that compound casts all route through here, so things work correctly, but want to add a few tests for that? eg:\n\nint2 cast_float2_to_int2(float2 x) { return int2(x); }\ncast_float2_to_int2(...);",
+      "revId": "82e68588607234ed8a8f061bff0b4692ed85973e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
