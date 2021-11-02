@@ -10,6 +10,7 @@
 #include "include/private/GrTypesPriv.h"
 #include "src/gpu/GrDataUtils.h"
 #include "src/gpu/gl/GrGLUtil.h"
+#include "src/utils/SkJSONWriter.h"
 #include <stdio.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -654,6 +655,13 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
     const char* const slversion = getString(GR_GL_SHADING_LANGUAGE_VERSION);
     const char* const renderer  = getString(GR_GL_RENDERER);
     const char* const vendor    = getString(GR_GL_VENDOR);
+
+    SkDebugf("GL_VERSION: %s\n", version);
+    SkDebugf("GL_SHADING_LANG_VERSION: %s\n", slversion);
+    SkDebugf("GL_RENDERER: %s\n", renderer);
+    SkDebugf("GL_VENDOR: %s\n", vendor);
+    interface->fExtensions.dump();
+    exit(0);
 
     info.fVersion     = GrGLGetVersionFromString(version);
     info.fGLSLVersion = get_glsl_version(slversion);
