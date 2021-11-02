@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85ebce5_728fa067",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-02T14:31:20Z",
+      "side": 1,
+      "message": "Chrome perf bots have found some regressions. The main one (10-15%) is on motionmark_leaves, eg:\n  https://browserbench.org/MotionMark1.2/developer.html?suite-name\u003dMotionMark\u0026test-name\u003dLeaves\u0026test-interval\u003d20\u0026display\u003dminimal\u0026tiles\u003dbig\u0026controller\u003dramp\u0026kalman-process-error\u003d1\u0026kalman-measurement-error\u003d4\u0026warmup-length\u003d2000\u0026warmup-frame-count\u003d30\u0026time-measurement\u003dperformance",
+      "revId": "379957e1f83fc5a8ea2c957627f2d23f824eba34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
