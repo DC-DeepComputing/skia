@@ -10,6 +10,7 @@
 #include "include/private/GrTypesPriv.h"
 #include "src/gpu/GrDataUtils.h"
 #include "src/gpu/gl/GrGLUtil.h"
+#include "src/utils/SkJSONWriter.h"
 #include <stdio.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -189,7 +190,10 @@ static GrGLRenderer get_renderer(const char* rendererString, const GrGLExtension
     if (0 == strncmp(rendererString, kPowerVRRogueStr, SK_ARRAY_COUNT(kPowerVRRogueStr) - 1) ||
         0 == strncmp(rendererString, kAppleA7Str, SK_ARRAY_COUNT(kAppleA7Str) - 1) ||
         0 == strncmp(rendererString, kAppleA8Str, SK_ARRAY_COUNT(kAppleA8Str) - 1)) {
+        SkDebugf("USING POWERVR ROGUE\n");
         return GrGLRenderer::kPowerVRRogue;
+    } else {
+        SkDebugf("not powervr rogue\n");
     }
     int adrenoNumber;
     n = sscanf(rendererString, "Adreno (TM) %d", &adrenoNumber);
@@ -654,6 +658,13 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
     const char* const slversion = getString(GR_GL_SHADING_LANGUAGE_VERSION);
     const char* const renderer  = getString(GR_GL_RENDERER);
     const char* const vendor    = getString(GR_GL_VENDOR);
+
+    SkDebugf("GL_VERSION: %s\n", version);
+    SkDebugf("GL_SHADING_LANG_VERSION: %s\n", slversion);
+    SkDebugf("GL_RENDERER: %s\n", renderer);
+    SkDebugf("GL_VENDOR: %s\n", vendor);
+    interface->fExtensions.dump();
+    exit(0);
 
     info.fVersion     = GrGLGetVersionFromString(version);
     info.fGLSLVersion = get_glsl_version(slversion);
