@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9affe223_d176e53f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-02T16:22:09Z",
+      "side": 1,
+      "message": "Ben, could you take a look? This hopefully matches what we discussed earlier. I\u0027ll rebase the other CL for foreground color support on top of this.\n\nWho do you suggest as an SkTypeface API reviewer? Could you add the best person for that if you\u0027re happy with the change?",
+      "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "629e308e_b4b51e07",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-02T16:22:09Z",
+      "side": 1,
+      "message": "This design approach was discussed with bungeman@. It is intended as a means of avoiding direct table access on remote typefaces for determining per-foreground color caching needs.",
+      "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
