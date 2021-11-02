@@ -4216,7 +4216,13 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     if (ctxInfo.renderer()      == GrGLRenderer::kPowerVRRogue &&
         ctxInfo.driver()        == GrGLDriver::kImagination    &&
         ctxInfo.driverVersion() <  GR_GL_DRIVER_VER(1, 16, 0)) {
+        SkDebugf("WE ARE DISABLING SHADER DERIV\n");
         fShaderCaps->fShaderDerivativeSupport = false;
+    } else {
+        SkDebugf("we did not disable shader deriv. driver version: %llu\n", ctxInfo.driverVersion());
+        SkDebugf("driver version 1,16,0 is: %llu\n", GR_GL_DRIVER_VER(1, 16, 0));
+        SkDebugf("driver version 1,13,0 is: %llu\n", GR_GL_DRIVER_VER(1, 13, 0));
+        SkDebugf("driver version 1,13,0 is: %llu\n", GR_GL_DRIVER_VER(1, 10, 0));
     }
 
     if (ctxInfo.driver() == GrGLDriver::kFreedreno) {
