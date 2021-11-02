@@ -20,6 +20,8 @@
 #define GL_CALL(X) GR_GL_CALL(GPUGL->glInterface(), X)
 #define GL_CALL_RET(RET, X) GR_GL_CALL_RET(GPUGL->glInterface(), RET, X)
 
+#include "base/logging.h"
+
 // Because this class is virtually derived from GrSurface we must explicitly call its constructor.
 // Constructor for wrapped render targets.
 GrGLRenderTarget::GrGLRenderTarget(GrGLGpu* gpu,
@@ -181,10 +183,21 @@ bool GrGLRenderTarget::ensureDynamicMSAAAttachment() {
     return true;
 }
 
+extern std::unordered_map<GrGLuint, int> gStencilSampleCnts;
+static int get_sample_count(const GrGLAttachment* s) {
+    if (!s) return -1;
+
+    if (auto pair = gStencilSampleCnts.find(s->renderbufferID()); pair != gStencilSampleCnts.end()) {
+        return pair->second;
+    }
+    return -1;
+}
+
 void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) {
     GrGLuint fboId = useMultisampleFBO ? fMultisampleFBOID : fSingleSampleFBOID;
     this->getGLGpu()->bindFramebuffer(fboTarget, fboId);
 
+    SkString str("\n");
     if (fSingleSampleFBOID != 0 &&
         fSingleSampleFBOID == fMultisampleFBOID &&
         useMultisampleFBO != fDMSAARenderToTextureFBOIsMultisample) {
@@ -205,12 +218,14 @@ void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) 
                                                     glTex->textureID(),
                                                     0 /*mipMapLevel*/,
                                                     internalSampleCount));
+            str.appendf("Color FT2DM count = %d\n", internalSampleCount);
         } else {
             GL_CALL(FramebufferTexture2D(fboTarget,
                                          GR_GL_COLOR_ATTACHMENT0,
                                          glTex->target(),
                                          glTex->textureID(),
                                          0 /*mipMapLevel*/));
+            str.appendf("Color FT2D count = 0\n");
         }
         fDMSAARenderToTextureFBOIsMultisample = useMultisampleFBO;
         fNeedsStencilAttachmentBind[useMultisampleFBO] = true;
@@ -219,41 +234,49 @@ void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) 
     // Make sure the stencil attachment is valid. Even though a color buffer op doesn't use stencil,
     // our FBO still needs to be "framebuffer complete".
     if (fNeedsStencilAttachmentBind[useMultisampleFBO]) {
-        if (auto stencil = this->getStencilAttachment(useMultisampleFBO)) {
+        auto stencil = this->getStencilAttachment(useMultisampleFBO);
+        if (stencil) {
             const GrGLAttachment* glStencil = static_cast<const GrGLAttachment*>(stencil);
             GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             glStencil->renderbufferID()));
+            str.appendf("Stencil FRB count = %d\n", get_sample_count(glStencil));
             if (GrGLFormatIsPackedDepthStencil(glStencil->format())) {
                 GL_CALL(FramebufferRenderbuffer(fboTarget,
                                                 GR_GL_DEPTH_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
                                                 glStencil->renderbufferID()));
+                str.appendf("Depth FRB count = %d\n", get_sample_count(glStencil));
             } else {
                 GL_CALL(FramebufferRenderbuffer(fboTarget,
                                                 GR_GL_DEPTH_ATTACHMENT,
                                                 GR_GL_RENDERBUFFER,
                                                 0));
+                str.appendf("Depth FRB unbind\n");
             }
         } else {
             GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_STENCIL_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             0));
+            str.appendf("Stencil FRB unbind\n");
             GL_CALL(FramebufferRenderbuffer(fboTarget,
                                             GR_GL_DEPTH_ATTACHMENT,
                                             GR_GL_RENDERBUFFER,
                                             0));
+            str.appendf("Stencil FRB unbind\n");
         }
 #ifdef SK_DEBUG
-        if (!this->getGLGpu()->glCaps().skipErrorChecks()) {
+        if (!this->getGLGpu()->glCaps().skipErrorChecks() || true) {
             GrGLenum status;
             GL_CALL_RET(status, CheckFramebufferStatus(fboTarget));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+                int sCount = stencil ? stencil->numSamples() : -1;
                 // This can fail if the context has been asynchronously abandoned (see
                 // skbug.com/5200).
-                SkDebugf("WARNING: failed to attach stencil.\n");
+                str.appendf("status = 0x%04x\n", status);
+                LOG(ERROR) << str.c_str();
             }
         }
 #endif

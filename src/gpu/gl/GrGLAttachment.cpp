@@ -24,6 +24,8 @@
         }                                                     \
     }()
 
+std::unordered_map<GrGLuint, int> gStencilSampleCnts;
+
 static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
                                       int sampleCount,
                                       GrGLenum format,
@@ -72,6 +74,7 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
             GL_CALL(DeleteRenderbuffers(1, &rbID));
             return nullptr;
         }
+        gStencilSampleCnts[rbID] = sampleCnt;
     } else {
         GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
                 GR_GL_RENDERBUFFER, glFmt, dimensions.width(), dimensions.height()));
