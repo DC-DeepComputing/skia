@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68af60ff_333e2748",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-02T16:20:40Z",
+      "side": 1,
+      "message": "I was accessing the vertexWriter in the assert after moving it.",
+      "revId": "9d08df21dd6d35b759767f1c1fef5c025a5e9856",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
