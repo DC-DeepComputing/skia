@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73be1ebc_ec49ded4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-02T19:53:15Z",
+      "side": 1,
+      "message": "There\u0027s a chance this undoes the one low-bit layout test change, so I kicked off the chromium canary. Locally, it seems to undo some of the low bit GM diffs from the previous version. It also restores all of the performance that I lost on motionmark_leaves.",
+      "revId": "5ef62e9d726d55a1a066c819ae7b4fd8ae0893bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
