@@ -33465,7 +33465,8 @@
       "dimensions": [
         "device_type:iPhone12,1",
         "os:iOS-13.6",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-rpi2-rack1-shelf1-020"
       ],
       "env_prefixes": {
         "PATH": [
