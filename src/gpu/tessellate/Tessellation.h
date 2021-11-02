@@ -44,16 +44,6 @@ SK_MAYBE_UNUSED SK_ALWAYS_INLINE float cross(float2 a, float2 b) {
     return x[0] - x[1];
 }
 
-// Writes out the path's inner fan using a middle-out topology. Writes 3 SkPoints per triangle to
-// the VertexWriter. Additionally writes out "pad32Count" repetitions of "pad32Value" after each
-// triangle. Set pad32Count to 0 if the triangles are to be tightly packed.
-VertexWriter WritePathMiddleOutInnerFan(VertexWriter&&,
-                                        int pad32Count,
-                                        uint32_t pad32Value,
-                                        const SkMatrix&,
-                                        const SkPath&,
-                                        int* numTrianglesWritten);
-
 }  // namespace skgpu
 
 #endif  // tessellate_Tessellation_DEFINED
