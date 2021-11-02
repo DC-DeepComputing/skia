@@ -138,6 +138,24 @@
       "message": "Note that these are already almost the bits you want, and are in fact already used in the COLRv0 implementation in SkScalerContext_win_dw.cpp (and see comment there). This is probably the value to tweak, though the name might want to be changed to fColor.",
       "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ba2ca4_026e8cdd",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-02T16:25:11Z",
+      "side": 1,
+      "message": "Leaving that in separate fForeGround color field for now, as discussed in chat.",
+      "parentUuid": "066c2fbf_d2e2cac3",
+      "revId": "5452f9076004a8bcf1fd61f183922231ac1dac4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
