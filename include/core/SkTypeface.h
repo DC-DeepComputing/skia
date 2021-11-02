@@ -60,6 +60,12 @@ public:
      */
     bool isFixedPitch() const { return fIsFixedPitch; }
 
+    /** Returns true if the typeface's glyph masks may refer to the foreground
+     *  paint foreground color. This is needed to determine caching requirements. Usually true for
+     *  typefaces that contain a COLR table.
+     */
+    bool glyphMaskNeedsCurrentColor() const;
+
     /** Copy into 'coordinates' (allocated by the caller) the design variation coordinates.
      *
      *  @param coordinates the buffer into which to write the design variation coordinates.
@@ -376,6 +382,8 @@ protected:
     virtual void getGlyphToUnicodeMap(SkUnichar* dstArray) const = 0;
 
     virtual std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const = 0;
+
+    virtual bool onGlyphMaskNeedsCurrentColor() const = 0;
 
     virtual int onGetVariationDesignPosition(
         SkFontArguments::VariationPosition::Coordinate coordinates[],
