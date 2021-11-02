@@ -24,6 +24,8 @@
         }                                                     \
     }()
 
+std::unordered_map<GrGLuint, int> gSampleCntMap;
+
 static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
                                       int sampleCount,
                                       GrGLenum format,
@@ -69,6 +71,7 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
     if (sampleCnt > 1) {
         if (!renderbuffer_storage_msaa(gpu, sampleCnt, glFmt, dimensions.width(),
                                        dimensions.height())) {
+            gSampleCntMap.erase(rbID);
             GL_CALL(DeleteRenderbuffers(1, &rbID));
             return nullptr;
         }
@@ -76,11 +79,12 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
                 GR_GL_RENDERBUFFER, glFmt, dimensions.width(), dimensions.height()));
         if (error != GR_GL_NO_ERROR) {
+            gSampleCntMap.erase(rbID);
             GL_CALL(DeleteRenderbuffers(1, &rbID));
             return nullptr;
         }
     }
-
+    gSampleCntMap[rbID] = sampleCnt;
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
@@ -103,10 +107,11 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
     GrGLenum glFmt = gpu->glCaps().getRenderbufferInternalFormat(format);
     if (!renderbuffer_storage_msaa(
             gpu, sampleCnt, glFmt, dimensions.width(), dimensions.height())) {
+        gSampleCntMap.erase(rbID);
         GL_CALL(DeleteRenderbuffers(1, &rbID));
         return nullptr;
     }
-
+    gSampleCntMap[rbID] = sampleCnt;
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
@@ -121,6 +126,7 @@ void GrGLAttachment::onRelease() {
         GrGLGpu* gpuGL = (GrGLGpu*)this->getGpu();
         const GrGLInterface* gl = gpuGL->glInterface();
         GR_GL_CALL(gl, DeleteRenderbuffers(1, &fRenderbufferID));
+        gSampleCntMap.erase(fRenderbufferID);
         fRenderbufferID = 0;
     }
 
