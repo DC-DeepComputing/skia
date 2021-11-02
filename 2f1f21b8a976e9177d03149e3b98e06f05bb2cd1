@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecd59839_396f4287",
+        "filename": "src/gpu/geometry/GrTriangulator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2021-11-02T17:16:29Z",
+      "side": 1,
+      "message": "This looks like a good fix. Thanks!\n\nAs a side note, IIRC this doesn\u0027t even have to involve clamping or rounding to occur.\n\nFor example, if the difference between p0.y and p1.y is exactly 1 ULP, and p0.x \u003e p1.x (ie., p0 is to the right of and slightly above p1), there is no value of v which will satisfy p0 \u003c v \u003c p1. Anything to the left of p0 on p0.y is \u003c p0, and anything to the right of p1 on p1.y is \u003e p1.",
+      "revId": "2f1f21b8a976e9177d03149e3b98e06f05bb2cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
