@@ -52,6 +52,24 @@
       "parentUuid": "f3c63ed2_25b940dd",
       "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de8db78_dca38f6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-02T11:46:29Z",
+      "side": 1,
+      "message": "Greg, would you be able to assist fixing Chrome or pointing me at someone who can? I feel out of my depth trying to modify Chrome, or at least doing so in a timely manner.",
+      "parentUuid": "6f942f44_fb98bfcf",
+      "revId": "1f1e02028b241048ce3f2f4fb884f620cbae2ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
