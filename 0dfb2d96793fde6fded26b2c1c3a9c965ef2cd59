@@ -46,6 +46,30 @@
       },
       "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84cafbb0_342496f2",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-02T11:16:42Z",
+      "side": 0,
+      "message": "So is the intent to continue to support indirect draws with desktop GL?",
+      "parentUuid": "7642fe85_2588c580",
+      "range": {
+        "startLine": 644,
+        "startChar": 52,
+        "endLine": 644,
+        "endChar": 70
+      },
+      "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
