@@ -70,6 +70,30 @@
       },
       "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "392ca72c_9bf13a56",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-02T19:21:56Z",
+      "side": 0,
+      "message": "Yes, and Android and ANGLE too.\n\nmultiDrawIndirect !\u003d drawIndirect\n\nmultiDrawIndirect is one graphics call that issues multiple indirect draws. Android still supports issuing single indirect draws in a loop.",
+      "parentUuid": "84cafbb0_342496f2",
+      "range": {
+        "startLine": 644,
+        "startChar": 52,
+        "endLine": 644,
+        "endChar": 70
+      },
+      "revId": "0dfb2d96793fde6fded26b2c1c3a9c965ef2cd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
