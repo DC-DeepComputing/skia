@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c862176e_52d4a9c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-02T18:11:13Z",
+      "side": 1,
+      "message": "Herb, any thoughts on other ways to go about doing this? See also https://skia-review.googlesource.com/c/skia/+/463656 for why this is being tried.",
+      "revId": "8c403529ea3b09c973b60ead9b564bb2c9cd0693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "531388e0_3b5ced99",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-02T18:11:13Z",
+      "side": 1,
+      "message": "nit: here (and below) four spaces.",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 6
+      },
+      "revId": "8c403529ea3b09c973b60ead9b564bb2c9cd0693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

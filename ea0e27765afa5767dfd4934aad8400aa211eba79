@@ -33,6 +33,24 @@
       "message": "This design approach was discussed with bungeman@. It is intended as a means of avoiding direct table access on remote typefaces for determining per-foreground color caching needs.",
       "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc47c74f_16632e89",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-02T18:11:13Z",
+      "side": 1,
+      "message": "I think this should be at least protected, maybe even private or the time being. This is bit we want from the typeface but only the SkScalerContext and SkStrikeServerImpl::serializeTypeface should ever need to know it. This is actually a glyph level bit, but we need to know for the whole scaler context, and we\u0027re putting it on the typeface because that\u0027s how the serialization needs to be done. This isn\u0027t really something we want anybody to just call (so should probably not end up in the release notes). In other words, I don\u0027t want random users to be able to call this at the moment.",
+      "parentUuid": "629e308e_b4b51e07",
+      "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
