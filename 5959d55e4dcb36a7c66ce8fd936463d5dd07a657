@@ -58,6 +58,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04efe488_83a24e18",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-03T20:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7da75bca_30916108",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c55e33cc_12a0d573",
@@ -301,6 +319,24 @@
       "side": 1,
       "message": "Also, imgur is doing something funny, https://imgur.com/a/beT70t2 seems to play 2x slower (10s vs. 5s in skottie and AE), so don\u0027t take its timing too seriously :)",
       "parentUuid": "26247087_b96292e9",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd48d13_560262f1",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-03T20:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "194b8f30_435914a0",
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
