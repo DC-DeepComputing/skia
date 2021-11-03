@@ -880,6 +880,16 @@ DEF_TEST(SkVM_assert, r) {
     });
 }
 
+DEF_TEST(SkVM_trace, r) {
+    skvm::Builder b;
+    b.trace();
+
+    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+        // The trace instruction has no behavior yet.
+        program.eval(1);
+    });
+}
+
 DEF_TEST(SkVM_premul, reporter) {
     // Test that premul is short-circuited when alpha is known opaque.
     {

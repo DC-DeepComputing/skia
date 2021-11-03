@@ -434,6 +434,7 @@ namespace skvm {
     // Order matters a little: Ops <=store128 are treated as having side effects.
     #define SKVM_OPS(M)                                              \
         M(assert_true)                                               \
+        M(trace)                                                     \
         M(store8)   M(store16)   M(store32) M(store64) M(store128)   \
         M(load8)    M(load16)    M(load32)  M(load64) M(load128)     \
         M(index)                                                     \
@@ -626,6 +627,9 @@ namespace skvm {
         void assert_true(I32 cond, I32 debug);
         void assert_true(I32 cond, F32 debug) { assert_true(cond, pun_to_I32(debug)); }
         void assert_true(I32 cond)            { assert_true(cond, cond); }
+
+        // Insert a debug trace into the instruction stream
+        void trace();
 
         // Store {8,16,32,64,128}-bit varying.
         void store8  (Ptr ptr, I32 val);

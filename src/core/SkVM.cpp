@@ -256,6 +256,8 @@ namespace skvm {
         switch (op) {
             case Op::assert_true: write(o, op, V{x}, V{y}); break;
 
+            case Op::trace:    write(o, op); break;
+
             case Op::store8:   write(o, op, Ptr{immA}, V{x}               ); break;
             case Op::store16:  write(o, op, Ptr{immA}, V{x}               ); break;
             case Op::store32:  write(o, op, Ptr{immA}, V{x}               ); break;
@@ -370,6 +372,8 @@ namespace skvm {
                 immC = inst.immC;
             switch (op) {
                 case Op::assert_true: write(o, op, R{x}, R{y}); break;
+
+                case Op::trace:       write(o, op); break;
 
                 case Op::store8:   write(o, op, Ptr{immA}, R{x}                  ); break;
                 case Op::store16:  write(o, op, Ptr{immA}, R{x}                  ); break;
@@ -576,7 +580,7 @@ namespace skvm {
         // But we never dedup loads or stores: an intervening store could change that memory.
         // Uniforms and gathers touch only uniform memory, so they're fine to dedup,
         // and index is varying but doesn't touch memory, so it's fine to dedup too.
-        if (!touches_varying_memory(inst.op)) {
+        if (!touches_varying_memory(inst.op) && !has_side_effect(inst.op)) {
             if (Val* id = fIndex.find(inst)) {
                 return *id;
             }
@@ -599,6 +603,11 @@ namespace skvm {
         if (this->allImm(cond.id,&imm)) { SkASSERT(imm); return; }
         (void)push(Op::assert_true, cond.id, debug.id);
     #endif
+    }
+
+    void Builder::trace() {
+        // TODO(skia:12614): the `trace` debugging instruction is still a work in progress.
+        (void)push(Op::trace, NA,NA,NA,NA,NA);
     }
 
     void Builder::store8 (Ptr ptr, I32 val) { (void)push(Op::store8 , val.id,NA,NA,NA, ptr.ix); }
@@ -2583,6 +2592,8 @@ namespace skvm {
 
                 case Op::assert_true: /*TODO*/ break;
 
+                case Op::trace: /* Only supported in the interpreter. */ break;
+
                 case Op::index:
                     if (I32->isVectorTy()) {
                         std::vector<llvm::Constant*> iota(K);
@@ -3507,6 +3518,8 @@ namespace skvm {
                     a->label(&all_true);
                 } break;
 
+                case Op::trace: /* Only supported in the interpreter. */ break;
+
                 case Op::store8:
                     if (scalar) {
                         a->vpextrb(A::Mem{arg[immA]}, (A::Xmm)r(x), 0);
@@ -3870,6 +3883,8 @@ namespace skvm {
                     a->brk(0);
                     a->label(&all_true);
                 } break;
+
+                case Op::trace: /* Only supported in the interpreter. */ break;
 
                 case Op::index: {
                     A::V tmp = alloc_tmp();
