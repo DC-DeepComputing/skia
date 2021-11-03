@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932de75a_6f3c8f8c",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T20:51:21Z",
+      "side": 1,
+      "message": "Should probably be\n\n    if (typeface-\u003eglyphMaskNeedsCurrentColor()) {",
+      "range": {
+        "startLine": 1116,
+        "startChar": 8,
+        "endLine": 1116,
+        "endChar": 48
+      },
+      "revId": "600fb3d4fe47c5592dc47a9ef8b7155c507a8cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c5512e_b4dca9f5",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T20:51:21Z",
+      "side": 1,
+      "message": "This code and the similar code above should be indented about the same way. Not really particular about which way, though this one should have these last two lines indented somehow. Might want to name the value passed as the second parameter for length reasons?",
+      "revId": "600fb3d4fe47c5592dc47a9ef8b7155c507a8cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
