@@ -52,6 +52,24 @@
       "parentUuid": "edf287e2_a2f9d836",
       "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0988c172_14847cf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-03T14:41:11Z",
+      "side": 1,
+      "message": "Only if we can\u0027t handle it with the DashPathOp. Like dashing4 draws nothing and the majority of all the draws in the GM should go through the DashPathOp. I think there are a couple cases where the lines are angled and probably do get turned into stroked paths. So maybe those couple draws are either covering everything up in the GM or corrupting the non stroked path draws output as well.",
+      "parentUuid": "15409c36_529552cf",
+      "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
