@@ -50,6 +50,24 @@
       "message": "Could this be inverted? As in, if (!flutter), since that seems to be the exception here? If not, it\u0027s fine as-is.",
       "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "629eee15_bbe947cf",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 18094
+      },
+      "writtenOn": "2021-11-03T16:06:52Z",
+      "side": 1,
+      "message": "The use case here is to give users a way to build skia with a dawn client without the dawn native backend. I believe this is a generic use case beyond flutter. Examples:\n- https://github.com/rust-skia/rust-skia might use rust-wgpu instead of dawn_native.\n- https://github.com/rsms/dawn-wire-example streams dawn commands over the wire.\n\nI used this long if condition instead of introducing a new variable, potentially called \"dawn_use_native\".",
+      "parentUuid": "6f55bca1_111ac731",
+      "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
