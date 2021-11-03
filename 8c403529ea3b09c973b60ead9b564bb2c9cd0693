@@ -39,6 +39,30 @@
       },
       "revId": "8c403529ea3b09c973b60ead9b564bb2c9cd0693",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a46cec_3cf58085",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-03T09:46:59Z",
+      "side": 1,
+      "message": "Done, here and below.",
+      "parentUuid": "531388e0_3b5ced99",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 6
+      },
+      "revId": "8c403529ea3b09c973b60ead9b564bb2c9cd0693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

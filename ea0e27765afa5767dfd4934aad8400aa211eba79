@@ -51,6 +51,24 @@
       "parentUuid": "629e308e_b4b51e07",
       "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0727498_b6dcb6ec",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-03T09:46:59Z",
+      "side": 1,
+      "message": "Marked private, onGlyphMaskNeedsCurrentColor() pure virtual method still protected. With a friend class line for SkStrikeServerImpl that\u0027s using this flag.",
+      "parentUuid": "fc47c74f_16632e89",
+      "revId": "ea0e27765afa5767dfd4934aad8400aa211eba79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
