@@ -16,6 +16,23 @@
       "message": "Does this look reasonable?",
       "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e262d3d_d0ac4dac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-03T16:42:59Z",
+      "side": 1,
+      "message": "GrMtlGpu.cpp calls getBlitCommandEncoder in lots of places and probably needs to guard against nil in at least some of them.",
+      "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
