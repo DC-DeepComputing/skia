@@ -267,6 +267,24 @@
       },
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26247087_b96292e9",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:48:07Z",
+      "side": 1,
+      "message": "I think that was being amplified by the 4x height scale.  After dividing by 4, it looks pretty close to AE.",
+      "parentUuid": "194b8f30_435914a0",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
