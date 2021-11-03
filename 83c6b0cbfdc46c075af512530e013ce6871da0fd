@@ -16,6 +16,40 @@
       "message": "Stephen, could you take a look at this Dawn build change?",
       "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d988510_f6dd9a6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2021-11-03T14:31:33Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f55bca1_111ac731",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2021-11-03T14:31:33Z",
+      "side": 1,
+      "message": "Could this be inverted? As in, if (!flutter), since that seems to be the exception here? If not, it\u0027s fine as-is.",
+      "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
