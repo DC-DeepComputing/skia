@@ -50,6 +50,24 @@
       "message": "Could we move the Wembley workaround next to here?",
       "revId": "f2f36f57c3da57ad9c170f76c49b7411488112f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abef8b5f_cded89e4",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 4040,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-03T19:46:37Z",
+      "side": 1,
+      "message": "moved it just below here so we can preserve the details in the comment easier.",
+      "parentUuid": "253b113f_d92ba876",
+      "revId": "f2f36f57c3da57ad9c170f76c49b7411488112f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
