@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da75bca_30916108",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-03T16:56:50Z",
+      "side": 1,
+      "message": "WIP: change SkSL to do more computations that are not pixel xy dependent",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db2628a_01630980",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-03T16:56:50Z",
+      "side": 1,
+      "message": "WIP: make sure we don\u0027t draw child shader",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "194b8f30_435914a0",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-03T16:56:50Z",
+      "side": 1,
+      "message": "WIP: map bulgeHeight to ensure linear 1-1 mapping to AE\u0027s impl (and scale height)",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
