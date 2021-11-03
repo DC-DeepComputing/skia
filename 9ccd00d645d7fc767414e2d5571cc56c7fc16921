@@ -70,6 +70,24 @@
       "parentUuid": "15409c36_529552cf",
       "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21794760_9fd0ddfa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-03T15:58:24Z",
+      "side": 1,
+      "message": "Disabling TesselationPathRender did not help (patchset 6), disable base vertex (patchset 7) did not help.",
+      "parentUuid": "0988c172_14847cf6",
+      "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
