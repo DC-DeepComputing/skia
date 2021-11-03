@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b470b1b5_75bf607b",
+        "filename": "src/utils/SkUTF.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T17:22:59Z",
+      "side": 1,
+      "message": "I don\u0027t think we can mark these as SK_SPI (export them) if they\u0027re static (though I think inline is fine). Since these are internal anyway, I think we can just drop the SK_SPI part (they weren\u0027t marked SK_SPI before). (This is why Win-Shared is failing.)",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 6
+      },
+      "revId": "e0ee095fa24270006e6c318af9a5b18418c57ed0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
