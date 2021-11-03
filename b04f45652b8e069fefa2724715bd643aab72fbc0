@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ecf06f_b8969489",
+        "filename": "src/gpu/mtl/GrMtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-03T20:55:38Z",
+      "side": 1,
+      "message": "Do you still need this?\n(Maybe for NSLog? Can you use printf instead?)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "b04f45652b8e069fefa2724715bd643aab72fbc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
