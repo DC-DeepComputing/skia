@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d96b89c_5631c8bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "Neat!",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7da75bca_30916108",
@@ -14,6 +31,160 @@
       "writtenOn": "2021-11-03T16:56:50Z",
       "side": 1,
       "message": "WIP: change SkSL to do more computations that are not pixel xy dependent",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be4fbab_293ac2a6",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "This is going to be annoying, but since these shader strings are stored in the binary, it\u0027s worth trying to get rid of most whitespace.  The most readable version I\u0027ve seen is along these lines:\n\n  static constexpr char gBulgeDisplacementSkSL[] \u003d\n    \"uniform shader iImage;\"\n\n    // comment which doesn\u0027t get included in the sksl string\n    \"uniform float2 iCenter;\"\n    \"uniform float3 iRadius;\"\n    ...\n    \"half3 main(float2 xy) {\"\n        \"float2 scale \u003d iRadius,\"\n              \"center \u003d iCenter;\"\n        ...\n    \"}\";",
+      "range": {
+        "startLine": 25,
+        "startChar": 49,
+        "endLine": 25,
+        "endChar": 52
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c55e33cc_12a0d573",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "naming nit: \"u\" prefix for uniforms, maybe u_center, etc.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca7af0d_23ad2557",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "maybe some comments\n\n    // AE\u0027s bulge effect appears to be a combination of spherical displacement and\n    // exponential displacement along the radius.\n    //\n    // To simplify the math, we pre scale/translate such that the ellipse becomes a\n    // circle with radius \u003d\u003d 1, centered on origin.",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4443ded_43716ec3",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "To support inner bulge, I think we need\n\n1) std::abs(fHeight) here\n2) add another uniform (u_direction?) and set to 1 for positive height and -1 for negative height\n  \n  builder.uniform(\"u_direction\") \u003d std::copysign(1.0f, fHeight);\n  \n3) multiply the displacement by u_direction in sksl\n  \n  return v + d*u_direction;",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec299da2_aaa98d72",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "I would move this check to buildEffectShader(), to skip building the shader altogether in this case (return nullptr).",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b357c458_3d0ab78b",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "nit: the epsilon comparator is better suited here\n  SkScalarNearlyZero(fHeight)",
+      "range": {
+        "startLine": 122,
+        "startChar": 12,
+        "endLine": 122,
+        "endChar": 24
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0f2a08d_08f0601f",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "We want to draw the child content in this case:\n\n  this-\u003echildren()[0]-\u003erender(canvas, ctx);\n  return;",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7366a8e_5b8e272d",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "We don\u0027t want to draw the child content here, just the shader below.",
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -48,6 +219,29 @@
       "writtenOn": "2021-11-03T16:56:50Z",
       "side": 1,
       "message": "WIP: map bulgeHeight to ensure linear 1-1 mapping to AE\u0027s impl (and scale height)",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72ebff2e_8a0950d1",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:38:23Z",
+      "side": 1,
+      "message": "Let\u0027s clamp to the range allowed in AE [-4..4]:\n\n  n-\u003esetHeight(SkTPin(fBulgeHeight/4, -1.0f, 1.0f));",
+      "range": {
+        "startLine": 180,
+        "startChar": 21,
+        "endLine": 180,
+        "endChar": 35
+      },
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
