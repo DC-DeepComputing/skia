@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a517469b_394a9812",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T16:38:57Z",
+      "side": 1,
+      "message": "So the idea is that all users of SkFont::setupForAsPaths (whose existence I find abhorrent, since it can only cause grief) return the return value separately from the SkStrikeSpec? So this CL currently covers SkStrikeSpec::MakeCanonicalized and then there would need to be one for the other user SkStrikeSpec::MakePath (which is used in two places, the GPU side which involves a little bit of plumbing). Is there a reason to do this in two CLs instead of just doing it all at once since the point is to remove SkStrikeSpec::fStrikeToSourceRatio?\n\nThis pair seems to need to be pushed around enough that it might make sense to give this a name, like an SkScaledStrikeSpec which has a `SkStrikeSpec fStrikeSpec` and a `SkScalar scale`?",
+      "revId": "723b979255e81ed6a640a81b3ee32fd582dd20b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
