@@ -87,6 +87,24 @@
       "parentUuid": "ef93b66b_645637c9",
       "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be1a8781_a7eff2f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-03T19:18:54Z",
+      "side": 1,
+      "message": "That makes sense. I tested it locally by always returning null/nil when creating the encoders. I\u0027ll add in those checks and make the helper function.",
+      "parentUuid": "2cdfa88b_5eebdf88",
+      "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
