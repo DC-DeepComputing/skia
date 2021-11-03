@@ -285,6 +285,24 @@
       "parentUuid": "194b8f30_435914a0",
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de92940d_47d52040",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:58:45Z",
+      "side": 1,
+      "message": "Also, imgur is doing something funny, https://imgur.com/a/beT70t2 seems to play 2x slower (10s vs. 5s in skottie and AE), so don\u0027t take its timing too seriously :)",
+      "parentUuid": "26247087_b96292e9",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
