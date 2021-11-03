@@ -69,6 +69,24 @@
       "parentUuid": "b4aea2c0_7314f758",
       "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cdfa88b_5eebdf88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-03T18:23:54Z",
+      "side": 1,
+      "message": "Re problems, I\u0027m thinking of something like `GrMtlGpu::uploadToTexture` https://osscs.corp.google.com/android/platform/superproject/+/master:external/skia/src/gpu/mtl/GrMtlGpu.mm;l\u003d410;drc\u003df6bbae0253480aff7582d46723122dbe42007d16\n\nGranted, you don\u0027t crash sending a message to nil, but it does do all the work to set up all the mips for a texture and then fail to copy them one by one. And it reports success at the end, but probably needs to return `false` since it didn\u0027t actually do the job. (This true vs false problem is true for most call sites) \n\nI\u0027m not sure if dm passing is a useful test or not? It seems like you\u0027d need to rapidly open and close the app to trigger background switches at different points during execution. This seems extremely hard to test right, honestly. \n\nIf I needed to 100% be sure I was testing this correctly, I\u0027d imagine making a helper function which does the `[NSThread isMainThread] \u0026\u0026 [UIApplication sharedApplication].applicationState \u003d\u003d UIApplicationStateBackground` test, and use that function to check for backgroundedness throughout GrMtl. Then it could be overridden to return whatever values we want during testing, and we could make a dm test that simulates foreground-\u003ebackground transitions at different stages.",
+      "parentUuid": "ef93b66b_645637c9",
+      "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
