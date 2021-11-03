@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "828c4ec0_fce16006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T14:23:04Z",
+      "side": 1,
+      "message": "-1 to counteract the +1\n\nThis doesn\u0027t look like an instancing bug to me. The colors are all correct in MotionMark. It looks to me like an issue with the math blowing up somewhere in the stroke tessellation shader. Can we try setting \"fDisableTessellationPathRenderer\" first?",
+      "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
