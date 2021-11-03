@@ -34,6 +34,24 @@
       "parentUuid": "828c4ec0_fce16006",
       "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15409c36_529552cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T14:34:22Z",
+      "side": 1,
+      "message": "If it\u0027s not a straight line I think it probably goes through tessellation. Isn\u0027t step one with a dash effect to convert the dashes to a stroked path with a bunch of moveTos?",
+      "parentUuid": "edf287e2_a2f9d836",
+      "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
