@@ -50,6 +50,24 @@
       "message": "Herb: it looks like if WireTypeface is not packed then we may be putting uninitialized bits into this SkData.",
       "revId": "3c4fd2b985e2dbe6f86234eb647ac661114c6dd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1997b8f6_6171ecee",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-03T19:14:45Z",
+      "side": 1,
+      "message": "I think that is OK. The isFixed bool already leaves three bytes at the end.",
+      "parentUuid": "924a59e9_f7580885",
+      "revId": "3c4fd2b985e2dbe6f86234eb647ac661114c6dd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
