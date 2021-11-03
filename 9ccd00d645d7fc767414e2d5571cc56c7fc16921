@@ -16,6 +16,24 @@
       "message": "-1 to counteract the +1\n\nThis doesn\u0027t look like an instancing bug to me. The colors are all correct in MotionMark. It looks to me like an issue with the math blowing up somewhere in the stroke tessellation shader. Can we try setting \"fDisableTessellationPathRenderer\" first?",
       "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edf287e2_a2f9d836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-03T14:32:04Z",
+      "side": 1,
+      "message": "But draws like dashing on gles that I believe wouldn\u0027t go through the tesselation path renderer are also dropping out.",
+      "parentUuid": "828c4ec0_fce16006",
+      "revId": "9ccd00d645d7fc767414e2d5571cc56c7fc16921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
