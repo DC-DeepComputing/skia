@@ -16,6 +16,24 @@
       "message": "So the idea is that all users of SkFont::setupForAsPaths (whose existence I find abhorrent, since it can only cause grief) return the return value separately from the SkStrikeSpec? So this CL currently covers SkStrikeSpec::MakeCanonicalized and then there would need to be one for the other user SkStrikeSpec::MakePath (which is used in two places, the GPU side which involves a little bit of plumbing). Is there a reason to do this in two CLs instead of just doing it all at once since the point is to remove SkStrikeSpec::fStrikeToSourceRatio?\n\nThis pair seems to need to be pushed around enough that it might make sense to give this a name, like an SkScaledStrikeSpec which has a `SkStrikeSpec fStrikeSpec` and a `SkScalar scale`?",
       "revId": "723b979255e81ed6a640a81b3ee32fd582dd20b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f62011b_08774cf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T21:45:37Z",
+      "side": 1,
+      "message": "Ah, I see you have the other half of this in https://skia-review.googlesource.com/c/skia/+/467136 . These CLs don\u0027t actually seem that large, would it be easier to combine these two CLs and also remove the field at the same time?\n\nThat being said, these two CLs have already been written and put out there and are fine so long as the cleanup happens after they land. While I\u0027d prefer the return type to not just be some random unnamed tuple (in particular that the return types of SkStrikeSpec::MakeCanonicalized and SkStrikeSpec::MakePath be more obviously related) the language tends to make that rather verbose, so I\u0027m fine leaving it out.",
+      "parentUuid": "a517469b_394a9812",
+      "revId": "723b979255e81ed6a640a81b3ee32fd582dd20b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
