@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b9163f7_f40215fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-03T21:03:04Z",
+      "side": 1,
+      "message": "It\u0027s lower level than that. I\u0027ve just found the real problem, which is the implementation of div255 in the low-precision raster pipeline:\n\n  return (v+255)/256;  // A good approximation of (v+127)/255.\n  \nThat turns out to not be a good approximation. Changing it to the ideal/correct thing (v+127)/255 solves the issue, but that\u0027s going to destroy lowp performance on a wide variety of raster pipeline stages that use the same helper function. NEON uses a better approximation that it can perform fairly quickly (v+((v+128)/256)+128)/256. That\u0027s still not good enough.\n\nNote that the inverse operation (when we do unpremul for reads) doesn\u0027t hit lowp, because there\u0027s no lowp version of that stage. So I\u0027m looking at adding a fake stage that forces highp, to avoid the poor quality premul.",
+      "parentUuid": "976c7aaa_4f735520",
+      "revId": "241dcac485c4ebc091f93ff13459101eb14769b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52450ab6_af64af93",
