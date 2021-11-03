@@ -33,6 +33,29 @@
       "message": "PTAL, the G3 errors seem unrelated.",
       "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d76dbfb0_2b8396d2",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-03T13:04:40Z",
+      "side": 1,
+      "message": "I think pruning includes from header files is useful, but I\u0027m not sure there\u0027s as much benefit in .cpp files. Practically, if SK_ENABLE_SKSL isn\u0027t defined, this ENTIRE file is ifdef\u0027d out, so we could be skipping ALL of the includes. That level of curation doesn\u0027t seem to benefit clients as much as making sure that no-op functions and classes aren\u0027t declared, though. Thoughts?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 0
+      },
+      "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
