@@ -13,7 +13,6 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#include "src/core/SkUtils.h"
 #include "tools/sk_app/WindowContext.h"
 #include "tools/sk_app/win/WindowContextFactory_win.h"
 #include "tools/skui/ModifierKey.h"
