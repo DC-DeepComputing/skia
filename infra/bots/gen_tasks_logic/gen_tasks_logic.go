@@ -1272,6 +1272,9 @@ func (b *jobBuilder) recreateSKPs() {
 		"--patch_ref", specs.PLACEHOLDER_PATCH_REF,
 		"--git_cache", "cache/git",
 		"--checkout_root", "cache/work",
+		"--skip-sync",  // For testing.
+		"--skip-build", // For testing.
+		"--workdir", ".",
 	}
 	if b.matchExtraConfig("DryRun") {
 		cmd = append(cmd, "--dry_run")
@@ -1279,6 +1282,7 @@ func (b *jobBuilder) recreateSKPs() {
 	b.addTask(b.Name, func(b *taskBuilder) {
 		b.cas(CAS_RECREATE_SKPS)
 		b.dep(b.buildTaskDrivers("linux", "amd64"))
+		b.dep("Build-Debian10-Clang-x86_64-Release") // To get DM.
 		b.cmd(cmd...)
 		b.cipd(CIPD_PKG_LUCI_AUTH)
 		b.serviceAccount(b.cfg.ServiceAccountRecreateSKPs)
@@ -1934,6 +1938,7 @@ func (b *jobBuilder) compileWasmGMTests(compileName string) {
 // We can use the same build for both CPU and GPU tests since the latter requires the code for the
 // former anyway.
 func (b *jobBuilder) runWasmGMTests() {
+	// Look into this.
 	compileTaskName := b.compile()
 
 	b.addTask(b.Name, func(b *taskBuilder) {
