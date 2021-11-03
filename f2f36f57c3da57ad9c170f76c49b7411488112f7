@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ed418c_a049a724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-03T19:23:21Z",
+      "side": 1,
+      "message": "Okay I relooked at the gold images from the tessellation test and now it does seem like that also fixed the same issues as instancing. My guess is gold was out of sync/stale as it was still uploading and diffing images when I first looked. So I\u0027ve switch this CL to disable that path renderer instead of instancing now.",
+      "revId": "f2f36f57c3da57ad9c170f76c49b7411488112f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
