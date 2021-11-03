@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a84f5181_61ad27a1",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-03T17:36:45Z",
+      "side": 1,
+      "message": "I think this comment would be more accessible as a comment for pushVertex() itself.",
+      "range": {
+        "startLine": 158,
+        "startChar": 8,
+        "endLine": 159,
+        "endChar": 79
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf2fea6_e704e424",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-03T17:36:45Z",
+      "side": 1,
+      "message": "Same, for closeAndMove()",
+      "range": {
+        "startLine": 175,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 59
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35abb808_1cdb67fd",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-03T17:36:45Z",
+      "side": 1,
+      "message": "going forward, we will need a new option for graphite, since it\u0027ll use an SkM44 or a Transform object, and will operate on Shape instead of SkPath.\n\nThe only complication there is that PathXform doesn\u0027t handle perspective, but if we want the iterator to transform the points, then having perspective creates more challenges since it would have to clip the edges to w\u003d0 on the fly. Perhaps it\u0027s better to have the renderer do gpu transformation when there\u0027s perspective so that this stays very fast and we can rely on GPU clipping.\n\nHaving a shape vs. a path is pretty trivial.\n\nMy last thought is that it\u0027s not necessarily obvious that PathMiddleOutFanIter is doing the transformation. Is it necessary? Does operating in device space produce better triangulation than having the same recursive algorithm locally? If not, maybe we drop the transform and allow callers to create a PathXform, and call mapPoint() on the [p0,p1,p2] that the PoppedTriangleStack returns if they want (vs. having to pass in SkMatrix::I() when they don\u0027t want transformation at all).",
+      "range": {
+        "startLine": 202,
+        "startChar": 26,
+        "endLine": 202,
+        "endChar": 67
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
