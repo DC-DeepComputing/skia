@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a735f6_d973209c",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T19:36:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a84f5181_61ad27a1",
+      "range": {
+        "startLine": 158,
+        "startChar": 8,
+        "endLine": 159,
+        "endChar": 79
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cf2fea6_e704e424",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bccda4a8_0cecf523",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T19:36:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cf2fea6_e704e424",
+      "range": {
+        "startLine": 175,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 59
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35abb808_1cdb67fd",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-11-03T17:36:45Z",
       "side": 1,
       "message": "going forward, we will need a new option for graphite, since it\u0027ll use an SkM44 or a Transform object, and will operate on Shape instead of SkPath.\n\nThe only complication there is that PathXform doesn\u0027t handle perspective, but if we want the iterator to transform the points, then having perspective creates more challenges since it would have to clip the edges to w\u003d0 on the fly. Perhaps it\u0027s better to have the renderer do gpu transformation when there\u0027s perspective so that this stays very fast and we can rely on GPU clipping.\n\nHaving a shape vs. a path is pretty trivial.\n\nMy last thought is that it\u0027s not necessarily obvious that PathMiddleOutFanIter is doing the transformation. Is it necessary? Does operating in device space produce better triangulation than having the same recursive algorithm locally? If not, maybe we drop the transform and allow callers to create a PathXform, and call mapPoint() on the [p0,p1,p2] that the PoppedTriangleStack returns if they want (vs. having to pass in SkMatrix::I() when they don\u0027t want transformation at all).",
+      "range": {
+        "startLine": 202,
+        "startChar": 26,
+        "endLine": 202,
+        "endChar": 67
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ad8f089_fa7cb19c",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T19:36:49Z",
+      "side": 1,
+      "message": "\u003e Perhaps it\u0027s better to have the renderer do gpu transformation when there\u0027s perspective so that this stays very fast and we can rely on GPU clipping.\n\nAgreed. The way v1 works is it actually has 2 matrices: a \"pathMatrix\" and a \"shaderMatrix\". The purpose of the pathMatrix is to get better batching, and this CPU transformation is so fast that we just pass in an identity here when there\u0027s only a shaderMatrix. Obviously we want a shaderMatrix when there\u0027s perspective.\n\nWhat if we rename PathXform to AffineMatrix? And when there\u0027s perspective we could probably benefit from having a base shaderMatrix with perspective, then lifting out the affine portions of the view matrix into the pathMatrix (e.g., when rendering a bunch of things into a common plane, this would give better batching shaderMatrix defines the common plane, pathMatrix defines the transformations within that plane.)\n\n\u003e maybe we drop the transform and allow callers to create a PathXform, and call mapPoint() on the [p0,p1,p2] that the PoppedTriangleStack returns \n\nI\u0027ll try it out. It\u0027s 3x redundant, but also can be done in float4 instead of float2, so maybe it\u0027s fine.",
+      "parentUuid": "35abb808_1cdb67fd",
       "range": {
         "startLine": 202,
         "startChar": 26,
