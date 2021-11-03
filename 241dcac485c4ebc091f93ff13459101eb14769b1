@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f04ce9f9_85329a5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-03T19:43:02Z",
+      "side": 1,
+      "message": "Can\u0027t really land this yet - it\u0027s more of an FYI. I wanted to dig into 12592, because it seems pretty serious. It turns out you can repro the failure by just calling GrConvertPixels directly, which is helpful. So I made two more versions of the unit test - one that does that, and another that uses SkConvertPixels.\n\nThe latter test passes, the former fails exactly like the Gpu test fails when PM/UPM FPs aren\u0027t found.\n\nI also did some printf debugging of entire rows of the data - we\u0027re getting lots of not-mismatched-but-still-wrong values all over the place (compared to both the pure CPU backend implementation of read/writePixels, and the pure GPU implementation with FP based PM/UPM - both of which agree on my machine).",
+      "revId": "241dcac485c4ebc091f93ff13459101eb14769b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
