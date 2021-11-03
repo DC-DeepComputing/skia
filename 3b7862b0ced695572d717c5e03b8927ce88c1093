@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15cec0d8_dbe2fa53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-03T21:31:13Z",
+      "side": 1,
+      "message": "I\u0027ve gone ahead and added a \u0027force_high\u0027 RP stage. This is a big hammer, but it\u0027s better than slowing down the lowp pipeline in a ton of other cases, and there are apparently few code paths where we actually care about the precision of the div255 approximation that much.",
+      "revId": "3b7862b0ced695572d717c5e03b8927ce88c1093",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
