@@ -36,6 +36,9 @@ struct FragmentUniforms {
 #endif
 
 std::string ProgramCache::ProgramInfo::getMSL() const {
+    std::string structCode = EmitMSLUniformStruct(const Uniform* uniforms, int numUniforms) {
+
+
     switch (fCombination.fShaderType) {
         case ShaderCombo::ShaderType::kLinearGradient:
             return std::string(
