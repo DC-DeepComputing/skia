@@ -56,6 +56,30 @@
       },
       "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29be5c40_d418a740",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-03T13:20:55Z",
+      "side": 1,
+      "message": "That\u0027s a good point. A better fix would be to not compile this source file when SK_SUPPORT_GPU is false, right?",
+      "parentUuid": "d76dbfb0_2b8396d2",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 0
+      },
+      "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
