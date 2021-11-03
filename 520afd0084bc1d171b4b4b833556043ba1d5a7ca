@@ -16,6 +16,23 @@
       "message": "G3 failure seems just to be flakiness",
       "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d68dce_0ddbaafd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-03T11:36:49Z",
+      "side": 1,
+      "message": "PTAL, the G3 errors seem unrelated.",
+      "revId": "520afd0084bc1d171b4b4b833556043ba1d5a7ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
