@@ -140,6 +140,30 @@
       },
       "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c877158_3a7cc08e",
+        "filename": "src/gpu/tessellate/MiddleOutPolygonTriangulator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-03T19:50:31Z",
+      "side": 1,
+      "message": "Doing the transform locally brings our triangulation cost from 268 -\u003e 295us. Thoughts? Still minimal but ~10%.",
+      "parentUuid": "8ad8f089_fa7cb19c",
+      "range": {
+        "startLine": 202,
+        "startChar": 26,
+        "endLine": 202,
+        "endChar": 67
+      },
+      "revId": "5e3ed8343b9521680fdbf65d2dfe0ae26650f7a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
