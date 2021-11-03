@@ -3782,6 +3782,19 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fDrawInstancedSupport = false;
     }
 
+    // We found that on Wembley devices (PowerVR GE8320) that using instanced drawing would cause
+    // lots of rendering errors where it seemed like vertices were in the wrong place. This led to
+    // lots of GMs drawing nothing (e.g. dashing4) or lots of garbage. The Wembley devices were
+    // running Android 12 with a driver version of 1.13. We previously had TecnoSpark devices with
+    // the same GPU running on Android P (driver 1.10) which did not have this issue. We don't know
+    // when the bug appeared in the driver so for now we disable instance draws for all matching
+    // gpus regardless of driver version.
+    if (ctxInfo.renderer() == GrGLRenderer::kPowerVRRogue) {
+       // fDrawInstancedSupport = false;
+        //fDisableTessellationPathRenderer = true;
+        fBaseVertexBaseInstanceSupport = false;
+    }
+
     // http://anglebug.com/4538
     if (fBaseVertexBaseInstanceSupport && !fDrawInstancedSupport) {
         fBaseVertexBaseInstanceSupport = false;
