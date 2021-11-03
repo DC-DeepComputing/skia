@@ -51,6 +51,24 @@
       "parentUuid": "7e262d3d_d0ac4dac",
       "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef93b66b_645637c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-03T17:29:56Z",
+      "side": 1,
+      "message": "So shouldn\u0027t calling the MTLBlitCommandEncoder methods with a nil object be fine?",
+      "parentUuid": "b4aea2c0_7314f758",
+      "revId": "39cae50a150d4193e6ebb8a76d2b97307d1212f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
