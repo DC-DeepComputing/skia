@@ -1590,10 +1590,11 @@ void GrMtlGpu::resolve(GrMtlAttachment* resolveAttachment,
 
     GrMtlRenderCommandEncoder* cmdEncoder =
             this->commandBuffer()->getRenderCommandEncoder(renderPassDesc, nullptr, nullptr);
-    SkASSERT(nil != cmdEncoder);
-    cmdEncoder->setLabel(@"resolveTexture");
-    this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
-    this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
+    if (cmdEncoder) {
+        cmdEncoder->setLabel(@"resolveTexture");
+        this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(resolveAttachment));
+        this->commandBuffer()->addGrSurface(sk_ref_sp<const GrSurface>(msaaAttachment));
+    }
 }
 
 GrMtlRenderCommandEncoder* GrMtlGpu::loadMSAAFromResolve(

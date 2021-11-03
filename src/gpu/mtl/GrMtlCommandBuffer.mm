@@ -18,6 +18,10 @@
 #error This file must be compiled with Arc. Use -fobjc-arc flag
 #endif
 
+#ifdef SK_BUILD_FOR_IOS
+#import <UIKit/UIApplication.h>
+#endif
+
 GR_NORETAIN_BEGIN
 
 sk_sp<GrMtlCommandBuffer> GrMtlCommandBuffer::Make(id<MTLCommandQueue> queue) {
@@ -56,6 +60,14 @@ id<MTLBlitCommandEncoder> GrMtlCommandBuffer::getBlitCommandEncoder() {
     }
 
     this->endAllEncoding();
+#ifdef SK_BUILD_FOR_IOS
+    if ([NSThread isMainThread] &&
+        [UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        fActiveBlitCommandEncoder = nil;
+        NSLog(@"GrMtlCommandBuffer: tried to create MTLBlitCommandEncoder while in background.");
+        return nil;
+    }
+#endif
     fActiveBlitCommandEncoder = [fCmdBuffer blitCommandEncoder];
     fHasWork = true;
 
@@ -148,6 +160,14 @@ GrMtlRenderCommandEncoder* GrMtlCommandBuffer::getRenderCommandEncoder(
         MTLRenderPassDescriptor* descriptor,
         GrMtlOpsRenderPass* opsRenderPass) {
     this->endAllEncoding();
+#ifdef SK_BUILD_FOR_IOS
+    if ([NSThread isMainThread] &&
+        [UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        fActiveRenderCommandEncoder = nullptr;
+        NSLog(@"GrMtlCommandBuffer: tried to create MTLRenderCommandEncoder while in background.");
+        return nullptr;
+    }
+#endif
     fActiveRenderCommandEncoder = GrMtlRenderCommandEncoder::Make(
             [fCmdBuffer renderCommandEncoderWithDescriptor:descriptor]);
     if (opsRenderPass) {
@@ -161,6 +181,13 @@ GrMtlRenderCommandEncoder* GrMtlCommandBuffer::getRenderCommandEncoder(
 
 bool GrMtlCommandBuffer::commit(bool waitUntilCompleted) {
     this->endAllEncoding();
+#ifdef SK_BUILD_FOR_IOS
+    if ([NSThread isMainThread] &&
+        [UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        NSLog(@"GrMtlCommandBuffer: Tried to commit command buffer while in background.\n");
+        return false;
+    }
+#endif
     [fCmdBuffer commit];
     if (waitUntilCompleted) {
         this->waitUntilCompleted();
