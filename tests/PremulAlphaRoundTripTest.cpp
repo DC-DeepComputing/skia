@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/gpu/GrPixmap.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
@@ -104,4 +105,49 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu, reporter, ctxInfo) 
     sk_sp<SkSurface> surf(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
                                                       SkBudgeted::kNo, info));
     test_premul_alpha_roundtrip(reporter, surf.get());
+}
+
+DEF_TEST(PremulAlphaRoundTripConvertPixels, reporter) {
+    // Code that does the same thing as above, but using GrConvertPixels. This simulates what
+    // happens if you run the above on a maching with a GPU that doesn't have a valid PM/UPM
+    // conversion pair of FPs.
+    const SkImageInfo upmInfo =
+            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+    const SkImageInfo pmInfo =
+            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+
+    GrPixmap src = GrPixmap::Allocate(upmInfo);
+    uint32_t* srcPixels = (uint32_t*)src.addr();
+    for (int y = 0; y < 256; ++y) {
+        for (int x = 0; x < 256; ++x) {
+            srcPixels[y * 256 + x] = pack_unpremul_rgba(SkColorSetARGB(y, x, 0, 0));
+        }
+    }
+
+    GrPixmap surf = GrPixmap::Allocate(pmInfo);
+    GrConvertPixels(surf, src);
+
+    GrPixmap read1 = GrPixmap::Allocate(upmInfo);
+    GrConvertPixels(read1, surf);
+
+    GrPixmap surf2 = GrPixmap::Allocate(pmInfo);
+    GrConvertPixels(surf2, read1);
+
+    GrPixmap read2 = GrPixmap::Allocate(upmInfo);
+    GrConvertPixels(read2, surf2);
+
+    bool success = true;
+    for (int y = 0; y < 256 && success; ++y) {
+        const uint32_t* pixels1 = (const uint32_t*) read1.addr();
+        const uint32_t* pixels2 = (const uint32_t*) read2.addr();
+        for (int x = 0; x < 256 && success; ++x) {
+            uint32_t c1 = pixels1[y * 256 + x],
+                     c2 = pixels2[y * 256 + x];
+            // We see sporadic failures here. May help to see where it goes wrong.
+            if (c1 != c2) {
+                SkDebugf("%x != %x, x = %d, y = %d\n", c1, c2, x, y);
+            }
+            REPORTER_ASSERT(reporter, success = c1 == c2);
+        }
+    }
 }
