@@ -100,6 +100,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cc77f99_2672552f",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-03T17:42:51Z",
+      "side": 1,
+      "message": "Since the sksl code is fixed, we should wrap the SkRuntimeEffect as a static singleton to avoid parsing repeatedly (see e.g. ThresholdEffect):\n\n  static sk_sp\u003cSkRuntimeEffect\u003e bulge_effect() {\n      static const SkRuntimeEffect* effect \u003d\n          SkRuntimeEffect::MakeForShader(SkString(gBulgeDisplacementSkSL), {}).effect.release();\n      SkASSERT(effect);\n\n      return sk_ref_sp(effect);\n  }",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4443ded_43716ec3",
         "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
         "patchSetId": 3
