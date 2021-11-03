@@ -3077,15 +3077,27 @@ static void start_pipeline(const size_t x0,     const size_t y0,
 // ~~~~~~ Commonly used helper functions ~~~~~~ //
 
 SI U16 div255(U16 v) {
+    // The ideal answer we want to compute is slow, thanks to a division by a non-power of two:
+    //   [1]  (v + 127) / 255
+
+    // There is a two-step process that computes the same answer for all inputs:
+    //   [2]  (v + 128 + ((v + 128) >> 8)) >> 8
+
+    // There is also a single iteration approximation, but it's wrong (+-1) ~25% of the time:
+    //   [3]  (v + 255) >> 8;
+
 #if 0
-    return (v+127)/255;  // The ideal rounding divide by 255.
+    // Ideal formula [1] from above. There's no reason to use this:
+    return (v+127)/255;
 #elif 1 && defined(JUMPER_IS_NEON)
-    // With NEON we can compute (v+127)/255 as (v + ((v+128)>>8) + 128)>>8
-    // just as fast as we can do the approximation below, so might as well be correct!
-    // First we compute v + ((v+128)>>8), then one more round of (...+128)>>8 to finish up.
+    // With NEON we can compute [2] just as fast as [3], so we definitely want to be correct!
+    // First we compute v + ((v+128)>>8), then one more round of (...+128)>>8 to finish up:
     return vrshrq_n_u16(vrsraq_n_u16(v, v, 8), 8);
 #else
-    return (v+255)/256;  // A good approximation of (v+127)/255.
+    // Historically, Skia used [3] here, but that leads to drift when doing repeated premul and
+    // unpremul operations. So, let's use the slower (but correct) [2] instead:
+    v += 128;
+    return (v+(v/256))/256;
 #endif
 }
 
