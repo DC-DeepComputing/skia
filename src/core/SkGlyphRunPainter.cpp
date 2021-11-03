@@ -104,8 +104,8 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
 
         if (SkStrikeSpec::ShouldDrawAsPath(paint, runFont, deviceMatrix)) {
 
-            SkStrikeSpec strikeSpec = SkStrikeSpec::MakePath(
-                    runFont, paint, props, fScalerContextFlags);
+            auto [strikeSpec, strikeToSourceScale] =
+                    SkStrikeSpec::MakePath(runFont, paint, props, fScalerContextFlags);
 
             auto strike = strikeSpec.findOrCreateStrike();
 
@@ -119,7 +119,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
             pathPaint.setAntiAlias(runFont.hasSomeAntiAliasing());
 
             bitmapDevice->paintPaths(
-                    &fDrawable, strikeSpec.strikeToSourceRatio(), drawOrigin, pathPaint);
+                    &fDrawable, strikeToSourceScale, drawOrigin, pathPaint);
         }
         if (!fRejects.source().empty() && !deviceMatrix.hasPerspective()) {
             SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
@@ -310,8 +310,8 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
     SkScalar maxDimensionInSourceSpace = 0.0;
     if (!fRejects.source().empty()) {
         // Path case - handle big things without color and that have a path.
-        SkStrikeSpec strikeSpec = SkStrikeSpec::MakePath(
-                runFont, runPaint, fDeviceProps, fScalerContextFlags);
+        auto [strikeSpec, strikeToSourceScale] =
+                SkStrikeSpec::MakePath(runFont, runPaint, fDeviceProps, fScalerContextFlags);
 
         #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
             msg.appendf("  Path case:\n%s", strikeSpec.dump().c_str());
@@ -326,13 +326,13 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
             #endif
             strike->prepareForPathDrawing(&fDrawable, &fRejects);
             fRejects.flipRejectsToSource();
-            maxDimensionInSourceSpace =
-                    fRejects.rejectedMaxDimension() * strikeSpec.strikeToSourceRatio();
+            maxDimensionInSourceSpace = fRejects.rejectedMaxDimension() * strikeToSourceScale;
 
             if (process && !fDrawable.drawableIsEmpty()) {
                 // processSourcePaths must be called even if there are no glyphs to make sure
                 // runs are set correctly.
-                process->processSourcePaths(fDrawable.drawable(), runFont, strikeSpec);
+                process->processSourcePaths(
+                        fDrawable.drawable(), runFont, strikeSpec, strikeToSourceScale);
             }
         }
     }

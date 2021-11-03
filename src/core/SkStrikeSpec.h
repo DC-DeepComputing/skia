@@ -12,6 +12,8 @@
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeForGPU.h"
 
+#include <tuple>
+
 #if SK_SUPPORT_GPU
 #include "src/gpu/text/GrSDFTControl.h"
 class GrStrikeCache;
@@ -42,7 +44,7 @@ public:
             const SkMatrix& deviceMatrix);
 
     // Create a strike spec for path style cache entries.
-    static SkStrikeSpec MakePath(
+    static std::tuple<SkStrikeSpec, SkScalar> MakePath(
             const SkFont& font,
             const SkPaint& paint,
             const SkSurfaceProps& surfaceProps,
@@ -85,6 +87,7 @@ public:
     sk_sp<SkStrike> findOrCreateStrike(
             SkStrikeCache* cache = SkStrikeCache::GlobalStrikeCache()) const;
 
+    // This call is deprecated.
     SkScalar strikeToSourceRatio() const { return fStrikeToSourceRatio; }
     bool isEmpty() const { return SkScalarNearlyZero(fStrikeToSourceRatio); }
     const SkDescriptor& descriptor() const { return *fAutoDescriptor.getDesc(); }

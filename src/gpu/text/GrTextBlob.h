@@ -263,7 +263,8 @@ private:
                             const SkStrikeSpec& strikeSpec) override;
     void processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkFont& runFont,
-                            const SkStrikeSpec& strikeSpec) override;
+                            const SkStrikeSpec& strikeSpec,
+                            SkScalar strikeToSourceScale) override;
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            const SkStrikeSpec& strikeSpec,
                            const SkFont& runFont,
@@ -314,7 +315,8 @@ public:
     void processSourceMasks(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                             const SkStrikeSpec& strikeSpec) override;
     void processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& drawables,
-                            const SkFont& runFont, const SkStrikeSpec& strikeSpec) override;
+                            const SkFont& runFont, const SkStrikeSpec& strikeSpec,
+                            SkScalar strikeToSourceScale) override;
     void processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
                            const SkStrikeSpec& strikeSpec, const SkFont& runFont,
                            SkScalar minScale, SkScalar maxScale) override;
