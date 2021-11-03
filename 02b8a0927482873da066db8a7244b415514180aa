@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf5eeea_e854fb35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-03T17:16:09Z",
+      "side": 1,
+      "message": "Sorry for the post-submit comment.",
+      "revId": "02b8a0927482873da066db8a7244b415514180aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcb9a7c3_e362a462",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-03T17:16:09Z",
+      "side": 1,
+      "message": "Could we add a follow-up comment here, or in ApplyPaintAlpha()?, that since ApplyPaintAlpha passes rgb1 into the child, using the unpremul paint color on the grPaint does the right thing. Right now it\u0027s still a little magical, but I think it\u0027s correct since it\u0027s equivalent to grPaint-\u003esetColor4f(origColor.premul()), and ApplyPaintAlpha()\u0027s FP calling unpremul on its input color to pass rgb1 into the child FP.",
+      "range": {
+        "startLine": 479,
+        "startChar": 37,
+        "endLine": 479,
+        "endChar": 77
+      },
+      "revId": "02b8a0927482873da066db8a7244b415514180aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
