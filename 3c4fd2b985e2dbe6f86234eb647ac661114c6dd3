@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b655f125_671fbda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T16:47:38Z",
+      "side": 1,
+      "message": "I think this should work.\n\nDerek: Adding you for the SkTypeface.h change, this is just adding private declarations, so should be ok.",
+      "revId": "3c4fd2b985e2dbe6f86234eb647ac661114c6dd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924a59e9_f7580885",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-03T16:47:38Z",
+      "side": 1,
+      "message": "Herb: it looks like if WireTypeface is not packed then we may be putting uninitialized bits into this SkData.",
+      "revId": "3c4fd2b985e2dbe6f86234eb647ac661114c6dd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
