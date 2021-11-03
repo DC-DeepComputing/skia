@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "976c7aaa_4f735520",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-03T20:31:10Z",
+      "side": 1,
+      "message": "Looks like the SkConvertPixels path uses a special function, swizzle_or_premul, for the write step rather than raster pipeline. I\u0027m guessing that explains the difference.",
+      "revId": "241dcac485c4ebc091f93ff13459101eb14769b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52450ab6_af64af93",
