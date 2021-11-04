@@ -16,6 +16,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 INFRA_BOTS_DIR = os.path.realpath(os.path.join(FILE_DIR, os.pardir, os.pardir))
@@ -36,7 +37,7 @@ def getenv(key):
   if not val:
     print(('Environment variable %s not set; you should run this via '
            'create_and_upload.py.' % key), file=sys.stderr)
-    sys.exit(1)
+    # sys.exit(1)
   return val
 
 
@@ -63,105 +64,127 @@ def get_flutter_skps(target_dir):
 
 
 def create_asset(chrome_src_path, browser_executable, target_dir,
-                 upload_to_partner_bucket):
+                 upload_to_partner_bucket, dm_path):
   """Create the SKP asset.
 
   Creates the asset from 3 sources:
   1. From Flutter's skp_generator tool.
   2. The web pages defined in the tools/skp/page_sets/ directory.
-  3. Any private SKPs stored in $PRIVATE_SKPS_GS
+  3. Any private SKPs stored in $PRIVATE_SKPS_GS after running dm on
+     them (see below).
+
+  The script runs the following cmd on the non-generated SKPs stored in
+  $PRIVATE_SKPS_GS -
+  `dm --config skp -w newskps/ --skps oldskps/ --src skp`
+  The cmd updates the version stored in the SKPs so that the versions in
+  them do not eventually become unsupported.
   """
-  browser_executable = os.path.realpath(browser_executable)
-  chrome_src_path = os.path.realpath(chrome_src_path)
+  # browser_executable = os.path.realpath(browser_executable)
+  # chrome_src_path = os.path.realpath(chrome_src_path)
   target_dir = os.path.realpath(target_dir)
 
   if not os.path.exists(target_dir):
     os.makedirs(target_dir)
 
   # 1. Flutter SKPs
-  get_flutter_skps(target_dir)
+  # get_flutter_skps(target_dir)
 
-  # 2. Skia's SKPs from tools/skp/page_sets/
-  with utils.tmp_dir():
-    if os.environ.get('CHROME_HEADLESS'):
-      print('Starting xvfb')
-      # Start Xvfb if running on a bot.
-      try:
-        xvfb_proc = subprocess.Popen([
-            'sudo', 'Xvfb', ':0', '-screen', '0', '1280x1024x24'])
-      except Exception:
-        # It is ok if the above command fails, it just means that DISPLAY=:0
-        # is already up.
-        xvfb_proc = None
+  # # 2. Skia's SKPs from tools/skp/page_sets/
+  # with utils.tmp_dir():
+  #   if os.environ.get('CHROME_HEADLESS'):
+  #     print('Starting xvfb')
+  #     # Start Xvfb if running on a bot.
+  #     try:
+  #       xvfb_proc = subprocess.Popen([
+  #           'sudo', 'Xvfb', ':0', '-screen', '0', '1280x1024x24'])
+  #     except Exception:
+  #       # It is ok if the above command fails, it just means that DISPLAY=:0
+  #       # is already up.
+  #       xvfb_proc = None
 
-    print('Running webpages_playback to generate SKPs...')
-    webpages_playback_cmd = [
-      'python', '-u', os.path.join(SKIA_TOOLS, 'skp', 'webpages_playback.py'),
-      '--page_sets', 'all',
-      '--browser_executable', browser_executable,
-      '--non-interactive',
-      '--output_dir', os.getcwd(),
-      '--chrome_src_path', chrome_src_path,
-    ]
-    if upload_to_partner_bucket:
-      webpages_playback_cmd.append('--upload_to_partner_bucket')
-    print('Running webpages_playback command:\n$ %s' %
-        ' '.join(webpages_playback_cmd))
-    try:
-      subprocess.check_call(webpages_playback_cmd)
-    finally:
-      if xvfb_proc:
-        try:
-          xvfb_proc.kill()
-        except OSError as e:
-          print('Failed to kill xvfb process via Popen.kill();'
-                ' attempting `sudo kill`...')
-          try:
-            subprocess.check_call(['sudo', 'kill', '-9', str(xvfb_proc.pid)])
-          except subprocess.CalledProcessError as e:
-            print('Failed to kill xvfb process via `sudo kill`;'
-                  'this may cause a hang.')
-      # Clean up any leftover browser instances. This can happen if there are
-      # telemetry crashes, processes are not always cleaned up appropriately by
-      # the webpagereplay and telemetry frameworks.
-      procs = subprocess.check_output(['ps', 'ax']).decode()
-      for line in procs.splitlines():
-        if browser_executable in line:
-          print(line)
-          pid = line.strip().split(' ')[0]
-          if pid != str(os.getpid()) and not 'python' in line:
-            print('Kill browser process %s' % str(pid))
-            try:
-              subprocess.check_call(['kill', '-9', str(pid)])
-            except subprocess.CalledProcessError as e:
-              print(e)
-          else:
-            pass
-        if 'Xvfb' in line:
-          print(line)
-          pid = line.strip().split(' ')[0]
-          print('Kill Xvfb process %s' % str(pid))
-          try:
-            subprocess.check_call(['sudo', 'kill', '-9', str(pid)])
-          except subprocess.CalledProcessError as e:
-            print(e)
+  #   print('Running webpages_playback to generate SKPs...')
+  #   webpages_playback_cmd = [
+  #     'python', '-u', os.path.join(SKIA_TOOLS, 'skp', 'webpages_playback.py'),
+  #     '--page_sets', 'all',
+  #     '--browser_executable', browser_executable,
+  #     '--non-interactive',
+  #     '--output_dir', os.getcwd(),
+  #     '--chrome_src_path', chrome_src_path,
+  #   ]
+  #   if upload_to_partner_bucket:
+  #     webpages_playback_cmd.append('--upload_to_partner_bucket')
+  #   print('Running webpages_playback command:\n$ %s' %
+  #       ' '.join(webpages_playback_cmd))
+  #   try:
+  #     subprocess.check_call(webpages_playback_cmd)
+  #   finally:
+  #     if xvfb_proc:
+  #       try:
+  #         xvfb_proc.kill()
+  #       except OSError as e:
+  #         print('Failed to kill xvfb process via Popen.kill();'
+  #               ' attempting `sudo kill`...')
+  #         try:
+  #           subprocess.check_call(['sudo', 'kill', '-9', str(xvfb_proc.pid)])
+  #         except subprocess.CalledProcessError as e:
+  #           print('Failed to kill xvfb process via `sudo kill`;'
+  #                 'this may cause a hang.')
+  #     # Clean up any leftover browser instances. This can happen if there are
+  #     # telemetry crashes, processes are not always cleaned up appropriately by
+  #     # the webpagereplay and telemetry frameworks.
+  #     procs = subprocess.check_output(['ps', 'ax']).decode()
+  #     for line in procs.splitlines():
+  #       if browser_executable in line:
+  #         print(line)
+  #         pid = line.strip().split(' ')[0]
+  #         if pid != str(os.getpid()) and not 'python' in line:
+  #           print('Kill browser process %s' % str(pid))
+  #           try:
+  #             subprocess.check_call(['kill', '-9', str(pid)])
+  #           except subprocess.CalledProcessError as e:
+  #             print(e)
+  #         else:
+  #           pass
+  #       if 'Xvfb' in line:
+  #         print(line)
+  #         pid = line.strip().split(' ')[0]
+  #         print('Kill Xvfb process %s' % str(pid))
+  #         try:
+  #           subprocess.check_call(['sudo', 'kill', '-9', str(pid)])
+  #         except subprocess.CalledProcessError as e:
+  #           print(e)
 
-    src = os.path.join(os.getcwd(), 'playback', 'skps')
-    for f in os.listdir(src):
-      if f.endswith('.skp'):
-        shutil.copyfile(os.path.join(src, f), os.path.join(target_dir, f))
-    print('Done running webpages_playback.')
+  #   src = os.path.join(os.getcwd(), 'playback', 'skps')
+  #   for f in os.listdir(src):
+  #     if f.endswith('.skp'):
+  #       shutil.copyfile(os.path.join(src, f), os.path.join(target_dir, f))
+  #   print('Done running webpages_playback.')
 
   # 3. Copy over private SKPs from Google storage into the target_dir.
-  print('Copying SKPs from private GCS bucket...')
-  subprocess.call([
-        'gsutil', 'cp', os.path.join(PRIVATE_SKPS_GS, '*'), target_dir])
-  print('Done copying SKPs from private GCS bucket.')
+  with tempfile.TemporaryDirectory() as old_skps_dir:
+    with tempfile.TemporaryDirectory() as new_skps_dir:
+      print('Copying non-generated SKPs from private GCS bucket...')
+      subprocess.call([
+        'gsutil', 'cp', os.path.join(PRIVATE_SKPS_GS, '*'), old_skps_dir])
+      print('Updating non-generated SKP versions')
+      subprocess.call([
+          dm_path,
+          '--config', 'skp',
+          '-w', new_skps_dir,
+          '--skps', old_skps_dir,
+          '--src', 'skp'])
+      # subprocess.call([
+      #     dm_path, '--config', 'skp'])
+      # subprocess.call([
+      #     dm_path, '--config skp -w %s --skps %s --src skp' % (new_skps_dir, old_skps_dir)])
+      # print('Putting non-generated SKPs in %s' % target_dir)
+      copy_tree(new_skps_dir, target_dir)
 
 
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--target_dir', '-t', required=True)
+  parser.add_argument('--dm_path', '-d', required=True)
   args = parser.parse_args()
 
   # Obtain flags from create_and_upload via environment variables, since
@@ -171,7 +194,7 @@ def main():
   upload_to_partner_bucket = getenv(UPLOAD_TO_PARTNER_BUCKET_ENV_VAR) == '1'
 
   create_asset(chrome_src_path, browser_executable, args.target_dir,
-               upload_to_partner_bucket)
+               upload_to_partner_bucket, args.dm_path)
 
 
 if __name__ == '__main__':
