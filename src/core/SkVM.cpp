@@ -189,9 +189,11 @@ namespace skvm {
 
         struct V { Val id; };
         struct R { Reg id; };
-        struct Shift { int bits; };
-        struct Splat { int bits; };
-        struct Hex   { int bits; };
+        struct Shift    { int bits; };
+        struct Splat    { int bits; };
+        struct Hex      { int bits; };
+        struct Line     { int bits; };
+        struct TraceVar { int bits; };
 
         static void write(SkWStream* o, const char* s) {
             o->writeText(s);
@@ -235,6 +237,13 @@ namespace skvm {
         static void write(SkWStream* o, Hex h) {
             o->writeHexAsText(h.bits);
         }
+        static void write(SkWStream* o, Line d) {
+            write(o, "L");
+            o->writeDecAsText(d.bits);
+        }
+        static void write(SkWStream* o, TraceVar d) {
+            o->writeDecAsText(d.bits);
+        }
 
         template <typename T, typename... Ts>
         static void write(SkWStream* o, T first, Ts... rest) {
@@ -255,6 +264,10 @@ namespace skvm {
             immC = inst.immC;
         switch (op) {
             case Op::assert_true: write(o, op, V{x}, V{y}); break;
+
+            case Op::trace_line:    write(o, op, Line{immA}); break;
+            case Op::trace_var_i32: write(o, op, V{x}, V{y}, TraceVar{immA}); break;
+            case Op::trace_var_f32: write(o, op, V{x}, V{y}, TraceVar{immA}); break;
 
             case Op::store8:   write(o, op, Ptr{immA}, V{x}               ); break;
             case Op::store16:  write(o, op, Ptr{immA}, V{x}               ); break;
@@ -371,6 +384,10 @@ namespace skvm {
             switch (op) {
                 case Op::assert_true: write(o, op, R{x}, R{y}); break;
 
+                case Op::trace_line:    write(o, op, Line{immA}); break;
+                case Op::trace_var_i32: write(o, op, R{x}, R{y}, TraceVar{immA}); break;
+                case Op::trace_var_f32: write(o, op, R{x}, R{y}, TraceVar{immA}); break;
+
                 case Op::store8:   write(o, op, Ptr{immA}, R{x}                  ); break;
                 case Op::store16:  write(o, op, Ptr{immA}, R{x}                  ); break;
                 case Op::store32:  write(o, op, Ptr{immA}, R{x}                  ); break;
@@ -455,6 +472,27 @@ namespace skvm {
             }
         }
 
+        // After removing non-live instructions, we can be left with redundant back-to-back
+        // trace_line instructions. Eliminate any duplicate ops.
+        int lastLine = -1, lastId = -1;
+        for (Val id = 0; id < (Val)program.size(); id++) {
+            if (!live[id]) {
+                continue;
+            }
+            const Instruction& inst = program[id];
+            if (inst.op != Op::trace_line) {
+                lastLine = -1;
+                lastId = -1;
+                continue;
+            }
+            if (inst.immA == lastLine) {
+                // Found two trace_lines in a row. Mark the first one as dead.
+                live[lastId] = false;
+            }
+            lastLine = inst.immA;
+            lastId = id;
+        }
+
         // Rewrite the program with only live Instructions:
         //   - remap IDs in live Instructions to what they'll be once dead Instructions are removed;
         //   - then actually remove the dead Instructions.
@@ -471,6 +509,8 @@ namespace skvm {
                 new_id[id] = next++;
             }
         }
+
+        // Eliminate any non-live ops.
         auto it = std::remove_if(program.begin(), program.end(), [&](const Instruction& inst) {
             Val id = (Val)(&inst - program.data());
             return !live[id];
@@ -576,7 +616,7 @@ namespace skvm {
         // But we never dedup loads or stores: an intervening store could change that memory.
         // Uniforms and gathers touch only uniform memory, so they're fine to dedup,
         // and index is varying but doesn't touch memory, so it's fine to dedup too.
-        if (!touches_varying_memory(inst.op)) {
+        if (!touches_varying_memory(inst.op) && !has_side_effect(inst.op)) {
             if (Val* id = fIndex.find(inst)) {
                 return *id;
             }
@@ -599,6 +639,18 @@ namespace skvm {
         if (this->allImm(cond.id,&imm)) { SkASSERT(imm); return; }
         (void)push(Op::assert_true, cond.id, debug.id);
     #endif
+    }
+
+    void Builder::trace_line(int line) {
+        (void)push(Op::trace_line, NA,NA,NA,NA, line);
+    }
+
+    void Builder::trace_var(I32 val, I32 mask, int identifier) {
+        (void)push(Op::trace_var_i32, val.id,mask.id,NA,NA, identifier);
+    }
+
+    void Builder::trace_var(F32 val, I32 mask, int identifier) {
+        (void)push(Op::trace_var_f32, val.id,mask.id,NA,NA, identifier);
     }
 
     void Builder::store8 (Ptr ptr, I32 val) { (void)push(Op::store8 , val.id,NA,NA,NA, ptr.ix); }
@@ -2583,6 +2635,12 @@ namespace skvm {
 
                 case Op::assert_true: /*TODO*/ break;
 
+                case Op::trace_line:
+                case Op::trace_var_i32:
+                case Op::trace_var_f32:
+                    /* Only supported in the interpreter. */
+                    break;
+
                 case Op::index:
                     if (I32->isVectorTy()) {
                         std::vector<llvm::Constant*> iota(K);
@@ -3507,6 +3565,12 @@ namespace skvm {
                     a->label(&all_true);
                 } break;
 
+                case Op::trace_line:
+                case Op::trace_var_i32:
+                case Op::trace_var_f32:
+                    /* Only supported in the interpreter. */
+                    break;
+
                 case Op::store8:
                     if (scalar) {
                         a->vpextrb(A::Mem{arg[immA]}, (A::Xmm)r(x), 0);
@@ -3870,6 +3934,12 @@ namespace skvm {
                     a->brk(0);
                     a->label(&all_true);
                 } break;
+
+                case Op::trace_line:
+                case Op::trace_var_i32:
+                case Op::trace_var_f32:
+                    /* Only supported in the interpreter. */
+                    break;
 
                 case Op::index: {
                     A::V tmp = alloc_tmp();
