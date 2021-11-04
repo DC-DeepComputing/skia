@@ -99,6 +99,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a1f70c_3045fc71",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c55e33cc_12a0d573",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cca7af0d_23ad2557",
@@ -156,6 +180,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f5872d_b8e3b3f6",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Was already working on it, see different approach. Done.",
+      "parentUuid": "d4443ded_43716ec3",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec299da2_aaa98d72",
@@ -196,6 +238,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6afe5301_351953a0",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "The epsilon is too big and leads to a noticeable snap near 0, opting for \u003d\u003d 0 here because the only way it breaks is at 0. We could also track this and is it does break, write our own near 0 check with a smaller e.",
+      "parentUuid": "b357c458_3d0ab78b",
+      "range": {
+        "startLine": 122,
+        "startChar": 12,
+        "endLine": 122,
+        "endChar": 24
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad83f44_8929bdcc",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec299da2_aaa98d72",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0f2a08d_08f0601f",
@@ -209,6 +293,24 @@
       "writtenOn": "2021-11-03T17:38:23Z",
       "side": 1,
       "message": "We want to draw the child content in this case:\n\n  this-\u003echildren()[0]-\u003erender(canvas, ctx);\n  return;",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00762c3_183270b7",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0f2a08d_08f0601f",
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -230,6 +332,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d16462c3_835ac52b",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7366a8e_5b8e272d",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3db2628a_01630980",
@@ -243,6 +363,24 @@
       "writtenOn": "2021-11-03T16:56:50Z",
       "side": 1,
       "message": "WIP: make sure we don\u0027t draw child shader",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d02d4c4_a89a163e",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3db2628a_01630980",
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -337,6 +475,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "194b8f30_435914a0",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4ff30d6_a33b6a1d",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72ebff2e_8a0950d1",
+      "range": {
+        "startLine": 180,
+        "startChar": 21,
+        "endLine": 180,
+        "endChar": 35
+      },
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

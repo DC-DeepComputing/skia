@@ -45,6 +45,30 @@
       },
       "revId": "190bee2c289068331ca4cb37acd57151fc182193",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5465c0e_59393ab5",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T14:50:56Z",
+      "side": 1,
+      "message": "Somewhere between patch 6 and 7 I break the SkSL when addressing this problem. I\u0027m uploading as is so others can see the diff.",
+      "parentUuid": "062d377b_335a23c6",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 49
+      },
+      "revId": "190bee2c289068331ca4cb37acd57151fc182193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
