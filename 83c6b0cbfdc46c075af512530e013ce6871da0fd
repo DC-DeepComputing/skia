@@ -68,6 +68,24 @@
       "parentUuid": "6f55bca1_111ac731",
       "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "085a2aaf_f775bea9",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 923,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2021-11-04T16:49:30Z",
+      "side": 1,
+      "message": "Seems fine as-is, then. Thanks for the explanation.\n\nWould you like me to submit it?",
+      "parentUuid": "629eee15_bbe947cf",
+      "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
