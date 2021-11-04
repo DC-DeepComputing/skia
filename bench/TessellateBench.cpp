@@ -236,7 +236,7 @@ DEF_PATH_TESS_BENCH(middle_out_triangulation,
     int baseVertex;
     VertexWriter vertexWriter = static_cast<SkPoint*>(fTarget->makeVertexSpace(
             sizeof(SkPoint), kNumCubicsInChalkboard, &buffer, &baseVertex));
-    PathXform m(gAlmostIdentity);
+    AffineMatrix m(gAlmostIdentity);
     for (PathMiddleOutFanIter it(fPath); !it.done();) {
         for (auto [p0, p1, p2] : it.nextStack()) {
             vertexWriter << m.map2Points(p0, p1) << m.mapPoint(p2);
