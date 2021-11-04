@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b959097_1a4a4b0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-04T20:23:25Z",
+      "side": 1,
+      "message": "Yeah, the first several attempts at this, I didn\u0027t have a way to restore it, so it just kept spreading as you hovered more items. Right now, it\u0027s pretty good at always restoring, but if you\u0027re clever enough to make it not restore, that item just stays magenta until you hit the clear button.",
+      "parentUuid": "15173b6a_cca97b18",
+      "revId": "b9581145ec764eb1820ab86af987c3f721b2e77b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33979322_ee3660a0",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-11-04T19:54:39Z",
       "side": 1,
       "message": "Does it complicate the code to move the magenta-program building out to a helper function? This feels pretty separable and we\u0027re already so deeply nested (in a lambda + if embedded inside several ImGui if blocks).",
+      "range": {
+        "startLine": 2662,
+        "startChar": 0,
+        "endLine": 2662,
+        "endChar": 40
+      },
+      "revId": "b9581145ec764eb1820ab86af987c3f721b2e77b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e89055_c0bb5a93",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2662,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-04T20:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33979322_ee3660a0",
       "range": {
         "startLine": 2662,
         "startChar": 0,
