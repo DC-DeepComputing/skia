@@ -60,7 +60,7 @@ def get_qualified_name(name, qualifiers):
   if not qualifiers:
     return name
   else:
-    args = ('%s=%s' % (k,v) for k,v in qualifiers.iteritems())
+    args = ('%s=%s' % (k,v) for k,v in qualifiers.items())
     return '%s (%s)' % (name, ' '.join(args))
 
 class Parser:
@@ -103,7 +103,7 @@ class Parser:
     outfile.write('\n')
 
     # Write the rows.
-    for bench, row in self.rows.iteritems():
+    for bench, row in self.rows.items():
       outfile.write('%s,' % bench)
       for fullconfig in self.fullconfigs:
         if fullconfig in row:
@@ -146,7 +146,7 @@ def main():
       with open(src, mode='r') as infile:
         parser.parse_file(infile)
 
-  # Print the csv.
+  # print(the csv.)
   if not FLAGS.open:
     parser.print_csv()
   else:

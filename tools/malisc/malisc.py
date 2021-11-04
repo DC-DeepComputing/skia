@@ -37,7 +37,7 @@ for filename in os.listdir(folder):
             inst = line.split(':')[1].split()
             stats[basename][ext] = inst
 
-for k, v in stats.iteritems():
+for k, v in stats.items():
     gl = v.get('.frag', ['', '', ''])
     vk = v.get('.spv', ['', '', ''])
     print('{0},{1},{2},{3},{4},{5},{6}'.format(

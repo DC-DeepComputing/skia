@@ -59,9 +59,9 @@ def main():
     if not re.match(r'^[a-z0-9]{40}$', rev):
       errs.append('%s: "%s" does not look like a commit hash.' % (repo, rev))
   if errs:
-    print >> sys.stderr, 'Found problems in DEPS:'
+    print('Found problems in DEPS:', file=sys.stderr)
     for err in errs:
-      print >> sys.stderr, err
+      print(err, file=sys.stderr)
     sys.exit(1)
 
 

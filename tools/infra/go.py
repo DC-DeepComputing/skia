@@ -18,7 +18,7 @@ WHICH = 'where' if sys.platform == 'win32' else 'which'
 def check():
   '''Verify that golang is properly installed. If not, exit with an error.'''
   def _fail(msg):
-    print >> sys.stderr, msg
+    print(msg, file=sys.stderr)
     sys.exit(1)
 
   try:
