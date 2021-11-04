@@ -132,7 +132,7 @@ gn_args = {
   'skia_use_system_zlib':          'true',
 }
 
-for k, v in SkqpGnArgs.iteritems():
+for k, v in SkqpGnArgs.items():
     gn_args[k] = v
 
 js = gn_to_bp_utils.GenerateJSONFromGN(gn_args)
@@ -185,7 +185,7 @@ gn_to_bp_utils.WriteUserConfig('include/config/SkUserConfig.h', defines)
 
 # OK!  We have everything to fill in Android.bp...
 with open('Android.bp', 'w') as f:
-  print >>f, bp.substitute({
+  print(>>f, bp.substitute({)
     'local_includes': bpfmt(8, local_includes),
     'srcs':           bpfmt(8, srcs),
     'cflags':         bpfmt(8, cflags, False),

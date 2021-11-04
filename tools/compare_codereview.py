@@ -50,7 +50,7 @@ class CodeReviewHTMLParser(HTMLParser.HTMLParser):
     try:
       parser.feed(urllib2.urlopen(url).read())
     except (urllib2.URLError,):
-      print >> sys.stderr, 'Error getting', url
+      print('Error getting', url, file=sys.stderr)
       return None
     parser.close()
     return parser.statuses
@@ -171,7 +171,7 @@ class BuilderHTMLParser(HTMLParser.HTMLParser):
     try:
       parser.feed(urllib2.urlopen(url).read())
     except (urllib2.URLError,):
-      print >> sys.stderr, 'Error getting', url
+      print('Error getting', url, file=sys.stderr)
       return []
     parser.close()
     return parser.failure_results
@@ -281,7 +281,7 @@ class BuilderHTMLParser(HTMLParser.HTMLParser):
 
 
 def printer(indent, string):
-  """Print indented, wrapped text.
+  """print(indented, wrapped text.)
   """
   def wrap_to(line, columns):
     """Wrap a line to the given number of columns, return a list
@@ -327,7 +327,7 @@ def main(control_url, roll_url, verbosity=1):
   roll = CodeReviewHTMLParser.parse(roll_url)
   all_bots = set(control) & set(roll)  # Set intersection.
   if not all_bots:
-    print >> sys.stderr, (
+    print((, file=sys.stderr)
       'Error:  control %s and roll %s have no common trybots.'
       % (list(control), list(roll)))
     return
@@ -386,7 +386,7 @@ def main(control_url, roll_url, verbosity=1):
     out.write('\n')
 
   if verbosity > 0:
-    # Print out summary of all of the bots.
+    # print(out summary of all of the bots.)
     out.write('%11s %11s %4s %s\n\n' %
           ('CONTROL', 'ROLL', 'DIFF', 'BOT'))
     for bot in sorted(all_bots):
@@ -407,7 +407,7 @@ def main(control_url, roll_url, verbosity=1):
 
 if __name__ == '__main__':
   if len(sys.argv) < 3:
-    print >> sys.stderr, __doc__
+    print(__doc__, file=sys.stderr)
     exit(1)
   main(sys.argv[1], sys.argv[2],
      int(os.environ.get('COMPARE_CODEREVIEW_VERBOSITY', 1)))

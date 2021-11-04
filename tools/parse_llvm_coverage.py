@@ -49,7 +49,7 @@ def _file_in_repo(filename, all_files):
   if len(matched) == 1:
     return matched[0]
   elif len(matched) > 1:
-    print >> sys.stderr, ('WARNING: multiple matches for %s; skipping:\n\t%s'
+    print(('WARNING: multiple matches for %s; skipping:\n\t%s', file=sys.stderr)
                           % (new_file, '\n\t'.join(matched)))
   return None
 
@@ -151,7 +151,7 @@ def _parse_key_value(kv_list):
 def _get_per_file_summaries(line_by_line):
   """Summarize the full line-by-line coverage report by file."""
   per_file = []
-  for filepath, lines in line_by_line.iteritems():
+  for filepath, lines in line_by_line.items():
     total_lines = 0
     covered_lines = 0
     for _, cov, _ in lines:
