@@ -527,7 +527,7 @@ bool Compiler::optimize(LoadedModule& module) {
 
 bool Compiler::optimize(Program& program) {
     // The optimizer only needs to run when it is enabled.
-    if (!program.fConfig->fSettings.fOptimize || program.fConfig->fSettings.fSkVMDebugTrace) {
+    if (!program.fConfig->fSettings.fOptimize) {
         return true;
     }
 
