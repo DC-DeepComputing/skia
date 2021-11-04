@@ -966,6 +966,9 @@ optional("gpu") {
     }
     frameworks += [ "Metal.framework" ]
     frameworks += [ "Foundation.framework" ]
+    if (is_ios) {
+      frameworks += [ "UIKit.framework" ]
+    }
     cflags_objcc += [ "-fobjc-arc" ]
   }
 
