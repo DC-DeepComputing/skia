@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca89b4c_9ae1c5a8",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-04T16:48:42Z",
+      "side": 1,
+      "message": "Doesn\u0027t need to live in another file, but want to hoist this magic number to a named constant, just so someone doesn\u0027t accidentally change one half of this test or something?",
+      "range": {
+        "startLine": 156,
+        "startChar": 40,
+        "endLine": 156,
+        "endChar": 47
+      },
+      "revId": "c47907158b321c646eec7c41e8628f8dbd2a54a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
