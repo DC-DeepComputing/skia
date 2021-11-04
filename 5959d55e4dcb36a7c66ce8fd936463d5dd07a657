@@ -280,6 +280,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c8bc831_664d700a",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-04T15:15:20Z",
+      "side": 1,
+      "message": "I think I noticed the snap too, with the software backend only.  It\u0027s going to be noticeable anyway if the animated height becomes \u003d\u003d 0.\n\nI seem to recall some sampling/filter differences between software and GPU sksl, which may explain why the software picture shader looks so much softer.  Might be worth investigating.",
+      "parentUuid": "6afe5301_351953a0",
+      "range": {
+        "startLine": 122,
+        "startChar": 12,
+        "endLine": 122,
+        "endChar": 24
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0f2a08d_08f0601f",
