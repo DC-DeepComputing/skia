@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc84c31_3754914f",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T20:23:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "827ad22d_3618ca6d",
+      "range": {
+        "startLine": 40,
+        "startChar": 41,
+        "endLine": 40,
+        "endChar": 63
+      },
+      "revId": "35b527d9b71de8a5def49293ed40d06a7c7f7cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5031b154_2cc09cd7",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-04T18:41:39Z",
       "side": 1,
       "message": "We can get rid of this divide too, if we fold the math into the shader local matrix, see below.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 40
+      },
+      "revId": "35b527d9b71de8a5def49293ed40d06a7c7f7cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d818454a_9ac4b2b4",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T20:23:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5031b154_2cc09cd7",
       "range": {
         "startLine": 58,
         "startChar": 0,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6b737fa_b7556167",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T20:23:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5f5ec37_7dccf59b",
+      "revId": "35b527d9b71de8a5def49293ed40d06a7c7f7cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be2f63d4_6d9fbc50",
@@ -94,6 +160,30 @@
       "writtenOn": "2021-11-04T18:41:39Z",
       "side": 1,
       "message": "nit: std::move(shaderNode)",
+      "range": {
+        "startLine": 204,
+        "startChar": 85,
+        "endLine": 204,
+        "endChar": 95
+      },
+      "revId": "35b527d9b71de8a5def49293ed40d06a7c7f7cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b50d0210_7e755da2",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T20:23:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be2f63d4_6d9fbc50",
       "range": {
         "startLine": 204,
         "startChar": 85,
