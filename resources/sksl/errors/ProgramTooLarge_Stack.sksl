@@ -1,0 +1,10 @@
+struct S {
+    half4 ah4[1];
+    half ah[99999];
+    half4 h4;
+    half h;
+};
+
+void main() {
+    S s;
+}

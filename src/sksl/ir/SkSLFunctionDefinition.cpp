@@ -6,6 +6,7 @@
  */
 
 #include "include/sksl/DSLCore.h"
+#include "src/core/SkSafeMath.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLContext.h"
@@ -117,6 +118,10 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             }
         }
 
+        size_t stackUsed() {
+            return fStackUsed;
+        }
+
         bool functionReturnsValue() const {
             return !fFunction.returnType().isVoid();
         }
@@ -142,6 +147,23 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
 
         bool visitStatement(Statement& stmt) override {
             switch (stmt.kind()) {
+                case Statement::Kind::kVarDeclaration: {
+                    // This is a rough estimate; it doesn't consider the precision of the base type.
+                    // However, in practice, this reflects what GPUs really do pretty well.
+                    // (i.e., RelaxedPrecision math doesn't mean your variable takes less space.)
+                    // We also don't attempt to reclaim stack space when a block is closed.
+                    size_t prevStackUsed = fStackUsed;
+                    fStackUsed = SkSafeMath::Add(
+                            fStackUsed, stmt.as<VarDeclaration>().var().type().slotCount());
+                    // To avoid overzealous error reporting, only trigger the error at the first
+                    // place where the stack limit is exceeded.
+                    if (prevStackUsed < 100000 && fStackUsed >= 100000) {
+                        fContext.fErrors->error(stmt.fLine, "variable '" +
+                                                            stmt.as<VarDeclaration>().var().name() +
+                                                            "' exceeds the stack size limit");
+                    }
+                    break;
+                }
                 case Statement::Kind::kReturn: {
                     // Early returns from a vertex main() function will bypass sk_Position
                     // normalization, so SkASSERT that we aren't doing that. If this becomes an
@@ -224,6 +246,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         IntrinsicSet* fReferencedIntrinsics;
         // how deeply nested we are in breakable constructs (for, do, switch).
         int fBreakableLevel = 0;
+        // how much stack space the program needs
+        size_t fStackUsed = 0;
         // how deeply nested we are in continuable constructs (for, do).
         // We keep a stack (via a forward_list) in order to disallow continue inside of switch.
         std::forward_list<int> fContinuableLevel{0};
@@ -239,7 +263,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
 
     if (Analysis::CanExitWithoutReturningValue(function, *body)) {
         context.fErrors->error(function.fLine, "function '" + function.name() +
-                                                 "' can exit without returning a value");
+                                               "' can exit without returning a value");
     }
 
     return std::make_unique<FunctionDefinition>(line, &function, builtin, std::move(body),
