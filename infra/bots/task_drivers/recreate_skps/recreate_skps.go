@@ -9,11 +9,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"go.skia.org/infra/go/auth"
 	"go.skia.org/infra/go/depot_tools"
 	"go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/gerrit"
@@ -134,6 +138,7 @@ func main() {
 		skipBuild        = flag.Bool("skip-build", false, "skip build. Helpful for running locally.")
 		gitCacheDirFlag  = flag.String("git_cache", "", "Git cache directory.")
 		checkoutRootFlag = flag.String("checkout_root", "", "Directory to use for checkouts.")
+		workDirFlag      = flag.String("workdir", ".", "Working directory.")
 	)
 	ctx := td.StartRun(projectId, taskId, taskName, output, local)
 	defer td.EndRun(ctx)
@@ -143,7 +148,7 @@ func main() {
 	var g gerrit.GerritInterface
 	if !*dryRun {
 		var err error
-		client, err = auth_steps.InitHttpClient(ctx, *local, gerrit.AuthScope)
+		client, err = auth_steps.InitHttpClient(ctx, *local, gerrit.AuthScope, auth.ScopeUserinfoEmail, auth.ScopeFullControl)
 		if err != nil {
 			td.Fatal(ctx, err)
 		}
@@ -233,12 +238,16 @@ func main() {
 		}
 	}
 
+	pathToDM := path.Join(*workDirFlag, "build", "dm")
+
+
 	// Capture and upload the SKPs.
 	script := filepath.Join(skiaDir, "infra", "bots", "assets", "skp", "create_and_upload.py")
 	cmd := []string{
 		"vpython3", "-u", script,
 		"--chrome_src_path", chromiumDir,
 		"--browser_executable", filepath.Join(outDir, "chrome"),
+		"--dm_path", "WHAT IS THE DM PATH??",
 	}
 	if *dryRun {
 		cmd = append(cmd, "--dry_run")
