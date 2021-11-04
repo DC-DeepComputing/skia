@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5782e300_8254387c",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T18:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2be4fbab_293ac2a6",
+      "range": {
+        "startLine": 25,
+        "startChar": 49,
+        "endLine": 25,
+        "endChar": 52
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c55e33cc_12a0d573",
@@ -140,6 +164,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8360f55_531a76ec",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T18:02:32Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "cca7af0d_23ad2557",
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cc77f99_2672552f",
@@ -153,6 +195,30 @@
       "writtenOn": "2021-11-03T17:42:51Z",
       "side": 1,
       "message": "Since the sksl code is fixed, we should wrap the SkRuntimeEffect as a static singleton to avoid parsing repeatedly (see e.g. ThresholdEffect):\n\n  static sk_sp\u003cSkRuntimeEffect\u003e bulge_effect() {\n      static const SkRuntimeEffect* effect \u003d\n          SkRuntimeEffect::MakeForShader(SkString(gBulgeDisplacementSkSL), {}).effect.release();\n      SkASSERT(effect);\n\n      return sk_ref_sp(effect);\n  }",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfa514f9_6b28efcc",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T18:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cc77f99_2672552f",
       "range": {
         "startLine": 98,
         "startChar": 0,
@@ -541,6 +607,30 @@
       "side": 1,
       "message": "Undone in recent patch, will address in next push.",
       "parentUuid": "c4ff30d6_a33b6a1d",
+      "range": {
+        "startLine": 180,
+        "startChar": 21,
+        "endLine": 180,
+        "endChar": 35
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be6561a_7f6bdc18",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T18:02:32Z",
+      "side": 1,
+      "message": "It seems like clamping it messes with the shader optimization math. Will leave as is.",
+      "parentUuid": "a9d5e428_102274e1",
       "range": {
         "startLine": 180,
         "startChar": 21,
