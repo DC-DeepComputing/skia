@@ -25,6 +25,7 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--chrome_src_path', '-c', required=True)
   parser.add_argument('--browser_executable', '-e', required=True)
+  parser.add_argument('--dm_path', '-d', required=True)
   parser.add_argument('--upload_to_partner_bucket', action='store_true')
   parser.add_argument('--dry_run', action='store_true')
   parser.add_argument('--local', action='store_true')
