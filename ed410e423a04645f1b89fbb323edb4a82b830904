@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bfe0167_06e0904c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-04T15:09:12Z",
+      "side": 1,
+      "message": "Just noticed that this is the philosophical opposite of \"initialize val in SkTHash Slot\" https://skia.googlesource.com/skia/+/55f6fd50ea715a637ec8b79baac8fb87231a6870 . It appears GCC would give a warning when default initialization was no-initialization in this situation, which was worked around by changing to value initialization. However, what was really wanted was to not default initialize at all, since there is in fact no T in an empty slot.",
+      "revId": "ed410e423a04645f1b89fbb323edb4a82b830904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
