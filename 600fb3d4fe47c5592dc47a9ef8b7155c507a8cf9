@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "480e4da6_d164df8a",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-04T10:15:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932de75a_6f3c8f8c",
+      "range": {
+        "startLine": 1116,
+        "startChar": 8,
+        "endLine": 1116,
+        "endChar": 48
+      },
+      "revId": "600fb3d4fe47c5592dc47a9ef8b7155c507a8cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34c5512e_b4dca9f5",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-11-03T20:51:21Z",
       "side": 1,
       "message": "This code and the similar code above should be indented about the same way. Not really particular about which way, though this one should have these last two lines indented somehow. Might want to name the value passed as the second parameter for length reasons?",
+      "revId": "600fb3d4fe47c5592dc47a9ef8b7155c507a8cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68425f9a_daf16791",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-04T10:15:51Z",
+      "side": 1,
+      "message": "Moved the alpha to named variables, reformatted, hope that looks better now.",
+      "parentUuid": "34c5512e_b4dca9f5",
       "revId": "600fb3d4fe47c5592dc47a9ef8b7155c507a8cf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
