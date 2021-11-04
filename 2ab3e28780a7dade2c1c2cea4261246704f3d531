@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b92c4ff6_80635ac0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-04T13:26:40Z",
+      "side": 1,
+      "message": "Tentative upstream fix for the extra Vulkan includes: https://chromium-review.googlesource.com/c/chromium/src/+/3261267",
+      "revId": "2ab3e28780a7dade2c1c2cea4261246704f3d531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
