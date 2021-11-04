@@ -501,6 +501,30 @@
       },
       "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d5e428_102274e1",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-04T15:05:46Z",
+      "side": 1,
+      "message": "Undone in recent patch, will address in next push.",
+      "parentUuid": "c4ff30d6_a33b6a1d",
+      "range": {
+        "startLine": 180,
+        "startChar": 21,
+        "endLine": 180,
+        "endChar": 35
+      },
+      "revId": "5959d55e4dcb36a7c66ce8fd936463d5dd07a657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
