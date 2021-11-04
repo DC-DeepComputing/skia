@@ -1,10 +1,237 @@
-4 registers, 8 instructions:
+14 registers, 235 instructions:
 0	r0 = uniform32 ptr0 14
 1	r1 = uniform32 ptr0 18
 2	r2 = uniform32 ptr0 1C
 3	r3 = uniform32 ptr0 20
+4	r4 = splat 0 (0)
+5	r5 = splat FFFFFFFF (nan)
+6	r6 = splat A (1.4012985e-44)
+7	trace_line L107
+8	trace_line L8
+9	trace_line L9
+10	r7 = splat 5 (7.0064923e-45)
+11	trace_line L9
+12	r8 = splat 1 (1.4012985e-45)
+13	trace_line L9
+14	trace_line L9
+15	r9 = splat 2 (2.8025969e-45)
+16	trace_line L9
+17	trace_line L9
+18	r10 = splat 3 (4.2038954e-45)
+19	trace_line L9
+20	trace_line L9
+21	r11 = splat 4 (5.6051939e-45)
+22	trace_line L9
+23	trace_line L9
+24	trace_line L9
+25	trace_line L9
+26	r12 = splat 6 (8.4077908e-45)
+27	trace_line L9
+28	trace_line L9
+29	trace_line L9
+30	trace_line L9
+31	trace_line L9
+32	trace_line L9
+33	r13 = splat 9 (1.2611686e-44)
+34	trace_line L9
+35	trace_line L9
+36	trace_line L11
+37	trace_line L17
+38	trace_line L18
+39	trace_line L19
+40	trace_line L19
+41	trace_line L20
+42	trace_var_i32 r4 r4 18
+43	trace_line L19
+44	trace_line L19
+45	trace_line L20
+46	trace_var_i32 r8 r4 18
+47	trace_line L19
+48	trace_line L19
+49	trace_line L20
+50	trace_var_i32 r9 r4 18
+51	trace_line L19
+52	trace_line L19
+53	trace_line L20
+54	trace_var_i32 r10 r4 18
+55	trace_line L19
+56	trace_line L19
+57	trace_line L20
+58	trace_var_i32 r11 r4 18
+59	trace_line L19
+60	trace_line L19
+61	trace_line L20
+62	trace_var_i32 r7 r5 24
+63	trace_line L19
+64	trace_line L19
+65	trace_line L20
+66	r7 = splat B (1.5414283e-44)
+67	trace_var_i32 r7 r5 82
+68	trace_line L19
+69	trace_line L19
+70	trace_line L20
+71	r7 = splat 12 (2.5223372e-44)
+72	trace_var_i32 r7 r5 87
+73	trace_line L19
+74	trace_line L19
+75	trace_line L20
+76	r7 = splat 1A (3.643376e-44)
+77	trace_var_i32 r7 r5 92
+78	trace_line L19
+79	trace_line L19
+80	trace_line L20
+81	r7 = splat 23 (4.9045446e-44)
+82	trace_var_i32 r7 r5 97
+83	trace_line L22
+84	trace_line L27
+85	trace_line L28
+86	trace_line L29
+87	trace_line L30
+88	trace_line L30
+89	trace_line L31
+90	trace_var_i32 r4 r5 18
+91	trace_line L30
+92	trace_line L30
+93	trace_line L31
+94	trace_var_i32 r8 r5 26
+95	trace_line L30
+96	trace_line L30
+97	trace_line L31
+98	trace_var_i32 r10 r5 32
+99	trace_line L30
+100	trace_line L30
+101	trace_line L31
+102	trace_var_i32 r12 r5 40
+103	trace_line L30
+104	trace_line L30
+105	trace_line L31
+106	trace_var_i32 r6 r5 20
+107	trace_line L30
+108	trace_line L30
+109	trace_line L31
+110	r6 = splat F (2.1019477e-44)
+111	trace_var_i32 r6 r5 126
+112	trace_line L30
+113	trace_line L30
+114	trace_line L31
+115	r6 = splat 15 (2.9427268e-44)
+116	trace_var_i32 r6 r4 126
+117	trace_line L30
+118	trace_line L30
+119	trace_line L31
+120	r6 = splat 16 (3.0828566e-44)
+121	trace_var_i32 r6 r4 126
+122	trace_line L30
+123	trace_line L30
+124	trace_line L31
+125	r6 = splat 17 (3.2229865e-44)
+126	trace_var_i32 r6 r4 126
+127	trace_line L30
+128	trace_line L30
+129	trace_line L31
+130	r6 = splat 18 (3.3631163e-44)
+131	trace_var_i32 r6 r4 126
+132	trace_line L33
+133	trace_line L41
+134	trace_line L42
+135	trace_line L43
+136	trace_var_i32 r13 r5 49
+137	trace_var_i32 r13 r5 49
+138	trace_var_i32 r13 r5 49
+139	trace_var_i32 r8 r5 26
+140	trace_line L43
+141	trace_var_i32 r13 r5 49
+142	trace_var_i32 r13 r5 49
+143	trace_var_i32 r8 r5 26
+144	trace_var_i32 r9 r5 29
+145	trace_line L43
+146	trace_var_i32 r13 r5 49
+147	trace_var_i32 r8 r5 26
+148	trace_var_i32 r9 r5 29
+149	trace_var_i32 r10 r5 32
+150	trace_line L45
+151	trace_line L53
+152	trace_line L54
+153	trace_line L55
+154	trace_var_i32 r13 r5 49
+155	trace_var_i32 r13 r5 49
+156	trace_var_i32 r13 r5 49
+157	trace_var_i32 r8 r5 26
+158	trace_line L55
+159	trace_var_i32 r13 r5 49
+160	trace_var_i32 r13 r5 49
+161	trace_var_i32 r8 r5 26
+162	trace_var_i32 r9 r5 29
+163	trace_line L55
+164	trace_var_i32 r13 r5 49
+165	trace_var_i32 r8 r5 26
+166	trace_var_i32 r9 r5 29
+167	trace_var_i32 r10 r5 32
+168	trace_line L57
+169	trace_line L65
+170	trace_line L66
+171	trace_line L67
+172	trace_var_i32 r13 r5 49
+173	trace_var_i32 r13 r5 49
+174	trace_var_i32 r13 r5 49
+175	trace_var_i32 r10 r5 32
+176	trace_line L67
+177	trace_var_i32 r13 r5 49
+178	trace_var_i32 r13 r5 49
+179	trace_var_i32 r10 r5 32
+180	trace_var_i32 r9 r5 29
+181	trace_line L67
+182	trace_var_i32 r13 r5 49
+183	trace_var_i32 r10 r5 32
+184	trace_var_i32 r9 r5 29
+185	trace_var_i32 r8 r5 26
+186	trace_line L69
+187	trace_line L77
+188	trace_line L78
+189	trace_line L79
+190	trace_var_i32 r13 r5 49
+191	trace_var_i32 r13 r5 49
+192	trace_var_i32 r13 r5 49
+193	trace_var_i32 r10 r5 32
+194	trace_line L79
+195	trace_var_i32 r13 r5 49
+196	trace_var_i32 r13 r5 49
+197	trace_var_i32 r10 r5 32
+198	trace_var_i32 r9 r5 29
+199	trace_line L79
+200	trace_var_i32 r13 r5 49
+201	trace_var_i32 r10 r5 32
+202	trace_var_i32 r9 r5 29
+203	trace_var_i32 r8 r5 26
+204	trace_line L81
+205	trace_line L99
+206	trace_line L100
+207	trace_line L101
+208	trace_var_i32 r13 r5 49
+209	trace_var_i32 r13 r5 49
+210	trace_var_i32 r13 r5 49
+211	trace_var_i32 r8 r5 26
+212	trace_line L103
+213	trace_line L88
+214	trace_line L89
+215	trace_line L90
+216	trace_var_i32 r13 r5 49
+217	trace_var_i32 r13 r5 49
+218	trace_var_i32 r13 r5 49
+219	trace_var_i32 r8 r5 26
+220	trace_line L90
+221	trace_var_i32 r13 r5 49
+222	trace_var_i32 r13 r5 49
+223	trace_var_i32 r8 r5 26
+224	trace_var_i32 r9 r5 29
+225	trace_line L90
+226	trace_var_i32 r13 r5 49
+227	trace_var_i32 r8 r5 26
+228	trace_var_i32 r9 r5 29
+229	trace_var_i32 r10 r5 32
+230	trace_line L92
 loop:
-4	    store32 ptr1 r0
-5	    store32 ptr2 r1
-6	    store32 ptr3 r2
-7	    store32 ptr4 r3
+231	    store32 ptr1 r0
+232	    store32 ptr2 r1
+233	    store32 ptr3 r2
+234	    store32 ptr4 r3

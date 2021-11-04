@@ -1472,11 +1472,25 @@ Value SkVMGenerator::writeStore(const Expression& lhs, const Value& rhs) {
         slotVal = this->writeConditionalStore(slotVal, rhs[i], mask);
     }
 
+    if (fProgram.fConfig->fSettings.fSkVMDebugTrace) {
+        // Any time a variable is written, emit a matching debug trace.
+        bool isInteger = var.type().componentType().isInteger();
+        for (size_t i = 0; i < rhs.slots(); ++i) {
+            skvm::Val& slotVal = fSlots[slots[i]];
+            if (isInteger) {
+                fBuilder->trace_var(i32(rhs[i]), mask, slotVal);
+            } else {
+                fBuilder->trace_var(f32(rhs[i]), mask, slotVal);
+            }
+        }
+    }
+
     return rhs;
 }
 
 skvm::Val SkVMGenerator::writeConditionalStore(skvm::Val lhs, skvm::Val rhs, skvm::I32 mask) {
-    return select(mask, f32(rhs), f32(lhs)).id;
+    skvm::Val result = select(mask, f32(rhs), f32(lhs)).id;
+    return result;
 }
 
 void SkVMGenerator::writeBlock(const Block& b) {
@@ -1604,6 +1618,12 @@ void SkVMGenerator::writeVarDeclaration(const VarDeclaration& decl) {
 }
 
 void SkVMGenerator::writeStatement(const Statement& s) {
+    if (s.isEmpty()) {
+        return;
+    }
+    if (fProgram.fConfig->fSettings.fSkVMDebugTrace && s.fLine > 0) {
+        fBuilder->trace_line(s.fLine);
+    }
     switch (s.kind()) {
         case Statement::Kind::kBlock:
             this->writeBlock(s.as<Block>());
@@ -1636,11 +1656,9 @@ void SkVMGenerator::writeStatement(const Statement& s) {
         case Statement::Kind::kDo:
             SkDEBUGFAIL("Unsupported control flow");
             break;
-        case Statement::Kind::kInlineMarker:
-        case Statement::Kind::kNop:
-            break;
         default:
-            SkASSERT(false);
+            SkDEBUGFAIL("Unrecognized statement");
+            break;
     }
 }
 
