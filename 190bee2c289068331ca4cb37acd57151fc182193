@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dc710cc_1c499062",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-04T12:52:54Z",
+      "side": 1,
+      "message": "nit: normally SkPoint goes hand in hand with SkVector (for non-positional 2d values).  SkV2 tends to work for both cases.  I\u0027d say let\u0027s use SkPoint/SkVector or SkV2/SkV2.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 47
+      },
+      "revId": "190bee2c289068331ca4cb37acd57151fc182193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "062d377b_335a23c6",
+        "filename": "modules/skottie/src/effects/BuldgeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-04T12:52:54Z",
+      "side": 1,
+      "message": "Most of these are impl details/optimizations for the sksl shader, it seems cleaner to compute these on the fly, in buildEffectShader(), instead of adapter/onSync.  That way we can replace them with a single fHeight attribute (normalized in [-1..1]).",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 49
+      },
+      "revId": "190bee2c289068331ca4cb37acd57151fc182193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
