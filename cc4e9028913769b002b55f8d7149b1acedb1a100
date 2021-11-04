@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "953319b4_63bbc24b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-04T13:25:31Z",
+      "side": 1,
+      "message": "I would like to get unblocked, so this leaves in the problematic RenderTarget API",
+      "revId": "cc4e9028913769b002b55f8d7149b1acedb1a100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
