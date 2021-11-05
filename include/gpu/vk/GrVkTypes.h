@@ -109,16 +109,22 @@ struct GrVkImageInfo {
     GrProtected              fProtected = GrProtected::kNo;
     GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
     VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    bool                     fPartOfSwapchainOrAndroidWindow = false;
 
 #if GR_TEST_UTILS
     bool operator==(const GrVkImageInfo& that) const {
         return fImage == that.fImage && fAlloc == that.fAlloc &&
-               fImageTiling == that.fImageTiling && fImageLayout == that.fImageLayout &&
-               fFormat == that.fFormat && fImageUsageFlags == that.fImageUsageFlags &&
-               fSampleCount == that.fSampleCount && fLevelCount == that.fLevelCount &&
-               fCurrentQueueFamily == that.fCurrentQueueFamily && fProtected == that.fProtected &&
+               fImageTiling == that.fImageTiling &&
+               fImageLayout == that.fImageLayout &&
+               fFormat == that.fFormat &&
+               fImageUsageFlags == that.fImageUsageFlags &&
+               fSampleCount == that.fSampleCount &&
+               fLevelCount == that.fLevelCount &&
+               fCurrentQueueFamily == that.fCurrentQueueFamily &&
+               fProtected == that.fProtected &&
                fYcbcrConversionInfo == that.fYcbcrConversionInfo &&
-               fSharingMode == that.fSharingMode;
+               fSharingMode == that.fSharingMode &&
+               fPartOfSwapchainOrAndroidWindow == that.fPartOfSwapchainOrAndroidWindow;
     }
 #endif
 };
@@ -159,6 +165,7 @@ struct GrVkDrawableInfo {
     VkFormat        fFormat;
     VkRect2D*       fDrawBounds;
     VkImage         fImage;
+    bool            fFromSwapchainOrAndroidWindow;
 };
 
 struct GrVkSurfaceInfo {

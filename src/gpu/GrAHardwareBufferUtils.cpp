@@ -306,7 +306,8 @@ static GrBackendTexture make_vk_backend_texture(
         TexImageCtx* imageCtx,
         bool isProtectedContent,
         const GrBackendFormat& backendFormat,
-        bool isRenderable) {
+        bool isRenderable,
+        boll fromAndroidWindow) {
     SkASSERT(dContext->backend() == GrBackendApi::kVulkan);
     GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
 
@@ -497,6 +498,7 @@ static GrBackendTexture make_vk_backend_texture(
     imageInfo.fProtected = isProtectedContent ? GrProtected::kYes : GrProtected::kNo;
     imageInfo.fYcbcrConversionInfo = *ycbcrConversion;
     imageInfo.fSharingMode = imageCreateInfo.sharingMode;
+    imageInfo.fFromSwapchainOrAndroidWindow = fromAndroidWindow;
 
     *deleteProc = delete_vk_image;
     *updateProc = update_vk_image;
@@ -541,7 +543,8 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* 
                                     TexImageCtx* imageCtx,
                                     bool isProtectedContent,
                                     const GrBackendFormat& backendFormat,
-                                    bool isRenderable) {
+                                    bool isRenderable,
+                                    bool fromAndroidWindow) {
     SkASSERT(dContext);
     if (!dContext || dContext->abandoned()) {
         return GrBackendTexture();
@@ -557,7 +560,7 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* 
 #ifdef SK_VULKAN
         return make_vk_backend_texture(dContext, hardwareBuffer, width, height, deleteProc,
                                        updateProc, imageCtx, createProtectedImage, backendFormat,
-                                       isRenderable);
+                                       isRenderable, fromAndroidWindow);
 #else
         return GrBackendTexture();
 #endif
