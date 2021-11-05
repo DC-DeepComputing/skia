@@ -1,0 +1,22 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "hdrs",
+    srcs = [
+        "Test.h",
+        "TestUtils.h",
+    ],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "Test.cpp",
+        "TestUtils.cpp",
+    ],
+)
+
+filegroup(
+    name = "gms",
+    srcs = ["dashing.cpp"],
+)
