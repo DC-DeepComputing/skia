@@ -13,7 +13,7 @@
 #include "experimental/graphite/src/DrawBufferManager.h"
 #include "experimental/graphite/src/DrawContext.h"
 #include "experimental/graphite/src/DrawList.h"
-#include "experimental/graphite/src/ProgramCache.h"
+#include "experimental/graphite/src/GraphicsPipelineDesc.h"
 #include "experimental/graphite/src/Recorder.h"
 #include "experimental/graphite/src/Renderer.h"
 #include "experimental/graphite/src/TextureProxy.h"
@@ -25,27 +25,6 @@
 #include "src/gpu/BufferWriter.h"
 
 #include <algorithm>
-
-namespace {
-
-// Retrieve the program ID and uniformData ID
-std::tuple<uint32_t, uint32_t> get_ids_from_paint(skgpu::Recorder* recorder,
-                                                  skgpu::PaintParams params) {
-    // TODO: add an ExtractCombo that takes PaintParams directly?
-    SkPaint p;
-
-    p.setColor(params.color());
-    p.setBlendMode(params.blendMode());
-    p.setShader(params.refShader());
-
-    // TODO: perhaps just return the ids here rather than the sk_sps?
-    auto [ combo, uniformData] = ExtractCombo(recorder->uniformCache(), p);
-    auto programInfo = recorder->programCache()->findOrCreateProgram(combo);
-
-    return { programInfo->id(), uniformData->id() };
-}
-
-} // anonymous namespace
 
 namespace skgpu {
 
@@ -172,6 +151,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     bool requiresMSAA = false;
     Rect passBounds = Rect::InfiniteInverted();
 
+    std::unordered_map<GraphicsPipelineDesc, Hash, Eq> pipelines;
+
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount()); // will not exceed but may use less with occluded draws
 
@@ -184,35 +165,36 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
-        uint32_t programID = ProgramCache::kInvalidProgramID;
-        uint32_t shadingUniformID = UniformData::kInvalidUniformID;
+        Combination shader;
+        sk_sp<UniformData> shadingUniforms = nullptr;
         if (draw.fPaintParams.has_value()) {
-            std::tie(programID, shadingUniformID) = get_ids_from_paint(recorder,
-                                                                       draw.fPaintParams.value());
-        }
+            std::tie(shader, shadingUniforms) = ExtractCombo(recorder->uniformCache(),
+                                                             draw.fPaintParams.value());
+        } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
             const RenderStep* const step = draw.fRenderer.steps()[stepIndex];
+            const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
-            // TODO ask step to generate a pipeline description based on the above shading code, and
-            // have pipelineIndex point to that description in the accumulated list of descs
-            uint32_t pipelineIndex = 0;
+            Combination stepShader;
+            uint32_t shadingIndex = UniformData::kInvalidUniformID;
+            if (performsShading) {
+                stepShader = shader;
+                shadingIndex = shadingUniforms->id();
+            } // else depth-only draw or stencil-only step of renderer so no shading is needed
+
             // TODO step writes out geometry uniforms and have geomIndex point to that buffer data,
             // providing shape, transform, scissor, and paint depth to RenderStep
             uint32_t geometryIndex = 0;
 
-            uint32_t shadingIndex = UniformData::kInvalidUniformID;
-
-            const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
-            if (performsShading) {
-                // TODO: we need to combine the 'programID' with the RenderPass info and the
-                // geometric rendering method to get the true 'pipelineIndex'
-                pipelineIndex = programID;
-                shadingIndex = shadingUniformID;
-            } else {
-                // TODO: fill in 'pipelineIndex' for Chris' stencil/depth draws
+            GraphicsPipelineDesc desc;
+            // TODO have step fill in stencil settings, vertex attributes, and vertex shader key
+            desc.setProgram(TestVertexShader::kVertexTris, stepShader);
+            uint32_t pipelineIndex = pipelines.get(desc);
+            if (!pipelineIndex) {
+                pipelineIndex = SkTo<uint32_t>(pipelines.size() - 1);
+                pipelines.insert({desc, pipelineIndex});
             }
-
             keys.push_back({&draw, stepIndex, pipelineIndex, geometryIndex, shadingIndex});
         }
 
@@ -288,6 +270,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         if (key.shadingUniforms() != lastShadingUniforms) {
             auto ud = lookup(recorder, key.shadingUniforms());
 
+            // TODO: We should remember if the UD has already been uploaded and re-bind the existing
+            // buffer+offset instead of always making a new copy. We don't just upload the data
+            // as part of ExtractCombo because eventually we'll choose between push constants
+            // and uniform buffers.
             auto [writer, bufferInfo] = bufferMgr->getUniformWriter(ud->dataSize());
             writer.write(ud->data(), ud->dataSize());
             // TODO: recording 'bufferInfo' somewhere to allow a later uniform bind call

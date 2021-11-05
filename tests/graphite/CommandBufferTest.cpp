@@ -58,6 +58,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
                                                                           textureInfo);
     REPORTER_ASSERT(reporter, texture);
 
+
+
     RenderPassDesc renderPassDesc = {};
     renderPassDesc.fColorAttachment.fTexture = texture;
     renderPassDesc.fColorAttachment.fLoadOp = LoadOp::kClear;
