@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "affe8761_372ce40d",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-05T19:35:28Z",
+      "side": 1,
+      "message": "I guess there\u0027s no way to accidentally elide/smash the entire loop down without putting the body on the same line as the loop, which would step over the whole thing in any other debugger anyway.\n\nAre we going to want to (in the future) think about injecting additional trace_line ops at other statement (or even expression) breaks within a single line? Thinking about loops where you might want to step to the next and test separately? Just thinking out loud...",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 24
+      },
+      "revId": "45a19bbde6d45129eb27e411baa2765706d6b10c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
