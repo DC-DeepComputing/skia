@@ -16,6 +16,24 @@
       "message": "Seems fine for now, but I can imagine that we\u0027ll want these to be orthogonal (with a best effort when optimizing)? Or - given how aggressively skvm itself does folding and CSE, maybe it doesn\u0027t matter, and we can keep this as is?",
       "revId": "f6070dda4c09fdff20f212bd3d68fba56e1f95e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0188cd0c_7631ca74",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-05T13:28:34Z",
+      "side": 1,
+      "message": "The idea here is that when debugging, anything that eliminates or reorders code can cause the debugger\u0027s behavior to be confusing; e.g., we want to avoid a scenario where stepping forward could jump ahead 3 lines because the inliner managed to fold a bunch of stuff into nothing. In general I don\u0027t think it\u0027s useful to debug with optimization on, for all the normal reasons. Of course, that\u0027s all separate from SkVM\u0027s program analysis.\n\nInterestingly, even though SkVM does pretty aggressive optimization, the only reordering is \"hoist\". Since the \"trace-var\" opcodes I\u0027m adding add a data dependency (which prevents dead work from being deleted) and I\u0027m not going to allow them to hoist, the trace opcodes actually seem to do a pretty good job defeating the optimizations that would make debugging difficult. The trace should show all the work happening in order, even if technically the value might have been computed a few cycles earlier. At least that\u0027s my current theory. There\u0027s a work-in-progress followup CL which you can peek at if you want, showing this stuff, but it\u0027s not ready to submit yet.",
+      "parentUuid": "3b5ba1e2_ca482aec",
+      "revId": "f6070dda4c09fdff20f212bd3d68fba56e1f95e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
