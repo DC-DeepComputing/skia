@@ -25,6 +25,16 @@ config_setting(
     ],
 )
 
+config_setting(
+    name = "debug_build",
+    values = {"compilation_mode": "dbg"},
+)
+
+config_setting(
+    name = "release_build",
+    values = {"compilation_mode": "opt"},
+)
+
 constraint_value(
     name = "fuchsia",
     constraint_setting = "@platforms//os:os",
@@ -80,4 +90,101 @@ constraint_value(
     name = "android_skdebug",
     constraint_setting = ":skdebug_impl",
     exec_compatible_with = ["@platforms//os:android"],
+)
+
+constraint_setting(
+    name = "fontmanager",
+    default_constraint_value = ":empty_fontmgr",
+)
+
+constraint_value(
+    name = "empty_fontmgr",
+    constraint_setting = ":fontmanager",
+)
+
+constraint_value(
+    name = "custom_directory_fontmgr",
+    constraint_setting = ":fontmanager",
+)
+
+constraint_value(
+    name = "win_fontmgr",
+    constraint_setting = ":fontmanager",
+    exec_compatible_with = ["@platforms//os:windows"],
+)
+
+constraint_value(
+    name = "win_factory_fontmgr",
+    constraint_setting = ":fontmanager",
+    exec_compatible_with = ["@platforms//os:windows"],
+)
+
+constraint_setting(
+    name = "skia_gl_standard",
+    default_constraint_value = ":no_gl_standard",
+)
+
+constraint_value(
+    name = "no_gl_standard",
+    constraint_setting = ":skia_gl_standard",
+)
+
+constraint_value(
+    name = "gl_standard",
+    constraint_setting = ":skia_gl_standard",
+)
+
+constraint_value(
+    name = "gles_standard",
+    constraint_setting = ":skia_gl_standard",
+)
+
+constraint_value(
+    name = "webgl_standard",
+    constraint_setting = ":skia_gl_standard",
+)
+
+constraint_setting(
+    name = "gl_backend",
+    default_constraint_value = ":no_gl_backend",
+)
+
+constraint_value(
+    name = "no_gl_backend",
+    constraint_setting = ":gl_backend",
+)
+
+constraint_value(
+    name = "use_gl_backend",
+    constraint_setting = ":gl_backend",
+)
+
+constraint_setting(
+    name = "vulkan_backend",
+    default_constraint_value = ":no_vulkan_backend",
+)
+
+constraint_value(
+    name = "no_vulkan_backend",
+    constraint_setting = ":vulkan_backend",
+)
+
+constraint_value(
+    name = "use_vulkan_backend",
+    constraint_setting = ":vulkan_backend",
+)
+
+constraint_setting(
+    name = "mock_gpu_backend",
+    default_constraint_value = ":no_mock_gpu_backend",
+)
+
+constraint_value(
+    name = "no_mock_gpu_backend",
+    constraint_setting = ":mock_gpu_backend",
+)
+
+constraint_value(
+    name = "use_mock_gpu_backend",
+    constraint_setting = ":mock_gpu_backend",
 )

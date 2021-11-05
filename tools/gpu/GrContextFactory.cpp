@@ -9,6 +9,9 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "tools/gpu/GrContextFactory.h"
+#include "src/gpu/GrCaps.h"
+#include "tools/gpu/gl/command_buffer/GLTestContext_command_buffer.h"
+
 #ifdef SK_GL
 #include "tools/gpu/gl/GLTestContext.h"
 #endif
@@ -16,7 +19,6 @@
 #if SK_ANGLE
 #include "tools/gpu/gl/angle/GLTestContext_angle.h"
 #endif
-#include "tools/gpu/gl/command_buffer/GLTestContext_command_buffer.h"
 #ifdef SK_VULKAN
 #include "tools/gpu/vk/VkTestContext.h"
 #endif
@@ -29,8 +31,9 @@
 #ifdef SK_DAWN
 #include "tools/gpu/dawn/DawnTestContext.h"
 #endif
-#include "src/gpu/GrCaps.h"
+#ifdef SK_MOCK_GPU
 #include "tools/gpu/mock/MockTestContext.h"
+#endif
 
 #if defined(SK_BUILD_FOR_WIN) && defined(SK_ENABLE_DISCRETE_GPU)
 extern "C" {
@@ -292,6 +295,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             break;
         }
 #endif
+#ifdef SK_MOCK_GPU
         case GrBackendApi::kMock: {
             TestContext* sharedContext = primaryContext ? primaryContext->fTestContext : nullptr;
             SkASSERT(kMock_ContextType == type);
@@ -301,6 +305,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             }
             break;
         }
+#endif
         default:
             return ContextInfo();
     }

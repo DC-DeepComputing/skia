@@ -26,7 +26,9 @@ struct GrD3DSurfaceInfo;
 #ifdef SK_DAWN
 #include "include/private/GrDawnTypesPriv.h"
 #endif
+#ifdef SK_MOCK_GPU
 #include "include/private/GrMockTypesPriv.h"
+#endif
 
 class GrSurfaceInfo {
 public:
@@ -70,6 +72,7 @@ public:
             , fProtected(dawnInfo.fProtected)
             , fDawnSpec(dawnInfo) {}
 #endif
+#ifdef SK_MOCK_GPU
     GrSurfaceInfo(const GrMockSurfaceInfo& mockInfo)
             : fBackend(GrBackendApi::kMock)
             , fValid(true)
@@ -77,6 +80,7 @@ public:
             , fLevelCount(mockInfo.fLevelCount)
             , fProtected(mockInfo.fProtected)
             , fMockSpec(mockInfo) {}
+#endif
 
     ~GrSurfaceInfo();
     GrSurfaceInfo(const GrSurfaceInfo&) = default;
@@ -127,6 +131,7 @@ public:
         return true;
     }
 #endif
+#ifdef SK_MOCK_GPU
     bool getMockSurfaceInfo(GrMockSurfaceInfo* info) const {
         if (!this->isValid() || fBackend != GrBackendApi::kMock) {
             return false;
@@ -134,6 +139,7 @@ public:
         *info = GrMockTextureSpecToSurfaceInfo(fMockSpec, fSampleCount, fLevelCount, fProtected);
         return true;
     }
+#endif
 
 private:
     GrBackendApi fBackend = GrBackendApi::kMock;
@@ -159,7 +165,9 @@ private:
 #ifdef SK_DAWN
         GrDawnTextureSpec fDawnSpec;
 #endif
+#ifdef SK_MOCK_GPU
         GrMockTextureSpec fMockSpec;
+#endif
     };
 };
 

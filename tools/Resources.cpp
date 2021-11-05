@@ -7,7 +7,6 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
-#include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"

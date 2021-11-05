@@ -1,0 +1,87 @@
+package(default_visibility = ["//:__subpackages__"])
+
+# https://github.com/bazelbuild/bazel-skylib
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+filegroup(
+    name = "core-srcs",
+    testonly = True,
+    srcs = [
+        "Registry.h",
+        "ResourceFactory.h",
+        "Resources.cpp",
+        "Resources.h",
+        "ToolUtils.cpp",
+        "ToolUtils.h",
+        "flags/CommandLineFlags.cpp",
+        "flags/CommandLineFlags.h",
+        # "fonts/TestFontMgr.cpp",
+        #"fonts/TestFontMgr.h",
+        #"fonts/TestTypeface.cpp",
+        #"fonts/TestTypeface.h",
+        #"fonts/ToolUtilsFont.cpp",
+    ],
+)
+
+filegroup(
+    name = "gpu-srcs",
+    testonly = True,
+    srcs = [
+        "gpu/FenceSync.h",
+        "gpu/FlushFinishTracker.cpp",
+        "gpu/FlushFinishTracker.h",
+        "gpu/GpuTimer.h",
+        "gpu/GrContextFactory.cpp",
+        "gpu/GrContextFactory.h",
+        "gpu/TestContext.cpp",
+        "gpu/TestContext.h",
+        "gpu/gl/GLTestContext.cpp",
+        "gpu/gl/GLTestContext.h",
+        "gpu/gl/command_buffer/GLTestContext_command_buffer.h",
+    ],
+)
+
+filegroup(
+    name = "hdrs",
+    srcs = [
+        "Registry.h",
+        "ResourceFactory.h",
+        "flags/CommandLineFlags.h",
+    ],
+)
+
+filegroup(
+    name = "srcs",
+    testonly = True,
+    srcs = [
+        ":core-srcs",
+        ":gpu-srcs",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+filegroup(
+    name = "txts",
+    testonly = True,
+    srcs = [
+        "fonts/test_font_index.inc",
+        "fonts/test_font_monospace.inc",
+        "fonts/test_font_sans_serif.inc",
+        "fonts/test_font_serif.inc",
+    ],
+)
+
+cc_library(
+    name = "hash_and_encode",
+    testonly = True,
+    srcs = [
+        "HashAndEncode.cpp",
+        "flags/CommandLineFlags.cpp",
+        "flags/CommandLineFlags.h",
+    ],
+    hdrs = ["HashAndEncode.h"],
+    deps = [
+        "//:skia-core",
+        "//third_party:libpng",
+    ],
+)
