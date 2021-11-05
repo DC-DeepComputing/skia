@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0552a755_7b4d01dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-05T13:20:02Z",
+      "side": 1,
+      "message": "Heather, this revert fixes a performance regression I introduced on some Android devices. (It\u0027s a non-trivial regression on some canvas2D operations, from looking at the benchmarks). How hard is it to sneak this onto the branch?",
+      "revId": "3018a47779bda1e9ee4a07264a54404cb9d77d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
