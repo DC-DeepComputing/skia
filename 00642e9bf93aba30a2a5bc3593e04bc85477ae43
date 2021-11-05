@@ -16,6 +16,23 @@
       "message": "The build failures are gone on the Chrome roll. I\u0027m not sure if the few test failures are actually a result of my change (if so, I\u0027m not sure how/why) or a flake.\n\nGreg, WDYT?",
       "revId": "00642e9bf93aba30a2a5bc3593e04bc85477ae43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7534fcd_ae508848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-05T17:57:41Z",
+      "side": 1,
+      "message": "Looks like the current chrome failures are not from this CL as far as I can tell",
+      "revId": "00642e9bf93aba30a2a5bc3593e04bc85477ae43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
