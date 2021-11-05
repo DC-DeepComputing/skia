@@ -9,7 +9,7 @@ found in the LICENSE file.
 '''
 
 '''
-Rewrites a JSON file to use Python's standard JSON pretty-print format,
+Rewrites a JSON file to use Python's standard JSON pretty-print(format,)
 so that subsequent runs of rebaseline.py will generate useful diffs
 (only the actual checksum differences will show up as diffs, not obscured
 by format differences).

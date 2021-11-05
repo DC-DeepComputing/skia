@@ -32,6 +32,6 @@ def get(repo_url, filepath):
 
 if __name__ == '__main__':
   if len(sys.argv) != 3:
-    print >> sys.stderr, 'Usage: %s <repo_url> <filepath>' % sys.argv[0]
+    print('Usage: %s <repo_url> <filepath>' % sys.argv[0], file=sys.stderr)
     sys.exit(1)
   sys.stdout.write(get(sys.argv[1], sys.argv[2]))

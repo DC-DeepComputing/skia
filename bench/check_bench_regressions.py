@@ -85,7 +85,7 @@ class Label:
         return (hash(self.bench) ^
                 hash(self.config) ^
                 hash(self.time_type) ^
-                hash(frozenset(self.settings.iteritems())))
+                hash(frozenset(self.settings.items())))
 
 def create_bench_dict(revision_data_points):
     """Convert current revision data into a dictionary of line data.
