@@ -76,7 +76,7 @@ class HardwareAndroid(Hardware):
     Hardware.sanity_check(self)
 
   def print_debug_diagnostics(self):
-    # search for and print thermal trip points that may have been exceeded.
+    # search for and print(thermal trip points that may have been exceeded.)
     self._adb.shell('''\
       THERMALDIR=/sys/class/thermal
       if [ ! -d $THERMALDIR ]; then

@@ -49,7 +49,7 @@ def toggle_chromium(args):
   stash_output = subprocess.check_output(['git', 'stash']).strip()
 
   if branch != "master" or stash_output != EXPECTED_STASH_OUT:
-    print ("Please checkout a clean master branch at your chromium repo (%s) "
+    print(("Please checkout a clean master branch at your chromium repo (%s) ")
         "before running this script") % args.chromium_dir
     if stash_output != EXPECTED_STASH_OUT:
       subprocess.check_call(['git', 'stash', 'pop'])
@@ -101,7 +101,7 @@ def toggle_chromium(args):
 def toggle_google3(args):
   G3_SCRIPT_DIR = os.path.expanduser("~/skia-g3/scripts")
   if not os.path.isdir(G3_SCRIPT_DIR):
-    print ("Google3 directory unavailable.\n"
+    print(("Google3 directory unavailable.\n")
            "Please see "
            "https://sites.google.com/a/google.com/skia/rebaseline#g3_flag "
            "for Google3 setup.")
