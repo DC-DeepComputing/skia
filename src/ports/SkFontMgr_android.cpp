@@ -170,8 +170,35 @@ class SkFontStyleSet_Android : public SkFontStyleSet {
     typedef SkTypeface_FreeType::Scanner Scanner;
 
 public:
+    struct ScanKey {
+        ScanKey() : ttcIndex(0) {}
+        ScanKey(const SkString& p, int ttc) : path(p), ttcIndex(ttc) {}
+
+        SkString path;
+        int ttcIndex;
+
+        bool operator==(const ScanKey& other) const {
+            return other.path == path && other.ttcIndex == ttcIndex;
+        }
+
+        struct Hash {
+            uint32_t operator()(const ScanKey& key) const {
+                return SkGoodHash()(key.path) ^ key.ttcIndex;
+            }
+        };
+    };
+
+    struct ScanResult {
+        SkString familyName;
+        SkFontStyle style;
+        bool isFixedWidth;
+        SkTypeface_FreeType::Scanner::AxisDefinitions axisDefinitions;
+    };
+
+    using ScanCache = SkTHashMap<ScanKey, ScanResult, ScanKey::Hash>;
+
     explicit SkFontStyleSet_Android(const FontFamily& family, const Scanner& scanner,
-                                    const bool cacheFontFiles) {
+                                    ScanCache& scanCache, const bool cacheFontFiles) {
         const SkString* cannonicalFamilyName = nullptr;
         if (family.fNames.count() > 0) {
             cannonicalFamilyName = &family.fNames[0];
@@ -185,26 +212,29 @@ public:
             SkString pathName(family.fBasePath);
             pathName.append(fontFile.fFileName);
 
-            std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(pathName.c_str());
-            if (!stream) {
-                SkDEBUGF("Requested font file %s does not exist or cannot be opened.\n",
-                         pathName.c_str());
-                continue;
-            }
-
             const int ttcIndex = fontFile.fIndex;
-            SkString familyName;
-            SkFontStyle style;
-            bool isFixedWidth;
-            Scanner::AxisDefinitions axisDefinitions;
-            if (!scanner.scanFont(stream.get(), ttcIndex,
-                                  &familyName, &style, &isFixedWidth, &axisDefinitions))
-            {
-                SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
-                         pathName.c_str());
-                continue;
+            ScanKey scanKey(pathName, ttcIndex);
+            ScanResult* scanResult = scanCache.find(scanKey);
+            if (!scanResult) {
+                std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(pathName.c_str());
+                if (!stream) {
+                    SkDEBUGF("Requested font file %s does not exist or cannot be opened.\n",
+                             pathName.c_str());
+                    continue;
+                }
+
+                ScanResult newResult;
+                if (!scanner.scanFont(stream.get(), ttcIndex,
+                                      &newResult.familyName, &newResult.style, &newResult.isFixedWidth, &newResult.axisDefinitions))
+                {
+                    SkDEBUGF("Requested font file %s exists, but is not a valid font.\n",
+                            pathName.c_str());
+                    continue;
+                }
+                scanResult = scanCache.set(scanKey, newResult);
             }
 
+            SkFontStyle style = scanResult->style;
             int weight = fontFile.fWeight != 0 ? fontFile.fWeight : style.weight();
             SkFontStyle::Slant slant = style.slant();
             switch (fontFile.fStyle) {
@@ -223,21 +253,24 @@ public:
             // The first specified family name overrides the family name found in the font.
             // TODO: SkTypeface_AndroidSystem::onCreateFamilyNameIterator should return
             // all of the specified family names in addition to the names found in the font.
+            SkString familyName;
             if (cannonicalFamilyName != nullptr) {
                 familyName = *cannonicalFamilyName;
+            } else {
+                familyName = scanResult->familyName;
             }
 
-            SkAutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.count());
+            SkAutoSTMalloc<4, SkFixed> axisValues(scanResult->axisDefinitions.count());
             SkFontArguments::VariationPosition position = {
                 fontFile.fVariationDesignPosition.begin(),
                 fontFile.fVariationDesignPosition.count()
             };
-            Scanner::computeAxisValues(axisDefinitions, position,
+            Scanner::computeAxisValues(scanResult->axisDefinitions, position,
                                        axisValues, familyName);
 
             fStyles.push_back().reset(new SkTypeface_AndroidSystem(
-                    pathName, cacheFontFiles, ttcIndex, axisValues.get(), axisDefinitions.count(),
-                    style, isFixedWidth, familyName, family.fLanguages, variant));
+                    pathName, cacheFontFiles, ttcIndex, axisValues.get(), scanResult->axisDefinitions.count(),
+                    style, scanResult->isFixedWidth, familyName, family.fLanguages, variant));
         }
     }
 
@@ -487,7 +520,6 @@ protected:
         return sk_sp<SkTypeface>(fDefaultStyleSet->matchStyle(style));
     }
 
-
 private:
 
     SkTypeface_FreeType::Scanner fScanner;
@@ -497,6 +529,8 @@ private:
 
     SkTArray<NameToFamily, true> fNameToFamilyMap;
     SkTArray<NameToFamily, true> fFallbackNameToFamilyMap;
+
+    SkFontStyleSet_Android::ScanCache fScanCache;
 
     void addFamily(FontFamily& family, const bool isolated, int familyIndex) {
         SkTArray<NameToFamily, true>* nameToFamily = &fNameToFamilyMap;
@@ -510,7 +544,7 @@ private:
         }
 
         sk_sp<SkFontStyleSet_Android> newSet =
-            sk_make_sp<SkFontStyleSet_Android>(family, fScanner, isolated);
+            sk_make_sp<SkFontStyleSet_Android>(family, fScanner, fScanCache, isolated);
         if (0 == newSet->count()) {
             return;
         }
