@@ -22,6 +22,30 @@
       },
       "revId": "45a19bbde6d45129eb27e411baa2765706d6b10c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d263abc8_5d032042",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-05T19:40:07Z",
+      "side": 1,
+      "message": "I think a lot of that depends on how it feels when we try it. It\u0027s certainly something we can tweak once we are further along. Right now I\u0027ve got code which actively seeks out and eliminates redundant trace_lines (two identical trace_lines in a row with no intervening ops), but maybe they will be less redundant once we start to emit more tracing information. e.g.:\n\n    i++; i++; i++;\n  \nDo we want to click \"next\" three times on this line or one time? I\u0027m not even sure what Xcode/Dev Studio would do TBH.\n\nAs for loops, the next and test are mandated by ES2 to be very boring and almost certainly not worthy of special attention.",
+      "parentUuid": "affe8761_372ce40d",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 24
+      },
+      "revId": "45a19bbde6d45129eb27e411baa2765706d6b10c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
