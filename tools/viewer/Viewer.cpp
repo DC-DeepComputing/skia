@@ -2643,6 +2643,7 @@ void Viewer::drawImGui() {
 
                 if (ImGui::Button("Clear")) {
                     cache->reset();
+                    fDisassemblyCache.reset();
                 }
 
                 // First, go through the cache and restore the original program if we were hovering
@@ -2668,14 +2669,24 @@ void Viewer::drawImGui() {
                         SkDynamicMemoryWStream stream;
                         program->dump(&stream);
                         auto dumpData = stream.detachAsData();
+                        std::string dumpString((const char*)dumpData->data(), dumpData->size());
+
+                        std::string* asmString = fDisassemblyCache.find(*key);
+                        if (!asmString) {
+                            program->disassemble(&stream);
+                            auto asmData = stream.detachAsData();
+                            asmString = fDisassemblyCache.set(
+                                    *key,
+                                    std::string((const char*)asmData->data(), asmData->size()));
+                        }
 
                         auto stringBox = [](const char* label, std::string* str) {
                             int lines = std::count(str->begin(), str->end(), '\n') + 2;
                             ImVec2 boxSize(-1.0f, ImGui::GetTextLineHeight() * std::min(lines, 30));
                             ImGui::InputTextMultiline(label, str, boxSize);
                         };
-                        std::string dumpString((const char*)dumpData->data(), dumpData->size());
                         stringBox("##VM", &dumpString);
+                        stringBox("##ASM", asmString);
 
                         ImGui::TreePop();
                     }
