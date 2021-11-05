@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cfdb03e_8c144f68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-05T13:07:35Z",
+      "side": 1,
+      "message": "Took a peek at this after I reviewed the previous CL...",
+      "revId": "1d4462322575a3245a40145c3da4a644e2d09a3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "392d152b_c99635d1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-05T13:07:35Z",
+      "side": 1,
+      "message": "I don\u0027t know what the full design is yet, but I feel like the last argument to trace_var is supposed to just be slots[i] ? That will be a consistent index for that SkSL identifier, even as the value changes over time.",
+      "range": {
+        "startLine": 1479,
+        "startChar": 33,
+        "endLine": 1479,
+        "endChar": 49
+      },
+      "revId": "1d4462322575a3245a40145c3da4a644e2d09a3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
