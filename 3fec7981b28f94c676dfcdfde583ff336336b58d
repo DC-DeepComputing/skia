@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f944285f_5752de59",
+        "filename": "modules/canvaskit/external_test/typescript_browser/module_uses_ck.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-11-05T18:15:08Z",
+      "side": 1,
+      "message": "Consider adding a comment explaining why this indirection is necessary.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 43
+      },
+      "revId": "3fec7981b28f94c676dfcdfde583ff336336b58d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
