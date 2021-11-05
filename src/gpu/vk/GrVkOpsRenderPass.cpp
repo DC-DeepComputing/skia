@@ -859,11 +859,8 @@ void GrVkOpsRenderPass::onExecuteDrawable(std::unique_ptr<SkDrawable::GpuDrawHan
     SkAssertResult(fCurrentRenderPass->colorAttachmentIndex(&vkInfo.fColorAttachmentIndex));
     vkInfo.fFormat = fFramebuffer->colorAttachment()->imageFormat();
     vkInfo.fDrawBounds = &bounds;
-#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-    vkInfo.fImage = fFramebuffer->colorAttachment()->image();
-#else
-    vkInfo.fImage = VK_NULL_HANDLE;
-#endif //SK_BUILD_FOR_ANDROID_FRAMEWORK
+    vkInfo.fFromSwapchainOrAndroidWindow =
+            fFramebuffer->colorAttachment()->vkImageInfo().fPartOfSwapchainOrAndroidWindow;
 
     GrBackendDrawableInfo info(vkInfo);
 
