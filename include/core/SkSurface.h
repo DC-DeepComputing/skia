@@ -374,13 +374,16 @@ public:
         @param colorSpace      range of colors; may be nullptr
         @param surfaceProps    LCD striping orientation and setting for device independent
                                fonts; may be nullptr
+        @param fromWindow      Whether or not the AHardwareBuffer is part of an Android Window.
+                               Currently only used with Vulkan backend.
         @return                created SkSurface, or nullptr
     */
     static sk_sp<SkSurface> MakeFromAHardwareBuffer(GrDirectContext* context,
                                                     AHardwareBuffer* hardwareBuffer,
                                                     GrSurfaceOrigin origin,
                                                     sk_sp<SkColorSpace> colorSpace,
-                                                    const SkSurfaceProps* surfaceProps);
+                                                    const SkSurfaceProps* surfaceProps,
+                                                    bool fromWindow = false);
 #endif
 
 #ifdef SK_METAL
