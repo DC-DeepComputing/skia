@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0deffcfe_bf4c0f66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-05T20:35:55Z",
+      "side": 1,
+      "message": "IMO this is a cleaner approach to handles Webviews layer needs compared to things talked about offline. Those included things like adding \"in save layer\" queries to canvas and also ways to inform Android\u0027s webview code that we were in the correct canvas (in cases of N-Way or recording canvas).\n\nThis change leaves everything as properties of the actual backend surface and takes Skia\u0027s pipeline out of the loop.",
+      "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90c10c84_3e28bea3",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-05T20:35:55Z",
+      "side": 1,
+      "message": "Derek is there anyway to get this sort of info from the AHB itself? I didn\u0027t see anything in the AHB_describe but I definitely could have missed things. Would be much nicer to not have to pass this value in here.",
+      "range": {
+        "startLine": 377,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 71
+      },
+      "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

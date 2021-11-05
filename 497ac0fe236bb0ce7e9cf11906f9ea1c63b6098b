@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bdccb4_b1e2bcd4",
+        "filename": "include/gpu/vk/GrVkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-05T20:35:55Z",
+      "side": 0,
+      "message": "So it looks like 2 years ago I did cave and allowed Stan to add the VkImage here to be used for this same reason. However, looking in Android it seems like this was never actually used to determine if we were in a layer. Now I\u0027m still not a fan of passing the VkImage here (we did restrict it to framework only), so we have to trust the user doesn\u0027t actually try to use the VkImage.\n\nSo we have two options here:\n1) We could abandon this CL and leave the VkImage as is. Then Android would need to add code in VkFunctorDrawHandler::draw, to access the vulkan window surfaces, extract the VkImages (Android doesn\u0027t directly have the VkImages since it just produces AHB so need to go through SkSurface), and compare if they match this VkImage.\n\n2) Land this CL. This means minimal changes on the Android side. However, this CL has more awkward public APIs with the tracking of things coming from Android windows.\n\nI honestly could be fine with either approach especially since we restrict the VkImage being passed only to the Android Framework in 1).",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "497ac0fe236bb0ce7e9cf11906f9ea1c63b6098b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
