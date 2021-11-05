@@ -22,6 +22,30 @@
       },
       "revId": "3fec7981b28f94c676dfcdfde583ff336336b58d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20328b18_eab63a42",
+        "filename": "modules/canvaskit/external_test/typescript_browser/module_uses_ck.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-05T18:36:25Z",
+      "side": 1,
+      "message": "What do you mean? The fact that it needs to be \"declared\" because the script is loaded elsewhere? Or the typeof shenanigans?",
+      "parentUuid": "f944285f_5752de59",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 43
+      },
+      "revId": "3fec7981b28f94c676dfcdfde583ff336336b58d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
