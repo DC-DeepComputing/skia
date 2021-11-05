@@ -16,9 +16,6 @@ template <typename Fn>
 static void test_jit_and_interpreter(const skvm::Builder& b, Fn&& test) {
     skvm::Program p = b.done();
     test(p);
-    if (p.hasJIT()) {
-        test(b.done(/*debug_name=*/nullptr, /*allow_jit=*/false));
-    }
 }
 
 DEF_TEST(SkVM_eliminate_dead_code, r) {
@@ -2597,5 +2594,42 @@ DEF_TEST(SkVM_fast_mul, r) {
                 REPORTER_ASSERT(r, isnan(slow[i]));
             }
         }
+    });
+}
+
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+DEF_TEST(SkVM_for, r) {
+    const char* src = "float main(float x, float y) { float sum = 0.0;  "
+            "for (float a = 0.0; a < 13.0; a += 1.0) { "
+            "    for (float b = 0.0; b < 3.0; b += 1.0) { "
+            "        for (float c = 0.0; c < 3.0; c += 1.0) { "
+            "     if (x > y) sum += x * a + y * b; else sum += x * y * c; }"
+            " } } "
+            "return 0.0; }";
+    GrShaderCaps caps;
+    SkSL::Compiler compiler(&caps);
+    SkSL::Program::Settings settings;
+    auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric,
+                                           SkSL::String(src), settings);
+
+    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
+    skvm::Builder b;
+    SkSL::ProgramToSkVM(*program, *main, &b, /*uniforms=*/{});
+    //skvm::Program p = b.done();
+
+    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+
+        float xs[] = { 1.0f, 3.0f, 5.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+              ys[] = { 4.0f, 4.0f, 4.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+        float rets[12];
+        program.eval(12, xs, ys, rets);
+
+        SkDebugf("Program:\n"); program.dump();
+
+        //REPORTER_ASSERT(r, rets[0] == 1.0f);
+        //REPORTER_ASSERT(r, rets[1] == 3.0f);
+        //REPORTER_ASSERT(r, rets[2] == 4.0f);
+        //REPORTER_ASSERT(r, rets[3] == 4.0f);
     });
 }

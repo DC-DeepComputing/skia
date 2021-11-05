@@ -1,0 +1,111 @@
+assert_true:  I32 [I32 | F32]
+
+store8:       Ptr I32
+store16:      Ptr I32
+store32:      Ptr I32
+storeF:       Ptr F32
+store64:      Ptr I32 I32
+store128:     Ptr I32 I32 I32 I32
+
+load8:        Ptr
+load16:       Ptr
+load32:       Ptr
+load64:       Ptr int
+load128:      Ptr int
+
+index:
+
+gather8:
+gather16:
+gather32:
+
+uniform32:
+array32:
+splat:
+
+add_f32:
+add_i32:
+
+sub_f32:
+sub_i32:
+
+mul_f32:
+mul_i32:
+
+div_f32:
+
+min_f32:
+max_f32:
+
+fma_f32:
+fms_f32:
+fnma_f32:
+
+sqrt_f32:
+
+shl_i32:
+shr_i32:
+sra_i32:
+
+ceil:
+floor:
+trunc:
+round:
+
+to_fp16:
+from_fp16:
+
+to_f32:
+
+neq_f32:
+eq_f32:
+eq_i32:
+
+gte_f32:
+gt_f32:
+gt_i32:
+
+bit_and:
+bit_or:
+bit_xor:
+bit_clear:
+select:
+
+nop: int
+
+
+
+
+main_loop:
+   cmp N, 0
+   j
+/*
+  (float x, float y)
+*/
+   v0 = load32 ptr0 		// load input values
+   v1 = load32 ptr1   		// load input values
+/*
+   if (x < y) { return x; } else { return y; }
+*/
+X  v2 = splat 0 (0)
+↑  v3 = splat FFFFFFFF (nan)
+   v4 = gt_f32 v1 v0  		      // if expression
+C                               // then branch
+   v5 = bit_and v0 v4           // else branch
+   v6 = bit_xor v3 v4
+   v7 = select v6 v1 v5         // merge branch masks
+   v8 = bit_or v4 v6            // return if mask
+   store32 ptr2 v7 		          // store output value
+   sub N, K
+   jump main_loop
+
+tail_loop:
+   v0 = load32 ptr0   // load input values
+   v1 = load32 ptr1   // load input values
+   v4 = gt_f32 v1 v0   // if expression
+   v5 = bit_and v0 v4   // if (v4) return v0
+   v6 = bit_xor v3 v4   // invert mask for else branch
+   v7 = select v6 v1 v5   // if (v6) return v1
+   v8 = bit_or v4 v6   // Return mask-
+   store32 ptr2 v7   // store back output values
+

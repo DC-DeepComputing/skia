@@ -125,6 +125,38 @@ public:
                       SkSpan<skvm::Val> arguments,
                       SkSpan<skvm::Val> outReturn);
 
+    class Comment {
+    public:
+        Comment(skvm::Builder* builder, const char* format, ...)
+            : fBuilder(builder) {
+
+            va_list args;
+            va_start(args, format);
+            SkString message("// ");
+            message.appendVAList(format, args);
+            va_end(args);
+
+            fComment = fBuilder->addComment(message);
+            fStart = fBuilder->lastCommand();
+        }
+
+        ~Comment() {
+            if (fComment >= 0) {
+                fBuilder->markComments(fStart, fComment);
+            }
+        }
+
+        void finish() {
+            if (fComment >= 0) {
+                fBuilder->markComments(fStart, fComment);
+                fComment = -1;
+            }
+        }
+    private:
+        skvm::Builder* fBuilder;
+        int fStart;
+        int fComment;
+    };
 private:
     /**
      * In SkSL, a Variable represents a named, typed value (along with qualifiers, etc).
@@ -262,11 +294,15 @@ private:
     class ScopedCondition {
     public:
         ScopedCondition(SkVMGenerator* generator, skvm::I32 mask)
-                : fGenerator(generator), fOldConditionMask(fGenerator->fConditionMask) {
+                : fGenerator(generator)
+                , fOldConditionMask(fGenerator->fConditionMask) {
+            fOldConditionMask = fGenerator->fConditionMask;
             fGenerator->fConditionMask &= mask;
         }
 
-        ~ScopedCondition() { fGenerator->fConditionMask = fOldConditionMask; }
+        ~ScopedCondition() {
+            fGenerator->fConditionMask = fOldConditionMask;
+        }
 
     private:
         SkVMGenerator* fGenerator;
@@ -1528,31 +1564,41 @@ void SkVMGenerator::writeForStatement(const ForStatement& f) {
 }
 
 void SkVMGenerator::writeIfStatement(const IfStatement& i) {
+
+    Comment ifComment(fBuilder, "if expression");
     Value test = this->writeExpression(*i.test());
+    ifComment.finish();
     {
         ScopedCondition ifTrue(this, i32(test));
         this->writeStatement(*i.ifTrue());
     }
     if (i.ifFalse()) {
+        Comment elseMask(fBuilder, "invert mask for else branch");
         ScopedCondition ifFalse(this, ~i32(test));
+        elseMask.finish();
         this->writeStatement(*i.ifFalse());
     }
 }
 
 void SkVMGenerator::writeReturnStatement(const ReturnStatement& r) {
+    Comment mask1(fBuilder, "Return mask+");
     skvm::I32 returnsHere = this->mask();
+    mask1.finish();
 
     if (r.expression()) {
         Value val = this->writeExpression(*r.expression());
 
         int i = 0;
         for (skvm::Val& slot : currentFunction().fReturnValue) {
+            Comment sel(fBuilder, "if (v%d) return v%d", returnsHere.id, f32(val[i]).id);
             slot = select(returnsHere, f32(val[i]), f32(slot)).id;
             i++;
         }
     }
 
+    Comment mask2(fBuilder, "Return mask-");
     currentFunction().fReturned |= returnsHere;
+    mask2.finish();
 }
 
 void SkVMGenerator::writeSwitchStatement(const SwitchStatement& s) {
@@ -1712,6 +1758,7 @@ bool ProgramToSkVM(const Program& program,
     std::vector<skvm::Ptr> argPtrs;
     std::vector<skvm::Val> argVals;
 
+    SkVMGenerator::Comment loads(b, "load input values");
     for (const Variable* p : function.declaration().parameters()) {
         size_t slots = p->type().slotCount();
         signature->fParameterSlots += slots;
@@ -1720,6 +1767,7 @@ bool ProgramToSkVM(const Program& program,
             argVals.push_back(b->loadF(argPtrs.back()).id);
         }
     }
+    loads.finish();
 
     std::vector<skvm::Ptr> returnPtrs;
     std::vector<skvm::Val> returnVals;
@@ -1771,6 +1819,7 @@ bool ProgramToSkVM(const Program& program,
 
     // It's also updated the contents of 'returnVals' with the return value of the entry point.
     // Store that as well:
+    SkVMGenerator::Comment stores(b, "store back output values");
     for (size_t i = 0; i < signature->fReturnSlots; ++i) {
         b->storeF(returnPtrs[i], skvm::F32{b, returnVals[i]});
     }

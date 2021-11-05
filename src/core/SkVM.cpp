@@ -325,8 +325,6 @@ namespace skvm {
             case Op::trunc:     write(o, V{id}, "=", op, V{x}); break;
             case Op::round:     write(o, V{id}, "=", op, V{x}); break;
         }
-
-        write(o, "\n");
     }
 
     void Builder::dump(SkWStream* o) const {
@@ -342,6 +340,7 @@ namespace skvm {
             const OptimizedInstruction& inst = optimized[id];
             write(o, inst.can_hoist ? "↑ " : "  ");
             write_one_instruction(id, inst, o);
+            write(o, "\n");
         }
     }
 
@@ -485,7 +484,7 @@ namespace skvm {
         for (Val id = 0; id < (Val)program.size(); id++) {
             Instruction inst = program[id];
             optimized[id] = {inst.op, inst.x,inst.y,inst.z,inst.w,
-                             inst.immA,inst.immB,inst.immC,
+                             inst.immA,inst.immB,inst.immC,inst.comment,
                              /*death=*/id, /*can_hoist=*/true};
         }
 
@@ -529,7 +528,7 @@ namespace skvm {
 
     std::vector<OptimizedInstruction> Builder::optimize() const {
         std::vector<Instruction> program = this->program();
-        program = eliminate_dead_code(std::move(program));
+        //program = eliminate_dead_code(std::move(program));bit_or
         return    finalize           (std::move(program));
     }
 
@@ -540,7 +539,7 @@ namespace skvm {
             debug_name = buf;
         }
 
-        return {this->optimize(), fStrides, debug_name, allow_jit};
+        return {this->optimize(), this->fComments, fStrides, debug_name, allow_jit};
     }
 
     uint64_t Builder::hash() const {
@@ -1808,7 +1807,7 @@ namespace skvm {
         return vex;
     }
 
-    Assembler::Assembler(void* buf) : fCode((uint8_t*)buf), fSize(0) {}
+    Assembler::Assembler(void* buf) : fCode((uint8_t*)buf), fSize(0), fDisassembler(new SkDebugfStream()) {}
 
     size_t Assembler::size() const { return fSize; }
 
@@ -1954,7 +1953,6 @@ namespace skvm {
     void Assembler::vpcmpeqw(Ymm dst, Ymm x, Operand y) { this->op(0x66,0x0f,0x75, dst,x,y); }
     void Assembler::vpcmpgtd(Ymm dst, Ymm x, Operand y) { this->op(0x66,0x0f,0x66, dst,x,y); }
     void Assembler::vpcmpgtw(Ymm dst, Ymm x, Operand y) { this->op(0x66,0x0f,0x65, dst,x,y); }
-
 
     void Assembler::imm_byte_after_operand(const Operand& operand, int imm) {
         // When we've embedded a label displacement in the middle of an instruction,
@@ -2456,6 +2454,21 @@ namespace skvm {
                 }
             }
         }
+    }
+
+    void Assembler::commentJIT(const char* format, ...) {
+        if (fDisassembler == nullptr) {
+            return;
+        }
+        SkString message;
+        va_list argp;
+        va_start(argp, format);
+        message.appendVAList(format, argp);
+        va_end(argp);
+
+        fDisassembler->writeText("/* ");
+        fDisassembler->writeText(message.c_str());
+        fDisassembler->writeText(" */\n");
     }
 
     void Program::eval(int n, void* args[]) const {
@@ -2976,6 +2989,7 @@ namespace skvm {
     }
 
     Program::Program(const std::vector<OptimizedInstruction>& instructions,
+                     const std::vector<SkString>& comments,
                      const std::vector<int>& strides,
                      const char* debug_name, bool allow_jit) : Program() {
         fImpl->strides = strides;
@@ -2983,13 +2997,14 @@ namespace skvm {
         #if 1 && defined(SKVM_LLVM)
             this->setupLLVM(instructions, debug_name);
         #elif 1 && defined(SKVM_JIT)
-            this->setupJIT(instructions, debug_name);
+            this->setupJIT(instructions, comments, debug_name);
         #endif
         }
 
         // Might as well do this after setupLLVM() to get a little more time to compile.
         this->setupInterpreter(instructions);
     }
+
 
     std::vector<InterpreterInstruction> Program::instructions() const { return fImpl->instructions; }
     int  Program::nargs() const { return (int)fImpl->strides.size(); }
@@ -3108,6 +3123,7 @@ namespace skvm {
     }  // namespace SkVMJitTypes
 
     bool Program::jit(const std::vector<OptimizedInstruction>& instructions,
+                      const std::vector<SkString>& comments,
                       int* stack_hint,
                       uint32_t* registers_used,
                       Assembler* a) const {
@@ -3310,6 +3326,17 @@ namespace skvm {
             const int immA = inst.immA,
                       immB = inst.immB,
                       immC = inst.immC;
+            if (a->disassembleOutput() != nullptr) {
+                a->disassembleOutput()->writeText("   ");
+                write_one_instruction(id, inst, a->disassembleOutput());
+                if (inst.comment >= 0) {
+                    if (true || id  == 0 || instructions[id - 1].comment != inst.comment) {
+                        a->disassembleOutput()->writeText("   ");
+                        a->disassembleOutput()->writeText(comments[inst.comment].c_str());
+                    }
+                }
+            }
+            a->disassembleOutput()->writeText("\n");
 
             // alloc_tmp() returns the first of N adjacent temporary registers,
             // each freed manually with free_tmp() or noted as our result with mark_tmp_as_dst().
@@ -3366,6 +3393,7 @@ namespace skvm {
 
                     SkASSERT(v == NA || v >= 0);
                     if (v >= 0 && needs_spill(v)) {
+                        a->commentJIT("store v%d = r%d", v, r);
                         store_to_stack((Reg)r, v);
                         SkASSERT(!needs_spill(v));
                         min_spills--;
@@ -3431,6 +3459,7 @@ namespace skvm {
                 if (v < id) {
                     // If v < id, we're loading one of this instruction's inputs.
                     // If v == id we're just allocating its destination register.
+                    a->commentJIT("load r%d = v%d", r, v);
                     load_from_memory(r, v);
                 }
                 regs[r] = v;
@@ -4156,6 +4185,7 @@ namespace skvm {
         // the loop comes around we'd better find those same registers holding those same values.
         auto restore_incoming_regs = [&,incoming=regs,saved_stack_slot=stack_slot,
                                       saved_next_stack_slot=next_stack_slot]{
+            a->commentJIT("Resore incoming registries");
             for (int r = 0; r < (int)regs.size(); r++) {
                 if (regs[r] != incoming[r]) {
                     regs[r]  = incoming[r];
@@ -4169,6 +4199,7 @@ namespace skvm {
             next_stack_slot = saved_next_stack_slot;
         };
 
+        a->commentJIT("Body");
         a->label(&body);
         {
             a->cmp(N, K);
@@ -4188,6 +4219,7 @@ namespace skvm {
             jump(&body);
         }
 
+        a->commentJIT("Tail");
         a->label(&tail);
         {
             a->cmp(N, 1);
@@ -4207,6 +4239,7 @@ namespace skvm {
             jump(&tail);
         }
 
+        a->commentJIT("Done");
         a->label(&done);
         {
             exit();
@@ -4244,13 +4277,14 @@ namespace skvm {
     }
 
     void Program::setupJIT(const std::vector<OptimizedInstruction>& instructions,
+                           const std::vector<SkString>& comments,
                            const char* debug_name) {
         // Assemble with no buffer to determine a.size() (the number of bytes we'll assemble)
         // and stack_hint/registers_used to feed forward into the next jit() call.
         Assembler a{nullptr};
         int stack_hint = -1;
         uint32_t registers_used = 0xffff'ffff;  // Start conservatively with all.
-        if (!this->jit(instructions, &stack_hint, &registers_used, &a)) {
+        if (!this->jit(instructions, comments, &stack_hint, &registers_used, &a)) {
             return;
         }
 
@@ -4260,7 +4294,7 @@ namespace skvm {
 
         // Assemble the program for real with stack_hint/registers_used as feedback from first call.
         a = Assembler{jit_entry};
-        SkAssertResult(this->jit(instructions, &stack_hint, &registers_used, &a));
+        SkAssertResult(this->jit(instructions, comments, &stack_hint, &registers_used, &a));
         SkASSERT(a.size() <= fImpl->jit_size);
 
         // Remap as executable, and flush caches on platforms that need that.

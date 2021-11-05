@@ -385,9 +385,15 @@ namespace skvm {
         void ld24s(V dst, X src, int lane);  // Load 2 32-bit values into given lane of dst..dst+1
         void ld44s(V dst, X src, int lane);  // Load 4 32-bit values into given lane of dst..dst+3
 
+        void commentJIT(const char* format, ...);
+        void commentGenerator(const char* message);
+        void disassembleTo(SkWStream* output) { fDisassembler = output; }
+        SkWStream* disassembleOutput() const { return fDisassembler; }
+
     private:
         uint8_t* fCode;
         size_t   fSize;
+        SkWStream* fDisassembler;
 
         // x86-64
         enum W { W0, W1 };      // Are the lanes 64-bit (W1) or default (W0)?  Intel Vol 2A 2.3.5.5
@@ -578,6 +584,7 @@ namespace skvm {
         Op  op;              // v* = op(x,y,z,w,immA,immB), where * == index of this Instruction.
         Val x,y,z,w;         // Enough arguments for Op::store128.
         int immA,immB,immC;  // Immediate bit pattern, shift count, pointer index, byte offset, etc.
+        int comment = -1;
     };
     SK_END_REQUIRE_DENSE
 
@@ -590,6 +597,7 @@ namespace skvm {
         Op op;
         Val x,y,z,w;
         int immA,immB,immC;
+        int comment = -1;
 
         Val  death;
         bool can_hoist;
@@ -965,6 +973,22 @@ namespace skvm {
             return false;
         }
 
+        int addComment(SkString message) {
+            fComments.emplace_back(std::move(message));
+            return fComments.size() - 1;
+        }
+
+        int lastCommand() {
+            return fProgram.size();
+        }
+
+        void markComments(int start, int comment) {
+            SkASSERT(comment != -1);
+            for (auto i = start; i < (int)fProgram.size(); ++i) {
+                if (fProgram[i].comment < 0) fProgram[i].comment = comment;
+            }
+        }
+
     private:
         // Declare an argument with given stride (use stride=0 for uniforms).
         Ptr arg(int stride);
@@ -984,6 +1008,7 @@ namespace skvm {
         std::vector<Instruction>                      fProgram;
         std::vector<int>                              fStrides;
         const Features                                fFeatures;
+        std::vector<SkString>                         fComments;
     };
 
     // Optimization passes and data structures normally used by Builder::optimize(),
@@ -1003,6 +1028,7 @@ namespace skvm {
     class Program {
     public:
         Program(const std::vector<OptimizedInstruction>& instructions,
+                const std::vector<SkString>& comments,
                 const std::vector<int>& strides,
                 const char* debug_name, bool allow_jit);
 
@@ -1038,10 +1064,11 @@ namespace skvm {
 
     private:
         void setupInterpreter(const std::vector<OptimizedInstruction>&);
-        void setupJIT        (const std::vector<OptimizedInstruction>&, const char* debug_name);
+        void setupJIT        (const std::vector<OptimizedInstruction>&, const std::vector<SkString>& comments, const char* debug_name);
         void setupLLVM       (const std::vector<OptimizedInstruction>&, const char* debug_name);
 
         bool jit(const std::vector<OptimizedInstruction>&,
+                 const std::vector<SkString>& comments,
                  int* stack_hint, uint32_t* registers_used,
                  Assembler*) const;
 
