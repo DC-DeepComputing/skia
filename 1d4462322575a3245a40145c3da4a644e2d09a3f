@@ -39,6 +39,30 @@
       },
       "revId": "1d4462322575a3245a40145c3da4a644e2d09a3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fb485c_b777a0d1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-05T13:33:38Z",
+      "side": 1,
+      "message": "Yes, that\u0027s correct. This is work in progress and there are lots of bugs :)\n \nThis really needs to be something more like `trace_var(slotVal, mask, slots[i])`. \n\nI realized that `fSlots[n] \u003d foo` across the board probably needs to be changed to `this-\u003ewriteSlot(n, foo)` and we can put in tracing there and then we\u0027re covered for all assignments. I haven\u0027t actually written that yet, just mulled it over last night after coming home.",
+      "parentUuid": "392d152b_c99635d1",
+      "range": {
+        "startLine": 1479,
+        "startChar": 33,
+        "endLine": 1479,
+        "endChar": 49
+      },
+      "revId": "1d4462322575a3245a40145c3da4a644e2d09a3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
