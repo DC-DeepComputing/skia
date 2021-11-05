@@ -34,6 +34,24 @@
       "parentUuid": "3b5ba1e2_ca482aec",
       "revId": "f6070dda4c09fdff20f212bd3d68fba56e1f95e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c04f0e14_70ee4d4d",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-05T13:42:24Z",
+      "side": 1,
+      "message": "Ah, that makes sense. Yeah, I think at some point I even realized that injecting anything with side effects would disable most of the builder\u0027s optimizations, then forgot about it. So yeah, this looks like a good path forward.",
+      "parentUuid": "0188cd0c_7631ca74",
+      "revId": "f6070dda4c09fdff20f212bd3d68fba56e1f95e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
