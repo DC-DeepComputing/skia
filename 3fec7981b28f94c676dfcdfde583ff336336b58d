@@ -46,6 +46,30 @@
       },
       "revId": "3fec7981b28f94c676dfcdfde583ff336336b58d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92566141_10c8d0f5",
+        "filename": "modules/canvaskit/external_test/typescript_browser/module_uses_ck.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-11-05T19:02:08Z",
+      "side": 1,
+      "message": "Apologies for the ambiguity. Yes, a quick note on the use of typeof would be useful for the reader, I think.",
+      "parentUuid": "20328b18_eab63a42",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 43
+      },
+      "revId": "3fec7981b28f94c676dfcdfde583ff336336b58d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
