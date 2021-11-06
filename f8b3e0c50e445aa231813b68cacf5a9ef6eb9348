@@ -117,6 +117,30 @@
       },
       "revId": "f8b3e0c50e445aa231813b68cacf5a9ef6eb9348",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf9e7626_d1e23f6b",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4329,
+      "author": {
+        "id": 8511
+      },
+      "writtenOn": "2021-11-06T13:35:26Z",
+      "side": 1,
+      "message": "If I remember right, there was a brief window where we put them _before_ the program.  :)",
+      "parentUuid": "71b4e937_e23fdcc9",
+      "range": {
+        "startLine": 4329,
+        "startChar": 21,
+        "endLine": 4329,
+        "endChar": 97
+      },
+      "revId": "f8b3e0c50e445aa231813b68cacf5a9ef6eb9348",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
