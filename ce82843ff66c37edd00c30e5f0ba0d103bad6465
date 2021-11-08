@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd888da5_212d659b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-08T20:20:23Z",
+      "side": 1,
+      "message": "that\u0027s awfully nice of GCC to point that out, thanks!",
+      "revId": "ce82843ff66c37edd00c30e5f0ba0d103bad6465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
