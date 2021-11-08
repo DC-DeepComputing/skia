@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1860e6fd_9b3224b1",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-08T20:26:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db2daf9_835c2244",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cb0b7c1_e7e15f02",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-11-08T19:53:03Z",
       "side": 1,
       "message": "This is fine for now, but note that setting up the fontmgr stuff in a sane way will be interesting (as it is in gn). We really want to allow building in as many fontmgr implementations as possible given the build conditions, but then pick a \"_factory.cpp\" for exactly one of the ones available, defaulting to the most common if not otherwise stated by the build configuration.\n\nIn other words, having a \"_factory.cpp\" in the select with an implementation on another arm of the select is not what is going to be wanted eventually.\n\nAlso keep in mind that we have some tests that are specific to specific fontmgr implementations. We want these to be gathered up into the final set of tests, but only if the associated fontmgr is being built.\n\nIn gn we did this with a lot of creating a number of targets which either had things in them or were empty, so that users of those targets could always just depend on them (like targets fontmgr_fontconfig and fontmgr_fontconfig_test which could them be depended on by the skia target or the tests target). Not sure if that makes the most sense here or not.",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfc173b8_0a52334a",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-08T20:26:34Z",
+      "side": 1,
+      "message": "That was one possibility I was thinking about for ports related things - have the builder of the exe explicitly declare which target they want.\n\nThat\u0027s why the gm-bindings cc_binary in //modules/canvaskit depends on these rules directly instead of skia-core having it.\n\nI think that will require some actual build targets to be made to see how that pans out.\n\nNote that Bazel 4.2.1 does not yet have support for flags being specified multiple times (i.e. to build in multiple fontmgr implementations), but that appears to have landed in 5.0.0.",
+      "parentUuid": "9cb0b7c1_e7e15f02",
       "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bab40930_66a4be3a",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-08T20:26:34Z",
+      "side": 1,
+      "message": "The fontmgr stuff here is really just penciled in. You are right that there would be issues trying to use it because of the lack of FreeType (and other things).",
+      "parentUuid": "16b3dbae_a202e15a",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cbfd38e1_f5944f56",
         "filename": "tests/BUILD.bazel",
         "patchSetId": 40
@@ -65,6 +119,24 @@
       "writtenOn": "2021-11-08T19:53:03Z",
       "side": 1,
       "message": "Not sure why this is here? Looks like maybe duplicated from gm/BUILD.bazel?",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c1cf8eb_4807b137",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-08T20:26:34Z",
+      "side": 1,
+      "message": "Just copypasta. Removed.",
+      "parentUuid": "cbfd38e1_f5944f56",
       "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
