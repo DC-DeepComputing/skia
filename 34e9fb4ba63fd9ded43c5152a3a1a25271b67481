@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2dc244b_5f8a89ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-08T15:48:10Z",
+      "side": 1,
+      "message": "LGTMer",
+      "revId": "34e9fb4ba63fd9ded43c5152a3a1a25271b67481",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c95d51a_bd3b7ed6",
+        "filename": "infra/bots/task_drivers/recreate_skps/recreate_skps.go",
+        "patchSetId": 22
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-08T15:48:10Z",
+      "side": 1,
+      "message": "This is okay, since we were already doing it, but if someone ran this locally and passed in an absolute path, it wouldn\u0027t work.  It\u0027d be better to use filepath.Abs, which automatically uses the current working directory if the given path is not already absolute.",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 42
+      },
+      "revId": "34e9fb4ba63fd9ded43c5152a3a1a25271b67481",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
