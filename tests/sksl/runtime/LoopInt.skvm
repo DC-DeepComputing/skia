@@ -1,78 +1,232 @@
-5 registers, 76 instructions:
-0	r0 = uniform32 ptr0 14
-1	r1 = uniform32 ptr0 18
-2	r2 = uniform32 ptr0 1C
-3	r3 = uniform32 ptr0 20
-4	r4 = splat FFFFFFFF (nan)
+26 registers, 230 instructions:
+0	r0 = uniform32 ptr0 0
+1	r1 = uniform32 ptr0 4
+2	r2 = uniform32 ptr0 8
+3	r3 = uniform32 ptr0 C
+4	r4 = uniform32 ptr0 10
+5	r5 = uniform32 ptr0 14
+6	r6 = uniform32 ptr0 18
+7	r7 = uniform32 ptr0 1C
+8	r8 = uniform32 ptr0 20
+9	r9 = splat FFFFFFFF (nan)
+10	r10 = splat A (1.4012985e-44)
+11	r11 = splat 5 (7.0064923e-45)
+12	r12 = splat 1 (1.4012985e-45)
+13	r13 = splat 2 (2.8025969e-45)
+14	r14 = splat 3 (4.2038954e-45)
+15	r15 = splat 4 (5.6051939e-45)
+16	r16 = splat 6 (8.4077908e-45)
+17	r17 = splat 7 (9.8090893e-45)
+18	r18 = splat 8 (1.1210388e-44)
+19	r19 = splat 9 (1.2611686e-44)
+20	r20 = splat B (1.5414283e-44)
+21	r21 = splat 12 (2.5223372e-44)
+22	r22 = splat 1A (3.643376e-44)
+23	r23 = splat 23 (4.9045446e-44)
+24	r24 = splat F (2.1019477e-44)
 loop:
-5	    trace_line r4 L107
-6	    trace_line r4 L8
-7	    trace_line r4 L9
-8	    trace_line r4 L17
-9	    trace_line r4 L18
-10	    trace_line r4 L19
-11	    trace_line r4 L20
-12	    trace_line r4 L19
-13	    trace_line r4 L20
-14	    trace_line r4 L19
-15	    trace_line r4 L20
-16	    trace_line r4 L19
-17	    trace_line r4 L20
-18	    trace_line r4 L19
-19	    trace_line r4 L20
-20	    trace_line r4 L22
-21	    trace_line r4 L27
-22	    trace_line r4 L28
-23	    trace_line r4 L29
-24	    trace_line r4 L30
-25	    trace_line r4 L31
-26	    trace_line r4 L30
-27	    trace_line r4 L31
-28	    trace_line r4 L30
-29	    trace_line r4 L31
-30	    trace_line r4 L30
-31	    trace_line r4 L31
-32	    trace_line r4 L30
-33	    trace_line r4 L31
-34	    trace_line r4 L30
-35	    trace_line r4 L31
-36	    trace_line r4 L30
-37	    trace_line r4 L33
-38	    trace_line r4 L38
-39	    trace_line r4 L39
-40	    trace_line r4 L41
-41	    trace_line r4 L42
-42	    trace_line r4 L43
-43	    trace_line r4 L45
-44	    trace_line r4 L50
-45	    trace_line r4 L51
-46	    trace_line r4 L53
-47	    trace_line r4 L54
-48	    trace_line r4 L55
-49	    trace_line r4 L57
-50	    trace_line r4 L62
-51	    trace_line r4 L63
-52	    trace_line r4 L65
-53	    trace_line r4 L66
-54	    trace_line r4 L67
-55	    trace_line r4 L69
-56	    trace_line r4 L74
-57	    trace_line r4 L75
-58	    trace_line r4 L77
-59	    trace_line r4 L78
-60	    trace_line r4 L79
-61	    trace_line r4 L81
-62	    trace_line r4 L97
-63	    trace_line r4 L99
-64	    trace_line r4 L100
-65	    trace_line r4 L101
-66	    trace_line r4 L103
-67	    trace_line r4 L86
-68	    trace_line r4 L88
-69	    trace_line r4 L89
-70	    trace_line r4 L90
-71	    trace_line r4 L92
-72	    store32 ptr1 r0
-73	    store32 ptr2 r1
-74	    store32 ptr3 r2
-75	    store32 ptr4 r3
+25	    r25 = index
+26	    trace_var r9 $0 = r1 (F32)
+27	    trace_var r9 $1 = r2 (F32)
+28	    trace_var r9 $2 = r3 (F32)
+29	    trace_var r9 $3 = r4 (F32)
+30	    trace_var r9 $4 = r5 (F32)
+31	    trace_var r9 $5 = r6 (F32)
+32	    trace_var r9 $6 = r7 (F32)
+33	    trace_var r9 $7 = r8 (F32)
+34	    trace_var r9 $9 = r10 (I32)
+35	    trace_var r9 $10 = r25 (F32)
+36	    trace_var r9 $11 = r0 (F32)
+37	    trace_line r9 L107
+38	    trace_line r9 L8
+39	    trace_line r9 L9
+40	    trace_var r9 $12 = r12 (I32)
+41	    trace_line r9 L9
+42	    trace_var r9 $12 = r13 (I32)
+43	    trace_line r9 L9
+44	    trace_var r9 $12 = r14 (I32)
+45	    trace_line r9 L9
+46	    trace_var r9 $12 = r15 (I32)
+47	    trace_line r9 L9
+48	    trace_var r9 $12 = r11 (I32)
+49	    trace_line r9 L9
+50	    trace_line r9 L17
+51	    trace_line r9 L18
+52	    trace_line r9 L19
+53	    trace_var r9 $14 = r12 (I32)
+54	    trace_line r9 L19
+55	    trace_var r9 $14 = r13 (I32)
+56	    trace_line r9 L19
+57	    trace_var r9 $14 = r14 (I32)
+58	    trace_line r9 L19
+59	    trace_var r9 $14 = r15 (I32)
+60	    trace_line r9 L19
+61	    trace_var r9 $14 = r11 (I32)
+62	    trace_line r9 L19
+63	    trace_line r9 L20
+64	    trace_var r9 $13 = r11 (I32)
+65	    trace_var r9 $14 = r16 (I32)
+66	    trace_line r9 L19
+67	    trace_line r9 L20
+68	    trace_var r9 $13 = r20 (I32)
+69	    trace_var r9 $14 = r17 (I32)
+70	    trace_line r9 L19
+71	    trace_line r9 L20
+72	    trace_var r9 $13 = r21 (I32)
+73	    trace_var r9 $14 = r18 (I32)
+74	    trace_line r9 L19
+75	    trace_line r9 L20
+76	    trace_var r9 $13 = r22 (I32)
+77	    trace_var r9 $14 = r19 (I32)
+78	    trace_line r9 L19
+79	    trace_line r9 L20
+80	    trace_var r9 $13 = r23 (I32)
+81	    trace_line r9 L22
+82	    trace_line r9 L27
+83	    trace_line r9 L28
+84	    trace_var r9 $16 = r12 (I32)
+85	    trace_line r9 L29
+86	    trace_line r9 L30
+87	    trace_line r9 L31
+88	    trace_var r9 $17 = r12 (I32)
+89	    trace_line r9 L30
+90	    trace_line r9 L31
+91	    trace_var r9 $15 = r12 (I32)
+92	    trace_var r9 $17 = r13 (I32)
+93	    trace_line r9 L30
+94	    trace_line r9 L31
+95	    trace_var r9 $15 = r14 (I32)
+96	    trace_var r9 $17 = r14 (I32)
+97	    trace_line r9 L30
+98	    trace_line r9 L31
+99	    trace_var r9 $15 = r16 (I32)
+100	    trace_var r9 $17 = r15 (I32)
+101	    trace_line r9 L30
+102	    trace_line r9 L31
+103	    trace_var r9 $15 = r10 (I32)
+104	    trace_var r9 $17 = r11 (I32)
+105	    trace_line r9 L30
+106	    trace_line r9 L31
+107	    trace_var r9 $15 = r24 (I32)
+108	    trace_var r9 $17 = r16 (I32)
+109	    trace_line r9 L30
+110	    trace_line r9 L33
+111	    trace_line r9 L38
+112	    trace_line r9 L39
+113	    trace_line r9 L41
+114	    trace_var r9 $18 = r19 (I32)
+115	    trace_var r9 $19 = r19 (I32)
+116	    trace_var r9 $20 = r19 (I32)
+117	    trace_var r9 $21 = r19 (I32)
+118	    trace_line r9 L42
+119	    trace_var r9 $22 = r12 (I32)
+120	    trace_line r9 L43
+121	    trace_var r9 $21 = r12 (I32)
+122	    trace_var r9 $22 = r13 (I32)
+123	    trace_line r9 L43
+124	    trace_var r9 $20 = r12 (I32)
+125	    trace_var r9 $21 = r13 (I32)
+126	    trace_var r9 $22 = r14 (I32)
+127	    trace_line r9 L43
+128	    trace_var r9 $19 = r12 (I32)
+129	    trace_var r9 $20 = r13 (I32)
+130	    trace_var r9 $21 = r14 (I32)
+131	    trace_line r9 L45
+132	    trace_line r9 L50
+133	    trace_line r9 L51
+134	    trace_line r9 L53
+135	    trace_var r9 $23 = r19 (I32)
+136	    trace_var r9 $24 = r19 (I32)
+137	    trace_var r9 $25 = r19 (I32)
+138	    trace_var r9 $26 = r19 (I32)
+139	    trace_line r9 L54
+140	    trace_var r9 $27 = r12 (I32)
+141	    trace_line r9 L55
+142	    trace_var r9 $26 = r12 (I32)
+143	    trace_var r9 $27 = r13 (I32)
+144	    trace_line r9 L55
+145	    trace_var r9 $25 = r12 (I32)
+146	    trace_var r9 $26 = r13 (I32)
+147	    trace_var r9 $27 = r14 (I32)
+148	    trace_line r9 L55
+149	    trace_var r9 $24 = r12 (I32)
+150	    trace_var r9 $25 = r13 (I32)
+151	    trace_var r9 $26 = r14 (I32)
+152	    trace_line r9 L57
+153	    trace_line r9 L62
+154	    trace_line r9 L63
+155	    trace_line r9 L65
+156	    trace_var r9 $28 = r19 (I32)
+157	    trace_var r9 $29 = r19 (I32)
+158	    trace_var r9 $30 = r19 (I32)
+159	    trace_var r9 $31 = r19 (I32)
+160	    trace_line r9 L66
+161	    trace_var r9 $32 = r14 (I32)
+162	    trace_line r9 L67
+163	    trace_var r9 $31 = r14 (I32)
+164	    trace_var r9 $32 = r13 (I32)
+165	    trace_line r9 L67
+166	    trace_var r9 $30 = r14 (I32)
+167	    trace_var r9 $31 = r13 (I32)
+168	    trace_var r9 $32 = r12 (I32)
+169	    trace_line r9 L67
+170	    trace_var r9 $29 = r14 (I32)
+171	    trace_var r9 $30 = r13 (I32)
+172	    trace_var r9 $31 = r12 (I32)
+173	    trace_line r9 L69
+174	    trace_line r9 L74
+175	    trace_line r9 L75
+176	    trace_line r9 L77
+177	    trace_var r9 $33 = r19 (I32)
+178	    trace_var r9 $34 = r19 (I32)
+179	    trace_var r9 $35 = r19 (I32)
+180	    trace_var r9 $36 = r19 (I32)
+181	    trace_line r9 L78
+182	    trace_var r9 $37 = r14 (I32)
+183	    trace_line r9 L79
+184	    trace_var r9 $36 = r14 (I32)
+185	    trace_var r9 $37 = r13 (I32)
+186	    trace_line r9 L79
+187	    trace_var r9 $35 = r14 (I32)
+188	    trace_var r9 $36 = r13 (I32)
+189	    trace_var r9 $37 = r12 (I32)
+190	    trace_line r9 L79
+191	    trace_var r9 $34 = r14 (I32)
+192	    trace_var r9 $35 = r13 (I32)
+193	    trace_var r9 $36 = r12 (I32)
+194	    trace_line r9 L81
+195	    trace_line r9 L97
+196	    trace_line r9 L99
+197	    trace_var r9 $38 = r19 (I32)
+198	    trace_var r9 $39 = r19 (I32)
+199	    trace_var r9 $40 = r19 (I32)
+200	    trace_var r9 $41 = r19 (I32)
+201	    trace_line r9 L100
+202	    trace_var r9 $42 = r12 (I32)
+203	    trace_line r9 L101
+204	    trace_var r9 $41 = r12 (I32)
+205	    trace_line r9 L103
+206	    trace_line r9 L86
+207	    trace_line r9 L88
+208	    trace_var r9 $43 = r19 (I32)
+209	    trace_var r9 $44 = r19 (I32)
+210	    trace_var r9 $45 = r19 (I32)
+211	    trace_var r9 $46 = r19 (I32)
+212	    trace_line r9 L89
+213	    trace_var r9 $47 = r12 (I32)
+214	    trace_line r9 L90
+215	    trace_var r9 $46 = r12 (I32)
+216	    trace_var r9 $47 = r13 (I32)
+217	    trace_line r9 L90
+218	    trace_var r9 $45 = r12 (I32)
+219	    trace_var r9 $46 = r13 (I32)
+220	    trace_var r9 $47 = r14 (I32)
+221	    trace_line r9 L90
+222	    trace_var r9 $44 = r12 (I32)
+223	    trace_var r9 $45 = r13 (I32)
+224	    trace_var r9 $46 = r14 (I32)
+225	    trace_line r9 L92
+226	    store32 ptr1 r5
+227	    store32 ptr2 r6
+228	    store32 ptr3 r7
+229	    store32 ptr4 r8
