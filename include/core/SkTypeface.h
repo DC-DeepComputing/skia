@@ -379,6 +379,8 @@ protected:
 
     virtual bool onGlyphMaskNeedsCurrentColor() const = 0;
 
+    virtual bool onSuitableForStroking() const = 0;
+
     virtual int onGetVariationDesignPosition(
         SkFontArguments::VariationPosition::Coordinate coordinates[],
         int coordinateCount) const = 0;
@@ -419,6 +421,7 @@ private:
      *  typefaces that contain a COLR table.
      */
     bool glyphMaskNeedsCurrentColor() const;
+    bool suitableForStroking() const;
     friend class SkStrikeServerImpl; // glyphMaskNeedsCurrentColor
 
     /** Retrieve detailed typeface metrics.  Used by the PDF backend.  */

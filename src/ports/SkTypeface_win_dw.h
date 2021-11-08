@@ -137,6 +137,7 @@ protected:
     bool onGetPostScriptName(SkString*) const override;
     SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const override;
     bool onGlyphMaskNeedsCurrentColor() const override { return false; }
+    bool onSuitableForStroking() const override;
     int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
                                      int coordinateCount) const override;
     int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],

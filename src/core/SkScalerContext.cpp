@@ -1050,7 +1050,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
 #endif
     }
 
-    if (style != SkPaint::kFill_Style && strokeWidth >= 0) {
+    if (style != SkPaint::kFill_Style && strokeWidth >= 0 && typeface->suitableForStroking()) {
         rec->fFrameWidth = strokeWidth;
         rec->fMiterLimit = paint.getStrokeMiter();
         rec->fStrokeJoin = SkToU8(paint.getStrokeJoin());

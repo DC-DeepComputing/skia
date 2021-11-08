@@ -1631,6 +1631,10 @@ bool SkTypeface_FreeType::onGlyphMaskNeedsCurrentColor() const {
     return this->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0;
 }
 
+bool SkTypeface_FreeType::onSuitableForStroking() const {
+    return true;
+}
+
 int SkTypeface_FreeType::onGetVariationDesignPosition(
     SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const
 {
