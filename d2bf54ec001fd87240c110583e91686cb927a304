@@ -52,6 +52,24 @@
       "parentUuid": "68fd7423_c0308c14",
       "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39cb0426_a8d17a44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-08T19:33:01Z",
+      "side": 1,
+      "message": "From a quick scan of the code, premul doesn\u0027t appear to happen *too* often:\n- Sprite blitter does it to a known (paint) color, which is totally unnecessary.\n- Various color filters do it (after converting to unpremul and doing some work, to get back to premul output)\n- Gradients do it depending on the flag (interpolate in premul or not)\n- And SkColorSpaceXformSteps does it, which is used in a few places (GrConvertPixels, SkConvertPixels, more color filters, etc...)\n\nSo, not that often overall. We could make opt to make premul use the more accurate rounding, and leave div255 separate. But does that make sense? My first reaction was no - if we have a better result, let\u0027s use it all the time. But all of the other situations aren\u0027t as sensitive to precision. They\u0027re blending or filtering results, which are strictly a one-way operation. The premul thing is much more sensitive, because of the unpremul -\u003e premul round-trip issue. So I can be convinced that only doing the better rounding for lowp premul is valid. Let me put that together (it should also avoid the huge number of GM diffs from PS3).",
+      "parentUuid": "b116bd36_84e9e345",
+      "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
