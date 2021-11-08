@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f26e1dfe_d6e1222f",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-08T15:47:54Z",
+      "side": 0,
+      "message": "Does this have any use cases anymore? Is it useful at the root when we are dealing with paint color? Or is it changed at each level of the FP tree?",
+      "range": {
+        "startLine": 772,
+        "startChar": 8,
+        "endLine": 772,
+        "endChar": 32
+      },
+      "revId": "f207db2dce77b3287cf69ed4f4544dd54ff6214a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
