@@ -22,6 +22,30 @@
       },
       "revId": "497ac0fe236bb0ce7e9cf11906f9ea1c63b6098b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b27742_8b563498",
+        "filename": "include/gpu/vk/GrVkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 10189
+      },
+      "writtenOn": "2021-11-08T20:29:37Z",
+      "side": 0,
+      "message": "So from hwui perspective 2) is a bit less work, but it\u0027s not huge amount to worry about(I don\u0027t see big problem in getting vkImage from SkSurface), so I\u0027d look at this from api / maintenance perspective. \n\nFrom maintenance:\nIn 1) will skia always know vkImage at that point? e.g with some future refactoring, might the drawable be called before skia knows vkImage? If so 2) might be a preferable option.\n\nFrom API:\n1) Allows clients do weird things with vkImage, although nothing stops them to get that vkImage from SkSurface. 2) Has a bit weird flag. Both are kinda not great, but not terrible either.",
+      "parentUuid": "f1bdccb4_b1e2bcd4",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "497ac0fe236bb0ce7e9cf11906f9ea1c63b6098b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

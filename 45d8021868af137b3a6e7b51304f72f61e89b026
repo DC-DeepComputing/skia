@@ -63,6 +63,30 @@
       },
       "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4598909b_9488b1d7",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 10189
+      },
+      "writtenOn": "2021-11-08T20:29:37Z",
+      "side": 1,
+      "message": "Even if they were I think it would be hard to support in the future, i.e hwui can change how they submit buffers, e.g like chrome via SurfaceControl, in this case buffers are allocated separately and don\u0027t really belong do surface.",
+      "parentUuid": "2a0f03b2_4f1fbfca",
+      "range": {
+        "startLine": 377,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 71
+      },
+      "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
