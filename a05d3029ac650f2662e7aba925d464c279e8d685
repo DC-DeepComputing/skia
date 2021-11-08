@@ -16,6 +16,24 @@
       "message": "Remove the TODO in recipe_modules/build/util.py ?",
       "revId": "a05d3029ac650f2662e7aba925d464c279e8d685",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c77d4c65_0aea46a9",
+        "filename": "infra/bots/recipe_modules/build/docker.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-08T20:50:06Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "bd62c727_2b2cadfe",
+      "revId": "a05d3029ac650f2662e7aba925d464c279e8d685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
