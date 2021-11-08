@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd156e8_db49211b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-08T15:16:39Z",
+      "side": 1,
+      "message": "Would this in general be a suitable way to let the ScalerContext decide whether to apply emboldening or not? Some implementations for non-remote typefaces are missing and they should in general follow the DWrite implementation. It\u0027s a bit unfortunate that this would mean another flag.\n\nAlternatives considered: Join the previous glyphMaskNeedsForeGroundColor and this one into a new method that returns some high level font type in a bitfield (i.e. isColrV0, isColrV1, isColorBitmap, isColor...)\n\nIf you have other architectural ideas or suggestions, I\u0027d be quite happy. A fix is needed to address this Windows emboldening emoji presentation regression. \n\n\n",
+      "revId": "6420bcc94a7670d4f37ae192901a2f692a966f5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
