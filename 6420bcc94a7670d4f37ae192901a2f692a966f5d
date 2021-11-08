@@ -16,6 +16,23 @@
       "message": "Would this in general be a suitable way to let the ScalerContext decide whether to apply emboldening or not? Some implementations for non-remote typefaces are missing and they should in general follow the DWrite implementation. It\u0027s a bit unfortunate that this would mean another flag.\n\nAlternatives considered: Join the previous glyphMaskNeedsForeGroundColor and this one into a new method that returns some high level font type in a bitfield (i.e. isColrV0, isColrV1, isColorBitmap, isColor...)\n\nIf you have other architectural ideas or suggestions, I\u0027d be quite happy. A fix is needed to address this Windows emboldening emoji presentation regression. \n\n\n",
       "revId": "6420bcc94a7670d4f37ae192901a2f692a966f5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ccbf87_7c821c5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T15:23:48Z",
+      "side": 1,
+      "message": "I\u0027m not sure I want to try to make this distinction at the typeface level, as this is really a glyph level decision. The real issue is just the decision to force generation from path for the whole scaler context is there is a stroke. This should be pushed to when the metrics and image are generated with SkScalerContext maybe having common code to handle the common case of handling creating metrics or images from the path, but it should be up to the implementing sub-classes of SkScalerContext to decide on a glyph by glyph basis what to do.\n\nNote that with the whole passing in the color bit, that was fine. While it might be wasteful on the cache side to cache lots of the same sort of A8 mask (if the glyphs happened to be A8) that\u0027s fine. But I don\u0027t want to shut off stroking for any A8 masks just because there happen to be some other tables present in the font file.",
+      "revId": "6420bcc94a7670d4f37ae192901a2f692a966f5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
