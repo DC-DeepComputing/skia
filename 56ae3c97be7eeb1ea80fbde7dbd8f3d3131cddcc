@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db2daf9_835c2244",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T19:53:03Z",
+      "side": 1,
+      "message": "Maybe fontmgr_factory or to explicitly request the default fontmgr. For a real build we need to be able to enable or disable any set of fontmgr implementations.",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cb0b7c1_e7e15f02",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T19:53:03Z",
+      "side": 1,
+      "message": "This is fine for now, but note that setting up the fontmgr stuff in a sane way will be interesting (as it is in gn). We really want to allow building in as many fontmgr implementations as possible given the build conditions, but then pick a \"_factory.cpp\" for exactly one of the ones available, defaulting to the most common if not otherwise stated by the build configuration.\n\nIn other words, having a \"_factory.cpp\" in the select with an implementation on another arm of the select is not what is going to be wanted eventually.\n\nAlso keep in mind that we have some tests that are specific to specific fontmgr implementations. We want these to be gathered up into the final set of tests, but only if the associated fontmgr is being built.\n\nIn gn we did this with a lot of creating a number of targets which either had things in them or were empty, so that users of those targets could always just depend on them (like targets fontmgr_fontconfig and fontmgr_fontconfig_test which could them be depended on by the skia target or the tests target). Not sure if that makes the most sense here or not.",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16b3dbae_a202e15a",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T19:53:03Z",
+      "side": 1,
+      "message": "Also, as this is set up right now, if one asks for custom_directory_fontmgr one will get it if they explicitly ask for it, but I think one will (eventually) get an undefined symbol error for SkFontMgr::Factory since there is no \"_factory.cpp\" here.\n\nAlso, I\u0027m fairly sure one needs FreeType to use there and I don\u0027t see that being built yet?",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbfd38e1_f5944f56",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T19:53:03Z",
+      "side": 1,
+      "message": "Not sure why this is here? Looks like maybe duplicated from gm/BUILD.bazel?",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
