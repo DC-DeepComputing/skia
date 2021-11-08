@@ -1,6 +1,9 @@
 # @platforms is found at https://github.com/bazelbuild/platforms
 package(default_visibility = ["//:__subpackages__"])
 
+# https://github.com/bazelbuild/bazel-skylib/blob/main/rules/common_settings.bzl
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
 config_setting(
     name = "linux_x64",
     constraint_values = [
@@ -23,6 +26,16 @@ config_setting(
         "@platforms//cpu:arm64",
         "@platforms//os:linux",
     ],
+)
+
+config_setting(
+    name = "debug_build",
+    values = {"compilation_mode": "dbg"},
+)
+
+config_setting(
+    name = "release_build",
+    values = {"compilation_mode": "opt"},
 )
 
 constraint_value(
@@ -50,34 +63,69 @@ config_setting(
 # =============================================================================
 #                     Configurable Skia Features
 # =============================================================================
-# Below, we define a number of constraint_settings (think enums) and their
-# associated constraint values (think enum values). These let us use select
-# to turn on or off certain Skia features. Many of these are platform-specific,
-# and can be configured as such with the exec_compatible_with.
-#
-# To actually set the values, you need to create a platform() rule. See
-# //bazel/supported_combinations for more.
-#
-# https://docs.bazel.build/versions/main/be/platform.html#constraint_setting
-constraint_setting(
-    name = "skdebug_impl",
-    default_constraint_value = ":stdio_skdebug",
+
+# We have to specify defaults https://docs.bazel.build/versions/main/skylark/config.html#instantiating-build-settings
+
+string_flag(
+    name = "gpu_backend",
+    build_setting_default = "",
 )
 
-# https://docs.bazel.build/versions/main/be/platform.html#constraint_value
-constraint_value(
-    name = "stdio_skdebug",
-    constraint_setting = ":skdebug_impl",
+config_setting(
+    name = "gl_backend",
+    flag_values = {
+        ":gpu_backend": "gl",
+    },
 )
 
-constraint_value(
-    name = "win_skdebug",
-    constraint_setting = ":skdebug_impl",
-    exec_compatible_with = ["@platforms//os:windows"],
+config_setting(
+    name = "vulkan_backend",
+    flag_values = {
+        ":gpu_backend": "vulkan",
+    },
 )
 
-constraint_value(
-    name = "android_skdebug",
-    constraint_setting = ":skdebug_impl",
-    exec_compatible_with = ["@platforms//os:android"],
+string_flag(
+    name = "with_gl_standard",
+    build_setting_default = "",
+)
+
+config_setting(
+    name = "gles_standard",
+    flag_values = {
+        ":with_gl_standard": "gles",
+    },
+)
+
+config_setting(
+    name = "gl_standard",
+    flag_values = {
+        ":with_gl_standard": "gl",
+    },
+)
+
+config_setting(
+    name = "webgl_standard",
+    flag_values = {
+        ":with_gl_standard": "webgl",
+    },
+)
+
+string_flag(
+    name = "fontmgr",
+    build_setting_default = "empty",
+)
+
+config_setting(
+    name = "empty_fontmgr",
+    flag_values = {
+        ":fontmgr": "empty",
+    },
+)
+
+config_setting(
+    name = "custom_directory_fontmgr",
+    flag_values = {
+        ":fontmgr": "custom_directory",
+    },
 )
