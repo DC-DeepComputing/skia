@@ -134,6 +134,7 @@ func main() {
 		skipBuild        = flag.Bool("skip-build", false, "skip build. Helpful for running locally.")
 		gitCacheDirFlag  = flag.String("git_cache", "", "Git cache directory.")
 		checkoutRootFlag = flag.String("checkout_root", "", "Directory to use for checkouts.")
+		dmPathFlag       = flag.String("dm_path", ".", "Path to the DM binary.")
 	)
 	ctx := td.StartRun(projectId, taskId, taskName, output, local)
 	defer td.EndRun(ctx)
@@ -233,12 +234,18 @@ func main() {
 		}
 	}
 
+	absDmPath, err := filepath.Abs(*dmPathFlag)
+	if err != nil {
+		td.Fatal(ctx, err)
+	}
+
 	// Capture and upload the SKPs.
 	script := filepath.Join(skiaDir, "infra", "bots", "assets", "skp", "create_and_upload.py")
 	cmd := []string{
 		"vpython3", "-u", script,
 		"--chrome_src_path", chromiumDir,
 		"--browser_executable", filepath.Join(outDir, "chrome"),
+		"--dm_path", absDmPath,
 	}
 	if *dryRun {
 		cmd = append(cmd, "--dry_run")
