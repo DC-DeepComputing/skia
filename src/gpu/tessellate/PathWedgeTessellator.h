@@ -10,6 +10,7 @@
 
 #include "src/gpu/GrVertexChunkArray.h"
 #include "src/gpu/tessellate/PathTessellator.h"
+#include "src/gpu/tessellate/Tessellation.h"
 
 class GrCaps;
 class GrGpuBuffer;
@@ -29,7 +30,8 @@ public:
                                  const SkPMColor4f&,
                                  int numPathVerbs,
                                  const GrPipeline&,
-                                 const GrCaps&);
+                                 const GrCaps&,
+                                 PatchAttribs = PatchAttribs::kNone);
 
     void prepare(GrMeshDrawTarget*, const PathDrawList&, int totalCombinedPathVerbCnt) override;
 
@@ -39,8 +41,10 @@ public:
 #endif
 
 private:
-    PathWedgeTessellator(GrPathTessellationShader* shader) : PathTessellator(shader) {}
+    PathWedgeTessellator(GrPathTessellationShader* shader, PatchAttribs attribs)
+            : PathTessellator(shader), fAttribs(attribs) {}
 
+    const PatchAttribs fAttribs;
     GrVertexChunkArray fVertexChunkArray;
 
     // If using fixed count, this is the number of vertices we need to emit per instance.
