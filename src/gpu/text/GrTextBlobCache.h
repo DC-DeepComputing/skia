@@ -9,9 +9,9 @@
 #define GrTextBlobCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
+#include "include/private/SkSpinlock.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/gpu/text/GrTextBlob.h"
