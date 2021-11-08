@@ -75,6 +75,9 @@ protected:
     bool onGlyphMaskNeedsCurrentColor() const override {
         return false;
     }
+    bool onSuitableForStroking() const override {
+        return true;
+    }
     int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
                                      int coordinateCount) const override
     {
@@ -236,6 +239,10 @@ sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream) {
 
 bool SkTypeface::glyphMaskNeedsCurrentColor() const {
     return this->onGlyphMaskNeedsCurrentColor();
+}
+
+bool SkTypeface::suitableForStroking() const {
+    return this->onSuitableForStroking();
 }
 
 int SkTypeface::getVariationDesignPosition(

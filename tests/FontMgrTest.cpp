@@ -161,6 +161,7 @@ DEF_TEST(FontMgr_MatchStyleCSS3, reporter) {
             return new EmptyLocalizedStrings;
         }
         bool onGlyphMaskNeedsCurrentColor() const override { return false; }
+        bool onSuitableForStroking() const override { return true; }
         int onGetVariationDesignPosition(
                 SkFontArguments::VariationPosition::Coordinate coordinates[],
                 int coordinateCount) const override

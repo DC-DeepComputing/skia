@@ -155,6 +155,14 @@ SkTypeface::LocalizedStrings* DWriteFontTypeface::onCreateFamilyNameIterator() c
     return nameIter.release();
 }
 
+bool DWriteFontTypeface::onSuitableForStroking() const {
+  return !(this->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0 ||
+           this->getTableSize(SkSetFourByteTag('S', 'B', 'I', 'X')) > 0 ||
+           this->getTableSize(SkSetFourByteTag('C', 'B', 'D', 'T')) > 0 ||
+           this->getTableSize(SkSetFourByteTag('S', 'V', 'G', ' ')) > 0 ||
+           this->getTableSize(SkSetFourByteTag('E', 'B', 'D', 'T')) > 0);
+}
+
 int DWriteFontTypeface::onGetVariationDesignPosition(
     SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const
 {

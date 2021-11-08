@@ -47,6 +47,7 @@ public:
                     const SkFontStyle& style,
                     bool isFixed,
                     bool glyphMaskNeedsCurrentColor,
+                    bool suitableForStroking,
                     sk_sp<SkStrikeClient::DiscardableHandleManager> manager,
                     bool isLogging = true)
             : INHERITED{style, false}
@@ -54,6 +55,7 @@ public:
             , fGlyphCount{glyphCount}
             , fIsLogging{isLogging}
             , fGlyphMaskNeedsCurrentColor(glyphMaskNeedsCurrentColor)
+            , fSuitableForStroking(suitableForStroking)
             , fDiscardableManager{std::move(manager)} {}
     SkFontID remoteTypefaceID() const {return fFontId;}
     int glyphCount() const {return fGlyphCount;}
@@ -69,6 +71,9 @@ protected:
     }
     bool onGlyphMaskNeedsCurrentColor() const override {
         return fGlyphMaskNeedsCurrentColor;
+    }
+    bool onSuitableForStroking() const override {
+        return fSuitableForStroking;
     }
     int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
                                      int coordinateCount) const override {
@@ -134,6 +139,7 @@ private:
     const int                                       fGlyphCount;
     const bool                                      fIsLogging;
     const bool                                      fGlyphMaskNeedsCurrentColor;
+    const bool                                      fSuitableForStroking;
     sk_sp<SkStrikeClient::DiscardableHandleManager> fDiscardableManager;
 
 
