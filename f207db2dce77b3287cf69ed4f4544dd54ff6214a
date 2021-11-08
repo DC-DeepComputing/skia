@@ -22,6 +22,30 @@
       },
       "revId": "f207db2dce77b3287cf69ed4f4544dd54ff6214a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dd8414d_05d436b2",
+        "filename": "src/gpu/gradients/GrGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-08T15:56:58Z",
+      "side": 0,
+      "message": "Good question. I need to audit the code and see. I\u0027d love to remove it if it\u0027s useless.",
+      "parentUuid": "f26e1dfe_d6e1222f",
+      "range": {
+        "startLine": 772,
+        "startChar": 8,
+        "endLine": 772,
+        "endChar": 32
+      },
+      "revId": "f207db2dce77b3287cf69ed4f4544dd54ff6214a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
