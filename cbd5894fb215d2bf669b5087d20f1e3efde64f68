@@ -22,6 +22,30 @@
       },
       "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a014f452_609141b8",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-08T22:33:31Z",
+      "side": 1,
+      "message": "You\u0027re totally right, but I think it actually goes further than this. In the end, I think I actually need a full mapping between slots and variables; knowing the difference between ints and bools doesn\u0027t actually go far enough.\n\nIn retrospect, I probably didn\u0027t *actually* need to put types inside Slots at all, because it\u0027s not actually necessary to make the SkVM code work (at the end of the day SkVM only cares about the bits), and it\u0027s not sufficient for a good debugger experience. Telling a user \"$100 changed to 1.0\" is kinda lame (although it\u0027s admittedly better than \"$100 changed to 0x3F800000\", which is why I added types to begin with). But we really want to say \"colorArray[2].r changed to 1.0\". And the SkVMCodeGenerator totally does know all those things! It knows the names and types of variables and can associate each slot with the part of the variable that it came from. We just need to keep that information around somehow. Right now it\u0027s getting tossed at the end of compilation because we have nowhere to stash it.\n\nI\u0027m still mulling over the best way to expose the slot\u003c-\u003evariable mapping. I can think of multiple ways to do it but I need to experiment with it a little while and see what feels right.",
+      "parentUuid": "afec11f5_d67a6eae",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 64
+      },
+      "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
