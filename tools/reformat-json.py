@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from __future__ import print_function
 
 '''
 Copyright 2013 Google Inc.
@@ -19,7 +20,6 @@ Should not modify the JSON contents in any meaningful way.
 
 
 # System-level imports
-from __future__ import print_function
 import argparse
 import os
 import sys
@@ -40,11 +40,13 @@ GM_DIRECTORY = os.path.realpath(
     os.path.join(os.path.dirname(os.path.dirname(__file__)), 'gm'))
 if GM_DIRECTORY not in sys.path:
     sys.path.append(GM_DIRECTORY)
-import gm_json
+from . import gm_json
+
 
 def Reformat(filename):
   print('Reformatting file %s...' % filename)
   gm_json.WriteToFile(gm_json.LoadFromFile(filename), filename)
+
 
 def _Main():
   parser = argparse.ArgumentParser(description='Reformat JSON files in-place.')
@@ -54,6 +56,7 @@ def _Main():
   for filename in args.filenames:
     Reformat(filename)
   sys.exit(0)
+
 
 if __name__ == '__main__':
     _Main()

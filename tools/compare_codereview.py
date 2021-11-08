@@ -18,11 +18,11 @@ import collections
 import os
 import re
 import sys
-import urllib2
-import HTMLParser
+import urllib
+import html.parser
 
 
-class CodeReviewHTMLParser(HTMLParser.HTMLParser):
+class CodeReviewHTMLParser(html.parser.HTMLParser):
   """Parses CodeReview web page.
 
   Use the CodeReviewHTMLParser.parse static function to make use of
@@ -48,9 +48,9 @@ class CodeReviewHTMLParser(HTMLParser.HTMLParser):
     """
     parser = CodeReviewHTMLParser()
     try:
-      parser.feed(urllib2.urlopen(url).read())
-    except (urllib2.URLError,):
-      print >> sys.stderr, 'Error getting', url
+      parser.feed(urllib.urlopen(url).read())
+    except (urllib.URLError,):
+      print('Error getting', url, file=sys.stderr)
       return None
     parser.close()
     return parser.statuses
@@ -60,7 +60,7 @@ class CodeReviewHTMLParser(HTMLParser.HTMLParser):
   Status = collections.namedtuple('Status', ['status', 'url'])
 
   def __init__(self):
-    HTMLParser.HTMLParser.__init__(self)
+    html.parser.HTMLParser.__init__(self)
     self._id = None
     self._status = None
     self._href = None
@@ -169,9 +169,9 @@ class BuilderHTMLParser(HTMLParser.HTMLParser):
     """
     parser = BuilderHTMLParser()
     try:
-      parser.feed(urllib2.urlopen(url).read())
-    except (urllib2.URLError,):
-      print >> sys.stderr, 'Error getting', url
+      parser.feed(urllib.urlopen(url).read())
+    except (urllib.URLError,):
+      print('Error getting', url, file=sys.stderr)
       return []
     parser.close()
     return parser.failure_results
@@ -179,7 +179,7 @@ class BuilderHTMLParser(HTMLParser.HTMLParser):
   Result = collections.namedtuple('Result', ['text', 'url'])
 
   def __init__(self):
-    HTMLParser.HTMLParser.__init__(self)
+    html.parser.HTMLParser.__init__(self)
     self.failure_results = []
     self._current_failure_result = None
     self._divlevel = None
@@ -327,9 +327,9 @@ def main(control_url, roll_url, verbosity=1):
   roll = CodeReviewHTMLParser.parse(roll_url)
   all_bots = set(control) & set(roll)  # Set intersection.
   if not all_bots:
-    print >> sys.stderr, (
+    print(
       'Error:  control %s and roll %s have no common trybots.'
-      % (list(control), list(roll)))
+      % (list(control), list(roll)), file=sys.stderr)
     return
 
   control_name = '[control %s]' % control_url.split('/')[-1]
@@ -407,7 +407,7 @@ def main(control_url, roll_url, verbosity=1):
 
 if __name__ == '__main__':
   if len(sys.argv) < 3:
-    print >> sys.stderr, __doc__
+    print(__doc__, file=sys.stderr)
     exit(1)
   main(sys.argv[1], sys.argv[2],
      int(os.environ.get('COMPARE_CODEREVIEW_VERBOSITY', 1)))

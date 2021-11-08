@@ -49,8 +49,8 @@ def _file_in_repo(filename, all_files):
   if len(matched) == 1:
     return matched[0]
   elif len(matched) > 1:
-    print >> sys.stderr, ('WARNING: multiple matches for %s; skipping:\n\t%s'
-                          % (new_file, '\n\t'.join(matched)))
+    print('WARNING: multiple matches for %s; skipping:\n\t%s' % (
+        new_file, '\n\t'.join(matched)), file=sys.stderr)
   return None
 
 
@@ -143,7 +143,7 @@ def _parse_key_value(kv_list):
     raise Exception('Invalid key/value pairs: %s' % kv_list)
 
   rv = {}
-  for i in xrange(len(kv_list) / 2):
+  for i in range(len(kv_list) / 2):
     rv[kv_list[i*2]] = kv_list[i*2+1]
   return rv
 
@@ -151,7 +151,7 @@ def _parse_key_value(kv_list):
 def _get_per_file_summaries(line_by_line):
   """Summarize the full line-by-line coverage report by file."""
   per_file = []
-  for filepath, lines in line_by_line.iteritems():
+  for filepath, lines in line_by_line.items():
     total_lines = 0
     covered_lines = 0
     for _, cov, _ in lines:

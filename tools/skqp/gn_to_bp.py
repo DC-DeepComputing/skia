@@ -21,9 +21,9 @@ root_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 skia_gn_dir = os.path.join(root_dir, 'gn')
 sys.path.insert(0, skia_gn_dir)
 
-import gn_to_bp_utils
+from . import gn_to_bp_utils
 
-from skqp_gn_args import SkqpGnArgs
+from . import skqp_gn_args
 
 # First we start off with a template for Android.bp,
 # with holes for source lists and include directories.
@@ -132,7 +132,7 @@ gn_args = {
   'skia_use_system_zlib':          'true',
 }
 
-for k, v in SkqpGnArgs.iteritems():
+for k, v in skqp_gn_args.SkqpGnArgs.items():
     gn_args[k] = v
 
 js = gn_to_bp_utils.GenerateJSONFromGN(gn_args)
@@ -185,7 +185,7 @@ gn_to_bp_utils.WriteUserConfig('include/config/SkUserConfig.h', defines)
 
 # OK!  We have everything to fill in Android.bp...
 with open('Android.bp', 'w') as f:
-  print >>f, bp.substitute({
+  print(bp.substitute({
     'local_includes': bpfmt(8, local_includes),
     'srcs':           bpfmt(8, srcs),
     'cflags':         bpfmt(8, cflags, False),
@@ -202,5 +202,5 @@ with open('Android.bp', 'w') as f:
                                 defs['sse42'] +
                                 defs['avx'] +
                                 defs['hsw']),
-  })
+  }), file=f)
 

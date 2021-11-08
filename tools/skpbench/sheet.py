@@ -6,16 +6,16 @@
 # found in the LICENSE file.
 
 from __future__ import print_function
-from _benchresult import BenchResult
+from . import _benchresult
 from argparse import ArgumentParser
 from collections import defaultdict, namedtuple
 from datetime import datetime
+from functools import reduce
 import operator
 import os
 import sys
 import tempfile
 import urllib
-import urlparse
 import webbrowser
 
 __argparse = ArgumentParser(description="""
@@ -60,7 +60,7 @@ def get_qualified_name(name, qualifiers):
   if not qualifiers:
     return name
   else:
-    args = ('%s=%s' % (k,v) for k,v in qualifiers.iteritems())
+    args = ['%s=%s' % (k,v) for k,v in qualifiers.items()]
     return '%s (%s)' % (name, ' '.join(args))
 
 class Parser:
@@ -73,7 +73,7 @@ class Parser:
 
   def parse_file(self, infile):
     for line in infile:
-      match = BenchResult.match(line)
+      match = _benchresult.BenchResult.match(line)
       if not match:
         continue
 
@@ -103,7 +103,7 @@ class Parser:
     outfile.write('\n')
 
     # Write the rows.
-    for bench, row in self.rows.iteritems():
+    for bench, row in self.rows.items():
       outfile.write('%s,' % bench)
       for fullconfig in self.fullconfigs:
         if fullconfig in row:
@@ -157,7 +157,7 @@ def main():
     pathname = os.path.join(dirname, basename)
     with open(pathname, mode='w') as tmpfile:
       parser.print_csv(outfile=tmpfile)
-    fileuri = urlparse.urljoin('file:', urllib.pathname2url(pathname))
+    fileuri = urllib.urljoin('file:', urllib.pathname2url(pathname))
     print('opening %s' % fileuri)
     webbrowser.open(fileuri)
 

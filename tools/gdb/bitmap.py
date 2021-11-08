@@ -80,7 +80,7 @@ class sk_bitmap(gdb.Command):
         # Fails on premultiplied alpha, it cannot convert to RGB.
         image.show()
       else:
-        print ("Need to add support for %s %s." % (
+        print("Need to add support for %s %s." % (
                str(ColorType(int(color_type))),
                str(AlphaType(int(alpha_type)))
         ))

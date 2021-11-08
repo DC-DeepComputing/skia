@@ -4,13 +4,13 @@
 # found in the LICENSE file.
 
 from __future__ import print_function
-from _hardware import Hardware
+from . import _hardware
 import sys
 import time
 
 class HardwareAndroid(Hardware):
   def __init__(self, adb):
-    Hardware.__init__(self)
+    _hardware.Hardware.__init__(self)
     self.warmup_time = 5
     self._adb = adb
     self.desiredClock = 0.66
@@ -19,7 +19,7 @@ class HardwareAndroid(Hardware):
       self._adb.remount()
 
   def __enter__(self):
-    Hardware.__enter__(self)
+    _hardware.Hardware.__enter__(self)
     if not self._adb.is_root() and self._adb.root():
       self._adb.remount()
 
@@ -69,11 +69,12 @@ class HardwareAndroid(Hardware):
     return self
 
   def __exit__(self, exception_type, exception_value, traceback):
-    Hardware.__exit__(self, exception_type, exception_value, traceback)
+    _hardware.Hardware.__exit__(
+        self, exception_type, exception_value, traceback)
     self._adb.reboot() # some devices struggle waking up; just hard reboot.
 
   def sanity_check(self):
-    Hardware.sanity_check(self)
+    _hardware.Hardware.sanity_check(self)
 
   def print_debug_diagnostics(self):
     # search for and print thermal trip points that may have been exceeded.
@@ -102,7 +103,7 @@ class HardwareAndroid(Hardware):
         fi
       done''')
 
-    Hardware.print_debug_diagnostics(self)
+    _hardware.Hardware.print_debug_diagnostics(self)
 
   # expects a float between 0 and 100 representing where along the list of freqs to choose a value.
   def setDesiredClock(self, c):

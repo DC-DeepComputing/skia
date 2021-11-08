@@ -12,7 +12,7 @@ from contextlib import closing
 
 import base64
 import sys
-import urllib2
+import urllib
 
 
 def get(repo_url, filepath):
@@ -26,12 +26,12 @@ def get(repo_url, filepath):
       string; the contents of the given file.
   """
   base64_url = '/'.join((repo_url, '+', 'main', filepath)) + '?format=TEXT'
-  with closing(urllib2.urlopen(base64_url)) as f:
+  with closing(urllib.urlopen(base64_url)) as f:
     return base64.b64decode(f.read())
 
 
 if __name__ == '__main__':
   if len(sys.argv) != 3:
-    print >> sys.stderr, 'Usage: %s <repo_url> <filepath>' % sys.argv[0]
+    print('Usage: %s <repo_url> <filepath>' % sys.argv[0], file=sys.stderr)
     sys.exit(1)
   sys.stdout.write(get(sys.argv[1], sys.argv[2]))

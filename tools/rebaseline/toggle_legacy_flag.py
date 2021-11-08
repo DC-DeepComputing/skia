@@ -3,6 +3,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+from __future__ import print_function
+
 README = """
 Automatically add or remove a specific legacy flag to multiple Skia client repos.
 
@@ -18,7 +20,6 @@ only -a (--android-dir) argument:
 
 """
 
-from __future__ import print_function
 import os, sys
 import argparse
 import subprocess
@@ -33,7 +34,7 @@ ANDROID_TOOLS_DIR = os.path.join(
 
 def toggle_android(args):
   sys.path.append(ANDROID_TOOLS_DIR)
-  import upload_to_android
+  from . import upload_to_android
 
   modifier = upload_to_android.AndroidLegacyFlagModifier(args.flag)
   upload_to_android.upload_to_android(args.android_dir, modifier)
@@ -49,15 +50,15 @@ def toggle_chromium(args):
   stash_output = subprocess.check_output(['git', 'stash']).strip()
 
   if branch != "master" or stash_output != EXPECTED_STASH_OUT:
-    print ("Please checkout a clean master branch at your chromium repo (%s) "
-        "before running this script") % args.chromium_dir
+    print(("Please checkout a clean master branch at your chromium repo (%s) "
+           "before running this script") % args.chromium_dir)
     if stash_output != EXPECTED_STASH_OUT:
       subprocess.check_call(['git', 'stash', 'pop'])
     exit(1)
 
   # Update the repository to avoid conflicts
   subprocess.check_call(['git', 'pull'])
-  subprocess.check_call(['gclient', 'sync']);
+  subprocess.check_call(['gclient', 'sync'])
 
   # Use random number to avoid branch name collision.
   # We'll delete the branch in the end.
@@ -101,13 +102,13 @@ def toggle_chromium(args):
 def toggle_google3(args):
   G3_SCRIPT_DIR = os.path.expanduser("~/skia-g3/scripts")
   if not os.path.isdir(G3_SCRIPT_DIR):
-    print ("Google3 directory unavailable.\n"
-           "Please see "
-           "https://sites.google.com/a/google.com/skia/rebaseline#g3_flag "
-           "for Google3 setup.")
+    print("Google3 directory unavailable.\n"
+          "Please see "
+          "https://sites.google.com/a/google.com/skia/rebaseline#g3_flag "
+          "for Google3 setup.")
     exit(1)
   sys.path.append(G3_SCRIPT_DIR)
-  import citc_flag
+  from . import citc_flag
 
   citc_flag.toggle_google3(args.google3, args.flag)
 

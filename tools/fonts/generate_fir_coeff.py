@@ -123,7 +123,7 @@ for sample_offset, sample_align in sample_offsets:
     # * an awful lot of the curve is out side our sample
     # either is pretty bad, and probably means the results will not be useful.
     num_elements_to_force_round = abs(coeffs_rounded_sum - target_sum)
-    for i in xrange(num_elements_to_force_round):
+    for i in range(num_elements_to_force_round):
       print("Adding %d to index %d to force round %f." % (
           delta, coeff_pkg[i].index, coeffs[coeff_pkg[i].index]))
       coeffs_rounded[coeff_pkg[i].index] += delta
