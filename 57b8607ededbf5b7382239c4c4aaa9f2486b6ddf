@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff9aa2c_6d80252c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T13:44:50Z",
+      "side": 1,
+      "message": "This CL just updated the version of SKP repo to use through Skia\u0027s tools and CI. It cannot cause b/205501709",
+      "revId": "57b8607ededbf5b7382239c4c4aaa9f2486b6ddf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
