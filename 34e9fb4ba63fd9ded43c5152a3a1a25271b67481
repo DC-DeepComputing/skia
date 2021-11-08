@@ -39,6 +39,30 @@
       },
       "revId": "34e9fb4ba63fd9ded43c5152a3a1a25271b67481",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "304ff09e_8cc0fe9d",
+        "filename": "infra/bots/task_drivers/recreate_skps/recreate_skps.go",
+        "patchSetId": 22
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T15:53:31Z",
+      "side": 1,
+      "message": "Ack. That\u0027s good to know. Leaving this just to be consistent with the other relative flag paths in this task driver.",
+      "parentUuid": "4c95d51a_bd3b7ed6",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 42
+      },
+      "revId": "34e9fb4ba63fd9ded43c5152a3a1a25271b67481",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
