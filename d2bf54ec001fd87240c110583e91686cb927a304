@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adc1395a_20d18452",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-08T17:38:51Z",
+      "side": 1,
+      "message": "It seems like we should put some effort into improving the SSE premult code in the future.",
+      "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
