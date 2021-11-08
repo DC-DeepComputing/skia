@@ -10,6 +10,7 @@
 
 #include "src/gpu/GrVertexChunkArray.h"
 #include "src/gpu/tessellate/PathTessellator.h"
+#include "src/gpu/tessellate/Tessellation.h"
 
 class GrCaps;
 class GrGpuBuffer;
@@ -36,7 +37,8 @@ public:
                                       DrawInnerFan,
                                       int numPathVerbs,
                                       const GrPipeline&,
-                                      const GrCaps&);
+                                      const GrCaps&,
+                                      PatchAttribs = PatchAttribs::kNone);
 
     void prepare(GrMeshDrawTarget* target,
                  const PathDrawList& pathDrawList,
@@ -64,10 +66,14 @@ public:
 #endif
 
 private:
-    PathCurveTessellator(GrPathTessellationShader* shader, DrawInnerFan drawInnerFan)
+    PathCurveTessellator(GrPathTessellationShader* shader,
+                         PatchAttribs attribs,
+                         DrawInnerFan drawInnerFan)
             : PathTessellator(shader)
+            , fAttribs(attribs)
             , fDrawInnerFan(drawInnerFan == DrawInnerFan::kYes) {}
 
+    const PatchAttribs fAttribs;
     const bool fDrawInnerFan;
     GrVertexChunkArray fVertexChunkArray;
 
