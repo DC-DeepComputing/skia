@@ -39,6 +39,30 @@
       },
       "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a0f03b2_4f1fbfca",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-08T14:44:12Z",
+      "side": 1,
+      "message": "Not that I am aware of.  The window/surface has visibility into what buffers it contains, but the buffers themselves don\u0027t know to which surface they belong.",
+      "parentUuid": "90c10c84_3e28bea3",
+      "range": {
+        "startLine": 377,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 71
+      },
+      "revId": "45d8021868af137b3a6e7b51304f72f61e89b026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
