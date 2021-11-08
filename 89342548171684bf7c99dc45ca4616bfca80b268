@@ -134,6 +134,30 @@
       },
       "revId": "89342548171684bf7c99dc45ca4616bfca80b268",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a5e66e9_b3d401ef",
+        "filename": "infra/bots/task_drivers/recreate_skps/recreate_skps.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T15:33:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19df07f0_bccd2675",
+      "range": {
+        "startLine": 242,
+        "startChar": 1,
+        "endLine": 242,
+        "endChar": 49
+      },
+      "revId": "89342548171684bf7c99dc45ca4616bfca80b268",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
