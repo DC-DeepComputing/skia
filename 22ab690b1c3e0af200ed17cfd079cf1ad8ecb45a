@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99b7103_0e41f109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-08T14:03:39Z",
+      "side": 1,
+      "message": "OK, chrome has re-landed the flag change, so this is good to go.",
+      "revId": "22ab690b1c3e0af200ed17cfd079cf1ad8ecb45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
