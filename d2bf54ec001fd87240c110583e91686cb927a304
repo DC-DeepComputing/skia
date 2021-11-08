@@ -34,6 +34,24 @@
       "parentUuid": "adc1395a_20d18452",
       "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b116bd36_84e9e345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-08T19:16:41Z",
+      "side": 1,
+      "message": "I think that div255() is the wrong abstraction. I think we want is\nU16 premul(c, a) {\n  U16 t \u003d c * a + 0x80\n  return (t + (t \u003e\u003e 8)) \u003e\u003e 8;\n}\n\n\nI think the real question is \"how often do we have to premul?\"",
+      "parentUuid": "68fd7423_c0308c14",
+      "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
