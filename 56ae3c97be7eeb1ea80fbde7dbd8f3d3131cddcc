@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8fc533a_fac615ad",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T21:20:34Z",
+      "side": 1,
+      "message": "Yeah, in GN we just have lots of flags (skia_enable_fontmgr_android, skia_enable_fontmgr_custom_directory, skia_enable_fontmgr_win, etc) so each can be turned on and off separately. Then based on these we have a default fontmgr picker logic which sets the default skia_fontmgr_factory (which is the one variable we have in GN which is actually the name of a target) which the GN fontmgr_factory target depends on. (There are fontmgr_empty_factory, fontmgr_android_factory, etc and one of those is depended on by the fontmgr_factory target by way of the skia_fontmgr_factory variable.)",
+      "parentUuid": "cfc173b8_0a52334a",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16b3dbae_a202e15a",
         "filename": "src/ports/BUILD.bazel",
         "patchSetId": 40
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "The fontmgr stuff here is really just penciled in. You are right that there would be issues trying to use it because of the lack of FreeType (and other things).",
       "parentUuid": "16b3dbae_a202e15a",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e606d397_6ca1eaf5",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-08T21:20:34Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s fine for now. It took ~4 years before we got the GN build working the right way with fontmgr. However, if you can get fontmgr and opts working, everything else seems pretty straight forward.",
+      "parentUuid": "bab40930_66a4be3a",
       "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
