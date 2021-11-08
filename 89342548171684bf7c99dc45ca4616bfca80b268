@@ -110,6 +110,30 @@
       },
       "revId": "89342548171684bf7c99dc45ca4616bfca80b268",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19df07f0_bccd2675",
+        "filename": "infra/bots/task_drivers/recreate_skps/recreate_skps.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-08T15:05:57Z",
+      "side": 1,
+      "message": "Yes, --dm-path instead of --workdir, especially since we only use --workdir to derive the path to DM.",
+      "parentUuid": "73f1b14f_01d6e97c",
+      "range": {
+        "startLine": 242,
+        "startChar": 1,
+        "endLine": 242,
+        "endChar": 49
+      },
+      "revId": "89342548171684bf7c99dc45ca4616bfca80b268",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
