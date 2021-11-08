@@ -16,6 +16,244 @@
       "message": "I sincerely apologize for this CL.",
       "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1285a70_c000c501",
+        "filename": "bin/fetch-sk",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "High-level question:\nThe recipes porting to python3 requires support for both python2+3 ?",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b9781e7_3f23e7c5",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "disclaimer: I don\u0027t completely understand what this block is doing but maybe that\u0027s ok",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba00d54_a703e4ee",
+        "filename": "infra/bots/recipe_modules/vars/examples/full.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Remove this and below",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5d1d2c6_b2ecb608",
+        "filename": "tools/BUILD_simulator.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "These 3 should be something like-\nprint(\u0027this file...\u0027, file\u003dout)",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dfad08e_928d6687",
+        "filename": "tools/compare_codereview.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b567b55_f43e334a",
+        "filename": "tools/compare_codereview.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "892d919f_3f03a5b0",
+        "filename": "tools/gdb/bitmap.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bca512c_15510a62",
+        "filename": "tools/parse_llvm_coverage.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59523f77_c2835df7",
+        "filename": "tools/rebaseline/toggle_legacy_flag.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1398565_7ae5e6f5",
+        "filename": "tools/rebaseline/toggle_legacy_flag.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ae10d5d_fceb0d98",
+        "filename": "tools/reformat-json.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e7d4f7_2a935973",
+        "filename": "tools/skpbench/_hardware_android.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c23680b2_3e90c63f",
+        "filename": "tools/skpbench/sheet.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c143ad09_e9181706",
+        "filename": "tools/skqp/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-08T16:38:32Z",
+      "side": 1,
+      "message": "Fix",
+      "revId": "fc86f41232d8ab0b671b9ed64b2997a934bd6fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
