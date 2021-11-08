@@ -16,6 +16,24 @@
       "message": "It seems like we should put some effort into improving the SSE premult code in the future.",
       "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68fd7423_c0308c14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-08T17:44:04Z",
+      "side": 1,
+      "message": "Yes, I wanted to ask about that. This reland (as-is) can\u0027t really land - it regressed performance on a bunch of chrome benchmarks pretty badly. Luckily, it was all on Android devices. The important thing there is that those devices have NEON, and the implementation of div255 on NEON is actually correct, vs. the approximation used on other architectures.\n\nSo, I could make the force_highp thing conditional on NEON (but that\u0027s ugly, and only fixes the precision problem in this one code path), or... we could try to make div255 accurate on all platforms. How bad would it be for performance if we changed div255 from:\n\n  return (v+255)/256;\n  \nto:\n\n  v +\u003d 128;\n  return (v+(v/256))/256;\n  \n... knowing that it\u0027s used throughout the lowp blending stages, etc?",
+      "parentUuid": "adc1395a_20d18452",
+      "revId": "d2bf54ec001fd87240c110583e91686cb927a304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
