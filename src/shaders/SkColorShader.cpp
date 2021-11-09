@@ -93,22 +93,28 @@ bool SkColor4Shader::onAppendStages(const SkStageRec& rec) const {
 
 skvm::Color SkColorShader::onProgram(skvm::Builder* p,
                                      skvm::Coord /*device*/, skvm::Coord /*local*/,
-                                     skvm::Color /*paint*/, const SkMatrixProvider&,
-                                     const SkMatrix* /*localM*/, const SkColorInfo& dst,
+                                     skvm::Color /*paint*/,
+                                     const SkMatrixProvider&, const SkMatrix* /*localM*/,
+                                     const SkColorInfo& dst, bool transformColor,
                                      skvm::Uniforms* uniforms, SkArenaAlloc*) const {
     SkColor4f color = SkColor4f::FromColor(fColor);
-    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                              dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    if (transformColor) {
+        SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                                dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    }
     return p->uniformColor(color, uniforms);
 }
 skvm::Color SkColor4Shader::onProgram(skvm::Builder* p,
                                       skvm::Coord /*device*/, skvm::Coord /*local*/,
-                                      skvm::Color /*paint*/, const SkMatrixProvider&,
-                                      const SkMatrix* /*localM*/, const SkColorInfo& dst,
+                                      skvm::Color /*paint*/,
+                                      const SkMatrixProvider&, const SkMatrix* /*localM*/,
+                                      const SkColorInfo& dst, bool transformColor,
                                       skvm::Uniforms* uniforms, SkArenaAlloc*) const {
     SkColor4f color = fColor;
-    SkColorSpaceXformSteps(fColorSpace.get(), kUnpremul_SkAlphaType,
-                            dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    if (transformColor) {
+        SkColorSpaceXformSteps(fColorSpace.get(), kUnpremul_SkAlphaType,
+                                dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    }
     return p->uniformColor(color, uniforms);
 }
 
@@ -120,17 +126,28 @@ skvm::Color SkColor4Shader::onProgram(skvm::Builder* p,
 #include "src/gpu/SkGr.h"
 
 std::unique_ptr<GrFragmentProcessor> SkColorShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
+        const GrFPArgs& args, bool transformColor) const {
+    if (transformColor) {
+        return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
+    } else {
+        // Skip transform and premul
+        SkColor4f color = SkColor4f::FromColor(fColor);
+        return GrFragmentProcessor::MakeColor({ color.fR, color.fG, color.fB, color.fA });
+    }
 }
 
 std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
-                                  args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
-    SkColor4f color = fColor;
-    steps.apply(color.vec());
-    return GrFragmentProcessor::MakeColor(color.premul());
+        const GrFPArgs& args, bool transformColor) const {
+    if (transformColor) {
+        SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
+                                    args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
+        SkColor4f color = fColor;
+        steps.apply(color.vec());
+        return GrFragmentProcessor::MakeColor(color.premul());
+    } else {
+        // Skip transform and premul
+        return GrFragmentProcessor::MakeColor({fColor.fR, fColor.fG, fColor.fB, fColor.fA});
+    }
 }
 
 #endif

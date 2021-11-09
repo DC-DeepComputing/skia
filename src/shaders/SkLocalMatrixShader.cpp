@@ -17,9 +17,10 @@
 
 #if SK_SUPPORT_GPU
 std::unique_ptr<GrFragmentProcessor> SkLocalMatrixShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return as_SB(fProxyShader)->asFragmentProcessor(
-        GrFPArgs::WithPreLocalMatrix(args, this->getLocalMatrix()));
+        const GrFPArgs& args, bool transformColor) const {
+    return as_SB(fProxyShader)
+            ->asFragmentProcessor(GrFPArgs::WithPreLocalMatrix(args, this->getLocalMatrix()),
+                                  transformColor);
 }
 #endif
 
@@ -131,7 +132,8 @@ public:
     }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 protected:
@@ -178,16 +180,18 @@ private:
 
 #if SK_SUPPORT_GPU
 std::unique_ptr<GrFragmentProcessor> SkCTMShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
     SkMatrix ctmInv;
     if (!fCTM.invert(&ctmInv)) {
         return nullptr;
     }
 
     auto ctmProvider = SkOverrideDeviceMatrixProvider(args.fMatrixProvider, fCTM);
-    auto base = as_SB(fProxyShader)->asFragmentProcessor(
-        GrFPArgs::WithPreLocalMatrix(args.withNewMatrixProvider(ctmProvider),
-                                     this->getLocalMatrix()));
+    auto base = as_SB(fProxyShader)
+                        ->asFragmentProcessor(GrFPArgs::WithPreLocalMatrix(
+                                                      args.withNewMatrixProvider(ctmProvider),
+                                                      this->getLocalMatrix()),
+                                              transformColor);
     if (!base) {
         return nullptr;
     }

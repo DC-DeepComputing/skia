@@ -65,12 +65,16 @@ bool SkColorFilterShader::onAppendStages(const SkStageRec& rec) const {
 skvm::Color SkColorFilterShader::onProgram(skvm::Builder* p,
                                            skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                            const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                           const SkColorInfo& dst,
+                                           const SkColorInfo& dst, bool transformColor,
                                            skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    // TODO(skbug:10479): Propagate this? What about premul vs. unpremul for the color filter input?
+    SkASSERT(transformColor);
+
     // Run the shader.
-    skvm::Color c = as_SB(fShader)->program(p, device,local, paint,
-                                            matrices,localM, dst,
-                                            uniforms,alloc);
+    skvm::Color c = as_SB(fShader)->program(p, device, local, paint,
+                                            matrices, localM,
+                                            dst, /*transformColor=*/true,
+                                            uniforms, alloc);
     if (!c) {
         return {};
     }
@@ -92,7 +96,10 @@ skvm::Color SkColorFilterShader::onProgram(skvm::Builder* p,
 
 
 std::unique_ptr<GrFragmentProcessor> SkColorFilterShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
+    // TODO(skbug:10479): Propagate this? What about premul vs. unpremul for the color filter input?
+    SkASSERT(transformColor);
+
     auto shaderFP = as_SB(fShader)->asFragmentProcessor(args);
     if (!shaderFP) {
         return nullptr;

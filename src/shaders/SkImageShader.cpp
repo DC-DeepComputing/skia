@@ -275,7 +275,7 @@ sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
     const auto lm = this->totalLocalMatrix(args.fPreLocalMatrix);
     SkMatrix lmInverse;
     if (!lm->invert(&lmInverse)) {
@@ -291,11 +291,14 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
         return nullptr;
     }
 
-    fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                       fImage->colorSpace(),
-                                       fImage->alphaType(),
-                                       args.fDstColorInfo->colorSpace(),
-                                       kPremul_SkAlphaType);
+    if (transformColor) {
+        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+                                           fImage->colorSpace(),
+                                           fImage->alphaType(),
+                                           args.fDstColorInfo->colorSpace(),
+                                           kPremul_SkAlphaType);
+    }
+
     if (fImage->isAlphaOnly()) {
         return GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kDstIn);
     } else {
@@ -337,10 +340,10 @@ public:
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        return fImageShader.makeProgram(
-                b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
+        return fImageShader.makeProgram(b, device, local, color, matrices, localM,
+                                        dst, transformColor, uniforms, this, alloc);
     }
 
 private:
@@ -665,15 +668,16 @@ SkUpdatableShader* SkImageShader::onUpdatableShader(SkArenaAlloc* alloc) const {
 skvm::Color SkImageShader::onProgram(skvm::Builder* b,
                                      skvm::Coord device, skvm::Coord origLocal, skvm::Color paint,
                                      const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                     const SkColorInfo& dst,
+                                     const SkColorInfo& dst, bool transformColor,
                                      skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
-    return this->makeProgram(
-            b, device, origLocal, paint, matrices, localM, dst, uniforms, nullptr, alloc);
+    return this->makeProgram(b, device, origLocal, paint, matrices, localM,
+                             dst, transformColor, uniforms, nullptr, alloc);
 }
 
 skvm::Color SkImageShader::makeProgram(
         skvm::Builder* p, skvm::Coord device, skvm::Coord origLocal, skvm::Color paint,
-        const SkMatrixProvider& matrices, const SkMatrix* localM, const SkColorInfo& dst,
+        const SkMatrixProvider& matrices, const SkMatrix* localM,
+        const SkColorInfo& dst, bool transformColor,
         skvm::Uniforms* uniforms, const TransformShader* coordShader, SkArenaAlloc* alloc) const {
 
     SkMatrix baseInv;
@@ -933,5 +937,8 @@ skvm::Color SkImageShader::makeProgram(
         c.b = clamp(c.b, 0.0f, limit);
     }
 
-    return SkColorSpaceXformSteps{cs,at, dst.colorSpace(),dst.alphaType()}.program(p, uniforms, c);
+    return transformColor
+                   ? SkColorSpaceXformSteps{cs, at, dst.colorSpace(), dst.alphaType()}.program(
+                             p, uniforms, c)
+                   : c;
 }

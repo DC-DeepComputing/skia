@@ -142,11 +142,15 @@ bool SkShader_Blend::onAppendStages(const SkStageRec& orig_rec) const {
 skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
                                       skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                       const SkMatrixProvider& mats, const SkMatrix* localM,
-                                      const SkColorInfo& cinfo,
+                                      const SkColorInfo& cinfo, bool transformColor,
                                       skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    // TODO(skbug:10479): Do we do anything here with transformColor? I don't think so.
+
     skvm::Color d,s;
-    if ((d = as_SB(fDst)->program(p, device,local, paint, mats,localM, cinfo, uniforms,alloc)) &&
-        (s = as_SB(fSrc)->program(p, device,local, paint, mats,localM, cinfo, uniforms,alloc)))
+    if ((d = as_SB(fDst)->program(p, device, local, paint, mats, localM,
+                                  cinfo, /*transformColor=*/true, uniforms, alloc)) &&
+        (s = as_SB(fSrc)->program(p, device, local, paint, mats, localM,
+                                  cinfo, /*transformColor=*/true, uniforms, alloc)))
     {
         if (fBlender) {
             return as_BB(fBlender)->program(p, s,d, cinfo, uniforms,alloc);
@@ -164,7 +168,9 @@ skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
-        const GrFPArgs& orig_args) const {
+        const GrFPArgs& orig_args, bool transformColor) const {
+    // TODO(skbug:10479): Do we do anything here with transformColor? I don't think so.
+
     GrFPArgs::WithPreLocalMatrix args(orig_args, this->getLocalMatrix());
     auto fpA = as_SB(fDst)->asFragmentProcessor(args);
     auto fpB = as_SB(fSrc)->asFragmentProcessor(args);

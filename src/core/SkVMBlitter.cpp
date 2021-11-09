@@ -72,7 +72,7 @@ namespace {
         skvm::Color onProgram(skvm::Builder* p,
                               skvm::Coord /*device*/, skvm::Coord /*local*/, skvm::Color /*paint*/,
                               const SkMatrixProvider&, const SkMatrix* /*localM*/,
-                              const SkColorInfo& dst,
+                              const SkColorInfo& dst, bool transformColor,
                               skvm::Uniforms* uniforms, SkArenaAlloc*) const override {
             const SkColorType ct = fSprite.colorType();
 
@@ -80,7 +80,8 @@ namespace {
 
             skvm::Color c = p->load(fmt, p->varying(SkColorTypeBytesPerPixel(ct)));
 
-            return SkColorSpaceXformSteps{fSprite, dst}.program(p, uniforms, c);
+            return transformColor ? SkColorSpaceXformSteps{fSprite, dst}.program(p, uniforms, c)
+                                  : c;
         }
     };
 
@@ -98,11 +99,23 @@ namespace {
         skvm::Color onProgram(skvm::Builder* p,
                               skvm::Coord device, skvm::Coord local, skvm::Color paint,
                               const SkMatrixProvider& matrices, const SkMatrix* localM,
-                              const SkColorInfo& dst,
+                              const SkColorInfo& dst, bool transformColor,
                               skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+            // TODO(skbug:10479): Shouldn't be possible for !transformColor, not clear what to do?
+            // if it is.
+            SkASSERT(transformColor);
+
             // Run our wrapped shader.
-            skvm::Color c = as_SB(fShader)->program(p, device,local, paint,
-                                                    matrices,localM, dst, uniforms,alloc);
+            skvm::Color c = as_SB(fShader)->program(p,
+                                                    device,
+                                                    local,
+                                                    paint,
+                                                    matrices,
+                                                    localM,
+                                                    dst,
+                                                    transformColor,
+                                                    uniforms,
+                                                    alloc);
             if (!c) {
                 return {};
             }
@@ -185,8 +198,12 @@ namespace {
 
         skvm::Color onProgram(skvm::Builder*,
                               skvm::Coord, skvm::Coord, skvm::Color paint,
-                              const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
+                              const SkMatrixProvider&, const SkMatrix*,
+                              const SkColorInfo&, bool transformColor,
                               skvm::Uniforms*, SkArenaAlloc*) const override {
+            // TODO(skbug:10479): Would suggest we skip premul, but no way for this to be false.
+            SkASSERT(transformColor);
+
             // Incoming `paint` is unpremul in the destination color space,
             // so we just need to premul it.
             return premul(paint);
@@ -313,7 +330,8 @@ void SkVMBlitter::BuildProgram(skvm::Builder* p, const Params& params,
     // See note about arguments above: a SpriteShader will call p->arg() once during program().
     skvm::Color src = as_SB(params.shader)->program(p, device, /*local=*/device, paint,
                                                     params.matrices, /*localM=*/nullptr,
-                                                    params.dst, uniforms, alloc);
+                                                    params.dst, /*transformColor=*/true,
+                                                    uniforms, alloc);
     SkASSERT(src);
     if (params.coverage == Coverage::Mask3D) {
         skvm::F32 M = from_unorm(8, p->load8(p->varying<uint8_t>())),
@@ -370,7 +388,8 @@ void SkVMBlitter::BuildProgram(skvm::Builder* p, const Params& params,
     if (params.clip) {
         skvm::Color clip = as_SB(params.clip)->program(p, device, /*local=*/device, paint,
                                                        params.matrices, /*localM=*/nullptr,
-                                                       params.dst, uniforms, alloc);
+                                                       params.dst, /*transformColor=*/true,
+                                                       uniforms, alloc);
         SkAssertResult(clip);
         cov.r *= clip.a;  // We use the alpha channel of clip for all four.
         cov.g *= clip.a;
@@ -442,8 +461,10 @@ SkVMBlitter::Key SkVMBlitter::CacheKey(
         };
 
         uint64_t hash = 0;
-        *outColor = sb->program(&p, device, /*local=*/device, paint, params.matrices,
-                /*localM=*/nullptr, params.dst, uniforms, alloc);
+        *outColor = sb->program(&p, device, /*local=*/device, paint,
+                                params.matrices, /*localM=*/nullptr,
+                                params.dst, /*transformColor=*/true,
+                                uniforms, alloc);
         if (*outColor) {
             hash = p.hash();
             // p.hash() folds in all instructions to produce r,g,b,a but does not know

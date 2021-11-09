@@ -90,6 +90,7 @@ void Dehydrator::write(Layout l) {
     } else {
         this->writeCommand(Rehydrator::kLayout_Command);
         fBody.write32(l.fFlags);
+        this->writeU8(l.fTransformColor);
         this->writeS8(l.fLocation);
         this->writeS8(l.fOffset);
         this->writeS8(l.fBinding);

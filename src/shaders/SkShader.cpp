@@ -127,7 +127,8 @@ SkShader::GradientType SkShader::asAGradient(GradientInfo* info) const {
 }
 
 #if SK_SUPPORT_GPU
-std::unique_ptr<GrFragmentProcessor> SkShaderBase::asFragmentProcessor(const GrFPArgs&) const {
+std::unique_ptr<GrFragmentProcessor> SkShaderBase::asFragmentProcessor(const GrFPArgs&,
+                                                                       bool transformColor) const {
     return nullptr;
 }
 #endif
@@ -211,7 +212,7 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
 skvm::Color SkShaderBase::program(skvm::Builder* p,
                                   skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                   const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                  const SkColorInfo& dst,
+                                  const SkColorInfo& dst, bool transformColor,
                                   skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
     // Shader subclasses should always act as if the destination were premul or opaque.
     // SkVMBlitter handles all the coordination of unpremul itself, via premul.
@@ -231,8 +232,16 @@ skvm::Color SkShaderBase::program(skvm::Builder* p,
     // shader program hash and blitter Key.  This makes it safe for us to use
     // that bit to make decisions when constructing an SkVMBlitter, like doing
     // SrcOver -> Src strength reduction.
-    if (auto color = this->onProgram(p, device,local, paint, matrices,localM, tweaked,
-                                     uniforms,alloc)) {
+    if (auto color = this->onProgram(p,
+                                     device,
+                                     local,
+                                     paint,
+                                     matrices,
+                                     localM,
+                                     tweaked,
+                                     transformColor,
+                                     uniforms,
+                                     alloc)) {
         if (this->isOpaque()) {
             color.a = p->splat(1.0f);
         }
