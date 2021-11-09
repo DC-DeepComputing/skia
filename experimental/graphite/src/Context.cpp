@@ -11,7 +11,7 @@
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/Gpu.h"
-#include "experimental/graphite/src/ProgramCache.h"
+#include "experimental/graphite/src/GraphicsPipelineDesc.h"
 #include "experimental/graphite/src/Recorder.h"
 #include "experimental/graphite/src/Recording.h"
 
@@ -55,21 +55,20 @@ void Context::submit(SyncToCpu syncToCpu) {
 }
 
 void Context::preCompile(const PaintCombo& paintCombo) {
-    ProgramCache cache;
-
     for (auto bm: paintCombo.fBlendModes) {
         for (auto& shaderCombo: paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
                     Combination c {shaderType, tm, bm};
 
-                    sk_sp<ProgramCache::ProgramInfo> pi = cache.findOrCreateProgram(c);
+                    GraphicsPipelineDesc desc;
+                    // TODO: To do this we will need the path rendering options from Chris and
+                    // a stock set of RenderPasses.
+                    desc.setProgram(TestVertexShader::kVertexTris, c);
                     // TODO: this should be getSkSL
                     // TODO: it should also return the uniform information
-                    std::string msl = pi->getMSL();
+                    // std::string msl = pi->getMSL();
                     // TODO: compile the MSL and store the result back into the ProgramInfo
-                    // To do this we will need the path rendering options from Chris and
-                    // a stock set of RenderPasses.
                 }
             }
         }

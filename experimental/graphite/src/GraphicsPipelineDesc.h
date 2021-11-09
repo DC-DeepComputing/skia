@@ -11,9 +11,39 @@
 #include "include/core/SkTypes.h"
 
 #include "experimental/graphite/include/private/GraphiteTypesPriv.h"
+#include "experimental/graphite/src/ContextUtils.h"
+#include "include/core/SkSpan.h"
+#include "include/private/SkOpts_spi.h"
 #include "include/private/SkTArray.h"
 
 namespace skgpu {
+
+// TODO: Temporary enum describing the set of supported vertex shaders. Vertex shader uniforms
+// are assumed to be bound to buffer 0, and fragment shader uniforms (for Combination) are bound
+// to buffer 1.
+enum class TestVertexShader : unsigned {
+    // Draws a rectangle from (0,0) to (1,1), from 2 triangles.
+    //  - no vertex attributes
+    //  - no instance attributes
+    //  - no vertex uniforms
+    kUnitRectangle,
+    // Draws a rectangle from (0,0) to (1,1), from 2 triangles, transformed by a uniform.
+    //  - no vertex attributes
+    //  - no instance attributes
+    //  - [sx,sy,tx,ty] as a single float4 uniform
+    kRectangle,
+    // Draws a rectangle from (0,0) to (1,1), transformed by instance attributes.
+    //  - no vertex attributes
+    //  - [tx,ty,sx,sy] float4 instance attribute
+    //  - no vertex uniforms
+    kInstanceRectangle,
+    // Draws transformed triangles, using vertex attributes to store initial position and a uniform
+    // to store the transform.
+    //  - float2 position vertex attribute
+    //  - no instance attributes
+    //  - [sx,sy,tx,ty] float4 uniform
+    kVertexTris,
+};
 
 /**
  * GraphicsPipelineDesc represents the state needed to create a backend specific GraphicsPipeline,
@@ -23,111 +53,9 @@ class GraphicsPipelineDesc {
 public:
     GraphicsPipelineDesc();
 
-    /** Describes a vertex or instance attribute. */
-    class Attribute {
-    public:
-        constexpr Attribute() = default;
-        constexpr Attribute(const char* name,
-                            VertexAttribType cpuType,
-                            SLType gpuType)
-                : fName(name), fCPUType(cpuType), fGPUType(gpuType) {
-            SkASSERT(name && gpuType != SLType::kVoid);
-        }
-        constexpr Attribute(const Attribute&) = default;
-
-        Attribute& operator=(const Attribute&) = default;
-
-        constexpr bool isInitialized() const { return fGPUType != SLType::kVoid; }
-
-        constexpr const char* name() const { return fName; }
-        constexpr VertexAttribType cpuType() const { return fCPUType; }
-        constexpr SLType           gpuType() const { return fGPUType; }
-
-        inline constexpr size_t size() const;
-        constexpr size_t sizeAlign4() const { return SkAlign4(this->size()); }
-
-    private:
-        const char* fName = nullptr;
-        VertexAttribType fCPUType = VertexAttribType::kFloat;
-        SLType fGPUType = SLType::kVoid;
-    };
-
-    class Iter {
-    public:
-        Iter() : fCurr(nullptr), fRemaining(0) {}
-        Iter(const Iter& iter) : fCurr(iter.fCurr), fRemaining(iter.fRemaining) {}
-        Iter& operator= (const Iter& iter) {
-            fCurr = iter.fCurr;
-            fRemaining = iter.fRemaining;
-            return *this;
-        }
-        Iter(const Attribute* attrs, int count) : fCurr(attrs), fRemaining(count) {
-            this->skipUninitialized();
-        }
-
-        bool operator!=(const Iter& that) const { return fCurr != that.fCurr; }
-        const Attribute& operator*() const { return *fCurr; }
-        void operator++() {
-            if (fRemaining) {
-                fRemaining--;
-                fCurr++;
-                this->skipUninitialized();
-            }
-        }
-
-    private:
-        void skipUninitialized() {
-            if (!fRemaining) {
-                fCurr = nullptr;
-            } else {
-                while (!fCurr->isInitialized()) {
-                    ++fCurr;
-                }
-            }
-        }
-
-        const Attribute* fCurr;
-        int fRemaining;
-    };
-
-    class AttributeSet {
-    public:
-        Iter begin() const { return Iter(fAttributes, fCount); }
-        Iter end() const { return Iter(); }
-
-        int count() const { return fCount; }
-        size_t stride() const { return fStride; }
-
-    private:
-        friend class GraphicsPipelineDesc;
-        void init(const Attribute* attrs, int count) {
-            fAttributes = attrs;
-            fRawCount = count;
-            fCount = 0;
-            fStride = 0;
-            for (int i = 0; i < count; ++i) {
-                if (attrs[i].isInitialized()) {
-                    fCount++;
-                    fStride += attrs[i].sizeAlign4();
-                }
-            }
-        }
-
-        const Attribute* fAttributes = nullptr;
-        int              fRawCount = 0;
-        int              fCount = 0;
-        size_t           fStride = 0;
-    };
-
     // Returns this as a uint32_t array to be used as a key in the pipeline cache.
-    // TODO: Do we want to do anything here with a tuple or an SkSpan?
-    const uint32_t* asKey() const {
-        return fKey.data();
-    }
-
-    // Gets the number of bytes in asKey(). It will be a 4-byte aligned value.
-    uint32_t keyLength() const {
-        return fKey.size() * sizeof(uint32_t);
+    SkSpan<const uint32_t> asKey() const {
+        return {fKey.data(), fKey.size()};
     }
 
     bool operator==(const GraphicsPipelineDesc& that) const {
@@ -138,128 +66,62 @@ public:
         return !(*this == other);
     }
 
-    // TODO: remove this once we have something real working
-    void setTestingOnlyShaderIndex(int index) {
-        fTestingOnlyShaderIndex = index;
-        if (fKey.count() >= 1) {
-            fKey[0] = index;
-        } else {
-            fKey.push_back(index);
-        }
-    }
-    int testingOnlyShaderIndex() const {
-        return fTestingOnlyShaderIndex;
-    }
+    // Key describing the color shading tree of the pipeline's program
+    Combination combo() const { return fCombination; }
+    // Key describing the vertex shader and coverage of the pipeline
+    TestVertexShader vertexShader() const { return fVertexShader; }
 
-    void setVertexAttributes(const Attribute* attrs, int attrCount) {
-        fVertexAttributes.init(attrs, attrCount);
-    }
-    void setInstanceAttributes(const Attribute* attrs, int attrCount) {
-        SkASSERT(attrCount >= 0);
-        fInstanceAttributes.init(attrs, attrCount);
-    }
-
-    int numVertexAttributes() const { return fVertexAttributes.fCount; }
-    const AttributeSet& vertexAttributes() const { return fVertexAttributes; }
-    int numInstanceAttributes() const { return fInstanceAttributes.fCount; }
-    const AttributeSet& instanceAttributes() const { return fInstanceAttributes; }
-
-    bool hasVertexAttributes() const { return SkToBool(fVertexAttributes.fCount); }
-    bool hasInstanceAttributes() const { return SkToBool(fInstanceAttributes.fCount); }
+    void setProgram(TestVertexShader shader, Combination combo);
 
     /**
      * A common practice is to populate the the vertex/instance's memory using an implicit array of
      * structs. In this case, it is best to assert that:
      *     stride == sizeof(struct)
      */
-    size_t vertexStride() const { return fVertexAttributes.fStride; }
-    size_t instanceStride() const { return fInstanceAttributes.fStride; }
+    size_t vertexStride() const { return fVertexStride; }
+    size_t instanceStride() const { return fInstanceStride; }
+
+    struct Hash {
+        uint32_t operator()(const GraphicsPipelineDesc& desc) const {
+            return SkOpts::hash_fn(desc.fKey.data(), desc.fKey.size() * sizeof(uint32_t), 0);
+        }
+    };
 
 private:
     // Estimate of max expected key size
     // TODO: flesh this out
-    inline static constexpr int kPreAllocSize = 1;
+    inline static constexpr int kPreAllocSize = 2;
 
+    // TODO: Depending on the nature of the 3 program keys and other state, could the "key" of the
+    // GraphicsPipelineDesc just be a char* view of its fields?
     SkSTArray<kPreAllocSize, uint32_t, true> fKey;
 
-    int fTestingOnlyShaderIndex;
+    // TODO: this is a bit underspecified. It still needs the rendering technique info, and fixed
+    // function settings like stencil settings, depth test, write masks, etc.
+    // Additionally, it still needs an entry point to generate the text of the program, but for now
+    // the MSL can be inferred directly from the Combination enum and the vertex shader index.
+    // Eventually, the program will be specified by a shading key, a geometry key, and a blending
+    // key that compactly represent identity and can be queried to produce SkSL if a program must
+    // be compiled. These three SkSL fragments are combined in a fixed way.
+    Combination      fCombination;
+    // TODO: store the rendering technique info from Chris here instead of a hard-coded VS index
+    TestVertexShader fVertexShader;
 
-    AttributeSet fVertexAttributes;
-    AttributeSet fInstanceAttributes;
+    // Vertex and instance strides are defined by the attribute layout of the vertex shader, and as
+    // such do not need to be included in the key. However, it's useful to include this info on the
+    // pipeline desc so that attribute writing can be validated easily.
+    size_t fVertexStride;
+    size_t fInstanceStride;
 };
 
-//////////////////////////////////////////////////////////////////////////////
-
-/**
- * Returns the size of the attrib type in bytes.
- * Placed here in service of Skia dependents that build with C++11.
- */
-static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
-    switch (type) {
-        case VertexAttribType::kFloat:
-            return sizeof(float);
-        case VertexAttribType::kFloat2:
-            return 2 * sizeof(float);
-        case VertexAttribType::kFloat3:
-            return 3 * sizeof(float);
-        case VertexAttribType::kFloat4:
-            return 4 * sizeof(float);
-        case VertexAttribType::kHalf:
-            return sizeof(uint16_t);
-        case VertexAttribType::kHalf2:
-            return 2 * sizeof(uint16_t);
-        case VertexAttribType::kHalf4:
-            return 4 * sizeof(uint16_t);
-        case VertexAttribType::kInt2:
-            return 2 * sizeof(int32_t);
-        case VertexAttribType::kInt3:
-            return 3 * sizeof(int32_t);
-        case VertexAttribType::kInt4:
-            return 4 * sizeof(int32_t);
-        case VertexAttribType::kByte:
-            return 1 * sizeof(char);
-        case VertexAttribType::kByte2:
-            return 2 * sizeof(char);
-        case VertexAttribType::kByte4:
-            return 4 * sizeof(char);
-        case VertexAttribType::kUByte:
-            return 1 * sizeof(char);
-        case VertexAttribType::kUByte2:
-            return 2 * sizeof(char);
-        case VertexAttribType::kUByte4:
-            return 4 * sizeof(char);
-        case VertexAttribType::kUByte_norm:
-            return 1 * sizeof(char);
-        case VertexAttribType::kUByte4_norm:
-            return 4 * sizeof(char);
-        case VertexAttribType::kShort2:
-            return 2 * sizeof(int16_t);
-        case VertexAttribType::kShort4:
-            return 4 * sizeof(int16_t);
-        case VertexAttribType::kUShort2: // fall through
-        case VertexAttribType::kUShort2_norm:
-            return 2 * sizeof(uint16_t);
-        case VertexAttribType::kInt:
-            return sizeof(int32_t);
-        case VertexAttribType::kUInt:
-            return sizeof(uint32_t);
-        case VertexAttribType::kUShort_norm:
-            return sizeof(uint16_t);
-        case VertexAttribType::kUShort4_norm:
-            return 4 * sizeof(uint16_t);
-    }
-    // GCC fails because SK_ABORT evaluates to non constexpr. clang and cl.exe think this is
-    // unreachable and don't complain.
-#if defined(__clang__) || !defined(__GNUC__)
-    SK_ABORT("Unsupported type conversion");
-#endif
-    return 0;
-}
-
-constexpr size_t GraphicsPipelineDesc::Attribute::size() const {
-    return VertexAttribTypeSize(fCPUType);
-}
-
 } // namespace skgpu
+
+// Map GraphicsPipelineDesc::Hash's return type to size_t for use with std::unordered_map hashes.
+template<>
+struct std::hash<skgpu::GraphicsPipelineDesc> {
+    size_t operator()(const skgpu::GraphicsPipelineDesc& desc) const noexcept {
+        return skgpu::GraphicsPipelineDesc::Hash()(desc);
+    }
+};
 
 #endif // skgpu_GraphicsPipelineDesc_DEFINED

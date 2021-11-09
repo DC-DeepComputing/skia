@@ -21,6 +21,16 @@ class Gpu;
 class GraphicsPipeline;
 class Texture;
 
+enum class UniformSlot {
+    // TODO: Want this?
+    // Meant for uniforms that change rarely to never over the course of a render pass
+    // kStatic,
+    // Meant for uniforms that are defined and used by the RenderStep portion of the pipeline shader
+    kRenderStep,
+    // Meant for uniforms that are defined and used by the paint parameters (ie SkPaint subset)
+    kPaint,
+};
+
 struct AttachmentDesc {
     sk_sp<Texture> fTexture; // the ref on this will be taken by the command buffer
     LoadOp fLoadOp;
@@ -60,7 +70,7 @@ public:
     // Can only be used within renderpasses
     //---------------------------------------------------------------
     void bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipeline);
-    void bindUniformBuffer(sk_sp<Buffer>, size_t bufferOffset);
+    void bindUniformBuffer(UniformSlot slot, sk_sp<Buffer>, size_t bufferOffset);
     void bindVertexBuffers(sk_sp<Buffer> vertexBuffer, sk_sp<Buffer> instanceBuffer);
     void bindIndexBuffer(sk_sp<Buffer> indexBuffer, size_t bufferOffset);
 
@@ -104,7 +114,7 @@ private:
     virtual void onBeginRenderPass(const RenderPassDesc&) = 0;
 
     virtual void onBindGraphicsPipeline(const GraphicsPipeline*) = 0;
-    virtual void onBindUniformBuffer(const Buffer*, size_t bufferOffset) = 0;
+    virtual void onBindUniformBuffer(UniformSlot slot, const Buffer*, size_t bufferOffset) = 0;
     virtual void onBindVertexBuffers(const Buffer* vertexBuffer, const Buffer* instanceBuffer) = 0;
     virtual void onBindIndexBuffer(const Buffer* indexBuffer, size_t bufferOffset) = 0;
 

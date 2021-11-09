@@ -7,11 +7,13 @@
 
 #include "experimental/graphite/src/ContextUtils.h"
 
-#include <string>
+#include "experimental/graphite/src/DrawList.h"
 #include "experimental/graphite/src/Uniform.h"
 #include "experimental/graphite/src/UniformCache.h"
 #include "experimental/graphite/src/UniformManager.h"
 #include "include/core/SkPaint.h"
+
+#include <string>
 
 namespace skgpu {
 
@@ -177,11 +179,12 @@ sk_sp<UniformData> UniformData::Make(int count,
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
 
-std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(UniformCache* cache, const SkPaint& p) {
+std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(UniformCache* cache,
+                                                         const PaintParams& p) {
     Combination result;
     sk_sp<UniformData> uniforms;
 
-    if (auto s = p.getShader()) {
+    if (auto s = p.shader()) {
         SkColor colors[kMaxStops];
         SkColor4f color4fs[kMaxStops];
         float offsets[kMaxStops];
@@ -249,78 +252,38 @@ std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(UniformCache* cache, co
             case SkShader::GradientType::kColor_GradientType:
             case SkShader::GradientType::kNone_GradientType:
             default:
-                result.fShaderType = ShaderCombo::ShaderType::kNone;
-                result.fTileMode = SkTileMode::kRepeat;
+                result.fShaderType = ShaderCombo::ShaderType::kSolidColor;
+                result.fTileMode = SkTileMode::kClamp;
 
-                uniforms = make_solid_uniform_data(p.getColor4f());
+                uniforms = make_solid_uniform_data(p.color());
                 break;
         }
     } else {
         // Solid colored paint
-        result.fShaderType = ShaderCombo::ShaderType::kNone;
-        result.fTileMode = SkTileMode::kRepeat;
+        result.fShaderType = ShaderCombo::ShaderType::kSolidColor;
+        result.fTileMode = SkTileMode::kClamp;
 
-        uniforms = make_solid_uniform_data(p.getColor4f());
+        uniforms = make_solid_uniform_data(p.color());
     }
 
-    result.fBlendMode = p.getBlendMode_or(SkBlendMode::kSrcOver);
+    result.fBlendMode = p.blendMode();
 
     sk_sp<UniformData> trueUD = cache->findOrCreate(std::move(uniforms));
     return { result, std::move(trueUD) };
 }
 
-namespace {
-
-// TODO: use a SkSpan for the parameters
-std::string emit_MSL_uniform_struct(const Uniform *uniforms, int numUniforms) {
-    std::string result;
-
-    result.append("struct FragmentUniforms {\n");
-    for (int i = 0; i < numUniforms; ++i) {
-        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
-        // machinery
-        switch (uniforms[i].type()) {
-            case SLType::kFloat4:
-                result.append("vector_float4");
-                break;
-            case SLType::kFloat2:
-                result.append("vector_float2");
-                break;
-            case SLType::kFloat:
-                result.append("float");
-                break;
-            case SLType::kHalf4:
-                result.append("vector_half4");
-                break;
-            default:
-                SkASSERT(0);
-        }
-
-        result.append(" ");
-        result.append(uniforms[i].name());
-        if (uniforms[i].count()) {
-            result.append("[");
-            result.append(std::to_string(uniforms[i].count()));
-            result.append("]");
-        }
-        result.append(";\n");
-    }
-    result.append("};\n");
-    return result;
-}
-
-} // anonymous namespace
-
-std::string GetMSLUniformStruct(ShaderCombo::ShaderType shaderType) {
+SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType shaderType) {
     switch (shaderType) {
         case ShaderCombo::ShaderType::kLinearGradient:
         case ShaderCombo::ShaderType::kRadialGradient:
         case ShaderCombo::ShaderType::kSweepGradient:
         case ShaderCombo::ShaderType::kConicalGradient:
-            return emit_MSL_uniform_struct(kGradientUniforms, kNumGradientUniforms);
+            return SkMakeSpan(kGradientUniforms, kNumGradientUniforms);
         case ShaderCombo::ShaderType::kNone:
+            return {nullptr, 0};
+        case ShaderCombo::ShaderType::kSolidColor:
         default:
-            return emit_MSL_uniform_struct(kSolidUniforms, kNumSolidUniforms);
+            return SkMakeSpan(kSolidUniforms, kNumSolidUniforms);
     }
 }
 
