@@ -73,16 +73,16 @@ void PathTessellateOp::prepareTessellator(const GrTessellationShader::ProgramArg
     auto* pipeline = GrTessellationShader::MakePipeline(args, fAAType, std::move(appliedClip),
                                                         std::move(fProcessors));
     fTessellator = PathWedgeTessellator::Make(args.fArena,
-                                              fShaderMatrix,
-                                              this->headDraw().fColor,
-                                              fTotalCombinedPathVerbCnt,
-                                              *pipeline,
-                                              *args.fCaps,
+                                              args.fCaps->shaderCaps()->infinitySupport(),
                                               fPatchAttribs);
-    fTessellationProgram = GrTessellationShader::MakeProgram(args,
-                                                             fTessellator->shader(),
-                                                             pipeline,
-                                                             fStencil);
+    auto* tessShader = GrPathTessellationShader::Make(args.fArena,
+                                                      fShaderMatrix,
+                                                      this->headDraw().fColor,
+                                                      fTotalCombinedPathVerbCnt,
+                                                      *pipeline,
+                                                      fTessellator->patchAttribs(),
+                                                      *args.fCaps);
+    fTessellationProgram = GrTessellationShader::MakeProgram(args, tessShader, pipeline, fStencil);
 }
 
 void PathTessellateOp::onPrePrepare(GrRecordingContext* context,
@@ -108,7 +108,15 @@ void PathTessellateOp::onPrepare(GrOpFlushState* flushState) {
                                  &flushState->caps()}, flushState->detachAppliedClip());
         SkASSERT(fTessellator);
     }
-    fTessellator->prepare(flushState, *fPathDrawList, fTotalCombinedPathVerbCnt);
+    auto tessShader = &fTessellationProgram->geomProc().cast<GrPathTessellationShader>();
+    fTessellator->prepare(flushState,
+                          tessShader->maxTessellationSegments(*flushState->caps().shaderCaps()),
+                          fShaderMatrix,
+                          *fPathDrawList,
+                          fTotalCombinedPathVerbCnt);
+    if (!tessShader->willUseTessellationShaders()) {
+        fTessellator->prepareFixedCountBuffers(flushState->resourceProvider());
+    }
 }
 
 void PathTessellateOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
@@ -117,7 +125,7 @@ void PathTessellateOp::onExecute(GrOpFlushState* flushState, const SkRect& chain
     flushState->bindPipelineAndScissorClip(*fTessellationProgram, this->bounds());
     flushState->bindTextures(fTessellationProgram->geomProc(), nullptr,
                              fTessellationProgram->pipeline());
-    fTessellator->draw(flushState);
+    fTessellator->draw(flushState, fTessellationProgram->geomProc().willUseTessellationShaders());
 }
 
 } // namespace skgpu::v1
