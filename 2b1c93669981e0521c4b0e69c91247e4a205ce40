@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1358720d_5c059acb",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-09T21:35:40Z",
+      "side": 0,
+      "message": "I could have copied this pattern instead of factoring out `isIncomplete` to its own function, but using \"coerce an expression to its own type\" as a backdoor to do basic error-checking felt a little goofy, and I didn\u0027t want to continue the pattern.",
+      "range": {
+        "startLine": 105,
+        "startChar": 1,
+        "endLine": 109,
+        "endChar": 9
+      },
+      "revId": "2b1c93669981e0521c4b0e69c91247e4a205ce40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e119e187_d86fd67a",
+        "filename": "src/sksl/ir/SkSLExpression.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-09T21:35:40Z",
+      "side": 1,
+      "message": "This check wasn\u0027t present in Type::coerceExpression, but it was just an oversight. I also added a test for this.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "63823615c80a52994393e2f1b2d69c86839e8efa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
