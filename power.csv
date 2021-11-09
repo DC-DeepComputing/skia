@@ -1,0 +1,30 @@
+
+
+
+
+
+"name","counter_name","SUM(delta/(dur/1000000))","SUM(dur)"
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_OLED_uws",39.392000,1000000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_QTM525_uws",46.768000,1001000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_RF_uws",43.220823,1250000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",289.210641,1000000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1C_uws",1569.418594,1000000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S2A_S3A_uws",9.041189,1000000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_WLAN_uws",85.448000,1000000000
+"GM_paragraph__underline","power.WCN3998_VDD13 [from PP1304_L2C]_uws",50.940000,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_OLED_uws",16.117010,999683171
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_QTM525_uws",32.725224,995683171
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_RF_uws",62.800659,1245683171
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",481.540970,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1C_uws",1284.687176,999683171
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",63.622265,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_WLAN_uws",11.245044,999683171
+"GM_paragraph__underline_visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",4.369141,999683171
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_OLED_uws",118.847570,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_QTM525_uws",24.177491,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_RF_uws",89.878593,999000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",392.048000,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1C_uws",926.855750,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",55.748000,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_WLAN_uws",71.198980,750000000
+"GM_paragraph__visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",22.033275,750000000
