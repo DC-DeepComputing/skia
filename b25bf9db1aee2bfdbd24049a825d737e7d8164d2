@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0934a84_30ac87aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-09T15:11:28Z",
+      "side": 1,
+      "message": "It looks like this variable was originally introduced in https://skia.googlesource.com/skia/+/637c06aec7b1f424c15db74639e8ed3a6759163b, but I don\u0027t see that we\u0027ve ever used it.",
+      "revId": "b25bf9db1aee2bfdbd24049a825d737e7d8164d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
