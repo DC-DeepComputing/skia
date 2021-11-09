@@ -1,5 +1,7 @@
 package(default_visibility = ["//visibility:private"])
 
+load("//bazel:macros.bzl", "select_multi")
+
 filegroup(
     name = "core-srcs",
     srcs = [
@@ -39,13 +41,79 @@ filegroup(
     ],
 )
 
-# TODO(kjlubick) add selects here to allow opting in or out of various codecs.
+filegroup(
+    name = "png-srcs",
+    srcs = [
+        "SkEncodedInfo.cpp",
+        "SkIcoCodec.cpp",
+        "SkIcoCodec.h",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+        "SkPngPriv.h",
+    ],
+)
+
+filegroup(
+    name = "jpeg-srcs",
+    srcs = [
+        "SkEncodedInfo.cpp",
+        "SkJpegCodec.cpp",
+        "SkJpegCodec.h",
+        "SkJpegDecoderMgr.cpp",
+        "SkJpegDecoderMgr.h",
+        "SkJpegPriv.h",
+        "SkJpegUtility.cpp",
+        "SkJpegUtility.h",
+        "SkParseEncodedOrigin.cpp",
+        "SkParseEncodedOrigin.h",
+    ],
+)
+
+filegroup(
+    name = "webp-srcs",
+    srcs = [
+        "SkEncodedInfo.cpp",
+        "SkParseEncodedOrigin.cpp",
+        "SkParseEncodedOrigin.h",
+        "SkScalingCodec.h",
+        "SkWebpCodec.cpp",
+        "SkWebpCodec.h",
+    ],
+)
+
+filegroup(
+    name = "gif-wuffs-srcs",
+    srcs = [
+        "SkScalingCodec.h",
+        "SkWuffsCodec.cpp",
+        "SkWuffsCodec.h",
+    ],
+)
+
+filegroup(
+    name = "libgifcodec-srcs",
+    srcs = [
+        "SkStreamBuffer.h",
+    ],
+)
 
 filegroup(
     name = "srcs",
     srcs = [
         ":bmp-srcs",
         ":core-srcs",
-    ],
+    ] + select_multi(
+        {
+            "//bazel/common_config_settings:png_codec": [":png-srcs"],
+            "//bazel/common_config_settings:jpeg_codec": [":jpeg-srcs"],
+            "//bazel/common_config_settings:webp_codec": [":webp-srcs"],
+            "//bazel/common_config_settings:gif_codec_wuffs": [":gif-wuffs-srcs"],
+            "//bazel/common_config_settings:gif_codec_libgifcodec": [
+                "//third_party:libgifcodec-srcs",
+                ":libgifcodec-srcs",
+            ],
+        },
+        default = [],
+    ),
     visibility = ["//:__subpackages__"],
 )
