@@ -12,7 +12,6 @@
 #include "experimental/graphite/src/ContextPriv.h"
 #include "experimental/graphite/src/DrawBufferManager.h"
 #include "experimental/graphite/src/Gpu.h"
-#include "experimental/graphite/src/ProgramCache.h"
 #include "experimental/graphite/src/Recording.h"
 #include "experimental/graphite/src/UniformCache.h"
 
@@ -20,7 +19,6 @@ namespace skgpu {
 
 Recorder::Recorder(sk_sp<Context> context)
     : fContext(std::move(context))
-    , fProgramCache(new ProgramCache)
     , fUniformCache(new UniformCache)
     // TODO: Is '4' the correct initial alignment?
     , fDrawBufferManager(new DrawBufferManager(fContext->priv().gpu()->resourceProvider(), 4)) {
@@ -30,10 +28,6 @@ Recorder::~Recorder() {}
 
 Context* Recorder::context() const {
     return fContext.get();
-}
-
-ProgramCache* Recorder::programCache() {
-    return fProgramCache.get();
 }
 
 UniformCache* Recorder::uniformCache() {

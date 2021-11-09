@@ -58,6 +58,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
                                                                           textureInfo);
     REPORTER_ASSERT(reporter, texture);
 
+
+
     RenderPassDesc renderPassDesc = {};
     renderPassDesc.fColorAttachment.fTexture = texture;
     renderPassDesc.fColorAttachment.fLoadOp = LoadOp::kClear;
@@ -66,42 +68,63 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     commandBuffer->beginRenderPass(renderPassDesc);
 
-    // Shared uniform buffer
-    struct UniformData {
+    // Uniform buffer for kRectangle and kVertexTris vertex shaders
+    struct VertexUniformData {
         SkPoint fScale;
         SkPoint fTranslate;
+    };
+    sk_sp<Buffer> vertexUniformBuffer = gpu->resourceProvider()->findOrCreateBuffer(
+        2*sizeof(VertexUniformData), BufferType::kUniform, PrioritizeGpuReads::kNo);
+    size_t vertexUniformOffset = 0;
+    VertexUniformData* vertexUniforms = (VertexUniformData*) vertexUniformBuffer->map();
+
+    // Uniform buffer for kSolidColor shader combination
+    // TODO: This is simple enough I've hard-coded it, but should be using ExtractCombo?
+    struct ShadingUniformData {
         SkColor4f fColor;
     };
-    sk_sp<Buffer> uniformBuffer = gpu->resourceProvider()->findOrCreateBuffer(
-            2*sizeof(UniformData), BufferType::kUniform, PrioritizeGpuReads::kNo);
-    size_t uniformOffset = 0;
+    sk_sp<Buffer> shadingUniformBuffer = gpu->resourceProvider()->findOrCreateBuffer(
+        4*sizeof(ShadingUniformData), BufferType::kUniform, PrioritizeGpuReads::kNo);
+    size_t shadingUniformOffset = 0;
+    ShadingUniformData* shadingUniforms = (ShadingUniformData*) shadingUniformBuffer->map();
+
 
     // Draw blue rectangle over entire rendertarget (which was red)
     GraphicsPipelineDesc pipelineDesc;
-    pipelineDesc.setTestingOnlyShaderIndex(0);
+    pipelineDesc.setProgram(TestVertexShader::kUnitRectangle,
+                            {ShaderCombo::ShaderType::kSolidColor});
     auto graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
     commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, nullptr, 0);
+    shadingUniforms->fColor = SkColors::kBlue;
+    commandBuffer->bindUniformBuffer(UniformSlot::kPaint,
+                                     shadingUniformBuffer,
+                                     shadingUniformOffset);
+    shadingUniformOffset += sizeof(ShadingUniformData);
+    shadingUniforms++;
     commandBuffer->draw(PrimitiveType::kTriangleStrip, 0, 4);
 
     // Draw inset yellow rectangle using uniforms
-    pipelineDesc.setTestingOnlyShaderIndex(1);
+    pipelineDesc.setProgram(TestVertexShader::kRectangle, {ShaderCombo::ShaderType::kSolidColor});
     graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
     commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
-    UniformData* uniforms = (UniformData*)uniformBuffer->map();
-    uniforms->fScale = SkPoint({1.8, 1.8});
-    uniforms->fTranslate = SkPoint({-0.9, -0.9});
-    uniforms->fColor = SkColors::kYellow;
-    commandBuffer->bindUniformBuffer(uniformBuffer, uniformOffset);
+    vertexUniforms->fScale = SkPoint({1.8, 1.8});
+    vertexUniforms->fTranslate = SkPoint({-0.9, -0.9});
+    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep,
+                                     vertexUniformBuffer,
+                                     vertexUniformOffset);
+    vertexUniformOffset += sizeof(VertexUniformData);
+    vertexUniforms++;
+    shadingUniforms->fColor = SkColors::kYellow;
+    commandBuffer->bindUniformBuffer(UniformSlot::kPaint,
+                                     shadingUniformBuffer,
+                                     shadingUniformOffset);
+    shadingUniformOffset += sizeof(ShadingUniformData);
+    shadingUniforms++;
     commandBuffer->draw(PrimitiveType::kTriangleStrip, 0, 4);
-    uniformOffset += sizeof(UniformData);
-    ++uniforms;
 
     // Draw inset magenta rectangle with triangles in vertex buffer
-    pipelineDesc.setTestingOnlyShaderIndex(2);
-    skgpu::GraphicsPipelineDesc::Attribute vertexAttributes[1] = {
-        { "position", VertexAttribType::kFloat2, SLType::kFloat2 }
-    };
-    pipelineDesc.setVertexAttributes(vertexAttributes, 1);
+    pipelineDesc.setProgram(TestVertexShader::kVertexTris, {ShaderCombo::ShaderType::kSolidColor});
     graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
     commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
 
@@ -128,46 +151,56 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     indexBuffer->unmap();
     commandBuffer->bindVertexBuffers(vertexBuffer, nullptr);
     commandBuffer->bindIndexBuffer(indexBuffer, 0);
-    uniforms->fScale = SkPoint({2, 2});
-    uniforms->fTranslate = SkPoint({-1, -1});
-    uniforms->fColor = SkColors::kMagenta;
-    commandBuffer->bindUniformBuffer(uniformBuffer, uniformOffset);
+    vertexUniforms->fScale = SkPoint({2, 2});
+    vertexUniforms->fTranslate = SkPoint({-1, -1});
+    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep,
+                                     vertexUniformBuffer,
+                                     vertexUniformOffset);
+    vertexUniformOffset += sizeof(VertexUniformData);
+    vertexUniforms++;
+    shadingUniforms->fColor = SkColors::kMagenta;
+    commandBuffer->bindUniformBuffer(UniformSlot::kPaint,
+                                     shadingUniformBuffer,
+                                     shadingUniformOffset);
+    shadingUniformOffset += sizeof(ShadingUniformData);
+    shadingUniforms++;
     commandBuffer->drawIndexed(PrimitiveType::kTriangles, 0, 6, 0);
 
     // draw rects using instance buffer
-    pipelineDesc.setTestingOnlyShaderIndex(3);
-    skgpu::GraphicsPipelineDesc::Attribute instanceAttributes[3] = {
-        { "position", VertexAttribType::kFloat2, SLType::kFloat2 },
-        { "dims", VertexAttribType::kFloat2, SLType::kFloat2 },
-        { "color", VertexAttribType::kFloat4, SLType::kFloat4 }
-    };
-    pipelineDesc.setVertexAttributes(nullptr, 0);
-    pipelineDesc.setInstanceAttributes(instanceAttributes, 3);
+    pipelineDesc.setProgram(TestVertexShader::kInstanceRectangle,
+                            {ShaderCombo::ShaderType::kSolidColor});
     graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
     commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
 
     struct InstanceData {
         SkPoint fPosition;
         SkPoint fDims;
-        SkColor4f fColor;
     };
     sk_sp<Buffer> instanceBuffer = gpu->resourceProvider()->findOrCreateBuffer(
             2*sizeof(InstanceData), BufferType::kVertex, PrioritizeGpuReads::kNo);
     auto instances = (InstanceData*)instanceBuffer->map();
     instances[0].fPosition = SkPoint({-0.4, -0.4});
     instances[0].fDims = SkPoint({0.4, 0.4});
-    instances[0].fColor = SkColors::kGreen;
     instances[1].fPosition = SkPoint({0, 0});
     instances[1].fDims = SkPoint({0.25, 0.25});
-    instances[1].fColor = SkColors::kCyan;
     instanceBuffer->unmap();
     commandBuffer->bindVertexBuffers(nullptr, instanceBuffer);
 //    commandBuffer->drawInstanced(PrimitiveType::kTriangleStrip, 0, 4, 0, 2);
+
+    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, nullptr, 0);
+    shadingUniforms->fColor = SkColors::kCyan;
+    commandBuffer->bindUniformBuffer(UniformSlot::kPaint,
+                                     shadingUniformBuffer,
+                                     shadingUniformOffset);
+    shadingUniformOffset += sizeof(ShadingUniformData);
+    shadingUniforms++;
+
     commandBuffer->drawIndexedInstanced(PrimitiveType::kTriangles, 0, 6, 0, 0, 2);
 
     commandBuffer->endRenderPass();
 
-    uniformBuffer->unmap();
+    vertexUniformBuffer->unmap();
+    shadingUniformBuffer->unmap();
 
     // Do readback
 
