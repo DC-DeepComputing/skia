@@ -46,6 +46,30 @@
       },
       "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a7a075_bfc66aa8",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-09T13:34:31Z",
+      "side": 1,
+      "message": "Right. I had that in the back of my mind, too. The old byte code interpreter used GL-style naming to reflect all of the uniforms (where names were emitted for each individual slot - iterating over arrays and fields, etc.). So you could learn that the 57th slot was actually \"myUniformArray[3].x\". That ends up being REALLY chatty, and generates lots of long string names for things, which may or may not be a great experience. The current code uses UniformInfo to reflect things at the top level about each declared uniform (but not individual elements inside) - so there\u0027s a type enum, slot count, array size, and that\u0027s about it (plus the name).",
+      "parentUuid": "a014f452_609141b8",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 64
+      },
+      "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
