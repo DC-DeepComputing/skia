@@ -1,0 +1,46 @@
+
+
+
+
+
+"name","counter_name","SUM(delta/(dur/1000000))","SUM(dur)"
+"GM_paragraph_","power.PPVAR_VPH_PWR_OLED_uws",132.567044,750000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_QTM525_uws",9.294821,750000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_RF_uws",112.475494,1000000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",429.673792,750000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_S1C_uws",495.501209,750000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_S2A_S3A_uws",2565.256946,750000000
+"GM_paragraph_","power.PPVAR_VPH_PWR_WLAN_uws",0.000000,750000000
+"GM_paragraph_","power.WCN3998_VDD13 [from PP1304_L2C]_uws",1.231076,750000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_OLED_uws",0.000000,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_QTM525_uws",22.246538,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_RF_uws",70.994988,999000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",447.406635,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1C_uws",654.305044,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S2A_S3A_uws",1995.192112,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_WLAN_uws",37.660000,749000000
+"GM_paragraph__underline","power.WCN3998_VDD13 [from PP1304_L2C]_uws",12.024000,749000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_OLED_uws",103.096000,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_QTM525_uws",20.894247,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_RF_uws",26.444000,1249000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",763.363433,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1C_uws",618.556000,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",2723.227621,1000000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_WLAN_uws",39.212000,1000000000
+"GM_paragraph__underline_visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",5.840000,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_OLED_uws",0.000000,751000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_QTM525_uws",2.560000,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_RF_uws",81.192000,1001000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",597.508303,751000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1C_uws",418.462837,751000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",2432.589227,751000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_WLAN_uws",39.532000,751000000
+"GM_paragraph__visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",11.432000,751000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_OLED_uws",173.603937,1002000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_QTM525_uws",23.102884,1001000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_RF_uws",59.125673,1252000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",701.791206,1002000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S1C_uws",601.418444,1002000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S2A_S3A_uws",2878.321365,1002000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_WLAN_uws",65.857937,1002000000
+"GM_paragraph_layout_","power.WCN3998_VDD13 [from PP1304_L2C]_uws",18.042190,1002000000
