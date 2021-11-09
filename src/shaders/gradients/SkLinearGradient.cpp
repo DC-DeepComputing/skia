@@ -97,8 +97,8 @@ SkShader::GradientType SkLinearGradient::asAGradient(GradientInfo* info) const {
 #include "src/gpu/gradients/GrGradientShader.h"
 
 std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrGradientShader::MakeLinear(*this, args);
+        const GrFPArgs& args, bool transformColor) const {
+    return GrGradientShader::MakeLinear(*this, args, transformColor);
 }
 
 #endif

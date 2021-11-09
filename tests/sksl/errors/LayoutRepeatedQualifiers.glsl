@@ -13,5 +13,5 @@ error: 23: layout qualifier 'builtin' appears more than once
 error: 24: layout qualifier 'input_attachment_index' appears more than once
 error: 25: 'srgb_unpremul' is only permitted in runtime effects
 error: 25: 'srgb_unpremul' is only permitted on 'uniform' variables
-error: 25: 'srgb_unpremul' is only permitted on half3, half4, float3, or float4 variables
+error: 25: 'srgb_unpremul' is not permitted on variables of type 'float'
 14 errors

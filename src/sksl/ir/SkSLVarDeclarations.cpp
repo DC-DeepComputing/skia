@@ -74,13 +74,15 @@ void VarDeclaration::ErrorCheck(const Context& context, int line, const Modifier
                     "'srgb_unpremul' is only permitted on 'uniform' variables");
         }
         auto validColorXformType = [](const Type& t) {
-            return t.isVector() && t.componentType().isFloat() &&
-                   (t.columns() == 3 || t.columns() == 4);
+            return (t.isVector() && t.componentType().isFloat() &&
+                    (t.columns() == 3 || t.columns() == 4)) ||
+                   t.isEffectChild();
         };
         if (!validColorXformType(*baseType) && !(baseType->isArray() &&
                                                  validColorXformType(baseType->componentType()))) {
-            context.fErrors->error(line, "'srgb_unpremul' is only permitted on half3, half4, "
-                    "float3, or float4 variables");
+            context.fErrors->error(line,
+                                   "'srgb_unpremul' is not permitted on variables of type '" +
+                                           baseType->displayName() + "'");
         }
     }
     int permitted = Modifiers::kConst_Flag | Modifiers::kHighp_Flag | Modifiers::kMediump_Flag |
