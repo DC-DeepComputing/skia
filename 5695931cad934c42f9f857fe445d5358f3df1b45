@@ -33,6 +33,40 @@
       "message": "I would be curious to try always applying paint alpha to see if perf moves either direction, and maybe give us some insight into how useful coverage-as-alpha actually is (or if it\u0027s really most useful when you\u0027re doing solid-color-only draws, and if you have a shader, you\u0027re probably changing shaders frequently?).",
       "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20df52b1_16dd3798",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-09T21:48:45Z",
+      "side": 1,
+      "message": "The paint color handling and CAA opt makes me think we\u0027d be better off deferring paint conversion until after we determined what our geometry step is and whether it involves coverage.",
+      "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f3a5b1_05cd0134",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-09T21:48:45Z",
+      "side": 1,
+      "message": "I think we could use a comment explaining that paintFP will ignore its input color and that\u0027s why we must disable caa here.",
+      "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
