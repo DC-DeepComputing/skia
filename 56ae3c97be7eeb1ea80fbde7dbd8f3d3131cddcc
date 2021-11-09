@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77110d48_2ff1784e",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-09T12:32:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a8fc533a_fac615ad",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16b3dbae_a202e15a",
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "Yeah, that\u0027s fine for now. It took ~4 years before we got the GN build working the right way with fontmgr. However, if you can get fontmgr and opts working, everything else seems pretty straight forward.",
       "parentUuid": "bab40930_66a4be3a",
+      "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7202bdfa_bd2c0256",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-09T12:32:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e606d397_6ca1eaf5",
       "revId": "56ae3c97be7eeb1ea80fbde7dbd8f3d3131cddcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
