@@ -16,6 +16,24 @@
       "message": "Seems like we want an index for the function itself (analogous to the variable slot index in trace_var), along with a function map just like the variable map? How were you planning on reconstructing the call stack?",
       "revId": "69ab1e07e6194796da6816ac71c448e984371ae1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f00985a2_b9f8c25e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-09T15:31:37Z",
+      "side": 1,
+      "message": "Yes, I haven\u0027t gotten there yet. As a stopgap, I\u0027m dumping in the line number as that\u0027s typically unique per function, but we should create a function\u003c-\u003eint mapping just like we have a variable\u003c-\u003eint mapping for slots.",
+      "parentUuid": "b5c27baa_e3c95688",
+      "revId": "69ab1e07e6194796da6816ac71c448e984371ae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
