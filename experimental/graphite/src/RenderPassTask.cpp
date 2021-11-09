@@ -44,9 +44,9 @@ void RenderPassTask::addCommands(ResourceProvider* resourceProvider, CommandBuff
                      target->dimensions().height());
             continue;
         }
-        // TODO: need to get these from the drawPass somehow
-        desc.fColorAttachment.fLoadOp = LoadOp::kLoad;
-        desc.fColorAttachment.fStoreOp = StoreOp::kStore;
+        // TODO: maybe just have DrawPass generate RenderPassDesc?
+        std::tie(desc.fColorAttachment.fLoadOp, desc.fColorAttachment.fStoreOp) = drawPass->ops();
+        desc.fClearColor = drawPass->clearColor();
 
         commandBuffer->beginRenderPass(desc);
 

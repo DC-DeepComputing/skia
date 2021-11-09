@@ -91,7 +91,7 @@ void CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc) {
     auto colorAttachment = (*descriptor).colorAttachments[0];
     Texture* colorTexture = (Texture*)colorInfo.fTexture.get();
     colorAttachment.texture = colorTexture->mtlTexture();
-    const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
+    auto& clearColor = renderPassDesc.fClearColor;
     colorAttachment.clearColor =
             MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
     colorAttachment.loadAction = mtlLoadAction[static_cast<int>(colorInfo.fLoadOp)];

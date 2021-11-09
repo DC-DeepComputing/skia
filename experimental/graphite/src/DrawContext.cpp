@@ -76,14 +76,24 @@ void DrawContext::strokePath(const Transform& localToDevice,
     fPendingDraws->strokePath(localToDevice, shape, stroke, clip, order, paint);
 }
 
+void DrawContext::clear(SkColor4f clearColor) {
+    // Need to figure out how to manage ordering here -- do we snap a drawpass and then clear?
+    fPendingLoadOp = LoadOp::kClear;
+    fPendingClearColor = clearColor;
+}
+
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {
     if (fPendingDraws->drawCount() == 0) {
         return;
     }
 
-    auto pass = DrawPass::Make(recorder, std::move(fPendingDraws), fTarget, occlusionCuller);
+    auto pass = DrawPass::Make(recorder, std::move(fPendingDraws), fTarget,
+                               std::make_pair(fPendingLoadOp, fPendingStoreOp), fPendingClearColor,
+                               occlusionCuller);
     fDrawPasses.push_back(std::move(pass));
     fPendingDraws = std::make_unique<DrawList>();
+    fPendingLoadOp = LoadOp::kLoad;
+    fPendingStoreOp = StoreOp::kStore;
 }
 
 sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
