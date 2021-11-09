@@ -479,6 +479,7 @@ static inline bool skpaint_to_grpaint_impl(GrRecordingContext* context,
                 paintFP = GrFragmentProcessor::ApplyPaintAlpha(std::move(paintFP));
                 grPaint->setColor4f({origColor.fR, origColor.fG, origColor.fB, origColor.fA});
             } else {
+                paintFP = GrFragmentProcessor::DisableCoverageAsAlpha(std::move(paintFP));
                 grPaint->setColor4f(origColor.premul());
             }
         }
