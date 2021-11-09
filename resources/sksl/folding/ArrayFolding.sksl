@@ -1,11 +1,15 @@
 uniform half4 colorRed, colorGreen;
 
 bool test() {
-    const int x [3] = int[3](1, 2, 3);
-    const int xx[3] = int[3](1, 2, 3);
-    const int y [3] = int[3](1, 2, 4);
+    const int x [3]    = int[3](1, 2, 3);
+    const int xx[3]    = int[3](1, 2, 3);
+    const int y [3]    = int[3](1, 2, 4);
 
-    return (x == xx) && !(x != xx) && (x != y) && !(x == y);
+    const int a [x[0]]       = int[1](1);
+    const int b [x[x[0]]]    = int[2](1, 2);
+    const int c [x[x[x[0]]]] = int[3](1, 2, 3);
+
+    return (x == xx) && !(x != xx) && (x != y) && !(x == y) && (x[0] == y[0]) && (c == x);
 }
 
 half4 main(float2 coords) {
