@@ -115,9 +115,15 @@ DSLGlobalVar::DSLGlobalVar(const char* name)
         // correctly-named variable with the right type, so we just create a placeholder for it.
         // TODO(skia/11330): we'll need to fix this when switching over to nodes.
         const SkSL::Modifiers* modifiers = ThreadContext::Context().fModifiersPool->add(
-                SkSL::Modifiers(SkSL::Layout(/*flags=*/0, /*location=*/-1, /*offset=*/-1,
-                                             /*binding=*/-1, /*index=*/-1, /*set=*/-1,
-                                             SK_MAIN_COORDS_BUILTIN, /*inputAttachmentIndex=*/-1),
+                SkSL::Modifiers(SkSL::Layout(/*flags=*/0,
+                                             /*transformColor=*/false,
+                                             /*location=*/-1,
+                                             /*offset=*/-1,
+                                             /*binding=*/-1,
+                                             /*index=*/-1,
+                                             /*set=*/-1,
+                                             SK_MAIN_COORDS_BUILTIN,
+                                             /*inputAttachmentIndex=*/-1),
                                 SkSL::Modifiers::kNo_Flag));
 
         fVar = ThreadContext::SymbolTable()->takeOwnershipOfIRNode(std::make_unique<SkSL::Variable>(
