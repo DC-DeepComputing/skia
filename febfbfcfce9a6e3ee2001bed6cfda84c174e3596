@@ -1,0 +1,758 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "4f698242_245cb375",
+        "filename": "buildit.sh",
+        "patchSetId": 22
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 4,
+        "startChar": 24,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d296332a_8b6ffd60",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 1712,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027they\u0027, \u0027them\u0027, or \u0027person\u0027; see https://developers.google.com/style/word-list#gender for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 1712,
+        "startChar": 3,
+        "endLine": 1712,
+        "endChar": 6
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "f80ba9bf_c640653d",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 5323,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027complex\u0027, \u0027unexpected\u0027, or \u0027placeholder\u0027; see https://developers.google.com/style/inclusive-documentation#ableist-language for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 5323,
+        "startChar": 11,
+        "endLine": 5323,
+        "endChar": 16
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "62fa0db1_d252b08e",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 5324,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027complex\u0027, \u0027unexpected\u0027, or \u0027placeholder\u0027; see https://developers.google.com/style/inclusive-documentation#ableist-language for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 5324,
+        "startChar": 40,
+        "endLine": 5324,
+        "endChar": 45
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "a99e074e_a7a2281c",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 7151,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027they\u0027, \u0027them\u0027, or \u0027person\u0027; see https://developers.google.com/style/word-list#gender for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 7151,
+        "startChar": 33,
+        "endLine": 7151,
+        "endChar": 36
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "43a9cb9a_54f3f491",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 36913,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 36913,
+        "startChar": 69,
+        "endLine": 36913,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "85684d02_bf5b7de2",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 36938,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 36938,
+        "startChar": 69,
+        "endLine": 36938,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "afe441e1_49241b8f",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37012,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37012,
+        "startChar": 69,
+        "endLine": 37012,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "00c64bdc_f1c36158",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37037,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37037,
+        "startChar": 69,
+        "endLine": 37037,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "3f473022_c9cc55a9",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37058,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37058,
+        "startChar": 69,
+        "endLine": 37058,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "3bc6e854_15e351f7",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37164,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37164,
+        "startChar": 69,
+        "endLine": 37164,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6cb00217_37d8faff",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37189,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37189,
+        "startChar": 69,
+        "endLine": 37189,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "b0e3e284_4a29be5e",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37217,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37217,
+        "startChar": 69,
+        "endLine": 37217,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1aca83e9_d090fcbc",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37245,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37245,
+        "startChar": 69,
+        "endLine": 37245,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "cd0b36e9_245820bb",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 37270,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 37270,
+        "startChar": 69,
+        "endLine": 37270,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "94975fc9_73d3130d",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 51657,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027valid\u0027, \u0027validity check\u0027 or \u0027initial check\u0027; see https://source.android.com/setup/contribute/respectful-code for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 51657,
+        "startChar": 50,
+        "endLine": 51657,
+        "endChar": 54
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "43488028_009ad117",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 53338,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027valid\u0027, \u0027validity check\u0027 or \u0027initial check\u0027; see https://source.android.com/setup/contribute/respectful-code for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 53338,
+        "startChar": 56,
+        "endLine": 53338,
+        "endChar": 60
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "f3e2c8fd_775cab71",
+        "filename": "third_party/perfetto/perfetto.cc",
+        "patchSetId": 22
+      },
+      "lineNbr": 62740,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027they\u0027, \u0027them\u0027, or \u0027person\u0027; see https://developers.google.com/style/word-list#gender for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 62740,
+        "startChar": 62,
+        "endLine": 62740,
+        "endChar": 65
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d0d9e3f6_07bfb434",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3328,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3328,
+        "startChar": 69,
+        "endLine": 3328,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "ca709cc7_96695d85",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3353,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3353,
+        "startChar": 69,
+        "endLine": 3353,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "8a34c386_68d2511c",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3401,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3401,
+        "startChar": 69,
+        "endLine": 3401,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "97a11a57_49ad40fd",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3426,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3426,
+        "startChar": 69,
+        "endLine": 3426,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "17f75fb1_dfe96d8f",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3477,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3477,
+        "startChar": 69,
+        "endLine": 3477,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "52980afc_7246d94b",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3502,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3502,
+        "startChar": 69,
+        "endLine": 3502,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "d343d974_04d50262",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3527,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3527,
+        "startChar": 69,
+        "endLine": 3527,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "e62ee495_c653f08e",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3690,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3690,
+        "startChar": 69,
+        "endLine": 3690,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "f630b661_11d7ed51",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3715,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3715,
+        "startChar": 69,
+        "endLine": 3715,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "ff79b00f_f795800d",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 3743,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3743,
+        "startChar": 69,
+        "endLine": 3743,
+        "endChar": 71
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017063590",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/456470?revision\u003d22",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "14c9f599_b579f1c1",
+        "filename": "third_party/perfetto/perfetto.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 11435,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-09T13:37:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027complex\u0027, \u0027unexpected\u0027, or \u0027placeholder\u0027; see https://developers.google.com/style/inclusive-documentation#ableist-language for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 11435,
+        "startChar": 3,
+        "endLine": 11435,
+        "endChar": 8
+      },
+      "revId": "febfbfcfce9a6e3ee2001bed6cfda84c174e3596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
