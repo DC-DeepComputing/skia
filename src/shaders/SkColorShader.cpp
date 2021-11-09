@@ -120,17 +120,28 @@ skvm::Color SkColor4Shader::onProgram(skvm::Builder* p,
 #include "src/gpu/SkGr.h"
 
 std::unique_ptr<GrFragmentProcessor> SkColorShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
+        const GrFPArgs& args, bool transformColor) const {
+    if (transformColor) {
+        return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
+    } else {
+        // Skip transform and premul
+        SkColor4f color = SkColor4f::FromColor(fColor);
+        return GrFragmentProcessor::MakeColor({ color.fR, color.fG, color.fB, color.fA });
+    }
 }
 
 std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
-                                  args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
-    SkColor4f color = fColor;
-    steps.apply(color.vec());
-    return GrFragmentProcessor::MakeColor(color.premul());
+        const GrFPArgs& args, bool transformColor) const {
+    if (transformColor) {
+        SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
+                                    args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
+        SkColor4f color = fColor;
+        steps.apply(color.vec());
+        return GrFragmentProcessor::MakeColor(color.premul());
+    } else {
+        // Skip transform and premul
+        return GrFragmentProcessor::MakeColor({fColor.fR, fColor.fG, fColor.fB, fColor.fA});
+    }
 }
 
 #endif

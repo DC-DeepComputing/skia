@@ -3053,6 +3053,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         // block, so we instead create a modified copy of it and write that.
         std::vector<Type::Field> fields = type.fields();
         fields.emplace_back(Modifiers(Layout(/*flags=*/0,
+                                             /*transformColor=*/false,
                                              /*location=*/-1,
                                              fProgram.fConfig->fSettings.fRTFlipOffset,
                                              /*binding=*/-1,
@@ -3499,6 +3500,7 @@ void SPIRVCodeGenerator::addRTFlipUniform(int line) {
         fContext.fErrors->error(line, "RTFlipOffset is negative");
     }
     fields.emplace_back(Modifiers(Layout(/*flags=*/0,
+                                         /*transformColor=*/false,
                                          /*location=*/-1,
                                          fProgram.fConfig->fSettings.fRTFlipOffset,
                                          /*binding=*/-1,
@@ -3526,6 +3528,7 @@ void SPIRVCodeGenerator::addRTFlipUniform(int line) {
     {
         AutoAttachPoolToThread attach(fProgram.fPool.get());
         Modifiers modifiers(Layout(flags,
+                                   /*transformColor=*/false,
                                    /*location=*/-1,
                                    /*offset=*/-1,
                                    binding,

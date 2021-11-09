@@ -164,7 +164,9 @@ skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
-        const GrFPArgs& orig_args) const {
+        const GrFPArgs& orig_args, bool transformColor) const {
+    // TODO(skbug:10479): Do we do anything here with transformColor? I don't think so.
+
     GrFPArgs::WithPreLocalMatrix args(orig_args, this->getLocalMatrix());
     auto fpA = as_SB(fDst)->asFragmentProcessor(args);
     auto fpB = as_SB(fSrc)->asFragmentProcessor(args);
