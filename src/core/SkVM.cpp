@@ -16,6 +16,7 @@
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkVM.h"
+#include "src/core/disassembler/SkVMDisassembler.h"
 #include <algorithm>
 #include <atomic>
 #include <queue>
@@ -149,8 +150,12 @@ namespace skvm {
         return { fma, fp16 };
     }
 
-    Builder::Builder()                  : fFeatures(detect_features()) {}
-    Builder::Builder(Features features) : fFeatures(features         ) {}
+    Builder::Builder()                  : fFeatures(detect_features()) {
+        fDisassembler = new skia::disassembler::Disassembler();
+    }
+    Builder::Builder(Features features) : fFeatures(features         ) {
+        fDisassembler = new skia::disassembler::Disassembler();
+    }
 
 
     struct Program::Impl {
@@ -254,6 +259,7 @@ namespace skvm {
             immB = inst.immB,
             immC = inst.immC;
         switch (op) {
+            case Op::no_op: break;
             case Op::assert_true: write(o, op, V{x}, V{y}); break;
 
             case Op::store8:   write(o, op, Ptr{immA}, V{x}               ); break;
@@ -368,6 +374,7 @@ namespace skvm {
                 immB = inst.immB,
                 immC = inst.immC;
             switch (op) {
+                case Op::no_op: break;
                 case Op::assert_true: write(o, op, R{x}, R{y}); break;
 
                 case Op::store8:   write(o, op, Ptr{immA}, R{x}                  ); break;
@@ -539,7 +546,7 @@ namespace skvm {
             debug_name = buf;
         }
 
-        return {this->optimize(), this->fComments, fStrides, debug_name, allow_jit};
+        return {this->optimize(), std::unique_ptr<skia::disassembler::Disassembler>(std::move(this->fDisassembler)), fStrides, debug_name, allow_jit};
     }
 
     uint64_t Builder::hash() const {
@@ -569,21 +576,40 @@ namespace skvm {
     // Most instructions produce a value and return it by ID,
     // the value-producing instruction's own index in the program vector.
     Val Builder::push(Instruction inst) {
+
         // Basic common subexpression elimination:
         // if we've already seen this exact Instruction, use it instead of creating a new one.
         //
         // But we never dedup loads or stores: an intervening store could change that memory.
         // Uniforms and gathers touch only uniform memory, so they're fine to dedup,
         // and index is varying but doesn't touch memory, so it's fine to dedup too.
-        if (!touches_varying_memory(inst.op)) {
+        if (!touches_varying_memory(inst.op) && inst.op != Op::no_op) {
             if (Val* id = fIndex.find(inst)) {
+                this->addToDisassembler(*id, true);
                 return *id;
             }
         }
         Val id = static_cast<Val>(fProgram.size());
         fProgram.push_back(inst);
         fIndex.set(inst, id);
+        this->addToDisassembler(id, false);
         return id;
+    }
+
+    void Builder::addToDisassembler(Val id, bool duplicate) {
+        auto& instr = fProgram[id];
+
+        fDisassembler->addInstruction({
+            fCommandIsConstant ? skia::disassembler::Kind::constant : skia::disassembler::Kind::normal,
+            (skia::disassembler::SkVMOp)((int)instr.op),
+            skia::disassembler::coord{},
+            std::vector<skia::disassembler::MachineCommand>(),
+            id,
+            0,
+            std::vector<int>(),
+            instr.x, instr.y, instr.z, instr.w,
+            instr.immA, instr.immB, instr.immC,
+        });
     }
 
     Ptr Builder::arg(int stride) {
@@ -965,6 +991,7 @@ namespace skvm {
     I32 Builder::lte(I32 x, I32 y) { return y>=x; }
 
     I32 Builder::bit_and(I32 x, I32 y) {
+        GenerateConstantCommand command(this, Op::bit_and, x.id, y.id );
         if (x.id == y.id) { return x; }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X&Y); }
         if (this->isImm(y.id, 0)) { return splat(0); }   // (x & false) == false
@@ -974,6 +1001,7 @@ namespace skvm {
         return {this, this->push(Op::bit_and, x.id, y.id)};
     }
     I32 Builder::bit_or(I32 x, I32 y) {
+        GenerateConstantCommand command(this, Op::bit_or, x.id, y.id );
         if (x.id == y.id) { return x; }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X|Y); }
         if (this->isImm(y.id, 0)) { return x; }           // (x | false) == x
@@ -983,6 +1011,7 @@ namespace skvm {
         return {this, this->push(Op::bit_or, x.id, y.id)};
     }
     I32 Builder::bit_xor(I32 x, I32 y) {
+        GenerateConstantCommand command(this, Op::bit_xor, x.id, y.id );
         if (x.id == y.id) { return splat(0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X^Y); }
         if (this->isImm(y.id, 0)) { return x; }   // (x ^ false) == x
@@ -991,6 +1020,7 @@ namespace skvm {
     }
 
     I32 Builder::bit_clear(I32 x, I32 y) {
+        GenerateConstantCommand command(this, Op::bit_clear, x.id, y.id );
         if (x.id == y.id) { return splat(0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X&~Y); }
         if (this->isImm(y.id, 0)) { return x; }          // (x & ~false) == x
@@ -1807,7 +1837,7 @@ namespace skvm {
         return vex;
     }
 
-    Assembler::Assembler(void* buf) : fCode((uint8_t*)buf), fSize(0), fDisassembler(new SkDebugfStream()) {}
+    Assembler::Assembler(void* buf) : fCode((uint8_t*)buf), fSize(0) {}
 
     size_t Assembler::size() const { return fSize; }
 
@@ -2456,21 +2486,6 @@ namespace skvm {
         }
     }
 
-    void Assembler::commentJIT(const char* format, ...) {
-        if (fDisassembler == nullptr) {
-            return;
-        }
-        SkString message;
-        va_list argp;
-        va_start(argp, format);
-        message.appendVAList(format, argp);
-        va_end(argp);
-
-        fDisassembler->writeText("/* ");
-        fDisassembler->writeText(message.c_str());
-        fDisassembler->writeText(" */\n");
-    }
-
     void Program::eval(int n, void* args[]) const {
     #define SKVM_JIT_STATS 0
     #if SKVM_JIT_STATS
@@ -2989,7 +3004,7 @@ namespace skvm {
     }
 
     Program::Program(const std::vector<OptimizedInstruction>& instructions,
-                     const std::vector<SkString>& comments,
+                     std::unique_ptr<skia::disassembler::Disassembler> disassembler,
                      const std::vector<int>& strides,
                      const char* debug_name, bool allow_jit) : Program() {
         fImpl->strides = strides;
@@ -2997,9 +3012,11 @@ namespace skvm {
         #if 1 && defined(SKVM_LLVM)
             this->setupLLVM(instructions, debug_name);
         #elif 1 && defined(SKVM_JIT)
-            this->setupJIT(instructions, comments, debug_name);
+            this->setupJIT(instructions, debug_name);
         #endif
         }
+
+        fDisassembler = std::move(disassembler);
 
         // Might as well do this after setupLLVM() to get a little more time to compile.
         this->setupInterpreter(instructions);
@@ -3123,7 +3140,6 @@ namespace skvm {
     }  // namespace SkVMJitTypes
 
     bool Program::jit(const std::vector<OptimizedInstruction>& instructions,
-                      const std::vector<SkString>& comments,
                       int* stack_hint,
                       uint32_t* registers_used,
                       Assembler* a) const {
@@ -3326,17 +3342,6 @@ namespace skvm {
             const int immA = inst.immA,
                       immB = inst.immB,
                       immC = inst.immC;
-            if (a->disassembleOutput() != nullptr) {
-                a->disassembleOutput()->writeText("   ");
-                write_one_instruction(id, inst, a->disassembleOutput());
-                if (inst.comment >= 0) {
-                    if (true || id  == 0 || instructions[id - 1].comment != inst.comment) {
-                        a->disassembleOutput()->writeText("   ");
-                        a->disassembleOutput()->writeText(comments[inst.comment].c_str());
-                    }
-                }
-            }
-            a->disassembleOutput()->writeText("\n");
 
             // alloc_tmp() returns the first of N adjacent temporary registers,
             // each freed manually with free_tmp() or noted as our result with mark_tmp_as_dst().
@@ -3522,6 +3527,8 @@ namespace skvm {
         #endif
 
             switch (op) {
+                case Op::no_op: break;
+
                 // Make sure splat constants can be found by load_from_memory() or any().
                 case Op::splat:
                     (void)constants[immA];
@@ -4277,14 +4284,13 @@ namespace skvm {
     }
 
     void Program::setupJIT(const std::vector<OptimizedInstruction>& instructions,
-                           const std::vector<SkString>& comments,
                            const char* debug_name) {
         // Assemble with no buffer to determine a.size() (the number of bytes we'll assemble)
         // and stack_hint/registers_used to feed forward into the next jit() call.
         Assembler a{nullptr};
         int stack_hint = -1;
         uint32_t registers_used = 0xffff'ffff;  // Start conservatively with all.
-        if (!this->jit(instructions, comments, &stack_hint, &registers_used, &a)) {
+        if (!this->jit(instructions, &stack_hint, &registers_used, &a)) {
             return;
         }
 
@@ -4294,7 +4300,7 @@ namespace skvm {
 
         // Assemble the program for real with stack_hint/registers_used as feedback from first call.
         a = Assembler{jit_entry};
-        SkAssertResult(this->jit(instructions, comments, &stack_hint, &registers_used, &a));
+        SkAssertResult(this->jit(instructions, &stack_hint, &registers_used, &a));
         SkASSERT(a.size() <= fImpl->jit_size);
 
         // Remap as executable, and flush caches on platforms that need that.

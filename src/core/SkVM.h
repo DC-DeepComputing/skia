@@ -15,6 +15,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkVM_fwd.h"
+#include "src/core/disassembler/SkVMDisassembler.h"
 #include <vector>      // std::vector
 
 class SkWStream;
@@ -385,15 +386,12 @@ namespace skvm {
         void ld24s(V dst, X src, int lane);  // Load 2 32-bit values into given lane of dst..dst+1
         void ld44s(V dst, X src, int lane);  // Load 4 32-bit values into given lane of dst..dst+3
 
-        void commentJIT(const char* format, ...);
-        void commentGenerator(const char* message);
-        void disassembleTo(SkWStream* output) { fDisassembler = output; }
-        SkWStream* disassembleOutput() const { return fDisassembler; }
+        void commentJIT(const char* format, ...) { }
+        void commentGenerator(const char* message) { }
 
     private:
         uint8_t* fCode;
         size_t   fSize;
-        SkWStream* fDisassembler;
 
         // x86-64
         enum W { W0, W1 };      // Are the lanes 64-bit (W1) or default (W0)?  Intel Vol 2A 2.3.5.5
@@ -460,7 +458,8 @@ namespace skvm {
         M(neq_f32) M(eq_f32) M(eq_i32)                               \
         M(gte_f32) M(gt_f32) M(gt_i32)                               \
         M(bit_and)     M(bit_or)     M(bit_xor)     M(bit_clear)     \
-        M(select)
+        M(select)                                                    \
+        M(no_op)                                                     \
     // End of SKVM_OPS
 
     enum class Op : int {
@@ -619,6 +618,7 @@ namespace skvm {
         // Mostly for debugging, tests, etc.
         std::vector<Instruction> program() const { return fProgram; }
         std::vector<OptimizedInstruction> optimize() const;
+        skia::disassembler::Disassembler* disassembler() { return std::move(fDisassembler); }
 
         // Convenience arg() wrappers for most common strides, sizeof(T) and 0.
         template <typename T>
@@ -948,6 +948,7 @@ namespace skvm {
         uint64_t hash() const;
 
         Val push(Instruction);
+        void addToDisassembler(Val id, bool duplicate);
 
         bool allImm() const { return true; }
 
@@ -973,21 +974,87 @@ namespace skvm {
             return false;
         }
 
+        int comment(const char* format, ...) {
+            va_list args;
+            va_start(args, format);
+            SkString message("// ");
+            message.appendVAList(format, args);
+            va_end(args);
+            auto index = fDisassembler->addComment(message);
+            auto result = this->push(Instruction{ Op::no_op, NA, NA, NA, NA, index, -1, -1 });
+            fDisassembler->finishComment(fProgram.size() - 1, index);
+            return result;
+        }
+
         int addComment(SkString message) {
-            fComments.emplace_back(std::move(message));
-            return fComments.size() - 1;
+            return fDisassembler->addComment(message);
         }
 
-        int lastCommand() {
-            return fProgram.size();
+        int lastInstruction() const { return fDisassembler->lastInstruction(); }
+
+        void pushToDisassembler(Instruction instr) {
+            fDisassembler->addInstruction({
+                skia::disassembler::Kind::constant,
+                (skia::disassembler::SkVMOp)((int)instr.op),
+                skia::disassembler::coord{},
+                std::vector<skia::disassembler::MachineCommand>(),
+                -1,
+                0,
+                std::vector<int>(),
+                instr.x, instr.y, instr.z, instr.w,
+                instr.immA, instr.immB, instr.immC,
+            });
         }
 
-        void markComments(int start, int comment) {
-            SkASSERT(comment != -1);
-            for (auto i = start; i < (int)fProgram.size(); ++i) {
-                if (fProgram[i].comment < 0) fProgram[i].comment = comment;
+        void finishComment(int index, int comment) {
+            fDisassembler->finishComment(index, comment);
+        }
+
+        class Comment {
+        public:
+            Comment(Builder* b, const char* format, ...)
+                : fBuilder(b) {
+                va_list args;
+                va_start(args, format);
+                SkString message("// ");
+                message.appendVAList(format, args);
+                va_end(args);
+                fComment = b->addComment(std::move(message));
+                fInstruction = b->lastInstruction();
             }
-        }
+            ~Comment() {
+                if (fComment > 0) {
+                    fBuilder->finishComment(fInstruction, fComment);
+                }
+            }
+
+            void finish() {
+                fBuilder->finishComment(fInstruction, fComment);
+                fComment = -1;
+            }
+        private:
+            Builder* fBuilder;
+            int fComment;
+            int fInstruction;
+        };
+
+        class GenerateConstantCommand {
+        public:
+            GenerateConstantCommand(Builder* b, Op op, Val x=NA, Val y=NA, Val z=NA, Val w=NA, int immA=0, int immB=0, int immC=0) {
+                fBuilder = b;
+                fLastCommand = fBuilder->lastInstruction();
+                fInstruction = std::move(Instruction{op, x,y,z,w, immA,immB,immC});
+            }
+            ~GenerateConstantCommand() {
+                if (fBuilder->lastInstruction() == fLastCommand) {
+                    fBuilder->pushToDisassembler(fInstruction);
+                }
+            }
+        private:
+            int fLastCommand;
+            Builder* fBuilder;
+            Instruction fInstruction;
+        };
 
     private:
         // Declare an argument with given stride (use stride=0 for uniforms).
@@ -1008,7 +1075,9 @@ namespace skvm {
         std::vector<Instruction>                      fProgram;
         std::vector<int>                              fStrides;
         const Features                                fFeatures;
-        std::vector<SkString>                         fComments;
+        skia::disassembler::Disassembler*             fDisassembler;
+        bool                                          fGenerateConstantCommands = true;
+        bool                                          fCommandIsConstant = false;
     };
 
     // Optimization passes and data structures normally used by Builder::optimize(),
@@ -1028,7 +1097,7 @@ namespace skvm {
     class Program {
     public:
         Program(const std::vector<OptimizedInstruction>& instructions,
-                const std::vector<SkString>& comments,
+                std::unique_ptr<skia::disassembler::Disassembler> disassembler,
                 const std::vector<int>& strides,
                 const char* debug_name, bool allow_jit);
 
@@ -1064,11 +1133,10 @@ namespace skvm {
 
     private:
         void setupInterpreter(const std::vector<OptimizedInstruction>&);
-        void setupJIT        (const std::vector<OptimizedInstruction>&, const std::vector<SkString>& comments, const char* debug_name);
+        void setupJIT        (const std::vector<OptimizedInstruction>&, const char* debug_name);
         void setupLLVM       (const std::vector<OptimizedInstruction>&, const char* debug_name);
 
         bool jit(const std::vector<OptimizedInstruction>&,
-                 const std::vector<SkString>& comments,
                  int* stack_hint, uint32_t* registers_used,
                  Assembler*) const;
 
@@ -1077,6 +1145,7 @@ namespace skvm {
 
         struct Impl;
         std::unique_ptr<Impl> fImpl;
+        std::unique_ptr<skia::disassembler::Disassembler> fDisassembler;
     };
 
     // TODO: control flow

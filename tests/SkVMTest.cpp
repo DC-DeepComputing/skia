@@ -2616,8 +2616,12 @@ DEF_TEST(SkVM_for, r) {
     const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
     skvm::Builder b;
     SkSL::ProgramToSkVM(*program, *main, &b, /*uniforms=*/{});
-    //skvm::Program p = b.done();
+    skvm::Program p = b.done();
+    auto disassembler = b.disassembler();
+    disassembler->dump("/usr//local/google/home/jlavrova/Sources/skia/out/test.html");
+    SkDebugf("Program:\n"); b.dump();
 
+/*
     test_jit_and_interpreter(b, [&](const skvm::Program& program) {
 
         float xs[] = { 1.0f, 3.0f, 5.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
@@ -2632,4 +2636,5 @@ DEF_TEST(SkVM_for, r) {
         //REPORTER_ASSERT(r, rets[2] == 4.0f);
         //REPORTER_ASSERT(r, rets[3] == 4.0f);
     });
+*/
 }
