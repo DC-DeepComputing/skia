@@ -22,6 +22,30 @@
       },
       "revId": "63823615c80a52994393e2f1b2d69c86839e8efa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48be177b_86b8a973",
+        "filename": "src/sksl/ir/SkSLExpression.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-09T21:51:10Z",
+      "side": 1,
+      "message": "Thanks for catching this!",
+      "parentUuid": "e119e187_d86fd67a",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "63823615c80a52994393e2f1b2d69c86839e8efa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
