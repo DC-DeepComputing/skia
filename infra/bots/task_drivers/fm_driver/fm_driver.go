@@ -162,7 +162,7 @@ func main() {
 	}
 	if *gold {
 		func() {
-			url := "https://storage.googleapis.com/skia-infra-gm/hash_files/gold-prod-hashes.txt"
+			url := "https://gold.skia.org/json/v1/hashes"
 			resp, err := httpClient(ctx).Get(url)
 			if err != nil {
 				fatal(ctx, err)

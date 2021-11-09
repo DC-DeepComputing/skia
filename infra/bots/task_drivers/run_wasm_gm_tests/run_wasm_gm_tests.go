@@ -158,7 +158,7 @@ func setupGoldctl(ctx context.Context, local bool, gitCommit, gerritCLID, tryjob
 	return nil
 }
 
-const knownHashesURL = "https://storage.googleapis.com/skia-infra-gm/hash_files/gold-prod-hashes.txt"
+const knownHashesURL = "https://gold.skia.org/json/v1/hashes"
 
 // downloadKnownHashes downloads the known hashes from Gold and stores it as a text file in
 // workPath/hashes.txt
