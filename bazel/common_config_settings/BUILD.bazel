@@ -102,3 +102,13 @@ string_flag_with_values(
         "custom_directory_fontmgr_factory",
     ],
 )
+
+string_flag_with_values(
+    flag_name = "include_codec",
+    multiple = True,
+    values = [
+        "jpeg_codec",
+        "png_codec",
+        "webp_codec",
+    ],
+)

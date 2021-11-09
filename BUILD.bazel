@@ -2,6 +2,7 @@ package(default_visibility = ["//:__subpackages__"])
 
 # https://github.com/bazelbuild/bazel-skylib
 load("@bazel_skylib//lib:selects.bzl", "selects")
+load("//bazel:macros.bzl", "select_multi")
 
 cc_test(
     name = "bazel_test",
@@ -99,7 +100,23 @@ CORE_DEFINES = select({
         "SK_USE_WEBGL",
     ],
     "//conditions:default": [],
-})
+}) + select_multi(
+    {
+        "//bazel/common_config_settings:png_codec": ["SK_CODEC_DECODES_PNG"],
+        "//bazel/common_config_settings:jpeg_codec": ["SK_CODEC_DECODES_JPEG"],
+        "//bazel/common_config_settings:webp_codec": ["SK_CODEC_DECODES_WEBP"],
+    },
+    default = [],
+)
+
+CORE_DEPS = [] + select_multi(
+    {
+        "//bazel/common_config_settings:png_codec": ["//third_party:libpng"],
+        "//bazel/common_config_settings:jpeg_codec": ["//third_party:libjpeg-turbo"],
+        "//bazel/common_config_settings:webp_codec": ["//third_party:libwebp"],
+    },
+    default = [],
+)
 
 cc_library(
     name = "skia-core",
@@ -107,6 +124,7 @@ cc_library(
     hdrs = CORE_HDRS,
     local_defines = CORE_DEFINES,
     textual_hdrs = ["//src/sksl:txts"],
+    deps = CORE_DEPS,
 )
 
 cc_library(
