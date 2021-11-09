@@ -16,6 +16,24 @@
       "message": "\"Spin\" feels like a curious name for it (I feel like \"Cycle\" is easier at first glance) but if it matches an existing API, it\u0027s probably better to keep consistent.",
       "revId": "f81b0c3f4c26f7d509fa095cbc71a322069d2e93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a198107c_ba6ff07c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-09T21:17:58Z",
+      "side": 1,
+      "message": "Agreed, but yeah - there\u0027s an SkColorSpace API, which is in turn named after a common ICC profile that does the same thing (and is used for some Chrome testing). I think it originates from looking at the color wheel, where the effect is in fact to spin it.",
+      "parentUuid": "f6604795_abec0a63",
+      "revId": "f81b0c3f4c26f7d509fa095cbc71a322069d2e93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
