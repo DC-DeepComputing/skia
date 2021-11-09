@@ -7,6 +7,7 @@
 
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
@@ -84,15 +85,28 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
     SkASSERT(baseType.isArray() || baseType.isMatrix() || baseType.isVector());
     SkASSERT(index->type().isInteger());
 
-    // Constant array indexes on vectors can be converted to swizzles: `v[2]` --> `v.z`.
-    // Swizzling is harmless and can unlock further simplifications for some base types.
     const Expression* indexExpr = ConstantFolder::GetConstantValueForVariable(*index);
-    if (indexExpr->isIntLiteral() && baseType.isVector()) {
+    if (indexExpr->isIntLiteral()) {
         SKSL_INT indexValue = indexExpr->as<Literal>().intValue();
-        return Swizzle::Make(context, std::move(base), ComponentArray{(int8_t)indexValue});
-    }
+        SkASSERT(indexValue >= 0 && indexValue < baseType.columns());
 
-    // TODO(skia:12472): constantArray[constantExpr] should be compile-time evaluated.
+        if (baseType.isVector()) {
+            // Constant array indexes on vectors can be converted to swizzles: `v[2]` --> `v.z`.
+            // Swizzling is harmless and can unlock further simplifications for some base types.
+            return Swizzle::Make(context, std::move(base), ComponentArray{(int8_t)indexValue});
+        }
+
+        if (baseType.isArray()) {
+            // Indexing an array constructor with a constant can just pluck out the requested value
+            // from the array. TODO: what if the other elements have side effects?
+            const Expression* baseExpr = ConstantFolder::GetConstantValueForVariable(*base);
+            if (baseExpr->is<ConstructorArray>()) {
+                const ConstructorArray& arrayCtor = baseExpr->as<ConstructorArray>();
+                SkASSERT(arrayCtor.arguments().count() == baseType.columns());
+                return arrayCtor.arguments()[indexValue]->clone();
+            }
+        }
+    }
 
     return std::make_unique<IndexExpression>(context, std::move(base), std::move(index));
 }
