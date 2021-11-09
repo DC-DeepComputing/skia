@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df3a09cf_7d8921f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-09T02:14:24Z",
+      "side": 1,
+      "message": "How much does this help in v1?\n\nWe had some discussion about uniform batching for paint parameters in graphite, where we might try and use storage buffers to hold uniform values for many draws and then index into them by an instance attribute, so that we can batch across gradient colors, etc. If that works, it would also mean that we could do the same for view matrices and other uniforms that the path renderers would need. A benefit of this is that all transformation could go on to the GPU, and there\u0027d be no difference in code path for perspective vs. non-perspective.\n\nIf this is mostly about making the tessellation ready for graphite, I\u0027d like to wait and see how storage buffers work out. While we are still trying to get grpahite up and running, I\u0027d rather work on correctness and then perf around pipeline re-ordering (batching stencils together instead of alternating stencil+cover) before this sort of thing. It\u0027s pretty simple to have a uniform view matrix that we can take away.\n\nThat being said, if this also really helps with v1 I can try and dig through it more carefully so it can be landed now to help both systems.",
+      "revId": "609e71a698d342e7a00177a206e5ebe6811e4525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
