@@ -269,8 +269,8 @@ skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::Uniforms
 #include "src/gpu/gradients/GrGradientShader.h"
 
 std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrGradientShader::MakeConical(*this, args);
+        const GrFPArgs& args, bool transformColor) const {
+    return GrGradientShader::MakeConical(*this, args, transformColor);
 }
 
 #endif

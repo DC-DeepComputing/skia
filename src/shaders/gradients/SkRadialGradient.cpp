@@ -75,8 +75,8 @@ skvm::F32 SkRadialGradient::transformT(skvm::Builder* p, skvm::Uniforms*,
 #include "src/gpu/gradients/GrGradientShader.h"
 
 std::unique_ptr<GrFragmentProcessor> SkRadialGradient::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrGradientShader::MakeRadial(*this, args);
+        const GrFPArgs& args, bool transformColor) const {
+    return GrGradientShader::MakeRadial(*this, args, transformColor);
 }
 
 #endif

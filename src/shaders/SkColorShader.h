@@ -29,7 +29,8 @@ public:
     GradientType asAGradient(GradientInfo* info) const override;
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 private:
@@ -45,7 +46,8 @@ private:
     bool onAppendStages(const SkStageRec&) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
+                          const SkMatrixProvider&, const SkMatrix* localM,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
     SkColor fColor;
@@ -59,7 +61,8 @@ public:
     bool isConstant() const override { return true; }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 private:
@@ -69,7 +72,8 @@ private:
     bool onAppendStages(const SkStageRec&) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
+                          const SkMatrixProvider&, const SkMatrix* localM,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
     sk_sp<SkColorSpace> fColorSpace;

@@ -38,7 +38,8 @@ protected:
     }
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
+                          const SkMatrixProvider&, const SkMatrix*,
+                          const SkColorInfo&, bool transformColor,
                           skvm::Uniforms*, SkArenaAlloc*) const override;
 
 private:

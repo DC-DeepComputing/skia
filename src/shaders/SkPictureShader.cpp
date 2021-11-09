@@ -296,8 +296,11 @@ bool SkPictureShader::onAppendStages(const SkStageRec& rec) const {
 skvm::Color SkPictureShader::onProgram(skvm::Builder* p,
                                        skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                        const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                       const SkColorInfo& dst,
+                                       const SkColorInfo& dst, bool transformColor,
                                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+    // TODO(skbug:10479): How do we handle transformColor? The picture needs to rasterize in *some*
+    // common color space (and in premul). For now, ignore the flag.
+
     auto lm = this->totalLocalMatrix(localM);
 
     // Keep bitmapShader alive by using alloc instead of stack memory
@@ -308,9 +311,10 @@ skvm::Color SkPictureShader::onProgram(skvm::Builder* p,
         return {};
     }
 
-    return as_SB(bitmapShader)->program(p, device,local, paint,
-                                        matrices,lm, dst,
-                                        uniforms,alloc);
+    return as_SB(bitmapShader)->program(p, device, local, paint,
+                                        matrices, lm,
+                                        dst, transformColor,
+                                        uniforms, alloc);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +368,9 @@ void SkPictureShader::PictureShaderContext::shadeSpan(int x, int y, SkPMColor ds
 #include "src/gpu/GrProxyProvider.h"
 
 std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
+    // TODO(skbug:10479): How do we handle transformColor? The picture needs to rasterize in *some*
+    // common color space (and in premul). For now, ignore the flag.
 
     auto ctx = args.fContext;
     auto lm = this->totalLocalMatrix(args.fPreLocalMatrix);

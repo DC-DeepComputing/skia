@@ -23,7 +23,7 @@ public:
     skvm::Color onProgram(skvm::Builder* b,
                           skvm::Coord device, skvm::Coord local, skvm::Color color,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
 
     // Add code to calculate a new coordinate given local using the mapping in fMatrix.

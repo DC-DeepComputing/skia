@@ -148,7 +148,8 @@ public:
      *  The returned GrFragmentProcessor should expect an unpremultiplied input color and
      *  produce a premultiplied output.
      */
-    virtual std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const;
+    virtual std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
+            const GrFPArgs&, bool transformColor = true) const;
 #endif
 
     /**
@@ -207,7 +208,7 @@ public:
     SK_WARN_UNUSED_RESULT
     skvm::Color program(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
                         const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
+                        bool transformColor, skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
@@ -243,7 +244,8 @@ private:
     virtual skvm::Color onProgram(skvm::Builder*,
                                   skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                   const SkMatrixProvider&, const SkMatrix* localM,
-                                  const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const = 0;
+                                  const SkColorInfo& dst, bool transformColor,
+                                  skvm::Uniforms*, SkArenaAlloc*) const = 0;
 
     using INHERITED = SkShader;
 };

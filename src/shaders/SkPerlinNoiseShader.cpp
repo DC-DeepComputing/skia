@@ -298,12 +298,13 @@ public:
     };
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
-    skvm::Color onProgram(skvm::Builder*,
-                          skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
+    skvm::Color onProgram(skvm::Builder*, skvm::Coord, skvm::Coord, skvm::Color,
+                          const SkMatrixProvider&, const SkMatrix*,
+                          const SkColorInfo&, bool transformColor,
                           skvm::Uniforms*, SkArenaAlloc*) const override {
         // TODO?
         return {};
@@ -917,7 +918,10 @@ void GrPerlinNoise2Effect::onAddToKey(const GrShaderCaps& caps, GrProcessorKeyBu
 /////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
+    // TODO(skbug:10479): This effect has never done color space transforms. Fix that, but suppress
+    // it if transformColor is false.
+
     SkASSERT(args.fContext);
 
     const auto localMatrix = this->totalLocalMatrix(args.fPreLocalMatrix);

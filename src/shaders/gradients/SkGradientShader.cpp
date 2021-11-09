@@ -424,7 +424,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
                                             skvm::Coord device, skvm::Coord local,
                                             skvm::Color /*paint*/,
                                             const SkMatrixProvider& mats, const SkMatrix* localM,
-                                            const SkColorInfo& dstInfo,
+                                            const SkColorInfo& dstInfo, bool transformColor,
                                             skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
     SkMatrix inv;
     if (!this->computeTotalInverse(mats.localToDevice(), localM, &inv)) {
@@ -464,10 +464,14 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
     }
 
     // Transform our colors as we want them interpolated, in dst color space, possibly premul.
+    // Note that if transformColor is false, we don't do color space transformation here. We do
+    // respect the interpolate-in-premul flag, but if that wasn't specified and transformColor is
+    // false, we suppress the post-interpolate premul, so that you can make purely mathetmatical
+    // gradients for your shaders.
     SkImageInfo common = SkImageInfo::Make(fColorCount,1, kRGBA_F32_SkColorType
                                                         , kUnpremul_SkAlphaType),
                 src    = common.makeColorSpace(fColorSpace),
-                dst    = common.makeColorSpace(dstInfo.refColorSpace());
+                dst    = common.makeColorSpace(transformColor ? dstInfo.refColorSpace() : nullptr);
     if (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag) {
         dst = dst.makeAlphaType(kPremul_SkAlphaType);
     }
@@ -588,7 +592,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
 
     // If we interpolated unpremul, premul now to match our output convention.
     if (0 == (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag)
-            && !fColorsAreOpaque) {
+            && !fColorsAreOpaque && transformColor) {
         color = premul(color);
     }
 

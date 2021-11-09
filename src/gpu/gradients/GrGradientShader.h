@@ -22,16 +22,20 @@
 
 namespace GrGradientShader {
     std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
-                                                    const GrFPArgs& args);
+                                                    const GrFPArgs& args,
+                                                    bool transformColor);
 
     std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
-                                                    const GrFPArgs& args);
+                                                    const GrFPArgs& args,
+                                                    bool transformColor);
 
     std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
-                                                   const GrFPArgs& args);
+                                                   const GrFPArgs& args,
+                                                   bool transformColor);
 
     std::unique_ptr<GrFragmentProcessor> MakeConical(const SkTwoPointConicalGradient& shader,
-                                                     const GrFPArgs& args);
+                                                     const GrFPArgs& args,
+                                                     bool transformColor);
 
 #if GR_TEST_UTILS
     /** Helper struct that stores (and populates) parameters to construct a random gradient.
