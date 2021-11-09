@@ -99,6 +99,28 @@ CORE_DEFINES = select({
         "SK_USE_WEBGL",
     ],
     "//conditions:default": [],
+}) + select({
+    "//bazel/common_config_settings:png_codec": [
+        "SK_CODEC_DECODES_PNG",
+    ],
+    "//conditions:default": [],
+}) + select({
+    "//bazel/common_config_settings:jpeg_codec": [
+        "SK_CODEC_DECODES_JPEG",
+    ],
+    "//conditions:default": [],
+})
+
+CORE_DEPS = [] + select({
+    "//bazel/common_config_settings:png_codec": [
+        "//third_party:libpng",
+    ],
+    "//conditions:default": [],
+}) + select({
+    "//bazel/common_config_settings:jpeg_codec": [
+        "//third_party:libjpeg-turbo",
+    ],
+    "//conditions:default": [],
 })
 
 cc_library(
@@ -107,6 +129,7 @@ cc_library(
     hdrs = CORE_HDRS,
     local_defines = CORE_DEFINES,
     textual_hdrs = ["//src/sksl:txts"],
+    deps = CORE_DEPS,
 )
 
 cc_library(

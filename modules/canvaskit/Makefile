@@ -125,7 +125,7 @@ typecheck:
 bazel_gms_sandboxed:
 	# Because emscripten does a lot of extra work, we need to limit the number of jobs or it
 	# can overwhelm even a powerful build system.
-	bazel build :gm-bindings-wasm --compilation_mode opt --cpu=wasm --jobs 8
+	bazelisk build :gm-bindings-wasm --compilation_mode opt --cpu=wasm --jobs 8
 	- rm -rf build/
 	mkdir build
 	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
@@ -139,8 +139,9 @@ bazel_gms_release:
 	# unit, by letting the cache be used (and not dropped from the sandbox), which gets expensive.
 	# Local testing showed using the local strategy sped up a clean build from 9.5 minutes
 	# to 1 minute. https://docs.bazel.build/versions/main/user-manual.html#strategy-options
-	bazel build :gm-bindings-wasm --compilation_mode opt --spawn_strategy=local \
-		--gpu_backend=gl_backend --with_gl_standard=webgl_standard
+	bazelisk build :gm-bindings-wasm --compilation_mode opt --spawn_strategy=local \
+		--gpu_backend=gl_backend --with_gl_standard=webgl_standard \
+		--included_codec=jpeg_codec --included_codec=png_codec
 	- rm -rf build/
 	mkdir build
 	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
@@ -148,8 +149,9 @@ bazel_gms_release:
 
 bazel_gms_debug:
 	# See above note about spawn_strategy
-	bazel build :gm-bindings-wasm --compilation_mode dbg --spawn_strategy=local \
-		--gpu_backend=gl_backend --with_gl_standard=webgl_standard
+	bazelisk build :gm-bindings-wasm --compilation_mode dbg --spawn_strategy=local \
+		--gpu_backend=gl_backend --with_gl_standard=webgl_standard \
+		--include_codec=jpeg_codec --include_codec=png_codec
 	- rm -rf build/
 	mkdir build
 	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
