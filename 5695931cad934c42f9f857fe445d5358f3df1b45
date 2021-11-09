@@ -16,6 +16,23 @@
       "message": "Am I thinking about this right. Our entire system of individual FPs being compatible (or not) seems flawed. Either you scale the shader output by alpha, or you don\u0027t? (I suspect this was more complex when paint alpha was visible to those FPs, and they might do things based on it - but that\u0027s no longer the case).",
       "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51f6a73_90a116ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-09T21:14:24Z",
+      "side": 1,
+      "message": "I would be curious to try always applying paint alpha to see if perf moves either direction, and maybe give us some insight into how useful coverage-as-alpha actually is (or if it\u0027s really most useful when you\u0027re doing solid-color-only draws, and if you have a shader, you\u0027re probably changing shaders frequently?).",
+      "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
