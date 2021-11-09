@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6604795_abec0a63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-09T21:15:00Z",
+      "side": 1,
+      "message": "\"Spin\" feels like a curious name for it (I feel like \"Cycle\" is easier at first glance) but if it matches an existing API, it\u0027s probably better to keep consistent.",
+      "revId": "f81b0c3f4c26f7d509fa095cbc71a322069d2e93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
