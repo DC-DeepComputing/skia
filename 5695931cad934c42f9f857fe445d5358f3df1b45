@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c016ef91_89f8aac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-09T18:31:59Z",
+      "side": 1,
+      "message": "Am I thinking about this right. Our entire system of individual FPs being compatible (or not) seems flawed. Either you scale the shader output by alpha, or you don\u0027t? (I suspect this was more complex when paint alpha was visible to those FPs, and they might do things based on it - but that\u0027s no longer the case).",
+      "revId": "5695931cad934c42f9f857fe445d5358f3df1b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
