@@ -275,7 +275,7 @@ sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
     const auto lm = this->totalLocalMatrix(args.fPreLocalMatrix);
     SkMatrix lmInverse;
     if (!lm->invert(&lmInverse)) {
@@ -291,11 +291,14 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
         return nullptr;
     }
 
-    fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                       fImage->colorSpace(),
-                                       fImage->alphaType(),
-                                       args.fDstColorInfo->colorSpace(),
-                                       kPremul_SkAlphaType);
+    if (transformColor) {
+        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+                                           fImage->colorSpace(),
+                                           fImage->alphaType(),
+                                           args.fDstColorInfo->colorSpace(),
+                                           kPremul_SkAlphaType);
+    }
+
     if (fImage->isAlphaOnly()) {
         return GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kDstIn);
     } else {

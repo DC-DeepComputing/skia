@@ -29,7 +29,8 @@ public:
     GradientType asAGradient(GradientInfo* info) const override;
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 private:
@@ -59,7 +60,8 @@ public:
     bool isConstant() const override { return true; }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 private:

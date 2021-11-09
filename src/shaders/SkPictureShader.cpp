@@ -364,7 +364,9 @@ void SkPictureShader::PictureShaderContext::shadeSpan(int x, int y, SkPMColor ds
 #include "src/gpu/GrProxyProvider.h"
 
 std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
+    // TODO(skbug:10479): How do we handle transformColor? The picture needs to rasterize in *some*
+    // common color space (and in premul). For now, ignore the flag.
 
     auto ctx = args.fContext;
     auto lm = this->totalLocalMatrix(args.fPreLocalMatrix);

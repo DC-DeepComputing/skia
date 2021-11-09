@@ -971,7 +971,8 @@ public:
     bool isOpaque() const override { return fIsOpaque; }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args) const override {
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
+            const GrFPArgs& args, bool /*transformColor*/) const override {
         SkMatrix matrix;
         if (!this->totalLocalMatrix(args.fPreLocalMatrix)->invert(&matrix)) {
             return nullptr;

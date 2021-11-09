@@ -24,7 +24,8 @@ public:
     bool isOpaque() const override;
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
     static SkM44 CubicResamplerMatrix(float B, float C);
