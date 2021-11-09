@@ -19,6 +19,7 @@ class UniformData;
 class UniformCache {
 public:
     UniformCache();
+    ~UniformCache();
 
     sk_sp<UniformData> findOrCreate(sk_sp<UniformData>);
 
