@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c27baa_e3c95688",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-09T14:51:11Z",
+      "side": 1,
+      "message": "Seems like we want an index for the function itself (analogous to the variable slot index in trace_var), along with a function map just like the variable map? How were you planning on reconstructing the call stack?",
+      "revId": "69ab1e07e6194796da6816ac71c448e984371ae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
