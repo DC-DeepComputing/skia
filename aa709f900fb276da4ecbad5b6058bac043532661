@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc9ddf5_be8a0fca",
+        "filename": "infra/bots/task_drivers/fm_driver/fm_driver.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-09T16:11:55Z",
+      "side": 1,
+      "message": "While we\u0027re here, can we pass this from gen_tasks as a flag, so that we only have to have this written in one place?",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 48
+      },
+      "revId": "aa709f900fb276da4ecbad5b6058bac043532661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c86f281_f10b4133",
+        "filename": "infra/bots/task_drivers/run_wasm_gm_tests/run_wasm_gm_tests.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-09T16:11:55Z",
+      "side": 1,
+      "message": "Same here",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 61
+      },
+      "revId": "aa709f900fb276da4ecbad5b6058bac043532661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
