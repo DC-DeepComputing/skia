@@ -86,9 +86,16 @@ public:
     };
 
     struct Child {
+        enum Flags {
+            kTransformColor_Flag = 0x1,
+        };
+
         SkString  name;
         ChildType type;
         int       index;
+        uint32_t  flags;
+
+        bool transformColor() const { return SkToBool(this->flags & kTransformColor_Flag); }
     };
 
     class Options {

@@ -316,6 +316,12 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
                 c.name  = SkString(var.name());
                 c.type  = child_type(varType);
                 c.index = children.size();
+                c.flags = 0;
+
+                if (var.modifiers().fLayout.fFlags & SkSL::Layout::Flag::kSRGBUnpremul_Flag) {
+                    c.flags |= Child::kTransformColor_Flag;
+                }
+
                 children.push_back(c);
                 auto usage = SkSL::Analysis::GetSampleUsage(
                         *program, var, sampleCoordsUsage.fWrite != 0, &elidedSampleCoords);
@@ -770,21 +776,28 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
                                  sk_sp<SkData> uniforms,
                                  std::unique_ptr<GrFragmentProcessor> inputFP,
                                  std::unique_ptr<GrFragmentProcessor> destColorFP,
-                                 SkSpan<const SkRuntimeEffect::ChildPtr> children,
+                                 SkSpan<const SkRuntimeEffect::ChildPtr> childPtrs,
                                  const GrFPArgs& childArgs) {
     SkSTArray<8, std::unique_ptr<GrFragmentProcessor>> childFPs;
-    for (const auto& child : children) {
-        skstd::optional<ChildType> type = child.type();
+    SkSpan<const SkRuntimeEffect::Child> children = effect->children();
+    SkASSERT(children.size() == childPtrs.size());
+
+    for (size_t i = 0; i < children.size(); ++i) {
+        const SkRuntimeEffect::Child& child = children[i];
+        const SkRuntimeEffect::ChildPtr& childPtr = childPtrs[i];
+
+        skstd::optional<ChildType> type = childPtr.type();
         if (type == ChildType::kShader) {
             // Convert a SkShader into a child FP.
-            auto childFP = as_SB(child.shader())->asFragmentProcessor(childArgs);
+            auto childFP = as_SB(childPtr.shader())
+                                   ->asFragmentProcessor(childArgs, child.transformColor());
             if (!childFP) {
                 return GrFPFailure(std::move(inputFP));
             }
             childFPs.push_back(std::move(childFP));
         } else if (type == ChildType::kColorFilter) {
             // Convert a SkColorFilter into a child FP.
-            auto [success, childFP] = as_CFB(child.colorFilter())
+            auto [success, childFP] = as_CFB(childPtr.colorFilter())
                                               ->asFragmentProcessor(/*inputFP=*/nullptr,
                                                                     childArgs.fContext,
                                                                     *childArgs.fDstColorInfo);
@@ -794,7 +807,7 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
             childFPs.push_back(std::move(childFP));
         } else if (type == ChildType::kBlender) {
             // Convert a SkBlender into a child FP.
-            auto childFP = as_BB(child.blender())->asFragmentProcessor(/*srcFP=*/nullptr,
+            auto childFP = as_BB(childPtr.blender())->asFragmentProcessor(/*srcFP=*/nullptr,
                                                                        /*dstFP=*/nullptr,
                                                                        childArgs);
             if (!childFP) {
@@ -971,7 +984,8 @@ public:
     bool isOpaque() const override { return fIsOpaque; }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args) const override {
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
+            const GrFPArgs& args, bool /*transformColor*/) const override {
         SkMatrix matrix;
         if (!this->totalLocalMatrix(args.fPreLocalMatrix)->invert(&matrix)) {
             return nullptr;
