@@ -33,6 +33,8 @@ UniformCache::UniformCache() {
     fUniformDataVector.push_back(nullptr);
 }
 
+UniformCache::~UniformCache() = default;
+
 sk_sp<UniformData> UniformCache::findOrCreate(sk_sp<UniformData> ud) {
 
     auto iter = fUniformDataHash.find(ud);
