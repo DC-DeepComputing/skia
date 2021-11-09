@@ -160,17 +160,19 @@ void CommandBuffer::onBindUniformBuffer(const skgpu::Buffer* uniformBuffer,
 }
 
 void CommandBuffer::onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
-                                        const skgpu::Buffer* instanceBuffer) {
+                                        size_t vertexOffset,
+                                        const skgpu::Buffer* instanceBuffer,
+                                        size_t instanceOffset) {
     SkASSERT(fActiveRenderCommandEncoder);
 
     if (vertexBuffer) {
         id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(vertexBuffer)->mtlBuffer();
-        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, 0,
+        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, vertexOffset,
                                                      GraphicsPipeline::kVertexBufferIndex);
     }
     if (instanceBuffer) {
         id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(instanceBuffer)->mtlBuffer();
-        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, 0,
+        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, instanceOffset,
                                                      GraphicsPipeline::kInstanceBufferIndex);
     }
 }
