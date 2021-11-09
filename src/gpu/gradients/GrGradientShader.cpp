@@ -672,6 +672,7 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
 static std::unique_ptr<GrFragmentProcessor> make_gradient(
         const SkGradientShaderBase& shader,
         const GrFPArgs& args,
+        bool transformColor,
         std::unique_ptr<GrFragmentProcessor> layout,
         const SkMatrix* overrideMatrix = nullptr) {
     // No shader is possible if a layout couldn't be created, e.g. a layout-specific Make() returned
@@ -689,13 +690,18 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient(
     matrix.postConcat(overrideMatrix ? *overrideMatrix : shader.getGradientMatrix());
     layout = GrMatrixEffect::Make(matrix, std::move(layout));
 
-    // Convert all colors into destination space and into SkPMColor4fs, and handle
-    // premul issues depending on the interpolation mode
+    // Convert all colors into destination space (if transformColor is true) and into SkPMColor4fs.
+    // We handle premul issues depending on the interpolation mode (and transformColor).
+    // If the interpolate-in-premul flag was specified, we premul the colors - we have to respect
+    // that. But if not, and transformColor is false, we suppress the post-interpolate premul,
+    // so that you can make purely mathematical gradients for your shaders.
     bool inputPremul = shader.getGradFlags() & SkGradientShader::kInterpolateColorsInPremul_Flag;
     bool allOpaque = true;
     SkAutoSTMalloc<4, SkPMColor4f> colors(shader.fColorCount);
-    SkColor4fXformer xformedColors(shader.fOrigColors4f, shader.fColorCount,
-                                   shader.fColorSpace.get(), args.fDstColorInfo->colorSpace());
+    SkColor4fXformer xformedColors(shader.fOrigColors4f,
+                                   shader.fColorCount,
+                                   shader.fColorSpace.get(),
+                                   transformColor ? args.fDstColorInfo->colorSpace() : nullptr);
     for (int i = 0; i < shader.fColorCount; i++) {
         const SkColor4f& upmColor = xformedColors.fColors[i];
         colors[i] = inputPremul ? upmColor.premul()
@@ -734,7 +740,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient(
     // allOpaque check is more permissive than SkGradientShaderBase's isOpaque(), since we can
     // optimize away the make-premul op for two point conical gradients (which report false for
     // isOpaque).
-    bool makePremul = !inputPremul && !allOpaque;
+    bool makePremul = !inputPremul && !allOpaque && transformColor;
 
     // All tile modes are supported (unless something was added to SkShader)
     std::unique_ptr<GrFragmentProcessor> gradient;
@@ -771,7 +777,8 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient(
 namespace GrGradientShader {
 
 std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
-                                                const GrFPArgs& args) {
+                                                const GrFPArgs& args,
+                                                bool transformColor) {
     // We add a tiny delta to t. When gradient stops are set up so that a hard stop in a vertically
     // or horizontally oriented gradient falls exactly at a column or row of pixel centers we can
     // get slightly different interpolated t values along the column/row. By adding the delta
@@ -787,11 +794,12 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     // The linear gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "LinearLayout", /*inputFP=*/nullptr,
                              GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return make_gradient(shader, args, std::move(fp));
+    return make_gradient(shader, args, transformColor, std::move(fp));
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
-                                                const GrFPArgs& args) {
+                                                const GrFPArgs& args,
+                                                bool transformColor) {
     static auto effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
         half4 main(float2 coord) {
             return half4(half(length(coord)), 1, 0, 0); // y = 1 for always valid
@@ -800,11 +808,12 @@ std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
     // The radial gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "RadialLayout", /*inputFP=*/nullptr,
                              GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return make_gradient(shader, args, std::move(fp));
+    return make_gradient(shader, args, transformColor, std::move(fp));
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
-                                               const GrFPArgs& args) {
+                                               const GrFPArgs& args,
+                                               bool transformColor) {
     // On some devices they incorrectly implement atan2(y,x) as atan(y/x). In actuality it is
     // atan2(y,x) = 2 * atan(y / (sqrt(x^2 + y^2) + x)). So to work around this we pass in (sqrt(x^2
     // + y^2) + x) as the second parameter to atan2 in these cases. We let the device handle the
@@ -833,11 +842,12 @@ std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
                              "bias", shader.getTBias(),
                              "scale", shader.getTScale(),
                              "useAtanWorkaround", GrSkSLFP::Specialize(useAtanWorkaround));
-    return make_gradient(shader, args, std::move(fp));
+    return make_gradient(shader, args, transformColor, std::move(fp));
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeConical(const SkTwoPointConicalGradient& shader,
-                                                 const GrFPArgs& args) {
+                                                 const GrFPArgs& args,
+                                                 bool transformColor) {
     // The 2 point conical gradient can reject a pixel so it does change opacity even if the input
     // was opaque. Thus, all of these layout FPs disable that optimization.
     std::unique_ptr<GrFragmentProcessor> fp;
@@ -981,7 +991,7 @@ std::unique_ptr<GrFragmentProcessor> MakeConical(const SkTwoPointConicalGradient
                                 "fx", focalData.fFocalX);
         } break;
     }
-    return make_gradient(shader, args, std::move(fp), matrix.getMaybeNull());
+    return make_gradient(shader, args, transformColor, std::move(fp), matrix.getMaybeNull());
 }
 
 #if GR_TEST_UTILS

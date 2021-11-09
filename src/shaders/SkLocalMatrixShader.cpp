@@ -17,9 +17,10 @@
 
 #if SK_SUPPORT_GPU
 std::unique_ptr<GrFragmentProcessor> SkLocalMatrixShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return as_SB(fProxyShader)->asFragmentProcessor(
-        GrFPArgs::WithPreLocalMatrix(args, this->getLocalMatrix()));
+        const GrFPArgs& args, bool transformColor) const {
+    return as_SB(fProxyShader)
+            ->asFragmentProcessor(GrFPArgs::WithPreLocalMatrix(args, this->getLocalMatrix()),
+                                  transformColor);
 }
 #endif
 
@@ -80,15 +81,16 @@ bool SkLocalMatrixShader::onAppendStages(const SkStageRec& rec) const {
 skvm::Color SkLocalMatrixShader::onProgram(skvm::Builder* p,
                                            skvm::Coord device, skvm::Coord local, skvm::Color paint,
                                            const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                           const SkColorInfo& dst,
+                                           const SkColorInfo& dst, bool transformColor,
                                            skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
     SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
     if (localM) {
         lm.writable()->preConcat(*localM);
     }
-    return as_SB(fProxyShader)->program(p, device,local, paint,
-                                        matrices,lm.get(), dst,
-                                        uniforms,alloc);
+    return as_SB(fProxyShader)->program(p, device, local, paint,
+                                        matrices, lm.get(),
+                                        dst, transformColor,
+                                        uniforms, alloc);
 }
 
 sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
@@ -131,7 +133,8 @@ public:
     }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
 protected:
@@ -158,12 +161,13 @@ protected:
     skvm::Color onProgram(skvm::Builder* p,
                           skvm::Coord device, skvm::Coord local, skvm::Color paint,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
         SkOverrideDeviceMatrixProvider matrixProvider(matrices, fCTM);
-        return as_SB(fProxyShader)->program(p, device,local, paint,
-                                            matrixProvider,localM, dst,
-                                            uniforms,alloc);
+        return as_SB(fProxyShader)->program(p, device, local, paint,
+                                            matrixProvider, localM,
+                                            dst, transformColor,
+                                            uniforms, alloc);
     }
 
 private:
@@ -178,16 +182,18 @@ private:
 
 #if SK_SUPPORT_GPU
 std::unique_ptr<GrFragmentProcessor> SkCTMShader::asFragmentProcessor(
-        const GrFPArgs& args) const {
+        const GrFPArgs& args, bool transformColor) const {
     SkMatrix ctmInv;
     if (!fCTM.invert(&ctmInv)) {
         return nullptr;
     }
 
     auto ctmProvider = SkOverrideDeviceMatrixProvider(args.fMatrixProvider, fCTM);
-    auto base = as_SB(fProxyShader)->asFragmentProcessor(
-        GrFPArgs::WithPreLocalMatrix(args.withNewMatrixProvider(ctmProvider),
-                                     this->getLocalMatrix()));
+    auto base = as_SB(fProxyShader)
+                        ->asFragmentProcessor(GrFPArgs::WithPreLocalMatrix(
+                                                      args.withNewMatrixProvider(ctmProvider),
+                                                      this->getLocalMatrix()),
+                                              transformColor);
     if (!base) {
         return nullptr;
     }

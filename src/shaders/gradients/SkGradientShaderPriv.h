@@ -80,7 +80,8 @@ protected:
     bool onAppendStages(const SkStageRec&) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dstCS,
+                          const SkMatrixProvider&, const SkMatrix* localM,
+                          const SkColorInfo& dstCS, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
 
     virtual void appendGradientStages(SkArenaAlloc* alloc, SkRasterPipeline* tPipeline,

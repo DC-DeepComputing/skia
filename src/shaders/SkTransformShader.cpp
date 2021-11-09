@@ -14,12 +14,14 @@ SkTransformShader::SkTransformShader(const SkShaderBase& shader) : fShader{shade
 skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
                       skvm::Coord device, skvm::Coord local, skvm::Color color,
                       const SkMatrixProvider& matrices, const SkMatrix* localM,
-                      const SkColorInfo& dst,
+                      const SkColorInfo& dst, bool transformColor,
                       skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
     skvm::Coord newLocal = this->applyMatrix(b, matrices.localToDevice(), local, uniforms);
     SkSimpleMatrixProvider matrixProvider{SkMatrix::I()};
-    return fShader.program(
-            b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+    return fShader.program(b, device, newLocal, color,
+                           matrixProvider, localM,
+                           dst, transformColor,
+                           uniforms, alloc);
 }
 
 skvm::Coord SkTransformShader::applyMatrix(

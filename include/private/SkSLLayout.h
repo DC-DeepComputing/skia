@@ -22,9 +22,9 @@ struct Layout {
         kOriginUpperLeft_Flag            = 1 <<  0,
         kPushConstant_Flag               = 1 <<  1,
         kBlendSupportAllEquations_Flag   = 1 <<  2,
-        kSRGBUnpremul_Flag               = 1 <<  3,
 
         // These flags indicate if the qualifier appeared, regardless of the accompanying value.
+        kTransformColor_Flag             = 1 <<  3,
         kLocation_Flag                   = 1 <<  4,
         kOffset_Flag                     = 1 <<  5,
         kBinding_Flag                    = 1 <<  6,
@@ -34,26 +34,35 @@ struct Layout {
         kInputAttachmentIndex_Flag       = 1 << 10,
     };
 
-    Layout(int flags, int location, int offset, int binding, int index, int set, int builtin,
+    Layout(int flags,
+           bool transformColor,
+           int location,
+           int offset,
+           int binding,
+           int index,
+           int set,
+           int builtin,
            int inputAttachmentIndex)
-    : fFlags(flags)
-    , fLocation(location)
-    , fOffset(offset)
-    , fBinding(binding)
-    , fIndex(index)
-    , fSet(set)
-    , fBuiltin(builtin)
-    , fInputAttachmentIndex(inputAttachmentIndex) {}
+            : fFlags(flags)
+            , fTransformColor(transformColor)
+            , fLocation(location)
+            , fOffset(offset)
+            , fBinding(binding)
+            , fIndex(index)
+            , fSet(set)
+            , fBuiltin(builtin)
+            , fInputAttachmentIndex(inputAttachmentIndex) {}
 
     Layout()
-    : fFlags(0)
-    , fLocation(-1)
-    , fOffset(-1)
-    , fBinding(-1)
-    , fIndex(-1)
-    , fSet(-1)
-    , fBuiltin(-1)
-    , fInputAttachmentIndex(-1) {}
+            : fFlags(0)
+            , fTransformColor(false)
+            , fLocation(-1)
+            , fOffset(-1)
+            , fBinding(-1)
+            , fIndex(-1)
+            , fSet(-1)
+            , fBuiltin(-1)
+            , fInputAttachmentIndex(-1) {}
 
     static Layout builtin(int builtin) {
         Layout result;
@@ -100,8 +109,8 @@ struct Layout {
         if (fFlags & kPushConstant_Flag) {
             result += separator() + "push_constant";
         }
-        if (fFlags & kSRGBUnpremul_Flag) {
-            result += separator() + "srgb_unpremul";
+        if (fFlags & kTransformColor_Flag) {
+            result += separator() + "transform_color = " + (fTransformColor ? "true" : "false");
         }
         if (result.size() > 0) {
             result = "layout (" + result + ")";
@@ -111,6 +120,7 @@ struct Layout {
 
     bool operator==(const Layout& other) const {
         return fFlags                == other.fFlags &&
+               fTransformColor       == other.fTransformColor &&
                fLocation             == other.fLocation &&
                fOffset               == other.fOffset &&
                fBinding              == other.fBinding &&
@@ -125,6 +135,7 @@ struct Layout {
     }
 
     int fFlags;
+    bool fTransformColor;
     int fLocation;
     int fOffset;
     int fBinding;

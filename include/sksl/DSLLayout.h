@@ -34,8 +34,9 @@ public:
                           "blend_support_all_equations", pos);
     }
 
-    DSLLayout& srgbUnpremul(PositionInfo pos = PositionInfo::Capture()) {
-        return this->flag(SkSL::Layout::kSRGBUnpremul_Flag, "srgb_unpremul", pos);
+    DSLLayout& transformColor(bool enable, PositionInfo pos = PositionInfo::Capture()) {
+        return this->boolValue(&fSkSLLayout.fTransformColor, enable,
+                               SkSL::Layout::kTransformColor_Flag, "transform_color", pos);
     }
 
     DSLLayout& location(int location, PositionInfo pos = PositionInfo::Capture()) {
@@ -78,6 +79,9 @@ private:
         : fSkSLLayout(skslLayout) {}
 
     DSLLayout& flag(SkSL::Layout::Flag mask, const char* name, PositionInfo pos);
+
+    DSLLayout& boolValue(bool* target, bool value, SkSL::Layout::Flag flag, const char* name,
+                         PositionInfo pos);
 
     DSLLayout& intValue(int* target, int value, SkSL::Layout::Flag flag, const char* name,
                         PositionInfo pos);

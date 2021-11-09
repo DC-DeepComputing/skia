@@ -57,7 +57,7 @@ public:
     skvm::Color onProgram(
             skvm::Builder* builder, skvm::Coord device, skvm::Coord local, skvm::Color paint,
             const SkMatrixProvider& provider, const SkMatrix* localM, const SkColorInfo& dst,
-            skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+            bool /*transformColor*/, skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
         skvm::Uniform color = uniforms->pushPtr(fValues);
         skvm::F32 r = builder->arrayF(color, 0);
         skvm::F32 g = builder->arrayF(color, 1);

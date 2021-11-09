@@ -95,7 +95,8 @@ protected:
 
     skvm::Color onProgram(skvm::Builder*,
                           skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
+                          const SkMatrixProvider&, const SkMatrix*,
+                          const SkColorInfo&, bool transformColor,
                           skvm::Uniforms*, SkArenaAlloc*) const override;
 
 private:
@@ -120,8 +121,8 @@ private:
 skvm::Color SkTriColorShader::onProgram(skvm::Builder* b,
                                         skvm::Coord device, skvm::Coord local, skvm::Color,
                                         const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                        const SkColorInfo&, skvm::Uniforms* uniforms,
-                                        SkArenaAlloc* alloc) const {
+                                        const SkColorInfo&, bool /*transformColor*/,
+                                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
 
     fColorMatrix = uniforms->pushPtr(&fM43);
 

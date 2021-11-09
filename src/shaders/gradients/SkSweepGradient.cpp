@@ -99,8 +99,8 @@ skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::Uniforms* uniforms
 #include "src/gpu/gradients/GrGradientShader.h"
 
 std::unique_ptr<GrFragmentProcessor> SkSweepGradient::asFragmentProcessor(
-        const GrFPArgs& args) const {
-    return GrGradientShader::MakeSweep(*this, args);
+        const GrFPArgs& args, bool transformColor) const {
+    return GrGradientShader::MakeSweep(*this, args, transformColor);
 }
 
 #endif

@@ -27,7 +27,8 @@ public:
     }
 
 #if SK_SUPPORT_GPU
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
+                                                             bool transformColor) const override;
 #endif
 
     sk_sp<SkShader> makeAsALocalMatrixShader(SkMatrix* localMatrix) const override {
@@ -49,7 +50,8 @@ protected:
     bool onAppendStages(const SkStageRec&) const override;
 
     skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
+                          const SkMatrixProvider&, const SkMatrix* localM,
+                          const SkColorInfo& dst, bool transformColor,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
 private:
