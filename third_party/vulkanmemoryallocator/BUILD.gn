@@ -3,6 +3,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("../../gn/skia.gni")
+
 config("vulkanmemoryallocator_public") {
   include_dirs = [ "." ]
 }
@@ -14,6 +16,36 @@ source_set("vulkanmemoryallocator") {
     "../..",
     "../../include/third_party/vulkan",
   ]
+
+  if (is_linux) {
+    defines = [
+      "VK_USE_PLATFORM_XLIB_KHR",
+      "VK_USE_PLATFORM_XCB_KHR",
+      "VK_EXPORT=__attribute__((visibility(\"default\")))",
+    ]
+  } else if (is_fuchsia) {
+    defines = [
+      "VK_USE_PLATFORM_FUCHSIA=1",
+      "VK_EXPORT=__attribute__((visibility(\"default\")))",
+    ]
+  } else if (is_win) {
+    defines = [
+      "VK_USE_PLATFORM_WIN32_KHR=1",
+      "VK_EXPORT=",
+    ]
+  } else if (is_mac) {
+    defines = [
+      "VK_USE_PLATFORM_MACOS_MVK=1",
+      "VK_USE_PLATFORM_METAL_EXT=1",
+      "VK_EXPORT=__attribute__((visibility(\"default\")))",
+    ]
+  } else {
+    defines = [ "VK_EXPORT=" ]
+  }
+
+  if (!skia_enable_vma_shared_mutex) {
+    defines += [ "VMA_USE_STL_SHARED_MUTEX=0" ]
+  }
 
   sources = [
     "GrVulkanMemoryAllocator.cpp",
