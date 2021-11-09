@@ -94,6 +94,30 @@
       },
       "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a08408a_030d84cd",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-09T13:43:23Z",
+      "side": 1,
+      "message": "For the short term, I put in a bool type as you suggested. I also made a change to LoopFloat/LoopInt to make the outcome not-entirely-deterministic (it now depends on a uniform) so that we could actually get to see how this stuff looks when there\u0027s real code. It\u0027s still only uniforms, though, so it\u0027s all hoisted.\n\nI think a map of slots to full names is a good starting point. We\u0027ll want it in the trace and in the skslc output. We do run the risk of getting chatty results like\n\nresultColor.r:  0.0\nresultColor.g:  1.0\nresultColor.b:  0.0\nresultColor.a:  1.0\n\nWhen we want\n\nresultColor: (0.0, 1.0, 0.0, 1.0)\n\nbut we can cross that bridge when we get to it.",
+      "parentUuid": "b26858dd_2cb512f1",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 64
+      },
+      "revId": "cbd5894fb215d2bf669b5087d20f1e3efde64f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
