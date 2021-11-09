@@ -12,6 +12,10 @@
 #ifndef GrVulkanMemoryAllocator_DEFINED
 #define GrVulkanMemoryAllocator_DEFINED
 
+#if defined(_WIN32)
+#include <windows.h>
+#endif
+
 // We only ever include this from src files which have already included vulkan.
 #ifndef VULKAN_CORE_H_
 #error "vulkan_core.h has not been included before trying to include the GrVulkanMemoryAllocator"
