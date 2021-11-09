@@ -147,16 +147,25 @@ void CommandBuffer::onBindGraphicsPipeline(const skgpu::GraphicsPipeline* graphi
     fCurrentInstanceStride = mtlPipeline->instanceStride();
 }
 
-void CommandBuffer::onBindUniformBuffer(const skgpu::Buffer* uniformBuffer,
+void CommandBuffer::onBindUniformBuffer(UniformSlot slot,
+                                        const skgpu::Buffer* uniformBuffer,
                                         size_t uniformOffset) {
     SkASSERT(fActiveRenderCommandEncoder);
 
     id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(uniformBuffer)->mtlBuffer();
 
-    fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, uniformOffset,
-                                                 GraphicsPipeline::kUniformBufferIndex);
-    fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, uniformOffset,
-                                                   GraphicsPipeline::kUniformBufferIndex);
+    unsigned int bufferIndex;
+    switch(slot) {
+        case UniformSlot::kRenderStep:
+            bufferIndex = GraphicsPipeline::kRenderStepUniformBufferIndex;
+            break;
+        case UniformSlot::kPaint:
+            bufferIndex = GraphicsPipeline::kPaintUniformBufferIndex;
+            break;
+    }
+
+    fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, uniformOffset, bufferIndex);
+    fActiveRenderCommandEncoder->setFragmentBuffer(mtlBuffer, uniformOffset, bufferIndex);
 }
 
 void CommandBuffer::onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
