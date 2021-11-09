@@ -1,0 +1,38 @@
+
+
+
+
+
+"name","counter_name","SUM(delta/(dur/1000000))","SUM(dur)"
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_OLED_uws",150.393092,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_QTM525_uws",36.293173,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_RF_uws",71.621578,999000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",222.013414,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S1C_uws",1407.014859,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_S2A_S3A_uws",47.212145,749000000
+"GM_paragraph__underline","power.PPVAR_VPH_PWR_WLAN_uws",87.675229,749000000
+"GM_paragraph__underline","power.WCN3998_VDD13 [from PP1304_L2C]_uws",27.471855,749000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_OLED_uws",99.092000,750000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_QTM525_uws",43.546805,751000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_RF_uws",59.648255,1001000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",381.934837,751000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S1C_uws",1485.712000,750000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",44.050805,751000000
+"GM_paragraph__underline_visitor","power.PPVAR_VPH_PWR_WLAN_uws",15.184000,750000000
+"GM_paragraph__underline_visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",4.464000,750000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_OLED_uws",157.276000,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_QTM525_uws",39.129458,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_RF_uws",39.436000,1250000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",344.168591,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S1C_uws",1497.596000,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_S2A_S3A_uws",56.082241,1000000000
+"GM_paragraph__visitor","power.PPVAR_VPH_PWR_WLAN_uws",90.472000,1000000000
+"GM_paragraph__visitor","power.WCN3998_VDD13 [from PP1304_L2C]_uws",22.184000,1000000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_OLED_uws",61.124000,1001000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_QTM525_uws",65.140733,1000000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_RF_uws",87.929485,1251000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",449.677199,1000000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S1C_uws",1393.263538,1001000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_S2A_S3A_uws",17.722566,1000000000
+"GM_paragraph_layout_","power.PPVAR_VPH_PWR_WLAN_uws",2.254980,1001000000
+"GM_paragraph_layout_","power.WCN3998_VDD13 [from PP1304_L2C]_uws",2.672000,1001000000
