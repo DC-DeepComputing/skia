@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b8d6d7a_f36aec0c",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-10T17:48:59Z",
+      "side": 1,
+      "message": "I had a theory on how this could break, and was able to confirm it locally - this moves all the side-effect expressions *before* the indexed value. This can alter the outcome, if the indexed value depends on the side effects. For example, if you change line 26 of ArrayFolding.sksl to be:\n\n    int noFlatten0 \u003d (int[3](globalValue, side_effecting(2), 3))[0];\n\n... the generated GLSL will still call side_effecting() before evaluating globalValue:\n\n    int _10_noFlatten0 \u003d (side_effecting_ii(2) , globalValue);\n\nThis is obviously really esoteric and unlikely, but it does seem like we should try to avoid this kind of reordering. The GLSL spec doesn\u0027t explicitly mention anything like a sequence point in array construction, it just says \"The\narguments are assigned in order, starting at element 0, to the elements of the constructed array\".",
+      "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
