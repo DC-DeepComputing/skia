@@ -73,12 +73,13 @@ protected:
     static void SortMesh(VertexList* vertices, const Comparator&);
 
     // 4) Simplify the mesh by inserting new vertices at intersecting edges:
-    enum class SimplifyResult : bool {
+    enum class SimplifyResult {
+        kFailed,
         kAlreadySimple,
         kFoundSelfIntersection
     };
 
-    SimplifyResult simplify(VertexList* mesh, const Comparator&) const;
+    SimplifyResult SK_WARN_UNUSED_RESULT simplify(VertexList* mesh, const Comparator&) const;
 
     // 5) Tessellate the simplified mesh into monotone polygons:
     virtual Poly* tessellate(const VertexList& vertices, const Comparator&) const;
@@ -140,6 +141,10 @@ protected:
     void generateCubicPoints(const SkPoint&, const SkPoint&, const SkPoint&, const SkPoint&,
                              SkScalar tolSqd, VertexList* contour, int pointsLeft) const;
     bool applyFillType(int winding) const;
+    MonotonePoly* allocateMonotonePoly(Edge* edge, Side side, int winding) const;
+    mutable int fNumMonotonePolys = 0;
+    Edge* allocateEdge(Vertex* top, Vertex* bottom, int winding, EdgeType type) const;
+    mutable int fNumEdges = 0;
     Edge* makeEdge(Vertex* prev, Vertex* next, EdgeType type, const Comparator&) const;
     void setTop(Edge* edge, Vertex* v, EdgeList* activeEdges, Vertex** current,
                 const Comparator&) const;
@@ -176,6 +181,7 @@ protected:
 
     // FIXME: fPath should be plumbed through function parameters instead.
     const SkPath fPath;
+public:
     SkArenaAlloc* const fAlloc;
 
     // Internal control knobs.
@@ -476,7 +482,7 @@ struct GrTriangulator::MonotonePoly {
 struct GrTriangulator::Poly {
     Poly(Vertex* v, int winding);
 
-    Poly* addEdge(Edge* e, Side side, SkArenaAlloc* alloc);
+    Poly* addEdge(Edge* e, Side side, const GrTriangulator*);
     Vertex* lastVertex() const { return fTail ? fTail->fLastEdge->fBottom : fFirstVertex; }
     Vertex* fFirstVertex;
     int fWinding;
