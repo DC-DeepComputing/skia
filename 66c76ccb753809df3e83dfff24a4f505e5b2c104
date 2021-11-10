@@ -106,6 +106,24 @@
       "parentUuid": "503bc81e_7810a898",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6d1c62_c27d25c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-10T20:06:55Z",
+      "side": 1,
+      "message": "Is that an API available today or does that need implementing?",
+      "parentUuid": "22270e44_f4dd15e4",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
