@@ -67,8 +67,8 @@ void GrAATriangulator::makeEvent(SSEdge* e, EventList* events) const {
     if (prev == next || !prev->fPartner || !next->fPartner) {
         return;
     }
-    Edge bisector1(prev, prev->fPartner, 1, EdgeType::kConnector);
-    Edge bisector2(next, next->fPartner, 1, EdgeType::kConnector);
+    Edge bisector1(prev, prev->fPartner, 1, EdgeType::kConnector, true);
+    Edge bisector2(next, next->fPartner, 1, EdgeType::kConnector, true);
     SkPoint p;
     uint8_t alpha;
     if (bisector1.intersect(bisector2, &p, &alpha)) {
@@ -93,7 +93,7 @@ void GrAATriangulator::makeEvent(SSEdge* edge, Vertex* v, SSEdge* other, Vertex*
     }
     Line line = edge->fEdge->fLine;
     line.fC = -(dest->fPoint.fX * line.fA  + dest->fPoint.fY * line.fB);
-    Edge bisector(v, v->fPartner, 1, EdgeType::kConnector);
+    Edge bisector(v, v->fPartner, 1, EdgeType::kConnector, true);
     SkPoint p;
     uint8_t alpha = dest->fAlpha;
     if (line.intersect(bisector.fLine, &p) && !c.sweep_lt(p, top->fPoint) &&
@@ -623,9 +623,15 @@ Poly* GrAATriangulator::tessellate(const VertexList& mesh, const Comparator& c) 
     SortMesh(&fOuterMesh, c);
     this->mergeCoincidentVertices(&innerMesh, c);
     bool was_complex = this->mergeCoincidentVertices(&fOuterMesh, c);
-    auto result = this->simplify(&innerMesh, c);
+    auto result = this->simplify1(&innerMesh, c);
+    if (result == SimplifyResult::kFailed) {
+        return nullptr;
+    }
     was_complex = (SimplifyResult::kFoundSelfIntersection == result) || was_complex;
-    result = this->simplify(&fOuterMesh, c);
+    result = this->simplify1(&fOuterMesh, c);
+    if (result == SimplifyResult::kFailed) {
+        return nullptr;
+    }
     was_complex = (SimplifyResult::kFoundSelfIntersection == result) || was_complex;
     TESS_LOG("\ninner mesh before:\n");
     DUMP_MESH(innerMesh);
@@ -648,7 +654,10 @@ Poly* GrAATriangulator::tessellate(const VertexList& mesh, const Comparator& c) 
         TESS_LOG("\nmerged mesh:\n");
         DUMP_MESH(aaMesh);
         this->mergeCoincidentVertices(&aaMesh, c);
-        result = this->simplify(&aaMesh, c);
+        result = this->simplify1(&aaMesh, c);
+        if (result == SimplifyResult::kFailed) {
+            return nullptr;
+        }
         TESS_LOG("combined and simplified mesh:\n");
         DUMP_MESH(aaMesh);
         fOuterMesh.fHead = fOuterMesh.fTail = nullptr;
