@@ -16,6 +16,23 @@
       "message": "This is just comments and variable renaming.",
       "revId": "94b03aee4e7d323ec0506ca1931edaf4b0886f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e9d986_f3a7e69d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-10T12:56:38Z",
+      "side": 1,
+      "message": "Thanks for the quick review.\n",
+      "revId": "94b03aee4e7d323ec0506ca1931edaf4b0886f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
