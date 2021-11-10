@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0879de1d_cc9b219a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T19:18:48Z",
+      "side": 1,
+      "message": "More comments:",
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55c0ed01_68378c70",
@@ -82,6 +99,52 @@
         "startChar": 30,
         "endLine": 201,
         "endChar": 38
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7b92273_0bdc1aee",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T19:18:48Z",
+      "side": 1,
+      "message": "Is it possible to derive them from the associated AttributeSet instead?",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "083bfa4b_a6675642",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T19:18:48Z",
+      "side": 1,
+      "message": "I guess I understand why this isn\u0027t in the GraphicsPipelineDesc, as we can derive these values from the Combination and such, but as these are generic classes used by all backends I\u0027d prefer to see them placed closer to where we think they\u0027re going to end up. Is it possible to put them in GraphicsPipeline and have MtlGraphicsPipeline make use of them?",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 15
       },
       "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
