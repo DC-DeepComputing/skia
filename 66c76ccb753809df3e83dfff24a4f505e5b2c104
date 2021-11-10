@@ -16,6 +16,24 @@
       "message": "It appears to work. https://screenshot.googleplex.com/AGrum3a5ngk2Dso\n\nOne thing I\u0027m not sure about is how those textures get cleaned up when the Images go away. We have a TextureReleaseContext that is used for when we make the image on the surface - can we do the same for our ImageGenerator?",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04784f5e_c7975689",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-10T19:19:00Z",
+      "side": 1,
+      "message": "So the actual wgl texture will get deleted by Skia because we use kAdopt_GrWrapOwnership. This means Skia will call glDeleteTextures() when we are done with it.\n\nThe real question is about how the JS texture source gets disposed of. A callback mechanism could work there where the CK client passes in the callback and gets handed back src.",
+      "parentUuid": "9a7344d6_6d89ae33",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
