@@ -244,6 +244,9 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
 
     GrSDFTControl::DrawingType drawingType = control.drawingType(runFont, runPaint, drawMatrix);
 
+    // DO NOT SUBMIT - testing path case.
+    //drawingType = GrSDFTControl::kPath;
+
     if (drawingType == GrSDFTControl::kSDFT) {
         // Process SDFT - This should be the .009% case.
         const auto& [strikeSpec, strikeToSourceScale, minScale, maxScale] =
