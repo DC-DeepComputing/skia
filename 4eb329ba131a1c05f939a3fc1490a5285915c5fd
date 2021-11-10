@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d11e58aa_6551abb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-10T20:39:00Z",
+      "side": 1,
+      "message": "Had to replace count() with size(), but canaries suggest this is going to be safe to land, regardless.",
+      "revId": "4eb329ba131a1c05f939a3fc1490a5285915c5fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
