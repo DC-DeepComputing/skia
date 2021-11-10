@@ -149,7 +149,9 @@ DEF_PATH_TESS_BENCH(GrPathCurveTessellator, make_cubic_path(8), SkMatrix::I()) {
                                            fTarget->caps().minPathVerbsForHwTessellation(),
                                            noVaryingsPipeline,
                                            fTarget->caps());
-    tess->prepare(fTarget.get(), {gAlmostIdentity, fPath, SK_PMColor4fTRANSPARENT},
+    tess->prepare(fTarget.get(),
+                  fMatrix,
+                  {gAlmostIdentity, fPath, SK_PMColor4fTRANSPARENT},
                   fPath.countVerbs());
 }
 
@@ -163,7 +165,9 @@ DEF_PATH_TESS_BENCH(GrPathWedgeTessellator, make_cubic_path(8), SkMatrix::I()) {
                                            fTarget->caps().minPathVerbsForHwTessellation(),
                                            noVaryingsPipeline,
                                            fTarget->caps());
-    tess->prepare(fTarget.get(), {gAlmostIdentity, fPath, SK_PMColor4fTRANSPARENT},
+    tess->prepare(fTarget.get(),
+                  fMatrix,
+                  {gAlmostIdentity, fPath, SK_PMColor4fTRANSPARENT},
                   fPath.countVerbs());
 }
 
