@@ -16,6 +16,23 @@
       "message": "Is this for the test to see the effect on perf?",
       "revId": "bc44794c64f06bd9e44e7287d4e82c6aa0f083fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5966f79f_42f44b5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T14:23:58Z",
+      "side": 1,
+      "message": "Could we isolate the disabling to Skia test bots to start? Use some #define? I\u0027m afraid we\u0027ll have to immediately revert this when it changes client stuff.",
+      "revId": "bc44794c64f06bd9e44e7287d4e82c6aa0f083fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
