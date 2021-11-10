@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4549f4c3_128de8ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T23:49:34Z",
+      "side": 1,
+      "message": "why is vulkan getting enabled on iOS?",
+      "range": {
+        "startLine": 9,
+        "startChar": 77,
+        "endLine": 9,
+        "endChar": 82
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25c59398_f5e89487",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T23:49:34Z",
+      "side": 1,
+      "message": "How is Skia able to compile on windows today if this is an issue?",
+      "range": {
+        "startLine": 9,
+        "startChar": 65,
+        "endLine": 9,
+        "endChar": 72
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "074a1665_908ae1ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T23:49:34Z",
+      "side": 1,
+      "message": "Are these issues that are specific to how flutter is setting things up and what it needs the VMA allocator for?\n\nIf so an alternative is for flutter to build the VMA allocator itself outside of Skia, create an implementation of GrVkMemoryAllocator (see GrVkAMDMemoryAllocator as an example), and then pass the allocator into Skia.",
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
