@@ -34,6 +34,24 @@
       "parentUuid": "9a7344d6_6d89ae33",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e8f672f_60782544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T19:20:56Z",
+      "side": 1,
+      "message": "Do we want to use kAdopt here? I was hoping to move away from supporting any sort of adopt wrapping. I think as of now chrome only has one place left that uses it and even that I question if it is needed.. We could implement this using release procs that deleted the gl texture directly.",
+      "parentUuid": "04784f5e_c7975689",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
