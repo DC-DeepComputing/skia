@@ -7,6 +7,8 @@
 
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
