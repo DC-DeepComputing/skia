@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19459cc3_1cce4112",
+        "filename": "src/core/SkBlurMF.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-10T14:34:35Z",
+      "side": 1,
+      "message": "Since directFilterMaskGPU can fail on line 1521, this delays setting the coverage FP until we\u0027re sure we can draw. The fallback (SW blur mask) path was asserting that the coverage FP had already been set.",
+      "revId": "998fdcebce75d8775bb1dc05b968068bd0c6d3ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
