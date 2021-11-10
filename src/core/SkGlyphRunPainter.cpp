@@ -244,7 +244,7 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
 
     GrSDFTControl::DrawingType drawingType = control.drawingType(runFont, runPaint, drawMatrix);
 
-    if (drawingType == GrSDFTControl::kSDFT) {
+    if (0 && drawingType == GrSDFTControl::kSDFT) {
         // Process SDFT - This should be the .009% case.
         const auto& [strikeSpec, strikeToSourceScale, minScale, maxScale] =
                 SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, drawMatrix, control);
