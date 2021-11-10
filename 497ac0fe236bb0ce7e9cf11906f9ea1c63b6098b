@@ -46,6 +46,30 @@
       },
       "revId": "497ac0fe236bb0ce7e9cf11906f9ea1c63b6098b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f650c7f0_221eefbe",
+        "filename": "include/gpu/vk/GrVkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T23:15:12Z",
+      "side": 0,
+      "message": "Okay I updated this to guard the new param for the framework only. I am actually happy with this, as long as there are no objections to the look of the ugly parameter lists no with the #ifdef",
+      "parentUuid": "17b27742_8b563498",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 27
+      },
+      "revId": "497ac0fe236bb0ce7e9cf11906f9ea1c63b6098b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
