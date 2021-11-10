@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53b1e2a_75de2725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-10T15:25:56Z",
+      "side": 1,
+      "message": "I stubbed out the WebGLImageGenerator. It has a JS object that it can use to call a JS function which will make the WebGL texture on the current WebGL context and return the identifier of that texture.\n\nAlthough the code compiles, I\u0027m not seeing the callback fire, and I\u0027m not sure why.",
+      "revId": "f7fac260a1d2d359422e4543735e194af15e70bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
