@@ -16,6 +16,7 @@
 #define VMA_NOT_NULL
 
 #define VMA_IMPLEMENTATION
+
 #include <vulkan/vulkan_core.h>
 #include "GrVulkanMemoryAllocator.h"
 
