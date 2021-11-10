@@ -22,6 +22,30 @@
       },
       "revId": "6e6ae1b76284912586ac9524a32253b082cb8d8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed5119f_49b4016c",
+        "filename": "tests/sksl/errors/ReservedNames.glsl",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-10T17:29:23Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "52decb3f_18302eb8",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 4,
+        "endChar": 7
+      },
+      "revId": "6e6ae1b76284912586ac9524a32253b082cb8d8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
