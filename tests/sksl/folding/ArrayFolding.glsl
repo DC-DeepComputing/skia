@@ -1,9 +1,18 @@
-### Compilation failed:
 
-error: 16: array size must be an integer
-error: 17: array size must be an integer
-error: 17: expected 'int[1]', but found 'int[2]'
-error: 18: array size must be an integer
-error: 18: expected 'int[1]', but found 'int[3]'
-error: 31: unknown identifier 'c'
-6 errors
+out vec4 sk_FragColor;
+uniform vec4 colorRed;
+uniform vec4 colorGreen;
+int globalValue = 0;
+int side_effecting_ii(int value) {
+    globalValue++;
+    return value;
+}
+vec4 main() {
+    int _7_flatten0 = side_effecting_ii(1);
+    int _8_flatten1 = side_effecting_ii(2);
+    int _9_flatten2 = side_effecting_ii(3);
+    int _10_noFlatten0 = (side_effecting_ii(2) , 1);
+    int _11_noFlatten1 = (side_effecting_ii(1) , 2);
+    int _12_noFlatten2 = (side_effecting_ii(2) , (side_effecting_ii(1) , 3));
+    return (_7_flatten0 == _10_noFlatten0 && _8_flatten1 == _11_noFlatten1) && _9_flatten2 == _12_noFlatten2 ? colorGreen : colorRed;
+}
