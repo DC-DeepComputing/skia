@@ -2609,3 +2609,27 @@ DEF_TEST(SkVM_fast_mul, r) {
         }
     });
 }
+
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+#include "src/core/SkVM.h"
+#include "src/core/disassembler/SkVMDisassembler.h"
+DEF_TEST(SkVM_for, r) {
+    const char* src = "float main(float x, float y) { float sum = 0.0;  "
+            "for (float a = 0.0; a < 13.0; a += 1.0) { "
+            "    for (float b = 0.0; b < 3.0; b += 1.0) { "
+            "        for (float c = 0.0; c < 3.0; c += 1.0) { "
+            "     if (x > y) sum += x * a + y * b; else sum += x * y * c; }"
+            " } } "
+            "return 0.0; }";
+    GrShaderCaps caps;
+    SkSL::Compiler compiler(&caps);
+    SkSL::Program::Settings settings;
+    auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric,
+                                           SkSL::String(src), settings);
+    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
+    skvm::Builder builder("/usr//local/google/home/jlavrova/Sources/skia/out/test.html");
+    SkSL::ProgramToSkVM(*program, *main, &builder, /*uniforms=*/{});
+    skvm::Program p = builder.done();
+    builder.disassembler()->dump();
+}
