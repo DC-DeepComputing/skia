@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52decb3f_18302eb8",
+        "filename": "tests/sksl/errors/ReservedNames.glsl",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-10T15:03:55Z",
+      "side": 0,
+      "message": "This file has been detritus for a long time.",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 4,
+        "endChar": 7
+      },
+      "revId": "6e6ae1b76284912586ac9524a32253b082cb8d8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
