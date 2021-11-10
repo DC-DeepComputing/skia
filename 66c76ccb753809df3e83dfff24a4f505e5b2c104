@@ -124,6 +124,24 @@
       "parentUuid": "22270e44_f4dd15e4",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01cbd024_b30de921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T20:15:50Z",
+      "side": 1,
+      "message": "Where we call wrapBackendTexture there is another param you can pass in at the end for a GrRefCntedCallback: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/GrProxyProvider.h;l\u003d119\n\nThis is an internal object, but as you can see it is just a Callback and Context (similar to the ReleaseProc and ReleaseContext you see on public things like SkImage). The Callback can just be a local static function in that file with a signature like:\n\nvoid delete_gl_texture(void* context) { ... }",
+      "parentUuid": "af6d1c62_c27d25c1",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
