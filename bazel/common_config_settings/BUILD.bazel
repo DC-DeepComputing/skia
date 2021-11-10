@@ -75,10 +75,9 @@ config_setting(
 # directory. https://docs.bazel.build/versions/main/guide.html#where-are-the-bazelrc-files
 #
 
-# TODO(kjlubick) make gpu_backend a multi-string flag when available in Bazel.
-#  https://docs.bazel.build/versions/main/skylark/config.html#defining-multi-set-string-flags
 string_flag_with_values(
     flag_name = "gpu_backend",
+    multiple = True,
     values = [
         "gl_backend",
         "vulkan_backend",
@@ -97,8 +96,22 @@ string_flag_with_values(
 string_flag_with_values(
     default = "empty_fontmgr_factory",
     flag_name = "fontmgr_factory",
+    multiple = True,
     values = [
         "empty_fontmgr_factory",
         "custom_directory_fontmgr_factory",
+    ],
+)
+
+string_flag_with_values(
+    flag_name = "include_codec",
+    multiple = True,
+    values = [
+        "gif_codec_libgifcodec",  # prefer using gif_codec_wuffs
+        "gif_codec_wuffs",
+        "jpeg_codec",
+        "png_codec",
+        "raw_codec",
+        "webp_codec",
     ],
 )
