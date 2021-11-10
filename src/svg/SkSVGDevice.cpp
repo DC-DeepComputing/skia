@@ -404,8 +404,11 @@ void SkSVGDevice::AutoElement::addGradientShaderResources(const SkShader* shader
                                                           Resources* resources) {
     SkShader::GradientInfo grInfo;
     memset(&grInfo, 0, sizeof(grInfo));
-    if (SkShader::kLinear_GradientType != shader->asAGradient(&grInfo)) {
-        // TODO: non-linear gradient support
+    const auto gradient_type = shader->asAGradient(&grInfo);
+
+    if (gradient_type != SkShader::kColor_GradientType &&
+        gradient_type != SkShader::kLinear_GradientType) {
+        // TODO: other gradient support
         return;
     }
 
@@ -419,7 +422,12 @@ void SkSVGDevice::AutoElement::addGradientShaderResources(const SkShader* shader
     SkASSERT(grInfo.fColorCount <= grColors.count());
     SkASSERT(grInfo.fColorCount <= grOffsets.count());
 
-    resources->fPaintServer.printf("url(#%s)", addLinearGradientDef(grInfo, shader).c_str());
+    if (gradient_type == SkShader::kColor_GradientType) {
+        SkASSERT(grInfo.fColorCount == 1);
+        resources->fPaintServer = svg_color(grColors[0]);
+    } else {
+        resources->fPaintServer.printf("url(#%s)", addLinearGradientDef(grInfo, shader).c_str());
+    }
 }
 
 void SkSVGDevice::AutoElement::addColorFilterResources(const SkColorFilter& cf,
