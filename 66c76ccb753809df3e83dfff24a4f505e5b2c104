@@ -88,6 +88,24 @@
       "parentUuid": "ccc99d96_8ff8f1f8",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22270e44_f4dd15e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T19:53:57Z",
+      "side": 1,
+      "message": "Yeah we should be able to do something where the ReleaseContext is the glTextureID and the ReleaseProc takes in the Context, cast it back to the textureID, then manually call: \"glDeleteTextures(1, \u0026texID);\"",
+      "parentUuid": "503bc81e_7810a898",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
