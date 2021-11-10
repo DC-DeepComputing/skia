@@ -151,7 +151,9 @@ namespace skvm {
 
     Builder::Builder()                  : fFeatures(detect_features()) {}
     Builder::Builder(Features features) : fFeatures(features         ) {}
-
+    Builder::Builder(const char* path, const char* source)
+        : fFeatures(detect_features())
+        , fDisassembler(path == nullptr ? nullptr : new disassembler::Disassembler(path, source)) {}
 
     struct Program::Impl {
         std::vector<InterpreterInstruction> instructions;
@@ -294,6 +296,7 @@ namespace skvm {
             immB = inst.immB,
             immC = inst.immC;
         switch (op) {
+            case Op::no_op: break;
             case Op::assert_true: write(o, op, V{x}, V{y}); break;
 
             case Op::trace_line: write(o, op, V{x}, Line{immA}); break;
@@ -368,6 +371,11 @@ namespace skvm {
             case Op::from_fp16: write(o, V{id}, "=", op, V{x}); break;
             case Op::trunc:     write(o, V{id}, "=", op, V{x}); break;
             case Op::round:     write(o, V{id}, "=", op, V{x}); break;
+
+            // The following instructions only appear in disassembler:
+            case Op::neq_i32:
+            case Op::gte_i32:
+            case Op::extract: SkASSERT(false); break;
         }
 
         write(o, "\n");
@@ -413,6 +421,7 @@ namespace skvm {
                 immB = inst.immB,
                 immC = inst.immC;
             switch (op) {
+                case Op::no_op: break;
                 case Op::assert_true: write(o, op, R{x}, R{y}); break;
 
                 case Op::trace_line: write(o, op, R{x}, Line{immA}); break;
@@ -486,12 +495,17 @@ namespace skvm {
                 case Op::from_fp16: write(o, R{d}, "=", op, R{x}); break;
                 case Op::trunc:     write(o, R{d}, "=", op, R{x}); break;
                 case Op::round:     write(o, R{d}, "=", op, R{x}); break;
+
+                // The following instructions only appear in disassembler:
+                case Op::neq_i32:
+                case Op::gte_i32:
+                case Op::extract: SkASSERT(false); break;
             }
             write(o, "\n");
         }
     }
 
-    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program) {
+    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program, disassembler::Disassembler* disassembler) {
         // Determine which Instructions are live by working back from side effects.
         std::vector<bool> live(program.size(), false);
         for (Val id = program.size(); id--;) {
@@ -544,6 +558,10 @@ namespace skvm {
             }
         }
 
+        if (disassembler) {
+            disassembler->markAsDeadCode(live, new_id);
+        }
+
         // Eliminate any non-live ops.
         auto it = std::remove_if(program.begin(), program.end(), [&](const Instruction& inst) {
             Val id = (Val)(&inst - program.data());
@@ -554,7 +572,7 @@ namespace skvm {
         return program;
     }
 
-    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program) {
+    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program, disassembler::Disassembler* disassembler) {
         std::vector<OptimizedInstruction> optimized(program.size());
         for (Val id = 0; id < (Val)program.size(); id++) {
             Instruction inst = program[id];
@@ -598,13 +616,21 @@ namespace skvm {
             }
         }
 
+        if (disassembler) {
+            for (Val id = 0; id < (Val)optimized.size(); id++) {
+                if (optimized[id].can_hoist) {
+                    disassembler->markAsHoisted(id);
+                }
+            }
+        }
+
         return optimized;
     }
 
     std::vector<OptimizedInstruction> Builder::optimize() const {
         std::vector<Instruction> program = this->program();
-        program = eliminate_dead_code(std::move(program));
-        return    finalize           (std::move(program));
+        program = eliminate_dead_code(std::move(program), fDisassembler);
+        return    finalize           (std::move(program), fDisassembler);
     }
 
     Program Builder::done(const char* debug_name, bool allow_jit) const {
@@ -652,13 +678,31 @@ namespace skvm {
         // and index is varying but doesn't touch memory, so it's fine to dedup too.
         if (!touches_varying_memory(inst.op) && !is_trace(inst.op)) {
             if (Val* id = fIndex.find(inst)) {
+                this->addToDisassembler(*id);
                 return *id;
             }
         }
         Val id = static_cast<Val>(fProgram.size());
         fProgram.push_back(inst);
         fIndex.set(inst, id);
+        this->addToDisassembler(id);
         return id;
+    }
+
+    void Builder::addToDisassembler(Val id) {
+        if (!fDisassembler) return;
+        auto& instr = fProgram[id];
+        fDisassembler->addInstruction({
+            disassembler::Kind::normal,
+            (disassembler::SkVMOp)((int)instr.op),
+            disassembler::coord{},
+            std::vector<disassembler::MachineCommand>(),
+            id,
+            0,
+            std::vector<int>(),
+            instr.x, instr.y, instr.z, instr.w,
+            instr.immA, instr.immB, instr.immC,
+        });
     }
 
     Ptr Builder::arg(int stride) {
@@ -760,6 +804,7 @@ namespace skvm {
     //     } while (++bits != 0);
 
     F32 Builder::add(F32 x, F32 y) {
+        StaticInstruction command(this, Op::add_f32, x.id, y.id); // TODO: features
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X+Y); }
         if (this->isImm(y.id, 0.0f)) { return x; }   // x+0 == x
         if (this->isImm(x.id, 0.0f)) { return y; }   // 0+y == y
@@ -776,6 +821,7 @@ namespace skvm {
     }
 
     F32 Builder::sub(F32 x, F32 y) {
+        StaticInstruction command(this, Op::sub_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X-Y); }
         if (this->isImm(y.id, 0.0f)) { return x; }   // x-0 == x
         if (fFeatures.fma) {
@@ -790,6 +836,7 @@ namespace skvm {
     }
 
     F32 Builder::mul(F32 x, F32 y) {
+        StaticInstruction command(this, Op::mul_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X*Y); }
         if (this->isImm(y.id, 1.0f)) { return x; }  // x*1 == x
         if (this->isImm(x.id, 1.0f)) { return y; }  // 1*y == y
@@ -797,17 +844,20 @@ namespace skvm {
     }
 
     F32 Builder::fast_mul(F32 x, F32 y) {
+        StaticInstruction command(this, Op::mul_f32, x.id, y.id);
         if (this->isImm(x.id, 0.0f) || this->isImm(y.id, 0.0f)) { return splat(0.0f); }
         return mul(x,y);
     }
 
     F32 Builder::div(F32 x, F32 y) {
+        StaticInstruction command(this, Op::div_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(sk_ieee_float_divide(X,Y)); }
         if (this->isImm(y.id, 1.0f)) { return x; }  // x/1 == x
         return {this, this->push(Op::div_f32, x.id, y.id)};
     }
 
     F32 Builder::sqrt(F32 x) {
+        StaticInstruction command(this, Op::sqrt_f32, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat(std::sqrt(X)); }
         return {this, this->push(Op::sqrt_f32, x.id)};
     }
@@ -971,16 +1021,19 @@ namespace skvm {
     }
 
     F32 Builder::min(F32 x, F32 y) {
+        StaticInstruction command(this, Op::min_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(std::min(X,Y)); }
         return {this, this->push(Op::min_f32, x.id, y.id)};
     }
     F32 Builder::max(F32 x, F32 y) {
+        StaticInstruction command(this, Op::max_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(std::max(X,Y)); }
         return {this, this->push(Op::max_f32, x.id, y.id)};
     }
 
     SK_ATTRIBUTE(no_sanitize("signed-integer-overflow"))
     I32 Builder::add(I32 x, I32 y) {
+        StaticInstruction command(this, Op::add_i32, x.id, y.id);
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X+Y); }
         if (this->isImm(x.id, 0)) { return y; }
         if (this->isImm(y.id, 0)) { return x; }
@@ -988,12 +1041,14 @@ namespace skvm {
     }
     SK_ATTRIBUTE(no_sanitize("signed-integer-overflow"))
     I32 Builder::sub(I32 x, I32 y) {
+        StaticInstruction command(this, Op::sub_i32, x.id, y.id);
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X-Y); }
         if (this->isImm(y.id, 0)) { return x; }
         return {this, this->push(Op::sub_i32, x.id, y.id)};
     }
     SK_ATTRIBUTE(no_sanitize("signed-integer-overflow"))
     I32 Builder::mul(I32 x, I32 y) {
+        StaticInstruction command(this, Op::mul_i32, x.id, y.id);
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X*Y); }
         if (this->isImm(x.id, 0)) { return splat(0); }
         if (this->isImm(y.id, 0)) { return splat(0); }
@@ -1004,60 +1059,73 @@ namespace skvm {
 
     SK_ATTRIBUTE(no_sanitize("shift"))
     I32 Builder::shl(I32 x, int bits) {
+        StaticInstruction command(this, Op::shl_i32, x.id,NA,NA,NA, bits);
         if (bits == 0) { return x; }
         if (int X; this->allImm(x.id,&X)) { return splat(X << bits); }
         return {this, this->push(Op::shl_i32, x.id,NA,NA,NA, bits)};
     }
     I32 Builder::shr(I32 x, int bits) {
+        StaticInstruction command(this, Op::shr_i32, x.id,NA,NA,NA, bits);
         if (bits == 0) { return x; }
         if (int X; this->allImm(x.id,&X)) { return splat(unsigned(X) >> bits); }
         return {this, this->push(Op::shr_i32, x.id,NA,NA,NA, bits)};
     }
     I32 Builder::sra(I32 x, int bits) {
+        StaticInstruction command(this, Op::sra_i32, x.id,NA,NA,NA, bits);
         if (bits == 0) { return x; }
         if (int X; this->allImm(x.id,&X)) { return splat(X >> bits); }
         return {this, this->push(Op::sra_i32, x.id,NA,NA,NA, bits)};
     }
 
     I32 Builder:: eq(F32 x, F32 y) {
+        StaticInstruction command(this, Op::eq_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X==Y ? ~0 : 0); }
         return {this, this->push(Op::eq_f32, x.id, y.id)};
     }
     I32 Builder::neq(F32 x, F32 y) {
+        StaticInstruction command(this, Op::neq_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X!=Y ? ~0 : 0); }
         return {this, this->push(Op::neq_f32, x.id, y.id)};
     }
     I32 Builder::lt(F32 x, F32 y) {
+        StaticInstruction command(this, Op::gt_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(Y> X ? ~0 : 0); }
         return {this, this->push(Op::gt_f32, y.id, x.id)};
     }
     I32 Builder::lte(F32 x, F32 y) {
+        StaticInstruction command(this, Op::gte_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(Y>=X ? ~0 : 0); }
         return {this, this->push(Op::gte_f32, y.id, x.id)};
     }
     I32 Builder::gt(F32 x, F32 y) {
+        StaticInstruction command(this, Op::gt_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X> Y ? ~0 : 0); }
         return {this, this->push(Op::gt_f32, x.id, y.id)};
     }
     I32 Builder::gte(F32 x, F32 y) {
+        StaticInstruction command(this, Op::gte_f32, x.id, y.id);
         if (float X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X>=Y ? ~0 : 0); }
         return {this, this->push(Op::gte_f32, x.id, y.id)};
     }
 
     I32 Builder:: eq(I32 x, I32 y) {
+        StaticInstruction command(this, Op::eq_i32, x.id, y.id);
         if (x.id == y.id) { return splat(~0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X==Y ? ~0 : 0); }
         return {this, this->push(Op:: eq_i32, x.id, y.id)};
     }
     I32 Builder::neq(I32 x, I32 y) {
+        StaticInstruction command(this, Op::neq_i32, x.id, y.id);
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X!=Y ? ~0 : 0); }
         return ~(x == y);
     }
     I32 Builder:: gt(I32 x, I32 y) {
+        StaticInstruction command(this, Op::gt_i32, x.id, y.id);
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X> Y ? ~0 : 0); }
         return {this, this->push(Op:: gt_i32, x.id, y.id)};
     }
     I32 Builder::gte(I32 x, I32 y) {
+        StaticInstruction command(this, Op::gte_i32, x.id, y.id);
         if (x.id == y.id) { return splat(~0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X>=Y ? ~0 : 0); }
         return ~(x < y);
@@ -1066,6 +1134,7 @@ namespace skvm {
     I32 Builder::lte(I32 x, I32 y) { return y>=x; }
 
     I32 Builder::bit_and(I32 x, I32 y) {
+        StaticInstruction command(this, Op::bit_and, x.id, y.id);
         if (x.id == y.id) { return x; }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X&Y); }
         if (this->isImm(y.id, 0)) { return splat(0); }   // (x & false) == false
@@ -1075,6 +1144,7 @@ namespace skvm {
         return {this, this->push(Op::bit_and, x.id, y.id)};
     }
     I32 Builder::bit_or(I32 x, I32 y) {
+        StaticInstruction command(this, Op::bit_or, x.id, y.id);
         if (x.id == y.id) { return x; }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X|Y); }
         if (this->isImm(y.id, 0)) { return x; }           // (x | false) == x
@@ -1084,6 +1154,7 @@ namespace skvm {
         return {this, this->push(Op::bit_or, x.id, y.id)};
     }
     I32 Builder::bit_xor(I32 x, I32 y) {
+        StaticInstruction command(this, Op::bit_xor, x.id, y.id);
         if (x.id == y.id) { return splat(0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X^Y); }
         if (this->isImm(y.id, 0)) { return x; }   // (x ^ false) == x
@@ -1092,6 +1163,7 @@ namespace skvm {
     }
 
     I32 Builder::bit_clear(I32 x, I32 y) {
+        StaticInstruction command(this, Op::bit_clear, x.id, y.id);
         if (x.id == y.id) { return splat(0); }
         if (int X,Y; this->allImm(x.id,&X, y.id,&Y)) { return splat(X&~Y); }
         if (this->isImm(y.id, 0)) { return x; }          // (x & ~false) == x
@@ -1101,6 +1173,7 @@ namespace skvm {
     }
 
     I32 Builder::select(I32 x, I32 y, I32 z) {
+        StaticInstruction command(this, Op::select, x.id, y.id);
         if (y.id == z.id) { return y; }
         if (int X,Y,Z; this->allImm(x.id,&X, y.id,&Y, z.id,&Z)) { return splat(X?Y:Z); }
         if (this->isImm(x.id,~0)) { return y; }               // true  ? y : z == y
@@ -1111,6 +1184,7 @@ namespace skvm {
     }
 
     I32 Builder::extract(I32 x, int bits, I32 z) {
+        StaticInstruction command(this, Op::extract, x.id,NA,NA,NA, bits);
         if (unsigned Z; this->allImm(z.id,&Z) && (~0u>>bits) == Z) { return shr(x, bits); }
         return bit_and(z, shr(x, bits));
     }
@@ -1120,31 +1194,38 @@ namespace skvm {
     }
 
     F32 Builder::ceil(F32 x) {
+        StaticInstruction command(this, Op::ceil, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat(ceilf(X)); }
         return {this, this->push(Op::ceil, x.id)};
     }
     F32 Builder::floor(F32 x) {
+        StaticInstruction command(this, Op::floor, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat(floorf(X)); }
         return {this, this->push(Op::floor, x.id)};
     }
     F32 Builder::to_F32(I32 x) {
+        StaticInstruction command(this, Op::to_f32, x.id);
         if (int X; this->allImm(x.id,&X)) { return splat((float)X); }
         return {this, this->push(Op::to_f32, x.id)};
     }
     I32 Builder::trunc(F32 x) {
+        StaticInstruction command(this, Op::trunc, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat((int)X); }
         return {this, this->push(Op::trunc, x.id)};
     }
     I32 Builder::round(F32 x) {
+        StaticInstruction command(this, Op::round, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat((int)lrintf(X)); }
         return {this, this->push(Op::round, x.id)};
     }
 
     I32 Builder::to_fp16(F32 x) {
+        StaticInstruction command(this, Op::to_fp16, x.id);
         if (float X; this->allImm(x.id,&X)) { return splat((int)SkFloatToHalf(X)); }
         return {this, this->push(Op::to_fp16, x.id)};
     }
     F32 Builder::from_fp16(I32 x) {
+        StaticInstruction command(this, Op::from_fp16, x.id);
         if (int X; this->allImm(x.id,&X)) { return splat(SkHalfToFloat(X)); }
         return {this, this->push(Op::from_fp16, x.id)};
     }
@@ -3599,6 +3680,7 @@ namespace skvm {
         #endif
 
             switch (op) {
+                case Op::no_op: break;
                 // Make sure splat constants can be found by load_from_memory() or any().
                 case Op::splat:
                     (void)constants[immA];
@@ -4122,7 +4204,10 @@ namespace skvm {
                         a->movs(GP1, r(x), i);    // Extract index lane i into GP1.
                         a->add (GP1, GP0, GP1);   // Add the gather base pointer.
                         a->ldrb(GP1, GP1);        // Load that byte.
-                        a->inss(dst(x), GP1, i);  // Insert it into dst() lane i.
+                        a->inss(dst(x), GP1, i);              // The folloring instructions only appear in disassembler:
+            case Op::neq_i32:
+            case Op::gte_i32:
+            case Op::extract: SkASSERT(false); break;// Insert it into dst() lane i.
                     }
                 } break;
 
@@ -4233,6 +4318,11 @@ namespace skvm {
                     a->fcvtl (dst(), dst());     // 4x f16 -> 4x f32
                     break;
             #endif
+                    
+                    // The following instructions only appear in disassembler:
+                    case Op::neq_i32:
+                    case Op::gte_i32:
+                    case Op::extract: SkASSERT(false); break;
             }
 
             // Proactively free the registers holding any value that dies here.
