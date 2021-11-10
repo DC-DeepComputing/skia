@@ -16,6 +16,15 @@
 #ifndef VULKAN_CORE_H_
 #error "vulkan_core.h has not been included before trying to include the GrVulkanMemoryAllocator"
 #endif
+
+// vk_mem_alloc.h is patched to not import vulkan.h. Instead, Vulkan is expected to be
+// imported wherever this header is used (see GrVulkanMemoryAllocator.cpp, for example).
+// On windows, vk_mem_alloc.h uses Windows SRWLock, which is normally included by vulkan.h, and so
+// the relevant symbols/defines need to be included here.
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "include/vk_mem_alloc.h"
 
 #endif
