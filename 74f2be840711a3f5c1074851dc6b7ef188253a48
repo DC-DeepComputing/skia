@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3686217_744da7b5",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T18:56:33Z",
+      "side": 1,
+      "message": "Add a comment here, something like \"// Quad is degenerate so we won\u0027t add it.\" ?",
+      "range": {
+        "startLine": 577,
+        "startChar": 12,
+        "endLine": 577,
+        "endChar": 25
+      },
+      "revId": "74f2be840711a3f5c1074851dc6b7ef188253a48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3cba710b_bcdbab8c",
         "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
         "patchSetId": 5
@@ -38,6 +61,30 @@
       "side": 1,
       "message": "Right",
       "parentUuid": "3cba710b_bcdbab8c",
+      "range": {
+        "startLine": 648,
+        "startChar": 8,
+        "endLine": 648,
+        "endChar": 45
+      },
+      "revId": "74f2be840711a3f5c1074851dc6b7ef188253a48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98d3a4e1_966e49ce",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T18:56:33Z",
+      "side": 1,
+      "message": "Got it -- I\u0027ve requested a comment above to make that clearer.",
+      "parentUuid": "7dee2e1b_ccc7c8d8",
       "range": {
         "startLine": 648,
         "startChar": 8,
