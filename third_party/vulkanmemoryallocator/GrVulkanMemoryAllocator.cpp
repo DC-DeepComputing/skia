@@ -16,6 +16,14 @@
 #define VMA_NOT_NULL
 
 #define VMA_IMPLEMENTATION
+
+// vk_mem_alloc.h is patched to not import vulkan.h. Instead, we import vulkan_core.h directly here.
+// On windows, vk_mem_alloc.h uses Windows API symbols, which are normally included by vulkan.h.
+// Because of this, they need to be included here.
+#if defined(_WIN32)
+#include <windows.h>
+#endif
+
 #include <vulkan/vulkan_core.h>
 #include "GrVulkanMemoryAllocator.h"
 
