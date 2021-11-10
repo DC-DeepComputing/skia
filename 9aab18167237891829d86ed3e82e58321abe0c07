@@ -52,6 +52,24 @@
       "parentUuid": "6cefe116_be9eaa78",
       "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10a40783_34dbec85",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-10T19:00:09Z",
+      "side": 1,
+      "message": "Done. Only compile-time-constant arrays will be considered now.\n\nTrivia tidbit: there\u0027s a middle-ground implementation here which I considered:\n\n  https://skia-review.googlesource.com/c/skia/+/469528/3/src/sksl/ir/SkSLIndexExpression.cpp\n\nThis allows the chosen index to have side-effects, but none of the other indices can. The value-add here is very very low. I thought it was worth calling out since it was already written. (I came up with this solution before realizing comma-expressions could do better.)",
+      "parentUuid": "695633c7_d0d0f18f",
+      "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
