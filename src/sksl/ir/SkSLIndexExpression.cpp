@@ -7,6 +7,8 @@
 
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
@@ -100,10 +102,41 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                 // Swizzling is harmless and can unlock further simplifications for some base types.
                 return Swizzle::Make(context, std::move(base), ComponentArray{(int8_t)indexValue});
             }
+
+            if (baseType.isArray()) {
+                // Indexing an array constructor with a constant can just pluck out the requested
+                // value from the array.
+                const Expression* baseExpr = ConstantFolder::GetConstantValueForVariable(*base);
+                if (baseExpr->is<ConstructorArray>()) {
+                    const ConstructorArray& arrayCtor = baseExpr->as<ConstructorArray>();
+                    const ExpressionArray& arguments = arrayCtor.arguments();
+                    SkASSERT(arguments.count() == baseType.columns());
+
+                    std::unique_ptr<Expression> expr = arguments[indexValue]->clone();
+
+                    // If any of the other array arguments have side effects, we can preserve those
+                    // with a comma-expression. GLSL guarantees left-to-right evaluation, but SkSL
+                    // explicitly does not, so reordering these arguments is fine.
+                    for (int argIndex = 0; argIndex < arguments.count(); ++argIndex) {
+                        if (argIndex == indexValue) {
+                            continue;
+                        }
+                        if (arguments[argIndex]->hasSideEffects()) {
+                            // Rewrite the expression into `(side-effect-expr, result)`.
+                            const Type& exprType = expr->type();
+                            expr = BinaryExpression::Make(context,
+                                                          arguments[argIndex]->clone(),
+                                                          Operator{Token::Kind::TK_COMMA},
+                                                          std::move(expr),
+                                                          &exprType);
+                        }
+                    }
+
+                    return expr;
+                }
+            }
         }
     }
-
-    // TODO(skia:12472): constantArray[constantExpr] should be compile-time evaluated.
 
     return std::make_unique<IndexExpression>(context, std::move(base), std::move(index));
 }
