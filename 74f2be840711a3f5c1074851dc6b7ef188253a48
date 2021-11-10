@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cba710b_bcdbab8c",
+        "filename": "src/gpu/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T16:36:39Z",
+      "side": 1,
+      "message": "So the idea is that if it fails, it\u0027s degenerate and there\u0027s nothing to render?",
+      "range": {
+        "startLine": 648,
+        "startChar": 8,
+        "endLine": 648,
+        "endChar": 45
+      },
+      "revId": "74f2be840711a3f5c1074851dc6b7ef188253a48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
