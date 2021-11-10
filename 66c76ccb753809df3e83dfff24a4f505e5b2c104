@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a7344d6_6d89ae33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-10T18:53:24Z",
+      "side": 1,
+      "message": "It appears to work. https://screenshot.googleplex.com/AGrum3a5ngk2Dso\n\nOne thing I\u0027m not sure about is how those textures get cleaned up when the Images go away. We have a TextureReleaseContext that is used for when we make the image on the surface - can we do the same for our ImageGenerator?",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
