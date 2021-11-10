@@ -462,6 +462,8 @@ skia_core_sources = [
   "$_src/shaders/SkShaderBase.h",
   "$_src/shaders/SkTransformShader.cpp",
   "$_src/shaders/SkTransformShader.h",
+  "$_src/core/disassembler/SkVMDisassembler.h",
+  "$_src/core/disassembler/SkVMDisassembler.cpp",
 
   # private
   "$_include/private/SkChecksum.h",

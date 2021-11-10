@@ -15,6 +15,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkVM_fwd.h"
+#include "src/core/disassembler/SkVMDisassembler.h"
 #include <vector>      // std::vector
 
 class SkWStream;
@@ -433,6 +434,7 @@ namespace skvm {
 
     // Order matters a little: Ops <=store128 are treated as having side effects.
     #define SKVM_OPS(M)                                              \
+        M(no_op)                                                     \
         M(assert_true)                                               \
         M(trace_line) M(trace_var) M(trace_call)                     \
         M(store8)   M(store16)   M(store32) M(store64) M(store128)   \
@@ -452,10 +454,11 @@ namespace skvm {
         M(shl_i32) M(shr_i32) M(sra_i32)                             \
         M(ceil) M(floor) M(trunc) M(round) M(to_fp16) M(from_fp16)   \
         M(to_f32)                                                    \
-        M(neq_f32) M(eq_f32) M(eq_i32)                               \
-        M(gte_f32) M(gt_f32) M(gt_i32)                               \
+        M(neq_f32) M(eq_f32) M(eq_i32) M(neq_i32)                    \
+        M(gte_f32) M(gt_f32) M(gte_i32) M(gt_i32)                    \
         M(bit_and)     M(bit_or)     M(bit_xor)     M(bit_clear)     \
-        M(select)
+        M(select)                                                    \
+        M(extract)                                                   \
     // End of SKVM_OPS
 
     enum class Op : int {
@@ -609,12 +612,16 @@ namespace skvm {
 
         Builder();
         explicit Builder(Features);
+        explicit Builder(const char* path);
 
         Program done(const char* debug_name = nullptr, bool allow_jit=true) const;
 
         // Mostly for debugging, tests, etc.
         std::vector<Instruction> program() const { return fProgram; }
         std::vector<OptimizedInstruction> optimize() const;
+        disassembler::Disassembler* disassembler() { return fDisassembler; }
+
+        void addToDisassembler(Val id);
 
         // Convenience arg() wrappers for most common strides, sizeof(T) and 0.
         template <typename T>
@@ -977,6 +984,68 @@ namespace skvm {
             return false;
         }
 
+        class Comment {
+        public:
+            Comment(Builder* b, const char* format, ...)
+                : fDisassembler(b->disassembler()) {
+                if (!fDisassembler) return;
+                va_list args;
+                va_start(args, format);
+                SkString message("// ");
+                message.appendVAList(format, args);
+                va_end(args);
+                fComment = fDisassembler->addComment(std::move(message));
+                fInstruction = fDisassembler->lastInstruction();
+            }
+            ~Comment() {
+                if (!fDisassembler) return;
+                if (fComment > 0) {
+                    fDisassembler->finishComment(fInstruction, fComment);
+                }
+            }
+
+            void finish() {
+                if (!fDisassembler) return;
+                fDisassembler->finishComment(fInstruction, fComment);
+                fComment = -1;
+            }
+        private:
+            disassembler::Disassembler* fDisassembler;
+            int fComment;
+            int fInstruction;
+        };
+
+        class StaticInstruction {
+        public:
+            StaticInstruction(Builder* b, Op op, Val x=NA, Val y=NA, Val z=NA, Val w=NA, int immA=0, int immB=0, int immC=0)
+                : fDisassembler(b->disassembler()) {
+                if (!fDisassembler) return;
+                fLastInstruction = fDisassembler->lastInstruction();
+                fInstruction = std::move(Instruction{op, x,y,z,w, immA,immB,immC});
+            }
+            ~StaticInstruction() {
+                if (!fDisassembler) return;
+                if (fDisassembler->lastInstruction() == fLastInstruction) {
+                    auto& instr = fInstruction;
+                    fDisassembler->addInstruction({
+                        disassembler::Kind::constant,
+                        (disassembler::SkVMOp)((int)instr.op),
+                        disassembler::coord{},
+                        std::vector<disassembler::MachineCommand>(),
+                        -1,
+                        0,
+                        std::vector<int>(),
+                        instr.x, instr.y, instr.z, instr.w,
+                        instr.immA, instr.immB, instr.immC,
+                    });
+                }
+            }
+        private:
+            disassembler::Disassembler* fDisassembler;
+            int fLastInstruction;
+            Instruction fInstruction;
+        };
+
     private:
         // Declare an argument with given stride (use stride=0 for uniforms).
         Ptr arg(int stride);
@@ -996,12 +1065,13 @@ namespace skvm {
         std::vector<Instruction>                      fProgram;
         std::vector<int>                              fStrides;
         const Features                                fFeatures;
+        disassembler::Disassembler*                   fDisassembler;
     };
 
     // Optimization passes and data structures normally used by Builder::optimize(),
     // extracted here so they can be unit tested.
-    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>);
-    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>);
+    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>, disassembler::Disassembler* disassembler = nullptr);
+    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>, disassembler::Disassembler* disassembler = nullptr);
 
     using Reg = int;
 
