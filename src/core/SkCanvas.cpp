@@ -53,6 +53,7 @@
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/chromium/GrSlug.h"
 #include "src/gpu/BaseDevice.h"
 #include "src/gpu/SkGr.h"
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
@@ -2305,6 +2306,27 @@ void SkCanvas::onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPa
     }
 }
 
+sk_sp<GrSlug> SkCanvas::convertBlobToSlug(const SkTextBlob& blob, const SkPaint& paint) {
+    TRACE_EVENT0("skia", TRACE_FUNC);
+    auto glyphRunList = fScratchGlyphRunBuilder->blobToGlyphRunList(blob, {0, 0});
+    SkRect bounds = glyphRunList.sourceBounds();
+    auto layer = this->aboutToDraw(this, paint, &bounds);
+    if (layer) {
+        return this->topDevice()->convertGlyphRunListToSlug(glyphRunList, layer->paint());
+    }
+    return nullptr;
+}
+
+void SkCanvas::drawSlug(GrSlug* slug) {
+    TRACE_EVENT0("skia", TRACE_FUNC);
+    SkRect bounds = slug->sourceBounds();
+    if (this->internalQuickReject(bounds, slug->paint())) {
+        return;
+    }
+
+    this->topDevice()->drawSlug(slug);
+}
+
 // These call the (virtual) onDraw... method
 void SkCanvas::drawSimpleText(const void* text, size_t byteLength, SkTextEncoding encoding,
                               SkScalar x, SkScalar y, const SkFont& font, const SkPaint& paint) {
@@ -2389,6 +2411,15 @@ void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
     TRACE_EVENT0("skia", TRACE_FUNC);
     RETURN_ON_NULL(blob);
     RETURN_ON_FALSE(blob->bounds().makeOffset(x, y).isFinite());
+
+    this->save();
+    auto slug = this->convertBlobToSlug(*blob, paint);
+    this->translate(x, y);
+    if (slug) {
+        this->drawSlug(slug.get());
+    }
+    this->restore();
+    return;
 
     // Overflow if more than 2^21 glyphs stopping a buffer overflow latter in the stack.
     // See chromium:1080481
