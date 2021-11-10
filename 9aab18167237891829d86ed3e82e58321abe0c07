@@ -34,6 +34,24 @@
       "parentUuid": "9b8d6d7a_f36aec0c",
       "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "695633c7_d0d0f18f",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-10T18:48:35Z",
+      "side": 1,
+      "message": "Ah, I overlooked that comment. Yeah - I think given how unlikely it is to improve real-world code, and the fact that it will make this simpler (and consistent with our matrix handling), I\u0027d prefer limiting it to compile-time constants.",
+      "parentUuid": "6cefe116_be9eaa78",
+      "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
