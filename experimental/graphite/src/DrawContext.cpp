@@ -76,14 +76,28 @@ void DrawContext::strokePath(const Transform& localToDevice,
     fPendingDraws->strokePath(localToDevice, shape, stroke, clip, order, paint);
 }
 
+void DrawContext::clear(SkColor4f clearColor) {
+    fPendingLoadOp = LoadOp::kClear;
+    fPendingClearColor = clearColor;
+
+    // a fullscreen clear will overwrite anything that came before, so start a new DrawList
+    // and clear any drawpasses that haven't been snapped yet
+    fPendingDraws = std::make_unique<DrawList>();
+    fDrawPasses.clear();
+}
+
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {
     if (fPendingDraws->drawCount() == 0) {
         return;
     }
 
-    auto pass = DrawPass::Make(recorder, std::move(fPendingDraws), fTarget, occlusionCuller);
+    auto pass = DrawPass::Make(recorder, std::move(fPendingDraws), fTarget,
+                               std::make_pair(fPendingLoadOp, fPendingStoreOp), fPendingClearColor,
+                               occlusionCuller);
     fDrawPasses.push_back(std::move(pass));
     fPendingDraws = std::make_unique<DrawList>();
+    fPendingLoadOp = LoadOp::kLoad;
+    fPendingStoreOp = StoreOp::kStore;
 }
 
 sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
