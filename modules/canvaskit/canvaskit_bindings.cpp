@@ -17,6 +17,7 @@
 #include "include/core/SkEncodedImageFormat.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMaskFilter.h"
@@ -713,6 +714,28 @@ void deleteJSTexture(SkImage::ReleaseContext rc) {
     delete ctx;
 }
 
+class WebGLTextureImageGenerator : public SkImageGenerator {
+public:
+    WebGLTextureImageGenerator(JSObject callbackObj): SkImageGenerator(SkImageInfo::MakeN32Premul(0, 0)), fCallback(callbackObj) {}
+
+    GrSurfaceProxyView generateTexture(GrRecordingContext* ctx,
+                                       const SkImageInfo& info,
+                                       const SkIPoint& origin,
+                                       GrMipmapped mipMapped,
+                                       GrImageTexGenPolicy texGenPolicy) {
+        int textureID = fCallback.call<int>("makeTexture");
+        SkDebugf("Do something with textureID %d\n", textureID);
+        return {};
+    }
+private:
+    JSObject fCallback;
+};
+
+sk_sp<SkImage> MakeImageFromGenerator(JSObject callbackObj) {
+    std::unique_ptr<SkImageGenerator> gen = std::make_unique<WebGLTextureImageGenerator>(callbackObj);
+    return SkImage::MakeFromGenerator(std::move(gen));
+}
+
 EMSCRIPTEN_BINDINGS(Skia) {
 #ifdef SK_GL
     function("_MakeGrContext", &MakeGrContext);
@@ -1269,6 +1292,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkImage>("Image")
         .smart_ptr<sk_sp<SkImage>>("sk_sp<Image>")
+#if SK_GL
+        .class_function("_makeFromGenerator", &MakeImageFromGenerator)
+#endif
         // Note that this needs to be cleaned up with delete().
         .function("getColorSpace", optional_override([](sk_sp<SkImage> self)->sk_sp<SkColorSpace> {
             return self->imageInfo().refColorSpace();
