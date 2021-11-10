@@ -244,6 +244,10 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
 
     GrSDFTControl::DrawingType drawingType = control.drawingType(runFont, runPaint, drawMatrix);
 
+    // DO NOT SUBMIT - testing path case.
+    //drawingType = GrSDFTControl::kPath;
+    //drawingType = GrSDFTControl::kSDFT;
+
     if (drawingType == GrSDFTControl::kSDFT) {
         // Process SDFT - This should be the .009% case.
         const auto& [strikeSpec, strikeToSourceScale, minScale, maxScale] =
@@ -335,6 +339,7 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
         }
     }
 
+    maxDimensionInSourceSpace = 16;
     if (!fRejects.source().empty() && maxDimensionInSourceSpace != 0) {
         // Draw of last resort. Scale the bitmap to the screen.
         auto [strikeSpec, strikeToSourceScale] = SkStrikeSpec::MakeSourceFallback(
