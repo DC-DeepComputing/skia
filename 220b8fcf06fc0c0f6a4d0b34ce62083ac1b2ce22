@@ -62,6 +62,29 @@
       "message": "Are these issues that are specific to how flutter is setting things up and what it needs the VMA allocator for?\n\nIf so an alternative is for flutter to build the VMA allocator itself outside of Skia, create an implementation of GrVkMemoryAllocator (see GrVkAMDMemoryAllocator as an example), and then pass the allocator into Skia.",
       "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6597bd_15252d31",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-10T23:53:47Z",
+      "side": 1,
+      "message": "My biggest worry is I hate indcluding windows.h into files that aren\u0027t windows specific because of the zillion macros it includes that restricts how you can name a lot of things in that file.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
