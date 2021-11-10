@@ -70,6 +70,24 @@
       "parentUuid": "7e8f672f_60782544",
       "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503bc81e_7810a898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-10T19:46:19Z",
+      "side": 1,
+      "message": "So, is there a way to use something like TextureReleaseContext or do we have to return a Subclass of SkImage that can clean up the texture?",
+      "parentUuid": "ccc99d96_8ff8f1f8",
+      "revId": "66c76ccb753809df3e83dfff24a4f505e5b2c104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
