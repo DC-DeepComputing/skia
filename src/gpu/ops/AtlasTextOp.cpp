@@ -107,7 +107,7 @@ auto AtlasTextOp::Geometry::MakeForBlob(const GrAtlasSubRun& subRun,
                                         const SkMatrix& drawMatrix,
                                         SkPoint drawOrigin,
                                         SkIRect clipRect,
-                                        sk_sp<GrTextBlob> blob,
+                                        sk_sp<SkRefCnt> blob,
                                         const SkPMColor4f& color,
                                         SkArenaAlloc* alloc) -> Geometry* {
     // Bypass the automatic dtor behavior in SkArenaAlloc. I'm leaving this up to the Op to run
@@ -517,7 +517,7 @@ GrOp::Owner AtlasTextOp::CreateOpTestingOnly(SurfaceDrawContext* sdc,
     SkASSERT(subRun);
     GrOp::Owner op;
     std::tie(std::ignore, op) = subRun->makeAtlasTextOp(
-            nullptr, mtxProvider, glyphRunList, skPaint, sdc, nullptr);
+            nullptr, mtxProvider, glyphRunList.origin(), skPaint, sdc, nullptr);
     return op;
 }
 
