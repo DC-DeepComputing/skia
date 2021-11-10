@@ -51,6 +51,23 @@
       "parentUuid": "552a7c7b_02ec4f98",
       "revId": "b4f0d5dc439bc7a5bda0041adaa6f3a4e8b52d41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9cc0ac9_57c3b525",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18434
+      },
+      "writtenOn": "2021-11-10T01:55:21Z",
+      "side": 1,
+      "message": "Friendly ping. Anything blocking this?",
+      "revId": "b4f0d5dc439bc7a5bda0041adaa6f3a4e8b52d41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
