@@ -16,6 +16,24 @@
       "message": "I had a theory on how this could break, and was able to confirm it locally - this moves all the side-effect expressions *before* the indexed value. This can alter the outcome, if the indexed value depends on the side effects. For example, if you change line 26 of ArrayFolding.sksl to be:\n\n    int noFlatten0 \u003d (int[3](globalValue, side_effecting(2), 3))[0];\n\n... the generated GLSL will still call side_effecting() before evaluating globalValue:\n\n    int _10_noFlatten0 \u003d (side_effecting_ii(2) , globalValue);\n\nThis is obviously really esoteric and unlikely, but it does seem like we should try to avoid this kind of reordering. The GLSL spec doesn\u0027t explicitly mention anything like a sequence point in array construction, it just says \"The\narguments are assigned in order, starting at element 0, to the elements of the constructed array\".",
       "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cefe116_be9eaa78",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-10T18:39:58Z",
+      "side": 1,
+      "message": "I allude to this in the code comment on L119: \"GLSL guarantees left-to-right evaluation, but SkSL explicitly does not, so reordering these arguments is fine.\"\n\nThis is called out in our SkSL/dEQP conformance doc here:\n\nhttp://docs/document/d/1fERt-OvOugo7AQ3ClN9VYAnYUndH08ZWOwCy6mkdMqw?resourcekey\u003d0-SMtN62PC0_fjz3Z5GZ_eAw#bookmark\u003did.dd2i89qcoch3\n\n\"[5.4] SkSL does not guarantee the evaluation order of constructor arguments.\"\n\nWe break ordering guarantees already in two significant ways:\n- The Metal backend ignores ordering concerns, and the Metal shading language does not promise any ordering here\n- Inlining can reorder any expression containing a function call (non-trivial arguments to the function call are moved up to a previous line)\n\nAll that being said, this optimization is very unlikely to meaningfully improve any real-world code. I can simplify it by (like matrices) only operating on compile-time constant arrays, which takes side effects off the table entirely and shrinks this code a bit. WDYT?",
+      "parentUuid": "9b8d6d7a_f36aec0c",
+      "revId": "9aab18167237891829d86ed3e82e58321abe0c07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
