@@ -16,6 +16,98 @@
       "message": "PTAL",
       "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68641097_34b9daf4",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-10T21:54:45Z",
+      "side": 1,
+      "message": "I actually liked having this be a std::array, since it had no pre-baked notions of premul or unpremul, and it will likely need to be used in both scenarios. SkColor4f is unpremul tagged.\n\nLooking at SurfaceFillContext, it converts from an SkRGBA4f\u003cAlphaType\u003e template to array\u003cfloat,4\u003e for internal consumption, and I think it makes sense for graphite to use a similar model here.",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d63c04f_bcd812ea",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-10T21:54:45Z",
+      "side": 1,
+      "message": "This check is unnecessary",
+      "range": {
+        "startLine": 147,
+        "startChar": 34,
+        "endLine": 147,
+        "endChar": 73
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d116ba47_f225262e",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-10T21:54:45Z",
+      "side": 1,
+      "message": "premul and dst color space conversion here? or is that the responsibility of the DrawContext?",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c8c0ac9_dddc6911",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-10T21:54:45Z",
+      "side": 1,
+      "message": "SFC has a template so it can have clear() for both SkColor4f and SkPMColor4f. Since graphite is at the drawing phase only, I\u0027d say SkPMColor4f is the key type to take here.",
+      "range": {
+        "startLine": 52,
+        "startChar": 15,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
