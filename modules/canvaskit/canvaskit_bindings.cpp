@@ -17,6 +17,7 @@
 #include "include/core/SkEncodedImageFormat.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMaskFilter.h"
@@ -63,6 +64,8 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/GrGLTypes.h"
+#include "src/gpu/GrProxyProvider.h"
+#include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/gl/GrGLDefines.h"
 
 #include "webgl/webgl1.h"
@@ -716,6 +719,57 @@ void deleteJSTexture(SkImage::ReleaseContext rc) {
     delete ctx;
 }
 
+class WebGLTextureImageGenerator : public SkImageGenerator {
+public:
+    // We probably need a real width and height here somehow.
+    WebGLTextureImageGenerator(JSObject callbackObj): SkImageGenerator(SkImageInfo::MakeN32Premul(0, 0)), fCallback(callbackObj) {}
+
+protected:
+    GrSurfaceProxyView onGenerateTexture(GrRecordingContext* ctx,
+                                         const SkImageInfo& info,
+                                         const SkIPoint& origin,
+                                         GrMipmapped mipMapped,
+                                         GrImageTexGenPolicy texGenPolicy) {
+        if (ctx->backend() != GrBackendApi::kOpenGL) {
+            return {};
+        }
+
+        GrGLTextureInfo glInfo;
+        glInfo.fFormat = GR_GL_RGBA8;  // Can we know the real format?
+        glInfo.fID     = fCallback.call<int>("makeTexture");
+        glInfo.fTarget = GR_GL_TEXTURE_2D;  // right?
+
+        static constexpr auto kMipmapped = GrMipmapped::kNo;  // presumably
+        GrBackendTexture backendTexture(info.width(), info.height(), kMipmapped, glInfo);
+
+        const GrBackendFormat& format    = backendTexture.getBackendFormat();
+        const GrColorType      colorType = SkColorTypeToGrColorType(info.colorType());
+        if (!ctx->priv().caps()->areColorTypeAndFormatCompatible(colorType, format)) {
+            return {};
+        }
+
+        sk_sp<GrSurfaceProxy> proxy = ctx->priv().proxyProvider()->wrapBackendTexture(
+                backendTexture,
+                kAdopt_GrWrapOwnership,
+                GrWrapCacheable::kNo,
+                kRead_GrIOType);
+        if (!proxy) {
+            return {};
+        }
+        static constexpr auto kOrigin = kBottomLeft_GrSurfaceOrigin;  // change this if upside down.
+        GrSwizzle swizzle = ctx->priv().caps()->getReadSwizzle(format, colorType);
+        return GrSurfaceProxyView(std::move(proxy), kOrigin, swizzle);
+    }
+
+private:
+    JSObject fCallback;
+};
+
+sk_sp<SkImage> MakeImageFromGenerator(JSObject callbackObj) {
+    std::unique_ptr<SkImageGenerator> gen = std::make_unique<WebGLTextureImageGenerator>(callbackObj);
+    return SkImage::MakeFromGenerator(std::move(gen));
+}
+
 EMSCRIPTEN_BINDINGS(Skia) {
 #ifdef SK_GL
     function("_MakeGrContext", &MakeGrContext);
@@ -1272,6 +1326,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkImage>("Image")
         .smart_ptr<sk_sp<SkImage>>("sk_sp<Image>")
+#if SK_GL
+        .class_function("_makeFromGenerator", &MakeImageFromGenerator)
+#endif
         // Note that this needs to be cleaned up with delete().
         .function("getColorSpace", optional_override([](sk_sp<SkImage> self)->sk_sp<SkColorSpace> {
             return self->imageInfo().refColorSpace();
