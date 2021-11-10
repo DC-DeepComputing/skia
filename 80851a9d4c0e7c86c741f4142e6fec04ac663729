@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a98efa_503c0729",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-10T14:33:37Z",
+      "side": 1,
+      "message": "I\u0027ve tried that making that assumption in the past and it didn\u0027t work. Suppose the buffermanager decides to pitch the current buffer for whatever reason, whether to allocate a larger one or to conserve memory. If there\u0027s a command buffer in flight using it that can cause a lot of issues.",
+      "parentUuid": "5cbd7d33_0d6b2654",
+      "revId": "80851a9d4c0e7c86c741f4142e6fec04ac663729",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b167056d_dc33bc2e",
