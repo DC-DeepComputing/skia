@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30365d29_7e5b2460",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-10T19:21:14Z",
+      "side": 1,
+      "message": "The fuzzer is having a good time with gradients with tiny t stops.",
+      "revId": "62dced1433d20e89fc29355264cb539ea0702d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
