@@ -2307,14 +2307,23 @@ void SkCanvas::onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPa
 sk_sp<GrSlug> SkCanvas::convertBlobToSlug(
         const SkTextBlob& blob, SkPoint origin, const SkPaint& paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
-
-    // TODO: implement convert
+    auto glyphRunList = fScratchGlyphRunBuilder->blobToGlyphRunList(blob, origin);
+    SkRect bounds = glyphRunList.sourceBounds();
+    auto layer = this->aboutToDraw(this, paint, &bounds);
+    if (layer) {
+        return this->topDevice()->convertGlyphRunListToSlug(glyphRunList, layer->paint());
+    }
     return nullptr;
 }
 
 void SkCanvas::drawSlug(GrSlug* slug) {
     TRACE_EVENT0("skia", TRACE_FUNC);
-    // TODO: implement draw
+    SkRect bounds = slug->sourceBounds();
+    if (this->internalQuickReject(bounds, slug->paint())) {
+        return;
+    }
+
+    this->topDevice()->drawSlug(slug);
 }
 #endif
 

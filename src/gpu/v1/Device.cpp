@@ -18,6 +18,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkShadowFlags.h"
 #include "include/private/SkTo.h"
+#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkClipStack.h"
 #include "src/core/SkDraw.h"
@@ -899,6 +900,11 @@ void Device::onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPain
     ASSERT_SINGLE_OWNER
     GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::v1::Device", "drawGlyphRunList", fContext.get());
     SkASSERT(!glyphRunList.hasRSXForm());
+
+    // DO NOT SUBMIT
+    auto slug = this->convertGlyphRunListToSlug(glyphRunList, paint);
+    this->drawSlug(slug.get());
+    return;
 
     fSurfaceDrawContext->drawGlyphRunList(
         this->clip(), this->asMatrixProvider(), glyphRunList, paint);

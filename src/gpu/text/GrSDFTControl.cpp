@@ -138,7 +138,7 @@ std::pair<SkScalar, SkScalar> GrSDFTControl::computeSDFMinMaxScale(
     SkScalar scaledTextSize = scaled_text_size(textSize, viewMatrix);
 
     // We have three sizes of distance field text, and within each size 'bucket' there is a floor
-    // and ceiling.  A scale outside of this range would require regenerating the distance fields
+    // and ceiling.  A scale outside this range would require regenerating the distance fields
     SkScalar dfMaskScaleFloor;
     SkScalar dfMaskScaleCeil;
     if (scaledTextSize <= kSmallDFFontLimit) {
@@ -159,6 +159,8 @@ std::pair<SkScalar, SkScalar> GrSDFTControl::computeSDFMinMaxScale(
     // we look at the delta in scale between the new viewmatrix and the old viewmatrix, and test
     // against these values to decide if we can reuse or not(ie, will a given scale change our mip
     // level)
+    // DO NOT SUBMIT
+    // TODO figure out what to do
     SkASSERT(dfMaskScaleFloor <= scaledTextSize && scaledTextSize <= dfMaskScaleCeil);
 
     return std::make_pair(dfMaskScaleFloor / scaledTextSize, dfMaskScaleCeil / scaledTextSize);
