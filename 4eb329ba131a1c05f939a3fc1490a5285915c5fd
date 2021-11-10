@@ -16,6 +16,24 @@
       "message": "Had to replace count() with size(), but canaries suggest this is going to be safe to land, regardless.",
       "revId": "4eb329ba131a1c05f939a3fc1490a5285915c5fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "838a48d7_3d366f95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-10T20:54:09Z",
+      "side": 1,
+      "message": "If there\u0027s any concern that clients really do this, we could add a count() to SkSpan first, then land this, then land a CL removing count() at our leisure.",
+      "parentUuid": "d11e58aa_6551abb5",
+      "revId": "4eb329ba131a1c05f939a3fc1490a5285915c5fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
