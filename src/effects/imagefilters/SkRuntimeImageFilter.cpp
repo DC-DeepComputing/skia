@@ -29,6 +29,12 @@ public:
             : INHERITED(&input, 1, /*cropRect=*/nullptr)
             , fEffect(std::move(effect))
             , fUniforms(std::move(uniforms)) {}
+    SkRuntimeImageFilter(const SkRuntimeShaderBuilder& builder,
+                         const char* childShaderName,
+                         sk_sp<SkImageFilter> input)
+            : INHERITED(&input, 1, /*cropRect=*/nullptr)
+            , fShaderBuilder(new SkRuntimeShaderBuilder(builder))
+            , fChildShaderName(childShaderName) {}
 
     bool onAffectsTransparentBlack() const override { return true; }
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kTranslate; }
@@ -43,6 +49,8 @@ private:
 
     sk_sp<SkRuntimeEffect> fEffect;
     sk_sp<SkData>          fUniforms;
+    std::unique_ptr<SkRuntimeShaderBuilder> fShaderBuilder;
+    SkString fChildShaderName;
 
     using INHERITED = SkImageFilter_Base;
 };
@@ -119,8 +127,14 @@ sk_sp<SkSpecialImage> SkRuntimeImageFilter::onFilterImage(const Context& ctx,
             input->asImage()->makeShader(SkSamplingOptions(SkFilterMode::kLinear), &localM);
     SkASSERT(inputShader);
 
-    auto shader = fEffect->makeShader(fUniforms, &inputShader, 1, nullptr, false);
-    SkASSERT(shader);
+    sk_sp<SkShader> shader;
+    if (fShaderBuilder.get()) {
+        fShaderBuilder->child(fChildShaderName.c_str()) = inputShader;
+        shader = fShaderBuilder->makeShader(nullptr, false);
+    } else {
+        shader = fEffect->makeShader(fUniforms, &inputShader, 1, nullptr, false);
+    }
+    SkASSERT(shader.get());
 
     SkPaint paint;
     paint.setShader(std::move(shader));
@@ -138,6 +152,27 @@ sk_sp<SkSpecialImage> SkRuntimeImageFilter::onFilterImage(const Context& ctx,
 
     *offset = outputBounds.topLeft();
     return surf->makeImageSnapshot();
+}
+
+sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder& builder,
+                                                   const char* childShaderName,
+                                                   sk_sp<SkImageFilter> input) {
+    // if no childShaderName is provided check to see if we can implicitly assign it to the only
+    // child in the effect
+    if (childShaderName == nullptr) {
+        auto childIterator = builder.effect()->children();
+        if (childIterator.count() != 1) {
+            return nullptr;
+        }
+        const char* name = childIterator.begin()->name.c_str();
+        childShaderName = name;
+    } else if (builder.effect()->findChild(childShaderName) == nullptr) {
+        // there was no child declared in the runtime effect that matches the provided name
+        return nullptr;
+    }
+
+    return sk_sp<SkImageFilter>(
+            new SkRuntimeImageFilter(builder, childShaderName, std::move(input)));
 }
 
 #endif  // SK_ENABLE_SKSL

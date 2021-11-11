@@ -15,6 +15,8 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkTileMode.h"
+#include "include/core/SkTypes.h"
+#include "include/effects/SkRuntimeEffect.h"
 
 #include <cstddef>
 
@@ -331,6 +333,29 @@ public:
         SkRect target = pic ? pic->cullRect() : SkRect::MakeEmpty();
         return Picture(std::move(pic), target);
     }
+
+#ifdef SK_ENABLE_SKSL
+    /**
+     *  Create a filter that fills the output with the per-pixel evaluation of the SkShader produced
+     *  by the SkRuntimeShaderBuilder. The shader is defined in the image filter's local coordinate
+     *  system, so will automatically be affected by SkCanvas' transform.
+     *
+     *  Like Image() and Picture(), this is a leaf filter that can be used to introduce inputs to
+     *  a complex filter graph, but should generally be combined with a filter that as at least
+     *  one null input to use the implicit source image.
+     *  @param builder         The builder used to produce the runtime shader, that in turn will
+     *                         fill the result image
+     *  @param childShaderName The name of the child shader defined by the builder that will be
+     *                         bound to the input param (or the source image if the input param
+     *                         is null). If null the builder must only have one child shader defined
+     *                         so that the input param can be bound to that child.
+     *  @param input          The image filter that will be provided as input to the runtime shader,
+     *                        if null the source bitmap is used instead
+     */
+    static sk_sp<SkImageFilter> RuntimeShader(const SkRuntimeShaderBuilder& builder,
+                                              const char* childShaderName,
+                                              sk_sp<SkImageFilter> input);
+#endif  // SK_ENABLE_SKSL
 
     enum class Dither : bool {
         kNo = false,
