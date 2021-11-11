@@ -135,6 +135,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26a5e584_e02837b5",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T15:12:32Z",
+      "side": 1,
+      "message": "I guess I\u0027m confused still why even temporarily this is true or helpful. Is it not the case that there is just a single DrawPass in the array right now? Like regardless of how many DrawPasses we have we should still just always be making one renderpass here. The DrawPasses should just be filling in commands inside the render pass.",
+      "parentUuid": "cd3480be_71406e79",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 97
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dcd0706_8ad347a9",
         "filename": "experimental/graphite/src/RenderPassTask.cpp",
         "patchSetId": 2
