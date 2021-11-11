@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d062af_c276362e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T14:47:26Z",
+      "side": 1,
+      "message": "Just to be clear, when we originally had the ownership as Adopt, I believe our inner code would have just called: glDeleteTextures(1, \u0026texID). Is this the same thing that happens when you call, textureCleanup.call\u003cvoid\u003e(\"deleteTexture\", ctx-\u003ewebglHandle, ctx-\u003etexHandle)? Do we need to be going out in JS to do this?",
+      "parentUuid": "c1409272_8198092d",
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28c3938a_36bcd25d",
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "Yes, that should do it. Oops!",
       "parentUuid": "28c3938a_36bcd25d",
+      "range": {
+        "startLine": 762,
+        "startChar": 16,
+        "endLine": 762,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d6fe2f2_c5fc1d26",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T14:47:26Z",
+      "side": 1,
+      "message": "But we have to be careful here right? Like if the context changes we have to regen the texture.",
+      "parentUuid": "0cb64a15_ba051f0d",
       "range": {
         "startLine": 762,
         "startChar": 16,
