@@ -976,12 +976,11 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 func (b *jobBuilder) bundleRecipes() string {
 	b.addTask(BUNDLE_RECIPES_NAME, func(b *taskBuilder) {
 		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
-		b.cipd(specs.CIPD_PKGS_PYTHON_LINUX_AMD64...)
 		b.cmd("/bin/bash", "skia/infra/bots/bundle_recipes.sh", specs.PLACEHOLDER_ISOLATED_OUTDIR)
 		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
-		b.addToPATH("cipd_bin_packages", "cipd_bin_packages/bin")
 		b.idempotent()
 		b.cas(CAS_RECIPES)
+		b.usesPython()
 	})
 	return BUNDLE_RECIPES_NAME
 }
