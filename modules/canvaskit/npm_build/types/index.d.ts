@@ -268,6 +268,20 @@ export interface CanvasKit {
     MakeRenderTarget(ctx: GrDirectContext, info: ImageInfo): Surface | null;
 
     /**
+     * Returns a texture-backed image based on the content in src. It assumes the image is
+     * RGBA_8888, unpremul and SRGB. This image can be re-used across multiple surfaces.
+     *
+     * Not available for software-backed surfaces.
+     * @param src - CanvasKit will take ownership of the TextureSource and clean it up when
+     *              the image is destroyed.
+     * @param width - If provided, will be used as the width of src. Otherwise, the natural
+     *                width of src (if available) will be used.
+     * @param height - If provided, will be used as the height of src. Otherwise, the natural
+     *                height of src (if available) will be used.
+     */
+    MakeLazyImageFromTextureSource(src: TextureSource, width?: number, height?: number): Image;
+
+    /**
      * Deletes the associated WebGLContext. Function not available on the CPU version.
      * @param ctx
      */
@@ -2619,6 +2633,12 @@ export interface Surface extends EmbindObject<Surface> {
     /**
      * Returns a texture-backed image based on the content in src. It uses RGBA_8888, unpremul
      * and SRGB - for more control, use makeImageFromTexture.
+     *
+     * The underlying texture for this image will be created immediately from src, so
+     * it can be disposed of after this call. This image will *only* be usable for this
+     * surface (because WebGL textures are not transferable to other WebGL contexts).
+     * For an image that can be used across multiple surfaces, at the cost of being lazily
+     * loaded, see MakeLazyImageFromTextureSource.
      *
      * Not available for software-backed surfaces.
      * @param src

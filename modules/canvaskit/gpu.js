@@ -154,11 +154,7 @@
       // Default to trying WebGL first.
       CanvasKit.MakeCanvasSurface = CanvasKit.MakeWebGLCanvasSurface;
 
-      CanvasKit.Surface.prototype.makeImageFromTexture = function(tex, info) {
-        CanvasKit.setCurrentContext(this._context);
-        if (!info['colorSpace']) {
-          info['colorSpace'] = CanvasKit.ColorSpace.SRGB;
-        }
+      function pushTexture(tex) {
         // GL is an emscripten object that holds onto WebGL state. One item in that state is
         // an array of textures, of which the index is the handle/id.
         var texHandle = GL.textures.length;
@@ -169,15 +165,26 @@
           texHandle = 1;
         }
         GL.textures.push(tex);
+        return texHandle
+      }
+
+      CanvasKit.Surface.prototype.makeImageFromTexture = function(tex, info) {
+        CanvasKit.setCurrentContext(this._context);
+        if (!info['colorSpace']) {
+          info['colorSpace'] = CanvasKit.ColorSpace.SRGB;
+        }
+        var texHandle = pushTexture(tex);
         return this._makeImageFromTexture(this._context, texHandle, info);
       };
 
       CanvasKit.Surface.prototype.makeImageFromTextureSource = function(src, w, h) {
         // If the user specified a height or width in the image info, we use that. Otherwise,
-        // we try to find the natural media type (for <img> and <video>) and then fall back to
+        // we try to find the natural media type (for <img> and <video>), display* for
+        // https://developer.mozilla.org/en-US/docs/Web/API/VideoFrame and then fall back to
         // the height and width (to cover <canvas>, ImageBitmap or ImageData).
-        var height = h || src.naturalHeight || src.videoHeight || src.height;
-        var width = w || src.naturalWidth || src.videoWidth || src.width;
+        var height = h || src.naturalHeight || src.videoHeight || src.displayHeight || src.height;
+        var width = w || src.naturalWidth || src.videoWidth || src.displayWidth || src.width;
+
         // We want to be pointing at the context associated with this surface.
         CanvasKit.setCurrentContext(this._context);
         var glCtx = GL.currentContext.GLctx;
@@ -198,6 +205,59 @@
         };
         return this.makeImageFromTexture(newTex, info);
       };
+
+      CanvasKit.MakeLazyImageFromTextureSource = function(src, w, h) {
+        var height = h || src.naturalHeight || src.videoHeight || src.displayHeight || src.height;
+        var width = w || src.naturalWidth || src.videoWidth || src.displayWidth || src.width;
+
+        var callbackObj = {
+          'makeTexture': function() {
+            // This callback function will make a texture on the current drawing surface (i.e.
+            // the current WebGL context). It assumes that Skia is just about to draw the texture
+            // to the desired surface, and thus the currentContext is the correct one.
+            // This is a lot easier than needing to pass the surface handle from the C++ side here.
+            var ctx = GL.currentContext;
+            var glCtx = ctx.GLctx;
+            var newTex = glCtx.createTexture();
+            glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+            if (ctx.version === 2) {
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, width, height, 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            } else {
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            }
+            glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+            return pushTexture(newTex);
+          }
+        }
+        var img = CanvasKit.Image._makeFromGenerator(width, height, callbackObj);
+        bindCleanup(img, src, (src) => {
+          // If the user provides us a VideoFrame (from the web codecs API), then we need to clean
+          // up the
+          if (src?.constructor?.name === 'VideoFrame') {
+            src.close();
+          }
+        });
+        return img;
+      }
+
+      function bindCleanup(embindObject, cleanupCtx, cleanupFn) {
+        var smtPtrType = embindObject.$$.smartPtrType;
+        if (smtPtrType._ckcleanup) {
+          smtPtrType[embindObject.$$.smartPtr] = cleanupCtx;
+          return;
+        }
+        smtPtrType._ckcleanup = true;
+        var contextMap = {
+          [embindObject.$$.smartPtr]: cleanupCtx,
+        };
+        var originalRawDestructor = smtPtrType.rawDestructor;
+        smtPtrType.rawDestructor = function(ptr) {
+          originalRawDestructor(ptr);
+          cleanupFn(contextMap[ptr]);
+          contextMap[ptr] = null;
+        }
+
+      }
 
       CanvasKit.setCurrentContext = function(ctx) {
         if (!ctx) {
