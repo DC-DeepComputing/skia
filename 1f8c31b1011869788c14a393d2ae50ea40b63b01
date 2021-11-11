@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19dae87a_64284712",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 0,
+      "message": "nit: This perhaps could be an independent CL",
+      "revId": "1f8c31b1011869788c14a393d2ae50ea40b63b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

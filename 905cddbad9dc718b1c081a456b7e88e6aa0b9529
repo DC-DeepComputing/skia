@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a47943c9_05acc220",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "nit: I would say\n\n  multiple values to be set at once.",
+      "range": {
+        "startLine": 19,
+        "startChar": 9,
+        "endLine": 19,
+        "endChar": 19
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "014d0c74_fb89a099",
+        "filename": "BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "Does this mean we always define SK_HAS_ANDROID_CODEC? I think we always test with it on, although Chrome and Flutter don\u0027t use it. So this is probably the right way to go, unless/until they use our Bazel files?",
+      "range": {
+        "startLine": 69,
+        "startChar": 17,
+        "endLine": 69,
+        "endChar": 37
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eb750ee_0d8b6ad0",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "Maybe it\u0027s worth pointing out that the dependency is set in gn_to_bp.py?",
+      "range": {
+        "startLine": 1011,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 72
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baaabc74_bdad6330",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "I might leave out libgifcodec. Android is the only current client, and my plan is to remove that soon (see http://go/android-wuffs-for-gif). Unless you think I\u0027m getting ahead of myself?",
+      "range": {
+        "startLine": 110,
+        "startChar": 9,
+        "endLine": 110,
+        "endChar": 30
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52a4b8e0_9af9eaec",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "What is bazel_gms_release? Why does it exclude gif?",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd076380_03161695",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "Do we build raw_codec somewhere?",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 33
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6ab4460_322634e7",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:44:38Z",
+      "side": 1,
+      "message": "I think this is needed for all codecs. Why is it in some of the filegroups, but not the core?",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
