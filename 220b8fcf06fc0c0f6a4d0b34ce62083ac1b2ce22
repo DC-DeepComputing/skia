@@ -97,6 +97,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bd38b032_b7ed6778",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T01:00:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3ae66f3d_499ea143",
+      "range": {
+        "startLine": 9,
+        "startChar": 77,
+        "endLine": 9,
+        "endChar": 82
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "074a1665_908ae1ad",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 13
@@ -108,6 +132,29 @@
       "writtenOn": "2021-11-10T23:49:34Z",
       "side": 1,
       "message": "Are these issues that are specific to how flutter is setting things up and what it needs the VMA allocator for?\n\nIf so an alternative is for flutter to build the VMA allocator itself outside of Skia, create an implementation of GrVkMemoryAllocator (see GrVkAMDMemoryAllocator as an example), and then pass the allocator into Skia.",
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4ca7aff_2fc7f826",
+        "filename": "third_party/vulkanmemoryallocator/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T01:00:32Z",
+      "side": 1,
+      "message": "Why do we need to define this. Are the checks in vk_mem_alloc.h not good enough for setting this correctly? Like is it the case that even if we\u0027re using the compiler that passes the checks, the libraries are still not present? https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/blob/master/include/vk_mem_alloc.h#L2445",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 3
+      },
       "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -149,6 +196,30 @@
       "side": 1,
       "message": "I agree and am uncomfortable with it too. What would you think if I just declared the few symbols that VMA uses?\nMainly it\u0027s the stuff listed here and simple macros like TRUE and FALSE: https://docs.microsoft.com/en-us/windows/win32/sync/slim-reader-writer--srw--locks",
       "parentUuid": "dc6597bd_15252d31",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be54dbe9_3bbdec62",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T01:00:32Z",
+      "side": 1,
+      "message": "Okay looking a little closer at vk_mem_alloc.h, I think all these symbols are only used during VMA_IMPLEMENATION. So if that\u0027s true then I think we can just include \u003cwindows.h\u003e inside GrVulkanemoryAllocator.cpp. There we don\u0027t need to worry about all of windows.h macros",
+      "parentUuid": "c6213c1d_d0a17669",
       "range": {
         "startLine": 25,
         "startChar": 0,
