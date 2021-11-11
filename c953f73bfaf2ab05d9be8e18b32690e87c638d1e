@@ -16,6 +16,24 @@
       "message": "Nice. I had to go double check how passing something to a function as an out parameter affects usage (it increments both read and write, AFAICT). Might be worth a test case, though?\n\n  void outParameterWriteIndirect(out half4 c) { outParameterWrite(c); }",
       "revId": "c953f73bfaf2ab05d9be8e18b32690e87c638d1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee01e11_a9912f65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-11T18:56:16Z",
+      "side": 1,
+      "message": "Yup, both ReadWrite and Pointer count as R+1 W+1.\nGood idea on the test, I\u0027ll add it.\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/ir/SkSLFunctionCall.cpp;l\u003d990;drc\u003d3b6e07098bd68c81367f6ffae7982d18d9c41877",
+      "parentUuid": "c5ce768b_9d0916b0",
+      "revId": "c953f73bfaf2ab05d9be8e18b32690e87c638d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
