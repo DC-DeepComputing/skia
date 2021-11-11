@@ -1,0 +1,273 @@
+"test_name","config_name","rail_name","power_mws"
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",119.100806
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",44.299371
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",36.608696
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",247.514303
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1328.30882
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",25.988987
+"mobi_amazon.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",75.899194
+"mobi_amazon.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",21.721774
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",69.589045
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",40.611336
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",43.687609
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",236.943609
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1423.207717
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",29.840627
+"mobi_amazon.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",38.748988
+"mobi_amazon.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",10.761134
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",53.381153
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",34.15736
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",24.530594
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",291.437862
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",947.899852
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",52.335885
+"mobi_baidu.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",0
+"mobi_baidu.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",1.243028
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",13.951613
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",72.28469
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",47.986993
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",297.060114
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1126.163082
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",19.188748
+"mobi_baidu.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",7.091398
+"mobi_baidu.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",3.008833
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",78.531746
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",24.777328
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",15.531661
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",453.315501
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1299.873784
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",21.506073
+"mobi_booking.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",76.325397
+"mobi_booking.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",21.880952
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",69.646825
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",51.744789
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",28.445029
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",258.083469
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",945.075052
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",67.566442
+"mobi_booking.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",34.781746
+"mobi_booking.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",12.051587
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",29.590683
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",44.321581
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",41.224392
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",481.881968
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",999.983228
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",26.613302
+"mobi_capitalvolkswagen.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",10.273345
+"mobi_capitalvolkswagen.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",0.38
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",100.30594
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",52.725821
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",26.34413
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",634.299041
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1241.364951
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",27.924709
+"mobi_capitalvolkswagen.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",39.222222
+"mobi_capitalvolkswagen.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",11.420635
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",50.327903
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",41.488095
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",46.377048
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",344.442087
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",972.989558
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",60.772147
+"mobi_cnn.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",42.012146
+"mobi_cnn.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",9.54251
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",150.383647
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",105.649714
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",78.520161
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",493.906926
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1544.932655
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",30.313065
+"mobi_cnn.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",72.144012
+"mobi_cnn.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",21.648611
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",104.072289
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",8.451613
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",95.09181
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",159.492448
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",739.563289
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",32.190476
+"mobi_cnnarticle.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",65.341365
+"mobi_cnnarticle.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",22.349398
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",31.699428
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",34.530186
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",70.26852
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",475.62183
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1572.627015
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",20.033794
+"mobi_cnnarticle.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",17.272273
+"mobi_cnnarticle.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",1.221262
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",97.112903
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",67.380441
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",58.663874
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",421.522657
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1054.489055
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",34.705389
+"mobi_deviantart.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",7.692204
+"mobi_deviantart.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",30.942756
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",83.425273
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",41.291574
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",10.689516
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",181.037961
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1143.968286
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",17.853567
+"mobi_deviantart.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",3.166008
+"mobi_deviantart.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",26.990788
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",32.956349
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",17.376229
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",47.855422
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",150.814326
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",860.406859
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",10.031985
+"mobi_facebook.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",38.900794
+"mobi_facebook.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",9.730159
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",54.183575
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",29.121224
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",67.619048
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",317.049538
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1488.445717
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",19.229827
+"mobi_facebook.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",16.975227
+"mobi_facebook.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",6.123016
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",0
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",24.446254
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",4.785714
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",241.785522
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1069.313445
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",61.091155
+"mobi_forecastio.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",6.445783
+"mobi_forecastio.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",2.959839
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",41.18254
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",54.56599
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",83.193695
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",540.327975
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1403.058209
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",38.797723
+"mobi_forecastio.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",43.72619
+"mobi_forecastio.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",9.956349
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",114.957949
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",24.826087
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",58.737431
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",470.730092
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1598.847112
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",5.216408
+"mobi_googlenews.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",13.475079
+"mobi_googlenews.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",4.140244
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",36.047619
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",61.591784
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",64.723991
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",386.99581
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1281.239695
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",31.813765
+"mobi_googlenews.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",0
+"mobi_googlenews.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",0
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",92.320099
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",5.834677
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",56.137531
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",224.186738
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1060.301176
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",3.887097
+"mobi_googlesearch.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",75.057872
+"mobi_googlesearch.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",21.933411
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",56.584137
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",2.561753
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",88.366708
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",593.856247
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1431.722512
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",30.049731
+"mobi_googlesearch.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",80.599778
+"mobi_googlesearch.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",25.883685
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",59.705094
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",27.549167
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",63.260538
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",175.417724
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",533.632683
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",27.988142
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",6.658895
+"mobi_reddit.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",2.643229
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",124.562054
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",12.318548
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",28.961734
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",191.52509
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",948.351676
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",13.10119
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",73.195405
+"mobi_reddit.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",22.32735
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",95.449195
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",28.858362
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",53.516113
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",232.578442
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",982.967848
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",35.300395
+"mobi_slashdot.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",75.355731
+"mobi_slashdot.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",20.608696
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",0
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",42.797139
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",79.042919
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",714.697522
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1765.82701
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",61.162698
+"mobi_slashdot.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",1.672235
+"mobi_slashdot.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",6.440565
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",74.374502
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",10.370968
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",23.673387
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",234.974782
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",945.289671
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",21.277778
+"mobi_techcrunch.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",39.450199
+"mobi_techcrunch.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",11.482072
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",100.862087
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",0
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",56.53573
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",402.512635
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1045.772316
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",10.855114
+"mobi_techcrunch.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",69.671826
+"mobi_techcrunch.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",20.039953
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",19.546559
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",55.470897
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",5.12082
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",386.056411
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",663.432069
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",26.845528
+"mobi_theverge.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",24.398769
+"mobi_theverge.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",6.42915
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",34.708975
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",25.279529
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",40.788618
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",420.889056
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1068.103668
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",31.616972
+"mobi_theverge.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",0
+"mobi_theverge.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",0.483871
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",33.934332
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",36.873518
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",59.557578
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",548.558876
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",1665.848566
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",20.253203
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",3.190476
+"mobi_wikipedia.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",27.271313
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",57.047649
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",70.682421
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",49.338645
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",705.248836
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1684.970747
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",13.303265
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",1.531997
+"mobi_wikipedia.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",28.798184
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",51.540323
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",45.994522
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",95.755795
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",176.020034
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",810.054326
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",9.880952
+"mobi_youtube.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",35.044355
+"mobi_youtube.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",11.387097
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",44.084677
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",55.948617
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",2.623802
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",406.611528
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",1543.210573
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",23.724696
+"mobi_youtube.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",41.508065
+"mobi_youtube.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",15.915323
