@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35519ffc_1cd697da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T02:08:42Z",
+      "side": 1,
+      "message": "Alright I think with the one variable name change this lgtm",
+      "revId": "51b3320adff71b1af07f3ebb117e4010f4f2b085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c830f13_c6c9d0a3",
+        "filename": "gn/skia.gni",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T02:08:42Z",
+      "side": 1,
+      "message": "I wonder if we should flip this variable. Like even if this true, it doesn\u0027t mean we will actually use it inside vma. But if we disble it, we are actually disabling the use. Also I think adding stl to the name makes it clearer what it is used for just from the name.\n\nSo something like:\n\nskia_disable_vma_stl_shared_mutex \u003d false",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 30
+      },
+      "revId": "51b3320adff71b1af07f3ebb117e4010f4f2b085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
