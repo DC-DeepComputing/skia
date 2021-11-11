@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69a83f4_b0292d33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a47943c9_05acc220",
+      "range": {
+        "startLine": 19,
+        "startChar": 9,
+        "endLine": 19,
+        "endChar": 19
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "014d0c74_fb89a099",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-11T16:44:38Z",
       "side": 1,
       "message": "Does this mean we always define SK_HAS_ANDROID_CODEC? I think we always test with it on, although Chrome and Flutter don\u0027t use it. So this is probably the right way to go, unless/until they use our Bazel files?",
+      "range": {
+        "startLine": 69,
+        "startChar": 17,
+        "endLine": 69,
+        "endChar": 37
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4701d09e_f95237cf",
+        "filename": "BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Yes, it\u0027s always defined.\n\nI was just following our BUILD.gn, which has this always defined https://github.com/google/skia/blob/main/BUILD.gn#L1321\n\nNeither of those clients will use our Bazel files for a long while.",
+      "parentUuid": "014d0c74_fb89a099",
       "range": {
         "startLine": 69,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc24cb19_a645cf7e",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6eb750ee_0d8b6ad0",
+      "range": {
+        "startLine": 1011,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 72
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2984b63_cf6c4300",
@@ -87,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fc6699e_923b0d9b",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2984b63_cf6c4300",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baaabc74_bdad6330",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-11-11T16:44:38Z",
       "side": 1,
       "message": "I might leave out libgifcodec. Android is the only current client, and my plan is to remove that soon (see http://go/android-wuffs-for-gif). Unless you think I\u0027m getting ahead of myself?",
+      "range": {
+        "startLine": 110,
+        "startChar": 9,
+        "endLine": 110,
+        "endChar": 30
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68e4e4d_f80b80ae",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baaabc74_bdad6330",
       "range": {
         "startLine": 110,
         "startChar": 9,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8060c4d5_6eb14902",
+        "filename": "bazel/common_config_settings/defs.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "I thought the same thing, but no, even with multiple, the default is just a string.\n\n\"Their default value is still set with a string-typed attribute\"\nhttps://docs.bazel.build/versions/main/skylark/config.html#defining-multi-set-string-flags",
+      "parentUuid": "a6cd96a7_c5c9b236",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 59
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52a4b8e0_9af9eaec",
@@ -146,6 +284,24 @@
       "writtenOn": "2021-11-11T16:44:38Z",
       "side": 1,
       "message": "What is bazel_gms_release? Why does it exclude gif?",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2df8c2a6_025c76ce",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "Just an oversight. It\u0027s supposed to be the same as bazel_gms_debug, just in release mode. Fixed.",
+      "parentUuid": "52a4b8e0_9af9eaec",
       "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -175,6 +331,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a033449d_8222cb68",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "I tested the raw_codec locally with:\nbazel build :skia-core --config clang --include_codec\u003draw_codec\n\nThat builds skia as a library with the raw codec. I know that won\u0027t expose any linking issues, but I can resolve those as we make more progress with a Bazel-built exe.",
+      "parentUuid": "bd076380_03161695",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 33
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6ab4460_322634e7",
         "filename": "src/codec/BUILD.bazel",
         "patchSetId": 8
@@ -186,6 +366,24 @@
       "writtenOn": "2021-11-11T16:44:38Z",
       "side": 1,
       "message": "I think this is needed for all codecs. Why is it in some of the filegroups, but not the core?",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e0c906_5692c367",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "It looks like if you build with no codecs, or just the gif (wuffs) codec, you don\u0027t need that file. I built each of the options independently and fixed any compile/link errors. I didn\u0027t see anything about missing SkEncodedInfo.cpp in those two situations.",
+      "parentUuid": "d6ab4460_322634e7",
       "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

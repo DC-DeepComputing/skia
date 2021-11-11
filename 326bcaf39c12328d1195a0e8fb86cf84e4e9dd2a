@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b52670c_c2ce8930",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T17:51:12Z",
+      "side": 1,
+      "message": "sidenote: I\u0027m not really sure what\u0027s going on with this. I just copied it from the BUILD.gn. Is this a bug in the dng_sdk that we are papering over?",
+      "range": {
+        "startLine": 778,
+        "startChar": 13,
+        "endLine": 778,
+        "endChar": 38
+      },
+      "revId": "326bcaf39c12328d1195a0e8fb86cf84e4e9dd2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
