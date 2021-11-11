@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f55ef81a_0e292444",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-11T21:34:44Z",
+      "side": 1,
+      "message": "I\u0027m a little unsure if this should be an sk_sp\u003c\u003e instead. I\u0027m trying to avoid a ref, but the lifetime of a TextureProxy is unclear to me.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 18
+      },
+      "revId": "988661799adefad614711956740026f20ffd4ae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
