@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b628337_7e7f4bc9",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-11T15:19:49Z",
+      "side": 1,
+      "message": "I don\u0027t think this hash exists in the new location?\nhttps://chromium.googlesource.com/chromium/src/buildtools.git/+/505de88083136eefd056e5ee4ca0f01fe9b33de8",
+      "range": {
+        "startLine": 13,
+        "startChar": 107,
+        "endLine": 13,
+        "endChar": 147
+      },
+      "revId": "8576ac056b8a391920c615ea1a1e5bc2686b9ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
