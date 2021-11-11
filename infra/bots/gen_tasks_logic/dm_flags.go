@@ -368,6 +368,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip("_ test _ ReplaceSurfaceBackendTexture")
 			skip("_ test _ SurfaceAttachStencil_Gpu")
 			skip("_ test _ SurfaceWrappedWithRelease_Gpu")
+			skip("_ test _ SurfacePartialDraw_Gpu")
+			skip("_ test _ SurfaceClear_Gpu")
+			skip("_ test _ SurfaceNoCanvas_Gpu")
+                        skip("_ test _ SurfaceBudget")
 		}
 
 		if b.extraConfig("CommandBuffer") {
