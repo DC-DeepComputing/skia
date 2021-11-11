@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75371071_01b42d57",
+        "filename": "third_party/vulkanmemoryallocator/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 17854
+      },
+      "writtenOn": "2021-11-11T01:27:46Z",
+      "side": 1,
+      "message": "std::shared_mutex was introduced in the iOS 10 standard library, but we target iOS 9. Despite this, we build with a modern Clang toolchain that supports C++17 features (which is what\u0027s getting checked and resulting in VMA_USE_STL_SHARED_MUTEX\u003d1).",
+      "parentUuid": "f4ca7aff_2fc7f826",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 3
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc6597bd_15252d31",
         "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
         "patchSetId": 13
@@ -220,6 +244,30 @@
       "side": 1,
       "message": "Okay looking a little closer at vk_mem_alloc.h, I think all these symbols are only used during VMA_IMPLEMENATION. So if that\u0027s true then I think we can just include \u003cwindows.h\u003e inside GrVulkanemoryAllocator.cpp. There we don\u0027t need to worry about all of windows.h macros",
       "parentUuid": "c6213c1d_d0a17669",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "220b8fcf06fc0c0f6a4d0b34ce62083ac1b2ce22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abc8f780_3ef09f15",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 17854
+      },
+      "writtenOn": "2021-11-11T01:27:46Z",
+      "side": 1,
+      "message": "Oh, great catch! I moved the import.",
+      "parentUuid": "be54dbe9_3bbdec62",
       "range": {
         "startLine": 25,
         "startChar": 0,
