@@ -1,0 +1,35 @@
+buffers: {
+    size_kb: 63488
+    fill_policy: DISCARD
+}
+data_sources {
+    config {
+        name: "android.gpu.memory"
+    }
+}
+data_sources {
+    config {
+        name: "track_event"
+    }
+}
+data_sources {
+    config {
+        name: "android.power"
+        android_power_config {
+            battery_poll_ms: 250
+            collect_power_rails: true
+        }
+    }
+}
+data_sources {
+    config {
+        name: "linux.ftrace"
+        ftrace_config {
+            atrace_apps: "nanobench"
+            ftrace_events: "power/gpu_frequency"
+            ftrace_events: "gpu_mem/gpu_mem_total"
+            ftrace_events: "mm_event/mm_event_record"
+        }
+    }
+}
+duration_ms: 10000
