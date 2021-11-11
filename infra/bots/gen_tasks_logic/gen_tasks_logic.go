@@ -578,6 +578,7 @@ func marshalJson(data interface{}) string {
 func (b *taskBuilder) kitchenTaskNoBundle(recipe string, outputDir string) {
 	b.cipd(CIPD_PKG_LUCI_AUTH)
 	b.cipd(cipd.MustGetPackage("infra/tools/luci/kitchen/${platform}"))
+	b.env("RECIPES_USE_PY3", "true")
 	b.usesPython()
 	b.recipeProp("swarm_out_dir", outputDir)
 	if outputDir != OUTPUT_NONE {
@@ -976,12 +977,12 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 func (b *jobBuilder) bundleRecipes() string {
 	b.addTask(BUNDLE_RECIPES_NAME, func(b *taskBuilder) {
 		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
-		b.cipd(specs.CIPD_PKGS_PYTHON_LINUX_AMD64...)
 		b.cmd("/bin/bash", "skia/infra/bots/bundle_recipes.sh", specs.PLACEHOLDER_ISOLATED_OUTDIR)
 		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
-		b.addToPATH("cipd_bin_packages", "cipd_bin_packages/bin")
 		b.idempotent()
 		b.cas(CAS_RECIPES)
+		b.usesPython()
+		b.addToPATH("cipd_bin_packages", "cipd_bin_packages/bin")
 	})
 	return BUNDLE_RECIPES_NAME
 }
@@ -1630,14 +1631,14 @@ func (b *jobBuilder) fm() {
 			// Point sanitizer builds at our prebuilt libc++ for this sanitizer.
 			if b.extraConfig("MSAN") {
 				// We'd see false positives in std::basic_string<char> if this weren't set.
-				b.env("LD_LIBRARY_PATH", "clang_linux/msan")
+				b.envPrefixes("LD_LIBRARY_PATH", "clang_linux/msan")
 			} else if b.extraConfig("TSAN") {
 				// Occasional false positives may crop up in the standard library without this.
-				b.env("LD_LIBRARY_PATH", "clang_linux/tsan")
+				b.envPrefixes("LD_LIBRARY_PATH", "clang_linux/tsan")
 			} else {
 				// This isn't strictly required, but we usually get better sanitizer
 				// diagnostics from libc++ than the default OS-provided libstdc++.
-				b.env("LD_LIBRARY_PATH", "clang_linux/lib")
+				b.envPrefixes("LD_LIBRARY_PATH", "clang_linux/lib")
 			}
 		}
 	})
