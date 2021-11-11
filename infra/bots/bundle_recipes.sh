@@ -6,6 +6,8 @@
 
 set -x -e
 
+which python
+python --version
 cd skia
 git init
 git add .
