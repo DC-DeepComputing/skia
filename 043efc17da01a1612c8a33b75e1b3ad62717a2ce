@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b330c39_7de4be94",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-11T20:43:39Z",
+      "side": 1,
+      "message": "This feels a little Metal specific. Maybe fReadable?",
+      "range": {
+        "startLine": 65,
+        "startChar": 9,
+        "endLine": 65,
+        "endChar": 25
+      },
+      "revId": "043efc17da01a1612c8a33b75e1b3ad62717a2ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
