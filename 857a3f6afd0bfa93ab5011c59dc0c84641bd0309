@@ -108,6 +108,29 @@
       },
       "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcd0706_8ad347a9",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T14:54:30Z",
+      "side": 1,
+      "message": "Isn\u0027t a DrawPass already a logical subpass? I am confused why the beginRenderPass is inside the loop here. A RenderPassTasks should always be one just one renderPass. The common case should be that we have one DrawPass. We only have multiple if we did some subpass stuff.",
+      "range": {
+        "startLine": 47,
+        "startChar": 80,
+        "endLine": 47,
+        "endChar": 99
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
