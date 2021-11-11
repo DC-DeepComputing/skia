@@ -136,7 +136,7 @@ private:
 
     const PatchAttribs fPatchAttribs;
     SkPoint fFanPointAttrib;
-    GrVertexColor fColorAttrib;
+    VertexColor fColorAttrib;
 
     GrVertexChunkBuilder fChunker;
 
