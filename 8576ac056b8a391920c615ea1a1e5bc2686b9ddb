@@ -22,6 +22,30 @@
       },
       "revId": "8576ac056b8a391920c615ea1a1e5bc2686b9ddb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009e5ec9_e7f12a1a",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-11T15:28:40Z",
+      "side": 1,
+      "message": "Gross, we\u0027re stuck on a revision from 2017.  Uploaded PS2 which rolls us to the most recent commit in the new repo.  Otherwise, the best we can do is split the different, since the oldest commit in the new repo is from 2019.",
+      "parentUuid": "0b628337_7e7f4bc9",
+      "range": {
+        "startLine": 13,
+        "startChar": 107,
+        "endLine": 13,
+        "endChar": 147
+      },
+      "revId": "8576ac056b8a391920c615ea1a1e5bc2686b9ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
