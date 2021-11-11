@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "64432d08_a46c1689",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T14:40:54Z",
+      "side": 1,
+      "message": "Yeah I would use ~WebGLTextureImageGenerator. The SkImage owns it uniquely so the lifetime should be the same.",
+      "parentUuid": "c7f10552_6727c375",
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c1409272_8198092d",
@@ -53,6 +71,76 @@
         "startChar": 16,
         "endLine": 762,
         "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb64a15_ba051f0d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T14:40:54Z",
+      "side": 1,
+      "message": "Yes, that should do it. Oops!",
+      "parentUuid": "28c3938a_36bcd25d",
+      "range": {
+        "startLine": 762,
+        "startChar": 16,
+        "endLine": 762,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5004747_58e2dfd2",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T14:40:54Z",
+      "side": 1,
+      "message": "can std::move this",
+      "range": {
+        "startLine": 764,
+        "startChar": 16,
+        "endLine": 764,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e89ae80_a12783ba",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T14:40:54Z",
+      "side": 1,
+      "message": "Do some src\u0027s not have natural sizes? It\u0027d be nice if we didn\u0027t have to take redundant params.",
+      "range": {
+        "startLine": 277,
+        "startChar": 79,
+        "endLine": 278,
+        "endChar": 62
       },
       "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
