@@ -271,6 +271,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b414a52_add7eb0d",
+        "filename": "bazel/common_config_settings/defs.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-11T19:07:21Z",
+      "side": 1,
+      "message": "It seems quite unfortunate the the default for multiple is single and cannot be multiple, so it isn\u0027t possible to create a good default. Seems the default for multiple is somewhat useless then, which is unfortunate. So we\u0027ll always end up needing a bunch of flags specified like \u0027--included_codec\u003d\u0027 is used many times in the invocation of bazel in the canvaskit/Makefile. The issue being that if we use multiple like this we cannot provide a sensible default from which the user can add or subtract, the user always has to specify everything they want explicitly, always. Which is fine I suppose, so long as we end up doing some documentation so that when someone does a default build and gets a Skia library that doesn\u0027t do fonts or image decoding and is slow because of no opts that they need to be asking for those things. In GN we never had the option to try out a multiple like thing, so options for optional targets were just given \u0027namespaced\u0027 similar names to relate like things (but each still had its own name, so can be selected or not independently of other things).\n\nAll that to explain why I\u0027m not sure excited about multiple. Though if it can be made to work well enough that\u0027s fine. It\u0027s just weird to run into such a limitation so early.",
+      "parentUuid": "8060c4d5_6eb14902",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 59
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52a4b8e0_9af9eaec",
