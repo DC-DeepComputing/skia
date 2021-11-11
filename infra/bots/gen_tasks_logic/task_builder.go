@@ -294,8 +294,6 @@ func (b *taskBuilder) usesPython() {
 	pythonPkgs := cipd.PkgsPython[b.cipdPlatform()]
 	b.cipd(pythonPkgs...)
 	b.addToPATH(
-		"cipd_bin_packages/cpython",
-		"cipd_bin_packages/cpython/bin",
 		"cipd_bin_packages/cpython3",
 		"cipd_bin_packages/cpython3/bin",
 	)
