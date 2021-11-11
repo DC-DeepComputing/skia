@@ -15,17 +15,22 @@
 
 namespace skgpu {
 
+class PathTessellator;
+
 // Writes out tessellation patches, formatted with their specific attribs, to a GPU buffer.
 class PatchWriter {
 public:
     PatchWriter(GrMeshDrawTarget* target,
                 GrVertexChunkArray* vertexChunkArray,
-                size_t patchStride,
-                int initialPatchAllocCount,
-                PatchAttribs attribs)
+                PatchAttribs attribs,
+                int initialAllocCount)
             : fPatchAttribs(attribs)
-            , fChunker(target, vertexChunkArray, patchStride, initialPatchAllocCount) {
+            , fChunker(target, vertexChunkArray, PatchStride(fPatchAttribs), initialAllocCount) {
     }
+
+#if SK_GPU_V1
+    PatchWriter(GrMeshDrawTarget*, PathTessellator* tessellator, int initialPatchAllocCount);
+#endif
 
     // Updates the fan point that will be written out with each patch (i.e., the point that wedges
     // fan around).
