@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "60a64339_1c3a2670",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T15:00:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure I follow. The texture gets cached in the resource cache of context A and shouldn\u0027t be finable in the resource cache of context B.",
+      "parentUuid": "5d6fe2f2_c5fc1d26",
+      "range": {
+        "startLine": 762,
+        "startChar": 16,
+        "endLine": 762,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b5004747_58e2dfd2",
         "filename": "modules/canvaskit/canvaskit_bindings.cpp",
         "patchSetId": 11
