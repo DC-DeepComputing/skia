@@ -16,6 +16,7 @@
 #ifndef VULKAN_CORE_H_
 #error "vulkan_core.h has not been included before trying to include the GrVulkanMemoryAllocator"
 #endif
+
 #include "include/vk_mem_alloc.h"
 
 #endif
