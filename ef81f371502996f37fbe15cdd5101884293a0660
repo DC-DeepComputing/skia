@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc87b416_4fad8eab",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-11T20:05:44Z",
+      "side": 1,
+      "message": "feels weird not to put these directly into the ShaderBuilder and then just store the builder directly as a member variable.  However, there isn\u0027t any way to pass the SkData directly into the builder.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 59
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4b04b9_0bdba91d",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-11T20:05:44Z",
+      "side": 1,
+      "message": "on the fence about checking for \"\". thoughts?",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc7c12d4_0e0c403a",
+        "filename": "tests/ShaderImageFilterTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-11T20:05:44Z",
+      "side": 1,
+      "message": "do tests need to be guarded with SK_ENABLE_SKSL ifdef?  I doesn\u0027t look like the other tests do.",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
