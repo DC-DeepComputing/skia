@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2984b63_cf6c4300",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-11T16:49:37Z",
+      "side": 1,
+      "message": "We don\u0027t want multiple fontmgr_factory, only one. We do want multiple fontmgr though. Think of the fontmgr like codecs, but fontmgr_factory like picking a default codec (from one of these enabled ones). Kinda like needing to allow picking between the two different gif codecs as the default.\n\nIn other words, I don\u0027t think that putting \u0027multiple\u0027 here is really a good idea until the CL that tries to do fontmgr.",
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "baaabc74_bdad6330",
         "filename": "bazel/common_config_settings/BUILD.bazel",
         "patchSetId": 8
@@ -88,6 +105,29 @@
         "startChar": 9,
         "endLine": 110,
         "endChar": 30
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6cd96a7_c5c9b236",
+        "filename": "bazel/common_config_settings/defs.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-11T16:49:37Z",
+      "side": 1,
+      "message": "Is the default always a single? Seems like if multiple is True then the default might be multiple? In other words, should the default be a list?",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 59
       },
       "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
