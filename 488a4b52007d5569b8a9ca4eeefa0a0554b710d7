@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0253dc1a_db95ee2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T14:39:53Z",
+      "side": 1,
+      "message": "I assume this is meant to be Color and not Writer?",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "488a4b52007d5569b8a9ca4eeefa0a0554b710d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41d31d5_27c71d85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T14:39:53Z",
+      "side": 1,
+      "message": "I asusme the ",
+      "revId": "488a4b52007d5569b8a9ca4eeefa0a0554b710d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
