@@ -10,6 +10,10 @@ struct Nested {
     S a;
     S b;
 };
+struct Vector {
+    vec4 f4;
+    ivec4 i4;
+};
 S returns_a_struct_S() {
     S s;
     s.x = 1.0;
@@ -39,6 +43,9 @@ vec4 main() {
     n2 = n1;
     n3 = n2;
     modifies_a_struct_vS(n3.b);
-    bool valid = (((((((x == 3.0 && s.x == 2.0) && s.y == 3) && s == expected) && s == S(2.0, 3)) && s != returns_a_struct_S()) && n1 == n2) && n1 != n3) && n3 == Nested(S(1.0, 2), S(2.0, 3));
+    Vector v1 = Vector(vec4(1.0, 2.0, 3.0, 4.0), ivec4(5, 6, 7, 8));
+    Vector v2 = Vector(vec4(colorGreen.y, 2.0, 3.0, 4.0), ivec4(5, 6, 7, 8));
+    Vector v3 = Vector(vec4(colorGreen.x, 2.0, 3.0, 4.0), ivec4(5, 6, 7, 8));
+    bool valid = (((((((((x == 3.0 && s.x == 2.0) && s.y == 3) && s == expected) && s == S(2.0, 3)) && s != returns_a_struct_S()) && n1 == n2) && n1 != n3) && n3 == Nested(S(1.0, 2), S(2.0, 3))) && v1 == v2) && v2 != v3;
     return valid ? colorGreen : colorRed;
 }
