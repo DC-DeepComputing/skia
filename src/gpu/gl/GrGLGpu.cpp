@@ -1260,9 +1260,10 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                                         GR_GL_RENDERBUFFER,
                                         rtIDs->fMSColorRenderbufferID));
         if (!this->glCaps().skipErrorChecks()) {
-            GrGLenum status;
-            GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+            GrGLenum status = GR_GL_FRAMEBUFFER_COMPLETE;
+            //GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+                SkDebugf("Not complete MSAA: 0x%04x\n", status);
                 return false;
             }
         }
@@ -1276,9 +1277,10 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                                  desc.fID,
                                  0));
     if (!this->glCaps().skipErrorChecks()) {
-        GrGLenum status;
-        GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
+        GrGLenum status = GR_GL_FRAMEBUFFER_COMPLETE;
+        //GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
         if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+            SkDebugf("Not complete Single: 0x%04x\n", status);
             return false;
         }
     }
