@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7f10552_6727c375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T14:23:06Z",
+      "side": 1,
+      "message": "I\u0027m a little stuck on how to hook into the SkImage destructor. I tried something from the JS side by hooking into the .delete() call, but that won\u0027t work if something like an SkPicture takes ownership of the SkImage and then goes away.\n\nShould I subclass SkImage somehow? Do we want to pipe in TextureReleaseProc somehow? Is it valid to make use of the WebGLTextureImageGenerator destructor instead?",
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1409272_8198092d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T14:23:06Z",
+      "side": 1,
+      "message": "I was able to reuse existing texture cleanup logic here using the refcounted callback.",
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28c3938a_36bcd25d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T14:23:06Z",
+      "side": 1,
+      "message": "I noticed that this texture is recreated every frame. I\u0027m not sure that\u0027s what want performance-wise, right? Can we cache the texture once created and then dispose of it only when the SkImage would be destroyed? Is that what this toggle does?",
+      "range": {
+        "startLine": 762,
+        "startChar": 16,
+        "endLine": 762,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
