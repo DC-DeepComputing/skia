@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9096c382_7c42e55c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-11T19:22:31Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/470436/1..4/src/gpu/tessellate/shaders/GrPathTessellationShader_MiddleOut.cpp has the fix.\n\nI forgot to update kMaxInstanceAttribs from 4 to 5.\n\nI also modified the batching test to not use SkRandom anymore.",
+      "revId": "1dd449d940034c3df64ce5ec3770932eca4c2393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
