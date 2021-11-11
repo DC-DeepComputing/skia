@@ -295,6 +295,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "946393f1_46ce7ace",
+        "filename": "bazel/common_config_settings/defs.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T19:25:33Z",
+      "side": 1,
+      "message": "The advice I got from trybka@ was to use .bazelrc to specify some sensible default flags. i.e. some one says\nbazel build :skia-core --config\u003ddefault_linux_x64\nand .bazelrc says something like:\nbuild:default_linux_x64 --included_codec\u003dpng_codec --included_codec\u003dwebp_codec etc.\n\nThe developer\u0027s ~/.bazelrc can be used similar to how current GN args in out/* perform, by remembering different configs that a particular developer cares about.",
+      "parentUuid": "0b414a52_add7eb0d",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 59
+      },
+      "revId": "905cddbad9dc718b1c081a456b7e88e6aa0b9529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52a4b8e0_9af9eaec",
