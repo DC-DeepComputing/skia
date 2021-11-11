@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ccfb02_8e94d670",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 12084
+      },
+      "writtenOn": "2021-11-11T18:51:56Z",
+      "side": 1,
+      "message": "The other file uses Unpremul. Flutter uses Premul everywhere, so this should be consistent. However, I think I\u0027d prefer that this is configurable.",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e190e4da_06fb9a36",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 12084
+      },
+      "writtenOn": "2021-11-11T18:51:56Z",
+      "side": 1,
+      "message": "nit: s/at/that/",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9093a39_e0274e15",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 12084
+      },
+      "writtenOn": "2021-11-11T18:51:56Z",
+      "side": 1,
+      "message": "Flutter uses Premul. Can this method take colorType, alphaType, and colorSpace as parameters?",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b484bed_45e2abbe",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 16
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 12084
+      },
+      "writtenOn": "2021-11-11T18:51:56Z",
+      "side": 1,
+      "message": "ditto: Flutter uses premul",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
