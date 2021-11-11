@@ -14,6 +14,11 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
 
+#if SK_SUPPORT_GPU
+#include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/effects/GrBlendFragmentProcessor.h"
+#endif
+
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkRuntimeEffect;

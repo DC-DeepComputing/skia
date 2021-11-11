@@ -70,6 +70,18 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 
 ///////////////////////////////////////////////////////////////////////////////
 
+SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
+        : fDst(std::move(dst))
+        , fSrc(std::move(src))
+        , fBlender(std::move(blender))
+        , fMode((SkBlendMode)kCustom_SkBlendMode)
+{
+    if (skstd::optional<SkBlendMode> bm = as_BB(fBlender)->asBlendMode(); bm.has_value()) {
+        fMode = *bm;
+        fBlender.reset();
+    }
+}
+
 sk_sp<SkFlattenable> SkShader_Blend::CreateProc(SkReadBuffer& buffer) {
     sk_sp<SkShader> dst(buffer.readShader());
     sk_sp<SkShader> src(buffer.readShader());
