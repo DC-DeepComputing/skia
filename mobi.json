@@ -1,0 +1,822 @@
+{
+  "perfetto.protos.nanobench_power": {
+    "nanobench_result": [
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 37.506073
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 55.284025
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 492.105807
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1017.060173
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 20.992095
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 8.941269
+      },
+      {
+        "test_name": "mobi_amazon.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 168.673451
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 24.490951
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 47.246392
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 188.307999
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1057.624744
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 21.288538
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 10.628776
+      },
+      {
+        "test_name": "mobi_baidu.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 2.862583
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 85.184982
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 55.444474
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 18.583205
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 307.972080
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1856.516269
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 19.908999
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 46.304233
+      },
+      {
+        "test_name": "mobi_booking.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 12.988308
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 81.116935
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 1.549407
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 61.217311
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 395.978929
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 847.043779
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 7.442943
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 38.286290
+      },
+      {
+        "test_name": "mobi_capitalvolkswagen.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 11.197581
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 22.282279
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 51.379845
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 25.590886
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 438.140169
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1482.315221
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 38.229839
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 22.508802
+      },
+      {
+        "test_name": "mobi_cnn.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 3.288105
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 90.856551
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 48.586510
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 33.675026
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 409.045264
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1141.054323
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 24.052632
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 1.936508
+      },
+      {
+        "test_name": "mobi_cnnarticle.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 2.852331
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 10.048387
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 23.697581
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 66.371058
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 513.709293
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1092.787762
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 57.620968
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 4.151306
+      },
+      {
+        "test_name": "mobi_deviantart.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 85.841270
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 9.060241
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 50.528625
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 462.476992
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 975.170218
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 25.173416
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 39.277778
+      },
+      {
+        "test_name": "mobi_facebook.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 11.007937
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 107.160935
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 1.286290
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 47.266833
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 242.102669
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1620.260876
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 16.764657
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 64.260876
+      },
+      {
+        "test_name": "mobi_forecastio.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 22.870958
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 22.690476
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 9.040161
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 38.706827
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 349.938592
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1447.073686
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 14.889764
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 43.880031
+      },
+      {
+        "test_name": "mobi_googlenews.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 5.210961
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 28.012000
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 27.113223
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 34.156501
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 461.985300
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1187.482531
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 18.600164
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_googlesearch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 26.416489
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 27.776989
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 25.216658
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 16.169960
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 722.935893
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1114.587449
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 57.103775
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 0.254980
+      },
+      {
+        "test_name": "mobi_reddit.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 28.155378
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 56.427419
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 46.841497
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 963.039078
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1290.471262
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 48.581028
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 36.338710
+      },
+      {
+        "test_name": "mobi_slashdot.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 11.221774
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 82.319838
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 44.902409
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 95.816456
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 228.786007
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 991.093608
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 20.978669
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 32.902834
+      },
+      {
+        "test_name": "mobi_techcrunch.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 12.680162
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 45.357143
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 57.254062
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 59.854900
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 390.717715
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1168.430350
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 18.229792
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 5.450199
+      },
+      {
+        "test_name": "mobi_theverge.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 0.394422
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 122.055336
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 0.000000
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 85.856763
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 429.194636
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1280.758885
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 59.290323
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 72.193676
+      },
+      {
+        "test_name": "mobi_wikipedia.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 20.035573
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_OLED_uws",
+        "power_mws": 39.056680
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_QTM525_uws",
+        "power_mws": 40.381470
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_RF_uws",
+        "power_mws": 42.613283
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",
+        "power_mws": 357.924475
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S1C_uws",
+        "power_mws": 1383.567502
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_S2A_S3A_uws",
+        "power_mws": 23.982591
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.PPVAR_VPH_PWR_WLAN_uws",
+        "power_mws": 4.122678
+      },
+      {
+        "test_name": "mobi_youtube.skp_1",
+        "config_name": "gles",
+        "rail_name": "power.WCN3998_VDD13 [from PP1304_L2C]_uws",
+        "power_mws": 5.935259
+      }
+    ]
+  }
+}
