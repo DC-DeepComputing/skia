@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ecce76_c2e596dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-11T21:55:37Z",
+      "side": 1,
+      "message": "That didn\u0027t set a +1 if that was your intention.",
+      "parentUuid": "dd184eea_feb922cf",
+      "revId": "988661799adefad614711956740026f20ffd4ae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f55ef81a_0e292444",
@@ -102,6 +120,30 @@
       "side": 1,
       "message": "I\u0027d have to think more about all the connections and what is still alive when. But my general rule of thumb, unless its obvious what the lifetime relationships are then just take a ref. In this case I don\u0027t think the 1-4 refs for attachments per renderpass is going to be very noticeable.\n\nThough it still might be worth while figure out what the lifetime of these proxies are and who will own refs when.",
       "parentUuid": "fe74f88e_aa399da7",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 31
+      },
+      "revId": "988661799adefad614711956740026f20ffd4ae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45ef0d52_b828e73b",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-11T21:55:37Z",
+      "side": 1,
+      "message": "Looking at the stack trace for the red bot, I think the ref is needed.",
+      "parentUuid": "1453305c_3eb2fcf9",
       "range": {
         "startLine": 26,
         "startChar": 4,
