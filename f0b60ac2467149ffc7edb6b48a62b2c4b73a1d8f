@@ -168,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a70331a_4f7dfa16",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T15:03:45Z",
+      "side": 1,
+      "message": "Oh sorry, I missed that the change here was just to make this GrWrapCacheable::kYes. I was thinking the suggestion was to cache the proxy on the WebGLTextureImageGenerator so we didn\u0027t recreate it every time.",
+      "parentUuid": "60a64339_1c3a2670",
+      "range": {
+        "startLine": 762,
+        "startChar": 16,
+        "endLine": 762,
+        "endChar": 31
+      },
+      "revId": "f0b60ac2467149ffc7edb6b48a62b2c4b73a1d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b5004747_58e2dfd2",
         "filename": "modules/canvaskit/canvaskit_bindings.cpp",
         "patchSetId": 11
