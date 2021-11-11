@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe3401e_95a97807",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-11T15:40:01Z",
+      "side": 1,
+      "message": "Using the WebGLTextureImageGenerator destructor worked great. Much cleaner than my unsuccessful hack earlier!",
+      "revId": "d2f185987f5ea2d35a58459aac664a4bdfaaae86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
