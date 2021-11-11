@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82ce2a1_de9a9b07",
+        "filename": "resources/sksl/runtime/PrecisionQualifiers.rts",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-11T20:56:56Z",
+      "side": 1,
+      "message": "This was the unrelated part. We didn\u0027t have any Runtime Effect test files with structs in them, and this seemed like a simple place to add one and shore up testing in a meaningful way.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "4ed3fd1b8bcc0b8147104230fd7ef5f25ed6a001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
