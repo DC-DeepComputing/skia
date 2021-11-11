@@ -16,6 +16,23 @@
       "message": "I was changing a Device function signature and thought I\u0027d rather delete the V2 device than modify it. This leaves the V1 macro around but should be simple to remove in a follow up.",
       "revId": "4be5b4fac635e3c46d616bab834df6034455a6b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a79d8683_71b894d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-11T17:03:41Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "4be5b4fac635e3c46d616bab834df6034455a6b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
