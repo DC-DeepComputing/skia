@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5ce768b_9d0916b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-11T18:52:52Z",
+      "side": 1,
+      "message": "Nice. I had to go double check how passing something to a function as an out parameter affects usage (it increments both read and write, AFAICT). Might be worth a test case, though?\n\n  void outParameterWriteIndirect(out half4 c) { outParameterWrite(c); }",
+      "revId": "c953f73bfaf2ab05d9be8e18b32690e87c638d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
