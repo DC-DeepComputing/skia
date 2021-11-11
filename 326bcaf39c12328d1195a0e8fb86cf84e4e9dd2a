@@ -22,6 +22,30 @@
       },
       "revId": "326bcaf39c12328d1195a0e8fb86cf84e4e9dd2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a7a30c9_d65b3649",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T20:07:35Z",
+      "side": 1,
+      "message": "It looks like there was a bug in clang. The bug here (b/29412086) links to https://bugs.llvm.org/show_bug.cgi?id\u003d28629, which has since been marked as resolved. The Android side tracking bug got closed, but I\u0027m not sure whether Android made the switch or not. (My guess is yes, but not sure.)\n\nWe could try removing it and see if we still get the message\n\n  dlopen failed: cannot locate symbol \"__mulodi4\" referenced by “libskia_android.so\"\n\nwhen we try to run the executable. But I\u0027d be fine with leaving it for now, too.",
+      "parentUuid": "4b52670c_c2ce8930",
+      "range": {
+        "startLine": 778,
+        "startChar": 13,
+        "endLine": 778,
+        "endChar": 38
+      },
+      "revId": "326bcaf39c12328d1195a0e8fb86cf84e4e9dd2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
