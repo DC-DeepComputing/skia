@@ -28,8 +28,7 @@ half4 main(float2 coords) {
     outParameterWrite(c);
     inoutParameterWrite(c);
 
-    // TODO(skia:12636): These calls are eligible for inlining, because they don't write to their
-    // `out` param.
+    // These calls are eligible for inlining, because they don't write to their `out` param.
     inoutParameterRead(c);
     inoutParameterIgnore(c);
     outParameterIgnore(c);
