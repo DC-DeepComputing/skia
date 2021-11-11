@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1effa426_36a078c8",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-11T15:52:12Z",
+      "side": 1,
+      "message": "I\u0027d just say auto here. The right side makes it clear what the type is.",
+      "range": {
+        "startLine": 788,
+        "startChar": 4,
+        "endLine": 788,
+        "endChar": 37
+      },
+      "revId": "0f934949fa04e811d30ff6032060aa4808abb88b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
