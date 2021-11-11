@@ -61,7 +61,8 @@ public:
     {
         enum : size_t {
             kSkSL_index = 0,
-            kFirstUniform_index = 1,
+            kType_index = 1,
+            kFirstUniform_index = 2,
         };
         if (jprops.size() < 1) {
             return;
@@ -75,7 +76,24 @@ public:
             return;
         }
         SkString shader = SkString(jShader->begin(), jShader->size());
-        auto result = SkRuntimeEffect::MakeForShader(shader, {});
+
+        // build either shader or color filter
+        const skjson::ObjectValue* typeProp = jprops[kType_index];
+        const skjson::ObjectValue* typeV = (*typeProp)["v"];
+        const skjson::NumberValue* type = (*typeV)["k"];
+        SkRuntimeEffect::Result result;
+        switch (ParseDefault<int>(*type, 0))
+        {
+        case 1:
+            result = SkRuntimeEffect::MakeForShader(shader, {});
+            break;
+        case 2:
+            result = SkRuntimeEffect::MakeForColorFilter(shader, {});
+            break;
+        default:
+            result = SkRuntimeEffect::MakeForShader(shader, {});
+            break;
+        }
         if (!result.effect) {
             abuilder.log(Logger::Level::kError, nullptr, "Failed to parse SkSL shader: %s",
                result.errorText.c_str());
