@@ -46,6 +46,30 @@
       },
       "revId": "043efc17da01a1612c8a33b75e1b3ad62717a2ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf31b9e1_bb6acbb5",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-11T21:29:56Z",
+      "side": 1,
+      "message": "My bad, I misread it as a higher-level abstraction.",
+      "parentUuid": "d1a73c37_380bc94d",
+      "range": {
+        "startLine": 65,
+        "startChar": 9,
+        "endLine": 65,
+        "endChar": 25
+      },
+      "revId": "043efc17da01a1612c8a33b75e1b3ad62717a2ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
