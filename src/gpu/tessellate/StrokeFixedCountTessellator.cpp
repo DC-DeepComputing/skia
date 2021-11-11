@@ -221,7 +221,7 @@ private:
 
     // Values for the current dynamic state (if any) that will get written out with each instance.
     GrStrokeTessellationShader::DynamicStroke fDynamicStroke;
-    GrVertexColor fDynamicColor;
+    VertexColor fDynamicColor;
 };
 
 // Returns the worst-case number of edges we will need in order to draw a join of the given type.

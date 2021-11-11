@@ -659,7 +659,7 @@ private:
 
     // Values for the current dynamic state (if any) that will get written out with each patch.
     GrStrokeTessellationShader::DynamicStroke fDynamicStroke;
-    GrVertexColor fDynamicColor;
+    VertexColor fDynamicColor;
 };
 
 SK_ALWAYS_INLINE bool cubic_has_cusp(const SkPoint p[4]) {
