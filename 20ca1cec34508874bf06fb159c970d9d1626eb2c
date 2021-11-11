@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc211dd_424bff80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-11T16:45:37Z",
+      "side": 1,
+      "message": "Oh, haha, you were way ahead of me! Ignore my comment in the other CL. You are correct, this is unnecessary.",
+      "revId": "20ca1cec34508874bf06fb159c970d9d1626eb2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
