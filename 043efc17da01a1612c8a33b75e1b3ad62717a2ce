@@ -22,6 +22,30 @@
       },
       "revId": "043efc17da01a1612c8a33b75e1b3ad62717a2ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a73c37_380bc94d",
+        "filename": "experimental/graphite/include/private/MtlTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-11T20:55:27Z",
+      "side": 1,
+      "message": "This is Metal specific though",
+      "parentUuid": "3b330c39_7de4be94",
+      "range": {
+        "startLine": 65,
+        "startChar": 9,
+        "endLine": 65,
+        "endChar": 25
+      },
+      "revId": "043efc17da01a1612c8a33b75e1b3ad62717a2ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
