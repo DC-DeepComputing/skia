@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1df0517_c70aa6bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-12T22:30:14Z",
+      "side": 1,
+      "message": "I think the original CL also caused some failures on the S7/Mali-T880. These were hidden because there were other failures related to transfer pixels tests (that are now. resolved at HEAD).\n\nExample log:\nhttps://logs.chromium.org/logs/skia/572eb07a85e3c011/+/steps/dm/0/stdout\n\n\nstart unit test  SkSLPrecisionQualifiers_GPU\n\n\nFAILURE: ../../../../../../skia/tests/SkSLTest.cpp:132\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLPrecisionQualifiers_GPU, OpenGLES]\n\n",
+      "revId": "ee37f13c748242b1dcab75e4d2a42fca89977620",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
