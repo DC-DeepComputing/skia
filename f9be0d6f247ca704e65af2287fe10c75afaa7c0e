@@ -34,6 +34,24 @@
       "parentUuid": "e383eb21_7e1b0298",
       "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68577a55_2c3cf0b3",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-12T15:09:41Z",
+      "side": 1,
+      "message": "Thinking about this some more, I still think there is value in having the NumberKind in each slot. Structs are a single variable with a single Type, but a struct doesn\u0027t have a single NumberKind. \n\nRealizing this, I looked closely at the code; I think we might actually have a latent bug in `writeBinaryExpression`. It trusts `base_number_kind` to get a NumberKind for our type, but this won\u0027t work for arrays or structs (presumably it\u0027ll be Nonnumeric). Presumably this means arrays and structs are always treated as big integer blobs, because writeBinaryExpression::binary treats NumberKinds other than kFloat as integer. In practice this is probably almost harmless, but (array1 \u003d\u003d array2) or (struct1 \u003d\u003d struct2) will use integer math, so we\u0027ll see subtle glitches like +0 ≠ -0, or NaN \u003d\u003d NaN, that we shouldn\u0027t see by the letter of the law. (Frankly this is subtle enough that I wouldn\u0027t trust a GPU to get it 100% correct either)",
+      "parentUuid": "4a7e7ebb_7fc89593",
+      "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
