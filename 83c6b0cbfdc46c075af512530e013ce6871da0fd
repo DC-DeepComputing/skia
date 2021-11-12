@@ -69,6 +69,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2444e35_fab67b1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2021-11-12T19:00:47Z",
+      "side": 1,
+      "message": "Ahh, yes. From https://skia.org/docs/dev/contrib/:\n\nAnyone contributing code to Skia must sign a Contributor License Agreement and ensure they are listed in the AUTHORS file:\n\nIndividual contributors can complete the Individual Contributor License Agreement online.\n\nIf you are contributing on behalf of a corporation, fill out the Corporate Contributor License Agreement and send it in as described on that page.\n\nIf it is your first time submitting code or you have not previously done so, add your (or your organization’s) name and contact info to the AUTHORS file as a part of your CL.",
+      "revId": "83c6b0cbfdc46c075af512530e013ce6871da0fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f55bca1_111ac731",
