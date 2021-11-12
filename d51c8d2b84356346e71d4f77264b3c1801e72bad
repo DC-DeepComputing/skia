@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cf2f3de_b0b7c361",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-12T17:05:05Z",
+      "side": 1,
+      "message": "What are the dashes for?",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 2,
+        "endChar": 3
+      },
+      "revId": "d51c8d2b84356346e71d4f77264b3c1801e72bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
