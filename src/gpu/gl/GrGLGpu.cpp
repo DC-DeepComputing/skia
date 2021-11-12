@@ -1263,8 +1263,19 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
             GrGLenum status;
             GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+                SkDebugf("Not complete MSAA: 0x%04x\n", status);
                 return false;
             }
+#if 0
+            GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                            GR_GL_COLOR_ATTACHMENT0,
+                                            GR_GL_RENDERBUFFER,
+                                            0));
+#endif
+            GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
+                                            GR_GL_COLOR_ATTACHMENT0,
+                                            GR_GL_RENDERBUFFER,
+                                            rtIDs->fMSColorRenderbufferID));
         }
         rtIDs->fTotalMemorySamplesPerPixel += sampleCount;
     }
@@ -1279,8 +1290,21 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         GrGLenum status;
         GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
         if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+            SkDebugf("Not complete Single: 0x%04x\n", status);
             return false;
         }
+#if 0
+        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                     GR_GL_COLOR_ATTACHMENT0,
+                                     desc.fTarget,
+                                     0,
+                                     0));
+#endif
+        GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
+                                     GR_GL_COLOR_ATTACHMENT0,
+                                     desc.fTarget,
+                                     desc.fID,
+                                     0));
     }
     ++rtIDs->fTotalMemorySamplesPerPixel;
 

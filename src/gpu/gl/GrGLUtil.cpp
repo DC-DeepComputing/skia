@@ -381,6 +381,12 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
     GrGLDriver driver               = GrGLDriver::kUnknown;
     GrGLDriverVersion driverVersion = GR_GL_DRIVER_UNKNOWN_VER;
 
+    if (1) {
+        SkDebugf("GL_VENDOR  : \"%s\"", vendorString  );
+        SkDebugf("GL_RENDERER: \"%s\"", rendererString);
+        SkDebugf("GL_VERSION : \"%s\"", vendorString  );
+    }
+
     int major, minor, rev, driverMajor, driverMinor, driverPoint;
     // This is the same on ES and regular GL.
     if (!strcmp(vendorString, "freedreno")) {
