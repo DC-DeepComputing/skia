@@ -1263,6 +1263,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
             GrGLenum status;
             GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+                SkDebugf("Not complete MSAA: 0x%04x\n", status);
                 return false;
             }
         }
@@ -1279,6 +1280,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         GrGLenum status;
         GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
         if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
+            SkDebugf("Not complete Single: 0x%04x\n", status);
             return false;
         }
     }
