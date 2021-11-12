@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c0eedc_ae60f5de",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-12T13:01:26Z",
+      "side": 1,
+      "message": "Since we already have a special/made-up index and property (0, \"sh\"), it seems more straightforward to add the type property in the same place.  Maybe \"sksl_ty\"?\n\nWhile at it, we should probably rename \"sh\" -\u003e \"sksl\".",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 36
+      },
+      "revId": "c3272b4e5bfb2f2bd81ac671ae5bfaa51cf9f347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f483522_06f848e4",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-12T13:01:26Z",
+      "side": 1,
+      "message": "I\u0027m guessing this is not sufficient: we later treat fEffect as a SkShader generator, but what we want in this case is a SkColorFilter.\n\nThat will require a different builder (don\u0027t think there is a SkRuntimeColorFilterBuilder at the moment), and a different render node to apply the CF.",
+      "range": {
+        "startLine": 91,
+        "startChar": 12,
+        "endLine": 91,
+        "endChar": 69
+      },
+      "revId": "c3272b4e5bfb2f2bd81ac671ae5bfaa51cf9f347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
