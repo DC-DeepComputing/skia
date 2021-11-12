@@ -80,62 +80,60 @@ private:
         const SkMatrix& shaderMatrix = SkMatrix::I();
         const SkMatrix& pathMatrix = fMatrix;
         const GrCaps& caps = flushState->caps();
-        const GrShaderCaps& shaderCaps = *caps.shaderCaps();
         int numVerbsToGetMiddleOut = 0;
         int numVerbsToGetTessellation = caps.minPathVerbsForHwTessellation();
         auto pipeline = GrSimpleMeshDrawOpHelper::CreatePipeline(flushState, std::move(fProcessors),
                                                                  fPipelineFlags);
-        int numVerbs;
         switch (fMode) {
             using DrawInnerFan = PathCurveTessellator::DrawInnerFan;
             case Mode::kWedgeMiddleOut:
-                fTessellator = PathWedgeTessellator::Make(alloc, shaderCaps.infinitySupport());
-                numVerbs = numVerbsToGetMiddleOut;
+                fTessellator = PathWedgeTessellator::Make(alloc,
+                                                          shaderMatrix,
+                                                          kCyan,
+                                                          numVerbsToGetMiddleOut,
+                                                          *pipeline,
+
+                                                          caps);
                 break;
             case Mode::kCurveMiddleOut:
                 fTessellator = PathCurveTessellator::Make(alloc,
+                                                          shaderMatrix,
+                                                          kCyan,
                                                           DrawInnerFan::kYes,
-                                                          shaderCaps.infinitySupport());
-                numVerbs = numVerbsToGetMiddleOut;
+                                                          numVerbsToGetMiddleOut,
+                                                          *pipeline,
+                                                          caps);
                 break;
             case Mode::kWedgeTessellate:
-                fTessellator = PathWedgeTessellator::Make(alloc, shaderCaps.infinitySupport());
-                numVerbs = numVerbsToGetTessellation;
+                fTessellator = PathWedgeTessellator::Make(alloc,
+                                                          shaderMatrix,
+                                                          kCyan,
+                                                          numVerbsToGetTessellation,
+                                                          *pipeline,
+                                                          caps);
                 break;
             case Mode::kCurveTessellate:
                 fTessellator = PathCurveTessellator::Make(alloc,
-                                                          DrawInnerFan::kYes,
-                                                          shaderCaps.infinitySupport());
-                numVerbs = numVerbsToGetTessellation;
-                break;
-        }
-        auto* tessShader = GrPathTessellationShader::Make(alloc,
                                                           shaderMatrix,
                                                           kCyan,
-                                                          numVerbs,
+                                                          DrawInnerFan::kYes,
+                                                          numVerbsToGetTessellation,
                                                           *pipeline,
-                                                          fTessellator->patchAttribs(),
                                                           caps);
-        fTessellator->prepare(flushState,
-                              tessShader->maxTessellationSegments(*caps.shaderCaps()),
-                              shaderMatrix,
-                              {pathMatrix, fPath, kCyan},
-                              fPath.countVerbs());
-        if (!tessShader->willUseTessellationShaders()) {
-            fTessellator->prepareFixedCountBuffers(flushState->resourceProvider());
+                break;
         }
+        fTessellator->prepare(flushState, {pathMatrix, fPath, kCyan}, fPath.countVerbs());
         fProgram = GrTessellationShader::MakeProgram({alloc, flushState->writeView(),
                                                      flushState->usesMSAASurface(),
                                                      &flushState->dstProxyView(),
                                                      flushState->renderPassBarriers(),
                                                      GrLoadOp::kClear, &flushState->caps()},
-                                                     tessShader,
-                                                     pipeline,
+                                                     fTessellator->shader(), pipeline,
                                                      &GrUserStencilSettings::kUnused);
     }
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         flushState->bindPipeline(*fProgram, chainBounds);
-        fTessellator->draw(flushState, fProgram->geomProc().willUseTessellationShaders());
+        fTessellator->draw(flushState);
     }
 
     const SkPath fPath;

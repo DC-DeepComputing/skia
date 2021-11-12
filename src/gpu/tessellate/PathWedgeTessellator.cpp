@@ -7,15 +7,17 @@
 
 #include "src/gpu/tessellate/PathWedgeTessellator.h"
 
+#include "src/gpu/GrMeshDrawTarget.h"
+#include "src/gpu/GrResourceProvider.h"
+#include "src/gpu/geometry/GrPathUtils.h"
 #include "src/gpu/tessellate/AffineMatrix.h"
 #include "src/gpu/tessellate/PatchWriter.h"
-#include "src/gpu/tessellate/PathCurveTessellator.h"
+#include "src/gpu/tessellate/Tessellation.h"
 #include "src/gpu/tessellate/WangsFormula.h"
+#include "src/gpu/tessellate/shaders/GrPathTessellationShader.h"
 
 #if SK_GPU_V1
-#include "src/gpu/GrMeshDrawTarget.h"
 #include "src/gpu/GrOpFlushState.h"
-#include "src/gpu/GrResourceProvider.h"
 #endif
 
 namespace skgpu {
@@ -126,13 +128,44 @@ private:
 
 }  // namespace
 
+PathTessellator* PathWedgeTessellator::Make(SkArenaAlloc* arena,
+                                            const SkMatrix& viewMatrix,
+                                            const SkPMColor4f& color,
+                                            int numPathVerbs,
+                                            const GrPipeline& pipeline,
+                                            const GrCaps& caps,
+                                            PatchAttribs attribs) {
+    GrPathTessellationShader* shader;
+    attribs |= PatchAttribs::kFanPoint;
+    if (!caps.shaderCaps()->infinitySupport()) {
+        attribs |= PatchAttribs::kExplicitCurveType;
+    }
+    if (caps.shaderCaps()->tessellationSupport() &&
+        caps.shaderCaps()->infinitySupport() &&  // The hw tessellation shaders use infinity.
+        !pipeline.usesLocalCoords() &&  // Our tessellation back door doesn't handle varyings.
+        !(attribs & PatchAttribs::kColor) &&  // Input color isn't implemented for tessellation.
+        numPathVerbs >= caps.minPathVerbsForHwTessellation()) {
+        shader = GrPathTessellationShader::MakeHardwareTessellationShader(arena, viewMatrix, color,
+                                                                          attribs);
+    } else {
+        shader = GrPathTessellationShader::MakeMiddleOutFixedCountShader(*caps.shaderCaps(), arena,
+                                                                         viewMatrix, color,
+                                                                         attribs);
+    }
+    return arena->make([=](void* objStart) {
+        return new(objStart) PathWedgeTessellator(shader, attribs);
+    });
+}
+
+GR_DECLARE_STATIC_UNIQUE_KEY(gFixedCountVertexBufferKey);
+GR_DECLARE_STATIC_UNIQUE_KEY(gFixedCountIndexBufferKey);
+
 void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
-                                   int maxTessellationSegments,
-                                   const SkMatrix& shaderMatrix,
                                    const PathDrawList& pathDrawList,
                                    int totalCombinedPathVerbCnt) {
     SkASSERT(fVertexChunkArray.empty());
-    SkASSERT(!fFixedResolveLevel);
+
+    const GrShaderCaps& shaderCaps = *target->caps().shaderCaps();
 
     // Over-allocate enough wedges for 1 in 4 to chop.
     int maxWedges = MaxCombinedFanEdgesInPathDrawList(totalCombinedPathVerbCnt);
@@ -140,10 +173,19 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
     if (!wedgeAllocCount) {
         return;
     }
-    PatchWriter patchWriter(target, &fVertexChunkArray, PatchStride(fAttribs), wedgeAllocCount,
-                            fAttribs);
+    size_t patchStride = fShader->willUseTessellationShaders() ? fShader->vertexStride() * 5
+                                                               : fShader->instanceStride();
 
-    float maxSegments_pow2 = pow2(maxTessellationSegments);
+    PatchWriter patchWriter(target, &fVertexChunkArray, patchStride, wedgeAllocCount, fAttribs);
+
+    int maxFixedCountResolveLevel = GrPathTessellationShader::kMaxFixedCountResolveLevel;
+    int maxSegments;
+    if (fShader->willUseTessellationShaders()) {
+        maxSegments = shaderCaps.maxTessellationSegments();
+    } else {
+        maxSegments = 1 << maxFixedCountResolveLevel;
+    }
+    float maxSegments_pow2 = pow2(maxSegments);
     float maxSegments_pow4 = pow2(maxSegments_pow2);
 
     // If using fixed count, this is the number of segments we need to emit per instance. Always
@@ -152,7 +194,7 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
 
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
-        wangs_formula::VectorXform totalXform(SkMatrix::Concat(shaderMatrix, pathMatrix));
+        wangs_formula::VectorXform totalXform(SkMatrix::Concat(fShader->viewMatrix(), pathMatrix));
         if (fAttribs & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
@@ -181,7 +223,7 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
                                                                  pts,
                                                                  totalXform);
                         if (n4 <= maxSegments_pow4) {
-                            // This quad already fits in "maxTessellationSegments".
+                            // This quad already fits into "maxSegments" tessellation segments.
                             CubicPatch(patchWriter) << QuadToCubic{p0, p1, p2};
                         } else {
                             // Chop until each quad tessellation requires "maxSegments" or fewer.
@@ -202,7 +244,7 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
                                                              *w,
                                                              totalXform);
                         if (n2 <= maxSegments_pow2) {
-                            // This conic already fits in "maxTessellationSegments".
+                            // This conic already fits into "maxSegments" tessellation segments.
                             ConicPatch(patchWriter) << p0 << p1 << p2 << *w;
                         } else {
                             // Chop until each conic tessellation requires "maxSegments" or fewer.
@@ -221,7 +263,7 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
                                                              pts,
                                                              totalXform);
                         if (n4 <= maxSegments_pow4) {
-                            // This cubic already fits in "maxTessellationSegments".
+                            // This cubic already fits into "maxSegments" tessellation segments.
                             CubicPatch(patchWriter) << p0 << p1 << p2 << p3;
                         } else {
                             // Chop until each cubic tessellation requires "maxSegments" or fewer.
@@ -246,76 +288,50 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
         }
     }
 
-    // log16(n^4) == log2(n).
-    // We already chopped curves to make sure none needed a higher resolveLevel than
-    // kMaxFixedResolveLevel.
-    fFixedResolveLevel = std::min(wangs_formula::nextlog16(numFixedSegments_pow4),
-                                  int(kMaxFixedResolveLevel));
-}
+    if (!fShader->willUseTessellationShaders()) {
+        // log16(n^4) == log2(n).
+        // We already chopped curves to make sure none needed a higher resolveLevel than
+        // kMaxFixedCountResolveLevel.
+        int fixedResolveLevel = std::min(wangs_formula::nextlog16(numFixedSegments_pow4),
+                                         maxFixedCountResolveLevel);
+        int numCurveTriangles =
+                GrPathTessellationShader::NumCurveTrianglesAtResolveLevel(fixedResolveLevel);
+        // Emit 3 vertices per curve triangle, plus 3 more for the fan triangle.
+        fFixedIndexCount = numCurveTriangles * 3 + 3;
 
-void PathWedgeTessellator::WriteFixedVertexBuffer(VertexWriter vertexWriter, size_t bufferSize) {
-    SkASSERT(bufferSize >= sizeof(SkPoint));
+        GR_DEFINE_STATIC_UNIQUE_KEY(gFixedCountVertexBufferKey);
 
-    // Start out with the fan point. A negative resolve level indicates the fan point.
-    vertexWriter << -1.f/*resolveLevel*/ << -1.f/*idx*/;
+        fFixedCountVertexBuffer = target->resourceProvider()->findOrMakeStaticBuffer(
+                GrGpuBufferType::kVertex,
+                GrPathTessellationShader::SizeOfVertexBufferForMiddleOutWedges(),
+                gFixedCountVertexBufferKey,
+                GrPathTessellationShader::InitializeVertexBufferForMiddleOutWedges);
 
-    // The rest is the same as for curves.
-    PathCurveTessellator::WriteFixedVertexBuffer(std::move(vertexWriter),
-                                                 bufferSize - sizeof(SkPoint));
-}
+        GR_DEFINE_STATIC_UNIQUE_KEY(gFixedCountIndexBufferKey);
 
-void PathWedgeTessellator::WriteFixedIndexBuffer(VertexWriter vertexWriter, size_t bufferSize) {
-    SkASSERT(bufferSize >= sizeof(uint16_t) * 3);
-
-    // Start out with the fan triangle.
-    vertexWriter << (uint16_t)0 << (uint16_t)1 << (uint16_t)2;
-
-    // The rest is the same as for curves, with a baseIndex of 1.
-    PathCurveTessellator::WriteFixedIndexBufferBaseIndex(std::move(vertexWriter),
-                                                         bufferSize - sizeof(uint16_t) * 3,
-                                                         1);
+        fFixedCountIndexBuffer = target->resourceProvider()->findOrMakeStaticBuffer(
+                GrGpuBufferType::kIndex,
+                GrPathTessellationShader::SizeOfIndexBufferForMiddleOutWedges(),
+                gFixedCountIndexBufferKey,
+                GrPathTessellationShader::InitializeIndexBufferForMiddleOutWedges);
+    }
 }
 
 #if SK_GPU_V1
-
-GR_DECLARE_STATIC_UNIQUE_KEY(gFixedVertexBufferKey);
-GR_DECLARE_STATIC_UNIQUE_KEY(gFixedIndexBufferKey);
-
-void PathWedgeTessellator::prepareFixedCountBuffers(GrResourceProvider* rp) {
-    GR_DEFINE_STATIC_UNIQUE_KEY(gFixedVertexBufferKey);
-
-    fFixedVertexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kVertex,
-                                                    FixedVertexBufferSize(kMaxFixedResolveLevel),
-                                                    gFixedVertexBufferKey,
-                                                    WriteFixedVertexBuffer);
-
-    GR_DEFINE_STATIC_UNIQUE_KEY(gFixedIndexBufferKey);
-
-    fFixedIndexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kIndex,
-                                                   FixedIndexBufferSize(kMaxFixedResolveLevel),
-                                                   gFixedIndexBufferKey,
-                                                   WriteFixedIndexBuffer);
-}
-
-void PathWedgeTessellator::drawTessellated(GrOpFlushState* flushState) const {
-    for (const GrVertexChunk& chunk : fVertexChunkArray) {
-        flushState->bindBuffers(nullptr, nullptr, chunk.fBuffer);
-        flushState->draw(chunk.fCount * 5, chunk.fBase * 5);
+void PathWedgeTessellator::draw(GrOpFlushState* flushState) const {
+    if (fShader->willUseTessellationShaders()) {
+        for (const GrVertexChunk& chunk : fVertexChunkArray) {
+            flushState->bindBuffers(nullptr, nullptr, chunk.fBuffer);
+            flushState->draw(chunk.fCount * 5, chunk.fBase * 5);
+        }
+    } else {
+        SkASSERT(fShader->hasInstanceAttributes());
+        for (const GrVertexChunk& chunk : fVertexChunkArray) {
+            flushState->bindBuffers(fFixedCountIndexBuffer, chunk.fBuffer, fFixedCountVertexBuffer);
+            flushState->drawIndexedInstanced(fFixedIndexCount, 0, chunk.fCount, chunk.fBase, 0);
+        }
     }
 }
-
-void PathWedgeTessellator::drawFixedCount(GrOpFlushState* flushState) const {
-    if (!fFixedVertexBuffer || !fFixedIndexBuffer) {
-        return;
-    }
-    // Emit 3 vertices per curve triangle, plus 3 more for the fan triangle.
-    int fixedIndexCount = (NumCurveTrianglesAtResolveLevel(fFixedResolveLevel) + 1) * 3;
-    for (const GrVertexChunk& chunk : fVertexChunkArray) {
-        flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
-        flushState->drawIndexedInstanced(fixedIndexCount, 0, chunk.fCount, chunk.fBase, 0);
-    }
-}
-
 #endif
 
 }  // namespace skgpu

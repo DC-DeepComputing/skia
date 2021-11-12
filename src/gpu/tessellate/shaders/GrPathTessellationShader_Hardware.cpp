@@ -40,11 +40,6 @@ public:
         constexpr static Attribute kInputPointAttrib{"inputPoint", kFloat2_GrVertexAttribType,
                                                      kFloat2_GrSLType};
         this->setVertexAttributes(&kInputPointAttrib, 1);
-        SkASSERT(this->vertexStride() * 5 == skgpu::PatchStride(fAttribs));
-    }
-
-    int maxTessellationSegments(const GrShaderCaps& shaderCaps) const override {
-        return shaderCaps.maxTessellationSegments();
     }
 
 private:
@@ -180,14 +175,6 @@ public:
         constexpr static Attribute kInputPointAttrib{"inputPoint", kFloat2_GrVertexAttribType,
                                                      kFloat2_GrSLType};
         this->setVertexAttributes(&kInputPointAttrib, 1);
-        SkASSERT(this->vertexStride() * 4 == skgpu::PatchStride(fAttribs));
-    }
-
-    int maxTessellationSegments(const GrShaderCaps& shaderCaps) const override {
-        // This shader tessellates T=0..(1/2) on the first side of the canonical triangle and
-        // T=(1/2)..1 on the second side. This means we get double the max tessellation segments for
-        // the range T=0..1.
-        return shaderCaps.maxTessellationSegments() * 2;
     }
 
 private:
