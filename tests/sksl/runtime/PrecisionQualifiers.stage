@@ -3,6 +3,17 @@ uniform half4 colorRed;
 bool test_scalar_0();
 bool test_vector_0();
 bool test_matrix_0();
+struct MyStruct_0 
+{
+	float hf;
+	half mf;
+	int hi;
+	short mi;
+	float2 hv;
+	short3 mv;
+}
+;
+bool test_struct_0();
 bool test_array_0();
 bool highp_param_0(float value);
 bool mediump_param_0(half value);
@@ -41,6 +52,13 @@ bool test_matrix_0()
 	float4x4 hp4 = float4x4(mp4);
 	return (float2x2(mp2) == hp2 && hp3 == float3x3(mp3)) && float4x4(mp4) == hp4;
 }
+bool test_struct_0()
+{
+	MyStruct_0 a = MyStruct_0(1.0, 2.0, 3, 4, float2(5.0, 6.0), short3(7, 8, 9));
+	MyStruct_0 b = MyStruct_0(1.0, 2.0, 3, 4, float2(5.0, 6.0), short3(7, 8, 9));
+	MyStruct_0 c = MyStruct_0(1.0, 2.0, 3, 4, float2(5.0, 6.0), short3(7, 8, -9));
+	return a == b && b != c;
+}
 bool test_array_0()
 {
 	half mf[1];
@@ -75,5 +93,5 @@ float4 main(float2 coords)
 	green = half4(float4(green * one) + zero);
 	float4 red = float4(colorRed);
 	red = (red + zero) * float4(one);
-	return half4((((((test_scalar_0() && test_vector_0()) && test_matrix_0()) && test_array_0()) && highp_param_0(1.0)) && mediump_param_0(2.0)) && lowp_param_0(3.0) ? float4(green) : red);
+	return half4(((((((test_scalar_0() && test_vector_0()) && test_matrix_0()) && test_array_0()) && test_struct_0()) && highp_param_0(1.0)) && mediump_param_0(2.0)) && lowp_param_0(3.0) ? float4(green) : red);
 }
