@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24b122a0_c7e44e52",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68641097_34b9daf4",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d63c04f_bcd812ea",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-10T21:54:45Z",
       "side": 1,
       "message": "This check is unnecessary",
+      "range": {
+        "startLine": 147,
+        "startChar": 34,
+        "endLine": 147,
+        "endChar": 73
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75275d14_8a5ae763",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "The clip doesn\u0027t seem to be set up correctly -- I only get clears if I check the bounds alone.",
+      "parentUuid": "7d63c04f_bcd812ea",
       "range": {
         "startLine": 147,
         "startChar": 34,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c35bb71d_2232aa6d",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "I passed it down to the DrawContext -- we don\u0027t do premul on the PaintParams and this is a subset of that.",
+      "parentUuid": "d116ba47_f225262e",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c8c0ac9_dddc6911",
         "filename": "experimental/graphite/src/DrawContext.h",
         "patchSetId": 2
@@ -100,6 +172,30 @@
       "writtenOn": "2021-11-10T21:54:45Z",
       "side": 1,
       "message": "SFC has a template so it can have clear() for both SkColor4f and SkPMColor4f. Since graphite is at the drawing phase only, I\u0027d say SkPMColor4f is the key type to take here.",
+      "range": {
+        "startLine": 52,
+        "startChar": 15,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e72e2f93_bbdf00f1",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "The PaintParams we pass down to the other routines have SkColor4f in them, so to be consistent it makes sense to me to do the premul conversion in DrawContext rather than outside of it.",
+      "parentUuid": "4c8c0ac9_dddc6911",
       "range": {
         "startLine": 52,
         "startChar": 15,
@@ -157,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ac3102_0d31615c",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26a5e584_e02837b5",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 97
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dcd0706_8ad347a9",
@@ -194,6 +314,30 @@
       "side": 1,
       "message": "This is temporary, see the comment above.",
       "parentUuid": "4dcd0706_8ad347a9",
+      "range": {
+        "startLine": 47,
+        "startChar": 80,
+        "endLine": 47,
+        "endChar": 99
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7426052e_ef56898f",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T20:01:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5075bb4d_f1bf6742",
       "range": {
         "startLine": 47,
         "startChar": 80,
