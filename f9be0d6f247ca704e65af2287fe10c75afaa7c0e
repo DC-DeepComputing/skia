@@ -52,6 +52,24 @@
       "parentUuid": "4a7e7ebb_7fc89593",
       "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76d87ee5_6e5770cb",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T15:28:29Z",
+      "side": 1,
+      "message": "Ah, good point/catch. It seems like the right answer for struct/array is to catch those and implement them recursively in writeBinaryExpression at the top? This is directly analogous to what we do in other backends (both at the source-level in Metal, and the per-element level in SPIRV I think).\n\nIf we do that, we could structure it to know the type per field as it\u0027s doing the roll-up. The other option is to keep the numberkind on the slot, though I\u0027m looking again, and I don\u0027t know if that will help us there? The values that we\u0027re operating on can be transient, so I don\u0027t think the slot storage is helpful?\n\nRegardless of how that shakes out, I\u0027d still rather not do the string assembly all the time, if we\u0027re just going to discard it. (Even if it means doing redundant work when we do need it...)",
+      "parentUuid": "68577a55_2c3cf0b3",
+      "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
