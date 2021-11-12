@@ -24,6 +24,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e71cb86_ec280086",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:07:21Z",
+      "side": 1,
+      "message": "Right. After you land this, I\u0027m happy to go update the one usage in chrome, and then we can limit ourselves to the newer builder-based impl.",
+      "parentUuid": "dc87b416_4fad8eab",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 59
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2d48f92_61be8357",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:07:21Z",
+      "side": 1,
+      "message": "Wondering about lifetime here - this is going to keep the inputShader alive for (much?) longer, as the builder retains a reference. Do we want to clear it out, after the drawPaint below?",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d4b04b9_0bdba91d",
@@ -41,6 +82,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7098f41_eb32572f",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:07:21Z",
+      "side": 1,
+      "message": "I think just checking for null is fine. Do we even need this? Is the Android API going to leverage this capability?",
+      "parentUuid": "8d4b04b9_0bdba91d",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb40c066_a98708fc",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:07:21Z",
+      "side": 1,
+      "message": "I just changed the API here, so children() returns an SkSpan. If you rebase, count() will no longer compile (it needs to be size()), and you\u0027ll be able to index the span, if you want.",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 62
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc7c12d4_0e0c403a",
@@ -54,6 +136,24 @@
       "writtenOn": "2021-11-11T20:05:44Z",
       "side": 1,
       "message": "do tests need to be guarded with SK_ENABLE_SKSL ifdef?  I doesn\u0027t look like the other tests do.",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3a345e2_a66b8fe9",
+        "filename": "tests/ShaderImageFilterTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:07:21Z",
+      "side": 1,
+      "message": "No, tests always have GPU (+SKSL) enabled.",
+      "parentUuid": "dc7c12d4_0e0c403a",
       "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
