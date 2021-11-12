@@ -22,6 +22,30 @@
       },
       "revId": "4ed3fd1b8bcc0b8147104230fd7ef5f25ed6a001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88317318_2a76e127",
+        "filename": "resources/sksl/runtime/PrecisionQualifiers.rts",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-12T14:00:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b82ce2a1_de9a9b07",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "4ed3fd1b8bcc0b8147104230fd7ef5f25ed6a001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
