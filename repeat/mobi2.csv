@@ -1,0 +1,33 @@
+"test_name","config_name","rail_name","power_mws","loops"
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",30.034557,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",16.076789,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",14.734196,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",174.489342,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",442.303735,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",17.638168,22
+"mobi_reddit.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",19.071049,22
+"mobi_reddit.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",5.601587,22
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",0.558678,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",0.253121,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",0.353303,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",3.687129,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",11.010677,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",0.233206,1216
+"mobi_reddit.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",0.331249,1216
+"mobi_reddit.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",0.085308,1216
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_OLED_uws",8.656119,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_QTM525_uws",2.8938,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_RF_uws",7.004614,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",59.676776,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S1C_uws",157.884646,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_S2A_S3A_uws",4.276247,81
+"mobi_wikipedia.skp_1","8888","power.PPVAR_VPH_PWR_WLAN_uws",9.289087,81
+"mobi_wikipedia.skp_1","8888","power.WCN3998_VDD13 [from PP1304_L2C]_uws",11.905854,81
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_OLED_uws",3.599688,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_QTM525_uws",1.486537,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_RF_uws",1.423556,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws",14.960165,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S1C_uws",48.222053,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_S2A_S3A_uws",1.18861,286
+"mobi_wikipedia.skp_1","gles","power.PPVAR_VPH_PWR_WLAN_uws",1.446907,286
+"mobi_wikipedia.skp_1","gles","power.WCN3998_VDD13 [from PP1304_L2C]_uws",1.275143,286
