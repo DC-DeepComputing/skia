@@ -16,6 +16,24 @@
       "message": "So looks like imagefilter_transformed_image is trying to give us a giant texture. I\u0027m guessing this is another we\u0027re not applying the clip yet issue.",
       "revId": "e539612f0eb2f3b39160c4889aa0a38e6cecbaa8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e717c6e7_1df39d0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-12T14:36:37Z",
+      "side": 1,
+      "message": "Yeah, with the clip set the perspective transform maps into a reasonable texture size. With the full bounds it\u0027s ridiculously huge.",
+      "parentUuid": "035aa42e_a458c19f",
+      "revId": "e539612f0eb2f3b39160c4889aa0a38e6cecbaa8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
