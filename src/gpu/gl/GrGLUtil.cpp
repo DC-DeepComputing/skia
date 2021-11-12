@@ -381,6 +381,12 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
     GrGLDriver driver               = GrGLDriver::kUnknown;
     GrGLDriverVersion driverVersion = GR_GL_DRIVER_UNKNOWN_VER;
 
+    if (1) {
+        SkDebugf("GL_VENDOR  : \"%s\"\n", vendorString  );
+        SkDebugf("GL_RENDERER: \"%s\"\n", rendererString);
+        SkDebugf("GL_VERSION : \"%s\"\n", versionString );
+    }
+
     int major, minor, rev, driverMajor, driverMinor, driverPoint;
     // This is the same on ES and regular GL.
     if (!strcmp(vendorString, "freedreno")) {
@@ -518,6 +524,21 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
                 // Revision is a large number (looks like a source control revision number) that
                 // doesn't fit into the 'patch' bits, so omit it until we need it.
                 driverVersion = GR_GL_DRIVER_VER(driverMajor, driverMinor, 0);
+            }
+        } else if (vendor == GrGLVendor::kARM) {
+            // Example:
+            // OpenGL ES 3.2 v1.r26p0-01rel0.217d2597f6bd19b169343737782e56e3
+            int revision;
+            int n = sscanf(versionString,
+                           "OpenGL ES %d.%d v%d.r%d.p%d",
+                           &major,
+                           &minor,
+                           &driverMajor,
+                           &driverMinor,
+                           &revision);
+            if (n == 5) {
+                driver = GrGLDriver::kARM;
+                driverVersion = GR_GL_DRIVER_VER(driverMajor, driverMinor, revision);
             }
         } else {
             static constexpr char kEmulatorPrefix[] = "Android Emulator OpenGL ES Translator";
