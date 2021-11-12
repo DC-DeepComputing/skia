@@ -149,3 +149,14 @@ bazel_gms_debug:
 	mkdir build
 	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.js build/gm-bindings.js
 	cp ../../bazel-bin/modules/canvaskit/gm-bindings-wasm/gm-bindings.wasm build/gm-bindings.wasm
+
+bazel_canvaskit_debug:
+	# See above note about spawn_strategy
+	bazelisk build :canvaskit-wasm --compilation_mode dbg --spawn_strategy=local \
+		--gpu_backend=gl_backend --with_gl_standard=webgl_standard \
+		--include_codec=jpeg_codec --include_codec=png_codec --include_codec=webp_codec \
+		--include_codec=gif_codec
+	- rm -rf build/
+	mkdir build
+	cp ../../bazel-bin/modules/canvaskit/canvaskit-wasm/canvaskit.js build/canvaskit.js
+	cp ../../bazel-bin/modules/canvaskit/canvaskit-wasm/canvaskit.wasm build/canvaskit.wasm
