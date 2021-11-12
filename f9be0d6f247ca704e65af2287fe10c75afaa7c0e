@@ -70,6 +70,24 @@
       "parentUuid": "68577a55_2c3cf0b3",
       "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab9fa5a3_951945ec",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-12T15:37:24Z",
+      "side": 1,
+      "message": "Oh for sure, wasn\u0027t trying to suggest that this code is ideal. Just something I noticed while pondering the utility of a per-slot NumberKind.",
+      "parentUuid": "76d87ee5_6e5770cb",
+      "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
