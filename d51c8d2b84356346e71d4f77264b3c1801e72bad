@@ -22,6 +22,30 @@
       },
       "revId": "d51c8d2b84356346e71d4f77264b3c1801e72bad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b30527d_7dd1b305",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T18:05:31Z",
+      "side": 1,
+      "message": "If Make fails to run the rule (e.g. the directory doesn\u0027t exist), this prevents the whole rule from failing.",
+      "parentUuid": "3cf2f3de_b0b7c361",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 2,
+        "endChar": 3
+      },
+      "revId": "d51c8d2b84356346e71d4f77264b3c1801e72bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
