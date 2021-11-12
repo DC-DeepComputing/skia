@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a7b2bbc_5fe3c809",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-12T20:05:26Z",
+      "side": 1,
+      "message": "Looks like I had onClipIsWideOpen() default to return false in Device.h; let\u0027s just update that to return true for now, and then this drawPaint() code can get rid of the TODO. \n\nTechnically since all clipping is ignored, clipIsWideOpen returning true is the right default behavior that I should have used to begin with.",
+      "parentUuid": "75275d14_8a5ae763",
+      "range": {
+        "startLine": 147,
+        "startChar": 34,
+        "endLine": 147,
+        "endChar": 73
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d116ba47_f225262e",
         "filename": "experimental/graphite/src/Device.cpp",
         "patchSetId": 2
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "I passed it down to the DrawContext -- we don\u0027t do premul on the PaintParams and this is a subset of that.",
       "parentUuid": "d116ba47_f225262e",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 39
+      },
+      "revId": "857a3f6afd0bfa93ab5011c59dc0c84641bd0309",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1879017b_9d8827b1",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-12T20:05:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c35bb71d_2232aa6d",
       "range": {
         "startLine": 149,
         "startChar": 0,
