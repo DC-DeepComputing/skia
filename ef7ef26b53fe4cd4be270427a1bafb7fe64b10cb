@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7af51b67_ec5763dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17854
+      },
+      "writtenOn": "2021-11-12T01:11:59Z",
+      "side": 1,
+      "message": "CQ+2 requires a vote from a committer",
+      "revId": "ef7ef26b53fe4cd4be270427a1bafb7fe64b10cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
