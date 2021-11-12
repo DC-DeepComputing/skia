@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkStream.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkTArray.h"
@@ -150,7 +151,7 @@ private:
      * Adds sufficient slots to the end of fSlot to hold the passed-in type.
      * All new slots will be initialized to `initialValue`.
      */
-    void addSlotsForType(const Type& type, skvm::Val initialValue);
+    void addSlotsForType(String varName, const Type& type, skvm::Val initialValue, int line);
 
     /**
      * Returns the slot holding v's Val(s). Allocates storage if this is first time 'v' is
@@ -301,6 +302,42 @@ private:
         skvm::I32 fOldConditionMask;
     };
 };
+
+void SkVMDebugInfo::dump(SkWStream* o) const {
+    for (size_t index = 0; index < fSlotInfo.size(); ++index) {
+        const SkVMSlotInfo& info = fSlotInfo[index];
+
+        o->writeText("$");
+        o->writeDecAsText(index);
+        o->writeText(" = ");
+        o->writeText(info.name.c_str());
+        o->writeText(" (");
+        switch (info.number) {
+            case Type::NumberKind::kFloat:      o->writeText("float"); break;
+            case Type::NumberKind::kSigned:     o->writeText("int"); break;
+            case Type::NumberKind::kUnsigned:   o->writeText("uint"); break;
+            case Type::NumberKind::kBoolean:    o->writeText("bool"); break;
+            case Type::NumberKind::kNonnumeric: o->writeText("???"); break;
+        }
+        if (info.rows * info.columns > 1) {
+            o->writeDecAsText(info.columns);
+            if (info.rows != 1) {
+                o->writeText("x");
+                o->writeDecAsText(info.rows);
+            }
+            o->writeText(" : ");
+            o->writeText("slot ");
+            o->writeDecAsText(info.componentIndex + 1);
+            o->writeText("/");
+            o->writeDecAsText(info.rows * info.columns);
+        }
+        o->writeText(", L");
+        o->writeDecAsText(info.line);
+        o->writeText(")");
+        o->newline();
+    }
+    o->newline();
+}
 
 static Type::NumberKind base_number_kind(const Type& type) {
     if (type.typeKind() == Type::TypeKind::kMatrix || type.typeKind() == Type::TypeKind::kVector) {
@@ -467,19 +504,28 @@ void SkVMGenerator::writeToSlot(int slot, skvm::Val value) {
     fSlots[slot].val = value;
 }
 
-void SkVMGenerator::addSlotsForType(const Type& type, skvm::Val initialValue) {
+void SkVMGenerator::addSlotsForType(String varName,
+                                    const Type& type,
+                                    skvm::Val initialValue,
+                                    int line) {
     switch (type.typeKind()) {
         case Type::TypeKind::kArray: {
             int nslots = type.columns();
             const Type& elemType = type.componentType();
             for (int slot = 0; slot < nslots; ++slot) {
-                this->addSlotsForType(elemType, initialValue);
+                this->addSlotsForType(varName + "[" + to_string(slot) + "]",
+                                      elemType,
+                                      initialValue,
+                                      line);
             }
             break;
         }
         case Type::TypeKind::kStruct: {
             for (const Type::Field& field : type.fields()) {
-                this->addSlotsForType(*field.fType, initialValue);
+                this->addSlotsForType(varName + "." + field.fName,
+                                      *field.fType,
+                                      initialValue,
+                                      line);
             }
             break;
         }
@@ -492,7 +538,21 @@ void SkVMGenerator::addSlotsForType(const Type& type, skvm::Val initialValue) {
         case Type::TypeKind::kMatrix: {
             Type::NumberKind numberKind = type.componentType().numberKind();
             int nslots = type.slotCount();
+
             for (int slot = 0; slot < nslots; ++slot) {
+                if (fDebugInfo) {
+                    // Add debug info for this slot.
+                    SkVMSlotInfo slotInfo;
+                    slotInfo.name = varName;
+                    slotInfo.columns = type.columns();
+                    slotInfo.rows = type.rows();
+                    slotInfo.componentIndex = slot;
+                    slotInfo.number = numberKind;
+                    slotInfo.line = line;
+                    fDebugInfo->fSlotInfo.push_back(std::move(slotInfo));
+                }
+
+                // Add the new slot.
                 fSlots.push_back(Slot{initialValue, numberKind});
             }
             break;
@@ -508,8 +568,18 @@ size_t SkVMGenerator::getSlot(const Variable& v) {
 
     size_t slot   = fSlots.size(),
            nslots = v.type().slotCount();
+
+    // Reserve slot space for this new variable.
     fSlots.reserve(slot + nslots);
-    this->addSlotsForType(v.type(), fBuilder->splat(0.0f).id);
+
+    if (fDebugInfo) {
+        // Our debug slot-info table should match the real slot table. Confirm that nothing's
+        // changed behind our back, then reserve slot space here as well.
+        SkASSERT(fSlots.size() == fDebugInfo->fSlotInfo.size());
+        fDebugInfo->fSlotInfo.reserve(slot + nslots);
+    }
+
+    this->addSlotsForType(String(v.name()), v.type(), fBuilder->splat(0.0f).id, v.fLine);
     SkASSERTF(fSlots.size() == slot + nslots,
               "addSlotsForType wrong for %s", v.type().description().c_str());
 
