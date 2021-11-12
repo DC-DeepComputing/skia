@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f70fb812_50cc815d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-12T19:47:11Z",
+      "side": 1,
+      "message": "was empty?",
+      "range": {
+        "startLine": 7,
+        "startChar": 67,
+        "endLine": 7,
+        "endChar": 73
+      },
+      "revId": "ff8235f6939ced3dc0a45891fb26f88df96f5be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cd99a88_ca7a302a",
+        "filename": "src/gpu/ops/PathInnerTriangulateOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-12T19:47:11Z",
+      "side": 1,
+      "message": "Can we lift this outside the loop?",
+      "range": {
+        "startLine": 440,
+        "startChar": 12,
+        "endLine": 440,
+        "endChar": 22
+      },
+      "revId": "ff8235f6939ced3dc0a45891fb26f88df96f5be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
