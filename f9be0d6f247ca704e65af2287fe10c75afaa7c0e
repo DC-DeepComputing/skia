@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e383eb21_7e1b0298",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-12T14:16:52Z",
+      "side": 1,
+      "message": "Can we restructure this to avoid all of the overhead if we\u0027re not emitting debug info? I\u0027m mostly worried about the heap traffic assembling all of these strings that are going to be discarded anyway.\n\nGiven that we have numberkind in the slot map now, it seems like we could remove it from the slots themselves? And if we do that, we can go back to simply expanding the fSlots with a bunch of copies of initialValue - then all of the work in this recursive function is only relevant when the debug info is present, so we could skip the entire function?",
+      "revId": "f9be0d6f247ca704e65af2287fe10c75afaa7c0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
