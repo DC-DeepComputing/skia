@@ -368,6 +368,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip("_ test _ ReplaceSurfaceBackendTexture")
 			skip("_ test _ SurfaceAttachStencil_Gpu")
 			skip("_ test _ SurfaceWrappedWithRelease_Gpu")
+			skip("_ test _ SurfacePartialDraw_Gpu")
+			skip("_ test _ SurfaceClear_Gpu")
+			skip("_ test _ SurfaceNoCanvas_Gpu")
+			skip("_ test _ SurfaceBudget")
+			skip("_ test _ SurfacepeekTexture_Gpu")
+			skip("_ test _ TestGpuFactory")
 		}
 
 		if b.extraConfig("CommandBuffer") {
@@ -1114,7 +1120,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// skia:10247
 		match = append(match, "~VkPrepareForExternalIOQueueTransitionTest")
 	}
-
+        if b.model("Spin513") {
+		match = append(match, "~Surface")
+        }
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
 		args = append(args, skipped...)

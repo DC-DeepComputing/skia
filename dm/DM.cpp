@@ -1478,6 +1478,19 @@ int main(int argc, char** argv) {
 #endif
     CommandLineFlags::Parse(argc, argv);
 
+    FLAGS_skip.reset();
+
+    FLAGS_match.reset();
+    FLAGS_match.append("SurfacePartialDraw_Gpu");
+    FLAGS_match.append("SurfaceClear_Gpu");
+    FLAGS_match.append("SurfaceNoCanvas_Gpu");
+    FLAGS_match.append("SurfaceBudget");
+    FLAGS_match.append("SurfacepeekTexture_Gpu");
+    FLAGS_match.append("TestGpuFactory");
+    FLAGS_match.append("SrcSrcOverBatchTest");
+
+
+
     initializeEventTracingForTools();
 
 #if !defined(SK_BUILD_FOR_GOOGLE3) && defined(SK_BUILD_FOR_IOS)
