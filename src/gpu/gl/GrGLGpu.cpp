@@ -1259,6 +1259,9 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                                         GR_GL_COLOR_ATTACHMENT0,
                                         GR_GL_RENDERBUFFER,
                                         rtIDs->fMSColorRenderbufferID));
+// See skbug.com/12644
+#if defined(__has_feature)
+#if !__has_feature(thread_sanitizer)
         if (!this->glCaps().skipErrorChecks()) {
             GrGLenum status;
             GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
@@ -1266,15 +1269,18 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
                 return false;
             }
         }
+#endif
         rtIDs->fTotalMemorySamplesPerPixel += sampleCount;
     }
-
     this->bindFramebuffer(GR_GL_FRAMEBUFFER, rtIDs->fSingleSampleFBOID);
     GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER,
                                  GR_GL_COLOR_ATTACHMENT0,
                                  desc.fTarget,
                                  desc.fID,
                                  0));
+// See skbug.com/12644
+#if defined(__has_feature)
+#if !__has_feature(thread_sanitizer)
     if (!this->glCaps().skipErrorChecks()) {
         GrGLenum status;
         GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
@@ -1282,6 +1288,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
             return false;
         }
     }
+#endif
     ++rtIDs->fTotalMemorySamplesPerPixel;
 
     // We did it!
