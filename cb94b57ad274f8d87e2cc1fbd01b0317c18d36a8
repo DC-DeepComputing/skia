@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a6a697_7f809778",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T14:12:05Z",
+      "side": 1,
+      "message": "Addressed Yegor\u0027s feedback in https://skia-review.googlesource.com/c/skia/+/470736",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3ccfb02_8e94d670",
@@ -14,6 +31,24 @@
       "writtenOn": "2021-11-11T18:51:56Z",
       "side": 1,
       "message": "The other file uses Unpremul. Flutter uses Premul everywhere, so this should be consistent. However, I think I\u0027d prefer that this is configurable.",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757d2f9f_a841599b",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T14:12:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3ccfb02_8e94d670",
       "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -35,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35f945b4_01561f1c",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T14:12:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e190e4da_06fb9a36",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9093a39_e0274e15",
@@ -52,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a939b6a7_ed7d7c72",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T14:12:05Z",
+      "side": 1,
+      "message": "Done, although colorType is ignored for now (I\u0027m not entirely sure how to properly plug that into the texImage2D function).",
+      "parentUuid": "c9093a39_e0274e15",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b484bed_45e2abbe",
@@ -65,6 +136,24 @@
       "writtenOn": "2021-11-11T18:51:56Z",
       "side": 1,
       "message": "ditto: Flutter uses premul",
+      "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e784e9_c3583478",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 16
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-12T14:12:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b484bed_45e2abbe",
       "revId": "cb94b57ad274f8d87e2cc1fbd01b0317c18d36a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
