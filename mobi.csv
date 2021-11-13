@@ -1,0 +1,273 @@
+test_name,config_name,rail_name,power_mws,loops,total_power
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,3.86467,31,119.804781
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.153156,31,97.747836
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,7.188865,31,222.854813
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,45.948242,31,1424.39549
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,118.514816,31,3673.959295
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,2.998972,31,92.968127
+mobi_amazon.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,6.247912,31,193.685259
+mobi_amazon.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,2.101658,31,65.151394
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,1.127338,173,195.029441
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.794916,173,137.520408
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.326595,173,56.500984
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,5.437896,173,940.756093
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,20.738192,173,3587.707188
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.670452,173,115.988113
+mobi_amazon.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.094324,173,16.318137
+mobi_amazon.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.015074,173,2.607778
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,7.053424,30,211.602713
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.336636,30,100.099069
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,2.311328,30,69.339837
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,22.647758,30,679.432739
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,92.935867,30,2788.07601
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,2.725965,30,81.77896
+mobi_baidu.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,2.966396,30,88.99189
+mobi_baidu.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.755325,30,22.659756
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.849394,172,146.095701
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.662461,172,113.943265
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.763593,172,131.338028
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,5.754143,172,989.712657
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,22.260665,172,3828.834404
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.386355,172,66.453077
+mobi_baidu.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.313384,172,53.902016
+mobi_baidu.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.100573,172,17.298568
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,9.422385,20,188.447698
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,5.04871,20,100.974193
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,5.63321,20,112.664206
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,50.909151,20,1018.183021
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,158.337869,20,3166.757381
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,3.051664,20,61.033271
+mobi_booking.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.399114,20,27.982277
+mobi_booking.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,3.358815,20,67.176305
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,2.125702,101,214.695871
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,1.123628,101,113.48643
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,1.768187,101,178.586873
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,12.543409,101,1266.884288
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,41.207518,101,4161.959279
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.223244,101,123.547605
+mobi_booking.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,1.952782,101,197.23094
+mobi_booking.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.534857,101,54.020546
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,10.16675,21,213.501753
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,7.889751,21,165.684773
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,3.909785,21,82.105476
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,49.087982,21,1030.847612
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,146.906726,21,3085.041246
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,5.849043,21,122.829912
+mobi_capitalvolkswagen.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.020256,21,21.425366
+mobi_capitalvolkswagen.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.485497,21,10.195431
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,6.404057,56,358.627177
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,1.083722,56,60.688408
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,4.001551,56,224.086836
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,22.428233,56,1255.981044
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,69.03596,56,3866.013764
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.571973,56,88.030512
+mobi_capitalvolkswagen.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,3.783261,56,211.862597
+mobi_capitalvolkswagen.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.780055,56,99.683065
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,4.227404,26,109.912493
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,2.109235,26,54.840109
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,4.104736,26,106.723148
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,35.83285,26,931.654088
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,113.738163,26,2957.192244
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,3.089569,26,80.328794
+mobi_cnn.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,5.903243,26,153.484317
+mobi_cnn.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.817741,26,47.261272
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.449847,224,100.765617
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.723975,224,162.170371
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.323232,224,72.403942
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,5.649964,224,1265.592036
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,14.659966,224,3283.83244
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.568792,224,127.40946
+mobi_cnn.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.097364,224,21.809524
+mobi_cnn.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.024275,224,5.437596
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,7.901984,27,213.353581
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.000456,27,81.01232
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,3.410389,27,92.080498
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,75.055104,27,2026.487807
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,115.249657,27,3111.740752
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.867142,27,50.412846
+mobi_cnnarticle.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,7.142513,27,192.847839
+mobi_cnnarticle.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.812075,27,48.926032
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.265403,604,160.303214
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.223226,604,134.828429
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.327545,604,197.837197
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,1.299592,604,784.953682
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,5.281462,604,3190.003091
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.062416,604,37.699201
+mobi_cnnarticle.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.150758,604,91.057759
+mobi_cnnarticle.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.040632,604,24.541893
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,3.767285,16,60.276558
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,8.134244,16,130.147911
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,7.937751,16,127.004016
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,112.443844,16,1799.10151
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,153.230881,16,2451.694091
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,5.523939,16,88.383023
+mobi_deviantart.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.337599,16,21.401588
+mobi_deviantart.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.268225,16,4.291602
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,1.531578,135,206.763037
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.784411,135,105.895524
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.724098,135,97.753295
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,10.514746,135,1419.490757
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,25.368567,135,3424.756557
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.324307,135,43.781425
+mobi_deviantart.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.781288,135,105.473837
+mobi_deviantart.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.252997,135,34.154553
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,10.421641,21,218.854457
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,6.361304,21,133.587385
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,3.251936,21,68.290661
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,56.914139,21,1195.196914
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,108.675994,21,2282.195868
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.70998,21,35.909584
+mobi_facebook.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.982083,21,41.623741
+mobi_facebook.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,3.037429,21,63.786003
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.638908,490,313.065141
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.188516,490,92.372726
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.189805,490,93.004386
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,2.653114,490,1300.026095
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,6.594515,490,3231.312407
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.281748,490,138.056494
+mobi_facebook.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.413691,490,202.708578
+mobi_facebook.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.120118,490,58.857671
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,10.169529,41,416.950693
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,0.72671,41,29.795108
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,1.859632,41,76.244931
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,34.938239,41,1432.467797
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,66.182321,41,2713.475177
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,3.489432,41,143.066701
+mobi_forecastio.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,4.335429,41,177.752606
+mobi_forecastio.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.443187,41,59.170661
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,1.053713,223,234.977928
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.541593,223,120.775171
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.595463,223,132.788325
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,3.388862,223,755.716325
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,17.762552,223,3961.048998
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.504971,223,112.608566
+mobi_forecastio.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.594286,223,132.525678
+mobi_forecastio.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.231407,223,51.603665
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,10.500949,10,105.009493
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,7.107014,10,71.070137
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,12.412331,10,124.123311
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,92.624838,10,926.248377
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,238.993651,10,2389.936509
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,6.967638,10,69.676383
+mobi_googlenews.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,19.241723,10,192.417234
+mobi_googlenews.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,5.731832,10,57.318321
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.424683,344,146.090814
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.258455,344,88.908453
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.01025,344,3.525896
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,2.497553,344,859.158342
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,10.247476,344,3525.131742
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.070609,344,24.289507
+mobi_googlenews.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.069726,344,23.985888
+mobi_googlenews.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.014952,344,5.143332
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,5.787767,45,260.449508
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,0.67667,45,30.450153
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,2.680718,45,120.632324
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,25.220706,45,1134.931781
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,68.297636,45,3073.393633
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.325894,45,59.665233
+mobi_googlesearch.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,0.657992,45,29.609638
+mobi_googlesearch.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.169354,45,7.620908
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,1.441376,194,279.627
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.6598,194,128.001216
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.53155,194,103.120706
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,8.288756,194,1608.018704
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,17.372458,194,3370.256791
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.778576,194,151.043785
+mobi_googlesearch.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.489886,194,95.037912
+mobi_googlesearch.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.253547,194,49.188177
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,22.206154,7,155.443079
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,17.584657,7,123.092596
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,16.624282,7,116.369972
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,86.063659,7,602.44561
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,384.751419,7,2693.25993
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,20.809169,7,145.664185
+mobi_reddit.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.178281,7,8.247966
+mobi_reddit.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.16494,7,8.15458
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.605873,364,220.537948
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.204767,364,74.53532
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.281135,364,102.333273
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,2.947197,364,1072.779771
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,11.182912,364,4070.580024
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.074324,364,27.054108
+mobi_reddit.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.600828,364,218.701432
+mobi_reddit.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.177426,364,64.583192
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,5.655591,26,147.045374
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.001578,26,78.041034
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,5.110565,26,132.874686
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,38.981347,26,1013.515012
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,115.531796,26,3003.826688
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.700758,26,44.21972
+mobi_slashdot.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,6.219732,26,161.713032
+mobi_slashdot.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,3.534662,26,91.901212
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.595819,152,90.564516
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.877528,152,133.384234
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.720666,152,109.541244
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,8.429475,152,1281.280232
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,23.772165,152,3613.36906
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.563737,152,85.688047
+mobi_slashdot.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.827066,152,125.714091
+mobi_slashdot.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.23399,152,35.566548
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,8.230948,27,222.235607
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,1.461398,27,39.457735
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,5.540781,27,149.601091
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,30.338224,27,819.132059
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,124.074104,27,3350.000814
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,5.072147,27,136.947972
+mobi_techcrunch.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,7.465508,27,201.568723
+mobi_techcrunch.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,2.213919,27,59.775806
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.590337,237,139.909782
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.155104,237,36.75955
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,1.065365,237,252.491494
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,5.02603,237,1191.169074
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,14.464861,237,3428.17217
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.565634,237,134.055345
+mobi_techcrunch.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.08475,237,20.08585
+mobi_techcrunch.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.269257,237,63.813911
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,96.840076,3,290.520228
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,28.810599,3,86.431796
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,53.094364,3,159.283092
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,380.941061,3,1142.823183
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,973.939084,3,2921.817252
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,72.038429,3,216.115286
+mobi_theverge.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,85.705889,3,257.117667
+mobi_theverge.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,23.167328,3,69.501983
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,1.041679,222,231.252645
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.514218,222,114.156323
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.660449,222,146.619642
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,4.623239,222,1026.359049
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,17.086766,222,3793.262158
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.043112,222,9.570879
+mobi_theverge.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.27169,222,60.315235
+mobi_theverge.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.104433,222,23.18418
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,11.186911,25,279.672774
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.666338,25,91.658442
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,3.423258,25,85.581457
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,47.123704,25,1178.092596
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,156.760206,25,3919.005154
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,2.176752,25,54.418793
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,1.391865,25,34.796635
+mobi_wikipedia.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.412731,25,10.31827
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,2.789494,93,259.422952
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.974175,93,90.598312
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.732127,93,68.087819
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,10.706086,93,995.665996
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,39.759818,93,3697.663029
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.265419,93,117.683946
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,1.526684,93,141.981583
+mobi_wikipedia.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.4887,93,45.449055
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,9.87717,23,227.174912
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,5.284701,23,121.548112
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,6.000977,23,138.022464
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,42.481136,23,977.066126
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,129.338808,23,2974.792582
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,3.534559,23,81.294846
+mobi_youtube.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,5.778032,23,132.894741
+mobi_youtube.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,1.686823,23,38.796926
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,0.310126,340,105.442689
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.274575,340,93.35543
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.475127,340,161.543193
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,3.271544,340,1112.325098
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,9.156154,340,3113.092321
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,0.135864,340,46.193824
+mobi_youtube.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,0.040327,340,13.7111
+mobi_youtube.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.031024,340,10.548163
