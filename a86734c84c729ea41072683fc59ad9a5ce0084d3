@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "225c5e4f_d70f5cb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-13T00:26:55Z",
+      "side": 1,
+      "message": "Just an update, based on our discussion on Friday and leaning more heavily on RenderStep directly to represent that part of the GraphicsPipelineDesc, I\u0027m working on building out the RenderStep API so that it can be used both in CommandBufferTest and in DrawPass with a writer-like API that will map well to the PatchWriter system that Chris\u0027 tessellation uses.  When that\u0027s done, it\u0027ll be easy to migrate the tests and MSL over to the RenderStep, and then rebase this change on to that.\n\nThe end result will be that this change focuses mostly on tackling the paint params/blob side of the graphics pipeline desc, and everything currently in the CL that moved vertex shaders and attributes around will be moot.",
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55c0ed01_68378c70",
