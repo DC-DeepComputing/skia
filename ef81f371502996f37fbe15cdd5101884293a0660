@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "960f222c_3e426acd",
+        "filename": "gm/runtimeimagefilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-13T00:51:30Z",
+      "side": 1,
+      "message": "I see, so the old hidden factory only supported a runtime shader that had one child, and that was always late bound to the IF input.",
+      "parentUuid": "9f0acfbb_6149d8e8",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 27
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c31e368_28f03392",
@@ -155,6 +179,30 @@
       "side": 1,
       "message": "That\u0027s my plan, yes.",
       "parentUuid": "78111f4c_602bea4c",
+      "range": {
+        "startLine": 60,
+        "startChar": 21,
+        "endLine": 60,
+        "endChar": 45
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7baba153_32faa37c",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-13T00:51:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3615be65_b79bf9ee",
       "range": {
         "startLine": 60,
         "startChar": 21,
