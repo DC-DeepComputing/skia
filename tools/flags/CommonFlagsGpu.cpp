@@ -76,6 +76,8 @@ static GpuPathRenderers get_named_pathrenderers_flags(const char* name) {
 }
 
 static GpuPathRenderers collect_gpu_path_renderers_from_flags() {
+    return GpuPathRenderers::kTriangulating;
+
     if (FLAGS_pr.isEmpty()) {
         return GpuPathRenderers::kDefault;
     }
