@@ -1,5 +1,5 @@
 # https://github.com/bazelbuild/bazel-skylib/blob/main/rules/common_settings.bzl
-load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag", skylib_bool_flag = "bool_flag")
 
 # Forked from https://github.com/bazelbuild/bazel-skylib/blob/main/rules/common_settings.bzl
 BuildSettingInfo = provider(fields = ["values"])
@@ -67,3 +67,27 @@ def string_flag_with_values(flag_name, values, default = "", multiple = False):
                 ":" + flag_name: v,
             },
         )
+
+# bool_flag is a Bazel Macro that defines a boolean flag with the given name two config_settings,
+# one for True, one for False. Reminder that Bazel has special syntax for unsetting boolean flags,
+# but this does not work well with aliases.
+# https://docs.bazel.build/versions/main/skylark/config.html#using-build-settings-on-the-command-line
+# Thus it is best to define both an "enabled" alias and a "disabled" alias.
+def bool_flag(flag_name, default = True):
+    skylib_bool_flag(name = flag_name, build_setting_default = default)
+
+    native.config_setting(
+        name = flag_name + "_true",
+        flag_values = {
+            # The value must be a string, but it will be parsed to a boolean
+            # https://docs.bazel.build/versions/main/skylark/config.html#build-settings-and-select
+            ":" + flag_name: "True",
+        },
+    )
+
+    native.config_setting(
+        name = flag_name + "_false",
+        flag_values = {
+            ":" + flag_name: "False",
+        },
+    )
