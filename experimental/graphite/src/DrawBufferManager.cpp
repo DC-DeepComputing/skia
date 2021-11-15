@@ -9,6 +9,7 @@
 
 #include "experimental/graphite/src/Buffer.h"
 #include "experimental/graphite/src/CommandBuffer.h"
+#include "experimental/graphite/src/GraphiteUtils.h"
 #include "experimental/graphite/src/ResourceProvider.h"
 
 namespace skgpu {

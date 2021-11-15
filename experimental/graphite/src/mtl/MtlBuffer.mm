@@ -7,6 +7,7 @@
 
 #include "experimental/graphite/src/mtl/MtlBuffer.h"
 
+#include "experimental/graphite/src/GraphiteUtils.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 
 namespace skgpu::mtl {
