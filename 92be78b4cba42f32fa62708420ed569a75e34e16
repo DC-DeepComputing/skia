@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de070a2f_6e95babd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18400
+      },
+      "writtenOn": "2021-11-15T20:51:55Z",
+      "side": 1,
+      "message": "WIP -- I had to comment out some tests/hacks to \u0027relax\u0027 the idea that contourmeasure would handle a zero-length contour...\n\nNot sure if this is the right approach, but it makes my new gm work so far...",
+      "revId": "92be78b4cba42f32fa62708420ed569a75e34e16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
