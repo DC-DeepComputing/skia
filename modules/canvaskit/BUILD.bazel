@@ -1,5 +1,5 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary")
 load("@emsdk//emscripten_toolchain:wasm_rules.bzl", "wasm_cc_binary")
+load("//bazel/common_config_settings:defs.bzl", "bool_flag")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -51,11 +51,6 @@ cc_binary(
         "gm_bindings.cpp",
         ":hdrs",
         "//gm:gms",  # Required for the registry to work
-        "//src/ports:default_global_init",
-        "//src/ports:fontmgr",
-        "//src/ports:malloc",
-        "//src/ports:skdebug",
-        "//src/ports:skia_image_generator",
     ],
     additional_linker_inputs = ["gm.js"],
     linkopts = select({
@@ -84,7 +79,6 @@ wasm_cc_binary(
 )
 
 CK_DEFINES = [
-    "SK_NO_FONTS",  #TODO(kjlubick)
     "SK_DISABLE_LEGACY_SHADERCONTEXT",
 ] + select({
     "//bazel/common_config_settings:gl_backend": [
@@ -94,6 +88,9 @@ CK_DEFINES = [
     "//conditions:default": [
         "SK_SUPPORT_GPU=0",
     ],
+}) + select({
+    ":enable_fonts_true": [],
+    ":enable_fonts_false": ["SK_NO_FONTS"],
 })
 
 CK_OPTS = BASE_LINKOPTS + [
@@ -134,11 +131,6 @@ cc_binary(
     srcs = [
         "canvaskit_bindings.cpp",
         ":hdrs",
-        "//src/ports:default_global_init",
-        "//src/ports:fontmgr",
-        "//src/ports:malloc",
-        "//src/ports:skdebug",
-        "//src/ports:skia_image_generator",
     ],
     additional_linker_inputs = [
         "color.js",
@@ -161,4 +153,9 @@ cc_binary(
 wasm_cc_binary(
     name = "canvaskit-wasm",
     cc_target = ":canvaskit",
+)
+
+bool_flag(
+    default = True,
+    flag_name = "enable_fonts",
 )
