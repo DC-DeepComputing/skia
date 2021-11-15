@@ -175,10 +175,21 @@ def create_asset(chrome_src_path, browser_executable, target_dir,
       '-w', new_skps_dir,
       '--skps', old_skps_dir,
       '--src', 'skp'])
-  for f in os.listdir(new_skps_dir):
+  print('DEBUGGING1')
+  for f in os.listdir(os.path.join(new_skps_dir)):
+    print(f)
+  print('DEBUGGING2')
+  for f in os.listdir(os.path.join(new_skps_dir, 'skp')):
+    print(f)
+  print('DEBUGGING3')
+  for f in os.listdir(os.path.join(new_skps_dir, 'skp', 'skp')):
+    print(f)
+  for f in os.listdir(os.path.join(new_skps_dir, 'skp', 'skp')):
     if f.endswith('.skp'):
+      print('COPYING SOMETHING')
+      print(os.path.join(new_skps_dir, f))
       shutil.copyfile(
-          os.path.join(new_skps_dir, f), os.path.join(target_dir, f))
+          os.path.join(new_skps_dir, 'skp', f), os.path.join(target_dir, f))
   shutil.rmtree(old_skps_dir)
   shutil.rmtree(new_skps_dir)
 
