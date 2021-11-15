@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48aecd6c_d03b1190",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-15T22:26:40Z",
+      "side": 0,
+      "message": "In the new use case the dst really wants to be the GP\u0027s output color (which becomes the input color for the blender FP inserted in skpaint_to_grpaint).\n\nWe weren\u0027t also inserting this wrapper in the other implementation of this virtual, SkRuntimeBlender::asFragmentProcessor. It seemed to that these should be consistent.\n\nIt seemed like this was meant to be used in cases where a blender appears as a child effect in a FP tree. So I moved it into the childFP traversal in SkRuntimeEffect\u0027s make_fp_tree.\n\nAll that said, I\u0027m not sure if there is a better alternative.",
+      "range": {
+        "startLine": 80,
+        "startChar": 51,
+        "endLine": 80,
+        "endChar": 70
+      },
+      "revId": "7b64e138b59f57c595d4d35364ba3329b59cf64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
