@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d7ba58_aceaa459",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-15T20:28:43Z",
+      "side": 1,
+      "message": "This is a fairly big hammer, but it seems to be the most reasonable one, actually.",
+      "revId": "138288956829a04cb3db7e9c3dd9a9ff5024377c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
