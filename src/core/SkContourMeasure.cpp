@@ -415,7 +415,8 @@ SkContourMeasure* SkContourMeasureIter::Impl::buildSegments() {
         return nullptr;
     }
     if (fSegments.count() == 0) {
-        return nullptr;
+        //        return nullptr;
+        return SkContourMeasure::SinglePoint(fPts[0]);
     }
 
     if (haveSeenClose) {
@@ -581,6 +582,18 @@ bool SkContourMeasure::getPosTan(SkScalar distance, SkPoint* pos, SkVector* tang
     }
 
     const SkScalar length = this->length();
+
+    // handle the single-point contour case
+    if (length == 0) {
+        if (pos) {
+            *pos = fPts[0];
+        }
+        if (tangent) {
+            *tangent = {1, 0};    // we have no "real" tangent, so just return 1,0
+        }
+        return true;
+    }
+
     SkASSERT(length > 0 && fSegments.count() > 0);
 
     // pin the distance to a legal range

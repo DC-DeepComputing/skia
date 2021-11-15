@@ -327,3 +327,30 @@ DEF_TEST(contour_measure, reporter) {
 
     test_shrink(reporter);
 }
+
+DEF_TEST(contour_measure_single_point, reporter) {
+    const SkPoint pos[] = {
+        {0, 0}, {1, 1},
+    };
+
+    SkPath path;
+    for (const auto& p : pos) {
+        path.moveTo(p).rLineTo(0, 0);
+    }
+
+    SkContourMeasureIter fact(path, false);
+
+    for (const auto& p : pos) {
+        auto cm = fact.next();
+
+        REPORTER_ASSERT(reporter, cm != nullptr);
+        REPORTER_ASSERT(reporter, cm->length() == 0);
+
+        SkPoint pt, tn;
+        bool success = cm->getPosTan(0, &pt, &tn);
+        REPORTER_ASSERT(reporter, success);
+        REPORTER_ASSERT(reporter, pt == p);
+//        REPORTER_ASSERT(reporter, tn == SkPoint{1, 0});
+    }
+    REPORTER_ASSERT(reporter, fact.next() == nullptr);
+}
