@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1852cd9f_73a5fe7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-15T22:02:09Z",
+      "side": 1,
+      "message": "It looks like our wrapper around strtoull assumes that any parse failure means the integer overflowed. So `08` will trigger that (the lexer\u0027s regex allows it). Might be nice to test that case, though?",
+      "revId": "b09c6b1c645a6c3a030700f4b26def6cecae99f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
