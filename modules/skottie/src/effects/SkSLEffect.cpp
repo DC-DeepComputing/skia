@@ -99,28 +99,31 @@ public:
 
 private:
     void onSync() override {
-        this->node()->setShader(buildEffectShader());
+        sk_sp<SkData> uniformData = buildUniformData();
+        if (nullptr == uniformData) {
+            return;
+        }
+        sk_sp<SkShader> shader = fEffect->makeShader(uniformData, {/* TODO: child support */}, &SkMatrix::I(), false);
+        this->node()->setShader(shader);
     }
 
-    sk_sp<SkShader> buildEffectShader() const {
+    sk_sp<SkData> buildUniformData() const {
         if (!fEffect) {
             return nullptr;
         }
-        // TODO: consider dumping builder and work with lower level API
-        SkRuntimeShaderBuilder builder = SkRuntimeShaderBuilder(fEffect);
+        sk_sp<SkData> uniformData = SkData::MakeFromMalloc(sk_malloc_canfail(fEffect->uniformSize()),
+                                                           fEffect->uniformSize());
+        if (nullptr == uniformData->data()) {
+            return nullptr;
+        }
         for (const auto& uniform : fUniforms) {
             const auto& name = std::get<0>(uniform);
             const auto& data = std::get<1>(uniform);
             auto metadata = fEffect->findUniform(name.c_str());
-            // TODO: build SkData from SkRuntimeEffect::Uniform data
-            switch (metadata->type) {
-                case SkRuntimeEffect::Uniform::Type::kFloat:
-                    builder.uniform(name.c_str()) = data->at(0); break;
-                default:
-                    printf("!!! %s\n", "uniform data type not supported");
-            }
+            auto src = reinterpret_cast<uint8_t*>(uniformData->writable_data()) + metadata->offset;
+            memcpy(reinterpret_cast<void*>(src), &data->at(0), data->size() * sizeof(float));
         }
-        return builder.makeShader(&SkMatrix::I(), false);
+        return uniformData;
     }
     sk_sp<SkRuntimeEffect> fEffect;
     std::vector<std::tuple<SkString, std::unique_ptr<VectorValue>>> fUniforms;
