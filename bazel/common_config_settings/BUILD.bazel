@@ -103,6 +103,16 @@ string_flag_with_values(
 )
 
 string_flag_with_values(
+    flag_name = "include_fontmgr",
+    multiple = True,
+    values = [
+        "custom_directory_fontmgr",
+        "custom_embedded_fontmgr",
+        "custom_empty_fontmgr",
+    ],
+)
+
+string_flag_with_values(
     flag_name = "include_codec",
     multiple = True,
     values = [
