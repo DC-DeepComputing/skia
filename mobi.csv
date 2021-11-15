@@ -1,0 +1,17 @@
+test_name,config_name,rail_name,power_mws,loops,total_power
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_OLED_uws,5.47805,24,131.473212
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_QTM525_uws,3.183268,24,76.398422
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_RF_uws,9.323161,24,223.755852
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,59.01954,24,1416.468967
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S1C_uws,136.903372,24,3285.680933
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_S2A_S3A_uws,2.555553,24,61.333278
+mobi_wikipedia.skp_1,8888,power.PPVAR_VPH_PWR_WLAN_uws,0.787422,24,18.898135
+mobi_wikipedia.skp_1,8888,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.411796,24,9.883095
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_OLED_uws,2.621657,94,246.435745
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_QTM525_uws,0.825856,94,77.630474
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_RF_uws,0.731213,94,68.734028
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S1A_S9A_S10A_uws,9.633887,94,905.585409
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S1C_uws,36.73891,94,3453.457538
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_S2A_S3A_uws,1.491583,94,140.208819
+mobi_wikipedia.skp_1,gles,power.PPVAR_VPH_PWR_WLAN_uws,1.040688,94,97.824701
+mobi_wikipedia.skp_1,gles,power.WCN3998_VDD13 [from PP1304_L2C]_uws,0.318172,94,29.908152
