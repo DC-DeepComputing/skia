@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed789b06_c8239cb9",
+        "filename": "resources/sksl/shared/Ossfuzz41000.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-15T13:43:19Z",
+      "side": 1,
+      "message": "This reproduces the same assertion issue that was found by the fuzzer, but without any syntax errors/invalid tokens.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 45
+      },
+      "revId": "1595a14a30ad613b13141d647310ef5a52319477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

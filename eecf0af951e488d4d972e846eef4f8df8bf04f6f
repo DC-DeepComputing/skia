@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fcfb79c_860233ee",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-15T13:43:19Z",
+      "side": 0,
+      "message": "This lookup has been redundant for a long time. Compound constructors have already replaced compile-time constant variables with their values. (This was probably written before the constructors were refactored, though.)\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/ir/SkSLConstructorCompound.cpp;l\u003d80;drc\u003dab0a13d9d988983205945ab63a9cbfb793ac1aa6",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 81
+      },
+      "revId": "eecf0af951e488d4d972e846eef4f8df8bf04f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
