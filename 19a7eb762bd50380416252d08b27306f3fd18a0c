@@ -33,6 +33,24 @@
       "message": "I\u0027m all for having more disparate headers for types.\n\nlgtm as-is, but wdyt about having the skvx typedefs moved to src/geom? and in a file like VectorTypes, MathTypes, etc.?  Similarly, could imagine the Mask type going into a BitMask or BitFlagsEnum header? But that would leave AlignTo all by itself, although an argument could be made that that belongs in a src/core file since AlignTo is used throughout both backends for memory management.",
       "revId": "19a7eb762bd50380416252d08b27306f3fd18a0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b977e57b_28a9079e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-15T19:13:09Z",
+      "side": 1,
+      "message": "Added VectorTypes.h and EnumBitMask.h files. I also switched to using SkAlignTo (recently GrAlignTo was moved to Sk land), so just deleted the AlignTo in Graphite.",
+      "parentUuid": "d244be1b_050b4ef5",
+      "revId": "19a7eb762bd50380416252d08b27306f3fd18a0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
