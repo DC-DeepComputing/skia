@@ -143,6 +143,9 @@ func waitForCanaryRoll(parentCtx context.Context, manualRollDB manual.DB, rollId
 				// Add the roll link to both the current step and it's parent.
 				td.StepText(ctx, "Canary roll CL", cl)
 				td.StepText(parentCtx, "Canary roll CL", cl)
+				// If Canary- something is specified then add that here as well
+				td.StepText(ctx, "Additional Patch", "https://chromium-review.googlesource.com/c/chromium/src/+/3276263/")
+				td.StepText(parentCtx, "Canary-Chromium-CL", cl)
 				addedRollLinkStepData = true
 			}
 			rollStatus = fmt.Sprintf("Canary roll [ %s ] has status %s", roll.Url, roll.Status)
