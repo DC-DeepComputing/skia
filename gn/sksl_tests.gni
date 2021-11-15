@@ -413,6 +413,7 @@ sksl_shared_tests = [
   "/sksl/shared/NormalizationVert.vert",
   "/sksl/shared/NumberCasts.sksl",
   "/sksl/shared/NumberConversions.sksl",
+  "/sksl/shared/Octal.sksl",
   "/sksl/shared/Offset.sksl",
   "/sksl/shared/OperatorsES2.sksl",
   "/sksl/shared/OperatorsES3.sksl",
