@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "411a3de3_2bb7fb01",
+        "filename": "src/pdf/SkPDFFont.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-15T13:08:03Z",
+      "side": 1,
+      "message": "The alternative here would be to put an additional flag on SkAdvancedTypefaceMetrics, for example kCOLR_FontFlag or kColorFont_FontFlag. Please advise on approach.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkAdvancedTypefaceMetrics.h;l\u003d53?q\u003dSkAdvancedTypefaceMetrics",
+      "revId": "603bfd864c361e527e8edb5ca2189cce74860607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
