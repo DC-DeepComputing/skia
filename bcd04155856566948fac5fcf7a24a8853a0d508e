@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66303201_61d6c896",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-15T21:31:24Z",
+      "side": 1,
+      "message": "This CL isn\u0027t ready for review, I just have a specific question about tweaking layout based on a variable\u0027s type. Let me know what you think...",
+      "revId": "bcd04155856566948fac5fcf7a24a8853a0d508e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18da1555_153ca8ca",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-15T21:31:24Z",
+      "side": 1,
+      "message": "I don\u0027t like that I\u0027m doing this (changing the default of the layout qualifier based on the variable\u0027s type - see below where other types invert the logic) in SkRuntimeEffect::Make - I\u0027d much rather have it reflected in the actual IR. There doesn\u0027t seem to be a good way to do that, though? We don\u0027t have the necessary context when we\u0027re parsing the modifiers/layout. And when we do have enough context (eg, Variable::Convert), the modifiers are const.\n\nAm I missing another opportunity to tweak the layout once I know the type?",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 17
+      },
+      "revId": "bcd04155856566948fac5fcf7a24a8853a0d508e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
