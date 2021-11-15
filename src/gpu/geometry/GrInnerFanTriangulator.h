@@ -23,13 +23,14 @@ public:
         fCollectBreadcrumbTriangles = true;
     }
 
-    int pathToTriangles(GrEagerVertexAllocator* vertexAlloc, BreadcrumbTriangleList* breadcrumbList,
-                        bool* isLinear) const {
+    int pathToTriangles(GrEagerVertexAllocator* vertexAlloc,
+                        BreadcrumbTriangleList* breadcrumbList,
+                        bool* isLinear) {
         Poly* polys = this->pathToPolys(breadcrumbList, isLinear);
         return this->polysToTriangles(polys, vertexAlloc, breadcrumbList);
     }
 
-    Poly* pathToPolys(BreadcrumbTriangleList* breadcrumbList, bool* isLinear) const {
+    Poly* pathToPolys(BreadcrumbTriangleList* breadcrumbList, bool* isLinear) {
         Poly* polys = this->GrTriangulator::pathToPolys(0, SkRect::MakeEmpty(), isLinear);
         breadcrumbList->concat(std::move(fBreadcrumbList));
         return polys;
