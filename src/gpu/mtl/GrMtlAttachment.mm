@@ -63,6 +63,12 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::MakeMSAA(GrMtlGpu* gpu,
     if (@available(macOS 10.11, iOS 9.0, *)) {
         textureUsage = MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget;
         storageMode = MTLStorageModePrivate;
+        if (@available(macOS 10.11, ios 10.0, *)) {
+            if (gpu->mtlCaps().memorylessRenderTargetSupport() &&
+                gpu->mtlCaps().preferDiscardableMSAAAttachment()) {
+                storageMode = MTLStorageModeMemoryless;
+            }
+        }
     }
     return GrMtlAttachment::Make(gpu, dimensions, UsageFlags::kColorAttachment, sampleCnt, format,
                                  /*mipLevels=*/1, textureUsage, storageMode, SkBudgeted::kYes);

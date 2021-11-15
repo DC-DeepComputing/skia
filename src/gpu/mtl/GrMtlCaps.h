@@ -97,6 +97,8 @@ public:
     bool preferDiscardableMSAAAttachment() const { return fPreferDiscardableMSAAAttachment; }
     bool renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget*) const;
 
+    bool memorylessRenderTargetSupport() const { return fMemorylessRenderTargetSupport; }
+
 #if GR_TEST_UTILS
     std::vector<TestFormatColorTypeCombination> getTestingCombinations() const override;
 #endif
@@ -199,6 +201,7 @@ private:
 
     bool fStoreAndMultisampleResolveSupport : 1;
     bool fPreferDiscardableMSAAAttachment : 1;
+    bool fMemorylessRenderTargetSupport : 1;
 
     using INHERITED = GrCaps;
 };

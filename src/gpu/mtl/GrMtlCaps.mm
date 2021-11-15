@@ -48,6 +48,8 @@ GrMtlCaps::GrMtlCaps(const GrContextOptions& contextOptions, const id<MTLDevice>
     // Also slow with non-Apple silicon
     fPreferDiscardableMSAAAttachment = (fGPUFamily == GPUFamily::kApple);
 
+    fMemorylessRenderTargetSupport = true;
+
     this->finishInitialization(contextOptions);
 }
 
