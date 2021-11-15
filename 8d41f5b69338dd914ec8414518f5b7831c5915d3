@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8cd218c_9de033f1",
+        "filename": "src/gpu/text/GrTextBlob.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-15T19:48:02Z",
+      "side": 1,
+      "message": "Have \u0027drawOrigin\u0027 here (and in following) for clarity?",
+      "revId": "8d41f5b69338dd914ec8414518f5b7831c5915d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
