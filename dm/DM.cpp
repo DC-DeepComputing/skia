@@ -1467,6 +1467,7 @@ static void run_test(skiatest::Test test, const GrContextOptions& grCtxOptions) 
     done("unit", "test", "", test.fName);
 }
 
+extern float gMaxRatio;
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 int main(int argc, char** argv) {
@@ -1587,6 +1588,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    SkDebugf("--------------------------- max ratio %f\n", gMaxRatio);
     SkGraphics::PurgeAllCaches();
     info("Finished!\n");
 
