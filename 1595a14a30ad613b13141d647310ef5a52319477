@@ -22,6 +22,30 @@
       },
       "revId": "1595a14a30ad613b13141d647310ef5a52319477",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "599570f4_0fc180f6",
+        "filename": "resources/sksl/shared/Ossfuzz41000.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-15T14:44:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ed789b06_c8239cb9",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 45
+      },
+      "revId": "1595a14a30ad613b13141d647310ef5a52319477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
