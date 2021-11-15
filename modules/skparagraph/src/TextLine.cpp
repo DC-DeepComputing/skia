@@ -1092,6 +1092,7 @@ void TextLine::getRectsForRange(TextRange textRange0,
                 bool mergedBoxes = false;
                 if (!boxes.empty() &&
                     lastRun != nullptr &&
+                    context.run->leftToRight() == lastRun->leftToRight() &&
                     lastRun->placeholderStyle() == nullptr &&
                     context.run->placeholderStyle() == nullptr &&
                     nearlyEqual(lastRun->heightMultiplier(),
@@ -1173,6 +1174,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
 
                 SkScalar offsetX = this->offset().fX;
                 ClipContext context = context0;
+                auto isLTR = context.run->leftToRight();
 
                 // Correct the clip size because libtxt counts trailing spaces
                 if (run->leftToRight()) {
@@ -1190,23 +1192,24 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos));
                     if (run->leftToRight()) {
                         result = { SkToS32(utf16Index), kDownstream };
+                        keepLooking = false;
                     } else {
-                        result = { SkToS32(utf16Index + 1), kUpstream };
+                        result = { SkToS32(utf16Index), kDownstream };
                     }
                     // For RTL we go another way
-                    return keepLooking = !run->leftToRight();
+                    return !run->leftToRight();
                 }
 
                 if (dx >= context.clip.fRight + offsetX) {
                     // We have to keep looking ; just in case keep the last one as the closest
                     auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos + context.size));
                     if (run->leftToRight()) {
-                        result = {SkToS32(utf16Index), kUpstream};
+                        result = {SkToS32(utf16Index), kUpstream };
                     } else {
-                        result = {SkToS32(utf16Index), kDownstream};
+                        result = {SkToS32(utf16Index), kDownstream };
                     }
                     // For RTL we go another way
-                    return keepLooking = run->leftToRight();
+                    return run->leftToRight();
                 }
 
                 // So we found the run that contains our coordinates
@@ -1220,6 +1223,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                         break;
                     } else if (end == dx && !context.run->leftToRight()) {
                         // When we move RTL variable end points to the beginning of the code point which is included
+                        found = index;
                         break;
                     }
                     found = index;
@@ -1233,18 +1237,27 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 auto clusterEnd8 = context.run->globalClusterIndex(found + 1);
 
                 SkScalar center = glyphemePosLeft + glyphemePosWidth / 2;
+/*
                 if ((dx < center) == context.run->leftToRight()) {
-                    size_t utf16Index = fOwner->getUTF16Index(clusterIndex8);
+                    size_t utf16Index = fOwner->getUTF16Index(context.run->leftToRight() ? clusterIndex8 : clusterEnd8);
                     result = { SkToS32(utf16Index), kDownstream };
                 } else {
-                    size_t utf16Index = fOwner->getUTF16Index(clusterEnd8);
+                    size_t utf16Index = fOwner->getUTF16Index(context.run->leftToRight() ? clusterEnd8 : clusterIndex8);
+                    result = { SkToS32(utf16Index), kUpstream };
+                }
+*/
+                if ((dx < center) == isLTR) {
+                    size_t utf16Index = isLTR ? fOwner->getUTF16Index(clusterIndex8) : fOwner->getUTF16Index(clusterEnd8) + 1;
+                    result = { SkToS32(utf16Index), kDownstream };
+                } else {
+                    size_t utf16Index = isLTR ? fOwner->getUTF16Index(clusterEnd8) : fOwner->getUTF16Index(clusterIndex8) + 1;
                     result = { SkToS32(utf16Index), kUpstream };
                 }
 
                 return keepLooking = false;
 
             });
-          return keepLooking;
+            return keepLooking;
         }
     );
     return result;
