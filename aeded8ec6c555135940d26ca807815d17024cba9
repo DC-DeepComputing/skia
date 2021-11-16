@@ -105,6 +105,24 @@
       "parentUuid": "c1d92aa0_c7149fbc",
       "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23805ee3_17c9d3fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T16:28:50Z",
+      "side": 1,
+      "message": "Hmm, if shader FPs don\u0027t look at their input colors ever, blender FPs definitely need to. This probably made it so that blenders were blending src X src instead of src X dst.",
+      "parentUuid": "68ceb137_b94bacf1",
+      "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
