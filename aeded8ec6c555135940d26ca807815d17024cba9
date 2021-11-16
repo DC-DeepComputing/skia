@@ -69,6 +69,24 @@
       "parentUuid": "9b3c883f_99f531a6",
       "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d92aa0_c7149fbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T16:03:17Z",
+      "side": 1,
+      "message": "Nice, we actually trust FPs to ignore the input color now?\nAre we going to be able to remove the color-passing entirely? That would make this FP truly inert, at which point it seems like it would be trivial to justify removal (as it would do literally nothing).",
+      "parentUuid": "6c59338a_e2956fde",
+      "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
