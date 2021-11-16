@@ -22,6 +22,30 @@
       },
       "revId": "f0fad9aad973b9ec366d649c2f522b82ab430157",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94a37fd_b2a1e982",
+        "filename": "src/sksl/lex/sksl.lex",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T14:31:26Z",
+      "side": 1,
+      "message": "\"error: 1: expected expression, but found \u002708\u0027\"",
+      "parentUuid": "56e3a5e1_e92974bf",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 31
+      },
+      "revId": "f0fad9aad973b9ec366d649c2f522b82ab430157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
