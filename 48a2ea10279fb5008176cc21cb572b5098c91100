@@ -16,6 +16,24 @@
       "message": "Awesome!\nOne thing I\u0027m not sure about--some places use sk_sp\u003c\u003e, others don\u0027t. But I couldn\u0027t tell if ownership is actually changing hands anywhere here. If not, sk_sp seems like it might not be necessary. Also, I wasn\u0027t entirely sure if a null SkBlender was meant to be valid or not.",
       "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0651af7a_f8bcc081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-16T15:17:25Z",
+      "side": 1,
+      "message": "It\u0027s mostly not supposed to be null. The exception is the sk_paint_to_grpaint_impl where null indicates we\u0027re not in a scenario where there is a primitive color to blend against the shader as that\u0027s a common implementation function for all the SkPaintToGrPaint* functions, including ones that don\u0027t take a blender.\n\nWe\u0027re not very consistent about passing SkFoo* vs sk_sp\u003cSkFoo\u003e, esp at the public API level (esp. where SkFoo is SkImage). I noticed one of the newer APIs, clipShader, only takes sk_sp\u003cSkShader\u003e at the SkCanvas level and then below in the implementation. That seemed like a nice model. I don\u0027t think we see much cost for additional ref\u0027ing, esp when we use move when possible internally. It seemed like the most defensive choice, so I followed that here, with the exception of Sk-\u003eGr paint conversion, but maybe that should also just take sk_sp for consistency. I\u0027m not strongly attached to any of this.",
+      "parentUuid": "03c7ef3c_15b0ec35",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
