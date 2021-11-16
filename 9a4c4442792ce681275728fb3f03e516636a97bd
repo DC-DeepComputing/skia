@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcd37fae_4d691a87",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-11-16T15:35:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b5b57e1_8b63a751",
+      "range": {
+        "startLine": 1206,
+        "startChar": 64,
+        "endLine": 1206,
+        "endChar": 65
+      },
+      "revId": "9a4c4442792ce681275728fb3f03e516636a97bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72c358fe_7b6be1bb",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-11-16T15:12:08Z",
       "side": 1,
       "message": "These lines are really long, maybe format like\n\n    size_t foo \u003d predicate\n               ? true_thing\n               : false_thing;",
+      "revId": "9a4c4442792ce681275728fb3f03e516636a97bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75302a3c_cb943335",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-11-16T15:35:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72c358fe_7b6be1bb",
       "revId": "9a4c4442792ce681275728fb3f03e516636a97bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

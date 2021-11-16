@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eefd537b_77e626c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-11-16T15:35:46Z",
+      "side": 1,
+      "message": "I could not make it absolutely equal to libtxt results in the bug although technically it\u0027s the same:\n(0, downstream) vs (1, upstream) for libtxt.\nWe cannot use position 1 in the results because we don\u0027t know the direction of the text on the right - it also could be RTL so the next position will be not 1 but something bigger. So I stick with 0, make it downstream and believe it\u0027s correct.",
+      "revId": "0a96cf6828bc26e470a24fb371b540f00ac71b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
