@@ -28,3 +28,48 @@ DEF_SIMPLE_GM(crbug_1113794, canvas, 600, 200) {
 
     canvas->drawPath(path, paint);
 }
+
+DEF_SIMPLE_GM(skbug_12546, canvas, 390, 320) {
+    int colorIndex = 0;
+    const SkColor colors[] = { SK_ColorBLACK, SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
+    auto get_color = [&]() { return colors[colorIndex++ % 4]; };
+
+    for (SkScalar delta : {0.0f, 0.01f}) {
+        canvas->save();
+
+        SkPath path;
+        path.moveTo( 50, 50).rLineTo(delta, 0);
+        path.moveTo(120, 50).rLineTo(delta, 0);
+
+        for (auto s : {SkPaint::kSquare_Cap, SkPaint::kRound_Cap}) {
+            auto draw = [&](SkPaint::Cap cap, SkColor color, sk_sp<SkPathEffect> pe) {
+                SkPaint p;
+                p.setStyle(SkPaint::kStroke_Style);
+                p.setStrokeCap(cap);
+                p.setStrokeWidth(50);
+                p.setColor(color);
+                p.setPathEffect(std::move(pe));
+                canvas->drawPath(path, p);
+            };
+
+            auto color = get_color();
+            draw(s, color, nullptr);
+
+            // draw using a dash patheffect
+            if (1) {
+                canvas->save();
+                canvas->translate(0, 64);
+
+                const SkScalar intervals[] = {1000, 100};
+                auto pe = SkDashPathEffect::Make(intervals, 2, 0);
+
+                draw(s, SkColorSetA(color, 0x80), pe);
+
+                canvas->restore();
+            }
+            canvas->translate(200, 0);
+        }
+        canvas->restore();
+        canvas->translate(0, 150);
+    }
+}
