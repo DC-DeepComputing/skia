@@ -9,6 +9,7 @@
 #define skgpu_CommandBuffer_DEFINED
 
 #include "experimental/graphite/src/DrawTypes.h"
+#include "experimental/graphite/src/DrawWriter.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -53,7 +54,7 @@ struct RenderPassDesc {
     // * input attachments
 };
 
-class CommandBuffer : public SkRefCnt {
+class CommandBuffer : public SkRefCnt, private DrawDispatcher {
 public:
     ~CommandBuffer() override {
         this->releaseResources();
@@ -73,31 +74,41 @@ public:
     //---------------------------------------------------------------
     void bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipeline);
     void bindUniformBuffer(UniformSlot, sk_sp<Buffer>, size_t bufferOffset);
+
     void bindVertexBuffers(sk_sp<Buffer> vertexBuffer, size_t vertexOffset,
                            sk_sp<Buffer> instanceBuffer, size_t instanceOffset);
     void bindIndexBuffer(sk_sp<Buffer> indexBuffer, size_t bufferOffset);
 
-    void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount) {
+    void bindVertexBuffers(BindBufferInfo vertices,
+                           BindBufferInfo instances,
+                           BindBufferInfo indices) final;
+
+    void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount) final {
         this->onDraw(type, baseVertex, vertexCount);
         fHasWork = true;
     }
     void drawIndexed(PrimitiveType type, unsigned int baseIndex, unsigned int indexCount,
-                     unsigned int baseVertex) {
+                     unsigned int baseVertex) final {
         this->onDrawIndexed(type, baseIndex, indexCount, baseVertex);
         fHasWork = true;
     }
     void drawInstanced(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount,
-                       unsigned int baseInstance, unsigned int instanceCount) {
+                       unsigned int baseInstance, unsigned int instanceCount) final {
         this->onDrawInstanced(type, baseVertex, vertexCount, baseInstance, instanceCount);
         fHasWork = true;
     }
     void drawIndexedInstanced(PrimitiveType type, unsigned int baseIndex, unsigned int indexCount,
                               unsigned int baseVertex, unsigned int baseInstance,
-                              unsigned int instanceCount) {
+                              unsigned int instanceCount) final {
         this->onDrawIndexedInstanced(type, baseIndex, indexCount, baseVertex, baseInstance,
                                      instanceCount);
         fHasWork = true;
     }
+
+    // When using a DrawWriter dispatching directly to a CommandBuffer, binding of pipelines and
+    // uniforms must be coordinated with forNewPipeline() and forDynamicStateChange(). The direct
+    // draw calls and vertex buffer binding calls on CB should not be intermingled with the writer.
+    DrawDispatcher* asDrawDispatcher() { return this; }
 
     //---------------------------------------------------------------
     // Can only be used outside renderpasses

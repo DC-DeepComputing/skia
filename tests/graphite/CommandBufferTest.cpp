@@ -13,6 +13,8 @@
 #include "experimental/graphite/include/mtl/MtlTypes.h"
 #include "experimental/graphite/src/Buffer.h"
 #include "experimental/graphite/src/CommandBuffer.h"
+#include "experimental/graphite/src/DrawBufferManager.h"
+#include "experimental/graphite/src/DrawWriter.h"
 #include "experimental/graphite/src/Gpu.h"
 #include "experimental/graphite/src/GraphicsPipeline.h"
 #include "experimental/graphite/src/ResourceProvider.h"
@@ -66,110 +68,101 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     renderPassDesc.fClearColor = { 1, 0, 0, 1 }; // red
 
     target->instantiate(gpu->resourceProvider());
+
+
     commandBuffer->beginRenderPass(renderPassDesc);
 
-    // Shared uniform buffer
-    struct UniformData {
-        SkPoint fScale;
-        SkPoint fTranslate;
-        SkColor4f fColor;
-    };
-    sk_sp<Buffer> uniformBuffer = gpu->resourceProvider()->findOrCreateBuffer(
-            2*sizeof(UniformData), BufferType::kUniform, PrioritizeGpuReads::kNo);
-    size_t uniformOffset = 0;
+    {
+        DrawBufferManager bufferMgr(gpu->resourceProvider(), 4);
+        DrawWriter drawWriter(commandBuffer->asDrawDispatcher(), &bufferMgr);
 
-    // Draw blue rectangle over entire rendertarget (which was red)
-    GraphicsPipelineDesc pipelineDesc;
-    pipelineDesc.setTestingOnlyShaderIndex(0);
-    auto graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
-    commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
-    commandBuffer->draw(PrimitiveType::kTriangleStrip, 0, 4);
+        // Shared uniform buffer
+        struct UniformData {
+            SkPoint fScale;
+            SkPoint fTranslate;
+            SkColor4f fColor;
+        };
+        sk_sp<Buffer> uniformBuffer = gpu->resourceProvider()->findOrCreateBuffer(
+                2*sizeof(UniformData), BufferType::kUniform, PrioritizeGpuReads::kNo);
+        size_t uniformOffset = 0;
 
-    // Draw inset yellow rectangle using uniforms
-    pipelineDesc.setTestingOnlyShaderIndex(1);
-    graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
-    commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
-    UniformData* uniforms = (UniformData*)uniformBuffer->map();
-    uniforms->fScale = SkPoint({1.8, 1.8});
-    uniforms->fTranslate = SkPoint({-0.9, -0.9});
-    uniforms->fColor = SkColors::kYellow;
-    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, uniformBuffer, uniformOffset);
-    commandBuffer->draw(PrimitiveType::kTriangleStrip, 0, 4);
-    uniformOffset += sizeof(UniformData);
-    ++uniforms;
+        // Draw blue rectangle over entire rendertarget (which was red)
+        GraphicsPipelineDesc pipelineDesc;
+        pipelineDesc.setTestingOnlyShaderIndex(0);
+        auto graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        drawWriter = drawWriter.forNewPipeline(PrimitiveType::kTriangleStrip,
+                                            pipelineDesc.vertexStride(),
+                                            pipelineDesc.instanceStride());
+        commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+        drawWriter.draw({}, {}, 4);
 
-    // Draw inset magenta rectangle with triangles in vertex buffer
-    pipelineDesc.setTestingOnlyShaderIndex(2);
-    skgpu::GraphicsPipelineDesc::Attribute vertexAttributes[1] = {
-        { "position", VertexAttribType::kFloat2, SLType::kFloat2 }
-    };
-    pipelineDesc.setVertexAttributes(vertexAttributes, 1);
-    graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
-    commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+        // Draw inset yellow rectangle using uniforms
+        pipelineDesc.setTestingOnlyShaderIndex(1);
+        graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        drawWriter = drawWriter.forNewPipeline(PrimitiveType::kTriangleStrip,
+                                               pipelineDesc.vertexStride(),
+                                               pipelineDesc.instanceStride());
+        commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+        UniformData* uniforms = (UniformData*)uniformBuffer->map();
+        uniforms->fScale = SkPoint({1.8, 1.8});
+        uniforms->fTranslate = SkPoint({-0.9, -0.9});
+        uniforms->fColor = SkColors::kYellow;
+        commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, uniformBuffer, uniformOffset);
+        drawWriter.draw({}, {}, 4);
+        uniformOffset += sizeof(UniformData);
+        ++uniforms;
 
-    struct VertexData {
-        SkPoint fPosition;
-    };
-    sk_sp<Buffer> vertexBuffer = gpu->resourceProvider()->findOrCreateBuffer(
-            4*sizeof(VertexData), BufferType::kVertex, PrioritizeGpuReads::kNo);
-    sk_sp<Buffer> indexBuffer = gpu->resourceProvider()->findOrCreateBuffer(
-            6*sizeof(uint16_t), BufferType::kIndex, PrioritizeGpuReads::kNo);
-    auto vertices = (VertexData*)vertexBuffer->map();
-    vertices[0].fPosition = SkPoint({0.25f, 0.25f});
-    vertices[1].fPosition = SkPoint({0.25f, 0.75f});
-    vertices[2].fPosition = SkPoint({0.75f, 0.25f});
-    vertices[3].fPosition = SkPoint({0.75f, 0.75f});
-    vertexBuffer->unmap();
-    auto indices = (uint16_t*)indexBuffer->map();
-    indices[0] = 0;
-    indices[1] = 1;
-    indices[2] = 2;
-    indices[3] = 2;
-    indices[4] = 1;
-    indices[5] = 3;
-    indexBuffer->unmap();
-    commandBuffer->bindVertexBuffers(vertexBuffer, 0, nullptr, 0);
-    commandBuffer->bindIndexBuffer(indexBuffer, 0);
-    uniforms->fScale = SkPoint({2, 2});
-    uniforms->fTranslate = SkPoint({-1, -1});
-    uniforms->fColor = SkColors::kMagenta;
-    commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, uniformBuffer, uniformOffset);
-    commandBuffer->drawIndexed(PrimitiveType::kTriangles, 0, 6, 0);
+        // Draw inset magenta rectangle with triangles in vertex buffer
+        pipelineDesc.setTestingOnlyShaderIndex(2);
+        skgpu::GraphicsPipelineDesc::Attribute vertexAttributes[1] = {
+            { "position", VertexAttribType::kFloat2, SLType::kFloat2 }
+        };
+        pipelineDesc.setVertexAttributes(vertexAttributes, 1);
+        graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        drawWriter = drawWriter.forNewPipeline(PrimitiveType::kTriangles,
+                                            pipelineDesc.vertexStride(),
+                                            pipelineDesc.instanceStride());
+        commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
 
-    // draw rects using instance buffer
-    pipelineDesc.setTestingOnlyShaderIndex(3);
-    skgpu::GraphicsPipelineDesc::Attribute instanceAttributes[3] = {
-        { "position", VertexAttribType::kFloat2, SLType::kFloat2 },
-        { "dims", VertexAttribType::kFloat2, SLType::kFloat2 },
-        { "color", VertexAttribType::kFloat4, SLType::kFloat4 }
-    };
-    pipelineDesc.setVertexAttributes(nullptr, 0);
-    pipelineDesc.setInstanceAttributes(instanceAttributes, 3);
-    graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
-    commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+        auto [vertexWriter, vertices] = bufferMgr.getVertexWriter(4 * pipelineDesc.vertexStride());
+        vertexWriter << SkPoint{0.25f, 0.25f}
+                     << SkPoint{0.25f, 0.75f}
+                     << SkPoint{0.75f, 0.25f}
+                     << SkPoint{0.75f, 0.75f};
+        auto [indexWriter, indices] = bufferMgr.getIndexWriter(6 * sizeof(uint16_t));
+        indexWriter << 0 << 1 << 2
+                    << 2 << 1 << 3;
+        uniforms->fScale = SkPoint({2, 2});
+        uniforms->fTranslate = SkPoint({-1, -1});
+        uniforms->fColor = SkColors::kMagenta;
+        commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep, uniformBuffer, uniformOffset);
 
-    struct InstanceData {
-        SkPoint fPosition;
-        SkPoint fDims;
-        SkColor4f fColor;
-    };
-    sk_sp<Buffer> instanceBuffer = gpu->resourceProvider()->findOrCreateBuffer(
-            2*sizeof(InstanceData), BufferType::kVertex, PrioritizeGpuReads::kNo);
-    auto instances = (InstanceData*)instanceBuffer->map();
-    instances[0].fPosition = SkPoint({-0.4, -0.4});
-    instances[0].fDims = SkPoint({0.4, 0.4});
-    instances[0].fColor = SkColors::kGreen;
-    instances[1].fPosition = SkPoint({0, 0});
-    instances[1].fDims = SkPoint({0.25, 0.25});
-    instances[1].fColor = SkColors::kCyan;
-    instanceBuffer->unmap();
-    commandBuffer->bindVertexBuffers(nullptr, 0, instanceBuffer, 0);
-//    commandBuffer->drawInstanced(PrimitiveType::kTriangleStrip, 0, 4, 0, 2);
-    commandBuffer->drawIndexedInstanced(PrimitiveType::kTriangles, 0, 6, 0, 0, 2);
+        drawWriter.draw(vertices, indices, 6);
+
+        // draw rects using instance buffer
+        pipelineDesc.setTestingOnlyShaderIndex(3);
+        skgpu::GraphicsPipelineDesc::Attribute instanceAttributes[3] = {
+            { "position", VertexAttribType::kFloat2, SLType::kFloat2 },
+            { "dims", VertexAttribType::kFloat2, SLType::kFloat2 },
+            { "color", VertexAttribType::kFloat4, SLType::kFloat4 }
+        };
+        pipelineDesc.setVertexAttributes(nullptr, 0);
+        pipelineDesc.setInstanceAttributes(instanceAttributes, 3);
+        graphicsPipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        drawWriter = drawWriter.forNewPipeline(PrimitiveType::kTriangles,
+                                            pipelineDesc.vertexStride(),
+                                            pipelineDesc.instanceStride());
+        commandBuffer->bindGraphicsPipeline(std::move(graphicsPipeline));
+
+        drawWriter.setInstanceTemplate({}, indices, 6);
+        auto instanceWriter = drawWriter.appendInstances(2);
+        instanceWriter << SkPoint{-0.4f, -0.4f}  << SkPoint{0.4f, 0.4f}   << SkColors::kGreen
+                       << SkPoint{0.f, 0.f}      << SkPoint{0.25f, 0.25f} << SkColors::kCyan;
+        bufferMgr.transferToCommandBuffer(commandBuffer.get());
+        uniformBuffer->unmap();
+    }
 
     commandBuffer->endRenderPass();
-
-    uniformBuffer->unmap();
 
     // Do readback
 
