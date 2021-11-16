@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04de8eac_8d7e6a9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-16T14:31:02Z",
+      "side": 1,
+      "message": "PTAL. Since PS 7, I updated the docs and added in the embedded font (still surprising to me that I wasn\u0027t seeing a linking error with 2.0.13, but was with 2.0.32, but it was not working at runtime without something to draw).",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
