@@ -991,6 +991,11 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
     if (function.intrinsicKind() == k_eval_IntrinsicKind) {
         // This is a method call on an effect child. Translate it into a ChildCall, which simplifies
         // handling in the generators and analysis code.
+        if (!arguments.back()->is<VariableReference>()) {
+            context.fErrors->error(line, "expression '" + arguments.back()->description() +
+                                         "' does not allow method calls");
+            return nullptr;
+        }
         const Variable& child = *arguments.back()->as<VariableReference>().variable();
         arguments.pop_back();
         return ChildCall::Make(context, line, returnType, child, std::move(arguments));
