@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95b5d888_4dae8ed1",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb4112de_eeb2ab52",
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e042cbe_5cb06ef9",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-11-16T14:28:01Z",
       "side": 1,
       "message": "I think we can guarantee non-null returns from buildUniformData, so this should not be needed.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 9
+      },
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f8814c_9d6ef78d",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e042cbe_5cb06ef9",
       "range": {
         "startLine": 103,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c8d51f_dd47b1aa",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9db7417c_5a4cd0b5",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 9
+      },
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "891d53a4_5bffe437",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-11-16T14:28:01Z",
       "side": 1,
       "message": "We don\u0027t normally allow malloc to fail -- let\u0027s use SkData::MakeUninitialized() instead, and also zero-initialize in case the uniform set is not complete:\n\n  auto data \u003d SkDataMakeUnitialized(fEffect-\u003euniformSize());\n  SkASSERT(data);\n  sk_bzero(data-\u003edata(), data-\u003esize());",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 9
+      },
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f44fcf4_9359eee1",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "891d53a4_5bffe437",
       "range": {
         "startLine": 114,
         "startChar": 0,
@@ -104,6 +194,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbe3add0_459c4c5c",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb3654ea_77714c8b",
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "951e8658_483733f0",
@@ -127,6 +235,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87b56791_3db558bc",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "whoops, done.",
+      "parentUuid": "951e8658_483733f0",
+      "range": {
+        "startLine": 123,
+        "startChar": 17,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77d119c2_e9641d67",
@@ -140,6 +272,30 @@
       "writtenOn": "2021-11-16T14:28:01Z",
       "side": 1,
       "message": "nit: data-\u003edata()",
+      "range": {
+        "startLine": 124,
+        "startChar": 49,
+        "endLine": 124,
+        "endChar": 61
+      },
+      "revId": "04364c5acce337ba8af9ea1f3740244e11910897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e605b634_5b637dc3",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-16T20:02:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77d119c2_e9641d67",
       "range": {
         "startLine": 124,
         "startChar": 49,
