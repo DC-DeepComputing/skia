@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "953f63fa_43e9c544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T18:03:09Z",
+      "side": 1,
+      "message": "sk_sp enforces a requirement on the caller that a raw pointer does not (you must have a sk_sp\u003c\u003e to pass one) so IMO we shouldn\u0027t require it unless ownership matters in some way. It\u0027s not a big deal if we consistently use sk_sp *everywhere* since then, of course you will have it, but that\u0027s got its own cost (paying for refcounting everywhere even when you don\u0027t need it). So I don\u0027t feel *strongly* about it, but I have been boxed in in the past by inconsistent use of shared-ptrs so I do have opinions here :) I feel like it\u0027s better to pass raw pointers if a raw pointer is all you actually care about, and limit the scope of ownership concerns where it\u0027s safe to do so.\n\nThe \"null\" question was to narrow in on, should this be a `const SkBlender*`, or a `const SkBlender\u0026`?",
+      "parentUuid": "0651af7a_f8bcc081",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4d233bb_2967d52d",
         "filename": "src/core/SkDraw_atlas.cpp",
         "patchSetId": 11
