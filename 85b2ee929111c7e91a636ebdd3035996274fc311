@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63775730_fdc43ad8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-16T17:48:11Z",
+      "side": 1,
+      "message": "Okay I understand the uses more now and generally am good with the changes. I\u0027m still a little iffy on the need for the DrawDispatcher and what we are gaining from long terms support of the CommandbufferTests, ",
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a662288e_8b066f77",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-16T17:48:11Z",
+      "side": 1,
+      "message": "pipelineChange",
+      "range": {
+        "startLine": 306,
+        "startChar": 12,
+        "endLine": 306,
+        "endChar": 43
+      },
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13347217_8d7dda33",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-16T17:48:11Z",
+      "side": 1,
+      "message": "need to finish comment here",
+      "range": {
+        "startLine": 125,
+        "startChar": 75,
+        "endLine": 125,
+        "endChar": 79
+      },
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
