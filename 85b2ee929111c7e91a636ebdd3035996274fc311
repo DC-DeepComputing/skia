@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f60c3d8_dac712b0",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-16T19:53:54Z",
+      "side": 1,
+      "message": "I\u0027m assuming that this comment was meant for previous if. I changed that one to \u0027pipelineChange\u0027, and then I moved the 3 state-checking ifs to be inside an `if (stateChange)`",
+      "parentUuid": "a662288e_8b066f77",
+      "range": {
+        "startLine": 306,
+        "startChar": 12,
+        "endLine": 306,
+        "endChar": 43
+      },
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13347217_8d7dda33",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-16T17:48:11Z",
       "side": 1,
       "message": "need to finish comment here",
+      "range": {
+        "startLine": 125,
+        "startChar": 75,
+        "endLine": 125,
+        "endChar": 79
+      },
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ec646ee_779b3f72",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-16T19:53:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13347217_8d7dda33",
       "range": {
         "startLine": 125,
         "startChar": 75,
