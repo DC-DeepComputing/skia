@@ -22,6 +22,30 @@
       },
       "revId": "20391114f1d84722d98506f64eba383ca8b75a7c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6adb6284_8a6fea0e",
+        "filename": "infra/bots/assets/skp/create.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-11-16T14:17:44Z",
+      "side": 1,
+      "message": "SGTM. Done.",
+      "parentUuid": "e8b470be_537fd8a5",
+      "range": {
+        "startLine": 184,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 30
+      },
+      "revId": "20391114f1d84722d98506f64eba383ca8b75a7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
