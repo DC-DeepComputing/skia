@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "208ea3dd_7d035e1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-16T22:46:20Z",
+      "side": 1,
+      "message": "So at the Canvas level, if we expose SkBlender there, we\u0027ll definitely want sk_sp since for the recording canvases. \n\nWithin Device implementations we sometimes pass the blender into wrapper classes that expect sk_sp. (In those cases the wrapper only lasts for the call stack, but they\u0027re subclasses of types like SkShader that are always ref counted). Sk-\u003eGr paint seems unlikely to ever want to retain.\n\nSo maybe what we have here is fine.\n\nA difference between sk_sp and shared_ptr is that sk_sp works with objects that have internal ref counts. So, really, you can always make a sk_sp from a bare pointer. There\u0027s only ever one ref count, internal to the object. (Of course the downside is reference counting is built into the class rather than layered on later at each use case so if you somehow put an object on the stack it could still be reffed/unreffed. We generally prevent that by enforcing factory functions for creation. Sometimes I wish we had the composability of shared_ptr).",
+      "parentUuid": "953f63fa_43e9c544",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4d233bb_2967d52d",
         "filename": "src/core/SkDraw_atlas.cpp",
         "patchSetId": 11
@@ -79,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75884a6f_cade2617",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-16T22:46:20Z",
+      "side": 1,
+      "message": "I had to hack up the code to make it actually get here. But it does actually work. We go into drawRect and it falls back to vm when SkShader_Blend::onAppendStages fails.",
+      "parentUuid": "b4d233bb_2967d52d",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 24
+      },
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6d326d5a_59e74499",
         "filename": "src/gpu/SkGr.cpp",
         "patchSetId": 11
@@ -90,6 +132,47 @@
       "writtenOn": "2021-11-16T15:19:50Z",
       "side": 1,
       "message": "^^^",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f173b6b_53f7170f",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-16T22:46:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6d326d5a_59e74499",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613dd6db_031dde57",
+        "filename": "src/shaders/SkComposeShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-16T22:46:20Z",
+      "side": 1,
+      "message": "This is now redundant. This optimization was moved into SkShader_Blend constructor.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
       "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
