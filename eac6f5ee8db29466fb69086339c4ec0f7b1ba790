@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6074385c_0354b99c",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-16T19:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54edbaaf_3b4cfbd7",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe4bfd1b_12ffa1f5",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb4508e_2d468357",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-16T19:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe4bfd1b_12ffa1f5",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53ba1750_be53d647",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-11-16T16:02:44Z",
       "side": 1,
       "message": "None of these should mention SkFontHost_FreeType* files. Each of these fontmgr implementations need to depend on the \"typeface_freetype\" target.\n\nThis may require all of these to be their own cc_library in order to do all the deps and whatnot, but that\u0027s fine.",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1125ca_31ab58ee",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-16T19:11:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53ba1750_be53d647",
       "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
