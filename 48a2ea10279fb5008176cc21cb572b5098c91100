@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49c90d6f_d96dd090",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T22:48:05Z",
+      "side": 1,
+      "message": "\u003c\u003cSo, really, you can always make a sk_sp from a bare pointer.\u003e\u003e\n\nThat answers my concerns, I hadn\u0027t considered that difference. Thank you!",
+      "parentUuid": "208ea3dd_7d035e1a",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4d233bb_2967d52d",
