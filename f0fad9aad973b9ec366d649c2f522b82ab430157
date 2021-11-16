@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56e3a5e1_e92974bf",
+        "filename": "src/sksl/lex/sksl.lex",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T14:18:23Z",
+      "side": 1,
+      "message": "What\u0027s the error message if we don\u0027t do this (and just do the change to INT_LITERAL, so that invalid octals end up as invalid?)",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 31
+      },
+      "revId": "f0fad9aad973b9ec366d649c2f522b82ab430157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
