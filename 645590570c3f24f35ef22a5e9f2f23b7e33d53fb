@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "437f5d75_b6ffed5d",
+        "filename": "src/sksl/codegen/SkVMDebugInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T13:53:06Z",
+      "side": 1,
+      "message": "MSVC insists on a double cast here.\n\n\"Conversions between enumeration and floating point values are no longer allowed.\"",
+      "range": {
+        "startLine": 118,
+        "startChar": 50,
+        "endLine": 118,
+        "endChar": 55
+      },
+      "revId": "645590570c3f24f35ef22a5e9f2f23b7e33d53fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
