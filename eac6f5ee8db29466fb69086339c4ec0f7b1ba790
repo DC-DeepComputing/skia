@@ -16,6 +16,74 @@
       "message": "PTAL. Since PS 7, I updated the docs and added in the embedded font (still surprising to me that I wasn\u0027t seeing a linking error with 2.0.13, but was with 2.0.32, but it was not working at runtime without something to draw).",
       "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54edbaaf_3b4cfbd7",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T16:02:44Z",
+      "side": 1,
+      "message": "This should be named like it is in the current GN build, \"typeface_freetype\". The files are completely misnamed for historical reasons (there is no more static class \"FontHost\" anymore). We should rename them, but no one has done the work to do so.",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4bfd1b_12ffa1f5",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T16:02:44Z",
+      "side": 1,
+      "message": "It seems really strange to have a single \"fontmgr\" filegroup, since one may have any number of them. I would put each of these fontmgr in their own filegroup. The select for which to depend on can happen in \"srcs\".",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ba1750_be53d647",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T16:02:44Z",
+      "side": 1,
+      "message": "None of these should mention SkFontHost_FreeType* files. Each of these fontmgr implementations need to depend on the \"typeface_freetype\" target.\n\nThis may require all of these to be their own cc_library in order to do all the deps and whatnot, but that\u0027s fine.",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d768b4_4a9521db",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 1059,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T16:02:44Z",
+      "side": 1,
+      "message": "In theory it\u0027s possible to build FreeType without the hand crafted jumbo build as a poor man\u0027s whole program optimization, but it kinda goes against how upstream builds and is a bit unstable. In any event this seems fine.",
+      "revId": "eac6f5ee8db29466fb69086339c4ec0f7b1ba790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
