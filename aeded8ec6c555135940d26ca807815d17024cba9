@@ -51,6 +51,24 @@
       "parentUuid": "1230c4d0_25004265",
       "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c59338a_e2956fde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T15:59:26Z",
+      "side": 1,
+      "message": "Hmm. I suspect it was impacted by:\n\n1) Changes that Brian S made to blend shader and blend FP, where it\u0027s more straightforward / simple now. (Possibly).\n2) Very likely: My recent changes to how input color impacts the FP tree, so that paint alpha is applied at the root. Previously, many FPs would fold in the input color\u0027s alpha. Now, FPs will all (or nearly all?) ignore input color entirely.",
+      "parentUuid": "9b3c883f_99f531a6",
+      "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
