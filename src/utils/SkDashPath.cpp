@@ -93,7 +93,7 @@ static void outset_for_stroke(SkRect* rect, const SkStrokeRec& rec) {
 // Large values are scaled by SK_ScalarNearlyZero so significant bits change.
 static void adjust_zero_length_line(SkPoint pts[2]) {
     SkASSERT(pts[0] == pts[1]);
-    pts[1].fX += std::max(1.001f, pts[1].fX) * SK_ScalarNearlyZero;
+//    pts[1].fX += std::max(1.001f, pts[1].fX) * SK_ScalarNearlyZero;
 }
 
 static bool clip_line(SkPoint pts[2], const SkRect& bounds, SkScalar intervalLength,
@@ -381,6 +381,13 @@ bool SkDashPath::InternalFilter(SkPath* dst, const SkPath& src, SkStrokeRec* rec
         if (dashCount > kMaxDashCount) {
             dst->reset();
             return false;
+        }
+
+        if (length == 0) {  // just a single point
+            SkPoint singlePt;
+            (void)meas.getPosTan(0, &singlePt, nullptr);
+            dst->moveTo(singlePt).lineTo(singlePt);
+            continue;
         }
 
         // Using double precision to avoid looping indefinitely due to single precision rounding

@@ -81,6 +81,9 @@ private:
 
     SkContourMeasure(SkTDArray<Segment>&& segs, SkTDArray<SkPoint>&& pts,
                      SkScalar length, bool isClosed);
+
+    static SkContourMeasure* SinglePoint(SkPoint);
+
     ~SkContourMeasure() override {}
 
     const Segment* distanceToSegment(SkScalar distance, SkScalar* t) const;
