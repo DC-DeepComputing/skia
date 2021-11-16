@@ -41,6 +41,8 @@ skia_graphite_sources = [
   "$_src/DrawOrder.h",
   "$_src/DrawPass.cpp",
   "$_src/DrawPass.h",
+  "$_src/DrawWriter.cpp",
+  "$_src/DrawWriter.h",
   "$_src/Gpu.cpp",
   "$_src/Gpu.h",
   "$_src/GpuWorkSubmission.h",
