@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3232476c_f8a71671",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18094
+      },
+      "writtenOn": "2021-11-16T17:47:50Z",
+      "side": 1,
+      "message": "I don\u0027t know what needs to be done, please advise.",
+      "revId": "98490a018cdf5887eb233cc7e6e2be8e1090d480",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
