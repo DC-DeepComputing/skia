@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55087028_b8fab457",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-16T20:47:19Z",
+      "side": 1,
+      "message": "nit: I would inline buildUniformData() in makeShader() below.",
+      "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e750055_c0b8ce08",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-16T20:47:19Z",
+      "side": 1,
+      "message": "nit: std::move(shader)",
+      "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61326d61_1eb7ce33",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-16T20:47:19Z",
+      "side": 1,
+      "message": "Oh right, this is at render time, we don\u0027t have a logger.\n\nWe should validate at build time, when we parse the uniforms and then we could assert here instead.\n\nWe can circle back on this later.",
+      "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
