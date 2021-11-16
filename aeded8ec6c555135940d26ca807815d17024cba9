@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d1ead5f_b87bce96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T15:43:58Z",
+      "side": 1,
+      "message": "SkSL blenders on the paint already have the real dst plumbed in, via the SurfaceColor FP. Their children have to be invoked with explicit inputs in all cases, so any blender children will get the dst if it\u0027s supplied. I\u0027m trying to figure out if there\u0027s a situation where this changes behavior involving null children? I\u0027m not sure. I think that many recent changes have made input color even less important than it was before ...",
+      "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
