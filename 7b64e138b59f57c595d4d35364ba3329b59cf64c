@@ -22,6 +22,30 @@
       },
       "revId": "7b64e138b59f57c595d4d35364ba3329b59cf64c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6622ebe3_e75b346a",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T15:19:50Z",
+      "side": 0,
+      "message": "Looking at this again, I\u0027m not sure this is necessary. (I think it can be removed from make_effect_fp???). I\u0027m trying to remember/reason about why it\u0027s needed, but it seems like other than the case of SurfaceColor() being used at the end of paint conversion - the child blender case in runtime effects is going to be invoked with two explicit colors, so feeding the dest color as input doesn\u0027t matter?",
+      "parentUuid": "48aecd6c_d03b1190",
+      "range": {
+        "startLine": 80,
+        "startChar": 51,
+        "endLine": 80,
+        "endChar": 70
+      },
+      "revId": "7b64e138b59f57c595d4d35364ba3329b59cf64c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

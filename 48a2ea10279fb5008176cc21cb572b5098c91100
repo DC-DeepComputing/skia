@@ -34,6 +34,46 @@
       "parentUuid": "03c7ef3c_15b0ec35",
       "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d233bb_2967d52d",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T15:19:50Z",
+      "side": 1,
+      "message": "This code path can now fail to draw without returning false from rpblit, right? Seems like we should just check if the blender isn\u0027t a blend-mode before we even try the rpblit path below?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 24
+      },
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d326d5a_59e74499",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-16T15:19:50Z",
+      "side": 1,
+      "message": "^^^",
+      "revId": "48a2ea10279fb5008176cc21cb572b5098c91100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
