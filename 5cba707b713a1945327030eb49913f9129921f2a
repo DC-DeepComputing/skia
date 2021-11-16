@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81b3160c_9946d1a6",
+        "filename": "BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T19:50:13Z",
+      "side": 1,
+      "message": "It seems awkward to put this logic here. This should be a transitive dependency from transitively depending on \"typeface_freetype\". It seems really awkward to try to have CORE know that it will be depending on a fontmgr which then depends on something that will need FreeType. That\u0027s what build systems are for, to allow targets to state what they need and then calculate the transitive closure of top level targets to depend on the right things. This feels like trying to write a build system in a build system. (CMake used to have this problem in droves for its equivalent of filegroups/source_sets, though that might be fixed now.)",
+      "revId": "5cba707b713a1945327030eb49913f9129921f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c84620_2a5fb7b1",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T19:50:13Z",
+      "side": 1,
+      "message": "This (or something really close to this) needs to state the dependence on the FreeType library or target. This should be the only code in Skia that ever uses FreeType directly and that should also be enforced by the build. \"CORE\" doesn\u0027t depend on FreeType, only this code in here does.",
+      "revId": "5cba707b713a1945327030eb49913f9129921f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49ec981_d49e83a2",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-16T19:50:13Z",
+      "side": 1,
+      "message": "I don\u0027t see this referenced anywhere. Is it needed?",
+      "revId": "5cba707b713a1945327030eb49913f9129921f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
