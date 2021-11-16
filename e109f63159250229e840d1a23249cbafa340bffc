@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2559223a_cce0f5f5",
+        "filename": "resources/sksl/runtime_errors/IllegalShaderSampling.rts",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T23:54:06Z",
+      "side": 1,
+      "message": "For reference, a cleaned up version of the fuzzer bug:\n\n   shader child; half m(float2 p) { (p-\u003d7, child).eval(p); }",
+      "range": {
+        "startLine": 16,
+        "startChar": 31,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "e109f63159250229e840d1a23249cbafa340bffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
