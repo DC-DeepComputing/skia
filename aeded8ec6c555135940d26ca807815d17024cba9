@@ -33,6 +33,24 @@
       "message": "Did something change to make this obsolete? When I added this, it definitely impacted some slides.",
       "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b3c883f_99f531a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-16T15:47:53Z",
+      "side": 1,
+      "message": "PTAL description at http://review.skia.org/434045\n\n\"By default, the GrBlendFragmentProcessor continues to pass `_src` to\nboth `srcFP` and `dstFP` since this is how it has historically worked.\nTo use the `_dst` color, the caller can wrap the dstFP in a\n`UseDestColorAsInput` FP.\"",
+      "parentUuid": "1230c4d0_25004265",
+      "revId": "aeded8ec6c555135940d26ca807815d17024cba9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
