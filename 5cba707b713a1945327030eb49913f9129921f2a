@@ -67,6 +67,24 @@
       "message": "I don\u0027t see this referenced anywhere. Is it needed?",
       "revId": "5cba707b713a1945327030eb49913f9129921f2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d339cc0_f85f8b3f",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-17T12:58:22Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "b49ec981_d49e83a2",
+      "revId": "5cba707b713a1945327030eb49913f9129921f2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
