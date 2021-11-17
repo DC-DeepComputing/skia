@@ -64,7 +64,7 @@ F8 = bool loop_operator_gt()
 F9 = bool loop_operator_eq()
 F10 = bool loop_operator_ne()
 
-43 registers, 799 instructions:
+48 registers, 737 instructions:
 0	r0 = splat 42C90000 (100.5)
 1	r1 = uniform32 ptr0 0
 2	r2 = uniform32 ptr0 4
@@ -657,211 +657,149 @@ loop:
 588	    trace_line r36 L52
 589	    r41 = select r35 r37 r22
 590	    trace_var r36 $26 = r41
-591	    r37 = select r35 r16 r37
-592	    trace_var r36 $27 = r37
+591	    r39 = select r35 r16 r37
+592	    trace_var r36 $27 = r39
 593	    trace_line r36 L51
 594	    trace_var r36 $28 = r17
 595	    trace_line r36 L52
-596	    r39 = select r35 r41 r22
-597	    trace_var r36 $25 = r39
-598	    r41 = select r35 r37 r41
-599	    trace_var r36 $26 = r41
-600	    r37 = select r35 r17 r37
-601	    trace_var r36 $27 = r37
+596	    r33 = select r35 r41 r22
+597	    trace_var r36 $25 = r33
+598	    r38 = select r35 r39 r41
+599	    trace_var r36 $26 = r38
+600	    r40 = select r35 r17 r39
+601	    trace_var r36 $27 = r40
 602	    trace_line r36 L51
 603	    trace_line r36 L54
-604	    r39 = eq_f32 r15 r39
-605	    r41 = eq_f32 r16 r41
-606	    r37 = eq_f32 r17 r37
-607	    r41 = bit_and r39 r41
-608	    r41 = bit_and r37 r41
-609	    r41 = bit_and r35 r41
-610	    trace_call r36 F5 (exit)
-611	    r41 = bit_and r35 r41
-612	    r35 = bit_and r34 r41
-613	    trace_call r35 F6 (enter)
-614	    trace_line r35 L59
-615	    trace_line r35 L60
-616	    trace_line r35 L62
-617	    trace_var r35 $29 = r22
-618	    trace_var r35 $30 = r22
-619	    trace_var r35 $31 = r22
-620	    trace_var r35 $32 = r22
-621	    trace_line r35 L63
-622	    trace_var r35 $33 = r15
-623	    trace_line r35 L64
-624	    r36 = select r41 r15 r22
-625	    trace_var r35 $32 = r36
-626	    trace_line r35 L63
-627	    trace_var r35 $33 = r16
-628	    trace_line r35 L64
-629	    r37 = select r41 r36 r22
-630	    trace_var r35 $31 = r37
-631	    r36 = select r41 r16 r36
-632	    trace_var r35 $32 = r36
-633	    trace_line r35 L63
-634	    trace_var r35 $33 = r17
-635	    trace_line r35 L64
-636	    r39 = select r41 r37 r22
-637	    trace_var r35 $30 = r39
-638	    r37 = select r41 r36 r37
-639	    trace_var r35 $31 = r37
-640	    r36 = select r41 r17 r36
-641	    trace_var r35 $32 = r36
-642	    trace_line r35 L63
-643	    trace_line r35 L66
-644	    r39 = eq_f32 r15 r39
-645	    r37 = eq_f32 r16 r37
-646	    r36 = eq_f32 r17 r36
-647	    r37 = bit_and r39 r37
-648	    r37 = bit_and r36 r37
-649	    r37 = bit_and r41 r37
-650	    trace_call r35 F6 (exit)
-651	    r37 = bit_and r41 r37
-652	    r41 = bit_and r34 r37
-653	    trace_call r41 F7 (enter)
-654	    trace_line r41 L71
-655	    trace_line r41 L72
-656	    trace_line r41 L74
-657	    trace_var r41 $34 = r22
-658	    trace_var r41 $35 = r22
-659	    trace_var r41 $36 = r22
-660	    trace_var r41 $37 = r22
-661	    trace_line r41 L75
-662	    trace_var r41 $38 = r17
-663	    trace_line r41 L76
-664	    r35 = select r37 r17 r22
-665	    trace_var r41 $37 = r35
-666	    trace_line r41 L75
-667	    trace_var r41 $38 = r16
-668	    trace_line r41 L76
-669	    r36 = select r37 r35 r22
-670	    trace_var r41 $36 = r36
-671	    r35 = select r37 r16 r35
-672	    trace_var r41 $37 = r35
-673	    trace_line r41 L75
-674	    trace_var r41 $38 = r15
-675	    trace_line r41 L76
-676	    r39 = select r37 r36 r22
-677	    trace_var r41 $35 = r39
-678	    r36 = select r37 r35 r36
-679	    trace_var r41 $36 = r36
-680	    r35 = select r37 r15 r35
-681	    trace_var r41 $37 = r35
-682	    trace_line r41 L75
-683	    trace_line r41 L78
-684	    r39 = eq_f32 r17 r39
-685	    r36 = eq_f32 r16 r36
-686	    r35 = eq_f32 r15 r35
-687	    r36 = bit_and r39 r36
-688	    r36 = bit_and r35 r36
-689	    r36 = bit_and r37 r36
-690	    trace_call r41 F7 (exit)
-691	    r36 = bit_and r37 r36
-692	    r37 = bit_and r34 r36
-693	    trace_call r37 F8 (enter)
-694	    trace_line r37 L83
-695	    trace_line r37 L84
-696	    trace_line r37 L86
-697	    trace_var r37 $39 = r22
-698	    trace_var r37 $40 = r22
-699	    trace_var r37 $41 = r22
-700	    trace_var r37 $42 = r22
-701	    trace_line r37 L87
-702	    trace_var r37 $43 = r17
-703	    trace_line r37 L88
-704	    r41 = select r36 r17 r22
-705	    trace_var r37 $42 = r41
-706	    trace_line r37 L87
-707	    trace_var r37 $43 = r16
-708	    trace_line r37 L88
-709	    r35 = select r36 r41 r22
-710	    trace_var r37 $41 = r35
-711	    r41 = select r36 r16 r41
-712	    trace_var r37 $42 = r41
-713	    trace_line r37 L87
-714	    trace_var r37 $43 = r15
-715	    trace_line r37 L88
-716	    r39 = select r36 r35 r22
-717	    trace_var r37 $40 = r39
-718	    r35 = select r36 r41 r35
-719	    trace_var r37 $41 = r35
-720	    r41 = select r36 r15 r41
-721	    trace_var r37 $42 = r41
-722	    trace_line r37 L87
-723	    trace_line r37 L90
-724	    r39 = eq_f32 r17 r39
-725	    r35 = eq_f32 r16 r35
-726	    r41 = eq_f32 r15 r41
-727	    r35 = bit_and r39 r35
-728	    r35 = bit_and r41 r35
-729	    r35 = bit_and r36 r35
-730	    trace_call r37 F8 (exit)
-731	    r35 = bit_and r36 r35
-732	    r36 = bit_and r34 r35
-733	    trace_call r36 F9 (enter)
-734	    trace_line r36 L106
-735	    trace_line r36 L108
-736	    trace_var r36 $44 = r22
-737	    trace_var r36 $45 = r22
-738	    trace_var r36 $46 = r22
-739	    trace_var r36 $47 = r22
-740	    trace_line r36 L109
-741	    trace_var r36 $48 = r15
-742	    trace_line r36 L110
-743	    r37 = select r35 r15 r22
-744	    trace_var r36 $47 = r37
-745	    trace_line r36 L109
-746	    trace_line r36 L112
-747	    r37 = eq_f32 r15 r37
-748	    r37 = bit_and r35 r37
-749	    trace_call r36 F9 (exit)
-750	    r37 = bit_and r35 r37
-751	    r35 = bit_and r34 r37
-752	    trace_call r35 F10 (enter)
-753	    trace_line r35 L95
-754	    trace_line r35 L97
-755	    trace_var r35 $49 = r22
-756	    trace_var r35 $50 = r22
-757	    trace_var r35 $51 = r22
-758	    trace_var r35 $52 = r22
-759	    trace_line r35 L98
-760	    trace_var r35 $53 = r15
-761	    trace_line r35 L99
-762	    r36 = select r37 r15 r22
-763	    trace_var r35 $52 = r36
-764	    trace_line r35 L98
-765	    trace_var r35 $53 = r16
-766	    trace_line r35 L99
-767	    r41 = select r37 r36 r22
-768	    trace_var r35 $51 = r41
-769	    r36 = select r37 r16 r36
-770	    trace_var r35 $52 = r36
-771	    trace_line r35 L98
-772	    trace_var r35 $53 = r17
-773	    trace_line r35 L99
-774	    r39 = select r37 r41 r22
-775	    trace_var r35 $50 = r39
-776	    r41 = select r37 r36 r41
-777	    trace_var r35 $51 = r41
-778	    r36 = select r37 r17 r36
-779	    trace_var r35 $52 = r36
-780	    trace_line r35 L98
-781	    trace_line r35 L101
-782	    r39 = eq_f32 r15 r39
-783	    r41 = eq_f32 r16 r41
-784	    r36 = eq_f32 r17 r36
-785	    r41 = bit_and r39 r41
-786	    r41 = bit_and r36 r41
-787	    r41 = bit_and r37 r41
-788	    trace_call r35 F10 (exit)
-789	    r41 = bit_and r37 r41
-790	    r37 = select r41 r6 r2
-791	    r35 = select r41 r7 r3
-792	    r36 = select r41 r8 r4
-793	    r41 = select r41 r9 r5
-794	    trace_call r34 F0 (exit)
-795	    store32 ptr1 r37
-796	    store32 ptr2 r35
-797	    store32 ptr3 r36
-798	    store32 ptr4 r41
+604	    trace_call r36 F5 (exit)
+605	    trace_call r36 F6 (enter)
+606	    trace_line r36 L59
+607	    trace_line r36 L60
+608	    trace_line r36 L62
+609	    trace_var r36 $29 = r22
+610	    trace_var r36 $30 = r22
+611	    trace_var r36 $31 = r22
+612	    trace_var r36 $32 = r22
+613	    trace_line r36 L63
+614	    trace_var r36 $33 = r15
+615	    trace_line r36 L64
+616	    trace_var r36 $32 = r37
+617	    trace_line r36 L63
+618	    trace_var r36 $33 = r16
+619	    trace_line r36 L64
+620	    trace_var r36 $31 = r41
+621	    trace_var r36 $32 = r39
+622	    trace_line r36 L63
+623	    trace_var r36 $33 = r17
+624	    trace_line r36 L64
+625	    trace_var r36 $30 = r33
+626	    trace_var r36 $31 = r38
+627	    trace_var r36 $32 = r40
+628	    trace_line r36 L63
+629	    trace_line r36 L66
+630	    trace_call r36 F6 (exit)
+631	    trace_call r36 F7 (enter)
+632	    trace_line r36 L71
+633	    trace_line r36 L72
+634	    trace_line r36 L74
+635	    trace_var r36 $34 = r22
+636	    trace_var r36 $35 = r22
+637	    trace_var r36 $36 = r22
+638	    trace_var r36 $37 = r22
+639	    trace_line r36 L75
+640	    trace_var r36 $38 = r17
+641	    trace_line r36 L76
+642	    r42 = select r35 r17 r22
+643	    trace_var r36 $37 = r42
+644	    trace_line r36 L75
+645	    trace_var r36 $38 = r16
+646	    trace_line r36 L76
+647	    r43 = select r35 r42 r22
+648	    trace_var r36 $36 = r43
+649	    r44 = select r35 r16 r42
+650	    trace_var r36 $37 = r44
+651	    trace_line r36 L75
+652	    trace_var r36 $38 = r15
+653	    trace_line r36 L76
+654	    r45 = select r35 r43 r22
+655	    trace_var r36 $35 = r45
+656	    r46 = select r35 r44 r43
+657	    trace_var r36 $36 = r46
+658	    r47 = select r35 r15 r44
+659	    trace_var r36 $37 = r47
+660	    trace_line r36 L75
+661	    trace_line r36 L78
+662	    trace_call r36 F7 (exit)
+663	    trace_call r36 F8 (enter)
+664	    trace_line r36 L83
+665	    trace_line r36 L84
+666	    trace_line r36 L86
+667	    trace_var r36 $39 = r22
+668	    trace_var r36 $40 = r22
+669	    trace_var r36 $41 = r22
+670	    trace_var r36 $42 = r22
+671	    trace_line r36 L87
+672	    trace_var r36 $43 = r17
+673	    trace_line r36 L88
+674	    trace_var r36 $42 = r42
+675	    trace_line r36 L87
+676	    trace_var r36 $43 = r16
+677	    trace_line r36 L88
+678	    trace_var r36 $41 = r43
+679	    trace_var r36 $42 = r44
+680	    trace_line r36 L87
+681	    trace_var r36 $43 = r15
+682	    trace_line r36 L88
+683	    trace_var r36 $40 = r45
+684	    trace_var r36 $41 = r46
+685	    trace_var r36 $42 = r47
+686	    trace_line r36 L87
+687	    trace_line r36 L90
+688	    trace_call r36 F8 (exit)
+689	    trace_call r36 F9 (enter)
+690	    trace_line r36 L106
+691	    trace_line r36 L108
+692	    trace_var r36 $44 = r22
+693	    trace_var r36 $45 = r22
+694	    trace_var r36 $46 = r22
+695	    trace_var r36 $47 = r22
+696	    trace_line r36 L109
+697	    trace_var r36 $48 = r15
+698	    trace_line r36 L110
+699	    trace_var r36 $47 = r37
+700	    trace_line r36 L109
+701	    trace_line r36 L112
+702	    trace_call r36 F9 (exit)
+703	    trace_call r36 F10 (enter)
+704	    trace_line r36 L95
+705	    trace_line r36 L97
+706	    trace_var r36 $49 = r22
+707	    trace_var r36 $50 = r22
+708	    trace_var r36 $51 = r22
+709	    trace_var r36 $52 = r22
+710	    trace_line r36 L98
+711	    trace_var r36 $53 = r15
+712	    trace_line r36 L99
+713	    trace_var r36 $52 = r37
+714	    trace_line r36 L98
+715	    trace_var r36 $53 = r16
+716	    trace_line r36 L99
+717	    trace_var r36 $51 = r41
+718	    trace_var r36 $52 = r39
+719	    trace_line r36 L98
+720	    trace_var r36 $53 = r17
+721	    trace_line r36 L99
+722	    trace_var r36 $50 = r33
+723	    trace_var r36 $51 = r38
+724	    trace_var r36 $52 = r40
+725	    trace_line r36 L98
+726	    trace_line r36 L101
+727	    trace_call r36 F10 (exit)
+728	    r36 = select r35 r6 r2
+729	    r40 = select r35 r7 r3
+730	    r38 = select r35 r8 r4
+731	    r35 = select r35 r9 r5
+732	    trace_call r34 F0 (exit)
+733	    store32 ptr1 r36
+734	    store32 ptr2 r40
+735	    store32 ptr3 r38
+736	    store32 ptr4 r35
