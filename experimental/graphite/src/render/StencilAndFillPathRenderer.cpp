@@ -54,21 +54,23 @@ private:
 // TODO: Hand off to csmartdalton, this should roughly correspond to the fCoverBBoxProgram stage
 // of skgpu::v1::PathStencilCoverOp.
 class FillBoundsRenderStep final : public RenderStep {
+    static const Attribute kVertexAttrs[1] = {
+            { "position", VertexAttribType::kFloat2, SLType::kFloat2 }
+    };
+
 public:
-    FillBoundsRenderStep() {}
+    // TODO: Will need to add kRequiresStencil when we support specifying stencil settings and
+    // the Renderer includes the stenciling step first.
+    FillBoundsRenderStep()
+            : RenderStep(Flags::kPerformsShading, PrimitiveType::kTriangleStrip,
+                         kVertexAttrs, 1, nullptr, 0) {}
 
     ~FillBoundsRenderStep() override {}
 
     const char* name()            const override { return "fill-bounds"; }
-    // TODO: true when combined with a stencil step
-    bool        requiresStencil() const override { return false; }
-    bool        requiresMSAA()    const override { return false; }
-    bool        performsShading() const override { return true;  }
 
-    PrimitiveType primitiveType()  const override { return PrimitiveType::kTriangleStrip; }
-    size_t        instanceStride() const override { return 0; }
-    size_t        vertexStride()   const override {
-        return VertexAttribTypeSize(VertexAttribType::kFloat2);
+    SkString getVertexMSL() const {
+        return ""; // FIXME
     }
 
     void writeVertices(DrawWriter* writer, ResourceProvider*, const Shape& shape) const override {
