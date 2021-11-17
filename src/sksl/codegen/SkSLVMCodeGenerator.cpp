@@ -663,13 +663,85 @@ Value SkVMGenerator::writeBinaryExpression(const BinaryExpression& b) {
 
     size_t nslots = std::max(lVal.slots(), rVal.slots());
 
+    auto op_is_comparison = [&]() {
+        switch (op.kind()) {
+            case Token::Kind::TK_EQEQ:
+            case Token::Kind::TK_NEQ:
+            case Token::Kind::TK_GT:
+            case Token::Kind::TK_GTEQ:
+            case Token::Kind::TK_LT:
+            case Token::Kind::TK_LTEQ:
+                return true;
+            default:
+                return false;
+        }
+    };
+
+    auto fieldSlotOffset = [&](const Type& structType, int index) {
+        size_t offset = 0;
+        for (int i = 0; i < index; ++i) {
+            offset += structType.fields()[i].fType->slotCount();
+        }
+        return offset;
+    };
+
+    auto indexSlotOffset = [&](const Type& arrayType, int index) {
+        size_t stride = arrayType.slotCount();
+        return index * stride;
+    };
+
     auto binary = [&](auto&& f_fn, auto&& i_fn) {
+
         Value result(nslots);
         for (size_t i = 0; i < nslots; ++i) {
             // If one side is scalar, replicate it to all channels
             skvm::Val L = lVal.slots() == 1 ? lVal[0] : lVal[i],
                       R = rVal.slots() == 1 ? rVal[0] : rVal[i];
-            if (nk == Type::NumberKind::kFloat) {
+
+            if (op_is_comparison() && lType.typeKind() == Type::TypeKind::kStruct) {
+                // Go through all the fields
+                const skvm::I32 one = fBuilder->splat(0xffff'ffff);
+                int fIndex = 0;
+                skvm::I32 temp = one;
+                for (const Type::Field& field : lType.fields()) {
+                    size_t lOffset = fieldSlotOffset(lType, fIndex);
+                    size_t rOffset = fieldSlotOffset(rType, fIndex);
+                    L = lVal[(lVal.slots() == 1 ? 0 : i) + lOffset];
+                    R = rVal[(rVal.slots() == 1 ? 0 : i) + rOffset];
+                    Type::NumberKind fnk = base_number_kind(*field.fType);
+                    if (fnk == Type::NumberKind::kFloat) {
+                        temp &= i32(f_fn(f32(L), f32(R)));
+                    } else {
+                        temp &= i32(i_fn(i32(L), i32(R)));
+                    }
+                    ++fIndex;
+                }
+                result[i] = temp;
+                SkDebugf("struct result[%d] = %d\n", i, result[i].fVal);
+            }
+            else if (op_is_comparison() && lType.typeKind() == Type::TypeKind::kArray) {
+                // Go through all the elements
+                const skvm::I32 one = fBuilder->splat(0xffff'ffff);
+                int fIndex = 0;
+                skvm::I32 temp = one;
+                Type::NumberKind enk = base_number_kind(lType.componentType());
+                for (int i = 0; i < lType.columns(); ++i) {
+
+                    size_t lOffset = indexSlotOffset(lType, fIndex);
+                    size_t rOffset = indexSlotOffset(rType, fIndex);
+                    L = lVal[(lVal.slots() == 1 ? 0 : i) + lOffset];
+                    R = rVal[(rVal.slots() == 1 ? 0 : i) + rOffset];
+                    if (enk == Type::NumberKind::kFloat) {
+                        temp &= i32(f_fn(f32(L), f32(R)));
+                    } else {
+                        temp &= i32(i_fn(i32(L), i32(R)));
+                    }
+                    ++fIndex;
+                }
+                result[i] = temp;
+                SkDebugf("array result[%d] = %d\n", i, result[i].fVal);
+            }
+            else if (nk == Type::NumberKind::kFloat) {
                 result[i] = f_fn(f32(L), f32(R));
             } else {
                 result[i] = i_fn(i32(L), i32(R));

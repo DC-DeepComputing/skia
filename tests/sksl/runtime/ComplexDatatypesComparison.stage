@@ -1,0 +1,18 @@
+uniform half4 colorGreen;
+uniform half4 colorRed;
+struct S_0 
+{
+	float f1;
+	float f2;
+}
+;
+float4 main(float2 coords)
+{
+	float _0_a[2];
+	_0_a[0] = float(colorGreen.x / colorGreen.z);
+	_0_a[1] = float(colorGreen.z / colorGreen.x);
+	float _1_b[2];
+	_1_b[0] = float(colorGreen.z / colorGreen.x);
+	_1_b[1] = float(colorGreen.x / colorGreen.z);
+	return half4(float4(!(_0_a == _1_b) ? colorGreen : colorRed));
+}

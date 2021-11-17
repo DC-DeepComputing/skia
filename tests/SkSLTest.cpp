@@ -283,6 +283,7 @@ SKSL_TEST(SkSLLoopFloat,                       "runtime/LoopFloat.rts")
 SKSL_TEST(SkSLLoopInt,                         "runtime/LoopInt.rts")
 SKSL_TEST(SkSLQualifierOrder,                  "runtime/QualifierOrder.rts")
 SKSL_TEST(SkSLPrecisionQualifiers,             "runtime/PrecisionQualifiers.rts")
+//SKSL_TEST_ES3(SkSLComplexDatatypesComparison,  "runtime/ComplexDatatypesComparison.rts")
 
 SKSL_TEST_ES3(SkSLArrayComparison,             "shared/ArrayComparison.sksl")
 SKSL_TEST_ES3(SkSLArrayConstructors,           "shared/ArrayConstructors.sksl")
