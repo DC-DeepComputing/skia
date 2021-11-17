@@ -563,6 +563,7 @@ public:
     bool fShowSub = false;
     bool fShowFlatness = false;
     bool fShowInnerQuads = false;
+    bool fShowOutsets = true;
     SkScalar fScale = 0.75;
 
     CubicCurve2() {
@@ -661,24 +662,33 @@ protected:
         // not sure we can get here
     }
 
+    static void draw_quad(SkCanvas* canvas, SkPoint a, SkPoint b, SkPoint c,
+                          SkColor color, float width = 1) {
+        SkPaint paint;
+        paint.setStrokeWidth(width);
+        paint.setAntiAlias(true);
+        paint.setStroke(true);
+        paint.setColor(color);
+
+        canvas->drawPath(SkPathBuilder().moveTo(a).quadTo(b, c).detach(), paint);
+    }
+
+    static void draw_line(SkCanvas* canvas, SkPoint a, SkPoint b, SkColor color) {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(color);
+        canvas->drawLine(a.fX, a.fY, b.fX, b.fY, paint);
+    }
+
     void showInnerQuads(SkCanvas* canvas) {
-        auto draw_quad = [canvas](SkPoint a, SkPoint b, SkPoint c, SkColor color) {
-            SkPaint paint;
-            paint.setAntiAlias(true);
-            paint.setStroke(true);
-            paint.setColor(color);
-
-            canvas->drawPath(SkPathBuilder().moveTo(a).quadTo(b, c).detach(), paint);
-        };
-
         SkPoint p0 = SkEvalQuadAt(&fPts[0], fT),
                 p1 = SkEvalQuadAt(&fPts[1], fT),
                 p2 = lerp(p0, p1, fT);
 
-        draw_quad(fPts[0], fPts[1], fPts[2], SK_ColorRED);
+        draw_quad(canvas, fPts[0], fPts[1], fPts[2], SK_ColorRED);
         Dot(canvas, p0, 4, SK_ColorRED);
 
-        draw_quad(fPts[1], fPts[2], fPts[3], SK_ColorBLUE);
+        draw_quad(canvas, fPts[1], fPts[2], fPts[3], SK_ColorBLUE);
         Dot(canvas, p1, 4, SK_ColorBLUE);
 
         SkPaint paint;
@@ -686,6 +696,39 @@ protected:
         paint.setColor(0xFF008800);
         canvas->drawLine(p0, p1, paint);
         Dot(canvas, p2, 4, 0xFF00AA00);
+    }
+
+    void showOutsets(SkCanvas* canvas) const {
+        auto make_outset = [](const SkPoint src[3], SkPoint dst[3], float radius) {
+            auto unit_norm = [](SkPoint p) -> SkVector {
+                p.setLength(1);
+                return {p.fY, -p.fX};
+            };
+            SkVector abn = unit_norm(src[1] - src[0]);
+            SkVector bcn = unit_norm(src[2] - src[1]);
+
+            const float coshalf = std::sqrt(0.5f + abn.dot(bcn) * 0.5f);
+            const float dist = radius / coshalf;
+            SkVector bisector = abn + bcn;
+            bisector.setLength(dist);
+
+            dst[0] = src[0] + abn * radius;
+            dst[1] = src[1] + bisector;
+            dst[2] = src[2] + bcn * radius;
+        };
+
+        SkPoint outer[3], inner[3];
+        make_outset(fQuad, outer, 30);
+        make_outset(fQuad, inner, -30);
+
+        draw_quad(canvas, fQuad[0], fQuad[1], fQuad[2], 0xFFCCCCCC, 60);
+        draw_quad(canvas, fQuad[0], fQuad[1], fQuad[2], SK_ColorBLACK, 0);
+        draw_quad(canvas, outer[0], outer[1], outer[2], SK_ColorRED);
+        draw_quad(canvas, inner[0], inner[1], inner[2], SK_ColorBLUE);
+
+        SkPoint c0 = SkEvalQuadAt(fQuad, 0.5);
+        SkPoint c1 = SkEvalQuadAt(outer, 0.5);
+        draw_line(canvas, c0, c1, SK_ColorBLACK);
     }
 
     void onDrawContent(SkCanvas* canvas) override {
@@ -720,6 +763,10 @@ protected:
 
         if (fShowInnerQuads) {
             this->showInnerQuads(canvas);
+        }
+
+        if (fShowOutsets) {
+            this->showOutsets(canvas);
         }
 
         paint.setColor(SK_ColorGRAY);
