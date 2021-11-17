@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1227b21c_95fd6a85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-17T19:47:30Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "fa28d498_38609b1b",
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6438aa7b_9a241021",
         "filename": "src/core/SkBitmapDevice.cpp",
         "patchSetId": 1
@@ -43,6 +61,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "896a99e8_7c57230f",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-17T19:47:30Z",
+      "side": 1,
+      "message": "Yeah, I had similar thoughts, and wasn\u0027t sure about the consequences, so figured a follow-up CL would be better.",
+      "parentUuid": "6438aa7b_9a241021",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 37
+      },
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "18a55ae0_cee2e1b1",
         "filename": "src/core/SkDevice.h",
         "patchSetId": 1
@@ -54,6 +96,30 @@
       "writtenOn": "2021-11-17T18:31:01Z",
       "side": 1,
       "message": "Another device cleanup that I\u0027m just remembering now is that every instance of TileUsage is kDontTile.",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 43
+      },
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76569a56_121cd83e",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-17T19:47:30Z",
+      "side": 1,
+      "message": "Oh, fun.",
+      "parentUuid": "18a55ae0_cee2e1b1",
       "range": {
         "startLine": 382,
         "startChar": 0,
