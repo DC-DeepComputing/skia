@@ -66,7 +66,7 @@ void Context::preCompile(const PaintCombo& paintCombo) {
                     sk_sp<ProgramCache::ProgramInfo> pi = cache.findOrCreateProgram(c);
                     // TODO: this should be getSkSL
                     // TODO: it should also return the uniform information
-                    std::string msl = pi->getMSL();
+                    std::string sksl = pi->getSkSL();
                     // TODO: compile the MSL and store the result back into the ProgramInfo
                     // To do this we will need the path rendering options from Chris and
                     // a stock set of RenderPasses.
