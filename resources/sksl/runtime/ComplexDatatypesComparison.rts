@@ -1,0 +1,148 @@
+/*#pragma settings NoES2Restrictions*/
+
+uniform half4 colorGreen, colorRed;
+
+struct S {float f1; float f2; float f3; };
+struct SA {float[2] a1; float[2] a2; };
+struct DEEP {S s1; SA sa2; SA asa3[2]; };
+
+S getS(S a0, float one) {
+     S a = a0;
+     a.f1 *= one;
+     a.f2 *= one;
+     a.f3 *= one;
+     return a;
+}
+
+SA getSA(SA sa0, float one) {
+    SA sa = sa0;
+    sa.a1[0] = sa0.a1[0] * one;
+    sa.a1[1] = sa0.a1[1] * one;
+    sa.a2[0] = sa0.a2[0] * one;
+    sa.a2[1] = sa0.a2[1] * one;
+    return sa;
+}
+/*
+vec4 main(vec2 coords) {
+    float NA = colorGreen.r/colorGreen.b;
+    float ZP = +colorGreen.r*colorGreen.b;
+    float ZM = -colorGreen.r*colorGreen.b;
+    float F42 = (colorGreen.r + 1) * 42.0;
+    float F43 = (colorGreen.r + 1) * 43.0;
+    float F44 = (colorGreen.r + 1) * 44.0;
+    float F45 = (colorGreen.r + 1) * 45.0;
+    float F46 = (colorGreen.r + 1) * 46.0;
+    float F47 = (colorGreen.r + 1) * 47.0;
+
+    float o1 = colorGreen.r + 1;
+    float o2 = colorGreen.b + 1;
+    float o3 = colorRed.g + 1;
+    float o4 = colorRed.b + 1;
+
+    float f1 = ZP, f2 = F42, f3 = F43, f4 = F44, f5 = F45, f6 = F46;
+
+    S a; a.f1 = f1; a.f2 = f2; a.f3 = f3;
+    SA sa; sa.a1[0] = f1; sa.a1[1] = f2; sa.a2[0] = f3; sa.a2[1] = f4;
+
+    DEEP d1[2];
+    d1[0].s1 = getS(a, o1); d1[0].sa2 = getSA(sa, o1 * o1); d1[0].asa3[0] = getSA(sa, o1 * o2); d1[0].asa3[1] = getSA(sa, o1 * o3);
+    d1[1].s1 = getS(a, o2); d1[1].sa2 = getSA(sa, o2 * o1); d1[1].asa3[0] = getSA(sa, o2 * o2); d1[1].asa3[1] = getSA(sa, o2 * o3);
+    DEEP d2[2];
+    d2[0].s1 = getS(a, o3); d2[0].sa2 = getSA(sa, o3 * o1); d2[0].asa3[0] = getSA(sa, o3 * o2); d2[0].asa3[1] = getSA(sa, o3 * o3);
+    d2[1].s1 = getS(a, o4); d2[1].sa2 = getSA(sa, o4 * o1); d2[1].asa3[0] = getSA(sa, o4 * o2); d2[1].asa3[1] = getSA(sa, o4 * o3);
+
+    d1[0].s1.f1 *= 1111;
+
+    return d1 != d2 ? colorGreen : colorRed;
+}
+*/
+
+bool test_struct(bool eq, bool diff, float f1, float f2, float f3) {
+    float one = diff ? 2.0 : (colorGreen.r + 1);
+    S a; a.f1 = f1; a.f2 = f2; a.f3 = f3;
+    S b = getS(a, one);
+    return eq ? a == b : a != b;
+}
+
+bool test_array(bool eq, bool diff, float f1, float f2, float f3) {
+    float one = diff ? 2.0 : colorGreen.b + 1;
+    float a[3]; a[0] = f1; a[1] = f2; a[2] = f3;
+    float b[3]; b[0] = f1 * one; b[1] = f2 * one; b[2] = f3 * one;
+    return eq ? a == b : a != b;
+}
+
+bool test_struct_of_arrays(bool eq, bool diff, float f1, float f2, float f3, float f4) {
+    float one = diff ? 2.0 : (colorGreen.r + 1);
+    SA a; a.a1[0] = f1; a.a1[1] = f2; a.a2[0] = f3; a.a2[1] = f4;
+    SA b = getSA(a, diff ? 2.0 : one);
+    return eq ? a == b : a != b;
+}
+
+bool test_array_of_structs(bool eq, bool diff, float f1, float f2, float f3, float f4, float f5, float f6) {
+    float one = colorGreen.r + 1;
+    S a[2]; a[0].f1 = f1; a[0].f2 = f2; a[0].f3 = f3; a[1] = getS(a[0], 2.0 * one);
+    S b[2]; b[0] = getS(a[0], diff ? 2.0 : one);      b[1] = getS(a[0], one + one);
+    return eq ? a == b : a != b;
+}
+
+bool test_deep_recursion(bool eq, bool diff, float f1, float f2, float f3, float f4) {
+    float one = colorGreen.r + 1.0;
+    float two = one + 1.0;
+    float three = one + 2.0;
+    float four = one + 3.0;
+    S a; a.f1 = f1; a.f2 = f2; a.f3 = f3;
+    SA sa; sa.a1[0] = f1; sa.a1[1] = f2; sa.a2[0] = f3; sa.a2[1] = f4;
+
+    DEEP d1[2];
+    d1[0].s1 = getS(a, one); d1[0].sa2 = getSA(sa, two); d1[0].asa3[0] = getSA(sa, three); d1[0].asa3[1] = getSA(sa, four);
+    d1[1].s1 = getS(a, one); d1[1].sa2 = getSA(sa, two); d1[1].asa3[0] = getSA(sa, three); d1[1].asa3[1] = getSA(sa, four);
+    DEEP d2[2];
+    d2[0].s1 = getS(a, 1.0); d2[0].sa2 = getSA(sa, 2.0); d2[0].asa3[0] = getSA(sa, 3.0); d2[0].asa3[1] = getSA(sa, 4.0);
+    d2[1].s1 = getS(a, 1.0); d2[1].sa2 = getSA(sa, 2.0); d2[1].asa3[0] = getSA(sa, 3.0); d2[1].asa3[1] = getSA(sa, 4.0);
+    if (diff) {
+        d2[1].s1.f3 *= 11111;
+    }
+
+    return eq ? d1 == d2 : d1 != d2;
+}
+
+vec4 main(vec2 coords) {
+
+    float NA = colorGreen.r/colorGreen.b;
+    float ZP = +colorGreen.r*colorGreen.b;
+    float ZM = -colorGreen.r*colorGreen.b;
+    float F42 = (colorGreen.r + 1) * 42.0;
+    float F43 = (colorGreen.r + 1) * 43.0;
+    float F44 = (colorGreen.r + 1) * 44.0;
+    float F45 = (colorGreen.r + 1) * 45.0;
+    float F46 = (colorGreen.r + 1) * 46.0;
+    float F47 = (colorGreen.r + 1) * 47.0;
+
+    bool EQ = true;     // Tests for ==
+    bool NE = false;    // Tests for !=
+    bool SAME = false;
+    bool DIFF = true;   // Changes one of the values so the objects don't mach (to test the negative cases)
+
+    return  true
+            && test_struct(EQ, SAME, F42, ZM, ZP) && !test_struct(NE, SAME, F42, ZM, ZP)         // equal, including 0- and 0+ values
+            && test_struct(NE, SAME, F42, NA, NA) && !test_struct(EQ, SAME, F42, NA, NA)         // NA values always not equal
+            && test_struct(NE, DIFF, F42, F42, F42) && !test_struct(EQ, DIFF, F42, F42, F42)     // one of the normal values not equal; all normal are equal
+
+            && test_array(EQ, SAME, F42, ZM, ZP) && !test_array(NE, SAME, F42, ZM, ZP)
+            && test_array(NE, SAME, F42, NA, NA) && !test_array(EQ, SAME, F42, NA, NA)
+            && test_array(NE, DIFF, F42, F42, F42) && !test_array(EQ, DIFF, F42, F42, F42)
+
+            && test_struct_of_arrays(EQ, SAME, F42, ZM, F42, ZP) && !test_struct_of_arrays(NE, SAME, F42, ZM, F42, ZP)
+            && test_struct_of_arrays(NE, SAME, F42, NA, F42, NA) && !test_struct_of_arrays(EQ, SAME, F42, NA, F42, NA)
+            && test_struct_of_arrays(NE, DIFF, F42, F42, F42, F42) && !test_struct_of_arrays(EQ, DIFF, F42, F42, F42, F42)
+
+            && test_array_of_structs(EQ, SAME, F42, ZM, ZP, F42, ZM, ZP) && !test_array_of_structs(NE, SAME, F42, ZM, ZP, F42, ZM, ZP)
+            && test_array_of_structs(NE, SAME, F42, NA, NA, F42, NA, NA) && !test_array_of_structs(EQ, SAME, F42, NA, NA, F42, NA, NA)
+            && test_array_of_structs(NE, DIFF, F42, F42, F42, F42, F42, F42) && !test_array_of_structs(EQ, DIFF, F42, F42, F42, F42, F42, F42)
+
+            && test_deep_recursion(EQ, SAME, F42, ZM, F42, ZP) && !test_deep_recursion(NE, SAME, F42, ZM, F42, ZP)
+            && test_deep_recursion(NE, SAME, F42, NA, F42, NA) && !test_deep_recursion(EQ, SAME, F42, NA, F42, NA)
+            && test_deep_recursion(NE, DIFF, F42, F42, F42, F42) && !test_deep_recursion(EQ, DIFF, F42, F43, F44, F45)
+
+           ? colorGreen : colorRed;
+}
