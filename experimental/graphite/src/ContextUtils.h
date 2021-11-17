@@ -11,6 +11,7 @@
 #include "experimental/graphite/include/Context.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 
 namespace skgpu {
@@ -94,7 +95,13 @@ private:
 };
 
 std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(UniformCache*, const PaintParams&);
-std::string GetMSLUniformStruct(ShaderCombo::ShaderType);
+// TODO: There is a bit of a cyclic dependency here, where uniform data extraction needs to know
+// the uniform layout in ExtractCombo and this will remain true even when we handle arbitrary SkSL.
+// However, it only needs the layout as long as eventual (and rare) program generation produces the
+// same stable layout. While GetUniforms() may not stick around in this current form, having it
+// defined here instead of with the hard-coded MSL in MtlGraphicsPipeline.mm captures the spirit
+// of separation between uniform layout and final program.
+SkSpan<const Uniform> GetUniforms(Combination);
 
 } // namespace skgpu
 

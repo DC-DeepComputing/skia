@@ -32,7 +32,7 @@ public:
         uint32_t id() const { return fID; }
         Combination combo() const { return fCombination; }
 
-        std::string getMSL() const;
+        std::string getSkSL() const { return ""; }
 
     private:
         const uint32_t    fID;
