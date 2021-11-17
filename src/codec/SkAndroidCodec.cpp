@@ -133,6 +133,8 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
                 return kRGB_565_SkColorType;
             }
             break;
+        case kRGBA_1010102_SkColorType:
+            return kRGBA_1010102_SkColorType;
         case kRGBA_F16_SkColorType:
             return kRGBA_F16_SkColorType;
         default:
@@ -156,7 +158,8 @@ sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(SkColorType outputCo
         case kRGBA_F16_SkColorType:
         case kRGB_565_SkColorType:
         case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType: {
+        case kBGRA_8888_SkColorType:
+        case kRGBA_1010102_SkColorType: {
             // If |prefColorSpace| is supplied, choose it.
             if (prefColorSpace) {
                 return prefColorSpace;
