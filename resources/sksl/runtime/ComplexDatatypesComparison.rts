@@ -1,0 +1,23 @@
+/*#pragma settings NoES2Restrictions*/
+
+uniform half4 colorGreen, colorRed;
+
+struct S {float f1; float f2; };
+
+bool test_struct_NA() {
+    S a; a.f1 = colorGreen.r/colorGreen.b; a.f2 = colorGreen.b/colorGreen.r;
+    S b; b.f1 = colorGreen.b/colorGreen.r; b.f2 = colorGreen.r/colorGreen.b;
+    //return a.f1 != b.f1 || a.f2 != b.f2;
+    return a != b;
+}
+
+bool test_array_NA() {
+    float a[2]; a[0] = colorGreen.r/colorGreen.b; a[1] = colorGreen.b/colorGreen.r;
+    float b[2]; b[0] = colorGreen.b/colorGreen.r; b[1] = colorGreen.r/colorGreen.b;
+    //return a[0] != b[0] || a[1] != b[1];
+    return !(a == b);
+}
+
+vec4 main(vec2 coords) {
+    return /*test_struct_NA() &&*/ test_array_NA() ? colorGreen : colorRed;
+}
