@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2064f347_313ace37",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-17T21:47:45Z",
+      "side": 1,
+      "message": "You need to check the extension as well as if the gl context was made protected or not.\n\nGrGLint contextFlags;\nGR_GL_GetIntegerv(gli, GR_GL_CONTEXT_FLAGS, \u0026contextFlags);\nfSupportsProtected \u003d hasExtension \u0026\u0026 (contextFlags \u0026 GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);",
+      "range": {
+        "startLine": 372,
+        "startChar": 4,
+        "endLine": 372,
+        "endChar": 75
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bfa20d16_edd4b630",
         "filename": "src/gpu/gl/GrGLDefines.h",
         "patchSetId": 1
@@ -31,6 +54,30 @@
       "writtenOn": "2021-11-17T18:47:53Z",
       "side": 1,
       "message": "This location was arbitrary. What would be the right place for these new constants?",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 51
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eafa9e1c_805e1edc",
+        "filename": "src/gpu/gl/GrGLDefines.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-17T21:47:45Z",
+      "side": 1,
+      "message": "This is fine",
+      "parentUuid": "bfa20d16_edd4b630",
       "range": {
         "startLine": 246,
         "startChar": 0,
@@ -59,6 +106,29 @@
         "startChar": 100,
         "endLine": 1709,
         "endChar": 101
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcf48a1e_b72d3432",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-17T21:47:45Z",
+      "side": 1,
+      "message": "As mentioned in caps change, just move this there.",
+      "range": {
+        "startLine": 1707,
+        "startChar": 11,
+        "endLine": 1709,
+        "endChar": 100
       },
       "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
