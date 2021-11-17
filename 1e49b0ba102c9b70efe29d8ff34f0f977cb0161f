@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa28d498_38609b1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:31:01Z",
+      "side": 1,
+      "message": "Can we tag https://bugs.chromium.org/p/skia/issues/detail?id\u003d10987",
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6438aa7b_9a241021",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:31:01Z",
+      "side": 1,
+      "message": "hmm, if we moved these asserts to SkBaseDevice::drawDevice, then we could not override it at all.\n\n(we could almost do this for GPU devices, too, except that they add ownership asserts and tracing, that could be done in drawSpecial, though). Nvm, I think leave it like this for now, and then I/you can do a cleanup to the device subclasses later.",
+      "range": {
+        "startLine": 553,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 37
+      },
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a55ae0_cee2e1b1",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:31:01Z",
+      "side": 1,
+      "message": "Another device cleanup that I\u0027m just remembering now is that every instance of TileUsage is kDontTile.",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 43
+      },
+      "revId": "1e49b0ba102c9b70efe29d8ff34f0f977cb0161f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
