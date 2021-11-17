@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f96f07f7_c464f436",
+        "filename": "tests/sksl/errors/ArrayOfVoid.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-17T14:01:52Z",
+      "side": 1,
+      "message": "I was very curious why this was appearing so I did some debugging.\nTurns out, the return type in this case was already determined to be an error, so it\u0027s of Poison type.\nHowever, we base our poison error-stripping on a string search for \u003cPOISON\u003e. This error doesn\u0027t actually include the name of the type, so it\u0027s not stripped out!",
+      "range": {
+        "startLine": 6,
+        "startChar": 9,
+        "endLine": 6,
+        "endChar": 61
+      },
+      "revId": "4eff1a7cd7dd78518bf1ed1bb27826aa517cd860",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
