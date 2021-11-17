@@ -155,9 +155,6 @@ bazel_canvaskit_debug:
 	#  https://github.com/bazelbuild/examples/tree/main/rules/starlark_configurations/cc_binary_selectable_copts
 	bazelisk build :canvaskit-wasm --compilation_mode dbg --spawn_strategy=local \
 		--gpu_backend=gl_backend --with_gl_standard=webgl_standard \
-		--include_decoder=jpeg_decode_codec --include_decoder=png_decode_codec \
-		--include_decoder=webp_decode_codec --include_decoder=gif_decode_codec \
-		--include_encoder=jpeg_encode_codec --include_encoder=png_encode_codec \
 		--include_fontmgr=custom_embedded_fontmgr --fontmgr_factory=custom_embedded_fontmgr_factory
 	- rm -rf build/
 	mkdir build
