@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "610e9ea8_4897b98c",
+        "filename": "modules/skottie/src/effects/SkSLColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-17T20:25:16Z",
+      "side": 1,
+      "message": "MakeForColorFilter",
+      "range": {
+        "startLine": 45,
+        "startChar": 39,
+        "endLine": 45,
+        "endChar": 52
+      },
+      "revId": "aad89f40eecb53e318f63f4369f4bd8f74f448d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
