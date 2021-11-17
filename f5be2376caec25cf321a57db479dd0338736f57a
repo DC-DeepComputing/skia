@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5364e377_0b54325e",
+        "filename": "experimental/graphite/src/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:18:00Z",
+      "side": 1,
+      "message": "I\u0027ll just use this comment as the discussion point. \n\nWhen I first wrote up this in the bigger CL, I didn\u0027t really know how I felt about SkSL, ContextUtils, and the hardcoded MSL. Since reading your doc on the precompilation and working on moving RenderStep into the pipeline desc, it has crystalized a bit.\n\nIMO, these functions in ContextUtils are temporary stand-ins for what will be the responsibility of the SkSL precompilation and caching system. That means it\u0027s okay for the hard-coded MSL to be defined in ContextUtils with the uniform declarations.\n\nI think, where want to end up in the short term with MSL is ContextUtils has GetUniforms(Combination) and GetMSL(Combination or ShaderType) (and remove getMSL() from ProgramInfo since that will go away shortly). I think having it be GetUniforms() vs. GetUniformStruct() is still the right thing to do, since when we build the final MSL in MtlGraphicsPipeline it\u0027ll be roughly:\n\n  1. msl +\u003d get_msl_struct(GetUniforms(combo))\n  2. msl +\u003d get_msl_struct(step.getUniforms())\n  3. msl +\u003d \"vertex func prefix\"\n  4. msl +\u003d step.getVertexMSL()\n  5. msl +\u003d \"postfix + frag func prefix\"\n  6. msl +\u003d GetMSL(combo)\n  7. msl +\u003d \"postfix\"",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 58
+      },
+      "revId": "f5be2376caec25cf321a57db479dd0338736f57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c40315c4_ef2101a1",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:18:00Z",
+      "side": 1,
+      "message": "I think we want \u0027get_msl\u0027 still, since it will construct the entire program out of the pieces that are in ContextUtils and RenderStep.",
+      "range": {
+        "startLine": 58,
+        "startChar": 13,
+        "endLine": 58,
+        "endChar": 20
+      },
+      "revId": "f5be2376caec25cf321a57db479dd0338736f57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd0f2a96_6ba66955",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-17T18:18:00Z",
+      "side": 1,
+      "message": "but if you like the thoughts in the earlier comment, these fragments can go in ContextUtils instead of ProgramCache.",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 115,
+        "endChar": 0
+      },
+      "revId": "f5be2376caec25cf321a57db479dd0338736f57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
