@@ -1,0 +1,65 @@
+uniform half4 colorGreen;
+uniform half4 colorRed;
+struct S_0 
+{
+	float f1;
+	float f2;
+}
+;
+bool test_same_types_0(bool eq, float f1, float f2, float f3, float f4);
+bool test_diff_types_0(bool eq, float f1, float f2, float f3, float f4);
+bool test_same_types_0(bool eq, float f1, float f2, float f3, float f4)
+{
+	float one = float(colorGreen.x + 1.0);
+	S_0 a[2];
+	a[0].f1 = f1;
+	a[0].f2 = f2;
+	a[1].f1 = f3;
+	a[1].f2 = f4;
+	S_0 b[2];
+	b[0].f1 = f1 * one;
+	b[0].f2 = f2 * one;
+	b[1].f1 = f3 * one;
+	b[1].f2 = f4 * one;
+	return eq ? a == b : a != b;
+}
+bool test_diff_types_0(bool eq, float f1, float f2, float f3, float f4)
+{
+	float two = float(colorGreen.x + 2.0);
+	S_0 a[2];
+	a[0].f1 = f1;
+	a[0].f2 = f2;
+	a[1].f1 = f3;
+	a[1].f2 = f4;
+	S_0 b[2];
+	b[0].f1 = f1 * two;
+	b[0].f2 = f2 * two;
+	b[1].f1 = f3 * two;
+	b[1].f2 = f4;
+	return eq ? a == b : a != b;
+}
+float4 main(float2 coords)
+{
+	float NA1 = float(colorGreen.x / colorGreen.z);
+	float NA2 = float(colorGreen.x / colorGreen.z);
+	float ZP = float(colorGreen.x * colorGreen.z);
+	float ZM = float(-colorGreen.x * colorGreen.z);
+	float F42 = float((colorGreen.x + 1.0) * 42.0);
+	float F43 = float((colorGreen.x + 1.0) * 43.0);
+	float F44 = float((colorGreen.x + 1.0) * 44.0);
+	float F45 = float((colorGreen.x + 1.0) * 45.0);
+	bool EQ = true;
+	bool NE = false;
+	float _0_one = float(colorGreen.x + 1.0);
+	S_0 _1_a[2];
+	_1_a[0].f1 = F42;
+	_1_a[0].f2 = ZM;
+	_1_a[1].f1 = ZP;
+	_1_a[1].f2 = F43;
+	S_0 _2_b[2];
+	_2_b[0].f1 = F42 * _0_one;
+	_2_b[0].f2 = ZM * _0_one;
+	_2_b[1].f1 = ZP * _0_one;
+	_2_b[1].f2 = F43 * _0_one;
+	return half4(float4((((((((EQ ? _1_a == _2_b : _1_a != _2_b) && !test_same_types_0(NE, F42, ZM, ZP, F43)) && test_same_types_0(NE, F42, NA1, NA2, F43)) && !test_same_types_0(EQ, F42, NA1, NA2, F43)) && test_diff_types_0(NE, F42, F43, F44, F45)) && !test_diff_types_0(EQ, F42, F43, F44, F45)) && test_diff_types_0(NE, NA1, ZM, ZP, F42)) && !test_diff_types_0(EQ, NA1, ZM, ZP, F42) ? colorGreen : colorRed));
+}
