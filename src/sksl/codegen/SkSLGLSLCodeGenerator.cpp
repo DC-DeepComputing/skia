@@ -540,14 +540,14 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
             }
             break;
         case k_inverse_IntrinsicKind:
-            if (this->caps().generation() < k140_GrGLSLGeneration) {
+            if (this->caps().generation() < k140_SkSLGLSLGeneration) {
                 SkASSERT(arguments.size() == 1);
                 this->writeInverseHack(*arguments[0]);
                 return;
             }
             break;
         case k_inversesqrt_IntrinsicKind:
-            if (this->caps().generation() < k130_GrGLSLGeneration) {
+            if (this->caps().generation() < k130_SkSLGLSLGeneration) {
                 SkASSERT(arguments.size() == 1);
                 this->writeInverseSqrtHack(*arguments[0]);
                 return;
@@ -651,7 +651,7 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
                 this->write(fTextureFunctionOverride.c_str());
             } else {
                 this->write("texture");
-                if (this->caps().generation() < k130_GrGLSLGeneration) {
+                if (this->caps().generation() < k130_SkSLGLSLGeneration) {
                     this->write(dim);
                 }
                 if (proj) {
@@ -662,7 +662,7 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
             break;
         }
         case k_transpose_IntrinsicKind:
-            if (this->caps().generation() < k130_GrGLSLGeneration) {
+            if (this->caps().generation() < k130_SkSLGLSLGeneration) {
                 SkASSERT(arguments.size() == 1);
                 this->writeTransposeHack(*arguments[0]);
                 return;
@@ -1098,7 +1098,7 @@ void GLSLCodeGenerator::writeModifiers(const Modifiers& modifiers,
         this->write("inout ");
     } else if (modifiers.fFlags & Modifiers::kIn_Flag) {
         if (globalContext &&
-            this->caps().generation() < GrGLSLGeneration::k130_GrGLSLGeneration) {
+            this->caps().generation() < SkSLGLSLGeneration::k130_SkSLGLSLGeneration) {
             this->write(fProgram.fConfig->fKind == ProgramKind::kVertex ? "attribute "
                                                                         : "varying ");
         } else {
@@ -1106,7 +1106,7 @@ void GLSLCodeGenerator::writeModifiers(const Modifiers& modifiers,
         }
     } else if (modifiers.fFlags & Modifiers::kOut_Flag) {
         if (globalContext &&
-            this->caps().generation() < GrGLSLGeneration::k130_GrGLSLGeneration) {
+            this->caps().generation() < SkSLGLSLGeneration::k130_SkSLGLSLGeneration) {
             this->write("varying ");
         } else {
             this->write("out ");

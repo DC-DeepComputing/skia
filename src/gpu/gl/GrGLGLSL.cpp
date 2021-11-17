@@ -8,7 +8,7 @@
 #include "src/gpu/gl/GrGLGLSL.h"
 #include "src/gpu/gl/GrGLUtil.h"
 
-bool GrGLGetGLSLGeneration(const GrGLDriverInfo& info, GrGLSLGeneration* generation) {
+bool GrGLGetGLSLGeneration(const GrGLDriverInfo& info, SkSLGLSLGeneration* generation) {
     SkASSERT(generation);
     // Workaround for a bug on some Adreno 308 devices with Android 9. The driver reports a GL
     // version of 3.0, and a GLSL version of 3.1. If we use version 310 shaders, the driver reports
@@ -28,39 +28,39 @@ bool GrGLGetGLSLGeneration(const GrGLDriverInfo& info, GrGLSLGeneration* generat
     if (GR_IS_GR_GL(info.fStandard)) {
         SkASSERT(ver >= GR_GLSL_VER(1,10));
         if (ver >= GR_GLSL_VER(4,20)) {
-            *generation = k420_GrGLSLGeneration;
+            *generation = k420_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(4,00)) {
-            *generation = k400_GrGLSLGeneration;
+            *generation = k400_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(3,30)) {
-            *generation = k330_GrGLSLGeneration;
+            *generation = k330_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(1,50)) {
-            *generation = k150_GrGLSLGeneration;
+            *generation = k150_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(1,40)) {
-            *generation = k140_GrGLSLGeneration;
+            *generation = k140_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(1,30)) {
-            *generation = k130_GrGLSLGeneration;
+            *generation = k130_SkSLGLSLGeneration;
         } else {
-            *generation = k110_GrGLSLGeneration;
+            *generation = k110_SkSLGLSLGeneration;
         }
         return true;
     } else if (GR_IS_GR_GL_ES(info.fStandard)) {
         SkASSERT(ver >= GR_GL_VER(1,00));
         if (ver >= GR_GLSL_VER(3,20)) {
-            *generation = k320es_GrGLSLGeneration;
+            *generation = k320es_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(3,10)) {
-            *generation = k310es_GrGLSLGeneration;
+            *generation = k310es_SkSLGLSLGeneration;
         } else if (ver >= GR_GLSL_VER(3,00)) {
-            *generation = k330_GrGLSLGeneration;
+            *generation = k330_SkSLGLSLGeneration;
         } else {
-            *generation = k110_GrGLSLGeneration;
+            *generation = k110_SkSLGLSLGeneration;
         }
         return true;
     } else if (GR_IS_GR_WEBGL(info.fStandard)) {
         SkASSERT(ver >= GR_GL_VER(1,0));
         if (ver >= GR_GLSL_VER(2,0)) {
-            *generation = k330_GrGLSLGeneration;  // ES 3.0
+            *generation = k330_SkSLGLSLGeneration;  // ES 3.0
         } else {
-            *generation = k110_GrGLSLGeneration;
+            *generation = k110_SkSLGLSLGeneration;
         }
         return true;
     }
