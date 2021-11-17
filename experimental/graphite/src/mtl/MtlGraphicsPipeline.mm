@@ -7,12 +7,116 @@
 
 #include "experimental/graphite/src/mtl/MtlGraphicsPipeline.h"
 
+#include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/GraphicsPipelineDesc.h"
+#include "experimental/graphite/src/Uniform.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 #include "experimental/graphite/src/mtl/MtlUtils.h"
 #include "include/private/SkSLString.h"
 
 namespace skgpu::mtl {
+
+namespace {
+
+std::string emit_MSL_uniform_struct(SkSpan<const Uniform> uniforms) {
+    std::string result;
+
+    result.append("struct FragmentUniforms {\n");
+    for (auto u : uniforms) {
+        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
+        // machinery
+        switch (u.type()) {
+            case SLType::kFloat4:
+                result.append("vector_float4");
+                break;
+            case SLType::kFloat2:
+                result.append("vector_float2");
+                break;
+            case SLType::kFloat:
+                result.append("float");
+                break;
+            case SLType::kHalf4:
+                result.append("vector_half4");
+                break;
+            default:
+                SkASSERT(0);
+        }
+
+        result.append(" ");
+        result.append(u.name());
+        if (u.count()) {
+            result.append("[");
+            result.append(std::to_string(u.count()));
+            result.append("]");
+        }
+        result.append(";\n");
+    }
+    result.append("};\n");
+    return result;
+}
+
+SkSL::String get_msl(Combination combo) {
+    SkSL::String msl =
+            "#include <metal_stdlib>\n"
+            "#include <simd/simd.h>\n"
+            "using namespace metal;\n"
+            "\n";
+
+    auto fsUniforms = GetUniforms(combo);
+    msl += emit_MSL_uniform_struct(fsUniforms);
+
+    switch (combo.fShaderType) {
+        case ShaderCombo::ShaderType::kLinearGradient:
+            // TODO: this MSL uses a 'rtSize' uniform that, presumably, we'll be getting from the
+            // vertex shader side of things (still somewhat TBD)
+            msl += std::string(
+            "fragment float4 fragmentShader(VertexOut interpolated [[stage_in]],\n"
+            "                               constant FragmentUniforms &uniforms [[buffer(0)]])\n"
+            "{"
+            "float2 screenPos = float2(2*interpolated.pos.x/uniforms.rtSize[0] - 1,\n"
+            "                          2*interpolated.pos.y/uniforms.rtSize[1] - 1);\n"
+            "float2 delta = uniforms.point1 - uniforms.point0;\n"
+            "float2 pt = screenPos - uniforms.point0;\n"
+            "float t = dot(pt, delta) / dot(delta, delta);\n"
+            "float4 result = uniforms.colors[0];\n"
+            "result = mix(result, uniforms.colors[1],\n"
+            "             clamp((t-uniforms.offsets[0])/(uniforms.offsets[1]-uniforms.offsets[0]),\n"
+            "                   0, 1));\n"
+            "result = mix(result, uniforms.colors[2],\n"
+            "             clamp((t-uniforms.offsets[1])/(uniforms.offsets[2]-uniforms.offsets[1]),\n"
+            "                   0, 1));\n"
+            "result = mix(result, uniforms.colors[3],\n"
+            "             clamp((t-uniforms.offsets[2])/(uniforms.offsets[3]-uniforms.offsets[2]),\n"
+            "             0, 1));\n"
+            "return result;\n"
+            "}\n");
+            break;
+        case ShaderCombo::ShaderType::kNone:
+            // TODO: kNone is for depth-only draws, so should actually have a fragment output type
+            // that only defines a [[depth]] attribute but no color calculation.
+            msl +=
+            "fragment float4 fragmentMain(VertexOutput interpolated [[stage_in]]) {\n"
+            "    return float4(0.0, 0.0, 1.0, 1.0);\n"
+            "}\n";
+            break;
+        case ShaderCombo::ShaderType::kRadialGradient:
+        case ShaderCombo::ShaderType::kSweepGradient:
+        case ShaderCombo::ShaderType::kConicalGradient:
+        case ShaderCombo::ShaderType::kSolidColor:
+        default:
+            msl += std::string(
+            "fragment float4 fragmentShader(VertexOut interpolated [[stage_in]],\n"
+            "                               constant FragmentUniforms &uniforms [[buffer(0)]])\n"
+            "{\n"
+            "    return float4(uniforms.color);\n"
+            "}\n");
+            break;
+    }
+
+    return msl;
+}
+
+} // anonymous namespace
 
 static const char* kTestingOnlyShaders[] = {
     // clear viewport to blue
@@ -268,6 +372,9 @@ static MTLVertexDescriptor* create_vertex_descriptor(const GraphicsPipelineDesc&
 sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
                                                const skgpu::GraphicsPipelineDesc& desc) {
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
+
+    Combination tmpCombo;
+    SkSL::String fsText = get_msl(tmpCombo);
 
     // Temp pipeline for now that just fills the viewport with blue
     int shaderIndex = desc.testingOnlyShaderIndex();
