@@ -645,10 +645,6 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     } else if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
-        return false;
-    }
 
     return true;
 }
@@ -698,10 +694,6 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
     }
 
     if (GR_GL_TEXTURE_2D != desc->fTarget) {
-        return false;
-    }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
         return false;
     }
 
@@ -777,11 +769,6 @@ sk_sp<GrTexture> GrGLGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
 sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTarget& backendRT) {
     GrGLFramebufferInfo info;
     if (!backendRT.getGLFramebufferInfo(&info)) {
-        return nullptr;
-    }
-
-    if (backendRT.isProtected()) {
-        // Not supported in GL at this time.
         return nullptr;
     }
 
@@ -1355,10 +1342,6 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           GrProtected isProtected,
                                           int mipLevelCount,
                                           uint32_t levelClearMask) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return nullptr;
-    }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
 
     SkASSERT(mipLevelCount > 0);
@@ -1387,7 +1370,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
     SkASSERT(!GrGLFormatIsCompressed(texDesc.fFormat));
 
     texDesc.fID = this->createTexture(dimensions, texDesc.fFormat, texDesc.fTarget, renderable,
-                                      &initialState, mipLevelCount);
+                                      &initialState, mipLevelCount, isProtected);
 
     if (!texDesc.fID) {
         return return_null_texture();
@@ -1458,10 +1441,6 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
                                                     GrMipmapped mipMapped,
                                                     GrProtected isProtected,
                                                     const void* data, size_t dataSize) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return nullptr;
-    }
     SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
 
     GrGLTextureParameters::SamplerOverriddenState initialState;
@@ -1501,11 +1480,6 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
 GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
         SkISize dimensions, const GrBackendFormat& format, GrMipmapped mipMapped,
         GrProtected isProtected) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return {};
-    }
-
     this->handleDirtyContext();
 
     GrGLFormat glFormat = format.asGLFormat();
@@ -1597,7 +1571,7 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
         int firstWorkingStencilFormatIndex = -1;
 
         GrGLuint colorID = this->createTexture({kSize, kSize}, format, GR_GL_TEXTURE_2D,
-                                               GrRenderable::kYes, nullptr, 1);
+                                               GrRenderable::kYes, nullptr, 1, GrProtected::kNo);
         if (!colorID) {
             return -1;
         }
@@ -1700,7 +1674,8 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
                                 GrGLenum target,
                                 GrRenderable renderable,
                                 GrGLTextureParameters::SamplerOverriddenState* initialState,
-                                int mipLevelCount) {
+                                int mipLevelCount,
+                                GrProtected isProtected) {
     SkASSERT(format != GrGLFormat::kUnknown);
     SkASSERT(!GrGLFormatIsCompressed(format));
 
@@ -1724,6 +1699,21 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         *initialState = set_initial_texture_params(this->glInterface(), target);
     } else {
         set_initial_texture_params(this->glInterface(), target);
+    }
+
+    if (GrProtected::kYes == isProtected) {
+        bool protectedSupport = false;
+        if (this->glCaps().supportsProtected()) {
+            GrGLint contextFlags;
+            GR_GL_GetIntegerv(this->glInterface(), GR_GL_CONTEXT_FLAGS, &contextFlags);
+            protectedSupport = SkToBool(contextFlags & GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);
+        }
+        if (protectedSupport) {
+            GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
+        } else {
+            GL_CALL(DeleteTextures(1, &id));
+            return 0;
+        }
     }
 
     GrGLenum internalFormat = this->glCaps().getTexImageOrStorageInternalFormat(format);
@@ -3609,11 +3599,6 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
                                                  GrRenderable renderable,
                                                  GrMipmapped mipMapped,
                                                  GrProtected isProtected) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return {};
-    }
-
     this->handleDirtyContext();
 
     GrGLFormat glFormat = format.asGLFormat();
@@ -3651,7 +3636,7 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
     }
     info.fFormat = GrGLFormatToEnum(glFormat);
     info.fID = this->createTexture(dimensions, glFormat, info.fTarget, renderable, &initialState,
-                                   numMipLevels);
+                                   numMipLevels, isProtected);
     if (!info.fID) {
         return {};
     }
@@ -3759,9 +3744,6 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         dimensions.height() > this->caps()->maxRenderTargetSize()) {
         return {};
     }
-    if (isProtected == GrProtected::kYes) {
-        return {};
-    }
 
     this->handleDirtyContext();
     auto format = this->glCaps().getFormatFromColorType(colorType);
@@ -3834,7 +3816,7 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
     if (useTexture) {
         GrGLTextureParameters::SamplerOverriddenState initialState;
         colorID = this->createTexture(dimensions, format, GR_GL_TEXTURE_2D, GrRenderable::kYes,
-                                      &initialState, 1);
+                                      &initialState, 1, isProtected);
         if (!colorID) {
             deleteIDs();
             return {};

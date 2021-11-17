@@ -71,6 +71,7 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     fFBFetchRequiresEnablePerSample = false;
     fSRGBWriteControl = false;
     fSkipErrorChecks = false;
+    fSupportsProtected = false;
 
     fShaderCaps = std::make_unique<GrShaderCaps>();
 
@@ -367,6 +368,8 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
 
     // When we are abandoning the context we cannot call into GL thus we should skip any sync work.
     fMustSyncGpuDuringAbandon = false;
+
+    fSupportsProtected = ctxInfo.hasExtension("GL_EXT_protected_textures");
 
     /**************************************************************************
     * GrShaderCaps fields
