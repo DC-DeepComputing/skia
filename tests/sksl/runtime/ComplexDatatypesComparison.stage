@@ -1,0 +1,43 @@
+uniform half4 colorGreen;
+uniform half4 colorRed;
+struct S_0 
+{
+	float f1;
+	float f2;
+	float f3;
+}
+;
+bool test_array_NA1_0();
+bool test_array_NA2_0();
+bool test_array_NA1_0()
+{
+	float a[2];
+	a[0] = float(colorGreen.x / colorGreen.z);
+	a[1] = float(colorGreen.z / colorGreen.x);
+	float b[2];
+	b[0] = float(colorGreen.z / colorGreen.x);
+	b[1] = float(colorGreen.x / colorGreen.z);
+	return a != b;
+}
+bool test_array_NA2_0()
+{
+	float a[2];
+	a[0] = float(colorGreen.x / colorGreen.z);
+	a[1] = float(colorGreen.z / colorGreen.x);
+	float b[2];
+	b[0] = float(colorGreen.z / colorGreen.x);
+	b[1] = float(colorGreen.x / colorGreen.z);
+	return !(a == b);
+}
+float4 main(float2 coords)
+{
+	S_0 _0_a;
+	_0_a.f1 = float(colorGreen.x / colorGreen.z);
+	_0_a.f2 = float(colorGreen.z / colorGreen.x);
+	_0_a.f3 = float(colorRed.x / colorRed.z);
+	S_0 _1_b;
+	_1_b.f1 = float(colorGreen.z / colorGreen.x);
+	_1_b.f2 = float(colorGreen.x / colorGreen.z);
+	_1_b.f3 = float(colorRed.x / colorRed.y);
+	return half4(float4((_0_a != _1_b && test_array_NA1_0()) && test_array_NA2_0() ? colorGreen : colorRed));
+}
