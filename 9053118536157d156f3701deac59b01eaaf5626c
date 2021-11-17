@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6c41ad_fefd449c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-17T18:14:36Z",
+      "side": 1,
+      "message": "Eliminates a longstanding piece of technical debt. (Pending chromium canary...)",
+      "revId": "9053118536157d156f3701deac59b01eaaf5626c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
