@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19995b2b_944642ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-17T18:47:53Z",
+      "side": 1,
+      "message": "I\u0027ve tested this, and it \"works\" in that I\u0027ve switched to this API without any apparent change in behavior.\n\nAs I mentioned previously, the devices I\u0027m testing on don\u0027t run into problems without this change, so I haven\u0027t been able to confirm that it fixes the bug.\n\nWhat tests should I add in Skia, and where should they go? At the very least, I think I should verify that calling\n\n  GrDirectContext::createBackendTexture(..., GrProtected::kYes)\n\nreturns non-null. (If we know, or we determine in code, that the device has the right extension?) I can also verify that\n\n  GrBackendTexture.isProtected()\n\nreturns true.\n\nAnything else?",
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfa20d16_edd4b630",
+        "filename": "src/gpu/gl/GrGLDefines.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-17T18:47:53Z",
+      "side": 1,
+      "message": "This location was arbitrary. What would be the right place for these new constants?",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 51
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e72513d_f91c9d69",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-17T18:47:53Z",
+      "side": 1,
+      "message": "D\u0027oh. I\u0027ll clean this up in another patch set, with whatever other changes we decide on.",
+      "range": {
+        "startLine": 1709,
+        "startChar": 100,
+        "endLine": 1709,
+        "endChar": 101
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

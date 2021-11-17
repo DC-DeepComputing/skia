@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad3f1358_9c63e92e",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-17T18:47:53Z",
+      "side": 0,
+      "message": "I wasn\u0027t sure whether these removals were strictly necessary for my purposes. (I\u0027m guessing check_compressed_backend_texture is not.)\n\nIf they\u0027re not necessary, does it make sense to loosen these restriction? Or should we do that when we provide end-to-end support?",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 651,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
