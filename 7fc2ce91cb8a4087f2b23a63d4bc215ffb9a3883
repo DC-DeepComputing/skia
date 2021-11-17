@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c956733_043fcfce",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-17T15:02:01Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "55087028_b8fab457",
+      "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e750055_c0b8ce08",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-11-16T20:47:19Z",
       "side": 1,
       "message": "nit: std::move(shader)",
+      "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a2ad6c1_f80f4742",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-17T15:02:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e750055_c0b8ce08",
       "revId": "7fc2ce91cb8a4087f2b23a63d4bc215ffb9a3883",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
