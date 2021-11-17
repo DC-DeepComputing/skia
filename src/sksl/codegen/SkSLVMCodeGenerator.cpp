@@ -356,8 +356,10 @@ void SkVMGenerator::setupGlobals(SkSpan<skvm::Val> uniforms, skvm::Coord device)
         // If we are debugging, we need to create a trace mask. This will be true when the current
         // device coordinates match the requested trace coordinates.
         if (fDebugInfo->fTraceCoord) {
-            fTraceMask = (device.x == fDebugInfo->fTraceCoord.x) &
-                         (device.y == fDebugInfo->fTraceCoord.y);
+            // Evaluate each side of '&' explicitly, to guarantee consistent order of evaluation:
+            skvm::I32 xMask = (device.x == fDebugInfo->fTraceCoord.x),
+                      yMask = (device.y == fDebugInfo->fTraceCoord.y);
+            fTraceMask = xMask & yMask;
         } else {
             // No debug coordinates were specified, so tracing will never occur.
             fTraceMask = fBuilder->splat(0);
@@ -663,19 +665,72 @@ Value SkVMGenerator::writeBinaryExpression(const BinaryExpression& b) {
 
     size_t nslots = std::max(lVal.slots(), rVal.slots());
 
-    auto binary = [&](auto&& f_fn, auto&& i_fn) {
-        Value result(nslots);
-        for (size_t i = 0; i < nslots; ++i) {
-            // If one side is scalar, replicate it to all channels
-            skvm::Val L = lVal.slots() == 1 ? lVal[0] : lVal[i],
-                      R = rVal.slots() == 1 ? rVal[0] : rVal[i];
+    std::function <size_t (int& lSlotOffset, int& rSlotOffset, skvm::I32& temp,
+                  const Type& lType, const Type& rType,
+                  const std::function <Value(skvm::F32 x, skvm::F32 y)>& f_fn,
+                  const std::function <Value(skvm::I32 x, skvm::I32 y)>& i_fn)>
+    recursiveComparison = [&] (int& lSlotOffset, int& rSlotOffset, skvm::I32& temp,const Type& lType, const Type& rType,
+                               const std::function <Value(skvm::F32 x, skvm::F32 y)>& f_fn,
+                               const std::function <Value(skvm::I32 x, skvm::I32 y)>& i_fn) -> size_t {
+        if (lType.typeKind() == Type::TypeKind::kStruct) {
+            SkASSERT(rType.typeKind() == Type::TypeKind::kStruct);
+            SkASSERT(lType.fields().size() == rType.fields().size());
+            // Go through all the fields
+            for (size_t f = 0; f < lType.fields().size(); ++f) {
+                const Type::Field& lField = lType.fields()[f];
+                const Type::Field& rField = rType.fields()[f];
+                recursiveComparison(lSlotOffset, rSlotOffset, temp, *lField.fType, *rField.fType, f_fn, i_fn);
+            }
+
+        } else if (lType.typeKind() == Type::TypeKind::kArray) {
+            SkASSERT(rType.typeKind() == Type::TypeKind::kArray);
+            // Go through all the elements
+            for (int c = 0; c < lType.columns(); ++c) {
+                recursiveComparison(lSlotOffset, rSlotOffset, temp, lType.componentType(), lType.componentType(), f_fn, i_fn);
+            }
+
+        } else {
+            Type::NumberKind nk = base_number_kind(lType);
+            auto L = lVal[lSlotOffset];
+            auto R = rVal[rSlotOffset];
             if (nk == Type::NumberKind::kFloat) {
-                result[i] = f_fn(f32(L), f32(R));
+                temp |= i32(f_fn(f32(L), f32(R)));
+                if (lVal.slots() > 1) ++lSlotOffset;
+                if (rVal.slots() > 1) ++rSlotOffset;
             } else {
-                result[i] = i_fn(i32(L), i32(R));
+                temp |= i32(i_fn(i32(L), i32(R)));
+                if (lVal.slots() > 1) ++lSlotOffset;
+                if (rVal.slots() > 1) ++rSlotOffset;
             }
         }
-        return isAssignment ? this->writeStore(left, result) : result;
+        return 0;
+    };
+
+    auto binary = [&](const std::function <Value(skvm::F32 x, skvm::F32 y)>& f_fn,
+                      const std::function <Value(skvm::I32 x, skvm::I32 y)>& i_fn) -> Value {
+
+        if (op.kind() == Token::Kind::TK_EQEQ || op.kind() == Token::Kind::TK_NEQ) {
+            // We only implement recursively comparison for now
+            skvm::I32 temp = fBuilder->splat(0);
+            int lOffset = 0;
+            int rOffset = 0;
+            recursiveComparison(lOffset, rOffset, temp, lType, rType, f_fn, i_fn);
+            return temp;
+        } else {
+            Value result(nslots);
+            for (size_t slot = 0; slot < nslots; ++slot) {
+                // If one side is scalar, replicate it to all channels
+                skvm::Val L = lVal.slots() == 1 ? lVal[0] : lVal[slot],
+                          R = rVal.slots() == 1 ? rVal[0] : rVal[slot];
+
+                if (nk == Type::NumberKind::kFloat) {
+                    result[slot] = i32(f_fn(f32(L), f32(R)));
+                } else {
+                    result[slot] = i32(i_fn(i32(L), i32(R)));
+                }
+            }
+            return isAssignment ? this->writeStore(left, result) : result;
+        }
     };
 
     auto unsupported_f = [&](skvm::F32, skvm::F32) {
@@ -686,23 +741,13 @@ Value SkVMGenerator::writeBinaryExpression(const BinaryExpression& b) {
     switch (op.kind()) {
         case Token::Kind::TK_EQEQ: {
             SkASSERT(!isAssignment);
-            Value cmp = binary([](skvm::F32 x, skvm::F32 y) { return x == y; },
-                               [](skvm::I32 x, skvm::I32 y) { return x == y; });
-            skvm::I32 folded = i32(cmp[0]);
-            for (size_t i = 1; i < nslots; ++i) {
-                folded &= i32(cmp[i]);
-            }
-            return folded;
+            return binary([](skvm::F32 x, skvm::F32 y) { return x == y; },
+                          [](skvm::I32 x, skvm::I32 y) { return x == y; });
         }
         case Token::Kind::TK_NEQ: {
             SkASSERT(!isAssignment);
-            Value cmp = binary([](skvm::F32 x, skvm::F32 y) { return x != y; },
-                               [](skvm::I32 x, skvm::I32 y) { return x != y; });
-            skvm::I32 folded = i32(cmp[0]);
-            for (size_t i = 1; i < nslots; ++i) {
-                folded |= i32(cmp[i]);
-            }
-            return folded;
+            return binary([](skvm::F32 x, skvm::F32 y) { return x != y; },
+                          [](skvm::I32 x, skvm::I32 y) { return x != y; });
         }
         case Token::Kind::TK_GT:
             return binary([](skvm::F32 x, skvm::F32 y) { return x > y; },
