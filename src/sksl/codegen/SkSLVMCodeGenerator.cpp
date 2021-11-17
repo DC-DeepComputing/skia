@@ -292,6 +292,13 @@ private:
     Value writeMatrixInverse3x3(const Value& m);
     Value writeMatrixInverse4x4(const Value& m);
 
+    void recursiveBinaryCompare(Token::Kind op,
+                                const Value& lVal, const Type& lType,
+                                const Value& rVal, const Type& rType,
+                                size_t* slotOffset, Value& result,
+                                const std::function <Value(skvm::F32 x, skvm::F32 y)>& float_comp,
+                                const std::function <Value(skvm::I32 x, skvm::I32 y)>& int_comp);
+
     //
     // Global state for the lifetime of the generator:
     //
@@ -665,6 +672,52 @@ size_t SkVMGenerator::getSlot(const FunctionDefinition& fn) {
     return slot;
 }
 
+void SkVMGenerator::recursiveBinaryCompare
+        (Token::Kind op,
+         const Value& lVal, const Type& lType,
+         const Value& rVal, const Type& rType,
+         size_t* slotOffset, Value& result,
+         const std::function <Value(skvm::F32 x, skvm::F32 y)>& float_comp,
+         const std::function <Value(skvm::I32 x, skvm::I32 y)>& int_comp) {
+    SkASSERT(op == Token::Kind::TK_EQEQ || op == Token::Kind::TK_NEQ);
+    switch (lType.typeKind()) {
+        case Type::TypeKind::kStruct:
+            SkASSERT(rType.typeKind() == Type::TypeKind::kStruct);
+            // Go through all the fields
+            for (size_t f = 0; f < lType.fields().size(); ++f) {
+                const Type::Field& lField = lType.fields()[f];
+                const Type::Field& rField = rType.fields()[f];
+                this->recursiveBinaryCompare
+                        (op, lVal, *lField.fType, rVal, *rField.fType,
+                         slotOffset, result, float_comp, int_comp);
+            }
+            break;
+
+        case Type::TypeKind::kArray:
+        case Type::TypeKind::kVector:
+        case Type::TypeKind::kMatrix:
+            SkASSERT(lType.typeKind() == rType.typeKind());
+            // Go through all the elements
+            for (int c = 0; c < lType.columns(); ++c) {
+                this->recursiveBinaryCompare
+                        (op, lVal, lType.componentType(), rVal,rType.componentType(),
+                         slotOffset, result, float_comp, int_comp);
+            }
+            break;
+        default:
+            SkASSERT(lType.typeKind() == rType.typeKind() &&
+                     lType.slotCount() == rType.slotCount());
+            Type::NumberKind nk = base_number_kind(lType);
+            auto L = lVal[*slotOffset];
+            auto R = rVal[*slotOffset];
+            result[*slotOffset] = i32(nk == Type::NumberKind::kFloat
+                                              ? float_comp(f32(L), f32(R))
+                                              : int_comp(i32(L), i32(R)));
+            *slotOffset += lType.slotCount();
+            break;
+    }
+}
+
 Value SkVMGenerator::writeBinaryExpression(const BinaryExpression& b) {
     const Expression& left = *b.left();
     const Expression& right = *b.right();
@@ -744,16 +797,34 @@ Value SkVMGenerator::writeBinaryExpression(const BinaryExpression& b) {
 
     size_t nslots = std::max(lVal.slots(), rVal.slots());
 
-    auto binary = [&](auto&& f_fn, auto&& i_fn) {
+    auto binary = [&](const std::function <Value(skvm::F32 x, skvm::F32 y)>& f_fn,
+                      const std::function <Value(skvm::I32 x, skvm::I32 y)>& i_fn) -> Value {
+
         Value result(nslots);
-        for (size_t i = 0; i < nslots; ++i) {
+        if ((op.kind() == Token::Kind::TK_EQEQ ||
+             op.kind() == Token::Kind::TK_NEQ) &&
+            // Just to keep the old code a working in simple cases
+            (lType.typeKind() == Type::TypeKind::kStruct ||
+             lType.typeKind() == Type::TypeKind::kArray)) {
+
+            // Shifting over lVal and rVal
+            size_t slotOffset = 0;
+            this->recursiveBinaryCompare
+                    (op.kind(), lVal, lType, rVal, rType, &slotOffset, result, f_fn, i_fn);
+            // For now just to make sure we didn't miss anything;
+            SkASSERT(slotOffset == nslots);
+            return result;
+        }
+
+        for (size_t slot = 0; slot < nslots; ++slot) {
             // If one side is scalar, replicate it to all channels
-            skvm::Val L = lVal.slots() == 1 ? lVal[0] : lVal[i],
-                      R = rVal.slots() == 1 ? rVal[0] : rVal[i];
+            skvm::Val L = lVal.slots() == 1 ? lVal[0] : lVal[slot],
+                      R = rVal.slots() == 1 ? rVal[0] : rVal[slot];
+
             if (nk == Type::NumberKind::kFloat) {
-                result[i] = f_fn(f32(L), f32(R));
+                result[slot] = i32(f_fn(f32(L), f32(R)));
             } else {
-                result[i] = i_fn(i32(L), i32(R));
+                result[slot] = i32(i_fn(i32(L), i32(R)));
             }
         }
         return isAssignment ? this->writeStore(left, result) : result;
