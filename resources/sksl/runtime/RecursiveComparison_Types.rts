@@ -1,0 +1,45 @@
+/*#pragma settings NoES2Restrictions*/
+
+uniform half4 colorGreen, colorRed;
+
+struct S {float f1; float f2; };
+
+bool test_same_types(bool eq, float f1, float f2, float f3, float f4) {
+    float one = colorGreen.r + 1;
+    S a[2]; a[0].f1 = f1;       a[0].f2 = f2;       a[1].f1 = f3;       a[1].f2 = f4;
+    S b[2]; b[0].f1 = f1 * one; b[0].f2 = f2 * one; b[1].f1 = f3 * one; b[1].f2 = f4 * one;
+    return eq ? a == b : a != b;
+}
+
+bool test_diff_types(bool eq, float f1, float f2, float f3, float f4) {
+    float two = colorGreen.r + 2;
+    S a[2]; a[0].f1 = f1;       a[0].f2 = f2;       a[1].f1 = f3;       a[1].f2 = f4;
+    S b[2]; b[0].f1 = f1 * two; b[0].f2 = f2 * two; b[1].f1 = f3 * two; b[1].f2 = f4;
+    return eq ? a == b : a != b;
+}
+
+vec4 main(vec2 coords) {
+
+    float NA1 = colorGreen.r/colorGreen.b;
+    float NA2 = colorGreen.r/colorGreen.b;
+    float ZP = +colorGreen.r*colorGreen.b;
+    float ZM = -colorGreen.r*colorGreen.b;
+    float F42 = (colorGreen.r + 1) * 42.0;
+    float F43 = (colorGreen.r + 1) * 43.0;
+    float F44 = (colorGreen.r + 1) * 44.0;
+    float F45 = (colorGreen.r + 1) * 45.0;
+
+    bool EQ = true;     // Tests for ==
+    bool NE = false;    // Tests for !=
+
+    return  true
+            && test_same_types(EQ, F42, ZM, ZP, F43)           // equal, including 0- and 0+ values
+            && !test_same_types(NE, F42, ZM, ZP, F43)          // not (not equal)
+            && test_same_types(NE, F42, NA1, NA2, F43)         // NA values always not equal
+            && !test_same_types(EQ, F42, NA1, NA2, F43)
+            && test_diff_types(NE, F42, F43, F44, F45)         // one of the normal values not equal; all normal are equal
+            && !test_diff_types(EQ, F42, F43, F44, F45)
+            && test_diff_types(NE, NA1, ZM, ZP, F42)           // one of the normal values not equal; all normal are equal
+            && !test_diff_types(EQ, NA1, ZM, ZP, F42)
+           ? colorGreen : colorRed;
+}

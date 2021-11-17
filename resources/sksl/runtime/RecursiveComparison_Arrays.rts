@@ -1,0 +1,42 @@
+/*#pragma settings NoES2Restrictions*/
+
+uniform half4 colorGreen, colorRed;
+
+bool test_same_arrays(bool eq, float f1, float f2, float f3) {
+    float one = colorGreen.r + 1;
+    float a[3]; a[0] = f1;       a[1] = f2;       a[2] = f3;
+    float b[3]; b[0] = f1 * one; b[1] = f2 * one; b[2] = f3 * one;
+    return eq ? a == b : a != b;
+}
+
+bool test_diff_arrays(bool eq, float f1, float f2, float f3) {
+    float two = colorGreen.r + 2;
+    float a[3]; a[0] = f1;       a[1] = f2;       a[2] = f3;
+    float b[3]; b[0] = f1 * two; b[1] = f2 * two; b[2] = f3;
+    return eq ? a == b : a != b;
+}
+
+vec4 main(vec2 coords) {
+
+    float NA1 = colorGreen.r/colorGreen.b;
+    float NA2 = colorGreen.r/colorGreen.b;
+    float ZP = +colorGreen.r*colorGreen.b;
+    float ZM = -colorGreen.r*colorGreen.b;
+    float F42 = (colorGreen.r + 1) * 42.0;
+    float F43 = (colorGreen.r + 1) * 43.0;
+    float F44 = (colorGreen.r + 1) * 44.0;
+
+    bool EQ = true;     // Tests for ==
+    bool NE = false;    // Tests for !=
+
+    return  true
+            && test_same_arrays(EQ, F42, ZM, ZP)           // equal, including 0- and 0+ values
+            && !test_same_arrays(NE, F42, ZM, ZP)          // not (not equal)
+            && test_same_arrays(NE, F42, NA1, NA2)         // NA values always not equal
+            && !test_same_arrays(EQ, F42, NA1, NA2)
+            && test_diff_arrays(NE, F42, F43, F44)         // one of the normal values not equal; all normal are equal
+            && !test_diff_arrays(EQ, F42, F43, F44)
+            && test_diff_arrays(NE, NA1, ZM, ZP)           // one of the normal values not equal; all normal are equal
+            && !test_diff_arrays(EQ, NA1, ZM, ZP)
+           ? colorGreen : colorRed;
+}
