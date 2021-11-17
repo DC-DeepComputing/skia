@@ -8,6 +8,8 @@
 #ifndef SKVMDEBUGINFO
 #define SKVMDEBUGINFO
 
+#include "include/core/SkPoint.h"
+#include "src/core/SkVM.h"
 #include "src/sksl/ir/SkSLType.h"
 
 #include <string>
@@ -44,6 +46,12 @@ public:
 
     /** Write a human-readable dump of the DebugInfo to a .skvm file. */
     void dump(SkWStream* o) const;
+
+    /**
+     * The device-coordinate pixel to trace. Callers should set this before compilation.
+     * If it's not set, the debugger will not emit trace data.
+     */
+    skvm::Coord fTraceCoord;
 
     /** A 1:1 mapping of slot numbers to debug information. */
     std::vector<SkVMSlotInfo> fSlotInfo;
