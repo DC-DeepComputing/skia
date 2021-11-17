@@ -22,6 +22,30 @@
       },
       "revId": "e109f63159250229e840d1a23249cbafa340bffc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a6c28ac_adfd434a",
+        "filename": "resources/sksl/runtime_errors/IllegalShaderSampling.rts",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-17T15:23:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2559223a_cce0f5f5",
+      "range": {
+        "startLine": 16,
+        "startChar": 31,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "e109f63159250229e840d1a23249cbafa340bffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
