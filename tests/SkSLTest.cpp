@@ -171,6 +171,13 @@ static void test_es3(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
     test_permutations(r, surface.get(), testFile, /*worksInES2=*/false);
 }
 
+static void test_cpu_es3(skiatest::Reporter* r, const char* testFile) {
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
+    sk_sp<SkSurface> surface(SkSurface::MakeRaster(info));
+
+    test_permutations(r, surface.get(), testFile, /*worksInES2=*/false);
+}
+
 #define SKSL_TEST_CPU(name, path)                                   \
     DEF_TEST(name ## _CPU, r) {                                     \
         test_cpu(r, path);                                          \
@@ -183,6 +190,11 @@ static void test_es3(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
     DEF_GPUTEST_FOR_RENDERING_CONTEXTS(name ## _GPU, r, ctxInfo) {  \
         test_es3(r, ctxInfo.directContext(), path);                 \
     }
+#define SKSL_TEST_CPU_ES3(name, path)                               \
+    DEF_TEST(name ## _CPU, r) {                                     \
+    test_cpu_es3(r, path);                                          \
+    }
+
 #define SKSL_TEST(name, path) SKSL_TEST_CPU(name, path) SKSL_TEST_GPU(name, path)
 
 SKSL_TEST(SkSLArraySizeFolding,                "folding/ArraySizeFolding.sksl")
@@ -283,6 +295,10 @@ SKSL_TEST(SkSLLoopFloat,                       "runtime/LoopFloat.rts")
 SKSL_TEST(SkSLLoopInt,                         "runtime/LoopInt.rts")
 SKSL_TEST(SkSLQualifierOrder,                  "runtime/QualifierOrder.rts")
 SKSL_TEST(SkSLPrecisionQualifiers,             "runtime/PrecisionQualifiers.rts")
+SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Arrays,  "runtime/RecursiveComparison_Arrays.rts")
+SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Structs, "runtime/RecursiveComparison_Structs.rts")
+SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Types,   "runtime/RecursiveComparison_Types.rts")
+SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Vectors, "runtime/RecursiveComparison_Vectors.rts")
 
 SKSL_TEST_ES3(SkSLArrayComparison,             "shared/ArrayComparison.sksl")
 SKSL_TEST_ES3(SkSLArrayConstructors,           "shared/ArrayConstructors.sksl")
