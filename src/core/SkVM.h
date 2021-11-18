@@ -613,17 +613,18 @@ namespace skvm {
         virtual void exit(int fnIdx) = 0;
     };
 
+    class SkVMVisualizer;
     class Builder {
     public:
 
-        Builder();
-        explicit Builder(Features);
+        Builder(SkVMVisualizer* visualizer = nullptr);
+        explicit Builder(Features, SkVMVisualizer* visualizer = nullptr);
 
         Program done(const char* debug_name = nullptr, bool allow_jit=true) const;
 
         // Mostly for debugging, tests, etc.
         std::vector<Instruction> program() const { return fProgram; }
-        std::vector<OptimizedInstruction> optimize() const;
+        std::vector<OptimizedInstruction> optimize(bool visualize = false) const;
 
         // Returns a trace-hook ID which must be passed to the trace opcodes.
         int attachTraceHook(TraceHook*);
@@ -987,6 +988,9 @@ namespace skvm {
             return false;
         }
 
+        void addToVisualizer(Val id);
+        SkVMVisualizer* visualizer() { return fVisualizer; }
+
     private:
         // Declare an argument with given stride (use stride=0 for uniforms).
         Ptr arg(int stride);
@@ -1007,12 +1011,13 @@ namespace skvm {
         std::vector<TraceHook*>                       fTraceHooks;
         std::vector<int>                              fStrides;
         const Features                                fFeatures;
+        SkVMVisualizer*                               fVisualizer;
     };
 
     // Optimization passes and data structures normally used by Builder::optimize(),
     // extracted here so they can be unit tested.
-    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>);
-    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>);
+    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>, SkVMVisualizer* visualizer = nullptr);
+    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>, SkVMVisualizer* visualizer = nullptr);
 
     using Reg = int;
 
@@ -1026,6 +1031,7 @@ namespace skvm {
     class Program {
     public:
         Program(const std::vector<OptimizedInstruction>& instructions,
+                SkVMVisualizer* visualizer,
                 const std::vector<int>& strides,
                 const std::vector<TraceHook*>& traceHooks,
                 const char* debug_name, bool allow_jit);
@@ -1074,6 +1080,7 @@ namespace skvm {
 
         struct Impl;
         std::unique_ptr<Impl> fImpl;
+        SkVMVisualizer* fVisualizer;
     };
 
     // TODO: control flow
