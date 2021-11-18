@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe391f4f_ff490569",
+        "filename": "tests/SkSLInterpreterTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T22:03:15Z",
+      "side": 1,
+      "message": "This highlights the one confusing thing about bool (it\u0027s a mask). We could fix it here in this unit test (at least to have an example of how). I guess we\u0027ll just end up with each implementer of TraceHook dealing with that?",
+      "range": {
+        "startLine": 1048,
+        "startChar": 13,
+        "endLine": 1048,
+        "endChar": 15
+      },
+      "revId": "d694dd9fa6fbd750572118f0d11b36ab7e755166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
