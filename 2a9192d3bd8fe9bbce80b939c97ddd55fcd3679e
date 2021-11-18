@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a45e132f_81ee496d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T22:07:58Z",
+      "side": 1,
+      "message": "+john, who worked on this code quite a bit. I think it looks good, and we can look at moving things even more as a follow-up. (eg, either collapsing down to a single unified shader caps, or hoisting more things that SkSL never needs to know about up to GrShaderCaps).",
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
