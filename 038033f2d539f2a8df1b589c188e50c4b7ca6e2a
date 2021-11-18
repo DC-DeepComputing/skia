@@ -219,6 +219,30 @@
       },
       "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f7f13a4_52035592",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 8511
+      },
+      "writtenOn": "2021-11-18T22:50:45Z",
+      "side": 1,
+      "message": "Yeah, Intel\u0027s instructions are indeed not commutative, and ARM offers both commutative and non-commutative instructions, though annoyingly I think I remember ARM\u0027s non-commutative instructions behave opposite of how Intel\u0027s non-commutative instructions work in terms of argument order.  I can\u0027t remember if ARM\u0027s commutative instructions conservatively produce NaN for either input being NaN, or if they generously ignore up to one NaN.\n\nstd::min and std::max are defined in terms of \u003c and ?:, which at least makes reasoning about them portable, and min and max throughout SkVM tried to track that.  Weirdly I think fminf and fmaxf are defined to be commutative in the generous sense that they ignore up to one NaN, so yes indeed, fminf and std::min\u003cfloat\u003e don\u0027t work the same...\n\nI personally think `F32 Builder::fast_mul(F32,F32)` above was a nice approach to handling this sort of thing, with the obviously-named mul() and operator* being safe, and the name fast_mul() evoking -ffast-math\u0027s caveats.  We used fast_mul() extensively throughout SkSL-\u003eSkVM translation (via a perhaps-too-cute operator**).  In this case I imagine you might actually want to plumb new fast_min/fast_max opcodes all the way through; it would help JIT codegen on Intel sometimes, and I think both JIT and interpreter codegen on ARM all the time.",
+      "parentUuid": "8e1f1818_b4372716",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 5
+      },
+      "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
