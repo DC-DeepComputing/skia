@@ -1045,11 +1045,11 @@ enter bool less_than(int left, int right)
 left = 10
 right = 20
 line 2
-comparison = 1
+comparison = -1
 line 3
 line 4
 exit bool less_than(int left, int right)
-function_result = 1
+function_result = -1
 line 11
 loop = 20
 line 12
