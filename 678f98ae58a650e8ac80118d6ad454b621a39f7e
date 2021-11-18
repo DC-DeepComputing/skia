@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3faa1c57_9e19f8b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-18T20:32:50Z",
+      "side": 1,
+      "message": "This seems fine for now. Really need to go through all glyph handling at some point and fix all the incorrect assumptions.",
+      "revId": "678f98ae58a650e8ac80118d6ad454b621a39f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
