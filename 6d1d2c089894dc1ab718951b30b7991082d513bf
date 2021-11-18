@@ -48,6 +48,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb770dcc_66883529",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "I think this means to leave compressed and wrapping in the state it is already at ToT?",
+      "parentUuid": "eab67a1f_f738b65d",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 651,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0719fd6d_69977976",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "Restored.",
+      "range": {
+        "startLine": 703,
+        "startChar": 0,
+        "endLine": 706,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7930ddd4_b836e383",
@@ -61,6 +108,30 @@
       "writtenOn": "2021-11-17T21:47:45Z",
       "side": 0,
       "message": "keep",
+      "range": {
+        "startLine": 783,
+        "startChar": 0,
+        "endLine": 786,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32a3513c_40aa1843",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "Restored.",
+      "parentUuid": "7930ddd4_b836e383",
       "range": {
         "startLine": 783,
         "startChar": 0,
@@ -94,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a606227a_ccb734fb",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "restored.",
+      "parentUuid": "25ee538f_fc466087",
+      "range": {
+        "startLine": 1358,
+        "startChar": 0,
+        "endLine": 1361,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef4ed7f8_b254a9ec",
@@ -107,6 +202,30 @@
       "writtenOn": "2021-11-17T21:47:45Z",
       "side": 0,
       "message": "keep",
+      "range": {
+        "startLine": 1462,
+        "startChar": 0,
+        "endLine": 1464,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29093ab4_1a4c6a63",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "Restored.",
+      "parentUuid": "ef4ed7f8_b254a9ec",
       "range": {
         "startLine": 1462,
         "startChar": 0,
@@ -140,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1686674_67e7a735",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "Restored.",
+      "parentUuid": "91e7195e_f4e28512",
+      "range": {
+        "startLine": 1505,
+        "startChar": 0,
+        "endLine": 1508,
+        "endChar": 0
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "457b6b61_e5e63624",
@@ -153,6 +296,30 @@
       "writtenOn": "2021-11-17T21:47:45Z",
       "side": 0,
       "message": "keep",
+      "range": {
+        "startLine": 3762,
+        "startChar": 0,
+        "endLine": 3764,
+        "endChar": 5
+      },
+      "revId": "6d1d2c089894dc1ab718951b30b7991082d513bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cbee81b_1a196c15",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3764,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 0,
+      "message": "Restored.",
+      "parentUuid": "457b6b61_e5e63624",
       "range": {
         "startLine": 3762,
         "startChar": 0,

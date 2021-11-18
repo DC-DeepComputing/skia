@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27810fce_6c451f96",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 1,
+      "message": "Done.\n\nTIL: The caps is tied to the context.",
+      "parentUuid": "2064f347_313ace37",
+      "range": {
+        "startLine": 372,
+        "startChar": 4,
+        "endLine": 372,
+        "endChar": 75
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfa20d16_edd4b630",
@@ -129,6 +153,54 @@
         "startChar": 11,
         "endLine": 1709,
         "endChar": 100
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "775f19df_abe353d8",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcf48a1e_b72d3432",
+      "range": {
+        "startLine": 1707,
+        "startChar": 11,
+        "endLine": 1709,
+        "endChar": 100
+      },
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bcf88a3_b128b25d",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-18T18:23:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e72513d_f91c9d69",
+      "range": {
+        "startLine": 1709,
+        "startChar": 100,
+        "endLine": 1709,
+        "endChar": 101
       },
       "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
