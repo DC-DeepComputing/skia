@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "042df12925137c5abbbe2f0b7540f01d453a6df0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec26bad_94f7a07c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T21:16:15Z",
+      "side": 1,
+      "message": "Looks like standalone isn\u0027t compiling. Make sure you set skia_compile_sksl_tests \u003d true in GN - that will ensure skslc gets built (and also verify that none of the SkSL golden compile results are impacted).",
+      "revId": "042df12925137c5abbbe2f0b7540f01d453a6df0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
