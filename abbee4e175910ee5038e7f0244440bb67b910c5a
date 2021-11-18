@@ -16,6 +16,24 @@
       "message": "Did it this way, because SkData::MakeUninitialized combines the allocations into a single block. Using MakeFromMalloc would turn this into two separate heap allocations.",
       "revId": "abbee4e175910ee5038e7f0244440bb67b910c5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fdce2c_7d9c9ba1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-18T15:55:52Z",
+      "side": 1,
+      "message": "Yeah, I just tried seeing if I could figure out a way to use calloc by introducing SkData::MakeZeroInitialized(size_t) but haven\u0027t figured out a way to make that work better than your memset.  Mostly because I haven\u0027t figure out how to make \"::operator new (actualLength)\" work with calloc.\n\nHowever, I do think we may just want to offer SkData::MakeZeroInitialized(size_t) as an API and if we find a way to optimize it later then we don\u0027t need to come back and clean up call sites like this one.",
+      "parentUuid": "e0e947e4_95d51fa8",
+      "revId": "abbee4e175910ee5038e7f0244440bb67b910c5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
