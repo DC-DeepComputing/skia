@@ -92,11 +92,6 @@ bool init_vertices_paint(GrRecordingContext* rContext,
                          bool hasColors,
                          GrPaint* grPaint) {
     if (hasColors) {
-        // When there are colors and a shader, the shader and colors are combined using bmode.
-        // With no shader, we just use the colors (kDst).
-        if (!skPaint.getShader()) {
-            blender = SkBlender::Mode(SkBlendMode::kDst);
-        }
         return SkPaintToGrPaintWithBlend(rContext,
                                          colorInfo,
                                          skPaint,
@@ -776,9 +771,12 @@ void Device::drawViewLattice(GrSurfaceProxyView view,
         paint.writable()->setColor(SkColorSetARGB(origPaint.getAlpha(), 0xFF, 0xFF, 0xFF));
     }
     GrPaint grPaint;
-    if (!SkPaintToGrPaintWithPrimitiveColor(this->recordingContext(),
-                                            fSurfaceDrawContext->colorInfo(), *paint,
-                                            this->asMatrixProvider(), &grPaint)) {
+    if (!SkPaintToGrPaintReplaceShader(this->recordingContext(),
+                                       fSurfaceDrawContext->colorInfo(),
+                                       *paint,
+                                       this->asMatrixProvider(),
+                                       nullptr,
+                                       &grPaint)) {
         return;
     }
 
