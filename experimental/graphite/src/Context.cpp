@@ -54,11 +54,12 @@ void Context::submit(SyncToCpu syncToCpu) {
     fRecordings.clear();
 }
 
-void Context::preCompile(const PaintCombo& paintCombo) {
+void Context::preCompile(const PaintCombinations& combinations) {
     ProgramCache cache;
 
-    for (auto bm: paintCombo.fBlendModes) {
-        for (auto& shaderCombo: paintCombo.fShaders) {
+//    for (auto bm: combinations.fBlendModes) {
+        for (auto& shaderCombo: combinations.fShaderCombos) {
+#if 0
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
                     Combination c {shaderType, tm, bm};
@@ -72,8 +73,9 @@ void Context::preCompile(const PaintCombo& paintCombo) {
                     // a stock set of RenderPasses.
                 }
             }
+#endif
         }
-    }
+//    }
 }
 
 } // namespace skgpu

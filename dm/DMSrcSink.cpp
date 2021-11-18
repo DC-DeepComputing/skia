@@ -2129,14 +2129,17 @@ namespace {
 void precompile(skgpu::Context* context) {
     using ShaderType = skgpu::ShaderCombo::ShaderType;
 
-    skgpu::PaintCombo c1 { { skgpu::ShaderCombo({ ShaderType::kSolidColor },
-                                                { SkTileMode::kRepeat }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+    skgpu::PaintCombinations c1;
+    c1.addShaderCombinations(std::unique_ptr<ShaderCombo2>(new NoShaderCombo));
+    c1.addBlendModes(BlendModeCombinations::kSrcOver | BlendModeCombinations::kSrc);
     context->preCompile(c1);
 
-    skgpu::PaintCombo c2 { { skgpu::ShaderCombo({ ShaderType::kLinearGradient },
-                                                { SkTileMode::kRepeat, SkTileMode::kClamp }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+    skgpu::PaintCombinations c2;
+    c2.addShaderCombinations(std::unique_ptr<ShaderCombo2>(
+            new GradientCombinations(GradientCombinations::Types::kLinear,
+                                     GradientCombinations::TileModes::kRepeat |
+                                     GradientCombinations::TileModes::kClamp)));
+    c1.addBlendModes(BlendModeCombinations::kSrcOver | BlendModeCombinations::kSrc);
     context->preCompile(c2);
 }
 
