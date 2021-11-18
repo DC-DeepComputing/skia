@@ -63,6 +63,30 @@
       },
       "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b595cd77_3af43efa",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T19:47:51Z",
+      "side": 1,
+      "message": "... or in scalar implementations, like std::min/std::max.",
+      "parentUuid": "687d6b24_907cc44e",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 5
+      },
+      "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
