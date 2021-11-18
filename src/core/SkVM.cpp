@@ -17,6 +17,7 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/core/SkVM.h"
+#include "src/utils/SkVMVisualizer.h"
 #include <algorithm>
 #include <atomic>
 #include <queue>
@@ -150,9 +151,8 @@ namespace skvm {
         return { fma, fp16 };
     }
 
-    Builder::Builder()                  : fFeatures(detect_features()) {}
-    Builder::Builder(Features features) : fFeatures(features         ) {}
-
+    Builder::Builder(SkVMVisualizer* visualizer)                    : fFeatures(detect_features()), fVisualizer(visualizer) {}
+    Builder::Builder(Features features, SkVMVisualizer* visualizer) : fFeatures(features         ), fVisualizer(visualizer) {}
 
     struct Program::Impl {
         std::vector<InterpreterInstruction> instructions;
@@ -349,7 +349,7 @@ namespace skvm {
         SkDebugfStream debug;
         if (!o) { o = &debug; }
 
-        std::vector<OptimizedInstruction> optimized = this->optimize();
+        std::vector<OptimizedInstruction> optimized = this->optimize(false);
         o->writeDecAsText(optimized.size());
         o->writeText(" values (originally ");
         o->writeDecAsText(fProgram.size());
@@ -467,8 +467,7 @@ namespace skvm {
             write(o, "\n");
         }
     }
-
-    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program) {
+    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program, SkVMVisualizer* visualizer) {
         // Determine which Instructions are live by working back from side effects.
         std::vector<bool> live(program.size(), false);
         for (Val id = program.size(); id--;) {
@@ -498,6 +497,10 @@ namespace skvm {
             }
         }
 
+        if (visualizer) {
+            visualizer->markAsDeadCode(live, new_id);
+        }
+
         // Eliminate any non-live ops.
         auto it = std::remove_if(program.begin(), program.end(), [&](const Instruction& inst) {
             Val id = (Val)(&inst - program.data());
@@ -508,7 +511,7 @@ namespace skvm {
         return program;
     }
 
-    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program) {
+    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program, SkVMVisualizer* visualizer) {
         std::vector<OptimizedInstruction> optimized(program.size());
         for (Val id = 0; id < (Val)program.size(); id++) {
             Instruction inst = program[id];
@@ -552,13 +555,21 @@ namespace skvm {
             }
         }
 
+        if (visualizer) {
+            for (Val id = 0; id < (Val)optimized.size(); id++) {
+                if (optimized[id].can_hoist) {
+                    visualizer->markAsHoisted(id);
+                }
+            }
+        }
+
         return optimized;
     }
 
-    std::vector<OptimizedInstruction> Builder::optimize() const {
+    std::vector<OptimizedInstruction> Builder::optimize(bool visualize) const {
         std::vector<Instruction> program = this->program();
-        program = eliminate_dead_code(std::move(program));
-        return    finalize           (std::move(program));
+        program = eliminate_dead_code(std::move(program), visualize ? fVisualizer : nullptr);
+        return    finalize           (std::move(program), visualize ? fVisualizer : nullptr);
     }
 
     Program Builder::done(const char* debug_name, bool allow_jit) const {
@@ -568,7 +579,7 @@ namespace skvm {
             debug_name = buf;
         }
 
-        return {this->optimize(), fStrides, fTraceHooks, debug_name, allow_jit};
+        return {this->optimize(), this->fVisualizer, fStrides, fTraceHooks, debug_name, allow_jit};
     }
 
     uint64_t Builder::hash() const {
@@ -606,13 +617,30 @@ namespace skvm {
         // and index is varying but doesn't touch memory, so it's fine to dedup too.
         if (!touches_varying_memory(inst.op) && !is_trace(inst.op)) {
             if (Val* id = fIndex.find(inst)) {
+                this->addToVisualizer(*id);
                 return *id;
             }
         }
         Val id = static_cast<Val>(fProgram.size());
         fProgram.push_back(inst);
         fIndex.set(inst, id);
+        this->addToVisualizer(id);
         return id;
+    }
+
+    void Builder::addToVisualizer(Val id) {
+        if (!fVisualizer) return;
+        auto& instr = fProgram[id];
+        fVisualizer->addInstruction({
+            InstructionFlags::kNormal,
+            (SkVMOp)((int)instr.op),
+            0, 0,
+            id,
+            0,
+            std::vector<int>(),
+            instr.x, instr.y, instr.z, instr.w,
+            instr.immA, instr.immB, instr.immC,
+        });
     }
 
     Ptr Builder::arg(int stride) {
@@ -3062,9 +3090,11 @@ namespace skvm {
     }
 
     Program::Program(const std::vector<OptimizedInstruction>& instructions,
+                     SkVMVisualizer* visualizer,
                      const std::vector<int>& strides,
                      const std::vector<TraceHook*>& traceHooks,
                      const char* debug_name, bool allow_jit) : Program() {
+        fVisualizer = visualizer;
         fImpl->strides = strides;
         fImpl->traceHooks = traceHooks;
         if (gSkVMAllowJIT && allow_jit) {
@@ -3600,8 +3630,11 @@ namespace skvm {
                 case Op::trace_enter:
                 case Op::trace_exit:
                 case Op::trace_done:
-                    /* Force this program to run in the interpreter. */
-                    return false;
+                    if (!this->fVisualizer) {
+                        // Force this program to run in the interpreter.
+                        return false;
+                    }
+                    break;
 
                 case Op::store8:
                     if (scalar) {
@@ -4278,8 +4311,12 @@ namespace skvm {
             a->cmp(N, K);
             jump_if_less(&tail);
             for (Val id = 0; id < (Val)instructions.size(); id++) {
+                auto start = a->size();
                 if (!instructions[id].can_hoist && !emit(id, /*scalar=*/false)) {
                     return false;
+                }
+                if (this->fVisualizer) {
+                    this->fVisualizer->addMachineCommands(id, start, a->size());
                 }
             }
             restore_incoming_regs();
