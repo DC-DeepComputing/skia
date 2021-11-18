@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bead39d8_1f67de0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T18:30:27Z",
+      "side": 1,
+      "message": "lgtm, pending Michael\u0027s opinion on the doc comment",
+      "revId": "7f1daafc183655e422d7b8cc861c37c1fb46466a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
