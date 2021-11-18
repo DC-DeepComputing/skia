@@ -16,6 +16,92 @@
       "message": "+john, who worked on this code quite a bit. I think it looks good, and we can look at moving things even more as a follow-up. (eg, either collapsing down to a single unified shader caps, or hoisting more things that SkSL never needs to know about up to GrShaderCaps).",
       "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "374c6de0_a7b35927",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T22:34:57Z",
+      "side": 1,
+      "message": "Nice! A few style nits aside, this is a solid cleanup. Thanks!",
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce7db7d_d9252538",
+        "filename": "fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T22:34:57Z",
+      "side": 1,
+      "message": "nit: Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type. http://go/cstyle#Type_deduction\n\nPlease restore explicit types (here and below).",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0f1d551_f77b2119",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T22:34:57Z",
+      "side": 1,
+      "message": "joshualitt@ works on Dart now, let\u0027s take his name out. (Remove the TODO entirely if we don\u0027t plan to make changes.)",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 0
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a8fb01_fb661ecd",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T22:34:57Z",
+      "side": 1,
+      "message": "This only existed because the types had to differ between Skia and skslc. Now that we don\u0027t have an #if block, can we just replace these with std::unique_ptr\u003cShaderCaps\u003e? (Doesn\u0027t have to happen in this CL necessarily, but would be nice cleanup!)",
+      "range": {
+        "startLine": 254,
+        "startChar": 6,
+        "endLine": 254,
+        "endChar": 23
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
