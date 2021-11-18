@@ -16,6 +16,121 @@
       "message": "PTAL - try to clean up more matrix names.",
       "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724a34d6_eb6d019e",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T19:20:17Z",
+      "side": 1,
+      "message": "I guess another option would be (I, { 100, 100 })",
+      "range": {
+        "startLine": 74,
+        "startChar": 44,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8afbe51b_29329d87",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T19:20:17Z",
+      "side": 1,
+      "message": "initialPositionMatrix ?",
+      "range": {
+        "startLine": 1327,
+        "startChar": 20,
+        "endLine": 1327,
+        "endChar": 33
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e13ef2aa_9af40608",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T19:20:17Z",
+      "side": 1,
+      "message": "Is this right? Comparing a position matrix w/ the drawMatrix?",
+      "range": {
+        "startLine": 1579,
+        "startChar": 0,
+        "endLine": 1579,
+        "endChar": 45
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11323998_1792ae7e",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T19:20:17Z",
+      "side": 1,
+      "message": "Is this really the initialPositionMatrix ?",
+      "range": {
+        "startLine": 1648,
+        "startChar": 33,
+        "endLine": 1648,
+        "endChar": 43
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f8b433_81a5a12f",
+        "filename": "src/gpu/text/GrTextBlob.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T19:20:17Z",
+      "side": 1,
+      "message": "This partially duplicates the first sentence.",
+      "range": {
+        "startLine": 284,
+        "startChar": 49,
+        "endLine": 284,
+        "endChar": 84
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
