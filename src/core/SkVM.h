@@ -15,6 +15,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkVM_fwd.h"
+#include "src/utils/SkVMVisualizer.h"
 #include <vector>      // std::vector
 
 class SkWStream;
@@ -455,7 +456,9 @@ namespace skvm {
         M(neq_f32) M(eq_f32) M(eq_i32)                               \
         M(gte_f32) M(gt_f32) M(gt_i32)                               \
         M(bit_and)     M(bit_or)     M(bit_xor)     M(bit_clear)     \
-        M(select)
+        M(select)                                                    \
+        M(neq_i32) M(gte_i32) M(extract)                             \
+        M(no_op)
     // End of SKVM_OPS
 
     enum class Op : int {
@@ -607,14 +610,14 @@ namespace skvm {
     class Builder {
     public:
 
-        Builder();
-        explicit Builder(Features);
+        Builder(SkVMVisualizer* visualizer = nullptr);
+        explicit Builder(Features, SkVMVisualizer* visualizer = nullptr);
 
         Program done(const char* debug_name = nullptr, bool allow_jit=true) const;
 
         // Mostly for debugging, tests, etc.
         std::vector<Instruction> program() const { return fProgram; }
-        std::vector<OptimizedInstruction> optimize() const;
+        std::vector<OptimizedInstruction> optimize(bool visualize = false) const;
 
         // Convenience arg() wrappers for most common strides, sizeof(T) and 0.
         template <typename T>
@@ -953,6 +956,8 @@ namespace skvm {
 
         Val push(Instruction);
 
+        void addToVisualizer(Val id);
+
         bool allImm() const { return true; }
 
         template <typename T, typename... Rest>
@@ -977,6 +982,106 @@ namespace skvm {
             return false;
         }
 
+        SkVMVisualizer* visualizer() { return fVisualizer; }
+
+        int comment(const char* format, ...) {
+            va_list args;
+            va_start(args, format);
+            SkString message("// ");
+            message.appendVAList(format, args);
+            va_end(args);
+            auto index = fVisualizer->addComment(message);
+            auto result = this->push(Instruction{ Op::no_op, NA, NA, NA, NA, index, -1, -1 });
+            fVisualizer->finishComment(fProgram.size() - 1, index);
+            return result;
+        }
+
+        int addComment(SkString message) {
+            return fVisualizer->addComment(message);
+        }
+
+        int lastInstruction() const { return fVisualizer->lastInstruction(); }
+
+        void pushToDisassembler(Instruction instr) {
+            fVisualizer->addInstruction({
+                Kind::constant,
+                (SkVMOp)((int)instr.op),
+                coord{},
+                0, 0,
+                -1,
+                0,
+                std::vector<int>(),
+                instr.x, instr.y, instr.z, instr.w,
+                instr.immA, instr.immB, instr.immC,
+            });
+        }
+
+        void finishComment(int index, int comment) {
+            fVisualizer->finishComment(index, comment);
+        }
+
+        class Comment {
+        public:
+            Comment(Builder* b, const char* format, ...)
+                : fVisualizer(b->visualizer()) {
+                if (!fVisualizer) return;
+                va_list args;
+                va_start(args, format);
+                SkString message("// ");
+                message.appendVAList(format, args);
+                va_end(args);
+                fComment = fVisualizer->addComment(std::move(message));
+                fInstruction = fVisualizer->lastInstruction();
+            }
+            ~Comment() {
+                if (!fVisualizer) return;
+                if (fComment > 0) {
+                    fVisualizer->finishComment(fInstruction, fComment);
+                }
+            }
+
+            void finish() {
+                if (!fVisualizer) return;
+                fVisualizer->finishComment(fInstruction, fComment);
+                fComment = -1;
+            }
+        private:
+            SkVMVisualizer* fVisualizer;
+            int fComment;
+            int fInstruction;
+        };
+
+        class StaticInstruction {
+        public:
+            StaticInstruction(Builder* b, Op op, Val x=NA, Val y=NA, Val z=NA, Val w=NA, int immA=0, int immB=0, int immC=0)
+                : fVisualizer(b->visualizer()) {
+                if (!fVisualizer) return;
+                fLastInstruction = fVisualizer->lastInstruction();
+                fInstruction = std::move(Instruction{op, x,y,z,w, immA,immB,immC});
+            }
+            ~StaticInstruction() {
+                if (!fVisualizer) return;
+                if (fVisualizer->lastInstruction() == fLastInstruction) {
+                    auto& instr = fInstruction;
+                    fVisualizer->addInstruction({
+                        Kind::constant,
+                        (SkVMOp)((int)instr.op),
+                        coord{},
+                        0, 0,
+                        -1,
+                        0,
+                        std::vector<int>(),
+                        instr.x, instr.y, instr.z, instr.w,
+                        instr.immA, instr.immB, instr.immC,
+                    });
+                }
+            }
+        private:
+            SkVMVisualizer* fVisualizer;
+            int fLastInstruction;
+            Instruction fInstruction;
+        };
+
     private:
         // Declare an argument with given stride (use stride=0 for uniforms).
         Ptr arg(int stride);
@@ -996,12 +1101,16 @@ namespace skvm {
         std::vector<Instruction>                      fProgram;
         std::vector<int>                              fStrides;
         const Features                                fFeatures;
+
+        SkVMVisualizer*                               fVisualizer;
+        bool                                          fGenerateConstantCommands = true;
+        bool                                          fCommandIsConstant = false;
     };
 
     // Optimization passes and data structures normally used by Builder::optimize(),
     // extracted here so they can be unit tested.
-    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>);
-    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>);
+    std::vector<Instruction>          eliminate_dead_code(std::vector<Instruction>, SkVMVisualizer* visualizer = nullptr);
+    std::vector<OptimizedInstruction> finalize           (std::vector<Instruction>, SkVMVisualizer* visualizer = nullptr);
 
     using Reg = int;
 
@@ -1015,6 +1124,7 @@ namespace skvm {
     class Program {
     public:
         Program(const std::vector<OptimizedInstruction>& instructions,
+                SkVMVisualizer* visualizer,
                 const std::vector<int>& strides,
                 const char* debug_name, bool allow_jit);
 
@@ -1062,6 +1172,7 @@ namespace skvm {
 
         struct Impl;
         std::unique_ptr<Impl> fImpl;
+        SkVMVisualizer* fVisualizer;
     };
 
     // TODO: control flow
