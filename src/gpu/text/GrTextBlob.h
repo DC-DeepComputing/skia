@@ -84,7 +84,9 @@ public:
 
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix,
+            GrColor color,
+            const SkMatrix& drawMatrix,
+            SkPoint drawOrigin,
             SkIRect clip) const = 0;
 
     virtual void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache* cache) = 0;
@@ -201,7 +203,7 @@ public:
         SkPixelGeometry fPixelGeometry;
         SkMaskFilterBase::BlurRec fBlurRec;
         uint32_t fScalerContextFlags;
-        SkMatrix fDrawMatrix;
+        SkMatrix fPositionMatrix;
         // Below here fields are of size 1 byte.
         uint8_t fSetOfDrawingTypes;
         bool fHasBlur;
@@ -216,7 +218,7 @@ public:
     // Make a GrTextBlob and its sub runs.
     static sk_sp<GrTextBlob> Make(const SkGlyphRunList& glyphRunList,
                                   const SkPaint& paint,
-                                  const SkMatrix& drawMatrix,
+                                  const SkMatrix& positionMatrix,
                                   const GrSDFTControl& control,
                                   SkGlyphRunListPainter* painter);
 
@@ -232,7 +234,7 @@ public:
 
     void addKey(const Key& key);
     bool hasPerspective() const;
-    const SkMatrix& initialMatrix() const { return fInitialMatrix; }
+    const SkMatrix& initialPositionMatrix() const { return fInitialPositionMatrix; }
 
     std::tuple<SkScalar, SkScalar> scaleBounds() const { return {fMaxMinScale, fMinMaxScale}; }
     bool canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const;
@@ -279,8 +281,8 @@ private:
     const int fSize;
 
     // The initial view matrix combined with the initial origin. Used to determine if a cached
-    // subRun can be used in this draw situation.
-    const SkMatrix fInitialMatrix;
+    // subRun can be used in this draw situation. This has the drawOrigin folded in.
+    const SkMatrix fInitialPositionMatrix;
 
     const SkColor fInitialLuminance;
 

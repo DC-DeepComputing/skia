@@ -29,6 +29,12 @@
 #include "src/gpu/ops/AtlasTextOp.h"
 #include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
+// Naming conventions
+//  * drawMatrix - the CTM from the canvas.
+//  * drawOrigin - the x, y location of the drawTextBlob call.
+//  * positionMatrix - this is the combination of the drawMatrix and the drawOrigin:
+//        positionMatrix = drawMatrix * TranslationMatrix(drawOrigin.x, drawOrigin.y);
+
 using AtlasTextOp = skgpu::v1::AtlasTextOp;
 
 namespace {
@@ -72,6 +78,11 @@ AtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
         case kARGB_GrMaskFormat: return AtlasTextOp::MaskType::kColorBitmap;
     }
     SkUNREACHABLE;
+}
+
+SkMatrix position_matrix(const SkMatrix& drawMatrix, SkPoint drawOrigin) {
+    SkMatrix position_matrix = drawMatrix;
+    return position_matrix.preTranslate(drawOrigin.x(), drawOrigin.y());
 }
 
 SkPMColor4f calculate_colors(skgpu::SurfaceContext* sc,
@@ -486,8 +497,10 @@ public:
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
-    void fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                        const SkMatrix& positionMatrix, SkIRect clip) const override;
+    void fillVertexData(void* vertexDst, int offset, int count,
+                        GrColor color,
+                        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                        SkIRect clip) const override;
 private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
@@ -565,7 +578,7 @@ GrSubRunOwner DirectMaskSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& drawa
 }
 
 bool DirectMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
-    auto [reuse, translation] = check_integer_translate(fBlob->initialMatrix(), drawMatrix);
+    auto [reuse, translation] = check_integer_translate(fBlob->initialPositionMatrix(), drawMatrix);
 
     // If glyphs were excluded because of position bounds, then this subrun can only be reused if
     // there is no change in position.
@@ -778,15 +791,18 @@ void generalized_direct_2D(SkZip<Quad, const GrGlyph*, const VertexData> quadDat
     }
 }
 
-void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                                      const SkMatrix& positionMatrix, SkIRect clip) const {
+void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
+                                      GrColor color,
+                                      const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                      SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
                          fGlyphs.glyphs().subspan(offset, count),
                          fLeftTopDevicePos.subspan(offset, count));
     };
 
-    SkPoint originOffset = positionMatrix.mapOrigin() - fBlob->initialMatrix().mapOrigin();
+    SkPoint originOffset = positionMatrix.mapOrigin() - fBlob->initialPositionMatrix().mapOrigin();
     SkIPoint integralOriginOffset =
             {SkScalarRoundToInt(originOffset.x()), SkScalarRoundToInt(originOffset.y())};
 
@@ -817,7 +833,7 @@ SkRect DirectMaskSubRun::deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrig
     SkIRect outBounds = fGlyphDeviceBounds.iRect();
 
     // Calculate the offset from the initial device origin to the current device origin.
-    SkVector offset = drawMatrix.mapPoint(drawOrigin) - fBlob->initialMatrix().mapOrigin();
+    SkVector offset = drawMatrix.mapPoint(drawOrigin) - fBlob->initialPositionMatrix().mapOrigin();
 
     // The offset should be integer, but make sure.
     SkIVector iOffset = {SkScalarRoundToInt(offset.x()), SkScalarRoundToInt(offset.y())};
@@ -877,7 +893,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -991,7 +1009,7 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
 // If we are not scaling the cache entry to be larger, than a cache with smaller glyphs may be
 // better.
 bool TransformedMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
-    if (fBlob->initialMatrix().getMaxScale() < 1) {
+    if (fBlob->initialPositionMatrix().getMaxScale() < 1) {
         return false;
     }
     return true;
@@ -1006,9 +1024,11 @@ std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
     return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
 }
 
-void TransformedMaskSubRun::fillVertexData(
-        void* vertexDst, int offset, int count, GrColor color, const SkMatrix& positionMatrix,
-        SkIRect clip) const {
+void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
+                                           GrColor color,
+                                           const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                           SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     constexpr SkScalar kDstPadding = 0.f;
 
     auto quadData = [&](auto dst) {
@@ -1136,7 +1156,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -1302,7 +1324,7 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
 }
 
 bool SDFTSubRun::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
-    const SkMatrix& initialMatrix = fBlob->initialMatrix();
+    const SkMatrix& initialMatrix = fBlob->initialPositionMatrix();
 
     // A scale outside of [blob.fMaxMinScale, blob.fMinMaxScale] would result in a different
     // distance field being generated, so we have to regenerate in those cases
@@ -1332,7 +1354,10 @@ size_t SDFTSubRun::vertexStride(const SkMatrix& drawMatrix) const {
 
 void SDFTSubRun::fillVertexData(
         void *vertexDst, int offset, int count,
-        GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const {
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
 
     using Quad = Mask2DVertex[4];
     SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
@@ -1444,14 +1469,14 @@ auto GrTextBlob::Key::Make(const SkGlyphRunList& glyphRunList,
             // Store the fractional offset of the position. We know that the matrix can't be
             // perspective at this point.
             SkPoint mappedOrigin = drawMatrix.mapOrigin();
-            key.fDrawMatrix = drawMatrix;
-            key.fDrawMatrix.setTranslateX(
+            key.fPositionMatrix = drawMatrix;
+            key.fPositionMatrix.setTranslateX(
                     mappedOrigin.x() - SkScalarFloorToScalar(mappedOrigin.x()));
-            key.fDrawMatrix.setTranslateY(
+            key.fPositionMatrix.setTranslateY(
                     mappedOrigin.y() - SkScalarFloorToScalar(mappedOrigin.y()));
         } else {
             // For path and SDFT, the matrix doesn't matter.
-            key.fDrawMatrix = SkMatrix::I();
+            key.fPositionMatrix = SkMatrix::I();
         }
     }
 
@@ -1479,7 +1504,7 @@ bool GrTextBlob::Key::operator==(const GrTextBlob::Key& that) const {
     if (fScalerContextFlags != that.fScalerContextFlags) { return false; }
 
     // Just punt on perspective.
-    if (fDrawMatrix.hasPerspective()) {
+    if (fPositionMatrix.hasPerspective()) {
         return false;
     }
 
@@ -1488,7 +1513,7 @@ bool GrTextBlob::Key::operator==(const GrTextBlob::Key& that) const {
     }
 
     if (fSetOfDrawingTypes & GrSDFTControl::kDirect) {
-        auto [compatible, _] = check_integer_translate(fDrawMatrix, that.fDrawMatrix);
+        auto [compatible, _] = check_integer_translate(fPositionMatrix, that.fPositionMatrix);
         return compatible;
     }
 
@@ -1504,7 +1529,7 @@ GrTextBlob::~GrTextBlob() = default;
 
 sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                                    const SkPaint& paint,
-                                   const SkMatrix& drawMatrix,
+                                   const SkMatrix& positionMatrix,
                                    const GrSDFTControl& control,
                                    SkGlyphRunListPainter* painter) {
     // The difference in alignment from the per-glyph data to the SubRun;
@@ -1526,11 +1551,11 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
 
     SkColor initialLuminance = SkPaintPriv::ComputeLuminanceColor(paint);
     sk_sp<GrTextBlob> blob{new (allocation)
-                            GrTextBlob(bytesNeededForSubRun, drawMatrix, initialLuminance)};
+                            GrTextBlob(bytesNeededForSubRun, positionMatrix, initialLuminance)};
 
     for (auto& glyphRun : glyphRunList) {
         painter->processGlyphRun(glyphRun,
-                                 drawMatrix,
+                                 positionMatrix,
                                  paint,
                                  control,
                                  blob.get(),
@@ -1544,14 +1569,14 @@ void GrTextBlob::addKey(const Key& key) {
     fKey = key;
 }
 
-bool GrTextBlob::hasPerspective() const { return fInitialMatrix.hasPerspective(); }
+bool GrTextBlob::hasPerspective() const { return fInitialPositionMatrix.hasPerspective(); }
 
 bool GrTextBlob::canReuse(const SkPaint& paint, const SkMatrix& drawMatrix) const {
     // A singular matrix will create a GrTextBlob with no SubRuns, but unknown glyphs can
     // also cause empty runs. If there are no subRuns or some glyphs were excluded or perspective,
     // then regenerate when the matrices don't match.
     if ((fSubRunList.isEmpty() || fSomeGlyphsExcluded || hasPerspective()) &&
-         fInitialMatrix != drawMatrix)
+        fInitialPositionMatrix != drawMatrix)
     {
         return false;
     }
@@ -1620,7 +1645,7 @@ GrTextBlob::GrTextBlob(int allocSize,
                        SkColor initialLuminance)
         : fAlloc{SkTAddOffset<char>(this, sizeof(GrTextBlob)), allocSize, allocSize/2}
         , fSize{allocSize}
-        , fInitialMatrix{drawMatrix}
+        , fInitialPositionMatrix{drawMatrix}
         , fInitialLuminance{initialLuminance} { }
 
 void GrTextBlob::processDeviceMasks(const SkZip<SkGlyphVariant, SkPoint>& drawables,
@@ -1693,8 +1718,10 @@ public:
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
-    void fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                        const SkMatrix& positionMatrix, SkIRect clip) const override;
+    void fillVertexData(void* vertexDst, int offset, int count,
+                        GrColor color,
+                        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                        SkIRect clip) const override;
 
 private:
     const GrMaskFormat fMaskFormat;
@@ -1864,32 +1891,36 @@ void direct_2D2(SkZip<Mask2DVertex[4],
     }
 }
 
-void DirectMaskSubRunNoCache::fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                                             const SkMatrix& positionMatrix, SkIRect clip) const {
+void DirectMaskSubRunNoCache::fillVertexData(void* vertexDst, int offset, int count,
+                                             GrColor color,
+                                             const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                             SkIRect clip) const {
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
                          fGlyphs.glyphs().subspan(offset, count),
                          fLeftTopDevicePos.subspan(offset, count));
     };
 
+    // Notice that no matrix manipulation is needed because all the rectangles are already mapped
+    // to device space.
     if (clip.isEmpty()) {
         if (fMaskFormat != kARGB_GrMaskFormat) {
             using Quad = Mask2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             direct_2D2(quadData((Quad*)vertexDst), color);
         } else {
             using Quad = ARGB2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0});
         }
     } else {
         if (fMaskFormat != kARGB_GrMaskFormat) {
             using Quad = Mask2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0}, &clip);
         } else {
             using Quad = ARGB2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0}, &clip);
         }
     }
@@ -1931,7 +1962,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -2043,9 +2076,12 @@ std::tuple<bool, int> TransformedMaskSubRunNoCache::regenerateAtlas(
 }
 
 void TransformedMaskSubRunNoCache::fillVertexData(
-        void* vertexDst, int offset, int count, GrColor color,
-        const SkMatrix& positionMatrix, SkIRect clip) const {
+        void* vertexDst, int offset, int count,
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
     constexpr SkScalar kDstPadding = 0.f;
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
 
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
@@ -2157,7 +2193,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -2294,8 +2332,13 @@ size_t SDFTSubRunNoCache::vertexStride(const SkMatrix& drawMatrix) const {
 
 void SDFTSubRunNoCache::fillVertexData(
         void *vertexDst, int offset, int count,
-        GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const {
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
     using Quad = Mask2DVertex[4];
+
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
+
     SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
     fill_transformed_vertices_2D(
             SkMakeZip((Quad*)vertexDst,
