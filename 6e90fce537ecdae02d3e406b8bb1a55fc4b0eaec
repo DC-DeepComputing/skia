@@ -16,6 +16,46 @@
       "message": "Color filter works (applies Threshold on solid green layer), but current JSON is not robust. Will find/make better test lottie",
       "revId": "6e90fce537ecdae02d3e406b8bb1a55fc4b0eaec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e867c147_bbd02ee7",
+        "filename": "modules/skottie/src/effects/Effects.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-18T16:43:08Z",
+      "side": 1,
+      "message": "We should also rename this to attachSkSLShader.",
+      "range": {
+        "startLine": 86,
+        "startChar": 28,
+        "endLine": 86,
+        "endChar": 45
+      },
+      "revId": "6e90fce537ecdae02d3e406b8bb1a55fc4b0eaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8787c213_58521976",
+        "filename": "modules/skottie/src/effects/SkSLColorFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2021-11-18T16:43:08Z",
+      "side": 1,
+      "message": "I\u0027m thinking everything here could go into SkSLEffect.cpp, which is already properly named to cover both shaders and color filters.  That should make code sharing/consolidation easier when we get to it.",
+      "revId": "6e90fce537ecdae02d3e406b8bb1a55fc4b0eaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
