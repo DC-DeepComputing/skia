@@ -39,6 +39,30 @@
       },
       "revId": "0860f762dbc8b8c659c442bb62c7064572a9b940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d027a506_a3df9aa3",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T18:35:25Z",
+      "side": 1,
+      "message": "Because they are direct to screen. All the coordinates are in device space. No need for a matrix to map them.",
+      "parentUuid": "b9b1c21f_2bf072cc",
+      "range": {
+        "startLine": 1902,
+        "startChar": 0,
+        "endLine": 1902,
+        "endChar": 58
+      },
+      "revId": "0860f762dbc8b8c659c442bb62c7064572a9b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
