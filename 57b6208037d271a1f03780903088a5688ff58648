@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f861c1ba_bdc8731c",
+        "filename": "tests/SkSLInterpreterTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T21:13:42Z",
+      "side": 1,
+      "message": "Now using an if-statement to exercise control flow masking in the trace.",
+      "range": {
+        "startLine": 987,
+        "startChar": 0,
+        "endLine": 991,
+        "endChar": 5
+      },
+      "revId": "57b6208037d271a1f03780903088a5688ff58648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
