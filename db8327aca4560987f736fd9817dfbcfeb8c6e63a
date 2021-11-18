@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f72010f_b89ad633",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T21:02:20Z",
+      "side": 1,
+      "message": "\u003e Patch Set 3: Code-Review+1\n\u003e \n\u003e By voting Code-Review+1 the following files are now code-owner approved by \u003cGERRIT_ACCOUNT_5210\u003e:\n\u003e * src/core/SkVM.cpp\n\u003e * tests/sksl/runtime/ArrayIndexing.skvm\n\u003e * tests/sksl/runtime/Commutative.skvm\n\u003e * tests/sksl/runtime/ConversionConstructors.skvm\n\u003e * tests/sksl/runtime/LoopFloat.skvm\n\u003e * tests/sksl/runtime/LoopInt.skvm\n\u003e * tests/sksl/runtime/PrecisionQualifiers.skvm\n\u003e * tests/sksl/runtime/SampleWithExplicitCoord.skvm\n\u003e * tests/sksl/runtime/Switch.skvm\n\u003e * tests/sksl/runtime/SwitchWithFallthrough.skvm\n\u003e * tests/sksl/runtime/SwitchWithLoops.skvm\n\u003e * tests/sksl/runtime/VectorIndexing.skvm\n\u003e \n\n",
+      "revId": "db8327aca4560987f736fd9817dfbcfeb8c6e63a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

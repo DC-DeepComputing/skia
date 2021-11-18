@@ -195,6 +195,30 @@
       },
       "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e1f1818_b4372716",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-18T21:02:20Z",
+      "side": 1,
+      "message": "Herb, this CL is +1ed but its parent CL is not:\nhttp://review.skia.org/473238\n\nPTAL?",
+      "parentUuid": "efcb0118_21ba0e6c",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 5
+      },
+      "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
