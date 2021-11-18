@@ -14,7 +14,7 @@
 #include "fuzz/Fuzz.h"
 
 bool FuzzSKSL2Pipeline(sk_sp<SkData> bytes) {
-    std::unique_ptr<GrShaderCaps> caps = SkSL::ShaderCapsFactory::Default();
+    auto caps = SkSL::ShaderCapsFactory::Default();
     SkSL::Compiler compiler(caps.get());
     SkSL::Program::Settings settings;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(
