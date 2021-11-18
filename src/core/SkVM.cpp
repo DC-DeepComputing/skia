@@ -17,6 +17,7 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/core/SkVM.h"
+#include "src/utils/SkVMVisualizer.h"
 #include <algorithm>
 #include <atomic>
 #include <queue>
@@ -159,13 +160,13 @@ namespace skvm {
     Builder::Builder(Features features, bool createDuplicates)
         : fFeatures(features         ), fCreateDuplicates(createDuplicates) {}
 
-
     struct Program::Impl {
         std::vector<InterpreterInstruction> instructions;
         int regs = 0;
         int loop = 0;
         std::vector<int> strides;
         std::vector<TraceHook*> traceHooks;
+        std::unique_ptr<viz::Visualizer> visualizer;
 
         std::atomic<void*> jit_entry{nullptr};   // TODO: minimal std::memory_orders
         size_t jit_size = 0;
@@ -368,6 +369,13 @@ namespace skvm {
         }
     }
 
+    void Program::visualize(SkWStream* output, const char* code) const {
+        if (fImpl->visualizer) {
+            fImpl->visualizer->dump(output, code);
+        }
+    }
+
+    viz::Visualizer* Program::visualizer() { return fImpl->visualizer.get(); }
     void Program::dump(SkWStream* o) const {
         SkDebugfStream debug;
         if (!o) { o = &debug; }
@@ -475,8 +483,8 @@ namespace skvm {
             write(o, "\n");
         }
     }
-
-    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program) {
+    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction> program,
+                                                 viz::Visualizer* visualizer) {
         // Determine which Instructions are live by working back from side effects.
         std::vector<bool> live(program.size(), false);
         for (Val id = program.size(); id--;) {
@@ -506,6 +514,26 @@ namespace skvm {
             }
         }
 
+        if (visualizer) {
+            for (Val id = 0; id < (Val)program.size(); id++) {
+                Instruction instr = program[id];
+                auto isDuplicate = instr.op == Op::duplicate;
+                if (isDuplicate) {
+                    visualizer->markAsDuplicate(instr.immA, id);
+                    instr = program[instr.immA];
+                }
+                visualizer->addInstruction({
+                    viz::InstructionFlags::kNormal,
+                    instr.op,
+                    /*startCode=*/0, /*endCode=0*/0,
+                    id,
+                    isDuplicate ? -1 : 0,
+                    instr
+                });
+            }
+            visualizer->markAsDeadCode(live, new_id);
+        }
+
         // Eliminate any non-live ops.
         auto it = std::remove_if(program.begin(), program.end(), [&](const Instruction& inst) {
             Val id = (Val)(&inst - program.data());
@@ -516,7 +544,8 @@ namespace skvm {
         return program;
     }
 
-    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program) {
+    std::vector<OptimizedInstruction> finalize(const std::vector<Instruction> program,
+                                               viz::Visualizer* visualizer) {
         std::vector<OptimizedInstruction> optimized(program.size());
         for (Val id = 0; id < (Val)program.size(); id++) {
             Instruction inst = program[id];
@@ -560,23 +589,38 @@ namespace skvm {
             }
         }
 
+        if (visualizer) {
+            visualizer->finalize(program, optimized);
+        }
+
         return optimized;
     }
 
-    std::vector<OptimizedInstruction> Builder::optimize() const {
+    std::vector<OptimizedInstruction> Builder::optimize(viz::Visualizer* visualizer) const {
         std::vector<Instruction> program = this->program();
-        program = eliminate_dead_code(std::move(program));
-        return    finalize           (std::move(program));
+        program = eliminate_dead_code(std::move(program), visualizer);
+        return    finalize           (std::move(program), visualizer);
     }
 
-    Program Builder::done(const char* debug_name, bool allow_jit) const {
+    Program Builder::done(const char* debug_name,
+                          bool allow_jit) const {
+        return this->done(debug_name, allow_jit, /*visualizer=*/nullptr);
+    }
+
+    Program Builder::done(const char* debug_name,
+                          bool allow_jit,
+                          std::unique_ptr<viz::Visualizer> visualizer) const {
         char buf[64] = "skvm-jit-";
         if (!debug_name) {
             *SkStrAppendU32(buf+9, this->hash()) = '\0';
             debug_name = buf;
         }
 
-        return {this->optimize(), fStrides, fTraceHooks, debug_name, allow_jit};
+        auto optimized = this->optimize(visualizer ? visualizer.get() : nullptr);
+        return {optimized,
+                std::move(visualizer),
+                fStrides,
+                fTraceHooks, debug_name, allow_jit};
     }
 
     uint64_t Builder::hash() const {
@@ -3074,9 +3118,11 @@ namespace skvm {
     }
 
     Program::Program(const std::vector<OptimizedInstruction>& instructions,
+                     std::unique_ptr<viz::Visualizer> visualizer,
                      const std::vector<int>& strides,
                      const std::vector<TraceHook*>& traceHooks,
                      const char* debug_name, bool allow_jit) : Program() {
+        fImpl->visualizer = std::move(visualizer);
         fImpl->strides = strides;
         fImpl->traceHooks = traceHooks;
         if (gSkVMAllowJIT && allow_jit) {
@@ -4264,8 +4310,16 @@ namespace skvm {
 
         enter();
         for (Val id = 0; id < (Val)instructions.size(); id++) {
+            if (fImpl->visualizer && is_trace(instructions[id].op)) {
+                // Make sure trace commands stay on JIT for visualizer
+                continue;
+            }
+            auto start = a->size();
             if (instructions[id].can_hoist && !emit(id, /*scalar=*/false)) {
                 return false;
+            }
+            if (fImpl->visualizer && instructions[id].can_hoist) {
+                fImpl->visualizer->addMachineCommands(id, start, a->size());
             }
         }
 
@@ -4292,8 +4346,16 @@ namespace skvm {
             a->cmp(N, K);
             jump_if_less(&tail);
             for (Val id = 0; id < (Val)instructions.size(); id++) {
+                if (fImpl->visualizer != nullptr && is_trace(instructions[id].op)) {
+                    // Make sure trace commands stay on JIT for visualizer
+                    continue;
+                }
+                auto start = a->size();
                 if (!instructions[id].can_hoist && !emit(id, /*scalar=*/false)) {
                     return false;
+                }
+                if (fImpl->visualizer && !instructions[id].can_hoist) {
+                    fImpl->visualizer->addMachineCommands(id, start, a->size());
                 }
             }
             restore_incoming_regs();
@@ -4311,6 +4373,10 @@ namespace skvm {
             a->cmp(N, 1);
             jump_if_less(&done);
             for (Val id = 0; id < (Val)instructions.size(); id++) {
+                if (fImpl->visualizer && is_trace(instructions[id].op)) {
+                    // Make sure trace commands stay on JIT for visualizer
+                    continue;
+                }
                 if (!instructions[id].can_hoist && !emit(id, /*scalar=*/true)) {
                     return false;
                 }
