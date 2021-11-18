@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c9be2b3_959cf235",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-18T16:45:52Z",
+      "side": 1,
+      "message": "I\u0027ll update the docs regarding automatically.\n\nFor the other doc update we have two choices if the builder has no shaders.\n\n1) return null\n2) internally turn this into SkImageFilters::Shader() on the callers behalf\n\nMichael, given that you know more about this API than I do I will defer to you on which behavior we go with.",
+      "parentUuid": "3c31e368_28f03392",
+      "range": {
+        "startLine": 347,
+        "startChar": 41,
+        "endLine": 348,
+        "endChar": 82
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc87b416_4fad8eab",
         "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
         "patchSetId": 2
@@ -230,6 +254,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "257ba9f9_86458fe6",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-18T16:45:52Z",
+      "side": 1,
+      "message": "good point.  I\u0027ve cleared the reference after we complete the drawPaint",
+      "parentUuid": "b2d48f92_61be8357",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d4b04b9_0bdba91d",
@@ -265,6 +307,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "071d988a_d2061a1e",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-18T16:45:52Z",
+      "side": 1,
+      "message": "Yes, the Android API will allow for not passing a string.  However, I can do extra precondition checking in Android before I ever call this API so if Android doesn\u0027t want to allow for \"\" I can catch it there.",
+      "parentUuid": "b7098f41_eb32572f",
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb40c066_a98708fc",
@@ -278,6 +338,30 @@
       "writtenOn": "2021-11-12T14:07:21Z",
       "side": 1,
       "message": "I just changed the API here, so children() returns an SkSpan. If you rebase, count() will no longer compile (it needs to be size()), and you\u0027ll be able to index the span, if you want.",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 62
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f02c5ed6_869a7961",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-18T16:45:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb40c066_a98708fc",
       "range": {
         "startLine": 163,
         "startChar": 0,
