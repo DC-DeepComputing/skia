@@ -11,6 +11,8 @@
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#include "src/gpu/GrShaderCaps.h"
+
 #ifndef __STDC_FORMAT_MACROS
 #define __STDC_FORMAT_MACROS
 #endif
@@ -18,6 +20,23 @@
 namespace SkSL {
 
 #if defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
+class StandaloneShaderCaps : public ShaderCaps {
+public:
+    StandaloneShaderCaps()
+        : fGLSLGeneration(SkSL::GLSLGeneration::k400)
+        , fShaderDerivativeSupport(true)
+        , fFlatInterpolationSupport(true)
+        , fNoperspectiveInterpolationSupport(true)
+        , fSampleMaskSupport(true)
+        , fExternalTextureSupport(true)
+        , fCanUseDoLoops(false)
+        , fVersionDeclString("") {
+        // we define canUseDoLoops to false in standalone so we don't use do loops while inlining
+        // in FP files (which would then, being baked in, end up being used even in contexts where
+        // do loops are not allowed)
+    }
+};
+
 ShaderCapsPointer ShaderCapsFactory::MakeShaderCaps() {
     return std::make_unique<StandaloneShaderCaps>();
 }

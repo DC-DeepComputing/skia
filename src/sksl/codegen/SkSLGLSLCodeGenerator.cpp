@@ -35,6 +35,7 @@
 #include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
+#include "src/sksl/ir/SkSLVariableReference.h"
 
 #ifndef SKSL_STANDALONE
 #include "include/private/SkOnce.h"
