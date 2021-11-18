@@ -78,7 +78,6 @@ GrShaderCaps::GrShaderCaps() {
     fFBFetchExtensionString = nullptr;
     fMaxFragmentSamplers = 0;
     fMaxTessellationSegments = 0;
-    fAdvBlendEqInteraction = kNotSupported_AdvBlendEqInteraction;
 }
 
 #ifdef SK_ENABLE_DUMP_GPU
