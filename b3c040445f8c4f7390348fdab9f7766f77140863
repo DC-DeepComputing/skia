@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b812f09_19d79fea",
+        "filename": "src/gpu/geometry/GrInnerFanTriangulator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-18T17:00:11Z",
+      "side": 1,
+      "message": "This will cause PathInnerTriangulateOp to simply draw incorrectly. Was that the intent?",
+      "range": {
+        "startLine": 36,
+        "startChar": 19,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "b3c040445f8c4f7390348fdab9f7766f77140863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
