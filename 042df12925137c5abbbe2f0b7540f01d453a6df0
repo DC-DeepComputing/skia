@@ -33,6 +33,24 @@
       "message": "Looks like standalone isn\u0027t compiling. Make sure you set skia_compile_sksl_tests \u003d true in GN - that will ensure skslc gets built (and also verify that none of the SkSL golden compile results are impacted).",
       "revId": "042df12925137c5abbbe2f0b7540f01d453a6df0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f68a30e_02c5a85d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-18T21:39:28Z",
+      "side": 1,
+      "message": "Should be working now.",
+      "parentUuid": "8ec26bad_94f7a07c",
+      "revId": "042df12925137c5abbbe2f0b7540f01d453a6df0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
