@@ -251,6 +251,8 @@ static void draw_batching(SkCanvas* canvas) {
                 canvas->save();
                 canvas->concat(m);
                 SkPaint paint;
+                // When there is no shader the vert colors blend against this color.
+                paint.setColor(0xFF886655);
                 paint.setShader(useShader ? shader : nullptr);
 
                 const SkPoint* t = useTex ? texs : nullptr;
