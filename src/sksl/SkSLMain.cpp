@@ -9,7 +9,7 @@
 #include "src/core/SkOpts.h"
 #include "src/opts/SkChecksum_opts.h"
 #include "src/opts/SkVM_opts.h"
-
+#include "src/core/SkCpu.h"
 #include "src/gpu/GrShaderUtils.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLDehydrator.h"
@@ -22,12 +22,16 @@
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
+#include "src/utils/SkVMVisualizer.h"
+
 #include "spirv-tools/libspirv.hpp"
 
 #include <fstream>
 #include <limits.h>
 #include <stdarg.h>
 #include <stdio.h>
+
+extern bool gSkVMAllowJIT;
 
 void SkDebugf(const char format[], ...) {
     va_list args;
@@ -282,9 +286,11 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
         kind = SkSL::ProgramKind::kRuntimeColorFilter;
     } else if (inputPath.ends_with(".rts")) {
         kind = SkSL::ProgramKind::kRuntimeShader;
+    } else if (inputPath.ends_with(".cpp")) {
+        kind = SkSL::ProgramKind::kGeneric;
     } else {
         printf("input filename must end in '.vert', '.frag', '.rtb', '.rtcf', "
-               "'.rts', or '.sksl'\n");
+               "'.rts', '.cpp' or '.sksl'\n");
         return ResultCode::kInputError;
     }
 
@@ -314,6 +320,9 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
     settings.fRTFlipBinding = 0;
 
     const SkSL::String& outputPath = args[2];
+    //if (outputPath.ends_with(".html")) {
+    //    kind = SkSL::ProgramKind::kGeneric;
+    //}
     auto emitCompileError = [&](SkSL::FileOutputStream& out, const char* errorText) {
         // Overwrite the compiler output, if any, with an error message.
         out.close();
@@ -489,9 +498,37 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
             printf("error writing '%s'\n", outputPath.c_str());
             return ResultCode::kOutputError;
         }
+    } else if (outputPath.ends_with(".html")) {
+        SkCpu::CacheRuntimeFeatures();
+        gSkVMAllowJIT = true;
+        return compileProgram(
+            [&](SkSL::Compiler&, SkSL::Program& program, SkSL::OutputStream& out) {
+                if (!debugInfo) {
+                    debugInfo.reset(new SkSL::SkVMDebugInfo());
+                    debugInfo->setSource(text.c_str());
+                }
+                skvm::SkVMVisualizer visualizer(debugInfo.get());
+                skvm::Builder builder(skvm::Features{}, &visualizer);
+                if (!SkSL::testingOnly_ProgramToSkVMShader(program, &builder, debugInfo.get())) {
+                    return false;
+                }
+                std::unique_ptr<SkWStream> redirect = as_SkWStream(out);
+#if defined(SKVM_JIT)
+                skvm::Program p = std::move(builder.done());
+                SkDynamicMemoryWStream asmFile;
+                p.disassemble(&asmFile);
+                auto dumpData = asmFile.detachAsData();
+                std::string dumpString((const char*)dumpData->data(), dumpData->size());
+
+                visualizer.dump(redirect.get(), dumpString.c_str());
+#else
+                visualizer.dump(redirect.get(), nullptr);
+#endif
+                return true;
+            });
     } else {
         printf("expected output path to end with one of: .glsl, .metal, .spirv, .asm.frag, .skvm, "
-               ".stage, .asm.vert (got '%s')\n", outputPath.c_str());
+               ".stage, .asm.vert (got '%s'), .html\n", outputPath.c_str());
         return ResultCode::kConfigurationError;
     }
     return ResultCode::kSuccess;

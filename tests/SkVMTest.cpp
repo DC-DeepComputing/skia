@@ -2679,3 +2679,48 @@ DEF_TEST(SkVM_fast_mul, r) {
         }
     });
 }
+
+#include "src/gpu/GrShaderCaps.h"
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+#include "src/utils/SkVMVisualizer.h"
+#include "src/sksl/codegen/SkVMDebugInfo.h"
+DEF_TEST(SkVM_Visualizer, r) {
+    const char* src = "float main(float x, float y) {\n"
+            "   float sum = 0.0;\n"
+            "   for (float c = 0.0; c < 3.0; c += 1.0) {\n"
+            "       if (x > y) sum += x * 20; else sum += y * 10;\n"
+            "   }\n"
+            "   return sum;\n"
+            "}";
+    GrShaderCaps caps;
+    SkSL::Compiler compiler(&caps);
+    SkSL::Program::Settings settings;
+    auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric,
+                                           SkSL::String(src), settings);
+    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
+    SkSL::SkVMDebugInfo d;
+    d.setSource(src);
+    skvm::SkVMVisualizer v(&d);
+    skvm::Builder b(&v);
+    SkSL::ProgramToSkVM(*program, *main, &b, &d, /*uniforms=*/{});
+    skvm::Program p = std::move(b.done());
+    SkDynamicMemoryWStream asmFile;
+    p.disassemble(&asmFile);
+    auto dumpData = asmFile.detachAsData();
+    std::string dumpString((const char*)dumpData->data(), dumpData->size());
+    v.dump(nullptr, dumpString.c_str());
+/*
+    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+        float xs[] = { 1.0f, 3.0f, 5.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+              ys[] = { 4.0f, 4.0f, 4.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+        float rets[12];
+        program.eval(12, xs, ys, rets);
+        SkDebugf("Program:\n"); program.dump();
+        //REPORTER_ASSERT(r, rets[0] == 1.0f);
+        //REPORTER_ASSERT(r, rets[1] == 3.0f);
+        //REPORTER_ASSERT(r, rets[2] == 4.0f);
+        //REPORTER_ASSERT(r, rets[3] == 4.0f);
+    });
+*/
+}
