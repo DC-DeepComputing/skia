@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3000be57_a91e6940",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T18:22:59Z",
+      "side": 1,
+      "message": "I see red bots and it scares me",
+      "revId": "0860f762dbc8b8c659c442bb62c7064572a9b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9b1c21f_2bf072cc",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T18:22:59Z",
+      "side": 1,
+      "message": "What\u0027s going on with this? Why don\u0027t we need the position matrix here?\n\nMaybe a comment?",
+      "range": {
+        "startLine": 1902,
+        "startChar": 0,
+        "endLine": 1902,
+        "endChar": 58
+      },
+      "revId": "0860f762dbc8b8c659c442bb62c7064572a9b940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
