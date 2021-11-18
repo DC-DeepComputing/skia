@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38c5fd90_314e13b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T13:41:45Z",
+      "side": 1,
+      "message": "Looks fine. Just curious: Why not just do \"+\u003d b-\u003eindex()\", so it would be the left-most pixel?",
+      "revId": "2605bb989fabac286c42a91a84348bc4668c5451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
