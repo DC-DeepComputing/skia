@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ee23ac_996f0155",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T19:54:33Z",
+      "side": 1,
+      "message": "I\u0027d be mildly curious about running dm - I guess it would just mean measuring the total number of skvm instructions across all programs that get generated? I suppose in the extreme limit today, it could end up reducing the total number of programs (because the program is the key, and we might get to merge programs that were previously distinct).",
+      "parentUuid": "58d0a089_a0ee0ccf",
+      "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fcde019_d122a7b0",
@@ -121,6 +139,30 @@
       "side": 1,
       "message": "GLSL is really the bar to meet, I\u0027d guess.\n\n \"min returns the minimum of the two parameters. It returns y if y is less than x, otherwise it returns x.\" \n\nOK, I\u0027ll remove these. I desperately hope no one writes a shader relying on this, but it\u0027s not a big deal.",
       "parentUuid": "687d6b24_907cc44e",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 5
+      },
+      "revId": "038033f2d539f2a8df1b589c188e50c4b7ca6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "863ab972_0fa75e13",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-18T19:54:33Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t think it\u0027s hyper-important, but the rest of SkVM\u0027s constant-folding already avoids doing anything that interacts badly with NaN or Infinity, so I figure it\u0027s worth being consistent with that. (On the flipside, I could be swayed to perform unsafe math optimizations, but that might require more thought and analysis).",
+      "parentUuid": "87a92d4b_8625ff93",
       "range": {
         "startLine": 966,
         "startChar": 0,
