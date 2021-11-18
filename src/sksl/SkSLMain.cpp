@@ -282,9 +282,11 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
         kind = SkSL::ProgramKind::kRuntimeColorFilter;
     } else if (inputPath.ends_with(".rts")) {
         kind = SkSL::ProgramKind::kRuntimeShader;
+    } else if (inputPath.ends_with(".cpp")) {
+        kind = SkSL::ProgramKind::kGeneric;
     } else {
         printf("input filename must end in '.vert', '.frag', '.rtb', '.rtcf', "
-               "'.rts', or '.sksl'\n");
+               "'.rts', '.cpp' or '.sksl'\n");
         return ResultCode::kInputError;
     }
 
@@ -495,9 +497,36 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
             printf("error writing '%s'\n", outputPath.c_str());
             return ResultCode::kOutputError;
         }
+    } else if (outputPath.ends_with(".html")) {
+        return compileProgram(
+                [&](SkSL::Compiler&, SkSL::Program& program, SkSL::OutputStream& out) {
+                    skvm::SkVMVisualizer visualizer(text.c_str());
+                    skvm::Builder builder(skvm::Features{}, &visualizer);
+                    if (!debugInfo) {
+                        debugInfo.reset(new SkSL::SkVMDebugInfo());
+                        debugInfo->setTraceCoord(skvm::Coord{builder.splat(0.0f),
+                                                             builder.splat(0.0f)});
+                        debugInfo->setSource(text.c_str());
+                    }
+                    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(program, "main");
+                    SkSL::ProgramToSkVM(program, *main, &builder, debugInfo.get(), /*uniforms=*/{});
+                    std::unique_ptr<SkWStream> redirect = as_SkWStream(out);
+#if defined(SKVM_JIT)
+                    skvm::Program p = std::move(builder.done());
+                    SkDynamicMemoryWStream asmFile;
+                    p.disassemble(&asmFile);
+                    auto dumpData = asmFile.detachAsData();
+                    std::string dumpString((const char*)dumpData->data(), dumpData->size());
+
+                    visualizer.dump(redirect.get(), dumpString.c_str());
+#else
+                    visualizer.dump(redirect.get(), nullptr);
+#endif
+                    return true;
+                });
     } else {
         printf("expected output path to end with one of: .glsl, .metal, .spirv, .asm.frag, .skvm, "
-               ".stage, .asm.vert (got '%s')\n", outputPath.c_str());
+               ".stage, .asm.vert (got '%s'), .html\n", outputPath.c_str());
         return ResultCode::kConfigurationError;
     }
     return ResultCode::kSuccess;
