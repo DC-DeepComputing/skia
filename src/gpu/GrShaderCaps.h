@@ -10,16 +10,16 @@
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/glsl/GrGLSL.h"
+#include "src/sksl/SkSLUtil.h"
 
 namespace SkSL {
-class ShaderCapsFactory;
 class SharedCompiler;
 }  // namespace SkSL
 
 struct GrContextOptions;
 class SkJSONWriter;
 
-class GrShaderCaps {
+class GrShaderCaps : public SkSL::ShaderCaps {
 public:
     /**
      * Indicates how GLSL must interact with advanced blend equations. The KHR extension requires
@@ -270,77 +270,31 @@ public:
 private:
     void applyOptionsOverrides(const GrContextOptions& options);
 
-    SkSL::GLSLGeneration fGLSLGeneration;
-
-    bool fShaderDerivativeSupport           : 1;
     bool fDstReadInShaderSupport            : 1;
     bool fDualSourceBlendingSupport         : 1;
-    bool fIntegerSupport                    : 1;
-    bool fNonsquareMatrixSupport            : 1;
-    bool fInverseHyperbolicSupport          : 1;
-    bool fFBFetchSupport                    : 1;
-    bool fFBFetchNeedsCustomOutput          : 1;
-    bool fUsesPrecisionModifiers            : 1;
-    bool fFlatInterpolationSupport          : 1;
     bool fPreferFlatInterpolation           : 1;
     bool fNoPerspectiveInterpolationSupport : 1;
-    bool fSampleMaskSupport                 : 1;
-    bool fExternalTextureSupport            : 1;
     bool fVertexIDSupport                   : 1;
     bool fInfinitySupport                   : 1;
     bool fNonconstantArrayIndexSupport      : 1;
     bool fBitManipulationSupport            : 1;
-    bool fFloatIs32Bits                     : 1;
     bool fHalfIs32Bits                      : 1;
     bool fHasLowFragmentPrecision           : 1;
     bool fReducedShaderMode                 : 1;
 
-    // Used by SkSL to know when to generate polyfills.
-    bool fBuiltinFMASupport : 1;
-    bool fBuiltinDeterminantSupport : 1;
-
     // Used for specific driver bug work arounds
-    bool fCanUseAnyFunctionInShader                   : 1;
-    bool fCanUseMinAndAbsTogether                     : 1;
-    bool fCanUseFractForNegativeValues                : 1;
-    bool fMustForceNegatedAtanParamToFloat            : 1;
-    bool fMustForceNegatedLdexpParamToMultiply        : 1;
-    bool fAtan2ImplementedAsAtanYOverX                : 1;
-    bool fMustDoOpBetweenFloorAndAbs                  : 1;
     bool fRequiresLocalOutputColorForFBFetch          : 1;
     bool fMustObfuscateUniformColor                   : 1;
-    bool fMustGuardDivisionEvenAfterExplicitZeroCheck : 1;
-    bool fCanUseFragCoord                             : 1;
-    bool fIncompleteShortIntPrecision                 : 1;
-    bool fAddAndTrueToLoopCondition                   : 1;
-    bool fUnfoldShortCircuitAsTernary                 : 1;
-    bool fEmulateAbsIntFunction                       : 1;
-    bool fRewriteDoWhileLoops                         : 1;
-    bool fRewriteSwitchStatements                     : 1;
-    bool fRemovePowWithConstantExponent               : 1;
     bool fMustWriteToFragColor                        : 1;
-    bool fNoDefaultPrecisionForExternalSamplers       : 1;
-    bool fRewriteMatrixVectorMultiply                 : 1;
-    bool fRewriteMatrixComparisons                    : 1;
     bool fColorSpaceMathNeedsFloat                    : 1;
-    bool fCanUseDoLoops                               : 1;
     bool fCanUseFastMath                              : 1;
     bool fAvoidDfDxForGradientsWhenPossible           : 1;
 
-    // This controls behavior of the SkSL compiler, not the code we generate
-    bool fUseNodePools : 1;
-
-    const char* fVersionDeclString;
-
-    const char* fShaderDerivativeExtensionString;
     const char* fSecondaryOutputExtensionString;
-    const char* fExternalTextureExtensionString;
-    const char* fSecondExternalTextureExtensionString;
     const char* fNoPerspectiveInterpolationExtensionString;
     const char* fSampleVariablesExtensionString;
     const char* fTessellationExtensionString;
 
-    const char* fFBFetchColorName;
     const char* fFBFetchExtensionString;
 
     int fMaxFragmentSamplers;
@@ -355,7 +309,6 @@ private:
     friend class GrMockCaps;
     friend class GrMtlCaps;
     friend class GrVkCaps;
-    friend class SkSL::ShaderCapsFactory;
     friend class SkSL::SharedCompiler;
 };
 
