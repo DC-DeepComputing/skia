@@ -2691,8 +2691,8 @@ namespace skvm {
                 case Op::trace_line:
                 case Op::trace_var:
                 case Op::trace_call:
-                    /* Only supported in the interpreter. */
-                    break;
+                    /* Force this program to run in the interpreter. */
+                    return false;
 
                 case Op::index:
                     if (I32->isVectorTy()) {
@@ -3621,8 +3621,8 @@ namespace skvm {
                 case Op::trace_line:
                 case Op::trace_var:
                 case Op::trace_call:
-                    /* Only supported in the interpreter. */
-                    break;
+                    /* Force this program to run in the interpreter. */
+                    return false;
 
                 case Op::store8:
                     if (scalar) {
@@ -3991,8 +3991,8 @@ namespace skvm {
                 case Op::trace_line:
                 case Op::trace_var:
                 case Op::trace_call:
-                    /* Only supported in the interpreter. */
-                    break;
+                    /* Force this program to run in the interpreter. */
+                    return false;
 
                 case Op::index: {
                     A::V tmp = alloc_tmp();
