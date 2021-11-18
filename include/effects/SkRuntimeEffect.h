@@ -378,10 +378,7 @@ public:
 
 protected:
     SkRuntimeEffectBuilder() = delete;
-    explicit SkRuntimeEffectBuilder(sk_sp<SkRuntimeEffect> effect)
-            : fEffect(std::move(effect))
-            , fUniforms(SkData::MakeUninitialized(fEffect->uniformSize()))
-            , fChildren(fEffect->children().size()) {}
+    explicit SkRuntimeEffectBuilder(sk_sp<SkRuntimeEffect> effect);
 
     SkRuntimeEffectBuilder(SkRuntimeEffectBuilder&&) = default;
     SkRuntimeEffectBuilder(const SkRuntimeEffectBuilder&) = default;

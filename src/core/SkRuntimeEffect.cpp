@@ -1426,6 +1426,13 @@ void SkRuntimeEffect::RegisterFlattenables() {
     SK_REGISTER_FLATTENABLE(SkRuntimeBlender);
 }
 
+SkRuntimeEffectBuilder::SkRuntimeEffectBuilder(sk_sp<SkRuntimeEffect> effect)
+        : fEffect(std::move(effect))
+        , fUniforms(SkData::MakeUninitialized(fEffect->uniformSize()))
+        , fChildren(fEffect->children().size()) {
+    memset(fUniforms->writable_data(), 0, fUniforms->size());
+}
+
 SkRuntimeShaderBuilder::SkRuntimeShaderBuilder(sk_sp<SkRuntimeEffect> effect)
         : INHERITED(std::move(effect)) {}
 
