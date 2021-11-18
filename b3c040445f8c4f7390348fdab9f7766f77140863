@@ -22,6 +22,30 @@
       },
       "revId": "b3c040445f8c4f7390348fdab9f7766f77140863",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9deffafc_f95661fe",
+        "filename": "src/gpu/geometry/GrInnerFanTriangulator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-18T17:24:07Z",
+      "side": 1,
+      "message": "If the triangulator fails, yes, we should drop the draw.",
+      "parentUuid": "3b812f09_19d79fea",
+      "range": {
+        "startLine": 36,
+        "startChar": 19,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "b3c040445f8c4f7390348fdab9f7766f77140863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
