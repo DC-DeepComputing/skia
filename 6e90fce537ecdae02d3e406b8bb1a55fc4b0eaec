@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4076b0e5_83edec13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-18T16:25:05Z",
+      "side": 1,
+      "message": "Color filter works (applies Threshold on solid green layer), but current JSON is not robust. Will find/make better test lottie",
+      "revId": "6e90fce537ecdae02d3e406b8bb1a55fc4b0eaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
