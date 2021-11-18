@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "559c3a72_55123618",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-11-18T15:34:42Z",
+      "side": 1,
+      "message": "Couldn\u0027t we go ahead and update build_task_drivers.sh to use the version from the infra repo?",
+      "revId": "4610f333e84d14d05f1dc78891730b4c9a10bd42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
