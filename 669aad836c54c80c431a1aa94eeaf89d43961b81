@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682dc321_ead6e1c5",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T19:35:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "724a34d6_eb6d019e",
+      "range": {
+        "startLine": 74,
+        "startChar": 44,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8afbe51b_29329d87",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-18T19:20:17Z",
       "side": 1,
       "message": "initialPositionMatrix ?",
+      "range": {
+        "startLine": 1327,
+        "startChar": 20,
+        "endLine": 1327,
+        "endChar": 33
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e290289_82a10986",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T19:35:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8afbe51b_29329d87",
       "range": {
         "startLine": 1327,
         "startChar": 20,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3889a44c_597a8276",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T19:35:41Z",
+      "side": 1,
+      "message": "the drawMatrix here is a position matrix.",
+      "parentUuid": "e13ef2aa_9af40608",
+      "range": {
+        "startLine": 1579,
+        "startChar": 0,
+        "endLine": 1579,
+        "endChar": 45
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11323998_1792ae7e",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0622a272_2e5d8afb",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T19:35:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11323998_1792ae7e",
+      "range": {
+        "startLine": 1648,
+        "startChar": 33,
+        "endLine": 1648,
+        "endChar": 43
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21f8b433_81a5a12f",
@@ -123,6 +219,30 @@
       "writtenOn": "2021-11-18T19:20:17Z",
       "side": 1,
       "message": "This partially duplicates the first sentence.",
+      "range": {
+        "startLine": 284,
+        "startChar": 49,
+        "endLine": 284,
+        "endChar": 84
+      },
+      "revId": "669aad836c54c80c431a1aa94eeaf89d43961b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec17ff77_5889066a",
+        "filename": "src/gpu/text/GrTextBlob.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-18T19:35:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21f8b433_81a5a12f",
       "range": {
         "startLine": 284,
         "startChar": 49,
