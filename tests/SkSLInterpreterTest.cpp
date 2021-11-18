@@ -33,7 +33,7 @@ struct ProgramBuilder {
     operator bool() const { return fProgram != nullptr; }
     SkSL::Program& operator*() { return *fProgram; }
 
-    GrShaderCaps fCaps;
+    SkSL::ShaderCaps fCaps;
     SkSL::Compiler fCompiler;
     std::unique_ptr<SkSL::Program> fProgram;
 };
@@ -623,7 +623,7 @@ DEF_TEST(SkSLInterpreterCompound, r) {
 }
 
 static void expect_failure(skiatest::Reporter* r, const char* src) {
-    GrShaderCaps caps;
+    SkSL::ShaderCaps caps;
     SkSL::Compiler compiler(&caps);
     SkSL::Program::Settings settings;
     auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric,
@@ -891,7 +891,7 @@ private:
 };
 
 DEF_TEST(SkSLInterpreterExternalFunction, r) {
-    GrShaderCaps caps;
+    SkSL::ShaderCaps caps;
     SkSL::Compiler compiler(&caps);
     SkSL::Program::Settings settings;
     const char* src = "float main() { return externalSqrt(25); }";
@@ -945,7 +945,7 @@ private:
 };
 
 DEF_TEST(SkSLInterpreterExternalTable, r) {
-    GrShaderCaps caps;
+    SkSL::ShaderCaps caps;
     SkSL::Compiler compiler(&caps);
     SkSL::Program::Settings settings;
     const char* src =

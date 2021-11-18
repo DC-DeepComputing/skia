@@ -21,7 +21,6 @@
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrContextOptions.h"
 #include "include/private/GrTypesPriv.h"
-#include "src/gpu/GrShaderCaps.h"
 #endif // SK_SUPPORT_GPU
 #endif // SKSL_STANDALONE
 
@@ -34,11 +33,9 @@ class OutputStream;
 class StringStream;
 class Type;
 
-#if defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
-
-class StandaloneShaderCaps {
+class ShaderCaps {
 public:
-    SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k400;
+    SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;
     SkSL::GLSLGeneration generation() const {
         return fGLSLGeneration;
     }
@@ -63,7 +60,7 @@ public:
         return fMustForceNegatedLdexpParamToMultiply;
     }
 
-    bool fShaderDerivativeSupport = true;
+    bool fShaderDerivativeSupport = false;
     bool shaderDerivativeSupport() const {
         return fShaderDerivativeSupport;
     }
@@ -87,12 +84,12 @@ public:
         return fFBFetchNeedsCustomOutput;
     }
 
-    bool fFlatInterpolationSupport = true;
+    bool fFlatInterpolationSupport = false;
     bool flatInterpolationSupport() const {
         return fFlatInterpolationSupport;
     }
 
-    bool fNoperspectiveInterpolationSupport = true;
+    bool fNoperspectiveInterpolationSupport = false;
     bool noperspectiveInterpolationSupport() const {
         return fNoperspectiveInterpolationSupport;
     }
@@ -102,12 +99,12 @@ public:
         return fMultisampleInterpolationSupport;
     }
 
-    bool fSampleMaskSupport = true;
+    bool fSampleMaskSupport = false;
     bool sampleMaskSupport() const {
         return fSampleMaskSupport;
     }
 
-    bool fExternalTextureSupport = true;
+    bool fExternalTextureSupport = false;
     bool externalTextureSupport() const {
         return fExternalTextureSupport;
     }
@@ -167,7 +164,7 @@ public:
         return fBuiltinDeterminantSupport;
     }
 
-    bool fCanUseDoLoops = false;
+    bool fCanUseDoLoops = true;
     bool canUseDoLoops() const {
         // we define this to false in standalone so we don't use do loops while inlining in FP files
         // (which would then, being baked in, end up being used even in contexts where do loops are
@@ -200,7 +197,7 @@ public:
         return fSecondExternalTextureExtensionString;
     }
 
-    const char* fVersionDeclString = "";
+    const char* fVersionDeclString = nullptr;
     const char* versionDeclString() const {
         return fVersionDeclString;
     }
@@ -265,16 +262,7 @@ public:
         return fRewriteMatrixComparisons;
     }
 };
-
-using ShaderCapsClass = StandaloneShaderCaps;
-using ShaderCapsPointer = std::unique_ptr<StandaloneShaderCaps>;
-
-#else
-
-using ShaderCapsClass = GrShaderCaps;
-using ShaderCapsPointer = std::unique_ptr<GrShaderCaps>;
-
-#endif  // defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
+using ShaderCapsPointer = std::unique_ptr<ShaderCaps>;
 
 // Various sets of caps for use in tests
 class ShaderCapsFactory {
