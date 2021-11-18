@@ -74,6 +74,11 @@ AtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     SkUNREACHABLE;
 }
 
+SkMatrix position_matrix(const SkMatrix& drawMatrix, SkPoint drawOrigin) {
+    SkMatrix position_matrix = drawMatrix;
+    return position_matrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+}
+
 SkPMColor4f calculate_colors(skgpu::SurfaceContext* sc,
                              const SkPaint& paint,
                              const SkMatrixProvider& matrix,
@@ -486,8 +491,10 @@ public:
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
-    void fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                        const SkMatrix& positionMatrix, SkIRect clip) const override;
+    void fillVertexData(void* vertexDst, int offset, int count,
+                        GrColor color,
+                        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                        SkIRect clip) const override;
 private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
@@ -778,8 +785,11 @@ void generalized_direct_2D(SkZip<Quad, const GrGlyph*, const VertexData> quadDat
     }
 }
 
-void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                                      const SkMatrix& positionMatrix, SkIRect clip) const {
+void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
+                                      GrColor color,
+                                      const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                      SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
                          fGlyphs.glyphs().subspan(offset, count),
@@ -877,7 +887,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -1006,9 +1018,11 @@ std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
     return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
 }
 
-void TransformedMaskSubRun::fillVertexData(
-        void* vertexDst, int offset, int count, GrColor color, const SkMatrix& positionMatrix,
-        SkIRect clip) const {
+void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
+                                           GrColor color,
+                                           const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                           SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     constexpr SkScalar kDstPadding = 0.f;
 
     auto quadData = [&](auto dst) {
@@ -1136,7 +1150,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -1332,7 +1348,10 @@ size_t SDFTSubRun::vertexStride(const SkMatrix& drawMatrix) const {
 
 void SDFTSubRun::fillVertexData(
         void *vertexDst, int offset, int count,
-        GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const {
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
 
     using Quad = Mask2DVertex[4];
     SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
@@ -1693,8 +1712,10 @@ public:
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
-    void fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                        const SkMatrix& positionMatrix, SkIRect clip) const override;
+    void fillVertexData(void* vertexDst, int offset, int count,
+                        GrColor color,
+                        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                        SkIRect clip) const override;
 
 private:
     const GrMaskFormat fMaskFormat;
@@ -1864,8 +1885,10 @@ void direct_2D2(SkZip<Mask2DVertex[4],
     }
 }
 
-void DirectMaskSubRunNoCache::fillVertexData(void* vertexDst, int offset, int count, GrColor color,
-                                             const SkMatrix& positionMatrix, SkIRect clip) const {
+void DirectMaskSubRunNoCache::fillVertexData(void* vertexDst, int offset, int count,
+                                             GrColor color,
+                                             const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                             SkIRect clip) const {
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
                          fGlyphs.glyphs().subspan(offset, count),
@@ -1875,21 +1898,21 @@ void DirectMaskSubRunNoCache::fillVertexData(void* vertexDst, int offset, int co
     if (clip.isEmpty()) {
         if (fMaskFormat != kARGB_GrMaskFormat) {
             using Quad = Mask2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             direct_2D2(quadData((Quad*)vertexDst), color);
         } else {
             using Quad = ARGB2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0});
         }
     } else {
         if (fMaskFormat != kARGB_GrMaskFormat) {
             using Quad = Mask2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0}, &clip);
         } else {
             using Quad = ARGB2DVertex[4];
-            SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
+            SkASSERT(sizeof(Quad) == this->vertexStride(SkMatrix::I()) * kVerticesPerGlyph);
             generalized_direct_2D(quadData((Quad*)vertexDst), color, {0,0}, &clip);
         }
     }
@@ -1931,7 +1954,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -2043,9 +2068,12 @@ std::tuple<bool, int> TransformedMaskSubRunNoCache::regenerateAtlas(
 }
 
 void TransformedMaskSubRunNoCache::fillVertexData(
-        void* vertexDst, int offset, int count, GrColor color,
-        const SkMatrix& positionMatrix, SkIRect clip) const {
+        void* vertexDst, int offset, int count,
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
     constexpr SkScalar kDstPadding = 0.f;
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
 
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
@@ -2157,7 +2185,9 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const override;
+            GrColor color,
+            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
     int glyphCount() const override;
@@ -2294,8 +2324,13 @@ size_t SDFTSubRunNoCache::vertexStride(const SkMatrix& drawMatrix) const {
 
 void SDFTSubRunNoCache::fillVertexData(
         void *vertexDst, int offset, int count,
-        GrColor color, const SkMatrix& positionMatrix, SkIRect clip) const {
+        GrColor color,
+        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        SkIRect clip) const {
     using Quad = Mask2DVertex[4];
+
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
+
     SkASSERT(sizeof(Quad) == this->vertexStride(positionMatrix) * kVerticesPerGlyph);
     fill_transformed_vertices_2D(
             SkMakeZip((Quad*)vertexDst,
