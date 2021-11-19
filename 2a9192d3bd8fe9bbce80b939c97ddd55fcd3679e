@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0afd96d_96ff1907",
+        "filename": "fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-19T22:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ce7db7d_d9252538",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0f1d551_f77b2119",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c56cf1e_0e5770ed",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-19T22:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0f1d551_f77b2119",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 0
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21a8fb01_fb661ecd",
@@ -94,6 +142,30 @@
       "writtenOn": "2021-11-18T22:34:57Z",
       "side": 1,
       "message": "This only existed because the types had to differ between Skia and skslc. Now that we don\u0027t have an #if block, can we just replace these with std::unique_ptr\u003cShaderCaps\u003e? (Doesn\u0027t have to happen in this CL necessarily, but would be nice cleanup!)",
+      "range": {
+        "startLine": 254,
+        "startChar": 6,
+        "endLine": 254,
+        "endChar": 23
+      },
+      "revId": "2a9192d3bd8fe9bbce80b939c97ddd55fcd3679e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc4ea38f_c44b0640",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-19T22:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a8fb01_fb661ecd",
       "range": {
         "startLine": 254,
         "startChar": 6,
