@@ -1,0 +1,47 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "DSLFPs",
+    srcs = ["DSLFPs.cpp"],
+    hdrs = ["DSLFPs.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLWriter",
+        "//include/sksl:DSL",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/ir:SkSLCodeStringExpression",
+    ],
+)
+
+cc_library(
+    name = "DSLWriter",
+    srcs = ["DSLWriter.cpp"],
+    hdrs = ["DSLWriter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStringView",
+        "//include/core:SkTypes",
+        "//include/sksl:DSLCore",
+        "//include/sksl:DSLStatement",
+        "//include/sksl:DSLSymbols",
+        "//include/sksl:DSLVar",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/ir:SkSLBlock",
+        "//src/sksl/ir:SkSLNop",
+        "//src/sksl/ir:SkSLVarDeclarations",
+        "//src/sksl/ir:SkSLVariable",
+    ],
+)
+
+cc_library(
+    name = "DSL_priv",
+    hdrs = ["DSL_priv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkSLProgramKind",
+        "//src/sksl:SkSLParsedModule",
+    ],
+)

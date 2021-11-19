@@ -1,0 +1,162 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrGLSL",
+    srcs = ["GrGLSL.cpp"],
+    hdrs = ["GrGLSL.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:GrTypesPriv",
+        "//src/sksl:SkSLGLSL",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLBlend",
+    srcs = ["GrGLSLBlend.cpp"],
+    hdrs = ["GrGLSLBlend.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLFragmentShaderBuilder",
+        ":GrGLSLProgramBuilder",
+        "//include/core:SkBlendMode",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLColorSpaceXformHelper",
+    hdrs = ["GrGLSLColorSpaceXformHelper.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLUniformHandler",
+        "//src/core:SkColorSpacePriv",
+        "//src/core:SkColorSpaceXformSteps",
+        "//src/gpu:GrColorSpaceXform",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLFragmentShaderBuilder",
+    srcs = ["GrGLSLFragmentShaderBuilder.cpp"],
+    hdrs = ["GrGLSLFragmentShaderBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLProgramBuilder",
+        ":GrGLSLShaderBuilder",
+        ":GrGLSLUniformHandler",
+        ":GrGLSLVarying",
+        "//src/gpu:GrBlend",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrShaderCaps",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLProgramBuilder",
+    srcs = ["GrGLSLProgramBuilder.cpp"],
+    hdrs = ["GrGLSLProgramBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLFragmentShaderBuilder",
+        ":GrGLSLProgramDataManager",
+        ":GrGLSLUniformHandler",
+        ":GrGLSLVarying",
+        ":GrGLSLVertexGeoBuilder",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProgramInfo",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/effects:GrTextureEffect",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl/dsl/priv:DSLFPs",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLProgramDataManager",
+    srcs = ["GrGLSLProgramDataManager.cpp"],
+    hdrs = ["GrGLSLProgramDataManager.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkM44",
+        "//include/core:SkMatrix",
+        "//include/core:SkTypes",
+        "//include/private:SkNoncopyable",
+        "//src/core:SkMatrixPriv",
+        "//src/gpu:GrResourceHandle",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLShaderBuilder",
+    srcs = ["GrGLSLShaderBuilder.cpp"],
+    hdrs = ["GrGLSLShaderBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLBlend",
+        ":GrGLSLColorSpaceXformHelper",
+        ":GrGLSLProgramBuilder",
+        ":GrGLSLUniformHandler",
+        "//include/core:SkSpan",
+        "//include/private:SkSLStatement",
+        "//include/private:SkSLString",
+        "//include/private:SkTDArray",
+        "//include/sksl:DSL",
+        "//src/core:SkTBlockList",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrShaderVar",
+        "//src/gpu:GrSwizzle",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/ir:SkSLVarDeclarations",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLUniformHandler",
+    srcs = ["GrGLSLUniformHandler.cpp"],
+    hdrs = ["GrGLSLUniformHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSL",
+        ":GrGLSLProgramDataManager",
+        ":GrGLSLShaderBuilder",
+        "//src/gpu:GrShaderVar",
+        "//src/gpu:GrSwizzle",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLVarying",
+    srcs = ["GrGLSLVarying.cpp"],
+    hdrs = ["GrGLSLVarying.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLProgramBuilder",
+        ":GrGLSLProgramDataManager",
+        "//include/private:GrTypesPriv",
+        "//src/core:SkTBlockList",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrShaderVar",
+    ],
+)
+
+cc_library(
+    name = "GrGLSLVertexGeoBuilder",
+    srcs = ["GrGLSLVertexGeoBuilder.cpp"],
+    hdrs = ["GrGLSLVertexGeoBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLSLProgramBuilder",
+        ":GrGLSLShaderBuilder",
+        ":GrGLSLVarying",
+        "//include/gpu:GrTypes",
+        "//src/gpu:GrGeometryProcessor",
+    ],
+)

@@ -1,0 +1,88 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "DFA",
+    hdrs = ["DFA.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "DFAState",
+    hdrs = ["DFAState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":LexUtil"],
+)
+
+cc_library(
+    name = "LexUtil",
+    hdrs = ["LexUtil.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "Main",
+    srcs = ["Main.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":NFAtoDFA",
+        ":RegexParser",
+        ":TransitionTable",
+    ],
+)
+
+cc_library(
+    name = "NFA",
+    srcs = ["NFA.cpp"],
+    hdrs = ["NFA.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":NFAState",
+        ":RegexNode",
+    ],
+)
+
+cc_library(
+    name = "NFAState",
+    hdrs = ["NFAState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":LexUtil"],
+)
+
+cc_library(
+    name = "NFAtoDFA",
+    hdrs = ["NFAtoDFA.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DFA",
+        ":DFAState",
+        ":NFA",
+        ":NFAState",
+    ],
+)
+
+cc_library(
+    name = "RegexNode",
+    srcs = ["RegexNode.cpp"],
+    hdrs = ["RegexNode.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":NFA"],
+)
+
+cc_library(
+    name = "RegexParser",
+    srcs = ["RegexParser.cpp"],
+    hdrs = ["RegexParser.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":LexUtil",
+        ":RegexNode",
+    ],
+)
+
+cc_library(
+    name = "TransitionTable",
+    srcs = ["TransitionTable.cpp"],
+    hdrs = ["TransitionTable.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":DFA"],
+)

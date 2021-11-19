@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkDiscardableMemoryPool",
+    srcs = ["SkDiscardableMemoryPool.cpp"],
+    hdrs = ["SkDiscardableMemoryPool.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkMalloc",
+        "//include/private:SkMutex",
+        "//include/private:SkTemplates",
+        "//src/core:SkDiscardableMemory",
+        "//src/core:SkTInternalLList",
+    ],
+)

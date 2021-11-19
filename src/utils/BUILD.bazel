@@ -1,72 +1,453 @@
-package(default_visibility = ["//visibility:private"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "core-srcs",
-    srcs = [
-        "SkAnimCodecPlayer.cpp",
-        "SkBase64.cpp",
-        "SkBitSet.h",
-        "SkCallableTraits.h",
-        "SkCamera.cpp",
-        "SkCanvasStack.cpp",
-        "SkCanvasStack.h",
-        "SkCanvasStateUtils.cpp",
-        "SkCharToGlyphCache.cpp",
-        "SkCharToGlyphCache.h",
-        "SkClipStackUtils.cpp",
-        "SkClipStackUtils.h",
-        "SkCustomTypeface.cpp",
-        "SkDashPath.cpp",
-        "SkDashPathPriv.h",
-        "SkEventTracer.cpp",
-        "SkFloatToDecimal.cpp",
-        "SkFloatToDecimal.h",
-        "SkFloatUtils.h",
-        "SkMatrix22.cpp",
-        "SkMatrix22.h",
-        "SkMultiPictureDocument.cpp",
-        "SkMultiPictureDocument.h",
-        "SkMultiPictureDocumentPriv.h",
-        "SkNWayCanvas.cpp",
-        "SkNullCanvas.cpp",
-        "SkOSPath.cpp",
-        "SkOSPath.h",
-        "SkOrderedFontMgr.cpp",
-        "SkPaintFilterCanvas.cpp",
-        "SkParse.cpp",
-        "SkParseColor.cpp",
-        "SkParsePath.cpp",
-        "SkPatchUtils.cpp",
-        "SkPatchUtils.h",
-        "SkPolyUtils.cpp",
-        "SkPolyUtils.h",
-        "SkShadowTessellator.cpp",
-        "SkShadowTessellator.h",
-        "SkShadowUtils.cpp",
-        "SkTextUtils.cpp",
-        "SkUTF.cpp",
-        "SkUTF.h",
-    ],
-)
-
-filegroup(
-    name = "json-srcs",
-    srcs = [
-        "SkJSON.cpp",
-        "SkJSON.h",
-        "SkJSONWriter.cpp",
-        "SkJSONWriter.h",
-        "SkShaperJSONWriter.cpp",
-        "SkShaperJSONWriter.h",
-    ],
-)
-
-# TODO(kjlubick) add selects here to allow opting in or out of things like JSON
-
-filegroup(
-    name = "srcs",
-    srcs = [
-        ":core-srcs",
-    ],
+cc_library(
+    name = "SkAnimCodecPlayer",
+    srcs = ["SkAnimCodecPlayer.cpp"],
     visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/codec:SkCodec",
+        "//include/core:SkCanvas",
+        "//include/core:SkData",
+        "//include/core:SkImage",
+        "//include/utils:SkAnimCodecPlayer",
+        "//src/codec:SkCodecImageGenerator",
+        "//src/core:SkPixmapPriv",
+    ],
+)
+
+cc_library(
+    name = "SkBase64",
+    srcs = ["SkBase64.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/utils:SkBase64"],
+)
+
+cc_library(
+    name = "SkBitSet",
+    hdrs = ["SkBitSet.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkMalloc",
+        "//include/private:SkTOptional",
+        "//include/private:SkTemplates",
+        "//src/core:SkMathPriv",
+    ],
+)
+
+cc_library(
+    name = "SkCallableTraits",
+    hdrs = ["SkCallableTraits.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkCamera",
+    srcs = ["SkCamera.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/utils:SkCamera",
+    ],
+)
+
+cc_library(
+    name = "SkCanvasStack",
+    srcs = ["SkCanvasStack.cpp"],
+    hdrs = ["SkCanvasStack.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRegion",
+        "//include/core:SkShader",
+        "//include/private:SkTArray",
+        "//include/utils:SkNWayCanvas",
+    ],
+)
+
+cc_library(
+    name = "SkCanvasStateUtils",
+    srcs = ["SkCanvasStateUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkCanvasStack",
+        "//include/core:SkBitmap",
+        "//include/core:SkCanvas",
+        "//include/utils:SkCanvasStateUtils",
+        "//src/core:SkDevice",
+        "//src/core:SkRasterClip",
+        "//src/core:SkWriter32",
+    ],
+)
+
+cc_library(
+    name = "SkCharToGlyphCache",
+    srcs = ["SkCharToGlyphCache.cpp"],
+    hdrs = ["SkCharToGlyphCache.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkTDArray",
+        "//include/private:SkTFitsIn",
+    ],
+)
+
+cc_library(
+    name = "SkClipStackUtils",
+    srcs = ["SkClipStackUtils.cpp"],
+    hdrs = ["SkClipStackUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/pathops:SkPathOps",
+        "//src/core:SkClipStack",
+    ],
+)
+
+cc_library(
+    name = "SkCustomTypeface",
+    srcs = ["SkCustomTypeface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/core:SkData",
+        "//include/core:SkFontMetrics",
+        "//include/private:SkFloatingPoint",
+        "//include/utils:SkCustomTypeface",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkAutoMalloc",
+        "//src/core:SkPathPriv",
+        "//src/core:SkScalerContext",
+    ],
+)
+
+cc_library(
+    name = "SkDashPath",
+    srcs = ["SkDashPath.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkDashPathPriv",
+        "//include/core:SkPathMeasure",
+        "//include/core:SkStrokeRec",
+        "//src/core:SkPathPriv",
+        "//src/core:SkPointPriv",
+    ],
+)
+
+cc_library(
+    name = "SkDashPathPriv",
+    hdrs = ["SkDashPathPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "SkEventTracer",
+    srcs = ["SkEventTracer.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkOnce",
+        "//include/utils:SkEventTracer",
+    ],
+)
+
+cc_library(
+    name = "SkFloatToDecimal",
+    srcs = ["SkFloatToDecimal.cpp"],
+    hdrs = ["SkFloatToDecimal.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkFloatUtils",
+    hdrs = ["SkFloatUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkJSON",
+    srcs = ["SkJSON.cpp"],
+    hdrs = ["SkJSON.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkUTF",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkMalloc",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTo",
+        "//include/utils:SkParse",
+        "//src/core:SkArenaAlloc",
+    ],
+)
+
+cc_library(
+    name = "SkJSONWriter",
+    srcs = ["SkJSONWriter.cpp"],
+    hdrs = ["SkJSONWriter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStream",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "SkMatrix22",
+    srcs = ["SkMatrix22.cpp"],
+    hdrs = ["SkMatrix22.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/core:SkPoint",
+        "//include/core:SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkMultiPictureDocument",
+    srcs = ["SkMultiPictureDocument.cpp"],
+    hdrs = ["SkMultiPictureDocument.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkMultiPictureDocumentPriv",
+        "//include/core:SkDocument",
+        "//include/core:SkPicture",
+        "//include/core:SkPictureRecorder",
+        "//include/core:SkSerialProcs",
+        "//include/core:SkSize",
+        "//include/core:SkStream",
+        "//include/private:SkTArray",
+        "//include/private:SkTo",
+        "//include/utils:SkNWayCanvas",
+    ],
+)
+
+cc_library(
+    name = "SkMultiPictureDocumentPriv",
+    hdrs = ["SkMultiPictureDocumentPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkMultiPictureDocument"],
+)
+
+cc_library(
+    name = "SkNWayCanvas",
+    srcs = ["SkNWayCanvas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkShader",
+        "//include/utils:SkNWayCanvas",
+        "//src/core:SkCanvasPriv",
+    ],
+)
+
+cc_library(
+    name = "SkNullCanvas",
+    srcs = ["SkNullCanvas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/utils:SkNWayCanvas",
+        "//include/utils:SkNullCanvas",
+    ],
+)
+
+cc_library(
+    name = "SkOSPath",
+    srcs = ["SkOSPath.cpp"],
+    hdrs = ["SkOSPath.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkString"],
+)
+
+cc_library(
+    name = "SkOrderedFontMgr",
+    srcs = ["SkOrderedFontMgr.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/utils:SkOrderedFontMgr",
+        "//src/core:SkFontDescriptor",
+    ],
+)
+
+cc_library(
+    name = "SkPaintFilterCanvas",
+    srcs = ["SkPaintFilterCanvas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPaint",
+        "//include/core:SkPixmap",
+        "//include/core:SkSurface",
+        "//include/utils:SkPaintFilterCanvas",
+        "//src/core:SkCanvasPriv",
+        "//src/core:SkTLazy",
+    ],
+)
+
+cc_library(
+    name = "SkParse",
+    srcs = ["SkParse.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/utils:SkParse"],
+)
+
+cc_library(
+    name = "SkParseColor",
+    srcs = ["SkParseColor.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/utils:SkParse"],
+)
+
+cc_library(
+    name = "SkParsePath",
+    srcs = ["SkParsePath.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/utils:SkParse",
+        "//include/utils:SkParsePath",
+        "//src/core:SkGeometry",
+    ],
+)
+
+cc_library(
+    name = "SkPatchUtils",
+    srcs = ["SkPatchUtils.cpp"],
+    hdrs = ["SkPatchUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/core:SkVertices",
+        "//include/private:SkColorData",
+        "//include/private:SkTPin",
+        "//include/private:SkTo",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkColorSpacePriv",
+        "//src/core:SkConvertPixels",
+        "//src/core:SkGeometry",
+    ],
+)
+
+cc_library(
+    name = "SkPolyUtils",
+    srcs = ["SkPolyUtils.cpp"],
+    hdrs = ["SkPolyUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPoint",
+        "//include/private:SkNx",
+        "//include/private:SkTArray",
+        "//include/private:SkTDArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkPointPriv",
+        "//src/core:SkTDPQueue",
+        "//src/core:SkTInternalLList",
+    ],
+)
+
+cc_library(
+    name = "SkShadowTessellator",
+    srcs = ["SkShadowTessellator.cpp"],
+    hdrs = ["SkShadowTessellator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPolyUtils",
+        "//include/core:SkColor",
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/core:SkPoint3",
+        "//include/core:SkRefCnt",
+        "//include/core:SkVertices",
+        "//include/private:SkColorData",
+        "//include/private:SkTPin",
+        "//src/core:SkDrawShadowInfo",
+        "//src/core:SkGeometry",
+        "//src/core:SkPointPriv",
+        "//src/gpu/geometry:GrPathUtils",
+    ],
+)
+
+cc_library(
+    name = "SkShadowUtils",
+    srcs = ["SkShadowUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkShadowTessellator",
+        "//include/core:SkCanvas",
+        "//include/core:SkColorFilter",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkPath",
+        "//include/core:SkString",
+        "//include/core:SkVertices",
+        "//include/private:SkColorData",
+        "//include/private:SkIDChangeListener",
+        "//include/private:SkTPin",
+        "//include/utils:SkRandom",
+        "//include/utils:SkShadowUtils",
+        "//src/core:SkBlurMask",
+        "//src/core:SkColorFilterBase",
+        "//src/core:SkColorFilterPriv",
+        "//src/core:SkDevice",
+        "//src/core:SkDrawShadowInfo",
+        "//src/core:SkEffectPriv",
+        "//src/core:SkPathPriv",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkResourceCache",
+        "//src/core:SkRuntimeEffectPriv",
+        "//src/core:SkTLazy",
+        "//src/core:SkVM",
+        "//src/core:SkVerticesPriv",
+        "//src/gpu/effects:GrSkSLFP",
+        "//src/gpu/geometry:GrStyledShape",
+    ],
+)
+
+cc_library(
+    name = "SkShaperJSONWriter",
+    srcs = ["SkShaperJSONWriter.cpp"],
+    hdrs = ["SkShaperJSONWriter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkJSONWriter",
+        ":SkUTF",
+        "//include/core:SkSpan",
+    ],
+)
+
+cc_library(
+    name = "SkTextUtils",
+    srcs = ["SkTextUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPath",
+        "//include/core:SkTextBlob",
+        "//include/utils:SkTextUtils",
+        "//src/core:SkFontPriv",
+    ],
+)
+
+cc_library(
+    name = "SkThreadUtils_pthread",
+    srcs = ["SkThreadUtils_pthread.cpp"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkThreadUtils_win",
+    srcs = ["SkThreadUtils_win.cpp"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkUTF",
+    srcs = ["SkUTF.cpp"],
+    hdrs = ["SkUTF.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkTFitsIn",
+    ],
 )

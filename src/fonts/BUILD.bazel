@@ -1,0 +1,32 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkFontMgr_indirect",
+    srcs = ["SkFontMgr_indirect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_indirect",
+        "//include/ports:SkRemotableFontMgr",
+        "//include/private:SkMutex",
+        "//include/private:SkOnce",
+        "//include/private:SkTArray",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkRemotableFontMgr",
+    srcs = ["SkRemotableFontMgr.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/ports:SkRemotableFontMgr",
+        "//include/private:SkOnce",
+    ],
+)

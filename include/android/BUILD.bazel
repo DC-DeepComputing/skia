@@ -1,9 +1,24 @@
-package(default_visibility = ["//visibility:public"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "hdrs",
-    srcs = [
-        "SkAndroidFrameworkUtils.h",
-        "SkAnimatedImage.h",
+cc_library(
+    name = "SkAndroidFrameworkUtils",
+    hdrs = ["SkAndroidFrameworkUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/core:SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkAnimatedImage",
+    hdrs = ["SkAnimatedImage.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/codec:SkCodecAnimation",
+        "//include/core:SkBitmap",
+        "//include/core:SkDrawable",
+        "//include/core:SkMatrix",
+        "//include/core:SkRect",
     ],
 )

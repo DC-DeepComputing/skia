@@ -1,0 +1,105 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkSLCanExitWithoutReturningValue",
+    srcs = ["SkSLCanExitWithoutReturningValue.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramVisitor",
+        "//include/private:SkSLStatement",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl/ir:SkSLDoStatement",
+        "//src/sksl/ir:SkSLForStatement",
+        "//src/sksl/ir:SkSLFunctionDeclaration",
+        "//src/sksl/ir:SkSLIfStatement",
+        "//src/sksl/ir:SkSLSwitchStatement",
+    ],
+)
+
+cc_library(
+    name = "SkSLCheckProgramUnrolledSize",
+    srcs = ["SkSLCheckProgramUnrolledSize.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramVisitor",
+        "//include/private:SkSLProgramElement",
+        "//include/private:SkSLStatement",
+        "//src/core:SkSafeMath",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl:SkSLContext",
+        "//src/sksl:SkSLProgramSettings",
+        "//src/sksl/ir:SkSLForStatement",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLProgram",
+    ],
+)
+
+cc_library(
+    name = "SkSLGetLoopUnrollInfo",
+    srcs = ["SkSLGetLoopUnrollInfo.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkFloatingPoint",
+        "//include/sksl:SkSLErrorReporter",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl:SkSLConstantFolder",
+        "//src/sksl/ir:SkSLBinaryExpression",
+        "//src/sksl/ir:SkSLForStatement",
+        "//src/sksl/ir:SkSLPostfixExpression",
+        "//src/sksl/ir:SkSLPrefixExpression",
+        "//src/sksl/ir:SkSLVarDeclarations",
+        "//src/sksl/ir:SkSLVariableReference",
+    ],
+)
+
+cc_library(
+    name = "SkSLIsConstantExpression",
+    srcs = ["SkSLIsConstantExpression.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramVisitor",
+        "//include/private:SkSLStatement",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl/ir:SkSLDoStatement",
+        "//src/sksl/ir:SkSLForStatement",
+        "//src/sksl/ir:SkSLFunctionDeclaration",
+        "//src/sksl/ir:SkSLIfStatement",
+        "//src/sksl/ir:SkSLSwitchStatement",
+    ],
+)
+
+cc_library(
+    name = "SkSLProgramUsage",
+    srcs = ["SkSLProgramUsage.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramVisitor",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLFunctionDeclaration",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLInterfaceBlock",
+        "//src/sksl/ir:SkSLProgram",
+        "//src/sksl/ir:SkSLVarDeclarations",
+        "//src/sksl/ir:SkSLVariableReference",
+    ],
+)
+
+cc_library(
+    name = "SkSLProgramVisitor",
+    hdrs = ["SkSLProgramVisitor.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkSLSwitchCaseContainsExit",
+    srcs = ["SkSLSwitchCaseContainsExit.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramVisitor",
+        "//include/private:SkSLStatement",
+        "//src/sksl:SkSLAnalysis",
+    ],
+)

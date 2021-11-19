@@ -1,0 +1,18 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrMtlBackendContext",
+    hdrs = ["GrMtlBackendContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrMtlTypes"],
+)
+
+cc_library(
+    name = "GrMtlTypes",
+    hdrs = ["GrMtlTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu:GrTypes",
+        "//include/ports:SkCFObject",
+    ],
+)

@@ -1,0 +1,210 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrDawnAttachment",
+    srcs = ["GrDawnAttachment.cpp"],
+    hdrs = ["GrDawnAttachment.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnUtil",
+        "//src/gpu:GrAttachment",
+    ],
+)
+
+cc_library(
+    name = "GrDawnBuffer",
+    srcs = ["GrDawnBuffer.cpp"],
+    hdrs = ["GrDawnBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        "//src/gpu:GrGpuBuffer",
+    ],
+)
+
+cc_library(
+    name = "GrDawnCaps",
+    srcs = ["GrDawnCaps.cpp"],
+    hdrs = ["GrDawnCaps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnUtil",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu:GrContextOptions",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu:GrProgramInfo",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrStencilSettings",
+    ],
+)
+
+cc_library(
+    name = "GrDawnGpu",
+    srcs = ["GrDawnGpu.cpp"],
+    hdrs = ["GrDawnGpu.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnAttachment",
+        ":GrDawnBuffer",
+        ":GrDawnCaps",
+        ":GrDawnOpsRenderPass",
+        ":GrDawnProgramBuilder",
+        ":GrDawnRenderTarget",
+        ":GrDawnRingBuffer",
+        ":GrDawnTexture",
+        ":GrDawnUtil",
+        "//include/gpu:GrBackendSemaphore",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu:GrContextOptions",
+        "//include/gpu:GrDirectContext",
+        "//src/core:SkAutoMalloc",
+        "//src/core:SkConvertPixels",
+        "//src/core:SkLRUCache",
+        "//src/core:SkMipmap",
+        "//src/gpu:GrDataUtils",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrFinishCallbacks",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrGpu",
+        "//src/gpu:GrGpuResourceCacheAccess",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrSemaphore",
+        "//src/gpu:GrStagingBufferManager",
+        "//src/gpu:GrStencilSettings",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrThreadSafePipelineBuilder",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl/ir:SkSLProgram",
+    ],
+)
+
+cc_library(
+    name = "GrDawnOpsRenderPass",
+    srcs = ["GrDawnOpsRenderPass.cpp"],
+    hdrs = ["GrDawnOpsRenderPass.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnAttachment",
+        ":GrDawnBuffer",
+        ":GrDawnGpu",
+        ":GrDawnProgramBuilder",
+        ":GrDawnRenderTarget",
+        ":GrDawnTexture",
+        ":GrDawnUtil",
+        "//include/gpu:GrTypes",
+        "//src/gpu:GrColor",
+        "//src/gpu:GrOpFlushState",
+        "//src/gpu:GrOpsRenderPass",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrTexture",
+        "//src/sksl:SkSLCompiler",
+    ],
+)
+
+cc_library(
+    name = "GrDawnProgramBuilder",
+    srcs = ["GrDawnProgramBuilder.cpp"],
+    hdrs = ["GrDawnProgramBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnProgramDataManager",
+        ":GrDawnTexture",
+        "//src/gpu:GrAutoLocaleSetter",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrSPIRVUniformHandler",
+        "//src/gpu:GrSPIRVVaryingHandler",
+        "//src/gpu:GrShaderUtils",
+        "//src/gpu:GrStencilSettings",
+        "//src/gpu/effects:GrTextureEffect",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLCompiler",
+    ],
+)
+
+cc_library(
+    name = "GrDawnProgramDataManager",
+    srcs = ["GrDawnProgramDataManager.cpp"],
+    hdrs = ["GrDawnProgramDataManager.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnRingBuffer",
+        "//src/core:SkAutoMalloc",
+        "//src/gpu:GrSPIRVUniformHandler",
+        "//src/gpu:GrUniformDataManager",
+    ],
+)
+
+cc_library(
+    name = "GrDawnRenderTarget",
+    srcs = ["GrDawnRenderTarget.cpp"],
+    hdrs = ["GrDawnRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnUtil",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu/dawn:GrDawnTypes",
+        "//src/gpu:GrRenderTarget",
+    ],
+)
+
+cc_library(
+    name = "GrDawnRingBuffer",
+    srcs = ["GrDawnRingBuffer.cpp"],
+    hdrs = ["GrDawnRingBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnBuffer",
+        ":GrDawnGpu",
+        ":GrDawnUtil",
+    ],
+)
+
+cc_library(
+    name = "GrDawnTexture",
+    srcs = ["GrDawnTexture.cpp"],
+    hdrs = ["GrDawnTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnTextureRenderTarget",
+        ":GrDawnUtil",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrDawnTextureRenderTarget",
+    srcs = ["GrDawnTextureRenderTarget.cpp"],
+    hdrs = ["GrDawnTextureRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu",
+        ":GrDawnRenderTarget",
+        ":GrDawnTexture",
+        "//include/core:SkTraceMemoryDump",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrDawnTypesPriv",
+    srcs = ["GrDawnTypesPriv.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:GrDawnTypesPriv"],
+)
+
+cc_library(
+    name = "GrDawnUtil",
+    srcs = ["GrDawnUtil.cpp"],
+    hdrs = ["GrDawnUtil.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:GrTypesPriv"],
+)

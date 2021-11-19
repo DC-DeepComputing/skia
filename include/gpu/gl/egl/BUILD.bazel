@@ -1,0 +1,11 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrGLMakeEGLInterface",
+    hdrs = ["GrGLMakeEGLInterface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+    ],
+)
