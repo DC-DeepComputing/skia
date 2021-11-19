@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7373cd04_94ae2e7f",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T18:27:16Z",
+      "side": 1,
+      "message": "These aren\u0027t going to be batchable, but that\u0027s okay, since the only way they would have been is if the explicitly provided buffers happened to be contiguous, and in those sorts of situations, the RenderStep probably should have been using the append API anyways.\n\nThat being said, if it turns out we do make lots of contiguous explicit instance buffers, we can have drawInternal() handle the buffer checking and instance count incrementing instead of appendData().\n\nRight now, this just gives us a single type that needs to be passed to RenderStep\u0027s writeVertices() and RS can then choose how to handle its draws. I think it\u0027s reasonable to refine this as we learn more about the needs of the tessellating render steps that will be added later.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 5
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a98b18d8_a11d0472",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T18:27:16Z",
+      "side": 1,
+      "message": "We might not need DrawWriter to take care of this logic, it could always set the buffers on the DrawDispatcher.\n\nMtlCommandBuffer already has logic to only actually record binds when there is a change. We could do something similar in the DrawPass\u0027 dispatcher as well.",
+      "range": {
+        "startLine": 209,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 44
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "590f6b83_5e423d96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T18:27:16Z",
+      "side": 1,
+      "message": "I would like to keep the DrawDispatcher for now because I have definitely found CommandBufferTests to be useful in getting things actually running and debugged.\n\nI would be happy if we landed in a spot where DrawWriter just recorded to a DrawPass, and this seems particularly likely if the Recordings just hold on to the DrawPass data and not create a CommandBuffer until they are scheduled.\n\nI don\u0027t think it will be difficult to tear out dispatcher if we do get to the point where DrawPass gives us sufficient ability to test the command buffer as well.",
+      "parentUuid": "63775730_fdc43ad8",
+      "revId": "85b2ee929111c7e91a636ebdd3035996274fc311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a662288e_8b066f77",
