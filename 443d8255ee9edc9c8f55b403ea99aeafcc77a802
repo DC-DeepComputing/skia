@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6c67da_351b655b",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T16:46:02Z",
+      "side": 0,
+      "message": "Since we set the vertex buffer offset in setVertexBUffers(), I opted to get rid of these calls and pass the base value into the draw call.  We could go the other direction and have MtlCommandBuffer remember the current offset and then have these draw calls always call setVertexBufferOffset(currentOffset + baseVertex*stride), which is how the index buffer offset is managed.\n\nThe benefit there is vertex/instance buffers are tracked identically to index buffers, but the downside is there\u0027s extra setOffset() commands.",
+      "range": {
+        "startLine": 259,
+        "startChar": 4,
+        "endLine": 260,
+        "endChar": 93
+      },
+      "revId": "443d8255ee9edc9c8f55b403ea99aeafcc77a802",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

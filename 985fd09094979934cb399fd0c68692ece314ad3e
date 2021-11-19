@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "486a009b_cfb398db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T16:46:02Z",
+      "side": 1,
+      "message": "This was another bug I encountered hidden in the DrawWriter CL: https://skia-review.googlesource.com/c/skia/+/471780 \n\nThis didn\u0027t show up until we started using the same buffer in the DrawBufferManager to store vertex and instance data at different offsets.",
+      "revId": "985fd09094979934cb399fd0c68692ece314ad3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0787ce2_61852491",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T16:46:02Z",
+      "side": 1,
+      "message": "We could get rid of the branch and just always do this path. I did test it that way and it works, but I don\u0027t know if Metal has any minor improvements for using the more limited draw call?",
+      "range": {
+        "startLine": 261,
+        "startChar": 7,
+        "endLine": 263,
+        "endChar": 90
+      },
+      "revId": "985fd09094979934cb399fd0c68692ece314ad3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
