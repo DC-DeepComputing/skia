@@ -175,7 +175,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                                                                  totalXform);
                         if (n4 <= maxSegments_pow4) {
                             // This quad already fits in "maxTessellationSegments".
-                            CubicPatch(patchWriter) << QuadToCubic{p0, p1, p2};
+                            CubicPatch(patchWriter) << QuadToCubic(p0, p1, p2);
                         } else {
                             // The path should have been pre-chopped if needed, so all curves fit in
                             // kMaxTessellationSegmentsPerCurve.
