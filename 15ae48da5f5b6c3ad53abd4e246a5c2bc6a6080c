@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de9608eb_5a97b5a6",
+        "filename": "resources/sksl/shared/Structs.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-19T16:43:59Z",
+      "side": 0,
+      "message": "Changes to generator would have silently ignored this, but this is a very old test, and I don\u0027t think this made much sense.",
+      "revId": "15ae48da5f5b6c3ad53abd4e246a5c2bc6a6080c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73bfe23f_53d4558f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-19T16:43:59Z",
+      "side": 1,
+      "message": "PS1 shows the errors that resulted from simply rolling SPIRV-Tools, without fixing anything. I ran all GMs locally in Vulkan, and everything still looks identical, so I don\u0027t think we were relying on any of this.",
+      "revId": "f62c7b056eb03615c68d9e4d794bba2f937d50b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
