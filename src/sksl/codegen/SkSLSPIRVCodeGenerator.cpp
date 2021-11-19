@@ -498,7 +498,7 @@ void SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memor
             }
         }
         this->writeInstruction(SpvOpMemberName, resultId, i, field.fName, fNameBuffer);
-        this->writeLayout(fieldLayout, resultId, i);
+        this->writeLayout(fieldLayout, resultId, i, type.fLine);
         if (field.fModifiers.fLayout.fBuiltin < 0) {
             this->writeInstruction(SpvOpMemberDecorate, resultId, (SpvId) i, SpvDecorationOffset,
                                    (SpvId) offset, fDecorationBuffer);
@@ -2979,7 +2979,13 @@ void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target) {
     }
 }
 
-void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target, int member) {
+void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target, int member, int line) {
+    if (layout.fBinding >= 0) {
+        fContext.fErrors->error(line, "'binding' can not be applied to struct members");
+    }
+    if (layout.fSet >= 0) {
+        fContext.fErrors->error(line, "'set' can not be applied to struct members");
+    }
     if (layout.fLocation >= 0) {
         this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationLocation,
                                layout.fLocation, fDecorationBuffer);

@@ -203,7 +203,7 @@ private:
 
     void writeLayout(const Layout& layout, SpvId target);
 
-    void writeLayout(const Layout& layout, SpvId target, int member);
+    void writeLayout(const Layout& layout, SpvId target, int member, int line);
 
     void writeStruct(const Type& type, const MemoryLayout& layout, SpvId resultId);
 
