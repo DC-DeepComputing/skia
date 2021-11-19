@@ -39,6 +39,53 @@
       },
       "revId": "985fd09094979934cb399fd0c68692ece314ad3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1826fc91_25572aef",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-19T18:13:00Z",
+      "side": 1,
+      "message": "I think using only this is fine, but we might want to wrap this in an @available(macOS 10.11, iOS 9.0) check in case someone tries to compile (for whatever reason) for an iOS 8 system. In that case we\u0027ll just not draw anything.",
+      "parentUuid": "b0787ce2_61852491",
+      "range": {
+        "startLine": 261,
+        "startChar": 7,
+        "endLine": 263,
+        "endChar": 90
+      },
+      "revId": "985fd09094979934cb399fd0c68692ece314ad3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e1e878a_15032f38",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-19T18:13:00Z",
+      "side": 1,
+      "message": "This should be in an @available check as well.",
+      "range": {
+        "startLine": 291,
+        "startChar": 4,
+        "endLine": 294,
+        "endChar": 81
+      },
+      "revId": "985fd09094979934cb399fd0c68692ece314ad3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
