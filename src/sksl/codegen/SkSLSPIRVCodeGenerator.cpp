@@ -2980,6 +2980,9 @@ void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target) {
 }
 
 void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target, int member) {
+    // 'binding' and 'set' can not be applied to struct members
+    SkASSERT(layout.fBinding == -1);
+    SkASSERT(layout.fSet == -1);
     if (layout.fLocation >= 0) {
         this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationLocation,
                                layout.fLocation, fDecorationBuffer);
