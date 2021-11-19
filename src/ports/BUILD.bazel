@@ -65,7 +65,6 @@ cc_library(
         "//include/private:SkTemplates",
         "//src/core:SkAutoMalloc",
         "//src/core:SkBuffer",
-        "//src/ports:SkFontConfigInterface_direct",
     ],
 )
 
@@ -74,8 +73,8 @@ cc_library(
     srcs = ["SkFontConfigInterface_direct_factory.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontConfigInterface_direct",
         "//include/private:SkOnce",
-        "//src/ports:SkFontConfigInterface_direct",
     ],
 )
 
@@ -84,11 +83,11 @@ cc_library(
     hdrs = ["SkFontConfigTypeface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontHost_FreeType_common",
         "//include/core:SkRefCnt",
         "//include/core:SkStream",
         "//include/ports:SkFontConfigInterface",
         "//src/core:SkFontDescriptor",
-        "//src/ports:SkFontHost_FreeType_common",
     ],
 )
 
@@ -97,6 +96,7 @@ cc_library(
     srcs = ["SkFontHost_FreeType.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontHost_FreeType_common",
         "//include/core:SkBitmap",
         "//include/core:SkCanvas",
         "//include/core:SkData",
@@ -120,7 +120,6 @@ cc_library(
         "//src/core:SkScalerContext",
         "//src/core:SkTSearch",
         "//src/core:SkUtils",
-        "//src/ports:SkFontHost_FreeType_common",
         "//src/sfnt:SkOTUtils",
         "//src/utils:SkCallableTraits",
         "//src/utils:SkMatrix22",
@@ -148,7 +147,6 @@ cc_library(
         "//src/core:SkScalerContext",
         "//src/core:SkScopeExit",
         "//src/core:SkSharedMutex",
-        "//src/ports:SkFontHost_FreeType_common",
         "//src/utils:SkCharToGlyphCache",
     ],
 )
@@ -197,6 +195,7 @@ cc_library(
     srcs = ["SkFontMgr_FontConfigInterface.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontConfigTypeface",
         "//include/core:SkFontMgr",
         "//include/core:SkFontStyle",
         "//include/core:SkString",
@@ -207,7 +206,6 @@ cc_library(
         "//src/core:SkFontDescriptor",
         "//src/core:SkResourceCache",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkFontConfigTypeface",
     ],
 )
 
@@ -227,6 +225,8 @@ cc_library(
     srcs = ["SkFontMgr_android.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontHost_FreeType_common",
+        ":SkFontMgr_android_parser",
         "//include/core:SkData",
         "//include/core:SkFontMgr",
         "//include/core:SkFontStyle",
@@ -244,8 +244,6 @@ cc_library(
         "//src/core:SkOSFile",
         "//src/core:SkTSearch",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkFontHost_FreeType_common",
-        "//src/ports:SkFontMgr_android_parser",
     ],
 )
 
@@ -279,7 +277,6 @@ cc_library(
         "//include/private:SkTemplates",
         "//src/core:SkOSFile",
         "//src/core:SkTSearch",
-        "//src/ports:SkFontMgr_android_parser",
     ],
 )
 
@@ -289,6 +286,7 @@ cc_library(
     hdrs = ["SkFontMgr_custom.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontHost_FreeType_common",
         "//include/core:SkFontArguments",
         "//include/core:SkFontMgr",
         "//include/core:SkFontStyle",
@@ -300,8 +298,6 @@ cc_library(
         "//include/private:SkTArray",
         "//include/private:SkTemplates",
         "//src/core:SkFontDescriptor",
-        "//src/ports:SkFontHost_FreeType_common",
-        "//src/ports:SkFontMgr_custom",
     ],
 )
 
@@ -310,10 +306,10 @@ cc_library(
     srcs = ["SkFontMgr_custom_directory.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontMgr_custom",
         "//include/core:SkStream",
         "//include/ports:SkFontMgr_directory",
         "//src/core:SkOSFile",
-        "//src/ports:SkFontMgr_custom",
         "//src/utils:SkOSPath",
     ],
 )
@@ -333,9 +329,9 @@ cc_library(
     srcs = ["SkFontMgr_custom_embedded.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontMgr_custom",
         "//include/core:SkStream",
         "//src/core:SkFontDescriptor",
-        "//src/ports:SkFontMgr_custom",
     ],
 )
 
@@ -351,8 +347,8 @@ cc_library(
     srcs = ["SkFontMgr_custom_empty.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontMgr_custom",
         "//include/ports:SkFontMgr_empty",
-        "//src/ports:SkFontMgr_custom",
     ],
 )
 
@@ -378,6 +374,7 @@ cc_library(
     srcs = ["SkFontMgr_fontconfig.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontHost_FreeType_common",
         "//include/core:SkDataTable",
         "//include/core:SkFontMgr",
         "//include/core:SkFontStyle",
@@ -395,7 +392,6 @@ cc_library(
         "//src/core:SkFontDescriptor",
         "//src/core:SkOSFile",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkFontHost_FreeType_common",
     ],
 )
 
@@ -415,13 +411,13 @@ cc_library(
     srcs = ["SkFontMgr_fuchsia.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkFontMgr_custom",
         "//include/core:SkFontMgr",
         "//include/core:SkStream",
         "//include/core:SkTypeface",
         "//include/ports:SkFontMgr_fuchsia",
         "//src/core:SkFontDescriptor",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkFontMgr_custom",
     ],
 )
 
@@ -430,6 +426,7 @@ cc_library(
     srcs = ["SkFontMgr_mac_ct.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTypeface_mac_ct",
         "//include/core:SkData",
         "//include/core:SkFontArguments",
         "//include/core:SkFontMgr",
@@ -445,7 +442,6 @@ cc_library(
         "//include/private:SkTemplates",
         "//include/private:SkTo",
         "//src/core:SkFontDescriptor",
-        "//src/ports:SkTypeface_mac_ct",
         "//src/utils:SkUTF",
     ],
 )
@@ -466,6 +462,7 @@ cc_library(
     srcs = ["SkFontMgr_win_dw.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTypeface_win_dw",
         "//include/core:SkFontMgr",
         "//include/core:SkStream",
         "//include/core:SkTypeface",
@@ -477,7 +474,6 @@ cc_library(
         "//src/core:SkEndian",
         "//src/core:SkFontDescriptor",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkTypeface_win_dw",
         "//src/utils:SkUTF",
         "//src/utils/win:SkDWrite",
         "//src/utils/win:SkDWriteFontFileStream",
@@ -529,10 +525,10 @@ cc_library(
     srcs = ["SkImageEncoder_NDK.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkNDKConversions",
         "//include/private:SkTFitsIn",
         "//include/private:SkTo",
         "//src/images:SkImageEncoderPriv",
-        "//src/ports:SkNDKConversions",
     ],
 )
 
@@ -574,10 +570,10 @@ cc_library(
     srcs = ["SkImageGeneratorNDK.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkNDKConversions",
         "//include/core:SkImageGenerator",
         "//include/core:SkImageInfo",
         "//include/ports:SkImageGeneratorNDK",
-        "//src/ports:SkNDKConversions",
     ],
 )
 
@@ -636,7 +632,6 @@ cc_library(
     deps = [
         "//include/core:SkColorSpace",
         "//include/core:SkImageInfo",
-        "//src/ports:SkNDKConversions",
     ],
 )
 
@@ -655,12 +650,12 @@ cc_library(
     srcs = ["SkOSFile_posix.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkOSFile_ios",
         "//include/core:SkString",
         "//include/core:SkTypes",
         "//include/private:SkTFitsIn",
         "//include/private:SkTemplates",
         "//src/core:SkOSFile",
-        "//src/ports:SkOSFile_ios",
     ],
 )
 
@@ -669,9 +664,9 @@ cc_library(
     srcs = ["SkOSFile_stdio.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkOSFile_ios",
         "//include/core:SkTypes",
         "//src/core:SkOSFile",
-        "//src/ports:SkOSFile_ios",
         "//src/utils:SkUTF",
     ],
 )
@@ -702,8 +697,8 @@ cc_library(
     srcs = ["SkOSLibrary_posix.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkOSLibrary",
         "//include/core:SkTypes",
-        "//src/ports:SkOSLibrary",
     ],
 )
 
@@ -712,9 +707,9 @@ cc_library(
     srcs = ["SkOSLibrary_win.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkOSLibrary",
         "//include/core:SkTypes",
         "//src/core:SkLeanWindows",
-        "//src/ports:SkOSLibrary",
     ],
 )
 
@@ -723,13 +718,13 @@ cc_library(
     srcs = ["SkRemotableFontMgr_win_dw.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTypeface_win_dw",
         "//include/core:SkStream",
         "//include/core:SkString",
         "//include/core:SkTypes",
         "//include/ports:SkRemotableFontMgr",
         "//include/private:SkMutex",
         "//include/private:SkTArray",
-        "//src/ports:SkTypeface_win_dw",
         "//src/utils:SkUTF",
         "//src/utils/win:SkDWrite",
         "//src/utils/win:SkDWriteFontFileStream",
@@ -746,6 +741,7 @@ cc_library(
     hdrs = ["SkScalerContext_mac_ct.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTypeface_mac_ct",
         "//include/core:SkColor",
         "//include/core:SkColorPriv",
         "//include/core:SkFontMetrics",
@@ -771,8 +767,6 @@ cc_library(
         "//src/core:SkMathPriv",
         "//src/core:SkOpts",
         "//src/core:SkScalerContext",
-        "//src/ports:SkScalerContext_mac_ct",
-        "//src/ports:SkTypeface_mac_ct",
         "//src/sfnt:SkOTTableTypes",
         "//src/sfnt:SkOTTable_OS_2",
         "//src/utils/mac:SkCGBase",
@@ -788,6 +782,7 @@ cc_library(
     hdrs = ["SkScalerContext_win_dw.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTypeface_win_dw",
         "//include/codec:SkCodec",
         "//include/core:SkBitmap",
         "//include/core:SkFontMetrics",
@@ -805,8 +800,6 @@ cc_library(
         "//src/core:SkRasterClip",
         "//src/core:SkScalerContext",
         "//src/core:SkSharedMutex",
-        "//src/ports:SkScalerContext_win_dw",
-        "//src/ports:SkTypeface_win_dw",
         "//src/sfnt:SkOTTable_EBLC",
         "//src/sfnt:SkOTTable_EBSC",
         "//src/sfnt:SkOTTable_gasp",
@@ -838,6 +831,7 @@ cc_library(
     hdrs = ["SkTypeface_mac_ct.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkScalerContext_mac_ct",
         "//include/core:SkColor",
         "//include/core:SkData",
         "//include/core:SkFontArguments",
@@ -866,8 +860,6 @@ cc_library(
         "//src/core:SkMask",
         "//src/core:SkScalerContext",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkScalerContext_mac_ct",
-        "//src/ports:SkTypeface_mac_ct",
         "//src/sfnt:SkOTTableTypes",
         "//src/sfnt:SkOTTable_OS_2",
         "//src/sfnt:SkOTTable_OS_2_V4",
@@ -887,6 +879,7 @@ cc_library(
     hdrs = ["SkTypeface_win_dw.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkScalerContext_win_dw",
         "//include/core:SkData",
         "//include/core:SkTypeface",
         "//include/core:SkTypes",
@@ -897,8 +890,6 @@ cc_library(
         "//src/core:SkLeanWindows",
         "//src/core:SkScalerContext",
         "//src/core:SkTypefaceCache",
-        "//src/ports:SkScalerContext_win_dw",
-        "//src/ports:SkTypeface_win_dw",
         "//src/sfnt:SkOTTable_OS_2",
         "//src/sfnt:SkOTTable_fvar",
         "//src/sfnt:SkOTTable_head",

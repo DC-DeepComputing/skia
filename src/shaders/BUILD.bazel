@@ -6,13 +6,12 @@ cc_library(
     hdrs = ["SkBitmapProcShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkShaderBase",
         "//src/core:SkArenaAlloc",
         "//src/core:SkBitmapProcState",
         "//src/core:SkImagePriv",
         "//src/core:SkPaintPriv",
         "//src/core:SkXfermodePriv",
-        "//src/shaders:SkBitmapProcShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -22,6 +21,7 @@ cc_library(
     hdrs = ["SkColorFilterShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkShaderBase",
         "//include/core:SkShader",
         "//include/core:SkString",
         "//src/core:SkArenaAlloc",
@@ -31,8 +31,6 @@ cc_library(
         "//src/core:SkVM",
         "//src/core:SkWriteBuffer",
         "//src/gpu:GrFragmentProcessor",
-        "//src/shaders:SkColorFilterShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -42,6 +40,7 @@ cc_library(
     hdrs = ["SkColorShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkShaderBase",
         "//include/core:SkColorSpace",
         "//src/core:SkArenaAlloc",
         "//src/core:SkColorSpacePriv",
@@ -54,8 +53,6 @@ cc_library(
         "//src/gpu:GrColorSpaceXform",
         "//src/gpu:GrFragmentProcessor",
         "//src/gpu:SkGr",
-        "//src/shaders:SkColorShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -65,6 +62,8 @@ cc_library(
     hdrs = ["SkComposeShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkColorShader",
+        ":SkShaderBase",
         "//include/core:SkBlendMode",
         "//include/core:SkColorFilter",
         "//include/core:SkString",
@@ -80,9 +79,6 @@ cc_library(
         "//src/core:SkWriteBuffer",
         "//src/gpu:GrFragmentProcessor",
         "//src/gpu/effects:GrBlendFragmentProcessor",
-        "//src/shaders:SkColorShader",
-        "//src/shaders:SkComposeShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -90,7 +86,7 @@ cc_library(
     name = "SkEmptyShader",
     hdrs = ["SkEmptyShader.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//src/shaders:SkShaderBase"],
+    deps = [":SkShaderBase"],
 )
 
 cc_library(
@@ -99,6 +95,10 @@ cc_library(
     hdrs = ["SkImageShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkBitmapProcShader",
+        ":SkEmptyShader",
+        ":SkShaderBase",
+        ":SkTransformShader",
         "//include/core:SkImage",
         "//include/private:SkImageInfoPriv",
         "//src/core:SkArenaAlloc",
@@ -118,11 +118,6 @@ cc_library(
         "//src/gpu:GrColorInfo",
         "//src/gpu/effects:GrBlendFragmentProcessor",
         "//src/image:SkImage_Base",
-        "//src/shaders:SkBitmapProcShader",
-        "//src/shaders:SkEmptyShader",
-        "//src/shaders:SkImageShader",
-        "//src/shaders:SkShaderBase",
-        "//src/shaders:SkTransformShader",
     ],
 )
 
@@ -132,6 +127,7 @@ cc_library(
     hdrs = ["SkLocalMatrixShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkShaderBase",
         "//src/core:SkMatrixProvider",
         "//src/core:SkReadBuffer",
         "//src/core:SkTLazy",
@@ -139,8 +135,6 @@ cc_library(
         "//src/core:SkWriteBuffer",
         "//src/gpu:GrFragmentProcessor",
         "//src/gpu/effects:GrMatrixEffect",
-        "//src/shaders:SkLocalMatrixShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -179,6 +173,9 @@ cc_library(
     hdrs = ["SkPictureShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkBitmapProcShader",
+        ":SkImageShader",
+        ":SkShaderBase",
         "//include/core:SkBitmap",
         "//include/core:SkCanvas",
         "//include/core:SkImage",
@@ -202,10 +199,6 @@ cc_library(
         "//src/gpu:SkGr",
         "//src/gpu/effects:GrTextureEffect",
         "//src/image:SkImage_Base",
-        "//src/shaders:SkBitmapProcShader",
-        "//src/shaders:SkImageShader",
-        "//src/shaders:SkPictureShader",
-        "//src/shaders:SkShaderBase",
     ],
 )
 
@@ -214,6 +207,13 @@ cc_library(
     srcs = ["SkShader.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkBitmapProcShader",
+        ":SkColorShader",
+        ":SkEmptyShader",
+        ":SkImageShader",
+        ":SkPictureShader",
+        ":SkShaderBase",
+        ":SkTransformShader",
         "//include/core:SkMallocPixelRef",
         "//include/core:SkPaint",
         "//include/core:SkPicture",
@@ -228,13 +228,6 @@ cc_library(
         "//src/core:SkVM",
         "//src/core:SkWriteBuffer",
         "//src/gpu:GrFragmentProcessor",
-        "//src/shaders:SkBitmapProcShader",
-        "//src/shaders:SkColorShader",
-        "//src/shaders:SkEmptyShader",
-        "//src/shaders:SkImageShader",
-        "//src/shaders:SkPictureShader",
-        "//src/shaders:SkShaderBase",
-        "//src/shaders:SkTransformShader",
     ],
 )
 
@@ -262,10 +255,9 @@ cc_library(
     hdrs = ["SkTransformShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkShaderBase",
         "//src/core:SkMatrixProvider",
         "//src/core:SkRasterPipeline",
         "//src/core:SkVM",
-        "//src/shaders:SkShaderBase",
-        "//src/shaders:SkTransformShader",
     ],
 )

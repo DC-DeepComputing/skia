@@ -5,6 +5,10 @@ cc_library(
     srcs = ["SkImage.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
+        ":SkImage_Gpu",
+        ":SkReadPixelsRec",
+        ":SkRescaleAndReadPixels",
         "//include/core:SkBitmap",
         "//include/core:SkData",
         "//include/core:SkImageEncoder",
@@ -36,10 +40,6 @@ cc_library(
         "//src/gpu:SkGr",
         "//src/gpu/effects:GrBicubicEffect",
         "//src/gpu/effects:GrTextureEffect",
-        "//src/image:SkImage_Base",
-        "//src/image:SkImage_Gpu",
-        "//src/image:SkReadPixelsRec",
-        "//src/image:SkRescaleAndReadPixels",
         "//src/shaders:SkImageShader",
     ],
 )
@@ -65,6 +65,7 @@ cc_library(
     hdrs = ["SkImage_Gpu.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_GpuBase",
         "//include/core:SkCanvas",
         "//include/gpu:GrBackendSurface",
         "//include/gpu:GrDirectContext",
@@ -103,8 +104,6 @@ cc_library(
         "//src/gpu:SurfaceFillContext",
         "//src/gpu/effects:GrTextureEffect",
         "//src/gpu/gl:GrGLTexture",
-        "//src/image:SkImage_Gpu",
-        "//src/image:SkImage_GpuBase",
     ],
 )
 
@@ -114,6 +113,9 @@ cc_library(
     hdrs = ["SkImage_GpuBase.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
+        ":SkImage_Gpu",
+        ":SkReadPixelsRec",
         "//include/core:SkBitmap",
         "//include/core:SkDeferredDisplayListRecorder",
         "//include/core:SkPromiseImageTexture",
@@ -134,10 +136,6 @@ cc_library(
         "//src/gpu:GrYUVATextureProxies",
         "//src/gpu:SurfaceContext",
         "//src/gpu/effects:GrYUVtoRGBEffect",
-        "//src/image:SkImage_Base",
-        "//src/image:SkImage_Gpu",
-        "//src/image:SkImage_GpuBase",
-        "//src/image:SkReadPixelsRec",
     ],
 )
 
@@ -147,6 +145,8 @@ cc_library(
     hdrs = ["SkImage_GpuYUVA.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Gpu",
+        ":SkImage_GpuBase",
         "//include/core:SkYUVAPixmaps",
         "//include/gpu:GrBackendSurface",
         "//include/gpu:GrDirectContext",
@@ -167,9 +167,6 @@ cc_library(
         "//src/gpu:SurfaceFillContext",
         "//src/gpu/effects:GrBicubicEffect",
         "//src/gpu/effects:GrYUVtoRGBEffect",
-        "//src/image:SkImage_Gpu",
-        "//src/image:SkImage_GpuBase",
-        "//src/image:SkImage_GpuYUVA",
     ],
 )
 
@@ -179,6 +176,7 @@ cc_library(
     hdrs = ["SkImage_Lazy.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
         "//include/core:SkBitmap",
         "//include/core:SkData",
         "//include/core:SkImageGenerator",
@@ -205,8 +203,6 @@ cc_library(
         "//src/gpu:SkGr",
         "//src/gpu:SurfaceFillContext",
         "//src/gpu/effects:GrYUVtoRGBEffect",
-        "//src/image:SkImage_Base",
-        "//src/image:SkImage_Lazy",
     ],
 )
 
@@ -215,6 +211,7 @@ cc_library(
     srcs = ["SkImage_Raster.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
         "//include/core:SkBitmap",
         "//include/core:SkCanvas",
         "//include/core:SkData",
@@ -230,7 +227,6 @@ cc_library(
         "//src/gpu:SkGr",
         "//src/gpu/effects:GrBicubicEffect",
         "//src/gpu/effects:GrTextureEffect",
-        "//src/image:SkImage_Base",
         "//src/shaders:SkBitmapProcShader",
     ],
 )
@@ -267,15 +263,15 @@ cc_library(
     srcs = ["SkSurface.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
+        ":SkRescaleAndReadPixels",
+        ":SkSurface_Base",
         "//include/core:SkCanvas",
         "//include/gpu:GrBackendSurface",
         "//include/utils:SkNoDrawCanvas",
         "//src/core:SkAutoPixmapStorage",
         "//src/core:SkImagePriv",
         "//src/core:SkPaintPriv",
-        "//src/image:SkImage_Base",
-        "//src/image:SkRescaleAndReadPixels",
-        "//src/image:SkSurface_Base",
     ],
 )
 
@@ -298,6 +294,9 @@ cc_library(
     hdrs = ["SkSurface_Gpu.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImage_Base",
+        ":SkImage_Gpu",
+        ":SkSurface_Base",
         "//include/core:SkCanvas",
         "//include/core:SkDeferredDisplayList",
         "//include/core:SkSurfaceCharacterization",
@@ -316,10 +315,6 @@ cc_library(
         "//src/gpu:GrRecordingContextPriv",
         "//src/gpu:GrRenderTarget",
         "//src/gpu:GrTexture",
-        "//src/image:SkImage_Base",
-        "//src/image:SkImage_Gpu",
-        "//src/image:SkSurface_Base",
-        "//src/image:SkSurface_Gpu",
     ],
 )
 
@@ -328,11 +323,11 @@ cc_library(
     srcs = ["SkSurface_Raster.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkSurface_Base",
         "//include/core:SkCanvas",
         "//include/core:SkMallocPixelRef",
         "//include/private:SkImageInfoPriv",
         "//src/core:SkDevice",
         "//src/core:SkImagePriv",
-        "//src/image:SkSurface_Base",
     ],
 )

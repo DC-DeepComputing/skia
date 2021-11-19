@@ -5,11 +5,11 @@ cc_library(
     srcs = ["SkImageEncoder.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImageEncoderPriv",
         "//include/core:SkBitmap",
         "//include/encode:SkJpegEncoder",
         "//include/encode:SkPngEncoder",
         "//include/encode:SkWebpEncoder",
-        "//src/images:SkImageEncoderPriv",
     ],
 )
 
@@ -44,7 +44,6 @@ cc_library(
     deps = [
         "//include/core:SkStream",
         "//src/codec:SkJpegPriv",
-        "//src/images:SkJPEGWriteUtility",
     ],
 )
 
@@ -53,15 +52,15 @@ cc_library(
     srcs = ["SkJpegEncoder.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImageEncoderFns",
+        ":SkImageEncoderPriv",
+        ":SkJPEGWriteUtility",
         "//include/core:SkStream",
         "//include/encode:SkJpegEncoder",
         "//include/private:SkColorData",
         "//include/private:SkImageInfoPriv",
         "//include/private:SkTemplates",
         "//src/core:SkMSAN",
-        "//src/images:SkImageEncoderFns",
-        "//src/images:SkImageEncoderPriv",
-        "//src/images:SkJPEGWriteUtility",
     ],
 )
 
@@ -70,6 +69,8 @@ cc_library(
     srcs = ["SkPngEncoder.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImageEncoderFns",
+        ":SkImageEncoderPriv",
         "//include/core:SkStream",
         "//include/core:SkString",
         "//include/encode:SkPngEncoder",
@@ -77,8 +78,6 @@ cc_library(
         "//src/codec:SkColorTable",
         "//src/codec:SkPngPriv",
         "//src/core:SkMSAN",
-        "//src/images:SkImageEncoderFns",
-        "//src/images:SkImageEncoderPriv",
     ],
 )
 
@@ -87,6 +86,8 @@ cc_library(
     srcs = ["SkWebpEncoder.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkImageEncoderFns",
+        ":SkImageEncoderPriv",
         "//include/core:SkBitmap",
         "//include/core:SkStream",
         "//include/core:SkUnPreMultiply",
@@ -94,8 +95,6 @@ cc_library(
         "//include/private:SkColorData",
         "//include/private:SkImageInfoPriv",
         "//include/private:SkTemplates",
-        "//src/images:SkImageEncoderFns",
-        "//src/images:SkImageEncoderPriv",
         "//src/utils:SkUTF",
     ],
 )

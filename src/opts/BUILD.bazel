@@ -64,8 +64,8 @@ cc_library(
     srcs = ["SkOpts_avx.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkUtils_opts",
         "//src/core:SkOpts",
-        "//src/opts:SkUtils_opts",
     ],
 )
 
@@ -74,8 +74,8 @@ cc_library(
     srcs = ["SkOpts_crc32.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkChecksum_opts",
         "//src/core:SkOpts",
-        "//src/opts:SkChecksum_opts",
     ],
 )
 
@@ -84,14 +84,14 @@ cc_library(
     srcs = ["SkOpts_hsw.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkBitmapProcState_opts",
+        ":SkBlitRow_opts",
+        ":SkRasterPipeline_opts",
+        ":SkSwizzler_opts",
+        ":SkUtils_opts",
+        ":SkVM_opts",
         "//src/core:SkCubicSolver",
         "//src/core:SkOpts",
-        "//src/opts:SkBitmapProcState_opts",
-        "//src/opts:SkBlitRow_opts",
-        "//src/opts:SkRasterPipeline_opts",
-        "//src/opts:SkSwizzler_opts",
-        "//src/opts:SkUtils_opts",
-        "//src/opts:SkVM_opts",
     ],
 )
 
@@ -100,8 +100,8 @@ cc_library(
     srcs = ["SkOpts_skx.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkVM_opts",
         "//src/core:SkOpts",
-        "//src/opts:SkVM_opts",
     ],
 )
 
@@ -116,8 +116,8 @@ cc_library(
     srcs = ["SkOpts_sse42.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkChecksum_opts",
         "//src/core:SkOpts",
-        "//src/opts:SkChecksum_opts",
     ],
 )
 
@@ -126,11 +126,11 @@ cc_library(
     srcs = ["SkOpts_ssse3.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkBitmapProcState_opts",
+        ":SkBlitMask_opts",
+        ":SkSwizzler_opts",
+        ":SkXfermode_opts",
         "//src/core:SkOpts",
-        "//src/opts:SkBitmapProcState_opts",
-        "//src/opts:SkBlitMask_opts",
-        "//src/opts:SkSwizzler_opts",
-        "//src/opts:SkXfermode_opts",
     ],
 )
 

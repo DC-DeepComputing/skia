@@ -83,12 +83,12 @@ cc_library(
     srcs = ["SkDashPathEffect.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkDashImpl",
         "//include/core:SkStrokeRec",
         "//include/effects:SkDashPathEffect",
         "//include/private:SkTo",
         "//src/core:SkReadBuffer",
         "//src/core:SkWriteBuffer",
-        "//src/effects:SkDashImpl",
         "//src/utils:SkDashPathPriv",
     ],
 )
@@ -115,12 +115,11 @@ cc_library(
     hdrs = ["SkEmbossMask.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkEmbossMaskFilter",
         "//include/core:SkMath",
         "//include/private:SkFixed",
         "//include/private:SkTo",
         "//src/core:SkMathPriv",
-        "//src/effects:SkEmbossMask",
-        "//src/effects:SkEmbossMaskFilter",
     ],
 )
 
@@ -130,6 +129,7 @@ cc_library(
     hdrs = ["SkEmbossMaskFilter.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkEmbossMask",
         "//include/core:SkColorPriv",
         "//include/core:SkString",
         "//include/effects:SkBlurMaskFilter",
@@ -138,8 +138,6 @@ cc_library(
         "//src/core:SkMaskFilterBase",
         "//src/core:SkReadBuffer",
         "//src/core:SkWriteBuffer",
-        "//src/effects:SkEmbossMask",
-        "//src/effects:SkEmbossMaskFilter",
     ],
 )
 
@@ -207,6 +205,7 @@ cc_library(
     srcs = ["SkOpPathEffect.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkOpPE",
         "//include/core:SkStrokeRec",
         "//include/effects:SkOpPathEffect",
         "//include/effects:SkStrokeAndFillPathEffect",
@@ -214,7 +213,6 @@ cc_library(
         "//src/core:SkReadBuffer",
         "//src/core:SkRectPriv",
         "//src/core:SkWriteBuffer",
-        "//src/effects:SkOpPE",
     ],
 )
 
@@ -303,11 +301,11 @@ cc_library(
     srcs = ["SkTrimPathEffect.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkTrimPE",
         "//include/core:SkPathMeasure",
         "//include/effects:SkTrimPathEffect",
         "//include/private:SkTPin",
         "//src/core:SkReadBuffer",
         "//src/core:SkWriteBuffer",
-        "//src/effects:SkTrimPE",
     ],
 )
