@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eec62f5_3f10f8db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-19T16:08:07Z",
+      "side": 1,
+      "message": "Over chat, Greg pointed out that it would be hard to test within Skia. I\u0027ll see if I can add an Android-side test.",
+      "parentUuid": "19995b2b_944642ba",
+      "revId": "bdc8d81a7d25f5314ae9ceaa7768460f16f0efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2064f347_313ace37",
