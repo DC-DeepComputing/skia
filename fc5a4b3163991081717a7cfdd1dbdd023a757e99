@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae66535_940f478f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2959,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2021-11-19T18:50:11Z",
+      "side": 1,
+      "message": "Seems like this ought to be an error, rather than just ignored?",
+      "range": {
+        "startLine": 2959,
+        "startChar": 8,
+        "endLine": 2959,
+        "endChar": 47
+      },
+      "revId": "fc5a4b3163991081717a7cfdd1dbdd023a757e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
