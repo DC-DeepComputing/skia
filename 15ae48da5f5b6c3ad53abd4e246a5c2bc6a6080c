@@ -49,6 +49,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5f88a397_1fd38689",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-19T18:01:20Z",
+      "side": 0,
+      "message": "That\u0027s only true as of this CL, right? Previously wasn\u0027t the idea that if there were no texCoords (eg, no shader), then we didn\u0027t blend?",
+      "parentUuid": "158fb362_046347d1",
+      "range": {
+        "startLine": 337,
+        "startChar": 32,
+        "endLine": 337,
+        "endChar": 45
+      },
+      "revId": "15ae48da5f5b6c3ad53abd4e246a5c2bc6a6080c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e6607c14_482881f0",
         "filename": "src/gpu/SkGr.cpp",
         "patchSetId": 4
