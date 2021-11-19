@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c3d91399_daba67b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-19T18:17:49Z",
+      "side": 1,
+      "message": "I think I can pre-patch Flutter for this rather than guard it. Catch no-shader before the canvas draw and change mode to kDst.",
+      "revId": "4b14b811916fb5cdb0b6e540629a473a7c7ecb22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9967c7be_c062425e",
         "filename": "src/core/SkDraw_vertices.cpp",
         "patchSetId": 5
@@ -54,6 +71,30 @@
       "writtenOn": "2021-11-19T18:01:20Z",
       "side": 1,
       "message": "Can we extract this out? I had written a couple questions here, and it took me a while to reason about what\u0027s happening.\n\n  const bool gpProvidesShader \u003d shaderFP.has_value() \u0026\u0026 !*shaderFP;\n  \n... would be helpful for future readers. Especially because it almost seems like this case should be impossible, until you realize that the optional being empty, and the held pointer being null are two *different* signals. Then it\u0027s compounded by the std::move() above that moves the unique_ptr inside the optional, which changes the pointer value, but not whether or not the optional has_value is true.",
+      "range": {
+        "startLine": 520,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 65
+      },
+      "revId": "4b14b811916fb5cdb0b6e540629a473a7c7ecb22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ccd3d20_bcb999c9",
+        "filename": "src/gpu/SkGr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-19T18:17:49Z",
+      "side": 1,
+      "message": "Good idea. Will do.",
+      "parentUuid": "a81a90e1_6018eae7",
       "range": {
         "startLine": 520,
         "startChar": 0,
