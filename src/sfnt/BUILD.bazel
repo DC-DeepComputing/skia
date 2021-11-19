@@ -1,36 +1,305 @@
-package(default_visibility = ["//:__subpackages__"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "srcs",
-    srcs = [
-        "SkIBMFamilyClass.h",
-        "SkOTTableTypes.h",
-        "SkOTTable_EBDT.h",
-        "SkOTTable_EBLC.h",
-        "SkOTTable_EBSC.h",
-        "SkOTTable_OS_2.h",
-        "SkOTTable_OS_2_V0.h",
-        "SkOTTable_OS_2_V1.h",
-        "SkOTTable_OS_2_V2.h",
-        "SkOTTable_OS_2_V3.h",
-        "SkOTTable_OS_2_V4.h",
-        "SkOTTable_OS_2_VA.h",
-        "SkOTTable_fvar.h",
-        "SkOTTable_gasp.h",
-        "SkOTTable_glyf.h",
-        "SkOTTable_head.h",
-        "SkOTTable_hhea.h",
-        "SkOTTable_loca.h",
-        "SkOTTable_maxp.h",
-        "SkOTTable_maxp_CFF.h",
-        "SkOTTable_maxp_TT.h",
-        "SkOTTable_name.cpp",
-        "SkOTTable_name.h",
-        "SkOTTable_post.h",
-        "SkOTUtils.cpp",
-        "SkOTUtils.h",
-        "SkPanose.h",
-        "SkSFNTHeader.h",
-        "SkTTCFHeader.h",
+cc_library(
+    name = "SkIBMFamilyClass",
+    hdrs = ["SkIBMFamilyClass.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/sfnt:SkOTTableTypes"],
+)
+
+cc_library(
+    name = "SkOTTableTypes",
+    hdrs = ["SkOTTableTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//src/core:SkEndian",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_EBDT",
+    hdrs = ["SkOTTable_EBDT.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_head",
+        "//src/sfnt:SkOTTable_loca",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_EBLC",
+    hdrs = ["SkOTTable_EBLC.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_EBDT",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_EBSC",
+    hdrs = ["SkOTTable_EBSC.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_EBLC",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2",
+    hdrs = ["SkOTTable_OS_2.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/sfnt:SkOTTable_OS_2_V0",
+        "//src/sfnt:SkOTTable_OS_2_V1",
+        "//src/sfnt:SkOTTable_OS_2_V2",
+        "//src/sfnt:SkOTTable_OS_2_V3",
+        "//src/sfnt:SkOTTable_OS_2_V4",
+        "//src/sfnt:SkOTTable_OS_2_VA",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_V0",
+    hdrs = ["SkOTTable_OS_2_V0.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_V1",
+    hdrs = ["SkOTTable_OS_2_V1.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_V2",
+    hdrs = ["SkOTTable_OS_2_V2.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_V3",
+    hdrs = ["SkOTTable_OS_2_V3.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_V4",
+    hdrs = ["SkOTTable_OS_2_V4.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_OS_2_VA",
+    hdrs = ["SkOTTable_OS_2_VA.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkIBMFamilyClass",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkPanose",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_fvar",
+    hdrs = ["SkOTTable_fvar.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_gasp",
+    hdrs = ["SkOTTable_gasp.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_glyf",
+    hdrs = ["SkOTTable_glyf.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_head",
+        "//src/sfnt:SkOTTable_loca",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_head",
+    hdrs = ["SkOTTable_head.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_hhea",
+    hdrs = ["SkOTTable_hhea.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_loca",
+    hdrs = ["SkOTTable_loca.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_maxp",
+    hdrs = ["SkOTTable_maxp.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_maxp_CFF",
+        "//src/sfnt:SkOTTable_maxp_TT",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_maxp_CFF",
+    hdrs = ["SkOTTable_maxp_CFF.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_maxp_TT",
+    hdrs = ["SkOTTable_maxp_TT.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_name",
+    srcs = ["SkOTTable_name.cpp"],
+    hdrs = ["SkOTTable_name.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkString",
+        "//src/core:SkEndian",
+        "//src/core:SkStringUtils",
+        "//src/core:SkTSearch",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_name",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkOTTable_post",
+    hdrs = ["SkOTTable_post.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOTUtils",
+    srcs = ["SkOTUtils.cpp"],
+    hdrs = ["SkOTUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_OS_2_V4",
+        "//src/sfnt:SkOTTable_head",
+        "//src/sfnt:SkOTTable_name",
+        "//src/sfnt:SkOTUtils",
+        "//src/sfnt:SkSFNTHeader",
+    ],
+)
+
+cc_library(
+    name = "SkPanose",
+    hdrs = ["SkPanose.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/sfnt:SkOTTableTypes"],
+)
+
+cc_library(
+    name = "SkSFNTHeader",
+    hdrs = ["SkSFNTHeader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkEndian",
+        "//src/sfnt:SkOTTableTypes",
+    ],
+)
+
+cc_library(
+    name = "SkTTCFHeader",
+    hdrs = ["SkTTCFHeader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkSFNTHeader",
     ],
 )
