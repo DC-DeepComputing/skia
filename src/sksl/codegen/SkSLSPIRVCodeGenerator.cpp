@@ -2983,18 +2983,18 @@ void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target, int mem
         this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationLocation,
                                layout.fLocation, fDecorationBuffer);
     }
-    if (layout.fBinding >= 0) {
-        this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationBinding,
-                               layout.fBinding, fDecorationBuffer);
-    }
+//    if (layout.fBinding >= 0) {
+//        this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationBinding,
+//                               layout.fBinding, fDecorationBuffer);
+//    }
     if (layout.fIndex >= 0) {
         this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationIndex,
                                layout.fIndex, fDecorationBuffer);
     }
-    if (layout.fSet >= 0) {
-        this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationDescriptorSet,
-                               layout.fSet, fDecorationBuffer);
-    }
+//    if (layout.fSet >= 0) {
+//        this->writeInstruction(SpvOpMemberDecorate, target, member, SpvDecorationDescriptorSet,
+//                               layout.fSet, fDecorationBuffer);
+//    }
     if (layout.fInputAttachmentIndex >= 0) {
         this->writeInstruction(SpvOpDecorate, target, member, SpvDecorationInputAttachmentIndex,
                                layout.fInputAttachmentIndex, fDecorationBuffer);
