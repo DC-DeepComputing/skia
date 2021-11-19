@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f4e1d6d_65f703bf",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-19T20:24:52Z",
+      "side": 1,
+      "message": "I initially considered RuntimeFilter() but stuck with RuntimeShader for two reasons. (1) None of the other entry points ended in Filter, and I didn\u0027t think that ::Runtime was clear enough.  (2) I stuck with RuntimeShader because it takes the RuntimeShaderBuilder and that seemed like it carried the most meaning without having to dig into the params to figure out what it does.",
+      "parentUuid": "49a79e20_eec55392",
+      "range": {
+        "startLine": 347,
+        "startChar": 41,
+        "endLine": 348,
+        "endChar": 82
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc87b416_4fad8eab",
         "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
         "patchSetId": 2
