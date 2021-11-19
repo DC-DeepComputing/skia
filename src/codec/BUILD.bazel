@@ -386,7 +386,6 @@ cc_library(
         "//include/private:SkMutex",
         "//include/private:SkTArray",
         "//include/private:SkTemplates",
-        "//src:piex",
         "//src/core:SkColorSpacePriv",
         "//src/core:SkStreamPriv",
         "//src/core:SkTaskGroup",
