@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e0164db_3b5c92da",
+        "filename": "experimental/graphite/src/ShaderCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-19T22:02:04Z",
+      "side": 1,
+      "message": "We will at some point. I believe there are some caps we\u0027ll need for Chris\u0027s stuff but I\u0027m 100% sure what they are.",
+      "parentUuid": "d31bacff_0e800735",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7f25613_fd12b092",
         "filename": "experimental/graphite/src/ShaderCaps.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-19T20:30:28Z",
       "side": 1,
       "message": "I assume this class is needed because we need mtl::Caps access to the data members of sksl::ShaderCaps. One thought do we really not want to just add the friends directly in sksl::ShaderCaps?",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a86ad96c_08840dd7",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-19T22:02:04Z",
+      "side": 1,
+      "message": "Those are limited to SkSL classes only. Also, there are probably caps we\u0027ll need beyond what is in SkSL::ShaderCaps.",
+      "parentUuid": "d7f25613_fd12b092",
       "range": {
         "startLine": 18,
         "startChar": 6,
