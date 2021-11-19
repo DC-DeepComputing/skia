@@ -1,0 +1,936 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkAnnotation",
+    hdrs = ["SkAnnotation.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkBBHFactory",
+    hdrs = ["SkBBHFactory.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRect",
+        ":SkRefCnt",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkBitmap",
+    hdrs = ["SkBitmap.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColor",
+        ":SkImageInfo",
+        ":SkMatrix",
+        ":SkPixmap",
+        ":SkPoint",
+        ":SkRefCnt",
+        ":SkShader",
+        ":SkTileMode",
+    ],
+)
+
+cc_library(
+    name = "SkBlendMode",
+    hdrs = ["SkBlendMode.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkBlender",
+    hdrs = ["SkBlender.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlendMode",
+        ":SkFlattenable",
+    ],
+)
+
+cc_library(
+    name = "SkBlurTypes",
+    hdrs = ["SkBlurTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkCanvas",
+    hdrs = ["SkCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlendMode",
+        ":SkClipOp",
+        ":SkColor",
+        ":SkFontTypes",
+        ":SkImageInfo",
+        ":SkM44",
+        ":SkMatrix",
+        ":SkPaint",
+        ":SkPoint",
+        ":SkRasterHandleAllocator",
+        ":SkRect",
+        ":SkRefCnt",
+        ":SkSamplingOptions",
+        ":SkScalar",
+        ":SkSize",
+        ":SkString",
+        ":SkSurfaceProps",
+        ":SkTypes",
+        "//include/private:SkDeque",
+        "//include/private:SkMacros",
+    ],
+)
+
+cc_library(
+    name = "SkCanvasVirtualEnforcer",
+    hdrs = ["SkCanvasVirtualEnforcer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkCanvas"],
+)
+
+cc_library(
+    name = "SkClipOp",
+    hdrs = ["SkClipOp.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkColor",
+    hdrs = ["SkColor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImageInfo",
+        ":SkScalar",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkColorFilter",
+    hdrs = ["SkColorFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlendMode",
+        ":SkColor",
+        ":SkFlattenable",
+    ],
+)
+
+cc_library(
+    name = "SkColorPriv",
+    hdrs = ["SkColorPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColor",
+        ":SkMath",
+        "//include/private:SkTPin",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkColorSpace",
+    hdrs = ["SkColorSpace.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        "//include/private:SkFixed",
+        "//include/private:SkOnce",
+        "//include/third_party/skcms",
+    ],
+)
+
+cc_library(
+    name = "SkContourMeasure",
+    hdrs = ["SkContourMeasure.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPath",
+        ":SkRefCnt",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkCoverageMode",
+    hdrs = ["SkCoverageMode.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkCubicMap",
+    hdrs = ["SkCubicMap.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkPoint"],
+)
+
+cc_library(
+    name = "SkData",
+    hdrs = ["SkData.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkRefCnt"],
+)
+
+cc_library(
+    name = "SkDataTable",
+    hdrs = ["SkDataTable.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkData",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkDeferredDisplayList",
+    hdrs = ["SkDeferredDisplayList.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        ":SkSurfaceCharacterization",
+        ":SkTypes",
+        "//include/gpu:GrRecordingContext",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "SkDeferredDisplayListRecorder",
+    hdrs = ["SkDeferredDisplayListRecorder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkDeferredDisplayList",
+        ":SkImage",
+        ":SkImageInfo",
+        ":SkRefCnt",
+        ":SkSurfaceCharacterization",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkDocument",
+    hdrs = ["SkDocument.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        ":SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkDrawLooper",
+    hdrs = ["SkDrawLooper.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlurTypes",
+        ":SkColor",
+        ":SkFlattenable",
+        ":SkPoint",
+    ],
+)
+
+cc_library(
+    name = "SkDrawable",
+    hdrs = ["SkDrawable.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFlattenable",
+        ":SkImageInfo",
+        ":SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkEncodedImageFormat",
+    hdrs = ["SkEncodedImageFormat.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkExecutor",
+    hdrs = ["SkExecutor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkFlattenable",
+    hdrs = ["SkFlattenable.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkRefCnt"],
+)
+
+cc_library(
+    name = "SkFont",
+    hdrs = ["SkFont.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontTypes",
+        ":SkScalar",
+        ":SkTypeface",
+    ],
+)
+
+cc_library(
+    name = "SkFontArguments",
+    hdrs = ["SkFontArguments.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkScalar",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkFontMetrics",
+    hdrs = ["SkFontMetrics.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkScalar"],
+)
+
+cc_library(
+    name = "SkFontMgr",
+    hdrs = ["SkFontMgr.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontArguments",
+        ":SkFontStyle",
+        ":SkRefCnt",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkFontParameters",
+    hdrs = ["SkFontParameters.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkScalar",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkFontStyle",
+    hdrs = ["SkFontStyle.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypes",
+        "//include/private:SkTPin",
+    ],
+)
+
+cc_library(
+    name = "SkFontTypes",
+    hdrs = ["SkFontTypes.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkGraphics",
+    hdrs = ["SkGraphics.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkRefCnt"],
+)
+
+cc_library(
+    name = "SkICC",
+    hdrs = ["SkICC.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkData"],
+)
+
+cc_library(
+    name = "SkImage",
+    hdrs = ["SkImage.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImageEncoder",
+        ":SkImageInfo",
+        ":SkM44",
+        ":SkRefCnt",
+        ":SkSamplingOptions",
+        ":SkScalar",
+        ":SkShader",
+        ":SkTileMode",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "SkImageEncoder",
+    hdrs = ["SkImageEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmap",
+        ":SkData",
+        ":SkEncodedImageFormat",
+        ":SkPixmap",
+        ":SkStream",
+    ],
+)
+
+cc_library(
+    name = "SkImageFilter",
+    hdrs = ["SkImageFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFlattenable",
+        ":SkMatrix",
+        ":SkRect",
+    ],
+)
+
+cc_library(
+    name = "SkImageGenerator",
+    hdrs = ["SkImageGenerator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmap",
+        ":SkColor",
+        ":SkImage",
+        ":SkImageInfo",
+        ":SkYUVAPixmaps",
+    ],
+)
+
+cc_library(
+    name = "SkImageInfo",
+    hdrs = ["SkImageInfo.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColorSpace",
+        ":SkMath",
+        ":SkRect",
+        ":SkSize",
+        "//include/private:SkTFitsIn",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkM44",
+    hdrs = ["SkM44.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkMatrix",
+        ":SkRect",
+        ":SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkMallocPixelRef",
+    hdrs = ["SkMallocPixelRef.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPixelRef",
+        ":SkRefCnt",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkMaskFilter",
+    hdrs = ["SkMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlurTypes",
+        ":SkCoverageMode",
+        ":SkFlattenable",
+        ":SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkMath",
+    hdrs = ["SkMath.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkMatrix",
+    hdrs = ["SkMatrix.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRect",
+        "//include/private:SkMacros",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkMilestone",
+    hdrs = ["SkMilestone.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkOverdrawCanvas",
+    hdrs = ["SkOverdrawCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkCanvasVirtualEnforcer",
+        "//include/utils:SkNWayCanvas",
+    ],
+)
+
+cc_library(
+    name = "SkPaint",
+    hdrs = ["SkPaint.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlendMode",
+        ":SkColor",
+        ":SkRefCnt",
+        "//include/private:SkTOptional",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkPath",
+    hdrs = ["SkPath.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkMatrix",
+        ":SkPathTypes",
+        "//include/private:SkPathRef",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkPathBuilder",
+    hdrs = ["SkPathBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkMatrix",
+        ":SkPath",
+        ":SkPathTypes",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkPathEffect",
+    hdrs = ["SkPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFlattenable",
+        ":SkPath",
+        ":SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkPathMeasure",
+    hdrs = ["SkPathMeasure.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkContourMeasure",
+        ":SkPath",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkPathTypes",
+    hdrs = ["SkPathTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkPicture",
+    hdrs = ["SkPicture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRect",
+        ":SkRefCnt",
+        ":SkSamplingOptions",
+        ":SkShader",
+        ":SkTileMode",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkPictureRecorder",
+    hdrs = ["SkPictureRecorder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBBHFactory",
+        ":SkPicture",
+        ":SkRefCnt",
+    ],
+)
+
+cc_library(
+    name = "SkPixelRef",
+    hdrs = ["SkPixelRef.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmap",
+        ":SkImageInfo",
+        ":SkPixmap",
+        ":SkRefCnt",
+        ":SkSize",
+        "//include/private:SkIDChangeListener",
+        "//include/private:SkMutex",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkPixmap",
+    hdrs = ["SkPixmap.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColor",
+        ":SkImageInfo",
+        ":SkSamplingOptions",
+    ],
+)
+
+cc_library(
+    name = "SkPngChunkReader",
+    hdrs = ["SkPngChunkReader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        ":SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkPoint",
+    hdrs = ["SkPoint.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkMath",
+        ":SkScalar",
+        "//include/private:SkSafe32",
+    ],
+)
+
+cc_library(
+    name = "SkPoint3",
+    hdrs = ["SkPoint3.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkPoint"],
+)
+
+cc_library(
+    name = "SkPromiseImageTexture",
+    hdrs = ["SkPromiseImageTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        ":SkTypes",
+        "//include/gpu:GrBackendSurface",
+        "//include/private:GrResourceKey",
+    ],
+)
+
+cc_library(
+    name = "SkRRect",
+    hdrs = ["SkRRect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPoint",
+        ":SkRect",
+    ],
+)
+
+cc_library(
+    name = "SkRSXform",
+    hdrs = ["SkRSXform.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPoint",
+        ":SkSize",
+    ],
+)
+
+cc_library(
+    name = "SkRasterHandleAllocator",
+    hdrs = ["SkRasterHandleAllocator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkImageInfo"],
+)
+
+cc_library(
+    name = "SkRect",
+    hdrs = ["SkRect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPoint",
+        ":SkSize",
+        "//include/private:SkSafe32",
+        "//include/private:SkTFitsIn",
+    ],
+)
+
+cc_library(
+    name = "SkRefCnt",
+    hdrs = ["SkRefCnt.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkRegion",
+    hdrs = ["SkRegion.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkRect"],
+)
+
+cc_library(
+    name = "SkSamplingOptions",
+    hdrs = ["SkSamplingOptions.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkScalar",
+    hdrs = ["SkScalar.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:SkFloatingPoint"],
+)
+
+cc_library(
+    name = "SkSerialProcs",
+    hdrs = ["SkSerialProcs.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImage",
+        ":SkPicture",
+        ":SkTypeface",
+    ],
+)
+
+cc_library(
+    name = "SkShader",
+    hdrs = ["SkShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBlendMode",
+        ":SkColor",
+        ":SkFlattenable",
+        ":SkImageInfo",
+        ":SkMatrix",
+        ":SkTileMode",
+    ],
+)
+
+cc_library(
+    name = "SkSize",
+    hdrs = ["SkSize.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkScalar"],
+)
+
+cc_library(
+    name = "SkSpan",
+    hdrs = ["SkSpan.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:SkTLogic"],
+)
+
+cc_library(
+    name = "SkStream",
+    hdrs = ["SkStream.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkData",
+        ":SkRefCnt",
+        ":SkScalar",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkString",
+    hdrs = ["SkString.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRefCnt",
+        ":SkScalar",
+        ":SkTypes",
+        "//include/private:SkMalloc",
+        "//include/private:SkTArray",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkStringView",
+    hdrs = ["SkStringView.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkStrokeRec",
+    hdrs = ["SkStrokeRec.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPaint",
+        "//include/private:SkMacros",
+    ],
+)
+
+cc_library(
+    name = "SkSurface",
+    hdrs = ["SkSurface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImage",
+        ":SkPixmap",
+        ":SkRefCnt",
+        ":SkSurfaceProps",
+        "//include/gpu:GrTypes",
+        "//include/gpu/mtl:GrMtlTypes",
+    ],
+)
+
+cc_library(
+    name = "SkSurfaceCharacterization",
+    hdrs = ["SkSurfaceCharacterization.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColorSpace",
+        ":SkImageInfo",
+        ":SkRefCnt",
+        ":SkSurfaceProps",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu:GrContextThreadSafeProxy",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "SkSurfaceProps",
+    hdrs = ["SkSurfaceProps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkSwizzle",
+    hdrs = ["SkSwizzle.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkTextBlob",
+    hdrs = ["SkTextBlob.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFont",
+        ":SkPaint",
+        ":SkRefCnt",
+        ":SkString",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkTileMode",
+    hdrs = ["SkTileMode.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkTime",
+    hdrs = ["SkTime.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypes",
+        "//include/private:SkMacros",
+    ],
+)
+
+cc_library(
+    name = "SkTraceMemoryDump",
+    hdrs = ["SkTraceMemoryDump.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkTypes"],
+)
+
+cc_library(
+    name = "SkTypeface",
+    hdrs = ["SkTypeface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontArguments",
+        ":SkFontParameters",
+        ":SkFontStyle",
+        ":SkFontTypes",
+        ":SkRect",
+        ":SkString",
+        "//include/private:SkOnce",
+        "//include/private:SkWeakRefCnt",
+    ],
+)
+
+cc_library(
+    name = "SkTypes",
+    hdrs = ["SkTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/config:SkUserConfig"],
+)
+
+cc_library(
+    name = "SkUnPreMultiply",
+    hdrs = ["SkUnPreMultiply.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkColor"],
+)
+
+cc_library(
+    name = "SkVertices",
+    hdrs = ["SkVertices.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColor",
+        ":SkRect",
+        ":SkRefCnt",
+    ],
+)
+
+cc_library(
+    name = "SkYUVAInfo",
+    hdrs = ["SkYUVAInfo.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImageInfo",
+        ":SkSize",
+        "//include/codec:SkEncodedOrigin",
+    ],
+)
+
+cc_library(
+    name = "SkYUVAPixmaps",
+    hdrs = ["SkYUVAPixmaps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkData",
+        ":SkImageInfo",
+        ":SkPixmap",
+        ":SkYUVAInfo",
+        "//include/private:SkTo",
+    ],
+)

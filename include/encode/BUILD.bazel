@@ -1,0 +1,36 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkEncoder",
+    hdrs = ["SkEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPixmap",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkJpegEncoder",
+    hdrs = ["SkJpegEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkEncoder"],
+)
+
+cc_library(
+    name = "SkPngEncoder",
+    hdrs = ["SkPngEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkEncoder",
+        "//include/core:SkDataTable",
+    ],
+)
+
+cc_library(
+    name = "SkWebpEncoder",
+    hdrs = ["SkWebpEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkEncoder"],
+)

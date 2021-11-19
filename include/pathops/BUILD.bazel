@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkPathOps",
+    hdrs = ["SkPathOps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkTArray",
+        "//include/private:SkTDArray",
+    ],
+)

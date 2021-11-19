@@ -203,6 +203,7 @@ cc_library(
     deps = [
         ":SkCodecPriv",
         ":SkFrameHolder",
+        ":SkStubHeifDecoderAPI",
         ":SkSwizzler",
         "//include/codec:SkCodec",
         "//include/codec:SkEncodedOrigin",
@@ -265,6 +266,7 @@ cc_library(
     deps = [
         ":SkCodecPriv",
         ":SkJpegUtility",
+        "//include/android:SkAndroidFrameworkUtils",
         "//include/codec:SkCodec",
     ],
 )
@@ -339,6 +341,7 @@ cc_library(
         ":SkColorTable",
         ":SkPngPriv",
         ":SkSwizzler",
+        "//include/android:SkAndroidFrameworkUtils",
         "//include/codec:SkCodec",
         "//include/core:SkBitmap",
         "//include/core:SkColorSpace",
@@ -453,6 +456,7 @@ cc_library(
     deps = [
         ":SkCodecPriv",
         ":SkSampler",
+        "//include/android:SkAndroidFrameworkUtils",
         "//include/codec:SkCodec",
         "//include/core:SkColor",
         "//include/core:SkImageInfo",

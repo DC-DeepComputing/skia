@@ -1,0 +1,91 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "sk_canvas",
+    hdrs = ["sk_canvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_colorspace",
+    hdrs = ["sk_colorspace.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_data",
+    hdrs = ["sk_data.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_image",
+    hdrs = ["sk_image.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_imageinfo",
+    hdrs = ["sk_imageinfo.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_maskfilter",
+    hdrs = ["sk_maskfilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_matrix",
+    hdrs = ["sk_matrix.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_paint",
+    hdrs = ["sk_paint.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_path",
+    hdrs = ["sk_path.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_picture",
+    hdrs = ["sk_picture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_shader",
+    hdrs = ["sk_shader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_surface",
+    hdrs = ["sk_surface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":sk_types"],
+)
+
+cc_library(
+    name = "sk_types",
+    hdrs = ["sk_types.h"],
+    visibility = ["//:__subpackages__"],
+)

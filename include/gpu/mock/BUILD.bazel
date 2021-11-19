@@ -1,0 +1,11 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrMockTypes",
+    hdrs = ["GrMockTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu:GrTypes",
+        "//include/private:GrTypesPriv",
+    ],
+)

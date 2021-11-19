@@ -1,0 +1,217 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "Sk1DPathEffect",
+    hdrs = ["Sk1DPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "Sk2DPathEffect",
+    hdrs = ["Sk2DPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "SkBlenders",
+    hdrs = ["SkBlenders.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkBlender"],
+)
+
+cc_library(
+    name = "SkBlurDrawLooper",
+    hdrs = ["SkBlurDrawLooper.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkDrawLooper"],
+)
+
+cc_library(
+    name = "SkBlurMaskFilter",
+    hdrs = ["SkBlurMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlurTypes",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkRect",
+        "//include/core:SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkColorMatrix",
+    hdrs = ["SkColorMatrix.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkImageInfo"],
+)
+
+cc_library(
+    name = "SkColorMatrixFilter",
+    hdrs = ["SkColorMatrixFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColorMatrix",
+        "//include/core:SkColorFilter",
+    ],
+)
+
+cc_library(
+    name = "SkCornerPathEffect",
+    hdrs = ["SkCornerPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "SkDashPathEffect",
+    hdrs = ["SkDashPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "SkDiscretePathEffect",
+    hdrs = ["SkDiscretePathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)
+
+cc_library(
+    name = "SkGradientShader",
+    hdrs = ["SkGradientShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkShader"],
+)
+
+cc_library(
+    name = "SkHighContrastFilter",
+    hdrs = ["SkHighContrastFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkColorFilter"],
+)
+
+cc_library(
+    name = "SkImageFilters",
+    hdrs = ["SkImageFilters.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlendMode",
+        "//include/core:SkColor",
+        "//include/core:SkImage",
+        "//include/core:SkImageFilter",
+        "//include/core:SkPicture",
+        "//include/core:SkRect",
+        "//include/core:SkTileMode",
+    ],
+)
+
+cc_library(
+    name = "SkLayerDrawLooper",
+    hdrs = ["SkLayerDrawLooper.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlendMode",
+        "//include/core:SkDrawLooper",
+        "//include/core:SkPaint",
+        "//include/core:SkPoint",
+    ],
+)
+
+cc_library(
+    name = "SkLumaColorFilter",
+    hdrs = ["SkLumaColorFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkColorFilter"],
+)
+
+cc_library(
+    name = "SkOpPathEffect",
+    hdrs = ["SkOpPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/core:SkPaint",
+        "//include/core:SkPathEffect",
+        "//include/pathops:SkPathOps",
+    ],
+)
+
+cc_library(
+    name = "SkOverdrawColorFilter",
+    hdrs = ["SkOverdrawColorFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColorFilter",
+        "//include/core:SkFlattenable",
+    ],
+)
+
+cc_library(
+    name = "SkPerlinNoiseShader",
+    hdrs = ["SkPerlinNoiseShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkShader"],
+)
+
+cc_library(
+    name = "SkRuntimeEffect",
+    hdrs = ["SkRuntimeEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlender",
+        "//include/core:SkColorFilter",
+        "//include/core:SkData",
+        "//include/core:SkImageInfo",
+        "//include/core:SkMatrix",
+        "//include/core:SkShader",
+        "//include/core:SkSpan",
+        "//include/core:SkString",
+        "//include/private:SkOnce",
+        "//include/private:SkSLSampleUsage",
+        "//include/private:SkTOptional",
+    ],
+)
+
+cc_library(
+    name = "SkShaderMaskFilter",
+    hdrs = ["SkShaderMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkMaskFilter"],
+)
+
+cc_library(
+    name = "SkStrokeAndFillPathEffect",
+    hdrs = ["SkStrokeAndFillPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPaint",
+        "//include/core:SkPathEffect",
+        "//include/pathops:SkPathOps",
+    ],
+)
+
+cc_library(
+    name = "SkTableColorFilter",
+    hdrs = ["SkTableColorFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkColorFilter"],
+)
+
+cc_library(
+    name = "SkTableMaskFilter",
+    hdrs = ["SkTableMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMaskFilter",
+        "//include/core:SkScalar",
+    ],
+)
+
+cc_library(
+    name = "SkTrimPathEffect",
+    hdrs = ["SkTrimPathEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPathEffect"],
+)

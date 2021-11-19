@@ -8,6 +8,9 @@ cc_library(
         "//include/core:SkColor",
         "//include/private:SkColorData",
         "//include/private:SkNx",
+        "//src/opts:Sk4px_NEON",
+        "//src/opts:Sk4px_SSE2",
+        "//src/opts:Sk4px_none",
     ],
 )
 
@@ -1378,6 +1381,7 @@ cc_library(
     srcs = ["SkExecutor.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkLeanWindows",
         "//include/core:SkExecutor",
         "//include/private:SkMutex",
         "//include/private:SkSemaphore",
@@ -3618,8 +3622,11 @@ cc_library(
     deps = [
         "//include/core:SkTypes",
         "//include/private:SkMacros",
+        "//include/private:SkMutex",
         "//include/private:SkSemaphore",
+        "//include/private:SkTDArray",
         "//include/private:SkThreadAnnotations",
+        "//include/private:SkThreadID",
     ],
 )
 
@@ -3676,6 +3683,7 @@ cc_library(
     srcs = ["SkSpinlock.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//include/private:SkMutex",
         "//include/private:SkSpinlock",
         "//include/private:SkThreadAnnotations",
     ],
@@ -4069,7 +4077,10 @@ cc_library(
     name = "SkThreadID",
     srcs = ["SkThreadID.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:SkThreadID"],
+    deps = [
+        ":SkLeanWindows",
+        "//include/private:SkThreadID",
+    ],
 )
 
 cc_library(
@@ -4198,6 +4209,7 @@ cc_library(
         ":SkColorSpaceXformSteps",
         ":SkCpu",
         ":SkEnumerate",
+        ":SkLeanWindows",
         ":SkOpts",
         ":SkStreamPriv",
         ":SkVM_fwd",
