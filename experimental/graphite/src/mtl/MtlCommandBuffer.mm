@@ -256,12 +256,16 @@ void CommandBuffer::onDrawIndexed(PrimitiveType type, unsigned int baseIndex,
 
     auto mtlPrimitiveType = graphite_to_mtl_primitive(type);
 
-    fActiveRenderCommandEncoder->setVertexBufferOffset(baseVertex * fCurrentVertexStride,
-                                                       GraphicsPipeline::kVertexBufferIndex);
     size_t indexOffset =  fCurrentIndexBufferOffset + sizeof(uint16_t )* baseIndex;
-    fActiveRenderCommandEncoder->drawIndexedPrimitives(mtlPrimitiveType, indexCount,
-                                                       MTLIndexTypeUInt16, fCurrentIndexBuffer,
-                                                       indexOffset);
+    if (baseVertex) {
+        fActiveRenderCommandEncoder->drawIndexedPrimitives(mtlPrimitiveType, indexCount,
+                                                           MTLIndexTypeUInt16, fCurrentIndexBuffer,
+                                                           indexOffset, 1, baseVertex, 0);
+    } else {
+        fActiveRenderCommandEncoder->drawIndexedPrimitives(mtlPrimitiveType, indexCount,
+                                                           MTLIndexTypeUInt16, fCurrentIndexBuffer,
+                                                           indexOffset);
+    }
 }
 
 void CommandBuffer::onDrawInstanced(PrimitiveType type, unsigned int baseVertex,
@@ -283,10 +287,6 @@ void CommandBuffer::onDrawIndexedInstanced(PrimitiveType type, unsigned int base
 
     auto mtlPrimitiveType = graphite_to_mtl_primitive(type);
 
-    fActiveRenderCommandEncoder->setVertexBufferOffset(baseVertex * fCurrentVertexStride,
-                                                       GraphicsPipeline::kVertexBufferIndex);
-    fActiveRenderCommandEncoder->setVertexBufferOffset(baseInstance * fCurrentInstanceStride,
-                                                       GraphicsPipeline::kInstanceBufferIndex);
     size_t indexOffset =  fCurrentIndexBufferOffset + sizeof(uint16_t) * baseIndex;
     fActiveRenderCommandEncoder->drawIndexedPrimitives(mtlPrimitiveType, indexCount,
                                                        MTLIndexTypeUInt16, fCurrentIndexBuffer,
