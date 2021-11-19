@@ -1,0 +1,16 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrGLMakeNativeInterface_webgl",
+    srcs = ["GrGLMakeNativeInterface_webgl.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//emscripten:html5",
+        "//include/gpu/gl:GrGLAssembleInterface",
+        "//include/gpu/gl:GrGLInterface",
+        "//webgl:webgl1",
+        "//webgl:webgl1_ext",
+        "//webgl:webgl2",
+        "//webgl:webgl2_ext",
+    ],
+)

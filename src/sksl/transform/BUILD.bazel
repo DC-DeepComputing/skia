@@ -1,0 +1,89 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkSLBuiltinVariableScanner",
+    srcs = ["SkSLBuiltinVariableScanner.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLTransform",
+        "//include/private:SkSLProgramKind",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLContext",
+        "//src/sksl:SkSLIntrinsicMap",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/analysis:SkSLProgramVisitor",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLInterfaceBlock",
+        "//src/sksl/ir:SkSLVarDeclarations",
+    ],
+)
+
+cc_library(
+    name = "SkSLEliminateDeadFunctions",
+    srcs = ["SkSLEliminateDeadFunctions.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLTransform",
+        "//include/private:SkSLProgramElement",
+        "//src/sksl:SkSLProgramSettings",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLProgram",
+    ],
+)
+
+cc_library(
+    name = "SkSLEliminateDeadGlobalVariables",
+    srcs = ["SkSLEliminateDeadGlobalVariables.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLTransform",
+        "//include/private:SkSLProgramElement",
+        "//src/sksl:SkSLProgramSettings",
+        "//src/sksl/ir:SkSLProgram",
+        "//src/sksl/ir:SkSLVarDeclarations",
+    ],
+)
+
+cc_library(
+    name = "SkSLEliminateDeadLocalVariables",
+    srcs = ["SkSLEliminateDeadLocalVariables.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramWriter",
+        ":SkSLTransform",
+        "//include/private:SkSLProgramElement",
+        "//src/sksl/ir:SkSLExpressionStatement",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLNop",
+        "//src/sksl/ir:SkSLProgram",
+        "//src/sksl/ir:SkSLVarDeclarations",
+    ],
+)
+
+cc_library(
+    name = "SkSLEliminateUnreachableCode",
+    srcs = ["SkSLEliminateUnreachableCode.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLProgramWriter",
+        ":SkSLTransform",
+        "//include/private:SkSLStatement",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLIfStatement",
+        "//src/sksl/ir:SkSLNop",
+        "//src/sksl/ir:SkSLProgram",
+    ],
+)
+
+cc_library(
+    name = "SkSLProgramWriter",
+    hdrs = ["SkSLProgramWriter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/sksl/analysis:SkSLProgramVisitor"],
+)
+
+cc_library(
+    name = "SkSLTransform",
+    hdrs = ["SkSLTransform.h"],
+    visibility = ["//:__subpackages__"],
+)

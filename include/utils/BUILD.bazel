@@ -1,31 +1,155 @@
-package(default_visibility = ["//visibility:public"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "base-hdrs",
-    srcs = [
-        "SkAnimCodecPlayer.h",
-        "SkBase64.h",
-        "SkCamera.h",
-        "SkCanvasStateUtils.h",
-        "SkCustomTypeface.h",
-        "SkEventTracer.h",
-        "SkNWayCanvas.h",
-        "SkNoDrawCanvas.h",
-        "SkNullCanvas.h",
-        "SkOrderedFontMgr.h",
-        "SkPaintFilterCanvas.h",
-        "SkParse.h",
-        "SkParsePath.h",
-        "SkRandom.h",
-        "SkShadowUtils.h",
-        "SkTextUtils.h",
-        "SkTraceEventPhase.h",
+cc_library(
+    name = "SkAnimCodecPlayer",
+    hdrs = ["SkAnimCodecPlayer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/codec:SkCodec"],
+)
+
+cc_library(
+    name = "SkBase64",
+    hdrs = ["SkBase64.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkCamera",
+    hdrs = ["SkCamera.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkM44",
+        "//include/core:SkMatrix",
+        "//include/private:SkNoncopyable",
     ],
 )
 
-filegroup(
-    name = "mac-hdrs",
-    srcs = [
-        "mac/SkCGUtils.h",
+cc_library(
+    name = "SkCanvasStateUtils",
+    hdrs = ["SkCanvasStateUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkCanvas"],
+)
+
+cc_library(
+    name = "SkCustomTypeface",
+    hdrs = ["SkCustomTypeface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontStyle",
+        "//include/core:SkImage",
+        "//include/core:SkPaint",
+        "//include/core:SkPath",
+        "//include/core:SkPicture",
+        "//include/core:SkTypeface",
     ],
+)
+
+cc_library(
+    name = "SkEventTracer",
+    hdrs = ["SkEventTracer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkNWayCanvas",
+    hdrs = ["SkNWayCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkNoDrawCanvas",
+        "//include/core:SkCanvasVirtualEnforcer",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "SkNoDrawCanvas",
+    hdrs = ["SkNoDrawCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/core:SkCanvasVirtualEnforcer",
+    ],
+)
+
+cc_library(
+    name = "SkNullCanvas",
+    hdrs = ["SkNullCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkCanvas"],
+)
+
+cc_library(
+    name = "SkOrderedFontMgr",
+    hdrs = ["SkOrderedFontMgr.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkFontMgr"],
+)
+
+cc_library(
+    name = "SkPaintFilterCanvas",
+    hdrs = ["SkPaintFilterCanvas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkNWayCanvas",
+        "//include/core:SkCanvasVirtualEnforcer",
+    ],
+)
+
+cc_library(
+    name = "SkParse",
+    hdrs = ["SkParse.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkColor"],
+)
+
+cc_library(
+    name = "SkParsePath",
+    hdrs = ["SkParsePath.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPath"],
+)
+
+cc_library(
+    name = "SkRandom",
+    hdrs = ["SkRandom.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkScalar",
+        "//include/private:SkFixed",
+        "//include/private:SkFloatBits",
+    ],
+)
+
+cc_library(
+    name = "SkShadowUtils",
+    hdrs = ["SkShadowUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColor",
+        "//include/core:SkPoint3",
+        "//include/core:SkScalar",
+        "//include/private:SkShadowFlags",
+    ],
+)
+
+cc_library(
+    name = "SkTextUtils",
+    hdrs = ["SkTextUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/core:SkFont",
+        "//include/core:SkPaint",
+        "//include/core:SkString",
+    ],
+)
+
+cc_library(
+    name = "SkTraceEventPhase",
+    hdrs = ["SkTraceEventPhase.h"],
+    visibility = ["//:__subpackages__"],
 )

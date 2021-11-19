@@ -1,28 +1,185 @@
-package(default_visibility = ["//:__subpackages__"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-# TODO(kjlubick) make these sources and headers dependent on target platform, as necessary
+cc_library(
+    name = "Sk4px_NEON",
+    hdrs = ["Sk4px_NEON.h"],
+    visibility = ["//:__subpackages__"],
+)
 
-filegroup(
-    name = "srcs",
-    srcs = [
-        "Sk4px_NEON.h",
-        "Sk4px_SSE2.h",
-        "Sk4px_none.h",
-        "SkBitmapProcState_opts.h",
-        "SkBlitMask_opts.h",
-        "SkBlitRow_opts.h",
-        "SkChecksum_opts.h",
-        "SkOpts_avx.cpp",
-        "SkOpts_crc32.cpp",
-        "SkOpts_hsw.cpp",
-        "SkOpts_skx.cpp",
-        "SkOpts_sse41.cpp",
-        "SkOpts_sse42.cpp",
-        "SkOpts_ssse3.cpp",
-        "SkRasterPipeline_opts.h",
-        "SkSwizzler_opts.h",
-        "SkUtils_opts.h",
-        "SkVM_opts.h",
-        "SkXfermode_opts.h",
+cc_library(
+    name = "Sk4px_SSE2",
+    hdrs = ["Sk4px_SSE2.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "Sk4px_none",
+    hdrs = ["Sk4px_none.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/core:SkUtils"],
+)
+
+cc_library(
+    name = "SkBitmapProcState_opts",
+    hdrs = ["SkBitmapProcState_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkVx",
+        "//src/core:SkBitmapProcState",
+        "//src/core:SkMSAN",
+    ],
+)
+
+cc_library(
+    name = "SkBlitMask_opts",
+    hdrs = ["SkBlitMask_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/core:Sk4px"],
+)
+
+cc_library(
+    name = "SkBlitRow_opts",
+    hdrs = ["SkBlitRow_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkColorData",
+        "//include/private:SkVx",
+        "//src/core:SkMSAN",
+    ],
+)
+
+cc_library(
+    name = "SkChecksum_opts",
+    hdrs = ["SkChecksum_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkChecksum",
+        "//src/core:SkUtils",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_avx",
+    srcs = ["SkOpts_avx.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkUtils_opts",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_crc32",
+    srcs = ["SkOpts_crc32.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkChecksum_opts",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_hsw",
+    srcs = ["SkOpts_hsw.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmapProcState_opts",
+        ":SkBlitRow_opts",
+        ":SkRasterPipeline_opts",
+        ":SkSwizzler_opts",
+        ":SkUtils_opts",
+        ":SkVM_opts",
+        "//src/core:SkCubicSolver",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_skx",
+    srcs = ["SkOpts_skx.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkVM_opts",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_sse41",
+    srcs = ["SkOpts_sse41.cpp"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkOpts_sse42",
+    srcs = ["SkOpts_sse42.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkChecksum_opts",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_ssse3",
+    srcs = ["SkOpts_ssse3.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmapProcState_opts",
+        ":SkBlitMask_opts",
+        ":SkSwizzler_opts",
+        ":SkXfermode_opts",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkRasterPipeline_opts",
+    hdrs = ["SkRasterPipeline_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//include/core:SkTypes",
+        "//src/core:SkUtils",
+    ],
+)
+
+cc_library(
+    name = "SkSwizzler_opts",
+    hdrs = ["SkSwizzler_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkColorData",
+        "//include/private:SkVx",
+    ],
+)
+
+cc_library(
+    name = "SkUtils_opts",
+    hdrs = ["SkUtils_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:SkNx"],
+)
+
+cc_library(
+    name = "SkVM_opts",
+    hdrs = ["SkVM_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkVx",
+        "//src/core:SkVM",
+    ],
+)
+
+cc_library(
+    name = "SkXfermode_opts",
+    hdrs = ["SkXfermode_opts.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkNx",
+        "//src/core:Sk4px",
+        "//src/core:SkMSAN",
+        "//src/core:SkXfermodePriv",
     ],
 )

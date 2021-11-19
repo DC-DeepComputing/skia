@@ -1,0 +1,453 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrGLAssembleGLESInterfaceAutogen",
+    srcs = ["GrGLAssembleGLESInterfaceAutogen.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLAssembleHelpers",
+        "//include/gpu/gl:GrGLAssembleInterface",
+    ],
+)
+
+cc_library(
+    name = "GrGLAssembleGLInterfaceAutogen",
+    srcs = ["GrGLAssembleGLInterfaceAutogen.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLAssembleHelpers",
+        "//include/gpu/gl:GrGLAssembleInterface",
+    ],
+)
+
+cc_library(
+    name = "GrGLAssembleHelpers",
+    srcs = ["GrGLAssembleHelpers.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLAssembleHelpers",
+    ],
+)
+
+cc_library(
+    name = "GrGLAssembleInterface",
+    srcs = ["GrGLAssembleInterface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLAssembleHelpers",
+        "//include/gpu/gl:GrGLAssembleInterface",
+    ],
+)
+
+cc_library(
+    name = "GrGLAssembleWebGLInterfaceAutogen",
+    srcs = ["GrGLAssembleWebGLInterfaceAutogen.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLAssembleHelpers",
+        "//include/gpu/gl:GrGLAssembleInterface",
+        "//webgl:webgl1",
+        "//webgl:webgl1_ext",
+        "//webgl:webgl2",
+        "//webgl:webgl2_ext",
+    ],
+)
+
+cc_library(
+    name = "GrGLAttachment",
+    srcs = ["GrGLAttachment.cpp"],
+    hdrs = ["GrGLAttachment.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        "//include/core:SkTraceMemoryDump",
+        "//include/gpu/gl:GrGLInterface",
+        "//src/gpu:GrAttachment",
+    ],
+)
+
+cc_library(
+    name = "GrGLBuffer",
+    srcs = ["GrGLBuffer.cpp"],
+    hdrs = ["GrGLBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLCaps",
+        ":GrGLGpu",
+        "//include/core:SkTraceMemoryDump",
+        "//include/gpu/gl:GrGLTypes",
+        "//src/core:SkTraceEvent",
+        "//src/gpu:GrGpuBuffer",
+        "//src/gpu:GrGpuResourcePriv",
+    ],
+)
+
+cc_library(
+    name = "GrGLCaps",
+    srcs = ["GrGLCaps.cpp"],
+    hdrs = ["GrGLCaps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLAttachment",
+        ":GrGLContext",
+        ":GrGLRenderTarget",
+        ":GrGLTexture",
+        ":GrGLUtil",
+        "//include/gpu:GrContextOptions",
+        "//include/private:GrGLTypesPriv",
+        "//include/private:SkChecksum",
+        "//include/private:SkTArray",
+        "//include/private:SkTHash",
+        "//src/core:SkCompressedDataUtils",
+        "//src/core:SkMathPriv",
+        "//src/core:SkTSearch",
+        "//src/gpu:GrBackendUtils",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrSurfaceProxyPriv",
+        "//src/gpu:GrSwizzle",
+        "//src/gpu:GrTextureProxyPriv",
+        "//src/gpu:SkGr",
+        "//src/utils:SkJSONWriter",
+    ],
+)
+
+cc_library(
+    name = "GrGLContext",
+    srcs = ["GrGLContext.cpp"],
+    hdrs = ["GrGLContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLCaps",
+        ":GrGLGLSL",
+        ":GrGLUtil",
+        "//include/gpu:GrContextOptions",
+        "//include/gpu/gl:GrGLExtensions",
+        "//include/gpu/gl:GrGLInterface",
+        "//src/gpu/glsl:GrGLSL",
+    ],
+)
+
+cc_library(
+    name = "GrGLDefines",
+    hdrs = ["GrGLDefines.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "GrGLExtensions",
+    srcs = ["GrGLExtensions.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLDefines",
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLExtensions",
+        "//src/core:SkTSearch",
+        "//src/core:SkTSort",
+        "//src/utils:SkJSONWriter",
+    ],
+)
+
+cc_library(
+    name = "GrGLGLSL",
+    srcs = ["GrGLGLSL.cpp"],
+    hdrs = ["GrGLGLSL.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//src/gpu/glsl:GrGLSL",
+    ],
+)
+
+cc_library(
+    name = "GrGLGpu",
+    srcs = ["GrGLGpu.cpp"],
+    hdrs = ["GrGLGpu.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLAttachment",
+        ":GrGLBuffer",
+        ":GrGLContext",
+        ":GrGLOpsRenderPass",
+        ":GrGLProgram",
+        ":GrGLRenderTarget",
+        ":GrGLSemaphore",
+        ":GrGLTexture",
+        ":GrGLTextureRenderTarget",
+        ":GrGLVertexArray",
+        "//include/core:SkPixmap",
+        "//include/core:SkTypes",
+        "//include/gpu:GrBackendSemaphore",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu:GrDirectContext",
+        "//include/gpu:GrTypes",
+        "//include/private:SkHalf",
+        "//include/private:SkTArray",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkAutoMalloc",
+        "//src/core:SkCompressedDataUtils",
+        "//src/core:SkLRUCache",
+        "//src/core:SkMipmap",
+        "//src/core:SkScopeExit",
+        "//src/core:SkTraceEvent",
+        "//src/gpu:GrBackendUtils",
+        "//src/gpu:GrCpuBuffer",
+        "//src/gpu:GrDataUtils",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrFinishCallbacks",
+        "//src/gpu:GrGpu",
+        "//src/gpu:GrGpuResourcePriv",
+        "//src/gpu:GrNativeRect",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu:GrProgramInfo",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrSurfaceProxyPriv",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrThreadSafePipelineBuilder",
+        "//src/gpu:GrWindowRectsState",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/gl/builders:GrGLShaderStringBuilder",
+        "//src/sksl:SkSLCompiler",
+        "//src/utils:SkJSONWriter",
+    ],
+)
+
+cc_library(
+    name = "GrGLGpuProgramCache",
+    srcs = ["GrGLGpuProgramCache.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        "//include/gpu:GrContextOptions",
+        "//include/gpu:GrDirectContext",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu/gl/builders:GrGLProgramBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrGLInterfaceAutogen",
+    srcs = ["GrGLInterfaceAutogen.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLUtil",
+        "//include/gpu/gl:GrGLExtensions",
+        "//include/gpu/gl:GrGLInterface",
+    ],
+)
+
+cc_library(
+    name = "GrGLMakeNativeInterface_none",
+    srcs = ["GrGLMakeNativeInterface_none.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu/gl:GrGLInterface"],
+)
+
+cc_library(
+    name = "GrGLOpsRenderPass",
+    srcs = ["GrGLOpsRenderPass.cpp"],
+    hdrs = ["GrGLOpsRenderPass.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        ":GrGLRenderTarget",
+        "//include/gpu:GrDirectContext",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrOpFlushState",
+        "//src/gpu:GrOpsRenderPass",
+        "//src/gpu:GrProgramInfo",
+        "//src/gpu:GrRenderTarget",
+    ],
+)
+
+cc_library(
+    name = "GrGLProgram",
+    srcs = ["GrGLProgram.cpp"],
+    hdrs = ["GrGLProgram.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLBuffer",
+        ":GrGLGpu",
+        ":GrGLProgramDataManager",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrProgramInfo",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/effects:GrTextureEffect",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/sksl:SkSLCompiler",
+    ],
+)
+
+cc_library(
+    name = "GrGLProgramDataManager",
+    srcs = ["GrGLProgramDataManager.cpp"],
+    hdrs = ["GrGLProgramDataManager.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        "//include/core:SkMatrix",
+        "//include/gpu/gl:GrGLTypes",
+        "//include/private:SkTArray",
+        "//src/core:SkTBlockList",
+        "//src/gpu:GrShaderVar",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrGLRenderTarget",
+    srcs = ["GrGLRenderTarget.cpp"],
+    hdrs = ["GrGLRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLDefines",
+        ":GrGLGpu",
+        ":GrGLUtil",
+        "//include/core:SkScalar",
+        "//include/core:SkTraceMemoryDump",
+        "//include/gpu:GrBackendSurface",
+        "//include/gpu:GrDirectContext",
+        "//src/gpu:GrBackendUtils",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrGpuResourcePriv",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrResourceProvider",
+    ],
+)
+
+cc_library(
+    name = "GrGLSemaphore",
+    srcs = ["GrGLSemaphore.cpp"],
+    hdrs = ["GrGLSemaphore.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        "//include/gpu:GrBackendSemaphore",
+        "//include/private:GrTypesPriv",
+        "//src/gpu:GrSemaphore",
+    ],
+)
+
+cc_library(
+    name = "GrGLTexture",
+    srcs = ["GrGLTexture.cpp"],
+    hdrs = ["GrGLTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        ":GrGLUtil",
+        "//include/core:SkTraceMemoryDump",
+        "//include/private:GrGLTypesPriv",
+        "//src/core:SkTraceEvent",
+        "//src/gpu:GrGpu",
+        "//src/gpu:GrSemaphore",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrGLTextureRenderTarget",
+    srcs = ["GrGLTextureRenderTarget.cpp"],
+    hdrs = ["GrGLTextureRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLGpu",
+        ":GrGLRenderTarget",
+        ":GrGLTexture",
+        "//include/core:SkTraceMemoryDump",
+        "//include/gpu:GrDirectContext",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrGLTypesPriv",
+    srcs = ["GrGLTypesPriv.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLDefines",
+        "//include/core:SkScalar",
+        "//include/private:GrGLTypesPriv",
+        "//src/gpu:GrSwizzle",
+    ],
+)
+
+cc_library(
+    name = "GrGLUniformHandler",
+    srcs = ["GrGLUniformHandler.cpp"],
+    hdrs = ["GrGLUniformHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLCaps",
+        ":GrGLGpu",
+        ":GrGLProgramDataManager",
+        "//src/gpu:GrTexture",
+        "//src/gpu/gl/builders:GrGLProgramBuilder",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/sksl:SkSLCompiler",
+    ],
+)
+
+cc_library(
+    name = "GrGLUtil",
+    srcs = ["GrGLUtil.cpp"],
+    hdrs = ["GrGLUtil.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLDefines",
+        "//include/core:SkMatrix",
+        "//include/gpu/gl:GrGLInterface",
+        "//include/private:GrTypesPriv",
+        "//include/private:SkImageInfoPriv",
+        "//src/gpu:GrDataUtils",
+        "//src/gpu:GrStencilSettings",
+    ],
+)
+
+cc_library(
+    name = "GrGLVaryingHandler",
+    hdrs = ["GrGLVaryingHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLProgramDataManager",
+        "//include/private:GrTypesPriv",
+        "//src/gpu/glsl:GrGLSLVarying",
+    ],
+)
+
+cc_library(
+    name = "GrGLVertexArray",
+    srcs = ["GrGLVertexArray.cpp"],
+    hdrs = ["GrGLVertexArray.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLBuffer",
+        ":GrGLDefines",
+        ":GrGLGpu",
+        "//include/gpu/gl:GrGLTypes",
+        "//include/private:GrTypesPriv",
+        "//include/private:SkTArray",
+        "//src/gpu:GrCpuBuffer",
+        "//src/gpu:GrGpuResource",
+    ],
+)

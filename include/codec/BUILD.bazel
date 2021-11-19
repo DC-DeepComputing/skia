@@ -1,11 +1,47 @@
-package(default_visibility = ["//visibility:public"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "hdrs",
-    srcs = [
-        "SkAndroidCodec.h",
-        "SkCodec.h",
-        "SkCodecAnimation.h",
-        "SkEncodedOrigin.h",
+cc_library(
+    name = "SkAndroidCodec",
+    hdrs = ["SkAndroidCodec.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkCodec",
+        "//include/core:SkEncodedImageFormat",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
     ],
+)
+
+cc_library(
+    name = "SkCodec",
+    hdrs = ["SkCodec.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkCodecAnimation",
+        ":SkEncodedOrigin",
+        "//include/core:SkColor",
+        "//include/core:SkEncodedImageFormat",
+        "//include/core:SkImageInfo",
+        "//include/core:SkPixmap",
+        "//include/core:SkSize",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//include/core:SkYUVAPixmaps",
+        "//include/private:SkEncodedInfo",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkCodecAnimation",
+    hdrs = ["SkCodecAnimation.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkEncodedOrigin",
+    hdrs = ["SkEncodedOrigin.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkMatrix"],
 )

@@ -1,0 +1,4 @@
+{
+  "png.h": "//third_party:libpng",
+  "src/piex.h": "//third_party:piex"
+}

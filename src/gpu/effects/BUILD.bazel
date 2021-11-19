@@ -1,0 +1,395 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrAtlasedShaderHelpers",
+    hdrs = ["GrAtlasedShaderHelpers.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/gpu:GrDrawOpAtlas",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrBezierEffect",
+    srcs = ["GrBezierEffect.cpp"],
+    hdrs = ["GrBezierEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:GrTypesPriv",
+        "//src/core:SkArenaAlloc",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrBicubicEffect",
+    srcs = ["GrBicubicEffect.cpp"],
+    hdrs = ["GrBicubicEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMatrixEffect",
+        ":GrTextureEffect",
+        "//src/core:SkMatrixPriv",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/shaders:SkImageShader",
+    ],
+)
+
+cc_library(
+    name = "GrBitmapTextGeoProc",
+    srcs = ["GrBitmapTextGeoProc.cpp"],
+    hdrs = ["GrBitmapTextGeoProc.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAtlasedShaderHelpers",
+        "//src/core:SkArenaAlloc",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrBlendFragmentProcessor",
+    srcs = ["GrBlendFragmentProcessor.cpp"],
+    hdrs = ["GrBlendFragmentProcessor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlendMode",
+        "//include/core:SkRefCnt",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:SkGr",
+        "//src/gpu/glsl:GrGLSLBlend",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrConvexPolyEffect",
+    srcs = ["GrConvexPolyEffect.cpp"],
+    hdrs = ["GrConvexPolyEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:GrTypesPriv",
+        "//src/core:SkPathPriv",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/sksl/dsl/priv:DSLFPs",
+    ],
+)
+
+cc_library(
+    name = "GrCoverageSetOpXP",
+    srcs = ["GrCoverageSetOpXP.cpp"],
+    hdrs = ["GrCoverageSetOpXP.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRegion",
+        "//include/gpu:GrTypes",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrColor",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/glsl:GrGLSLBlend",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrCustomXfermode",
+    srcs = ["GrCustomXfermode.cpp"],
+    hdrs = ["GrCustomXfermode.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlendMode",
+        "//include/core:SkRefCnt",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/glsl:GrGLSLBlend",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrDisableColorXP",
+    srcs = ["GrDisableColorXP.cpp"],
+    hdrs = ["GrDisableColorXP.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+    ],
+)
+
+cc_library(
+    name = "GrDistanceFieldGeoProc",
+    srcs = ["GrDistanceFieldGeoProc.cpp"],
+    hdrs = ["GrDistanceFieldGeoProc.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAtlasedShaderHelpers",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkDistanceFieldGen",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrGaussianConvolutionFragmentProcessor",
+    srcs = ["GrGaussianConvolutionFragmentProcessor.cpp"],
+    hdrs = ["GrGaussianConvolutionFragmentProcessor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTextureEffect",
+        "//src/core:SkGpuBlurUtils",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrTextureProxy",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/sksl/dsl/priv:DSLFPs",
+    ],
+)
+
+cc_library(
+    name = "GrMatrixConvolutionEffect",
+    srcs = ["GrMatrixConvolutionEffect.cpp"],
+    hdrs = ["GrMatrixConvolutionEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTextureEffect",
+        "//include/private:SkHalf",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrProxyProvider",
+        "//src/gpu:GrRecordingContextPriv",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrTextureProxy",
+        "//src/gpu:GrThreadSafeCache",
+        "//src/gpu:SkGr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrMatrixEffect",
+    srcs = ["GrMatrixEffect.cpp"],
+    hdrs = ["GrMatrixEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTextureEffect",
+        "//include/core:SkM44",
+        "//include/core:SkTypes",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLUtil",
+    ],
+)
+
+cc_library(
+    name = "GrModulateAtlasCoverageEffect",
+    srcs = ["GrModulateAtlasCoverageEffect.cpp"],
+    hdrs = ["GrModulateAtlasCoverageEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTextureEffect",
+        "//src/gpu:GrDynamicAtlas",
+        "//src/gpu:GrFragmentProcessor",
+    ],
+)
+
+cc_library(
+    name = "GrOvalEffect",
+    srcs = ["GrOvalEffect.cpp"],
+    hdrs = ["GrOvalEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+        "//include/private:GrTypesPriv",
+        "//src/gpu:GrFragmentProcessor",
+    ],
+)
+
+cc_library(
+    name = "GrPorterDuffXferProcessor",
+    srcs = ["GrPorterDuffXferProcessor.cpp"],
+    hdrs = ["GrPorterDuffXferProcessor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBlendMode",
+        "//include/gpu:GrTypes",
+        "//include/private:SkMacros",
+        "//include/private:SkTo",
+        "//src/gpu:GrBlend",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrPipeline",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrProcessorAnalysis",
+        "//src/gpu:GrXferProcessor",
+        "//src/gpu/glsl:GrGLSLBlend",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrRRectEffect",
+    srcs = ["GrRRectEffect.cpp"],
+    hdrs = ["GrRRectEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrConvexPolyEffect",
+        ":GrOvalEffect",
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+        "//include/private:GrTypesPriv",
+        "//src/core:SkRRectPriv",
+        "//src/core:SkTLazy",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrShaderCaps",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrShadowGeoProc",
+    srcs = ["GrShadowGeoProc.cpp"],
+    hdrs = ["GrShadowGeoProc.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkArenaAlloc",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrProcessor",
+        "//src/gpu:GrSurfaceProxyView",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrSkSLFP",
+    srcs = ["GrSkSLFP.cpp"],
+    hdrs = ["GrSkSLFP.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/effects:SkOverdrawColorFilter",
+        "//include/effects:SkRuntimeEffect",
+        "//include/gpu:GrContextOptions",
+        "//include/private:GrContext_Base",
+        "//include/private:SkSLString",
+        "//include/private:SkVx",
+        "//src/core:SkColorFilterBase",
+        "//src/core:SkRuntimeEffectPriv",
+        "//src/core:SkVM",
+        "//src/gpu:GrBaseContextPriv",
+        "//src/gpu:GrColorInfo",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLUtil",
+        "//src/sksl/codegen:SkSLPipelineStageCodeGenerator",
+        "//src/sksl/ir:SkSLVarDeclarations",
+    ],
+)
+
+cc_library(
+    name = "GrTextureEffect",
+    srcs = ["GrTextureEffect.cpp"],
+    hdrs = ["GrTextureEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMatrixEffect",
+        "//include/core:SkImageInfo",
+        "//include/core:SkMatrix",
+        "//src/core:SkMatrixPriv",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrSurfaceProxyView",
+        "//src/gpu:GrTexture",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLUtil",
+    ],
+)
+
+cc_library(
+    name = "GrYUVtoRGBEffect",
+    srcs = ["GrYUVtoRGBEffect.cpp"],
+    hdrs = ["GrYUVtoRGBEffect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMatrixEffect",
+        ":GrTextureEffect",
+        "//include/core:SkYUVAInfo",
+        "//src/core:SkYUVAInfoLocation",
+        "//src/core:SkYUVMath",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrTexture",
+        "//src/gpu:GrYUVATextureProxies",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLUtil",
+    ],
+)

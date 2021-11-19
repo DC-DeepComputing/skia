@@ -1,0 +1,80 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "sk_c_from_to",
+    hdrs = ["sk_c_from_to.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "sk_effects",
+    srcs = ["sk_effects.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":sk_types_priv",
+        "//include/c:sk_maskfilter",
+        "//include/c:sk_shader",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkMatrix",
+        "//include/effects:SkGradientShader",
+    ],
+)
+
+cc_library(
+    name = "sk_imageinfo",
+    srcs = ["sk_imageinfo.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/c:sk_colorspace",
+        "//include/c:sk_imageinfo",
+        "//include/core:SkColorSpace",
+        "//include/core:SkImageInfo",
+    ],
+)
+
+cc_library(
+    name = "sk_paint",
+    srcs = ["sk_paint.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":sk_c_from_to",
+        ":sk_types_priv",
+        "//include/c:sk_paint",
+        "//include/core:SkBlendMode",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkPaint",
+        "//include/core:SkShader",
+    ],
+)
+
+cc_library(
+    name = "sk_surface",
+    srcs = ["sk_surface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":sk_types_priv",
+        "//include/c:sk_canvas",
+        "//include/c:sk_data",
+        "//include/c:sk_image",
+        "//include/c:sk_paint",
+        "//include/c:sk_path",
+        "//include/c:sk_picture",
+        "//include/c:sk_surface",
+        "//include/core:SkCanvas",
+        "//include/core:SkData",
+        "//include/core:SkImage",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkMatrix",
+        "//include/core:SkPaint",
+        "//include/core:SkPathBuilder",
+        "//include/core:SkPictureRecorder",
+        "//include/core:SkSurface",
+    ],
+)
+
+cc_library(
+    name = "sk_types_priv",
+    hdrs = ["sk_types_priv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/c:sk_types"],
+)

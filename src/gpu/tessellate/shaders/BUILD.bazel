@@ -1,0 +1,97 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrPathTessellationShader",
+    srcs = ["GrPathTessellationShader.cpp"],
+    hdrs = ["GrPathTessellationShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTessellationShader",
+        "//src/gpu/effects:GrDisableColorXP",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:Tessellation",
+    ],
+)
+
+cc_library(
+    name = "GrPathTessellationShader_Hardware",
+    srcs = ["GrPathTessellationShader_Hardware.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPathTessellationShader",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:Tessellation",
+        "//src/gpu/tessellate:WangsFormula",
+    ],
+)
+
+cc_library(
+    name = "GrPathTessellationShader_MiddleOut",
+    srcs = ["GrPathTessellationShader_MiddleOut.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPathTessellationShader",
+        "//src/core:SkMathPriv",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:PathTessellator",
+        "//src/gpu/tessellate:Tessellation",
+        "//src/gpu/tessellate:WangsFormula",
+    ],
+)
+
+cc_library(
+    name = "GrStrokeTessellationShader",
+    srcs = ["GrStrokeTessellationShader.cpp"],
+    hdrs = ["GrStrokeTessellationShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTessellationShader",
+        "//include/core:SkStrokeRec",
+        "//src/gpu:GrVx",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:StrokeTessellator",
+        "//src/gpu/tessellate:Tessellation",
+    ],
+)
+
+cc_library(
+    name = "GrStrokeTessellationShader_HardwareImpl",
+    srcs = ["GrStrokeTessellationShader_HardwareImpl.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrStrokeTessellationShader",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLVarying",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:WangsFormula",
+    ],
+)
+
+cc_library(
+    name = "GrStrokeTessellationShader_InstancedImpl",
+    srcs = ["GrStrokeTessellationShader_InstancedImpl.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrStrokeTessellationShader",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        "//src/gpu/tessellate:StrokeFixedCountTessellator",
+        "//src/gpu/tessellate:WangsFormula",
+    ],
+)
+
+cc_library(
+    name = "GrTessellationShader",
+    srcs = ["GrTessellationShader.cpp"],
+    hdrs = ["GrTessellationShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/gpu:BufferWriter",
+        "//src/gpu:GrGeometryProcessor",
+        "//src/gpu:GrProgramInfo",
+    ],
+)
