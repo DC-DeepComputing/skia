@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41f6bf81_b664281d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-19T14:58:13Z",
+      "side": 1,
+      "message": "I think the solution is (unfortunately) more complex, because structs and arrays can be nested. (We only allow 1-dimensional arrays, but you can put arrays in structs, and you can put structs in arrays, or in other structs).\n\nYou\u0027ll either need some kind of recursive approach, or a way to get the number kind of each individual slot (again, by recursively traversing the fields and arrays).",
+      "revId": "b464f6440e82ad40495ee7d007d6eaa2f58a70ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
