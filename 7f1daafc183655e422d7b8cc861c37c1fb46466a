@@ -16,6 +16,29 @@
       "message": "lgtm, pending Michael\u0027s opinion on the doc comment",
       "revId": "7f1daafc183655e422d7b8cc861c37c1fb46466a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a43ef85c_fc57a8cd",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T17:43:36Z",
+      "side": 1,
+      "message": "nit: alignment",
+      "range": {
+        "startLine": 349,
+        "startChar": 30,
+        "endLine": 349,
+        "endChar": 31
+      },
+      "revId": "7f1daafc183655e422d7b8cc861c37c1fb46466a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

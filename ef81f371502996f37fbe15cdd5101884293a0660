@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49a79e20_eec55392",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-19T17:43:36Z",
+      "side": 1,
+      "message": "I think returning null is appropriate, given the new language in the API doc, which I like.\n\nI am good landing this as-is, but wdyt think about tweaking the public name? The only reason I ask is to differentiate it from the 0-input ::Shader() factory. Except that we don\u0027t yet support bounds inset/outsetting, this really is a runtime image filter, so could we go with SkImageFilters::Runtime() or RuntimeFilter()? Or is it better to stick with RuntimeShader() since you\u0027re passing in a runtimeshaderbuilder?\n\nMy thinking was that as we expand the capabilities of runtime image filters to allow for bounds specification somehow, they would share the same factory name as this one, but with more args.",
+      "parentUuid": "1c9be2b3_959cf235",
+      "range": {
+        "startLine": 347,
+        "startChar": 41,
+        "endLine": 348,
+        "endChar": 82
+      },
+      "revId": "ef81f371502996f37fbe15cdd5101884293a0660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc87b416_4fad8eab",
         "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
         "patchSetId": 2
