@@ -16,6 +16,23 @@
       "message": "This is the only thing I can think of to try with regard to this perf issue.",
       "revId": "890a3372d53b58f1f88af95e12669f2b525b72b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d1cc34a_d2ca6862",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-19T17:04:52Z",
+      "side": 1,
+      "message": "I forgot that this isn\u0027t going to work because on the subclasses can provide the data and at this point there is no subclass. Delay until later or muck with the scanner I suppose...",
+      "revId": "890a3372d53b58f1f88af95e12669f2b525b72b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
