@@ -22,6 +22,30 @@
       },
       "revId": "d694dd9fa6fbd750572118f0d11b36ab7e755166",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c089771_03aab479",
+        "filename": "tests/SkSLInterpreterTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-19T22:24:31Z",
+      "side": 1,
+      "message": "OK, I\u0027ve fixed up the hook to support slot types and updated the test code to use a mix of floats, ints and bools. (uints require ES3 so I\u0027ve left them out, but it\u0027s just %u vs %d.)",
+      "parentUuid": "fe391f4f_ff490569",
+      "range": {
+        "startLine": 1048,
+        "startChar": 13,
+        "endLine": 1048,
+        "endChar": 15
+      },
+      "revId": "d694dd9fa6fbd750572118f0d11b36ab7e755166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
