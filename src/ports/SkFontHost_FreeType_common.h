@@ -146,6 +146,7 @@ private:
 
     mutable SkSharedMutex fC2GCacheMutex;
     mutable SkCharToGlyphCache fC2GCache;
+    bool fGlyphMasksMayNeedCurrentColor;
 
     using INHERITED = SkTypeface;
 };

@@ -1545,10 +1545,9 @@ void SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "src/core/SkUtils.h"
-
 SkTypeface_FreeType::SkTypeface_FreeType(const SkFontStyle& style, bool isFixedPitch)
     : INHERITED(style, isFixedPitch)
+    , fGlyphMasksMayNeedCurrentColor(this->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0)
 {}
 
 SkTypeface_FreeType::~SkTypeface_FreeType() {
@@ -1628,7 +1627,7 @@ SkTypeface::LocalizedStrings* SkTypeface_FreeType::onCreateFamilyNameIterator() 
 }
 
 bool SkTypeface_FreeType::onGlyphMaskNeedsCurrentColor() const {
-    return this->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0;
+    return fGlyphMasksMayNeedCurrentColor;
 }
 
 int SkTypeface_FreeType::onGetVariationDesignPosition(
