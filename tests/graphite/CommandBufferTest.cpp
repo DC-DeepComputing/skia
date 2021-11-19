@@ -113,7 +113,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
         // Draw inset magenta rectangle with triangles in vertex buffer
         pipelineDesc.setTestingOnlyShaderIndex(2);
-        skgpu::GraphicsPipelineDesc::Attribute vertexAttributes[1] = {
+        Attribute vertexAttributes[1] = {
             { "position", VertexAttribType::kFloat2, SLType::kFloat2 }
         };
         pipelineDesc.setVertexAttributes(vertexAttributes, 1);
@@ -140,7 +140,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
         // draw rects using instance buffer
         pipelineDesc.setTestingOnlyShaderIndex(3);
-        skgpu::GraphicsPipelineDesc::Attribute instanceAttributes[3] = {
+        Attribute instanceAttributes[3] = {
             { "position", VertexAttribType::kFloat2, SLType::kFloat2 },
             { "dims", VertexAttribType::kFloat2, SLType::kFloat2 },
             { "color", VertexAttribType::kFloat4, SLType::kFloat4 }
