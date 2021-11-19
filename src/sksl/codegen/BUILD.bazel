@@ -188,7 +188,10 @@ cc_library(
     srcs = ["SkSLSPIRVtoHLSL.cpp"],
     hdrs = ["SkSLSPIRVtoHLSL.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:SkSLString"],
+    deps = [
+        "//include/private:SkSLString",
+        "//third_party/externals/spirv-cross:spirv_hlsl",
+    ],
 )
 
 cc_library(

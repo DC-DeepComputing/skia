@@ -78,6 +78,7 @@ cc_library(
         "//src/codec:SkColorTable",
         "//src/codec:SkPngPriv",
         "//src/core:SkMSAN",
+        "//third_party:libpng",
     ],
 )
 
@@ -96,5 +97,7 @@ cc_library(
         "//include/private:SkImageInfoPriv",
         "//include/private:SkTemplates",
         "//src/utils:SkUTF",
+        "//webp:encode",
+        "//webp:mux",
     ],
 )

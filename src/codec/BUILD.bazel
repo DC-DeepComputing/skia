@@ -357,6 +357,7 @@ cc_library(
         "//include/private:SkMacros",
         "//include/private:SkTemplates",
         "//src/core:SkOpts",
+        "//third_party:libpng",
     ],
 )
 
@@ -389,6 +390,7 @@ cc_library(
         "//src/core:SkColorSpacePriv",
         "//src/core:SkStreamPriv",
         "//src/core:SkTaskGroup",
+        "//third_party:piex",
     ],
 )
 
@@ -506,6 +508,9 @@ cc_library(
         "//include/private:SkTo",
         "//src/core:SkRasterPipeline",
         "//src/core:SkStreamPriv",
+        "//webp:decode",
+        "//webp:demux",
+        "//webp:encode",
     ],
 )
 

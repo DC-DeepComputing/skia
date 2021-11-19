@@ -51,6 +51,10 @@ cc_library(
         ":GrGLUtil",
         "//include/gpu/gl:GrGLAssembleHelpers",
         "//include/gpu/gl:GrGLAssembleInterface",
+        "//webgl:webgl1",
+        "//webgl:webgl1_ext",
+        "//webgl:webgl2",
+        "//webgl:webgl2_ext",
     ],
 )
 

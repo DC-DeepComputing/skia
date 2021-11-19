@@ -8,6 +8,7 @@ cc_library(
     deps = [
         ":GrDawnGpu",
         ":GrDawnUtil",
+        "//dawn:webgpu_cpp",
         "//src/gpu:GrAttachment",
     ],
 )
@@ -19,6 +20,7 @@ cc_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":GrDawnGpu",
+        "//dawn:webgpu_cpp",
         "//src/gpu:GrGpuBuffer",
     ],
 )
@@ -55,6 +57,7 @@ cc_library(
         ":GrDawnRingBuffer",
         ":GrDawnTexture",
         ":GrDawnUtil",
+        "//dawn:webgpu_cpp",
         "//include/gpu:GrBackendSemaphore",
         "//include/gpu:GrBackendSurface",
         "//include/gpu:GrContextOptions",
@@ -95,6 +98,7 @@ cc_library(
         ":GrDawnRenderTarget",
         ":GrDawnTexture",
         ":GrDawnUtil",
+        "//dawn:webgpu_cpp",
         "//include/gpu:GrTypes",
         "//src/gpu:GrColor",
         "//src/gpu:GrOpFlushState",
@@ -115,6 +119,7 @@ cc_library(
         ":GrDawnGpu",
         ":GrDawnProgramDataManager",
         ":GrDawnTexture",
+        "//dawn:webgpu_cpp",
         "//src/gpu:GrAutoLocaleSetter",
         "//src/gpu:GrRenderTarget",
         "//src/gpu:GrSPIRVUniformHandler",
@@ -135,6 +140,7 @@ cc_library(
     deps = [
         ":GrDawnGpu",
         ":GrDawnRingBuffer",
+        "//dawn:webgpu_cpp",
         "//src/core:SkAutoMalloc",
         "//src/gpu:GrSPIRVUniformHandler",
         "//src/gpu:GrUniformDataManager",
@@ -176,6 +182,7 @@ cc_library(
         ":GrDawnGpu",
         ":GrDawnTextureRenderTarget",
         ":GrDawnUtil",
+        "//dawn:webgpu_cpp",
         "//src/gpu:GrTexture",
     ],
 )
@@ -206,5 +213,8 @@ cc_library(
     srcs = ["GrDawnUtil.cpp"],
     hdrs = ["GrDawnUtil.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:GrTypesPriv"],
+    deps = [
+        "//dawn:webgpu_cpp",
+        "//include/private:GrTypesPriv",
+    ],
 )
