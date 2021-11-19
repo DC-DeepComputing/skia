@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9967c7be_c062425e",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-19T16:05:27Z",
+      "side": 1,
+      "message": "This is common code lifted from VM and RP setup. It now always applies the blender (unless kDst) and supplies the opaque paint color as the shader if no shader.",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 0
+      },
+      "revId": "4b14b811916fb5cdb0b6e540629a473a7c7ecb22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

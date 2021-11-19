@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1c57602_a3c0d1b1",
+        "filename": "gm/patch.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-19T16:05:27Z",
+      "side": 1,
+      "message": "Deliberately changed the GM result here. Modulating against black isn\u0027t very interesting.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 33
+      },
+      "revId": "f9a355fd147f0568d34dc334ed6c45d0fa2312cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2647ed_b7284e65",
+        "filename": "gm/runtimecolorfilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-19T16:05:27Z",
+      "side": 1,
+      "message": "When I added this GM recently I had src/dst backwards.",
+      "range": {
+        "startLine": 161,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 70
+      },
+      "revId": "f9a355fd147f0568d34dc334ed6c45d0fa2312cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
