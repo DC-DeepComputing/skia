@@ -1,53 +1,313 @@
-package(default_visibility = ["//:__subpackages__"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "srcs",
-    srcs = [
-        "Sk1DPathEffect.cpp",
-        "Sk2DPathEffect.cpp",
-        "SkBlenders.cpp",
-        "SkColorMatrix.cpp",
-        "SkColorMatrixFilter.cpp",
-        "SkCornerPathEffect.cpp",
-        "SkDashImpl.h",
-        "SkDashPathEffect.cpp",
-        "SkDiscretePathEffect.cpp",
-        "SkEmbossMask.cpp",
-        "SkEmbossMask.h",
-        "SkEmbossMaskFilter.cpp",
-        "SkEmbossMaskFilter.h",
-        "SkHighContrastFilter.cpp",
-        "SkLayerDrawLooper.cpp",
-        "SkLumaColorFilter.cpp",
-        "SkOpPE.h",
-        "SkOpPathEffect.cpp",
-        "SkOverdrawColorFilter.cpp",
-        "SkShaderMaskFilter.cpp",
-        "SkTableColorFilter.cpp",
-        "SkTableMaskFilter.cpp",
-        "SkTrimPE.h",
-        "SkTrimPathEffect.cpp",
-        "imagefilters/SkAlphaThresholdImageFilter.cpp",
-        "imagefilters/SkArithmeticImageFilter.cpp",
-        "imagefilters/SkBlendImageFilter.cpp",
-        "imagefilters/SkBlurImageFilter.cpp",
-        "imagefilters/SkColorFilterImageFilter.cpp",
-        "imagefilters/SkComposeImageFilter.cpp",
-        "imagefilters/SkCropImageFilter.cpp",
-        "imagefilters/SkCropImageFilter.h",
-        "imagefilters/SkDisplacementMapImageFilter.cpp",
-        "imagefilters/SkDropShadowImageFilter.cpp",
-        "imagefilters/SkImageImageFilter.cpp",
-        "imagefilters/SkLightingImageFilter.cpp",
-        "imagefilters/SkMagnifierImageFilter.cpp",
-        "imagefilters/SkMatrixConvolutionImageFilter.cpp",
-        "imagefilters/SkMergeImageFilter.cpp",
-        "imagefilters/SkMorphologyImageFilter.cpp",
-        "imagefilters/SkOffsetImageFilter.cpp",
-        "imagefilters/SkPictureImageFilter.cpp",
-        "imagefilters/SkRuntimeImageFilter.cpp",
-        "imagefilters/SkRuntimeImageFilter.h",
-        "imagefilters/SkShaderImageFilter.cpp",
-        "imagefilters/SkTileImageFilter.cpp",
+cc_library(
+    name = "Sk1DPathEffect",
+    srcs = ["Sk1DPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPathMeasure",
+        "//include/core:SkStrokeRec",
+        "//include/effects:Sk1DPathEffect",
+        "//src/core:SkPathEffectBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "Sk2DPathEffect",
+    srcs = ["Sk2DPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPath",
+        "//include/core:SkRegion",
+        "//include/core:SkStrokeRec",
+        "//include/effects:Sk2DPathEffect",
+        "//src/core:SkPathEffectBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "SkBlenders",
+    srcs = ["SkBlenders.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkScalar",
+        "//include/effects:SkBlenders",
+        "//include/effects:SkRuntimeEffect",
+    ],
+)
+
+cc_library(
+    name = "SkColorMatrix",
+    srcs = ["SkColorMatrix.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/effects:SkColorMatrix",
+        "//src/core:SkYUVMath",
+    ],
+)
+
+cc_library(
+    name = "SkColorMatrixFilter",
+    srcs = ["SkColorMatrixFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/effects:SkColorMatrixFilter"],
+)
+
+cc_library(
+    name = "SkCornerPathEffect",
+    srcs = ["SkCornerPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/effects:SkCornerPathEffect",
+        "//src/core:SkPathEffectBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "SkDashImpl",
+    hdrs = ["SkDashImpl.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/core:SkPathEffectBase"],
+)
+
+cc_library(
+    name = "SkDashPathEffect",
+    srcs = ["SkDashPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStrokeRec",
+        "//include/effects:SkDashPathEffect",
+        "//include/private:SkTo",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/effects:SkDashImpl",
+        "//src/utils:SkDashPathPriv",
+    ],
+)
+
+cc_library(
+    name = "SkDiscretePathEffect",
+    srcs = ["SkDiscretePathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPathMeasure",
+        "//include/core:SkStrokeRec",
+        "//include/effects:SkDiscretePathEffect",
+        "//include/private:SkFixed",
+        "//src/core:SkPathEffectBase",
+        "//src/core:SkPointPriv",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "SkEmbossMask",
+    srcs = ["SkEmbossMask.cpp"],
+    hdrs = ["SkEmbossMask.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMath",
+        "//include/private:SkFixed",
+        "//include/private:SkTo",
+        "//src/core:SkMathPriv",
+        "//src/effects:SkEmbossMask",
+        "//src/effects:SkEmbossMaskFilter",
+    ],
+)
+
+cc_library(
+    name = "SkEmbossMaskFilter",
+    srcs = ["SkEmbossMaskFilter.cpp"],
+    hdrs = ["SkEmbossMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColorPriv",
+        "//include/core:SkString",
+        "//include/effects:SkBlurMaskFilter",
+        "//include/private:SkTPin",
+        "//src/core:SkBlurMask",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/effects:SkEmbossMask",
+        "//src/effects:SkEmbossMaskFilter",
+    ],
+)
+
+cc_library(
+    name = "SkHighContrastFilter",
+    srcs = ["SkHighContrastFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkString",
+        "//include/effects:SkHighContrastFilter",
+        "//include/effects:SkRuntimeEffect",
+        "//include/private:SkTPin",
+        "//src/core:SkColorFilterPriv",
+        "//src/core:SkRuntimeEffectPriv",
+    ],
+)
+
+cc_library(
+    name = "SkLayerDrawLooper",
+    srcs = ["SkLayerDrawLooper.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/core:SkColor",
+        "//include/core:SkMaskFilter",
+        "//include/core:SkString",
+        "//include/core:SkUnPreMultiply",
+        "//include/effects:SkBlurDrawLooper",
+        "//include/effects:SkLayerDrawLooper",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkBlendModePriv",
+        "//src/core:SkColorSpacePriv",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkStringUtils",
+        "//src/core:SkWriteBuffer",
+        "//src/core:SkXfermodePriv",
+    ],
+)
+
+cc_library(
+    name = "SkLumaColorFilter",
+    srcs = ["SkLumaColorFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkString",
+        "//include/effects:SkLumaColorFilter",
+        "//include/effects:SkRuntimeEffect",
+        "//src/core:SkRuntimeEffectPriv",
+    ],
+)
+
+cc_library(
+    name = "SkOpPE",
+    hdrs = ["SkOpPE.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/pathops:SkPathOps",
+        "//src/core:SkPathEffectBase",
+    ],
+)
+
+cc_library(
+    name = "SkOpPathEffect",
+    srcs = ["SkOpPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStrokeRec",
+        "//include/effects:SkOpPathEffect",
+        "//include/effects:SkStrokeAndFillPathEffect",
+        "//src/core:SkPathPriv",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkRectPriv",
+        "//src/core:SkWriteBuffer",
+        "//src/effects:SkOpPE",
+    ],
+)
+
+cc_library(
+    name = "SkOverdrawColorFilter",
+    srcs = ["SkOverdrawColorFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//include/effects:SkOverdrawColorFilter",
+        "//include/effects:SkRuntimeEffect",
+        "//include/private:SkColorData",
+        "//src/core:SkRuntimeEffectPriv",
+    ],
+)
+
+cc_library(
+    name = "SkShaderMaskFilter",
+    srcs = ["SkShaderMaskFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkCanvas",
+        "//include/core:SkString",
+        "//include/effects:SkShaderMaskFilter",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkReadBuffer",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/shaders:SkShaderBase",
+    ],
+)
+
+cc_library(
+    name = "SkTableColorFilter",
+    srcs = ["SkTableColorFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkString",
+        "//include/effects:SkTableColorFilter",
+        "//include/gpu:GrRecordingContext",
+        "//include/private:SkColorData",
+        "//include/private:SkTo",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkColorFilterBase",
+        "//src/core:SkEffectPriv",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkVM",
+        "//src/core:SkWriteBuffer",
+        "//src/gpu:GrColorInfo",
+        "//src/gpu:GrFragmentProcessor",
+        "//src/gpu:GrRecordingContextPriv",
+        "//src/gpu:SkGr",
+        "//src/gpu/effects:GrTextureEffect",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+    ],
+)
+
+cc_library(
+    name = "SkTableMaskFilter",
+    srcs = ["SkTableMaskFilter.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkString",
+        "//include/effects:SkTableMaskFilter",
+        "//include/private:SkFixed",
+        "//include/private:SkTPin",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "SkTrimPE",
+    hdrs = ["SkTrimPE.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/effects:SkTrimPathEffect",
+        "//src/core:SkPathEffectBase",
+    ],
+)
+
+cc_library(
+    name = "SkTrimPathEffect",
+    srcs = ["SkTrimPathEffect.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPathMeasure",
+        "//include/effects:SkTrimPathEffect",
+        "//include/private:SkTPin",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/effects:SkTrimPE",
     ],
 )
