@@ -1,0 +1,286 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrMtlAttachment",
+    hdrs = ["GrMtlAttachment.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu/mtl:GrMtlTypes",
+        "//src/gpu:GrAttachment",
+    ],
+)
+
+cc_library(
+    name = "GrMtlBuffer",
+    hdrs = ["GrMtlBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlUniformHandler",
+        "//src/gpu:GrGpuBuffer",
+    ],
+)
+
+cc_library(
+    name = "GrMtlCaps",
+    hdrs = ["GrMtlCaps.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlAttachment",
+        "//include/private:SkTDArray",
+        "//src/gpu:GrCaps",
+    ],
+)
+
+cc_library(
+    name = "GrMtlCommandBuffer",
+    hdrs = ["GrMtlCommandBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlRenderCommandEncoder",
+        ":GrMtlUtil",
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+        "//src/gpu:GrBuffer",
+        "//src/gpu:GrManagedResource",
+        "//src/gpu:GrRefCnt",
+        "//src/gpu:GrSurface",
+    ],
+)
+
+cc_library(
+    name = "GrMtlCppUtil",
+    hdrs = ["GrMtlCppUtil.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkImage",
+        "//include/gpu/mtl:GrMtlTypes",
+        "//include/private:GrTypesPriv",
+    ],
+)
+
+cc_library(
+    name = "GrMtlDepthStencil",
+    hdrs = ["GrMtlDepthStencil.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu:GrTypes",
+        "//src/core:SkOpts",
+        "//src/gpu:GrManagedResource",
+    ],
+)
+
+cc_library(
+    name = "GrMtlFramebuffer",
+    hdrs = ["GrMtlFramebuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu:GrTypes",
+        "//include/gpu/mtl:GrMtlTypes",
+        "//include/private:GrTypesPriv",
+    ],
+)
+
+cc_library(
+    name = "GrMtlGpu",
+    hdrs = ["GrMtlGpu.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlAttachment",
+        ":GrMtlCaps",
+        ":GrMtlCommandBuffer",
+        ":GrMtlResourceProvider",
+        ":GrMtlUtil",
+        "//include/gpu/mtl:GrMtlBackendContext",
+        "//include/private:GrMtlTypesPriv",
+        "//include/private:SkDeque",
+        "//src/gpu:GrFinishCallbacks",
+        "//src/gpu:GrGpu",
+        "//src/gpu:GrRenderTarget",
+        "//src/gpu:GrRingBuffer",
+        "//src/gpu:GrSemaphore",
+        "//src/gpu:GrStagingBufferManager",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrMtlOpsRenderPass",
+    hdrs = ["GrMtlOpsRenderPass.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlGpu",
+        "//src/gpu:GrOpFlushState",
+        "//src/gpu:GrOpsRenderPass",
+    ],
+)
+
+cc_library(
+    name = "GrMtlPipeline",
+    hdrs = ["GrMtlPipeline.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu:GrManagedResource"],
+)
+
+cc_library(
+    name = "GrMtlPipelineState",
+    hdrs = ["GrMtlPipelineState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlBuffer",
+        ":GrMtlPipeline",
+        ":GrMtlPipelineStateDataManager",
+        "//include/private:GrTypesPriv",
+        "//src/gpu:GrStencilSettings",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrMtlPipelineStateBuilder",
+    hdrs = ["GrMtlPipelineStateBuilder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlUniformHandler",
+        ":GrMtlVaryingHandler",
+        "//src/gpu:GrPipeline",
+        "//src/gpu/glsl:GrGLSLProgramBuilder",
+        "//src/sksl:SkSLCompiler",
+    ],
+)
+
+cc_library(
+    name = "GrMtlPipelineStateDataManager",
+    hdrs = ["GrMtlPipelineStateDataManager.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlUniformHandler",
+        "//src/core:SkAutoMalloc",
+        "//src/gpu:GrUniformDataManager",
+    ],
+)
+
+cc_library(
+    name = "GrMtlRenderCommandEncoder",
+    hdrs = ["GrMtlRenderCommandEncoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlSampler",
+        ":GrMtlUniformHandler",
+        ":GrMtlUtil",
+        "//src/gpu:GrSamplerState",
+    ],
+)
+
+cc_library(
+    name = "GrMtlRenderTarget",
+    hdrs = ["GrMtlRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlAttachment",
+        ":GrMtlFramebuffer",
+        "//include/gpu:GrBackendSurface",
+        "//src/gpu:GrGpu",
+        "//src/gpu:GrRenderTarget",
+    ],
+)
+
+cc_library(
+    name = "GrMtlResourceProvider",
+    hdrs = ["GrMtlResourceProvider.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlDepthStencil",
+        ":GrMtlPipeline",
+        ":GrMtlPipelineStateBuilder",
+        ":GrMtlSampler",
+        "//include/private:SkSpinlock",
+        "//include/private:SkTArray",
+        "//src/core:SkLRUCache",
+        "//src/core:SkTDynamicHash",
+        "//src/gpu:GrProgramDesc",
+        "//src/gpu:GrThreadSafePipelineBuilder",
+    ],
+)
+
+cc_library(
+    name = "GrMtlSampler",
+    hdrs = ["GrMtlSampler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkOpts",
+        "//src/gpu:GrManagedResource",
+    ],
+)
+
+cc_library(
+    name = "GrMtlSemaphore",
+    hdrs = ["GrMtlSemaphore.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlUtil",
+        "//include/gpu:GrBackendSemaphore",
+        "//include/private:GrTypesPriv",
+        "//src/gpu:GrManagedResource",
+        "//src/gpu:GrSemaphore",
+    ],
+)
+
+cc_library(
+    name = "GrMtlTexture",
+    hdrs = ["GrMtlTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlAttachment",
+        "//src/gpu:GrTexture",
+    ],
+)
+
+cc_library(
+    name = "GrMtlTextureRenderTarget",
+    hdrs = ["GrMtlTextureRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMtlRenderTarget",
+        ":GrMtlTexture",
+    ],
+)
+
+cc_library(
+    name = "GrMtlTrampoline",
+    hdrs = ["GrMtlTrampoline.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "GrMtlUniformHandler",
+    hdrs = ["GrMtlUniformHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//src/core:SkTBlockList",
+        "//src/gpu:GrShaderVar",
+        "//src/gpu/glsl:GrGLSLUniformHandler",
+    ],
+)
+
+cc_library(
+    name = "GrMtlUtil",
+    hdrs = ["GrMtlUtil.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/gpu:GrBackendSurface",
+        "//include/private:GrMtlTypesPriv",
+        "//include/private:GrTypesPriv",
+        "//src/sksl/ir:SkSLProgram",
+    ],
+)
+
+cc_library(
+    name = "GrMtlVaryingHandler",
+    hdrs = ["GrMtlVaryingHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu/glsl:GrGLSLVarying"],
+)

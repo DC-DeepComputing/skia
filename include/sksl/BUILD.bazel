@@ -1,22 +1,169 @@
-package(default_visibility = ["//visibility:public"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "hdrs",
-    srcs = [
-        "DSL.h",
-        "DSLBlock.h",
-        "DSLCase.h",
-        "DSLCore.h",
-        "DSLExpression.h",
-        "DSLFunction.h",
-        "DSLLayout.h",
-        "DSLModifiers.h",
-        "DSLRuntimeEffects.h",
-        "DSLStatement.h",
-        "DSLSymbols.h",
-        "DSLType.h",
-        "DSLVar.h",
-        "DSLWrapper.h",
-        "SkSLErrorReporter.h",
+cc_library(
+    name = "DSL",
+    hdrs = ["DSL.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":DSLCore"],
+)
+
+cc_library(
+    name = "DSLBlock",
+    hdrs = ["DSLBlock.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLExpression",
+        ":DSLStatement",
+        "//include/private:SkSLDefines",
+    ],
+)
+
+cc_library(
+    name = "DSLCase",
+    hdrs = ["DSLCase.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLExpression",
+        ":DSLStatement",
+        "//include/private:SkSLDefines",
+    ],
+)
+
+cc_library(
+    name = "DSLCore",
+    hdrs = ["DSLCore.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLBlock",
+        ":DSLCase",
+        ":DSLExpression",
+        ":DSLFunction",
+        ":DSLStatement",
+        ":DSLType",
+        ":DSLVar",
+        ":DSLWrapper",
+        ":SkSLErrorReporter",
+        "//include/private:SkSLProgramKind",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "DSLExpression",
+    hdrs = ["DSLExpression.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLWrapper",
+        ":SkSLErrorReporter",
+        "//include/core:SkStringView",
+        "//include/core:SkTypes",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "DSLFunction",
+    hdrs = ["DSLFunction.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLBlock",
+        ":DSLExpression",
+        ":DSLType",
+        ":DSLVar",
+        ":DSLWrapper",
+    ],
+)
+
+cc_library(
+    name = "DSLLayout",
+    hdrs = ["DSLLayout.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLErrorReporter",
+        "//include/private:SkSLLayout",
+    ],
+)
+
+cc_library(
+    name = "DSLModifiers",
+    hdrs = ["DSLModifiers.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLLayout",
+        "//include/core:SkSpan",
+        "//include/private:SkSLModifiers",
+    ],
+)
+
+cc_library(
+    name = "DSLRuntimeEffects",
+    hdrs = ["DSLRuntimeEffects.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSL",
+        "//include/effects:SkRuntimeEffect",
+    ],
+)
+
+cc_library(
+    name = "DSLStatement",
+    hdrs = ["DSLStatement.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSLErrorReporter",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkSLStatement",
+    ],
+)
+
+cc_library(
+    name = "DSLSymbols",
+    hdrs = ["DSLSymbols.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLExpression",
+        "//include/core:SkStringView",
+        "//include/private:SkSLString",
+    ],
+)
+
+cc_library(
+    name = "DSLType",
+    hdrs = ["DSLType.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLExpression",
+        ":DSLModifiers",
+        "//include/core:SkSpan",
+        "//include/private:SkSLString",
+    ],
+)
+
+cc_library(
+    name = "DSLVar",
+    hdrs = ["DSLVar.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DSLExpression",
+        ":DSLModifiers",
+        ":DSLType",
+    ],
+)
+
+cc_library(
+    name = "DSLWrapper",
+    hdrs = ["DSLWrapper.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkSLErrorReporter",
+    hdrs = ["SkSLErrorReporter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStringView",
+        "//include/core:SkTypes",
+        "//include/private:SkSLString",
     ],
 )

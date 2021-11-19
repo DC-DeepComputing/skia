@@ -1,0 +1,162 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrAAConvexTessellator",
+    srcs = ["GrAAConvexTessellator.cpp"],
+    hdrs = ["GrAAConvexTessellator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPathUtils",
+        "//include/core:SkCanvas",
+        "//include/core:SkColor",
+        "//include/core:SkPaint",
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/core:SkScalar",
+        "//include/core:SkString",
+        "//include/core:SkStrokeRec",
+        "//include/private:SkTDArray",
+        "//include/private:SkTPin",
+        "//src/core:SkGeometry",
+        "//src/core:SkPointPriv",
+    ],
+)
+
+cc_library(
+    name = "GrAATriangulator",
+    srcs = ["GrAATriangulator.cpp"],
+    hdrs = ["GrAATriangulator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTriangulator",
+        "//src/gpu:GrEagerVertexAllocator",
+    ],
+)
+
+cc_library(
+    name = "GrInnerFanTriangulator",
+    hdrs = ["GrInnerFanTriangulator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrTriangulator"],
+)
+
+cc_library(
+    name = "GrPathUtils",
+    srcs = ["GrPathUtils.cpp"],
+    hdrs = ["GrPathUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRect",
+        "//include/gpu:GrTypes",
+        "//include/private:SkTArray",
+        "//src/core:SkGeometry",
+        "//src/core:SkMathPriv",
+        "//src/core:SkPathPriv",
+        "//src/core:SkPointPriv",
+        "//src/core:SkUtils",
+        "//src/gpu:BufferWriter",
+        "//src/gpu:GrVx",
+        "//src/gpu/tessellate:WangsFormula",
+    ],
+)
+
+cc_library(
+    name = "GrQuad",
+    srcs = ["GrQuad.cpp"],
+    hdrs = ["GrQuad.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/core:SkPoint",
+        "//include/core:SkPoint3",
+        "//include/private:SkVx",
+        "//src/gpu:BufferWriter",
+    ],
+)
+
+cc_library(
+    name = "GrQuadBuffer",
+    hdrs = ["GrQuadBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrQuad",
+        "//include/private:SkTDArray",
+    ],
+)
+
+cc_library(
+    name = "GrQuadUtils",
+    srcs = ["GrQuadUtils.cpp"],
+    hdrs = ["GrQuadUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrQuad",
+        "//include/core:SkRect",
+        "//include/private:GrTypesPriv",
+        "//include/private:SkVx",
+        "//src/core:SkPathPriv",
+    ],
+)
+
+cc_library(
+    name = "GrRect",
+    hdrs = ["GrRect.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/core:SkRect",
+        "//include/core:SkTypes",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "GrShape",
+    srcs = ["GrShape.cpp"],
+    hdrs = ["GrShape.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/core:SkRRect",
+        "//include/core:SkRect",
+        "//src/core:SkPathPriv",
+        "//src/core:SkRRectPriv",
+    ],
+)
+
+cc_library(
+    name = "GrStyledShape",
+    srcs = ["GrStyledShape.cpp"],
+    hdrs = ["GrStyledShape.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrShape",
+        "//include/core:SkPath",
+        "//include/core:SkRRect",
+        "//include/private:SkIDChangeListener",
+        "//include/private:SkTemplates",
+        "//src/core:SkPathPriv",
+        "//src/core:SkTLazy",
+        "//src/gpu:GrStyle",
+    ],
+)
+
+cc_library(
+    name = "GrTriangulator",
+    srcs = ["GrTriangulator.cpp"],
+    hdrs = ["GrTriangulator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPathUtils",
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/private:SkColorData",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkGeometry",
+        "//src/core:SkPointPriv",
+        "//src/gpu:BufferWriter",
+        "//src/gpu:GrColor",
+        "//src/gpu:GrEagerVertexAllocator",
+    ],
+)

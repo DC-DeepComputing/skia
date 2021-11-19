@@ -1,0 +1,50 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkDOM",
+    srcs = ["SkDOM.cpp"],
+    hdrs = ["SkDOM.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkXMLParser",
+        ":SkXMLWriter",
+        "//include/core:SkScalar",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTDArray",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//include/utils:SkParse",
+        "//src/core:SkArenaAlloc",
+    ],
+)
+
+cc_library(
+    name = "SkXMLParser",
+    srcs = ["SkXMLParser.cpp"],
+    hdrs = ["SkXMLParser.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkXMLWriter",
+    srcs = ["SkXMLWriter.cpp"],
+    hdrs = ["SkXMLWriter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkDOM",
+        ":SkXMLParser",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/private:SkTDArray",
+        "//include/private:SkTo",
+    ],
+)

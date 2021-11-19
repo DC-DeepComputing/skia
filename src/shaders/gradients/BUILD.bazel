@@ -1,0 +1,143 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "Sk4fGradientBase",
+    srcs = ["Sk4fGradientBase.cpp"],
+    hdrs = ["Sk4fGradientBase.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Sk4fGradientPriv",
+        ":SkGradientShaderPriv",
+        "//include/core:SkColor",
+        "//include/core:SkPaint",
+        "//include/private:SkNx",
+        "//include/private:SkTArray",
+        "//src/core:SkMatrixPriv",
+        "//src/shaders:SkShaderBase",
+    ],
+)
+
+cc_library(
+    name = "Sk4fGradientPriv",
+    hdrs = ["Sk4fGradientPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColor",
+        "//include/core:SkImageInfo",
+        "//include/private:SkColorData",
+        "//include/private:SkHalf",
+        "//include/private:SkNx",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "Sk4fLinearGradient",
+    srcs = ["Sk4fLinearGradient.cpp"],
+    hdrs = ["Sk4fLinearGradient.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Sk4fGradientBase",
+        ":SkLinearGradient",
+        "//include/core:SkPaint",
+        "//include/private:SkTPin",
+    ],
+)
+
+cc_library(
+    name = "SkGradientShader",
+    srcs = ["SkGradientShader.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Sk4fLinearGradient",
+        ":SkGradientShaderPriv",
+        ":SkLinearGradient",
+        ":SkRadialGradient",
+        ":SkSweepGradient",
+        ":SkTwoPointConicalGradient",
+        "//include/core:SkMallocPixelRef",
+        "//include/private:SkFloatBits",
+        "//include/private:SkHalf",
+        "//include/private:SkTPin",
+        "//include/private:SkVx",
+        "//src/core:SkColorSpacePriv",
+        "//src/core:SkConvertPixels",
+        "//src/core:SkMatrixProvider",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkVM",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "SkGradientShaderPriv",
+    hdrs = ["SkGradientShaderPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMatrix",
+        "//include/effects:SkGradientShader",
+        "//include/private:SkTArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkVM",
+        "//src/shaders:SkShaderBase",
+    ],
+)
+
+cc_library(
+    name = "SkLinearGradient",
+    srcs = ["SkLinearGradient.cpp"],
+    hdrs = ["SkLinearGradient.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Sk4fLinearGradient",
+        ":SkGradientShaderPriv",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/gpu/gradients:GrGradientShader",
+    ],
+)
+
+cc_library(
+    name = "SkRadialGradient",
+    srcs = ["SkRadialGradient.cpp"],
+    hdrs = ["SkRadialGradient.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkGradientShaderPriv",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/gpu/gradients:GrGradientShader",
+    ],
+)
+
+cc_library(
+    name = "SkSweepGradient",
+    srcs = ["SkSweepGradient.cpp"],
+    hdrs = ["SkSweepGradient.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkGradientShaderPriv",
+        "//include/private:SkFloatingPoint",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/gpu/gradients:GrGradientShader",
+    ],
+)
+
+cc_library(
+    name = "SkTwoPointConicalGradient",
+    srcs = ["SkTwoPointConicalGradient.cpp"],
+    hdrs = ["SkTwoPointConicalGradient.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkGradientShaderPriv",
+        "//include/private:SkFloatingPoint",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkWriteBuffer",
+        "//src/gpu/gradients:GrGradientShader",
+    ],
+)

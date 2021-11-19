@@ -1,0 +1,51 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkSVGCanvas",
+    srcs = ["SkSVGCanvas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkSVGDevice",
+        "//include/svg:SkSVGCanvas",
+        "//src/xml:SkXMLWriter",
+    ],
+)
+
+cc_library(
+    name = "SkSVGDevice",
+    srcs = ["SkSVGDevice.cpp"],
+    hdrs = ["SkSVGDevice.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkBlendMode",
+        "//include/core:SkColorFilter",
+        "//include/core:SkData",
+        "//include/core:SkImage",
+        "//include/core:SkImageEncoder",
+        "//include/core:SkPaint",
+        "//include/core:SkPathBuilder",
+        "//include/core:SkShader",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/private:SkChecksum",
+        "//include/private:SkTArray",
+        "//include/private:SkTHash",
+        "//include/private:SkTPin",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//include/svg:SkSVGCanvas",
+        "//include/utils:SkBase64",
+        "//include/utils:SkParsePath",
+        "//src/codec:SkJpegCodec",
+        "//src/core:SkAnnotationKeys",
+        "//src/core:SkClipStack",
+        "//src/core:SkClipStackDevice",
+        "//src/core:SkDraw",
+        "//src/core:SkFontPriv",
+        "//src/core:SkUtils",
+        "//src/image:SkImage_Base",
+        "//src/shaders:SkShaderBase",
+        "//src/xml:SkXMLWriter",
+    ],
+)
