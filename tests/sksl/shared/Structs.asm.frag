@@ -1,3 +1,8 @@
+### Compilation failed:
+
+error: SPIR-V validation error: Binding cannot be applied to structure members
+  OpMemberDecorate %B 2 Binding 1
+
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
@@ -68,3 +73,5 @@ OpStore %26 %float_0
 OpStore %34 %33
 OpReturn
 OpFunctionEnd
+
+1 error

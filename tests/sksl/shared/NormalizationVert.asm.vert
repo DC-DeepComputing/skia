@@ -1,3 +1,8 @@
+### Compilation failed:
+
+error: SPIR-V validation error: DescriptorSet cannot be applied to structure members
+  OpMemberDecorate %_UniformBuffer 0 DescriptorSet 0
+
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
@@ -63,3 +68,5 @@ OpStore %18 %15
 OpStore %44 %43
 OpReturn
 OpFunctionEnd
+
+1 error

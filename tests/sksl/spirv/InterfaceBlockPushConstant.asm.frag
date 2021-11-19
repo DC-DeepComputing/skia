@@ -1,3 +1,8 @@
+### Compilation failed:
+
+error: SPIR-V validation error: Binding decoration on target <id> '3[%3]' must be in the StorageBuffer, Uniform, or UniformConstant storage class
+  OpDecorate %3 Binding 456
+
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
@@ -69,3 +74,5 @@ OpDecorate %34 RelaxedPrecision
 OpStore %sk_FragColor %34
 OpReturn
 OpFunctionEnd
+
+1 error
