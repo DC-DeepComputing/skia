@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "327f8a74_58fbfa8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-19T18:29:08Z",
+      "side": 1,
+      "message": "Right now, I have the GrSlug simulating drawTextBlob in the prototype, and everything draws properly. I would like to get the API nailed down, and then add all the machinery for GrSlug.",
+      "revId": "0acf6640109c7c9cdd64870a6d9e1267dd5d8c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
