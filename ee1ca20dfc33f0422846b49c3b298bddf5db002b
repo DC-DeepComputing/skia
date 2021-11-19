@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59b0c733_b3ceaa6f",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T19:22:45Z",
+      "side": 1,
+      "message": "can these be moved private and have everything use BindBufferInfo version?",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd8928c6_57a2d57b",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T19:22:45Z",
+      "side": 1,
+      "message": "what about bindDrawBuffers? It is a little confusing to me to call this bind vertex buffers but also bind index buffers.",
+      "range": {
+        "startLine": 82,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 26
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f5bb3a_e710a38c",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T19:22:45Z",
+      "side": 1,
+      "message": "Why is this needed to be declared in the class here? Similar question for SortKey.",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7373cd04_94ae2e7f",
         "filename": "experimental/graphite/src/DrawWriter.h",
         "patchSetId": 11
@@ -66,6 +135,29 @@
         "startChar": 4,
         "endLine": 217,
         "endChar": 44
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "946f9964_c33aebbd",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T19:22:45Z",
+      "side": 1,
+      "message": "Why are we passing in a ResourceProvider here? The only resource i could think we\u0027d need here is if we need to allocate a new buffer. But that should be handled by DrawBufferManager in the DrawWriter right?\n\nMy worry here is if anyone starts trying to get new resources at this stage in the recorder causing a lot of cross thread calls needing to happen to the resource cache.",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 60
       },
       "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
