@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d31bacff_0e800735",
+        "filename": "experimental/graphite/src/ShaderCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T20:30:28Z",
+      "side": 1,
+      "message": "I assume we dont\u0027 need this file?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f25613_fd12b092",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T20:30:28Z",
+      "side": 1,
+      "message": "I assume this class is needed because we need mtl::Caps access to the data members of sksl::ShaderCaps. One thought do we really not want to just add the friends directly in sksl::ShaderCaps?",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
