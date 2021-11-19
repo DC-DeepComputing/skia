@@ -65,6 +65,8 @@ skia_graphite_sources = [
   "$_src/ResourceProvider.cpp",
   "$_src/ResourceProvider.h",
   "$_src/ResourceTypes.h",
+  "$_src/ShaderCaps.cpp",
+  "$_src/ShaderCaps.h",
   "$_src/SkStuff.cpp",
   "$_src/Surface_Graphite.cpp",
   "$_src/Surface_Graphite.h",

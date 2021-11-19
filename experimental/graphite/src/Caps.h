@@ -14,11 +14,14 @@
 
 namespace skgpu {
 
+class ShaderCaps;
 class TextureInfo;
 
 class Caps : public SkRefCnt {
 public:
-    ~Caps() override {}
+    ~Caps() override;
+
+    const ShaderCaps* shaderCaps() const { return fShaderCaps.get(); }
 
     virtual TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                                      uint32_t levelCount,
@@ -35,6 +38,8 @@ public:
 
 protected:
     Caps();
+
+    std::unique_ptr<ShaderCaps> fShaderCaps;
 
 private:
 };
