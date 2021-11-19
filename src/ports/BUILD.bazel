@@ -1,116 +1,941 @@
-# https://github.com/bazelbuild/bazel-skylib
-load("@bazel_skylib//lib:selects.bzl", "selects")
-load("//bazel:macros.bzl", "select_multi")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(default_visibility = ["//visibility:private"])
+cc_library(
+    name = "SkDebug_android",
+    srcs = ["SkDebug_android.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
 
-filegroup(
-    name = "typeface_freetype",
-    srcs = [
-        "SkFontHost_FreeType.cpp",
-        "SkFontHost_FreeType_common.cpp",
-        "SkFontHost_FreeType_common.h",
+cc_library(
+    name = "SkDebug_stdio",
+    srcs = ["SkDebug_stdio.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkDebug_win",
+    srcs = ["SkDebug_win.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//src/core:SkLeanWindows",
     ],
 )
 
-filegroup(
-    name = "fontmgr_factory",
-    srcs = selects.with_or({
-        "//bazel/common_config_settings:custom_embedded_fontmgr_factory": [
-            "SkFontMgr_custom_embedded_factory.cpp",
-        ],
-        ("//bazel/common_config_settings:empty_fontmgr_factory", "//conditions:default"): [
-            "SkFontMgr_empty_factory.cpp",
-        ],
-    }),
-)
-
-filegroup(
-    name = "custom_directory_fontmgr_srcs",
-    srcs = [
-        "SkFontMgr_custom.cpp",
-        "SkFontMgr_custom.h",
-        "SkFontMgr_custom_directory.cpp",
-        ":typeface_freetype",
+cc_library(
+    name = "SkDiscardableMemory_none",
+    srcs = ["SkDiscardableMemory_none.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//src/core:SkDiscardableMemory",
+        "//src/lazy:SkDiscardableMemoryPool",
     ],
 )
 
-filegroup(
-    name = "custom_embedded_fontmgr_srcs",
-    srcs = [
-        "SkFontMgr_custom.cpp",
-        "SkFontMgr_custom.h",
-        "SkFontMgr_custom_embedded.cpp",
-        ":typeface_freetype",
+cc_library(
+    name = "SkFontConfigInterface",
+    srcs = ["SkFontConfigInterface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkRefCnt",
+        "//include/ports:SkFontConfigInterface",
+        "//include/private:SkMutex",
     ],
 )
 
-filegroup(
-    name = "custom_empty_fontmgr_srcs",
-    srcs = [
-        "SkFontMgr_custom.cpp",
-        "SkFontMgr_custom.h",
-        "SkFontMgr_custom_empty.cpp",
-        ":typeface_freetype",
+cc_library(
+    name = "SkFontConfigInterface_direct",
+    srcs = ["SkFontConfigInterface_direct.cpp"],
+    hdrs = ["SkFontConfigInterface_direct.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontStyle",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/ports:SkFontConfigInterface",
+        "//include/private:SkFixed",
+        "//include/private:SkMutex",
+        "//include/private:SkTArray",
+        "//include/private:SkTDArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkAutoMalloc",
+        "//src/core:SkBuffer",
     ],
 )
 
-filegroup(
-    name = "global_init",
-    srcs = [
-        "SkGlobalInitialization_default.cpp",  # TODO(kjlubick) use select
+cc_library(
+    name = "SkFontConfigInterface_direct_factory",
+    srcs = ["SkFontConfigInterface_direct_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontConfigInterface_direct",
+        "//include/private:SkOnce",
     ],
 )
 
-filegroup(
-    name = "image_generator",
-    srcs = [
-        "SkImageGenerator_skia.cpp",  # TODO(kjlubick) use select
+cc_library(
+    name = "SkFontConfigTypeface",
+    hdrs = ["SkFontConfigTypeface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontHost_FreeType_common",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/ports:SkFontConfigInterface",
+        "//src/core:SkFontDescriptor",
     ],
 )
 
-filegroup(
-    name = "osfile",
-    srcs = ["SkOSFile_stdio.cpp"] + select({
-        "@platforms//os:windows": ["SkOSFile_win.cpp"],
-        "//conditions:default": ["SkOSFile_posix.cpp"],
-    }),
-)
-
-filegroup(
-    name = "malloc",
-    srcs = [
-        "SkMemory_malloc.cpp",  # TODO(kjlubick) use select
+cc_library(
+    name = "SkFontHost_FreeType",
+    srcs = ["SkFontHost_FreeType.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontHost_FreeType_common",
+        "//include/core:SkBitmap",
+        "//include/core:SkCanvas",
+        "//include/core:SkData",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkPath",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/private:SkColorData",
+        "//include/private:SkMalloc",
+        "//include/private:SkMutex",
+        "//include/private:SkTPin",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkDescriptor",
+        "//src/core:SkFDot6",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkGlyph",
+        "//src/core:SkMask",
+        "//src/core:SkMaskGamma",
+        "//src/core:SkScalerContext",
+        "//src/core:SkTSearch",
+        "//src/core:SkUtils",
+        "//src/sfnt:SkOTUtils",
+        "//src/utils:SkCallableTraits",
+        "//src/utils:SkMatrix22",
     ],
 )
 
-filegroup(
-    name = "skdebug",
-    srcs = select({
-        "@platforms//os:windows": ["SkDebug_win.cpp"],
-        "@platforms//os:android": ["SkDebug_android.cpp"],
-        "//conditions:default": ["SkDebug_stdio.cpp"],
-    }),
+cc_library(
+    name = "SkFontHost_FreeType_common",
+    srcs = ["SkFontHost_FreeType_common.cpp"],
+    hdrs = ["SkFontHost_FreeType_common.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkCanvas",
+        "//include/core:SkColor",
+        "//include/core:SkFontMgr",
+        "//include/core:SkPath",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/effects:SkGradientShader",
+        "//include/private:SkColorData",
+        "//include/private:SkTo",
+        "//src/core:SkFDot6",
+        "//src/core:SkGlyph",
+        "//src/core:SkScalerContext",
+        "//src/core:SkScopeExit",
+        "//src/core:SkSharedMutex",
+        "//src/utils:SkCharToGlyphCache",
+    ],
+)
+
+cc_library(
+    name = "SkFontHost_win",
+    srcs = ["SkFontHost_win.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//include/core:SkDataTable",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontMgr",
+        "//include/core:SkPath",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/ports:SkTypeface_win",
+        "//include/private:SkColorData",
+        "//include/private:SkMacros",
+        "//include/private:SkOnce",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//include/utils:SkBase64",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkDescriptor",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkGlyph",
+        "//src/core:SkLeanWindows",
+        "//src/core:SkMaskGamma",
+        "//src/core:SkStrikeCache",
+        "//src/core:SkTypefaceCache",
+        "//src/sfnt:SkOTTable_OS_2",
+        "//src/sfnt:SkOTTable_maxp",
+        "//src/sfnt:SkOTTable_name",
+        "//src/sfnt:SkOTUtils",
+        "//src/sfnt:SkSFNTHeader",
+        "//src/utils:SkMatrix22",
+        "//src/utils:SkUTF",
+        "//src/utils/win:SkHRESULT",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_FontConfigInterface",
+    srcs = ["SkFontMgr_FontConfigInterface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontConfigTypeface",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/ports:SkFontConfigInterface",
+        "//include/ports:SkFontMgr_FontConfigInterface",
+        "//include/private:SkMutex",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkResourceCache",
+        "//src/core:SkTypefaceCache",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_FontConfigInterface_factory",
+    srcs = ["SkFontMgr_FontConfigInterface_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/ports:SkFontConfigInterface",
+        "//include/ports:SkFontMgr_FontConfigInterface",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_android",
+    srcs = ["SkFontMgr_android.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontHost_FreeType_common",
+        ":SkFontMgr_android_parser",
+        "//include/core:SkData",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkPaint",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_android",
+        "//include/private:SkFixed",
+        "//include/private:SkTArray",
+        "//include/private:SkTDArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkOSFile",
+        "//src/core:SkTSearch",
+        "//src/core:SkTypefaceCache",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_android_factory",
+    srcs = ["SkFontMgr_android_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_android",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_android_parser",
+    srcs = ["SkFontMgr_android_parser.cpp"],
+    hdrs = ["SkFontMgr_android_parser.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkFixed",
+        "//include/private:SkMalloc",
+        "//include/private:SkTArray",
+        "//include/private:SkTDArray",
+        "//include/private:SkTHash",
+        "//include/private:SkTLogic",
+        "//include/private:SkTemplates",
+        "//src/core:SkOSFile",
+        "//src/core:SkTSearch",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom",
+    srcs = ["SkFontMgr_custom.cpp"],
+    hdrs = ["SkFontMgr_custom.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontHost_FreeType_common",
+        "//include/core:SkFontArguments",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/private:SkTArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkFontDescriptor",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_directory",
+    srcs = ["SkFontMgr_custom_directory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontMgr_custom",
+        "//include/core:SkStream",
+        "//include/ports:SkFontMgr_directory",
+        "//src/core:SkOSFile",
+        "//src/utils:SkOSPath",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_directory_factory",
+    srcs = ["SkFontMgr_custom_directory_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/ports:SkFontMgr_directory",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_embedded",
+    srcs = ["SkFontMgr_custom_embedded.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontMgr_custom",
+        "//include/core:SkStream",
+        "//src/core:SkFontDescriptor",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_embedded_factory",
+    srcs = ["SkFontMgr_custom_embedded_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkFontMgr"],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_empty",
+    srcs = ["SkFontMgr_custom_empty.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontMgr_custom",
+        "//include/ports:SkFontMgr_empty",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_custom_empty_factory",
+    srcs = ["SkFontMgr_custom_empty_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/ports:SkFontMgr_empty",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_empty_factory",
+    srcs = ["SkFontMgr_empty_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkFontMgr"],
+)
+
+cc_library(
+    name = "SkFontMgr_fontconfig",
+    srcs = ["SkFontMgr_fontconfig.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontHost_FreeType_common",
+        "//include/core:SkDataTable",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkMath",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/private:SkFixed",
+        "//include/private:SkMutex",
+        "//include/private:SkTDArray",
+        "//include/private:SkTemplates",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkOSFile",
+        "//src/core:SkTypefaceCache",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_fontconfig_factory",
+    srcs = ["SkFontMgr_fontconfig_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_fontconfig",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_fuchsia",
+    srcs = ["SkFontMgr_fuchsia.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkFontMgr_custom",
+        "//include/core:SkFontMgr",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/ports:SkFontMgr_fuchsia",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkTypefaceCache",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_mac_ct",
+    srcs = ["SkFontMgr_mac_ct.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypeface_mac_ct",
+        "//include/core:SkData",
+        "//include/core:SkFontArguments",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_mac_ct",
+        "//include/private:SkFixed",
+        "//include/private:SkOnce",
+        "//include/private:SkTPin",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkFontDescriptor",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_mac_ct_factory",
+    srcs = ["SkFontMgr_mac_ct_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_mac_ct",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_win_dw",
+    srcs = ["SkFontMgr_win_dw.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypeface_win_dw",
+        "//include/core:SkFontMgr",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/ports:SkFontMgr_indirect",
+        "//include/ports:SkTypeface_win",
+        "//include/private:SkMutex",
+        "//include/private:SkTPin",
+        "//src/core:SkEndian",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkTypefaceCache",
+        "//src/utils:SkUTF",
+        "//src/utils/win:SkDWrite",
+        "//src/utils/win:SkDWriteFontFileStream",
+        "//src/utils/win:SkDWriteNTDDI_VERSION",
+        "//src/utils/win:SkHRESULT",
+        "//src/utils/win:SkObjBase",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
+)
+
+cc_library(
+    name = "SkFontMgr_win_dw_factory",
+    srcs = ["SkFontMgr_win_dw_factory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkTypes",
+        "//include/ports:SkTypeface_win",
+    ],
+)
+
+cc_library(
+    name = "SkGlobalInitialization_default",
+    srcs = ["SkGlobalInitialization_default.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBBHFactory",
+        "//include/core:SkColorFilter",
+        "//include/core:SkFlattenable",
+        "//include/core:SkPathEffect",
+        "//include/effects:Sk1DPathEffect",
+        "//include/effects:Sk2DPathEffect",
+        "//include/effects:SkCornerPathEffect",
+        "//include/effects:SkDiscretePathEffect",
+        "//include/effects:SkGradientShader",
+        "//include/effects:SkImageFilters",
+        "//include/effects:SkLayerDrawLooper",
+        "//include/effects:SkOverdrawColorFilter",
+        "//include/effects:SkPerlinNoiseShader",
+        "//include/effects:SkRuntimeEffect",
+        "//include/effects:SkShaderMaskFilter",
+        "//include/effects:SkTableColorFilter",
+        "//src/core:SkBlendModeBlender",
+        "//src/core:SkColorFilter_Matrix",
+        "//src/core:SkImageFilter_Base",
+        "//src/core:SkLocalMatrixImageFilter",
+        "//src/core:SkMatrixImageFilter",
+        "//src/core:SkRecordedDrawable",
+        "//src/effects:SkDashImpl",
+        "//src/effects:SkEmbossMaskFilter",
+        "//src/effects:SkOpPE",
+        "//src/effects:SkTrimPE",
+        "//src/shaders:SkBitmapProcShader",
+        "//src/shaders:SkColorFilterShader",
+        "//src/shaders:SkColorShader",
+        "//src/shaders:SkComposeShader",
+        "//src/shaders:SkEmptyShader",
+        "//src/shaders:SkImageShader",
+        "//src/shaders:SkLocalMatrixShader",
+        "//src/shaders:SkPictureShader",
+        "//src/shaders:SkShaderBase",
+    ],
+)
+
+cc_library(
+    name = "SkImageEncoder_CG",
+    srcs = ["SkImageEncoder_CG.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkData",
+        "//include/core:SkStream",
+        "//include/core:SkUnPreMultiply",
+        "//include/private:SkColorData",
+        "//include/private:SkTemplates",
+        "//include/utils/mac:SkCGUtils",
+        "//src/core:SkStreamPriv",
+        "//src/images:SkImageEncoderPriv",
+        "//src/utils/mac:SkUniqueCFRef",
+    ],
+)
+
+cc_library(
+    name = "SkImageEncoder_NDK",
+    srcs = ["SkImageEncoder_NDK.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkNDKConversions",
+        "//include/private:SkTFitsIn",
+        "//include/private:SkTo",
+        "//src/images:SkImageEncoderPriv",
+    ],
+)
+
+cc_library(
+    name = "SkImageEncoder_WIC",
+    srcs = ["SkImageEncoder_WIC.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkBitmap",
+        "//include/core:SkImageEncoder",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//include/core:SkUnPreMultiply",
+        "//include/private:SkTemplates",
+        "//src/core:SkAutoMalloc",
+        "//src/images:SkImageEncoderPriv",
+        "//src/utils/win:SkAutoCoInitialize",
+        "//src/utils/win:SkIStream",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
+)
+
+cc_library(
+    name = "SkImageGeneratorCG",
+    srcs = ["SkImageGeneratorCG.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/codec:SkEncodedOrigin",
+        "//include/ports:SkImageGeneratorCG",
+        "//include/private:SkTemplates",
+        "//include/utils/mac:SkCGUtils",
+        "//src/core:SkPixmapPriv",
+        "//src/utils/mac:SkUniqueCFRef",
+    ],
+)
+
+cc_library(
+    name = "SkImageGeneratorNDK",
+    srcs = ["SkImageGeneratorNDK.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkNDKConversions",
+        "//include/core:SkImageGenerator",
+        "//include/core:SkImageInfo",
+        "//include/ports:SkImageGeneratorNDK",
+    ],
+)
+
+cc_library(
+    name = "SkImageGeneratorWIC",
+    srcs = ["SkImageGeneratorWIC.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkStream",
+        "//include/ports:SkImageGeneratorWIC",
+        "//include/private:SkTemplates",
+        "//src/utils/win:SkIStream",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
+)
+
+cc_library(
+    name = "SkImageGenerator_none",
+    srcs = ["SkImageGenerator_none.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkImageGenerator"],
+)
+
+cc_library(
+    name = "SkImageGenerator_skia",
+    srcs = ["SkImageGenerator_skia.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//src/codec:SkCodecImageGenerator",
+    ],
+)
+
+cc_library(
+    name = "SkMemory_malloc",
+    srcs = ["SkMemory_malloc.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:SkMalloc"],
+)
+
+cc_library(
+    name = "SkMemory_mozalloc",
+    srcs = ["SkMemory_mozalloc.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkMalloc",
+    ],
+)
+
+cc_library(
+    name = "SkNDKConversions",
+    srcs = ["SkNDKConversions.cpp"],
+    hdrs = ["SkNDKConversions.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColorSpace",
+        "//include/core:SkImageInfo",
+    ],
+)
+
+cc_library(
+    name = "SkOSFile_ios",
+    hdrs = ["SkOSFile_ios.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkString",
+        "//include/ports:SkCFObject",
+    ],
+)
+
+cc_library(
+    name = "SkOSFile_posix",
+    srcs = ["SkOSFile_posix.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkOSFile_ios",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkTFitsIn",
+        "//include/private:SkTemplates",
+        "//src/core:SkOSFile",
+    ],
+)
+
+cc_library(
+    name = "SkOSFile_stdio",
+    srcs = ["SkOSFile_stdio.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkOSFile_ios",
+        "//include/core:SkTypes",
+        "//src/core:SkOSFile",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkOSFile_win",
+    srcs = ["SkOSFile_win.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkMalloc",
+        "//include/private:SkNoncopyable",
+        "//include/private:SkTFitsIn",
+        "//src/core:SkLeanWindows",
+        "//src/core:SkOSFile",
+        "//src/core:SkStringUtils",
+    ],
+)
+
+cc_library(
+    name = "SkOSLibrary",
+    hdrs = ["SkOSLibrary.h"],
     visibility = ["//:__subpackages__"],
 )
 
-filegroup(
-    name = "srcs",
-    srcs = [
-        ":fontmgr",
-        ":fontmgr_factory",
-        ":global_init",
-        ":image_generator",
-        ":malloc",
-        ":osfile",
-        ":skdebug",
-    ] + select_multi(
-        {
-            "//bazel/common_config_settings:custom_directory_fontmgr": [":custom_directory_fontmgr_srcs"],
-            "//bazel/common_config_settings:custom_embedded_fontmgr": [":custom_embedded_fontmgr_srcs"],
-            "//bazel/common_config_settings:custom_empty_fontmgr": [":custom_empty_fontmgr_srcs"],
-        },
-        default = [],
-    ),
+cc_library(
+    name = "SkOSLibrary_posix",
+    srcs = ["SkOSLibrary_posix.cpp"],
     visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkOSLibrary",
+        "//include/core:SkTypes",
+    ],
+)
+
+cc_library(
+    name = "SkOSLibrary_win",
+    srcs = ["SkOSLibrary_win.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkOSLibrary",
+        "//include/core:SkTypes",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkRemotableFontMgr_win_dw",
+    srcs = ["SkRemotableFontMgr_win_dw.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypeface_win_dw",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/ports:SkRemotableFontMgr",
+        "//include/private:SkMutex",
+        "//include/private:SkTArray",
+        "//src/utils:SkUTF",
+        "//src/utils/win:SkDWrite",
+        "//src/utils/win:SkDWriteFontFileStream",
+        "//src/utils/win:SkDWriteNTDDI_VERSION",
+        "//src/utils/win:SkHRESULT",
+        "//src/utils/win:SkObjBase",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
+)
+
+cc_library(
+    name = "SkScalerContext_mac_ct",
+    srcs = ["SkScalerContext_mac_ct.cpp"],
+    hdrs = ["SkScalerContext_mac_ct.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypeface_mac_ct",
+        "//include/core:SkColor",
+        "//include/core:SkColorPriv",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontTypes",
+        "//include/core:SkMatrix",
+        "//include/core:SkPathBuilder",
+        "//include/core:SkPoint",
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkSize",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/private:SkColorData",
+        "//include/private:SkFixed",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkAutoMalloc",
+        "//src/core:SkEndian",
+        "//src/core:SkGlyph",
+        "//src/core:SkMask",
+        "//src/core:SkMaskGamma",
+        "//src/core:SkMathPriv",
+        "//src/core:SkOpts",
+        "//src/core:SkScalerContext",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_OS_2",
+        "//src/utils/mac:SkCGBase",
+        "//src/utils/mac:SkCGGeometry",
+        "//src/utils/mac:SkCTFont",
+        "//src/utils/mac:SkUniqueCFRef",
+    ],
+)
+
+cc_library(
+    name = "SkScalerContext_win_dw",
+    srcs = ["SkScalerContext_win_dw.cpp"],
+    hdrs = ["SkScalerContext_win_dw.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkTypeface_win_dw",
+        "//include/codec:SkCodec",
+        "//include/core:SkBitmap",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkPath",
+        "//include/core:SkScalar",
+        "//include/core:SkTypes",
+        "//include/private:SkColorData",
+        "//include/private:SkMutex",
+        "//include/private:SkTo",
+        "//src/core:SkDraw",
+        "//src/core:SkEndian",
+        "//src/core:SkGlyph",
+        "//src/core:SkMaskGamma",
+        "//src/core:SkMatrixProvider",
+        "//src/core:SkRasterClip",
+        "//src/core:SkScalerContext",
+        "//src/core:SkSharedMutex",
+        "//src/sfnt:SkOTTable_EBLC",
+        "//src/sfnt:SkOTTable_EBSC",
+        "//src/sfnt:SkOTTable_gasp",
+        "//src/sfnt:SkOTTable_maxp",
+        "//src/utils:SkMatrix22",
+        "//src/utils/win:SkDWrite",
+        "//src/utils/win:SkDWriteGeometrySink",
+        "//src/utils/win:SkDWriteNTDDI_VERSION",
+        "//src/utils/win:SkHRESULT",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
+)
+
+cc_library(
+    name = "SkTLS_pthread",
+    srcs = ["SkTLS_pthread.cpp"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkTLS_win",
+    srcs = ["SkTLS_win.cpp"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkTypeface_mac_ct",
+    srcs = ["SkTypeface_mac_ct.cpp"],
+    hdrs = ["SkTypeface_mac_ct.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkScalerContext_mac_ct",
+        "//include/core:SkColor",
+        "//include/core:SkData",
+        "//include/core:SkFontArguments",
+        "//include/core:SkFontParameters",
+        "//include/core:SkFontStyle",
+        "//include/core:SkFontTypes",
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/ports:SkTypeface_mac",
+        "//include/private:SkFixed",
+        "//include/private:SkMalloc",
+        "//include/private:SkMutex",
+        "//include/private:SkOnce",
+        "//include/private:SkTDArray",
+        "//include/private:SkTPin",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkEndian",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkMask",
+        "//src/core:SkScalerContext",
+        "//src/core:SkTypefaceCache",
+        "//src/sfnt:SkOTTableTypes",
+        "//src/sfnt:SkOTTable_OS_2",
+        "//src/sfnt:SkOTTable_OS_2_V4",
+        "//src/sfnt:SkOTUtils",
+        "//src/sfnt:SkSFNTHeader",
+        "//src/utils:SkUTF",
+        "//src/utils/mac:SkCGBase",
+        "//src/utils/mac:SkCGGeometry",
+        "//src/utils/mac:SkCTFont",
+        "//src/utils/mac:SkUniqueCFRef",
+    ],
+)
+
+cc_library(
+    name = "SkTypeface_win_dw",
+    srcs = ["SkTypeface_win_dw.cpp"],
+    hdrs = ["SkTypeface_win_dw.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkScalerContext_win_dw",
+        "//include/core:SkData",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkFontDescriptor",
+        "//src/core:SkFontStream",
+        "//src/core:SkLeanWindows",
+        "//src/core:SkScalerContext",
+        "//src/core:SkTypefaceCache",
+        "//src/sfnt:SkOTTable_OS_2",
+        "//src/sfnt:SkOTTable_fvar",
+        "//src/sfnt:SkOTTable_head",
+        "//src/sfnt:SkOTTable_hhea",
+        "//src/sfnt:SkOTTable_post",
+        "//src/sfnt:SkOTUtils",
+        "//src/utils/win:SkDWrite",
+        "//src/utils/win:SkDWriteFontFileStream",
+        "//src/utils/win:SkDWriteNTDDI_VERSION",
+        "//src/utils/win:SkHRESULT",
+        "//src/utils/win:SkTScopedComPtr",
+    ],
 )

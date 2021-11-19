@@ -1,0 +1,49 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "vk_platform",
+    hdrs = ["vk_platform.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan",
+    hdrs = ["vulkan.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_android",
+    hdrs = ["vulkan_android.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_core",
+    hdrs = ["vulkan_core.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_ios",
+    hdrs = ["vulkan_ios.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_macos",
+    hdrs = ["vulkan_macos.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_win32",
+    hdrs = ["vulkan_win32.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "vulkan_xcb",
+    hdrs = ["vulkan_xcb.h"],
+    visibility = ["//:__subpackages__"],
+)
