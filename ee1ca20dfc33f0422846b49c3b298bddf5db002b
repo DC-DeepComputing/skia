@@ -45,6 +45,30 @@
       },
       "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448da2c7_8e029dc3",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-19T19:08:56Z",
+      "side": 1,
+      "message": "Ideally I think we should not rely on the backends to not do a bind buffer. I would actually support down the line moving the checks in the backend command buffers to just be asserts that we aren\u0027t doing the same bind twice.",
+      "parentUuid": "a98b18d8_a11d0472",
+      "range": {
+        "startLine": 209,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 44
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
