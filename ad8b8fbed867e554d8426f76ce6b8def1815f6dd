@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a494d7_1d6f01b9",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T01:59:00Z",
+      "side": 1,
+      "message": "Just so we don\u0027t have to reason about operator precedence and integer division, can we rewrite this to be (totalCOmbinedStrokeVerbCnt * 5)/4?",
+      "range": {
+        "startLine": 668,
+        "startChar": 30,
+        "endLine": 668,
+        "endChar": 62
+      },
+      "revId": "ad8b8fbed867e554d8426f76ce6b8def1815f6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
