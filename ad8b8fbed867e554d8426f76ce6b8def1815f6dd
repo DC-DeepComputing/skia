@@ -22,6 +22,30 @@
       },
       "revId": "ad8b8fbed867e554d8426f76ce6b8def1815f6dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4afd9460_2ca00553",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-20T02:03:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80a494d7_1d6f01b9",
+      "range": {
+        "startLine": 668,
+        "startChar": 30,
+        "endLine": 668,
+        "endChar": 62
+      },
+      "revId": "ad8b8fbed867e554d8426f76ce6b8def1815f6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
