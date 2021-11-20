@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1214b43_70dfdf08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-20T02:47:36Z",
+      "side": 1,
+      "message": "This CL actually fixed it.\n\nI intentionally implemented the mix() as (b-a)*T + a because it seemed more stable than a*(1-T) + b*T.\n\nIn this particular svg I guess the new mix() is also more stable.. With the old interpolation, the (flat degenerate) quadratic introduced an epsilon in y, which introduced a very tight cusp at the end. The new way doesn\u0027t have this bug and y remains flat all throughout.",
+      "parentUuid": "c47f6c1f_5a30e856",
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4aeea128_ed2e3ff8",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd71e45e_4416af53",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-20T02:47:36Z",
+      "side": 1,
+      "message": "Yeah that\u0027s the cause of the pixel diffs. The new mix() is more stable.",
+      "parentUuid": "4aeea128_ed2e3ff8",
+      "range": {
+        "startLine": 194,
+        "startChar": 33,
+        "endLine": 194,
+        "endChar": 70
+      },
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "183d7df2_5437f1ad",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-11-20T02:07:01Z",
       "side": 1,
       "message": "I assume this is to support \"VertexWriter(points) \u003c\u003c ...\"?",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 1
+      },
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee8d6f87_4a9a7fa0",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2021-11-20T02:47:36Z",
+      "side": 1,
+      "message": "Yeah... kind of ugly. We don\u0027t have to keep it.",
+      "parentUuid": "183d7df2_5437f1ad",
       "range": {
         "startLine": 197,
         "startChar": 0,
