@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d634981_fcffdcaa",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:20:33Z",
+      "side": 1,
+      "message": "When these were first added to CommandBuffer, I had asked Jim if they could just take const Buffer* + size_t (or BindBufferInfo), but there was concern that we weren\u0027t accurately conveying ownership transfer. Having the main API on CB use sk_sp makes it clear that the CB will be reff\u0027ing these.\n\nThat being said, the bindDrawBuffers below is very convenient for the DrawWriter, which is why I added it. I am also not sure, but would believe that if we restricted everything to use DrawPass + DrawWriter / DBM for buffer management and binding, then we wouldn\u0027t have to worry about buffers not actually being transferred to the CB (since DBM does that in bulk).\n\nMy vote would be to keep this as-is for now, and revisit refs/lifecycle of all tracked resources for CBs/DrawPasses at a later point.",
+      "parentUuid": "59b0c733_b3ceaa6f",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd8928c6_57a2d57b",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a9dbc42_f01175a1",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:20:33Z",
+      "side": 1,
+      "message": "Okay, I will rename to bindDrawBuffers and update DrawDispatcher to match.",
+      "parentUuid": "dd8928c6_57a2d57b",
+      "range": {
+        "startLine": 82,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 26
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45f5bb3a_e710a38c",
         "filename": "experimental/graphite/src/DrawPass.h",
         "patchSetId": 11
@@ -60,6 +108,30 @@
       "writtenOn": "2021-11-19T19:22:45Z",
       "side": 1,
       "message": "Why is this needed to be declared in the class here? Similar question for SortKey.",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9285de7_fdb956e8",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:20:33Z",
+      "side": 1,
+      "message": "SortKey is declared here so that it can inherit the friend relationship between DrawList and DrawPass and be able to point to DrawList::Draw.\n\nDrawer eventually will need to record the command structs that DrawPass holds on to. Initially, I\u0027ve been having all of these structs private, since DrawPass creates them and handles converting them to appropriate calls to CommandBuffer in addCommands. If/when we move to Recordings holding on to DrawPasses directly and executing a task requires one virtual to then iterate over the DrawPass commands, these structs will necessarily be public and then I would bet Drawer could be a cpp only class.",
+      "parentUuid": "45f5bb3a_e710a38c",
       "range": {
         "startLine": 77,
         "startChar": 4,
@@ -140,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "701dacf3_6df19124",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:20:33Z",
+      "side": 1,
+      "message": "Ok, I like that direction too. \n\nI will leave the buffer tracking in DrawWriter for now. If DrawDispatcher goes away entirely, we may gain some cleanup here to have DrawPass track the bound buffers, but I agree that it would be nice to let CommandBuffer be as dumb as possible.",
+      "parentUuid": "448da2c7_8e029dc3",
+      "range": {
+        "startLine": 209,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 44
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "946f9964_c33aebbd",
@@ -153,6 +249,30 @@
       "writtenOn": "2021-11-19T19:22:45Z",
       "side": 1,
       "message": "Why are we passing in a ResourceProvider here? The only resource i could think we\u0027d need here is if we need to allocate a new buffer. But that should be handled by DrawBufferManager in the DrawWriter right?\n\nMy worry here is if anyone starts trying to get new resources at this stage in the recorder causing a lot of cross thread calls needing to happen to the resource cache.",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 60
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6724bd24_56beb185",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:20:33Z",
+      "side": 1,
+      "message": "I added ResourceProvider to \"writeVertices\" so that there was a way for RenderSteps to get at \"static\"/re-usable buffers that they may need, e.g. an index pattern.\n\nHowever, when that buffer hasn\u0027t been made yet, using the DBM is a lot nicer from their point of view (something I ran into in updating tests in a later CL). It doesn\u0027t seem out of this world to have DBM have a way to get at named/singleton buffers that a RenderStep \"owns\", since it internally can go to the ResourceProvider if necessary and return a vertex writer to fill it out.\n\nI think what I will do is let DrawWriter return the DBM that it is using, so that RenderSteps can get at that if they need to manually make buffers, and then completely remove the REsourceProvider argument here.",
+      "parentUuid": "946f9964_c33aebbd",
       "range": {
         "startLine": 74,
         "startChar": 43,
