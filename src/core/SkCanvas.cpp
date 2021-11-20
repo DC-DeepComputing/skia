@@ -1802,6 +1802,12 @@ void SkCanvas::drawVertices(const SkVertices* vertices, SkBlendMode mode, const 
     // We expect fans to be converted to triangles when building or deserializing SkVertices.
     SkASSERT(vertices->priv().mode() != SkVertices::kTriangleFan_VertexMode);
 
+#ifdef SK_LEGACY_IGNORE_DRAW_VERTICES_BLEND_WITH_NO_SHADER
+    if (!paint.getShader()) {
+        mode = SkBlendMode::kDst;
+    }
+#endif
+
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     // Preserve legacy behavior for Android: ignore the SkShader if there are no texCoords present
     if (paint.getShader() && !vertices->priv().hasTexCoords()) {
@@ -1811,7 +1817,6 @@ void SkCanvas::drawVertices(const SkVertices* vertices, SkBlendMode mode, const 
         return;
     }
 #endif
-
     this->onDrawVerticesObject(vertices, mode, paint);
 }
 
