@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c47f6c1f_5a30e856",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:07:01Z",
+      "side": 1,
+      "message": "This gold diff seems suspect to me, but overall code changes look good. I\u0027m going to +1 so you\u0027re not blocked, but can you look at https://gold.skia.org/detail?test\u003dpaths-data-15-t.svg\u0026digest\u003d08502c810477ae7c53b73ed67649d2c2\u0026changelist_id\u003d474357\u0026crs\u003dgerrit before landing?",
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aeea128_ed2e3ff8",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:07:01Z",
+      "side": 1,
+      "message": "This is logically equivalent to the deleted writeQuadAsCubic function, but it is technically different math given the \"mix\". This might be some of the slight pixel diffs?",
+      "range": {
+        "startLine": 194,
+        "startChar": 33,
+        "endLine": 194,
+        "endChar": 70
+      },
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "183d7df2_5437f1ad",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T02:07:01Z",
+      "side": 1,
+      "message": "I assume this is to support \"VertexWriter(points) \u003c\u003c ...\"?",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 1
+      },
+      "revId": "46eb1e9793987cd04d48c42124105e5aadcc58c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
