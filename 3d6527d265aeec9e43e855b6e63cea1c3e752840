@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6dc76a7_9fed0129",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-20T01:51:26Z",
+      "side": 1,
+      "message": "Added @available version check in Gpu creation per offline chat, but wanted to call this out since I just duplicated the version that v1 requires. I don\u0027t know what the minimum we actually want for graphite will be.",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 5
+      },
+      "revId": "3d6527d265aeec9e43e855b6e63cea1c3e752840",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
