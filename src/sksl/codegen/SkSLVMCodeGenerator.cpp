@@ -353,15 +353,14 @@ void SkVMGenerator::setupGlobals(SkSpan<skvm::Val> uniforms, skvm::Coord device)
         // Copy the program source into the debug info so that it will be written in the trace file.
         fDebugInfo->setSource(*fProgram.fSource);
 
+        // The SkVM blitter generates centered pixel coordinates. (0.5, 1.5, 2.5, 3.5, etc.)
+        // Add 0.5 to the requested trace coordinate to match this.
+        skvm::Coord traceCoord = {to_F32(fBuilder->splat(fDebugInfo->fTraceCoord.fX)) + 0.5f,
+                                  to_F32(fBuilder->splat(fDebugInfo->fTraceCoord.fY)) + 0.5f};
+
         // If we are debugging, we need to create a trace mask. This will be true when the current
         // device coordinates match the requested trace coordinates.
-        if (fDebugInfo->fTraceCoord) {
-            fTraceMask = (device.x == fDebugInfo->fTraceCoord.x) &
-                         (device.y == fDebugInfo->fTraceCoord.y);
-        } else {
-            // No debug coordinates were specified, so tracing will never occur.
-            fTraceMask = fBuilder->splat(0);
-        }
+        fTraceMask = (device.x == traceCoord.x) & (device.y == traceCoord.y);
     }
 
     // Add storage for each global variable (including uniforms) to fSlots, and entries in
