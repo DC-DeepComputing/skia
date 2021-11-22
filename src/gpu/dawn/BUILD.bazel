@@ -1,210 +1,296 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrDawnAttachment",
-    srcs = ["GrDawnAttachment.cpp"],
+generated_cc_atom(
+    name = "GrDawnAttachment_hdr",
     hdrs = ["GrDawnAttachment.h"],
     visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrDawnGpu",
-        ":GrDawnUtil",
-        "//src/gpu:GrAttachment",
-    ],
+    deps = ["//src/gpu:GrAttachment_hdr"],
 )
 
-cc_library(
-    name = "GrDawnBuffer",
-    srcs = ["GrDawnBuffer.cpp"],
-    hdrs = ["GrDawnBuffer.h"],
+generated_cc_atom(
+    name = "GrDawnAttachment_src",
+    srcs = ["GrDawnAttachment.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        "//src/gpu:GrGpuBuffer",
+        ":GrDawnAttachment_hdr",
+        ":GrDawnGpu_hdr",
+        ":GrDawnUtil_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnCaps",
-    srcs = ["GrDawnCaps.cpp"],
+generated_cc_atom(
+    name = "GrDawnBuffer_hdr",
+    hdrs = ["GrDawnBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu:GrGpuBuffer_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDawnBuffer_src",
+    srcs = ["GrDawnBuffer.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnBuffer_hdr",
+        ":GrDawnGpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnCaps_hdr",
     hdrs = ["GrDawnCaps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnUtil",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrContextOptions",
-        "//src/gpu:GrCaps",
-        "//src/gpu:GrProgramDesc",
-        "//src/gpu:GrProgramInfo",
-        "//src/gpu:GrRenderTarget",
-        "//src/gpu:GrStencilSettings",
+        ":GrDawnUtil_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//src/gpu:GrCaps_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnGpu",
-    srcs = ["GrDawnGpu.cpp"],
+generated_cc_atom(
+    name = "GrDawnCaps_src",
+    srcs = ["GrDawnCaps.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnCaps_hdr",
+        "//src/gpu:GrProgramDesc_hdr",
+        "//src/gpu:GrProgramInfo_hdr",
+        "//src/gpu:GrRenderTarget_hdr",
+        "//src/gpu:GrStencilSettings_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnGpu_hdr",
     hdrs = ["GrDawnGpu.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnAttachment",
-        ":GrDawnBuffer",
-        ":GrDawnCaps",
-        ":GrDawnOpsRenderPass",
-        ":GrDawnProgramBuilder",
-        ":GrDawnRenderTarget",
-        ":GrDawnRingBuffer",
-        ":GrDawnTexture",
-        ":GrDawnUtil",
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrContextOptions",
-        "//include/gpu:GrDirectContext",
-        "//src/core:SkAutoMalloc",
-        "//src/core:SkConvertPixels",
-        "//src/core:SkLRUCache",
-        "//src/core:SkMipmap",
-        "//src/gpu:GrDataUtils",
-        "//src/gpu:GrDirectContextPriv",
-        "//src/gpu:GrFinishCallbacks",
-        "//src/gpu:GrGeometryProcessor",
-        "//src/gpu:GrGpu",
-        "//src/gpu:GrGpuResourceCacheAccess",
-        "//src/gpu:GrPipeline",
-        "//src/gpu:GrProgramDesc",
-        "//src/gpu:GrRenderTarget",
-        "//src/gpu:GrSemaphore",
-        "//src/gpu:GrStagingBufferManager",
-        "//src/gpu:GrStencilSettings",
-        "//src/gpu:GrTexture",
-        "//src/gpu:GrThreadSafePipelineBuilder",
-        "//src/sksl:SkSLCompiler",
-        "//src/sksl/ir:SkSLProgram",
+        ":GrDawnRingBuffer_hdr",
+        "//src/core:SkLRUCache_hdr",
+        "//src/gpu:GrFinishCallbacks_hdr",
+        "//src/gpu:GrGpu_hdr",
+        "//src/gpu:GrProgramDesc_hdr",
+        "//src/gpu:GrStagingBufferManager_hdr",
+        "//src/sksl/ir:SkSLProgram_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnOpsRenderPass",
-    srcs = ["GrDawnOpsRenderPass.cpp"],
+generated_cc_atom(
+    name = "GrDawnGpu_src",
+    srcs = ["GrDawnGpu.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnAttachment_hdr",
+        ":GrDawnBuffer_hdr",
+        ":GrDawnCaps_hdr",
+        ":GrDawnGpu_hdr",
+        ":GrDawnOpsRenderPass_hdr",
+        ":GrDawnProgramBuilder_hdr",
+        ":GrDawnRenderTarget_hdr",
+        ":GrDawnTexture_hdr",
+        ":GrDawnUtil_hdr",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/core:SkConvertPixels_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/gpu:GrDataUtils_hdr",
+        "//src/gpu:GrDirectContextPriv_hdr",
+        "//src/gpu:GrGeometryProcessor_hdr",
+        "//src/gpu:GrGpuResourceCacheAccess_hdr",
+        "//src/gpu:GrPipeline_hdr",
+        "//src/gpu:GrRenderTarget_hdr",
+        "//src/gpu:GrSemaphore_hdr",
+        "//src/gpu:GrStencilSettings_hdr",
+        "//src/gpu:GrTexture_hdr",
+        "//src/gpu:GrThreadSafePipelineBuilder_hdr",
+        "//src/sksl:SkSLCompiler_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnOpsRenderPass_hdr",
     hdrs = ["GrDawnOpsRenderPass.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnAttachment",
-        ":GrDawnBuffer",
-        ":GrDawnGpu",
-        ":GrDawnProgramBuilder",
-        ":GrDawnRenderTarget",
-        ":GrDawnTexture",
-        ":GrDawnUtil",
-        "//include/gpu:GrTypes",
-        "//src/gpu:GrColor",
-        "//src/gpu:GrOpFlushState",
-        "//src/gpu:GrOpsRenderPass",
-        "//src/gpu:GrPipeline",
-        "//src/gpu:GrRenderTarget",
-        "//src/gpu:GrTexture",
-        "//src/sksl:SkSLCompiler",
+        "//include/gpu:GrTypes_hdr",
+        "//src/gpu:GrColor_hdr",
+        "//src/gpu:GrOpsRenderPass_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnProgramBuilder",
-    srcs = ["GrDawnProgramBuilder.cpp"],
+generated_cc_atom(
+    name = "GrDawnOpsRenderPass_src",
+    srcs = ["GrDawnOpsRenderPass.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnAttachment_hdr",
+        ":GrDawnBuffer_hdr",
+        ":GrDawnGpu_hdr",
+        ":GrDawnOpsRenderPass_hdr",
+        ":GrDawnProgramBuilder_hdr",
+        ":GrDawnRenderTarget_hdr",
+        ":GrDawnTexture_hdr",
+        ":GrDawnUtil_hdr",
+        "//src/gpu:GrOpFlushState_hdr",
+        "//src/gpu:GrPipeline_hdr",
+        "//src/gpu:GrRenderTarget_hdr",
+        "//src/gpu:GrTexture_hdr",
+        "//src/sksl:SkSLCompiler_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnProgramBuilder_hdr",
     hdrs = ["GrDawnProgramBuilder.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        ":GrDawnProgramDataManager",
-        ":GrDawnTexture",
-        "//src/gpu:GrAutoLocaleSetter",
-        "//src/gpu:GrRenderTarget",
-        "//src/gpu:GrSPIRVUniformHandler",
-        "//src/gpu:GrSPIRVVaryingHandler",
-        "//src/gpu:GrShaderUtils",
-        "//src/gpu:GrStencilSettings",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/gpu/glsl:GrGLSLProgramBuilder",
-        "//src/sksl:SkSLCompiler",
+        ":GrDawnProgramDataManager_hdr",
+        "//src/gpu:GrSPIRVUniformHandler_hdr",
+        "//src/gpu:GrSPIRVVaryingHandler_hdr",
+        "//src/gpu/glsl:GrGLSLProgramBuilder_hdr",
+        "//src/sksl:SkSLCompiler_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnProgramDataManager",
-    srcs = ["GrDawnProgramDataManager.cpp"],
+generated_cc_atom(
+    name = "GrDawnProgramBuilder_src",
+    srcs = ["GrDawnProgramBuilder.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu_hdr",
+        ":GrDawnProgramBuilder_hdr",
+        ":GrDawnTexture_hdr",
+        "//src/gpu:GrAutoLocaleSetter_hdr",
+        "//src/gpu:GrRenderTarget_hdr",
+        "//src/gpu:GrShaderUtils_hdr",
+        "//src/gpu:GrStencilSettings_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnProgramDataManager_hdr",
     hdrs = ["GrDawnProgramDataManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        ":GrDawnRingBuffer",
-        "//src/core:SkAutoMalloc",
-        "//src/gpu:GrSPIRVUniformHandler",
-        "//src/gpu:GrUniformDataManager",
+        ":GrDawnRingBuffer_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/gpu:GrSPIRVUniformHandler_hdr",
+        "//src/gpu:GrUniformDataManager_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnRenderTarget",
-    srcs = ["GrDawnRenderTarget.cpp"],
+generated_cc_atom(
+    name = "GrDawnProgramDataManager_src",
+    srcs = ["GrDawnProgramDataManager.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu_hdr",
+        ":GrDawnProgramDataManager_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnRenderTarget_hdr",
     hdrs = ["GrDawnRenderTarget.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        ":GrDawnUtil",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu/dawn:GrDawnTypes",
-        "//src/gpu:GrRenderTarget",
+        "//include/gpu/dawn:GrDawnTypes_hdr",
+        "//src/gpu:GrRenderTarget_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnRingBuffer",
-    srcs = ["GrDawnRingBuffer.cpp"],
+generated_cc_atom(
+    name = "GrDawnRenderTarget_src",
+    srcs = ["GrDawnRenderTarget.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu_hdr",
+        ":GrDawnRenderTarget_hdr",
+        ":GrDawnUtil_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnRingBuffer_hdr",
     hdrs = ["GrDawnRingBuffer.h"],
     visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrDawnBuffer",
-        ":GrDawnGpu",
-        ":GrDawnUtil",
-    ],
+    deps = [":GrDawnBuffer_hdr"],
 )
 
-cc_library(
-    name = "GrDawnTexture",
-    srcs = ["GrDawnTexture.cpp"],
-    hdrs = ["GrDawnTexture.h"],
+generated_cc_atom(
+    name = "GrDawnRingBuffer_src",
+    srcs = ["GrDawnRingBuffer.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        ":GrDawnTextureRenderTarget",
-        ":GrDawnUtil",
-        "//src/gpu:GrTexture",
+        ":GrDawnGpu_hdr",
+        ":GrDawnRingBuffer_hdr",
+        ":GrDawnUtil_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnTextureRenderTarget",
-    srcs = ["GrDawnTextureRenderTarget.cpp"],
+generated_cc_atom(
+    name = "GrDawnTextureRenderTarget_hdr",
     hdrs = ["GrDawnTextureRenderTarget.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDawnGpu",
-        ":GrDawnRenderTarget",
-        ":GrDawnTexture",
-        "//include/core:SkTraceMemoryDump",
-        "//src/gpu:GrTexture",
+        ":GrDawnRenderTarget_hdr",
+        ":GrDawnTexture_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnTypesPriv",
-    srcs = ["GrDawnTypesPriv.cpp"],
+generated_cc_atom(
+    name = "GrDawnTextureRenderTarget_src",
+    srcs = ["GrDawnTextureRenderTarget.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:GrDawnTypesPriv"],
+    deps = [
+        ":GrDawnGpu_hdr",
+        ":GrDawnTextureRenderTarget_hdr",
+        "//include/core:SkTraceMemoryDump_hdr",
+        "//src/gpu:GrTexture_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrDawnUtil",
-    srcs = ["GrDawnUtil.cpp"],
+generated_cc_atom(
+    name = "GrDawnTexture_hdr",
+    hdrs = ["GrDawnTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu:GrTexture_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDawnTexture_src",
+    srcs = ["GrDawnTexture.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDawnGpu_hdr",
+        ":GrDawnTextureRenderTarget_hdr",
+        ":GrDawnTexture_hdr",
+        ":GrDawnUtil_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDawnTypesPriv_src",
+    srcs = ["GrDawnTypesPriv.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:GrDawnTypesPriv_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDawnUtil_hdr",
     hdrs = ["GrDawnUtil.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:GrTypesPriv"],
+    deps = ["//include/private:GrTypesPriv_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDawnUtil_src",
+    srcs = ["GrDawnUtil.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrDawnUtil_hdr"],
 )

@@ -1,11 +1,11 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrGLMakeEGLInterface",
+generated_cc_atom(
+    name = "GrGLMakeEGLInterface_hdr",
     hdrs = ["GrGLMakeEGLInterface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )

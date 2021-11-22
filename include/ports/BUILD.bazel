@@ -1,159 +1,159 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "SkCFObject",
+generated_cc_atom(
+    name = "SkCFObject_hdr",
     hdrs = ["SkCFObject.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkFontConfigInterface",
+generated_cc_atom(
+    name = "SkFontConfigInterface_hdr",
     hdrs = ["SkFontConfigInterface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkFontStyle",
-        "//include/core:SkRefCnt",
-        "//include/core:SkStream",
-        "//include/core:SkTypeface",
+        "//include/core:SkFontStyle_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkStream_hdr",
+        "//include/core:SkTypeface_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFontMgr_FontConfigInterface",
+generated_cc_atom(
+    name = "SkFontMgr_FontConfigInterface_hdr",
     hdrs = ["SkFontMgr_FontConfigInterface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFontMgr_android",
+generated_cc_atom(
+    name = "SkFontMgr_android_hdr",
     hdrs = ["SkFontMgr_android.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkRefCnt"],
+    deps = ["//include/core:SkRefCnt_hdr"],
 )
 
-cc_library(
-    name = "SkFontMgr_directory",
+generated_cc_atom(
+    name = "SkFontMgr_directory_hdr",
     hdrs = ["SkFontMgr_directory.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFontMgr_empty",
+generated_cc_atom(
+    name = "SkFontMgr_empty_hdr",
     hdrs = ["SkFontMgr_empty.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFontMgr_fontconfig",
+generated_cc_atom(
+    name = "SkFontMgr_fontconfig_hdr",
     hdrs = ["SkFontMgr_fontconfig.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkRefCnt"],
+    deps = ["//include/core:SkRefCnt_hdr"],
 )
 
-cc_library(
-    name = "SkFontMgr_fuchsia",
+generated_cc_atom(
+    name = "SkFontMgr_fuchsia_hdr",
     hdrs = ["SkFontMgr_fuchsia.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkRefCnt"],
+    deps = ["//include/core:SkRefCnt_hdr"],
 )
 
-cc_library(
-    name = "SkFontMgr_indirect",
+generated_cc_atom(
+    name = "SkFontMgr_indirect_hdr",
     hdrs = ["SkFontMgr_indirect.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkRemotableFontMgr",
-        "//include/core:SkFontMgr",
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypeface",
-        "//include/core:SkTypes",
-        "//include/private:SkMutex",
-        "//include/private:SkOnce",
-        "//include/private:SkTArray",
+        ":SkRemotableFontMgr_hdr",
+        "//include/core:SkFontMgr_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypeface_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkMutex_hdr",
+        "//include/private:SkOnce_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFontMgr_mac_ct",
+generated_cc_atom(
+    name = "SkFontMgr_mac_ct_hdr",
     hdrs = ["SkFontMgr_mac_ct.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkImageGeneratorCG",
+generated_cc_atom(
+    name = "SkImageGeneratorCG_hdr",
     hdrs = ["SkImageGeneratorCG.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkData",
-        "//include/core:SkImageGenerator",
-        "//include/core:SkTypes",
+        "//include/core:SkData_hdr",
+        "//include/core:SkImageGenerator_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkImageGeneratorNDK",
+generated_cc_atom(
+    name = "SkImageGeneratorNDK_hdr",
     hdrs = ["SkImageGeneratorNDK.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkData",
-        "//include/core:SkImageGenerator",
-        "//include/core:SkTypes",
+        "//include/core:SkData_hdr",
+        "//include/core:SkImageGenerator_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkImageGeneratorWIC",
+generated_cc_atom(
+    name = "SkImageGeneratorWIC_hdr",
     hdrs = ["SkImageGeneratorWIC.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkData",
-        "//include/core:SkImageGenerator",
-        "//include/core:SkTypes",
+        "//include/core:SkData_hdr",
+        "//include/core:SkImageGenerator_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkRemotableFontMgr",
+generated_cc_atom(
+    name = "SkRemotableFontMgr_hdr",
     hdrs = ["SkRemotableFontMgr.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkFontStyle",
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
-        "//include/private:SkTemplates",
+        "//include/core:SkFontStyle_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkTemplates_hdr",
     ],
 )
 
-cc_library(
-    name = "SkTypeface_mac",
+generated_cc_atom(
+    name = "SkTypeface_mac_hdr",
     hdrs = ["SkTypeface_mac.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypeface"],
+    deps = ["//include/core:SkTypeface_hdr"],
 )
 
-cc_library(
-    name = "SkTypeface_win",
+generated_cc_atom(
+    name = "SkTypeface_win_hdr",
     hdrs = ["SkTypeface_win.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypeface",
-        "//include/core:SkTypes",
+        "//include/core:SkTypeface_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )

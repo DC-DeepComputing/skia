@@ -1,18 +1,18 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrMtlBackendContext",
+generated_cc_atom(
+    name = "GrMtlBackendContext_hdr",
     hdrs = ["GrMtlBackendContext.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrMtlTypes"],
+    deps = [":GrMtlTypes_hdr"],
 )
 
-cc_library(
-    name = "GrMtlTypes",
+generated_cc_atom(
+    name = "GrMtlTypes_hdr",
     hdrs = ["GrMtlTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrTypes",
-        "//include/ports:SkCFObject",
+        "//include/gpu:GrTypes_hdr",
+        "//include/ports:SkCFObject_hdr",
     ],
 )

@@ -1,169 +1,169 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "DSL",
-    hdrs = ["DSL.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [":DSLCore"],
-)
-
-cc_library(
-    name = "DSLBlock",
+generated_cc_atom(
+    name = "DSLBlock_hdr",
     hdrs = ["DSLBlock.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLExpression",
-        ":DSLStatement",
-        "//include/private:SkSLDefines",
+        ":DSLExpression_hdr",
+        ":DSLStatement_hdr",
+        "//include/private:SkSLDefines_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLCase",
+generated_cc_atom(
+    name = "DSLCase_hdr",
     hdrs = ["DSLCase.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLExpression",
-        ":DSLStatement",
-        "//include/private:SkSLDefines",
+        ":DSLExpression_hdr",
+        ":DSLStatement_hdr",
+        "//include/private:SkSLDefines_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLCore",
+generated_cc_atom(
+    name = "DSLCore_hdr",
     hdrs = ["DSLCore.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLBlock",
-        ":DSLCase",
-        ":DSLExpression",
-        ":DSLFunction",
-        ":DSLStatement",
-        ":DSLType",
-        ":DSLVar",
-        ":DSLWrapper",
-        ":SkSLErrorReporter",
-        "//include/private:SkSLProgramKind",
-        "//include/private:SkTArray",
+        ":DSLBlock_hdr",
+        ":DSLCase_hdr",
+        ":DSLExpression_hdr",
+        ":DSLFunction_hdr",
+        ":DSLStatement_hdr",
+        ":DSLType_hdr",
+        ":DSLVar_hdr",
+        ":DSLWrapper_hdr",
+        ":SkSLErrorReporter_hdr",
+        "//include/private:SkSLProgramKind_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLExpression",
+generated_cc_atom(
+    name = "DSLExpression_hdr",
     hdrs = ["DSLExpression.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLWrapper",
-        ":SkSLErrorReporter",
-        "//include/core:SkStringView",
-        "//include/core:SkTypes",
-        "//include/private:SkTArray",
+        ":DSLWrapper_hdr",
+        ":SkSLErrorReporter_hdr",
+        "//include/core:SkStringView_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLFunction",
+generated_cc_atom(
+    name = "DSLFunction_hdr",
     hdrs = ["DSLFunction.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLBlock",
-        ":DSLExpression",
-        ":DSLType",
-        ":DSLVar",
-        ":DSLWrapper",
+        ":DSLBlock_hdr",
+        ":DSLExpression_hdr",
+        ":DSLType_hdr",
+        ":DSLVar_hdr",
+        ":DSLWrapper_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLLayout",
+generated_cc_atom(
+    name = "DSLLayout_hdr",
     hdrs = ["DSLLayout.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLErrorReporter",
-        "//include/private:SkSLLayout",
+        ":SkSLErrorReporter_hdr",
+        "//include/private:SkSLLayout_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLModifiers",
+generated_cc_atom(
+    name = "DSLModifiers_hdr",
     hdrs = ["DSLModifiers.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLLayout",
-        "//include/core:SkSpan",
-        "//include/private:SkSLModifiers",
+        ":DSLLayout_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/private:SkSLModifiers_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLRuntimeEffects",
+generated_cc_atom(
+    name = "DSLRuntimeEffects_hdr",
     hdrs = ["DSLRuntimeEffects.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSL",
-        "//include/effects:SkRuntimeEffect",
+        ":DSL_hdr",
+        "//include/effects:SkRuntimeEffect_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLStatement",
+generated_cc_atom(
+    name = "DSLStatement_hdr",
     hdrs = ["DSLStatement.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLErrorReporter",
-        "//include/core:SkString",
-        "//include/core:SkTypes",
-        "//include/private:SkSLStatement",
+        ":SkSLErrorReporter_hdr",
+        "//include/core:SkString_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkSLStatement_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLSymbols",
+generated_cc_atom(
+    name = "DSLSymbols_hdr",
     hdrs = ["DSLSymbols.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLExpression",
-        "//include/core:SkStringView",
-        "//include/private:SkSLString",
+        ":DSLExpression_hdr",
+        "//include/core:SkStringView_hdr",
+        "//include/private:SkSLString_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLType",
+generated_cc_atom(
+    name = "DSLType_hdr",
     hdrs = ["DSLType.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLExpression",
-        ":DSLModifiers",
-        "//include/core:SkSpan",
-        "//include/private:SkSLString",
+        ":DSLExpression_hdr",
+        ":DSLModifiers_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/private:SkSLString_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLVar",
+generated_cc_atom(
+    name = "DSLVar_hdr",
     hdrs = ["DSLVar.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DSLExpression",
-        ":DSLModifiers",
-        ":DSLType",
+        ":DSLExpression_hdr",
+        ":DSLModifiers_hdr",
+        ":DSLType_hdr",
     ],
 )
 
-cc_library(
-    name = "DSLWrapper",
+generated_cc_atom(
+    name = "DSLWrapper_hdr",
     hdrs = ["DSLWrapper.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkSLErrorReporter",
+generated_cc_atom(
+    name = "DSL_hdr",
+    hdrs = ["DSL.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":DSLCore_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkSLErrorReporter_hdr",
     hdrs = ["SkSLErrorReporter.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkStringView",
-        "//include/core:SkTypes",
-        "//include/private:SkSLString",
+        "//include/core:SkStringView_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkSLString_hdr",
     ],
 )

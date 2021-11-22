@@ -1,12 +1,12 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "SkPathOps",
+generated_cc_atom(
+    name = "SkPathOps_hdr",
     hdrs = ["SkPathOps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/private:SkTArray",
-        "//include/private:SkTDArray",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTDArray_hdr",
     ],
 )

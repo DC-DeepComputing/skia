@@ -1,88 +1,116 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "DFA",
+generated_cc_atom(
+    name = "DFAState_hdr",
+    hdrs = ["DFAState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":LexUtil_hdr"],
+)
+
+generated_cc_atom(
+    name = "DFA_hdr",
     hdrs = ["DFA.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "DFAState",
-    hdrs = ["DFAState.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [":LexUtil"],
-)
-
-cc_library(
-    name = "LexUtil",
+generated_cc_atom(
+    name = "LexUtil_hdr",
     hdrs = ["LexUtil.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "Main",
+generated_cc_atom(
+    name = "Main_src",
     srcs = ["Main.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":NFAtoDFA",
-        ":RegexParser",
-        ":TransitionTable",
+        ":NFAtoDFA_hdr",
+        ":RegexParser_hdr",
+        ":TransitionTable_hdr",
     ],
 )
 
-cc_library(
-    name = "NFA",
-    srcs = ["NFA.cpp"],
+generated_cc_atom(
+    name = "NFAState_hdr",
+    hdrs = ["NFAState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":LexUtil_hdr"],
+)
+
+generated_cc_atom(
+    name = "NFA_hdr",
     hdrs = ["NFA.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":NFAState",
-        ":RegexNode",
+        ":NFAState_hdr",
+        ":RegexNode_hdr",
     ],
 )
 
-cc_library(
-    name = "NFAState",
-    hdrs = ["NFAState.h"],
+generated_cc_atom(
+    name = "NFA_src",
+    srcs = ["NFA.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = [":LexUtil"],
+    deps = [":NFA_hdr"],
 )
 
-cc_library(
-    name = "NFAtoDFA",
+generated_cc_atom(
+    name = "NFAtoDFA_hdr",
     hdrs = ["NFAtoDFA.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":DFA",
-        ":DFAState",
-        ":NFA",
-        ":NFAState",
+        ":DFAState_hdr",
+        ":DFA_hdr",
+        ":NFAState_hdr",
+        ":NFA_hdr",
     ],
 )
 
-cc_library(
-    name = "RegexNode",
-    srcs = ["RegexNode.cpp"],
+generated_cc_atom(
+    name = "RegexNode_hdr",
     hdrs = ["RegexNode.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":NFA"],
 )
 
-cc_library(
-    name = "RegexParser",
-    srcs = ["RegexParser.cpp"],
-    hdrs = ["RegexParser.h"],
+generated_cc_atom(
+    name = "RegexNode_src",
+    srcs = ["RegexNode.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":LexUtil",
-        ":RegexNode",
+        ":NFA_hdr",
+        ":RegexNode_hdr",
     ],
 )
 
-cc_library(
-    name = "TransitionTable",
-    srcs = ["TransitionTable.cpp"],
+generated_cc_atom(
+    name = "RegexParser_hdr",
+    hdrs = ["RegexParser.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":RegexNode_hdr"],
+)
+
+generated_cc_atom(
+    name = "RegexParser_src",
+    srcs = ["RegexParser.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":LexUtil_hdr",
+        ":RegexParser_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "TransitionTable_hdr",
     hdrs = ["TransitionTable.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":DFA"],
+)
+
+generated_cc_atom(
+    name = "TransitionTable_src",
+    srcs = ["TransitionTable.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DFA_hdr",
+        ":TransitionTable_hdr",
+    ],
 )

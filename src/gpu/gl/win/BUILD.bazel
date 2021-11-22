@@ -1,14 +1,14 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrGLMakeNativeInterface_win",
+generated_cc_atom(
+    name = "GrGLMakeNativeInterface_win_src",
     srcs = ["GrGLMakeNativeInterface_win.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/gpu/gl:GrGLAssembleInterface",
-        "//include/gpu/gl:GrGLInterface",
-        "//src/core:SkLeanWindows",
-        "//src/gpu/gl:GrGLUtil",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu/gl:GrGLAssembleInterface_hdr",
+        "//include/gpu/gl:GrGLInterface_hdr",
+        "//src/core:SkLeanWindows_hdr",
+        "//src/gpu/gl:GrGLUtil_hdr",
     ],
 )

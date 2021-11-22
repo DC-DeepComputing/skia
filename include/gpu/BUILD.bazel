@@ -1,160 +1,160 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrBackendDrawableInfo",
+generated_cc_atom(
+    name = "GrBackendDrawableInfo_hdr",
     hdrs = ["GrBackendDrawableInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrTypes",
-        "//include/gpu/vk:GrVkTypes",
+        ":GrTypes_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendSemaphore",
+generated_cc_atom(
+    name = "GrBackendSemaphore_hdr",
     hdrs = ["GrBackendSemaphore.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrTypes",
-        "//include/gpu/gl:GrGLTypes",
-        "//include/gpu/mtl:GrMtlTypes",
-        "//include/gpu/vk:GrVkTypes",
-        "//include/private:GrD3DTypesMinimal",
+        ":GrTypes_hdr",
+        "//include/gpu/gl:GrGLTypes_hdr",
+        "//include/gpu/mtl:GrMtlTypes_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
+        "//include/private:GrD3DTypesMinimal_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendSurface",
-    hdrs = ["GrBackendSurface.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrBackendSurfaceMutableState",
-        ":GrSurfaceInfo",
-        ":GrTypes",
-        "//include/gpu/dawn:GrDawnTypes",
-        "//include/gpu/gl:GrGLTypes",
-        "//include/gpu/mock:GrMockTypes",
-        "//include/gpu/mtl:GrMtlTypes",
-        "//include/gpu/vk:GrVkTypes",
-        "//include/private:GrD3DTypesMinimal",
-        "//include/private:GrGLTypesPriv",
-        "//include/private:GrVkTypesPriv",
-    ],
-)
-
-cc_library(
-    name = "GrBackendSurfaceMutableState",
+generated_cc_atom(
+    name = "GrBackendSurfaceMutableState_hdr",
     hdrs = ["GrBackendSurfaceMutableState.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrTypes",
-        "//include/private:GrVkTypesPriv",
+        ":GrTypes_hdr",
+        "//include/private:GrVkTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrConfig",
-    hdrs = ["GrConfig.h"],
+generated_cc_atom(
+    name = "GrBackendSurface_hdr",
+    hdrs = ["GrBackendSurface.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = [
+        ":GrBackendSurfaceMutableState_hdr",
+        ":GrSurfaceInfo_hdr",
+        ":GrTypes_hdr",
+        "//include/gpu/dawn:GrDawnTypes_hdr",
+        "//include/gpu/gl:GrGLTypes_hdr",
+        "//include/gpu/mock:GrMockTypes_hdr",
+        "//include/gpu/mtl:GrMtlTypes_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
+        "//include/private:GrD3DTypesMinimal_hdr",
+        "//include/private:GrGLTypesPriv_hdr",
+        "//include/private:GrVkTypesPriv_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrContextOptions",
+generated_cc_atom(
+    name = "GrConfig_hdr",
+    hdrs = ["GrConfig.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrContextOptions_hdr",
     hdrs = ["GrContextOptions.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDriverBugWorkarounds",
-        ":GrTypes",
-        "//include/core:SkData",
-        "//include/core:SkString",
-        "//include/core:SkTypes",
-        "//include/private:GrTypesPriv",
+        ":GrDriverBugWorkarounds_hdr",
+        ":GrTypes_hdr",
+        "//include/core:SkData_hdr",
+        "//include/core:SkString_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrContextThreadSafeProxy",
+generated_cc_atom(
+    name = "GrContextThreadSafeProxy_hdr",
     hdrs = ["GrContextThreadSafeProxy.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrContextOptions",
-        ":GrTypes",
-        "//include/core:SkImageInfo",
-        "//include/core:SkRefCnt",
+        ":GrContextOptions_hdr",
+        ":GrTypes_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDirectContext",
+generated_cc_atom(
+    name = "GrDirectContext_hdr",
     hdrs = ["GrDirectContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendSurface",
-        ":GrRecordingContext",
-        "//include/core:SkUnPreMultiply",
+        ":GrBackendSurface_hdr",
+        ":GrRecordingContext_hdr",
+        "//include/core:SkUnPreMultiply_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDriverBugWorkarounds",
-    hdrs = ["GrDriverBugWorkarounds.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrDriverBugWorkaroundsAutogen",
-        "//include/core:SkTypes",
-    ],
-)
-
-cc_library(
-    name = "GrDriverBugWorkaroundsAutogen",
+generated_cc_atom(
+    name = "GrDriverBugWorkaroundsAutogen_hdr",
     hdrs = ["GrDriverBugWorkaroundsAutogen.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "GrRecordingContext",
+generated_cc_atom(
+    name = "GrDriverBugWorkarounds_hdr",
+    hdrs = ["GrDriverBugWorkarounds.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDriverBugWorkaroundsAutogen_hdr",
+        "//include/core:SkTypes_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRecordingContext_hdr",
     hdrs = ["GrRecordingContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/private:GrImageContext",
-        "//include/private:SkTArray",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:GrImageContext_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSurfaceInfo",
+generated_cc_atom(
+    name = "GrSurfaceInfo_hdr",
     hdrs = ["GrSurfaceInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrTypes",
-        "//include/private:GrD3DTypesMinimal",
-        "//include/private:GrDawnTypesPriv",
-        "//include/private:GrGLTypesPriv",
-        "//include/private:GrMockTypesPriv",
-        "//include/private:GrMtlTypesPriv",
-        "//include/private:GrVkTypesPriv",
+        ":GrTypes_hdr",
+        "//include/private:GrD3DTypesMinimal_hdr",
+        "//include/private:GrDawnTypesPriv_hdr",
+        "//include/private:GrGLTypesPriv_hdr",
+        "//include/private:GrMockTypesPriv_hdr",
+        "//include/private:GrMtlTypesPriv_hdr",
+        "//include/private:GrVkTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTypes",
+generated_cc_atom(
+    name = "GrTypes_hdr",
     hdrs = ["GrTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrConfig",
-        "//include/core:SkMath",
-        "//include/core:SkTypes",
+        ":GrConfig_hdr",
+        "//include/core:SkMath_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrYUVABackendTextures",
+generated_cc_atom(
+    name = "GrYUVABackendTextures_hdr",
     hdrs = ["GrYUVABackendTextures.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendSurface",
-        "//include/core:SkYUVAInfo",
+        ":GrBackendSurface_hdr",
+        "//include/core:SkYUVAInfo_hdr",
     ],
 )

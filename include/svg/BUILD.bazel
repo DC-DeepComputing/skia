@@ -1,8 +1,8 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "SkSVGCanvas",
+generated_cc_atom(
+    name = "SkSVGCanvas_hdr",
     hdrs = ["SkSVGCanvas.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkCanvas"],
+    deps = ["//include/core:SkCanvas_hdr"],
 )

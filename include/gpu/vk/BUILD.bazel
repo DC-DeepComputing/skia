@@ -1,56 +1,56 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrVkBackendContext",
+generated_cc_atom(
+    name = "GrVkBackendContext_hdr",
     hdrs = ["GrVkBackendContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrVkMemoryAllocator",
-        ":GrVkTypes",
-        "//include/core:SkRefCnt",
+        ":GrVkMemoryAllocator_hdr",
+        ":GrVkTypes_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVkExtensions",
+generated_cc_atom(
+    name = "GrVkExtensions_hdr",
     hdrs = ["GrVkExtensions.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrVkTypes",
-        "//include/core:SkString",
-        "//include/private:SkTArray",
+        ":GrVkTypes_hdr",
+        "//include/core:SkString_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVkMemoryAllocator",
+generated_cc_atom(
+    name = "GrVkMemoryAllocator_hdr",
     hdrs = ["GrVkMemoryAllocator.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrVkTypes",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        ":GrVkTypes_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVkTypes",
+generated_cc_atom(
+    name = "GrVkTypes_hdr",
     hdrs = ["GrVkTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrVkVulkan",
-        "//include/core:SkTypes",
-        "//include/gpu:GrTypes",
+        ":GrVkVulkan_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVkVulkan",
+generated_cc_atom(
+    name = "GrVkVulkan_hdr",
     hdrs = ["GrVkVulkan.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/third_party/vulkan/vulkan:vulkan_android",
-        "//include/third_party/vulkan/vulkan:vulkan_core",
+        "//include/core:SkTypes_hdr",
+        "//include/third_party/vulkan/vulkan:vulkan_android_hdr",
+        "//include/third_party/vulkan/vulkan:vulkan_core_hdr",
     ],
 )

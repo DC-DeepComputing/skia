@@ -1,49 +1,49 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "vk_platform",
+generated_cc_atom(
+    name = "vk_platform_hdr",
     hdrs = ["vk_platform.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan",
-    hdrs = ["vulkan.h"],
-    visibility = ["//:__subpackages__"],
-)
-
-cc_library(
-    name = "vulkan_android",
+generated_cc_atom(
+    name = "vulkan_android_hdr",
     hdrs = ["vulkan_android.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan_core",
+generated_cc_atom(
+    name = "vulkan_core_hdr",
     hdrs = ["vulkan_core.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan_ios",
+generated_cc_atom(
+    name = "vulkan_hdr",
+    hdrs = ["vulkan.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+generated_cc_atom(
+    name = "vulkan_ios_hdr",
     hdrs = ["vulkan_ios.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan_macos",
+generated_cc_atom(
+    name = "vulkan_macos_hdr",
     hdrs = ["vulkan_macos.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan_win32",
+generated_cc_atom(
+    name = "vulkan_win32_hdr",
     hdrs = ["vulkan_win32.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "vulkan_xcb",
+generated_cc_atom(
+    name = "vulkan_xcb_hdr",
     hdrs = ["vulkan_xcb.h"],
     visibility = ["//:__subpackages__"],
 )

@@ -1,2427 +1,3149 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "BaseDevice",
-    srcs = ["BaseDevice.cpp"],
+generated_cc_atom(
+    name = "BaseDevice_hdr",
     hdrs = ["BaseDevice.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrSurfaceProxyView",
-        ":SurfaceContext",
-        ":SurfaceFillContext",
-        "//include/core:SkImage",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkDevice",
+        "//include/core:SkImage_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/core:SkDevice_hdr",
     ],
 )
 
-cc_library(
-    name = "BufferWriter",
+generated_cc_atom(
+    name = "BaseDevice_src",
+    srcs = ["BaseDevice.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":BaseDevice_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrSurfaceProxyView_hdr",
+        ":SurfaceContext_hdr",
+        ":SurfaceFillContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "BufferWriter_hdr",
     hdrs = ["BufferWriter.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRect",
-        "//include/private:SkNx",
-        "//include/private:SkTemplates",
+        "//include/core:SkRect_hdr",
+        "//include/private:SkColorData_hdr",
+        "//include/private:SkNx_hdr",
+        "//include/private:SkTemplates_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAHardwareBufferImageGenerator",
-    srcs = ["GrAHardwareBufferImageGenerator.cpp"],
+generated_cc_atom(
+    name = "GrAHardwareBufferImageGenerator_hdr",
     hdrs = ["GrAHardwareBufferImageGenerator.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAHardwareBufferUtils",
-        ":GrDirectContextPriv",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrResourceCache",
-        ":GrResourceProvider",
-        ":GrResourceProviderPriv",
-        ":GrTexture",
-        ":GrTextureProxy",
-        ":SkGr",
-        "//include/core:SkImageGenerator",
-        "//include/core:SkTypes",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//include/gpu/gl:GrGLTypes",
-        "//include/gpu/vk:GrVkExtensions",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkMessageBus",
-        "//src/gpu/gl:GrGLDefines",
-        "//src/gpu/vk:GrVkGpu",
+        "//include/core:SkImageGenerator_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAHardwareBufferUtils",
-    srcs = ["GrAHardwareBufferUtils.cpp"],
+generated_cc_atom(
+    name = "GrAHardwareBufferImageGenerator_src",
+    srcs = ["GrAHardwareBufferImageGenerator.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAHardwareBufferImageGenerator_hdr",
+        ":GrAHardwareBufferUtils_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrResourceCache_hdr",
+        ":GrResourceProviderPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrTexture_hdr",
+        ":SkGr_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//include/gpu/gl:GrGLTypes_hdr",
+        "//include/gpu/vk:GrVkExtensions_hdr",
+        "//src/core:SkMessageBus_hdr",
+        "//src/gpu/gl:GrGLDefines_hdr",
+        "//src/gpu/vk:GrVkGpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrAHardwareBufferUtils_hdr",
     hdrs = ["GrAHardwareBufferUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        "//include/core:SkTypes",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrTypes",
-        "//include/gpu/gl:GrGLTypes",
-        "//src/gpu/gl:GrGLDefines",
-        "//src/gpu/gl:GrGLUtil",
-        "//src/gpu/vk:GrVkCaps",
-        "//src/gpu/vk:GrVkGpu",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAppliedClip",
+generated_cc_atom(
+    name = "GrAHardwareBufferUtils_src",
+    srcs = ["GrAHardwareBufferUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAHardwareBufferUtils_hdr",
+        ":GrDirectContextPriv_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu/gl:GrGLTypes_hdr",
+        "//src/gpu/gl:GrGLDefines_hdr",
+        "//src/gpu/gl:GrGLUtil_hdr",
+        "//src/gpu/vk:GrVkCaps_hdr",
+        "//src/gpu/vk:GrVkGpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrAppliedClip_hdr",
     hdrs = ["GrAppliedClip.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrFragmentProcessor",
-        ":GrScissorState",
-        ":GrWindowRectsState",
-        "//src/core:SkClipStack",
+        ":GrFragmentProcessor_hdr",
+        ":GrScissorState_hdr",
+        ":GrWindowRectsState_hdr",
+        "//src/core:SkClipStack_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAttachment",
-    srcs = ["GrAttachment.cpp"],
+generated_cc_atom(
+    name = "GrAttachment_hdr",
     hdrs = ["GrAttachment.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendUtils",
-        ":GrCaps",
-        ":GrDataUtils",
-        ":GrGpu",
-        ":GrSurface",
-        "//include/private:GrResourceKey",
-        "//src/core:SkClipStack",
+        ":GrSurface_hdr",
+        "//src/core:SkClipStack_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAuditTrail",
-    srcs = ["GrAuditTrail.cpp"],
+generated_cc_atom(
+    name = "GrAttachment_src",
+    srcs = ["GrAttachment.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrBackendUtils_hdr",
+        ":GrCaps_hdr",
+        ":GrDataUtils_hdr",
+        ":GrGpu_hdr",
+        "//include/private:GrResourceKey_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrAuditTrail_hdr",
     hdrs = ["GrAuditTrail.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRenderTargetProxy",
-        "//include/core:SkRect",
-        "//include/core:SkString",
-        "//include/gpu:GrConfig",
-        "//include/gpu:GrTypes",
-        "//include/private:SkTArray",
-        "//include/private:SkTHash",
-        "//src/gpu/ops:GrOp",
-        "//src/utils:SkJSONWriter",
+        ":GrRenderTargetProxy_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrConfig_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTHash_hdr",
     ],
 )
 
-cc_library(
-    name = "GrAutoLocaleSetter",
+generated_cc_atom(
+    name = "GrAuditTrail_src",
+    srcs = ["GrAuditTrail.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAuditTrail_hdr",
+        "//src/gpu/ops:GrOp_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrAutoLocaleSetter_hdr",
     hdrs = ["GrAutoLocaleSetter.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkString",
-        "//include/gpu:GrTypes",
-        "//include/private:SkNoncopyable",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkNoncopyable_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendSemaphore",
+generated_cc_atom(
+    name = "GrBackendSemaphore_src",
     srcs = ["GrBackendSemaphore.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu/d3d:GrD3DTypes",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/gpu/d3d:GrD3DTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendSurface",
-    srcs = ["GrBackendSurface.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrBackendSurfaceMutableStateImpl",
-        "//include/core:SkString",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu/d3d:GrD3DTypes",
-        "//include/gpu/dawn:GrDawnTypes",
-        "//include/gpu/mtl:GrMtlTypes",
-        "//include/gpu/vk:GrVkTypes",
-        "//include/private:GrTypesPriv",
-        "//src/gpu/d3d:GrD3DResourceState",
-        "//src/gpu/d3d:GrD3DUtil",
-        "//src/gpu/dawn:GrDawnUtil",
-        "//src/gpu/gl:GrGLUtil",
-        "//src/gpu/mtl:GrMtlCppUtil",
-        "//src/gpu/vk:GrVkImageLayout",
-        "//src/gpu/vk:GrVkUtil",
-    ],
-)
-
-cc_library(
-    name = "GrBackendSurfaceMutableState",
-    srcs = ["GrBackendSurfaceMutableState.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrBackendSurfaceMutableState"],
-)
-
-cc_library(
-    name = "GrBackendSurfaceMutableStateImpl",
+generated_cc_atom(
+    name = "GrBackendSurfaceMutableStateImpl_hdr",
     hdrs = ["GrBackendSurfaceMutableStateImpl.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrBackendSurfaceMutableState",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrBackendSurfaceMutableState_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendTextureImageGenerator",
-    srcs = ["GrBackendTextureImageGenerator.cpp"],
+generated_cc_atom(
+    name = "GrBackendSurfaceMutableState_src",
+    srcs = ["GrBackendSurfaceMutableState.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrBackendSurfaceMutableState_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrBackendSurface_src",
+    srcs = ["GrBackendSurface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendSurfaceMutableStateImpl_hdr",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu/d3d:GrD3DTypes_hdr",
+        "//include/gpu/dawn:GrDawnTypes_hdr",
+        "//include/gpu/mtl:GrMtlTypes_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/gpu/d3d:GrD3DResourceState_hdr",
+        "//src/gpu/d3d:GrD3DUtil_hdr",
+        "//src/gpu/dawn:GrDawnUtil_hdr",
+        "//src/gpu/gl:GrGLUtil_hdr",
+        "//src/gpu/mtl:GrMtlCppUtil_hdr",
+        "//src/gpu/vk:GrVkImageLayout_hdr",
+        "//src/gpu/vk:GrVkUtil_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrBackendTextureImageGenerator_hdr",
     hdrs = ["GrBackendTextureImageGenerator.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrResourceCache",
-        ":GrResourceProvider",
-        ":GrResourceProviderPriv",
-        ":GrSemaphore",
-        ":GrTexture",
-        ":GrTextureProxyPriv",
-        ":SkGr",
-        "//include/core:SkImageGenerator",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:GrResourceKey",
-        "//include/private:SkMutex",
-        "//src/core:SkMessageBus",
-        "//src/gpu/gl:GrGLTexture",
+        ":GrTexture_hdr",
+        "//include/core:SkImageGenerator_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//include/private:SkMutex_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBackendUtils",
-    srcs = ["GrBackendUtils.cpp"],
+generated_cc_atom(
+    name = "GrBackendTextureImageGenerator_src",
+    srcs = ["GrBackendTextureImageGenerator.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendTextureImageGenerator_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpu_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrResourceCache_hdr",
+        ":GrResourceProviderPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSemaphore_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTexture_hdr",
+        ":SkGr_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkMessageBus_hdr",
+        "//src/gpu/gl:GrGLTexture_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrBackendUtils_hdr",
     hdrs = ["GrBackendUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDataUtils",
-        "//include/core:SkImage",
-        "//include/gpu:GrBackendSurface",
-        "//src/gpu/d3d:GrD3DUtil",
-        "//src/gpu/dawn:GrDawnUtil",
-        "//src/gpu/gl:GrGLUtil",
-        "//src/gpu/mtl:GrMtlCppUtil",
-        "//src/gpu/vk:GrVkUtil",
+        "//include/core:SkImage_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBaseContextPriv",
-    hdrs = ["GrBaseContextPriv.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/private:GrContext_Base"],
-)
-
-cc_library(
-    name = "GrBlend",
-    hdrs = ["GrBlend.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
-)
-
-cc_library(
-    name = "GrBlurUtils",
-    srcs = ["GrBlurUtils.cpp"],
-    hdrs = ["GrBlurUtils.h"],
+generated_cc_atom(
+    name = "GrBackendUtils_src",
+    srcs = ["GrBackendUtils.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrFixedClip",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrResourceProvider",
-        ":GrStyle",
-        ":GrTextureProxy",
-        ":GrThreadSafeCache",
-        ":GrUtil",
-        ":SkGr",
-        "//include/core:SkPaint",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkDraw",
-        "//src/core:SkMaskFilterBase",
-        "//src/core:SkMatrixProvider",
-        "//src/core:SkTLazy",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/gpu/geometry:GrStyledShape",
-        "//src/gpu/v1:SurfaceDrawContext_v1",
+        ":GrBackendUtils_hdr",
+        ":GrDataUtils_hdr",
+        "//src/gpu/d3d:GrD3DUtil_hdr",
+        "//src/gpu/dawn:GrDawnUtil_hdr",
+        "//src/gpu/gl:GrGLUtil_hdr",
+        "//src/gpu/mtl:GrMtlCppUtil_hdr",
+        "//src/gpu/vk:GrVkUtil_hdr",
     ],
 )
 
-cc_library(
-    name = "GrBuffer",
-    hdrs = ["GrBuffer.h"],
+generated_cc_atom(
+    name = "GrBaseContextPriv_hdr",
+    hdrs = ["GrBaseContextPriv.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrTypes"],
+    deps = ["//include/private:GrContext_Base_hdr"],
 )
 
-cc_library(
-    name = "GrBufferAllocPool",
-    srcs = ["GrBufferAllocPool.cpp"],
+generated_cc_atom(
+    name = "GrBlend_hdr",
+    hdrs = ["GrBlend.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrBlurUtils_hdr",
+    hdrs = ["GrBlurUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/private:GrTypesPriv_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrBlurUtils_src",
+    srcs = ["GrBlurUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBlurUtils_hdr",
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrFixedClip_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrStyle_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrThreadSafeCache_hdr",
+        ":GrUtil_hdr",
+        ":SkGr_hdr",
+        "//include/core:SkPaint_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkDraw_hdr",
+        "//src/core:SkMaskFilterBase_hdr",
+        "//src/core:SkMatrixProvider_hdr",
+        "//src/core:SkTLazy_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+        "//src/gpu/geometry:GrStyledShape_hdr",
+        "//src/gpu/v1:SurfaceDrawContext_v1_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrBufferAllocPool_hdr",
     hdrs = ["GrBufferAllocPool.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrCpuBuffer",
-        ":GrDirectContextPriv",
-        ":GrDrawIndirectCommand",
-        ":GrGpu",
-        ":GrGpuBuffer",
-        ":GrNonAtomicRef",
-        ":GrResourceProvider",
-        "//include/core:SkTypes",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrTypes",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkMacros",
-        "//include/private:SkNoncopyable",
-        "//include/private:SkTArray",
-        "//include/private:SkTDArray",
-        "//src/core:SkSafeMath",
-        "//src/core:SkTraceEvent",
+        ":GrCpuBuffer_hdr",
+        ":GrDrawIndirectCommand_hdr",
+        ":GrNonAtomicRef_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkNoncopyable_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTDArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrCaps",
-    srcs = ["GrCaps.cpp"],
+generated_cc_atom(
+    name = "GrBufferAllocPool_src",
+    srcs = ["GrBufferAllocPool.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBufferAllocPool_hdr",
+        ":GrCaps_hdr",
+        ":GrCpuBuffer_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrGpu_hdr",
+        ":GrResourceProvider_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkMacros_hdr",
+        "//src/core:SkSafeMath_hdr",
+        "//src/core:SkTraceEvent_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrBuffer_hdr",
+    hdrs = ["GrBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrCaps_hdr",
     hdrs = ["GrCaps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendUtils",
-        ":GrBlend",
-        ":GrRenderTargetProxy",
-        ":GrSamplerState",
-        ":GrShaderCaps",
-        ":GrSurface",
-        ":GrSurfaceProxy",
-        ":GrSwizzle",
-        ":GrTestUtils",
-        ":GrWindowRectangles",
-        "//include/core:SkImageInfo",
-        "//include/core:SkRefCnt",
-        "//include/core:SkString",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrContextOptions",
-        "//include/gpu:GrDriverBugWorkarounds",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkCompressedDataUtils",
-        "//src/utils:SkJSONWriter",
+        ":GrBlend_hdr",
+        ":GrSamplerState_hdr",
+        ":GrShaderCaps_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSwizzle_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrDriverBugWorkarounds_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/core:SkCompressedDataUtils_hdr",
     ],
 )
 
-cc_library(
-    name = "GrClientMappedBufferManager",
-    srcs = ["GrClientMappedBufferManager.cpp"],
+generated_cc_atom(
+    name = "GrCaps_src",
+    srcs = ["GrCaps.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendUtils_hdr",
+        ":GrCaps_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSurface_hdr",
+        ":GrTestUtils_hdr",
+        ":GrWindowRectangles_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrClientMappedBufferManager_hdr",
     hdrs = ["GrClientMappedBufferManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpuBuffer",
-        "//include/gpu:GrDirectContext",
-        "//include/private:SkTArray",
-        "//src/core:SkMessageBus",
+        ":GrGpuBuffer_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkMessageBus_hdr",
     ],
 )
 
-cc_library(
-    name = "GrClip",
+generated_cc_atom(
+    name = "GrClientMappedBufferManager_src",
+    srcs = ["GrClientMappedBufferManager.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrClientMappedBufferManager_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrClip_hdr",
     hdrs = ["GrClip.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAppliedClip",
-        "//include/core:SkRRect",
-        "//include/core:SkRect",
+        ":GrAppliedClip_hdr",
+        "//include/core:SkRRect_hdr",
+        "//include/core:SkRect_hdr",
     ],
 )
 
-cc_library(
-    name = "GrColor",
-    hdrs = ["GrColor.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":BufferWriter",
-        "//include/core:SkColor",
-        "//include/core:SkColorPriv",
-        "//include/gpu:GrTypes",
-        "//include/private:SkColorData",
-        "//include/private:SkHalf",
-    ],
-)
-
-cc_library(
-    name = "GrColorInfo",
-    srcs = ["GrColorInfo.cpp"],
+generated_cc_atom(
+    name = "GrColorInfo_hdr",
     hdrs = ["GrColorInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColorSpaceXform",
-        "//include/core:SkColorSpace",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
-        "//src/core:SkColorSpacePriv",
+        ":GrColorSpaceXform_hdr",
+        "//include/core:SkColorSpace_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrColorSpaceXform",
-    srcs = ["GrColorSpaceXform.cpp"],
+generated_cc_atom(
+    name = "GrColorInfo_src",
+    srcs = ["GrColorInfo.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrColorInfo_hdr",
+        "//src/core:SkColorSpacePriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrColorSpaceXform_hdr",
     hdrs = ["GrColorSpaceXform.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColorInfo",
-        ":GrFragmentProcessor",
-        "//include/core:SkColorSpace",
-        "//include/core:SkRefCnt",
-        "//src/core:SkColorSpacePriv",
-        "//src/core:SkColorSpaceXformSteps",
-        "//src/gpu/glsl:GrGLSLColorSpaceXformHelper",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        ":GrFragmentProcessor_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//src/core:SkColorSpacePriv_hdr",
+        "//src/core:SkColorSpaceXformSteps_hdr",
     ],
 )
 
-cc_library(
-    name = "GrContextThreadSafeProxy",
-    srcs = ["GrContextThreadSafeProxy.cpp"],
+generated_cc_atom(
+    name = "GrColorSpaceXform_src",
+    srcs = ["GrColorSpaceXform.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBaseContextPriv",
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrThreadSafeCache",
-        ":GrThreadSafePipelineBuilder",
-        "//include/core:SkSurfaceCharacterization",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/vk:GrVkCaps",
-        "//src/image:SkSurface_Gpu",
+        ":GrColorInfo_hdr",
+        ":GrColorSpaceXform_hdr",
+        "//include/core:SkColorSpace_hdr",
+        "//src/core:SkColorSpacePriv_hdr",
+        "//src/gpu/glsl:GrGLSLColorSpaceXformHelper_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
     ],
 )
 
-cc_library(
-    name = "GrContextThreadSafeProxyPriv",
+generated_cc_atom(
+    name = "GrColor_hdr",
+    hdrs = ["GrColor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":BufferWriter_hdr",
+        "//include/core:SkColorPriv_hdr",
+        "//include/core:SkColor_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkColorData_hdr",
+        "//include/private:SkHalf_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrContextThreadSafeProxyPriv_hdr",
     hdrs = ["GrContextThreadSafeProxyPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//include/private:GrContext_Base",
-        "//src/gpu/text:GrTextBlobCache",
+        ":GrCaps_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//include/private:GrContext_Base_hdr",
+        "//src/gpu/text:GrTextBlobCache_hdr",
     ],
 )
 
-cc_library(
-    name = "GrContext_Base",
+generated_cc_atom(
+    name = "GrContextThreadSafeProxy_src",
+    srcs = ["GrContextThreadSafeProxy.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBaseContextPriv_hdr",
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrThreadSafeCache_hdr",
+        ":GrThreadSafePipelineBuilder_hdr",
+        "//include/core:SkSurfaceCharacterization_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/vk:GrVkCaps_hdr",
+        "//src/image:SkSurface_Gpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrContext_Base_src",
     srcs = ["GrContext_Base.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBaseContextPriv",
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrShaderUtils",
-        "//include/private:GrContext_Base",
-        "//src/gpu/effects:GrSkSLFP",
+        ":GrBaseContextPriv_hdr",
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrShaderUtils_hdr",
+        "//include/private:GrContext_Base_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
     ],
 )
 
-cc_library(
-    name = "GrCopyRenderTask",
-    srcs = ["GrCopyRenderTask.cpp"],
+generated_cc_atom(
+    name = "GrCopyRenderTask_hdr",
     hdrs = ["GrCopyRenderTask.h"],
     visibility = ["//:__subpackages__"],
+    deps = [":GrRenderTask_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrCopyRenderTask_src",
+    srcs = ["GrCopyRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        ":GrOpFlushState",
-        ":GrRenderTask",
-        ":GrResourceAllocator",
-        "//src/gpu/geometry:GrRect",
+        ":GrCopyRenderTask_hdr",
+        ":GrGpu_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrResourceAllocator_hdr",
+        "//src/gpu/geometry:GrRect_hdr",
     ],
 )
 
-cc_library(
-    name = "GrCpuBuffer",
+generated_cc_atom(
+    name = "GrCpuBuffer_hdr",
     hdrs = ["GrCpuBuffer.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBuffer",
-        ":GrNonAtomicRef",
-        "//src/core:SkSafeMath",
+        ":GrBuffer_hdr",
+        ":GrNonAtomicRef_hdr",
+        "//src/core:SkSafeMath_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDDLContext",
+generated_cc_atom(
+    name = "GrDDLContext_src",
     srcs = ["GrDDLContext.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrProgramDesc",
-        ":GrProgramInfo",
-        ":GrRecordingContextPriv",
-        "//include/gpu:GrRecordingContext",
-        "//src/core:SkLRUCache",
-        "//src/gpu/effects:GrSkSLFP",
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrProgramDesc_hdr",
+        ":GrProgramInfo_hdr",
+        ":GrRecordingContextPriv_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkLRUCache_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDDLTask",
-    srcs = ["GrDDLTask.cpp"],
+generated_cc_atom(
+    name = "GrDDLTask_hdr",
     hdrs = ["GrDDLTask.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRenderTask",
-        ":GrResourceAllocator",
-        "//include/core:SkDeferredDisplayList",
-        "//include/core:SkPoint",
-        "//src/core:SkDeferredDisplayListPriv",
+        ":GrRenderTask_hdr",
+        "//include/core:SkPoint_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDataUtils",
-    srcs = ["GrDataUtils.cpp"],
+generated_cc_atom(
+    name = "GrDDLTask_src",
+    srcs = ["GrDDLTask.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDDLTask_hdr",
+        ":GrResourceAllocator_hdr",
+        "//include/core:SkDeferredDisplayList_hdr",
+        "//src/core:SkDeferredDisplayListPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDataUtils_hdr",
     hdrs = ["GrDataUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrColor",
-        ":GrImageInfo",
-        ":GrPixmap",
-        ":GrSwizzle",
-        "//include/core:SkColor",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkTArray",
-        "//include/private:SkTPin",
-        "//include/third_party/skcms",
-        "//src/core:SkColorSpaceXformSteps",
-        "//src/core:SkCompressedDataUtils",
-        "//src/core:SkConvertPixels",
-        "//src/core:SkMathPriv",
-        "//src/core:SkMipmap",
-        "//src/core:SkRasterPipeline",
-        "//src/core:SkTLazy",
-        "//src/core:SkTraceEvent",
-        "//src/core:SkUtils",
+        "//include/core:SkColor_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDefaultGeoProcFactory",
-    srcs = ["GrDefaultGeoProcFactory.cpp"],
-    hdrs = ["GrDefaultGeoProcFactory.h"],
+generated_cc_atom(
+    name = "GrDataUtils_src",
+    srcs = ["GrDataUtils.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrGeometryProcessor",
-        "//include/core:SkRefCnt",
-        "//src/core:SkArenaAlloc",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
-        "//src/gpu/glsl:GrGLSLVarying",
-        "//src/gpu/glsl:GrGLSLVertexGeoBuilder",
+        ":GrCaps_hdr",
+        ":GrColor_hdr",
+        ":GrDataUtils_hdr",
+        ":GrImageInfo_hdr",
+        ":GrPixmap_hdr",
+        ":GrSwizzle_hdr",
+        "//include/private:SkTPin_hdr",
+        "//include/third_party/skcms:skcms_hdr",
+        "//src/core:SkColorSpaceXformSteps_hdr",
+        "//src/core:SkCompressedDataUtils_hdr",
+        "//src/core:SkConvertPixels_hdr",
+        "//src/core:SkMathPriv_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/core:SkRasterPipeline_hdr",
+        "//src/core:SkTLazy_hdr",
+        "//src/core:SkTraceEvent_hdr",
+        "//src/core:SkUtils_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDeferredProxyUploader",
+generated_cc_atom(
+    name = "GrDefaultGeoProcFactory_hdr",
+    hdrs = ["GrDefaultGeoProcFactory.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrGeometryProcessor_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDefaultGeoProcFactory_src",
+    srcs = ["GrDefaultGeoProcFactory.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrDefaultGeoProcFactory_hdr",
+        ":GrGeometryProcessor_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
+        "//src/gpu/glsl:GrGLSLVarying_hdr",
+        "//src/gpu/glsl:GrGLSLVertexGeoBuilder_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDeferredProxyUploader_hdr",
     hdrs = ["GrDeferredProxyUploader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrOpFlushState",
-        ":GrTextureProxyPriv",
-        "//include/core:SkRefCnt",
-        "//include/private:SkSemaphore",
-        "//src/core:SkAutoPixmapStorage",
+        ":GrOpFlushState_hdr",
+        ":GrTextureProxyPriv_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkSemaphore_hdr",
+        "//src/core:SkAutoPixmapStorage_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDeferredUpload",
+generated_cc_atom(
+    name = "GrDeferredUpload_hdr",
     hdrs = ["GrDeferredUpload.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrTypes",
-        "//include/private:GrTypesPriv",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDirectContext",
-    srcs = ["GrDirectContext.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrBackendUtils",
-        ":GrClientMappedBufferManager",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrDirectContextPriv",
-        ":GrDrawingManager",
-        ":GrGpu",
-        ":GrResourceProvider",
-        ":GrSemaphore",
-        ":GrShaderUtils",
-        ":GrThreadSafePipelineBuilder",
-        ":SurfaceContext",
-        "//include/core:SkString",
-        "//include/core:SkTraceMemoryDump",
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu/mtl:GrMtlBackendContext",
-        "//include/utils:SkRandom",
-        "//src/core:SkAutoMalloc",
-        "//src/core:SkTaskGroup",
-        "//src/core:SkTraceEvent",
-        "//src/gpu/d3d:GrD3DGpu",
-        "//src/gpu/dawn:GrDawnGpu",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/gl:GrGLGpu",
-        "//src/gpu/mock:GrMockGpu",
-        "//src/gpu/mtl:GrMtlTrampoline",
-        "//src/gpu/ops:SmallPathAtlasMgr",
-        "//src/gpu/text:GrAtlasManager",
-        "//src/gpu/text:GrStrikeCache",
-        "//src/gpu/vk:GrVkGpu",
-        "//src/image:SkImage_GpuBase",
-        "//src/utils:SkJSONWriter",
-    ],
-)
-
-cc_library(
-    name = "GrDirectContextPriv",
-    srcs = ["GrDirectContextPriv.cpp"],
+generated_cc_atom(
+    name = "GrDirectContextPriv_hdr",
     hdrs = ["GrDirectContextPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":BaseDevice",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrDrawingManager",
-        ":GrGpu",
-        ":GrMemoryPool",
-        ":GrRecordingContextPriv",
-        ":GrTexture",
-        ":GrThreadSafePipelineBuilder",
-        ":GrTracing",
-        ":SkGr",
-        ":SurfaceContext",
-        ":SurfaceFillContext",
-        "//include/core:SkSpan",
-        "//include/core:SkSurface",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//include/gpu:GrDirectContext",
-        "//src/core:SkRuntimeEffectPriv",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/gpu/text:GrAtlasManager",
-        "//src/gpu/text:GrTextBlobCache",
-        "//src/image:SkImage_Base",
-        "//src/image:SkImage_Gpu",
+        ":BaseDevice_hdr",
+        ":GrRecordingContextPriv_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/core:SkSurface_hdr",
+        "//include/gpu:GrDirectContext_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDistanceFieldGenFromVector",
-    srcs = ["GrDistanceFieldGenFromVector.cpp"],
-    hdrs = ["GrDistanceFieldGenFromVector.h"],
+generated_cc_atom(
+    name = "GrDirectContextPriv_src",
+    srcs = ["GrDirectContextPriv.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkMatrix",
-        "//include/core:SkPath",
-        "//include/gpu:GrConfig",
-        "//include/private:SkTPin",
-        "//src/core:SkAutoMalloc",
-        "//src/core:SkDistanceFieldGen",
-        "//src/core:SkGeometry",
-        "//src/core:SkPointPriv",
-        "//src/core:SkRectPriv",
-        "//src/gpu/geometry:GrPathUtils",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrGpu_hdr",
+        ":GrMemoryPool_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrTexture_hdr",
+        ":GrThreadSafePipelineBuilder_hdr",
+        ":GrTracing_hdr",
+        ":SkGr_hdr",
+        ":SurfaceContext_hdr",
+        ":SurfaceFillContext_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//src/core:SkRuntimeEffectPriv_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+        "//src/gpu/text:GrAtlasManager_hdr",
+        "//src/gpu/text:GrTextBlobCache_hdr",
+        "//src/image:SkImage_Base_hdr",
+        "//src/image:SkImage_Gpu_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDrawIndirectCommand",
+generated_cc_atom(
+    name = "GrDirectContext_src",
+    srcs = ["GrDirectContext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendUtils_hdr",
+        ":GrClientMappedBufferManager_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrGpu_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSemaphore_hdr",
+        ":GrShaderUtils_hdr",
+        ":GrThreadSafePipelineBuilder_hdr",
+        ":SurfaceContext_hdr",
+        "//include/core:SkString_hdr",
+        "//include/core:SkTraceMemoryDump_hdr",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu/mtl:GrMtlBackendContext_hdr",
+        "//include/utils:SkRandom_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/core:SkTaskGroup_hdr",
+        "//src/core:SkTraceEvent_hdr",
+        "//src/gpu/d3d:GrD3DGpu_hdr",
+        "//src/gpu/dawn:GrDawnGpu_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/gl:GrGLGpu_hdr",
+        "//src/gpu/mock:GrMockGpu_hdr",
+        "//src/gpu/mtl:GrMtlTrampoline_hdr",
+        "//src/gpu/ops:SmallPathAtlasMgr_hdr",
+        "//src/gpu/text:GrAtlasManager_hdr",
+        "//src/gpu/text:GrStrikeCache_hdr",
+        "//src/gpu/vk:GrVkGpu_hdr",
+        "//src/image:SkImage_GpuBase_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDistanceFieldGenFromVector_hdr",
+    hdrs = ["GrDistanceFieldGenFromVector.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkPath_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDistanceFieldGenFromVector_src",
+    srcs = ["GrDistanceFieldGenFromVector.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDistanceFieldGenFromVector_hdr",
+        "//include/core:SkMatrix_hdr",
+        "//include/gpu:GrConfig_hdr",
+        "//include/private:SkTPin_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/core:SkDistanceFieldGen_hdr",
+        "//src/core:SkGeometry_hdr",
+        "//src/core:SkPointPriv_hdr",
+        "//src/core:SkRectPriv_hdr",
+        "//src/gpu/geometry:GrPathUtils_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDrawIndirectCommand_hdr",
     hdrs = ["GrDrawIndirectCommand.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "GrDrawOpAtlas",
-    srcs = ["GrDrawOpAtlas.cpp"],
+generated_cc_atom(
+    name = "GrDrawOpAtlas_hdr",
     hdrs = ["GrDrawOpAtlas.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendUtils",
-        ":GrDeferredUpload",
-        ":GrOnFlushResourceProvider",
-        ":GrOpFlushState",
-        ":GrProxyProvider",
-        ":GrRectanizerSkyline",
-        ":GrResourceProvider",
-        ":GrResourceProviderPriv",
-        ":GrSurfaceProxyPriv",
-        ":GrSurfaceProxyView",
-        ":GrTexture",
-        ":GrTracing",
-        "//include/gpu:GrBackendSurface",
-        "//include/private:SkTArray",
-        "//include/private:SkTPin",
-        "//src/core:SkIPoint16",
-        "//src/core:SkOpts",
-        "//src/core:SkTInternalLList",
-        "//src/gpu/geometry:GrRect",
+        ":GrDeferredUpload_hdr",
+        ":GrRectanizerSkyline_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkIPoint16_hdr",
+        "//src/core:SkTInternalLList_hdr",
+        "//src/gpu/geometry:GrRect_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDrawOpTest",
-    srcs = ["GrDrawOpTest.cpp"],
+generated_cc_atom(
+    name = "GrDrawOpAtlas_src",
+    srcs = ["GrDrawOpAtlas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendUtils_hdr",
+        ":GrDrawOpAtlas_hdr",
+        ":GrOnFlushResourceProvider_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrResourceProviderPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrTexture_hdr",
+        ":GrTracing_hdr",
+        "//include/private:SkTPin_hdr",
+        "//src/core:SkOpts_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDrawOpTest_hdr",
     hdrs = ["GrDrawOpTest.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBaseContextPriv",
-        ":GrCaps",
-        ":GrTestUtils",
-        ":GrUserStencilSettings",
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
-        "//include/private:GrContext_Base",
-        "//include/utils:SkRandom",
+        ":GrTestUtils_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDrawingManager",
-    srcs = ["GrDrawingManager.cpp"],
+generated_cc_atom(
+    name = "GrDrawOpTest_src",
+    srcs = ["GrDrawOpTest.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBaseContextPriv_hdr",
+        ":GrCaps_hdr",
+        ":GrDrawOpTest_hdr",
+        ":GrUserStencilSettings_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:GrContext_Base_hdr",
+        "//include/utils:SkRandom_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDrawingManager_hdr",
     hdrs = ["GrDrawingManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBufferAllocPool",
-        ":GrClientMappedBufferManager",
-        ":GrCopyRenderTask",
-        ":GrDDLTask",
-        ":GrDeferredUpload",
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrHashMapWithCache",
-        ":GrMemoryPool",
-        ":GrOnFlushResourceProvider",
-        ":GrOpFlushState",
-        ":GrRecordingContextPriv",
-        ":GrRenderTargetProxy",
-        ":GrRenderTask",
-        ":GrRenderTaskCluster",
-        ":GrResourceAllocator",
-        ":GrResourceCache",
-        ":GrResourceProvider",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyPriv",
-        ":GrTTopoSort",
-        ":GrTexture",
-        ":GrTextureProxy",
-        ":GrTextureProxyPriv",
-        ":GrTextureResolveRenderTask",
-        ":GrTracing",
-        ":GrTransferFromRenderTask",
-        ":GrWaitRenderTask",
-        ":GrWritePixelsRenderTask",
-        "//include/core:SkDeferredDisplayList",
-        "//include/core:SkSpan",
-        "//include/core:SkSurface",
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:SkTArray",
-        "//include/private:SkTHash",
-        "//src/core:SkDeferredDisplayListPriv",
-        "//src/core:SkTInternalLList",
-        "//src/gpu/ops:OpsTask",
-        "//src/gpu/ops:SoftwarePathRenderer",
-        "//src/gpu/text:GrSDFTControl",
-        "//src/gpu/v1:PathRenderer",
-        "//src/gpu/v1:PathRendererChain",
-        "//src/image:SkSurface_Gpu",
+        ":GrBufferAllocPool_hdr",
+        ":GrDeferredUpload_hdr",
+        ":GrHashMapWithCache_hdr",
+        ":GrResourceCache_hdr",
+        ":GrSurfaceProxy_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/core:SkSurface_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTHash_hdr",
+        "//src/gpu/v1:PathRendererChain_hdr",
+        "//src/gpu/v1:PathRenderer_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDriverBugWorkarounds",
+generated_cc_atom(
+    name = "GrDrawingManager_src",
+    srcs = ["GrDrawingManager.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrClientMappedBufferManager_hdr",
+        ":GrCopyRenderTask_hdr",
+        ":GrDDLTask_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrGpu_hdr",
+        ":GrMemoryPool_hdr",
+        ":GrOnFlushResourceProvider_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrRenderTaskCluster_hdr",
+        ":GrRenderTask_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrTTopoSort_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrTextureResolveRenderTask_hdr",
+        ":GrTexture_hdr",
+        ":GrTracing_hdr",
+        ":GrTransferFromRenderTask_hdr",
+        ":GrWaitRenderTask_hdr",
+        ":GrWritePixelsRenderTask_hdr",
+        "//include/core:SkDeferredDisplayList_hdr",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkDeferredDisplayListPriv_hdr",
+        "//src/core:SkTInternalLList_hdr",
+        "//src/gpu/ops:OpsTask_hdr",
+        "//src/gpu/ops:SoftwarePathRenderer_hdr",
+        "//src/gpu/text:GrSDFTControl_hdr",
+        "//src/image:SkSurface_Gpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrDriverBugWorkarounds_src",
     srcs = ["GrDriverBugWorkarounds.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/gpu:GrDriverBugWorkarounds",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrDriverBugWorkarounds_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDstProxyView",
+generated_cc_atom(
+    name = "GrDstProxyView_hdr",
     hdrs = ["GrDstProxyView.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrSurfaceProxyView",
-        "//include/gpu:GrTypes",
-        "//include/private:GrTypesPriv",
+        ":GrSurfaceProxyView_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDynamicAtlas",
-    srcs = ["GrDynamicAtlas.cpp"],
+generated_cc_atom(
+    name = "GrDynamicAtlas_hdr",
     hdrs = ["GrDynamicAtlas.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrOnFlushResourceProvider",
-        ":GrProxyProvider",
-        ":GrRectanizerPow2",
-        ":GrRectanizerSkyline",
-        ":GrRenderTarget",
-        ":GrResourceProvider",
-        ":GrSurfaceProxyPriv",
-        ":GrSurfaceProxyView",
-        ":GrTextureProxy",
-        "//src/core:SkArenaAlloc",
-        "//src/core:SkIPoint16",
+        ":GrTextureProxy_hdr",
+        "//src/core:SkArenaAlloc_hdr",
     ],
 )
 
-cc_library(
-    name = "GrEagerVertexAllocator",
-    srcs = ["GrEagerVertexAllocator.cpp"],
-    hdrs = ["GrEagerVertexAllocator.h"],
+generated_cc_atom(
+    name = "GrDynamicAtlas_src",
+    srcs = ["GrDynamicAtlas.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrMeshDrawTarget",
-        ":GrThreadSafeCache",
+        ":GrCaps_hdr",
+        ":GrDynamicAtlas_hdr",
+        ":GrOnFlushResourceProvider_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRectanizerPow2_hdr",
+        ":GrRectanizerSkyline_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//src/core:SkIPoint16_hdr",
     ],
 )
 
-cc_library(
-    name = "GrFPArgs",
-    hdrs = ["GrFPArgs.h"],
+generated_cc_atom(
+    name = "GrEagerVertexAllocator_hdr",
+    hdrs = ["GrEagerVertexAllocator.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkMatrix"],
+    deps = [":GrThreadSafeCache_hdr"],
 )
 
-cc_library(
-    name = "GrFinishCallbacks",
-    srcs = ["GrFinishCallbacks.cpp"],
+generated_cc_atom(
+    name = "GrEagerVertexAllocator_src",
+    srcs = ["GrEagerVertexAllocator.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrEagerVertexAllocator_hdr",
+        ":GrMeshDrawTarget_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrFPArgs_hdr",
+    hdrs = ["GrFPArgs.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkMatrix_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrFinishCallbacks_hdr",
     hdrs = ["GrFinishCallbacks.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        "//include/gpu:GrTypes",
-        "//include/private:GrTypesPriv",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrFixedClip",
-    srcs = ["GrFixedClip.cpp"],
+generated_cc_atom(
+    name = "GrFinishCallbacks_src",
+    srcs = ["GrFinishCallbacks.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrFinishCallbacks_hdr",
+        ":GrGpu_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrFixedClip_hdr",
     hdrs = ["GrFixedClip.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAppliedClip",
-        ":GrClip",
-        ":GrScissorState",
-        ":GrWindowRectsState",
+        ":GrClip_hdr",
+        ":GrScissorState_hdr",
+        ":GrWindowRectsState_hdr",
     ],
 )
 
-cc_library(
-    name = "GrFragmentProcessor",
-    srcs = ["GrFragmentProcessor.cpp"],
+generated_cc_atom(
+    name = "GrFixedClip_src",
+    srcs = ["GrFixedClip.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAppliedClip_hdr",
+        ":GrFixedClip_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrFragmentProcessor_hdr",
     hdrs = ["GrFragmentProcessor.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrPipeline",
-        ":GrProcessor",
-        ":GrProcessorAnalysis",
-        ":GrShaderCaps",
-        "//include/private:SkMacros",
-        "//include/private:SkSLSampleUsage",
-        "//include/private:SkSLString",
-        "//src/core:SkRuntimeEffectPriv",
-        "//src/gpu/effects:GrBlendFragmentProcessor",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
-        "//src/gpu/glsl:GrGLSLProgramBuilder",
-        "//src/gpu/glsl:GrGLSLProgramDataManager",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
+        ":GrProcessor_hdr",
+        "//include/private:SkMacros_hdr",
+        "//include/private:SkSLSampleUsage_hdr",
+        "//include/private:SkSLString_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGeometryProcessor",
-    srcs = ["GrGeometryProcessor.cpp"],
+generated_cc_atom(
+    name = "GrFragmentProcessor_src",
+    srcs = ["GrFragmentProcessor.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrFragmentProcessor_hdr",
+        ":GrPipeline_hdr",
+        ":GrProcessorAnalysis_hdr",
+        ":GrShaderCaps_hdr",
+        "//src/core:SkRuntimeEffectPriv_hdr",
+        "//src/gpu/effects:GrBlendFragmentProcessor_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLProgramBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLProgramDataManager_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGeometryProcessor_hdr",
     hdrs = ["GrGeometryProcessor.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColor",
-        ":GrFragmentProcessor",
-        ":GrPipeline",
-        ":GrProcessor",
-        ":GrShaderCaps",
-        ":GrShaderVar",
-        ":GrSwizzle",
-        "//src/core:SkMatrixPriv",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
-        "//src/gpu/glsl:GrGLSLProgramBuilder",
-        "//src/gpu/glsl:GrGLSLProgramDataManager",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
-        "//src/gpu/glsl:GrGLSLVarying",
+        ":GrColor_hdr",
+        ":GrFragmentProcessor_hdr",
+        ":GrProcessor_hdr",
+        ":GrShaderCaps_hdr",
+        ":GrShaderVar_hdr",
+        ":GrSwizzle_hdr",
+        "//src/gpu/glsl:GrGLSLProgramDataManager_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
+        "//src/gpu/glsl:GrGLSLVarying_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGlyph",
+generated_cc_atom(
+    name = "GrGeometryProcessor_src",
+    srcs = ["GrGeometryProcessor.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGeometryProcessor_hdr",
+        ":GrPipeline_hdr",
+        "//src/core:SkMatrixPriv_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLProgramBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
+        "//src/gpu/glsl:GrGLSLVarying_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGlyph_hdr",
     hdrs = ["GrGlyph.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDrawOpAtlas",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkGlyph",
-        "//src/core:SkMask",
+        ":GrDrawOpAtlas_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/core:SkGlyph_hdr",
+        "//src/core:SkMask_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGpu",
-    srcs = ["GrGpu.cpp"],
-    hdrs = ["GrGpu.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrAttachment",
-        ":GrBackendUtils",
-        ":GrCaps",
-        ":GrDataUtils",
-        ":GrDirectContextPriv",
-        ":GrGpuResourcePriv",
-        ":GrNativeRect",
-        ":GrOpsRenderPass",
-        ":GrPipeline",
-        ":GrPixmap",
-        ":GrRenderTarget",
-        ":GrResourceCache",
-        ":GrResourceProvider",
-        ":GrRingBuffer",
-        ":GrSemaphore",
-        ":GrStagingBufferManager",
-        ":GrStencilSettings",
-        ":GrSwizzle",
-        ":GrTextureProxyPriv",
-        ":GrTracing",
-        ":GrXferProcessor",
-        "//include/core:SkPath",
-        "//include/core:SkSpan",
-        "//include/core:SkSurface",
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrTypes",
-        "//include/private:SkTArray",
-        "//src/core:SkCompressedDataUtils",
-        "//src/core:SkMathPriv",
-        "//src/core:SkMipmap",
-        "//src/core:SkTInternalLList",
-        "//src/sksl:SkSLCompiler",
-        "//src/utils:SkJSONWriter",
-    ],
-)
-
-cc_library(
-    name = "GrGpuBuffer",
-    srcs = ["GrGpuBuffer.cpp"],
+generated_cc_atom(
+    name = "GrGpuBuffer_hdr",
     hdrs = ["GrGpuBuffer.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBuffer",
-        ":GrCaps",
-        ":GrGpu",
-        ":GrGpuResource",
+        ":GrBuffer_hdr",
+        ":GrGpuResource_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGpuResource",
-    srcs = ["GrGpuResource.cpp"],
-    hdrs = ["GrGpuResource.h"],
+generated_cc_atom(
+    name = "GrGpuBuffer_src",
+    srcs = ["GrGpuBuffer.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrGpuResourcePriv",
-        ":GrResourceCache",
-        "//include/core:SkTraceMemoryDump",
-        "//include/gpu:GrDirectContext",
-        "//include/private:GrResourceKey",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkNoncopyable",
+        ":GrCaps_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrGpu_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGpuResourceCacheAccess",
+generated_cc_atom(
+    name = "GrGpuResourceCacheAccess_hdr",
     hdrs = ["GrGpuResourceCacheAccess.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpuResource",
-        ":GrGpuResourcePriv",
+        ":GrGpuResourcePriv_hdr",
+        ":GrGpuResource_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGpuResourcePriv",
+generated_cc_atom(
+    name = "GrGpuResourcePriv_hdr",
     hdrs = ["GrGpuResourcePriv.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrGpuResource"],
+    deps = [":GrGpuResource_hdr"],
 )
 
-cc_library(
-    name = "GrHashMapWithCache",
+generated_cc_atom(
+    name = "GrGpuResource_hdr",
+    hdrs = ["GrGpuResource.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:GrResourceKey_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkNoncopyable_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGpuResource_src",
+    srcs = ["GrGpuResource.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrGpuResource_hdr",
+        ":GrGpu_hdr",
+        ":GrResourceCache_hdr",
+        "//include/core:SkTraceMemoryDump_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGpu_hdr",
+    hdrs = ["GrGpu.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrCaps_hdr",
+        ":GrOpsRenderPass_hdr",
+        ":GrPixmap_hdr",
+        ":GrSwizzle_hdr",
+        ":GrXferProcessor_hdr",
+        "//include/core:SkPath_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/core:SkSurface_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkTInternalLList_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGpu_src",
+    srcs = ["GrGpu.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrBackendUtils_hdr",
+        ":GrCaps_hdr",
+        ":GrDataUtils_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrGpu_hdr",
+        ":GrNativeRect_hdr",
+        ":GrPipeline_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceCache_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrRingBuffer_hdr",
+        ":GrSemaphore_hdr",
+        ":GrStagingBufferManager_hdr",
+        ":GrStencilSettings_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTracing_hdr",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//src/core:SkCompressedDataUtils_hdr",
+        "//src/core:SkMathPriv_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/sksl:SkSLCompiler_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrHashMapWithCache_hdr",
     hdrs = ["GrHashMapWithCache.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/private:SkChecksum",
-        "//include/private:SkNoncopyable",
-        "//include/private:SkTHash",
+        "//include/private:SkChecksum_hdr",
+        "//include/private:SkNoncopyable_hdr",
+        "//include/private:SkTHash_hdr",
     ],
 )
 
-cc_library(
-    name = "GrImageContext",
-    srcs = ["GrImageContext.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrImageContextPriv",
-        ":GrProxyProvider",
-        "//include/private:GrImageContext",
-        "//src/gpu/effects:GrSkSLFP",
-    ],
-)
-
-cc_library(
-    name = "GrImageContextPriv",
+generated_cc_atom(
+    name = "GrImageContextPriv_hdr",
     hdrs = ["GrImageContextPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBaseContextPriv",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//include/private:GrImageContext",
+        ":GrBaseContextPriv_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//include/private:GrImageContext_hdr",
     ],
 )
 
-cc_library(
-    name = "GrImageInfo",
+generated_cc_atom(
+    name = "GrImageContext_src",
+    srcs = ["GrImageContext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrImageContextPriv_hdr",
+        ":GrProxyProvider_hdr",
+        "//include/private:GrImageContext_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrImageInfo_hdr",
     hdrs = ["GrImageInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColorInfo",
-        "//include/core:SkImageInfo",
-        "//include/private:GrTypesPriv",
+        ":GrColorInfo_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrManagedResource",
-    srcs = ["GrManagedResource.cpp"],
+generated_cc_atom(
+    name = "GrManagedResource_hdr",
     hdrs = ["GrManagedResource.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpuResourcePriv",
-        ":GrTexture",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkMutex",
-        "//include/private:SkTHash",
-        "//include/utils:SkRandom",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkMutex_hdr",
+        "//include/private:SkTHash_hdr",
+        "//include/utils:SkRandom_hdr",
     ],
 )
 
-cc_library(
-    name = "GrMemoryPool",
-    srcs = ["GrMemoryPool.cpp"],
+generated_cc_atom(
+    name = "GrManagedResource_src",
+    srcs = ["GrManagedResource.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGpuResourcePriv_hdr",
+        ":GrManagedResource_hdr",
+        ":GrTexture_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrMemoryPool_hdr",
     hdrs = ["GrMemoryPool.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/private:SkTHash",
-        "//include/private:SkTPin",
-        "//src/core:SkASAN",
-        "//src/core:SkBlockAllocator",
+        "//include/private:SkTHash_hdr",
+        "//src/core:SkBlockAllocator_hdr",
     ],
 )
 
-cc_library(
-    name = "GrMeshDrawTarget",
-    srcs = ["GrMeshDrawTarget.cpp"],
+generated_cc_atom(
+    name = "GrMemoryPool_src",
+    srcs = ["GrMemoryPool.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMemoryPool_hdr",
+        "//include/private:SkTPin_hdr",
+        "//src/core:SkASAN_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrMeshDrawTarget_hdr",
     hdrs = ["GrMeshDrawTarget.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDrawIndirectCommand",
-        ":GrResourceProvider",
-        ":GrSimpleMesh",
+        ":GrDrawIndirectCommand_hdr",
+        ":GrSimpleMesh_hdr",
     ],
 )
 
-cc_library(
-    name = "GrNativeRect",
+generated_cc_atom(
+    name = "GrMeshDrawTarget_src",
+    srcs = ["GrMeshDrawTarget.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMeshDrawTarget_hdr",
+        ":GrResourceProvider_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrNativeRect_hdr",
     hdrs = ["GrNativeRect.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRect",
-        "//include/gpu:GrTypes",
+        "//include/core:SkRect_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrNonAtomicRef",
+generated_cc_atom(
+    name = "GrNonAtomicRef_hdr",
     hdrs = ["GrNonAtomicRef.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/private:SkNoncopyable",
-        "//include/private:SkTArray",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkNoncopyable_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrOnFlushResourceProvider",
-    srcs = ["GrOnFlushResourceProvider.cpp"],
+generated_cc_atom(
+    name = "GrOnFlushResourceProvider_hdr",
     hdrs = ["GrOnFlushResourceProvider.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDeferredUpload",
-        ":GrDirectContextPriv",
-        ":GrDrawingManager",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrResourceProvider",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyPriv",
-        ":GrTextureResolveRenderTask",
-        "//include/core:SkSpan",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
+        ":GrDeferredUpload_hdr",
+        "//include/core:SkSpan_hdr",
     ],
 )
 
-cc_library(
-    name = "GrOpFlushState",
-    srcs = ["GrOpFlushState.cpp"],
+generated_cc_atom(
+    name = "GrOnFlushResourceProvider_src",
+    srcs = ["GrOnFlushResourceProvider.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrOnFlushResourceProvider_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrTextureResolveRenderTask_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrOpFlushState_hdr",
     hdrs = ["GrOpFlushState.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAppliedClip",
-        ":GrBufferAllocPool",
-        ":GrDataUtils",
-        ":GrDeferredUpload",
-        ":GrDirectContextPriv",
-        ":GrDrawOpAtlas",
-        ":GrGpu",
-        ":GrImageInfo",
-        ":GrMeshDrawTarget",
-        ":GrProgramInfo",
-        ":GrRenderTargetProxy",
-        ":GrResourceProvider",
-        ":GrSurfaceProxyView",
-        ":GrTexture",
-        "//include/gpu:GrDirectContext",
-        "//src/core:SkArenaAlloc",
-        "//src/core:SkArenaAllocList",
-        "//src/core:SkConvertPixels",
+        ":GrAppliedClip_hdr",
+        ":GrBufferAllocPool_hdr",
+        ":GrDeferredUpload_hdr",
+        ":GrMeshDrawTarget_hdr",
+        ":GrProgramInfo_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//src/core:SkArenaAllocList_hdr",
+        "//src/core:SkArenaAlloc_hdr",
     ],
 )
 
-cc_library(
-    name = "GrOpsRenderPass",
-    srcs = ["GrOpsRenderPass.cpp"],
+generated_cc_atom(
+    name = "GrOpFlushState_src",
+    srcs = ["GrOpFlushState.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDataUtils_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawOpAtlas_hdr",
+        ":GrGpu_hdr",
+        ":GrImageInfo_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrProgramInfo_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrTexture_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//src/core:SkConvertPixels_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrOpsRenderPass_hdr",
     hdrs = ["GrOpsRenderPass.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrCpuBuffer",
-        ":GrDeferredUpload",
-        ":GrDrawIndirectCommand",
-        ":GrGeometryProcessor",
-        ":GrGpu",
-        ":GrPipeline",
-        ":GrProgramInfo",
-        ":GrRenderTarget",
-        ":GrScissorState",
-        ":GrSimpleMesh",
-        ":GrTexture",
-        "//include/core:SkDrawable",
-        "//include/core:SkRect",
+        ":GrDeferredUpload_hdr",
+        ":GrPipeline_hdr",
+        "//include/core:SkDrawable_hdr",
     ],
 )
 
-cc_library(
-    name = "GrOpsTypes",
+generated_cc_atom(
+    name = "GrOpsRenderPass_src",
+    srcs = ["GrOpsRenderPass.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrCpuBuffer_hdr",
+        ":GrDrawIndirectCommand_hdr",
+        ":GrGeometryProcessor_hdr",
+        ":GrGpu_hdr",
+        ":GrOpsRenderPass_hdr",
+        ":GrProgramInfo_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrScissorState_hdr",
+        ":GrSimpleMesh_hdr",
+        ":GrTexture_hdr",
+        "//include/core:SkRect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrOpsTypes_hdr",
     hdrs = ["GrOpsTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrSurfaceProxyView",
-        "//include/core:SkMatrix",
-        "//include/core:SkRect",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkColorData",
+        ":GrSurfaceProxyView_hdr",
+        "//include/core:SkMatrix_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkColorData_hdr",
     ],
 )
 
-cc_library(
-    name = "GrPaint",
-    srcs = ["GrPaint.cpp"],
+generated_cc_atom(
+    name = "GrPaint_hdr",
     hdrs = ["GrPaint.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColor",
-        ":GrFragmentProcessor",
-        ":GrXferProcessor",
-        "//include/core:SkBlendMode",
-        "//include/core:SkRefCnt",
-        "//include/core:SkRegion",
-        "//src/core:SkTLazy",
-        "//src/gpu/effects:GrCoverageSetOpXP",
-        "//src/gpu/effects:GrPorterDuffXferProcessor",
-        "//src/gpu/effects:GrTextureEffect",
+        ":GrColor_hdr",
+        ":GrFragmentProcessor_hdr",
+        "//include/core:SkBlendMode_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkRegion_hdr",
+        "//src/core:SkTLazy_hdr",
     ],
 )
 
-cc_library(
-    name = "GrPersistentCacheUtils",
-    srcs = ["GrPersistentCacheUtils.cpp"],
+generated_cc_atom(
+    name = "GrPaint_src",
+    srcs = ["GrPaint.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPaint_hdr",
+        ":GrXferProcessor_hdr",
+        "//src/gpu/effects:GrCoverageSetOpXP_hdr",
+        "//src/gpu/effects:GrPorterDuffXferProcessor_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrPersistentCacheUtils_hdr",
     hdrs = ["GrPersistentCacheUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkData",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkSLString",
-        "//src/core:SkReadBuffer",
-        "//src/core:SkWriteBuffer",
-        "//src/sksl/ir:SkSLProgram",
+        "//include/core:SkData_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/sksl/ir:SkSLProgram_hdr",
     ],
 )
 
-cc_library(
-    name = "GrPipeline",
-    srcs = ["GrPipeline.cpp"],
+generated_cc_atom(
+    name = "GrPersistentCacheUtils_src",
+    srcs = ["GrPersistentCacheUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrPersistentCacheUtils_hdr",
+        "//include/private:SkSLString_hdr",
+        "//src/core:SkReadBuffer_hdr",
+        "//src/core:SkWriteBuffer_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrPipeline_hdr",
     hdrs = ["GrPipeline.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAppliedClip",
-        ":GrCaps",
-        ":GrColor",
-        ":GrDstProxyView",
-        ":GrFragmentProcessor",
-        ":GrProcessorSet",
-        ":GrScissorState",
-        ":GrSurfaceProxyView",
-        ":GrUserStencilSettings",
-        ":GrWindowRectsState",
-        ":GrXferProcessor",
-        "//include/core:SkRefCnt",
-        "//src/gpu/effects:GrPorterDuffXferProcessor",
-        "//src/gpu/glsl:GrGLSLProgramDataManager",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
+        ":GrColor_hdr",
+        ":GrDstProxyView_hdr",
+        ":GrFragmentProcessor_hdr",
+        ":GrProcessorSet_hdr",
+        ":GrScissorState_hdr",
+        ":GrSurfaceProxyView_hdr",
+        ":GrUserStencilSettings_hdr",
+        ":GrWindowRectsState_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//src/gpu/effects:GrPorterDuffXferProcessor_hdr",
     ],
 )
 
-cc_library(
-    name = "GrPixmap",
+generated_cc_atom(
+    name = "GrPipeline_src",
+    srcs = ["GrPipeline.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAppliedClip_hdr",
+        ":GrCaps_hdr",
+        ":GrPipeline_hdr",
+        ":GrXferProcessor_hdr",
+        "//src/gpu/glsl:GrGLSLProgramDataManager_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrPixmap_hdr",
     hdrs = ["GrPixmap.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrImageInfo",
-        "//include/core:SkData",
-        "//include/core:SkPixmap",
+        ":GrImageInfo_hdr",
+        "//include/core:SkData_hdr",
+        "//include/core:SkPixmap_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProcessor",
-    srcs = ["GrProcessor.cpp"],
-    hdrs = ["GrProcessor.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrColor",
-        ":GrGeometryProcessor",
-        ":GrGpuBuffer",
-        ":GrMemoryPool",
-        ":GrProcessorUnitTest",
-        ":GrProgramDesc",
-        ":GrSamplerState",
-        ":GrShaderVar",
-        ":GrSurfaceProxyPriv",
-        ":GrTextureProxy",
-        ":GrXferProcessor",
-        "//include/core:SkMath",
-        "//include/core:SkString",
-        "//include/private:SkSpinlock",
-    ],
-)
-
-cc_library(
-    name = "GrProcessorAnalysis",
-    srcs = ["GrProcessorAnalysis.cpp"],
+generated_cc_atom(
+    name = "GrProcessorAnalysis_hdr",
     hdrs = ["GrProcessorAnalysis.h"],
     visibility = ["//:__subpackages__"],
+    deps = ["//include/private:SkColorData_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrProcessorAnalysis_src",
+    srcs = ["GrProcessorAnalysis.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrFragmentProcessor",
-        ":GrGeometryProcessor",
-        "//include/private:SkColorData",
+        ":GrCaps_hdr",
+        ":GrFragmentProcessor_hdr",
+        ":GrGeometryProcessor_hdr",
+        ":GrProcessorAnalysis_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProcessorSet",
-    srcs = ["GrProcessorSet.cpp"],
+generated_cc_atom(
+    name = "GrProcessorSet_hdr",
     hdrs = ["GrProcessorSet.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAppliedClip",
-        ":GrCaps",
-        ":GrFragmentProcessor",
-        ":GrPaint",
-        ":GrProcessorAnalysis",
-        ":GrUserStencilSettings",
-        ":GrXferProcessor",
-        "//include/private:SkTemplates",
-        "//src/core:SkBlendModePriv",
-        "//src/gpu/effects:GrPorterDuffXferProcessor",
+        ":GrFragmentProcessor_hdr",
+        ":GrPaint_hdr",
+        ":GrProcessorAnalysis_hdr",
+        ":GrXferProcessor_hdr",
+        "//include/private:SkTemplates_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProcessorUnitTest",
-    srcs = ["GrProcessorUnitTest.cpp"],
+generated_cc_atom(
+    name = "GrProcessorSet_src",
+    srcs = ["GrProcessorSet.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAppliedClip_hdr",
+        ":GrCaps_hdr",
+        ":GrProcessorSet_hdr",
+        ":GrUserStencilSettings_hdr",
+        ":GrXferProcessor_hdr",
+        "//src/core:SkBlendModePriv_hdr",
+        "//src/gpu/effects:GrPorterDuffXferProcessor_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProcessorUnitTest_hdr",
     hdrs = ["GrProcessorUnitTest.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrFragmentProcessor",
-        ":GrRecordingContextPriv",
-        ":GrSurfaceProxyView",
-        ":GrTestUtils",
-        ":GrTextureProxy",
-        "//include/core:SkTypes",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:SkTArray",
-        "//src/core:SkArenaAlloc",
+        ":GrTestUtils_hdr",
+        ":GrTextureProxy_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkArenaAlloc_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProgramDesc",
-    srcs = ["GrProgramDesc.cpp"],
+generated_cc_atom(
+    name = "GrProcessorUnitTest_src",
+    srcs = ["GrProcessorUnitTest.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrFragmentProcessor_hdr",
+        ":GrProcessorUnitTest_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProcessor_hdr",
+    hdrs = ["GrProcessor.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrColor_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrProcessorUnitTest_hdr",
+        ":GrProgramDesc_hdr",
+        ":GrSamplerState_hdr",
+        ":GrShaderVar_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrTextureProxy_hdr",
+        "//include/core:SkMath_hdr",
+        "//include/core:SkString_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProcessor_src",
+    srcs = ["GrProcessor.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGeometryProcessor_hdr",
+        ":GrMemoryPool_hdr",
+        ":GrProcessor_hdr",
+        ":GrSamplerState_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrXferProcessor_hdr",
+        "//include/private:SkSpinlock_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProgramDesc_hdr",
     hdrs = ["GrProgramDesc.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrFragmentProcessor",
-        ":GrGeometryProcessor",
-        ":GrPipeline",
-        ":GrProcessor",
-        ":GrProgramInfo",
-        ":GrRenderTarget",
-        ":GrShaderCaps",
-        ":GrTexture",
-        "//include/core:SkString",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkChecksum",
-        "//include/private:SkTArray",
-        "//include/private:SkTo",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//include/core:SkString_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTo_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProgramInfo",
-    srcs = ["GrProgramInfo.cpp"],
+generated_cc_atom(
+    name = "GrProgramDesc_src",
+    srcs = ["GrProgramDesc.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrFragmentProcessor_hdr",
+        ":GrGeometryProcessor_hdr",
+        ":GrPipeline_hdr",
+        ":GrProcessor_hdr",
+        ":GrProgramDesc_hdr",
+        ":GrProgramInfo_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrShaderCaps_hdr",
+        ":GrTexture_hdr",
+        "//include/private:SkChecksum_hdr",
+        "//include/private:SkTo_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProgramInfo_hdr",
     hdrs = ["GrProgramInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGeometryProcessor",
-        ":GrPipeline",
-        ":GrStencilSettings",
-        ":GrTexture",
-        "//include/gpu:GrTypes",
-        "//src/gpu/effects:GrTextureEffect",
+        ":GrGeometryProcessor_hdr",
+        ":GrPipeline_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrProxyProvider",
-    srcs = ["GrProxyProvider.cpp"],
+generated_cc_atom(
+    name = "GrProgramInfo_src",
+    srcs = ["GrProgramInfo.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrProgramInfo_hdr",
+        ":GrStencilSettings_hdr",
+        ":GrTexture_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrProxyProvider_hdr",
     hdrs = ["GrProxyProvider.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrDirectContextPriv",
-        ":GrImageContextPriv",
-        ":GrRenderTarget",
-        ":GrResourceProvider",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyPriv",
-        ":GrTexture",
-        ":GrTextureProxy",
-        ":GrTextureProxyCacheAccess",
-        ":GrTextureRenderTargetProxy",
-        ":SkGr",
-        "//include/core:SkBitmap",
-        "//include/core:SkImage",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrTypes",
-        "//include/gpu/vk:GrVkTypes",
-        "//include/private:GrImageContext",
-        "//include/private:GrResourceKey",
-        "//include/private:GrSingleOwner",
-        "//include/private:SkImageInfoPriv",
-        "//src/core:SkAutoPixmapStorage",
-        "//src/core:SkCompressedDataUtils",
-        "//src/core:SkImagePriv",
-        "//src/core:SkMipmap",
-        "//src/core:SkTDynamicHash",
-        "//src/core:SkTraceEvent",
-        "//src/image:SkImage_Base",
+        ":GrTextureProxy_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//src/core:SkTDynamicHash_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRecordingContext",
-    srcs = ["GrRecordingContext.cpp"],
+generated_cc_atom(
+    name = "GrProxyProvider_src",
+    srcs = ["GrProxyProvider.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAuditTrail",
-        ":GrCaps",
-        ":GrContextThreadSafeProxyPriv",
-        ":GrDrawingManager",
-        ":GrMemoryPool",
-        ":GrProgramDesc",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":SkGr",
-        ":SurfaceContext",
-        "//include/gpu:GrContextThreadSafeProxy",
-        "//include/gpu:GrRecordingContext",
-        "//src/core:SkArenaAlloc",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/ops:AtlasTextOp",
-        "//src/gpu/text:GrTextBlob",
-        "//src/gpu/text:GrTextBlobCache",
-        "//src/utils:SkJSONWriter",
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrImageContextPriv_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrTextureProxyCacheAccess_hdr",
+        ":GrTextureRenderTargetProxy_hdr",
+        ":GrTexture_hdr",
+        ":SkGr_hdr",
+        "//include/core:SkBitmap_hdr",
+        "//include/core:SkImage_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
+        "//include/private:GrImageContext_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//include/private:GrSingleOwner_hdr",
+        "//include/private:SkImageInfoPriv_hdr",
+        "//src/core:SkAutoPixmapStorage_hdr",
+        "//src/core:SkCompressedDataUtils_hdr",
+        "//src/core:SkImagePriv_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/core:SkTraceEvent_hdr",
+        "//src/image:SkImage_Base_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRecordingContextPriv",
-    srcs = ["GrRecordingContextPriv.cpp"],
+generated_cc_atom(
+    name = "GrRecordingContextPriv_hdr",
     hdrs = ["GrRecordingContextPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":BaseDevice",
-        ":GrCaps",
-        ":GrDrawingManager",
-        ":GrImageContextPriv",
-        ":GrProxyProvider",
-        ":GrRenderTargetProxy",
-        ":GrSurfaceProxyView",
-        "//include/core:SkPaint",
-        "//include/gpu:GrRecordingContext",
-        "//src/gpu/text:GrSDFTControl",
-        "//src/gpu/v1:Device_v1",
-        "//src/gpu/v1:SurfaceDrawContext_v1",
-        "//src/gpu/v1:SurfaceFillContext_v1",
+        ":BaseDevice_hdr",
+        ":GrImageContextPriv_hdr",
+        "//include/core:SkPaint_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/gpu/text:GrSDFTControl_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRectanizer",
-    hdrs = ["GrRectanizer.h"],
+generated_cc_atom(
+    name = "GrRecordingContextPriv_src",
+    srcs = ["GrRecordingContextPriv.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrTypes"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//src/gpu/v1:Device_v1_hdr",
+        "//src/gpu/v1:SurfaceDrawContext_v1_hdr",
+        "//src/gpu/v1:SurfaceFillContext_v1_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrRectanizerPow2",
-    srcs = ["GrRectanizerPow2.cpp"],
+generated_cc_atom(
+    name = "GrRecordingContext_src",
+    srcs = ["GrRecordingContext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAuditTrail_hdr",
+        ":GrCaps_hdr",
+        ":GrContextThreadSafeProxyPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrMemoryPool_hdr",
+        ":GrProgramDesc_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":SkGr_hdr",
+        ":SurfaceContext_hdr",
+        "//include/gpu:GrContextThreadSafeProxy_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/ops:AtlasTextOp_hdr",
+        "//src/gpu/text:GrTextBlobCache_hdr",
+        "//src/gpu/text:GrTextBlob_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRectanizerPow2_hdr",
     hdrs = ["GrRectanizerPow2.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRectanizer",
-        "//include/private:SkMalloc",
-        "//src/core:SkIPoint16",
-        "//src/core:SkMathPriv",
+        ":GrRectanizer_hdr",
+        "//include/private:SkMalloc_hdr",
+        "//src/core:SkIPoint16_hdr",
+        "//src/core:SkMathPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRectanizerSkyline",
-    srcs = ["GrRectanizerSkyline.cpp"],
+generated_cc_atom(
+    name = "GrRectanizerPow2_src",
+    srcs = ["GrRectanizerPow2.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrRectanizerPow2_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrRectanizerSkyline_hdr",
     hdrs = ["GrRectanizerSkyline.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRectanizer",
-        "//include/private:SkTDArray",
-        "//src/core:SkIPoint16",
+        ":GrRectanizer_hdr",
+        "//include/private:SkTDArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRefCnt",
+generated_cc_atom(
+    name = "GrRectanizerSkyline_src",
+    srcs = ["GrRectanizerSkyline.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrRectanizerSkyline_hdr",
+        "//src/core:SkIPoint16_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRectanizer_hdr",
+    hdrs = ["GrRectanizer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrRefCnt_hdr",
     hdrs = ["GrRefCnt.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpuResource",
-        ":GrManagedResource",
-        "//include/core:SkRefCnt",
+        ":GrGpuResource_hdr",
+        ":GrManagedResource_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRenderTarget",
-    srcs = ["GrRenderTarget.cpp"],
-    hdrs = ["GrRenderTarget.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrAttachment",
-        ":GrBackendUtils",
-        ":GrGpu",
-        ":GrStencilSettings",
-        ":GrSurface",
-        "//include/core:SkRect",
-        "//src/core:SkRectPriv",
-    ],
-)
-
-cc_library(
-    name = "GrRenderTargetContext",
+generated_cc_atom(
+    name = "GrRenderTargetContext_hdr",
     hdrs = ["GrRenderTargetContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//src/gpu/v1:SurfaceDrawContext_v1",
+        "//include/core:SkTypes_hdr",
+        "//src/gpu/v1:SurfaceDrawContext_v1_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRenderTargetProxy",
-    srcs = ["GrRenderTargetProxy.cpp"],
+generated_cc_atom(
+    name = "GrRenderTargetProxy_hdr",
     hdrs = ["GrRenderTargetProxy.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrGpuResourcePriv",
-        ":GrNativeRect",
-        ":GrRenderTarget",
-        ":GrResourceProvider",
-        ":GrSubRunAllocator",
-        ":GrSurface",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyPriv",
-        ":GrSwizzle",
-        ":GrTextureRenderTargetProxy",
-        "//include/gpu:GrDirectContext",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkArenaAlloc",
-        "//src/core:SkMathPriv",
+        ":GrCaps_hdr",
+        ":GrNativeRect_hdr",
+        ":GrSubRunAllocator_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSwizzle_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/core:SkArenaAlloc_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRenderTask",
-    srcs = ["GrRenderTask.cpp"],
-    hdrs = ["GrRenderTask.h"],
+generated_cc_atom(
+    name = "GrRenderTargetProxy_src",
+    srcs = ["GrRenderTargetProxy.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAttachment",
-        ":GrRenderTarget",
-        ":GrSurfaceProxyView",
-        ":GrTextureProxy",
-        ":GrTextureProxyPriv",
-        ":GrTextureResolveManager",
-        ":GrTextureResolveRenderTask",
-        "//include/core:SkRefCnt",
-        "//include/private:SkTArray",
-        "//src/core:SkTInternalLList",
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurface_hdr",
+        ":GrTextureRenderTargetProxy_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//src/core:SkMathPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrRenderTaskCluster",
-    srcs = ["GrRenderTaskCluster.cpp"],
+generated_cc_atom(
+    name = "GrRenderTarget_hdr",
+    hdrs = ["GrRenderTarget.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrSurface_hdr",
+        "//include/core:SkRect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRenderTarget_src",
+    srcs = ["GrRenderTarget.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrBackendUtils_hdr",
+        ":GrGpu_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrStencilSettings_hdr",
+        "//src/core:SkRectPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRenderTaskCluster_hdr",
     hdrs = ["GrRenderTaskCluster.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRenderTask",
-        "//include/core:SkRefCnt",
-        "//include/core:SkSpan",
-        "//include/private:SkTHash",
-        "//src/core:SkTInternalLList",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkSpan_hdr",
+        "//src/core:SkTInternalLList_hdr",
     ],
 )
 
-cc_library(
-    name = "GrResourceAllocator",
-    srcs = ["GrResourceAllocator.cpp"],
+generated_cc_atom(
+    name = "GrRenderTaskCluster_src",
+    srcs = ["GrRenderTaskCluster.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrRenderTaskCluster_hdr",
+        ":GrRenderTask_hdr",
+        "//include/private:SkTHash_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRenderTask_hdr",
+    hdrs = ["GrRenderTask.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrSurfaceProxyView_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrTextureResolveManager_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkTInternalLList_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrRenderTask_src",
+    srcs = ["GrRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrRenderTask_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTextureResolveRenderTask_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrResourceAllocator_hdr",
     hdrs = ["GrResourceAllocator.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpuResourcePriv",
-        ":GrHashMapWithCache",
-        ":GrRenderTargetProxy",
-        ":GrResourceProvider",
-        ":GrSurface",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyPriv",
-        "//include/private:SkTHash",
-        "//src/core:SkArenaAlloc",
-        "//src/core:SkTMultiMap",
+        ":GrHashMapWithCache_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSurface_hdr",
+        "//include/private:SkTHash_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/core:SkTMultiMap_hdr",
     ],
 )
 
-cc_library(
-    name = "GrResourceCache",
-    srcs = ["GrResourceCache.cpp"],
+generated_cc_atom(
+    name = "GrResourceAllocator_src",
+    srcs = ["GrResourceAllocator.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrRenderTargetProxy_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurfaceProxy_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrResourceCache_hdr",
     hdrs = ["GrResourceCache.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrGpuResource",
-        ":GrGpuResourceCacheAccess",
-        ":GrGpuResourcePriv",
-        ":GrProxyProvider",
-        ":GrTexture",
-        ":GrTextureProxyCacheAccess",
-        ":GrThreadSafeCache",
-        ":GrTracing",
-        ":SkGr",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrDirectContext",
-        "//include/private:GrResourceKey",
-        "//include/private:GrSingleOwner",
-        "//include/private:SkTArray",
-        "//include/private:SkTHash",
-        "//include/private:SkTo",
-        "//include/utils:SkRandom",
-        "//src/core:SkMessageBus",
-        "//src/core:SkOpts",
-        "//src/core:SkScopeExit",
-        "//src/core:SkTDPQueue",
-        "//src/core:SkTInternalLList",
-        "//src/core:SkTMultiMap",
-        "//src/core:SkTSort",
+        ":GrGpuResourceCacheAccess_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrGpuResource_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTHash_hdr",
+        "//src/core:SkMessageBus_hdr",
+        "//src/core:SkTDPQueue_hdr",
+        "//src/core:SkTInternalLList_hdr",
+        "//src/core:SkTMultiMap_hdr",
     ],
 )
 
-cc_library(
-    name = "GrResourceHandle",
-    hdrs = ["GrResourceHandle.h"],
+generated_cc_atom(
+    name = "GrResourceCache_src",
+    srcs = ["GrResourceCache.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourceCacheAccess_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrResourceCache_hdr",
+        ":GrTextureProxyCacheAccess_hdr",
+        ":GrTexture_hdr",
+        ":GrThreadSafeCache_hdr",
+        ":GrTracing_hdr",
+        ":SkGr_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/private:GrSingleOwner_hdr",
+        "//include/private:SkTo_hdr",
+        "//include/utils:SkRandom_hdr",
+        "//src/core:SkMessageBus_hdr",
+        "//src/core:SkOpts_hdr",
+        "//src/core:SkScopeExit_hdr",
+        "//src/core:SkTSort_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrResourceProvider",
-    srcs = ["GrResourceProvider.cpp"],
+generated_cc_atom(
+    name = "GrResourceHandle_hdr",
+    hdrs = ["GrResourceHandle.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrResourceProviderPriv_hdr",
+    hdrs = ["GrResourceProviderPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrResourceProvider_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrResourceProvider_hdr",
     hdrs = ["GrResourceProvider.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":BufferWriter",
-        ":GrAttachment",
-        ":GrCaps",
-        ":GrDataUtils",
-        ":GrGpu",
-        ":GrGpuBuffer",
-        ":GrImageInfo",
-        ":GrProxyProvider",
-        ":GrRenderTarget",
-        ":GrResourceCache",
-        ":GrSemaphore",
-        ":GrTexture",
-        ":SkGr",
-        "//include/gpu:GrBackendSemaphore",
-        "//include/gpu:GrContextOptions",
-        "//include/private:GrResourceKey",
-        "//include/private:GrSingleOwner",
-        "//include/private:SkImageInfoPriv",
-        "//src/core:SkConvertPixels",
-        "//src/core:SkMathPriv",
-        "//src/core:SkMipmap",
+        ":GrGpuBuffer_hdr",
+        ":GrResourceCache_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/private:SkImageInfoPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrResourceProviderPriv",
-    hdrs = ["GrResourceProviderPriv.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [":GrResourceProvider"],
-)
-
-cc_library(
-    name = "GrRingBuffer",
-    srcs = ["GrRingBuffer.cpp"],
-    hdrs = ["GrRingBuffer.h"],
+generated_cc_atom(
+    name = "GrResourceProvider_src",
+    srcs = ["GrResourceProvider.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrGpuBuffer",
-        ":GrResourceProvider",
+        ":BufferWriter_hdr",
+        ":GrAttachment_hdr",
+        ":GrCaps_hdr",
+        ":GrDataUtils_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrGpu_hdr",
+        ":GrImageInfo_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceCache_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSemaphore_hdr",
+        ":GrTexture_hdr",
+        ":SkGr_hdr",
+        "//include/gpu:GrBackendSemaphore_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//include/private:GrSingleOwner_hdr",
+        "//src/core:SkConvertPixels_hdr",
+        "//src/core:SkMathPriv_hdr",
+        "//src/core:SkMipmap_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSPIRVUniformHandler",
-    srcs = ["GrSPIRVUniformHandler.cpp"],
+generated_cc_atom(
+    name = "GrRingBuffer_hdr",
+    hdrs = ["GrRingBuffer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrGpuBuffer_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrRingBuffer_src",
+    srcs = ["GrRingBuffer.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrGpu_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrRingBuffer_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSPIRVUniformHandler_hdr",
     hdrs = ["GrSPIRVUniformHandler.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//src/core:SkTBlockList",
-        "//src/gpu/glsl:GrGLSLProgramBuilder",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
+        "//src/core:SkTBlockList_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSPIRVVaryingHandler",
-    srcs = ["GrSPIRVVaryingHandler.cpp"],
-    hdrs = ["GrSPIRVVaryingHandler.h"],
+generated_cc_atom(
+    name = "GrSPIRVUniformHandler_src",
+    srcs = ["GrSPIRVUniformHandler.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//src/gpu/glsl:GrGLSLVarying"],
+    deps = [
+        ":GrSPIRVUniformHandler_hdr",
+        "//src/gpu/glsl:GrGLSLProgramBuilder_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrSWMaskHelper",
-    srcs = ["GrSWMaskHelper.cpp"],
+generated_cc_atom(
+    name = "GrSPIRVVaryingHandler_hdr",
+    hdrs = ["GrSPIRVVaryingHandler.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu/glsl:GrGLSLVarying_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrSPIRVVaryingHandler_src",
+    srcs = ["GrSPIRVVaryingHandler.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrSPIRVVaryingHandler_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrSWMaskHelper_hdr",
     hdrs = ["GrSWMaskHelper.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrSurfaceProxyView",
-        ":GrTextureProxy",
-        ":SkGr",
-        ":SurfaceContext",
-        "//include/core:SkMatrix",
-        "//include/core:SkRegion",
-        "//include/core:SkTypes",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkAutoPixmapStorage",
-        "//src/core:SkDraw",
-        "//src/core:SkMatrixProvider",
-        "//src/core:SkRasterClip",
-        "//src/gpu/geometry:GrStyledShape",
+        ":GrSurfaceProxyView_hdr",
+        "//include/core:SkMatrix_hdr",
+        "//include/core:SkRegion_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
+        "//src/core:SkAutoPixmapStorage_hdr",
+        "//src/core:SkDraw_hdr",
+        "//src/core:SkRasterClip_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSamplerState",
+generated_cc_atom(
+    name = "GrSWMaskHelper_src",
+    srcs = ["GrSWMaskHelper.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrSWMaskHelper_hdr",
+        ":GrTextureProxy_hdr",
+        ":SkGr_hdr",
+        ":SurfaceContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkMatrixProvider_hdr",
+        "//src/gpu/geometry:GrStyledShape_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSamplerState_hdr",
     hdrs = ["GrSamplerState.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkSamplingOptions",
-        "//include/gpu:GrTypes",
+        "//include/core:SkSamplingOptions_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrScissorState",
+generated_cc_atom(
+    name = "GrScissorState_hdr",
     hdrs = ["GrScissorState.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkRect"],
+    deps = ["//include/core:SkRect_hdr"],
 )
 
-cc_library(
-    name = "GrSemaphore",
+generated_cc_atom(
+    name = "GrSemaphore_hdr",
     hdrs = ["GrSemaphore.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrBackendSemaphore"],
+    deps = ["//include/gpu:GrBackendSemaphore_hdr"],
 )
 
-cc_library(
-    name = "GrShaderCaps",
-    srcs = ["GrShaderCaps.cpp"],
+generated_cc_atom(
+    name = "GrShaderCaps_hdr",
     hdrs = ["GrShaderCaps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrContextOptions",
-        "//src/gpu/glsl:GrGLSL",
-        "//src/sksl:SkSLUtil",
-        "//src/utils:SkJSONWriter",
+        "//include/core:SkRefCnt_hdr",
+        "//src/gpu/glsl:GrGLSL_hdr",
+        "//src/sksl:SkSLUtil_hdr",
     ],
 )
 
-cc_library(
-    name = "GrShaderUtils",
-    srcs = ["GrShaderUtils.cpp"],
+generated_cc_atom(
+    name = "GrShaderCaps_src",
+    srcs = ["GrShaderCaps.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrShaderCaps_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//src/utils:SkJSONWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrShaderUtils_hdr",
     hdrs = ["GrShaderUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkString",
-        "//include/core:SkTypes",
-        "//include/gpu:GrContextOptions",
-        "//include/private:SkSLProgramKind",
-        "//include/private:SkSLString",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/private:SkSLProgramKind_hdr",
+        "//include/private:SkSLString_hdr",
     ],
 )
 
-cc_library(
-    name = "GrShaderVar",
-    srcs = ["GrShaderVar.cpp"],
+generated_cc_atom(
+    name = "GrShaderUtils_src",
+    srcs = ["GrShaderUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrShaderUtils_hdr",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/private:SkSLString_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrShaderVar_hdr",
     hdrs = ["GrShaderVar.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrShaderCaps",
-        "//include/core:SkString",
-        "//include/private:GrTypesPriv",
+        "//include/core:SkString_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSimpleMesh",
+generated_cc_atom(
+    name = "GrShaderVar_src",
+    srcs = ["GrShaderVar.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrShaderCaps_hdr",
+        ":GrShaderVar_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSimpleMesh_hdr",
     hdrs = ["GrSimpleMesh.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBuffer",
-        ":GrGpuBuffer",
-        ":GrOpsRenderPass",
+        ":GrBuffer_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrOpsRenderPass_hdr",
     ],
 )
 
-cc_library(
-    name = "GrStagingBufferManager",
-    srcs = ["GrStagingBufferManager.cpp"],
+generated_cc_atom(
+    name = "GrStagingBufferManager_hdr",
     hdrs = ["GrStagingBufferManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrGpuBuffer",
-        ":GrResourceProvider",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrDirectContext",
+        ":GrGpuBuffer_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrStencilSettings",
-    srcs = ["GrStencilSettings.cpp"],
+generated_cc_atom(
+    name = "GrStagingBufferManager_src",
+    srcs = ["GrStagingBufferManager.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrGpu_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrStagingBufferManager_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrStencilSettings_hdr",
     hdrs = ["GrStencilSettings.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrProcessor",
-        ":GrUserStencilSettings",
-        "//include/core:SkRegion",
+        ":GrUserStencilSettings_hdr",
+        "//include/core:SkRegion_hdr",
     ],
 )
 
-cc_library(
-    name = "GrStyle",
-    srcs = ["GrStyle.cpp"],
+generated_cc_atom(
+    name = "GrStencilSettings_src",
+    srcs = ["GrStencilSettings.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrProcessor_hdr",
+        ":GrStencilSettings_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrStyle_hdr",
     hdrs = ["GrStyle.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkMatrix",
-        "//include/core:SkStrokeRec",
-        "//include/gpu:GrTypes",
-        "//include/private:SkTemplates",
-        "//src/core:SkPathEffectBase",
-        "//src/utils:SkDashPathPriv",
+        "//include/core:SkMatrix_hdr",
+        "//include/core:SkStrokeRec_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkTemplates_hdr",
+        "//src/core:SkPathEffectBase_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSubRunAllocator",
-    srcs = ["GrSubRunAllocator.cpp"],
+generated_cc_atom(
+    name = "GrStyle_src",
+    srcs = ["GrStyle.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrStyle_hdr",
+        "//src/utils:SkDashPathPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSubRunAllocator_hdr",
     hdrs = ["GrSubRunAllocator.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkMath",
-        "//include/core:SkSpan",
-        "//src/core:SkArenaAlloc",
+        "//include/core:SkMath_hdr",
+        "//include/core:SkSpan_hdr",
+        "//src/core:SkArenaAlloc_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSurface",
-    srcs = ["GrSurface.cpp"],
-    hdrs = ["GrSurface.h"],
+generated_cc_atom(
+    name = "GrSubRunAllocator_src",
+    srcs = ["GrSubRunAllocator.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBackendUtils",
-        ":GrGpuResource",
-        ":GrRenderTarget",
-        ":GrResourceProvider",
-        ":GrTexture",
-        ":SkGr",
-        "//include/core:SkImageInfo",
-        "//include/core:SkRect",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrTypes",
-        "//src/core:SkCompressedDataUtils",
-        "//src/core:SkMathPriv",
+        ":GrSubRunAllocator_hdr",
+        "//include/core:SkMath_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSurfaceInfo",
+generated_cc_atom(
+    name = "GrSurfaceInfo_src",
     srcs = ["GrSurfaceInfo.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrSurfaceInfo",
-        "//include/gpu/d3d:GrD3DTypes",
+        "//include/gpu:GrSurfaceInfo_hdr",
+        "//include/gpu/d3d:GrD3DTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSurfaceProxy",
-    srcs = ["GrSurfaceProxy.cpp"],
-    hdrs = ["GrSurfaceProxy.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrAttachment",
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrGpuResource",
-        ":GrGpuResourcePriv",
-        ":GrImageInfo",
-        ":GrRecordingContextPriv",
-        ":GrRenderTarget",
-        ":GrResourceProvider",
-        ":GrSurface",
-        ":GrSurfaceProxyPriv",
-        ":GrTexture",
-        ":GrTextureRenderTargetProxy",
-        ":SurfaceFillContext",
-        "//include/core:SkRect",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//include/private:SkNoncopyable",
-        "//src/core:SkMathPriv",
-    ],
-)
-
-cc_library(
-    name = "GrSurfaceProxyPriv",
+generated_cc_atom(
+    name = "GrSurfaceProxyPriv_hdr",
     hdrs = ["GrSurfaceProxyPriv.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrSurfaceProxy"],
+    deps = [":GrSurfaceProxy_hdr"],
 )
 
-cc_library(
-    name = "GrSurfaceProxyView",
+generated_cc_atom(
+    name = "GrSurfaceProxyView_hdr",
     hdrs = ["GrSurfaceProxyView.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrRenderTargetProxy",
-        ":GrSurfaceProxy",
-        ":GrSwizzle",
-        ":GrTextureProxy",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        ":GrRenderTargetProxy_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSwizzle_hdr",
+        ":GrTextureProxy_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSwizzle",
-    srcs = ["GrSwizzle.cpp"],
+generated_cc_atom(
+    name = "GrSurfaceProxy_hdr",
+    hdrs = ["GrSurfaceProxy.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGpuResource_hdr",
+        ":GrSurface_hdr",
+        ":GrTexture_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/private:SkNoncopyable_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSurfaceProxy_src",
+    srcs = ["GrSurfaceProxy.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAttachment_hdr",
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrImageInfo_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurfaceProxy_hdr",
+        ":GrSurface_hdr",
+        ":GrTextureRenderTargetProxy_hdr",
+        ":GrTexture_hdr",
+        ":SurfaceFillContext_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkMathPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSurface_hdr",
+    hdrs = ["GrSurface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGpuResource_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrTypes_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSurface_src",
+    srcs = ["GrSurface.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrBackendUtils_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrSurface_hdr",
+        ":GrTexture_hdr",
+        ":SkGr_hdr",
+        "//src/core:SkCompressedDataUtils_hdr",
+        "//src/core:SkMathPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrSwizzle_hdr",
     hdrs = ["GrSwizzle.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColor",
-        "//include/core:SkString",
-        "//include/private:SkColorData",
-        "//src/core:SkRasterPipeline",
+        ":GrColor_hdr",
+        "//include/core:SkString_hdr",
+        "//include/private:SkColorData_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTTopoSort",
+generated_cc_atom(
+    name = "GrSwizzle_src",
+    srcs = ["GrSwizzle.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrSwizzle_hdr",
+        "//src/core:SkRasterPipeline_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrTTopoSort_hdr",
     hdrs = ["GrTTopoSort.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/private:SkTArray",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTestUtils",
-    srcs = ["GrTestUtils.cpp"],
+generated_cc_atom(
+    name = "GrTestUtils_hdr",
     hdrs = ["GrTestUtils.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrColor",
-        ":GrColorInfo",
-        ":GrFPArgs",
-        ":GrProcessorUnitTest",
-        ":GrSamplerState",
-        ":GrStyle",
-        "//include/core:SkMatrix",
-        "//include/core:SkPathBuilder",
-        "//include/core:SkRRect",
-        "//include/core:SkStrokeRec",
-        "//include/core:SkTypes",
-        "//include/private:SkMacros",
-        "//include/private:SkTemplates",
-        "//include/utils:SkRandom",
-        "//src/core:SkMatrixProvider",
-        "//src/core:SkPathEffectBase",
-        "//src/core:SkRectPriv",
-        "//src/shaders:SkShaderBase",
-        "//src/utils:SkDashPathPriv",
+        ":GrColor_hdr",
+        ":GrFPArgs_hdr",
+        ":GrSamplerState_hdr",
+        "//include/core:SkStrokeRec_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkMacros_hdr",
+        "//include/private:SkTemplates_hdr",
+        "//include/utils:SkRandom_hdr",
+        "//src/core:SkMatrixProvider_hdr",
+        "//src/core:SkPathEffectBase_hdr",
+        "//src/shaders:SkShaderBase_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTexture",
-    srcs = ["GrTexture.cpp"],
-    hdrs = ["GrTexture.h"],
+generated_cc_atom(
+    name = "GrTestUtils_src",
+    srcs = ["GrTestUtils.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrGpu",
-        ":GrRenderTarget",
-        ":GrResourceCache",
-        ":GrSurface",
-        "//include/core:SkImage",
-        "//include/core:SkMath",
-        "//include/core:SkPoint",
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrTypes",
-        "//include/private:GrResourceKey",
-        "//include/private:GrTypesPriv",
-        "//src/core:SkMipmap",
+        ":GrColorInfo_hdr",
+        ":GrProcessorUnitTest_hdr",
+        ":GrStyle_hdr",
+        ":GrTestUtils_hdr",
+        "//include/core:SkMatrix_hdr",
+        "//include/core:SkPathBuilder_hdr",
+        "//include/core:SkRRect_hdr",
+        "//src/core:SkRectPriv_hdr",
+        "//src/utils:SkDashPathPriv_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTextureProxy",
-    srcs = ["GrTextureProxy.cpp"],
+generated_cc_atom(
+    name = "GrTextureProxyCacheAccess_hdr",
+    hdrs = ["GrTextureProxyCacheAccess.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrTextureProxy_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrTextureProxyPriv_hdr",
+    hdrs = ["GrTextureProxyPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrTextureProxy_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrTextureProxy_hdr",
     hdrs = ["GrTextureProxy.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDeferredProxyUploader",
-        ":GrDirectContextPriv",
-        ":GrGpuResourcePriv",
-        ":GrProxyProvider",
-        ":GrSamplerState",
-        ":GrSurface",
-        ":GrSurfaceProxy",
-        ":GrTexture",
-        ":GrTextureProxyPriv",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrDirectContext",
+        ":GrSamplerState_hdr",
+        ":GrSurfaceProxy_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTextureProxyCacheAccess",
-    hdrs = ["GrTextureProxyCacheAccess.h"],
+generated_cc_atom(
+    name = "GrTextureProxy_src",
+    srcs = ["GrTextureProxy.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrTextureProxy"],
+    deps = [
+        ":GrDeferredProxyUploader_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrSurface_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrTexture_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrTextureProxyPriv",
-    hdrs = ["GrTextureProxyPriv.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [":GrTextureProxy"],
-)
-
-cc_library(
-    name = "GrTextureRenderTargetProxy",
-    srcs = ["GrTextureRenderTargetProxy.cpp"],
+generated_cc_atom(
+    name = "GrTextureRenderTargetProxy_hdr",
     hdrs = ["GrTextureRenderTargetProxy.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrCaps",
-        ":GrDirectContextPriv",
-        ":GrRenderTarget",
-        ":GrRenderTargetProxy",
-        ":GrSurface",
-        ":GrSurfaceProxyPriv",
-        ":GrTexture",
-        ":GrTextureProxy",
-        ":GrTextureProxyPriv",
-        "//include/gpu:GrDirectContext",
+        ":GrRenderTargetProxy_hdr",
+        ":GrTextureProxy_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTextureResolveManager",
+generated_cc_atom(
+    name = "GrTextureRenderTargetProxy_src",
+    srcs = ["GrTextureRenderTargetProxy.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrSurfaceProxyPriv_hdr",
+        ":GrSurface_hdr",
+        ":GrTextureProxyPriv_hdr",
+        ":GrTextureRenderTargetProxy_hdr",
+        ":GrTexture_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrTextureResolveManager_hdr",
     hdrs = ["GrTextureResolveManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDrawingManager",
-        "//include/core:SkRefCnt",
+        ":GrDrawingManager_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTextureResolveRenderTask",
-    srcs = ["GrTextureResolveRenderTask.cpp"],
+generated_cc_atom(
+    name = "GrTextureResolveRenderTask_hdr",
     hdrs = ["GrTextureResolveRenderTask.h"],
     visibility = ["//:__subpackages__"],
+    deps = [":GrRenderTask_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrTextureResolveRenderTask_src",
+    srcs = ["GrTextureResolveRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        ":GrMemoryPool",
-        ":GrOpFlushState",
-        ":GrRenderTarget",
-        ":GrRenderTask",
-        ":GrResourceAllocator",
-        ":GrTexture",
+        ":GrGpu_hdr",
+        ":GrMemoryPool_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrTextureResolveRenderTask_hdr",
+        ":GrTexture_hdr",
     ],
 )
 
-cc_library(
-    name = "GrThreadSafeCache",
-    srcs = ["GrThreadSafeCache.cpp"],
+generated_cc_atom(
+    name = "GrTexture_hdr",
+    hdrs = ["GrTexture.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrSurface_hdr",
+        "//include/core:SkImage_hdr",
+        "//include/core:SkPoint_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/private:GrTypesPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrTexture_src",
+    srcs = ["GrTexture.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrGpu_hdr",
+        ":GrRenderTarget_hdr",
+        ":GrResourceCache_hdr",
+        ":GrTexture_hdr",
+        "//include/core:SkMath_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrResourceKey_hdr",
+        "//src/core:SkMipmap_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrThreadSafeCache_hdr",
     hdrs = ["GrThreadSafeCache.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrDirectContextPriv",
-        ":GrGpuBuffer",
-        ":GrProxyProvider",
-        ":GrResourceCache",
-        ":GrSurfaceProxyView",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrDirectContext",
-        "//include/private:SkSpinlock",
-        "//src/core:SkArenaAlloc",
-        "//src/core:SkTDynamicHash",
-        "//src/core:SkTInternalLList",
+        ":GrGpuBuffer_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkSpinlock_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/core:SkTDynamicHash_hdr",
+        "//src/core:SkTInternalLList_hdr",
     ],
 )
 
-cc_library(
-    name = "GrThreadSafePipelineBuilder",
-    srcs = ["GrThreadSafePipelineBuilder.cpp"],
+generated_cc_atom(
+    name = "GrThreadSafeCache_src",
+    srcs = ["GrThreadSafeCache.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrDirectContextPriv_hdr",
+        ":GrGpuBuffer_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrResourceCache_hdr",
+        ":GrThreadSafeCache_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrThreadSafePipelineBuilder_hdr",
     hdrs = ["GrThreadSafePipelineBuilder.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/core:SkString",
-        "//include/gpu:GrConfig",
-        "//include/private:SkTArray",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrConfig_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTracing",
+generated_cc_atom(
+    name = "GrThreadSafePipelineBuilder_src",
+    srcs = ["GrThreadSafePipelineBuilder.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrThreadSafePipelineBuilder_hdr",
+        "//include/core:SkString_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrTracing_hdr",
     hdrs = ["GrTracing.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrAuditTrail",
-        "//src/core:SkTraceEvent",
+        ":GrAuditTrail_hdr",
+        "//src/core:SkTraceEvent_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTransferFromRenderTask",
-    srcs = ["GrTransferFromRenderTask.cpp"],
+generated_cc_atom(
+    name = "GrTransferFromRenderTask_hdr",
     hdrs = ["GrTransferFromRenderTask.h"],
     visibility = ["//:__subpackages__"],
+    deps = [":GrRenderTask_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrTransferFromRenderTask_src",
+    srcs = ["GrTransferFromRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        ":GrOpFlushState",
-        ":GrRenderTask",
-        ":GrResourceAllocator",
-        ":GrResourceProvider",
+        ":GrGpu_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrTransferFromRenderTask_hdr",
     ],
 )
 
-cc_library(
-    name = "GrUniformDataManager",
-    srcs = ["GrUniformDataManager.cpp"],
+generated_cc_atom(
+    name = "GrUniformDataManager_hdr",
     hdrs = ["GrUniformDataManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrShaderVar",
-        "//include/private:GrTypesPriv",
-        "//include/private:SkHalf",
-        "//include/private:SkTArray",
-        "//src/core:SkAutoMalloc",
-        "//src/gpu/glsl:GrGLSLProgramDataManager",
+        "//include/private:GrTypesPriv_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/gpu/glsl:GrGLSLProgramDataManager_hdr",
     ],
 )
 
-cc_library(
-    name = "GrUserStencilSettings",
-    hdrs = ["GrUserStencilSettings.h"],
+generated_cc_atom(
+    name = "GrUniformDataManager_src",
+    srcs = ["GrUniformDataManager.cpp"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrTypes"],
+    deps = [
+        ":GrShaderVar_hdr",
+        ":GrUniformDataManager_hdr",
+        "//include/private:SkHalf_hdr",
+    ],
 )
 
-cc_library(
-    name = "GrUtil",
-    srcs = ["GrUtil.cpp"],
+generated_cc_atom(
+    name = "GrUserStencilSettings_hdr",
+    hdrs = ["GrUserStencilSettings.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrUtil_hdr",
     hdrs = ["GrUtil.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrStyle",
-        "//include/core:SkScalar",
-        "//include/core:SkTypes",
-        "//src/core:SkDrawProcs",
+        "//include/core:SkScalar_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVertexChunkArray",
-    srcs = ["GrVertexChunkArray.cpp"],
+generated_cc_atom(
+    name = "GrUtil_src",
+    srcs = ["GrUtil.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrStyle_hdr",
+        ":GrUtil_hdr",
+        "//src/core:SkDrawProcs_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrVertexChunkArray_hdr",
     hdrs = ["GrVertexChunkArray.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":BufferWriter",
-        ":GrBuffer",
-        ":GrMeshDrawTarget",
-        "//include/core:SkRefCnt",
-        "//include/private:SkNoncopyable",
-        "//include/private:SkTArray",
+        ":BufferWriter_hdr",
+        ":GrBuffer_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkNoncopyable_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVx",
+generated_cc_atom(
+    name = "GrVertexChunkArray_src",
+    srcs = ["GrVertexChunkArray.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrMeshDrawTarget_hdr",
+        ":GrVertexChunkArray_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrVx_hdr",
     hdrs = ["GrVx.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/private:SkVx",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkVx_hdr",
     ],
 )
 
-cc_library(
-    name = "GrWaitRenderTask",
-    srcs = ["GrWaitRenderTask.cpp"],
+generated_cc_atom(
+    name = "GrWaitRenderTask_hdr",
     hdrs = ["GrWaitRenderTask.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        ":GrOpFlushState",
-        ":GrRenderTask",
-        ":GrResourceAllocator",
-        ":GrSemaphore",
+        ":GrRenderTask_hdr",
+        ":GrSemaphore_hdr",
     ],
 )
 
-cc_library(
-    name = "GrWindowRectangles",
+generated_cc_atom(
+    name = "GrWaitRenderTask_src",
+    srcs = ["GrWaitRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGpu_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrWaitRenderTask_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrWindowRectangles_hdr",
     hdrs = ["GrWindowRectangles.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrNonAtomicRef",
-        "//include/core:SkRect",
+        ":GrNonAtomicRef_hdr",
+        "//include/core:SkRect_hdr",
     ],
 )
 
-cc_library(
-    name = "GrWindowRectsState",
+generated_cc_atom(
+    name = "GrWindowRectsState_hdr",
     hdrs = ["GrWindowRectsState.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrWindowRectangles"],
+    deps = [":GrWindowRectangles_hdr"],
 )
 
-cc_library(
-    name = "GrWritePixelsRenderTask",
-    srcs = ["GrWritePixelsRenderTask.cpp"],
+generated_cc_atom(
+    name = "GrWritePixelsRenderTask_hdr",
     hdrs = ["GrWritePixelsRenderTask.h"],
     visibility = ["//:__subpackages__"],
+    deps = [":GrRenderTask_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrWritePixelsRenderTask_src",
+    srcs = ["GrWritePixelsRenderTask.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGpu",
-        ":GrOpFlushState",
-        ":GrRenderTask",
-        ":GrResourceAllocator",
+        ":GrGpu_hdr",
+        ":GrOpFlushState_hdr",
+        ":GrResourceAllocator_hdr",
+        ":GrWritePixelsRenderTask_hdr",
     ],
 )
 
-cc_library(
-    name = "GrXferProcessor",
-    srcs = ["GrXferProcessor.cpp"],
+generated_cc_atom(
+    name = "GrXferProcessor_hdr",
     hdrs = ["GrXferProcessor.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend",
-        ":GrCaps",
-        ":GrNonAtomicRef",
-        ":GrPipeline",
-        ":GrProcessor",
-        ":GrProcessorAnalysis",
-        ":GrSurfaceProxyView",
-        "//include/gpu:GrTypes",
-        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
-        "//src/gpu/glsl:GrGLSLProgramDataManager",
-        "//src/gpu/glsl:GrGLSLUniformHandler",
+        ":GrBlend_hdr",
+        ":GrNonAtomicRef_hdr",
+        ":GrProcessorAnalysis_hdr",
+        ":GrProcessor_hdr",
+        ":GrSurfaceProxyView_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//src/gpu/glsl:GrGLSLUniformHandler_hdr",
     ],
 )
 
-cc_library(
-    name = "GrYUVABackendTextures",
+generated_cc_atom(
+    name = "GrXferProcessor_src",
+    srcs = ["GrXferProcessor.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrPipeline_hdr",
+        ":GrXferProcessor_hdr",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder_hdr",
+        "//src/gpu/glsl:GrGLSLProgramDataManager_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrYUVABackendTextures_src",
     srcs = ["GrYUVABackendTextures.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrYUVABackendTextures",
-        "//src/core:SkYUVAInfoLocation",
+        "//include/gpu:GrYUVABackendTextures_hdr",
+        "//src/core:SkYUVAInfoLocation_hdr",
     ],
 )
 
-cc_library(
-    name = "GrYUVATextureProxies",
-    srcs = ["GrYUVATextureProxies.cpp"],
+generated_cc_atom(
+    name = "GrYUVATextureProxies_hdr",
     hdrs = ["GrYUVATextureProxies.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyView",
-        "//include/core:SkYUVAInfo",
-        "//src/core:SkYUVAInfoLocation",
+        ":GrSurfaceProxyView_hdr",
+        ":GrSurfaceProxy_hdr",
+        "//include/core:SkYUVAInfo_hdr",
+        "//src/core:SkYUVAInfoLocation_hdr",
     ],
 )
 
-cc_library(
-    name = "SkGr",
-    srcs = ["SkGr.cpp"],
+generated_cc_atom(
+    name = "GrYUVATextureProxies_src",
+    srcs = ["GrYUVATextureProxies.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrYUVATextureProxies_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkGr_hdr",
     hdrs = ["SkGr.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend",
-        ":GrCaps",
-        ":GrColor",
-        ":GrColorInfo",
-        ":GrColorSpaceXform",
-        ":GrGpuResourcePriv",
-        ":GrPaint",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrSamplerState",
-        ":GrTextureProxy",
-        ":GrXferProcessor",
-        "//include/core:SkBlender",
-        "//include/core:SkCanvas",
-        "//include/core:SkColor",
-        "//include/core:SkColorFilter",
-        "//include/core:SkData",
-        "//include/core:SkImageInfo",
-        "//include/core:SkPixelRef",
-        "//include/core:SkSamplingOptions",
-        "//include/effects:SkRuntimeEffect",
-        "//include/gpu:GrRecordingContext",
-        "//include/gpu:GrTypes",
-        "//include/private:SkColorData",
-        "//include/private:SkIDChangeListener",
-        "//include/private:SkImageInfoPriv",
-        "//include/private:SkTPin",
-        "//include/private:SkTemplates",
-        "//src/core:SkAutoMalloc",
-        "//src/core:SkBlendModePriv",
-        "//src/core:SkBlenderBase",
-        "//src/core:SkColorFilterBase",
-        "//src/core:SkColorSpacePriv",
-        "//src/core:SkImagePriv",
-        "//src/core:SkMaskFilterBase",
-        "//src/core:SkMessageBus",
-        "//src/core:SkMipmap",
-        "//src/core:SkPaintPriv",
-        "//src/core:SkResourceCache",
-        "//src/core:SkRuntimeEffectPriv",
-        "//src/core:SkTraceEvent",
-        "//src/gpu/effects:GrBicubicEffect",
-        "//src/gpu/effects:GrBlendFragmentProcessor",
-        "//src/gpu/effects:GrPorterDuffXferProcessor",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/image:SkImage_Base",
-        "//src/shaders:SkShaderBase",
+        ":GrBlend_hdr",
+        ":GrCaps_hdr",
+        ":GrColor_hdr",
+        ":GrSamplerState_hdr",
+        "//include/core:SkBlender_hdr",
+        "//include/core:SkCanvas_hdr",
+        "//include/core:SkColor_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/core:SkSamplingOptions_hdr",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:SkColorData_hdr",
+        "//src/core:SkBlendModePriv_hdr",
     ],
 )
 
-cc_library(
-    name = "SurfaceContext",
-    srcs = ["SurfaceContext.cpp"],
+generated_cc_atom(
+    name = "SkGr_src",
+    srcs = ["SkGr.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrCaps_hdr",
+        ":GrColorInfo_hdr",
+        ":GrColorSpaceXform_hdr",
+        ":GrGpuResourcePriv_hdr",
+        ":GrPaint_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrTextureProxy_hdr",
+        ":GrXferProcessor_hdr",
+        ":SkGr_hdr",
+        "//include/core:SkCanvas_hdr",
+        "//include/core:SkColorFilter_hdr",
+        "//include/core:SkData_hdr",
+        "//include/core:SkPixelRef_hdr",
+        "//include/effects:SkRuntimeEffect_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//include/private:SkIDChangeListener_hdr",
+        "//include/private:SkImageInfoPriv_hdr",
+        "//include/private:SkTPin_hdr",
+        "//include/private:SkTemplates_hdr",
+        "//src/core:SkAutoMalloc_hdr",
+        "//src/core:SkBlendModePriv_hdr",
+        "//src/core:SkBlenderBase_hdr",
+        "//src/core:SkColorFilterBase_hdr",
+        "//src/core:SkColorSpacePriv_hdr",
+        "//src/core:SkImagePriv_hdr",
+        "//src/core:SkMaskFilterBase_hdr",
+        "//src/core:SkMessageBus_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/core:SkPaintPriv_hdr",
+        "//src/core:SkResourceCache_hdr",
+        "//src/core:SkRuntimeEffectPriv_hdr",
+        "//src/core:SkTraceEvent_hdr",
+        "//src/gpu/effects:GrBicubicEffect_hdr",
+        "//src/gpu/effects:GrBlendFragmentProcessor_hdr",
+        "//src/gpu/effects:GrPorterDuffXferProcessor_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+        "//src/image:SkImage_Base_hdr",
+        "//src/shaders:SkShaderBase_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "SurfaceContext_hdr",
     hdrs = ["SurfaceContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrClientMappedBufferManager",
-        ":GrColorInfo",
-        ":GrColorSpaceXform",
-        ":GrDataUtils",
-        ":GrDirectContextPriv",
-        ":GrDrawingManager",
-        ":GrGpu",
-        ":GrImageInfo",
-        ":GrPixmap",
-        ":GrProxyProvider",
-        ":GrRecordingContextPriv",
-        ":GrRenderTask",
-        ":GrResourceProvider",
-        ":GrSurfaceProxy",
-        ":GrSurfaceProxyView",
-        ":GrTracing",
-        ":SkGr",
-        ":SurfaceFillContext",
-        "//include/core:SkImage",
-        "//include/core:SkRect",
-        "//include/core:SkRefCnt",
-        "//include/core:SkSamplingOptions",
-        "//include/core:SkSurface",
-        "//include/gpu:GrDirectContext",
-        "//include/gpu:GrRecordingContext",
-        "//src/core:SkAutoPixmapStorage",
-        "//src/core:SkMipmap",
-        "//src/core:SkYUVMath",
-        "//src/gpu/effects:GrBicubicEffect",
-        "//src/gpu/effects:GrTextureEffect",
+        ":GrColorInfo_hdr",
+        ":GrDataUtils_hdr",
+        ":GrImageInfo_hdr",
+        ":GrPixmap_hdr",
+        ":GrRenderTask_hdr",
+        ":GrSurfaceProxyView_hdr",
+        ":GrSurfaceProxy_hdr",
+        "//include/core:SkImage_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkSamplingOptions_hdr",
+        "//include/core:SkSurface_hdr",
     ],
 )
 
-cc_library(
-    name = "SurfaceFillContext",
-    srcs = ["SurfaceFillContext.cpp"],
-    hdrs = ["SurfaceFillContext.h"],
+generated_cc_atom(
+    name = "SurfaceContext_src",
+    srcs = ["SurfaceContext.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SurfaceContext",
-        "//src/gpu/effects:GrMatrixEffect",
+        ":GrClientMappedBufferManager_hdr",
+        ":GrColorSpaceXform_hdr",
+        ":GrDataUtils_hdr",
+        ":GrDirectContextPriv_hdr",
+        ":GrDrawingManager_hdr",
+        ":GrGpu_hdr",
+        ":GrImageInfo_hdr",
+        ":GrProxyProvider_hdr",
+        ":GrRecordingContextPriv_hdr",
+        ":GrResourceProvider_hdr",
+        ":GrTracing_hdr",
+        ":SkGr_hdr",
+        ":SurfaceContext_hdr",
+        ":SurfaceFillContext_hdr",
+        "//include/gpu:GrDirectContext_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkAutoPixmapStorage_hdr",
+        "//src/core:SkMipmap_hdr",
+        "//src/core:SkYUVMath_hdr",
+        "//src/gpu/effects:GrBicubicEffect_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "SurfaceFillContext_hdr",
+    hdrs = ["SurfaceFillContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SurfaceContext_hdr"],
+)
+
+generated_cc_atom(
+    name = "SurfaceFillContext_src",
+    srcs = ["SurfaceFillContext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SurfaceFillContext_hdr",
+        "//src/gpu/effects:GrMatrixEffect_hdr",
     ],
 )

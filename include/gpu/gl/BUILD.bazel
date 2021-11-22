@@ -1,70 +1,70 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrGLAssembleHelpers",
+generated_cc_atom(
+    name = "GrGLAssembleHelpers_hdr",
     hdrs = ["GrGLAssembleHelpers.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrGLAssembleInterface"],
+    deps = [":GrGLAssembleInterface_hdr"],
 )
 
-cc_library(
-    name = "GrGLAssembleInterface",
+generated_cc_atom(
+    name = "GrGLAssembleInterface_hdr",
     hdrs = ["GrGLAssembleInterface.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":GrGLInterface"],
+    deps = [":GrGLInterface_hdr"],
 )
 
-cc_library(
-    name = "GrGLConfig",
-    hdrs = ["GrGLConfig.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrTypes"],
-)
-
-cc_library(
-    name = "GrGLConfig_chrome",
+generated_cc_atom(
+    name = "GrGLConfig_chrome_hdr",
     hdrs = ["GrGLConfig_chrome.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "GrGLExtensions",
+generated_cc_atom(
+    name = "GrGLConfig_hdr",
+    hdrs = ["GrGLConfig.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrGLExtensions_hdr",
     hdrs = ["GrGLExtensions.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGLFunctions",
-        "//include/core:SkString",
-        "//include/private:SkTArray",
+        ":GrGLFunctions_hdr",
+        "//include/core:SkString_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGLFunctions",
+generated_cc_atom(
+    name = "GrGLFunctions_hdr",
     hdrs = ["GrGLFunctions.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGLTypes",
-        "//include/private:SkTLogic",
+        ":GrGLTypes_hdr",
+        "//include/private:SkTLogic_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGLInterface",
+generated_cc_atom(
+    name = "GrGLInterface_hdr",
     hdrs = ["GrGLInterface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGLExtensions",
-        ":GrGLFunctions",
-        "//include/core:SkRefCnt",
+        ":GrGLExtensions_hdr",
+        ":GrGLFunctions_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGLTypes",
+generated_cc_atom(
+    name = "GrGLTypes_hdr",
     hdrs = ["GrGLTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGLConfig",
-        "//include/core:SkRefCnt",
+        ":GrGLConfig_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )

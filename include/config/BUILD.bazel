@@ -1,7 +1,7 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "SkUserConfig",
+generated_cc_atom(
+    name = "SkUserConfig_hdr",
     hdrs = ["SkUserConfig.h"],
     visibility = ["//:__subpackages__"],
 )

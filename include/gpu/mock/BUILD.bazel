@@ -1,11 +1,11 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrMockTypes",
+generated_cc_atom(
+    name = "GrMockTypes_hdr",
     hdrs = ["GrMockTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrTypes",
-        "//include/private:GrTypesPriv",
+        "//include/gpu:GrTypes_hdr",
+        "//include/private:GrTypesPriv_hdr",
     ],
 )

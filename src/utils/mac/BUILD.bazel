@@ -1,56 +1,63 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "SkCGBase",
+generated_cc_atom(
+    name = "SkCGBase_hdr",
     hdrs = ["SkCGBase.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkCGGeometry",
+generated_cc_atom(
+    name = "SkCGGeometry_hdr",
     hdrs = ["SkCGGeometry.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkCTFont",
-    srcs = ["SkCTFont.cpp"],
+generated_cc_atom(
+    name = "SkCTFont_hdr",
     hdrs = ["SkCTFont.h"],
     visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkCTFont_src",
+    srcs = ["SkCTFont.cpp"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":SkUniqueCFRef",
-        "//include/core:SkData",
-        "//include/core:SkRefCnt",
-        "//include/core:SkTypes",
-        "//include/private:SkOnce",
-        "//src/sfnt:SkOTTable_OS_2",
-        "//src/sfnt:SkSFNTHeader",
+        ":SkCTFont_hdr",
+        ":SkUniqueCFRef_hdr",
+        "//include/core:SkData_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkOnce_hdr",
+        "//src/sfnt:SkOTTable_OS_2_hdr",
+        "//src/sfnt:SkSFNTHeader_hdr",
     ],
 )
 
-cc_library(
-    name = "SkCreateCGImageRef",
+generated_cc_atom(
+    name = "SkCreateCGImageRef_src",
     srcs = ["SkCreateCGImageRef.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkUniqueCFRef",
-        "//include/core:SkBitmap",
-        "//include/core:SkTypes",
-        "//include/private:SkColorData",
-        "//include/private:SkMacros",
-        "//include/private:SkTo",
-        "//include/utils/mac:SkCGUtils",
+        ":SkUniqueCFRef_hdr",
+        "//include/core:SkBitmap_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkColorData_hdr",
+        "//include/private:SkMacros_hdr",
+        "//include/private:SkTo_hdr",
+        "//include/utils/mac:SkCGUtils_hdr",
     ],
 )
 
-cc_library(
-    name = "SkUniqueCFRef",
+generated_cc_atom(
+    name = "SkUniqueCFRef_hdr",
     hdrs = ["SkUniqueCFRef.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkTypes",
-        "//include/private:SkTemplates",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkTemplates_hdr",
     ],
 )

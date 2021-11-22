@@ -1,47 +1,63 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrGradientBitmapCache",
-    srcs = ["GrGradientBitmapCache.cpp"],
+generated_cc_atom(
+    name = "GrGradientBitmapCache_hdr",
     hdrs = ["GrGradientBitmapCache.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkBitmap",
-        "//include/private:SkColorData",
-        "//include/private:SkFloatBits",
-        "//include/private:SkHalf",
-        "//include/private:SkMalloc",
-        "//include/private:SkMutex",
-        "//include/private:SkNoncopyable",
-        "//include/private:SkTemplates",
+        "//include/core:SkBitmap_hdr",
+        "//include/private:SkColorData_hdr",
+        "//include/private:SkMutex_hdr",
+        "//include/private:SkNoncopyable_hdr",
     ],
 )
 
-cc_library(
-    name = "GrGradientShader",
-    srcs = ["GrGradientShader.cpp"],
+generated_cc_atom(
+    name = "GrGradientBitmapCache_src",
+    srcs = ["GrGradientBitmapCache.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGradientBitmapCache_hdr",
+        "//include/private:SkFloatBits_hdr",
+        "//include/private:SkHalf_hdr",
+        "//include/private:SkMalloc_hdr",
+        "//include/private:SkTemplates_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGradientShader_hdr",
     hdrs = ["GrGradientShader.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrGradientBitmapCache",
-        "//include/gpu:GrRecordingContext",
-        "//include/utils:SkRandom",
-        "//src/core:SkMathPriv",
-        "//src/core:SkRuntimeEffectPriv",
-        "//src/gpu:GrCaps",
-        "//src/gpu:GrColor",
-        "//src/gpu:GrColorInfo",
-        "//src/gpu:GrFPArgs",
-        "//src/gpu:GrFragmentProcessor",
-        "//src/gpu:GrRecordingContextPriv",
-        "//src/gpu:SkGr",
-        "//src/gpu/effects:GrMatrixEffect",
-        "//src/gpu/effects:GrSkSLFP",
-        "//src/gpu/effects:GrTextureEffect",
-        "//src/shaders/gradients:SkGradientShaderPriv",
-        "//src/shaders/gradients:SkLinearGradient",
-        "//src/shaders/gradients:SkRadialGradient",
-        "//src/shaders/gradients:SkSweepGradient",
-        "//src/shaders/gradients:SkTwoPointConicalGradient",
+        "//include/utils:SkRandom_hdr",
+        "//src/gpu:GrFPArgs_hdr",
+        "//src/gpu:GrFragmentProcessor_hdr",
+        "//src/shaders/gradients:SkGradientShaderPriv_hdr",
+        "//src/shaders/gradients:SkLinearGradient_hdr",
+        "//src/shaders/gradients:SkRadialGradient_hdr",
+        "//src/shaders/gradients:SkSweepGradient_hdr",
+        "//src/shaders/gradients:SkTwoPointConicalGradient_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GrGradientShader_src",
+    srcs = ["GrGradientShader.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGradientBitmapCache_hdr",
+        ":GrGradientShader_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
+        "//src/core:SkMathPriv_hdr",
+        "//src/core:SkRuntimeEffectPriv_hdr",
+        "//src/gpu:GrCaps_hdr",
+        "//src/gpu:GrColorInfo_hdr",
+        "//src/gpu:GrColor_hdr",
+        "//src/gpu:GrRecordingContextPriv_hdr",
+        "//src/gpu:SkGr_hdr",
+        "//src/gpu/effects:GrMatrixEffect_hdr",
+        "//src/gpu/effects:GrSkSLFP_hdr",
+        "//src/gpu/effects:GrTextureEffect_hdr",
     ],
 )

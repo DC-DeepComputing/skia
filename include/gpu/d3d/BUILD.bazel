@@ -1,21 +1,21 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrD3DBackendContext",
+generated_cc_atom(
+    name = "GrD3DBackendContext_hdr",
     hdrs = ["GrD3DBackendContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrD3DTypes",
-        "//include/gpu:GrTypes",
+        ":GrD3DTypes_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrD3DTypes",
+generated_cc_atom(
+    name = "GrD3DTypes_hdr",
     hdrs = ["GrD3DTypes.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )

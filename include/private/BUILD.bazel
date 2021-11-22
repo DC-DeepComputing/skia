@@ -1,560 +1,560 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:macros.bzl", "generated_cc_atom")
 
-cc_library(
-    name = "GrContext_Base",
+generated_cc_atom(
+    name = "GrContext_Base_hdr",
     hdrs = ["GrContext_Base.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrBackendSurface",
-        "//include/gpu:GrContextOptions",
-        "//include/gpu:GrTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrBackendSurface_hdr",
+        "//include/gpu:GrContextOptions_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrD3DTypesMinimal",
+generated_cc_atom(
+    name = "GrD3DTypesMinimal_hdr",
     hdrs = ["GrD3DTypesMinimal.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrDawnTypesPriv",
+generated_cc_atom(
+    name = "GrDawnTypesPriv_hdr",
     hdrs = ["GrDawnTypesPriv.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu/dawn:GrDawnTypes"],
+    deps = ["//include/gpu/dawn:GrDawnTypes_hdr"],
 )
 
-cc_library(
-    name = "GrGLTypesPriv",
+generated_cc_atom(
+    name = "GrGLTypesPriv_hdr",
     hdrs = ["GrGLTypesPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu/gl:GrGLTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu/gl:GrGLTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrImageContext",
+generated_cc_atom(
+    name = "GrImageContext_hdr",
     hdrs = ["GrImageContext.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrContext_Base",
-        ":GrSingleOwner",
+        ":GrContext_Base_hdr",
+        ":GrSingleOwner_hdr",
     ],
 )
 
-cc_library(
-    name = "GrMockTypesPriv",
+generated_cc_atom(
+    name = "GrMockTypesPriv_hdr",
     hdrs = ["GrMockTypesPriv.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu/mock:GrMockTypes"],
+    deps = ["//include/gpu/mock:GrMockTypes_hdr"],
 )
 
-cc_library(
-    name = "GrMtlTypesPriv",
+generated_cc_atom(
+    name = "GrMtlTypesPriv_hdr",
     hdrs = ["GrMtlTypesPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/gpu:GrTypes",
-        "//include/gpu/mtl:GrMtlTypes",
+        "//include/gpu:GrTypes_hdr",
+        "//include/gpu/mtl:GrMtlTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrResourceKey",
+generated_cc_atom(
+    name = "GrResourceKey_hdr",
     hdrs = ["GrResourceKey.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkOnce",
-        ":SkTemplates",
-        ":SkTo",
-        "//include/core:SkData",
-        "//include/core:SkString",
-        "//include/gpu:GrTypes",
+        ":SkOnce_hdr",
+        ":SkTemplates_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkData_hdr",
+        "//include/core:SkString_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrSingleOwner",
+generated_cc_atom(
+    name = "GrSingleOwner_hdr",
     hdrs = ["GrSingleOwner.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMutex",
-        ":SkThreadID",
-        "//include/core:SkTypes",
+        ":SkMutex_hdr",
+        ":SkThreadID_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrTypesPriv",
+generated_cc_atom(
+    name = "GrTypesPriv_hdr",
     hdrs = ["GrTypesPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkImageInfoPriv",
-        ":SkMacros",
-        "//include/core:SkImage",
-        "//include/core:SkImageInfo",
-        "//include/core:SkPath",
-        "//include/core:SkRefCnt",
-        "//include/gpu:GrTypes",
+        ":SkImageInfoPriv_hdr",
+        ":SkMacros_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/core:SkImage_hdr",
+        "//include/core:SkPath_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu:GrTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "GrVkTypesPriv",
+generated_cc_atom(
+    name = "GrVkTypesPriv_hdr",
     hdrs = ["GrVkTypesPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkRefCnt",
-        "//include/gpu/vk:GrVkTypes",
+        "//include/core:SkRefCnt_hdr",
+        "//include/gpu/vk:GrVkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkBitmaskEnum",
+generated_cc_atom(
+    name = "SkBitmaskEnum_hdr",
     hdrs = ["SkBitmaskEnum.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkChecksum",
+generated_cc_atom(
+    name = "SkChecksum_hdr",
     hdrs = ["SkChecksum.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkNoncopyable",
-        ":SkOpts_spi",
-        ":SkTLogic",
-        "//include/core:SkString",
-        "//include/core:SkTypes",
+        ":SkNoncopyable_hdr",
+        ":SkOpts_spi_hdr",
+        ":SkTLogic_hdr",
+        "//include/core:SkString_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkColorData",
+generated_cc_atom(
+    name = "SkColorData_hdr",
     hdrs = ["SkColorData.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkNx",
-        ":SkTo",
-        "//include/core:SkColor",
-        "//include/core:SkColorPriv",
+        ":SkNx_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkColorPriv_hdr",
+        "//include/core:SkColor_hdr",
     ],
 )
 
-cc_library(
-    name = "SkDeque",
+generated_cc_atom(
+    name = "SkDeque_hdr",
     hdrs = ["SkDeque.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkEncodedInfo",
+generated_cc_atom(
+    name = "SkEncodedInfo_hdr",
     hdrs = ["SkEncodedInfo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkData",
-        "//include/core:SkImageInfo",
-        "//include/third_party/skcms",
+        "//include/core:SkData_hdr",
+        "//include/core:SkImageInfo_hdr",
+        "//include/third_party/skcms:skcms_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFixed",
+generated_cc_atom(
+    name = "SkFixed_hdr",
     hdrs = ["SkFixed.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSafe_math",
-        ":SkTPin",
-        ":SkTo",
-        "//include/core:SkScalar",
-        "//include/core:SkTypes",
+        ":SkSafe_math_hdr",
+        ":SkTPin_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkScalar_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFloatBits",
+generated_cc_atom(
+    name = "SkFloatBits_hdr",
     hdrs = ["SkFloatBits.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSafe_math",
-        "//include/core:SkTypes",
+        ":SkSafe_math_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkFloatingPoint",
+generated_cc_atom(
+    name = "SkFloatingPoint_hdr",
     hdrs = ["SkFloatingPoint.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkFloatBits",
-        ":SkSafe_math",
-        "//include/core:SkTypes",
+        ":SkFloatBits_hdr",
+        ":SkSafe_math_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkHalf",
+generated_cc_atom(
+    name = "SkHalf_hdr",
     hdrs = ["SkHalf.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkNx",
-        "//include/core:SkTypes",
+        ":SkNx_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkIDChangeListener",
+generated_cc_atom(
+    name = "SkIDChangeListener_hdr",
     hdrs = ["SkIDChangeListener.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMutex",
-        ":SkTDArray",
-        "//include/core:SkRefCnt",
+        ":SkMutex_hdr",
+        ":SkTDArray_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "SkImageInfoPriv",
+generated_cc_atom(
+    name = "SkImageInfoPriv_hdr",
     hdrs = ["SkImageInfoPriv.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/core:SkColor",
-        "//include/core:SkImageInfo",
+        "//include/core:SkColor_hdr",
+        "//include/core:SkImageInfo_hdr",
     ],
 )
 
-cc_library(
-    name = "SkMacros",
+generated_cc_atom(
+    name = "SkMacros_hdr",
     hdrs = ["SkMacros.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkMalloc",
+generated_cc_atom(
+    name = "SkMalloc_hdr",
     hdrs = ["SkMalloc.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkMutex",
+generated_cc_atom(
+    name = "SkMutex_hdr",
     hdrs = ["SkMutex.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMacros",
-        ":SkSemaphore",
-        ":SkThreadAnnotations",
-        ":SkThreadID",
-        "//include/core:SkTypes",
+        ":SkMacros_hdr",
+        ":SkSemaphore_hdr",
+        ":SkThreadAnnotations_hdr",
+        ":SkThreadID_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkNoncopyable",
+generated_cc_atom(
+    name = "SkNoncopyable_hdr",
     hdrs = ["SkNoncopyable.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkNx",
+generated_cc_atom(
+    name = "SkNx_hdr",
     hdrs = ["SkNx.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkNx_neon",
-        ":SkNx_sse",
-        ":SkSafe_math",
-        "//include/core:SkScalar",
-        "//include/core:SkTypes",
+        ":SkNx_neon_hdr",
+        ":SkNx_sse_hdr",
+        ":SkSafe_math_hdr",
+        "//include/core:SkScalar_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkNx_neon",
+generated_cc_atom(
+    name = "SkNx_neon_hdr",
     hdrs = ["SkNx_neon.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkNx_sse",
+generated_cc_atom(
+    name = "SkNx_sse_hdr",
     hdrs = ["SkNx_sse.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkOnce",
+generated_cc_atom(
+    name = "SkOnce_hdr",
     hdrs = ["SkOnce.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":SkThreadAnnotations"],
+    deps = [":SkThreadAnnotations_hdr"],
 )
 
-cc_library(
-    name = "SkOpts_spi",
+generated_cc_atom(
+    name = "SkOpts_spi_hdr",
     hdrs = ["SkOpts_spi.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkPathRef",
+generated_cc_atom(
+    name = "SkPathRef_hdr",
     hdrs = ["SkPathRef.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkIDChangeListener",
-        ":SkMutex",
-        ":SkTDArray",
-        ":SkTemplates",
-        ":SkTo",
-        "//include/core:SkMatrix",
-        "//include/core:SkPoint",
-        "//include/core:SkRRect",
-        "//include/core:SkRect",
-        "//include/core:SkRefCnt",
+        ":SkIDChangeListener_hdr",
+        ":SkMutex_hdr",
+        ":SkTDArray_hdr",
+        ":SkTemplates_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkMatrix_hdr",
+        "//include/core:SkPoint_hdr",
+        "//include/core:SkRRect_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/core:SkRefCnt_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSLDefines",
+generated_cc_atom(
+    name = "SkSLDefines_hdr",
     hdrs = ["SkSLDefines.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkTArray",
-        "//include/core:SkTypes",
+        ":SkTArray_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSLIRNode",
+generated_cc_atom(
+    name = "SkSLIRNode_hdr",
     hdrs = ["SkSLIRNode.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLString",
-        ":SkTArray",
-        "//src/sksl:SkSLLexer",
-        "//src/sksl:SkSLModifiersPool",
-        "//src/sksl:SkSLPool",
+        ":SkSLString_hdr",
+        ":SkTArray_hdr",
+        "//src/sksl:SkSLLexer_hdr",
+        "//src/sksl:SkSLModifiersPool_hdr",
+        "//src/sksl:SkSLPool_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSLLayout",
+generated_cc_atom(
+    name = "SkSLLayout_hdr",
     hdrs = ["SkSLLayout.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":SkSLString"],
+    deps = [":SkSLString_hdr"],
 )
 
-cc_library(
-    name = "SkSLModifiers",
+generated_cc_atom(
+    name = "SkSLModifiers_hdr",
     hdrs = ["SkSLModifiers.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":SkSLLayout"],
+    deps = [":SkSLLayout_hdr"],
 )
 
-cc_library(
-    name = "SkSLProgramElement",
+generated_cc_atom(
+    name = "SkSLProgramElement_hdr",
     hdrs = ["SkSLProgramElement.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":SkSLIRNode"],
+    deps = [":SkSLIRNode_hdr"],
 )
 
-cc_library(
-    name = "SkSLProgramKind",
+generated_cc_atom(
+    name = "SkSLProgramKind_hdr",
     hdrs = ["SkSLProgramKind.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkSLSampleUsage",
+generated_cc_atom(
+    name = "SkSLSampleUsage_hdr",
     hdrs = ["SkSLSampleUsage.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkSLStatement",
+generated_cc_atom(
+    name = "SkSLStatement_hdr",
     hdrs = ["SkSLStatement.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLIRNode",
-        ":SkSLSymbol",
+        ":SkSLIRNode_hdr",
+        ":SkSLSymbol_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSLString",
+generated_cc_atom(
+    name = "SkSLString_hdr",
     hdrs = ["SkSLString.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLDefines",
-        "//include/core:SkString",
-        "//include/core:SkStringView",
+        ":SkSLDefines_hdr",
+        "//include/core:SkStringView_hdr",
+        "//include/core:SkString_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSLSymbol",
+generated_cc_atom(
+    name = "SkSLSymbol_hdr",
     hdrs = ["SkSLSymbol.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLIRNode",
-        ":SkSLProgramElement",
+        ":SkSLIRNode_hdr",
+        ":SkSLProgramElement_hdr",
     ],
 )
 
-cc_library(
-    name = "SkSafe32",
+generated_cc_atom(
+    name = "SkSafe32_hdr",
     hdrs = ["SkSafe32.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkSafe_math",
+generated_cc_atom(
+    name = "SkSafe_math_hdr",
     hdrs = ["SkSafe_math.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkSemaphore",
+generated_cc_atom(
+    name = "SkSemaphore_hdr",
     hdrs = ["SkSemaphore.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkOnce",
-        ":SkThreadAnnotations",
-        "//include/core:SkTypes",
+        ":SkOnce_hdr",
+        ":SkThreadAnnotations_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkShadowFlags",
+generated_cc_atom(
+    name = "SkShadowFlags_hdr",
     hdrs = ["SkShadowFlags.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkSpinlock",
+generated_cc_atom(
+    name = "SkSpinlock_hdr",
     hdrs = ["SkSpinlock.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkThreadAnnotations",
-        "//include/core:SkTypes",
+        ":SkThreadAnnotations_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkTArray",
+generated_cc_atom(
+    name = "SkTArray_hdr",
     hdrs = ["SkTArray.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMalloc",
-        ":SkSafe32",
-        ":SkTLogic",
-        ":SkTemplates",
-        ":SkTo",
-        "//include/core:SkMath",
-        "//include/core:SkTypes",
+        ":SkMalloc_hdr",
+        ":SkSafe32_hdr",
+        ":SkTLogic_hdr",
+        ":SkTemplates_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkMath_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkTDArray",
+generated_cc_atom(
+    name = "SkTDArray_hdr",
     hdrs = ["SkTDArray.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMalloc",
-        ":SkTo",
-        "//include/core:SkTypes",
+        ":SkMalloc_hdr",
+        ":SkTo_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkTFitsIn",
+generated_cc_atom(
+    name = "SkTFitsIn_hdr",
     hdrs = ["SkTFitsIn.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkTHash",
+generated_cc_atom(
+    name = "SkTHash_hdr",
     hdrs = ["SkTHash.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkChecksum",
-        ":SkTemplates",
-        "//include/core:SkTypes",
+        ":SkChecksum_hdr",
+        ":SkTemplates_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkTLogic",
+generated_cc_atom(
+    name = "SkTLogic_hdr",
     hdrs = ["SkTLogic.h"],
     visibility = ["//:__subpackages__"],
-    deps = [":SkTo"],
+    deps = [":SkTo_hdr"],
 )
 
-cc_library(
-    name = "SkTOptional",
+generated_cc_atom(
+    name = "SkTOptional_hdr",
     hdrs = ["SkTOptional.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkTPin",
+generated_cc_atom(
+    name = "SkTPin_hdr",
     hdrs = ["SkTPin.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkTemplates",
+generated_cc_atom(
+    name = "SkTemplates_hdr",
     hdrs = ["SkTemplates.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkMalloc",
-        ":SkTLogic",
-        "//include/core:SkTypes",
+        ":SkMalloc_hdr",
+        ":SkTLogic_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkThreadAnnotations",
+generated_cc_atom(
+    name = "SkThreadAnnotations_hdr",
     hdrs = ["SkThreadAnnotations.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkThreadID",
+generated_cc_atom(
+    name = "SkThreadID_hdr",
     hdrs = ["SkThreadID.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
 
-cc_library(
-    name = "SkTo",
+generated_cc_atom(
+    name = "SkTo_hdr",
     hdrs = ["SkTo.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkTFitsIn",
-        "//include/core:SkTypes",
+        ":SkTFitsIn_hdr",
+        "//include/core:SkTypes_hdr",
     ],
 )
 
-cc_library(
-    name = "SkVx",
+generated_cc_atom(
+    name = "SkVx_hdr",
     hdrs = ["SkVx.h"],
     visibility = ["//:__subpackages__"],
 )
 
-cc_library(
-    name = "SkWeakRefCnt",
+generated_cc_atom(
+    name = "SkWeakRefCnt_hdr",
     hdrs = ["SkWeakRefCnt.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkRefCnt"],
+    deps = ["//include/core:SkRefCnt_hdr"],
 )
