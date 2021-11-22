@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4821c41_c955857d",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T14:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a9dbc42_f01175a1",
+      "range": {
+        "startLine": 82,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 26
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45f5bb3a_e710a38c",
@@ -273,6 +297,30 @@
       "side": 1,
       "message": "I added ResourceProvider to \"writeVertices\" so that there was a way for RenderSteps to get at \"static\"/re-usable buffers that they may need, e.g. an index pattern.\n\nHowever, when that buffer hasn\u0027t been made yet, using the DBM is a lot nicer from their point of view (something I ran into in updating tests in a later CL). It doesn\u0027t seem out of this world to have DBM have a way to get at named/singleton buffers that a RenderStep \"owns\", since it internally can go to the ResourceProvider if necessary and return a vertex writer to fill it out.\n\nI think what I will do is let DrawWriter return the DBM that it is using, so that RenderSteps can get at that if they need to manually make buffers, and then completely remove the REsourceProvider argument here.",
       "parentUuid": "946f9964_c33aebbd",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 60
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3805bb84_640b8140",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T14:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6724bd24_56beb185",
       "range": {
         "startLine": 74,
         "startChar": 43,
