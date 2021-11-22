@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c3a2ec3_14ff1249",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "I agree that everything should go through the DBM and the refs are handled there. How about in the short term we wrap this public calls in a testing only compile macro, and add a comment that even for tests they are deprecated and all calls should go through bindDrawBuffers instead.\n\nAgain I\u0027m fine keep the CommandBufferTests alive for now, but continuing to support it keeps adding more things to our APIs that our normal code flow would never use. Once we have an end to end system finished I think we\u0027ll need to delete that test or have it run using the APIs we actually use.",
+      "parentUuid": "8d634981_fcffdcaa",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd8928c6_57a2d57b",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 11
@@ -320,6 +344,30 @@
       "writtenOn": "2021-11-22T14:57:08Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "6724bd24_56beb185",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 60
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44c90c54_f020d665",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "I think this is fine for now, but I wonder if it would be better to keep DBM private and have helpers on DrawWriter to get static buffers (which call into the private DBM to get them). Like is there worry about weird things happening if a draw starts asking to allocate new VertexWriters while there are still current ones active. Especially if we start allowing draws to \"return\" space they didn\u0027t use.",
       "parentUuid": "6724bd24_56beb185",
       "range": {
         "startLine": 74,

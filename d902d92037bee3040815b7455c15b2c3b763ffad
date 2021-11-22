@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e88a9971_3904cc46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "Okay addded more comments (and I think this covers all my comments for now). \n\nHowever, as this is interesting/complex/core-ish code I would appreciate someone else also looking it over to give their feedback :)",
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3cc11e8_1541c679",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "I wondering if the whole getting a new drawWriter here really adds any clarity to loop or if this could all be handled internally by the drawWriter. Like as a user I\u0027m not why I\u0027m getting a new DrawWriter here. Like does it seem cleaner out here to just say:\n\nif (pipelineChange) {\n    drawWriter.newPipelineState(primitiveType, vertexStride, instanceStride):\n} else if (stateChange) {\n    drawWriter.dynamicStateChanged();\n}\n\nLike if we changed the work to \"write out\" the draws to just be a function on DrawWriter, the implementation of those functions above could just write out the draws (by calling that function) and then reset the state appropriately.\n\nI also think doing this would make the large comment in DrawWriter simpler in that you can just have a line that says: \"When state changes you must notify the DrawWriter either through newPipelineState or dynamicStateChanged\". You don\u0027t really have to show a copy of this loop in the comment then (this code is already an example of such a loop and the comment doesn\u0027t add as much).",
+      "range": {
+        "startLine": 294,
+        "startChar": 36,
+        "endLine": 294,
+        "endChar": 50
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4355c9b5_ff71f0c5",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "Personally I always find it ugly to explicitly be calling dtors. Does the dtor have to be called before we make the DrawPass? In other words can it just be destroyed naturally at the end of this function. If not, can we just put it into a scope with the loop so that we\u0027re very explicit about what the life time of the writer needs to be?\n\nOr option 3, related to suggestion above, make a specific function call on the writer to \"finish\" its work/write out draws and name it in such a way (or just good comments here) that its clear it needs to be called before a DrawPass is made?\n\nMy worry here is it isn\u0027t obvious the dtor has to be called where it is and some refactor down the line could cause someone to move it after making the DrawPass if we need to make the DrawPass outside the return call.",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 330,
+        "endChar": 29
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32da5067_0720cf6c",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T15:12:24Z",
+      "side": 1,
+      "message": "Do we want to add an assert here that the int is in a valid range for a uint16_t?",
+      "range": {
+        "startLine": 328,
+        "startChar": 58,
+        "endLine": 328,
+        "endChar": 93
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
