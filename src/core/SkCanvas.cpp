@@ -1811,7 +1811,6 @@ void SkCanvas::drawVertices(const SkVertices* vertices, SkBlendMode mode, const 
         return;
     }
 #endif
-
     this->onDrawVerticesObject(vertices, mode, paint);
 }
 
