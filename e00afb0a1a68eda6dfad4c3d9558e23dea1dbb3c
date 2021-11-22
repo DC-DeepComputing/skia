@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8f17976_c1150846",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-22T21:34:38Z",
+      "side": 0,
+      "message": "So looking at https://skia-review.googlesource.com/c/buildbot/+/473357 and thinking about this, it appears the idea is that in theory one could link against the system FreeType, but probably not build against the system FreeType? This seems a little awkward. It seems the build wants to know way early if a library is going to be system or repo local, and due to the idea of reproducible builds it\u0027s really awkward to actually build against any system libraries for real anyway.\n\nI\u0027m not really sure what to think about that, but I think we do want to be able to (optionally) build against system libraries.",
+      "parentUuid": "03efea57_aa62f64b",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5761a7e1_2f4dcb42",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 2
