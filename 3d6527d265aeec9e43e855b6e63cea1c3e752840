@@ -22,6 +22,30 @@
       },
       "revId": "3d6527d265aeec9e43e855b6e63cea1c3e752840",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2722c7d4_9e121eb1",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T16:22:49Z",
+      "side": 1,
+      "message": "I think we will want a higher version but this will hold us for now. Thanks for adding it in.",
+      "parentUuid": "c6dc76a7_9fed0129",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 5
+      },
+      "revId": "3d6527d265aeec9e43e855b6e63cea1c3e752840",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
