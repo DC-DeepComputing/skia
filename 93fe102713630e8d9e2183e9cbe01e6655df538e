@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3fec83d_f9107dbd",
+        "filename": "experimental/graphite/src/ShaderCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T22:34:47Z",
+      "side": 1,
+      "message": "After discussion, no longer needed.",
+      "parentUuid": "6e0164db_3b5c92da",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7f25613_fd12b092",
@@ -181,6 +205,30 @@
       "side": 1,
       "message": "I see what you\u0027re saying, that would work. I still think we shouldn\u0027t put references to Graphite classes in SkSL, so we\u0027ll at least need this class to do the \u0027friend\u0027ing. I can put a comment in saying that this is all it\u0027s for.",
       "parentUuid": "faa8e8e4_cef36fbc",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29690786_af356f8b",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T22:34:47Z",
+      "side": 1,
+      "message": "After outside discussion, the \u0027friend\u0027 is no longer needed either as SkSL::ShaderCaps is now a struct. Removing the class entirely.",
+      "parentUuid": "eda9e145_820076d6",
       "range": {
         "startLine": 18,
         "startChar": 6,
