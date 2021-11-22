@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dc6a807_55b6a6c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-22T16:06:46Z",
+      "side": 1,
+      "message": "PS3 adds an interfaceBlock flag to StructType, so it\u0027s a non-trivial change from the first version. Want to take another look?",
+      "revId": "a14adf1c6bc5b9afd4ef726e761fb19b5b501f8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
