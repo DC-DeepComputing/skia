@@ -1,4 +1,32 @@
 {
+  "D3D12MemAlloc.h": "SK_GAZELLE_IGNORE TODO //third_party:d3d12allocator",
+
+  "dng_area_task.h": "//third_party:dng_dsk",
+  "dng_color_space.h": "//third_party:dng_dsk",
+  "dng_errors.h": "//third_party:dng_dsk",
+  "dng_exceptions.h": "//third_party:dng_dsk",
+  "dng_host.h": "//third_party:dng_dsk",
+  "dng_info.h": "//third_party:dng_dsk",
+  "dng_memory.h": "//third_party:dng_dsk",
+  "dng_render.h": "//third_party:dng_dsk",
+  "dng_stream.h": "//third_party:dng_dsk",
+
+  "hb-subset.h": "SK_GAZELLE_IGNORE TODO //third_party:harfbuzz",
+  "hb.h": "SK_GAZELLE_IGNORE TODO //third_party:harfbuzz",
+
   "png.h": "//third_party:libpng",
-  "src/piex.h": "//third_party:piex"
+
+  "jerror.h": "//third_party:libjpeg-turbo",
+  "jpeglib.h": "//third_party:libjpeg-turbo",
+
+  "src/piex.h": "//third_party:piex",
+
+  "GrVulkanMemoryAllocator.h": "SK_GAZELLE_IGNORE TODO //third_party:vulkanmemoryallocator",
+
+  "wuffs-v0.3.c": "//third_party:wuffs",
+
+  "zlib.h": "//third_party:zlib",
+
+  "HeifDecoderAPI.h": "SK_GAZELLE_IGNORE Android-only build",
+  "SkGifCodec.h": "SK_GAZELLE_IGNORE Deprecated gif library"
 }

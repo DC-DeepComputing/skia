@@ -255,6 +255,7 @@ cc_library(
         "//include/private:SkColorData",
         "//include/private:SkTemplates",
         "//include/private:SkTo",
+        "//third_party:libjpeg-turbo",
     ],
 )
 
@@ -268,6 +269,7 @@ cc_library(
         ":SkJpegUtility",
         "//include/android:SkAndroidFrameworkUtils",
         "//include/codec:SkCodec",
+        "//third_party:libjpeg-turbo",
     ],
 )
 
@@ -278,6 +280,7 @@ cc_library(
     deps = [
         "//include/core:SkStream",
         "//include/private:SkTArray",
+        "//third_party:libjpeg-turbo",
     ],
 )
 
@@ -290,6 +293,7 @@ cc_library(
         ":SkCodecPriv",
         ":SkJpegPriv",
         "//include/core:SkStream",
+        "//third_party:libjpeg-turbo",
     ],
 )
 
@@ -390,6 +394,7 @@ cc_library(
         "//src/core:SkColorSpacePriv",
         "//src/core:SkStreamPriv",
         "//src/core:SkTaskGroup",
+        "//third_party:dng_dsk",
         "//third_party:piex",
     ],
 )
@@ -532,5 +537,6 @@ cc_library(
         "//src/core:SkMatrixProvider",
         "//src/core:SkRasterClip",
         "//src/core:SkUtils",
+        "//third_party:wuffs",
     ],
 )

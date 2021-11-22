@@ -30,6 +30,7 @@ cc_library(
         "//include/private:SkMalloc",
         "//include/private:SkTo",
         "//src/core:SkTraceEvent",
+        "//third_party:zlib",
     ],
 )
 
