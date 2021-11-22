@@ -100,6 +100,7 @@ Layout Rehydrator::layout() {
             return Layout();
         case kLayout_Command: {
             int flags = this->readU32();
+            bool transformColor = this->readU8();
             int location = this->readS8();
             int offset = this->readS8();
             int binding = this->readS8();
@@ -107,8 +108,15 @@ Layout Rehydrator::layout() {
             int set = this->readS8();
             int builtin = this->readS16();
             int inputAttachmentIndex = this->readS8();
-            return Layout(
-                    flags, location, offset, binding, index, set, builtin, inputAttachmentIndex);
+            return Layout(flags,
+                          transformColor,
+                          location,
+                          offset,
+                          binding,
+                          index,
+                          set,
+                          builtin,
+                          inputAttachmentIndex);
         }
         default:
             SkASSERT(false);

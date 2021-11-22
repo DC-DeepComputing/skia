@@ -64,8 +64,8 @@ public:
         };
 
         enum Flags {
-            kArray_Flag         = 0x1,
-            kSRGBUnpremul_Flag  = 0x2,
+            kArray_Flag          = 0x1,
+            kTransformColor_Flag = 0x2,
         };
 
         SkString  name;

@@ -72,22 +72,24 @@ void VarDeclaration::ErrorCheck(const Context& context,
         context.fErrors->error(line,
                 "variables of type '" + baseType->displayName() + "' must be uniform");
     }
-    if (modifiers.fLayout.fFlags & Layout::kSRGBUnpremul_Flag) {
+    if (modifiers.fLayout.fFlags & Layout::kTransformColor_Flag) {
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
-            context.fErrors->error(line, "'srgb_unpremul' is only permitted in runtime effects");
+            context.fErrors->error(line, "'transform_color' is only permitted in runtime effects");
         }
         if (!(modifiers.fFlags & Modifiers::kUniform_Flag)) {
             context.fErrors->error(line,
-                    "'srgb_unpremul' is only permitted on 'uniform' variables");
+                    "'transform_color' is only permitted on 'uniform' variables");
         }
         auto validColorXformType = [](const Type& t) {
-            return t.isVector() && t.componentType().isFloat() &&
-                   (t.columns() == 3 || t.columns() == 4);
+            return (t.isVector() && t.componentType().isFloat() &&
+                    (t.columns() == 3 || t.columns() == 4)) ||
+                   t.isEffectChild();
         };
         if (!validColorXformType(*baseType) && !(baseType->isArray() &&
                                                  validColorXformType(baseType->componentType()))) {
-            context.fErrors->error(line, "'srgb_unpremul' is only permitted on half3, half4, "
-                    "float3, or float4 variables");
+            context.fErrors->error(line,
+                                   "'transform_color' is not permitted on variables of type '" +
+                                           baseType->displayName() + "'");
         }
     }
     int permitted = Modifiers::kConst_Flag | Modifiers::kHighp_Flag | Modifiers::kMediump_Flag |

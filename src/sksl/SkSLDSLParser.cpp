@@ -92,7 +92,7 @@ void DSLParser::InitLayoutMap() {
     TOKEN(ORIGIN_UPPER_LEFT,            "origin_upper_left");
     TOKEN(BLEND_SUPPORT_ALL_EQUATIONS,  "blend_support_all_equations");
     TOKEN(PUSH_CONSTANT,                "push_constant");
-    TOKEN(SRGB_UNPREMUL,                "srgb_unpremul");
+    TOKEN(TRANSFORM_COLOR,              "transform_color");
     #undef TOKEN
 }
 
@@ -689,6 +689,16 @@ int DSLParser::layoutInt() {
     return resultValue;
 }
 
+/** EQ BOOL_LITERAL */
+bool DSLParser::layoutBool() {
+    if (!this->expect(Token::Kind::TK_EQ, "'='")) {
+        return false;
+    }
+    bool resultBool = false;
+    this->boolLiteral(&resultBool);
+    return resultBool;
+}
+
 /** EQ IDENTIFIER */
 skstd::string_view DSLParser::layoutIdentifier() {
     if (!this->expect(Token::Kind::TK_EQ, "'='")) {
@@ -723,8 +733,8 @@ DSLLayout DSLParser::layout() {
                     case LayoutToken::BLEND_SUPPORT_ALL_EQUATIONS:
                         result.blendSupportAllEquations(this->position(t));
                         break;
-                    case LayoutToken::SRGB_UNPREMUL:
-                        result.srgbUnpremul(this->position(t));
+                    case LayoutToken::TRANSFORM_COLOR:
+                        result.transformColor(this->layoutBool(), this->position(t));
                         break;
                     case LayoutToken::LOCATION:
                         result.location(this->layoutInt(), this->position(t));
