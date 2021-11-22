@@ -18,7 +18,7 @@
 
 #include <utility>
 
-#include <ft2build.h>
+#include "ft2build.h"
 #include FT_FREETYPE_H
 #include FT_BITMAP_H
 #ifdef FT_COLOR_H
