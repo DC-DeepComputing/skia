@@ -1896,8 +1896,9 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLLayout, r, ctxInfo) {
     EXPECT_EQUAL(Declare(v5), "layout (blend_support_all_equations) half4 v5;");
 
     {
-        ExpectError error(r, "'srgb_unpremul' is only permitted in runtime effects");
-        DSLGlobalVar v(DSLModifiers(DSLLayout().srgbUnpremul(), kUniform_Modifier), kHalf4_Type,
+        ExpectError error(r, "'transform_color' is only permitted in runtime effects");
+        DSLGlobalVar v(DSLModifiers(DSLLayout().transformColor(true), kUniform_Modifier),
+                       kHalf4_Type,
                        "v");
         Declare(v);
     }
@@ -1954,8 +1955,8 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLLayout, r, ctxInfo) {
     }
 
     {
-        ExpectError error(r, "layout qualifier 'srgb_unpremul' appears more than once");
-        DSLLayout().srgbUnpremul().srgbUnpremul();
+        ExpectError error(r, "layout qualifier 'transform_color' appears more than once");
+        DSLLayout().transformColor(true).transformColor(false);
     }
 }
 

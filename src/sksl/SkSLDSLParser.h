@@ -42,6 +42,7 @@ public:
         BLEND_SUPPORT_ALL_EQUATIONS,
         PUSH_CONSTANT,
         SRGB_UNPREMUL,
+        TRANSFORM_COLOR,
     };
 
     DSLParser(Compiler* compiler, const ProgramSettings& settings, ProgramKind kind,
@@ -161,6 +162,8 @@ private:
     skstd::optional<dsl::DSLWrapper<dsl::DSLParameter>> parameter();
 
     int layoutInt();
+
+    bool layoutBool();
 
     skstd::string_view layoutIdentifier();
 

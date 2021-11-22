@@ -22,6 +22,13 @@ DSLLayout& DSLLayout::flag(SkSL::Layout::Flag mask, const char* name, PositionIn
     return *this;
 }
 
+DSLLayout& DSLLayout::boolValue(bool* target, bool value, SkSL::Layout::Flag flag, const char* name,
+                                PositionInfo pos) {
+    this->flag(flag, name, pos);
+    *target = value;
+    return *this;
+}
+
 DSLLayout& DSLLayout::intValue(int* target, int value, SkSL::Layout::Flag flag, const char* name,
                                PositionInfo pos) {
     this->flag(flag, name, pos);
