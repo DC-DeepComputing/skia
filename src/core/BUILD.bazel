@@ -2349,18 +2349,28 @@ cc_library(
 
 cc_library(
     name = "SkOpts",
-    srcs = ["SkOpts.cpp"],
     hdrs = ["SkOpts.h"],
+    tags = ["sk_skip_gazelle"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkRasterPipeline",
+        ":SkXfermodePriv",
+        "//include/core:SkTypes",
+        "//include/private:SkOpts_spi",
+    ],
+)
+
+cc_library(
+    name = "SkOpts_impl",
+    srcs = ["SkOpts.cpp"],
+    tags = ["sk_skip_gazelle"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkCpu",
         ":SkCubicSolver",
-        ":SkRasterPipeline",
-        ":SkXfermodePriv",
-        "//include/core:SkTypes",
+        ":SkOpts",
         "//include/private:SkHalf",
         "//include/private:SkOnce",
-        "//include/private:SkOpts_spi",
         "//src/opts:SkBitmapProcState_opts",
         "//src/opts:SkBlitMask_opts",
         "//src/opts:SkBlitRow_opts",
