@@ -9,6 +9,7 @@
 #include "include/private/SkOnce.h"
 #include "src/core/SkCpu.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkRasterPipeline_stages.h"
 
 #if defined(SK_ARM_HAS_NEON)
     #if defined(SK_ARM_HAS_CRC32)
@@ -39,7 +40,7 @@
 #endif
 
 #include "src/core/SkCubicSolver.h"
-#include "src/opts/SkBitmapProcState_opts.h"
+#include "src/opts/SkBitmapProcState_opts.h" // SK_GAZELLE_IGNORE to avoid circular dep
 #include "src/opts/SkBlitMask_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
 #include "src/opts/SkChecksum_opts.h"
