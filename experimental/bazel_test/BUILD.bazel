@@ -1,24 +1,25 @@
+load("//bazel:macros.bzl", "generated_cc_atom")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
-
-cc_library(
-    name = "bazel_test",
-    srcs = ["bazel_test.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "//include/core:SkTypes",
-        "//third_party:libpng",
-    ],
-)
 
 cc_binary(
     name = "bazel_test_exe",
     visibility = ["//:__subpackages__"],
     deps = [
-        ":bazel_test",
+        ":bazel_test_src",
         "//third_party:musl_compat",
     ] + select({
-        "@platforms//os:windows": ["//src/ports:SkDebug_win"],
-        "@platforms//os:android": ["//src/ports:SkDebug_android"],
-        "//conditions:default": ["//src/ports:SkDebug_stdio"],
+        "@platforms//os:windows": ["//src/ports:SkDebug_win_src"],
+        "@platforms//os:android": ["//src/ports:SkDebug_android_src"],
+        "//conditions:default": ["//src/ports:SkDebug_stdio_src"],
     }),
+)
+
+generated_cc_atom(
+    name = "bazel_test_src",
+    srcs = ["bazel_test.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes_hdr",
+        "//third_party:libpng",
+    ],
 )

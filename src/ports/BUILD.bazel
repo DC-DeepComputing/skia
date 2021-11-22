@@ -127,6 +127,7 @@ generated_cc_atom(
         "//include/private:SkTo_hdr",
         "//src/core:SkFDot6_hdr",
         "//src/core:SkScopeExit_hdr",
+        "//third_party:freetype2",
     ],
 )
 
@@ -162,6 +163,7 @@ generated_cc_atom(
         "//src/sfnt:SkOTUtils_hdr",
         "//src/utils:SkCallableTraits_hdr",
         "//src/utils:SkMatrix22_hdr",
+        "//third_party:freetype2",
     ],
 )
 

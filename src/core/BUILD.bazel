@@ -2834,7 +2834,7 @@ generated_cc_atom(
     hdrs = ["SkOpts.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkRasterPipeline_stages_hdr",
+        ":SkRasterPipeline_hdr",
         ":SkXfermodePriv_hdr",
         "//include/core:SkTypes_hdr",
         "//include/private:SkOpts_spi_hdr",
@@ -2849,7 +2849,6 @@ generated_cc_atom(
         ":SkCpu_hdr",
         ":SkCubicSolver_hdr",
         ":SkOpts_hdr",
-        ":SkRasterPipeline_stages_hdr",
         "//include/private:SkHalf_hdr",
         "//include/private:SkOnce_hdr",
         "//src/opts:SkBitmapProcState_opts_hdr",
@@ -3561,7 +3560,6 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkArenaAlloc_hdr",
-        ":SkRasterPipeline_stages_hdr",
         "//include/core:SkColor_hdr",
         "//include/core:SkImageInfo_hdr",
         "//include/core:SkMatrix_hdr",
@@ -3580,7 +3578,6 @@ generated_cc_atom(
         ":SkColorSpacePriv_hdr",
         ":SkOpts_hdr",
         ":SkRasterPipeline_hdr",
-        ":SkRasterPipeline_stages_hdr",
         "//include/private:SkImageInfoPriv_hdr",
         "//include/private:SkNx_hdr",
         "//include/private:SkTemplates_hdr",
@@ -4595,7 +4592,6 @@ generated_cc_atom(
     hdrs = ["SkStroke.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkStrokerPriv_hdr",
         "//include/core:SkPaint_hdr",
         "//include/core:SkPath_hdr",
         "//include/core:SkPoint_hdr",
