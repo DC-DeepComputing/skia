@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bfbca4a_0bd0b682",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-22T15:59:02Z",
+      "side": 1,
+      "message": "Would it be possible to make this more friendly to other canvas types (sw, picture, ...)? I\u0027m wondering if the slug could be backend-neutral, capturing the blob and relevant canvas state when it\u0027s created, and then convert to backend-specific implementation when it\u0027s used the first time.",
+      "revId": "2968f4ad340f495c6a16728af574e0feb456802c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
