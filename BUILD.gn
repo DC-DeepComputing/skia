@@ -2126,6 +2126,12 @@ if (skia_enable_tools) {
       "modules/svg",
       "//third_party/imgui",
     ]
+
+    include_dirs = [
+      "//../../rive/include",
+      "//../../rive/skia/renderer/include",
+    ]
+    sources += [ "//../../rive/skia/renderer/src/skia_renderer.cpp" ]
   }
   test_lib("hash_and_encode") {
     sources = [
@@ -2816,7 +2822,8 @@ if (skia_enable_tools) {
         "tools/viewer/Viewer.cpp",
         "tools/viewer/Viewer.h",
       ]
-      libs = []
+
+      libs = [ "/Users/mike/rive/build/macosx/bin/debug/librive.a" ]
 
       deps = [
         ":common_flags_fontmgr",
@@ -2843,6 +2850,7 @@ if (skia_enable_tools) {
         deps += [ ":experimental_xform" ]
         sources += [ "gm/xform.cpp" ]
       }
+
       if (skia_use_vulkan) {
         deps += [
           "//third_party/externals/spirv-tools:spvtools",
