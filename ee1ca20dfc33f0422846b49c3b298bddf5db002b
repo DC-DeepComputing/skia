@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de74469b_53c3219e",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T19:19:17Z",
+      "side": 1,
+      "message": "CommandBufferTest can be deleted once we are drawing through the full pipeline. It was only added to make sure the backend code was working. In the short term I would recommend we edit it to test the bindDrawBuffers interface.",
+      "parentUuid": "7c3a2ec3_14ff1249",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd8928c6_57a2d57b",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 11

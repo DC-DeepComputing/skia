@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b81d3113_18ad57a9",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T19:19:17Z",
+      "side": 1,
+      "message": "I agree. I\u0027d rather see a finish() method and then have it be destroyed naturally later.",
+      "parentUuid": "4355c9b5_ff71f0c5",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 330,
+        "endChar": 29
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32da5067_0720cf6c",
         "filename": "src/gpu/BufferWriter.h",
         "patchSetId": 12
