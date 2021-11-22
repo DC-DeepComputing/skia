@@ -2350,7 +2350,7 @@ cc_library(
 cc_library(
     name = "SkOpts",
     hdrs = ["SkOpts.h"],
-    tags = ["sk_skip_gazelle"],
+    tags = ["SK_GAZELLE_IGNORE"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkRasterPipeline",
@@ -2363,7 +2363,7 @@ cc_library(
 cc_library(
     name = "SkOpts_impl",
     srcs = ["SkOpts.cpp"],
-    tags = ["sk_skip_gazelle"],
+    tags = ["SK_GAZELLE_IGNORE"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkCpu",

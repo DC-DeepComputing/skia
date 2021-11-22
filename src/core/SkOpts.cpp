@@ -9,6 +9,7 @@
 #include "include/private/SkOnce.h"
 #include "src/core/SkCpu.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkRasterPipeline_stages.h"
 
 #if defined(SK_ARM_HAS_NEON)
     #if defined(SK_ARM_HAS_CRC32)
