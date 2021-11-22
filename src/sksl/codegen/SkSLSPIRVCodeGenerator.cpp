@@ -2956,17 +2956,25 @@ void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target) {
         this->writeInstruction(SpvOpDecorate, target, SpvDecorationLocation, layout.fLocation,
                                fDecorationBuffer);
     }
-    if (layout.fBinding >= 0 && !isPushConstant) {
-        this->writeInstruction(SpvOpDecorate, target, SpvDecorationBinding, layout.fBinding,
-                               fDecorationBuffer);
+    if (layout.fBinding >= 0) {
+        if (isPushConstant) {
+            fContext.fErrors->error(-1, "Can't apply 'binding' to push constants");
+        } else {
+            this->writeInstruction(SpvOpDecorate, target, SpvDecorationBinding, layout.fBinding,
+                                   fDecorationBuffer);
+        }
     }
     if (layout.fIndex >= 0) {
         this->writeInstruction(SpvOpDecorate, target, SpvDecorationIndex, layout.fIndex,
                                fDecorationBuffer);
     }
-    if (layout.fSet >= 0 && !isPushConstant) {
-        this->writeInstruction(SpvOpDecorate, target, SpvDecorationDescriptorSet, layout.fSet,
-                               fDecorationBuffer);
+    if (layout.fSet >= 0) {
+        if (isPushConstant) {
+            fContext.fErrors->error(-1, "Can't apply 'set' to push constants");
+        } else {
+            this->writeInstruction(SpvOpDecorate, target, SpvDecorationDescriptorSet, layout.fSet,
+                                   fDecorationBuffer);
+        }
     }
     if (layout.fInputAttachmentIndex >= 0) {
         this->writeInstruction(SpvOpDecorate, target, SpvDecorationInputAttachmentIndex,
@@ -3069,8 +3077,8 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     this->writeInstruction(SpvOpTypePointer, ptrType, storageClass, typeId, fConstantBuffer);
     this->writeInstruction(SpvOpVariable, ptrType, result, storageClass, fConstantBuffer);
     Layout layout = intfModifiers.fLayout;
-    if (intfModifiers.fFlags & Modifiers::kUniform_Flag && layout.fSet == -1) {
-        layout.fSet = 0;
+    if (storageClass == SpvStorageClassUniform && layout.fSet < 0) {
+        layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
     }
     this->writeLayout(layout, result);
     fVariableMap[&intfVar] = result;
@@ -3483,15 +3491,18 @@ void SPIRVCodeGenerator::addRTFlipUniform(int line) {
     skstd::string_view name = "sksl_synthetic_uniforms";
     const Type* intfStruct = fSynthetics.takeOwnershipOfSymbol(
             Type::MakeStructType(/*line=*/-1, name, fields, /*interfaceBlock=*/true));
-    int binding = fProgram.fConfig->fSettings.fRTFlipBinding;
-    if (binding == -1) {
-        fContext.fErrors->error(line, "layout(binding=...) is required in SPIR-V");
-    }
-    int set = fProgram.fConfig->fSettings.fRTFlipSet;
-    if (set == -1) {
-        fContext.fErrors->error(line, "layout(set=...) is required in SPIR-V");
-    }
     bool usePushConstants = fProgram.fConfig->fSettings.fUsePushConstants;
+    int binding = -1, set = -1;
+    if (!usePushConstants) {
+        binding = fProgram.fConfig->fSettings.fRTFlipBinding;
+        if (binding == -1) {
+            fContext.fErrors->error(line, "layout(binding=...) is required in SPIR-V");
+        }
+        set = fProgram.fConfig->fSettings.fRTFlipSet;
+        if (set == -1) {
+            fContext.fErrors->error(line, "layout(set=...) is required in SPIR-V");
+        }
+    }
     int flags = usePushConstants ? Layout::Flag::kPushConstant_Flag : 0;
     const Modifiers* modsPtr;
     {
