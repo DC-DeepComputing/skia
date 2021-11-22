@@ -93,6 +93,30 @@
       },
       "revId": "afdb91bea7a97eff154cde9aa47dbed919994755",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5173135_883e0f48",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-22T19:14:33Z",
+      "side": 1,
+      "message": "Ah, right. I guess that just leaves the possibility of the count being wrong (or the stream being otherwise corrupted), which would all be guarded by a final isValid check?",
+      "parentUuid": "75b76a66_734467db",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 46
+      },
+      "revId": "afdb91bea7a97eff154cde9aa47dbed919994755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
