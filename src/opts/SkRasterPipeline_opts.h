@@ -10,8 +10,6 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkTypes.h"
-#include "src/core/SkRasterPipeline.h"
-#include "src/core/SkRasterPipeline_stages.h"
 #include "src/core/SkUtils.h"  // unaligned_{load,store}
 #include <cstdint>
 

@@ -11,7 +11,6 @@
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
-#include "src/core/SkRasterPipeline_stages.h"
 #include <algorithm>
 
 bool gForceHighPrecisionRasterPipeline;

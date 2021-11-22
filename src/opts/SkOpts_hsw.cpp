@@ -9,7 +9,6 @@
 
 #define SK_OPTS_NS hsw
 #include "src/core/SkCubicSolver.h"
-#include "src/core/SkRasterPipeline_stages.h"
 #include "src/opts/SkBitmapProcState_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
 #include "src/opts/SkRasterPipeline_opts.h"

@@ -10,7 +10,7 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkOpts_spi.h"
-#include "src/core/SkRasterPipeline_stages.h"
+#include "src/core/SkRasterPipeline.h"
 #include "src/core/SkXfermodePriv.h"
 
 struct SkBitmapProcState;
