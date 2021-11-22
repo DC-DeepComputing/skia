@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad4387e4_c5332e2b",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "Done, I like this better, too.",
+      "parentUuid": "d3cc11e8_1541c679",
+      "range": {
+        "startLine": 294,
+        "startChar": 36,
+        "endLine": 294,
+        "endChar": 50
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4355c9b5_ff71f0c5",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d340b4f_cdbb79da",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b81d3113_18ad57a9",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 330,
+        "endChar": 29
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32da5067_0720cf6c",
@@ -101,6 +149,30 @@
       "writtenOn": "2021-11-22T15:12:24Z",
       "side": 1,
       "message": "Do we want to add an assert here that the int is in a valid range for a uint16_t?",
+      "range": {
+        "startLine": 328,
+        "startChar": 58,
+        "endLine": 328,
+        "endChar": 93
+      },
+      "revId": "d902d92037bee3040815b7455c15b2c3b763ffad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12151c4a_715c09be",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "SkTo already includes such an assert.",
+      "parentUuid": "32da5067_0720cf6c",
       "range": {
         "startLine": 328,
         "startChar": 58,

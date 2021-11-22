@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f3a7359_84fd9442",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "I was able to make the bindVertexBuffers and bindIndexBuffer function private, so there is only the public bindDrawBuffers().  The onBind virtuals are still separated though.\n\nI also added a TODO to revisit the reffing once everything is definitely going through DBM.",
+      "parentUuid": "de74469b_53c3219e",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd8928c6_57a2d57b",
@@ -251,6 +275,30 @@
       "writtenOn": "2021-11-19T18:27:16Z",
       "side": 1,
       "message": "These aren\u0027t going to be batchable, but that\u0027s okay, since the only way they would have been is if the explicitly provided buffers happened to be contiguous, and in those sorts of situations, the RenderStep probably should have been using the append API anyways.\n\nThat being said, if it turns out we do make lots of contiguous explicit instance buffers, we can have drawInternal() handle the buffer checking and instance count incrementing instead of appendData().\n\nRight now, this just gives us a single type that needs to be passed to RenderStep\u0027s writeVertices() and RS can then choose how to handle its draws. I think it\u0027s reasonable to refine this as we learn more about the needs of the tessellating render steps that will be added later.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 5
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e857c6c5_b3d4d7a2",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7373cd04_94ae2e7f",
       "range": {
         "startLine": 166,
         "startChar": 0,
@@ -417,6 +465,30 @@
       "side": 1,
       "message": "I think this is fine for now, but I wonder if it would be better to keep DBM private and have helpers on DrawWriter to get static buffers (which call into the private DBM to get them). Like is there worry about weird things happening if a draw starts asking to allocate new VertexWriters while there are still current ones active. Especially if we start allowing draws to \"return\" space they didn\u0027t use.",
       "parentUuid": "6724bd24_56beb185",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 60
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbb8f6b5_a8262a9d",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-22T20:01:34Z",
+      "side": 1,
+      "message": "Yes, I could see that being useful down the road.",
+      "parentUuid": "44c90c54_f020d665",
       "range": {
         "startLine": 74,
         "startChar": 43,
