@@ -40,7 +40,7 @@
 #endif
 
 #include "src/core/SkCubicSolver.h"
-#include "src/opts/SkBitmapProcState_opts.h"
+#include "src/opts/SkBitmapProcState_opts.h" // SK_GAZELLE_IGNORE to avoid circular dep
 #include "src/opts/SkBlitMask_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
 #include "src/opts/SkChecksum_opts.h"

@@ -63,6 +63,7 @@ cc_library(
         "//src/core:SkColorSpacePriv",
         "//src/core:SkConvertPixels",
         "//src/core:SkMatrixProvider",
+        "//src/core:SkRasterPipeline",
         "//src/core:SkReadBuffer",
         "//src/core:SkVM",
         "//src/core:SkWriteBuffer",

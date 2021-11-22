@@ -2353,7 +2353,7 @@ cc_library(
     tags = ["SK_GAZELLE_IGNORE"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkRasterPipeline",
+        ":SkRasterPipeline_stages",
         ":SkXfermodePriv",
         "//include/core:SkTypes",
         "//include/private:SkOpts_spi",
@@ -2369,6 +2369,7 @@ cc_library(
         ":SkCpu",
         ":SkCubicSolver",
         ":SkOpts",
+        ":SkRasterPipeline_stages",
         "//include/private:SkHalf",
         "//include/private:SkOnce",
         "//src/opts:SkBitmapProcState_opts",
@@ -3003,6 +3004,7 @@ cc_library(
         ":SkArenaAlloc",
         ":SkColorSpacePriv",
         ":SkOpts",
+        ":SkRasterPipeline_stages",
         "//include/core:SkColor",
         "//include/core:SkImageInfo",
         "//include/core:SkMatrix",
@@ -4485,4 +4487,10 @@ cc_library(
         "//include/private:SkTemplates",
         "//include/private:SkTo",
     ],
+)
+
+cc_library(
+    name = "SkRasterPipeline_stages",
+    hdrs = ["SkRasterPipeline_stages.h"],
+    visibility = ["//:__subpackages__"],
 )

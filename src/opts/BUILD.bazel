@@ -92,6 +92,7 @@ cc_library(
         ":SkVM_opts",
         "//src/core:SkCubicSolver",
         "//src/core:SkOpts",
+        "//src/core:SkRasterPipeline_stages",
     ],
 )
 
@@ -141,6 +142,8 @@ cc_library(
     deps = [
         "//include/core:SkData",
         "//include/core:SkTypes",
+        "//src/core:SkRasterPipeline",
+        "//src/core:SkRasterPipeline_stages",
         "//src/core:SkUtils",
     ],
 )
