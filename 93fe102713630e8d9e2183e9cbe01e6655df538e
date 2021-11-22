@@ -93,6 +93,30 @@
       },
       "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd05dbc_68cde5f2",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T13:07:12Z",
+      "side": 1,
+      "message": "Do you have an example of a case where we\u0027d want a specialized thing in mtl::ShaderCaps that shouldn\u0027t be in sksl::ShaderCaps or mtl::Caps? My thought was that the reason ShaderCaps are pulled at from Caps in the first place is so that we can pass SkSL these caps from either Graphite or Ganesh. Seems like things that are needed outside of SkSL specifically in Graphite could just live in Caps?\n\nI\u0027m not against this approach in general, I just am not seeing a use for it. But I very well may be missing a good use case.",
+      "parentUuid": "a86ad96c_08840dd7",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
