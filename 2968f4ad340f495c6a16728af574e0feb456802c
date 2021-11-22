@@ -34,6 +34,47 @@
       "parentUuid": "2bfbca4a_0bd0b682",
       "revId": "2968f4ad340f495c6a16728af574e0feb456802c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9def019c_622fc3ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-22T17:44:51Z",
+      "side": 1,
+      "message": "Right, I think we might need a level of indirection, though, if a slug could be drawn into a picture recorder before we know whether the end target is cpu or gpu. But mostly just wanted to make sure you were thinking about handling multiple backends.",
+      "parentUuid": "1d28981c_2d736a49",
+      "revId": "2968f4ad340f495c6a16728af574e0feb456802c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b76d36_b01b96f3",
+        "filename": "src/gpu/text/GrSlug.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-22T17:44:51Z",
+      "side": 1,
+      "message": "\"Google LLC\" here and in in GrSlug.h",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "2968f4ad340f495c6a16728af574e0feb456802c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
