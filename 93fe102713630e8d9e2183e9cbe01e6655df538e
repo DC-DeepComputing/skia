@@ -141,6 +141,30 @@
       },
       "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faa8e8e4_cef36fbc",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T16:45:57Z",
+      "side": 1,
+      "message": "Right and I guess my question there is, now that you\u0027ve moved out the things needed by the compiler, is there is a reason for those things to live on a GrShaderCaps and not GrCaps? Like do we gain something by having them be two separate classes?\n\nI\u0027m not suggesting we have to go back and change Ganesh code, but just wondering if that is a pattern we want to repeat in Graphite or not.",
+      "parentUuid": "1f62f514_960aef8e",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
