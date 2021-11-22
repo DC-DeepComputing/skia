@@ -99,7 +99,6 @@ cc_library(
         "//include/private:SkImageInfoPriv",
         "//include/private:SkTemplates",
         "//src/utils:SkUTF",
-        "//webp:encode",
-        "//webp:mux",
+        "//third_party:libwebp",
     ],
 )

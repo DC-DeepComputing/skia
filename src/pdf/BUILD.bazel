@@ -413,7 +413,6 @@ cc_library(
         "//include/docs:SkPDFDocument",
         "//include/private:SkTemplates",
         "//include/private:SkTo",
-        "//sample/chromium:font_subsetter",
         "//src/utils:SkCallableTraits",
     ],
 )

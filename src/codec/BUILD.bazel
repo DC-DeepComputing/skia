@@ -394,7 +394,7 @@ cc_library(
         "//src/core:SkColorSpacePriv",
         "//src/core:SkStreamPriv",
         "//src/core:SkTaskGroup",
-        "//third_party:dng_dsk",
+        "//third_party:dng_sdk",
         "//third_party:piex",
     ],
 )
@@ -513,9 +513,7 @@ cc_library(
         "//include/private:SkTo",
         "//src/core:SkRasterPipeline",
         "//src/core:SkStreamPriv",
-        "//webp:decode",
-        "//webp:demux",
-        "//webp:encode",
+        "//third_party:libwebp",
     ],
 )
 

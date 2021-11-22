@@ -657,9 +657,6 @@ cc_library(
     deps = [
         "//include/core:SkTypes",
         "//include/private:SkMalloc",
-        "//mozilla:mozalloc",
-        "//mozilla:mozalloc_abort",
-        "//mozilla:mozalloc_oom",
     ],
 )
 
