@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrD3DBackendContext",
+    hdrs = ["GrD3DBackendContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrD3DTypes",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "GrD3DTypes",
+    hdrs = ["GrD3DTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+    ],
+)

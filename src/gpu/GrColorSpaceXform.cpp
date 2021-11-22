@@ -9,7 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "src/core/SkColorSpacePriv.h"
-#include "src/gpu/GrColorInfo.h"
+#include "src/gpu/GrColorInfo.h"  // SK_GAZELLE_IGNORE to avoid cycle
 #include "src/gpu/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 

@@ -1,0 +1,507 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkBitmapKey",
+    hdrs = ["SkBitmapKey.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkRect"],
+)
+
+cc_library(
+    name = "SkClusterator",
+    srcs = ["SkClusterator.cpp"],
+    hdrs = ["SkClusterator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkTo",
+        "//src/core:SkGlyphRun",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkDeflate",
+    srcs = ["SkDeflate.cpp"],
+    hdrs = ["SkDeflate.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkData",
+        "//include/core:SkStream",
+        "//include/private:SkMalloc",
+        "//include/private:SkTo",
+        "//src/core:SkTraceEvent",
+        "//third_party:zlib",
+    ],
+)
+
+cc_library(
+    name = "SkDocument_PDF_None",
+    srcs = ["SkDocument_PDF_None.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkCanvas",
+        "//include/core:SkData",
+        "//include/docs:SkPDFDocument",
+    ],
+)
+
+cc_library(
+    name = "SkJpegInfo",
+    srcs = ["SkJpegInfo.cpp"],
+    hdrs = ["SkJpegInfo.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/codec:SkEncodedOrigin",
+        "//include/core:SkSize",
+        "//include/private:SkEncodedInfo",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkKeyedImage",
+    srcs = ["SkKeyedImage.cpp"],
+    hdrs = ["SkKeyedImage.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmapKey",
+        "//include/core:SkBitmap",
+        "//include/core:SkImage",
+        "//src/image:SkImage_Base",
+    ],
+)
+
+cc_library(
+    name = "SkPDFBitmap",
+    srcs = ["SkPDFBitmap.cpp"],
+    hdrs = ["SkPDFBitmap.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkDeflate",
+        ":SkJpegInfo",
+        ":SkPDFDocumentPriv",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkBitmap",
+        "//include/core:SkData",
+        "//include/core:SkExecutor",
+        "//include/core:SkImage",
+        "//include/core:SkStream",
+        "//include/private:SkColorData",
+        "//include/private:SkImageInfoPriv",
+        "//include/private:SkTo",
+    ],
+)
+
+cc_library(
+    name = "SkPDFDevice",
+    srcs = ["SkPDFDevice.cpp"],
+    hdrs = ["SkPDFDevice.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmapKey",
+        ":SkClusterator",
+        ":SkKeyedImage",
+        ":SkPDFBitmap",
+        ":SkPDFDocumentPriv",
+        ":SkPDFFont",
+        ":SkPDFFormXObject",
+        ":SkPDFGraphicStackState",
+        ":SkPDFGraphicState",
+        ":SkPDFResourceDict",
+        ":SkPDFShader",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkBitmap",
+        "//include/core:SkCanvas",
+        "//include/core:SkColor",
+        "//include/core:SkColorFilter",
+        "//include/core:SkData",
+        "//include/core:SkPaint",
+        "//include/core:SkPath",
+        "//include/core:SkPathEffect",
+        "//include/core:SkRRect",
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkSurface",
+        "//include/core:SkTextBlob",
+        "//include/docs:SkPDFDocument",
+        "//include/encode:SkJpegEncoder",
+        "//include/pathops:SkPathOps",
+        "//include/private:SkTHash",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkAnnotationKeys",
+        "//src/core:SkBitmapDevice",
+        "//src/core:SkClipStack",
+        "//src/core:SkClipStackDevice",
+        "//src/core:SkColorSpacePriv",
+        "//src/core:SkDraw",
+        "//src/core:SkGlyphRun",
+        "//src/core:SkImageFilterCache",
+        "//src/core:SkImageFilter_Base",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkRasterClip",
+        "//src/core:SkScalerCache",
+        "//src/core:SkScopeExit",
+        "//src/core:SkStrikeSpec",
+        "//src/core:SkTextBlobPriv",
+        "//src/core:SkTextFormatParams",
+        "//src/core:SkXfermodeInterpretation",
+        "//src/utils:SkClipStackUtils",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkPDFDocument",
+    srcs = ["SkPDFDocument.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDevice",
+        ":SkPDFDocumentPriv",
+        ":SkPDFFont",
+        ":SkPDFGradientShader",
+        ":SkPDFGraphicState",
+        ":SkPDFShader",
+        ":SkPDFTag",
+        ":SkPDFUtils",
+        "//include/core:SkStream",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkTo",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkPDFDocumentPriv",
+    hdrs = ["SkPDFDocumentPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFMetadata",
+        ":SkPDFTag",
+        "//include/core:SkCanvas",
+        "//include/core:SkStream",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkMutex",
+        "//include/private:SkTHash",
+    ],
+)
+
+cc_library(
+    name = "SkPDFFont",
+    srcs = ["SkPDFFont.cpp"],
+    hdrs = ["SkPDFFont.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFBitmap",
+        ":SkPDFDocumentPriv",
+        ":SkPDFGlyphUse",
+        ":SkPDFMakeCIDGlyphWidthsArray",
+        ":SkPDFMakeToUnicodeCmap",
+        ":SkPDFSubsetFont",
+        ":SkPDFType1Font",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkBitmap",
+        "//include/core:SkData",
+        "//include/core:SkFont",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontTypes",
+        "//include/core:SkImage",
+        "//include/core:SkImageInfo",
+        "//include/core:SkMatrix",
+        "//include/core:SkPaint",
+        "//include/core:SkPath",
+        "//include/core:SkPoint",
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/core:SkSurfaceProps",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkBitmaskEnum",
+        "//include/private:SkTHash",
+        "//include/private:SkTo",
+        "//src/core:SkAdvancedTypefaceMetrics",
+        "//src/core:SkGlyph",
+        "//src/core:SkImagePriv",
+        "//src/core:SkMask",
+        "//src/core:SkScalerCache",
+        "//src/core:SkScalerContext",
+        "//src/core:SkStrikeCache",
+        "//src/core:SkStrikeSpec",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkPDFFormXObject",
+    srcs = ["SkPDFFormXObject.cpp"],
+    hdrs = ["SkPDFFormXObject.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDevice",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+    ],
+)
+
+cc_library(
+    name = "SkPDFGlyphUse",
+    hdrs = ["SkPDFGlyphUse.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//src/utils:SkBitSet",
+    ],
+)
+
+cc_library(
+    name = "SkPDFGradientShader",
+    srcs = ["SkPDFGradientShader.cpp"],
+    hdrs = ["SkPDFGradientShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDocumentPriv",
+        ":SkPDFFormXObject",
+        ":SkPDFGraphicState",
+        ":SkPDFResourceDict",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkShader",
+        "//include/docs:SkPDFDocument",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkPDFGraphicStackState",
+    srcs = ["SkPDFGraphicStackState.cpp"],
+    hdrs = ["SkPDFGraphicStackState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFUtils",
+        "//include/core:SkColor",
+        "//include/core:SkMatrix",
+        "//include/core:SkScalar",
+        "//include/core:SkStream",
+        "//include/pathops:SkPathOps",
+        "//src/core:SkClipStack",
+        "//src/utils:SkClipStackUtils",
+    ],
+)
+
+cc_library(
+    name = "SkPDFGraphicState",
+    srcs = ["SkPDFGraphicState.cpp"],
+    hdrs = ["SkPDFGraphicState.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDocumentPriv",
+        ":SkPDFFormXObject",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkData",
+        "//include/core:SkPaint",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkMacros",
+        "//include/private:SkTo",
+        "//src/core:SkOpts",
+    ],
+)
+
+cc_library(
+    name = "SkPDFMakeCIDGlyphWidthsArray",
+    srcs = ["SkPDFMakeCIDGlyphWidthsArray.cpp"],
+    hdrs = ["SkPDFMakeCIDGlyphWidthsArray.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFGlyphUse",
+        ":SkPDFTypes",
+        "//include/core:SkPaint",
+        "//include/private:SkTo",
+        "//src/core:SkScalerCache",
+        "//src/core:SkStrikeSpec",
+    ],
+)
+
+cc_library(
+    name = "SkPDFMakeToUnicodeCmap",
+    srcs = ["SkPDFMakeToUnicodeCmap.cpp"],
+    hdrs = ["SkPDFMakeToUnicodeCmap.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFFont",
+        ":SkPDFUtils",
+        "//include/core:SkStream",
+        "//include/private:SkTo",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkPDFMetadata",
+    srcs = ["SkPDFMetadata.cpp"],
+    hdrs = ["SkPDFMetadata.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFTypes",
+        ":SkUUID",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkTo",
+        "//src/core:SkMD5",
+        "//src/core:SkUtils",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkPDFResourceDict",
+    srcs = ["SkPDFResourceDict.cpp"],
+    hdrs = ["SkPDFResourceDict.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFFont",
+        ":SkPDFTypes",
+        "//include/core:SkStream",
+    ],
+)
+
+cc_library(
+    name = "SkPDFShader",
+    srcs = ["SkPDFShader.cpp"],
+    hdrs = ["SkPDFShader.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBitmapKey",
+        ":SkPDFDevice",
+        ":SkPDFDocumentPriv",
+        ":SkPDFFormXObject",
+        ":SkPDFGradientShader",
+        ":SkPDFGraphicState",
+        ":SkPDFResourceDict",
+        ":SkPDFTypes",
+        ":SkPDFUtils",
+        "//include/core:SkData",
+        "//include/core:SkMath",
+        "//include/core:SkScalar",
+        "//include/core:SkShader",
+        "//include/core:SkStream",
+        "//include/core:SkSurface",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkMacros",
+        "//include/private:SkTPin",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkPDFSubsetFont",
+    srcs = ["SkPDFSubsetFont.cpp"],
+    hdrs = ["SkPDFSubsetFont.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFGlyphUse",
+        "//include/core:SkData",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/utils:SkCallableTraits",
+    ],
+)
+
+cc_library(
+    name = "SkPDFTag",
+    srcs = ["SkPDFTag.cpp"],
+    hdrs = ["SkPDFTag.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDocumentPriv",
+        "//include/docs:SkPDFDocument",
+        "//include/private:SkTArray",
+        "//include/private:SkTHash",
+        "//src/core:SkArenaAlloc",
+    ],
+)
+
+cc_library(
+    name = "SkPDFType1Font",
+    srcs = ["SkPDFType1Font.cpp"],
+    hdrs = ["SkPDFType1Font.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFDocumentPriv",
+        ":SkPDFFont",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//src/core:SkStrikeSpec",
+    ],
+)
+
+cc_library(
+    name = "SkPDFTypes",
+    srcs = ["SkPDFTypes.cpp"],
+    hdrs = ["SkPDFTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkDeflate",
+        ":SkPDFDocumentPriv",
+        ":SkPDFUnion",
+        ":SkPDFUtils",
+        "//include/core:SkData",
+        "//include/core:SkExecutor",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//include/private:SkTHash",
+        "//include/private:SkTo",
+        "//src/core:SkStreamPriv",
+    ],
+)
+
+cc_library(
+    name = "SkPDFUnion",
+    hdrs = ["SkPDFUnion.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkPDFTypes"],
+)
+
+cc_library(
+    name = "SkPDFUtils",
+    srcs = ["SkPDFUtils.cpp"],
+    hdrs = ["SkPDFUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPDFResourceDict",
+        ":SkPDFTypes",
+        "//include/core:SkBitmap",
+        "//include/core:SkData",
+        "//include/core:SkPaint",
+        "//include/core:SkPath",
+        "//include/core:SkShader",
+        "//include/core:SkStream",
+        "//include/core:SkString",
+        "//include/private:SkFixed",
+        "//src/core:SkGeometry",
+        "//src/core:SkPathPriv",
+        "//src/core:SkUtils",
+        "//src/image:SkImage_Base",
+        "//src/shaders:SkShaderBase",
+        "//src/utils:SkFloatToDecimal",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkUUID",
+    hdrs = ["SkUUID.h"],
+    visibility = ["//:__subpackages__"],
+)

@@ -1,0 +1,70 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrGLAssembleHelpers",
+    hdrs = ["GrGLAssembleHelpers.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrGLAssembleInterface"],
+)
+
+cc_library(
+    name = "GrGLAssembleInterface",
+    hdrs = ["GrGLAssembleInterface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrGLInterface"],
+)
+
+cc_library(
+    name = "GrGLConfig",
+    hdrs = ["GrGLConfig.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes"],
+)
+
+cc_library(
+    name = "GrGLConfig_chrome",
+    hdrs = ["GrGLConfig_chrome.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "GrGLExtensions",
+    hdrs = ["GrGLExtensions.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLFunctions",
+        "//include/core:SkString",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "GrGLFunctions",
+    hdrs = ["GrGLFunctions.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLTypes",
+        "//include/private:SkTLogic",
+    ],
+)
+
+cc_library(
+    name = "GrGLInterface",
+    hdrs = ["GrGLInterface.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLExtensions",
+        ":GrGLFunctions",
+        "//include/core:SkRefCnt",
+    ],
+)
+
+cc_library(
+    name = "GrGLTypes",
+    hdrs = ["GrGLTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrGLConfig",
+        "//include/core:SkRefCnt",
+    ],
+)

@@ -1,0 +1,56 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrVkBackendContext",
+    hdrs = ["GrVkBackendContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrVkMemoryAllocator",
+        ":GrVkTypes",
+        "//include/core:SkRefCnt",
+    ],
+)
+
+cc_library(
+    name = "GrVkExtensions",
+    hdrs = ["GrVkExtensions.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrVkTypes",
+        "//include/core:SkString",
+        "//include/private:SkTArray",
+    ],
+)
+
+cc_library(
+    name = "GrVkMemoryAllocator",
+    hdrs = ["GrVkMemoryAllocator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrVkTypes",
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "GrVkTypes",
+    hdrs = ["GrVkTypes.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrVkVulkan",
+        "//include/core:SkTypes",
+        "//include/gpu:GrTypes",
+    ],
+)
+
+cc_library(
+    name = "GrVkVulkan",
+    hdrs = ["GrVkVulkan.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/third_party/vulkan/vulkan:vulkan_android",
+        "//include/third_party/vulkan/vulkan:vulkan_core",
+    ],
+)

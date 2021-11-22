@@ -1,9 +1,32 @@
-package(default_visibility = ["//:__subpackages__"])
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
-filegroup(
-    name = "srcs",
-    srcs = [
-        "SkAndroidFrameworkUtils.cpp",
-        "SkAnimatedImage.cpp",
+cc_library(
+    name = "SkAndroidFrameworkUtils",
+    srcs = ["SkAndroidFrameworkUtils.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/android:SkAndroidFrameworkUtils",
+        "//include/core:SkCanvas",
+        "//include/utils:SkPaintFilterCanvas",
+        "//src/core:SkDevice",
+        "//src/image:SkSurface_Base",
+    ],
+)
+
+cc_library(
+    name = "SkAnimatedImage",
+    srcs = ["SkAnimatedImage.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/android:SkAnimatedImage",
+        "//include/codec:SkAndroidCodec",
+        "//include/codec:SkCodec",
+        "//include/core:SkCanvas",
+        "//include/core:SkPicture",
+        "//include/core:SkPictureRecorder",
+        "//include/core:SkPixelRef",
+        "//src/codec:SkCodecPriv",
+        "//src/core:SkImagePriv",
+        "//src/core:SkPixmapPriv",
     ],
 )

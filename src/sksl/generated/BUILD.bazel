@@ -1,0 +1,10 @@
+filegroup(
+    name = "dehydrated_sksl",
+    srcs = [
+        "generated/sksl_frag.dehydrated.sksl",
+        "generated/sksl_gpu.dehydrated.sksl",
+        "generated/sksl_public.dehydrated.sksl",
+        "generated/sksl_rt_shader.dehydrated.sksl",
+        "generated/sksl_vert.dehydrated.sksl",
+    ],
+)

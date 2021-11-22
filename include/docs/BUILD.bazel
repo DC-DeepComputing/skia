@@ -1,0 +1,26 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkPDFDocument",
+    hdrs = ["SkPDFDocument.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkColor",
+        "//include/core:SkDocument",
+        "//include/core:SkMilestone",
+        "//include/core:SkScalar",
+        "//include/core:SkString",
+        "//include/core:SkTime",
+        "//include/private:SkNoncopyable",
+    ],
+)
+
+cc_library(
+    name = "SkXPSDocument",
+    hdrs = ["SkXPSDocument.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkDocument",
+        "//include/core:SkTypes",
+    ],
+)

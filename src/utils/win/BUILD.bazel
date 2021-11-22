@@ -1,0 +1,129 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkAutoCoInitialize",
+    srcs = ["SkAutoCoInitialize.cpp"],
+    hdrs = ["SkAutoCoInitialize.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkNoncopyable",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkDWrite",
+    srcs = ["SkDWrite.cpp"],
+    hdrs = ["SkDWrite.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkHRESULT",
+        "//include/core:SkFontStyle",
+        "//include/core:SkString",
+        "//include/core:SkTypes",
+        "//include/private:SkOnce",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkDWriteFontFileStream",
+    srcs = ["SkDWriteFontFileStream.cpp"],
+    hdrs = ["SkDWriteFontFileStream.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkHRESULT",
+        ":SkObjBase",
+        ":SkTScopedComPtr",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//include/private:SkMutex",
+        "//include/private:SkTFitsIn",
+        "//include/private:SkTemplates",
+    ],
+)
+
+cc_library(
+    name = "SkDWriteGeometrySink",
+    srcs = ["SkDWriteGeometrySink.cpp"],
+    hdrs = ["SkDWriteGeometrySink.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkObjBase",
+        "//include/core:SkPath",
+        "//include/core:SkTypes",
+        "//src/utils:SkFloatUtils",
+    ],
+)
+
+cc_library(
+    name = "SkDWriteNTDDI_VERSION",
+    hdrs = ["SkDWriteNTDDI_VERSION.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "SkHRESULT",
+    srcs = ["SkHRESULT.cpp"],
+    hdrs = ["SkHRESULT.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkIStream",
+    srcs = ["SkIStream.cpp"],
+    hdrs = ["SkIStream.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkObjBase",
+        "//include/core:SkStream",
+        "//include/core:SkTypes",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkObjBase",
+    hdrs = ["SkObjBase.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/core:SkLeanWindows"],
+)
+
+cc_library(
+    name = "SkTScopedComPtr",
+    hdrs = ["SkTScopedComPtr.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkObjBase",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkWGL",
+    hdrs = ["SkWGL.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkRefCnt",
+        "//src/core:SkLeanWindows",
+    ],
+)
+
+cc_library(
+    name = "SkWGL_win",
+    srcs = ["SkWGL_win.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkWGL",
+        "//include/core:SkTypes",
+        "//include/private:SkOnce",
+        "//include/private:SkTDArray",
+        "//src/core:SkTSearch",
+        "//src/core:SkTSort",
+    ],
+)

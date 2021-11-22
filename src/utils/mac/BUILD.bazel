@@ -1,0 +1,56 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkCGBase",
+    hdrs = ["SkCGBase.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkCGGeometry",
+    hdrs = ["SkCGGeometry.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes"],
+)
+
+cc_library(
+    name = "SkCTFont",
+    srcs = ["SkCTFont.cpp"],
+    hdrs = ["SkCTFont.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkUniqueCFRef",
+        "//include/core:SkData",
+        "//include/core:SkRefCnt",
+        "//include/core:SkTypes",
+        "//include/private:SkOnce",
+        "//src/sfnt:SkOTTable_OS_2",
+        "//src/sfnt:SkSFNTHeader",
+    ],
+)
+
+cc_library(
+    name = "SkCreateCGImageRef",
+    srcs = ["SkCreateCGImageRef.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkUniqueCFRef",
+        "//include/core:SkBitmap",
+        "//include/core:SkTypes",
+        "//include/private:SkColorData",
+        "//include/private:SkMacros",
+        "//include/private:SkTo",
+        "//include/utils/mac:SkCGUtils",
+    ],
+)
+
+cc_library(
+    name = "SkUniqueCFRef",
+    hdrs = ["SkUniqueCFRef.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkTypes",
+        "//include/private:SkTemplates",
+    ],
+)

@@ -1,0 +1,13 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkCGUtils",
+    hdrs = ["SkCGUtils.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkImage",
+        "//include/core:SkImageInfo",
+        "//include/core:SkPixmap",
+        "//include/core:SkSize",
+    ],
+)

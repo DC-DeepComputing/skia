@@ -1,0 +1,82 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkShaper",
+    srcs = ["SkShaper.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFont",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontStyle",
+        "//include/core:SkString",
+        "//include/core:SkTypeface",
+        "//include/private:SkTFitsIn",
+        "//modules/skshaper/include:SkShaper",
+        "//modules/skunicode/include:SkUnicode",
+        "//src/core:SkTextBlobPriv",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkShaper_coretext",
+    srcs = ["SkShaper_coretext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/ports:SkTypeface_mac",
+        "//include/private:SkTemplates",
+        "//modules/skshaper/include:SkShaper",
+        "//src/utils:SkUTF",
+        "//src/utils/mac:SkCGBase",
+        "//src/utils/mac:SkUniqueCFRef",
+    ],
+)
+
+cc_library(
+    name = "SkShaper_harfbuzz",
+    srcs = ["SkShaper_harfbuzz.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFont",
+        "//include/core:SkFontArguments",
+        "//include/core:SkFontMetrics",
+        "//include/core:SkFontMgr",
+        "//include/core:SkFontTypes",
+        "//include/core:SkPaint",
+        "//include/core:SkPoint",
+        "//include/core:SkRect",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkSpan",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/core:SkTypes",
+        "//include/private:SkBitmaskEnum",
+        "//include/private:SkMalloc",
+        "//include/private:SkMutex",
+        "//include/private:SkTArray",
+        "//include/private:SkTFitsIn",
+        "//include/private:SkTemplates",
+        "//include/private:SkTo",
+        "//modules/skshaper/include:SkShaper",
+        "//modules/skunicode/include:SkUnicode",
+        "//src/core:SkLRUCache",
+        "//src/core:SkTDPQueue",
+        "//src/utils:SkUTF",
+    ],
+)
+
+cc_library(
+    name = "SkShaper_primitive",
+    srcs = ["SkShaper_primitive.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMetrics",
+        "//include/core:SkStream",
+        "//include/core:SkTypeface",
+        "//include/private:SkTo",
+        "//modules/skshaper/include:SkShaper",
+        "//src/utils:SkUTF",
+    ],
+)

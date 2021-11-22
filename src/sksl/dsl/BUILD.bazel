@@ -1,0 +1,181 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "DSLBlock",
+    srcs = ["DSLBlock.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLBlock",
+        "//include/sksl:DSLStatement",
+        "//src/sksl/ir:SkSLBlock",
+    ],
+)
+
+cc_library(
+    name = "DSLCase",
+    srcs = ["DSLCase.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkSLStatement",
+        "//include/sksl:DSLCase",
+    ],
+)
+
+cc_library(
+    name = "DSLCore",
+    srcs = ["DSLCore.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkSLDefines",
+        "//include/sksl:DSLCore",
+        "//include/sksl:DSLSymbols",
+        "//include/sksl:DSLVar",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/dsl/priv:DSLWriter",
+        "//src/sksl/ir:SkSLBlock",
+        "//src/sksl/ir:SkSLBreakStatement",
+        "//src/sksl/ir:SkSLContinueStatement",
+        "//src/sksl/ir:SkSLDiscardStatement",
+        "//src/sksl/ir:SkSLDoStatement",
+        "//src/sksl/ir:SkSLExtension",
+        "//src/sksl/ir:SkSLField",
+        "//src/sksl/ir:SkSLForStatement",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLIfStatement",
+        "//src/sksl/ir:SkSLInterfaceBlock",
+        "//src/sksl/ir:SkSLModifiersDeclaration",
+        "//src/sksl/ir:SkSLReturnStatement",
+        "//src/sksl/ir:SkSLStructDefinition",
+        "//src/sksl/ir:SkSLSwitchStatement",
+        "//src/sksl/ir:SkSLSwizzle",
+        "//src/sksl/ir:SkSLTernaryExpression",
+        "//src/sksl/transform:SkSLTransform",
+    ],
+)
+
+cc_library(
+    name = "DSLExpression",
+    srcs = ["DSLExpression.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLCore",
+        "//include/sksl:DSLExpression",
+        "//include/sksl:DSLVar",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/dsl/priv:DSLWriter",
+        "//src/sksl/ir:SkSLBinaryExpression",
+        "//src/sksl/ir:SkSLFieldAccess",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLIndexExpression",
+        "//src/sksl/ir:SkSLLiteral",
+        "//src/sksl/ir:SkSLPoison",
+        "//src/sksl/ir:SkSLPostfixExpression",
+        "//src/sksl/ir:SkSLPrefixExpression",
+    ],
+)
+
+cc_library(
+    name = "DSLFunction",
+    srcs = ["DSLFunction.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLFunction",
+        "//include/sksl:DSLVar",
+        "//src/sksl:SkSLAnalysis",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/dsl/priv:DSLWriter",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLFunctionDefinition",
+        "//src/sksl/ir:SkSLFunctionPrototype",
+        "//src/sksl/ir:SkSLReturnStatement",
+    ],
+)
+
+cc_library(
+    name = "DSLLayout",
+    srcs = ["DSLLayout.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLLayout",
+        "//src/sksl:SkSLThreadContext",
+    ],
+)
+
+cc_library(
+    name = "DSLRuntimeEffects",
+    srcs = ["DSLRuntimeEffects.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/effects:SkRuntimeEffect",
+        "//include/sksl:DSLCore",
+        "//include/sksl:DSLRuntimeEffects",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+    ],
+)
+
+cc_library(
+    name = "DSLStatement",
+    srcs = ["DSLStatement.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLBlock",
+        "//include/sksl:DSLExpression",
+        "//include/sksl:DSLStatement",
+        "//src/gpu/glsl:GrGLSLFragmentShaderBuilder",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/ir:SkSLBlock",
+        "//src/sksl/ir:SkSLExpressionStatement",
+        "//src/sksl/ir:SkSLNop",
+    ],
+)
+
+cc_library(
+    name = "DSLSymbols",
+    srcs = ["DSLSymbols.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLSymbols",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/dsl/priv:DSLWriter",
+        "//src/sksl/ir:SkSLVariable",
+    ],
+)
+
+cc_library(
+    name = "DSLType",
+    srcs = ["DSLType.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLType",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl/ir:SkSLConstructor",
+        "//src/sksl/ir:SkSLStructDefinition",
+    ],
+)
+
+cc_library(
+    name = "DSLVar",
+    srcs = ["DSLVar.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/sksl:DSLModifiers",
+        "//include/sksl:DSLType",
+        "//include/sksl:DSLVar",
+        "//src/sksl:SkSLCompiler",
+        "//src/sksl:SkSLThreadContext",
+        "//src/sksl:SkSLUtil",
+        "//src/sksl/dsl/priv:DSLWriter",
+        "//src/sksl/ir:SkSLBinaryExpression",
+        "//src/sksl/ir:SkSLFunctionCall",
+        "//src/sksl/ir:SkSLSymbolTable",
+        "//src/sksl/ir:SkSLVariable",
+        "//src/sksl/ir:SkSLVariableReference",
+    ],
+)

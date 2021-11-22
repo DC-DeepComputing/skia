@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "SkShaper",
+    hdrs = ["SkShaper.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFontMgr",
+        "//include/core:SkPoint",
+        "//include/core:SkRefCnt",
+        "//include/core:SkScalar",
+        "//include/core:SkTextBlob",
+        "//include/core:SkTypes",
+    ],
+)

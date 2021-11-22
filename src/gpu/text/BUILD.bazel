@@ -1,0 +1,140 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "GrAtlasManager",
+    srcs = ["GrAtlasManager.cpp"],
+    hdrs = ["GrAtlasManager.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrStrikeCache",
+        "//include/core:SkBitmap",
+        "//include/core:SkImageEncoder",
+        "//include/core:SkStream",
+        "//include/gpu:GrDirectContext",
+        "//src/codec:SkMasks",
+        "//src/core:SkAutoMalloc",
+        "//src/gpu:GrCaps",
+        "//src/gpu:GrDirectContextPriv",
+        "//src/gpu:GrDrawOpAtlas",
+        "//src/gpu:GrGlyph",
+        "//src/gpu:GrImageInfo",
+        "//src/gpu:GrOnFlushResourceProvider",
+        "//src/gpu:GrProxyProvider",
+        "//src/gpu:GrSurfaceProxy",
+        "//src/gpu:GrTextureProxy",
+        "//src/gpu:SurfaceContext",
+    ],
+)
+
+cc_library(
+    name = "GrDistanceFieldAdjustTable",
+    srcs = ["GrDistanceFieldAdjustTable.cpp"],
+    hdrs = ["GrDistanceFieldAdjustTable.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkScalar",
+        "//src/core:SkScalerContext",
+    ],
+)
+
+cc_library(
+    name = "GrSDFMaskFilter",
+    srcs = ["GrSDFMaskFilter.cpp"],
+    hdrs = ["GrSDFMaskFilter.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkMaskFilter",
+        "//include/core:SkString",
+        "//src/core:SkDistanceFieldGen",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkReadBuffer",
+        "//src/core:SkSafeMath",
+        "//src/core:SkWriteBuffer",
+    ],
+)
+
+cc_library(
+    name = "GrSDFTControl",
+    srcs = ["GrSDFTControl.cpp"],
+    hdrs = ["GrSDFTControl.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/core:SkFont",
+        "//include/core:SkGraphics",
+        "//include/core:SkMatrix",
+        "//include/core:SkPaint",
+        "//include/core:SkScalar",
+        "//include/core:SkSurfaceProps",
+        "//src/core:SkGlyphRunPainter",
+    ],
+)
+
+cc_library(
+    name = "GrStrikeCache",
+    srcs = ["GrStrikeCache.cpp"],
+    hdrs = ["GrStrikeCache.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkTHash",
+        "//src/core:SkArenaAlloc",
+        "//src/core:SkStrikeSpec",
+        "//src/gpu:GrGlyph",
+    ],
+)
+
+cc_library(
+    name = "GrTextBlob",
+    srcs = ["GrTextBlob.cpp"],
+    hdrs = ["GrTextBlob.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrAtlasManager",
+        ":GrStrikeCache",
+        "//include/core:SkColorFilter",
+        "//include/core:SkPoint3",
+        "//include/core:SkRefCnt",
+        "//include/gpu:GrRecordingContext",
+        "//include/private:SkTemplates",
+        "//src/core:SkGlyphRunPainter",
+        "//src/core:SkIPoint16",
+        "//src/core:SkMaskFilterBase",
+        "//src/core:SkMatrixProvider",
+        "//src/core:SkOpts",
+        "//src/core:SkPaintPriv",
+        "//src/core:SkRectPriv",
+        "//src/core:SkStrikeCache",
+        "//src/core:SkStrikeSpec",
+        "//src/core:SkTInternalLList",
+        "//src/core:SkTLazy",
+        "//src/gpu:GrBlurUtils",
+        "//src/gpu:GrClip",
+        "//src/gpu:GrColor",
+        "//src/gpu:GrGlyph",
+        "//src/gpu:GrMeshDrawTarget",
+        "//src/gpu:GrRecordingContextPriv",
+        "//src/gpu:GrStyle",
+        "//src/gpu:GrSubRunAllocator",
+        "//src/gpu:SkGr",
+        "//src/gpu/effects:GrDistanceFieldGeoProc",
+        "//src/gpu/geometry:GrStyledShape",
+        "//src/gpu/ops:AtlasTextOp",
+        "//src/gpu/ops:GrOp",
+        "//src/gpu/v1:SurfaceDrawContext_v1",
+    ],
+)
+
+cc_library(
+    name = "GrTextBlobCache",
+    srcs = ["GrTextBlobCache.cpp"],
+    hdrs = ["GrTextBlobCache.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":GrTextBlob",
+        "//include/core:SkRefCnt",
+        "//include/private:SkSpinlock",
+        "//include/private:SkTArray",
+        "//include/private:SkTHash",
+        "//src/core:SkMessageBus",
+        "//src/core:SkTextBlobPriv",
+    ],
+)
