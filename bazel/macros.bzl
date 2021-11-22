@@ -49,3 +49,9 @@ def select_multi(values_map, default, name = ""):
             "//conditions:default": default,
         })
     return rv
+
+def generated_cc_atom(name, **kwargs):
+    native.cc_library(
+        name = name,
+        **kwargs
+    )
