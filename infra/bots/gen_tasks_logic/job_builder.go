@@ -191,13 +191,13 @@ func (b *jobBuilder) genTasksForJob() {
 			b.g3FrameworkCanary()
 			return
 		} else if b.project("Android") {
-			b.canary("android-master-autoroll")
+			b.canary("android-master-autoroll", "Canary-Android-Topic")
 			return
 		} else if b.project("Chromium") {
-			b.canary("skia-autoroll")
+			b.canary("skia-autoroll", "Canary-Chromium-CL")
 			return
 		} else if b.project("Flutter") {
-			b.canary("skia-flutter-autoroll")
+			b.canary("skia-flutter-autoroll", "Canary-Flutter-PR")
 			return
 		}
 	}
