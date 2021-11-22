@@ -119,6 +119,9 @@ SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
             "typedef struct {\n"
             "    float4 position [[position]];\n"
             "} VertexOutput;\n"
+            "typedef struct {\n"
+            "    float4 color [[color]];\n"
+            "} FragmentOutput;\n"
             "\n";
 
     // Typedefs needed by RenderStep
@@ -145,18 +148,20 @@ SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
     // Vertex shader body
     msl += "    VertexOutput out;\n";
     msl += step->vertexMSL();
-    msl += "return out;\n"
+    msl += "    return out;\n"
            "}\n";
 
     // Typedefs needed for painting
-    // TODO: Right now hardcoded float4 color uniform but will come from Combination once that is
-    // stored on the GraphicsPipelineDesc.
-    msl += "struct PaintUniforms {\n"
-           "    float4 color;\n"
-           "};\n";
-    msl += "fragment float4 fragmentMain(VertexOutput in [[stage_in]],\n"
-           "                             const PaintUniforms& uniforms [[buffer(1)]]) {\n"
-           "    return uniforms.color;\n"
+    auto paintUniforms = GetUniforms(desc.shaderCombo().fShaderType);
+    if (!paintUniforms.empty()) {
+        msl += emit_MSL_uniform_struct("FragUniforms", paintUniforms);
+    }
+
+    msl += "fragment FragmentOutput fragmentMain(VertexOutput interpolated [[stage_in]],\n"
+           "                                     const FragUniforms& uniforms [[buffer(1)]]) {\n"
+           "    FragmentOutput out;\n";
+    msl += GetShaderMSL(desc.shaderCombo().fShaderType);
+           "    return out;\n"
            "}\n";
 
     return msl;
