@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8289d3c2_ffbc98ec",
+        "filename": "experimental/graphite/src/CommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-22T19:47:50Z",
+      "side": 1,
+      "message": "Yeah I think CBTest has been extremely valuable during this bring up phase before all the wires are connected. But once it is all in place the CommandBuffer should naturally get tested through the normal pipeline of calls.",
+      "parentUuid": "de74469b_53c3219e",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 73
+      },
+      "revId": "ee1ca20dfc33f0422846b49c3b298bddf5db002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd8928c6_57a2d57b",
         "filename": "experimental/graphite/src/CommandBuffer.h",
         "patchSetId": 11
