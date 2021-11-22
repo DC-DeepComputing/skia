@@ -117,6 +117,30 @@
       },
       "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f62f514_960aef8e",
+        "filename": "experimental/graphite/src/ShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-22T15:55:02Z",
+      "side": 1,
+      "message": "After my revision SkSL::ShaderCaps doesn\u0027t include all of the caps, only the ones needed by the compiler. So there are still some in GrShaderCaps, e.g., VertexIDSupport, InfinitySupport, MaxFragmentSamplers, MaxTesselationSegments, etc.",
+      "parentUuid": "2bd05dbc_68cde5f2",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "93fe102713630e8d9e2183e9cbe01e6655df538e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
