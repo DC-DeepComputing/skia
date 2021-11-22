@@ -35,23 +35,23 @@
 #include <memory>
 #include <tuple>
 
-#include <ft2build.h>
-#include <freetype/ftadvanc.h>
-#include <freetype/ftimage.h>
-#include <freetype/ftbitmap.h>
+#include "ft2build.h"
+#include "freetype/ftadvanc.h"
+#include "freetype/ftimage.h"
+#include "freetype/ftbitmap.h"
 #ifdef FT_COLOR_H  // 2.10.0
-#   include <freetype/ftcolor.h>
+#   include "freetype/ftcolor.h"
 #endif
-#include <freetype/freetype.h>
-#include <freetype/ftlcdfil.h>
-#include <freetype/ftmodapi.h>
-#include <freetype/ftmm.h>
-#include <freetype/ftoutln.h>
-#include <freetype/ftsizes.h>
-#include <freetype/ftsystem.h>
-#include <freetype/tttables.h>
-#include <freetype/t1tables.h>
-#include <freetype/ftfntfmt.h>
+#include "freetype/freetype.h"
+#include "freetype/ftlcdfil.h"
+#include "freetype/ftmodapi.h"
+#include "freetype/ftmm.h"
+#include "freetype/ftoutln.h"
+#include "freetype/ftsizes.h"
+#include "freetype/ftsystem.h"
+#include "freetype/tttables.h"
+#include "freetype/t1tables.h"
+#include "freetype/ftfntfmt.h"
 
 // SK_FREETYPE_MINIMUM_RUNTIME_VERSION 0x<major><minor><patch><flags>
 // Flag SK_FREETYPE_DLOPEN: also try dlopen to get newer features.
