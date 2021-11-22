@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03efea57_aa62f64b",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-22T21:14:48Z",
+      "side": 0,
+      "message": "These really should be pointy. We do support building with the system FreeType. We can also bundle one. It\u0027s both. In general anything in third_party should probably be pointy. Which reminds me that I need to check in a work-around for building against FreeType 2.11.0.",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5761a7e1_2f4dcb42",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-22T21:14:48Z",
+      "side": 0,
+      "message": "Should eventually convert these to strings instead of defines like in SkFontHost_FreeType.cpp (note that these currently expand to pointy brackets anyway). Just haven\u0027t gotten around to that yet.",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
