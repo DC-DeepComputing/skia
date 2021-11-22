@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd6df2e_f1532ac4",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-22T18:52:17Z",
+      "side": 1,
+      "message": "nit: Remove the .c_str() (this is doing SkString -\u003e C-string -\u003e SkString)",
+      "range": {
+        "startLine": 29,
+        "startChar": 79,
+        "endLine": 29,
+        "endChar": 87
+      },
+      "revId": "afdb91bea7a97eff154cde9aa47dbed919994755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520f9f24_fc301e2d",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-22T18:52:17Z",
+      "side": 1,
+      "message": "Probably want to check that \u0027name\u0027 actually names a child, or we\u0027re going to assert when we try to assign to the result of child(name) below.\n\nSeems like we should also check the buffer isValid and return nullptr if not, after this loop is done?",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 46
+      },
+      "revId": "afdb91bea7a97eff154cde9aa47dbed919994755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
