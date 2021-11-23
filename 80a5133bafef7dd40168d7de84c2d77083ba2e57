@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6eae9cf6_d4abc045",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:49:37Z",
+      "side": 1,
+      "message": "It should be default initialized, right?",
+      "parentUuid": "7921c5ef_061a03ab",
+      "range": {
+        "startLine": 252,
+        "startChar": 32,
+        "endLine": 252,
+        "endChar": 48
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "499940a1_2ce76a50",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 3
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2aef735_9ae72142",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:49:37Z",
+      "side": 1,
+      "message": "I suppose it\u0027s not if all the backends just ignore bound buffers that the pipeline won\u0027t read, which does appear to be the case for Metal at least. Is that true for vulkan and d3d12?",
+      "parentUuid": "499940a1_2ce76a50",
+      "range": {
+        "startLine": 332,
+        "startChar": 29,
+        "endLine": 332,
+        "endChar": 72
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0bf4d55a_32386353",
         "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2021-11-23T18:36:13Z",
       "side": 1,
       "message": "Needed?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1096ee33_30bceac3",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:49:37Z",
+      "side": 1,
+      "message": "Yes, right now that header provides the UniformData definition.",
+      "parentUuid": "0bf4d55a_32386353",
       "range": {
         "startLine": 10,
         "startChar": 0,
