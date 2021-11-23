@@ -15,6 +15,7 @@
 #include "experimental/graphite/src/mtl/MtlGraphicsPipeline.h"
 #include "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h"
 #include "experimental/graphite/src/mtl/MtlTexture.h"
+#include "experimental/graphite/src/mtl/MtlUtils.h"
 
 namespace skgpu::mtl {
 
@@ -90,19 +91,50 @@ void CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc) {
     // Set up color attachment.
     auto& colorInfo = renderPassDesc.fColorAttachment;
     if (colorInfo.fTextureProxy) {
-        auto colorAttachment = (*descriptor).colorAttachments[0];
         const Texture* colorTexture = (const Texture*)colorInfo.fTextureProxy->texture();
+        auto colorAttachment = (*descriptor).colorAttachments[0];
         colorAttachment.texture = colorTexture->mtlTexture();
         const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
         colorAttachment.clearColor =
                 MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         colorAttachment.loadAction = mtlLoadAction[static_cast<int>(colorInfo.fLoadOp)];
         colorAttachment.storeAction = mtlStoreAction[static_cast<int>(colorInfo.fStoreOp)];
+        // Set up resolve attachment
+        auto& resolveInfo = renderPassDesc.fColorResolveAttachment;
+        if (resolveInfo.fTextureProxy) {
+            const Texture* resolveTexture = (const Texture*)resolveInfo.fTextureProxy->texture();
+            colorAttachment.resolveTexture = resolveTexture->mtlTexture();
+            // Inclusion of a resolve texture implies the client wants to finish the
+            // renderpass with a resolve.
+            colorAttachment.storeAction = MTLStoreActionMultisampleResolve;
+        }
     }
 
-    // TODO:
-    // * setup resolve
-    // * set up stencil and depth
+    // Set up stencil/depth attachment
+    auto& stencilDepthInfo = renderPassDesc.fStencilDepthAttachment;
+    if (stencilDepthInfo.fTextureProxy) {
+        const Texture* stencilDepthTexture =
+                 (const Texture*)stencilDepthInfo.fTextureProxy->texture();
+        id<MTLTexture> mtlTexture = stencilDepthTexture->mtlTexture();
+        if (FormatIsStencil(mtlTexture.pixelFormat)) {
+            auto stencilAttachment = (*descriptor).stencilAttachment;
+            stencilAttachment.texture = mtlTexture;
+            stencilAttachment.clearStencil = renderPassDesc.fClearStencil;
+            stencilAttachment.loadAction =
+                     mtlLoadAction[static_cast<int>(stencilDepthInfo.fLoadOp)];
+            stencilAttachment.storeAction =
+                     mtlStoreAction[static_cast<int>(stencilDepthInfo.fStoreOp)];
+        }
+        if (FormatIsDepth(mtlTexture.pixelFormat)) {
+            auto depthAttachment = (*descriptor).depthAttachment;
+            depthAttachment.texture = mtlTexture;
+            depthAttachment.clearDepth = renderPassDesc.fClearDepth;
+            depthAttachment.loadAction =
+                     mtlLoadAction[static_cast<int>(stencilDepthInfo.fLoadOp)];
+            depthAttachment.storeAction =
+                     mtlStoreAction[static_cast<int>(stencilDepthInfo.fStoreOp)];
+        }
+    }
 
     fActiveRenderCommandEncoder = RenderCommandEncoder::Make(fCommandBuffer.get(),
                                                              descriptor.get());
