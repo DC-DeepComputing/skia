@@ -16,6 +16,92 @@
       "message": "A small CL with perhaps one contentious element, PTAL.",
       "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adee9fb6_38da306f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T21:19:46Z",
+      "side": 1,
+      "message": "What part were you think was contentious?",
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06ef96a6_8d4981f1",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T21:19:46Z",
+      "side": 1,
+      "message": "These are not \"caps\" in the sense they depend on the capabilities of the GPU. Thus I\u0027ve generally put these into MtlUtils.h. Also they should be statics right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 5
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b64b2c9b_0f91aad6",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T21:19:46Z",
+      "side": 1,
+      "message": "Isn\u0027t there also a MultisampleResolveAndStore? I feel like in general if we have a resolve attachment we\u0027ll be using DMSAA and thus what you have is right. But maybe there are cases we want to store as well??\n\nI assume the code is set up so that the caller of beginRenderPass should have already make the load/store decisions for the attachments right? So we could check if they want to store or discard the color attachment and pick the correct Resolve store here.",
+      "range": {
+        "startLine": 108,
+        "startChar": 42,
+        "endLine": 108,
+        "endChar": 74
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2457d29_08e326d9",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T21:19:46Z",
+      "side": 1,
+      "message": "So I was actually hoping we wouldn\u0027t need proxies at all for Depth and Stencil things. Especially because the higher level could should really need info on what type of depth stencil we will have (I think??). It just needs to know there will be a stencil and/or there will be a depth.\n\nThus I was wondering if the renderPassDesc should hold Textures instead? Do we currently use the renderpassDesc where we wouldn\u0027t have instantiated Textures yet?",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
