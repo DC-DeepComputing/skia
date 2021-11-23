@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "025a8053_b1e4f492",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T21:52:22Z",
+      "side": 1,
+      "message": "I wouldn\u0027t worry too much about this, get_ids_from_paint goes away in a few CLs anyways.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 44
+      },
+      "revId": "87d70e301c18e39048cb1e52a44adebdff6b3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24a7576_92fd8f53",
+        "filename": "experimental/graphite/src/UniformCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T21:52:22Z",
+      "side": 1,
+      "message": "For some reason the compiler tries to take a reference to kInvalidUniformID here, like it\u0027s treating the second argument as a \"const uint32_t\u0026\", and then the linker fails because kInvalidUniformID is only constexpr, in debug builds.\n\nThis doesn\u0027t look great but works for now and the static_assert above makes it safe.",
+      "range": {
+        "startLine": 40,
+        "startChar": 37,
+        "endLine": 40,
+        "endChar": 38
+      },
+      "revId": "87d70e301c18e39048cb1e52a44adebdff6b3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
