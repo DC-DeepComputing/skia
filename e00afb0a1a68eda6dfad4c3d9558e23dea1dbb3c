@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97072780_3ac2ae03",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-23T12:42:39Z",
+      "side": 0,
+      "message": "Disclaimer: I\u0027m not sure how easy it is going to be to have the system libraries be used with Bazel. It\u0027s a secondary priority for me at the moment, because of that uncertainty.\n\nWhat I\u0027m hearing is that I should be moving third_party includes to use \u003c\u003e, not \"\", right? My cursory look at the existing codebase is that more use the latter not the former. I don\u0027t particularly care in either case, and can modify gazelle to not care much either, but we should pick one.",
+      "parentUuid": "a8f17976_c1150846",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5761a7e1_2f4dcb42",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 2
@@ -49,6 +67,24 @@
       "writtenOn": "2021-11-22T21:14:48Z",
       "side": 0,
       "message": "Should eventually convert these to strings instead of defines like in SkFontHost_FreeType.cpp (note that these currently expand to pointy brackets anyway). Just haven\u0027t gotten around to that yet.",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1546897d_f4ed76dd",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-23T12:42:39Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "5761a7e1_2f4dcb42",
       "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
