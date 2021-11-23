@@ -16,6 +16,29 @@
       "message": "This hopefully addresses some of the confusion around UniformCache::findOrCreate(), but since it\u0027s a little more substantial I pulled it forward instead of modifying https://skia-review.googlesource.com/c/skia/+/474137",
       "revId": "514b0c7b64abce9cc95a30dbe92f8f99544b2921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37b58718_8530cacf",
+        "filename": "experimental/graphite/src/UniformCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T22:03:16Z",
+      "side": 1,
+      "message": "Can we add a comment here to say it only inserts if the data is already in the cache. And something to describe what the return value here is?",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 40
+      },
+      "revId": "514b0c7b64abce9cc95a30dbe92f8f99544b2921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
