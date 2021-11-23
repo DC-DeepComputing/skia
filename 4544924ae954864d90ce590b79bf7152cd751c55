@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6ba86b_f3c2e7ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-23T21:21:23Z",
+      "side": 1,
+      "message": "Wow, the ones drawn out of the atlas look terrible (not just the resizing, but the artifacts at the glyph boundary). Also, there is one image that is completely empty, it seems preferable to try not to generate those since triaging an empty image means that any new empty images won\u0027t be flagged.",
+      "revId": "4544924ae954864d90ce590b79bf7152cd751c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
