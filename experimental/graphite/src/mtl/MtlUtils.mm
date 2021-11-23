@@ -12,6 +12,10 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#ifdef SK_BUILD_FOR_IOS
+#import <UIKit/UIApplication.h>
+#endif
+
 namespace skgpu::mtl {
 
 bool FormatIsDepthOrStencil(MTLPixelFormat format) {
@@ -132,4 +136,10 @@ sk_cfp<id<MTLLibrary>> CompileShaderLibrary(const Gpu* gpu,
     return compiledLibrary;
 }
 
+#ifdef SK_BUILD_FOR_IOS
+bool GrMtlIsAppInBackground() {
+    return [NSThread isMainThread] &&
+           ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground);
+}
+#endif
 } // namespace skgpu::mtl

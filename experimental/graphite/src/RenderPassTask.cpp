@@ -48,15 +48,15 @@ void RenderPassTask::addCommands(ResourceProvider* resourceProvider, CommandBuff
     }
     // TODO: instantiate depth and stencil
 
-    commandBuffer->beginRenderPass(fRenderPassDesc);
+    if (commandBuffer->beginRenderPass(fRenderPassDesc)) {
+        // Assuming one draw pass per renderpasstask for now
+        SkASSERT(fDrawPasses.size() == 1);
+        for (const auto& drawPass: fDrawPasses) {
+            drawPass->addCommands(commandBuffer);
+        }
 
-    // Assuming one draw pass per renderpasstask for now
-    SkASSERT(fDrawPasses.size() == 1);
-    for (const auto& drawPass: fDrawPasses) {
-        drawPass->addCommands(commandBuffer);
+        commandBuffer->endRenderPass();
     }
-
-    commandBuffer->endRenderPass();
 }
 
 } // namespace skgpu
