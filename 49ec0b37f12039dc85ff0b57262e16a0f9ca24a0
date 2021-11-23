@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b91aca87_58f863e7",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T21:55:11Z",
+      "side": 1,
+      "message": "For some reason I was thinking we were moving stuff like this into Caps. Utils is fine.",
+      "parentUuid": "06ef96a6_8d4981f1",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 5
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b64b2c9b_0f91aad6",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 2
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "641283bf_81871662",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T21:55:11Z",
+      "side": 1,
+      "message": "This is the contentious part (or at least the part I thought would encourage discussion, which it has).\n\nThat makes sense to me. Just checking -- can we store on all platforms?",
+      "parentUuid": "b64b2c9b_0f91aad6",
+      "range": {
+        "startLine": 108,
+        "startChar": 42,
+        "endLine": 108,
+        "endChar": 74
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2457d29_08e326d9",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 2
@@ -94,6 +142,30 @@
       "writtenOn": "2021-11-23T21:19:46Z",
       "side": 1,
       "message": "So I was actually hoping we wouldn\u0027t need proxies at all for Depth and Stencil things. Especially because the higher level could should really need info on what type of depth stencil we will have (I think??). It just needs to know there will be a stencil and/or there will be a depth.\n\nThus I was wondering if the renderPassDesc should hold Textures instead? Do we currently use the renderpassDesc where we wouldn\u0027t have instantiated Textures yet?",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94af6122_f54bed06",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T21:55:11Z",
+      "side": 1,
+      "message": "We do. It\u0027s stored in the RenderPassTask as the description of its renderpass, and currently we don\u0027t instantiate until we call RenderPassTask::addCommands().",
+      "parentUuid": "c2457d29_08e326d9",
       "range": {
         "startLine": 114,
         "startChar": 8,
