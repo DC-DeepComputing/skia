@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "259af00f_60408bf5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-23T16:57:14Z",
+      "side": 0,
+      "message": "Yeah, the difference between \u003c\u003e and \"\" is interesting. The language specification specification is that \u003c\u003e searches an \"implementation-dependent list of places\" and \"\" searches for a file \"in an implementation-dependent manner\". Which isn\u0027t exactly helpful.\n\nGenerally, everyone expects \"\" to be includes from the current project (header files which the current project controls, which the current project could in theory make public as part of its build) and \u003c\u003e is for including things from other projects (which may be built independently and the current project doesn\u0027t normally really change or export). Basically, if I own it and could export it if I felt like it \"\", else \u003c\u003e.\n\nThis of course gets muddy with bazel which is based on blaze which grew out of the idea that everything is going to be built into one big statically liked lump and it doesn\u0027t matter who owns the code or API or ABI or what not, because nothing is separately compiled or versioned.",
+      "parentUuid": "97072780_3ac2ae03",
+      "revId": "e00afb0a1a68eda6dfad4c3d9558e23dea1dbb3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5761a7e1_2f4dcb42",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 2
