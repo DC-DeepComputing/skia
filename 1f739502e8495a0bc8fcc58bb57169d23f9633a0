@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f40ad606_5c0cd5c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-23T22:30:17Z",
+      "side": 1,
+      "message": "Thanks for also fixing the sync error I introduced!",
+      "revId": "1f739502e8495a0bc8fcc58bb57169d23f9633a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
