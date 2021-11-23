@@ -24,8 +24,10 @@ void CommandBuffer::releaseResources() {
     fTrackedResources.reset();
 }
 
-void CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
-    this->onBeginRenderPass(renderPassDesc);
+bool CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
+    if (!this->onBeginRenderPass(renderPassDesc)) {
+        return false;
+    }
 
     auto& colorInfo = renderPassDesc.fColorAttachment;
     if (colorInfo.fTextureProxy) {
@@ -34,6 +36,8 @@ void CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc) {
     if (colorInfo.fStoreOp == StoreOp::kStore) {
         fHasWork = true;
     }
+
+    return true;
 }
 
 void CommandBuffer::bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipeline) {
@@ -87,21 +91,25 @@ static bool check_max_blit_width(int widthInPixels) {
     return true;
 }
 
-void CommandBuffer::copyTextureToBuffer(sk_sp<skgpu::Texture> texture,
+bool CommandBuffer::copyTextureToBuffer(sk_sp<skgpu::Texture> texture,
                                         SkIRect srcRect,
                                         sk_sp<skgpu::Buffer> buffer,
                                         size_t bufferOffset,
                                         size_t bufferRowBytes) {
     if (!check_max_blit_width(srcRect.width())) {
-        return;
+        return false;
     }
 
-    this->onCopyTextureToBuffer(texture.get(), srcRect, buffer.get(), bufferOffset, bufferRowBytes);
+    if (!this->onCopyTextureToBuffer(texture.get(), srcRect, buffer.get(), bufferOffset,                                      bufferRowBytes)) {
+        return false;
+    }
 
     this->trackResource(std::move(texture));
     this->trackResource(std::move(buffer));
 
     fHasWork = true;
+
+    return true;
 }
 
 } // namespace skgpu
