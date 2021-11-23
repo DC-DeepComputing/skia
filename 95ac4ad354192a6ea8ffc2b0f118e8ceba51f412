@@ -16,6 +16,23 @@
       "message": "PTAL, angle brackets restored to FreeType and implemented for \u003cpng.h\u003e",
       "revId": "95ac4ad354192a6ea8ffc2b0f118e8ceba51f412",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba002637_a021a77b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-23T16:45:29Z",
+      "side": 1,
+      "message": "Need approval for changing to pointy brackets in SkTypes.h.",
+      "revId": "95ac4ad354192a6ea8ffc2b0f118e8ceba51f412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
