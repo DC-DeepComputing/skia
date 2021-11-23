@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61beebc4_6d4a23ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8223
+      },
+      "writtenOn": "2021-11-23T11:52:48Z",
+      "side": 1,
+      "message": "Let me know if \"frameInfos.size() returns 1, not 0\" is a deeper bug that needs fixing somewhere.",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "d20214b6675663ecdc7886ba381b51a3c7c24961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
