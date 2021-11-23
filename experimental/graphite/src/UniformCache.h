@@ -8,9 +8,10 @@
 #ifndef skgpu_UniformCache_DEFINED
 #define skgpu_UniformCache_DEFINED
 
-#include <unordered_set>
-#include <vector>
 #include "include/core/SkRefCnt.h"
+
+#include <unordered_map>
+#include <vector>
 
 namespace skgpu {
 
@@ -18,31 +19,39 @@ class UniformData;
 
 class UniformCache {
 public:
+    static constexpr uint32_t kInvalidUniformID = 0;
+
     UniformCache();
 
-    sk_sp<UniformData> findOrCreate(sk_sp<UniformData>);
+    uint32_t insert(sk_sp<UniformData>);
 
     sk_sp<UniformData> lookup(uint32_t uniqueID);
 
     // The number of unique uniformdata objects in the cache
     size_t count() const {
-        SkASSERT(fUniformDataHash.size()+1 == fUniformDataVector.size());
-        return fUniformDataHash.size();
+        SkASSERT(fUniformData.size() == fUniformDataIDs.size() && fUniformData.size() > 0);
+        return fUniformData.size() - 1;
     }
 
 private:
     struct Hash {
-        size_t operator()(sk_sp<UniformData>) const;
+        // This hash operator de-references and hashes the data contents
+        size_t operator()(UniformData*) const;
     };
     struct Eq {
-        // This equality operator doesn't compare the UniformData's ids
-        bool operator()(sk_sp<UniformData>, sk_sp<UniformData>) const;
+        // This equality operator de-references and compares the actual data contents
+        bool operator()(UniformData*, UniformData*) const;
     };
 
-    std::unordered_set<sk_sp<UniformData>, Hash, Eq> fUniformDataHash;
-    std::vector<sk_sp<UniformData>> fUniformDataVector;
     // The UniformData's unique ID is only unique w/in a Recorder _not_ globally
-    uint32_t fNextUniqueID = 1;
+    std::unordered_map<UniformData*, uint32_t, Hash, Eq> fUniformDataIDs;
+    std::vector<sk_sp<UniformData>> fUniformData;
+
+#ifdef SK_DEBUG
+    void validate() const;
+#else
+    void validate() const {}
+#endif
 };
 
 } // namespace skgpu
