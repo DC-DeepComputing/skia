@@ -37,6 +37,21 @@ public:
 
     size_t getMinBufferAlignment() const { return this->isMac() ? 4 : 1; }
 
+    bool IsStencilFormat(MTLPixelFormat format) {
+        return (format == MTLPixelFormatStencil8 ||
+                format == MTLPixelFormatDepth24Unorm_Stencil8 ||
+                format == MTLPixelFormatDepth32Float_Stencil8 ||
+                format == MTLPixelFormatX24_Stencil8 ||
+                format == MTLPixelFormatX32_Stencil8);
+    }
+
+    bool IsDepthFormat(MTLPixelFormat format) {
+        return (format == MTLPixelFormatDepth16Unorm ||
+                format == MTLPixelFormatDepth32Float ||
+                format == MTLPixelFormatDepth24Unorm_Stencil8 ||
+                format == MTLPixelFormatDepth32Float_Stencil8);
+    }
+
 private:
     void initGPUFamily(const id<MTLDevice>);
 
