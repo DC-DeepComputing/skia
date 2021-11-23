@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a72437bd_e705086c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-23T19:22:58Z",
+      "side": 1,
+      "message": "Just a quick CL to remove differences between ToT and the bigger CL. ",
+      "revId": "f1643b6fc21acc2053dfb50b962226cfaee461bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
