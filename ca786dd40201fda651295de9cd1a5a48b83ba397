@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0370b530_b4dc38b8",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Felt like deja vu, but the rebase fixed most of these.",
+      "parentUuid": "6aa2f3b3_5c90f0f3",
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4be3aa31_df0f17c2",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-11-22T19:44:55Z",
       "side": 1,
       "message": "We can hoist to onSync and assert that buildUniformData always returns non-null.",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 9
+      },
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a651c8b5_7feb71d4",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Fixed with rebase.",
+      "parentUuid": "4be3aa31_df0f17c2",
       "range": {
         "startLine": 187,
         "startChar": 0,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ff518a_bfbc91bc",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Fixed with rebase.",
+      "parentUuid": "137b671f_b5c4a173",
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc4f70a2_d8b32642",
@@ -71,6 +131,30 @@
       "writtenOn": "2021-11-22T19:44:55Z",
       "side": 1,
       "message": "Should not be needed with MakeUnitialized.",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 9
+      },
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33370ef9_3675739e",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Fixed with rebase.",
+      "parentUuid": "dc4f70a2_d8b32642",
       "range": {
         "startLine": 192,
         "startChar": 0,
@@ -104,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd8b1b1_50959deb",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Fixed with rebase.",
+      "parentUuid": "c5672a59_68126c54",
+      "range": {
+        "startLine": 200,
+        "startChar": 49,
+        "endLine": 200,
+        "endChar": 61
+      },
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d023d311_90c0813c",
@@ -117,6 +225,30 @@
       "writtenOn": "2021-11-22T19:44:55Z",
       "side": 1,
       "message": "std::move(cfNode)",
+      "range": {
+        "startLine": 227,
+        "startChar": 89,
+        "endLine": 227,
+        "endChar": 95
+      },
+      "revId": "ca786dd40201fda651295de9cd1a5a48b83ba397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfd9444_8222ea06",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-11-23T03:29:20Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d023d311_90c0813c",
       "range": {
         "startLine": 227,
         "startChar": 89,
