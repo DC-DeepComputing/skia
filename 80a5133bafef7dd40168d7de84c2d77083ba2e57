@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ee2f4d_31e6865d",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T19:28:15Z",
+      "side": 1,
+      "message": "I misunderstood, I thought this was referencing the ResourceProvider in some way. I see what it\u0027s doing now.",
+      "parentUuid": "6eae9cf6_d4abc045",
+      "range": {
+        "startLine": 252,
+        "startChar": 32,
+        "endLine": 252,
+        "endChar": 48
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "499940a1_2ce76a50",

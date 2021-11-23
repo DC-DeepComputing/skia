@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "412312a0_f810fa3e",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T19:28:15Z",
+      "side": 1,
+      "message": "I agree, both of these tripped me up.",
+      "parentUuid": "1c67eb24_6ec4d5d9",
+      "range": {
+        "startLine": 252,
+        "startChar": 16,
+        "endLine": 252,
+        "endChar": 20
+      },
+      "revId": "e87f53ce68316d670e2b1df8d881a518f3fa8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93903378_c4ed7bc4",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 6
