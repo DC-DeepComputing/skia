@@ -22,6 +22,30 @@
       },
       "revId": "d20214b6675663ecdc7886ba381b51a3c7c24961",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a574366e_d14015bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-11-23T15:34:54Z",
+      "side": 1,
+      "message": "I think you\u0027re referring to this comment, which was introduced (though later slightly modfied) in [1]:\n\n  For still (non-animated) image codecs, this will return an empty vector.\n\nLooking back, I don\u0027t think this was ever guaranteed to be true. That CL introduced animated frames in SkCodec, and SkGifCodec::onGetFrameInfo() (the only implementation at that time) returned a vector of size 1.\n\nIn its current implementation, SkCodec::getFrameInfo [2] considers an image \"animated\" if there is a single frame and onGetFrameInfo(int, FrameInfo*) returns true. So there is a bug in that the documentation doesn\u0027t match the implementation. I think we should fix one of them. I don\u0027t have a strong preference which one, but I lean towards fixing the implementation (and adding tests), since I don\u0027t see how it\u0027s useful to provide the FrameInfo for a still image. (A client can already call getFrameInfo(int, FrameInfo*) directly, if they so choose.) Neither Chromium nor Android use the version of getFrameInfo that returns a vector. (Neither does Flutter; at least not flutter/engine [3], which I think is the only piece of Flutter that uses SkCodec.) So I think it should be fine to change the implementation.\n\n[1] https://codereview.chromium.org/2045293002\n[2] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d764;drc\u003dde68be3f18ba99cc01d75903e167ca09bade253c;bpv\u003d0;bpt\u003d1\n[3] https://github.com/flutter/engine",
+      "parentUuid": "61beebc4_6d4a23ae",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "d20214b6675663ecdc7886ba381b51a3c7c24961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
