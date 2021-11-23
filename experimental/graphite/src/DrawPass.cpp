@@ -20,6 +20,7 @@
 #include "experimental/graphite/src/Renderer.h"
 #include "experimental/graphite/src/TextureProxy.h"
 #include "experimental/graphite/src/UniformCache.h"
+#include "experimental/graphite/src/UniformManager.h"
 #include "experimental/graphite/src/geom/BoundsManager.h"
 
 #include "src/core/SkMathPriv.h"
@@ -34,6 +35,12 @@ namespace {
 std::tuple<uint32_t, uint32_t> get_ids_from_paint(skgpu::Recorder* recorder,
                                                   skgpu::PaintParams params) {
     // TODO: perhaps just return the ids here rather than the sk_sps?
+    // TODO: The recorder can't actually have a single uniform cache w/o possibly running afoul of
+    // the bit size of the shading uniform index in the SortKey. Since DrawPass has a max number of
+    // draws in it, we know the total unique sets of uniforms that it will see are bounded, but
+    // that's not enforceable in a Recorder (although realistically, uint32_t ought to be fine).
+    // The downside of having DrawPass::Make use a temporary UniformCache for the paint data is that
+    // we would always be re-uploading the same uniforms for shaders that are re-used across frames.
     auto [ combo, uniformData] = ExtractCombo(recorder->uniformCache(), params);
     auto programInfo = recorder->programCache()->findOrCreateProgram(combo);
 
@@ -209,6 +216,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     bool requiresMSAA = false;
     Rect passBounds = Rect::InfiniteInverted();
 
+    DrawBufferManager* bufferMgr = recorder->drawBufferManager();
+    UniformCache geometryUniforms;
+    std::unordered_map<uint32_t, BindBufferInfo> geometryUniformBindings;
+
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount()); // will not exceed but may use less with occluded draws
 
@@ -234,9 +245,21 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             // TODO ask step to generate a pipeline description based on the above shading code, and
             // have pipelineIndex point to that description in the accumulated list of descs
             uint32_t pipelineIndex = 0;
-            // TODO step writes out geometry uniforms and have geomIndex point to that buffer data,
-            // providing shape, transform, scissor, and paint depth to RenderStep
-            uint32_t geometryIndex = 0;
+
+            uint32_t geometryIndex = UniformData::kInvalidUniformID;
+            if (step->numUniforms() > 0) {
+                // TODO: Get layout from the GPU
+                auto uniforms = geometryUniforms.findOrCreate(
+                        step->writeUniforms(Layout::kMetal, draw.fShape));
+                geometryIndex = uniforms->id();
+
+                // Upload the data to the GPU if it's the first time encountered
+                if (geometryUniformBindings.find(uniforms->id()) == geometryUniformBindings.end()) {
+                    auto [writer, bufferInfo] = bufferMgr->getUniformWriter(uniforms->dataSize());
+                    writer.write(uniforms->data(), uniforms->dataSize());
+                    geometryUniformBindings.insert({geometryIndex, bufferInfo});
+                }
+            }
 
             uint32_t shadingIndex = UniformData::kInvalidUniformID;
 
@@ -266,8 +289,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // TODO: It's not strictly necessary, but would a stable sort be useful or just end up hiding
     // bugs in the DrawOrder determination code?
     std::sort(keys.begin(), keys.end());
-
-    DrawBufferManager* bufferMgr = recorder->drawBufferManager();
 
     // Used to record vertex/instance data, buffer binds, and draw calls
     Drawer drawer;
@@ -307,10 +328,17 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         }
         if (stateChange) {
             if (key.geometryUniforms() != lastGeometryUniforms) {
-                // TODO: Look up uniform buffer binding info corresponding to key's index and record
+                if (key.geometryUniforms() != UniformData::kInvalidUniformID) {
+                    auto binding = geometryUniformBindings.find(key.geometryUniforms())->second;
+                    // TODO: Record bind 'binding' buffer + offset to kRenderStep slot
+                    (void) binding;
+                }
                 lastGeometryUniforms = key.geometryUniforms();
             }
             if (key.shadingUniforms() != lastShadingUniforms) {
+                // TODO: We should not re-upload the uniforms for every draw that referenced them,
+                // they should be uploaded first time seen in the earlier loop of DrawPass::Make and
+                // then this can lookup the cached BindBufferInfo, similar to geometryUniformBinding
                 auto ud = lookup(recorder, key.shadingUniforms());
 
                 auto [writer, bufferInfo] = bufferMgr->getUniformWriter(ud->dataSize());
