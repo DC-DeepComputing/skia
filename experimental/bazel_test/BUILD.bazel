@@ -1,3 +1,5 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
+
 package(default_visibility = ["//:__subpackages__"])
 
 filegroup(
@@ -5,4 +7,9 @@ filegroup(
     srcs = [
         "bazel_test.cpp",
     ],
+)
+
+go_binary(
+    name = "hello_world",
+    srcs = ["hello_world.go"],
 )
