@@ -90,19 +90,50 @@ void CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc) {
     // Set up color attachment.
     auto& colorInfo = renderPassDesc.fColorAttachment;
     if (colorInfo.fTextureProxy) {
-        auto colorAttachment = (*descriptor).colorAttachments[0];
         const Texture* colorTexture = (const Texture*)colorInfo.fTextureProxy->texture();
+        auto colorAttachment = (*descriptor).colorAttachments[0];
         colorAttachment.texture = colorTexture->mtlTexture();
         const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
         colorAttachment.clearColor =
                 MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         colorAttachment.loadAction = mtlLoadAction[static_cast<int>(colorInfo.fLoadOp)];
         colorAttachment.storeAction = mtlStoreAction[static_cast<int>(colorInfo.fStoreOp)];
+        // Set up resolve attachment
+        auto& resolveInfo = renderPassDesc.fResolveAttachment;
+        if (resolveInfo.fTextureProxy) {
+            const Texture* resolveTexture = (const Texture*)resolveInfo.fTextureProxy->texture();
+            colorAttachment.resolveTexture = colorTexture->mtlTexture();
+            // Inclusion of a resolve texture implies the client wants to finish the
+            // renderpass with a resolve.
+            colorAttachment.storeAction = MTLStoreActionMultisampleResolve;
+        }
     }
 
-    // TODO:
-    // * setup resolve
-    // * set up stencil and depth
+    // Set up stencil/depth attachment
+    auto& stencilDepthInfo = renderPassDesc.fStencilDepthAttachment;
+    if (stencilDepthInfo.fTextureProxy) {
+        const Texture* stencilDepthTexture =
+                 (const Texture*)stencilDepthInfo.fTextureProxy->texture();
+        id<MTLTexture> mtlTexture = stencilDepthTexture->mtlTexture();
+        if (Caps::IsStencilFormat(mtlTexture.pixelFormat)) {
+            auto stencilAttachment = (*descriptor).stencilAttachment;
+            stencilAttachment.texture = mtlTexture;
+            stencilAttachment.clearStencil = renderPass.fClearStencil;
+            colorAttachment.loadAction =
+                     mtlLoadAction[static_cast<int>(stencilDepthInfo.fLoadOp)];
+            colorAttachment.storeAction =
+                     mtlStoreAction[static_cast<int>(stencilDepthInfo.fStoreOp)];
+        }
+        if (Caps::IsDepthFormat(mtlTexture.pixelFormat)) {
+            auto depthAttachment = (*descriptor).depthAttachment;
+            depthAttachment.texture = mtlTexture;
+            depthAttachment.clearDepth = renderPass.fClearDepth;
+            depthAttachment.loadAction =
+                     mtlLoadAction[static_cast<int>(stencilDepthInfo.fLoadOp)];
+            depthAttachment.storeAction =
+                     mtlStoreAction[static_cast<int>(stencilDepthInfo.fStoreOp)];
+        }
+    }
 
     fActiveRenderCommandEncoder = RenderCommandEncoder::Make(fCommandBuffer.get(),
                                                              descriptor.get());
