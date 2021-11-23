@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa2795c_f3eca1ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-23T21:01:26Z",
+      "side": 1,
+      "message": "Were these values always integral? Because this does prevent any rounding that was happening before...",
+      "revId": "4353367be56f796d25d6a60e56612fc08dbe57b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
