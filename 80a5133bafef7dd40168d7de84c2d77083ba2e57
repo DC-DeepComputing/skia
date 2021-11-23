@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5049667a_ad2778d6",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:53:39Z",
+      "side": 1,
+      "message": "I\u0027ve removed this branch, can always add it back if it turns out some driver bug workaround requires clearing bindings.",
+      "parentUuid": "b2aef735_9ae72142",
+      "range": {
+        "startLine": 332,
+        "startChar": 29,
+        "endLine": 332,
+        "endChar": 72
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bf4d55a_32386353",
@@ -155,6 +179,30 @@
       "writtenOn": "2021-11-23T18:36:13Z",
       "side": 1,
       "message": "A TODO comment with a description of what\u0027s coming would be helpful here.",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 86,
+        "endChar": 23
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "156bd1ec_095e2335",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:53:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32897ea7_3c87600f",
       "range": {
         "startLine": 86,
         "startChar": 8,
