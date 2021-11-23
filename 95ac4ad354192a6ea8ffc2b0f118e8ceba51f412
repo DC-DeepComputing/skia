@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "715d5c28_7fa6e070",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-23T14:10:23Z",
+      "side": 1,
+      "message": "PTAL, angle brackets restored to FreeType and implemented for \u003cpng.h\u003e",
+      "revId": "95ac4ad354192a6ea8ffc2b0f118e8ceba51f412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
