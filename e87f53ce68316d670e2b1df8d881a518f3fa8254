@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1885922_2f69785d",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T21:49:33Z",
+      "side": 1,
+      "message": "This is done, although I pulled the changes into a Cl that needs to land before this one.",
+      "parentUuid": "412312a0_f810fa3e",
+      "range": {
+        "startLine": 252,
+        "startChar": 16,
+        "endLine": 252,
+        "endChar": 20
+      },
+      "revId": "e87f53ce68316d670e2b1df8d881a518f3fa8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93903378_c4ed7bc4",
@@ -61,6 +85,30 @@
       "writtenOn": "2021-11-23T19:17:55Z",
       "side": 1,
       "message": "for consistency just use geometryIndex here?",
+      "range": {
+        "startLine": 257,
+        "startChar": 49,
+        "endLine": 257,
+        "endChar": 63
+      },
+      "revId": "e87f53ce68316d670e2b1df8d881a518f3fa8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d1adae_7e9ea5f6",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T21:49:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93903378_c4ed7bc4",
       "range": {
         "startLine": 257,
         "startChar": 49,
