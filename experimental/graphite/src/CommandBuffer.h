@@ -66,7 +66,7 @@ public:
         fTrackedResources.push_back(std::move(resource));
     }
 
-    void beginRenderPass(const RenderPassDesc&);
+    bool beginRenderPass(const RenderPassDesc&);
     virtual void endRenderPass() = 0;
 
     //---------------------------------------------------------------
@@ -132,7 +132,7 @@ public:
     //---------------------------------------------------------------
     // Can only be used outside renderpasses
     //---------------------------------------------------------------
-    void copyTextureToBuffer(sk_sp<Texture>,
+    bool copyTextureToBuffer(sk_sp<Texture>,
                              SkIRect srcRect,
                              sk_sp<Buffer>,
                              size_t bufferOffset,
@@ -151,7 +151,7 @@ private:
                            sk_sp<Buffer> instanceBuffer, size_t instanceOffset);
     void bindIndexBuffer(sk_sp<Buffer> indexBuffer, size_t bufferOffset);
 
-    virtual void onBeginRenderPass(const RenderPassDesc&) = 0;
+    virtual bool onBeginRenderPass(const RenderPassDesc&) = 0;
 
     virtual void onBindGraphicsPipeline(const GraphicsPipeline*) = 0;
     virtual void onBindUniformBuffer(UniformSlot, const Buffer*, size_t bufferOffset) = 0;
@@ -176,7 +176,7 @@ private:
                                         unsigned int indexCount, unsigned int baseVertex,
                                         unsigned int baseInstance, unsigned int instanceCount) = 0;
 
-    virtual void onCopyTextureToBuffer(const Texture*,
+    virtual bool onCopyTextureToBuffer(const Texture*,
                                        SkIRect srcRect,
                                        const Buffer*,
                                        size_t bufferOffset,
