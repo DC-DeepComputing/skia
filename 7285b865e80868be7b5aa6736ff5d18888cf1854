@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c2f480e_dddaebbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-23T21:11:18Z",
+      "side": 1,
+      "message": "Note that part of the difficulty here is that there is not yet a FreeType 2.11.1 (the macro for FREETYPE_PATCH hasn\u0027t been bumped to 1 yet) but we still want to build and test this newer code and users. Once 2.11.1 is released we could remove the sneaky, logically unrelated !defined bit.\n\nIn other words, this is dirty computer engineering as far from computer science as one can get.",
+      "revId": "7285b865e80868be7b5aa6736ff5d18888cf1854",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
