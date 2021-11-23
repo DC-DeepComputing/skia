@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7921c5ef_061a03ab",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T18:36:13Z",
+      "side": 1,
+      "message": "This isn\u0027t initialized, does that matter?",
+      "range": {
+        "startLine": 252,
+        "startChar": 32,
+        "endLine": 252,
+        "endChar": 48
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499940a1_2ce76a50",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T18:36:13Z",
+      "side": 1,
+      "message": "Why is this necessary?",
+      "range": {
+        "startLine": 332,
+        "startChar": 29,
+        "endLine": 332,
+        "endChar": 72
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf4d55a_32386353",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T18:36:13Z",
+      "side": 1,
+      "message": "Needed?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32897ea7_3c87600f",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-23T18:36:13Z",
+      "side": 1,
+      "message": "A TODO comment with a description of what\u0027s coming would be helpful here.",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 86,
+        "endChar": 23
+      },
+      "revId": "80a5133bafef7dd40168d7de84c2d77083ba2e57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
