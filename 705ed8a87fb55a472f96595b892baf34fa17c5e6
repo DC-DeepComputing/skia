@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac8d9aa4_a8c42cda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18479
+      },
+      "writtenOn": "2021-11-23T00:32:30Z",
+      "side": 1,
+      "message": "Hey Eric, I am seeing you have made some manual rolls after this. Should this be abandoned for the roller to generate new roll CLs?",
+      "revId": "705ed8a87fb55a472f96595b892baf34fa17c5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
