@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15bee1b5_c4cf2123",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "At this point, this CL has been covered by a number of other landed, or pending CLs so I will abandon it, but marking Jim\u0027s comments as done since I tried to make sure I accounted for them in the new CLs.",
+      "revId": "2502d5471d41af5e3593e94d50ce55f111e3ab0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

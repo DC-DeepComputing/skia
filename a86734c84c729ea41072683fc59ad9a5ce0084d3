@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb4fd54f_b4411981",
+        "filename": "experimental/graphite/src/Context.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55c0ed01_68378c70",
+      "range": {
+        "startLine": 70,
+        "startChar": 20,
+        "endLine": 70,
+        "endChar": 54
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3db6675b_3bd74d60",
@@ -88,6 +112,30 @@
       "writtenOn": "2021-11-09T22:03:30Z",
       "side": 1,
       "message": "pipeline descriptor?",
+      "range": {
+        "startLine": 198,
+        "startChar": 39,
+        "endLine": 198,
+        "endChar": 47
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e580d97a_2b2068b3",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3db6675b_3bd74d60",
       "range": {
         "startLine": 198,
         "startChar": 39,
@@ -121,6 +169,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b4559b_82ddc389",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db77bbb_51009749",
+      "range": {
+        "startLine": 201,
+        "startChar": 30,
+        "endLine": 201,
+        "endChar": 38
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7b92273_0bdc1aee",
@@ -144,6 +216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "319061b6_1be5dfaf",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "Yes, RenderStep now derives stride from its attribute set",
+      "parentUuid": "a7b92273_0bdc1aee",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "083bfa4b_a6675642",
@@ -157,6 +253,30 @@
       "writtenOn": "2021-11-10T19:18:48Z",
       "side": 1,
       "message": "I guess I understand why this isn\u0027t in the GraphicsPipelineDesc, as we can derive these values from the Combination and such, but as these are generic classes used by all backends I\u0027d prefer to see them placed closer to where we think they\u0027re going to end up. Is it possible to put them in GraphicsPipeline and have MtlGraphicsPipeline make use of them?",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 15
+      },
+      "revId": "a86734c84c729ea41072683fc59ad9a5ce0084d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5219bcc_7ba06440",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-23T18:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "083bfa4b_a6675642",
       "range": {
         "startLine": 26,
         "startChar": 6,
