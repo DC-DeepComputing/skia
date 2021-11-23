@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c67eb24_6ec4d5d9",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T19:17:55Z",
+      "side": 1,
+      "message": "I don\u0027t find this auto to be obvious on type. From name of the function I would have guessed it was an Uniform but its a UniformData. I\u0027d say just write out the sk_sp\u003cUniformData\u003e here or update the function to be findOrCreateUniformData.\n\nNow on a related but different note, I think findOrCreate here is a bad name in the sense that we aren\u0027t creating a UniformData object here. We already have that object. What were really trying to do is see if a matching uniform already exists and then get an id. So I really feel like this funciton should be:\n// If the UniformData doesn\u0027t exist in the cache add it.\n// Returns a uniqueID corresponding to the UniformData in the cache.\nuint32_t insertUniformData(sk_sp\u003cUniformData\u003e)",
+      "range": {
+        "startLine": 252,
+        "startChar": 16,
+        "endLine": 252,
+        "endChar": 20
+      },
+      "revId": "e87f53ce68316d670e2b1df8d881a518f3fa8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93903378_c4ed7bc4",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-23T19:17:55Z",
+      "side": 1,
+      "message": "for consistency just use geometryIndex here?",
+      "range": {
+        "startLine": 257,
+        "startChar": 49,
+        "endLine": 257,
+        "endChar": 63
+      },
+      "revId": "e87f53ce68316d670e2b1df8d881a518f3fa8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
