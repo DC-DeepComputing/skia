@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c43457c_b9747fe9",
+        "filename": "bazel/Makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2021-11-23T19:35:20Z",
+      "side": 1,
+      "message": "Can we use the same file name and macro format as in the Skia Infra repo?\n\n  -to_macro\u003d../go_repositories.bzl%go_repositories\n\nRationale:\n- //deps.bzl and //DEPS are similarly named, which might give the false impression that //deps.bzl is the Bazel equivalent of //DEPS.\n- Consistency with the Skia Infra repo.",
+      "range": {
+        "startLine": 8,
+        "startChar": 59,
+        "endLine": 8,
+        "endChar": 73
+      },
+      "revId": "fd29e970f0c562ef31075cba252efc0a9dcb3efa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
