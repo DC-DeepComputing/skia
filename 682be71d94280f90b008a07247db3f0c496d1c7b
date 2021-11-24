@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5b4083_699c7a2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-24T19:09:30Z",
+      "side": 1,
+      "message": "I\u0027m glad to hear you think I\u0027m on the right track. I\u0027ll come back to this a bit more after the break.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5dba981_d25891a0",
@@ -48,6 +65,24 @@
       "writtenOn": "2021-11-24T17:09:52Z",
       "side": 1,
       "message": "I suppose the idea is to eventually have flags for all of these (Skia really has lots of build flags in the gn build).",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd8b22e_abf8dd91",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-24T19:09:30Z",
+      "side": 1,
+      "message": "Yes. All the defines would be controlled by flags.",
+      "parentUuid": "4c042ba2_289764cb",
       "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -88,6 +123,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ba1296b_5e98143f",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-24T19:09:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7d244210_41cff9ff",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d0e7f6b_88f286bc",
         "filename": "tools/skdiff/BUILD.bazel",
         "patchSetId": 6
@@ -99,6 +152,24 @@
       "writtenOn": "2021-11-24T17:09:52Z",
       "side": 1,
       "message": "I\u0027m somewhat surprised //tools/fonts shows up here at all. Is there something else that this depends on that wants it? As far as I know, skdiff shouldn\u0027t ever be interested in typeface things.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5f85d6_bd2d920e",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-24T19:09:30Z",
+      "side": 1,
+      "message": "We need //tools:ToolUtils_src, for copy_to, and that needs the font stuff. Not ideal, IMO and we should probably address that.",
+      "parentUuid": "0d0e7f6b_88f286bc",
       "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
