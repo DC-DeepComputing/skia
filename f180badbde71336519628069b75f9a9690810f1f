@@ -46,6 +46,30 @@
       },
       "revId": "f180badbde71336519628069b75f9a9690810f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41722c19_bc655965",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T19:17:50Z",
+      "side": 1,
+      "message": "Plot thickens - although Julia and I are both seeing this diff locally (on different OSes), the housekeeper disagrees. So I think we\u0027ve got some nondeterminism at play. We\u0027ll have to investigate this further.",
+      "parentUuid": "f90eabcc_463001f3",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "f180badbde71336519628069b75f9a9690810f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
