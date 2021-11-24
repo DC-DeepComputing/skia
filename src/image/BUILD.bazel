@@ -1,5 +1,29 @@
 load("//bazel:macros.bzl", "generated_cc_atom")
 
+cc_library(
+    name = "core_srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImage_Lazy_src",
+        ":SkImage_Raster_src",
+        ":SkImage_src",
+        ":SkRescaleAndReadPixels_src",
+        ":SkSurface_Raster_src",
+        ":SkSurface_src",
+    ],
+)
+
+cc_library(
+    name = "gpu_srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkImage_GpuBase_src",
+        ":SkImage_GpuYUVA_src",
+        ":SkImage_Gpu_src",
+        ":SkSurface_Gpu_src",
+    ],
+)
+
 generated_cc_atom(
     name = "SkImage_Base_hdr",
     hdrs = ["SkImage_Base.h"],
