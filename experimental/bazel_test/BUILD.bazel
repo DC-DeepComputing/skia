@@ -1,6 +1,6 @@
 load("//bazel:macros.bzl", "generated_cc_atom")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
-load("@io_bazel_rules_go//go:def.bzl", "go_binary")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 cc_binary(
     name = "bazel_test_exe",
@@ -15,11 +15,43 @@ cc_binary(
     }),
 )
 
+cc_binary(
+    name = "alpha_def",
+    defines = ["SK_USE_ALPHA=1"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":bazel_test_src",
+        "//experimental/bazel_test/alpha:Alpha_src",
+        "//third_party:musl_compat",
+    ] + select({
+        "@platforms//os:windows": ["//src/ports:SkDebug_win_src"],
+        "@platforms//os:android": ["//src/ports:SkDebug_android_src"],
+        "//conditions:default": ["//src/ports:SkDebug_stdio_src"],
+    }),
+)
+
+cc_binary(
+    name = "alpha_def_with_src",
+    srcs = ["bazel_test.cpp"],
+    defines = ["SK_USE_ALPHA=1"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":bazel_test_src",
+        "//experimental/bazel_test/alpha:Alpha_src",
+        "//third_party:musl_compat",
+    ] + select({
+        "@platforms//os:windows": ["//src/ports:SkDebug_win_src"],
+        "@platforms//os:android": ["//src/ports:SkDebug_android_src"],
+        "//conditions:default": ["//src/ports:SkDebug_stdio_src"],
+    }),
+)
+
 generated_cc_atom(
     name = "bazel_test_src",
     srcs = ["bazel_test.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//experimental/bazel_test/alpha:Alpha_hdr",
         "//include/core:SkTypes_hdr",
         "//third_party:libpng",
     ],
@@ -27,6 +59,13 @@ generated_cc_atom(
 
 go_binary(
     name = "hello_world",
-    srcs = ["hello_world.go"],
+    embed = [":bazel_test_lib"],
+    visibility = ["//visibility:public"],
 )
 
+go_library(
+    name = "bazel_test_lib",
+    srcs = ["hello_world.go"],
+    importpath = "go.skia.org/skia/experimental/bazel_test",
+    visibility = ["//visibility:private"],
+)
