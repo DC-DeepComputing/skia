@@ -70,6 +70,30 @@
       },
       "revId": "f180badbde71336519628069b75f9a9690810f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcee6f8_7061d450",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8511
+      },
+      "writtenOn": "2021-11-24T19:27:54Z",
+      "side": 1,
+      "message": "this used to happen a lot to me due to differing function argument evaluation order between compilers.  clang and gcc are opposite, can’t remember which msvc matched.  usually easy to clear up by introducing explicit lvalues instead of nesting builder calls.\n\nfwiw the registers you see here are how the interpreter colors its values, and don’t correspond well to native register use, especially on x86 where we can use memory operands often.  so it’s kind of to get the gist, nothing really true per se.",
+      "parentUuid": "41722c19_bc655965",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "f180badbde71336519628069b75f9a9690810f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
