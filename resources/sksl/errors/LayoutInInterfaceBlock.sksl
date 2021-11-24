@@ -1,0 +1,8 @@
+struct A { int x; };
+
+t {
+    layout(binding=1) A y;
+    layout(set=0) A z;
+};
+
+void main(){}
