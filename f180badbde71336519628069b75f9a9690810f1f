@@ -22,6 +22,30 @@
       },
       "revId": "f180badbde71336519628069b75f9a9690810f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90eabcc_463001f3",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-24T16:16:29Z",
+      "side": 1,
+      "message": "I haven\u0027t looked so I don\u0027t know the answer to your question, but the ordering happens when the code is still in SSA form, before actual register allocation occurs. The final output isn\u0027t *necessarily* ordered, it depends on how register assignment translates SSA slots into registers.",
+      "parentUuid": "7a0098b8_6f05e9b8",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "f180badbde71336519628069b75f9a9690810f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
