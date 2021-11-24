@@ -94,6 +94,30 @@
       },
       "revId": "f180badbde71336519628069b75f9a9690810f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7466cd8_3dcfc35b",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T19:47:05Z",
+      "side": 1,
+      "message": "... yup, and I think I found it. Most of the code-gen inside the SkSL -\u003e skvm logic does boil things down before ever calling functions. The first diff (r12) is from a comparison against 100.5, which was the big clue - that\u0027s for the new pixel tracing logic. Sure enough, trace-mask is created via an expression that looks like:\n\n  fTraceMask \u003d (device.x \u003d\u003d traceCoord.x) \u0026 (device.y \u003d\u003d traceCoord.y);\n  \nSo the evaluation of the two inputs to operator\u0026 are going to be eval\u0027d in a different order, resulting in differently numbered temporaries. Easy fix.",
+      "parentUuid": "fdcee6f8_7061d450",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "f180badbde71336519628069b75f9a9690810f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
