@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03961bdd_d7cb6673",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-24T19:49:31Z",
+      "side": 1,
+      "message": "Right now there\u0027s no reason this can\u0027t be called multiple times. That being said, we probably should just move towards passing in the render step and combo in the constructor and having Descs be immutable.\n\nI\u0027m going to leave this as is for now, in the interest of moving forwards, but we can then clean it up when the dust settles.",
+      "parentUuid": "40153aa8_30f484e8",
+      "revId": "fc030db9e763037e33d3c21c12046e2ffab6bc0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8835912b_bd0c31a1",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-11-24T19:42:23Z",
       "side": 1,
       "message": "Seems like it\u0027s worth trying. Would the renderstep contribution be its pointer or the block it points to?",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 69,
+        "endChar": 11
+      },
+      "revId": "fc030db9e763037e33d3c21c12046e2ffab6bc0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "040fe2ed_3d619210",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-24T19:49:31Z",
+      "side": 1,
+      "message": "I will try that in a follow-up CL",
+      "parentUuid": "8835912b_bd0c31a1",
       "range": {
         "startLine": 69,
         "startChar": 7,
