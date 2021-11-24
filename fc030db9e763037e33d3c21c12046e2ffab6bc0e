@@ -16,6 +16,46 @@
       "message": "This is the first step towards having GraphicsPipelineDesc be just RenderStep + paint combo. \n\nMost of the changes should be considered short term since they are so MSL oriented, but they are intended to follow a similar role to the eventual SkSL integration.\n\nThe largest change is that the hard coded test shaders used in CommandBufferTest are converted into trivial RenderSteps in the test file itself. Their vertex shaders have been updated to fit the MSL concatenation model that MtlGraphicsPipeline.mm now uses to build the full program. For now, it uses a solid-color shader that has a single float4 uniform but in a follow-up CL that will be replaced with the MSL produced by the paint combination.\n\nWhile the testing RenderSteps are pretty trivial and not very general, I found them valuable to keep testing the DrawWriter and other API expressiveness of RenderStep. Once we get end-to-end and can test by just recording to a DrawList, these can be easily deleted.",
       "revId": "fc030db9e763037e33d3c21c12046e2ffab6bc0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40153aa8_30f484e8",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-24T19:42:23Z",
+      "side": 1,
+      "message": "SkASSERT(!fRenderStep); ?",
+      "revId": "fc030db9e763037e33d3c21c12046e2ffab6bc0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8835912b_bd0c31a1",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-24T19:42:23Z",
+      "side": 1,
+      "message": "Seems like it\u0027s worth trying. Would the renderstep contribution be its pointer or the block it points to?",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 69,
+        "endChar": 11
+      },
+      "revId": "fc030db9e763037e33d3c21c12046e2ffab6bc0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
