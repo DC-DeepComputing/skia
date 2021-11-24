@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a0098b8_6f05e9b8",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T16:01:01Z",
+      "side": 1,
+      "message": "Yeah -- how come these didn\u0027t get sorted? See https://skia-review.googlesource.com/c/skia/+/476316 -- two weeks later and clean builds are now re-ordering a handful of bit_and instructions that were not sorted when this landed.",
+      "range": {
+        "startLine": 93,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "f180badbde71336519628069b75f9a9690810f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
