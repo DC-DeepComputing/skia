@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3760051_958b37b9",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.skvm",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T18:22:37Z",
+      "side": 1,
+      "message": "This seems to be generating more work than is necessary. For example, this block is doing a large number of repeated bit_or instructions with the same arguments.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 24
+      },
+      "revId": "9e2ba779df4b301825a78d8ea0c1822e448fa7cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
