@@ -762,3 +762,91 @@ private:
 };
 DEF_SAMPLE( return new CubicCurve2; )
 
+
+class InkTest : public Sample {
+    enum {
+        kMinCountForStroke = 3
+    };
+public:
+    std::vector<SkPoint> fArray;    // active array
+    std::vector<SkPath> fPaths;
+
+    SkPaint fHairPaint, fStrokePaint;
+
+    InkTest() {
+        fStrokePaint.setAntiAlias(true);
+        fStrokePaint.setStroke(true);
+        fStrokePaint.setStrokeCap(SkPaint::kRound_Cap);
+        fStrokePaint.setStrokeJoin(SkPaint::kRound_Join);
+        fStrokePaint.setStrokeWidth(20);
+
+        fHairPaint.setAntiAlias(false);
+        fHairPaint.setStroke(true);
+        fHairPaint.setColor(SK_ColorWHITE);
+    }
+
+protected:
+    SkString name() override { return SkString("inktest"); }
+
+    bool onChar(SkUnichar uni) override {
+            return true;
+    }
+
+    static SkPath to_path(const std::vector<SkPoint> pts) {
+        auto midway = [](SkPoint a, SkPoint b) {
+            return (a + b) * 0.5f;
+        };
+
+        const size_t N = pts.size();
+
+        SkPath path;
+        if (N < kMinCountForStroke) {
+            return path;
+        }
+        path.moveTo(pts[0]);
+        for (size_t i = 1; i < N - 3; ++i) {
+            path.quadTo(pts[i], midway(pts[i], pts[i+1]));
+        }
+        path.quadTo(pts[N-2], pts[N-1]);
+        return path;
+    }
+
+    void onDrawContent(SkCanvas* canvas) override {
+        for (const auto& path : fPaths) {
+            canvas->drawPath(path, fStrokePaint);
+            canvas->drawPath(path, fHairPaint);
+        }
+
+        if (fArray.size() >= kMinCountForStroke) {
+            auto last = to_path(fArray);
+            canvas->drawPath(last, fStrokePaint);
+            canvas->drawPath(last, fHairPaint);
+        }
+    }
+
+    Sample::Click* onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey modi) override {
+        return new Click([this](Click* c) {
+            switch (c->fState) {
+                case skui::InputState::kDown:
+                case skui::InputState::kMove:
+                    fArray.push_back(c->fCurr);
+                    break;
+                case skui::InputState::kUp:
+                    if (fArray.size() >= kMinCountForStroke) {
+                        fPaths.push_back(to_path(fArray));
+                    }
+                    fArray.clear();
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        });
+        return this->INHERITED::onFindClickHandler(x, y, modi);
+    }
+
+private:
+    using INHERITED = Sample;
+};
+DEF_SAMPLE( return new InkTest; )
+
