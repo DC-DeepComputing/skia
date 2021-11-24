@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac226b4_68b54a33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T21:13:22Z",
+      "side": 1,
+      "message": "Needed to detect that COLRv1 support is available, which will fix several Android gms.",
+      "revId": "14716ff511f83e2c52b4670136c6c13a5fa8eb55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
