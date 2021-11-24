@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cbab543_07ce6eec",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T20:22:13Z",
+      "side": 1,
+      "message": "This loop is already iterating over all slots of the two values, so will be executed N times for a complex variable containing N values. (eg, float[N])...\n\nBut then recursiveComparison does a deep comparison of all structs and arrays. So I *think* this ends up being N^2 comparisons (even if most of them are deduped and eliminated). Right?",
+      "range": {
+        "startLine": 725,
+        "startChar": 7,
+        "endLine": 725,
+        "endChar": 54
+      },
+      "revId": "e53a00da037d808523a723c38e121a770f898623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
