@@ -21,6 +21,7 @@ load(
     "variable_with_value",
 )
 load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
+load("//toolchain:features.bzl", "make_skia_features")
 
 # The location of the created clang toolchain.
 EXTERNAL_TOOLCHAIN = "external/clang_linux_amd64_musl"
@@ -30,6 +31,7 @@ def _clang_impl(ctx):
     features = []
     features += _make_default_flags()
     features += _make_diagnostic_flags()
+    features += make_skia_features()
 
     # https://docs.bazel.build/versions/main/skylark/lib/cc_common.html#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
