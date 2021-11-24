@@ -22,6 +22,30 @@
       },
       "revId": "9e2ba779df4b301825a78d8ea0c1822e448fa7cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14644346_65de8c46",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.skvm",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-11-24T18:35:36Z",
+      "side": 1,
+      "message": "Looking...",
+      "parentUuid": "e3760051_958b37b9",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 24
+      },
+      "revId": "9e2ba779df4b301825a78d8ea0c1822e448fa7cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
