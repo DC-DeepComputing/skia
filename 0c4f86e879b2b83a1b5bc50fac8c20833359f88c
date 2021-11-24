@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "d2a332c2_99c52de7",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "On the one hand I\u0027m glad they\u0027re working on having (more like developing) trybots for all these old mac versions, but they\u0027re currently almost useless since there aren\u0027t actually any expectations for them so it\u0027s really hard to tell what\u0027s what (there are no equivalent non-trybots). They seem to actually be passing (more or less).",
       "revId": "0c4f86e879b2b83a1b5bc50fac8c20833359f88c",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": false
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d99e046e_ec6be341",
         "filename": "src/core/SkFontDescriptor.cpp",
@@ -37,10 +38,34 @@
         "endChar": 66
       },
       "revId": "0c4f86e879b2b83a1b5bc50fac8c20833359f88c",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "863e3682_6297905c",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-24T18:57:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d99e046e_ec6be341",
+      "range": {
+        "startLine": 20,
+        "startChar": 39,
+        "endLine": 20,
+        "endChar": 66
+      },
+      "revId": "0c4f86e879b2b83a1b5bc50fac8c20833359f88c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "807d090c_9ffa1702",
         "filename": "src/core/SkFontDescriptor.cpp",
@@ -60,8 +85,31 @@
         "endChar": 41
       },
       "revId": "0c4f86e879b2b83a1b5bc50fac8c20833359f88c",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b20a35ca_e860ac0f",
+        "filename": "src/core/SkFontDescriptor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-11-24T18:57:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "807d090c_9ffa1702",
+      "range": {
+        "startLine": 21,
+        "startChar": 39,
+        "endLine": 21,
+        "endChar": 41
+      },
+      "revId": "0c4f86e879b2b83a1b5bc50fac8c20833359f88c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
