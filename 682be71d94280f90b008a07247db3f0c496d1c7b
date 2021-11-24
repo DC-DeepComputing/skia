@@ -16,6 +16,91 @@
       "message": "I don\u0027t think this is ready to land yet, but I just wanted to get some initial thoughts. Is this organization flow on the right track?",
       "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5dba981_d25891a0",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T17:09:52Z",
+      "side": 1,
+      "message": "Remove?",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c042ba2_289764cb",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T17:09:52Z",
+      "side": 1,
+      "message": "I suppose the idea is to eventually have flags for all of these (Skia really has lots of build flags in the gn build).",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2e2496_574f8c74",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T17:09:52Z",
+      "side": 1,
+      "message": "Should make this a select_multi to make sure that works out well.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d244210_41cff9ff",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T17:09:52Z",
+      "side": 1,
+      "message": "Adding Skia specific flags to this is much like the use of set_defaults in our gn build, which lead to the whole namespacing thing with the skia_executable, skia_source_set, skia_* in gn. (Which was done to avoid overloading the global names like source_set, which other projects like third_part might want to use but should have different defaults.) Basically, adding these Skia specific flag deps makes this a lot like the skia_source_set in out gn build. In other words, I\"m fine with generated_cc_atom for now, but this has also become quite Skia specific, so renaming this something like skia_cc_atom would not be amiss. In any event, adding implicit deps here makes this far more Skia specific and less generic.\n\nThat being said, essentially what this is doing is taking the bazel flags we get, translating those into a set of defines and settings for all the Skia code, then implicitly making all the Skia code depend on those to get those defines and settings. This generally seems fine, though I\u0027m sure that if I had spent more time mucking about with bazel I\u0027d have stronger opinions.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0e7f6b_88f286bc",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-24T17:09:52Z",
+      "side": 1,
+      "message": "I\u0027m somewhat surprised //tools/fonts shows up here at all. Is there something else that this depends on that wants it? As far as I know, skdiff shouldn\u0027t ever be interested in typeface things.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
