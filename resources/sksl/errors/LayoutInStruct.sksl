@@ -1,0 +1,10 @@
+struct A {
+    layout(set = 0) int x;  // Not allowed
+    layout(binding = 1) float y;  // Not allowed
+};
+
+A a;
+
+void main(){
+    a.x++;
+}
