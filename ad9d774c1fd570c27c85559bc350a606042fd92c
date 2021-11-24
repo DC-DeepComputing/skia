@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b1f45fa_90da7394",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-11-24T21:28:12Z",
+      "side": 1,
+      "message": "these two lines combined with line 185 cause a threading problem.  This method is const and can be potentially called by different threads at the same time, which makes mutating the fShaderBuilder problematic.  The solutions that I see here are...\n\n1. move line 185 to 168 and put those three lines a small mutex/spinlock protected block.\n2. make a copy of the std::vector\u003cChildPtr*\u003e every frame just so they can be copied again in the SkRTShader constructor.\n3. some idea that I\u0027m missing.\n\nI\u0027m personally leaning toward 1 or 3. Thoughts?",
+      "range": {
+        "startLine": 166,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 73
+      },
+      "revId": "ad9d774c1fd570c27c85559bc350a606042fd92c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
