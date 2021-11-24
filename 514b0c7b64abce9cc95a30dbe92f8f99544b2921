@@ -63,6 +63,30 @@
       },
       "revId": "514b0c7b64abce9cc95a30dbe92f8f99544b2921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8796d618_6058b8bd",
+        "filename": "experimental/graphite/src/UniformCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-24T16:33:42Z",
+      "side": 1,
+      "message": "I added a comment about insert()\u0027s behavior, but I also added a larger comment covering some of the longer term changes that would be nice to have for UniformData and UniformCache, which include adjusting the insert name if a better one can be thought of.",
+      "parentUuid": "79702df6_6f5d5a0a",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 40
+      },
+      "revId": "514b0c7b64abce9cc95a30dbe92f8f99544b2921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
