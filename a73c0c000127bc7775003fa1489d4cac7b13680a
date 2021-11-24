@@ -22,6 +22,30 @@
       },
       "revId": "a73c0c000127bc7775003fa1489d4cac7b13680a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "665f51cf_80455c45",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2961,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-24T18:30:19Z",
+      "side": 1,
+      "message": "Done. (Had to rename the other writeLayout to avoid signature conflict).",
+      "parentUuid": "d2ed3810_e0c7e230",
+      "range": {
+        "startLine": 2961,
+        "startChar": 36,
+        "endLine": 2961,
+        "endChar": 38
+      },
+      "revId": "a73c0c000127bc7775003fa1489d4cac7b13680a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
