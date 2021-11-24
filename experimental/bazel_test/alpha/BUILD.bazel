@@ -1,0 +1,14 @@
+load("//bazel:macros.bzl", "generated_cc_atom")
+
+generated_cc_atom(
+    name = "Alpha_hdr",
+    hdrs = ["Alpha.h"],
+    visibility = ["//:__subpackages__"],
+)
+
+generated_cc_atom(
+    name = "Alpha_src",
+    srcs = ["Alpha.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":Alpha_hdr"],
+)

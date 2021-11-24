@@ -1,5 +1,42 @@
 load("//bazel:macros.bzl", "generated_cc_atom")
 
+cc_library(
+    name = "androidcodec_srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "SkAndroidCodecAdapter_src",
+        "SkAndroidCodec_src",
+        "SkSampledCodec_src",
+    ],
+)
+
+cc_library(
+    name = "bmp_srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkBmpBaseCodec_src",
+        ":SkBmpCodec_src",
+        ":SkBmpMaskCodec_src",
+        ":SkBmpRLECodec_src",
+        ":SkBmpStandardCodec_src",
+        ":SkWbmpCodec_src",
+    ],
+)
+
+cc_library(
+    name = "core_srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkCodecImageGenerator_src",
+        ":SkCodec_src",
+        ":SkColorTable_src",
+        ":SkMaskSwizzler_src",
+        ":SkMasks_src",
+        ":SkSampler_src",
+        ":SkSwizzler_src",
+    ],
+)
+
 generated_cc_atom(
     name = "SkAndroidCodecAdapter_hdr",
     hdrs = ["SkAndroidCodecAdapter.h"],
