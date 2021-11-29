@@ -56,6 +56,24 @@
       "message": "Interesting. So in our current GN build we have something like\n\n    optional(\"fontmgr_custom\") {\n      deps \u003d [ \":typeface_freetype\" ]\n      public \u003d [ \"src/ports/SkFontMgr_custom.h\" ]\n      sources \u003d [ \"src/ports/SkFontMgr_custom.cpp\" ]\n    }\n\nand the \"fontmgr_custom_*\" then depend on that. Here we\u0027re just depending on SkFontMgr_custom_src directly, which means we also need to bring in the dep on :typeface_freetype. But SkFontMgr_custom_empty_src (and this cc_library) doesn\u0027t depend on :typeface_freetype, only SkFontMgr_custom_src does. So this is kinda spreading around the SkFontMgr_custom_src dependencies, which is awkward.\n\nIn our current GN build it looks like all the fontmgr_custom_* depend on :typeface_freetype, but they actually don\u0027t. Probably should clean that up (not that it was enforced before).\n\nAll this to say that in the build, it would probably be better to have a fontmgr_custom target which has public headers and the source and the dep, and then depend on that.\n\nIn fact this, kinda goes further than that. The reason why SkFontMgr_custom_empty_src should be able to include SkFontMgr_custom_hdr isn\u0027t because SkFontMgr_custom_empty_src happened to #include the header, but because the target SkFontMgr_custom_empty_src is in depends on a fontmgr_custom target which exports SkFontMgr_custom_hdr as a public header. It kinda make the who gazelle thing a bit iffy sounding, since it violates reasoning about dependencies in order to get headers. This seems like gn without check, and no way to add check back?",
       "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "303428a2_99659f92",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-29T21:13:31Z",
+      "side": 1,
+      "message": "I should probably rephrase some of that. fontmgr_custom_* do depend on :typeface_freetype, but only indirectly (through public headers of fontmgr_custom and of course transitively at runtime through the implementation of fontmgr_custom). However, in theory the implementation of fontmgr_custom could change to depend on something other than :typeface_freetype and fontmgr_custom_* should continue to compile and work.\n\nThat is to say, what we currently state in gn is more or less exactly what we wanted to state here (as far as fontmgr_custom is concerned, this code of course also depends on core Skia and should also be getting its Skia headers from depending on some :skia_core target and not by implicitly having the sources just pick up the right headers by just magically making them available.",
+      "parentUuid": "01034c0a_9c2c2a86",
+      "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
