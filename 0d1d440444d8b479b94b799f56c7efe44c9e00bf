@@ -233,6 +233,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d783a8e_0d471dad",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T21:42:51Z",
+      "side": 1,
+      "message": "Oh right. So just to confirm -- we need the extra ref on a client\u0027s BackendTexture because like Texture we need to maintain lifetime when we create one ourselves.",
+      "parentUuid": "9954b974_f48ba066",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 1
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31896a3d_4478ee91",
         "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
         "patchSetId": 1
