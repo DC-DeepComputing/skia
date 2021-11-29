@@ -22,6 +22,30 @@
       },
       "revId": "36b3628f3b20ada5cb67ab6838732fd18442b9a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b9288f9_e6a282f6",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T14:43:10Z",
+      "side": 1,
+      "message": "Done. Yeah I had copied the \"style\" of Ganesh with adding the type names to various is*Texturable calls. But really that is already inferred by what type you pass in.",
+      "parentUuid": "5c6a031f_e4df57ab",
+      "range": {
+        "startLine": 44,
+        "startChar": 17,
+        "endLine": 44,
+        "endChar": 40
+      },
+      "revId": "36b3628f3b20ada5cb67ab6838732fd18442b9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
