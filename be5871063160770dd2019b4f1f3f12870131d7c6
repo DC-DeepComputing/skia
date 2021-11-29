@@ -135,6 +135,30 @@
       },
       "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ec5910_b544bc8a",
+        "filename": "modules/sksg/src/SkSGRenderNode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-29T20:05:06Z",
+      "side": 1,
+      "message": "Eventually, tiling geometry is going to be explicitly provided. SkImageFilters::Blur will not take a tile mode at all, and the only way to to clamp, repeat, or mirror will be using SkImageFilters::Crop(rect, mode). Then you always define the geometry when you specify the mode.\n\nThis will also allow us to more fully enforce that the user bounds argument to the saveLayer() function is purely an optimization, so that it shouldn\u0027t affect the results visually (unless the user is lying about the bounds, of course).\n\nRight now, and in the future, the crop rects and user bounds hints are in the local coordinate space, and are automatically mapped by the canvas matrix. So in my example, the 1px isnt\u0027 actually in device space, so we would want it to be 1/scale factor of the canvas matrix instead. If you do add padding via user bounds, it only defeats kClamp if there\u0027s no tiling geometry specified, so you would then have to combine it with a crop rect on the blur image filter to define where the clamp is meant to be.",
+      "parentUuid": "f2f1d05d_a468fdc4",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 70
+      },
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
