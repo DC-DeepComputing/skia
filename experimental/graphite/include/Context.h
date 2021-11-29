@@ -18,10 +18,12 @@
 
 namespace skgpu {
 
+class BackendTexture;
 class ContextPriv;
 class Gpu;
 class Recorder;
 class Recording;
+class TextureInfo;
 namespace mtl { struct BackendContext; }
 
 struct ShaderCombo {
@@ -63,6 +65,9 @@ public:
     void submit(SyncToCpu = SyncToCpu::kNo);
 
     void preCompile(const PaintCombo&);
+
+    BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
+    void deleteBackendTexture(const BackendTexture&);
 
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();

@@ -20,9 +20,19 @@ namespace skgpu {
 
 class BackendTexture {
 public:
+    BackendTexture() {}
 #ifdef SK_METAL
     BackendTexture(SkISize dimensions, sk_cfp<mtl::Handle> mtlTexture);
 #endif
+
+    BackendTexture(const BackendTexture&);
+
+    ~BackendTexture();
+
+    BackendTexture& operator=(const BackendTexture&);
+
+    bool operator==(const BackendTexture&) const;
+    bool operator!=(const BackendTexture& that) const { return !(*this == that); }
 
     bool isValid() const { return fInfo.isValid(); }
     BackendApi backend() const { return fInfo.backend(); }
@@ -36,6 +46,8 @@ public:
 #endif
 
 private:
+    void cleanup();
+
     SkISize fDimensions;
     TextureInfo fInfo;
 

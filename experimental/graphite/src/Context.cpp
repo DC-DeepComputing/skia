@@ -7,6 +7,8 @@
 
 #include "experimental/graphite/include/Context.h"
 
+#include "experimental/graphite/include/BackendTexture.h"
+#include "experimental/graphite/include/TextureInfo.h"
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/ContextUtils.h"
@@ -74,6 +76,17 @@ void Context::preCompile(const PaintCombo& paintCombo) {
             }
         }
     }
+}
+
+BackendTexture Context::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+    return fGpu->createBackendTexture(dimensions, info);
+}
+
+void Context::deleteBackendTexture(const BackendTexture& texture) {
+    if (!texture.isValid()) {
+        return;
+    }
+    fGpu->deleteBackendTexture(texture);
 }
 
 } // namespace skgpu

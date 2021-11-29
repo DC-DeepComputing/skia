@@ -29,10 +29,14 @@ public:
 
     const Caps& mtlCaps() const { return static_cast<const Caps&>(*this->caps()); }
 
+    void deleteBackendTexture(const BackendTexture&) override;
+
 private:
     Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>, sk_sp<const Caps>);
 
     bool onSubmit(sk_sp<skgpu::CommandBuffer>) override;
+
+    BackendTexture onCreateBackendTexture(SkISize dimensions, const skgpu::TextureInfo&) override;
 
 #if GRAPHITE_TEST_UTILS
     void testingOnly_startCapture() override;

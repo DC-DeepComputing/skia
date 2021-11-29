@@ -7,9 +7,12 @@
 
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 
+#include "experimental/graphite/include/BackendTexture.h"
+#include "experimental/graphite/include/TextureInfo.h"
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 #include "experimental/graphite/src/mtl/MtlResourceProvider.h"
+#include "experimental/graphite/src/mtl/MtlTexture.h"
 
 namespace skgpu::mtl {
 
@@ -74,6 +77,19 @@ bool Gpu::onSubmit(sk_sp<skgpu::CommandBuffer> commandBuffer) {
     new (fOutstandingSubmissions.push_back()) OutstandingSubmission(std::move(submission));
 
     return true;
+}
+
+BackendTexture Gpu::onCreateBackendTexture(SkISize dimensions, const skgpu::TextureInfo& info) {
+    sk_cfp<id<MTLTexture>> texture = Texture::MakeMtlTexture(this, dimensions, info);
+    if (!texture) {
+        return {};
+    }
+    sk_cfp<Handle> cTexture((Handle)texture.release());
+    return BackendTexture(dimensions, std::move(cTexture));
+}
+
+void Gpu::deleteBackendTexture(const BackendTexture&) {
+
 }
 
 #if GRAPHITE_TEST_UTILS
