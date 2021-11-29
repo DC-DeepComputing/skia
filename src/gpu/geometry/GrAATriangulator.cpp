@@ -165,7 +165,7 @@ void GrAATriangulator::removeNonBoundaryEdges(const VertexList& mesh) const {
             if (prev) {
                 e->fWinding += prev->fWinding;
             }
-            activeEdges.insert(e, prev);
+            activeEdges.insert2(e, prev);
             prev = e;
         }
     }
@@ -208,7 +208,7 @@ void GrAATriangulator::simplifyBoundary(EdgeList* boundary, const Comparator& c)
                 join->fLine.normalize();
                 join->fLine = join->fLine * join->fWinding;
             }
-            boundary->insert(join, e);
+            boundary->insert2(join, e);
             boundary->remove(prevEdge);
             boundary->remove(e);
             if (join->fLeft && join->fRight) {
@@ -371,7 +371,7 @@ bool GrAATriangulator::collapseOverlapRegions(VertexList* mesh, const Comparator
             if (prev) {
                 e->fWinding += prev->fWinding;
             }
-            activeEdges.insert(e, prev);
+            activeEdges.insert2(e, prev);
             prev = e;
         }
     }
