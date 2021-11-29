@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3363ca4_a1142984",
+        "filename": "experimental/graphite/include/BackendTexture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:29:57Z",
+      "side": 1,
+      "message": "Yeah I think we want an sk_cfp in mtl::Texture for all use cases. I am leaning towards not reffing the mtl::Handle in backend texture.\n\nWe would just have to be very explicit in the API for wrapping on what the clients responsibility for the lifetime of the backend object is. On metal the client is safe to drop their refs on the object as soon as it is wrapped in Skia. For Vulkan they are required to keep the object alive until Skia is done with it. For D3D, I guess it would be similar to Metal. We could just say for all backends the client should keep the object alive until Skia is done just to be safe. But obviously this is a slight waste for clients only using metal.",
+      "parentUuid": "f466ac28_c17ea7f1",
+      "range": {
+        "startLine": 25,
+        "startChar": 39,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "06c5afbe_78a26482",
         "filename": "experimental/graphite/src/BackendTexture.cpp",
         "patchSetId": 1
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "We could have BackendTexture take a mtl::Handle, but then ref it once we store it in the mtl::Texture.",
       "parentUuid": "06c5afbe_78a26482",
+      "range": {
+        "startLine": 44,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 13
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbc46173_28e177c8",
+        "filename": "experimental/graphite/src/BackendTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:29:57Z",
+      "side": 1,
+      "message": "I think I\u0027m currently leaning towards not refing it at all in the BackendTexture.",
+      "parentUuid": "b3a5b54a_d690b5c3",
       "range": {
         "startLine": 44,
         "startChar": 11,
@@ -161,6 +209,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9954b974_f48ba066",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:29:57Z",
+      "side": 1,
+      "message": "Well if we only had a mtl::Handle (without reffing it by the BackendTexture) then we would have to do an unref here since it has to pair with the ref on create. The API already requires the if you use Context::createBackendTexture then you must call Context::deleteBackendTexture. So those would be paired up.",
+      "parentUuid": "562c19c0_893b6ebb",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 1
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31896a3d_4478ee91",
         "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
         "patchSetId": 1
@@ -196,6 +268,30 @@
       "side": 1,
       "message": "I think it makes sense to be more restrictive up front to avoid confusion. If it becomes unwieldy for clients we can change it later.",
       "parentUuid": "31896a3d_4478ee91",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ce7d258_a337a39b",
+        "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:29:57Z",
+      "side": 1,
+      "message": "sgtm",
+      "parentUuid": "2166cad7_ac95406d",
       "range": {
         "startLine": 30,
         "startChar": 3,
