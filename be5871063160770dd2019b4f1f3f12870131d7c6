@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dbc57a6_e48ed1c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-11-29T16:59:12Z",
+      "side": 1,
+      "message": "Interestingly, incorrect bounds seem to only affect the GPU backend -- I guess the software rasterizer ignores the hint.",
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
