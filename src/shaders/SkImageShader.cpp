@@ -71,12 +71,14 @@ SkImageShader::SkImageShader(sk_sp<SkImage> img,
                              SkTileMode tmx, SkTileMode tmy,
                              const SkSamplingOptions& sampling,
                              const SkMatrix* localMatrix,
+                             bool raw,
                              bool clampAsIfUnpremul)
     : INHERITED(localMatrix)
     , fImage(std::move(img))
     , fSampling(sampling)
     , fTileModeX(optimize(tmx, fImage->width()))
     , fTileModeY(optimize(tmy, fImage->height()))
+    , fRaw(raw)
     , fClampAsIfUnpremul(clampAsIfUnpremul)
 {}
 
@@ -247,25 +249,43 @@ SkImage* SkImageShader::onIsAImage(SkMatrix* texM, SkTileMode xy[]) const {
     return const_cast<SkImage*>(fImage.get());
 }
 
+static bool sampling_options_are_valid(const SkSamplingOptions& options) {
+    auto is_unit = [](float x) { return x >= 0 && x <= 1; };
+    if (options.useCubic) {
+        if (!is_unit(options.cubic.B) || !is_unit(options.cubic.C)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
                                     SkTileMode tmx, SkTileMode tmy,
                                     const SkSamplingOptions& options,
                                     const SkMatrix* localMatrix,
                                     bool clampAsIfUnpremul) {
-    auto is_unit = [](float x) {
-        return x >= 0 && x <= 1;
-    };
-    if (options.useCubic) {
-        if (!is_unit(options.cubic.B) || !is_unit(options.cubic.C)) {
-            return nullptr;
-        }
+    if (!sampling_options_are_valid(options)) {
+        return nullptr;
     }
     if (!image) {
         return sk_make_sp<SkEmptyShader>();
     }
-    return sk_sp<SkShader>{
-        new SkImageShader(image, tmx, tmy, options, localMatrix, clampAsIfUnpremul)
-    };
+    return sk_sp<SkShader>{new SkImageShader(
+            image, tmx, tmy, options, localMatrix, /*raw=*/false, clampAsIfUnpremul)};
+}
+
+sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
+                                       SkTileMode tmx, SkTileMode tmy,
+                                       const SkSamplingOptions& options,
+                                       const SkMatrix* localMatrix) {
+    if (!sampling_options_are_valid(options)) {
+        return nullptr;
+    }
+    if (!image) {
+        return sk_make_sp<SkEmptyShader>();
+    }
+    return sk_sp<SkShader>{new SkImageShader(
+            image, tmx, tmy, options, localMatrix, /*raw=*/true, /*clampAsIfUnpremul=*/false)};
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,11 +312,14 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
         return nullptr;
     }
 
-    fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                       fImage->colorSpace(),
-                                       fImage->alphaType(),
-                                       args.fDstColorInfo->colorSpace(),
-                                       kPremul_SkAlphaType);
+    if (!fRaw) {
+        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+                                           fImage->colorSpace(),
+                                           fImage->alphaType(),
+                                           args.fDstColorInfo->colorSpace(),
+                                           kPremul_SkAlphaType);
+    }
+
     if (fImage->isAlphaOnly()) {
         return GrBlendFragmentProcessor::Make(std::move(fp), nullptr, SkBlendMode::kDstIn);
     } else {
@@ -536,9 +559,9 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
         }
 
         // Transform color space and alpha type to match shader convention (dst CS, premul alpha).
-        alloc->make<SkColorSpaceXformSteps>(cs, at,
-                                            rec.fDstCS, kPremul_SkAlphaType)
-            ->apply(p);
+        if (!fRaw) {
+            alloc->make<SkColorSpaceXformSteps>(cs, at, rec.fDstCS, kPremul_SkAlphaType)->apply(p);
+        }
 
         return true;
     };
@@ -934,5 +957,7 @@ skvm::Color SkImageShader::makeProgram(
         c.b = clamp(c.b, 0.0f, limit);
     }
 
-    return SkColorSpaceXformSteps{cs,at, dst.colorSpace(),dst.alphaType()}.program(p, uniforms, c);
+    return fRaw ? c
+                : SkColorSpaceXformSteps{cs, at, dst.colorSpace(), dst.alphaType()}.program(
+                          p, uniforms, c);
 }
