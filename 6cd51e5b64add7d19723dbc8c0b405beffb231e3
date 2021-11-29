@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3a6a139_3291452d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-29T12:43:11Z",
+      "side": 1,
+      "message": "Docs were updated to make it more clear that defines only travel up the stack (that is, to dependents), not down the stack.\n\nhttps://docs.bazel.build/versions/main/skylark/lib/CompilationContext.html#defines\nReturns the set of defines needed to compile this target. Each define is a string. These values are propagated to the target\u0027s transitive dependents, that is, any rules that depend on this target.",
+      "revId": "6cd51e5b64add7d19723dbc8c0b405beffb231e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
