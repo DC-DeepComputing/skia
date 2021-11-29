@@ -297,4 +297,41 @@ skgpu::TextureInfo Caps::getDefaultDepthStencilTextureInfo(DepthStencilType dept
     return info;
 }
 
+bool Caps::isTextureInfoTexturable(const skgpu::TextureInfo& info) const {
+    return info.mtlTextureSpec().fUsage & MTLTextureUsageShaderRead &&
+           this->isFormatTexturable((MTLPixelFormat)info.mtlTextureSpec().fFormat);
+}
+
+bool Caps::isFormatTexturable(MTLPixelFormat format) const {
+    // TODO: Fill out format table so that we can query all formats. For now we only support RGBA8
+    // which is supported everywhere.
+    if (format != MTLPixelFormatRGBA8Unorm) {
+        return false;
+    }
+    return true;
+}
+
+bool Caps::isTextureInfoRenderable(const skgpu::TextureInfo& info) const {
+    return info.mtlTextureSpec().fUsage & MTLTextureUsageRenderTarget &&
+    this->isFormatRenderable((MTLPixelFormat)info.mtlTextureSpec().fFormat, info.numSamples());
+}
+
+bool Caps::isFormatRenderable(MTLPixelFormat format, uint32_t numSamples) const {
+    // TODO: Fill out format table so that we can query all formats. For now we only support RGBA8
+    // with a sampleCount of 1 which is supported everywhere.
+    if (format != MTLPixelFormatRGBA8Unorm || numSamples != 1) {
+        return false;
+    }
+    return true;
+}
+
+
+bool Caps::onAreColorTypeAndTextureInfoCompatible(SkColorType type,
+                                                  const skgpu::TextureInfo& info) const {
+    // TODO: Fill out format table so that we can query all formats. For now we only support RGBA8
+    // for both the color type and format.
+    return type == kRGBA_8888_SkColorType &&
+           info.mtlTextureSpec().fFormat == MTLPixelFormatRGBA8Unorm;
+}
+
 } // namespace skgpu::mtl

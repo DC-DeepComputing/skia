@@ -37,6 +37,9 @@ public:
 
     size_t getMinBufferAlignment() const { return this->isMac() ? 4 : 1; }
 
+    bool isTextureInfoTexturable(const skgpu::TextureInfo&) const override;
+    bool isTextureInfoRenderable(const skgpu::TextureInfo&) const override;
+
 private:
     void initGPUFamily(const id<MTLDevice>);
 
@@ -51,6 +54,11 @@ private:
     static bool GetGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* group);
     static bool GetGPUFamilyFromFeatureSet(id<MTLDevice> device, GPUFamily* gpuFamily,
                                            int* group);
+
+    bool onAreColorTypeAndTextureInfoCompatible(SkColorType,
+                                                const skgpu::TextureInfo&) const override;
+    bool isFormatTexturable(MTLPixelFormat) const;
+    bool isFormatRenderable(MTLPixelFormat, uint32_t numSamples) const;
 
     GPUFamily fGPUFamily;
     int fFamilyGroup;
