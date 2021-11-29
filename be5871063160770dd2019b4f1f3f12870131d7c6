@@ -159,6 +159,30 @@
       },
       "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036a0f84_510e1130",
+        "filename": "modules/sksg/src/SkSGRenderNode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-11-29T20:14:13Z",
+      "side": 1,
+      "message": "Thanks.\n\nFor now the easy fix is to just use decal, which is the correct tiling mode for masks.  PTAL",
+      "parentUuid": "91ec5910_b544bc8a",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 70
+      },
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
