@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa844711_e4ba5db7",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-29T19:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5dba981_d25891a0",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c042ba2_289764cb",
@@ -87,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e1ca8b_67e76d96",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-29T19:31:08Z",
+      "side": 1,
+      "message": "I moved the flag handling from //BUILD.bazel here.",
+      "parentUuid": "6dd8b22e_abf8dd91",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d2e2496_574f8c74",
@@ -100,6 +136,24 @@
       "writtenOn": "2021-11-24T17:09:52Z",
       "side": 1,
       "message": "Should make this a select_multi to make sure that works out well.",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "297bc94e_2d19150c",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-29T19:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d2e2496_574f8c74",
       "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -135,6 +189,24 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "7d244210_41cff9ff",
+      "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f38288b0_de4331b0",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-29T19:31:08Z",
+      "side": 1,
+      "message": "It should be pretty easy to rename this skia_cc_atom in the future. It\u0027s one constant in the gazelle extension.",
+      "parentUuid": "3ba1296b_5e98143f",
       "revId": "682be71d94280f90b008a07247db3f0c496d1c7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
