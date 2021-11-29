@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1971fcd6_64d64378",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-29T15:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4189590d_949a3e85",
+      "revId": "0da4d9bcbb033a3b26b088f3ee9cfffd74599acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e20251e_dc919058",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07669985_916fd263",
+        "filename": "resources/sksl/errors/LayoutInInterfaceBlock.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-29T15:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e20251e_dc919058",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 0
+      },
+      "revId": "0da4d9bcbb033a3b26b088f3ee9cfffd74599acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03fd2c39_bba60c5d",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-11-25T02:14:23Z",
       "side": 1,
       "message": "This seems like it should be reporting on lines 4 and 5.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 9
+      },
+      "revId": "0da4d9bcbb033a3b26b088f3ee9cfffd74599acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e6d4de3_731a5fd5",
+        "filename": "tests/sksl/errors/LayoutInInterfaceBlock.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-29T15:13:07Z",
+      "side": 1,
+      "message": "Yes, fixed this (we were reporting errors for individual fields using the position of the interface block itself).",
+      "parentUuid": "03fd2c39_bba60c5d",
       "range": {
         "startLine": 3,
         "startChar": 0,
