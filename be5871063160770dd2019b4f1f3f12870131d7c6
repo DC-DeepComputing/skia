@@ -63,6 +63,30 @@
       },
       "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92cab784_7f26d3d8",
+        "filename": "modules/sksg/src/SkSGRenderNode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-11-29T17:59:16Z",
+      "side": 1,
+      "message": "Scratch that, crop rect doesn\u0027t seem to make a difference: https://fiddle.skia.org/c/7b22e6579530a7303070c78314b74449",
+      "parentUuid": "ac95a37b_48a51e1f",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 70
+      },
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
