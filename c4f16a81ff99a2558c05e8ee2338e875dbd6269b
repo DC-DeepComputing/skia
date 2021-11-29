@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43ac14f_e0c909be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-11-29T13:01:53Z",
+      "side": 1,
+      "message": "Ben, we really still need a fix for this issue chromium:1266022 - could you get to implementing the change we discussed of moving the emboldening choice to the ScalerContext or consider approving this CL?",
+      "revId": "c4f16a81ff99a2558c05e8ee2338e875dbd6269b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
