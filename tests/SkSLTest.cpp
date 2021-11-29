@@ -319,8 +319,10 @@ SKSL_TEST(SkSLHex,                             "shared/Hex.sksl")
 SKSL_TEST_ES3(SkSLHexUnsigned,                 "shared/HexUnsigned.sksl")
 SKSL_TEST(SkSLMatrices,                        "shared/Matrices.sksl")
 SKSL_TEST_ES3(SkSLMatricesNonsquare,           "shared/MatricesNonsquare.sksl")
-SKSL_TEST(SkSLMatrixConstructorsES2,           "shared/MatrixConstructorsES2.sksl")
-SKSL_TEST_ES3(SkSLMatrixConstructorsES3,       "shared/MatrixConstructorsES3.sksl")
+// TODO(skia:12443) These tests actually don't work on MANY devices. The GLSL conformance suite
+// does a terrible job of enforcing this rule.
+//SKSL_TEST(SkSLMatrixConstructorsES2,           "shared/MatrixConstructorsES2.sksl")
+//SKSL_TEST_ES3(SkSLMatrixConstructorsES3,       "shared/MatrixConstructorsES3.sksl")
 SKSL_TEST(SkSLMatrixEquality,                  "shared/MatrixEquality.sksl")
 SKSL_TEST(SkSLMatrixScalarSplat,               "shared/MatrixScalarSplat.sksl")
 SKSL_TEST(SkSLMatrixToVectorCast,              "shared/MatrixToVectorCast.sksl")
