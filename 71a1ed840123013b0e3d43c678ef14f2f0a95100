@@ -1,0 +1,134 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017772568",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/472997?revision\u003d8",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "31846411_24f93aae",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.stage",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-29T16:17:34Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 3,
+        "startChar": 10,
+        "endLine": 3,
+        "endChar": 11
+      },
+      "revId": "71a1ed840123013b0e3d43c678ef14f2f0a95100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017772568",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/472997?revision\u003d8",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "90393bf7_c562cbd9",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.stage",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-29T16:17:34Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 10,
+        "startChar": 11,
+        "endLine": 10,
+        "endChar": 12
+      },
+      "revId": "71a1ed840123013b0e3d43c678ef14f2f0a95100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017772568",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/472997?revision\u003d8",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "ac91deec_54686395",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.stage",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-29T16:17:34Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 16,
+        "startChar": 13,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "71a1ed840123013b0e3d43c678ef14f2f0a95100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017772568",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/472997?revision\u003d8",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "a78b6020_3726dd1b",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.stage",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-29T16:17:34Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 98,
+        "startChar": 10,
+        "endLine": 98,
+        "endChar": 11
+      },
+      "revId": "71a1ed840123013b0e3d43c678ef14f2f0a95100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017772568",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/472997?revision\u003d8",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "6c781a86_5207b5df",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.stage",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-11-29T16:17:34Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 114,
+        "startChar": 10,
+        "endLine": 114,
+        "endChar": 11
+      },
+      "revId": "71a1ed840123013b0e3d43c678ef14f2f0a95100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
