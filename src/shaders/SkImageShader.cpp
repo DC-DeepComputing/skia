@@ -23,7 +23,6 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkBitmapProcShader.h"
-#include "src/shaders/SkEmptyShader.h"
 #include "src/shaders/SkTransformShader.h"
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
@@ -261,7 +260,7 @@ sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
         }
     }
     if (!image) {
-        return sk_make_sp<SkEmptyShader>();
+        return nullptr;
     }
     return sk_sp<SkShader>{
         new SkImageShader(image, tmx, tmy, options, localMatrix, clampAsIfUnpremul)
