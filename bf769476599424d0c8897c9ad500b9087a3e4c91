@@ -16,6 +16,46 @@
       "message": "By adding back in the package level human-made rules, this made dealing with sources more tolerable. WDYT?",
       "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5beff97_e3e082a1",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-29T20:50:52Z",
+      "side": 1,
+      "message": "Can we name this \"fontmgr_custom_directory_srcs\"? (Is A is most general and C is most specific, A_B_C.) I know it reads a bit awkward to speakers of English, but going from general to specific makes things easier to group and sort. This name is logically awkward since if goes B_C_A. Same below for the others.",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 42
+      },
+      "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01034c0a_9c2c2a86",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-29T20:50:52Z",
+      "side": 1,
+      "message": "Interesting. So in our current GN build we have something like\n\n    optional(\"fontmgr_custom\") {\n      deps \u003d [ \":typeface_freetype\" ]\n      public \u003d [ \"src/ports/SkFontMgr_custom.h\" ]\n      sources \u003d [ \"src/ports/SkFontMgr_custom.cpp\" ]\n    }\n\nand the \"fontmgr_custom_*\" then depend on that. Here we\u0027re just depending on SkFontMgr_custom_src directly, which means we also need to bring in the dep on :typeface_freetype. But SkFontMgr_custom_empty_src (and this cc_library) doesn\u0027t depend on :typeface_freetype, only SkFontMgr_custom_src does. So this is kinda spreading around the SkFontMgr_custom_src dependencies, which is awkward.\n\nIn our current GN build it looks like all the fontmgr_custom_* depend on :typeface_freetype, but they actually don\u0027t. Probably should clean that up (not that it was enforced before).\n\nAll this to say that in the build, it would probably be better to have a fontmgr_custom target which has public headers and the source and the dep, and then depend on that.\n\nIn fact this, kinda goes further than that. The reason why SkFontMgr_custom_empty_src should be able to include SkFontMgr_custom_hdr isn\u0027t because SkFontMgr_custom_empty_src happened to #include the header, but because the target SkFontMgr_custom_empty_src is in depends on a fontmgr_custom target which exports SkFontMgr_custom_hdr as a public header. It kinda make the who gazelle thing a bit iffy sounding, since it violates reasoning about dependencies in order to get headers. This seems like gn without check, and no way to add check back?",
+      "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
