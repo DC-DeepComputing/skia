@@ -39,6 +39,30 @@
       },
       "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac95a37b_48a51e1f",
+        "filename": "modules/sksg/src/SkSGRenderNode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-11-29T17:30:41Z",
+      "side": 1,
+      "message": "\u003e This shouldn\u0027t be necessary and I think it is masking over a different issue.\n\u003e \n\u003e The bounds hint represents the geometric limit of what\u0027s drawn *into* the layer, so that the backends can limit the size of the buffer used to rasterize that content before passing it off to the image filter. It should not be clipping the results of the image filter, nor should it be used to automatically clip the layer contents to those bounds (although that doesn\u0027t appear to be the intent in this instance).\n\u003e \n\u003e Do we know more about the specific blur filter that was referenced in the bug? If it had specified the kClamp tile mode, it might be interacting strangely with the bounds hint. Unfortunately, tile modes and the blur image filter are in a very confusing place, since it really needs to be tied to the crop rect property so that there is a known geometry that is being tiled/clamped over. A blur without a crop rect that has kClamp is going to behave unpredictably and could certainly be clamping to the user bounds.\n\nIt is indeed related to clamp/repeat (decal seems to work fine): https://fiddle.skia.org/c/36cadde09ea6dfd16719d7e998cd6479\n\nSo to properly support clamp (which is an explicit flag in AE), we should be passing the bounds as a crop rect?",
+      "parentUuid": "8b272c5b_ffcdfd2c",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 70
+      },
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
