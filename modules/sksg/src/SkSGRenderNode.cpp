@@ -212,9 +212,12 @@ RenderNode::ScopedRenderContext::setFilterIsolation(const SkRect& bounds, const 
         SkPaint layer_paint;
         fCtx.modulatePaint(ctm, &layer_paint);
 
+        const auto filter_bounds =
+                filter->filterBounds(bounds.roundOut(), ctm, SkImageFilter::kForward_MapDirection);
+
         SkASSERT(!layer_paint.getImageFilter());
         layer_paint.setImageFilter(std::move(filter));
-        fCanvas->saveLayer(bounds, &layer_paint);
+        fCanvas->saveLayer(SkRect::Make(filter_bounds), &layer_paint);
         fCtx = RenderContext();
     }
 
