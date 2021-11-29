@@ -66,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb606fa5_0595afca",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T15:33:00Z",
+      "side": 1,
+      "message": "Oh another question, Should calling context-\u003edestroyBackendTexture(backendTexture), clear out the backendTexture (i.e. set it to be invalid) or just leave everything as is? Currently Ganesh just leaves it as is since the dtor on most backends doesn\u0027t do anything anyways. But with Metal this means the MTLTexture doesn\u0027t get destroyed until the ~BackendTexture. We could unref the texture here instead.",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 1
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31896a3d_4478ee91",
         "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
         "patchSetId": 1
