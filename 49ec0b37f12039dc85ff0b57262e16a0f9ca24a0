@@ -177,6 +177,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e88346_08f95bdc",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T21:39:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0d5f8c0_86f11c87",
+      "range": {
+        "startLine": 108,
+        "startChar": 42,
+        "endLine": 108,
+        "endChar": 74
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2457d29_08e326d9",
@@ -238,6 +262,30 @@
       "side": 1,
       "message": "So in an ideal world the RenderPassDesc would just have a description of the attachments without needing the specific attachment. Now for color attachments this is essentially what the Proxy is except it can later be instantiated to a real Texture. It seems like it would be waste to basically copy the internals of the class and remove the instantiate just to have a \"pure\" description. So I think for the color attachments having a pointer to the proxy is fine since we already have and need that proxy for other things.\n\nBut for the depth and stencil there is no need to have an actual proxy earlier since we are never saving a depth/stencil and reusing it later (with the same data). So I wonder if the RenderPassDesc can just a flag to say that it has a D/S on it. I believe we agreed that D/S load/store will always both be discard (maybe there is clear load???). Also I believe we\u0027ll always pick the same format for the cases of DepthOnly, StencilOnly, or DepthAndStencil. The sample counts should match the color attachments, right? So it seems like we could easily describe that attachment fully using our DepthStencilType enum and a Load op. Though technically I don\u0027t think the load/stores are even needed until beginRenderPass, but we can just include them in the Desc since we\u0027ll already have them.\n\nThen when we doing beginRenderPass, we pass in an all the actual Attachments directly (maybe wrapped in a Framebuffer type object if thats useful).\n\nCommandBuffer::beginRenderPass(const RenderPassDesc\u0026, sk_sp\u003cTexture\u003e colorAttachment, sk_sp\u003cTexture\u003e resolve, sk_sp\u003cTexture\u003e DSAttachment);",
       "parentUuid": "94af6122_f54bed06",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bb81edc_3a21fc47",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T21:39:08Z",
+      "side": 1,
+      "message": "I tried implementing this and it feels a little off to me. If we\u0027re going to ignore the Texture information (via the Proxies) in RenderPassDesc when creating the render pass I\u0027d prefer to be up front about it. Pull all the proxies out and rename it LoadStoreDesc or something. Then make the RenderPassTask with LoadStoreDesc and the color and resolve proxies. And finally pass in LoadStoreDesc and the attachment Textures in a Framebuffer object in beginRenderPass. What do you think?",
+      "parentUuid": "aba243d9_e49b3e61",
       "range": {
         "startLine": 114,
         "startChar": 8,
