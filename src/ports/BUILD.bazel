@@ -1,4 +1,112 @@
-load("//bazel:macros.bzl", "generated_cc_atom")
+# https://github.com/bazelbuild/bazel-skylib
+load("@bazel_skylib//lib:selects.bzl", "selects")
+load("//bazel:macros.bzl", "generated_cc_atom", "select_multi")
+
+cc_library(
+    name = "typeface_freetype",
+    deps = [
+        "SkFontHost_FreeType_common_src",
+        "SkFontHost_FreeType_src",
+    ],
+)
+
+cc_library(
+    name = "fontmgr_factory",
+    deps = selects.with_or({
+        "//bazel/common_config_settings:custom_embedded_fontmgr_factory": [
+            "SkFontMgr_custom_embedded_factory_src",
+        ],
+        ("//bazel/common_config_settings:empty_fontmgr_factory", "//conditions:default"): [
+            "SkFontMgr_empty_factory_src",
+        ],
+    }),
+)
+
+cc_library(
+    name = "custom_directory_fontmgr_srcs",
+    deps = [
+        "SkFontMgr_custom_directory_src",
+        "SkFontMgr_custom_src",
+        ":typeface_freetype",
+    ],
+)
+
+cc_library(
+    name = "custom_embedded_fontmgr_srcs",
+    deps = [
+        "SkFontMgr_custom_embedded_src",
+        "SkFontMgr_custom_src",
+        ":typeface_freetype",
+    ],
+)
+
+cc_library(
+    name = "custom_empty_fontmgr_srcs",
+    deps = [
+        "SkFontMgr_custom_empty_src",
+        "SkFontMgr_custom_src",
+        ":typeface_freetype",
+    ],
+)
+
+cc_library(
+    name = "global_init",
+    deps = [
+        "SkGlobalInitialization_default_src",  # TODO(kjlubick) use select
+    ],
+)
+
+cc_library(
+    name = "image_generator",
+    deps = [
+        "SkImageGenerator_skia_src",  # TODO(kjlubick) use select
+    ],
+)
+
+cc_library(
+    name = "osfile",
+    deps = ["SkOSFile_stdio_src"] + select({
+        "@platforms//os:windows": ["SkOSFile_win_src"],
+        "//conditions:default": ["SkOSFile_posix_src"],
+    }),
+)
+
+cc_library(
+    name = "malloc",
+    deps = [
+        "SkMemory_malloc_src",  # TODO(kjlubick) use select
+    ],
+)
+
+cc_library(
+    name = "skdebug",
+    visibility = ["//:__subpackages__"],
+    deps = select({
+        "@platforms//os:windows": ["SkDebug_win_src"],
+        "@platforms//os:android": ["SkDebug_android_src"],
+        "//conditions:default": ["SkDebug_stdio_src"],
+    }),
+)
+
+cc_library(
+    name = "srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":fontmgr_factory",
+        ":global_init",
+        ":image_generator",
+        ":malloc",
+        ":osfile",
+        ":skdebug",
+    ] + select_multi(
+        {
+            "//bazel/common_config_settings:custom_directory_fontmgr": [":custom_directory_fontmgr_srcs"],
+            "//bazel/common_config_settings:custom_embedded_fontmgr": [":custom_embedded_fontmgr_srcs"],
+            "//bazel/common_config_settings:custom_empty_fontmgr": [":custom_empty_fontmgr_srcs"],
+        },
+        default = [],
+    ),
+)
 
 generated_cc_atom(
     name = "SkDebug_android_src",
