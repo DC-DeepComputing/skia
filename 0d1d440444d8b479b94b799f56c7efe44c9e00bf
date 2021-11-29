@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f466ac28_c17ea7f1",
+        "filename": "experimental/graphite/include/BackendTexture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T16:26:42Z",
+      "side": 1,
+      "message": "I don\u0027t see that we have much choice but to use sk_cfp\u003c\u003e in mtl::Texture. If we\u0027re creating our own textures, we need to keep them alive and we don\u0027t want to manage lifetime manually (and I\u0027m not sure we\u0027d want to distinguish between wrapped and non-wrapped textures to know whether to de-ref on destruction). And in D3D we do keep a ref to the backend object, as ID3D12Resource is ref-counted as well.",
+      "parentUuid": "1b656072_5e1afeaa",
+      "range": {
+        "startLine": 25,
+        "startChar": 39,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "06c5afbe_78a26482",
         "filename": "experimental/graphite/src/BackendTexture.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-29T15:28:31Z",
       "side": 1,
       "message": "This awkwardness all comes from the fact that we store an sk_cfp of the mtl texture. If we didn\u0027t have the BackendTexture take a ref then this assignment would be trivial.\n\nAn alternative here is that we have BackendTexture take an mtl::Handle (id\u003cMTLTexture), but state that BackendTexture will call Retain and Release on the object. Then inside here we can be explicit with when we need to Release the previous texture and not have the ugliness of calling fMtlTexture.release() on an uninitialized sk_cfp object.",
+      "range": {
+        "startLine": 44,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 13
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a5b54a_d690b5c3",
+        "filename": "experimental/graphite/src/BackendTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T16:26:42Z",
+      "side": 1,
+      "message": "We could have BackendTexture take a mtl::Handle, but then ref it once we store it in the mtl::Texture.",
+      "parentUuid": "06c5afbe_78a26482",
       "range": {
         "startLine": 44,
         "startChar": 11,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "562c19c0_893b6ebb",
+        "filename": "experimental/graphite/src/mtl/MtlGpu.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T16:26:42Z",
+      "side": 1,
+      "message": "If we store mtl::Handle then we don\u0027t need to do anything, right? The client is responsible for unref-ing the ref keeping the BackendTexture alive.",
+      "parentUuid": "eb606fa5_0595afca",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 1
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31896a3d_4478ee91",
         "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
         "patchSetId": 1
@@ -100,6 +172,30 @@
       "writtenOn": "2021-11-29T15:28:31Z",
       "side": 1,
       "message": "What do we think the \"caps\" requirements should be for making a BackendTexture. Do we restrict things to the same requirements that Skia has? For example, for Skia isTexturable currently requires the format to also be linearly filterable when sampled in the shader. Or what if the client asks to add the MTLTextureUsageRenderTarget flag to a format that Skia itself doesn\u0027t render (e.g. 101010102 because Skia can\u0027t handle the 2 alpha correctly when rendering)? Should we block the client from making these BackendTexture objects or be more open to making them as long as the conform the APIs specs?\n\nIf we\u0027re more open about making them we can still restrict and reject them when a client goes to wrap the BackendTexture into Skia.\n\nThough on the flip side do we really see clients who want Skia to make the textures for them but don\u0027t intend to immediately wrap them back into Skia? Assuming that doesn\u0027t happen maybe it makes sense to just be restrictive on BackendTexture creation from the get go.",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "0d1d440444d8b479b94b799f56c7efe44c9e00bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2166cad7_ac95406d",
+        "filename": "experimental/graphite/src/mtl/MtlTexture.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-29T16:26:42Z",
+      "side": 1,
+      "message": "I think it makes sense to be more restrictive up front to avoid confusion. If it becomes unwieldy for clients we can change it later.",
+      "parentUuid": "31896a3d_4478ee91",
       "range": {
         "startLine": 30,
         "startChar": 3,
