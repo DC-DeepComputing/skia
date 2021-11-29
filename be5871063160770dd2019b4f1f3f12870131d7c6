@@ -111,6 +111,30 @@
       },
       "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f1d05d_a468fdc4",
+        "filename": "modules/sksg/src/SkSGRenderNode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-11-29T19:39:28Z",
+      "side": 1,
+      "message": "\u003e So I think there are limitations in the current image filter pipeline that are making this hard to specify, which I\u0027ll try to describe here.\n\u003e \n\u003e Right now, user bounds is the bounding box around what\u0027s drawn, and is assumed to be transparent outside of it. This would be equivalent to sampling with kDecal. However, because of how tile modes are specified on the blur filter right now, it just applies that tile mode to its input image. This means that we override the kDecal and clamp whatever happened to be drawn right up to the edge.\n\nThe more I think about this, the more confusing it gets 😊\n\nFor single draw calls, the tiling bounds are obvious: geometry bounding box (mapped though CTM I guess).\n\nBut how about saveLayer-applied IFs?  We seem to treat the savelayer bounds as tile bounds, and if unspecified I assume the default is infinite?  Relying on optional savelayer hints (instead of e.g. having an explicit tile rect for IFs which perform tiling) seems fragile, but I could be convinced it makes sense.\n\n\u003e \n\u003e Eventually, when cropping is its own filter, and supports tile modes, and all the image filters are robust to those tilings (a looong ways off), we could reason about this and see that the blur filter has a kClamp crop rect larger than its kDecal input image, so it\u0027s transparent black that\u0027s being clamped. If you had a kClamp crop rect exactly equal to a kDecal input image, you would still be asking to clamp whatever edge colors were rendered and not the transparent black.\n\u003e \n\u003e The issue currently is that the image filter with a larger kClamp crop rect doesn\u0027t realize it needs to preserve the transparent edges of the kDecal. It just takes the intersected bounds and overrides the tile mode.\n\u003e \n\u003e The robust way to do this is actually what you\u0027re doing, more or less, but it doesn\u0027t require invoking filterBounds() since it\u0027s not actually tied to the image filter. All you need is to force the original layer image to have a transparent border of pixels, which can be done by simply outsetting by 1 pixel: https://fiddle.skia.org/c/02703075c5a950aeb45f4ec3815615fb.  \n\n1 pixel in device space - so I presume we\u0027d need to adjust for the local coordinate system.  Wouldn\u0027t that defeat clamp\u0027s purpose though?\n\nOh wait, I think I\u0027m starting to see the light: Skottie only uses kclamp to support gaussian blur effect semantics (repeat edge pixels option) -- but this bug is related to mask feathers, which shouldn\u0027t be using kclamp to begin with.  We only trigger the issue because sksg::BlurImageFilter\u0027s tile mode defaults to clamp [1] and we forgot to reset for masks, doh!  done.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/sksg/include/SkSGRenderEffect.h;drc\u003dfe0de30a87bd084a04ddf27ab542676f72dd35cc;l\u003d222",
+      "parentUuid": "26243d26_d0cf8b34",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 70
+      },
+      "revId": "be5871063160770dd2019b4f1f3f12870131d7c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
