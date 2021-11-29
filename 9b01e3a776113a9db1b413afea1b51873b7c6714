@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a901ee_c19f24f5",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-29T20:08:02Z",
+      "side": 1,
+      "message": "Putting \"Color\" in this helped remind me about what this is doing.",
+      "range": {
+        "startLine": 358,
+        "startChar": 22,
+        "endLine": 358,
+        "endChar": 36
+      },
+      "revId": "9b01e3a776113a9db1b413afea1b51873b7c6714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba4b893_46745807",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-11-29T20:08:02Z",
+      "side": 1,
+      "message": "Here lies the problem. After my last change texCoordShader wasn\u0027t actually applied properly. It should apply to the original shader before the blend with colors.",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 490,
+        "endChar": 9
+      },
+      "revId": "9b01e3a776113a9db1b413afea1b51873b7c6714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
