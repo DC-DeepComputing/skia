@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0d5f8c0_86f11c87",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:01:37Z",
+      "side": 1,
+      "message": "I\u0027m not sure about D3D, but in vulkan the color and resolve attachments each have their own load/store ops. So vulkan could store for sure. I think if the caller is passing in the resolve attachment (assuming it is generic and has a load/store op), we should assert the resolves store op is a Store.",
+      "parentUuid": "641283bf_81871662",
+      "range": {
+        "startLine": 108,
+        "startChar": 42,
+        "endLine": 108,
+        "endChar": 74
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2457d29_08e326d9",
         "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
         "patchSetId": 2
@@ -190,6 +214,30 @@
       "side": 1,
       "message": "We do. It\u0027s stored in the RenderPassTask as the description of its renderpass, and currently we don\u0027t instantiate until we call RenderPassTask::addCommands().",
       "parentUuid": "c2457d29_08e326d9",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba243d9_e49b3e61",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T18:01:37Z",
+      "side": 1,
+      "message": "So in an ideal world the RenderPassDesc would just have a description of the attachments without needing the specific attachment. Now for color attachments this is essentially what the Proxy is except it can later be instantiated to a real Texture. It seems like it would be waste to basically copy the internals of the class and remove the instantiate just to have a \"pure\" description. So I think for the color attachments having a pointer to the proxy is fine since we already have and need that proxy for other things.\n\nBut for the depth and stencil there is no need to have an actual proxy earlier since we are never saving a depth/stencil and reusing it later (with the same data). So I wonder if the RenderPassDesc can just a flag to say that it has a D/S on it. I believe we agreed that D/S load/store will always both be discard (maybe there is clear load???). Also I believe we\u0027ll always pick the same format for the cases of DepthOnly, StencilOnly, or DepthAndStencil. The sample counts should match the color attachments, right? So it seems like we could easily describe that attachment fully using our DepthStencilType enum and a Load op. Though technically I don\u0027t think the load/stores are even needed until beginRenderPass, but we can just include them in the Desc since we\u0027ll already have them.\n\nThen when we doing beginRenderPass, we pass in an all the actual Attachments directly (maybe wrapped in a Framebuffer type object if thats useful).\n\nCommandBuffer::beginRenderPass(const RenderPassDesc\u0026, sk_sp\u003cTexture\u003e colorAttachment, sk_sp\u003cTexture\u003e resolve, sk_sp\u003cTexture\u003e DSAttachment);",
+      "parentUuid": "94af6122_f54bed06",
       "range": {
         "startLine": 114,
         "startChar": 8,
