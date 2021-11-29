@@ -16,6 +16,29 @@
       "message": "This will need to wait until the ASAN issue is addressed in its parent CL, but I think it\u0027s still useful to get an initial review on this, since the ASAN fix won\u0027t fundamentally change the parent.",
       "revId": "fc80c89cbf4198541ed8f4b73deef6c55f6584e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "696ed4d5_138a2462",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-11-29T21:17:07Z",
+      "side": 1,
+      "message": "Maybe an \"auto\u0026\" here ?",
+      "range": {
+        "startLine": 424,
+        "startChar": 16,
+        "endLine": 424,
+        "endChar": 20
+      },
+      "revId": "fc80c89cbf4198541ed8f4b73deef6c55f6584e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
