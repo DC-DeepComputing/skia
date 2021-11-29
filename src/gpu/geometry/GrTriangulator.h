@@ -284,11 +284,14 @@ struct GrTriangulator::Vertex {
     , fID (-1.0f)
 #endif
     {}
+
     SkPoint fPoint;               // Vertex position
     Vertex* fPrev;                // Linked list of contours, then Y-sorted vertices.
     Vertex* fNext;                // "
+
     Edge*   fFirstEdgeAbove;      // Linked list of edges above this vertex.
     Edge*   fLastEdgeAbove;       // "
+
     Edge*   fFirstEdgeBelow;      // Linked list of edges below this vertex.
     Edge*   fLastEdgeBelow;       // "
     Edge*   fLeftEnclosingEdge;   // Nearest edge in the AEL left of this vertex.
@@ -300,6 +303,17 @@ struct GrTriangulator::Vertex {
     float   fID;                  // Identifier used for logging.
 #endif
     bool isConnected() const { return this->fFirstEdgeAbove || this->fFirstEdgeBelow; }
+
+    bool isValid() const;
+
+    bool almost(Vertex* other) const {
+        static const float kEps = 0.000001f;
+
+        double dX = abs(fPoint.fX - other->fPoint.fX);
+        double dY = abs(fPoint.fY - other->fPoint.fY);
+
+        return dX < kEps && dY < kEps;
+    }
 };
 
 struct GrTriangulator::VertexList {
@@ -438,28 +452,52 @@ struct GrTriangulator::Edge {
     void insertBelow(Vertex*, const Comparator&);
     void disconnect();
     bool intersect(const Edge& other, SkPoint* p, uint8_t* alpha = nullptr) const;
+
+    bool almost(const Edge* other) const {
+        return fTop->almost(other->fTop) && fBottom->almost(other->fBottom);
+    }
 };
 
 struct GrTriangulator::EdgeList {
     EdgeList() : fHead(nullptr), fTail(nullptr) {}
     Edge* fHead;
     Edge* fTail;
-    void insert(Edge* edge, Edge* prev, Edge* next);
-    void insert(Edge* edge, Edge* prev);
-    void append(Edge* e) { insert(e, fTail, nullptr); }
+    void insert1(Edge* edge, Edge* prev, Edge* next);
+    void insert2(Edge* edge, Edge* prev);
+    void append(Edge* e) { insert1(e, fTail, nullptr); }
     void remove(Edge* edge);
     void removeAll() {
         while (fHead) {
             this->remove(fHead);
         }
     }
-    void close() {
-        if (fHead && fTail) {
-            fTail->fRight = fHead;
-            fHead->fLeft = fTail;
+
+#ifdef SK_DEBUG
+    bool contains1(Edge* edge) const { return edge->fLeft || edge->fRight || fHead == edge; }
+    bool contains2(Edge* edge) const {
+        for (Edge* e = fHead; e; e = e->fRight) {
+            if (e == edge) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void print(const char* label) const {
+        int num = 0;
+        for (Edge* e = fHead; e; e = e->fRight) {
+            ++num;
+        }
+
+        SkDebugf("%s %d:\n", label, num);
+        num = 0;
+        for (Edge* e = fHead; e; e = e->fRight) {
+            SkDebugf("%d: (%g, %g)-(%g, %g)\n", num,
+                     e->fTop->fPoint.fX, e->fTop->fPoint.fY,
+                     e->fBottom->fPoint.fX, e->fBottom->fPoint.fY);
+            ++num;
         }
     }
-    bool contains(Edge* edge) const { return edge->fLeft || edge->fRight || fHead == edge; }
+#endif
 };
 
 struct GrTriangulator::MonotonePoly {

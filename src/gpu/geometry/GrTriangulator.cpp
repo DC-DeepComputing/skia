@@ -17,6 +17,8 @@
 #include <algorithm>
 
 
+#define TESS_LOG1 SkDebugf
+
 #if TRIANGULATOR_LOGGING
 #define TESS_LOG printf
 #define DUMP_MESH(M) (M).dump()
@@ -201,6 +203,8 @@ static bool recursive_edge_intersect(const Line& u, SkPoint u0, SkPoint u1,
     *t = tNumer / denom;
     SkASSERT(*s >= 0.0 && *s <= 1.0 && *t >= 0.0 && *t <= 1.0);
 
+    SkDebugf("s %g t %g\n", *s, *t);
+
     const bool uNeedsSplit = edge_line_needs_recursion(u0, u1);
     const bool vNeedsSplit = edge_line_needs_recursion(v0, v1);
     if (!uNeedsSplit && !vNeedsSplit) {
@@ -272,7 +276,7 @@ bool GrTriangulator::Edge::intersect(const Edge& other, SkPoint* p, uint8_t* alp
             // triangulation could leech transparency into the inner fill region.
             *alpha = 255;
         } else if (fType == EdgeType::kOuter && other.fType == EdgeType::kOuter) {
-            // Trivially, the intersection will be fully transparent since since it is by
+            // Trivially, the intersection will be fully transparent since it is by
             // construction on the outer edge.
             *alpha = 0;
         } else {
@@ -286,13 +290,24 @@ bool GrTriangulator::Edge::intersect(const Edge& other, SkPoint* p, uint8_t* alp
     return true;
 }
 
-void GrTriangulator::EdgeList::insert(Edge* edge, Edge* prev, Edge* next) {
+void GrTriangulator::EdgeList::insert1(Edge* edge, Edge* prev, Edge* next) {
+    int index = 0;
+    for (Edge* cur = fHead; cur; cur = cur->fRight) {
+        if (edge->almost(cur)) {
+            SkDebugf("duplicate edge %d: (%g, %g)-(%g, %g)\n",
+                     index,
+                     edge->fTop->fPoint.fX, edge->fTop->fPoint.fY,
+                     edge->fBottom->fPoint.fX, edge->fBottom->fPoint.fY);
+        }
+        ++index;
+    }
+
     list_insert<Edge, &Edge::fLeft, &Edge::fRight>(edge, prev, next, &fHead, &fTail);
 }
 
 void GrTriangulator::EdgeList::remove(Edge* edge) {
     TESS_LOG("removing edge %g -> %g\n", edge->fTop->fID, edge->fBottom->fID);
-    SkASSERT(this->contains(edge));
+    SkASSERT(this->contains1(edge));
     list_remove<Edge, &Edge::fLeft, &Edge::fRight>(edge, &fHead, &fTail);
 }
 
@@ -635,11 +650,11 @@ Edge* GrTriangulator::makeEdge(Vertex* prev, Vertex* next, EdgeType type,
     return this->allocateEdge(top, bottom, winding, type);
 }
 
-void EdgeList::insert(Edge* edge, Edge* prev) {
+void EdgeList::insert2(Edge* edge, Edge* prev) {
     TESS_LOG("inserting edge %g -> %g\n", edge->fTop->fID, edge->fBottom->fID);
-    SkASSERT(!this->contains(edge));
+    SkASSERT(!this->contains1(edge));
     Edge* next = prev ? prev->fRight : fHead;
-    this->insert(edge, prev, next);
+    this->insert1(edge, prev, next);
 }
 
 void GrTriangulator::FindEnclosingEdges(Vertex* v, EdgeList* edges, Edge** left, Edge** right) {
@@ -730,7 +745,7 @@ static void rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
         }
         Edge* leftEdge = v->fLeftEnclosingEdge;
         for (Edge* e = v->fFirstEdgeAbove; e; e = e->fNextEdgeAbove) {
-            activeEdges->insert(e, leftEdge);
+            activeEdges->insert2(e, leftEdge);
             leftEdge = e;
             Vertex* top = e->fTop;
             if (c.sweep_lt(top->fPoint, dst->fPoint) &&
@@ -898,7 +913,7 @@ bool GrTriangulator::splitEdge(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     Vertex* top;
     Vertex* bottom;
     int winding = edge->fWinding;
-    // Theoretically, and ideally, the edge betwee p0 and p1 is being split by v, and v is "between"
+    // Theoretically, and ideally, the edge between p0 and p1 is being split by v, and v is "between"
     // the segment end points according to c. This is equivalent to p0 < v < p1.  Unfortunately, if
     // v was clamped/rounded this relation doesn't always hold.
     if (c.sweep_lt(v->fPoint, edge->fTop->fPoint)) {
@@ -1073,7 +1088,13 @@ bool GrTriangulator::checkForIntersection(Edge* left, Edge* right, EdgeList* act
     uint8_t alpha;
     if (left->intersect(*right, &p, &alpha) && p.isFinite()) {
         Vertex* v;
-        TESS_LOG("found intersection, pt is %g, %g\n", p.fX, p.fY);
+        TESS_LOG1("found intersection, pt is %g, %g from (%g, %g)-(%g, %g) | (%g, %g)-(%g, %g)\n",
+                  p.fX, p.fY,
+                  left->fTop->fPoint.fX, left->fTop->fPoint.fY,
+                  left->fBottom->fPoint.fX, left->fBottom->fPoint.fY,
+                  right->fTop->fPoint.fX, right->fTop->fPoint.fY,
+                  right->fBottom->fPoint.fX, right->fBottom->fPoint.fY);
+
         Vertex* top = *current;
         // If the intersection point is above the current vertex, rewind to the vertex above the
         // intersection.
@@ -1301,11 +1322,45 @@ static void validate_edge_list(EdgeList* edges, const Comparator& c) {
 }
 #endif
 
+bool GrTriangulator::Vertex::isValid() const {
+
+    // Edges above
+    {
+        Edge *prev = nullptr;
+        for (Edge* cur = fFirstEdgeAbove; cur; prev = cur, cur = cur->fNextEdgeAbove) {
+            SkASSERT(cur->fBottom == this);
+
+            SkASSERT(cur->fPrevEdgeAbove == prev);
+            if (prev) {
+                SkASSERT(cur->isRightOf(prev->fTop));
+            }
+        }
+
+        SkASSERT(prev == fLastEdgeAbove);
+    }
+
+    // edges below
+    {
+        Edge *prev = nullptr;
+        for (Edge* cur = fFirstEdgeBelow; cur; prev = cur, cur = cur->fNextEdgeBelow) {
+            SkASSERT(cur->fTop == this);
+
+            SkASSERT(cur->fPrevEdgeBelow == prev);
+            if (prev) {
+                SkASSERT(cur->isRightOf(prev->fBottom));
+            }
+        }
+
+        SkASSERT(prev == fLastEdgeBelow);
+    }
+
+    return true;
+}
 // Stage 4: Simplify the mesh by inserting new vertices at intersecting edges.
 
 GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                                                         const Comparator& c) {
-    TESS_LOG("simplifying complex polygons\n");
+    TESS_LOG1("------------------- simplifying complex polygons\n");
 
     int initialNumEdges = fNumEdges;
 
@@ -1327,10 +1382,20 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
         Edge* rightEnclosingEdge;
         bool restartChecks;
         do {
-            TESS_LOG("\nvertex %g: (%g,%g), alpha %d\n",
-                     v->fID, v->fPoint.fX, v->fPoint.fY, v->fAlpha);
+#ifdef SK_DEBUG
+            activeEdges.print("activeEdges");
+            validate_edge_list(&activeEdges, c);
+#endif
+            SkASSERT(v->isValid());
+
+            TESS_LOG1("\nvertex: (%g,%g), alpha %d\n",
+                      v->fPoint.fX, v->fPoint.fY, v->fAlpha);
             restartChecks = false;
             FindEnclosingEdges(v, &activeEdges, &leftEnclosingEdge, &rightEnclosingEdge);
+
+//            SkASSERT(activeEdges.contains2(leftEnclosingEdge));
+//            SkASSERT(activeEdges.contains2(rightEnclosingEdge));
+
             v->fLeftEnclosingEdge = leftEnclosingEdge;
             v->fRightEnclosingEdge = rightEnclosingEdge;
             if (v->fFirstEdgeBelow) {
@@ -1339,6 +1404,7 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                             leftEnclosingEdge, edge, &activeEdges, &v, mesh, c) ||
                         this->checkForIntersection(
                             edge, rightEnclosingEdge, &activeEdges, &v, mesh, c)) {
+                        SkDebugf("case1\n");
                         result = SimplifyResult::kFoundSelfIntersection;
                         restartChecks = true;
                         break;
@@ -1347,6 +1413,7 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
             } else {
                 if (this->checkForIntersection(leftEnclosingEdge, rightEnclosingEdge, &activeEdges,
                                                &v, mesh, c)) {
+                    SkDebugf("case2\n");
                     result = SimplifyResult::kFoundSelfIntersection;
                     restartChecks = true;
                 }
@@ -1361,7 +1428,7 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
         }
         Edge* leftEdge = leftEnclosingEdge;
         for (Edge* e = v->fFirstEdgeBelow; e; e = e->fNextEdgeBelow) {
-            activeEdges.insert(e, leftEdge);
+            activeEdges.insert2(e, leftEdge);
             leftEdge = e;
         }
     }
@@ -1457,10 +1524,10 @@ std::tuple<Poly*, bool> GrTriangulator::tessellate(const VertexList& vertices, c
             }
             Edge* leftEdge = v->fFirstEdgeBelow;
             leftEdge->fLeftPoly = leftPoly;
-            activeEdges.insert(leftEdge, leftEnclosingEdge);
+            activeEdges.insert2(leftEdge, leftEnclosingEdge);
             for (Edge* rightEdge = leftEdge->fNextEdgeBelow; rightEdge;
                  rightEdge = rightEdge->fNextEdgeBelow) {
-                activeEdges.insert(rightEdge, leftEdge);
+                activeEdges.insert2(rightEdge, leftEdge);
                 int winding = leftEdge->fLeftPoly ? leftEdge->fLeftPoly->fWinding : 0;
                 winding += leftEdge->fWinding;
                 if (winding != 0) {
