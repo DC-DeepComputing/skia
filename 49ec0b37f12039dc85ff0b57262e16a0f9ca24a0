@@ -294,6 +294,30 @@
       },
       "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a497df8_672703ce",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-29T21:57:10Z",
+      "side": 1,
+      "message": "Yeah moving the proxies off completely sounds good to me. I think RenderPassDesc could still be a fine name (I personally like it better than LoadStoreDesc, but also happy to hear other suggestions). You could have something like:\n\nstruct AttachmentDesc {\n    TextureInfo fInfo;\n    LoadOp fLoadOp;\n    StoreOp fStoreOp;\n}\n\nstruct RenderPassDesc {\n    AttachmentDesc fColorAttachment; // Eventually will be an array here\n    AttachmentDesc fResolveAttachment;\n    AttachmentDesc fStencilAttachment;\n\n    // Eventually we\u0027ll have more info here like number of subpasses and which\n    // attachments are used in each subpass. But for now its always one.\n};\n\nThen yeah beginRenderPass will take a RenderPassDesc and Framebuffer class. We\u0027ll validate the Framebuffer\u0027s Textures are compatible with the RenderPassDesc attachments.",
+      "parentUuid": "7bb81edc_3a21fc47",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
