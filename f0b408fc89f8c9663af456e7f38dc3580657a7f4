@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66e395e_3bd49656",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-30T00:52:14Z",
+      "side": 1,
+      "message": "In a follow up CL, the pipelineDescs array is going to stay owned by the DrawPass, but the map from desc to uint32_t will be temporary to ::Make(). Let me know on that CL if you still want the logic grouped together.",
+      "parentUuid": "c56f4f16_16e1ee58",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 92
+      },
+      "revId": "f0b408fc89f8c9663af456e7f38dc3580657a7f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d38301_a504f524",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-11-29T20:08:20Z",
       "side": 1,
       "message": "Maybe remove this comment?",
+      "revId": "f0b408fc89f8c9663af456e7f38dc3580657a7f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85c91e4_8a2bf3b7",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-30T00:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38d38301_a504f524",
       "revId": "f0b408fc89f8c9663af456e7f38dc3580657a7f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
