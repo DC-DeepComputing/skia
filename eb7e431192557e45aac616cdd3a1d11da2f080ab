@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d121bea_1cdc9398",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-30T01:04:36Z",
+      "side": 1,
+      "message": "As part of the rebase, and based on the fix for the ASAN failures in the parent CL, this has switched from std::vector to SkTBlockList.",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "eb7e431192557e45aac616cdd3a1d11da2f080ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
