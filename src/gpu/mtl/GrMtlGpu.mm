@@ -39,7 +39,7 @@ GR_NORETAIN_BEGIN
 
 #if GR_TEST_UTILS
 // set to 1 if you want to do GPU capture of each commandBuffer
-#define GR_METAL_CAPTURE_COMMANDBUFFER 0
+#define GR_METAL_CAPTURE_COMMANDBUFFER 1
 #endif
 
 sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextOptions& options,

@@ -28,6 +28,7 @@ const Gpu* ResourceProvider::mtlGpu() {
 }
 
 sk_sp<skgpu::CommandBuffer> ResourceProvider::createCommandBuffer() {
+    const_cast<Gpu*>(this->mtlGpu())->testingOnly_startCapture();
     return CommandBuffer::Make(this->mtlGpu());
 }
 

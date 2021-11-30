@@ -298,7 +298,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             if (step->numUniforms() > 0) {
                 // TODO: Get layout from the GPU
                 geometryIndex = geometryUniformBindings.addUniforms(
-                        step->writeUniforms(Layout::kMetal, draw.fShape));
+                        step->writeUniforms(Layout::kMetal, draw.fTransform, draw.fShape));
             }
 
             GraphicsPipelineDesc desc;
@@ -342,6 +342,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     uint32_t lastShadingUniforms = UniformCache::kInvalidUniformID;
     uint32_t lastGeometryUniforms = UniformCache::kInvalidUniformID;
     SkIRect lastScissor = SkIRect::MakeSize(drawPass->fTarget->dimensions());
+
+    float rtAdjust[4] = {2.f / drawPass->fTarget->dimensions().fWidth, 2.f / drawPass->fTarget->dimensions().fHeight, -1.f, -1.f};
+    auto [rtWriter, rtBind] = bufferMgr->getUniformWriter(4 * sizeof(float));
+    rtWriter.write(rtAdjust, 4 * sizeof(float));
+    drawPass->fCommands.emplace_back(BindUniformBuffer{rtBind, UniformSlot::kStatic});
 
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = *key.draw();
@@ -393,7 +398,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
         }
 
-        renderStep.writeVertices(&drawWriter, draw.fShape);
+        renderStep.writeVertices(&drawWriter, draw.fTransform, draw.fShape);
     }
     // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();

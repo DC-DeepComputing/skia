@@ -24,10 +24,11 @@
 #include "experimental/graphite/src/TextureProxy.h"
 #include "experimental/graphite/src/UniformManager.h"
 #include "experimental/graphite/src/geom/Shape.h"
+#include "experimental/graphite/src/geom/Transform_graphite.h"
 
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
-#define CAPTURE_COMMANDBUFFER 0
+#define CAPTURE_COMMANDBUFFER 1
 #endif
 
 using namespace skgpu;
@@ -51,12 +52,12 @@ public:
                "out.position.zw = float2(0.0, 1.0);\n";
     }
 
-    void writeVertices(DrawWriter* writer, const Shape&) const override {
+    void writeVertices(DrawWriter* writer, const Transform&, const Shape&) const override {
         // This RenderStep ignores shape and just needs to draw 4 data-less vertices
         writer->draw({}, {}, 4);
     }
 
-    sk_sp<UniformData> writeUniforms(Layout, const Shape&) const override {
+    sk_sp<UniformData> writeUniforms(Layout,  const Transform&, const Shape&) const override {
         return nullptr;
     }
 
@@ -85,12 +86,12 @@ public:
                "out.position.zw = float2(0.0, 1.0);\n";
     }
 
-    void writeVertices(DrawWriter* writer, const Shape&) const override {
+    void writeVertices(DrawWriter* writer,  const Transform&, const Shape&) const override {
         // The shape is upload via uniforms, so this just needs to record 4 data-less vertices
         writer->draw({}, {}, 4);
     }
 
-    sk_sp<UniformData> writeUniforms(Layout layout, const Shape& shape) const override {
+    sk_sp<UniformData> writeUniforms(Layout layout, const Transform&,  const Shape& shape) const override {
         SkASSERT(shape.isRect());
         // TODO: A << API for uniforms would be nice, particularly if it could take pre-computed
         // offsets for each uniform.
@@ -129,7 +130,7 @@ public:
                "out.position.zw = float2(0.0, 1.0);\n";
     }
 
-    void writeVertices(DrawWriter* writer, const Shape& shape) const override {
+    void writeVertices(DrawWriter* writer, const Transform&,  const Shape& shape) const override {
         DrawBufferManager* bufferMgr = writer->bufferManager();
         auto [vertexWriter, vertices] = bufferMgr->getVertexWriter(4 * this->vertexStride());
         vertexWriter << 0.5f * (shape.rect().left() + 1.f)  << 0.5f * (shape.rect().top() + 1.f)
@@ -145,7 +146,7 @@ public:
         writer->draw(vertices, indices, 6);
     }
 
-    sk_sp<UniformData> writeUniforms(Layout layout, const Shape&) const override {
+    sk_sp<UniformData> writeUniforms(Layout layout, const Transform&,  const Shape&) const override {
         auto uniforms = UniformData::Make(this->numUniforms(), this->uniforms().data(),
                                           sizeof(float) * 4);
         float data[4] = {2.f, 2.f, -1.f, -1.f};
@@ -180,7 +181,7 @@ public:
                "out.position.zw = float2(0.0, 1.0);\n";
     }
 
-    void writeVertices(DrawWriter* writer, const Shape& shape) const override {
+    void writeVertices(DrawWriter* writer, const Transform&, const Shape& shape) const override {
         SkASSERT(shape.isRect());
 
         DrawBufferManager* bufferMgr = writer->bufferManager();
@@ -196,7 +197,7 @@ public:
         instanceWriter << shape.rect().topLeft() << shape.rect().size();
     }
 
-    sk_sp<UniformData> writeUniforms(Layout, const Shape&) const override {
+    sk_sp<UniformData> writeUniforms(Layout, const Transform&, const Shape&) const override {
         return nullptr;
     }
 
@@ -258,6 +259,11 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     commandBuffer->beginRenderPass(renderPassDesc);
 
+    float unitRTAdjust[4] = {1.f, 1.f, 0.f, 0.f};
+    auto [rtWriter, rtBind] = bufferMgr.getUniformWriter(4 * sizeof(float));
+    rtWriter.write(unitRTAdjust, 4 * sizeof(float));
+    commandBuffer->bindUniformBuffer(UniformSlot::kStatic, sk_ref_sp(rtBind.fBuffer), rtBind.fOffset);
+
     DrawWriter drawWriter(commandBuffer->asDrawDispatcher(), &bufferMgr);
 
     struct RectAndColor {
@@ -275,11 +281,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
         auto pipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
         commandBuffer->bindGraphicsPipeline(std::move(pipeline));
 
+        Transform identity{SkM44()};
+
         for (auto d : draws) {
             drawWriter.newDynamicState();
             Shape shape(d.fRect);
 
-            auto renderStepUniforms = step->writeUniforms(Layout::kMetal, shape);
+            auto renderStepUniforms = step->writeUniforms(Layout::kMetal, identity, shape);
             if (renderStepUniforms) {
                 auto [writer, bindInfo] =
                         bufferMgr.getUniformWriter(renderStepUniforms->dataSize());
@@ -296,7 +304,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
                                              sk_ref_sp(bindInfo.fBuffer),
                                              bindInfo.fOffset);
 
-            step->writeVertices(&drawWriter, shape);
+            step->writeVertices(&drawWriter, identity, shape);
         }
     };
 

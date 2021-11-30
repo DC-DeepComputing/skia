@@ -28,16 +28,16 @@ public:
     id<MTLCommandQueue> queue() const { return fQueue.get(); }
 
     const Caps& mtlCaps() const { return static_cast<const Caps&>(*this->caps()); }
-
+#if GRAPHITE_TEST_UTILS
+    void testingOnly_startCapture() override;
+    void testingOnly_endCapture() override;
+#endif
 private:
     Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>, sk_sp<const Caps>);
 
     bool onSubmit(sk_sp<skgpu::CommandBuffer>) override;
 
-#if GRAPHITE_TEST_UTILS
-    void testingOnly_startCapture() override;
-    void testingOnly_endCapture() override;
-#endif
+
 
     sk_cfp<id<MTLDevice>> fDevice;
     sk_cfp<id<MTLCommandQueue>> fQueue;

@@ -160,6 +160,9 @@ void CommandBuffer::onBindUniformBuffer(UniformSlot slot,
 
     unsigned int bufferIndex;
     switch(slot) {
+        case UniformSlot::kStatic:
+            bufferIndex = GraphicsPipeline::kStaticUniformBufferIndex;
+            break;
         case UniformSlot::kRenderStep:
             bufferIndex = GraphicsPipeline::kRenderStepUniformBufferIndex;
             break;

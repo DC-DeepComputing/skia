@@ -41,6 +41,7 @@ Gpu::Gpu(sk_cfp<id<MTLDevice>> device, sk_cfp<id<MTLCommandQueue>> queue, sk_sp<
     , fQueue(std::move(queue)) {
     this->initCompiler();
     fResourceProvider.reset(new ResourceProvider(this));
+    this->testingOnly_startCapture();
 }
 
 Gpu::~Gpu() {
@@ -72,7 +73,7 @@ bool Gpu::onSubmit(sk_sp<skgpu::CommandBuffer> commandBuffer) {
 
     std::unique_ptr<WorkSubmission> submission(new WorkSubmission(mtlCmdBuffer));
     new (fOutstandingSubmissions.push_back()) OutstandingSubmission(std::move(submission));
-
+    this->testingOnly_endCapture();
     return true;
 }
 
