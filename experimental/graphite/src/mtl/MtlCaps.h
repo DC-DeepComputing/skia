@@ -39,7 +39,6 @@ public:
 
     bool isTexturable(const skgpu::TextureInfo&) const override;
     bool isRenderable(const skgpu::TextureInfo&) const override;
-
 private:
     void initGPUFamily(const id<MTLDevice>);
 
