@@ -847,6 +847,30 @@ void Device::drawVertices(const SkVertices* vertices,
                                       nullptr);
 }
 
+void Device::drawCustomMesh(SkCustomMesh customMesh,
+                             sk_sp<SkBlender> blender,
+                             const SkPaint& paint) {
+    ASSERT_SINGLE_OWNER
+    GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::v1::Device", "drawCustomMesh", fContext.get());
+    SkASSERT(customMesh.vb);
+
+    GrPaint grPaint;
+    if (!paint.getShader()) {
+        blender = SkBlender::Mode(SkBlendMode::kDst);
+    }
+    SkPaintToGrPaintWithBlend(fContext.get(),
+                              fSurfaceDrawContext->colorInfo(),
+                              paint,
+                              this->asMatrixProvider(),
+                              paint.getShader() ? blender.get()
+                                                : SkBlender::Mode(SkBlendMode::kDst).get(),
+                              &grPaint);
+    fSurfaceDrawContext->drawCustomMesh(this->clip(),
+                                        std::move(grPaint),
+                                        this->asMatrixProvider(),
+                                        std::move(customMesh));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void Device::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {

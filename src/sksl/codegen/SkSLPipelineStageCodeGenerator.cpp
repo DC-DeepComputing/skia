@@ -305,7 +305,7 @@ void PipelineStageCodeGenerator::writeSwitchStatement(const SwitchStatement& s) 
 
 String PipelineStageCodeGenerator::functionName(const FunctionDeclaration& decl) {
     if (decl.isMain()) {
-        return String(decl.name());
+        return String(fCallbacks->getMainName());
     }
 
     auto it = fFunctionNames.find(&decl);
@@ -328,7 +328,7 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
     // obscure bug.
     const FunctionDeclaration& decl = f.declaration();
     if (decl.isMain()) {
-        fCastReturnsToHalf = true;
+        fCastReturnsToHalf = fCallbacks->coerceMainReturnToHalf4();
     }
 
     for (const std::unique_ptr<Statement>& stmt : f.body()->as<Block>().children()) {
