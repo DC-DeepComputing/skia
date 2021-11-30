@@ -46,6 +46,30 @@
       },
       "revId": "9e2ba779df4b301825a78d8ea0c1822e448fa7cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a584a0c4_67d65694",
+        "filename": "tests/sksl/runtime/ComplexDatatypesComparison.skvm",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-11-30T16:20:01Z",
+      "side": 1,
+      "message": "There are \"constant\" commands in between that just disappear and the result looks weird. I tried to update the test to have less repeating values (so less constant commands are removed).",
+      "parentUuid": "14644346_65de8c46",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 24
+      },
+      "revId": "9e2ba779df4b301825a78d8ea0c1822e448fa7cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
