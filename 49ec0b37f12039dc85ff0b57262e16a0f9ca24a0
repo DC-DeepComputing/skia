@@ -342,6 +342,30 @@
       },
       "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1f61ae6_8224b3f8",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-11-30T21:32:49Z",
+      "side": 1,
+      "message": "Revised based on outside discussion.",
+      "parentUuid": "67896b8a_4aa9f856",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "49ec0b37f12039dc85ff0b57262e16a0f9ca24a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
