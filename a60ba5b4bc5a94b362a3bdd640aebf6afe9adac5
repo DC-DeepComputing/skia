@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f651ec_6bed060e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-30T22:15:42Z",
+      "side": 1,
+      "message": "The one comment I have is tangential to this change (since it was just a refactor of existing code). So we can handle it in another CL, just starting the discussion here.",
+      "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d83594e2_34cd9b55",
+        "filename": "experimental/graphite/src/CommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-30T22:15:42Z",
+      "side": 1,
+      "message": "What are we trying to capture here in terms of work? If I made a renderpass that had not draws but just did color attachment load then store, I would claim there is no work and we could drop the command buffer (assuming no other work of course). If we just care if things are recorded on the command buffer than I don\u0027t think we need an check at all here, just always set work. If we do want the check it seems like the interesting thing in terms of the render pass is if we do a Load::kClear and then either Store::kStore the colorAttachment or resolve (resolve store should always be kStore if the attachment exists).",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
