@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54d7d2ad_47eebbde",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-30T15:28:25Z",
+      "side": 1,
+      "message": "I\u0027m fine with this for now, but I wonder if we want to move this to a single virtual on command buffer and pass in the whole fCommands array. Obviously this means making Commands be public. I think these has two benefits. First is just less virtual calls are needed (1 vs N). Second, I think this makes it easier to move to a world where the Recordings on a thread are just generic command streams and then they can easily be played back on the main thread. Obvious down side is that this loop will now exists in all the backend command buffers.",
+      "range": {
+        "startLine": 419,
+        "startChar": 1,
+        "endLine": 458,
+        "endChar": 5
+      },
+      "revId": "526d09495a89284e687d36d963f9c8e09dc221ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
