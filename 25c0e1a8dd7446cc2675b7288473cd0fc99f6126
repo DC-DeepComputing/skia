@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d16e9aab_1c798bad",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 3635,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2021-11-30T00:28:52Z",
+      "side": 1,
+      "message": "Does it mean we need a gpu device to convert blob to slug? In renderer,  I think we don\u0027t have a gpu device when we record draw or serialize textblob paint op, can skia convert textblob to slug without a gpu device?",
+      "range": {
+        "startLine": 3635,
+        "startChar": 0,
+        "endLine": 3635,
+        "endChar": 33
+      },
+      "revId": "25c0e1a8dd7446cc2675b7288473cd0fc99f6126",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
