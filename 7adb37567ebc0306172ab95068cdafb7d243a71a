@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adc18432_880fec73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-30T20:00:55Z",
+      "side": 1,
+      "message": "This seems mostly more-or-less in line with the rest of the Bazel build, so I will allow it. With notes about how the shaper is built.",
+      "revId": "7adb37567ebc0306172ab95068cdafb7d243a71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d40075_cabe0afb",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-30T20:00:55Z",
+      "side": 1,
+      "message": "I know it isn\u0027t as interesting for the wasm build, but there\u0027s also the coretext_shaper.",
+      "revId": "7adb37567ebc0306172ab95068cdafb7d243a71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3b116c1_e3986df8",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-30T20:00:55Z",
+      "side": 1,
+      "message": "I think this can be multiple? In fact, it\u0027s structured a bit differently in the gn build in that the primitive sources are always included and the HarfBuzz and CoreText ones are optional. I\u0027m not sure the current code should link correctly if the primitive one isn\u0027t compiled in (since it will be used unconditionally in the current code, I think).",
+      "revId": "7adb37567ebc0306172ab95068cdafb7d243a71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
