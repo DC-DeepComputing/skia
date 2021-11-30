@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b2c2b7a_08457886",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-30T18:43:08Z",
+      "side": 1,
+      "message": "Good idea; it makes the caller\u0027s lives easier and saves a hash lookup. Done.",
+      "parentUuid": "c7bb638a_9e5ac3f1",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 5
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3416a45b_58eff98c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4401c27_f9e2685f",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-30T18:43:08Z",
+      "side": 1,
+      "message": "\"// Append slot names and types to our debug slot-info table.\"",
+      "parentUuid": "3416a45b_58eff98c",
+      "range": {
+        "startLine": 586,
+        "startChar": 33,
+        "endLine": 586,
+        "endChar": 42
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a84be1e5_e2d141bb",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-11-30T17:40:14Z",
       "side": 1,
       "message": "nit: likewise - this is used for both variables and return values...",
+      "range": {
+        "startLine": 594,
+        "startChar": 39,
+        "endLine": 594,
+        "endChar": 51
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4851f4e_64fcbe50",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-11-30T18:43:08Z",
+      "side": 1,
+      "message": "\"// Create brand new slots initialized to zero.\"",
+      "parentUuid": "a84be1e5_e2d141bb",
       "range": {
         "startLine": 594,
         "startChar": 39,
