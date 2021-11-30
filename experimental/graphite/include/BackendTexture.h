@@ -43,6 +43,7 @@ private:
 #ifdef SK_METAL
         sk_cfp<mtl::Handle> fMtlTexture;
 #endif
+        int foo;
     };
 };
 

@@ -55,9 +55,50 @@ void Context::submit(SyncToCpu syncToCpu) {
     fRecordings.clear();
 }
 
-void Context::preCompile(const PaintCombo& paintCombo) {
-    for (auto bm: paintCombo.fBlendModes) {
-        for (auto& shaderCombo: paintCombo.fShaders) {
+static SkBlendMode foo(BlendModeCombinations bm) {
+    switch (bm) {
+        case kSrcOver:
+            return SkBlendMode::kSrcOver;
+        case kSrc:
+            return SkBlendMode::kSrc;
+    }
+
+    return SkBlendMode::kSrc;
+}
+
+const ShaderCombo2::Iter ShaderCombo2::Iter::kEnd = { true, {0, 0, 0}};
+
+//std::vector<Combination>
+void PaintCombinations::getCombos() const {
+    for (auto& sc : fShaderCombos) {
+        for (ShaderCombo2::Iter iter = sc->begin(); iter != ShaderCombo2::Iter::kEnd; ) {
+
+            int code = sc->getCode(iter);
+            for (int b = 0x01; b <= kMax; b <<= 1) {
+                if (!(fBlendModes & b)) {
+                    continue;
+                }
+                SkBlendMode bm = foo((BlendModeCombinations) b);
+
+                SkDebugf("%d %d\n", code, (int) bm);
+                //            Combination c {shaderType, tm, bm};
+
+            }
+        }
+    }
+}
+
+void Context::preCompile(const PaintCombinations& combinations) {
+
+//    std::vector<Combination> combos =
+    combinations.getCombos();
+//    for (Combination c : combos) {
+//
+    //}
+
+//    for (auto bm: combinations.fBlendModes) {
+        //for (auto& shaderCombo: combinations.fShaderCombos) {
+#if 0
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
                     Combination c {shaderType, tm, bm};
@@ -75,8 +116,9 @@ void Context::preCompile(const PaintCombo& paintCombo) {
                     }
                 }
             }
-        }
-    }
+#endif
+        //}
+//    }
 }
 
 } // namespace skgpu
