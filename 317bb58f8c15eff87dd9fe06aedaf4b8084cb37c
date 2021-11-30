@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e91791f8_35a27056",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-11-30T01:03:48Z",
+      "side": 1,
+      "message": "Switching this from std::vector to SkTBlockList fixes the ASAN use-after-free issues, since the way I structured pipelineDescToIndex does require stable pointers.\n\nI had originally used std::vector since I assumed we needed to have random access into the vector, but that\u0027s not actually the case. We only need random access during addToCommands() for the final GraphicsPipeline objects.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 88
+      },
+      "revId": "317bb58f8c15eff87dd9fe06aedaf4b8084cb37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
