@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e6cb19_a2c79ae8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2021-11-30T00:33:01Z",
+      "side": 1,
+      "message": "Whichever early riser sees this first, please give it a look at your earliest convenience. I plan to go in tomorrow and move the iOS devices over to rpi2s, and if I can just hit Merge on this, that\u0027ll make it nice and smooth. Many thanks! :-D",
+      "revId": "7a04cbb182cb4824b8caff784c2c434dbd4ac9f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
