@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee07cfca_0ecdd708",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-11-30T17:05:02Z",
+      "side": 1,
+      "message": "Okay I uploaded a version where the BackendTexture does not retain or release the metal texture and instead just holds the Handle. In this version deleteBackendTexture must call release to balance out the createBackendTexture. Let me know what you think about this version.",
+      "revId": "97f88a383dd9be1c05cf11a83248021b11ffecd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
