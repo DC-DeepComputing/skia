@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9109ecf8_8b6e08c9",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-30T13:15:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5beff97_e3e082a1",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 42
+      },
+      "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01034c0a_9c2c2a86",
@@ -72,6 +96,24 @@
       "side": 1,
       "message": "I should probably rephrase some of that. fontmgr_custom_* do depend on :typeface_freetype, but only indirectly (through public headers of fontmgr_custom and of course transitively at runtime through the implementation of fontmgr_custom). However, in theory the implementation of fontmgr_custom could change to depend on something other than :typeface_freetype and fontmgr_custom_* should continue to compile and work.\n\nThat is to say, what we currently state in gn is more or less exactly what we wanted to state here (as far as fontmgr_custom is concerned, this code of course also depends on core Skia and should also be getting its Skia headers from depending on some :skia_core target and not by implicitly having the sources just pick up the right headers by just magically making them available.",
       "parentUuid": "01034c0a_9c2c2a86",
+      "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0f128e_126ed0b2",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-11-30T13:15:46Z",
+      "side": 1,
+      "message": "Done. Added in another cc_library that makes use of the atoms.",
+      "parentUuid": "303428a2_99659f92",
       "revId": "bf769476599424d0c8897c9ad500b9087a3e4c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
