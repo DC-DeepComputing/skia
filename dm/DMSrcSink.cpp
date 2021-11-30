@@ -1480,6 +1480,8 @@ static DEFINE_bool(releaseAndAbandonGpuContext, false,
 static DEFINE_bool(drawOpClip, false, "Clip each GrDrawOp to its device bounds for testing.");
 static DEFINE_bool(programBinaryCache, true, "Use in-memory program binary cache");
 
+void precompile7();
+
 GPUSink::GPUSink(const SkCommandLineConfigGpu* config,
                  const GrContextOptions& grCtxOptions)
         : fContextType(config->getContextType())
@@ -1493,6 +1495,7 @@ GPUSink::GPUSink(const SkCommandLineConfigGpu* config,
     if (FLAGS_programBinaryCache) {
         fBaseContextOptions.fPersistentCache = &fMemoryCache;
     }
+    precompile7();
 }
 
 Result GPUSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkString* log) const {
@@ -2121,26 +2124,31 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 #ifdef SK_GRAPHITE_ENABLED
 
-namespace {
-
 // For the sprint Graphite only handles:
 //    solid colors with src or srcOver
 //    repeated or clamped linear gradients with src or srcOver
-void precompile(skgpu::Context* context) {
-    using ShaderType = skgpu::ShaderCombo::ShaderType;
+void precompile7() {
+    using namespace skgpu;
 
-    skgpu::PaintCombo c1 { { skgpu::ShaderCombo({ ShaderType::kSolidColor },
-                                                { SkTileMode::kRepeat }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
-    context->preCompile(c1);
+    {
+        PaintCombinations c1;
+        c1.addShaderCombinations(std::unique_ptr<ShaderCombo2>(new NoShaderCombo));
+        c1.addBlendModeCombinations((BlendModeCombinations) (BlendModeCombinations::kSrcOver |
+                                                             BlendModeCombinations::kSrc));
+        Context::preCompile(c1);
+    }
 
-    skgpu::PaintCombo c2 { { skgpu::ShaderCombo({ ShaderType::kLinearGradient },
-                                                { SkTileMode::kRepeat, SkTileMode::kClamp }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
-    context->preCompile(c2);
+    {
+        PaintCombinations c2;
+        c2.addShaderCombinations(std::unique_ptr<ShaderCombo2>(
+                new GradientCombinations(GradientCombinations::GradientType::kLinear_GradientType,
+                                         GradientCombinations::TileMode::kRepeat_TileMode |
+                                         GradientCombinations::TileMode::kClamp_TileMode)));
+        c2.addBlendModeCombinations((BlendModeCombinations) (BlendModeCombinations::kSrcOver |
+                                                             BlendModeCombinations::kSrc));
+        Context::preCompile(c2);
+    }
 }
-
-} // anonymous namespace
 
 GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
         : fContextType(config->getContextType())
@@ -2159,7 +2167,7 @@ Result GraphiteSink::draw(const Src& src,
     auto [_, context] = factory.getContextInfo(fContextType);
 
     if (fTestPrecompile) {
-        precompile(context.get());
+        precompile7(); // (context.get());
     }
 
     sk_sp<skgpu::Recorder> recorder = context->createRecorder();

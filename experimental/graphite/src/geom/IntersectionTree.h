@@ -42,11 +42,13 @@ private:
         virtual Node* addNonIntersecting(Rect, SkArenaAlloc*) = 0;
     };
 
+public:
     enum class SplitType : bool {
         kX,
         kY
     };
 
+private:
     template<SplitType kSplitType> class TreeNode;
     class LeafNode;
 
