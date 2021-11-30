@@ -87,4 +87,7 @@ skgpu_v1_samples_sources = [
   "$_samplecode/SamplePathTessellators.cpp",
 ]
 
+pentrek_sources = [ "/Users/mike/pentrek/src/sample.cpp" ]
+samples_sources += pentrek_sources
+
 samples_sources += skgpu_v1_samples_sources
