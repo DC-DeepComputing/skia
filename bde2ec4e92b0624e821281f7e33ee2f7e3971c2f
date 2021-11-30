@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6fe9cf_0c868568",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-30T17:29:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "265db000_cbfbfb23",
+      "range": {
+        "startLine": 324,
+        "startChar": 2,
+        "endLine": 324,
+        "endChar": 11
+      },
+      "revId": "bde2ec4e92b0624e821281f7e33ee2f7e3971c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f7fa93f_e0f8247e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-30T16:04:07Z",
       "side": 1,
       "message": "If we support nonsquare mats in SkVM (don\u0027t remember), this could also be SKSL_TEST_CPU. If not, disabled is fine.",
+      "range": {
+        "startLine": 325,
+        "startChar": 2,
+        "endLine": 325,
+        "endChar": 15
+      },
+      "revId": "bde2ec4e92b0624e821281f7e33ee2f7e3971c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09e1a934_359ad20f",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-30T17:29:52Z",
+      "side": 1,
+      "message": "Yes, it does seem to work. I had to add a new macro to support running ES3 tests on CPU (making it opt-in only for this test right now). We could also enable some of the bitwise ops tests, but that\u0027s pretty low priority.",
+      "parentUuid": "6f7fa93f_e0f8247e",
       "range": {
         "startLine": 325,
         "startChar": 2,
