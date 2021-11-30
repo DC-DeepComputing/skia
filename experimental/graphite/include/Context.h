@@ -24,6 +24,250 @@ class Recorder;
 class Recording;
 namespace mtl { struct BackendContext; }
 
+
+
+
+class Combo2 {
+public:
+    static const int kMaxInts = 8;
+
+    void addInt(int iFoo) {
+        SkASSERT(fNumInts < kMaxInts);
+        fInts[fNumInts] = iFoo;
+        ++fNumInts;
+    }
+
+    int numInts() const { return fNumInts; }
+
+private:
+    int fNumInts = 0;
+    std::array<int, kMaxInts> fInts;
+};
+
+class ShaderCombo2 {
+public:
+    virtual ~ShaderCombo2() {}
+
+    class Iter {
+    public:
+        bool operator==(const Iter& rhs) const { return fDone == rhs.fDone &&
+                                                        fIndices == rhs.fIndices; }
+        bool operator!=(const Iter& rhs) const { return !(*this == rhs); }
+
+        bool fDone;
+        std::array<int, 3> fIndices;
+
+        static const Iter kEnd;
+    };
+
+    virtual Iter begin() const = 0;
+    Iter end() const { return Iter::kEnd; }
+
+    virtual void next(Iter*) const = 0;
+
+    virtual void addToCode(const Iter&, Combo2*) const = 0;
+
+#if 0
+    class Iterator {
+    public:
+        using iterator_category = std::input_iterator_tag;
+        using difference_type = ptrdiff_t;
+        using value_type = GrSubRun;
+        using pointer = value_type*;
+        using reference = value_type&;
+
+        Iterator(GrSubRun* subRun) : fPtr{subRun} { }
+        Iterator& operator++() { fPtr = fPtr->fNext.get(); return *this; }
+        Iterator operator++(int) { Iterator tmp(*this); operator++(); return tmp; }
+        bool operator==(const Iterator& rhs) const { return fPtr == rhs.fPtr; }
+        bool operator!=(const Iterator& rhs) const { return fPtr != rhs.fPtr; }
+        reference operator*() { return *fPtr; }
+
+    private:
+        GrSubRun* fPtr;
+    };
+
+    Iterator begin() { return Iterator{ fHead.get()}; }
+    Iterator end() { return Iterator{nullptr}; }
+    Iterator begin() const { return Iterator{ fHead.get()}; }
+    Iterator end() const { return Iterator{nullptr}; }
+#endif
+
+private:
+};
+
+enum ShaderCode {
+    kNone_ShaderCode = 1,
+    kImage_ShaderCode = 2,
+    kGradient_ShaderCode = 3,
+};
+static const int kShaderCodeBits = 16;
+
+class NoShaderCombo : public ShaderCombo2 {
+public:
+    ~NoShaderCombo() override {}
+
+    Iter begin() const override { return { false, {0, 0, 0} }; }
+    void next(Iter* iter) const override {
+        SkASSERT(!iter->fDone);
+        *iter = Iter::kEnd;
+    }
+
+    void addToCode(const Iter& iter, Combo2* combo) const override {
+        SkASSERT(!iter.fDone);
+        combo->addInt(kNone_ShaderCode);
+    }
+private:
+};
+
+class ImageShaderCombinations : public ShaderCombo2 {
+public:
+    ~ImageShaderCombinations() override {}
+
+    Iter begin() const override { return { false, {0, 0, 0} };  }
+    void next(Iter* iter) const override {
+        SkASSERT(!iter->fDone);
+        *iter = Iter::kEnd;
+    }
+    void addToCode(const Iter& iter, Combo2* combo) const override {
+        SkASSERT(!iter.fDone);
+        combo->addInt(kImage_ShaderCode);
+    }
+
+private:
+};
+
+class GradientCombinations : public ShaderCombo2 {
+public:
+    enum GradientType {
+        kLinear_GradientType  = 0x01,
+        kRadial_GradientType  = 0x02,
+        kConical_GradientType = 0x04,
+        kSweep_GradientType   = 0x08,
+
+        kLast_GradientType = kSweep_GradientType,
+    };
+    static const int kGradientTypeBits = 2;
+    static const int kGradientTypeCount = 4;
+    static const int kAllGradientTypes = kLinear_GradientType |
+                                         kRadial_GradientType |
+                                         kConical_GradientType |
+                                         kSweep_GradientType;
+
+    enum TileMode {
+        kClamp_TileMode  = 0x01,
+        kRepeat_TileMode = 0x02,
+        kMirror_TileMode = 0x04,
+        kDecal_TileMode  = 0x08,
+
+        kLast_TileMode = kDecal_TileMode,
+
+    };
+    static const int kTileModeBits = 2;
+    static const int kTileModeCount = 4;
+    static const int kAllTileModes = kClamp_TileMode |
+                                     kRepeat_TileMode |
+                                     kMirror_TileMode |
+                                     kDecal_TileMode;
+
+    GradientCombinations(GradientType types = (GradientType) kAllGradientTypes)
+            : fTypes(types)
+            , fTileModes((TileMode) kAllTileModes)
+            , fMinNumStops(2)
+            , fMaxNumStops(256) {}
+    GradientCombinations(GradientType types, unsigned int minNumStops, unsigned int maxNumStops = 256)
+            : fTypes(types)
+            , fMinNumStops(minNumStops)
+            , fMaxNumStops(maxNumStops) {}
+    GradientCombinations(unsigned int minNumStops, unsigned int maxNumStops = 256)
+            : fTypes((GradientType) kAllGradientTypes)
+            , fTileModes((TileMode) kAllTileModes)
+            , fMinNumStops(minNumStops)
+            , fMaxNumStops(maxNumStops) {}
+    ~GradientCombinations() override {}
+
+    static int getTypeCode(GradientType type) {
+        static_assert((0x1 << (kGradientTypeCount-1)) == kLast_GradientType);
+
+        int code = 0;
+        switch (type) {
+            case kLinear_GradientType:  code = 0; break;
+            case kRadial_GradientType:  code = 1; break;
+            case kConical_GradientType: code = 2; break;
+            case kSweep_GradientType:   code = 3; break;
+        }
+
+        SkASSERT(code < kGradientTypeCount);
+        return code;
+    }
+
+    static int getTileModeCode(TileMode tm) {
+        static_assert((0x1 << (kTileModeCount-1)) == kLast_TileMode);
+
+        int code = 0;
+        switch (tm) {
+            case kClamp_TileMode:  code = 0; break;
+            case kRepeat_TileMode: code = 1; break;
+            case kMirror_TileMode: code = 2; break;
+            case kDecal_TileMode:  code = 3; break;
+        }
+
+        SkASSERT(code < kTileModeCount);
+        return code;
+    }
+
+    static int GenCode(GradientType type, TileMode tm, int numStops) {
+        int typeCode = getTypeCode(type);
+        int tileModeCode = getTileModeCode(tm);
+
+        int code = kGradient_ShaderCode |
+                   (typeCode << kShaderCodeBits) |
+                   (tileModeCode << (kShaderCodeBits + kGradientTypeBits));
+        return code;
+    }
+
+    Iter begin() const override {
+        return { false, {0x1, 0x1, (int) fMinNumStops} };
+    }
+
+    void next(Iter* iter) const override {
+        SkASSERT(!iter->fDone);
+
+        for (; iter->fIndices[0] <= kLast_GradientType; iter->fIndices[0] <<= 1) {
+            if (!(iter->fIndices[0] & fTypes)) {
+                continue;
+            }
+
+            for (; iter->fIndices[1] <= kLast_TileMode; iter->fIndices[1] <<= 1) {
+                if (!(iter->fIndices[1] & fTileModes)) {
+                    continue;
+                }
+
+                for (; iter->fIndices[2] <= (int) fMaxNumStops; ++iter->fIndices[2]) {
+                    return;
+                }
+            }
+        }
+
+        *iter = Iter::kEnd;
+    }
+
+    void addToCode(const Iter& iter, Combo2* combo) const override {
+        SkASSERT(!iter.fDone);
+        int code = GenCode((GradientType) iter.fIndices[0],
+                           (TileMode) iter.fIndices[1],
+                           iter.fIndices[2]);
+        combo->addInt(code);
+    }
+
+private:
+    GradientType fTypes;
+    TileMode fTileModes;
+    unsigned int fMinNumStops;
+    unsigned int fMaxNumStops;
+};
+
+#if 1
 struct ShaderCombo {
     enum class ShaderType {
         kNone, // does not modify color buffer, e.g. depth and/or stencil only
@@ -33,20 +277,50 @@ struct ShaderCombo {
         kSweepGradient,
         kConicalGradient
     };
+};
+#endif
 
-    ShaderCombo() {}
-    ShaderCombo(std::vector<ShaderType> types,
-                std::vector<SkTileMode> tileModes)
-            : fTypes(std::move(types))
-            , fTileModes(std::move(tileModes)) {
-    }
-    std::vector<ShaderType> fTypes;
-    std::vector<SkTileMode> fTileModes;
+enum BlendModeCombinations {
+    kSrcOver = 0x1,
+    kSrc = 0x2,
+
+    kMax = kSrc
 };
 
-struct PaintCombo {
-    std::vector<ShaderCombo> fShaders;
-    std::vector<SkBlendMode> fBlendModes;
+class PaintCombinations {
+public:
+    void addShaderCombinations(std::unique_ptr<ShaderCombo2> combo) {
+        fShaderCombos.emplace_back(std::move(combo));
+    }
+    void addBlendModeCombinations(BlendModeCombinations blendModeCombinations) {
+        fBlendModes = (BlendModeCombinations) (fBlendModes | blendModeCombinations);
+    }
+
+    void /* std::vector<Combination>*/ getCombos() const;
+
+    class Iter {
+    public:
+        bool operator==(const Iter& rhs) const { return fDone == rhs.fDone &&
+                                                        fIndices == rhs.fIndices; }
+        bool operator!=(const Iter& rhs) const { return !(*this == rhs); }
+
+        bool fDone;
+        std::array<int, 2> fIndices;
+
+        static const Iter kEnd;
+    };
+
+    Iter begin() const { return { false, {0, 0} }; }
+    Iter end() const { return Iter::kEnd; }
+
+    void next(Iter*) const;
+
+    void getCode(const Iter&, Combo2*) const;
+
+private:
+    std::vector<std::unique_ptr<ShaderCombo2>> fShaderCombos;
+//    std::vector<ImageFilterCombo> fIFCombos;
+    BlendModeCombinations fBlendModes;
 };
 
 class Context final : public SkRefCnt {
@@ -62,7 +336,7 @@ public:
     void insertRecording(std::unique_ptr<Recording>);
     void submit(SyncToCpu = SyncToCpu::kNo);
 
-    void preCompile(const PaintCombo&);
+    void preCompile(const PaintCombinations&);
 
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();

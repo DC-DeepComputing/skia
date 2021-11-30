@@ -55,28 +55,75 @@ void Context::submit(SyncToCpu syncToCpu) {
     fRecordings.clear();
 }
 
-void Context::preCompile(const PaintCombo& paintCombo) {
-    for (auto bm: paintCombo.fBlendModes) {
-        for (auto& shaderCombo: paintCombo.fShaders) {
-            for (auto shaderType: shaderCombo.fTypes) {
-                for (auto tm: shaderCombo.fTileModes) {
-                    Combination c {shaderType, tm, bm};
+static SkBlendMode foo(BlendModeCombinations bm) {
+    switch (bm) {
+        case kSrcOver:
+            return SkBlendMode::kSrcOver;
+        case kSrc:
+            return SkBlendMode::kSrc;
+    }
 
-                    GraphicsPipelineDesc desc;
+    return SkBlendMode::kSrc;
+}
 
-                    for (const Renderer* r : {&Renderer::StencilAndFillPath()}) {
-                        for (auto&& s : r->steps()) {
-                            desc.setProgram(s, c);
-                            // TODO: Combine with renderpass description set to generate full
-                            // GraphicsPipeline and MSL program. Cache that compiled pipeline on
-                            // the resource provider in a map from desc -> pipeline so that any
-                            // later desc created from equivalent RenderStep + Combination get it.
-                        }
-                    }
+const ShaderCombo2::Iter ShaderCombo2::Iter::kEnd = { true, {0, 0, 0} };
+
+const PaintCombinations::Iter PaintCombinations::Iter::kEnd = { true, {0, 0x01} };
+
+void PaintCombinations::next(Iter* iter) const {
+    SkASSERT(!iter->fDone);
+
+
+            for (; iter->fIndices[1] <= kMax; iter->fIndices[1] <<= 1) {
+                if (!(fBlendModes & iter->fIndices[1])) {
+                    continue;
+                }
+
+                return;
+            }
+}
+
+void PaintCombinations::getCode(const Iter& iter, Combo2* combo) const {
+    for (auto& sc : fShaderCombos) {
+        for (ShaderCombo2::Iter iter = sc->begin(); iter != ShaderCombo2::Iter::kEnd; ) {
+
+            sc->addToCode(iter, &combo);
+
+            {
+                SkBlendMode bm = foo((BlendModeCombinations)iter.fIndices[1]);
+                combo->addInt((int)bm);
+            }
+        }
+    }
+}
+
+void Context::preCompile(const PaintCombinations& combinations) {
+
+    for (PaintCombinations::Iter iter = combinations.begin(); iter != combinations.end(); combinations.next(&iter)){
+        Combo2 combo;
+
+        combinations.getCode(iter, &combo);
+    }
+
+#if 0
+    for (auto shaderType: shaderCombo.fTypes) {
+        for (auto tm: shaderCombo.fTileModes) {
+            Combination c {shaderType, tm, bm};
+
+            GraphicsPipelineDesc desc;
+
+            for (const Renderer* r : {&Renderer::StencilAndFillPath()}) {
+                for (auto&& s : r->steps()) {
+                    desc.setProgram(s, c);
+                    // TODO: Combine with renderpass description set to generate full
+                    // GraphicsPipeline and MSL program. Cache that compiled pipeline on
+                    // the resource provider in a map from desc -> pipeline so that any
+                    // later desc created from equivalent RenderStep + Combination get it.
                 }
             }
         }
     }
+#endif
 }
 
 } // namespace skgpu
