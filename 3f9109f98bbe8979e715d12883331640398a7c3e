@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2c6afe1_ef8d7d7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-11-30T16:49:53Z",
+      "side": 1,
+      "message": "With the caveat and long discussion about how having the atoms depend directly on headers, including headers which should be provided by dependencies making this more like or current GN build of not enforcing real header checking, and the plan to eventually tighten up visibility to slowly fix that up, I think I\"m ok with this for now as a way to get a build up and running.",
+      "revId": "3f9109f98bbe8979e715d12883331640398a7c3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
