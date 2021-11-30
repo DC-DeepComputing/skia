@@ -23,6 +23,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
@@ -59,6 +60,7 @@ class SkPixmap;
 class SkRegion;
 class SkRRect;
 struct SkRSXform;
+struct SkCustomMesh;
 class SkSpecialImage;
 class SkSurface;
 class SkSurface_Base;
@@ -1944,7 +1946,7 @@ public:
         If paint contains an SkShader and vertices does not contain texCoords, the shader
         is mapped using the vertices' positions.
 
-        If vertices colors are defined in vertices, and SkPaint paint contains SkShader,
+        If vertices colors are defined in vertices, and SkPapanint paint contains SkShader,
         SkBlendMode mode combines vertices colors with SkShader.
 
         SkMaskFilter and SkPathEffect on paint are ignored.
@@ -1956,6 +1958,10 @@ public:
         example: https://fiddle.skia.org/c/@Canvas_drawVertices_2
     */
     void drawVertices(const sk_sp<SkVertices>& vertices, SkBlendMode mode, const SkPaint& paint);
+
+    void drawCustomMesh(SkCustomMesh rm,
+                         sk_sp<SkBlender>  blender,
+                         const SkPaint&    paint);
 
     /** Draws a Coons patch: the interpolation of four cubics with shared corners,
         associating a color, and optionally a texture SkPoint, with each corner.
@@ -2216,6 +2222,8 @@ protected:
 
     virtual void onDrawVerticesObject(const SkVertices* vertices, SkBlendMode mode,
                                       const SkPaint& paint);
+
+    virtual void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&);
 
     virtual void onDrawAnnotation(const SkRect& rect, const char key[], SkData* value);
     virtual void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&);

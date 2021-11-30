@@ -328,7 +328,7 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
     // obscure bug.
     const FunctionDeclaration& decl = f.declaration();
     if (decl.isMain()) {
-        fCastReturnsToHalf = true;
+        fCastReturnsToHalf = fCallbacks->coerceMainReturnToHalf4();
     }
 
     for (const std::unique_ptr<Statement>& stmt : f.body()->as<Block>().children()) {
