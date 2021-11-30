@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7bb638a_9e5ac3f1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-30T17:40:14Z",
+      "side": 1,
+      "message": "I think it would be nicer to have this return the return slot? Every call to this is followed (sooner or later) by a call to getSlot(fnDef).",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 5
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3416a45b_58eff98c",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-30T17:40:14Z",
+      "side": 1,
+      "message": "nit: not sure what to call this now. Maybe just \"append named slots to the debug slot-info table\" ?",
+      "range": {
+        "startLine": 586,
+        "startChar": 33,
+        "endLine": 586,
+        "endChar": 42
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a84be1e5_e2d141bb",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-11-30T17:40:14Z",
+      "side": 1,
+      "message": "nit: likewise - this is used for both variables and return values...",
+      "range": {
+        "startLine": 594,
+        "startChar": 39,
+        "endLine": 594,
+        "endChar": 51
+      },
+      "revId": "1ec310e3aeaab012b891440c4bf55514dc24ae04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
