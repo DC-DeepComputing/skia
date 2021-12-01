@@ -81,6 +81,7 @@ private:
 #ifdef SK_METAL
         mtl::TextureSpec fMtlSpec;
 #endif
+        int foo;
     };
 };
 
