@@ -58,20 +58,20 @@ wait_cmd = ['docker', 'exec', container_name,
             'timeout', '45', 'adb', 'wait-for-device']
 
 for t in range(MAX_TRIES):
-  print 'Starting Emulator try %d' % t
+  print('Starting Emulator try %d' % t)
   try:
     # Start emulator
-    print subprocess.check_output(start_cmd)
+    print(subprocess.check_output(start_cmd))
     # Wait a short time using adb-wait-for-device
-    print subprocess.check_output(wait_cmd)
+    print(subprocess.check_output(wait_cmd))
     # if exit code 0, we are good so end loop
-    print 'Emulator started'
+    print('Emulator started')
     sys.exit(0)
   except subprocess.CalledProcessError:
     # else kill docker container
-    print 'Killing and trying again'
-    print subprocess.check_output(['docker', 'kill', container_name])
-print 'Could not start emulator'
+    print('Killing and trying again')
+    print(subprocess.check_output(['docker', 'kill', container_name]))
+print('Could not start emulator')
 sys.exit(1)
 ''',
       args=[container_name, checkout_root, apk_location, DOCKER_IMAGE],
