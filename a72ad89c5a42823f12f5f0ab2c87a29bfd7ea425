@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "192af18a_35de3c02",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T18:59:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf08eb8a_931ce237",
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bf6a600_68af2634",
@@ -98,6 +116,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c80135_d0ef0349",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T18:59:59Z",
+      "side": 1,
+      "message": "Yes, I think that\u0027s a good idea. (Ideally we could remove this logic from here entirely, but that\u0027s a longer term project...)",
+      "parentUuid": "f4fe45cd_efcea7c6",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 91
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b342d4b0_9d1abe51",
@@ -123,6 +165,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c339f4f3_b2e7e4d7",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T18:59:59Z",
+      "side": 1,
+      "message": "Ah, good point. I originally figured that bicubic was pretty rare, but I suppose if you are using it, we should still squelch the clamp, to keep with the spirit of \"raw\". I\u0027ll see what I can do - definitely going to require some plumbing for the GPU case.",
+      "parentUuid": "b342d4b0_9d1abe51",
+      "range": {
+        "startLine": 554,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 0
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "965f3aab_b15a7459",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 4
@@ -134,6 +200,30 @@
       "writtenOn": "2021-12-01T14:25:06Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 936,
+        "startChar": 0,
+        "endLine": 946,
+        "endChar": 5
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77201fba_45051227",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T18:59:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "965f3aab_b15a7459",
       "range": {
         "startLine": 936,
         "startChar": 0,
