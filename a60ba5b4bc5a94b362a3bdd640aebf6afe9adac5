@@ -87,6 +87,30 @@
       },
       "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a4a30e5_1d8949c6",
+        "filename": "experimental/graphite/src/CommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-01T16:31:06Z",
+      "side": 1,
+      "message": "I like the idea of making the client responsible. Our dev tools should be able to tell us if a command buffer is empty on submission (for example, Metal validation will report an error). I could also leave it in for debug builds and just print an error, or assert.",
+      "parentUuid": "1164eb6d_2e696cd5",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
