@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd344268_2a6d8f03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-01T21:54:26Z",
+      "side": 1,
+      "message": "I will resolve the merge conflict once the parent CL lands, but this should be the last CL needed to make graphite \"end-to-end\".",
+      "revId": "2c4a39b216b20c3841a2f768a025d3d7a88b78ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
