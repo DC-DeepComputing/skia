@@ -63,6 +63,30 @@
       },
       "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1164eb6d_2e696cd5",
+        "filename": "experimental/graphite/src/CommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-01T16:25:53Z",
+      "side": 1,
+      "message": "I like the idea of not having to worry about it for any in render pass draws. Maybe the right thing to do here is always set it to true for all begingRenderPasses. If there really is no work to be done in the render pass well that is more a bug on the higher level code for even starting a render pass. I prefer for the command buffer to be as dumb as possible and just do what its told.\n\nI also could easily be convinced to drop the whole hasWork check all together on command buffer. Since the clients are now much more in control on when we flush and submit, should we really be responsible for making sure they don\u0027t keep submitting no work?",
+      "parentUuid": "7b350506_a0150aee",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
