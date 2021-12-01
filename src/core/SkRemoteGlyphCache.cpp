@@ -303,19 +303,19 @@ private:
     // Same thing as MaskSummary, but for paths.
     struct PathSummary {
         constexpr static uint16_t kIsPath = 0;
-        SkGlyphID glyphID;
+        SkPackedGlyphID packedID;
         // If drawing glyphID can be done with a path, this is 0, otherwise it is the max
         // dimension of the glyph.
         uint16_t maxDimensionOrPath;
     };
 
     struct PathSummaryTraits {
-        static SkGlyphID GetKey(PathSummary summary) {
-            return summary.glyphID;
+        static SkPackedGlyphID GetKey(PathSummary summary) {
+            return summary.packedID;
         }
 
-        static uint32_t Hash(SkGlyphID packedID) {
-            return SkChecksum::CheapMix(packedID);
+        static uint32_t Hash(SkPackedGlyphID packedID) {
+            return SkChecksum::CheapMix(packedID.value());
         }
     };
 
@@ -341,7 +341,7 @@ private:
 
     // The masks and paths that currently reside in the GPU process.
     SkTHashTable<MaskSummary, SkPackedGlyphID, MaskSummaryTraits> fSentGlyphs;
-    SkTHashTable<PathSummary, SkGlyphID, PathSummaryTraits> fSentPaths;
+    SkTHashTable<PathSummary, SkPackedGlyphID, PathSummaryTraits> fSentPaths;
 
     // The Masks, SDFT Mask, and Paths that need to be sent to the GPU task for the processed
     // TextBlobs. Cleared after diffs are serialized.
@@ -464,7 +464,7 @@ void RemoteStrike::commonMaskLoop(
                 if (summary == nullptr) {
                     // Put the new SkGlyph in the glyphs to send.
                     this->ensureScalerContext();
-                    fMasksToSend.emplace_back(fContext->makeGlyph(packedID));
+                    fMasksToSend.emplace_back(fContext->makeGlyph(packedID, &fPathAlloc));
                     SkGlyph* glyph = &fMasksToSend.back();
 
                     MaskSummary newSummary =
@@ -497,7 +497,7 @@ void RemoteStrike::prepareForMaskDrawing(
 
             // Put the new SkGlyph in the glyphs to send.
             this->ensureScalerContext();
-            fMasksToSend.emplace_back(fContext->makeGlyph(packedID));
+            fMasksToSend.emplace_back(fContext->makeGlyph(packedID, &fPathAlloc));
             SkGlyph* glyph = &fMasksToSend.back();
 
             MaskSummary newSummary =
@@ -527,25 +527,21 @@ void RemoteStrike::prepareForPathDrawing(
         SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) {
     drawables->forEachGlyphID(
             [&](size_t i, SkPackedGlyphID packedID, SkPoint position) {
-                SkGlyphID glyphID = packedID.glyphID();
-                PathSummary* summary = fSentPaths.find(glyphID);
+                PathSummary* summary = fSentPaths.find(packedID);
                 if (summary == nullptr) {
 
                     // Put the new SkGlyph in the glyphs to send.
                     this->ensureScalerContext();
-                    fPathsToSend.emplace_back(fContext->makeGlyph(SkPackedGlyphID{glyphID}));
+                    fPathsToSend.emplace_back(fContext->makeGlyph(packedID, &fPathAlloc));
                     SkGlyph* glyph = &fPathsToSend.back();
 
                     uint16_t maxDimensionOrPath = glyph->maxDimension();
-                    // Only try to get the path if the glyphs is not color.
-                    if (!glyph->isColor() && !glyph->isEmpty()) {
-                        glyph->setPath(&fPathAlloc, fContext.get());
-                        if (glyph->path() != nullptr) {
-                            maxDimensionOrPath = PathSummary::kIsPath;
-                        }
+                    glyph->setPath(&fPathAlloc, fContext.get());
+                    if (glyph->path() != nullptr) {
+                        maxDimensionOrPath = PathSummary::kIsPath;
                     }
 
-                    PathSummary newSummary = {glyph->getGlyphID(), maxDimensionOrPath};
+                    PathSummary newSummary = {packedID, maxDimensionOrPath};
                     summary = fSentPaths.set(newSummary);
                 }
 
@@ -1045,7 +1041,7 @@ bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memo
                 pathPtr = &path;
             }
 
-            strike->mergePath(allocatedGlyph, pathPtr);
+            strike->mergePath(allocatedGlyph, pathPtr, false /*TODO: serialize and deserialize hairline*/);
         }
     }
 
