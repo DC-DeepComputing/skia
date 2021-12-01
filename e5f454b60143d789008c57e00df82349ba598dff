@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "522610bb_1b06336c",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T19:13:40Z",
+      "side": 1,
+      "message": "Might be able to use std::equal_range over `fAsm` to avoid a linear search here.",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 9
+      },
+      "revId": "e5f454b60143d789008c57e00df82349ba598dff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
