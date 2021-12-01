@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ce87d2_b4a78483",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 3615,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T18:58:02Z",
+      "side": 1,
+      "message": "The flow might feel simpler if we flip the condition:\n\n  if (!fVisualizer) {\n    // Force this program to run in the interpreter. \n    return false;\n  }\n  break;",
+      "range": {
+        "startLine": 3611,
+        "startChar": 0,
+        "endLine": 3615,
+        "endChar": 33
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f59d3a_6180ac81",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T18:58:02Z",
+      "side": 1,
+      "message": "I don\u0027t think we should overload the cpp extension to mean \"generic SkSL programs\". And I\u0027m not really sure we actually need to add support for Generic programs at all?\n\nIf we use .sksl, that limits the function signature on main() slightly but otherwise AFAICS it should be fine. The visualizer should still work the same, I think?",
+      "range": {
+        "startLine": 289,
+        "startChar": 37,
+        "endLine": 289,
+        "endChar": 40
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f102412f_4bf88268",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T18:58:02Z",
+      "side": 1,
+      "message": "Move this before \" (got \u0027.abcde\u0027)\"",
+      "range": {
+        "startLine": 531,
+        "startChar": 44,
+        "endLine": 531,
+        "endChar": 51
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2bfce6_bfa9e5a7",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T18:58:02Z",
+      "side": 1,
+      "message": "We already have a hash function that mixes a new value into an existing hash:\n\n   hash \u003d SkOpts::hash_fn(\u0026data, sizeof(data), hash);\n\nIt\u0027s rarely used in Skia, but it\u0027ll mix better than this and run faster. It computes a rolling CRC-32 and uses the hardware CRC instructions when available.\nhttps://osscs.corp.google.com/skia/skia/+/main:src/opts/SkChecksum_opts.h;l\u003d112;drc\u003d0074706b80c7163e0cfa9bb9389dd5e281411b2c",
+      "range": {
+        "startLine": 137,
+        "startChar": 12,
+        "endLine": 137,
+        "endChar": 51
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
