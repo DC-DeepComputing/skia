@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d34f3934_119e1313",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T19:09:24Z",
+      "side": 1,
+      "message": "AFAICS, this call here is the main reason that we need fVisualizer as a member of the Builder. Is my understanding correct? It seems like everything else could technically be done during Builder::done(), if done() took an SkVMVisualizer* as a passed-in parameter. But in that case, dead code that\u0027s eliminated here would not be shown at all, and you are worried that useful information would be lost.\n\nThen again, if the visualizer only ran in Builder::done(), the non-dead-code call to `addToVisualizer` on L639 would need to moved as well. We\u0027d have to read back the completed program instead of doing it on an instruction-by-instruction basis to populate the visualizer instructions. But that seems OK. In fact, it might let us populate the visualizer all in one pass; it could send every instruction in the program one-by-one, plus the \"dead?\" and \"hoisted?\" bits. \n\nI wonder if we could do everything visualization-related in Builder::done, but find some way to keep track of discarded/dead code separately (optionally if we are concerned about perf), so that the info is available to visualize. Keeping track of it would just require two IDs (at program position XXXX, we reused the instruction from position YYYY instead of emitting a new op). That\u0027s lightweight enough that it might be fine.",
+      "range": {
+        "startLine": 632,
+        "startChar": 16,
+        "endLine": 632,
+        "endChar": 43
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68ce87d2_b4a78483",
         "filename": "src/core/SkVM.cpp",
         "patchSetId": 9
