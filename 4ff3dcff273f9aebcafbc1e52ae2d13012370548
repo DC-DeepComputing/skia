@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48477a0a_88b7b74f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-01T22:51:49Z",
+      "side": 1,
+      "message": "At Pathset 2 this isn\u0027t complete (still need to modify the ports that don\u0027t compile on Linux) but I think this is a kind of thing I\u0027d like to do. The initial motivation for this was to allow a glyph to decide if it has a path or not depending on if that path will actually be used to draw it. (So that COLRv0 and COLRv1 glyphs don\u0027t try to pretend they can be drawn from a path resulting in bad behavior when stroking or emboldening is requested.) Along the way this also fixes up a few other edge cases and also propagates up the stack that a glyph path is a dev-path not a user-path, so it needs an extra \u0027hairline\u0027 property so we know if its a fill path or not.",
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
