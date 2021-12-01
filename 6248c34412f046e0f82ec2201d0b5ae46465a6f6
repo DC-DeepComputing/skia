@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ac7648_b507dd9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T21:19:00Z",
+      "side": 1,
+      "message": "Sigh",
+      "revId": "6248c34412f046e0f82ec2201d0b5ae46465a6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed169bdc_7c982cf2",
+        "filename": "gm/image_shader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T21:19:00Z",
+      "side": 1,
+      "message": "What\u0027s up with this sentence ?",
+      "range": {
+        "startLine": 222,
+        "startChar": 54,
+        "endLine": 223,
+        "endChar": 23
+      },
+      "revId": "6248c34412f046e0f82ec2201d0b5ae46465a6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
