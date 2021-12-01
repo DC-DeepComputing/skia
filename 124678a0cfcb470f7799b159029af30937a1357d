@@ -16,6 +16,109 @@
       "message": "This should get Peng up and running. I need to make some GMs in the near future to keep the code from regressing.",
       "revId": "124678a0cfcb470f7799b159029af30937a1357d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "171d06c8_96bce241",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T14:49:19Z",
+      "side": 1,
+      "message": "Do you actually want these braces ?",
+      "range": {
+        "startLine": 626,
+        "startChar": 46,
+        "endLine": 626,
+        "endChar": 47
+      },
+      "revId": "124678a0cfcb470f7799b159029af30937a1357d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927203be_9f31afbf",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2679,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T14:49:19Z",
+      "side": 1,
+      "message": "deviceBounds ?",
+      "range": {
+        "startLine": 2679,
+        "startChar": 37,
+        "endLine": 2679,
+        "endChar": 43
+      },
+      "revId": "124678a0cfcb470f7799b159029af30937a1357d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c406e8c4_2bf83611",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2725,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T14:49:19Z",
+      "side": 1,
+      "message": "// Return the device space bounds of the entire subRun adjusted to be at the new offset it is being drawn to\n\n?",
+      "revId": "124678a0cfcb470f7799b159029af30937a1357d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79ffea93_59c97e82",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2825,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T14:49:19Z",
+      "side": 1,
+      "message": "subRunDeviceBounds ?",
+      "range": {
+        "startLine": 2825,
+        "startChar": 17,
+        "endLine": 2825,
+        "endChar": 29
+      },
+      "revId": "124678a0cfcb470f7799b159029af30937a1357d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f8b60a0_a03f229a",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2973,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-01T14:49:19Z",
+      "side": 1,
+      "message": "Does it make sense to move this down to ~line 2980 ?",
+      "revId": "124678a0cfcb470f7799b159029af30937a1357d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
