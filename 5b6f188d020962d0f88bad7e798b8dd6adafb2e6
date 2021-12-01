@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f04aad17_9b9d436e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-01T15:28:19Z",
+      "side": 1,
+      "message": "After dicsussing with @robertphillips, I\u0027ve disabled the gradient msl and he will do a follow CL to correct the shader\u0027s compilation issues and re-enable.",
+      "revId": "5b6f188d020962d0f88bad7e798b8dd6adafb2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

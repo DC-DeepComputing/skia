@@ -22,6 +22,30 @@
       },
       "revId": "526d09495a89284e687d36d963f9c8e09dc221ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd32817d_a1e832a7",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-01T15:28:19Z",
+      "side": 1,
+      "message": "I also think this is the right direction to go, but will involve changing how the task graph executes in two phases (the recording thread phase and at submission time).\n\nI can do follow up changes to make the commands visible and adjust the what is responsible for iterating the commands.",
+      "parentUuid": "54d7d2ad_47eebbde",
+      "range": {
+        "startLine": 419,
+        "startChar": 1,
+        "endLine": 458,
+        "endChar": 5
+      },
+      "revId": "526d09495a89284e687d36d963f9c8e09dc221ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
