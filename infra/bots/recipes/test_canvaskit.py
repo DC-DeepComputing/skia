@@ -4,6 +4,7 @@
 
 # Recipe which runs the Canvaskit tests using docker
 
+PYTHON_VERSION_COMPATIBILITY = "PY3"
 
 DEPS = [
   'checkout',

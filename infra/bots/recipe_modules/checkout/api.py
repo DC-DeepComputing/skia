@@ -24,8 +24,8 @@ import subprocess
 import sys
 
 which = 'where' if sys.platform == 'win32' else 'which'
-git = subprocess.check_output([which, 'git'])
-print 'git was found at %s' % git
+git = subprocess.check_output([which, 'git']).decode('utf-8')
+print('git was found at %s' % git)
 if 'cipd_bin_packages' not in git:
   print >> sys.stderr, 'Git must be obtained through CIPD.'
   sys.exit(1)
