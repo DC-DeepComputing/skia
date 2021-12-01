@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0b81144_77a0f97f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T18:39:29Z",
+      "side": 1,
+      "message": "I\u0027m looking at the various comments, but my first thing was to address the failures in serialize-8888. Sadly, this is EXTREMELY difficult, given how Skia has operated for a long time. SkImage::MakeFromEncoded *always* produces a premul image, and this can\u0027t be overridden via an API. (It\u0027s hard-coded behavior in SkCodecImageGenerator.cpp - adjust_info()). Trying to come up with options, because it means that you can\u0027t serialize an unpremul image (shader) at all, and get the results you want on the receiving end.",
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf08eb8a_931ce237",
