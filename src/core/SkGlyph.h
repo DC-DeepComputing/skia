@@ -291,7 +291,7 @@ public:
     // Returns true if this is the first time you called setPath()
     // and there actually is a path; call path() to get it.
     bool setPath(SkArenaAlloc* alloc, SkScalerContext* scalerContext);
-    bool setPath(SkArenaAlloc* alloc, const SkPath* path);
+    bool setPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline);
 
     // Returns true if that path has been set.
     bool setPathHasBeenCalled() const { return fPathData != nullptr; }
@@ -299,6 +299,7 @@ public:
     // Return a pointer to the path if it exists, otherwise return nullptr. Only works if the
     // path was previously set.
     const SkPath* path() const;
+    bool pathIsHairline() const;
 
     // Format
     bool isColor() const { return fMaskFormat == SkMask::kARGB32_Format; }
@@ -371,12 +372,13 @@ private:
         Intercept* fIntercept{nullptr};
         SkPath     fPath;
         bool       fHasPath{false};
+        bool       fHairline{false};
     };
 
     size_t allocImage(SkArenaAlloc* alloc);
 
     // path == nullptr indicates that there is no path.
-    void installPath(SkArenaAlloc* alloc, const SkPath* path);
+    void installPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline);
 
     // The width and height of the glyph mask.
     uint16_t  fWidth  = 0,
