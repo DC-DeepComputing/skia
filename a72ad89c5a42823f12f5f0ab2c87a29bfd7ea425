@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c0b6ac0_03996a3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-01T13:36:01Z",
+      "side": 1,
+      "message": "I\u0027m all in favor of the idea, but it isn\u0027t clear to me that \"raw\" by itself carries sufficient meaning.  I know the commit comments reference it but if we are going to stick with \"raw\" as the description then we should put into the code comments what it means.",
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
