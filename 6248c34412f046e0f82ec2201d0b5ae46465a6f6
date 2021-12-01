@@ -39,6 +39,30 @@
       },
       "revId": "6248c34412f046e0f82ec2201d0b5ae46465a6f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00f4e2ea_76aac5c4",
+        "filename": "gm/image_shader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-01T21:27:19Z",
+      "side": 1,
+      "message": "Ah, it\u0027s tricky to parse. I rewrote it to be clearer.",
+      "parentUuid": "ed169bdc_7c982cf2",
+      "range": {
+        "startLine": 222,
+        "startChar": 54,
+        "endLine": 223,
+        "endChar": 23
+      },
+      "revId": "6248c34412f046e0f82ec2201d0b5ae46465a6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
