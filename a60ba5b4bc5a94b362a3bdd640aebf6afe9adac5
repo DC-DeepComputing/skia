@@ -39,6 +39,30 @@
       },
       "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b350506_a0150aee",
+        "filename": "experimental/graphite/src/CommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-01T15:22:29Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m not sure what I had in mind here. I think I was thinking that we could remove setting fHasWork for the intra-renderpass commands and only set it here, but your counterexample contradicts that idea. I think adding the load clear check makes the most sense to me.",
+      "parentUuid": "d83594e2_34cd9b55",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "a60ba5b4bc5a94b362a3bdd640aebf6afe9adac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
