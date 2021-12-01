@@ -464,7 +464,7 @@ void RemoteStrike::commonMaskLoop(
                 if (summary == nullptr) {
                     // Put the new SkGlyph in the glyphs to send.
                     this->ensureScalerContext();
-                    fMasksToSend.emplace_back(fContext->makeGlyph(packedID));
+                    fMasksToSend.emplace_back(fContext->makeGlyph(packedID, &fPathAlloc));
                     SkGlyph* glyph = &fMasksToSend.back();
 
                     MaskSummary newSummary =
@@ -497,7 +497,7 @@ void RemoteStrike::prepareForMaskDrawing(
 
             // Put the new SkGlyph in the glyphs to send.
             this->ensureScalerContext();
-            fMasksToSend.emplace_back(fContext->makeGlyph(packedID));
+            fMasksToSend.emplace_back(fContext->makeGlyph(packedID, &fPathAlloc));
             SkGlyph* glyph = &fMasksToSend.back();
 
             MaskSummary newSummary =
@@ -533,16 +533,13 @@ void RemoteStrike::prepareForPathDrawing(
 
                     // Put the new SkGlyph in the glyphs to send.
                     this->ensureScalerContext();
-                    fPathsToSend.emplace_back(fContext->makeGlyph(SkPackedGlyphID{glyphID}));
+                    fPathsToSend.emplace_back(fContext->makeGlyph(SkPackedGlyphID{glyphID}, &fPathAlloc));
                     SkGlyph* glyph = &fPathsToSend.back();
 
                     uint16_t maxDimensionOrPath = glyph->maxDimension();
-                    // Only try to get the path if the glyphs is not color.
-                    if (!glyph->isColor() && !glyph->isEmpty()) {
-                        glyph->setPath(&fPathAlloc, fContext.get());
-                        if (glyph->path() != nullptr) {
-                            maxDimensionOrPath = PathSummary::kIsPath;
-                        }
+                    glyph->setPath(&fPathAlloc, fContext.get());
+                    if (glyph->path() != nullptr) {
+                        maxDimensionOrPath = PathSummary::kIsPath;
                     }
 
                     PathSummary newSummary = {glyph->getGlyphID(), maxDimensionOrPath};
@@ -1045,7 +1042,7 @@ bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memo
                 pathPtr = &path;
             }
 
-            strike->mergePath(allocatedGlyph, pathPtr);
+            strike->mergePath(allocatedGlyph, pathPtr, false /*TODO: serialize and deserialize hairline*/);
         }
     }
 
