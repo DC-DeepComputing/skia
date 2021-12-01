@@ -16,6 +16,138 @@
       "message": "I\u0027m all in favor of the idea, but it isn\u0027t clear to me that \"raw\" by itself carries sufficient meaning.  I know the commit comments reference it but if we are going to stick with \"raw\" as the description then we should put into the code comments what it means.",
       "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf08eb8a_931ce237",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "Is it worth asserting !fRaw || !clampAsIfUnpremul?",
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf6a600_68af2634",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "I\u0027m guessing somewhere buried in here is the same type of clamping in bicubic as in the raster impl.",
+      "range": {
+        "startLine": 307,
+        "startChar": 35,
+        "endLine": 307,
+        "endChar": 54
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4fe45cd_efcea7c6",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "Do we want to skip this in raw mode?",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 91
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b342d4b0_9d1abe51",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "Hm, what if a raw shader had arbitrary float values?",
+      "range": {
+        "startLine": 554,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 0
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "965f3aab_b15a7459",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 936,
+        "startChar": 0,
+        "endLine": 946,
+        "endChar": 5
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a1d3de_69164363",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-01T14:25:06Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 958,
+        "endChar": 5
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
