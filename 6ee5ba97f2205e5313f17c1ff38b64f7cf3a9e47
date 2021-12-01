@@ -16,6 +16,24 @@
       "message": "Hmmm... this is subtly incorrect, the fMaskFormat will be set to a suggested format (may or may not be that of the rec). The fMaskFormat may be adjusted to whatever works best for that glyph given this request.",
       "revId": "6ee5ba97f2205e5313f17c1ff38b64f7cf3a9e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1713b8d6_551714a8",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-01T01:06:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "74e70a67_76f7ddb7",
+      "revId": "6ee5ba97f2205e5313f17c1ff38b64f7cf3a9e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
