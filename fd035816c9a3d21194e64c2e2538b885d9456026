@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1d07255_75005c04",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-01T19:27:47Z",
+      "side": 1,
+      "message": "To avoid keeping a separate table of data, we could add a new Op here? `duplicate_op YYYY` (where YYYY is the Op we found and reused). The visualizer could use that data to visualize, and dead-code elimination could strip that opcode out (it is otherwise a nop).",
+      "parentUuid": "d34f3934_119e1313",
+      "range": {
+        "startLine": 632,
+        "startChar": 16,
+        "endLine": 632,
+        "endChar": 43
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68ce87d2_b4a78483",
         "filename": "src/core/SkVM.cpp",
         "patchSetId": 9
