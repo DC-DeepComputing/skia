@@ -7,6 +7,7 @@
 import calendar
 import re
 
+PYTHON_VERSION_COMPATIBILITY = "PY3"
 
 # trim
 DEPS = [

@@ -5,6 +5,9 @@
 # Recipe which analyzes a compiled binary for information (e.g. file size)
 
 import ast
+import json
+
+PYTHON_VERSION_COMPATIBILITY = "PY3"
 
 DEPS = [
   'checkout',
