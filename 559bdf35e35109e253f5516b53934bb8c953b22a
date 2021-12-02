@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000017917492",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/478957?revision\u003d3",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "fd8bb032_4b24672f",
+        "filename": "gm/colorwheel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2021-12-02T19:29:14Z",
+      "side": 1,
+      "message": "Please remove the trailing whitespace.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 1
+      },
+      "revId": "559bdf35e35109e253f5516b53934bb8c953b22a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
