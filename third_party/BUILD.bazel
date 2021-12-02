@@ -70,7 +70,7 @@ cc_library(
     ],
     copts = [
         "-isystem third_party/libpng/",
-        #"-Wno-unused-but-set-variable",
+        "-Wno-unused-but-set-variable",
     ],
     includes = [
         # This adds -isystem "third_party/externals/libpng" to any dependent
@@ -2078,6 +2078,7 @@ cc_library(
     copts = [
         "-Wno-deprecated-declarations",
         "-Wno-unused-function",
+        "-Wno-unused-but-set-variable",
     ],
     defines = [
         "U_USING_ICU_NAMESPACE=0",
