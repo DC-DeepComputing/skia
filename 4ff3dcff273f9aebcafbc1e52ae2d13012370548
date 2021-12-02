@@ -16,6 +16,190 @@
       "message": "At Pathset 2 this isn\u0027t complete (still need to modify the ports that don\u0027t compile on Linux) but I think this is a kind of thing I\u0027d like to do. The initial motivation for this was to allow a glyph to decide if it has a path or not depending on if that path will actually be used to draw it. (So that COLRv0 and COLRv1 glyphs don\u0027t try to pretend they can be drawn from a path resulting in bad behavior when stroking or emboldening is requested.) Along the way this also fixes up a few other edge cases and also propagates up the stack that a glyph path is a dev-path not a user-path, so it needs an extra \u0027hairline\u0027 property so we know if its a fill path or not.",
       "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a8363e_2cfaaf96",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Add comment about this path be used for drawing a hairline instead of the usual filling.",
+      "range": {
+        "startLine": 375,
+        "startChar": 7,
+        "endLine": 375,
+        "endChar": 36
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df0d9b0e_1cb121dd",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 536,
+        "startChar": 20,
+        "endLine": 536,
+        "endChar": 32
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cbd75b0_4f91bc2a",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 1045,
+        "startChar": 55,
+        "endLine": 1045,
+        "endChar": 105
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d701091f_d46514e0",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 69,
+        "startChar": 94,
+        "endLine": 69,
+        "endChar": 111
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f9ef5c_bc6ac471",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Should this invariant be maintained here?\nAdd a TODO that explains that this invariant needs to be maintained internal.",
+      "range": {
+        "startLine": 702,
+        "startChar": 3,
+        "endLine": 706,
+        "endChar": 50
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43aa085d_e45396d2",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Because that happens at path drawing time.",
+      "range": {
+        "startLine": 297,
+        "startChar": 62,
+        "endLine": 297,
+        "endChar": 86
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e64846b_7ad49dd4",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 79,
+        "startChar": 83,
+        "endLine": 79,
+        "endChar": 102
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fddc787_d10194f2",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T15:41:09Z",
+      "side": 1,
+      "message": "SK_ABORT?",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 24
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
