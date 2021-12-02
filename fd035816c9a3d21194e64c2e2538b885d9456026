@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0da14d28_875c6397",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T16:20:30Z",
+      "side": 1,
+      "message": "I tried to avoid changing anything structural in SkVM but I like this one, and it simplifies the process a lot.\nI will change it in a separate CL.",
+      "parentUuid": "b1d07255_75005c04",
+      "range": {
+        "startLine": 632,
+        "startChar": 16,
+        "endLine": 632,
+        "endChar": 43
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68ce87d2_b4a78483",
@@ -61,6 +85,30 @@
       "writtenOn": "2021-12-01T18:58:02Z",
       "side": 1,
       "message": "The flow might feel simpler if we flip the condition:\n\n  if (!fVisualizer) {\n    // Force this program to run in the interpreter. \n    return false;\n  }\n  break;",
+      "range": {
+        "startLine": 3611,
+        "startChar": 0,
+        "endLine": 3615,
+        "endChar": 33
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e128461e_e4d8b76a",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 3615,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T16:20:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68ce87d2_b4a78483",
       "range": {
         "startLine": 3611,
         "startChar": 0,
@@ -94,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1842c910_da115347",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T16:20:30Z",
+      "side": 1,
+      "message": "I think you are right. I also think that we can use ,rts - that will cover all the tests.",
+      "parentUuid": "c1f59d3a_6180ac81",
+      "range": {
+        "startLine": 289,
+        "startChar": 37,
+        "endLine": 289,
+        "endChar": 40
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f102412f_4bf88268",
@@ -107,6 +179,30 @@
       "writtenOn": "2021-12-01T18:58:02Z",
       "side": 1,
       "message": "Move this before \" (got \u0027.abcde\u0027)\"",
+      "range": {
+        "startLine": 531,
+        "startChar": 44,
+        "endLine": 531,
+        "endChar": 51
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1596e285_3ee0f011",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T16:20:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f102412f_4bf88268",
       "range": {
         "startLine": 531,
         "startChar": 44,
@@ -154,6 +250,30 @@
       "side": 1,
       "message": "Technically, it doesn\u0027t compute a true CRC-32; it leverages the CRC opcodes but mixes them differently (for better pipelining). That doesn\u0027t matter though :)",
       "parentUuid": "3e2bfce6_bfa9e5a7",
+      "range": {
+        "startLine": 137,
+        "startChar": 12,
+        "endLine": 137,
+        "endChar": 51
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a12cadeb_aca2c651",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T16:20:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1aa1ea5_46620f01",
       "range": {
         "startLine": 137,
         "startChar": 12,
