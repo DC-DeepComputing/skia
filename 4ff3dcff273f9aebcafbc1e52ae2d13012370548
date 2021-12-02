@@ -207,6 +207,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef93e5ca_43d6242b",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T22:59:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d951f77_9a97711d",
+      "range": {
+        "startLine": 1045,
+        "startChar": 55,
+        "endLine": 1045,
+        "endChar": 105
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d701091f_d46514e0",
