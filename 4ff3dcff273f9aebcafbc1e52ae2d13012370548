@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f9a9ea_ecfd78cc",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Done\n\nAlso added this to the CL description since this is a intentional change and not just an incidental one.",
+      "parentUuid": "98a8363e_2cfaaf96",
+      "range": {
+        "startLine": 375,
+        "startChar": 7,
+        "endLine": 375,
+        "endChar": 36
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df0d9b0e_1cb121dd",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-12-02T15:41:09Z",
       "side": 1,
       "message": "Line length",
+      "range": {
+        "startLine": 536,
+        "startChar": 20,
+        "endLine": 536,
+        "endChar": 32
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51fa2d05_535c1222",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Yeah... this line is long because of the use of `SkPackedGlyphID{glyphID}` instead of `packedID` in what looks like an attempt to enforce here that only 0,0 subpixel glyphs get paths. However, it seems odd to try to enforce that at this level, since it is the higher levels which would need to enforce (and deal with) that (and they appear to do so).\n\nUsing the packedID here for consistency means PathSummary needs to have a packedID, but that\u0027s about it. The actual glyph serialization already always sends over packedID anyway.",
+      "parentUuid": "df0d9b0e_1cb121dd",
       "range": {
         "startLine": 536,
         "startChar": 20,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32a54344_f847d533",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Yep, hanging there to make sure I actually do it.",
+      "parentUuid": "2cbd75b0_4f91bc2a",
+      "range": {
+        "startLine": 1045,
+        "startChar": 55,
+        "endLine": 1045,
+        "endChar": 105
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d701091f_d46514e0",
         "filename": "src/core/SkScalerCache.cpp",
         "patchSetId": 2
@@ -100,6 +172,30 @@
       "writtenOn": "2021-12-02T15:41:09Z",
       "side": 1,
       "message": "Line length",
+      "range": {
+        "startLine": 69,
+        "startChar": 94,
+        "endLine": 69,
+        "endChar": 111
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1700e086_031615ff",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d701091f_d46514e0",
       "range": {
         "startLine": 69,
         "startChar": 94,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b790256_4ef7fed9",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Yes, it should also be maintained (or enforced somehow) by getImage and generateImage as well. In some sense this is a lot like calling the generateImage case, in that you might get something unexpected to happen, but it shouldn\u0027t crash or do anything really awful. On the other hand, it would always be a logical error to do so. I was thinking about splitting the fForceBW into a bitfield so we have a bit to set to state that we\u0027re sure that the metrics, bounds, format, and any initial path overrides are already setup. On the other hand, I\u0027m not sure we need it at runtime, maybe only test time. In which case this could be an SkDEBUGCODE flag on the SkGlyph.",
+      "parentUuid": "21f9ef5c_bc6ac471",
+      "range": {
+        "startLine": 702,
+        "startChar": 3,
+        "endLine": 706,
+        "endChar": 50
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43aa085d_e45396d2",
         "filename": "src/core/SkScalerContext.h",
         "patchSetId": 2
@@ -146,6 +266,30 @@
       "writtenOn": "2021-12-02T15:41:09Z",
       "side": 1,
       "message": "Because that happens at path drawing time.",
+      "range": {
+        "startLine": 297,
+        "startChar": 62,
+        "endLine": 297,
+        "endChar": 86
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62a7ee04_06e49eca",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Actually, this comment is incorrect. getPath (well, internalGetPath) does do subpixel offsets. This comment was intended for generatePath (it seems I managed to misplace this comment). The \"draw a glyph from path\" and \"user requested a path\" code simply requests the path from a glyph without any subpixel offset.",
+      "parentUuid": "43aa085d_e45396d2",
       "range": {
         "startLine": 297,
         "startChar": 62,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb50b5ac_5e67f13d",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Done\n\nYeah, I suppose \"Shadow\" and \"Proxy\" here is a bit of an over specification. Dropped the \"Shadow\" part.",
+      "parentUuid": "5e64846b_7ad49dd4",
+      "range": {
+        "startLine": 79,
+        "startChar": 83,
+        "endLine": 79,
+        "endChar": 102
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fddc787_d10194f2",
@@ -192,6 +360,30 @@
       "writtenOn": "2021-12-02T15:41:09Z",
       "side": 1,
       "message": "SK_ABORT?",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 24
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8f10fe4_c0706061",
+        "filename": "tools/fonts/TestSVGTypeface.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-02T20:17:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fddc787_d10194f2",
       "range": {
         "startLine": 253,
         "startChar": 8,
