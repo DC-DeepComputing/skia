@@ -22,6 +22,30 @@
       },
       "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5079f8c1_dccd4aef",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-02T17:50:37Z",
+      "side": 1,
+      "message": "I don\u0027t think deleting it will work without also updating the autoroller to remove the file from every merge.  That may be more trouble than it is worth.",
+      "parentUuid": "924d492b_31432f6c",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
