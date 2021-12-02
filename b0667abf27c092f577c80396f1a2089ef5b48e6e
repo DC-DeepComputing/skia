@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d8a73df_39fc0069",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T19:33:15Z",
+      "side": 1,
+      "message": "Allowing opaque-ification of transparent images is a pandora\u0027s box. I went back to specifying that you can only pass kPremul or kUnpremul. We check for kOpaque and return nullptr at a point common to both public APIs, and assert that we don\u0027t get kOpaque at a point deeper than that.",
+      "revId": "b0667abf27c092f577c80396f1a2089ef5b48e6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
