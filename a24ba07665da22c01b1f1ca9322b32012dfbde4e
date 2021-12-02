@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4c92958_f96111c8",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:59:33Z",
+      "side": 1,
+      "message": "I means that I generate structures with one of the values different and that value is a normal number, not NAN. I can remove or attempt to rephrase it.",
+      "parentUuid": "9c53651c_fe382ae0",
+      "range": {
+        "startLine": 39,
+        "startChar": 58,
+        "endLine": 39,
+        "endChar": 92
+      },
+      "revId": "a24ba07665da22c01b1f1ca9322b32012dfbde4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11fdbd3d_956bb5c7",
@@ -37,6 +61,54 @@
       "writtenOn": "2021-12-02T21:22:12Z",
       "side": 1,
       "message": "Add to the top of the source files which fail:\n\n/*#pragma settings NoES2Restrictions*/",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 81
+      },
+      "revId": "a24ba07665da22c01b1f1ca9322b32012dfbde4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2015a0e_f3ec4ad5",
+        "filename": "tests/sksl/runtime/RecursiveComparison_Types.skvm",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:59:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11fdbd3d_956bb5c7",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 81
+      },
+      "revId": "a24ba07665da22c01b1f1ca9322b32012dfbde4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "880218d9_ac4e696a",
+        "filename": "tests/sksl/runtime/RecursiveComparison_Types.skvm",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:59:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11fdbd3d_956bb5c7",
       "range": {
         "startLine": 3,
         "startChar": 0,
