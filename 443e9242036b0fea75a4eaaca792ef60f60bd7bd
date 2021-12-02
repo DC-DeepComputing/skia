@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1615f6e0_c6e59f6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T20:22:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cc1e55b_d6110622",
+      "revId": "443e9242036b0fea75a4eaaca792ef60f60bd7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ad2100a_fc605c9f",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b86982_021e910f",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Arrays.rts",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T20:22:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ad2100a_fc605c9f",
+      "range": {
+        "startLine": 21,
+        "startChar": 10,
+        "endLine": 21,
+        "endChar": 13
+      },
+      "revId": "443e9242036b0fea75a4eaaca792ef60f60bd7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75738e0f_940cde03",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-12-02T20:02:55Z",
       "side": 1,
       "message": "line too long",
+      "range": {
+        "startLine": 37,
+        "startChar": 80,
+        "endLine": 37,
+        "endChar": 86
+      },
+      "revId": "443e9242036b0fea75a4eaaca792ef60f60bd7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62862458_55fc3f79",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Arrays.rts",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T20:22:32Z",
+      "side": 1,
+      "message": "I just found lots of your comments on these tests in another CL. I will address them all.",
+      "parentUuid": "75738e0f_940cde03",
       "range": {
         "startLine": 37,
         "startChar": 80,
