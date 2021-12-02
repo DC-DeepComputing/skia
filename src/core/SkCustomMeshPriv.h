@@ -1,0 +1,58 @@
+/*
+ * Copyright 2021 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef SkCustomMeshPriv_DEFINED
+#define SkCustomMeshPriv_DEFINED
+
+#include "include/core/SkCustomMesh.h"
+#include "include/private/GrTypesPriv.h"
+
+struct SkCustomMeshDescPriv {
+    using Varying = SkCustomMeshSpecification::Varying;
+    using Attr    = SkCustomMeshSpecification::Attribute;
+
+    static SkSpan<const Varying> Varyings(const SkCustomMeshSpecification& desc) {
+        return SkMakeSpan(desc.fVaryings);
+    }
+
+    static const SkSL::Program* VS(SkCustomMeshSpecification& spec) { return spec.fVS.get(); }
+    static const SkSL::Program* FS(SkCustomMeshSpecification& spec) { return spec.fFS.get(); }
+
+    static int ID(SkCustomMeshSpecification& spec) { return spec.fID; }
+
+    static GrSLType VaryingTypeAsSLType(Varying::Type type) {
+        switch (type) {
+            case Varying::Type::kFloat:  return kFloat_GrSLType;
+            case Varying::Type::kFloat2: return kFloat2_GrSLType;
+            case Varying::Type::kFloat3: return kFloat3_GrSLType;
+            case Varying::Type::kFloat4: return kFloat4_GrSLType;
+            case Varying::Type::kHalf:   return kHalf_GrSLType;
+            case Varying::Type::kHalf2:  return kHalf2_GrSLType;
+            case Varying::Type::kHalf3:  return kHalf3_GrSLType;
+            case Varying::Type::kHalf4:  return kHalf4_GrSLType;
+        }
+        SkUNREACHABLE;
+    }
+
+    static GrVertexAttribType AttrTypeAsVertexAttribType(Attr::Type type) {
+        switch (type) {
+            case Attr::Type::kFloat4:       return kFloat4_GrVertexAttribType;
+            case Attr::Type::kUByte4_unorm: return kUByte4_norm_GrVertexAttribType;
+        }
+        SkUNREACHABLE;
+    }
+
+    static GrSLType AttrTypeAsSLType(Attr::Type type) {
+        switch (type) {
+            case Attr::Type::kFloat4:       return kFloat4_GrSLType;
+            case Attr::Type::kUByte4_unorm: return kHalf4_GrSLType;
+        }
+        SkUNREACHABLE;
+    }
+};
+
+#endif

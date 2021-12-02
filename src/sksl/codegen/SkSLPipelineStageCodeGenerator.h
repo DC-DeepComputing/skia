@@ -22,6 +22,7 @@ namespace PipelineStage {
     public:
         virtual ~Callbacks() = default;
 
+        virtual String getMainName() { return "main"; }
         virtual String getMangledName(const char* name) { return name; }
         virtual void   defineFunction(const char* declaration, const char* body, bool isMain) = 0;
         virtual void   declareFunction(const char* declaration) = 0;
@@ -32,6 +33,8 @@ namespace PipelineStage {
         virtual String sampleShader(int index, String coords) = 0;
         virtual String sampleColorFilter(int index, String color) = 0;
         virtual String sampleBlender(int index, String src, String dst) = 0;
+
+        virtual bool coerceMainReturnToHalf4() { return true; }
     };
 
     /*

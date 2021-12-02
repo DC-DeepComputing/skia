@@ -166,6 +166,7 @@ private:
     int fNumFragmentSamplers;
 
     GrGeometryProcessor::ProgramImpl::FPCoordsMap fFPCoordsMap;
+    GrShaderVar                                   fLocalCoordsVar;
 
     /**
      * Each root processor has an stage index. The GP is stage 0. The first root FP is stage 1,
