@@ -16,6 +16,24 @@
       "message": "Still not sure about bicubic. It\u0027s obviously fixable, but also not real likely, and the number of places that would require plumbing on the GPU backend is a little overwhelming.",
       "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e31724_a48db34e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-02T20:56:49Z",
+      "side": 1,
+      "message": "Just disallow it?",
+      "parentUuid": "6b9af494_a306e076",
+      "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
