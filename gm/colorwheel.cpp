@@ -59,3 +59,26 @@ DEF_SIMPLE_GM(colorwheelnative, canvas, 128, 28) {
     canvas->drawString("Y", 88.0f,  20.0f, font, SkPaint(SkColors::kYellow));
     canvas->drawString("K", 104.0f, 20.0f, font, SkPaint(SkColors::kBlack));
 }
+
+/**
+ * This GM tests decoding images with non-default (overridden) alpha types.
+ * We draw at a 150% scale, so that the impact of filtering unpremul data can be seen.
+ */
+DEF_SIMPLE_GM(colorwheel_alphatypes, canvas, 384, 192) {
+    canvas->clear(SK_ColorWHITE);
+
+    canvas->save();
+    canvas->scale(1.5f, 1.5f);
+
+    sk_sp<SkData> imgData = GetResourceAsData("images/color_wheel.png");
+
+    auto pmImg = SkImage::MakeFromEncoded(imgData, kPremul_SkAlphaType);
+    auto upmImg = SkImage::MakeFromEncoded(imgData, kUnpremul_SkAlphaType);
+ 
+    SkSamplingOptions linear{SkFilterMode::kLinear};
+
+    canvas->drawImage(pmImg, 0, 0, linear);
+    canvas->drawImage(upmImg, 128, 0, linear);
+
+    canvas->restore();
+}
