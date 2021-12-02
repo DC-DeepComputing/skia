@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45afd69b_6822f82b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a87e623_ff886b8c",
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90d0e901_78e8847c",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "Is this program not ES2-compatible? Might be able to remove this. (Same for other tests besides Array.)",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 38
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60aeea95_8442e214",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90d0e901_78e8847c",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63491c56_5f04e1ee",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ea15f01_71f078e9",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 13
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9b98b0a_34d2445f",
@@ -94,6 +160,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "SSA form could potentially end up deduplicating these.\nMight be a better test to flip the order to ensure the values get separate SSA slots?\n\ncolorGreen.r / colorGreen.b\ncolorGreen.b / colorGreen.r",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 42
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71a81ee_aeffdac5",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9b98b0a_34d2445f",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b69f40_39eeb079",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de803fec_83b5b4dd",
+      "range": {
+        "startLine": 27,
+        "startChar": 16,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f4cc50e_9b1b1ba4",
@@ -140,6 +254,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "nit: `-0 and +0`",
+      "range": {
+        "startLine": 35,
+        "startChar": 80,
+        "endLine": 35,
+        "endChar": 89
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edf7f50_be10a6ce",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Structs.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f4cc50e_9b1b1ba4",
       "range": {
         "startLine": 35,
         "startChar": 80,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d3bcd78_b21ecde1",
+        "filename": "resources/sksl/runtime/RecursiveComparison_Types.rts",
+        "patchSetId": 19
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3545378a_65596c15",
+      "range": {
+        "startLine": 9,
+        "startChar": 110,
+        "endLine": 9,
+        "endChar": 111
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5019185f_15745a78",
@@ -186,6 +348,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "Not all binary ops, just comparisons, right? Maybe `recursiveBinaryCompare`?",
+      "range": {
+        "startLine": 642,
+        "startChar": 20,
+        "endLine": 642,
+        "endChar": 35
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d5bd925_a6f4c441",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5019185f_15745a78",
       "range": {
         "startLine": 642,
         "startChar": 20,
@@ -219,6 +405,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf09cc5b_496913d4",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f247db1f_50c4e1c3",
+      "range": {
+        "startLine": 649,
+        "startChar": 4,
+        "endLine": 649,
+        "endChar": 54
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a261016_49bdfc6c",
@@ -232,6 +442,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "http://go/skiastyle#classes : \"Method calls within method calls should be prefixed with dereference of the ‘this’ pointer.\"",
+      "range": {
+        "startLine": 655,
+        "startChar": 12,
+        "endLine": 655,
+        "endChar": 27
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9493a4e1_e747128e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a261016_49bdfc6c",
       "range": {
         "startLine": 655,
         "startChar": 12,
@@ -265,6 +499,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ea5e16d_145d4b90",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "I thought of it and actually tried to make it work at first. But then I noticed that lots of old tests changed a little bit (registry numbers and such) and I really didn\u0027t want the old tests to change.\nI would rather leave it as is for now. You see, the logic is not equivalent in both cases (I like mine more).\nWe can add a bug to merge the logic later. It\u0027s just a few lines but then I am sure I didn\u0027t break anything that worked before.",
+      "parentUuid": "a25297c3_f4ae0e6c",
+      "range": {
+        "startLine": 666,
+        "startChar": 0,
+        "endLine": 671,
+        "endChar": 41
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4465dfa7_3ca65822",
@@ -278,6 +536,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "nit: this sentence can be removed",
+      "range": {
+        "startLine": 766,
+        "startChar": 12,
+        "endLine": 766,
+        "endChar": 78
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c16a303d_3da752f1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4465dfa7_3ca65822",
       "range": {
         "startLine": 766,
         "startChar": 12,
@@ -311,6 +593,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "167b3173_1abc570f",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f79e5cee_f628d1b8",
+      "range": {
+        "startLine": 768,
+        "startChar": 12,
+        "endLine": 770,
+        "endChar": 0
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42cba2f7_d6c67ae5",
@@ -324,6 +630,30 @@
       "writtenOn": "2021-11-30T20:29:54Z",
       "side": 1,
       "message": "(this is the \"old code\")",
+      "range": {
+        "startLine": 773,
+        "startChar": 0,
+        "endLine": 783,
+        "endChar": 9
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17e03fae_2188bb2e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-02T21:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42cba2f7_d6c67ae5",
       "range": {
         "startLine": 773,
         "startChar": 0,
