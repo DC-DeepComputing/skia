@@ -16,6 +16,40 @@
       "message": "This is only tested with a single PNG right now, but the GM works as expected. Per John\u0027s suggestion, I make SkCodec force usage of skcms if we\u0027re making a transparent image opaque.\n\nLeon: That\u0027s the part of this CL I\u0027m most nervous about - WDYT?",
       "revId": "0d2b8c503c7b0a2e4a908d876638a2fb75616d18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34fa9e11_c4324186",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T17:36:12Z",
+      "side": 1,
+      "message": "Bleh. I realize this isn\u0027t quite correct for the codecs that return false from usesColorXform. Those will never call applyColorXform at all, so we won\u0027t be applying the skcms transform.",
+      "revId": "0d2b8c503c7b0a2e4a908d876638a2fb75616d18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c657dcbd_c589a6c8",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T17:36:12Z",
+      "side": 1,
+      "message": "This previously made conversionSupported() return false...",
+      "revId": "0d2b8c503c7b0a2e4a908d876638a2fb75616d18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
