@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c6d8ac_5be1fd6b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T17:31:22Z",
+      "side": 1,
+      "message": "This is just the value holding the 0xFFFFFFFF immediate, right? (Because we no longer depend on that value in our trace instruction). Seems fine, I was trying to assess the value of this particular optimization.",
+      "range": {
+        "startLine": 20,
+        "startChar": 18,
+        "endLine": 20,
+        "endChar": 48
+      },
+      "revId": "415d0195f2d2bc7af66e86034b1fdcab5a368c17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
