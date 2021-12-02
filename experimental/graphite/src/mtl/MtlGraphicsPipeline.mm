@@ -105,7 +105,7 @@ SkSL::String emit_MSL_vertex_struct(const char* structName,
     return result;
 }
 
-SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
+SkSL::String get_sksl(const GraphicsPipelineDesc& desc) {
     const RenderStep* step = desc.renderStep();
     // TODO: To more completely support end-to-end rendering, this will need to be updated so that
     // the RenderStep shader snippet can produce a device coord, a local coord, and depth.
@@ -116,11 +116,10 @@ SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
     // produced by the RenderStep automatically.
 
     // Fixed program header
-    SkSL::String msl =
-            "#include <metal_stdlib>\n"
-            "#include <simd/simd.h>\n"
-            "using namespace metal;\n"
-            "\n"
+    SkSL::String sksl =
+            "uniform float4 rtAdjust;\n"
+            "\n";
+#if 0
             "typedef struct {\n"
             "    float4 rtAdjust;\n"
             "} Intrinsics;\n"
@@ -131,50 +130,51 @@ SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
             "    float4 color [[color(0)]];\n"
             "} FragmentOutput;\n"
             "\n";
+#endif
 
     // Typedefs needed by RenderStep
     if (step->numUniforms() > 0) {
-        msl += emit_MSL_uniform_struct("StepUniforms", step->uniforms());
+        sksl += emit_MSL_uniform_struct("StepUniforms", step->uniforms());
     }
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
-        msl += emit_MSL_vertex_struct("VertexAttrs",
-                                      step->vertexAttributes(),
-                                      step->instanceAttributes());
+        sksl += emit_MSL_vertex_struct("VertexAttrs",
+                                       step->vertexAttributes(),
+                                       step->instanceAttributes());
     }
 
     // Vertex shader function declaration
-    msl += "vertex VertexOutput vertexMain(uint vertexID [[vertex_id]],\n"
-           "                               uint instanceID [[instance_id]],\n"
-           "                               constant Intrinsics& intrinsics [[buffer(0)]]";
+    sksl += "vertex VertexOutput vertexMain(uint vertexID [[vertex_id]],\n"
+            "                               uint instanceID [[instance_id]],\n"
+            "                               constant Intrinsics& intrinsics [[buffer(0)]]";
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
-        msl += ",\n                        VertexAttrs vtx [[stage_in]]";
+        sksl += ",\n                        VertexAttrs vtx [[stage_in]]";
     }
     if (step->numUniforms() > 0) {
-        msl += ",\n                        constant StepUniforms& uniforms [[buffer(1)]]";
+        sksl += ",\n                        constant StepUniforms& uniforms [[buffer(1)]]";
     }
-    msl += ") {\n";
+    sksl += ") {\n";
 
     // Vertex shader body
-    msl += "    VertexOutput out;\n";
-    msl += step->vertexMSL();
-    msl += "    out.position.xy = out.position.xy * intrinsics.rtAdjust.xy + intrinsics.rtAdjust.zw;\n";
-    msl += "    return out;\n"
-           "}\n";
+    sksl += "    VertexOutput out;\n";
+    sksl += step->vertexMSL();
+    sksl += "    out.position.xy = out.position.xy * intrinsics.rtAdjust.xy + intrinsics.rtAdjust.zw;\n";
+    sksl += "    return out;\n"
+            "}\n";
 
     // Typedefs needed for painting
     auto paintUniforms = GetUniforms(desc.shaderCombo().fShaderType);
     if (!paintUniforms.empty()) {
-        msl += emit_MSL_uniform_struct("FragUniforms", paintUniforms);
+        sksl += emit_MSL_uniform_struct("FragUniforms", paintUniforms);
     }
 
-    msl += "fragment FragmentOutput fragmentMain(VertexOutput interpolated [[stage_in]],\n"
-           "                                     constant FragUniforms& uniforms [[buffer(2)]]) {\n"
-           "    FragmentOutput out;\n";
-    msl += GetShaderMSL(desc.shaderCombo().fShaderType);
-    msl += "    return out;\n"
-           "}\n";
+    sksl += "fragment FragmentOutput fragmentMain(VertexOutput interpolated [[stage_in]],\n"
+            "                                     constant FragUniforms& uniforms [[buffer(2)]]) {\n"
+            "    half4 out;\n";
+    sksl += GetShaderSkSL(desc.shaderCombo().fShaderType);
+    sksl += "    return out;\n"
+            "}\n";
 
-    return msl;
+    return sksl;
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
@@ -313,17 +313,43 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
                                                const skgpu::GraphicsPipelineDesc& desc) {
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
 
-    auto metallib = CompileShaderLibrary(gpu, get_msl(desc));
-    if (!metallib) {
+    auto errorHandler = fGpu->getContext()->priv().getShaderErrorHandler();
+    SkSL::String msl[kGrShaderTypeCount];
+    SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+    SkSL::Program::Settings settings;
+
+    if (!SkSLToMSL(gpu,
+                   get_sksl_vs(desc),
+                   SkSL::ProgramKind::kVertex,
+                   settings,
+                   &msl[kVertex_GrShaderType],
+                   &inputs[kVertex_GrShaderType])) {
+        return nullptr;
+    }
+
+    if (!SkSLToMSL(gpu,
+                   get_sksl_fs(desc),
+                   SkSL::ProgramKind::kFragment,
+                   settings,
+                   &msl[kFragment_GrShaderType],
+                   &inputs[kFragment_GrShaderType])) {
+        return nullptr;
+    }
+
+    sk_cfp<id<MTLLibrary>> shaderLibraries[kGrShaderTypeCount];
+
+    shaderLibraries[kVertex_GrShaderType] = CompileShaderLibrary(gpu, msl[kVertex_GrShaderType]);
+    shaderLibraries[kFragment_GrShaderType] = CompileShaderLibrary(gpu, msl[kFragment_GrShaderType]);
+    if (!shaderLibraries[kVertex_GrShaderType] || !shaderLibraries[kFragment_GrShaderType]) {
         return nullptr;
     }
 
     (*psoDescriptor).label = @(desc.renderStep()->name());
 
     (*psoDescriptor).vertexFunction =
-            [*metallib newFunctionWithName: @"vertexMain"];
+            [shaderLibraries[kVertex_GrShaderType].get() newFunctionWithName: @"vertexMain"];
     (*psoDescriptor).fragmentFunction =
-            [*metallib newFunctionWithName: @"fragmentMain"];
+            [shaderLibraries[kFragment_GrShaderType].get() newFunctionWithName: @"fragmentMain"];
 
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(desc.renderStep());

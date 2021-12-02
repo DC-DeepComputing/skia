@@ -21,7 +21,7 @@ enum class ProgramKind : int8_t {
     kRuntimeColorFilter,  // Runtime effect only suitable as SkColorFilter
     kRuntimeShader,       //   "       "     "      "     "  SkShader
     kRuntimeBlender,      //   "       "     "      "     "  SkBlender
-    kGeneric,
+    kGeneric1,
 };
 
 } // namespace SkSL
