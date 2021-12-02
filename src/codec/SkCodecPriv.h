@@ -98,7 +98,7 @@ static inline bool valid_alpha(SkAlphaType dstAlpha, bool srcIsOpaque) {
         return true;
     }
 
-    return dstAlpha != kOpaque_SkAlphaType;
+    return true;
 }
 
 /*

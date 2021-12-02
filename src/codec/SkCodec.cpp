@@ -731,6 +731,14 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
         }
     }
 
+    bool forceToOpaque = (dstInfo.alphaType() == kOpaque_SkAlphaType) && !srcIsOpaque;
+    if (forceToOpaque && !needsColorXform) {
+        // We will use skcms to make the image opaque. Use the srcProfile to avoid other conversion.
+        needsColorXform = true;
+        const auto* srcProfile = fEncodedInfo.profile();
+        fDstProfile = srcProfile ? *srcProfile : *skcms_sRGB_profile();
+    }
+
     if (!this->conversionSupported(dstInfo, srcIsOpaque, needsColorXform)) {
         return false;
     }
@@ -747,7 +755,9 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
                 && dstInfo.alphaType() == kPremul_SkAlphaType) {
             fDstXformAlphaFormat = skcms_AlphaFormat_PremulAsEncoded;
         } else {
-            fDstXformAlphaFormat = skcms_AlphaFormat_Unpremul;
+            fDstXformAlphaFormat = dstInfo.alphaType() == kOpaque_SkAlphaType
+                                           ? skcms_AlphaFormat_Opaque
+                                           : skcms_AlphaFormat_Unpremul;
         }
     }
     return true;
