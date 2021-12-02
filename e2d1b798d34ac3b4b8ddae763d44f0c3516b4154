@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924d492b_31432f6c",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-02T17:06:37Z",
+      "side": 1,
+      "message": "Wondering if we could make this clearer. The CL I\u0027m copying this from modified gn_to_bp.py, but did it in the AOSP branch.\n\nOne thought - we could *delete* the external/skia copy of this file, which might push non-Skia engineers to hunt down the actual file.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
