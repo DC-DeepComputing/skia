@@ -138,6 +138,30 @@
       },
       "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1aa1ea5_46620f01",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-02T15:10:06Z",
+      "side": 1,
+      "message": "Technically, it doesn\u0027t compute a true CRC-32; it leverages the CRC opcodes but mixes them differently (for better pipelining). That doesn\u0027t matter though :)",
+      "parentUuid": "3e2bfce6_bfa9e5a7",
+      "range": {
+        "startLine": 137,
+        "startChar": 12,
+        "endLine": 137,
+        "endChar": 51
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
