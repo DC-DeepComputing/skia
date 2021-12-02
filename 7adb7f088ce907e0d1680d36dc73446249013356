@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523eaa6f_cfc992f1",
+        "filename": "gm/colorwheel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-02T21:12:07Z",
+      "side": 1,
+      "message": "nit: It might be hard to see the difference between these two images (or what they\u0027re trying to do)? After staring at https://gold.skia.org/img/images/1af9361c68966f0352f2ea3356c62d72.png for a bit, I finally noticed that the one on the right (unpremul) has a bit of an edge around it.\n\nBut maybe this is just a more general problem: it\u0027s hard to triage unless you know exactly what the GM is trying to do.",
+      "range": {
+        "startLine": 67,
+        "startChar": 14,
+        "endLine": 67,
+        "endChar": 35
+      },
+      "revId": "7adb7f088ce907e0d1680d36dc73446249013356",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eabe592_b203eb40",
+        "filename": "src/core/SkImageGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-02T21:12:07Z",
+      "side": 1,
+      "message": "Should we add a test to confirm this behavior?",
+      "range": {
+        "startLine": 88,
+        "startChar": 17,
+        "endLine": 89,
+        "endChar": 23
+      },
+      "revId": "7adb7f088ce907e0d1680d36dc73446249013356",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
