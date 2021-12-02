@@ -274,7 +274,7 @@ static void add_glsl_type_aliases(SkSL::SymbolTable* symbols, const SkSL::Builti
 
 const ParsedModule& Compiler::loadPublicModule() {
     if (!fPublicModule.fSymbols) {
-        fPublicModule = this->parseModule(ProgramKind::kGeneric, MODULE_DATA(public), fRootModule);
+        fPublicModule = this->parseModule(ProgramKind::kGeneric1, MODULE_DATA(public), fRootModule);
         add_glsl_type_aliases(fPublicModule.fSymbols.get(), fContext->fTypes);
     }
     return fPublicModule;
@@ -295,7 +295,7 @@ const ParsedModule& Compiler::moduleForProgramKind(ProgramKind kind) {
         case ProgramKind::kRuntimeColorFilter: return this->loadPublicModule();        break;
         case ProgramKind::kRuntimeShader:      return this->loadRuntimeShaderModule(); break;
         case ProgramKind::kRuntimeBlender:     return this->loadPublicModule();        break;
-        case ProgramKind::kGeneric:            return this->loadPublicModule();        break;
+        case ProgramKind::kGeneric1:            return this->loadPublicModule();        break;
     }
     SkUNREACHABLE;
 }
@@ -406,7 +406,7 @@ std::unique_ptr<Program> Compiler::convertProgram(ProgramKind kind,
                                                   Program::Settings settings) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::convertProgram");
 
-    SkASSERT(!settings.fExternalFunctions || (kind == ProgramKind::kGeneric));
+    SkASSERT(!settings.fExternalFunctions || (kind == ProgramKind::kGeneric1));
 
     // Honor our optimization-override flags.
     switch (sOptimizer) {

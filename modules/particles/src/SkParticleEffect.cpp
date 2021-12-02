@@ -161,7 +161,7 @@ void SkParticleEffectParams::prepare(const skresources::ResourceProvider* resour
         settings.fRemoveDeadFunctions = false;
         settings.fExternalFunctions = &externalFns;
 
-        auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric, code, settings);
+        auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric1, code, settings);
         if (!program) {
             SkDebugf("%s\n", compiler.errorText().c_str());
             return nullptr;
