@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c356e225_da383011",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-02T13:35:40Z",
+      "side": 1,
+      "message": "Not ready yet because of https://github.com/emscripten-core/emsdk/pull/941#issuecomment-984631382",
+      "revId": "d9b3123c946e1f28d80267294ad7215bcdd6b77b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
