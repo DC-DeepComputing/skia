@@ -9,10 +9,14 @@
 
 #include "experimental/graphite/include/BackendTexture.h"
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/include/SkStuff.h"
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/ContextPriv.h"
 #include "experimental/graphite/src/Gpu.h"
 #include "experimental/graphite/src/ResourceTypes.h"
+
+#include "include/core/SkSurface.h"
 
 using namespace skgpu;
 
@@ -61,3 +65,29 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(BackendTextureTest, reporter, context) {
     context->deleteBackendTexture(texture1);
     context->deleteBackendTexture(texture2);
 }
+
+DEF_GRAPHITE_TEST_FOR_CONTEXTS(SurfaceBackendTextureTest, reporter, context) {
+#if 0
+    auto caps = context->priv().gpu()->caps();
+    sk_sp<Recorder> recorder = context->createRecorder();
+
+    TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                          /*levelCount=*/1,
+                                                          Protected::kNo,
+                                                          Renderable::kYes);
+
+    auto texture1 = context->createBackendTexture(kSize, info);
+    REPORTER_ASSERT(reporter, texture1.isValid());
+
+    sk_sp<SkSurface> surface = MakeGraphiteFromBackendTexture(recorder,
+                                                              texture1,
+                                                              kRGBA_8888_SkColorType,
+                                                              /*colorSpace=*/nullptr,
+                                                              /*props=*/nullptr);
+    REPORTER_ASSERT(reporter, surface);
+
+    surface.reset();
+    context->deleteBackendTexture(texture1);
+#endif
+}
+
