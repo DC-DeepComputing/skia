@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7594a930_491aabb4",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-02T15:57:42Z",
+      "side": 1,
+      "message": "Nit: unnecessary comma",
+      "range": {
+        "startLine": 421,
+        "startChar": 38,
+        "endLine": 421,
+        "endChar": 39
+      },
+      "revId": "049dafd6292f3884529a0337a95b2de2f779fdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
