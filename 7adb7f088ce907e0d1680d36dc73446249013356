@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da7a2b67_1f41a421",
+        "filename": "gm/colorwheel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T21:18:40Z",
+      "side": 1,
+      "message": "Yeah, the fringe is the key difference. I thought about changing it to zoom way in (and crop) to just the edge, so it would be really visible. I can do that before I land, so the GM clearly shows the impact, and triaging is maybe easier. (Along with a comment in the GM about the expected visual result).",
+      "parentUuid": "523eaa6f_cfc992f1",
+      "range": {
+        "startLine": 67,
+        "startChar": 14,
+        "endLine": 67,
+        "endChar": 35
+      },
+      "revId": "7adb7f088ce907e0d1680d36dc73446249013356",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eabe592_b203eb40",
         "filename": "src/core/SkImageGenerator.cpp",
         "patchSetId": 5
