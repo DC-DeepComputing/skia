@@ -46,6 +46,30 @@
       },
       "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056b5ff4_a4a1064b",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18504
+      },
+      "writtenOn": "2021-12-02T18:20:27Z",
+      "side": 1,
+      "message": "I wouldn\u0027t interpret that comment as written to mean that changes shouldn\u0027t go into AOSP, so clarifying would have helped me.\n\nYou could add an OWNERS file in AOSP that would ensure someone on the skia team gets a chance to review everything before it goes in.",
+      "parentUuid": "5079f8c1_dccd4aef",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
