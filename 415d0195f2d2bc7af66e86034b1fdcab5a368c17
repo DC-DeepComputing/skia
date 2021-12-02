@@ -22,6 +22,30 @@
       },
       "revId": "415d0195f2d2bc7af66e86034b1fdcab5a368c17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077e287a_f6f8af58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-02T18:15:28Z",
+      "side": 1,
+      "message": "That\u0027s exactly right, it adds a hoisted splat 0xFFFFFFFF instruction. It would make a simple non-branchy test like Commutative.skvm grow by an instruction, instead of breaking even.",
+      "parentUuid": "c8c6d8ac_5be1fd6b",
+      "range": {
+        "startLine": 20,
+        "startChar": 18,
+        "endLine": 20,
+        "endChar": 48
+      },
+      "revId": "415d0195f2d2bc7af66e86034b1fdcab5a368c17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
