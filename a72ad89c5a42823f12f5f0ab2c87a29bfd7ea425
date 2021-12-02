@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b4bc83_7cfe78ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-02T20:30:45Z",
+      "side": 1,
+      "message": "PS6 is rebased on https://skia-review.googlesource.com/c/skia/+/478957, which fixes this problem by allowing us to round-trip unpremul images.",
+      "parentUuid": "f0b81144_77a0f97f",
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf08eb8a_931ce237",
