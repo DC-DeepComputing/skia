@@ -202,7 +202,7 @@ static bool check_main_signature(const Context& context, int line, const Type& r
             }
             break;
         }
-        case ProgramKind::kGeneric:
+        case ProgramKind::kGeneric1:
             // No rules apply here
             break;
         case ProgramKind::kFragment: {

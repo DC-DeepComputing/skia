@@ -120,6 +120,34 @@ bool SkSLToMSL(const Gpu* gpu,
     return true;
 }
 
+#if 0
+static int foo() {
+    bool success = true;
+    if (msl[kVertex_GrShaderType].empty()) {
+        success = GrSkSLToMSL(fGpu,
+                              fVS.fCompilerString,
+                              SkSL::ProgramKind::kVertex,
+                              settings,
+                              &msl[kVertex_GrShaderType],
+                              &inputs[kVertex_GrShaderType],
+                              errorHandler);
+    }
+    if (!success) {
+        return nullptr;
+    }
+
+    id<MTLLibrary> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
+    if (!shaderLibrary) {
+        return nullptr;
+    }
+
+    pipelineDescriptor.vertexFunction =
+            [shaderLibraries[kVertex_GrShaderType] newFunctionWithName: @"vertexMain"];
+    pipelineDescriptor.fragmentFunction =
+            [shaderLibraries[kFragment_GrShaderType] newFunctionWithName: @"fragmentMain"];
+}
+#endif
+
 sk_cfp<id<MTLLibrary>> CompileShaderLibrary(const Gpu* gpu,
                                             const SkSL::String& msl) {
     TRACE_EVENT0("skia.shaders", "driver_compile_shader");

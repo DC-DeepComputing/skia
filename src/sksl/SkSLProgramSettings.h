@@ -98,7 +98,7 @@ struct ProgramConfig {
 
     bool strictES2Mode() const {
         return fSettings.fEnforceES2Restrictions &&
-               (IsRuntimeEffect(fKind) || fKind == ProgramKind::kGeneric);
+               (IsRuntimeEffect(fKind) || fKind == ProgramKind::kGeneric1);
     }
 
     static bool IsRuntimeEffect(ProgramKind kind) {
