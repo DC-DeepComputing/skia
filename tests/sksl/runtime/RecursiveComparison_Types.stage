@@ -1,0 +1,7 @@
+### Compilation failed:
+
+error: 11: operator '==' can not operate on arrays (or structs containing arrays)
+error: 11: operator '!=' can not operate on arrays (or structs containing arrays)
+error: 20: operator '==' can not operate on arrays (or structs containing arrays)
+error: 20: operator '!=' can not operate on arrays (or structs containing arrays)
+4 errors
