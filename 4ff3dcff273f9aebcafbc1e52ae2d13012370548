@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bed7c872_f4941256",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T20:24:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "51fa2d05_535c1222",
+      "range": {
+        "startLine": 536,
+        "startChar": 20,
+        "endLine": 536,
+        "endChar": 32
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cbd75b0_4f91bc2a",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "Yep, hanging there to make sure I actually do it.",
       "parentUuid": "2cbd75b0_4f91bc2a",
+      "range": {
+        "startLine": 1045,
+        "startChar": 55,
+        "endLine": 1045,
+        "endChar": 105
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d951f77_9a97711d",
+        "filename": "src/core/SkRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T20:24:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "32a54344_f847d533",
       "range": {
         "startLine": 1045,
         "startChar": 55,
@@ -243,6 +291,30 @@
       "side": 1,
       "message": "Yes, it should also be maintained (or enforced somehow) by getImage and generateImage as well. In some sense this is a lot like calling the generateImage case, in that you might get something unexpected to happen, but it shouldn\u0027t crash or do anything really awful. On the other hand, it would always be a logical error to do so. I was thinking about splitting the fForceBW into a bitfield so we have a bit to set to state that we\u0027re sure that the metrics, bounds, format, and any initial path overrides are already setup. On the other hand, I\u0027m not sure we need it at runtime, maybe only test time. In which case this could be an SkDEBUGCODE flag on the SkGlyph.",
       "parentUuid": "21f9ef5c_bc6ac471",
+      "range": {
+        "startLine": 702,
+        "startChar": 3,
+        "endLine": 706,
+        "endChar": 50
+      },
+      "revId": "4ff3dcff273f9aebcafbc1e52ae2d13012370548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbccd870_652c2844",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-02T20:24:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7b790256_4ef7fed9",
       "range": {
         "startLine": 702,
         "startChar": 3,
