@@ -12,6 +12,7 @@
 #include "src/core/SkVM.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -59,6 +60,9 @@ public:
     /** Attaches the SkSL source to be debugged. */
     void setSource(std::string source);
 
+    /** Attaches a callback that will be invoked as soon as the `trace_done` op is encountered. */
+    void setCompletionCallback(std::function<void()> callbackFn);
+
     /** Serialization for .trace files. */
     bool readTrace(SkStream* r);
     void writeTrace(SkWStream* w) const;
@@ -78,6 +82,9 @@ public:
 
     /** The SkSL code, split line-by-line. */
     std::vector<std::string> fSource;
+
+    /** The debug-trace completion callback (controlled by setCompletionCallback). */
+    std::function<void()> fCompletionCallback;
 
     /**
      * A trace hook which populates fTraceInfo during SkVM program evaluation. This will be created
