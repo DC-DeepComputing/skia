@@ -129,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d3f525_dd0328a2",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T19:07:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5bf6a600_68af2634",
+      "range": {
+        "startLine": 307,
+        "startChar": 35,
+        "endLine": 307,
+        "endChar": 54
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4fe45cd_efcea7c6",
@@ -223,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1572fcb6_227d7170",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T19:07:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c339f4f3_b2e7e4d7",
+      "range": {
+        "startLine": 554,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 0
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "965f3aab_b15a7459",
@@ -283,6 +331,30 @@
       "writtenOn": "2021-12-01T14:25:06Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 958,
+        "endChar": 5
+      },
+      "revId": "a72ad89c5a42823f12f5f0ab2c87a29bfd7ea425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de1b14b7_b4c195b3",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T19:07:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "70a1d3de_69164363",
       "range": {
         "startLine": 948,
         "startChar": 0,
