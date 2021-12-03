@@ -84,8 +84,11 @@ namespace SkVMInterpreterTypes {
             r = (Slot*)addr;
         }
 
+        const auto is_valid_trace_hook = [&](int immA) -> bool {
+            return immA >= 0 && immA < nTraceHooks;
+        };
         const auto should_trace = [&](int immA, Reg x, Reg y) -> bool {
-            return immA >= 0 && immA < nTraceHooks && any(r[x].i32 & r[y].i32);
+            return is_valid_trace_hook(immA) && any(r[x].i32 & r[y].i32);
         };
 
         // Step each argument pointer ahead by its stride a number of times.
@@ -247,6 +250,12 @@ namespace SkVMInterpreterTypes {
                     CASE(Op::trace_exit):
                         if (should_trace(immA, x, y)) {
                             traceHooks[immA]->exit(immB);
+                        }
+                        break;
+
+                    CASE(Op::trace_done):
+                        if (is_valid_trace_hook(immA)) {
+                            traceHooks[immA]->done();
                         }
                         break;
 
