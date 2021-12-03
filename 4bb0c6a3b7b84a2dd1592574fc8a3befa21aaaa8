@@ -16,6 +16,24 @@
       "message": "Neat. Is there a specific use-case? I know many art tools offer histograms, and they can be really useful for finding bugs like banding or comb-filtering induced by other operations - just curious what led to this.",
       "revId": "4bb0c6a3b7b84a2dd1592574fc8a3befa21aaaa8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ff322be_419715eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-12-03T15:06:19Z",
+      "side": 1,
+      "message": "Oh, I\u0027m so glad you asked 😊\n\nI\u0027m debugging some discrepancies in our fractal noise impl vs. AE, and kind of narrowed it down to octaves composition/averaging.\n\nMore specifically, the \"sub influence\" property determines how much each noise layer contributes to the result and, per Adobe [1], \"At 100%, all iterations have the same amount of influence. At 50%, each iteration has half as much influence as the previous iteration. A value of 0% makes the effect appear exactly as if Complexity is 1.\"\n\nThat sounds like weighted average (which is what we have now), and for 100% specifically it sounds like plain arithmetic mean.\n\nBut as you increase the number of planes, averaging converges to midtone, and the noise softens quite a bit.  That\u0027s not what AE does though, theirs remains relatively sharp and retains details.\n\nAveraging also doesn\u0027t make sense fundamentally: we\u0027re composing noise signals, so if e.g. two octaves yield positive values then the result should increase -- but averaging will reduce it instead.\n\nSo yeah, I\u0027m struggling to figure how AE composes noise planes and visualizing the color distribution (how it shrinks with more planes) while I tweak the impl is super helpful.\n\n\n[1] https://helpx.adobe.com/after-effects/using/noise-grain-effects.html",
+      "parentUuid": "a8836e8a_199eb560",
+      "revId": "4bb0c6a3b7b84a2dd1592574fc8a3befa21aaaa8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
