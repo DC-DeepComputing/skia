@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8836e8a_199eb560",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T14:29:30Z",
+      "side": 1,
+      "message": "Neat. Is there a specific use-case? I know many art tools offer histograms, and they can be really useful for finding bugs like banding or comb-filtering induced by other operations - just curious what led to this.",
+      "revId": "4bb0c6a3b7b84a2dd1592574fc8a3befa21aaaa8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
