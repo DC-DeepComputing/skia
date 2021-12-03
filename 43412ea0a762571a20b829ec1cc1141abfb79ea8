@@ -34,6 +34,24 @@
       "parentUuid": "6b9af494_a306e076",
       "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e857d1d_f4532431",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T16:59:23Z",
+      "side": 1,
+      "message": "Yes. Alternately, I put together the plumbing that would allow us to turn off bicubic clamp on GPU: https://skia-review.googlesource.com/c/skia/+/479716",
+      "parentUuid": "69e31724_a48db34e",
+      "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
