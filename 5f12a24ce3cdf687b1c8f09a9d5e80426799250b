@@ -401,6 +401,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7454a613_7829a140",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:14:50Z",
+      "side": 1,
+      "message": "(This was meant to be a global comment on the CL, not isolated to this line. Sorry!)",
+      "parentUuid": "78aff1e6_68535ae8",
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f247db1f_50c4e1c3",
         "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
         "patchSetId": 19
