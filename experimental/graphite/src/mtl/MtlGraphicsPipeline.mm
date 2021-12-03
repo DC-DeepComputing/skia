@@ -18,29 +18,36 @@ namespace skgpu::mtl {
 
 namespace {
 
-SkSL::String emit_MSL_uniform_struct(const char* structName, SkSpan<const Uniform> uniforms) {
+SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
     SkSL::String result;
 
-    result.appendf("struct %s {\n", structName);
+    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+
+    int offset = 0;
     for (auto u : uniforms) {
         // TODO: this is sufficient for the sprint but should be changed to use SkSL's
         // machinery
-        result.append("    ");
+        result.appendf("    layout(offset=%d) ", offset);
         switch (u.type()) {
             case SLType::kFloat4:
                 result.append("float4");
+                offset += 16 * u.count();
                 break;
             case SLType::kFloat2:
                 result.append("float2");
+                offset += 8 * u.count();
                 break;
             case SLType::kFloat:
                 result.append("float");
+                offset += 4 * u.count();
                 break;
             case SLType::kFloat4x4:
                 result.append("float4x4");
+                offset += 64 * u.count();
                 break;
             case SLType::kHalf4:
                 result.append("half4");
+                offset += 8 * u.count();
                 break;
             default:
                 SkASSERT(0);
@@ -105,8 +112,156 @@ SkSL::String emit_MSL_vertex_struct(const char* structName,
     return result;
 }
 
-SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
-    const RenderStep* step = desc.renderStep();
+// Gradient
+#if 0
+---- Vertex shader ----------------------------------------------------
+SKSL:
+1	layout (binding=0) uniform uniformBuffer
+2	{
+3		layout(offset=0) float4 sk_RTAdjust;
+4		layout(offset=16) half4 ustart_S1_c0_c0;
+5		layout(offset=24) half4 uend_S1_c0_c0;
+6		layout(offset=32) float3x3 umatrix_S1_c0_c1;
+7		layout(offset=80) half4 uleftBorderColor_S1_c0;
+8		layout(offset=88) half4 urightBorderColor_S1_c0;
+9	}
+10	;
+11	layout(location = 0) in float2 position;
+12	layout(location = 1) in half4 color;
+13	layout(location = 2) in float2 localCoord;
+14	layout(location = 0) flat out half4 vcolor_S0;
+15	layout(location = 1) out float2 vTransformedCoords_5_S0;
+16	void main()
+17	{
+18		// Primitive Processor QuadPerEdgeAAGeometryProcessor
+19		vcolor_S0 = color;
+20		sk_Position = position.xy01;
+21		{
+22			vTransformedCoords_5_S0 = float3x2(umatrix_S1_c0_c1) * localCoord.xy1;
+23		}
+24	}
+25
+---- Fragment shader ----------------------------------------------------
+SKSL:
+1	layout (binding=0) uniform uniformBuffer
+2	{
+3		layout(offset=0) float4 sk_RTAdjust;
+4		layout(offset=16) half4 ustart_S1_c0_c0;
+5		layout(offset=24) half4 uend_S1_c0_c0;
+6		layout(offset=32) float3x3 umatrix_S1_c0_c1;
+7		layout(offset=80) half4 uleftBorderColor_S1_c0;
+8		layout(offset=88) half4 urightBorderColor_S1_c0;
+9	}
+10	;
+11	layout(location = 0) flat in half4 vcolor_S0;
+12	layout(location = 1) in float2 vTransformedCoords_5_S0;
+13	layout(location = 0, index = 0) out half4 sk_FragColor;
+14	half4 SingleIntervalColorizer_S1_c0_c0(half4 _input, float2 _coords)
+15	{
+16		half4 _tmp_0_inColor = _input;
+17		float2 _tmp_1_coords = _coords;
+18		return half4(mix(ustart_S1_c0_c0, uend_S1_c0_c0, half(_tmp_1_coords.x)));
+19	}
+20	half4 LinearLayout_S1_c0_c1_c0(half4 _input)
+21	{
+22		half4 _tmp_2_inColor = _input;
+23		float2 _tmp_3_coords = vTransformedCoords_5_S0;
+24		return half4(half4(half(_tmp_3_coords.x) + 9.9999997473787516e-06, 1.0, 0.0, 0.0));
+25	}
+26	half4 MatrixEffect_S1_c0_c1(half4 _input)
+27	{
+28		return LinearLayout_S1_c0_c1_c0(_input);
+29	}
+30	half4 ClampedGradient_S1_c0(half4 _input)
+31	{
+32		half4 _tmp_4_inColor = _input;
+33		half4 t = MatrixEffect_S1_c0_c1(_tmp_4_inColor);
+34		half4 outColor;
+35		if (!bool(int(1)) && t.y < 0.0)
+36		{
+37			outColor = half4(0.0);
+38		}
+39		else if (t.x < 0.0)
+40		{
+41			outColor = uleftBorderColor_S1_c0;
+42		}
+43		else if (t.x > 1.0)
+44		{
+45			outColor = urightBorderColor_S1_c0;
+46		}
+47		else
+48		{
+49			outColor = SingleIntervalColorizer_S1_c0_c0(_tmp_4_inColor, float2(half2(t.x, 0.0)));
+50		}
+51		if (bool(int(0)))
+52		{
+53			outColor.xyz *= outColor.w;
+54		}
+55		return half4(outColor);
+56	}
+57	half4 DisableCoverageAsAlpha_S1(half4 _input)
+58	{
+59		_input = ClampedGradient_S1_c0(_input);
+60		half4 _tmp_5_inColor = _input;
+61		return half4(_input);
+62	}
+63	void main()
+64	{
+65		// Stage 0, QuadPerEdgeAAGeometryProcessor
+66		half4 outputColor_S0;
+67		outputColor_S0 = vcolor_S0;
+68		const half4 outputCoverage_S0 = half4(1);
+69		half4 output_S1;
+70		output_S1 = DisableCoverageAsAlpha_S1(outputColor_S0);
+71		{
+72			// Xfer Processor: Porter Duff
+73			sk_FragColor = output_S1 * outputCoverage_S0;
+74		}
+75	}
+#endif
+// Solid
+#if 0
+---- Vertex shader ----------------------------------------------------
+SKSL:
+1	layout (binding=0) uniform uniformBuffer
+2	{
+3		layout(offset=0) float4 sk_RTAdjust;
+4	}
+5	;
+6	layout(location = 0) in float2 position;
+7	layout(location = 1) in half4 color;
+8	layout(location = 0) flat out half4 vcolor_S0;
+9	void main()
+10	{
+11		// Primitive Processor QuadPerEdgeAAGeometryProcessor
+12		vcolor_S0 = color;
+13		sk_Position = position.xy01;
+14	}
+15
+---- Fragment shader ----------------------------------------------------
+SKSL:
+1	layout (binding=0) uniform uniformBuffer
+2	{
+3		layout(offset=0) float4 sk_RTAdjust;
+4	}
+5	;
+6	layout(location = 0) flat in half4 vcolor_S0;
+7	layout(location = 0, index = 0) out half4 sk_FragColor;
+8	void main()
+9	{
+10		// Stage 0, QuadPerEdgeAAGeometryProcessor
+11		half4 outputColor_S0;
+12		outputColor_S0 = vcolor_S0;
+13		const half4 outputCoverage_S0 = half4(1);
+14		{
+15			// Xfer Processor: Porter Duff
+16			sk_FragColor = outputColor_S0 * outputCoverage_S0;
+17		}
+18	}
+#endif
+
+SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
+    const RenderStep *step = desc.renderStep();
     // TODO: To more completely support end-to-end rendering, this will need to be updated so that
     // the RenderStep shader snippet can produce a device coord, a local coord, and depth.
     // If the paint combination doesn't need the local coord it can be ignored, otherwise we need
@@ -116,65 +271,71 @@ SkSL::String get_msl(const GraphicsPipelineDesc& desc) {
     // produced by the RenderStep automatically.
 
     // Fixed program header
-    SkSL::String msl =
-            "#include <metal_stdlib>\n"
-            "#include <simd/simd.h>\n"
-            "using namespace metal;\n"
-            "\n"
-            "typedef struct {\n"
-            "    float4 rtAdjust;\n"
-            "} Intrinsics;\n"
-            "typedef struct {\n"
-            "    float4 position [[position]];\n"
-            "} VertexOutput;\n"
-            "typedef struct {\n"
-            "    float4 color [[color(0)]];\n"
-            "} FragmentOutput;\n"
-            "\n";
+    SkSL::String sksl =
+        "layout (binding=0) uniform intrinsicUniforms {\n"
+        "    layout(offset=0) float4 rtAdjust;\n"
+        "};\n"
+        "layout(location = 0) in float2 position;\n"
+        "\n";
+
+#if 0
+    "typedef struct {\n"
+    "    float4 rtAdjust;\n"
+    "} Intrinsics;\n"
+    "typedef struct {\n"
+    "    float4 position [[position]];\n"
+    "} VertexOutput;\n"
+    "typedef struct {\n"
+    "    float4 color [[color(0)]];\n"
+    "} FragmentOutput;\n"
+    "\n";
+#endif
 
     // Typedefs needed by RenderStep
     if (step->numUniforms() > 0) {
-        msl += emit_MSL_uniform_struct("StepUniforms", step->uniforms());
+        sksl += emit_SKSL_uniforms(1, "VS", step->uniforms());
     }
-    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
-        msl += emit_MSL_vertex_struct("VertexAttrs",
-                                      step->vertexAttributes(),
-                                      step->instanceAttributes());
-    }
+//    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
+//        sksl += emit_MSL_vertex_struct("VertexAttrs",
+//                                       step->vertexAttributes(),
+//                                       step->instanceAttributes());
+//    }
 
     // Vertex shader function declaration
-    msl += "vertex VertexOutput vertexMain(uint vertexID [[vertex_id]],\n"
-           "                               uint instanceID [[instance_id]],\n"
-           "                               constant Intrinsics& intrinsics [[buffer(0)]]";
-    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
-        msl += ",\n                        VertexAttrs vtx [[stage_in]]";
-    }
-    if (step->numUniforms() > 0) {
-        msl += ",\n                        constant StepUniforms& uniforms [[buffer(1)]]";
-    }
-    msl += ") {\n";
+    sksl += "void main() {\n";
+//    if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
+//        sksl += ",\n                        VertexAttrs vtx [[stage_in]]";
+//    }
+//    if (step->numUniforms() > 0) {
+//        sksl += ",\n                        constant StepUniforms& uniforms [[buffer(1)]]";
+//    }
+//    sksl += ") {\n";
 
     // Vertex shader body
-    msl += "    VertexOutput out;\n";
-    msl += step->vertexMSL();
-    msl += "    out.position.xy = out.position.xy * intrinsics.rtAdjust.xy + intrinsics.rtAdjust.zw;\n";
-    msl += "    return out;\n"
-           "}\n";
+    //sksl += "    VertexOutput out;\n";
+    sksl += step->vertexMSL();
+    sksl += "    sk_Position = float4(stepPosition.xy * rtAdjust.xy + rtAdjust.zw, stepPosition.zw);\n"
+            "}\n";
+
+    return sksl;
+}
+
+SkSL::String get_sksl_fs(const GraphicsPipelineDesc& desc) {
+    SkSL::String sksl;
 
     // Typedefs needed for painting
     auto paintUniforms = GetUniforms(desc.shaderCombo().fShaderType);
     if (!paintUniforms.empty()) {
-        msl += emit_MSL_uniform_struct("FragUniforms", paintUniforms);
+        sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
     }
 
-    msl += "fragment FragmentOutput fragmentMain(VertexOutput interpolated [[stage_in]],\n"
-           "                                     constant FragUniforms& uniforms [[buffer(2)]]) {\n"
-           "    FragmentOutput out;\n";
-    msl += GetShaderMSL(desc.shaderCombo().fShaderType);
-    msl += "    return out;\n"
-           "}\n";
+    sksl += "half4 main() {\n"
+            "    half4 outColor;\n";
+    sksl += GetShaderSkSL(desc.shaderCombo().fShaderType);
+    sksl += "    return outColor;\n"
+            "}\n";
 
-    return msl;
+    return sksl;
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
@@ -313,17 +474,43 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
                                                const skgpu::GraphicsPipelineDesc& desc) {
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
 
-    auto metallib = CompileShaderLibrary(gpu, get_msl(desc));
-    if (!metallib) {
+    //auto errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
+    SkSL::String msl[kGrShaderTypeCount];
+    SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+    SkSL::Program::Settings settings;
+
+    if (!SkSLToMSL(gpu,
+                   get_sksl_vs(desc),
+                   SkSL::ProgramKind::kVertex,
+                   settings,
+                   &msl[kVertex_GrShaderType],
+                   &inputs[kVertex_GrShaderType])) {
+        return nullptr;
+    }
+
+    if (!SkSLToMSL(gpu,
+                   get_sksl_fs(desc),
+                   SkSL::ProgramKind::kFragment,
+                   settings,
+                   &msl[kFragment_GrShaderType],
+                   &inputs[kFragment_GrShaderType])) {
+        return nullptr;
+    }
+
+    sk_cfp<id<MTLLibrary>> shaderLibraries[kGrShaderTypeCount];
+
+    shaderLibraries[kVertex_GrShaderType] = CompileShaderLibrary(gpu, msl[kVertex_GrShaderType]);
+    shaderLibraries[kFragment_GrShaderType] = CompileShaderLibrary(gpu, msl[kFragment_GrShaderType]);
+    if (!shaderLibraries[kVertex_GrShaderType] || !shaderLibraries[kFragment_GrShaderType]) {
         return nullptr;
     }
 
     (*psoDescriptor).label = @(desc.renderStep()->name());
 
     (*psoDescriptor).vertexFunction =
-            [*metallib newFunctionWithName: @"vertexMain"];
+            [shaderLibraries[kVertex_GrShaderType].get() newFunctionWithName: @"vertexMain"];
     (*psoDescriptor).fragmentFunction =
-            [*metallib newFunctionWithName: @"fragmentMain"];
+            [shaderLibraries[kFragment_GrShaderType].get() newFunctionWithName: @"fragmentMain"];
 
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(desc.renderStep());
