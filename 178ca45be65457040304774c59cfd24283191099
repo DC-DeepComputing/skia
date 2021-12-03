@@ -83,6 +83,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b2aaa8b_908d09fa",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-03T21:02:08Z",
+      "side": 1,
+      "message": "I can be more explicit about it -- this is casting skgpu::ResourceProvider to skgpu::mtl::ResourceProvider.",
+      "parentUuid": "c5c1110c_61a51e56",
+      "range": {
+        "startLine": 357,
+        "startChar": 28,
+        "endLine": 357,
+        "endChar": 47
+      },
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cd39d6b_47443020",
         "filename": "experimental/graphite/src/mtl/MtlResourceProvider.mm",
         "patchSetId": 4
