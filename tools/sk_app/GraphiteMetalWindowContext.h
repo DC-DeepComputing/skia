@@ -49,6 +49,7 @@ protected:
     sk_cfp<id<MTLCommandQueue>> fQueue;
     CAMetalLayer*               fMetalLayer;
     CFTypeRef                   fDrawableHandle;
+    SkSurface*                  fVeryHackyBackPointerToCurrentSurface = nullptr;
 };
 
 }   // namespace sk_app

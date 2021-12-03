@@ -9,8 +9,17 @@
 #include "src/core/SkMathPriv.h"
 #include "tools/sk_app/GraphiteMetalWindowContext.h"
 
+#include "experimental/graphite/include/BackendTexture.h"
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/include/Recording.h"
+#include "experimental/graphite/include/SkStuff.h"
 #include "experimental/graphite/include/mtl/MtlBackendContext.h"
+#include "experimental/graphite/include/mtl/MtlTypes.h"
+
+// TODO: Remove these hacky src includes
+#include "experimental/graphite/src/Device.h"
+#include "experimental/graphite/src/Surface_Graphite.h"
 
 using sk_app::DisplayParams;
 using sk_app::GraphiteMetalWindowContext;
@@ -46,9 +55,10 @@ void GraphiteMetalWindowContext::initializeContext() {
     fValid = this->onInitializeContext();
 
     skgpu::mtl::BackendContext backendContext = {};
-    backendContext.fDevice.retain((GrMTLHandle)fDevice.get());
-    backendContext.fQueue.retain((GrMTLHandle)fQueue.get());
+    backendContext.fDevice.retain((skgpu::mtl::Handle)fDevice.get());
+    backendContext.fQueue.retain((skgpu::mtl::Handle)fQueue.get());
     fGraphiteContext = skgpu::Context::MakeMetal(backendContext);
+    fGraphiteRecorder = fGraphiteContext->createRecorder();
     // TODO
 //    if (!fGraphiteContext && fDisplayParams.fMSAASampleCount > 1) {
 //        fDisplayParams.fMSAASampleCount /= 2;
@@ -70,11 +80,6 @@ void GraphiteMetalWindowContext::destroyContext() {
     fMetalLayer = nil;
     fValid = false;
 
-#if GR_METAL_SDK_VERSION >= 230
-    if (@available(macOS 11.0, iOS 14.0, *)) {
-        [fPipelineArchive release];
-    }
-#endif
     fQueue.reset();
     fDevice.reset();
 }
@@ -83,27 +88,41 @@ sk_sp<SkSurface> GraphiteMetalWindowContext::getBackbufferSurface() {
     sk_sp<SkSurface> surface;
     id<CAMetalDrawable> currentDrawable = [fMetalLayer nextDrawable];
 
-    // TODO
-//    GrMtlTextureInfo fbInfo;
-//    fbInfo.fTexture.retain(currentDrawable.texture);
-//
-//    GrBackendRenderTarget backendRT(fWidth,
-//                                    fHeight,
-//                                    fSampleCount,
-//                                    fbInfo);
-//
-//    surface = SkSurface::MakeFromBackendRenderTarget(fContext.get(), backendRT,
-//                                                     kTopLeft_GrSurfaceOrigin,
-//                                                     kBGRA_8888_SkColorType,
-//                                                     fDisplayParams.fColorSpace,
-//                                                     &fDisplayParams.fSurfaceProps);
+    skgpu::mtl::TextureInfo mtlInfo((skgpu::mtl::Handle)currentDrawable.texture);
 
-    fDrawableHandle = CFRetain((GrMTLHandle) currentDrawable);
+    skgpu::BackendTexture backendTex(this->dimensions(),
+                                     (skgpu::mtl::Handle)currentDrawable.texture);
+
+    surface = MakeGraphiteFromBackendTexture(this->graphiteRecorder(),
+                                             backendTex,
+                                             kBGRA_8888_SkColorType,
+                                             fDisplayParams.fColorSpace,
+                                             &fDisplayParams.fSurfaceProps);
+
+    fDrawableHandle = CFRetain((skgpu::mtl::Handle) currentDrawable);
+
+    if (surface) {
+        fVeryHackyBackPointerToCurrentSurface = surface.get();
+    }
 
     return surface;
 }
 
 void GraphiteMetalWindowContext::swapBuffers() {
+    // TODO: We need to somehow flush the devices work to the recorder. This is currently a very
+    // hacky way to do it and we need to figure out what the correct pattern should be. Calling
+    // snap on the recorder should probably be able to flush all the connected devices?
+    SkASSERT(fVeryHackyBackPointerToCurrentSurface);
+    auto grSurface = static_cast<skgpu::Surface_Graphite*>(fVeryHackyBackPointerToCurrentSurface);
+    grSurface->hackyForceFlushDevice();
+    fVeryHackyBackPointerToCurrentSurface = nullptr;
+
+    // This chunk of code should not be in this class but higher up either in Window or
+    // WindowContext
+    std::unique_ptr<skgpu::Recording> recording = fGraphiteRecorder->snap();
+    fGraphiteContext->insertRecording(std::move(recording));
+    fGraphiteContext->submit(skgpu::SyncToCpu::kNo);
+
     id<CAMetalDrawable> currentDrawable = (id<CAMetalDrawable>)fDrawableHandle;
 
     id<MTLCommandBuffer> commandBuffer([*fQueue commandBuffer]);

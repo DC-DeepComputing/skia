@@ -40,6 +40,9 @@ public:
 
     sk_sp<Recorder> refRecorder() { return fRecorder; }
 
+    // TODO: Remove
+    void hackyFlushCall() { this->flushPendingWorkToRecorder(); }
+
 private:
     // Clipping
     void onSave() override {}

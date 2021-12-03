@@ -25,6 +25,9 @@ public:
     void onWritePixels(const SkPixmap&, int x, int y) override;
     bool onCopyOnWrite(ContentChangeMode) override;
 
+    // TODO: Remove
+    void hackyForceFlushDevice();
+
 private:
     sk_sp<Device> fDevice;
 };

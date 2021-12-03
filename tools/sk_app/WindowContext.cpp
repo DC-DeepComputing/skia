@@ -10,6 +10,7 @@
 #include "include/gpu/GrDirectContext.h"
 #ifdef SK_GRAPHITE_ENABLED
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Recorder.h"
 #endif
 
 namespace sk_app {
@@ -18,5 +19,9 @@ WindowContext::WindowContext(const DisplayParams& params)
         : fDisplayParams(params) {}
 
 WindowContext::~WindowContext() {}
+
+#ifdef SK_GRAPHITE_ENABLED
+sk_sp<skgpu::Recorder> WindowContext::graphiteRecorder() const { return fGraphiteRecorder; }
+#endif
 
 }   //namespace sk_app

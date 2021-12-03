@@ -331,7 +331,7 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor as well?
     auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
 
-    mtlColorAttachment.pixelFormat = MTLPixelFormatRGBA8Unorm;
+    mtlColorAttachment.pixelFormat = MTLPixelFormatBGRA8Unorm;
     mtlColorAttachment.blendingEnabled = FALSE;
     mtlColorAttachment.writeMask = MTLColorWriteMaskAll;
 
