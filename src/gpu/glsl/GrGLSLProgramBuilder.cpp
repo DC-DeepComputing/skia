@@ -116,7 +116,7 @@ bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkStrin
                                                     outputColor->c_str(),
                                                     outputCoverage->c_str(),
                                                     texSamplers.get());
-    fFPCoordsMap = fGPImpl->emitCode(args, this->pipeline());
+    std::tie(fFPCoordsMap, fLocalCoordsVar) = fGPImpl->emitCode(args, this->pipeline());
 
     // We have to check that effects and the code they emit are consistent, ie if an effect
     // asks for dst color, then the emit code needs to follow suit
@@ -178,10 +178,28 @@ SkString GrGLSLProgramBuilder::emitFragProc(const GrFragmentProcessor& fp,
     this->writeFPFunction(fp, impl);
 
     if (fp.isBlendFunction()) {
-        fFS.codeAppendf(
-                "%s = %s(%s, half4(1));", output.c_str(), impl.functionName(), input.c_str());
+        if (fFPCoordsMap[&fp].hasCoordsParam) {
+            fFS.codeAppendf("%s = %s(%s, half4(1), %s);",
+                            output.c_str(),
+                            impl.functionName(),
+                            input.c_str(),
+                            fLocalCoordsVar.c_str());
+        } else {
+            fFS.codeAppendf("%s = %s(%s, half4(1));",
+                            output.c_str(),
+                            impl.functionName(),
+                            input.c_str());
+        }
     } else {
-        fFS.codeAppendf("%s = %s(%s);", output.c_str(), impl.functionName(), input.c_str());
+        if (fFPCoordsMap[&fp].hasCoordsParam) {
+            fFS.codeAppendf("%s = %s(%s, %s);",
+                            output.c_str(),
+                            impl.functionName(),
+                            input.c_str(),
+                            fLocalCoordsVar.c_str());
+        } else {
+            fFS.codeAppendf("%s = %s(%s);", output.c_str(), impl.functionName(), input.c_str());
+        }
     }
 
     // We have to check that effects and the code they emit are consistent, ie if an effect asks
