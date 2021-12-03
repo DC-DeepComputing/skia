@@ -27,7 +27,8 @@ std::unique_ptr<GrFragmentProcessor> Image_Graphite::onAsFragmentProcessor(
         const SkTileMode[2],
         const SkMatrix&,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp>) const {
     return nullptr;
 }
 #endif

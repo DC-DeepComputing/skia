@@ -1207,7 +1207,8 @@ bool SurfaceContext::rescaleInto(skgpu::SurfaceFillContext* dst,
                                              SkRect::Make(srcRect),
                                              kKernel,
                                              dir,
-                                             *this->caps());
+                                             *this->caps(),
+                                             /*clampOverride=*/skstd::nullopt);
         } else {
             auto filter = rescaleMode == RescaleMode::kNearest ? GrSamplerState::Filter::kNearest
                                                                : GrSamplerState::Filter::kLinear;

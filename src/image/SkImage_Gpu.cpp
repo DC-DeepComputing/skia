@@ -846,7 +846,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) const {
     if (!fContext->priv().matches(rContext)) {
         return {};
     }
@@ -858,7 +859,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
                                          tileModes,
                                          m,
                                          subset,
-                                         domain);
+                                         domain,
+                                         bicubicClamp);
 }
 
 GrSurfaceProxyView SkImage_Gpu::makeView(GrRecordingContext* rContext) const {

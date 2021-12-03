@@ -12,6 +12,12 @@
 
 class GrInvariantOutput;
 
+enum class GrBicubicClamp : int {
+    kUnpremul,  // clamps rgba to 0..1
+    kPremul,    // clamps a to 0..1 and rgb to 0..a
+    kNone,      // does no clamping
+};
+
 class GrBicubicEffect : public GrFragmentProcessor {
 public:
     enum {
@@ -44,7 +50,8 @@ public:
                                                      SkAlphaType,
                                                      const SkMatrix&,
                                                      SkImage::CubicResampler,
-                                                     Direction);
+                                                     Direction,
+                                                     skstd::optional<GrBicubicClamp>);
 
     /**
      * Create a bicubic filter effect for a texture with arbitrary wrap modes.
@@ -56,7 +63,8 @@ public:
                                                      const GrSamplerState::WrapMode wrapY,
                                                      SkImage::CubicResampler,
                                                      Direction,
-                                                     const GrCaps&);
+                                                     const GrCaps&,
+                                                     skstd::optional<GrBicubicClamp>);
 
     /**
      * Create a bicubic filter effect for a subset of a texture, specified by a texture coordinate
@@ -70,7 +78,8 @@ public:
                                                            const SkRect& subset,
                                                            SkImage::CubicResampler,
                                                            Direction,
-                                                           const GrCaps&);
+                                                           const GrCaps&,
+                                                           skstd::optional<GrBicubicClamp>);
 
     /**
      * Same as above but provides a known 'domain' that bounds the coords at which bicubic sampling
@@ -85,7 +94,8 @@ public:
                                                            const SkRect& domain,
                                                            SkImage::CubicResampler,
                                                            Direction,
-                                                           const GrCaps&);
+                                                           const GrCaps&,
+                                                           skstd::optional<GrBicubicClamp>);
 
     /**
      * Make a bicubic filter of a another fragment processor. The bicubic filter assumes that the
@@ -95,20 +105,16 @@ public:
                                                      SkAlphaType,
                                                      const SkMatrix&,
                                                      SkImage::CubicResampler,
-                                                     Direction);
+                                                     Direction,
+                                                     skstd::optional<GrBicubicClamp>);
 
 private:
     class Impl;
 
-    enum class Clamp {
-        kUnpremul,  // clamps rgba to 0..1
-        kPremul,    // clamps a to 0..1 and rgb to 0..a
-    };
-
     GrBicubicEffect(std::unique_ptr<GrFragmentProcessor>,
                     SkImage::CubicResampler,
                     Direction,
-                    Clamp);
+                    GrBicubicClamp);
 
     explicit GrBicubicEffect(const GrBicubicEffect&);
 
@@ -122,7 +128,7 @@ private:
 
     SkImage::CubicResampler fKernel;
     Direction fDirection;
-    Clamp fClamp;
+    GrBicubicClamp fClamp;
 
     GR_DECLARE_FRAGMENT_PROCESSOR_TEST
 

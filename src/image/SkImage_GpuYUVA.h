@@ -53,12 +53,14 @@ private:
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
 
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
+    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
+            GrRecordingContext*,
+            SkSamplingOptions,
+            const SkTileMode[],
+            const SkMatrix&,
+            const SkRect*,
+            const SkRect*,
+            skstd::optional<GrBicubicClamp>) const override;
 
     mutable GrYUVATextureProxies     fYUVAProxies;
 

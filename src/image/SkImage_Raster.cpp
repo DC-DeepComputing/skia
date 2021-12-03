@@ -139,12 +139,14 @@ private:
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
 
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[2],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
+    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
+            GrRecordingContext*,
+            SkSamplingOptions,
+            const SkTileMode[2],
+            const SkMatrix&,
+            const SkRect*,
+            const SkRect*,
+            skstd::optional<GrBicubicClamp>) const override;
 #endif
 
     SkBitmap fBitmap;
@@ -448,7 +450,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) const {
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
                                          std::get<0>(this->asView(rContext, mm)),
@@ -457,6 +460,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
                                          tileModes,
                                          m,
                                          subset,
-                                         domain);
+                                         domain,
+                                         bicubicClamp);
 }
 #endif

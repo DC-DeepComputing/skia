@@ -64,7 +64,8 @@ private:
             const SkTileMode[2],
             const SkMatrix&,
             const SkRect* subset,
-            const SkRect* domain) const override;
+            const SkRect* domain,
+            skstd::optional<GrBicubicClamp>) const override;
 #endif
 
 };

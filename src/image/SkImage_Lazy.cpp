@@ -264,7 +264,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) const {
     // TODO: If the CPU data is extracted as planes return a FP that reconstructs the image from
     // the planes.
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
@@ -275,7 +276,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
                                          tileModes,
                                          m,
                                          subset,
-                                         domain);
+                                         domain,
+                                         bicubicClamp);
 }
 
 GrSurfaceProxyView SkImage_Lazy::textureProxyViewFromPlanes(GrRecordingContext* ctx,

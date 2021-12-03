@@ -15,10 +15,12 @@
 
 #if SK_SUPPORT_GPU
 #include "include/private/SkTDArray.h"
+#include "include/private/SkTOptional.h"
 #include "src/gpu/GrSurfaceProxyView.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/gpu/SkGr.h"
 
+enum class GrBicubicClamp : int;
 class GrTexture;
 #endif
 
@@ -105,12 +107,14 @@ public:
      * Optional 'domain' is a bound on the coordinates of the image that will be required and can be
      * used to optimize the shader if 'subset' is also specified.
      */
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(GrRecordingContext*,
-                                                             SkSamplingOptions,
-                                                             const SkTileMode[2],
-                                                             const SkMatrix&,
-                                                             const SkRect* subset = nullptr,
-                                                             const SkRect* domain = nullptr) const;
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
+            GrRecordingContext*,
+            SkSamplingOptions,
+            const SkTileMode[2],
+            const SkMatrix&,
+            const SkRect* subset = nullptr,
+            const SkRect* domain = nullptr,
+            skstd::optional<GrBicubicClamp> = skstd::nullopt) const;
 
     virtual bool isYUVA() const { return false; }
 
@@ -174,14 +178,16 @@ protected:
                                        GrMipmapped,
                                        GrImageTexGenPolicy);
 
-    static std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(GrRecordingContext*,
-                                                                              GrSurfaceProxyView,
-                                                                              SkAlphaType,
-                                                                              SkSamplingOptions,
-                                                                              const SkTileMode[2],
-                                                                              const SkMatrix&,
-                                                                              const SkRect* subset,
-                                                                              const SkRect* domain);
+    static std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(
+            GrRecordingContext*,
+            GrSurfaceProxyView,
+            SkAlphaType,
+            SkSamplingOptions,
+            const SkTileMode[2],
+            const SkMatrix&,
+            const SkRect* subset,
+            const SkRect* domain,
+            skstd::optional<GrBicubicClamp>);
 
     /**
      * Returns input view if it is already mipmapped. Otherwise, attempts to make a mipmapped view
@@ -208,7 +214,8 @@ private:
             const SkTileMode[2],
             const SkMatrix&,
             const SkRect* subset,
-            const SkRect* domain) const = 0;
+            const SkRect* domain,
+            skstd::optional<GrBicubicClamp> bicubicClamp) const = 0;
 #endif
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;

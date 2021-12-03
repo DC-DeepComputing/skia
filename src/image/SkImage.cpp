@@ -317,7 +317,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::asFragmentProcessor(
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) const {
     if (!rContext) {
         return {};
     }
@@ -328,7 +329,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::asFragmentProcessor(
         (!rContext->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
-    return this->onAsFragmentProcessor(rContext, sampling, tileModes, m, subset, domain);
+    return this->onAsFragmentProcessor(
+            rContext, sampling, tileModes, m, subset, domain, bicubicClamp);
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView(
@@ -339,7 +341,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) {
     if (!view) {
         return nullptr;
     }
@@ -358,7 +361,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
                                                    *domain,
                                                    sampling.cubic,
                                                    GrBicubicEffect::Direction::kXY,
-                                                   *rContext->priv().caps());
+                                                   *rContext->priv().caps(),
+                                                   bicubicClamp);
             }
             return GrBicubicEffect::MakeSubset(std::move(view),
                                                at,
@@ -368,7 +372,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
                                                *subset,
                                                sampling.cubic,
                                                GrBicubicEffect::Direction::kXY,
-                                               *rContext->priv().caps());
+                                               *rContext->priv().caps(),
+                                               bicubicClamp);
         }
         return GrBicubicEffect::Make(std::move(view),
                                      at,
@@ -377,7 +382,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
                                      wmy,
                                      sampling.cubic,
                                      GrBicubicEffect::Direction::kXY,
-                                     *rContext->priv().caps());
+                                     *rContext->priv().caps(),
+                                     bicubicClamp);
     }
     if (view.proxy()->asTextureProxy()->mipmapped() == GrMipmapped::kNo) {
         sampling = SkSamplingOptions(sampling.filter);

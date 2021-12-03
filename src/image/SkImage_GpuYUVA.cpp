@@ -186,7 +186,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
         const SkTileMode tileModes[2],
         const SkMatrix& m,
         const SkRect* subset,
-        const SkRect* domain) const {
+        const SkRect* domain,
+        skstd::optional<GrBicubicClamp> bicubicClamp) const {
     if (!fContext->priv().matches(context)) {
         return {};
     }
@@ -209,7 +210,8 @@ std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
                                    this->alphaType(),
                                    m,
                                    sampling.cubic,
-                                   GrBicubicEffect::Direction::kXY);
+                                   GrBicubicEffect::Direction::kXY,
+                                   bicubicClamp);
     }
     if (fFromColorSpace) {
         fp = GrColorSpaceXformEffect::Make(std::move(fp),

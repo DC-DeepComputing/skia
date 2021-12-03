@@ -88,10 +88,12 @@ void GrBicubicEffect::Impl::emitCode(EmitArgs& args) {
     // Bicubic can send colors out of range, so clamp to get them back in (source) gamut.
     // The kind of clamp we have to do depends on the alpha type.
     switch (bicubicEffect.fClamp) {
-        case Clamp::kUnpremul:
+        case GrBicubicClamp::kNone:
+            break;
+        case GrBicubicClamp::kUnpremul:
             fragBuilder->codeAppend("bicubicColor = saturate(bicubicColor);");
             break;
-        case Clamp::kPremul:
+        case GrBicubicClamp::kPremul:
             fragBuilder->codeAppend(
                     "bicubicColor.rgb = max(half3(0.0), min(bicubicColor.rgb, bicubicColor.aaa));");
             break;
@@ -111,29 +113,43 @@ void GrBicubicEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdm,
     }
 }
 
-std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
-                                                           const SkMatrix& matrix,
-                                                           SkImage::CubicResampler kernel,
-                                                           Direction direction) {
+static GrBicubicClamp clamp_type(SkAlphaType alphaType,
+                                 skstd::optional<GrBicubicClamp> clampOverride) {
+    if (clampOverride.has_value()) {
+        return *clampOverride;
+    } else {
+        return alphaType == kPremul_SkAlphaType ? GrBicubicClamp::kPremul
+                                                : GrBicubicClamp::kUnpremul;
+    }
+}
+
+std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(
+        GrSurfaceProxyView view,
+        SkAlphaType alphaType,
+        const SkMatrix& matrix,
+        SkImage::CubicResampler kernel,
+        Direction direction,
+        skstd::optional<GrBicubicClamp> clampOverride) {
     auto fp = GrTextureEffect::Make(std::move(view), alphaType, SkMatrix::I());
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = clamp_type(alphaType, clampOverride);
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
-std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
-                                                           const SkMatrix& matrix,
-                                                           const GrSamplerState::WrapMode wrapX,
-                                                           const GrSamplerState::WrapMode wrapY,
-                                                           SkImage::CubicResampler kernel,
-                                                           Direction direction,
-                                                           const GrCaps& caps) {
+std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(
+        GrSurfaceProxyView view,
+        SkAlphaType alphaType,
+        const SkMatrix& matrix,
+        const GrSamplerState::WrapMode wrapX,
+        const GrSamplerState::WrapMode wrapY,
+        SkImage::CubicResampler kernel,
+        Direction direction,
+        const GrCaps& caps,
+        skstd::optional<GrBicubicClamp> clampOverride) {
     GrSamplerState sampler(wrapX, wrapY, GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::Make(std::move(view), alphaType, SkMatrix::I(), sampler, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = clamp_type(alphaType, clampOverride);
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
@@ -147,12 +163,13 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
         const SkRect& subset,
         SkImage::CubicResampler kernel,
         Direction direction,
-        const GrCaps& caps) {
+        const GrCaps& caps,
+        skstd::optional<GrBicubicClamp> clampOverride) {
     GrSamplerState sampler(wrapX, wrapY, GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::MakeSubset(
             std::move(view), alphaType, SkMatrix::I(), sampler, subset, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = clamp_type(alphaType, clampOverride);
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
@@ -167,7 +184,8 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
         const SkRect& domain,
         SkImage::CubicResampler kernel,
         Direction direction,
-        const GrCaps& caps) {
+        const GrCaps& caps,
+        skstd::optional<GrBicubicClamp> clampOverride) {
     auto lowerBound = [](float x) { return std::floor(x - 1.5f) + 0.5f; };
     auto upperBound = [](float x) { return std::floor(x + 1.5f) - 0.5f; };
     SkRect expandedDomain {
@@ -180,17 +198,19 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::MakeSubset(
             std::move(view), alphaType, SkMatrix::I(), sampler, subset, expandedDomain, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = clamp_type(alphaType, clampOverride);
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
-std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(std::unique_ptr<GrFragmentProcessor> fp,
-                                                           SkAlphaType alphaType,
-                                                           const SkMatrix& matrix,
-                                                           SkImage::CubicResampler kernel,
-                                                           Direction direction) {
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(
+        std::unique_ptr<GrFragmentProcessor> fp,
+        SkAlphaType alphaType,
+        const SkMatrix& matrix,
+        SkImage::CubicResampler kernel,
+        Direction direction,
+        skstd::optional<GrBicubicClamp> clampOverride) {
+    auto clamp = clamp_type(alphaType, clampOverride);
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
@@ -198,7 +218,7 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(std::unique_ptr<GrFra
 GrBicubicEffect::GrBicubicEffect(std::unique_ptr<GrFragmentProcessor> fp,
                                  SkImage::CubicResampler kernel,
                                  Direction direction,
-                                 Clamp clamp)
+                                 GrBicubicClamp clamp)
         : INHERITED(kGrBicubicEffect_ClassID, ProcessorOptimizationFlags(fp.get()))
         , fKernel(kernel)
         , fDirection(direction)
@@ -250,6 +270,9 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::TestCreate(GrProcessorTest
             direction = Direction::kXY;
             break;
     }
+    skstd::optional<GrBicubicClamp> clampOverride =
+            d->fRandom->nextBool() ? skstd::optional<GrBicubicClamp>(GrBicubicClamp::kNone)
+                                   : skstd::nullopt;
     auto kernel = d->fRandom->nextBool() ? GrBicubicEffect::gMitchell
                                          : GrBicubicEffect::gCatmullRom;
     auto m = GrTest::TestMatrix(d->fRandom);
@@ -274,20 +297,30 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::TestCreate(GrProcessorTest
                                   subset,
                                   kernel,
                                   direction,
-                                  *d->caps());
+                                  *d->caps(),
+                                  clampOverride);
             }
-            return Make(std::move(view), at, m, wm[0], wm[1], kernel, direction, *d->caps());
+            return Make(std::move(view),
+                        at,
+                        m,
+                        wm[0],
+                        wm[1],
+                        kernel,
+                        direction,
+                        *d->caps(),
+                        clampOverride);
         }
         case 1: {
             auto [view, ct, at] = d->randomView();
-            return Make(std::move(view), at, m, kernel, direction);
+            return Make(std::move(view), at, m, kernel, direction, clampOverride);
         }
         default: {
             SkAlphaType at;
             do {
                 at = static_cast<SkAlphaType>(d->fRandom->nextULessThan(kLastEnum_SkAlphaType + 1));
             } while (at == kUnknown_SkAlphaType);
-            return Make(GrProcessorUnitTest::MakeChildFP(d), at, m, kernel, direction);
+            return Make(
+                    GrProcessorUnitTest::MakeChildFP(d), at, m, kernel, direction, clampOverride);
         }
     }
 }
