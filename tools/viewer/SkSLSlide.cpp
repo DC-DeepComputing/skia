@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include "imgui.h"
 
 using namespace sk_app;
@@ -140,6 +141,15 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         return;
     }
 
+    bool debugTrace = false;
+    if (!canvas->recordingContext()) {
+        ImGui::InputText("Trace Coordinate (X)", fTraceXCoord, SK_ARRAY_COUNT(fTraceXCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Trace Coordinate (Y)", fTraceYCoord, SK_ARRAY_COUNT(fTraceYCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        debugTrace = ImGui::Button("Generate Debug Trace");
+    }
+
     // Update fMousePos
     ImVec2 mousePos = ImGui::GetMousePos();
     if (ImGui::IsMouseDown(0)) {
@@ -248,6 +258,13 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     auto inputs = SkData::MakeWithoutCopy(fInputs.get(), fEffect->uniformSize());
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.count(),
                                       nullptr, false);
+    if (debugTrace) {
+        auto traceStream = std::make_unique<SkFILEWStream>("SkVMDebugTrace.json");
+        SkIPoint traceCoord = {std::atoi(fTraceXCoord), std::atoi(fTraceYCoord)};
+        if (!SkRuntimeEffect::AttachDebugger(shader, traceCoord, std::move(traceStream))) {
+            SkASSERT(!"unable to write debug trace");
+        }
+    }
 
     SkPaint p;
     p.setColor4f(gPaintColor);

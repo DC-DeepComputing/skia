@@ -29,6 +29,7 @@ class GrRecordingContext;
 class SkFilterColorProgram;
 class SkImage;
 class SkRuntimeImageFilter;
+class SkWStream;
 
 namespace SkSL {
 class FunctionDefinition;
@@ -208,6 +209,21 @@ public:
                                          SkSpan<ChildPtr> children) const;
 
     sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms, SkSpan<ChildPtr> children = {}) const;
+
+    /**
+     * Requests a debug trace for the Runtime Effect at the specified coordinate. Debug traces are
+     * only supported on a raster (non-GPU) canvas. Trace data will not be written until your
+     * Runtime Effect is actually painted to the canvas.
+     */
+    static bool AttachDebugger(sk_sp<SkShader> shader,
+                               const SkIPoint& traceCoord,
+                               std::unique_ptr<SkWStream> traceData);
+    static bool AttachDebugger(sk_sp<SkColorFilter> shader,
+                               const SkIPoint& traceCoord,
+                               std::unique_ptr<SkWStream> traceData);
+    static bool AttachDebugger(sk_sp<SkBlender> shader,
+                               const SkIPoint& traceCoord,
+                               std::unique_ptr<SkWStream> traceData);
 
     const std::string& source() const;
 
