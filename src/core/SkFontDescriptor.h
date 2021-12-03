@@ -18,13 +18,21 @@
 class SkFontData {
 public:
     /** Makes a copy of the data in 'axis'. */
-    SkFontData(std::unique_ptr<SkStreamAsset> stream, int index, const SkFixed* axis, int axisCount)
-        : fStream(std::move(stream)), fIndex(index), fAxisCount(axisCount), fAxis(axisCount)
+     SkFontData(std::unique_ptr<SkStreamAsset> stream, int index, const SkFixed* axis, int axisCount,
+                const SkColor* palette, int paletteEntryCount)
+        : fStream(std::move(stream)), fIndex(index)
+        , fAxisCount(axisCount), fAxis(axisCount)
+        , fPaletteEntryCount(paletteEntryCount), fPalette(paletteEntryCount)
     {
         for (int i = 0; i < axisCount; ++i) {
             fAxis[i] = axis[i];
         }
+        for (int i = 0; i < paletteEntryCount; ++i) {
+            fPalette[i] = palette[i];
+        }
     }
+
+    // TODO: We might need to put a fully resolved palette in SkFontArguments instead.
     SkFontData(std::unique_ptr<SkStreamAsset> stream, SkFontArguments args)
         : fStream(std::move(stream)), fIndex(args.getCollectionIndex())
         , fAxisCount(args.getVariationDesignPosition().coordinateCount)
@@ -51,12 +59,16 @@ public:
     int getIndex() const { return fIndex; }
     int getAxisCount() const { return fAxisCount; }
     const SkFixed* getAxis() const { return fAxis.get(); }
+    int getPaletteEntryCount() const { return fPaletteEntryCount; }
+    const SkColor* getPalette() const { return fPalette.get(); }
 
 private:
     std::unique_ptr<SkStreamAsset> fStream;
     int fIndex;
     int fAxisCount;
     SkAutoSTMalloc<4, SkFixed> fAxis;
+    int fPaletteEntryCount;
+    SkAutoSTMalloc<0, SkColor> fPalette;
 };
 
 class SkFontDescriptor : SkNoncopyable {

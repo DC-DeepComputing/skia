@@ -92,6 +92,11 @@ public:
             const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
         static bool GetAxes(FT_Face face, AxisDefinitions* axes);
 
+        static void resolvePaletteOverride(FT_Face face,
+                                           const SkFontArguments::PaletteOverride& paletteOverride,
+                                           int* paletteEntryCount,
+                                           SkColor* palette);
+
     private:
         FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
         FT_Library fLibrary;

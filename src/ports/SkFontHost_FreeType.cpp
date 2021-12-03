@@ -662,7 +662,12 @@ std::unique_ptr<SkFontData> SkTypeface_FreeType::cloneFontData(const SkFontArgum
                                currentAxisCount == axisCount ? currentPosition.get() : nullptr);
     int ttcIndex;
     std::unique_ptr<SkStreamAsset> stream = this->openStream(&ttcIndex);
-    return std::make_unique<SkFontData>(std::move(stream), ttcIndex, axisValues.get(), axisCount);
+
+    // TODO: Allocation inside the function?
+    SkTypeface_FreeType::Scanner::resolvePaletteOverride(face, args.getPaletteOverride(), 0, nullptr);
+
+    // TODO: Resolve, then place palette info as last arguments.
+    return std::make_unique<SkFontData>(std::move(stream), ttcIndex, axisValues.get(), axisCount, nullptr, 0);
 }
 
 void SkTypeface_FreeType::onFilterRec(SkScalerContextRec* rec) const {
@@ -2042,4 +2047,12 @@ bool SkTypeface_FreeType::Scanner::GetAxes(FT_Face face, AxisDefinitions* axes) 
             }
         }
     )
+}
+
+void SkTypeface_FreeType::Scanner::resolvePaletteOverride(
+        FT_Face face,
+        const SkFontArguments::PaletteOverride& paletteOverride,
+        int* paletteEntryCount,
+        SkColor* palette) {
+    // TODO: Override palette information passed in belonging to an SkFontData.
 }
