@@ -82,6 +82,11 @@ namespace {
             fDebugInfo->fTraceInfo.push_back({SkSL::SkVMTraceInfo::Op::kExit,
                                               /*data=*/{fnIdx, 0}});
         }
+        void done() override {
+            if (fDebugInfo->fCompletionCallback) {
+                fDebugInfo->fCompletionCallback();
+            }
+        }
 
     private:
         SkSL::SkVMDebugInfo* fDebugInfo;
@@ -386,6 +391,10 @@ void SkVMGenerator::writeProgram(SkSpan<skvm::Val> uniforms,
 
     this->setupGlobals(uniforms, device);
     size_t returnSlot = this->writeFunction(function, arguments);
+
+    if (fDebugInfo) {
+        fBuilder->trace_done(fTraceHookID);
+    }
 
     // Copy the value from the return slot into outReturn.
     SkASSERT(function.declaration().returnType().slotCount() == outReturn.size());
