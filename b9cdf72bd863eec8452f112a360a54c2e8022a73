@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11b8632_e0093e4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2021-12-03T16:25:17Z",
+      "side": 1,
+      "message": "poster circle works with cl. thanks",
+      "revId": "b9cdf72bd863eec8452f112a360a54c2e8022a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
