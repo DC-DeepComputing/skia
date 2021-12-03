@@ -12,11 +12,13 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "src/core/SkEnumerate.h"
+#include "src/sksl/codegen/SkVMDebugInfo.h"
 #include "tools/Resources.h"
 #include "tools/viewer/Viewer.h"
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include "imgui.h"
 
 using namespace sk_app;
@@ -140,6 +142,15 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         return;
     }
 
+    bool debugTrace = false;
+    if (!canvas->recordingContext()) {
+        ImGui::InputText("Trace Coordinate (X)", fTraceXCoord, SK_ARRAY_COUNT(fTraceXCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Trace Coordinate (Y)", fTraceYCoord, SK_ARRAY_COUNT(fTraceYCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        debugTrace = ImGui::Button("Generate Debug Trace");
+    }
+
     // Update fMousePos
     ImVec2 mousePos = ImGui::GetMousePos();
     if (ImGui::IsMouseDown(0)) {
@@ -248,6 +259,20 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     auto inputs = SkData::MakeWithoutCopy(fInputs.get(), fEffect->uniformSize());
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.count(),
                                       nullptr, false);
+    if (debugTrace) {
+        SkIPoint traceCoord = {std::atoi(fTraceXCoord), std::atoi(fTraceYCoord)};
+        auto callback = [](SkSL::SkVMDebugInfo* debugInfo) {
+            SkFILEWStream traceStream("SkVMDebugTrace.json");
+            debugInfo->writeTrace(&traceStream);
+
+            SkFILEWStream dumpStream("SkVMDebugTrace.dump.txt");
+            debugInfo->dump(&dumpStream);
+        };
+
+        if (!SkRuntimeEffect::AttachDebugger(shader, traceCoord, std::move(callback))) {
+            SkASSERT(!"unable to write debug trace");
+        }
+    }
 
     SkPaint p;
     p.setColor4f(gPaintColor);

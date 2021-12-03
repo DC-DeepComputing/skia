@@ -1946,6 +1946,13 @@ skvm::Color ProgramToSkVM(const Program& program,
     }
     SkASSERT(argSlots <= SK_ARRAY_COUNT(args));
 
+    // Make sure that the SkVMDebugInfo starts from a clean slate.
+    if (debugInfo) {
+        debugInfo->fSlotInfo.clear();
+        debugInfo->fFuncInfo.clear();
+        debugInfo->fTraceInfo.clear();
+    }
+
     SkVMGenerator generator(program, builder, debugInfo, std::move(sampleShader),
                             std::move(sampleColorFilter), std::move(sampleBlender));
     generator.writeProgram(uniforms, device, function, {args, argSlots}, SkMakeSpan(result));
