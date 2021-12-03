@@ -16,6 +16,86 @@
       "message": "PTAL. This is part one. I still need to use the depth stencil state, and set up the attachments.",
       "revId": "178ca45be65457040304774c59cfd24283191099",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4093bdd6_caef712f",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-03T20:53:37Z",
+      "side": 1,
+      "message": "Were these spaces intentional ?",
+      "range": {
+        "startLine": 76,
+        "startChar": 36,
+        "endLine": 76,
+        "endChar": 37
+      },
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bca6082e_a912ad25",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-03T20:53:37Z",
+      "side": 1,
+      "message": "Don\u0027t we normally we do:\n ? foo\n : bar;\n \nin this case?",
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5c1110c_61a51e56",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-03T20:53:37Z",
+      "side": 1,
+      "message": "Do we need this cast ?",
+      "range": {
+        "startLine": 357,
+        "startChar": 28,
+        "endLine": 357,
+        "endChar": 47
+      },
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cd39d6b_47443020",
+        "filename": "experimental/graphite/src/mtl/MtlResourceProvider.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-03T20:53:37Z",
+      "side": 1,
+      "message": "// anonymous namespace\n?",
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
