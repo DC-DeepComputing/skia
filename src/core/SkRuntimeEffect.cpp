@@ -7,6 +7,7 @@
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkMutex.h"
@@ -28,6 +29,7 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+#include "src/sksl/codegen/SkVMDebugInfo.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
@@ -103,6 +105,28 @@ private:
 SharedCompiler::Impl* SharedCompiler::gImpl = nullptr;
 
 }  // namespace SkSL
+namespace {
+
+struct SkRuntimeEffectTrace {
+    static std::unique_ptr<SkRuntimeEffectTrace> Make(SkRuntimeEffect* effect,
+                                                      const SkIPoint& coord,
+                                                      std::unique_ptr<SkWStream> stream) {
+        auto trace = std::make_unique<SkRuntimeEffectTrace>();
+        trace->debugInfo.setSource(effect->source());
+        trace->debugInfo.setTraceCoord(coord);
+        trace->stream = std::move(stream);
+        return trace;
+    }
+
+    ~SkRuntimeEffectTrace() {
+        debugInfo.writeTrace(stream.get());
+    }
+
+    SkSL::SkVMDebugInfo debugInfo;
+    std::unique_ptr<SkWStream> stream;
+};
+
+}  // namespace
 
 static bool init_uniform_type(const SkSL::Context& ctx,
                               const SkSL::Type* type,
@@ -851,9 +875,15 @@ public:
         return false;
     }
 
+    bool attachDebugger(const SkIPoint& traceCoord, std::unique_ptr<SkWStream> traceStream) {
+        fTrace = SkRuntimeEffectTrace::Make(fEffect.get(), traceCoord, std::move(traceStream));
+        return true;
+    }
+
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        // TODO(skia:12708): hook up debugging
         sk_sp<SkData> inputs =
                 get_xformed_uniforms(fEffect.get(), fUniforms, colorInfo.colorSpace());
         SkASSERT(inputs);
@@ -884,8 +914,10 @@ public:
 
         // There should be no way for the color filter to use device coords, but we need to supply
         // something. (Uninitialized values can trigger asserts in skvm::Builder).
-        skvm::Coord zeroCoord = { p->splat(0.0f), p->splat(0.0f) };
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, /*debugInfo=*/nullptr,
+        SkSL::SkVMDebugInfo* debugInfo = fTrace ? &fTrace->debugInfo : nullptr;
+        skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
+
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, debugInfo,
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    c, c, sampleShader, sampleColorFilter, sampleBlender);
     }
@@ -935,6 +967,7 @@ public:
 
 private:
     sk_sp<SkRuntimeEffect> fEffect;
+    std::unique_ptr<SkRuntimeEffectTrace> fTrace;
     sk_sp<SkData> fUniforms;
     std::vector<SkRuntimeEffect::ChildPtr> fChildren;
 };
@@ -1009,6 +1042,11 @@ public:
         return false;
     }
 
+    bool attachDebugger(const SkIPoint& traceCoord, std::unique_ptr<SkWStream> traceStream) {
+        fTrace = SkRuntimeEffectTrace::Make(fEffect.get(), traceCoord, std::move(traceStream));
+        return true;
+    }
+
     skvm::Color onProgram(skvm::Builder* p,
                           skvm::Coord device, skvm::Coord local, skvm::Color paint,
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
@@ -1045,12 +1083,12 @@ public:
             return blend(SkBlendMode::kSrcOver, src, dst);
         };
 
+        SkSL::SkVMDebugInfo* debugInfo = fTrace ? &fTrace->debugInfo : nullptr;
         std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
                                                             *inputs);
-
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, /*debugInfo=*/nullptr,
-                                   SkMakeSpan(uniform), device, local, paint, paint, sampleShader,
-                                   sampleColorFilter, sampleBlender);
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, debugInfo,
+                                   SkMakeSpan(uniform), device, local, paint, paint,
+                                   sampleShader, sampleColorFilter, sampleBlender);
     }
 
     void flatten(SkWriteBuffer& buffer) const override {
@@ -1082,6 +1120,7 @@ private:
     };
 
     sk_sp<SkRuntimeEffect> fEffect;
+    std::unique_ptr<SkRuntimeEffectTrace> fTrace;
     bool fIsOpaque;
 
     sk_sp<SkData> fUniforms;
@@ -1127,9 +1166,15 @@ public:
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
+    bool attachDebugger(const SkIPoint& traceCoord, std::unique_ptr<SkWStream> traceStream) {
+        fTrace = SkRuntimeEffectTrace::Make(fEffect.get(), traceCoord, std::move(traceStream));
+        return true;
+    }
+
     skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                           SkArenaAlloc* alloc) const override {
+        // TODO(skia:12708): hook up debugging
         sk_sp<SkData> inputs = get_xformed_uniforms(fEffect.get(), fUniforms,
                                                     colorInfo.colorSpace());
         SkASSERT(inputs);
@@ -1159,8 +1204,10 @@ public:
                                                             *inputs);
 
         // Emit the blend function as an SkVM program.
+        SkSL::SkVMDebugInfo* debugInfo = fTrace ? &fTrace->debugInfo : nullptr;
         skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, /*debugInfo=*/nullptr,
+
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, debugInfo,
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    src, dst, sampleShader, sampleColorFilter, sampleBlender);
     }
@@ -1197,6 +1244,7 @@ private:
     using INHERITED = SkBlenderBase;
 
     sk_sp<SkRuntimeEffect> fEffect;
+    std::unique_ptr<SkRuntimeEffectTrace> fTrace;
     sk_sp<SkData> fUniforms;
     std::vector<SkRuntimeEffect::ChildPtr> fChildren;
 };
@@ -1382,6 +1430,44 @@ sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<SkData> uniforms,
         return nullptr;
     }
     return sk_sp<SkBlender>(new SkRuntimeBlender(sk_ref_sp(this), std::move(uniforms), children));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool SkRuntimeEffect::AttachDebugger(sk_sp<SkShader> shader,
+                                     const SkIPoint& traceCoord,
+                                     std::unique_ptr<SkWStream> traceStream) {
+    SkRuntimeEffect* effect = as_SB(shader)->asRuntimeEffect();
+    if (!effect) {
+        return false;
+    }
+    // An SkShader with an attached SkRuntimeEffect must be an SkRTShader.
+    SkRTShader* rtShader = static_cast<SkRTShader*>(shader.get());
+    return rtShader->attachDebugger(traceCoord, std::move(traceStream));
+}
+
+bool SkRuntimeEffect::AttachDebugger(sk_sp<SkColorFilter> colorFilter,
+                                     const SkIPoint& traceCoord,
+                                     std::unique_ptr<SkWStream> traceStream) {
+    SkRuntimeEffect* effect = as_CFB(colorFilter)->asRuntimeEffect();
+    if (!effect) {
+        return false;
+    }
+    // An SkColorFilter with an attached SkRuntimeEffect must be a SkRuntimeColorFilter.
+    SkRuntimeColorFilter* rtColorFilter = static_cast<SkRuntimeColorFilter*>(colorFilter.get());
+    return rtColorFilter->attachDebugger(traceCoord, std::move(traceStream));
+}
+
+bool SkRuntimeEffect::AttachDebugger(sk_sp<SkBlender> blender,
+                                     const SkIPoint& traceCoord,
+                                     std::unique_ptr<SkWStream> traceStream) {
+    SkRuntimeEffect* effect = as_BB(blender)->asRuntimeEffect();
+    if (!effect) {
+        return false;
+    }
+    // An SkBlender with an attached SkRuntimeEffect must be a SkRuntimeBlender.
+    SkRuntimeBlender* rtBlender = static_cast<SkRuntimeBlender*>(blender.get());
+    return rtBlender->attachDebugger(traceCoord, std::move(traceStream));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
