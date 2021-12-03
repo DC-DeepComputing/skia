@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8bc747f_843ac9ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-03T18:52:17Z",
+      "side": 1,
+      "message": "PTAL. This is part one. I still need to use the depth stencil state, and set up the attachments.",
+      "revId": "178ca45be65457040304774c59cfd24283191099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
