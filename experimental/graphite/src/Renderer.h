@@ -73,9 +73,11 @@ public:
     bool          requiresMSAA()    const { return fFlags & Flags::kRequiresMSAA;    }
     bool          performsShading() const { return fFlags & Flags::kPerformsShading; }
 
-    PrimitiveType primitiveType()   const { return fPrimitiveType;  }
-    size_t        vertexStride()    const { return fVertexStride;   }
-    size_t        instanceStride()  const { return fInstanceStride; }
+    PrimitiveType  primitiveType()    const { return fPrimitiveType;  }
+    size_t         vertexStride()     const { return fVertexStride;   }
+    size_t         instanceStride()   const { return fInstanceStride; }
+
+    const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
     size_t numUniforms()            const { return fUniforms.size();      }
     size_t numVertexAttributes()    const { return fVertexAttrs.size();   }
@@ -132,8 +134,9 @@ private:
     RenderStep(const RenderStep&) = delete;
     RenderStep(RenderStep&&)      = delete;
 
-    Mask<Flags>   fFlags;
-    PrimitiveType fPrimitiveType;
+    Mask<Flags>      fFlags;
+    PrimitiveType    fPrimitiveType;
+    DepthStencilSettings fDepthStencilSettings;
 
     // TODO: When we always use C++17 for builds, we should be able to just let subclasses declare
     // constexpr arrays and point to those, but we need explicit storage for C++14.

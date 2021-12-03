@@ -118,6 +118,15 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
     std::tie(desc.fColorAttachment.fLoadOp, desc.fColorAttachment.fStoreOp) = fDrawPasses[0]->ops();
     desc.fClearColor = fDrawPasses[0]->clearColor();
 
+    // setup depth and stencil
+    // depth is always here
+    // always clears to 0
+    // stencil depends on drawpasses flag
+    // also clears to 0
+    // neither store
+
+    // do MSAA as well?
+
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
 }

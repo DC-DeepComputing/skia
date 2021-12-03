@@ -48,7 +48,10 @@ void RenderPassTask::addCommands(ResourceProvider* resourceProvider, CommandBuff
             return;
         }
     }
+
     // TODO: set up depth and stencil
+    // based on renderpassdesc, get scratch depthstencil texture and pass in
+    // do the same for MSAA texture?
 
     commandBuffer->beginRenderPass(fRenderPassDesc, fTarget->refTexture(), nullptr, nullptr);
 

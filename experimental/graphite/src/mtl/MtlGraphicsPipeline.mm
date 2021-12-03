@@ -7,9 +7,11 @@
 
 #include "experimental/graphite/src/mtl/MtlGraphicsPipeline.h"
 
+#include "experimental/graphite/include/TextureInfo.h"
 #include "experimental/graphite/src/GraphicsPipelineDesc.h"
 #include "experimental/graphite/src/Renderer.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
+#include "experimental/graphite/src/mtl/MtlResourceProvider.h"
 #include "experimental/graphite/src/mtl/MtlUtils.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkSLString.h"
@@ -328,7 +330,26 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
     mtlColorAttachment.writeMask = MTLColorWriteMaskAll;
 
     (*psoDescriptor).colorAttachments[0] = mtlColorAttachment;
-    (*psoDescriptor).sampleCount = 1;
+
+    DepthStencilType depthStencilType = desc.renderStep()->requiresStencil() ?
+                                        DepthStencilType::kDepthStencil :
+                                        DepthStencilType::kDepthOnly;
+    skgpu::TextureInfo texInfo = gpu->caps()->getDefaultDepthStencilTextureInfo(depthStencilType,
+                                                                                1 /*sampleCount*/,
+                                                                                Protected::kNo);
+    mtl::TextureInfo mtlTexInfo;
+    texInfo.getMtlTextureInfo(&mtlTexInfo);
+    if (depthStencilType != DepthStencilType::kDepthOnly) {
+        (*psoDescriptor).stencilAttachmentPixelFormat = (MTLPixelFormat)mtlTexInfo.fFormat;
+    }
+    (*psoDescriptor).depthAttachmentPixelFormat = (MTLPixelFormat)mtlTexInfo.fFormat;
+
+    // setup stencil and depth settings based on renderstep
+    // depth test is >
+    // stencil test is ...?
+    // depth writes if shading
+    // stencil/depth mask is ...?
+    // ref value for stencil is set in addCommands
 
     NSError* error;
     sk_cfp<id<MTLRenderPipelineState>> pso(
@@ -339,7 +360,13 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
         SkDebugf("Errors:\n%s", error.debugDescription.UTF8String);
         return nullptr;
     }
+
+    auto resourceProvider = (ResourceProvider*) gpu->resourceProvider();
+    id<MTLDepthStencilState> dss = resourceProvider->findOrCreateCompatibleDepthStencilState(
+            desc.renderStep()->depthStencilSettings());
+
     return sk_sp<GraphicsPipeline>(new GraphicsPipeline(std::move(pso),
+                                                        dss,
                                                         desc.renderStep()->vertexStride(),
                                                         desc.renderStep()->instanceStride()));
 }
