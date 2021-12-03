@@ -26,6 +26,10 @@ void SkVMDebugInfo::setSource(std::string source) {
     }
 }
 
+void SkVMDebugInfo::setCompletionCallback(std::function<void()> callbackFn) {
+    fCompletionCallback = std::move(callbackFn);
+}
+
 void SkVMDebugInfo::dump(SkWStream* o) const {
     for (size_t index = 0; index < fSlotInfo.size(); ++index) {
         const SkVMSlotInfo& info = fSlotInfo[index];
