@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a110c164_f87e5655",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "This doesn\u0027t match existing style. (here and below)\nPlease use clang-format, git cl format, or manually update style to match surrounding code.",
+      "range": {
+        "startLine": 640,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 73
+      },
+      "revId": "10252721d7391e372b7e24db9bc842469823b062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58a7595d_30fb0bf1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "Since we now have totally different behavior for comparisons vs other binary-expressions, we should probably have a different lambda function for comparisons (`compare`?) and leave `binary` as-is.",
+      "range": {
+        "startLine": 769,
+        "startChar": 0,
+        "endLine": 782,
+        "endChar": 9
+      },
+      "revId": "10252721d7391e372b7e24db9bc842469823b062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06ff4259_f46b6a45",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "Does not require ES3; please use SKSL_TEST_CPU.",
+      "range": {
+        "startLine": 294,
+        "startChar": 13,
+        "endLine": 294,
+        "endChar": 17
+      },
+      "revId": "10252721d7391e372b7e24db9bc842469823b062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9075fa42_8de0556a",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "SKSL_TEST_CPU",
+      "range": {
+        "startLine": 296,
+        "startChar": 13,
+        "endLine": 296,
+        "endChar": 17
+      },
+      "revId": "10252721d7391e372b7e24db9bc842469823b062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

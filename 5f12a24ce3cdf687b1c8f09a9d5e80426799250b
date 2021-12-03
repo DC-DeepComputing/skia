@@ -384,6 +384,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78aff1e6_68535ae8",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "This is looking good. The diffs show some interesting behavior but it all looks right. I didn\u0027t realize we lacked a `neq_i32` opcode entirely. I guess Intel/ARM don\u0027t have a dedicated opcode for this either?",
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f247db1f_50c4e1c3",
         "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
         "patchSetId": 19
@@ -513,6 +530,30 @@
       "side": 1,
       "message": "I thought of it and actually tried to make it work at first. But then I noticed that lots of old tests changed a little bit (registry numbers and such) and I really didn\u0027t want the old tests to change.\nI would rather leave it as is for now. You see, the logic is not equivalent in both cases (I like mine more).\nWe can add a bug to merge the logic later. It\u0027s just a few lines but then I am sure I didn\u0027t break anything that worked before.",
       "parentUuid": "a25297c3_f4ae0e6c",
+      "range": {
+        "startLine": 666,
+        "startChar": 0,
+        "endLine": 671,
+        "endChar": 41
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84ec45c1_670a102e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-03T13:13:53Z",
+      "side": 1,
+      "message": "Could you please make this change in a followup CL (parented to this one) so I can see the before-and-after?\nI still think it is the right thing to do, and a separate CL would let me see the delta in isolation.",
+      "parentUuid": "4ea5e16d_145d4b90",
       "range": {
         "startLine": 666,
         "startChar": 0,
