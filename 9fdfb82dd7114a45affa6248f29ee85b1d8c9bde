@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de3c94c2_a6badb7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-03T17:55:28Z",
+      "side": 1,
+      "message": "This has a bunch of hacks in it, but it does work. I just wanted to put this up here now so we can start discussions on how we want to flush work from the Device/DrawContext onto the recorder. Currently there is no public way to do that. I would think that it would make sense for recorder::snap to flush all the work but then it needs to know about the DrawContexts.",
+      "revId": "9fdfb82dd7114a45affa6248f29ee85b1d8c9bde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
