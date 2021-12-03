@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5f7033a3_7dcf217e",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-03T20:40:34Z",
+      "side": 1,
+      "message": "As mentioned in meeting: Using RGBA_8888 means that we get different color-types for these images (they revert to N32) after serializing. That leads to different blitter selection, which means we get low-bit diffs, and serialize-8888 fails. 😞",
+      "parentUuid": "48ec7a0c_c7bc343b",
+      "range": {
+        "startLine": 746,
+        "startChar": 38,
+        "endLine": 746,
+        "endChar": 54
+      },
+      "revId": "29091bb141fc8d3a40ebf1485a1698631f96f308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "689e122c_7da58b42",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 9
