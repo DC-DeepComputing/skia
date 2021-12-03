@@ -898,7 +898,7 @@
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "kill-server"
+      "reconnect"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
