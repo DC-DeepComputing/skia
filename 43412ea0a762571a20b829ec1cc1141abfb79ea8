@@ -52,6 +52,24 @@
       "parentUuid": "69e31724_a48db34e",
       "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ede4d2de_7a721d09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-03T17:41:33Z",
+      "side": 1,
+      "message": "I\u0027m leaning to disallow and revisit if anyone yelps loudly enough.",
+      "parentUuid": "0e857d1d_f4532431",
+      "revId": "43412ea0a762571a20b829ec1cc1141abfb79ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
