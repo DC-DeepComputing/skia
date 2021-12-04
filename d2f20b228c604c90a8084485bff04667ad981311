@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c97b3d3_02a0adcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2021-12-04T22:59:28Z",
+      "side": 1,
+      "message": "Not sure the make debug step is needed by I am sure the make npm step is needed.\n\nNote: some tests still failed",
+      "revId": "d2f20b228c604c90a8084485bff04667ad981311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
