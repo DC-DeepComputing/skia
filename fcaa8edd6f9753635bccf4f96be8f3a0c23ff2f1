@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9097173a_e45cf7ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2021-12-04T04:31:53Z",
+      "side": 1,
+      "message": "I\u0027m new to Skia. I\u0027m not sure this is a valid idea even but I thought I\u0027d post a CL and look forward to feedback and if and how to proceed.",
+      "revId": "fcaa8edd6f9753635bccf4f96be8f3a0c23ff2f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
