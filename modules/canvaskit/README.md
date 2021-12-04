@@ -58,6 +58,7 @@ To run unit tests and compute test coverage on a debug gpu build
 
 ```
 make debug
+make npm
 make test-continuous
 ```
 
