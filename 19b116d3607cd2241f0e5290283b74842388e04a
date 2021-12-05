@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd015716_7d9fb24f",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-12-05T21:05:20Z",
+      "side": 1,
+      "message": "nit: missing tabs for these 2 lines?",
+      "revId": "19b116d3607cd2241f0e5290283b74842388e04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
