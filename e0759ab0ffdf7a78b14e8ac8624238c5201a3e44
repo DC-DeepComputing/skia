@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2c0035d_814e583f",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-06T18:43:38Z",
+      "side": 1,
+      "message": "Ah, I forgot that was there, yes.",
+      "parentUuid": "5833beef_14e81db8",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 0
+      },
+      "revId": "e0759ab0ffdf7a78b14e8ac8624238c5201a3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5bf6e4ff_98598793",
         "filename": "experimental/graphite/src/mtl/MtlResourceProvider.mm",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2021-12-06T18:37:18Z",
       "side": 1,
       "message": "Is there utility in having depth-test enabled? vs. relying on always/never? Depth at least doesn\u0027t have the nil semantics that stencil does.\n\nIf we do keep it, should we have an extra if around setting these fields on \u0027desc\u0027 for if (dss.fDepthTestEnabled) { ... } ?",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 92
+      },
+      "revId": "e0759ab0ffdf7a78b14e8ac8624238c5201a3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2c02473_491bb9f7",
+        "filename": "experimental/graphite/src/mtl/MtlResourceProvider.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-06T18:43:38Z",
+      "side": 1,
+      "message": "Vulkan and D3D have separate depth{Test}Enable fields in the pipeline descriptor, in addition to the compareOp. We could set them to False if the compareOp is Always, I guess.",
+      "parentUuid": "5bf6e4ff_98598793",
       "range": {
         "startLine": 119,
         "startChar": 8,
