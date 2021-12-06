@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef3347aa_0e5ff950",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-06T19:19:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2c0035d_814e583f",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 0
+      },
+      "revId": "e0759ab0ffdf7a78b14e8ac8624238c5201a3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bf6e4ff_98598793",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Vulkan and D3D have separate depth{Test}Enable fields in the pipeline descriptor, in addition to the compareOp. We could set them to False if the compareOp is Always, I guess.",
       "parentUuid": "5bf6e4ff_98598793",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 92
+      },
+      "revId": "e0759ab0ffdf7a78b14e8ac8624238c5201a3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6af3f02_cfacc15b",
+        "filename": "experimental/graphite/src/mtl/MtlResourceProvider.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-06T19:19:53Z",
+      "side": 1,
+      "message": "After outside discussion, having the enable bools gives us a little more flexibility, so leaving them and adding the check wrapping depthwrite here.",
+      "parentUuid": "f2c02473_491bb9f7",
       "range": {
         "startLine": 119,
         "startChar": 8,
