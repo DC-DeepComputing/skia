@@ -3620,11 +3620,11 @@ namespace skvm {
                 case Op::trace_var:
                 case Op::trace_enter:
                 case Op::trace_exit:
-                    if (!this->fVisualizer) {
-                        // Force this program to run in the interpreter.
+                    //if (!this->fVisualizer) {
+                    //    // Force this program to run in the interpreter.
                         return false;
-                    }
-                    break;
+                    //}
+                    //break;
 
                 case Op::store8:
                     if (scalar) {
