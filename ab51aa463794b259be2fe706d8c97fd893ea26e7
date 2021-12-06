@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "006ad1ad_7e74fc48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "Well, if you spent time looking for it I may as well spend time fixing it.",
+      "parentUuid": "add28cb2_f38a2e26",
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db4a38a5_b53ff5fb",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-12-06T16:04:52Z",
       "side": 1,
       "message": "This is only used in an assertion, and both callers already inspect the value of `op` before making the call. Let\u0027s remove it.",
+      "range": {
+        "startLine": 676,
+        "startChar": 8,
+        "endLine": 676,
+        "endChar": 19
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b999a1ae_7382b60e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db4a38a5_b53ff5fb",
       "range": {
         "startLine": 676,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c6eab64_4b7dcd10",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a24e14f3_3379ebfe",
+      "range": {
+        "startLine": 682,
+        "startChar": 8,
+        "endLine": 682,
+        "endChar": 21
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37a1e92c_c6b18cbe",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-12-06T16:05:59Z",
       "side": 1,
       "message": "tiny nit: remove ; at end of comment",
+      "range": {
+        "startLine": 817,
+        "startChar": 64,
+        "endLine": 817,
+        "endChar": 65
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "743eb997_0a5e3716",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37a1e92c_c6b18cbe",
       "range": {
         "startLine": 817,
         "startChar": 64,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f0ac09_124b61b3",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "I did these changes few times and the last time I forgot to remove the redundant code. Thanks!",
+      "parentUuid": "cc9812da_76d0c7af",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 820,
+        "endChar": 9
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11a0ea6d_a8aa91f3",
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38aca9e5_eed96027",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "The only thing that stopped me from adding that operation was that I could not come up with the name :). You see, it should be called isEqualityOrNonEquality to be exact or I didn\u0027t like it enough not to bring it up.",
+      "parentUuid": "11a0ea6d_a8aa91f3",
+      "range": {
+        "startLine": 839,
+        "startChar": 17,
+        "endLine": 840,
+        "endChar": 50
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c6fb84b_4be272e0",
@@ -146,6 +284,30 @@
       "writtenOn": "2021-12-06T16:04:52Z",
       "side": 1,
       "message": "I think this comment might be more useful to a reader if it moved to the start of the else block. Right now it talks about the \"old code\" then does the \"new code.\"",
+      "range": {
+        "startLine": 843,
+        "startChar": 8,
+        "endLine": 843,
+        "endChar": 62
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b24493e_84c78c4e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T19:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c6fb84b_4be272e0",
       "range": {
         "startLine": 843,
         "startChar": 8,
