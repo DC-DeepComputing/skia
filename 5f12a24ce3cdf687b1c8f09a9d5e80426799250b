@@ -417,6 +417,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "184af6dc_4f5e117a",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T15:48:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7454a613_7829a140",
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f247db1f_50c4e1c3",
@@ -572,6 +590,30 @@
       "side": 1,
       "message": "Could you please make this change in a followup CL (parented to this one) so I can see the before-and-after?\nI still think it is the right thing to do, and a separate CL would let me see the delta in isolation.",
       "parentUuid": "4ea5e16d_145d4b90",
+      "range": {
+        "startLine": 666,
+        "startChar": 0,
+        "endLine": 671,
+        "endChar": 41
+      },
+      "revId": "5f12a24ce3cdf687b1c8f09a9d5e80426799250b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44b2db8_a2c85a11",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T15:48:48Z",
+      "side": 1,
+      "message": "I will",
+      "parentUuid": "84ec45c1_670a102e",
       "range": {
         "startLine": 666,
         "startChar": 0,
