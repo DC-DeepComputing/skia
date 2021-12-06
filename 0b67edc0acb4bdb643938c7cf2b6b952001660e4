@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0a7e3e7_d3c7e5c8",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T20:06:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "517a818c_4726405a",
+      "range": {
+        "startLine": 691,
+        "startChar": 24,
+        "endLine": 691,
+        "endChar": 25
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65bf16e0_6ab51234",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af0cc4f_d37030e4",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T20:06:56Z",
+      "side": 1,
+      "message": "It took me a some time to figure out the right code. I will simplify, of course...",
+      "parentUuid": "65bf16e0_6ab51234",
+      "range": {
+        "startLine": 713,
+        "startChar": 12,
+        "endLine": 713,
+        "endChar": 50
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10cbf8d1_42e75d99",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-12-06T19:57:46Z",
       "side": 1,
       "message": "tiny nit: remove ; at end of comment\n\nOr honestly, it\u0027s OK to just remove this comment entirely. The assert feels self-explanatory to me.",
+      "range": {
+        "startLine": 834,
+        "startChar": 64,
+        "endLine": 834,
+        "endChar": 65
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "411da926_cacb6d7a",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T20:06:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10cbf8d1_42e75d99",
       "range": {
         "startLine": 834,
         "startChar": 64,

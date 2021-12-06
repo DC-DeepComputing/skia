@@ -295,6 +295,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5769100b_83d07abc",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-06T20:06:56Z",
+      "side": 1,
+      "message": "IsRelational sometimes is used for all comparison operations. I think isEquality is OK.",
+      "parentUuid": "4d6aa0e9_703f0e3c",
+      "range": {
+        "startLine": 839,
+        "startChar": 17,
+        "endLine": 840,
+        "endChar": 50
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c6fb84b_4be272e0",
