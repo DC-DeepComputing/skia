@@ -189,8 +189,8 @@ public:
     SpiralRT() : RuntimeShaderGM("spiral_rt", {512, 512}, R"(
         uniform float rad_scale;
         uniform float2 in_center;
-        layout(srgb_unpremul) uniform float4 in_colors0;
-        layout(srgb_unpremul) uniform float4 in_colors1;
+        layout(color) uniform float4 in_colors0;
+        layout(color) uniform float4 in_colors1;
 
         half4 main(float2 p) {
             float2 pp = p - in_center;
