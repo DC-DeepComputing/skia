@@ -191,6 +191,11 @@ void CommandBuffer::onBindGraphicsPipeline(const skgpu::GraphicsPipeline* graphi
     auto mtlPipeline = static_cast<const GraphicsPipeline*>(graphicsPipeline);
     auto pipelineState = mtlPipeline->mtlPipelineState();
     fActiveRenderCommandEncoder->setRenderPipelineState(pipelineState);
+    auto depthStencilState = mtlPipeline->mtlDepthStencilState();
+    fActiveRenderCommandEncoder->setDepthStencilState(depthStencilState);
+    uint32_t stencilRefValue = mtlPipeline->stencilReferenceValue();
+    fActiveRenderCommandEncoder->setStencilReferenceValue(stencilRefValue);
+
     fCurrentVertexStride = mtlPipeline->vertexStride();
     fCurrentInstanceStride = mtlPipeline->instanceStride();
 }
