@@ -16,6 +16,23 @@
       "message": "I\u0027m new to Skia. I\u0027m not sure this is a valid idea even but I thought I\u0027d post a CL and look forward to feedback and if and how to proceed.",
       "revId": "fcaa8edd6f9753635bccf4f96be8f3a0c23ff2f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "302d9d48_ade44a2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10818
+      },
+      "writtenOn": "2021-12-06T15:30:25Z",
+      "side": 1,
+      "message": "Hi Gregg, thanks for the CL! Kevin is the person you want for CanvasKit work, so I\u0027ve swapped myself out for him to review.",
+      "revId": "fcaa8edd6f9753635bccf4f96be8f3a0c23ff2f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
