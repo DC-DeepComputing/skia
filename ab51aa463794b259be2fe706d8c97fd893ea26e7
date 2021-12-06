@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "add28cb2_f38a2e26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "This is coming together nicely! Thanks for your patience with my nits.",
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4a38a5_b53ff5fb",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "This is only used in an assertion, and both callers already inspect the value of `op` before making the call. Let\u0027s remove it.",
+      "range": {
+        "startLine": 676,
+        "startChar": 8,
+        "endLine": 676,
+        "endChar": 19
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24e14f3_3379ebfe",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "small nit: it\u0027s easier for a reader to see that `result` is being mutated if we use `Value*` instead of `Value\u0026` here.",
+      "range": {
+        "startLine": 682,
+        "startChar": 8,
+        "endLine": 682,
+        "endChar": 21
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc9812da_76d0c7af",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "Should never happen (we should have called `compare` in this case). Just assert that the op isn\u0027t EQEQ/NEQ and delete the rest?",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 820,
+        "endChar": 9
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11a0ea6d_a8aa91f3",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "Not for this CL, but: it looks like we could use an `op.isEquality()` in Operator which checks for TK_EQEQ/NEQ. We already have 5+ places which make this check.",
+      "range": {
+        "startLine": 839,
+        "startChar": 17,
+        "endLine": 840,
+        "endChar": 50
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6fb84b_4be272e0",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T16:04:52Z",
+      "side": 1,
+      "message": "I think this comment might be more useful to a reader if it moved to the start of the else block. Right now it talks about the \"old code\" then does the \"new code.\"",
+      "range": {
+        "startLine": 843,
+        "startChar": 8,
+        "endLine": 843,
+        "endChar": 62
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
