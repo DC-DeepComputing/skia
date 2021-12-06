@@ -271,6 +271,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d6aa0e9_703f0e3c",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T19:57:46Z",
+      "side": 1,
+      "message": "Microsoft calls them the \"equality operators\" \n\nhttps://docs.microsoft.com/en-us/cpp/cpp/equality-operators-equal-equal-and-exclpt-equal\n\nAs does Java:\n\nhttps://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html\n\n\nJava also uses the \"relational operators\" for our `isLogical` and I think that\u0027s probably a better word. `isRelational` and `isEquality` work OK?",
+      "parentUuid": "38aca9e5_eed96027",
+      "range": {
+        "startLine": 839,
+        "startChar": 17,
+        "endLine": 840,
+        "endChar": 50
+      },
+      "revId": "ab51aa463794b259be2fe706d8c97fd893ea26e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c6fb84b_4be272e0",

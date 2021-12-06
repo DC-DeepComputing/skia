@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517a818c_4726405a",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T19:57:46Z",
+      "side": 1,
+      "message": "tiny nit: clang-format never puts open-parens here, they always stick to the function name. Feels out of place. (Here and below)",
+      "range": {
+        "startLine": 691,
+        "startChar": 24,
+        "endLine": 691,
+        "endChar": 25
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65bf16e0_6ab51234",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T19:57:46Z",
+      "side": 1,
+      "message": "Feels like it\u0027d read better as\n\n   (*result)[*slotOffset] \u003d\n\nor\n   (*result)[*slotOffset].fVal \u003d",
+      "range": {
+        "startLine": 713,
+        "startChar": 12,
+        "endLine": 713,
+        "endChar": 50
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10cbf8d1_42e75d99",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-06T19:57:46Z",
+      "side": 1,
+      "message": "tiny nit: remove ; at end of comment\n\nOr honestly, it\u0027s OK to just remove this comment entirely. The assert feels self-explanatory to me.",
+      "range": {
+        "startLine": 834,
+        "startChar": 64,
+        "endLine": 834,
+        "endChar": 65
+      },
+      "revId": "0b67edc0acb4bdb643938c7cf2b6b952001660e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
