@@ -16,6 +16,24 @@
       "message": "nit: missing tabs for these 2 lines?",
       "revId": "19b116d3607cd2241f0e5290283b74842388e04a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7771c39a_73dcefc9",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2021-12-06T16:01:43Z",
+      "side": 1,
+      "message": "Ah, that must be where I cleaned up a merge conflict in my diffing tool (which is not as smart as my editor), and I probably hit the spacebar (because clearly neither am I). Unfortuantely, this has already landed as https://skia-review.googlesource.com/c/skia/+/478401; I\u0027m not sure why there was a duplicate. Anyway, here\u0027s a fix: https://skia-review.googlesource.com/c/skia/+/480296.",
+      "parentUuid": "fd015716_7d9fb24f",
+      "revId": "19b116d3607cd2241f0e5290283b74842388e04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
