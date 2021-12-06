@@ -520,6 +520,27 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
 DEF_TEST(SkRuntimeEffectSimple, r) {
     test_RuntimeEffect_Shaders(r, nullptr);
 }
+#if 0
+DEF_TEST(SkRuntimeShaderTrace, r) {
+    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+    REPORTER_ASSERT(r, surface);
+    TestEffect effect(r, surface);
+
+    using float4 = std::array<float, 4>;
+    using int4 = std::array<int, 4>;
+
+    // Local coords
+    auto traceStream;
+    effect.build("half4 main(float2 p) { return half4(0, p.x, p.y, 1); }");
+    effect.test({0xFF000000, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF},
+                /*pretest=*/[](SkCanvas* canvas, SkPaint* paint) {
+                    SkRuntimeEffect::AttachDebugger(paint->refShader(),
+                                                    SkIPoint(0, 0),
+                                                    traceStream);
+                });
+}
+#endif
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeEffectSimple_GPU, r, ctxInfo) {
     test_RuntimeEffect_Shaders(r, ctxInfo.directContext());

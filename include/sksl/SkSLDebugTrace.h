@@ -17,10 +17,11 @@ public:
     virtual ~DebugTrace() = default;
 
     /** Serializes a debug trace to JSON which can be parsed by our debugger. */
-    virtual void writeTrace(SkWStream* w) const = 0;
+    virtual void setTraceStream(SkWStream* stream) = 0;
+    virtual void writeTrace() = 0;
 
     /** Generates a human-readable dump of the debug trace. */
-    virtual void dump(SkWStream* o) const = 0;
+    virtual void dump(SkWStream* stream) const = 0;
 };
 
 } // namespace SkSL

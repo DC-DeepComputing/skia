@@ -24,6 +24,7 @@ DEF_TEST(SkVMDebugTraceSetSource, r) {
 }
 
 DEF_TEST(SkVMDebugTraceWrite, r) {
+    SkDynamicMemoryWStream wstream;
     SkSL::SkVMDebugTrace i;
     i.fSource = {
         "\t// first line",
@@ -43,8 +44,8 @@ DEF_TEST(SkVMDebugTraceWrite, r) {
         {SkSL::SkVMTraceInfo::Op::kVar,   {10, 15}},
         {SkSL::SkVMTraceInfo::Op::kExit,  {20, 0}},
     };
-    SkDynamicMemoryWStream wstream;
-    i.writeTrace(&wstream);
+    i.setTraceStream(&wstream);
+    i.writeTrace();
     sk_sp<SkData> trace = wstream.detachAsData();
 
     static constexpr char kExpected[] =
