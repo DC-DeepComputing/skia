@@ -3624,7 +3624,7 @@ namespace skvm {
                         // Force this program to run in the interpreter.
                         return false;
                     }
-                    break;
+                    return false;
 
                 case Op::store8:
                     if (scalar) {
