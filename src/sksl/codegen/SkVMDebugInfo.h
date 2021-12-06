@@ -12,6 +12,7 @@
 #include "src/core/SkVM.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#include <functional>
 #include <string>
 #include <vector>
 
