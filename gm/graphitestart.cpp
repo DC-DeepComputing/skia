@@ -8,6 +8,7 @@
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
+#include "include/effects/SkGradientShader.h"
 
 namespace skiagm {
 
@@ -28,14 +29,20 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPaint p1, p2, p3;
+        SkPaint /*p1, p2,*/ p3;
 
-        p1.setColor(SK_ColorRED);
-        p2.setColor(SK_ColorGREEN);
+//        p1.setColor(SK_ColorRED);
+//        p2.setColor(SK_ColorGREEN);
         p3.setColor(SK_ColorBLUE);
 
-        canvas->drawRect({10, 10, 100, 100}, p1);
-        canvas->drawRect({50, 50, 150, 150}, p2);
+        SkPoint pts[2] = { {100, 100}, {200, 200} };
+        const SkColor colors[] = { SK_ColorRED, SK_ColorGREEN };
+        SkScalar pos[2] = { 0.0f, 1.0f };
+        auto grad = SkGradientShader::MakeLinear(pts, colors, pos, 2, SkTileMode::kClamp);
+        p3.setShader(grad);
+
+//        canvas->drawRect({10, 10, 100, 100}, p1);
+//        canvas->drawRect({50, 50, 150, 150}, p2);
         canvas->drawRect({100, 100, 200, 200}, p3);
     }
 };
