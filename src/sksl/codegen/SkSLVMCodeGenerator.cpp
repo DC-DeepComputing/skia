@@ -13,7 +13,7 @@
 #include "src/sksl/SkSLOperators.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/codegen/SkVMDebugInfo.h"
+#include "src/sksl/codegen/SkVMDebugTrace.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
@@ -60,7 +60,7 @@ namespace {
 
     class SkSLTracer : public skvm::TraceHook {
     public:
-        static std::unique_ptr<SkSLTracer> Make(SkSL::SkVMDebugInfo* debugInfo) {
+        static std::unique_ptr<SkSLTracer> Make(SkSL::SkVMDebugTrace* debugInfo) {
             auto hook = std::make_unique<SkSLTracer>();
             hook->fDebugInfo = debugInfo;
             return hook;
@@ -84,7 +84,7 @@ namespace {
         }
 
     private:
-        SkSL::SkVMDebugInfo* fDebugInfo;
+        SkSL::SkVMDebugTrace* fDebugInfo;
     };
 }
 
@@ -146,7 +146,7 @@ class SkVMGenerator {
 public:
     SkVMGenerator(const Program& program,
                   skvm::Builder* builder,
-                  SkVMDebugInfo* debugInfo,
+                  SkVMDebugTrace* debugInfo,
                   SampleShaderFn sampleShader,
                   SampleColorFilterFn sampleColorFilter,
                   SampleBlenderFn sampleBlender);
@@ -181,12 +181,12 @@ private:
     Value getSlotValue(size_t slot, size_t nslots);
 
     /**
-     * Returns the slot index of this function inside the SkVMFunctionInfo array in SkVMDebugInfo.
+     * Returns the slot index of this function inside the SkVMFunctionInfo array in SkVMDebugTrace.
      * The SkVMFunctionInfo slot will be created if it doesn't already exist.
      */
     int getDebugFunctionInfo(const FunctionDeclaration& decl);
 
-    /** Used by `createSlot` to add this variable to the SkVMSlotInfo array inside SkVMDebugInfo. */
+    /** Used by `createSlot` to add this variable to the SkVMSlotInfo array inside SkVMDebugTrace. */
     void addDebugSlotInfo(String varName, const Type& type, int line);
 
     /** Used by `getSlot` to create a new slot on its first access. */
@@ -297,7 +297,7 @@ private:
     //
     const Program& fProgram;
     skvm::Builder* fBuilder;
-    SkVMDebugInfo* fDebugInfo;
+    SkVMDebugTrace* fDebugInfo;
     int fTraceHookID = -1;
 
     const SampleShaderFn fSampleShader;
@@ -366,7 +366,7 @@ static inline bool is_uniform(const SkSL::Variable& var) {
 
 SkVMGenerator::SkVMGenerator(const Program& program,
                              skvm::Builder* builder,
-                             SkVMDebugInfo* debugInfo,
+                             SkVMDebugTrace* debugInfo,
                              SampleShaderFn sampleShader,
                              SampleColorFilterFn sampleColorFilter,
                              SampleBlenderFn sampleBlender)
@@ -1893,7 +1893,7 @@ void SkVMGenerator::writeStatement(const Statement& s) {
 skvm::Color ProgramToSkVM(const Program& program,
                           const FunctionDefinition& function,
                           skvm::Builder* builder,
-                          SkVMDebugInfo* debugInfo,
+                          SkVMDebugTrace* debugInfo,
                           SkSpan<skvm::Val> uniforms,
                           skvm::Coord device,
                           skvm::Coord local,
@@ -1951,7 +1951,7 @@ skvm::Color ProgramToSkVM(const Program& program,
 bool ProgramToSkVM(const Program& program,
                    const FunctionDefinition& function,
                    skvm::Builder* b,
-                   SkVMDebugInfo* debugInfo,
+                   SkVMDebugTrace* debugInfo,
                    SkSpan<skvm::Val> uniforms,
                    SkVMSignature* outSignature) {
     SkVMSignature ignored,
@@ -2085,7 +2085,7 @@ std::unique_ptr<UniformInfo> Program_GetUniformInfo(const Program& program) {
  */
 bool testingOnly_ProgramToSkVMShader(const Program& program,
                                      skvm::Builder* builder,
-                                     SkVMDebugInfo* debugInfo) {
+                                     SkVMDebugTrace* debugInfo) {
     const SkSL::FunctionDefinition* main = Program_GetFunction(program, "main");
     if (!main) {
         return false;

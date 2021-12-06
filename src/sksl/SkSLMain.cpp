@@ -18,7 +18,7 @@
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/codegen/SkVMDebugInfo.h"
+#include "src/sksl/codegen/SkVMDebugTrace.h"
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
@@ -94,7 +94,7 @@ static SkSL::String base_name(const SkSL::String& fpPath, const char* prefix, co
 static bool detect_shader_settings(const SkSL::String& text,
                                    SkSL::Program::Settings* settings,
                                    const SkSL::ShaderCaps** caps,
-                                   std::unique_ptr<SkSL::SkVMDebugInfo>* debugInfo) {
+                                   std::unique_ptr<SkSL::SkVMDebugTrace>* debugInfo) {
     using Factory = SkSL::ShaderCapsFactory;
 
     // Find a matching comment and isolate the name portion.
@@ -222,7 +222,7 @@ static bool detect_shader_settings(const SkSL::String& text,
                 }
                 if (settingsText.consumeSuffix(" SkVMDebugTrace")) {
                     settings->fOptimize = false;
-                    *debugInfo = std::make_unique<SkSL::SkVMDebugInfo>();
+                    *debugInfo = std::make_unique<SkSL::SkVMDebugTrace>();
                 }
 
                 if (settingsText.empty()) {
@@ -302,7 +302,7 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
     SkSL::Program::Settings settings;
     auto standaloneCaps = SkSL::ShaderCapsFactory::Standalone();
     const SkSL::ShaderCaps* caps = standaloneCaps.get();
-    std::unique_ptr<SkSL::SkVMDebugInfo> debugInfo;
+    std::unique_ptr<SkSL::SkVMDebugTrace> debugInfo;
     if (honorSettings) {
         if (!detect_shader_settings(text, &settings, &caps, &debugInfo)) {
             return ResultCode::kInputError;

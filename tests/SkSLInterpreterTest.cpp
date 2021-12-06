@@ -8,7 +8,7 @@
 #include "include/core/SkM44.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/codegen/SkVMDebugInfo.h"
+#include "src/sksl/codegen/SkVMDebugTrace.h"
 #include "src/sksl/ir/SkSLExternalFunction.h"
 #include "src/utils/SkJSON.h"
 
@@ -1004,7 +1004,7 @@ int main() {
     REPORTER_ASSERT(r, program);
 
     const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
-    SkSL::SkVMDebugInfo debugInfo;
+    SkSL::SkVMDebugTrace debugInfo;
     SkSL::ProgramToSkVM(*program, *main, &b, &debugInfo, /*uniforms=*/{});
     skvm::Program p = b.done();
     REPORTER_ASSERT(r, p.nargs() == 1);
