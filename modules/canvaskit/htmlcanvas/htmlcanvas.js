@@ -18,7 +18,11 @@ function HTMLCanvas(skSurface) {
       throw 'Invalid input';
     }
     this._toCleanup.push(img);
-    return img;
+    function Image(img) {
+      this._img = img;
+      this.width
+    }
+    return new HTMLImage(img);
   };
 
   this.loadFont = function(buffer, descriptors) {
