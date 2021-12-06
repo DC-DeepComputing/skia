@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "407ddfe1_7609b521",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-06T17:38:08Z",
+      "side": 1,
+      "message": "These changes originally proposed in cl/412913264 .",
+      "revId": "6cdfb3a709b32cefb1fc09a113b8947b022cea94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
