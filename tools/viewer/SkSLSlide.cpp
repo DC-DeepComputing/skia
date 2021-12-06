@@ -12,11 +12,13 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "src/core/SkEnumerate.h"
+#include "src/sksl/codegen/SkVMDebugTrace.h"
 #include "tools/Resources.h"
 #include "tools/viewer/Viewer.h"
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include "imgui.h"
 
 using namespace sk_app;
@@ -140,6 +142,15 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         return;
     }
 
+    bool debugTrace = false;
+    if (!canvas->recordingContext()) {
+        ImGui::InputText("Trace Coordinate (X)", fTraceXCoord, SK_ARRAY_COUNT(fTraceXCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Trace Coordinate (Y)", fTraceYCoord, SK_ARRAY_COUNT(fTraceYCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        debugTrace = ImGui::Button("Generate Debug Trace");
+    }
+
     // Update fMousePos
     ImVec2 mousePos = ImGui::GetMousePos();
     if (ImGui::IsMouseDown(0)) {
@@ -249,6 +260,15 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.count(),
                                       nullptr, false);
 
+    SkDynamicMemoryWStream traceStream;
+    if (debugTrace) {
+        // Generate a trace JSON dump in memory.
+        SkIPoint traceCoord = {std::atoi(fTraceXCoord), std::atoi(fTraceYCoord)};
+        if (!SkRuntimeEffect::TraceShader(shader, traceCoord, &traceStream)) {
+            SkASSERT(!"unable to write debug trace");
+        }
+    }
+
     SkPaint p;
     p.setColor4f(gPaintColor);
     p.setShader(std::move(shader));
@@ -273,6 +293,20 @@ void SkSLSlide::draw(SkCanvas* canvas) {
                                    256, font, p);
         } break;
         default: break;
+    }
+
+    if (debugTrace) {
+        // Serialize the JSON trace to disk as-is.
+        SkFILEWStream jsonFile("SkVMDebugTrace.json");
+        traceStream.writeToStream(&jsonFile);
+
+        // Read back the JSON trace into a new SkVMDebugTrace, and write a human-readable dump
+        std::unique_ptr<SkStreamAsset> traceJson = traceStream.detachAsStream();
+        SkSL::SkVMDebugTrace trace;
+        trace.readTrace(traceJson.get());
+
+        SkFILEWStream dumpFile("SkVMDebugTrace.dump.txt");
+        trace.dump(&dumpFile);
     }
 }
 
