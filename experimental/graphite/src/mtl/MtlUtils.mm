@@ -73,8 +73,8 @@ MTLPixelFormat DepthStencilTypeToFormat(DepthStencilType type) {
 }
 
 // Print the source code for all shaders generated.
-static const bool gPrintSKSL = false;
-static const bool gPrintMSL = false;
+static const bool gPrintSKSL = true;
+static const bool gPrintMSL = true;
 
 // TODO: add errorHandler support
 static void compile_error(const char* shaderSource, const char* errorText) {
