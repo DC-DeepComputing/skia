@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4f3640f_cfeab94e",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-07T20:09:50Z",
+      "side": 1,
+      "message": "this-\u003e ?",
+      "range": {
+        "startLine": 180,
+        "startChar": 36,
+        "endLine": 180,
+        "endChar": 49
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2590c41b_aee5373a",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-07T20:09:50Z",
+      "side": 1,
+      "message": "Is this intentional ?",
+      "range": {
+        "startLine": 235,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 3
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79816ea5_e2552d40",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-07T20:09:50Z",
+      "side": 1,
+      "message": "checksum ?",
+      "range": {
+        "startLine": 66,
+        "startChar": 27,
+        "endLine": 66,
+        "endChar": 34
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
