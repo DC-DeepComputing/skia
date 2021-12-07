@@ -547,6 +547,12 @@ void DebugCanvas::onDrawVerticesObject(const SkVertices*      vertices,
             new DrawVerticesCommand(sk_ref_sp(const_cast<SkVertices*>(vertices)), bmode, paint));
 }
 
+void DebugCanvas::onDrawCustomMesh(SkCustomMesh     cm,
+                                   sk_sp<SkBlender> blender,
+                                   const SkPaint&   paint) {
+    this->addDrawCommand(new DrawCustomMeshCommand(SkOwnedCustomMesh::Make(cm), blender, paint));
+}
+
 void DebugCanvas::onDrawAtlas2(const SkImage*           image,
                                const SkRSXform          xform[],
                                const SkRect             tex[],

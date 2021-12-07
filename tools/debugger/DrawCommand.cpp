@@ -7,8 +7,9 @@
 
 #include "tools/debugger/DrawCommand.h"
 
-#include <algorithm>
+#include "include/core/SkBlender.h"
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkCustomMesh.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkPathEffect.h"
@@ -20,6 +21,7 @@
 #include "include/private/SkTHash.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPaintDefaults.h"
@@ -37,6 +39,8 @@
 #else
 class GrDirectContext;
 #endif
+
+#include <algorithm>
 
 #define DEBUGCANVAS_ATTRIBUTE_COMMAND "command"
 #define DEBUGCANVAS_ATTRIBUTE_VISIBLE "visible"
@@ -1945,6 +1949,20 @@ DrawVerticesCommand::DrawVerticesCommand(sk_sp<SkVertices> vertices,
 
 void DrawVerticesCommand::execute(SkCanvas* canvas) const {
     canvas->drawVertices(fVertices, fBlendMode, fPaint);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+DrawCustomMeshCommand::DrawCustomMeshCommand(sk_sp<SkOwnedCustomMesh> cm,
+                                             sk_sp<SkBlender> blender,
+                                             const SkPaint& paint)
+        : INHERITED(kDrawCustomMesh_OpType)
+        , fOwnedCustomMesh(std::move(cm))
+        , fBlender(std::move(blender))
+        , fPaint(paint) {}
+
+void DrawCustomMeshCommand::execute(SkCanvas* canvas) const {
+    SkCanvasPriv::DrawCustomMesh(canvas, fOwnedCustomMesh->mesh(), fBlender, fPaint);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

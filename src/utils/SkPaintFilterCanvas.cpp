@@ -7,6 +7,7 @@
 
 #include "include/utils/SkPaintFilterCanvas.h"
 
+#include "include/core/SkBlender.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSurface.h"
@@ -147,6 +148,15 @@ void SkPaintFilterCanvas::onDrawVerticesObject(const SkVertices* vertices,
     AutoPaintFilter apf(this, paint);
     if (apf.shouldDraw()) {
         this->SkNWayCanvas::onDrawVerticesObject(vertices, bmode, apf.paint());
+    }
+}
+
+void SkPaintFilterCanvas::onDrawCustomMesh(SkCustomMesh cm,
+                                           sk_sp<SkBlender> blender,
+                                           const SkPaint& paint) {
+    AutoPaintFilter apf(this, paint);
+    if (apf.shouldDraw()) {
+        this->SkNWayCanvas::onDrawCustomMesh(std::move(cm), std::move(blender), apf.paint());
     }
 }
 

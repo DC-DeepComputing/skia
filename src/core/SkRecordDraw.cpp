@@ -142,6 +142,10 @@ DRAW(DrawTextBlob, drawTextBlob(r.blob.get(), r.x, r.y, r.paint));
 DRAW(DrawAtlas, drawAtlas(r.atlas.get(), r.xforms, r.texs, r.colors, r.count, r.mode, r.sampling,
                           r.cull, r.paint));
 DRAW(DrawVertices, drawVertices(r.vertices, r.bmode, r.paint));
+// DRAW(DrawCustomMesh, drawCustomMesh(r.mesh->mesh(), r.blender, r.paint));
+template <> void Draw::draw(const DrawCustomMesh& r) {
+    SkCanvasPriv::DrawCustomMesh(fCanvas, r.mesh->mesh(), r.blender, r.paint);
+}
 DRAW(DrawShadowRec, private_draw_shadow_rec(r.path, r.rec));
 DRAW(DrawAnnotation, drawAnnotation(r.rect, r.key.c_str(), r.value.get()));
 
@@ -441,6 +445,9 @@ private:
     }
     Bounds bounds(const DrawVertices& op) const {
         return this->adjustAndMap(op.vertices->bounds(), &op.paint);
+    }
+    Bounds bounds(const DrawCustomMesh& op) const {
+        return this->adjustAndMap(op.mesh->mesh().bounds, &op.paint);
     }
 
     Bounds bounds(const DrawAtlas& op) const {
