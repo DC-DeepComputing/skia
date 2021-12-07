@@ -8,8 +8,10 @@
 #ifndef SkNoDrawCanvas_DEFINED
 #define SkNoDrawCanvas_DEFINED
 
+#include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCanvasVirtualEnforcer.h"
+#include "include/core/SkCustomMesh.h"
 
 struct SkIRect;
 
@@ -64,6 +66,7 @@ protected:
                   SkBlendMode, const SkSamplingOptions&, const SkRect*, const SkPaint*) override {}
 
     void onDrawVerticesObject(const SkVertices*, SkBlendMode, const SkPaint&) override {}
+    void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override {}
     void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&) override {}
     void onDrawPicture(const SkPicture*, const SkMatrix*, const SkPaint*) override {}
 

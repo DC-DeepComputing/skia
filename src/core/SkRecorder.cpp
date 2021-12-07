@@ -13,6 +13,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkBigPicture.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkGlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
 
@@ -253,6 +254,10 @@ void SkRecorder::onDrawVerticesObject(const SkVertices* vertices, SkBlendMode bm
     this->append<SkRecords::DrawVertices>(paint,
                                           sk_ref_sp(const_cast<SkVertices*>(vertices)),
                                           bmode);
+}
+
+void SkRecorder::onDrawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender> blender, const SkPaint& paint) {
+    this->append<SkRecords::DrawCustomMesh>(paint, SkOwnedCustomMesh::Make(cm), std::move(blender));
 }
 
 void SkRecorder::onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
