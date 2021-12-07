@@ -22,23 +22,29 @@ class GrGLSLColorSpaceXformHelper : public SkNoncopyable {
 public:
     GrGLSLColorSpaceXformHelper() {}
 
-    void emitCode(GrGLSLUniformHandler* uniformHandler, const GrColorSpaceXform* colorSpaceXform,
-                  uint32_t visibility = kFragment_GrShaderFlag) {
+    void emitCode(GrGLSLUniformHandler* uniformHandler,
+                  const GrColorSpaceXform* colorSpaceXform,
+                  uint32_t visibility = kFragment_GrShaderFlag,
+                  const char* mangle = "") {
         SkASSERT(uniformHandler);
         if (colorSpaceXform) {
             fFlags = colorSpaceXform->fSteps.flags;
+            SkString name;
             if (this->applySrcTF()) {
+                name.printf("SrcTF%s", mangle);
                 fSrcTFVar = uniformHandler->addUniformArray(nullptr, visibility, kHalf_GrSLType,
-                                                            "SrcTF", kNumTransferFnCoeffs);
+                                                            name.c_str(), kNumTransferFnCoeffs);
                 fSrcTFKind = classify_transfer_fn(colorSpaceXform->fSteps.srcTF);
             }
             if (this->applyGamutXform()) {
+                name.printf("ColorXform%s", mangle);
                 fGamutXformVar = uniformHandler->addUniform(nullptr, visibility, kHalf3x3_GrSLType,
-                                                            "ColorXform");
+                                                            name.c_str());
             }
             if (this->applyDstTF()) {
+                name.printf("DstTF%s", mangle);
                 fDstTFVar = uniformHandler->addUniformArray(nullptr, visibility, kHalf_GrSLType,
-                                                            "DstTF", kNumTransferFnCoeffs);
+                                                            name.c_str(), kNumTransferFnCoeffs);
                 fDstTFKind = classify_transfer_fn(colorSpaceXform->fSteps.dstTFInv);
             }
         }

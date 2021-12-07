@@ -102,6 +102,7 @@ public:
     static std::unique_ptr<GrSkSLFP> MakeWithData(
             sk_sp<SkRuntimeEffect> effect,
             const char* name,
+            sk_sp<SkColorSpace> dstColorSpace,
             std::unique_ptr<GrFragmentProcessor> inputFP,
             std::unique_ptr<GrFragmentProcessor> destColorFP,
             sk_sp<SkData> uniforms,
@@ -148,10 +149,14 @@ public:
                   effect->fChildren.end(),
                   std::forward<Args>(args)...);
 #endif
+        // This factory is used internally (for "runtime FPs"). We don't pass/know the destination
+        // color space, so these effects can't use the color transform intrinsics. Callers of this
+        // factory should instead construct an GrColorSpaceXformEffect as part of the FP tree.
+        SkASSERT(!effect->usesColorTranform());
 
         size_t uniformPayloadSize = UniformPayloadSize(effect.get());
-        std::unique_ptr<GrSkSLFP> fp(new (uniformPayloadSize)
-                                             GrSkSLFP(std::move(effect), name, optFlags));
+        std::unique_ptr<GrSkSLFP> fp(new (uniformPayloadSize) GrSkSLFP(
+                std::move(effect), name, /*dstColorSpace=*/nullptr, optFlags));
         fp->appendArgs(fp->uniformData(), fp->uniformFlags(), std::forward<Args>(args)...);
         if (inputFP) {
             fp->setInput(std::move(inputFP));
@@ -165,7 +170,10 @@ public:
 private:
     class Impl;
 
-    GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags optFlags);
+    GrSkSLFP(sk_sp<SkRuntimeEffect> effect,
+             const char* name,
+             sk_sp<SkColorSpace> dstColorSpace,
+             OptFlags optFlags);
     GrSkSLFP(const GrSkSLFP& other);
 
     void addChild(std::unique_ptr<GrFragmentProcessor> child, bool mergeOptFlags);
@@ -400,11 +408,13 @@ private:
     }
 #endif
 
-    sk_sp<SkRuntimeEffect> fEffect;
-    const char*            fName;
-    uint32_t               fUniformSize;
-    int                    fInputChildIndex = -1;
-    int                    fDestColorChildIndex = -1;
+    sk_sp<SkRuntimeEffect>   fEffect;
+    const char*              fName;
+    uint32_t                 fUniformSize;
+    int                      fInputChildIndex = -1;
+    int                      fDestColorChildIndex = -1;
+    int                      fWorkingSpaceToLinearSrgbChildIndex = -1;
+    int                      fLinearSrgbToWorkingSpaceChildIndex = -1;
 
     GR_DECLARE_FRAGMENT_PROCESSOR_TEST
 

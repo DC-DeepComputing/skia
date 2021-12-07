@@ -468,6 +468,13 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
                                    dst + ")";
                         }
 
+                        String workingSpaceToLinearSrgb(String color) override {
+                            return "workingSpaceToLinearSrgb(" + color + ")";
+                        }
+                        String linearSrgbToWorkingSpace(String color) override {
+                            return "linearSrgbToWorkingSpace(" + color + ")";
+                        }
+
                         String fOutput;
                     };
                     // The .stage output looks almost like valid SkSL, but not quite.
