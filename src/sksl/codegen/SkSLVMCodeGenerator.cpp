@@ -83,7 +83,7 @@ namespace {
                                           /*data=*/{fnIdx, 0}});
         }
         void done() override {
-            // TODO(skia:12708): write the trace here
+            fTrace->writeTrace();
         }
 
     private:
@@ -2046,6 +2046,13 @@ skvm::Color ProgramToSkVM(const Program& program,
         }
     }
     SkASSERT(argSlots <= SK_ARRAY_COUNT(args));
+
+    // Make sure that the SkVMDebugTrace starts from a clean slate.
+    if (debugTrace) {
+        debugTrace->fSlotInfo.clear();
+        debugTrace->fFuncInfo.clear();
+        debugTrace->fTraceInfo.clear();
+    }
 
     SkVMGenerator generator(program, builder, debugTrace, std::move(sampleShader),
                             std::move(sampleColorFilter), std::move(sampleBlender));
