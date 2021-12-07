@@ -727,63 +727,63 @@ struct SK_API SkRect {
 
         @return  fLeft
     */
-    SkScalar    x() const { return fLeft; }
+    constexpr SkScalar x() const { return fLeft; }
 
     /** Returns top edge of SkRect, if sorted. Call isEmpty() to see if SkRect may be invalid,
         and sort() to reverse fTop and fBottom if needed.
 
         @return  fTop
     */
-    SkScalar    y() const { return fTop; }
+    constexpr SkScalar y() const { return fTop; }
 
     /** Returns left edge of SkRect, if sorted. Call isSorted() to see if SkRect is valid.
         Call sort() to reverse fLeft and fRight if needed.
 
         @return  fLeft
     */
-    SkScalar    left() const { return fLeft; }
+    constexpr SkScalar left() const { return fLeft; }
 
     /** Returns top edge of SkRect, if sorted. Call isEmpty() to see if SkRect may be invalid,
         and sort() to reverse fTop and fBottom if needed.
 
         @return  fTop
     */
-    SkScalar    top() const { return fTop; }
+    constexpr SkScalar top() const { return fTop; }
 
     /** Returns right edge of SkRect, if sorted. Call isSorted() to see if SkRect is valid.
         Call sort() to reverse fLeft and fRight if needed.
 
         @return  fRight
     */
-    SkScalar    right() const { return fRight; }
+    constexpr SkScalar right() const { return fRight; }
 
     /** Returns bottom edge of SkRect, if sorted. Call isEmpty() to see if SkRect may be invalid,
         and sort() to reverse fTop and fBottom if needed.
 
         @return  fBottom
     */
-    SkScalar    bottom() const { return fBottom; }
+    constexpr SkScalar bottom() const { return fBottom; }
 
     /** Returns span on the x-axis. This does not check if SkRect is sorted, or if
         result fits in 32-bit float; result may be negative or infinity.
 
         @return  fRight minus fLeft
     */
-    SkScalar    width() const { return fRight - fLeft; }
+    constexpr SkScalar width() const { return fRight - fLeft; }
 
     /** Returns span on the y-axis. This does not check if SkRect is sorted, or if
         result fits in 32-bit float; result may be negative or infinity.
 
         @return  fBottom minus fTop
     */
-    SkScalar    height() const { return fBottom - fTop; }
+    constexpr SkScalar height() const { return fBottom - fTop; }
 
     /** Returns average of left edge and right edge. Result does not change if SkRect
         is sorted. Result may overflow to infinity if SkRect is far from the origin.
 
         @return  midpoint on x-axis
     */
-    SkScalar centerX() const {
+    constexpr SkScalar centerX() const {
         // don't use SkScalarHalf(fLeft + fBottom) as that might overflow before the 0.5
         return SkScalarHalf(fLeft) + SkScalarHalf(fRight);
     }
@@ -793,7 +793,7 @@ struct SK_API SkRect {
 
         @return  midpoint on y-axis
     */
-    SkScalar centerY() const {
+    constexpr SkScalar centerY() const {
         // don't use SkScalarHalf(fTop + fBottom) as that might overflow before the 0.5
         return SkScalarHalf(fTop) + SkScalarHalf(fBottom);
     }

@@ -145,6 +145,12 @@ void SkOverdrawCanvas::onDrawVerticesObject(const SkVertices* vertices,
     fList[0]->onDrawVerticesObject(vertices, blendMode, this->overdrawPaint(paint));
 }
 
+void SkOverdrawCanvas::onDrawCustomMesh(SkCustomMesh cm,
+                                        sk_sp<SkBlender> blender,
+                                        const SkPaint& paint) {
+    fList[0]->onDrawCustomMesh(std::move(cm), std::move(blender), this->overdrawPaint(paint));
+}
+
 void SkOverdrawCanvas::onDrawAtlas2(const SkImage* image, const SkRSXform xform[],
                                     const SkRect texs[], const SkColor colors[], int count,
                                     SkBlendMode mode, const SkSamplingOptions& sampling,

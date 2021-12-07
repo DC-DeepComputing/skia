@@ -8,7 +8,9 @@
 #ifndef SkRecords_DEFINED
 #define SkRecords_DEFINED
 
+#include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkCustomMesh.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkImage.h"
@@ -24,6 +26,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
 
 namespace SkRecords {
@@ -77,11 +80,11 @@ namespace SkRecords {
     M(DrawTextBlob)                                                 \
     M(DrawAtlas)                                                    \
     M(DrawVertices)                                                 \
+    M(DrawCustomMesh)                                               \
     M(DrawShadowRec)                                                \
     M(DrawAnnotation)                                               \
     M(DrawEdgeAAQuad)                                               \
     M(DrawEdgeAAImageSet)
-
 
 // Defines SkRecords::Type, an enum of all record types.
 #define ENUM(T) T##_Type,
@@ -316,6 +319,10 @@ RECORD(DrawVertices, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
         sk_sp<SkVertices> vertices;
         SkBlendMode bmode);
+RECORD(DrawCustomMesh, kDraw_Tag|kHasPaint_Tag,
+       SkPaint paint;
+       sk_sp<SkOwnedCustomMesh> mesh;
+       sk_sp<SkBlender> blender);
 RECORD(DrawShadowRec, kDraw_Tag,
        PreCachedPath path;
        SkDrawShadowRec rec);

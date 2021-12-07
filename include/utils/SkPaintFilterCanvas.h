@@ -68,6 +68,7 @@ protected:
                      SkBlendMode, const SkSamplingOptions&, const SkRect*, const SkPaint*) override;
 
     void onDrawVerticesObject(const SkVertices*, SkBlendMode, const SkPaint&) override;
+    void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override;
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                              const SkPoint texCoords[4], SkBlendMode,
                              const SkPaint& paint) override;

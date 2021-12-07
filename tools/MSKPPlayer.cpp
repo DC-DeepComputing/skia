@@ -7,6 +7,7 @@
 
 #include "tools/MSKPPlayer.h"
 
+#include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCanvasVirtualEnforcer.h"
 #include "include/core/SkPicture.h"
@@ -174,6 +175,18 @@ protected:
                         SkScalar y,
                         const SkPaint& paint) override {
         fRecorder.getRecordingCanvas()->drawTextBlob(blob, x, y, paint);
+    }
+
+    void onDrawVerticesObject(const SkVertices* vertices,
+                              SkBlendMode mode,
+                              const SkPaint& paint) override {
+        fRecorder.getRecordingCanvas()->drawVertices(vertices, mode, paint);
+    }
+
+    void onDrawCustomMesh(SkCustomMesh cm,
+                          sk_sp<SkBlender> blender,
+                          const SkPaint& paint) override {
+        fRecorder.getRecordingCanvas()->drawCustomMesh(std::move(cm), std::move(blender), paint);
     }
 
     void onDrawPatch(const SkPoint cubics[12],

@@ -56,6 +56,7 @@ protected:
     void onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix) override = 0;
     void onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
                        const SkPaint* paint) override = 0;
+    void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override = 0;
 };
 
 #endif
