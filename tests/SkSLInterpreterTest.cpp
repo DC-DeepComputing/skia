@@ -1061,8 +1061,8 @@ enter int main()
     comparison = true
     line 3
     line 4
-    [less_than].result = true
   exit bool less_than(float left, int right)
+  [less_than].result = true
   function_result = true
   line 11
   loop = 20
@@ -1084,8 +1084,8 @@ enter int main()
     comparison = false
     line 3
     line 6
-    [less_than].result = false
   exit bool less_than(float left, int right)
+  [less_than].result = false
   function_result = false
   line 11
   loop = 30
@@ -1107,12 +1107,12 @@ enter int main()
     comparison = false
     line 3
     line 6
-    [less_than].result = false
   exit bool less_than(float left, int right)
+  [less_than].result = false
   function_result = false
   line 11
   line 16
-  [main].result = 40
 exit int main()
+[main].result = 40
 )", "Trace output does not match expectation:\n%.*s\n", (int)trace.size(), trace.data());
 }
