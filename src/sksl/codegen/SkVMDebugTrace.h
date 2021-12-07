@@ -59,12 +59,15 @@ public:
     /** Attaches the SkSL source to be debugged. */
     void setSource(std::string source);
 
-    /** Serializes a debug trace to JSON which can be parsed by our debugger. */
-    bool readTrace(SkStream* r);
-    void writeTrace(SkWStream* w) const;
+    /** Serializes a debug trace to a JSON file. Can be read back later via `readTrace`. */
+    void setTraceStream(SkWStream* stream);
+    void writeTrace();
 
-    /** Generates a human-readable dump of the debug trace. */
-    void dump(SkWStream* o) const;
+    /** Reads back a JSON trace file emitted by `writeTrace`. */
+    bool readTrace(SkStream* r);
+
+    /** Generates a human-readable (but not machine-parseable) dump of the debug trace. */
+    void dump(SkWStream* stream) const;
 
     /** The device-coordinate pixel to trace (controlled by setTraceCoord) */
     SkIPoint fTraceCoord = {};
@@ -84,6 +87,12 @@ public:
      * automatically by the SkSLVMCodeGenerator.
      */
     std::unique_ptr<skvm::TraceHook> fTraceHook;
+
+    /**
+     * A destination stream for `writeTrace` to use when a debug trace is generated.
+     * Stream lifetime must be managed by the caller.
+     */
+    SkWStream* fTraceStream;
 };
 
 }  // namespace SkSL
