@@ -230,14 +230,17 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
                                             const GrSDFTControl& control,
                                             SkGlyphRunPainterInterface* process,
                                             const char* tag) {
-    #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
+ //   #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
         SkString msg;
         msg.appendf("\nStart glyph run processing");
         if (tag != nullptr) {
             msg.appendf(" for %s ", tag);
         }
-        msg.appendf("\n");
-    #endif
+        msg.appendf("\n   matrix\n");
+        msg.appendf("   %7.3g %7.3g %7.3g\n   %7.3g %7.3g %7.3g\n",
+                    drawMatrix[0], drawMatrix[1], drawMatrix[2],
+                    drawMatrix[3], drawMatrix[4], drawMatrix[5]);
+  //  #endif
     ScopedBuffers _ = this->ensureBuffers(glyphRun);
     fRejects.setSource(glyphRun.source());
     const SkFont& runFont = glyphRun.font();
