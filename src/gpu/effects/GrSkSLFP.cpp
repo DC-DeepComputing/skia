@@ -15,6 +15,7 @@
 #include "src/gpu/GrBaseContextPriv.h"
 #include "src/gpu/GrColorInfo.h"
 #include "src/gpu/GrTexture.h"
+#include "src/gpu/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/sksl/SkSLUtil.h"
@@ -154,6 +155,16 @@ public:
                 return String(fSelf->invokeChild(index, src.c_str(), dst.c_str(), fArgs).c_str());
             }
 
+            String workingSpaceToLinearSrgb(String color) override {
+                if (!fSelf->fWorkingSpaceToLinearSrgbXform) {
+                    // Ack. We need to go way out, to when the FP was created. Oops.
+                }
+                return color;
+            }
+            String linearSrgbToWorkingSpace(String color) override {
+                return color;
+            }
+
             Impl*                         fSelf;
             EmitArgs&                     fArgs;
             const char*                   fInputColor;
@@ -225,6 +236,9 @@ public:
 private:
     void onSetData(const GrGLSLProgramDataManager& pdman,
                    const GrFragmentProcessor& _proc) override {
+        fWorkingSpaceToLinearSrgbHelper.setData(pdman, fWorkingSpaceToLinearSrgbXform.get());
+        fLinearSrgbToWorkingSpaceHelper.setData(pdman, fLinearSrgbToWorkingSpaceXform.get());
+
         using Type = SkRuntimeEffect::Uniform::Type;
         size_t uniIndex = 0;
         const GrSkSLFP& outer = _proc.cast<GrSkSLFP>();
@@ -260,6 +274,11 @@ private:
     }
 
     std::vector<UniformHandle> fUniformHandles;
+
+    sk_sp<GrColorSpaceXform> fWorkingSpaceToLinearSrgbXform;
+    sk_sp<GrColorSpaceXform> fLinearSrgbToWorkingSpaceXform;
+    GrGLSLColorSpaceXformHelper fWorkingSpaceToLinearSrgbHelper;
+    GrGLSLColorSpaceXformHelper fLinearSrgbToWorkingSpaceHelper;
 };
 
 std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(

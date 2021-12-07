@@ -607,7 +607,7 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
             } else if (isSimpleUniform(c, &call.fOffset)) {
                 call.fKind = SkFilterColorProgram::SampleCall::Kind::kUniform;
             } else {
-                fAllSampleCallsSupported = false;
+                fUsedUnsupportedFeatures = true;
             }
             fSampleCalls->push_back(call);
             fChildColors.push_back(result);
@@ -625,6 +625,19 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
             return {};
         }
 
+        // TODO(skia:10479): Can we support this? When the color filter is invoked like this, there
+        // may not be a real working space? If there is, we'd need to add it as a parameter to eval,
+        // and then coordinate where the relevant uniforms go. For now, just fall back to the slow
+        // path if we see these intrinsics being called.
+        skvm::Color workingSpaceToLinearSrgb(skvm::Color color) override {
+            fUsedUnsupportedFeatures = true;
+            return color;
+        }
+        skvm::Color linearSrgbToWorkingSpace(skvm::Color color) override {
+            fUsedUnsupportedFeatures = true;
+            return color;
+        }
+
         skvm::Builder* fBuilder;
         const skvm::Uniforms* fSkslUniforms;
         skvm::Uniforms* fChildColorUniforms;
@@ -632,9 +645,12 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
         std::vector<SkFilterColorProgram::SampleCall>* fSampleCalls;
 
         std::vector<skvm::Color> fChildColors;
-        bool fAllSampleCallsSupported = true;
+        bool fUsedUnsupportedFeatures = false;
     };
     Callbacks callbacks(&p, &skslUniforms, &childColorUniforms, inputColor, &sampleCalls);
+
+    // TODO(skia:10479): What do we do with color space conversion here? In this context, there is
+    // no working space?
 
     // Emit the skvm instructions for the SkSL
     skvm::Coord zeroCoord = {p.splat(0.0f), p.splat(0.0f)};
@@ -653,7 +669,7 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
     p.store({skvm::PixelFormat::FLOAT, 32, 32, 32, 32, 0, 32, 64, 96},
             p.varying<skvm::F32>(), result);
 
-    if (!callbacks.fAllSampleCallsSupported) {
+    if (callbacks.fUsedUnsupportedFeatures) {
         return nullptr;
     }
 
@@ -845,6 +861,26 @@ public:
             return as_BB(blender)->program(fBuilder, src, dst, fColorInfo, fUniforms, fAlloc);
         }
         return blend(SkBlendMode::kSrcOver, src, dst);
+    }
+
+    skvm::Color workingSpaceToLinearSrgb(skvm::Color color) override {
+        if (!fColorInfo.colorSpace()) {
+            // These intrinsics do nothing when color management is disabled
+            return color;
+        }
+        return SkColorSpaceXformSteps{fColorInfo.colorSpace(),    kUnpremul_SkAlphaType,
+                                      sk_srgb_linear_singleton(), kUnpremul_SkAlphaType}
+                .program(fBuilder, fUniforms, color);
+    }
+
+    skvm::Color linearSrgbToWorkingSpace(skvm::Color color) override {
+        if (!fColorInfo.colorSpace()) {
+            // These intrinsics do nothing when color management is disabled
+            return color;
+        }
+        return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
+                                      fColorInfo.colorSpace(),    kUnpremul_SkAlphaType}
+                .program(fBuilder, fUniforms, color);
     }
 
     skvm::Builder* fBuilder;
