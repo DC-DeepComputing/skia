@@ -7,11 +7,13 @@
 
 #include "src/core/SkPictureRecord.h"
 
+#include "include/core/SkCustomMesh.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkTextBlob.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkSamplingPriv.h"
@@ -636,6 +638,20 @@ void SkPictureRecord::onDrawVerticesObject(const SkVertices* vertices,
     this->validate(initialOffset, size);
 }
 
+void SkPictureRecord::onDrawCustomMesh(SkCustomMesh cm,
+                                       sk_sp<SkBlender> blender,
+                                       const SkPaint& paint) {
+    // op + paint index + mesh index +  blender index
+    size_t size = 4 * kUInt32Size;
+    size_t initialOffset = this->addDraw(DRAW_CUSTOM_MESH, &size);
+
+    this->addPaint(paint);
+    this->addCustomMesh(cm);
+    this->addBlender(std::move(blender));
+
+    this->validate(initialOffset, size);
+}
+
 void SkPictureRecord::onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                                   const SkPoint texCoords[4], SkBlendMode bmode,
                                   const SkPaint& paint) {
@@ -939,6 +955,18 @@ void SkPictureRecord::addTextBlob(const SkTextBlob* blob) {
 void SkPictureRecord::addVertices(const SkVertices* vertices) {
     // follow the convention of recording a 1-based index
     this->addInt(find_or_append(fVertices, vertices) + 1);
+}
+
+void SkPictureRecord::addCustomMesh(const SkCustomMesh mesh) {
+    // follow the convention of recording a 1-based index
+    fCustomMeshes.emplace_back(SkOwnedCustomMesh::Make(mesh));
+    this->addInt(fCustomMeshes.size());
+}
+
+void SkPictureRecord::addBlender(sk_sp<SkBlender> blender) {
+    // follow the convention of recording a 1-based index
+    fBlenders.emplace_back(std::move(blender));
+    this->addInt(fBlenders.size());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

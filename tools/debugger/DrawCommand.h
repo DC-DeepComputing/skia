@@ -10,6 +10,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkCustomMesh.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRRect.h"
@@ -18,6 +19,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkTDArray.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkTLazy.h"
 #include "src/utils/SkJSONWriter.h"
@@ -58,6 +60,7 @@ public:
         kDrawShadow_OpType,
         kDrawTextBlob_OpType,
         kDrawVertices_OpType,
+        kDrawCustomMesh_OpType,
         kDrawAtlas_OpType,
         kDrawDrawable_OpType,
         kDrawEdgeAAQuad_OpType,
@@ -580,6 +583,20 @@ private:
     sk_sp<SkVertices> fVertices;
     SkBlendMode       fBlendMode;
     SkPaint           fPaint;
+
+    using INHERITED = DrawCommand;
+};
+
+class DrawCustomMeshCommand : public DrawCommand {
+public:
+    DrawCustomMeshCommand(sk_sp<SkOwnedCustomMesh>, sk_sp<SkBlender>, const SkPaint&);
+
+    void execute(SkCanvas* canvas) const override;
+
+private:
+    sk_sp<SkOwnedCustomMesh>      fOwnedCustomMesh;
+    sk_sp<SkBlender>              fBlender;
+    SkPaint                       fPaint;
 
     using INHERITED = DrawCommand;
 };

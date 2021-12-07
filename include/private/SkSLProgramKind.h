@@ -21,6 +21,8 @@ enum class ProgramKind : int8_t {
     kRuntimeColorFilter,  // Runtime effect only suitable as SkColorFilter
     kRuntimeShader,       //   "       "     "      "     "  SkShader
     kRuntimeBlender,      //   "       "     "      "     "  SkBlender
+    kRuntimeCustomMeshVertex,
+    kRuntimeCustomMeshFragment,
     kGeneric,
 };
 

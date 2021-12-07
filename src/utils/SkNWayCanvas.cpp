@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkShader.h"
 #include "include/utils/SkNWayCanvas.h"
+
+#include "include/core/SkBlender.h"
+#include "include/core/SkShader.h"
 #include "src/core/SkCanvasPriv.h"
 
 SkNWayCanvas::SkNWayCanvas(int width, int height) : INHERITED(width, height) {}
@@ -320,6 +322,15 @@ void SkNWayCanvas::onDrawVerticesObject(const SkVertices* vertices,
     Iter iter(fList);
     while (iter.next()) {
         iter->drawVertices(vertices, bmode, paint);
+    }
+}
+
+void SkNWayCanvas::onDrawCustomMesh(SkCustomMesh cm,
+                                    sk_sp<SkBlender> blender,
+                                    const SkPaint& paint) {
+    Iter iter(fList);
+    while (iter.next()) {
+        iter->drawCustomMesh(cm, blender, paint);
     }
 }
 
