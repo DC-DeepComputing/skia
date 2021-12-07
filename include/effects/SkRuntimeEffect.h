@@ -31,6 +31,7 @@ class SkImage;
 class SkRuntimeImageFilter;
 
 namespace SkSL {
+class DebugTrace;
 class FunctionDefinition;
 struct Program;
 enum class ProgramKind : int8_t;
@@ -215,6 +216,33 @@ public:
 
     sk_sp<SkBlender> makeBlender(sk_sp<SkData> uniforms, SkSpan<ChildPtr> children = {}) const;
 
+    /**
+     * Creates a new Runtime Effect patterned after an already-existing one. The new Effect behaves
+     * like the original, but also creates a debug trace of its execution at the requested
+     * coordinate. Debug traces are only supported on a raster (non-GPU) canvas. After painting with
+     * the new Runtime Effect, the returned DebugTrace object will contain an execution trace. Call
+     * `writeTrace` on the debug trace object to generate a full trace suitable for a debugger, or
+     * call `dump` to emit a human-readable trace.
+     */
+    struct TracedShader {
+        sk_sp<SkShader> shader;
+        sk_sp<SkSL::DebugTrace> debugTrace;
+    };
+    static TracedShader MakeTraced(sk_sp<SkShader> shader, const SkIPoint& traceCoord);
+
+    struct TracedColorFilter {
+        sk_sp<SkColorFilter> colorFilter;
+        sk_sp<SkSL::DebugTrace> debugTrace;
+    };
+    static TracedColorFilter MakeTraced(sk_sp<SkColorFilter> shader, const SkIPoint& traceCoord);
+
+    struct TracedBlender {
+        sk_sp<SkBlender> blender;
+        sk_sp<SkSL::DebugTrace> debugTrace;
+    };
+    static TracedBlender MakeTraced(sk_sp<SkBlender> shader, const SkIPoint& traceCoord);
+
+    // Returns the SkSL source of the runtime effect shader.
     const std::string& source() const;
 
     // Combined size of all 'uniform' variables. When calling makeColorFilter or makeShader,
