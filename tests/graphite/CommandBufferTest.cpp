@@ -46,10 +46,9 @@ public:
 
     const char* name() const override { return "uniform-rect"; }
 
-    const char* vertexMSL() const override {
-        return "float2 position = float2(float(vertexID >> 1), float(vertexID & 1));\n"
-               "out.position.xy = position * uniforms.scale + uniforms.translate;\n"
-               "out.position.zw = float2(0.0, 1.0);\n";
+    const char* vertexSkSL() const override {
+        return "float2 tmpPosition = float2(float(sk_VertexID >> 1), float(sk_VertexID & 1));\n"
+               "float4 stepPosition = float4(tmpPosition * scale + translate, 0.0, 1.0);\n";
     }
 
     void writeVertices(DrawWriter* writer, const Transform&, const Shape&) const override {
@@ -92,10 +91,8 @@ public:
 
     const char* name() const override { return "triangle-rect"; }
 
-    const char* vertexMSL() const override {
-        return "float2 position = vtx.position;\n"
-               "out.position.xy = position * uniforms.scale + uniforms.translate;\n"
-               "out.position.zw = float2(0.0, 1.0);\n";
+    const char* vertexSkSL() const override {
+        return "float4 stepPosition = float4(position * scale + translate, 0.0, 1.0);\n";
     }
 
     void writeVertices(DrawWriter* writer, const Transform&, const Shape& shape) const override {
@@ -143,10 +140,9 @@ public:
 
     const char* name() const override { return "instance-rect"; }
 
-    const char* vertexMSL() const override {
-        return "float2 position = float2(float(vertexID >> 1), float(vertexID & 1));\n"
-               "out.position.xy = position * vtx.dims + vtx.position;\n"
-               "out.position.zw = float2(0.0, 1.0);\n";
+    const char* vertexSkSL() const override {
+        return "float2 tmpPosition = float2(float(sk_VertexID >> 1), float(sk_VertexID & 1));\n"
+               "float4 stepPosition = float4(tmpPosition * dims + position, 0.0, 1.0);\n";
     }
 
     void writeVertices(DrawWriter* writer, const Transform&, const Shape& shape) const override {
@@ -314,6 +310,11 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     gpu->checkForFinishedWork(skgpu::SyncToCpu::kYes);
     uint32_t* pixels = (uint32_t*)(copyBuffer->map());
+
+    SkDebugf("----------0x%x 0x%x 0x%x\n",
+             pixels[0],
+             pixels[51 + 38*kTextureWidth],
+             pixels[256 + 192*kTextureWidth]);
     REPORTER_ASSERT(reporter, pixels[0] == 0xffff0000);
     REPORTER_ASSERT(reporter, pixels[51 + 38*kTextureWidth] == 0xff00ffff);
     REPORTER_ASSERT(reporter, pixels[256 + 192*kTextureWidth] == 0xffff00ff);
