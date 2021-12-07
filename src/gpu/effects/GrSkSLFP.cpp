@@ -15,6 +15,7 @@
 #include "src/gpu/GrBaseContextPriv.h"
 #include "src/gpu/GrColorInfo.h"
 #include "src/gpu/GrTexture.h"
+#include "src/gpu/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/sksl/SkSLUtil.h"
@@ -26,6 +27,11 @@ public:
     void emitCode(EmitArgs& args) override {
         const GrSkSLFP& fp            = args.fFp.cast<GrSkSLFP>();
         const SkSL::Program& program  = *fp.fEffect->fBaseProgram;
+
+        fWorkingSpaceToLinearSrgbHelper.emitCode(args.fUniformHandler,
+                                                 fp.fWorkingSpaceToLinearSrgb.get());
+        fLinearSrgbToWorkingSpaceHelper.emitCode(args.fUniformHandler,
+                                                 fp.fLinearSrgbToWorkingSpace.get());
 
         class FPCallbacks : public SkSL::PipelineStage::Callbacks {
         public:
@@ -154,6 +160,20 @@ public:
                 return String(fSelf->invokeChild(index, src.c_str(), dst.c_str(), fArgs).c_str());
             }
 
+            String workingSpaceToLinearSrgb(String color) override {
+                SkString xformedColor;
+                fArgs.fFragBuilder->appendColorGamutXform(
+                        &xformedColor, color.c_str(), &fSelf->fWorkingSpaceToLinearSrgbHelper);
+                return String(xformedColor.c_str(), xformedColor.size());
+            }
+
+            String linearSrgbToWorkingSpace(String color) override {
+                SkString xformedColor;
+                fArgs.fFragBuilder->appendColorGamutXform(
+                        &xformedColor, color.c_str(), &fSelf->fLinearSrgbToWorkingSpaceHelper);
+                return String(xformedColor.c_str(), xformedColor.size());
+            }
+
             Impl*                         fSelf;
             EmitArgs&                     fArgs;
             const char*                   fInputColor;
@@ -225,9 +245,13 @@ public:
 private:
     void onSetData(const GrGLSLProgramDataManager& pdman,
                    const GrFragmentProcessor& _proc) override {
+        const GrSkSLFP& outer = _proc.cast<GrSkSLFP>();
+
+        fWorkingSpaceToLinearSrgbHelper.setData(pdman, outer.fWorkingSpaceToLinearSrgb.get());
+        fLinearSrgbToWorkingSpaceHelper.setData(pdman, outer.fLinearSrgbToWorkingSpace.get());
+
         using Type = SkRuntimeEffect::Uniform::Type;
         size_t uniIndex = 0;
-        const GrSkSLFP& outer = _proc.cast<GrSkSLFP>();
         const uint8_t* uniformData = outer.uniformData();
         const GrSkSLFP::UniformFlags* uniformFlags = outer.uniformFlags();
         for (const auto& v : outer.fEffect->uniforms()) {
@@ -260,11 +284,15 @@ private:
     }
 
     std::vector<UniformHandle> fUniformHandles;
+
+    GrGLSLColorSpaceXformHelper fWorkingSpaceToLinearSrgbHelper;
+    GrGLSLColorSpaceXformHelper fLinearSrgbToWorkingSpaceHelper;
 };
 
 std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
         sk_sp<SkRuntimeEffect> effect,
         const char* name,
+        sk_sp<SkColorSpace> dstColorSpace,
         std::unique_ptr<GrFragmentProcessor> inputFP,
         std::unique_ptr<GrFragmentProcessor> destColorFP,
         sk_sp<SkData> uniforms,
@@ -274,8 +302,8 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
     }
     size_t uniformSize = uniforms->size();
     size_t uniformFlagSize = effect->uniforms().size() * sizeof(UniformFlags);
-    std::unique_ptr<GrSkSLFP> fp(new (uniformSize + uniformFlagSize)
-                                         GrSkSLFP(std::move(effect), name, OptFlags::kNone));
+    std::unique_ptr<GrSkSLFP> fp(new (uniformSize + uniformFlagSize) GrSkSLFP(
+            std::move(effect), name, std::move(dstColorSpace), OptFlags::kNone));
     sk_careful_memcpy(fp->uniformData(), uniforms->data(), uniformSize);
     for (auto& childFP : childFPs) {
         fp->addChild(std::move(childFP), /*mergeOptFlags=*/true);
@@ -289,7 +317,10 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
     return fp;
 }
 
-GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags optFlags)
+GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect,
+                   const char* name,
+                   sk_sp<SkColorSpace> dstColorSpace,
+                   OptFlags optFlags)
         : INHERITED(kGrSkSLFP_ClassID,
                     static_cast<OptimizationFlags>(optFlags) |
                             (effect->getFilterColorProgram()
@@ -304,6 +335,19 @@ GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags opt
     }
     if (fEffect->allowBlender()) {
         this->setIsBlendFunction();
+    }
+    // We only want to bother constructing the color transform objects if the effect uses those
+    // intrinsics. Also, the color transform intrinsics are specified to do nothing when color
+    // management is disabled.
+    if (fEffect->usesColorTranform() && dstColorSpace) {
+        fWorkingSpaceToLinearSrgb = GrColorSpaceXform::Make(dstColorSpace.get(),
+                                                            kUnpremul_SkAlphaType,
+                                                            sk_srgb_linear_singleton(),
+                                                            kUnpremul_SkAlphaType);
+        fLinearSrgbToWorkingSpace = GrColorSpaceXform::Make(sk_srgb_linear_singleton(),
+                                                            kUnpremul_SkAlphaType,
+                                                            dstColorSpace.get(),
+                                                            kUnpremul_SkAlphaType);
     }
 }
 
@@ -357,6 +401,8 @@ void GrSkSLFP::onAddToKey(const GrShaderCaps& caps, GrProcessorKeyBuilder* b) co
     // amount of uniform data.
     b->add32(fEffect->hash());
     b->add32(fUniformSize);
+    b->add32(GrColorSpaceXform::XformKey(fWorkingSpaceToLinearSrgb.get()));
+    b->add32(GrColorSpaceXform::XformKey(fLinearSrgbToWorkingSpace.get()));
 
     const UniformFlags* flags = this->uniformFlags();
     const uint8_t* uniformData = this->uniformData();
