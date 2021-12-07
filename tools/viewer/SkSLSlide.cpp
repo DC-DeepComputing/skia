@@ -11,12 +11,14 @@
 #include "include/core/SkFont.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
+#include "include/sksl/SkSLDebugTrace.h"
 #include "src/core/SkEnumerate.h"
 #include "tools/Resources.h"
 #include "tools/viewer/Viewer.h"
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include "imgui.h"
 
 using namespace sk_app;
@@ -140,6 +142,17 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         return;
     }
 
+    bool writeTrace = false;
+    bool writeDump = false;
+    if (!canvas->recordingContext()) {
+        ImGui::InputText("Trace Coordinate (X)", fTraceXCoord, SK_ARRAY_COUNT(fTraceXCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Trace Coordinate (Y)", fTraceYCoord, SK_ARRAY_COUNT(fTraceYCoord),
+                         ImGuiInputTextFlags_CharsDecimal);
+        writeTrace = ImGui::Button("Write Debug Trace (JSON)");
+        writeDump = ImGui::Button("Write Debug Dump (Human-Readable)");
+    }
+
     // Update fMousePos
     ImVec2 mousePos = ImGui::GetMousePos();
     if (ImGui::IsMouseDown(0)) {
@@ -246,9 +259,17 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     ImGui::End();
 
     auto inputs = SkData::MakeWithoutCopy(fInputs.get(), fEffect->uniformSize());
+
+    sk_sp<SkSL::DebugTrace> debugTrace;
     auto shader = fEffect->makeShader(std::move(inputs), fChildren.data(), fChildren.count(),
                                       nullptr, false);
-
+    if (writeTrace || writeDump) {
+        SkIPoint traceCoord = {std::atoi(fTraceXCoord), std::atoi(fTraceYCoord)};
+        SkRuntimeEffect::TracedShader traced = SkRuntimeEffect::MakeTraced(std::move(shader),
+                                                                           traceCoord);
+        shader = std::move(traced.shader);
+        debugTrace = std::move(traced.debugTrace);
+    }
     SkPaint p;
     p.setColor4f(gPaintColor);
     p.setShader(std::move(shader));
@@ -273,6 +294,15 @@ void SkSLSlide::draw(SkCanvas* canvas) {
                                    256, font, p);
         } break;
         default: break;
+    }
+
+    if (debugTrace && writeTrace) {
+        SkFILEWStream traceFile("SkVMDebugTrace.json");
+        debugTrace->writeTrace(&traceFile);
+    }
+    if (debugTrace && writeDump) {
+        SkFILEWStream dumpFile("SkVMDebugTrace.dump.txt");
+        debugTrace->dump(&dumpFile);
     }
 }
 

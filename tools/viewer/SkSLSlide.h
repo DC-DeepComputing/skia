@@ -51,6 +51,8 @@ private:
     int fGeometry = kFill;
     SkV3 fResolution = { 1, 1, 1 };
     SkV4 fMousePos;
+    char fTraceXCoord[32] = "64";
+    char fTraceYCoord[32] = "64";
 
     // Named shaders that can be selected as inputs
     SkTArray<std::pair<const char*, sk_sp<SkShader>>> fShaders;
