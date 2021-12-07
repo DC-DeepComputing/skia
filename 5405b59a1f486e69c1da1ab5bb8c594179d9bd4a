@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbebf6e8_eac46859",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-07T17:18:55Z",
+      "side": 1,
+      "message": "Yes. I added a couple words, but not much. I started trying to explain it more completely here, but it\u0027s the same mechanism we use for SkPaint colors, and for gradient colors (anywhere we take SkColor4f). Explaining in more detail kept turning into a tangential essay about color management, which felt out of place.",
+      "parentUuid": "5d40aa57_566b8724",
+      "range": {
+        "startLine": 72,
+        "startChar": 15,
+        "endLine": 72,
+        "endChar": 29
+      },
+      "revId": "5405b59a1f486e69c1da1ab5bb8c594179d9bd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "076c346b_c29b4c83",
         "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-07T16:38:41Z",
       "side": 1,
       "message": "Missing space before apostrophe",
+      "range": {
+        "startLine": 90,
+        "startChar": 88,
+        "endLine": 90,
+        "endChar": 90
+      },
+      "revId": "5405b59a1f486e69c1da1ab5bb8c594179d9bd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f409792_632b38b4",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-07T17:18:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "076c346b_c29b4c83",
       "range": {
         "startLine": 90,
         "startChar": 88,
