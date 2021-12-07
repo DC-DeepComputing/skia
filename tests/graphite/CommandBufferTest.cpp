@@ -46,7 +46,7 @@ public:
 
     const char* name() const override { return "uniform-rect"; }
 
-    const char* vertexMSL() const override {
+    const char* vertexSkSL() const override {
         return "float2 position = float2(float(vertexID >> 1), float(vertexID & 1));\n"
                "out.position.xy = position * uniforms.scale + uniforms.translate;\n"
                "out.position.zw = float2(0.0, 1.0);\n";
@@ -92,7 +92,7 @@ public:
 
     const char* name() const override { return "triangle-rect"; }
 
-    const char* vertexMSL() const override {
+    const char* vertexSkSL() const override {
         return "float2 position = vtx.position;\n"
                "out.position.xy = position * uniforms.scale + uniforms.translate;\n"
                "out.position.zw = float2(0.0, 1.0);\n";
@@ -143,7 +143,7 @@ public:
 
     const char* name() const override { return "instance-rect"; }
 
-    const char* vertexMSL() const override {
+    const char* vertexSkSL() const override {
         return "float2 position = float2(float(vertexID >> 1), float(vertexID & 1));\n"
                "out.position.xy = position * vtx.dims + vtx.position;\n"
                "out.position.zw = float2(0.0, 1.0);\n";
