@@ -336,6 +336,17 @@ bool Analysis::CallsSampleOutsideMain(const Program& program) {
     return visitor.visit(program);
 }
 
+bool Analysis::CallsColorTransformIntrinsics(const Program& program) {
+    for (auto [fn, count] : program.usage()->fCallCounts) {
+        if ((fn->intrinsicKind() == k_colorWorkingSpaceToLinearSrgb_IntrinsicKind ||
+             fn->intrinsicKind() == k_colorLinearSrgbToWorkingSpace_IntrinsicKind) &&
+            count != 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Analysis::DetectVarDeclarationWithoutScope(const Statement& stmt, ErrorReporter* errors) {
     // A variable declaration can create either a lone VarDeclaration or an unscoped Block
     // containing multiple VarDeclaration statements. We need to detect either case.
