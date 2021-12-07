@@ -993,6 +993,8 @@ R"(bool less_than(float left, int right) {
 
 int main() {
     for (float loop = 10; loop <= 30; loop += 10) {
+        half4 v = half4(loop, loop+1, loop+2, loop+3);
+        float2x2 m = float2x2(v);
         bool function_result = less_than(loop, 20);
     }
     return 40;
@@ -1022,11 +1024,19 @@ int main() {
     REPORTER_ASSERT(r, trace ==
 R"($0 = [main].result (int, L10)
 $1 = loop (float, L11)
-$2 = function_result (bool, L12)
-$3 = [less_than].result (bool, L1)
-$4 = left (float, L1)
-$5 = right (int, L1)
-$6 = comparison (bool, L2)
+$2 = v (float4 : slot 1/4, L12)
+$3 = v (float4 : slot 2/4, L12)
+$4 = v (float4 : slot 3/4, L12)
+$5 = v (float4 : slot 4/4, L12)
+$6 = m (float2x2 : slot 1/4, L13)
+$7 = m (float2x2 : slot 2/4, L13)
+$8 = m (float2x2 : slot 3/4, L13)
+$9 = m (float2x2 : slot 4/4, L13)
+$10 = function_result (bool, L14)
+$11 = [less_than].result (bool, L1)
+$12 = left (float, L1)
+$13 = right (int, L1)
+$14 = comparison (bool, L2)
 F0 = int main()
 F1 = bool less_than(float left, int right)
 
@@ -1034,6 +1044,16 @@ enter int main()
   line 11
   loop = 10
   line 12
+  v.x = 10
+  v.y = 11
+  v.z = 12
+  v.w = 13
+  line 13
+  m[0][0] = 10
+  m[0][1] = 11
+  m[1][0] = 12
+  m[1][1] = 13
+  line 14
   enter bool less_than(float left, int right)
     left = 10
     right = 20
@@ -1047,6 +1067,16 @@ enter int main()
   line 11
   loop = 20
   line 12
+  v.x = 20
+  v.y = 21
+  v.z = 22
+  v.w = 23
+  line 13
+  m[0][0] = 20
+  m[0][1] = 21
+  m[1][0] = 22
+  m[1][1] = 23
+  line 14
   enter bool less_than(float left, int right)
     left = 20
     right = 20
@@ -1060,6 +1090,16 @@ enter int main()
   line 11
   loop = 30
   line 12
+  v.x = 30
+  v.y = 31
+  v.z = 32
+  v.w = 33
+  line 13
+  m[0][0] = 30
+  m[0][1] = 31
+  m[1][0] = 32
+  m[1][1] = 33
+  line 14
   enter bool less_than(float left, int right)
     left = 30
     right = 20
@@ -1071,7 +1111,7 @@ enter int main()
   exit bool less_than(float left, int right)
   function_result = false
   line 11
-  line 14
+  line 16
   [main].result = 40
 exit int main()
 )", "Trace output does not match expectation:\n%.*s\n", (int)trace.size(), trace.data());
