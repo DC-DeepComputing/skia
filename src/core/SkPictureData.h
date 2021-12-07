@@ -23,6 +23,7 @@ class SkStream;
 class SkWStream;
 class SkBBoxHierarchy;
 class SkMatrix;
+class SkOwnedCustomMesh;
 class SkPaint;
 class SkPath;
 class SkReadBuffer;
@@ -56,13 +57,15 @@ public:
 #define SK_PICT_DRAWABLE_TAG   SkSetFourByteTag('d', 'r', 'a', 'w')
 
 // This tag specifies the size of the ReadBuffer, needed for the following tags
-#define SK_PICT_BUFFER_SIZE_TAG     SkSetFourByteTag('a', 'r', 'a', 'y')
+#define SK_PICT_BUFFER_SIZE_TAG        SkSetFourByteTag('a', 'r', 'a', 'y')
 // these are all inside the ARRAYS tag
-#define SK_PICT_PAINT_BUFFER_TAG    SkSetFourByteTag('p', 'n', 't', ' ')
-#define SK_PICT_PATH_BUFFER_TAG     SkSetFourByteTag('p', 't', 'h', ' ')
-#define SK_PICT_TEXTBLOB_BUFFER_TAG SkSetFourByteTag('b', 'l', 'o', 'b')
-#define SK_PICT_VERTICES_BUFFER_TAG SkSetFourByteTag('v', 'e', 'r', 't')
-#define SK_PICT_IMAGE_BUFFER_TAG    SkSetFourByteTag('i', 'm', 'a', 'g')
+#define SK_PICT_PAINT_BUFFER_TAG       SkSetFourByteTag('p', 'n', 't', ' ')
+#define SK_PICT_PATH_BUFFER_TAG        SkSetFourByteTag('p', 't', 'h', ' ')
+#define SK_PICT_TEXTBLOB_BUFFER_TAG    SkSetFourByteTag('b', 'l', 'o', 'b')
+#define SK_PICT_VERTICES_BUFFER_TAG    SkSetFourByteTag('v', 'e', 'r', 't')
+#define SK_PICT_CUSTOM_MESH_BUFFER_TAG SkSetFourByteTag('m', 'e', 's', 'h')
+#define SK_PICT_BLENDER_BUFFER_TAG     SkSetFourByteTag('b', 'l', 'n', 'd')
+#define SK_PICT_IMAGE_BUFFER_TAG       SkSetFourByteTag('i', 'm', 'a', 'g')
 
 // Always write this last (with no length field afterwards)
 #define SK_PICT_EOF_TAG     SkSetFourByteTag('e', 'o', 'f', ' ')
@@ -131,6 +134,14 @@ public:
         return read_index_base_1_or_null(reader, fVertices);
     }
 
+    const SkOwnedCustomMesh* getCustomMesh(SkReadBuffer* reader) const {
+        return read_index_base_1_or_null(reader, fCustomMeshes);
+    }
+
+    SkBlender* getBlender(SkReadBuffer* reader) const {
+        return read_index_base_1_or_null(reader, fBlenders);
+    }
+
 private:
     // these help us with reading/writing
     // Does not affect ownership of SkStream.
@@ -151,6 +162,10 @@ private:
     SkTArray<sk_sp<SkDrawable>>        fDrawables;
     SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
     SkTArray<sk_sp<const SkVertices>>  fVertices;
+    // TODO: Does it really make sense to store an array of meshes? Shouldn't we de-dup the
+    // specs? Revisit all this when the VBO API takes shape.
+    SkTArray<sk_sp<SkOwnedCustomMesh>> fCustomMeshes;
+    SkTArray<sk_sp<SkBlender>>         fBlenders;
     SkTArray<sk_sp<const SkImage>>     fImages;
 
     SkTypefacePlayback                 fTFPlayback;
