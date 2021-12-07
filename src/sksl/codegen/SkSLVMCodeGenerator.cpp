@@ -151,7 +151,9 @@ public:
                   SkVMDebugTrace* debugTrace,
                   SampleShaderFn sampleShader,
                   SampleColorFilterFn sampleColorFilter,
-                  SampleBlenderFn sampleBlender);
+                  SampleBlenderFn sampleBlender,
+                  ColorTransformFn colorToLinearSrgb,
+                  ColorTransformFn colorFromLinearSrgb);
 
     void writeProgram(SkSpan<skvm::Val> uniforms,
                       skvm::Coord device,
@@ -311,6 +313,8 @@ private:
     const SampleShaderFn fSampleShader;
     const SampleColorFilterFn fSampleColorFilter;
     const SampleBlenderFn fSampleBlender;
+    const ColorTransformFn fColorToLinearSrgb;
+    const ColorTransformFn fColorFromLinearSrgb;
 
     struct Slot {
         skvm::Val  val;
@@ -377,13 +381,17 @@ SkVMGenerator::SkVMGenerator(const Program& program,
                              SkVMDebugTrace* debugTrace,
                              SampleShaderFn sampleShader,
                              SampleColorFilterFn sampleColorFilter,
-                             SampleBlenderFn sampleBlender)
+                             SampleBlenderFn sampleBlender,
+                             ColorTransformFn colorToLinearSrgb,
+                             ColorTransformFn colorFromLinearSrgb)
         : fProgram(program)
         , fBuilder(builder)
         , fDebugTrace(debugTrace)
         , fSampleShader(std::move(sampleShader))
         , fSampleColorFilter(std::move(sampleColorFilter))
-        , fSampleBlender(std::move(sampleBlender)) {}
+        , fSampleBlender(std::move(sampleBlender))
+        , fColorToLinearSrgb(std::move(colorToLinearSrgb))
+        , fColorFromLinearSrgb(std::move(colorFromLinearSrgb)) {}
 
 void SkVMGenerator::writeProgram(SkSpan<skvm::Val> uniforms,
                                  skvm::Coord device,
@@ -1503,6 +1511,27 @@ Value SkVMGenerator::writeIntrinsicCall(const FunctionCall& c) {
         }
         case k_not_IntrinsicKind: return unary(args[0], [](skvm::I32 x) { return ~x; });
 
+        case k_colorWorkingSpaceToLinearSrgb_IntrinsicKind: {
+            skvm::Color color = {
+                    f32(args[0][0]), f32(args[0][1]), f32(args[0][2]), fBuilder->splat(1.0f)};
+            color = fColorToLinearSrgb(color);
+            Value result(3);
+            result[0] = color.r;
+            result[1] = color.g;
+            result[2] = color.b;
+            return result;
+        }
+        case k_colorLinearSrgbToWorkingSpace_IntrinsicKind: {
+            skvm::Color color = {
+                    f32(args[0][0]), f32(args[0][1]), f32(args[0][2]), fBuilder->splat(1.0f)};
+            color = fColorFromLinearSrgb(color);
+            Value result(3);
+            result[0] = color.r;
+            result[1] = color.g;
+            result[2] = color.b;
+            return result;
+        }
+
         default:
             SkDEBUGFAILF("unsupported intrinsic %s", c.function().description().c_str());
             return {};
@@ -2010,7 +2039,9 @@ skvm::Color ProgramToSkVM(const Program& program,
                           skvm::Color destColor,
                           SampleShaderFn sampleShader,
                           SampleColorFilterFn sampleColorFilter,
-                          SampleBlenderFn sampleBlender) {
+                          SampleBlenderFn sampleBlender,
+                          ColorTransformFn colorToLinearSrgb,
+                          ColorTransformFn colorFromLinearSrgb) {
     skvm::Val zero = builder->splat(0.0f).id;
     skvm::Val result[4] = {zero,zero,zero,zero};
 
@@ -2055,7 +2086,8 @@ skvm::Color ProgramToSkVM(const Program& program,
     }
 
     SkVMGenerator generator(program, builder, debugTrace, std::move(sampleShader),
-                            std::move(sampleColorFilter), std::move(sampleBlender));
+                            std::move(sampleColorFilter), std::move(sampleBlender),
+                            std::move(colorToLinearSrgb), std::move(colorFromLinearSrgb));
     generator.writeProgram(uniforms, device, function, {args, argSlots}, SkMakeSpan(result));
 
     return skvm::Color{{builder, result[0]},
@@ -2094,17 +2126,21 @@ bool ProgramToSkVM(const Program& program,
         returnVals.push_back(b->splat(0.0f).id);
     }
 
-    bool sampledChildEffects = false;
+    bool usedUnsupportedFeatures = false;
     auto sampleShader = [&](int, skvm::Coord) {
-        sampledChildEffects = true;
+        usedUnsupportedFeatures = true;
         return skvm::Color{};
     };
     auto sampleColorFilter = [&](int, skvm::Color) {
-        sampledChildEffects = true;
+        usedUnsupportedFeatures = true;
         return skvm::Color{};
     };
     auto sampleBlender = [&](int, skvm::Color, skvm::Color) {
-        sampledChildEffects = true;
+        usedUnsupportedFeatures = true;
+        return skvm::Color{};
+    };
+    auto colorTransform = [&](skvm::Color) {
+        usedUnsupportedFeatures = true;
         return skvm::Color{};
     };
 
@@ -2114,12 +2150,13 @@ bool ProgramToSkVM(const Program& program,
     skvm::Coord device = {pixelCenter, pixelCenter};
     device.x += to_F32(b->splat(1) - b->index());
 
-    SkVMGenerator generator(program, b, debugTrace, sampleShader, sampleColorFilter, sampleBlender);
+    SkVMGenerator generator(program, b, debugTrace, sampleShader, sampleColorFilter, sampleBlender,
+                            colorTransform, colorTransform);
     generator.writeProgram(uniforms, device, function, SkMakeSpan(argVals), SkMakeSpan(returnVals));
 
-    // If the SkSL tried to use any shader, colorFilter, or blender objects - we don't have a
-    // mechanism (yet) for binding to those.
-    if (sampledChildEffects) {
+    // If the SkSL tried to use any shader, colorFilter, or blender objects, or color transform
+    // intrinsics - we don't have a mechanism (yet) for binding to those.
+    if (usedUnsupportedFeatures) {
         return false;
     }
 
@@ -2254,10 +2291,20 @@ bool testingOnly_ProgramToSkVMShader(const Program& program,
     skvm::Color inColor = builder->uniformColor(SkColors::kWhite, &uniforms);
     skvm::Color destColor = builder->uniformColor(SkColors::kBlack, &uniforms);
 
-    skvm::Color result = SkSL::ProgramToSkVM(program, *main, builder, debugTrace,
-                                             SkMakeSpan(uniformVals), device, local, inColor,
-                                             destColor, sampleShader, /*sampleColorFilter=*/nullptr,
-                                             /*sampleBlender=*/nullptr);
+    skvm::Color result = SkSL::ProgramToSkVM(program,
+                                             *main,
+                                             builder,
+                                             debugTrace,
+                                             SkMakeSpan(uniformVals),
+                                             device,
+                                             local,
+                                             inColor,
+                                             destColor,
+                                             sampleShader,
+                                             /*sampleColorFilter=*/nullptr,
+                                             /*sampleBlender=*/nullptr,
+                                             /*colorToLinearSrgb=*/nullptr,
+                                             /*colorFromLinearSrgb=*/nullptr);
 
     storeF(builder->varying<float>(), result.r);
     storeF(builder->varying<float>(), result.g);

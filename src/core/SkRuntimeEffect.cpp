@@ -600,6 +600,9 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
         return result;
     };
 
+    // TODO(skia:10479): What do we do with color space conversion here? In this context, there is
+    // no working space?
+
     // Emit the skvm instructions for the SkSL
     skvm::Coord zeroCoord = {p.splat(0.0f), p.splat(0.0f)};
     skvm::Color result = SkSL::ProgramToSkVM(*effect->fBaseProgram,
@@ -613,7 +616,9 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
                                              inputColor,
                                              /*sampleShader=*/nullptr,
                                              sampleColorFilter,
-                                             /*sampleBlender=*/nullptr);
+                                             /*sampleBlender=*/nullptr,
+                                             /*colorToLinearSrgb=*/nullptr,
+                                             /*colorFromLinearSrgb=*/nullptr);
 
     // Then store the result to the *third* arg ptr
     p.store({skvm::PixelFormat::FLOAT, 32, 32, 32, 32, 0, 32, 64, 96},
@@ -834,6 +839,16 @@ public:
             }
             return blend(SkBlendMode::kSrcOver, src, dst);
         };
+        auto colorToLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{colorInfo.colorSpace(),     kUnpremul_SkAlphaType,
+                                          sk_srgb_linear_singleton(), kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
+        auto colorFromLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
+                                          colorInfo.colorSpace(),     kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
 
         std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
                                                             *inputs);
@@ -843,7 +858,8 @@ public:
         skvm::Coord zeroCoord = { p->splat(0.0f), p->splat(0.0f) };
         return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
-                                   c, c, sampleShader, sampleColorFilter, sampleBlender);
+                                   c, c, sampleShader, sampleColorFilter, sampleBlender,
+                                   colorToLinearSrgb, colorFromLinearSrgb);
     }
 
     SkPMColor4f onFilterColor4f(const SkPMColor4f& color, SkColorSpace* dstCS) const override {
@@ -1011,13 +1027,24 @@ public:
             }
             return blend(SkBlendMode::kSrcOver, src, dst);
         };
+        auto colorToLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{colorInfo.colorSpace(),     kUnpremul_SkAlphaType,
+                                          sk_srgb_linear_singleton(), kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
+        auto colorFromLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
+                                          colorInfo.colorSpace(),     kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
 
         std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
                                                             *inputs);
 
         return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, fDebugTrace.get(),
                                    SkMakeSpan(uniform), device, local, paint, paint, sampleShader,
-                                   sampleColorFilter, sampleBlender);
+                                   sampleColorFilter, sampleBlender,
+                                   colorToLinearSrgb, colorFromLinearSrgb);
     }
 
     void flatten(SkWriteBuffer& buffer) const override {
@@ -1122,6 +1149,16 @@ public:
             }
             return blend(SkBlendMode::kSrcOver, src, dst);
         };
+        auto colorToLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{colorInfo.colorSpace(),     kUnpremul_SkAlphaType,
+                                          sk_srgb_linear_singleton(), kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
+        auto colorFromLinearSrgb = [&](skvm::Color color) {
+            return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
+                                          colorInfo.colorSpace(),     kUnpremul_SkAlphaType}
+                    .program(p, uniforms, color);
+        };
 
         std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
                                                             *inputs);
@@ -1130,7 +1167,8 @@ public:
         skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
         return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
-                                   src, dst, sampleShader, sampleColorFilter, sampleBlender);
+                                   src, dst, sampleShader, sampleColorFilter, sampleBlender,
+                                   colorToLinearSrgb, colorFromLinearSrgb);
     }
 
 #if SK_SUPPORT_GPU

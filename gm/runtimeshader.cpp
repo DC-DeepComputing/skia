@@ -620,6 +620,38 @@ DEF_GM(return new ClipSuperRRect("clip_super_rrect_pow3.5", 3.5);)
 // DEF_GM(return new ClipSuperRRect("clip_super_rrect_pow4.5", 4.5);)
 // DEF_GM(return new ClipSuperRRect("clip_super_rrect_pow5", 5);)
 
+class LinearGradientRT : public RuntimeShaderGM {
+public:
+    LinearGradientRT() : RuntimeShaderGM("linear_gradient_rt", {256, 64}, R"(
+        layout(color) uniform vec4 in_colors0;
+        layout(color) uniform vec4 in_colors1;
+
+        vec4 main(vec2 p) {
+            float t = p.x / 256;
+            if (p.y < 32) {
+                return mix(in_colors0, in_colors1, t);
+            } else {
+                vec3 linColor0 = colorWorkingSpaceToLinearSrgb(in_colors0.rgb);
+                vec3 linColor1 = colorWorkingSpaceToLinearSrgb(in_colors1.rgb);
+                vec3 linColor = mix(linColor0, linColor1, t);
+                return colorLinearSrgbToWorkingSpace(linColor).rgb1;
+            }
+        }
+    )") {}
+
+    void onDraw(SkCanvas* canvas) override {
+        SkRuntimeShaderBuilder builder(fEffect);
+
+        builder.uniform("in_colors0") = SkColors::kRed;
+        builder.uniform("in_colors1") = SkColors::kGreen;
+
+        SkPaint paint;
+        paint.setShader(builder.makeShader(nullptr, true));
+        canvas->drawRect({0, 0, 256, 64}, paint);
+    }
+};
+DEF_GM(return new LinearGradientRT;)
+
 DEF_SIMPLE_GM(child_sampling_rt, canvas, 256,256) {
     static constexpr char scale[] =
         "uniform shader child;"
