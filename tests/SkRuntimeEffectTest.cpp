@@ -420,6 +420,29 @@ public:
         verify_2x2_surface_results(fReporter, fBuilder->effect(), fSurface.get(), expected);
     }
 
+    std::string trace(const SkIPoint& traceCoord) {
+        sk_sp<SkBlender> blender = fBuilder->makeBlender();
+        if (!blender) {
+            REPORT_FAILURE(fReporter, "blender", SkString("Effect didn't produce a blender"));
+            return {};
+        }
+
+        auto [debugBlender, debugTrace] = SkRuntimeEffect::MakeTraced(std::move(blender),
+                                                                      traceCoord);
+        SkCanvas* canvas = fSurface->getCanvas();
+        SkPaint paint;
+        paint.setBlender(std::move(debugBlender));
+        paint.setColor(SK_ColorGRAY);
+
+        paint_canvas(canvas, &paint, /*preTestCallback=*/nullptr);
+
+        SkDynamicMemoryWStream wstream;
+        debugTrace->dump(&wstream);
+        sk_sp<SkData> streamData = wstream.detachAsData();
+        return std::string(static_cast<const char*>(streamData->data()), streamData->size());
+    }
+
+
     void test(GrColor expected, PreTestFn preTestCallback = nullptr) {
         this->test({expected, expected, expected, expected}, preTestCallback);
     }
@@ -585,6 +608,25 @@ exit half4 main(float2 p)
 [main].result.z = 0
 [main].result.w = 1
 )",
+                    "Trace output does not match expectation:\n%.*s\n",
+                    (int)dump.size(), dump.data());
+}
+
+DEF_TEST(SkRuntimeEffectTraceBlender, r) {
+    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+    REPORTER_ASSERT(r, surface);
+    TestBlend effect(r, surface);
+    std::string dump;
+
+    effect.build(R"(
+        half4 main(half4 s, half4 d) {
+            half4 val = s * d;
+            return val * 2;
+        }
+    )");
+    dump = effect.trace({0, 0});
+    REPORTER_ASSERT(r, dump == R"(?)",
                     "Trace output does not match expectation:\n%.*s\n",
                     (int)dump.size(), dump.data());
 }
