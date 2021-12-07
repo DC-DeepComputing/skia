@@ -64,6 +64,15 @@ public:
             : RenderStep(Flags::kPerformsShading,
                          /*uniforms=*/{{"localToDevice", SLType::kFloat4x4}},
                          PrimitiveType::kTriangleStrip,
+                         /*depthStencilSettings=*/ {
+                             {},
+                             {},
+                             0,
+                             CompareOp::kAlways,
+                             true,
+                             true,
+                             false,
+                         },
                          /*vertexAttrs=*/{{"position", VertexAttribType::kFloat2, SLType::kFloat2}},
                          /*instanceAttrs=*/{}) {}
 

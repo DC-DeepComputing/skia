@@ -77,6 +77,15 @@ private:
                                    /*uniforms=*/{{"scale",     SLType::kFloat2},
                                                  {"translate", SLType::kFloat2}},
                                    PrimitiveType::kTriangleStrip,
+                                   /*depthStencilSettings=*/ {
+                                       {},
+                                       {},
+                                       0,
+                                       CompareOp::kAlways,
+                                       true,
+                                       true,
+                                       false,
+                                   },
                                    /*vertexAttrs=*/{},
                                    /*instanceAttrs=*/{}) {}
 };
@@ -128,6 +137,15 @@ private:
                          /*uniforms=*/{{"scale",     SLType::kFloat2},
                                        {"translate", SLType::kFloat2}},
                          PrimitiveType::kTriangles,
+                         /*depthStencilSettings=*/ {
+                             {},
+                             {},
+                             0,
+                             CompareOp::kAlways,
+                             true,
+                             true,
+                             false,
+                         },
                          /*vertexAttrs=*/{{"position", VertexAttribType::kFloat2, SLType::kFloat2}},
                          /*instanceAttrs=*/{}) {}
 };
@@ -174,6 +192,15 @@ private:
             : RenderStep(Flags::kPerformsShading,
                          /*uniforms=*/{},
                          PrimitiveType::kTriangles,
+                         /*depthStencilSettings=*/ {
+                             {},
+                             {},
+                             0,
+                             CompareOp::kAlways,
+                             true,
+                             true,
+                             false,
+                         },
                          /*vertexAttrs=*/{},
                          /*instanceAttrs=*/ {
                                 { "position", VertexAttribType::kFloat2, SLType::kFloat2 },

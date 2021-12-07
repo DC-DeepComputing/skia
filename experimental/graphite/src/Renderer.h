@@ -116,10 +116,12 @@ protected:
     RenderStep(Mask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
+               DepthStencilSettings depthStencilSettings,
                std::initializer_list<Attribute> vertexAttrs,
                std::initializer_list<Attribute> instanceAttrs)
             : fFlags(flags)
             , fPrimitiveType(primitiveType)
+            , fDepthStencilSettings(depthStencilSettings)
             , fUniforms(uniforms)
             , fVertexAttrs(vertexAttrs)
             , fInstanceAttrs(instanceAttrs)
@@ -194,6 +196,7 @@ public:
     const char* name()            const { return fName.c_str();    }
     int         numRenderSteps()  const { return fStepCount;       }
     bool        requiresStencil() const { return fRequiresStencil; }
+    bool        requiresDepth()   const { return fRequiresDepth; }
     bool        requiresMSAA()    const { return fRequiresMSAA;    }
 
 private:
@@ -222,6 +225,7 @@ private:
         for (int i = 0 ; i < fStepCount; ++i) {
             fSteps[i] = steps[i];
             fRequiresStencil |= fSteps[i]->requiresStencil();
+            fRequiresDepth |= fSteps[i]->requiresDepth();
             fRequiresMSAA |= fSteps[i]->requiresMSAA();
             SkDEBUGCODE(performsShading |= fSteps[i]->performsShading());
         }
@@ -237,6 +241,7 @@ private:
     SkString fName;
     int      fStepCount;
     bool     fRequiresStencil;
+    bool     fRequiresDepth;
     bool     fRequiresMSAA;
 };
 
