@@ -19,11 +19,16 @@ void SkVMDebugTrace::setTraceCoord(const SkIPoint& coord) {
 }
 
 void SkVMDebugTrace::setSource(std::string source) {
+    fSource.clear();
     std::stringstream stream{std::move(source)};
     while (stream.good()) {
         fSource.push_back({});
         std::getline(stream, fSource.back(), '\n');
     }
+}
+
+void SkVMDebugTrace::setTraceStream(SkWStream* stream) {
+    fTraceStream = stream;
 }
 
 void SkVMDebugTrace::dump(SkWStream* o) const {
@@ -126,8 +131,13 @@ void SkVMDebugTrace::dump(SkWStream* o) const {
     }
 }
 
-void SkVMDebugTrace::writeTrace(SkWStream* w) const {
-    SkJSONWriter json(w);
+void SkVMDebugTrace::writeTrace() {
+    if (!fTraceStream) {
+        return;
+    }
+
+    SkJSONWriter json(fTraceStream);
+    fTraceStream = nullptr;
 
     json.beginObject(); // root
     json.beginArray("source");
