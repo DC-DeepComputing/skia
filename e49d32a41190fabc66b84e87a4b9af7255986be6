@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82dcc6fc_c9159410",
+        "filename": "src/sksl/codegen/SkVMDebugTrace.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-07T14:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afc64234_109aeab3",
+      "range": {
+        "startLine": 95,
+        "startChar": 33,
+        "endLine": 95,
+        "endChar": 49
+      },
+      "revId": "e49d32a41190fabc66b84e87a4b9af7255986be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca6cc0d5_907e4757",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-12-07T14:25:13Z",
       "side": 1,
       "message": "Does this case also catch arrays (in which case, we should be using [] rather than swizzles)?",
+      "revId": "e49d32a41190fabc66b84e87a4b9af7255986be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "813ce050_b7e300ba",
+        "filename": "src/sksl/codegen/SkVMDebugTrace.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-07T14:42:40Z",
+      "side": 1,
+      "message": "You had me worried for a sec, but arrays actually do work. Each element of the array is treated as a distinct stand-alone variable named `var[n]`. Added an array to the test case to demonstrate.",
+      "parentUuid": "ca6cc0d5_907e4757",
       "revId": "e49d32a41190fabc66b84e87a4b9af7255986be6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
