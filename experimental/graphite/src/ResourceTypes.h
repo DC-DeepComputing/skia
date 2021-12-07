@@ -21,6 +21,7 @@ enum class Renderable : bool {
 };
 
 enum class DepthStencilType {
+    kNone,
     kDepthOnly,
     kStencilOnly,
     kDepthStencil,
