@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3c2aca_edbe932f",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-07T20:20:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4f3640f_cfeab94e",
+      "range": {
+        "startLine": 180,
+        "startChar": 36,
+        "endLine": 180,
+        "endChar": 49
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2590c41b_aee5373a",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e480f9a_f4513554",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-07T20:20:44Z",
+      "side": 1,
+      "message": "Nice catch. Thanks!",
+      "parentUuid": "2590c41b_aee5373a",
+      "range": {
+        "startLine": 235,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 3
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79816ea5_e2552d40",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-12-07T20:09:50Z",
       "side": 1,
       "message": "checksum ?",
+      "range": {
+        "startLine": 66,
+        "startChar": 27,
+        "endLine": 66,
+        "endChar": 34
+      },
+      "revId": "ebe8e8d28a90d06dbd869aaff00f17273ea8f0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9291474e_127cbb42",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-07T20:20:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79816ea5_e2552d40",
       "range": {
         "startLine": 66,
         "startChar": 27,
