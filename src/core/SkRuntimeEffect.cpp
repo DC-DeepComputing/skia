@@ -28,6 +28,7 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
+#include "src/sksl/codegen/SkVMDebugTrace.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
@@ -103,6 +104,14 @@ private:
 SharedCompiler::Impl* SharedCompiler::gImpl = nullptr;
 
 }  // namespace SkSL
+
+static sk_sp<SkSL::SkVMDebugTrace> make_skvm_debug_trace(SkRuntimeEffect* effect,
+                                                         const SkIPoint& coord) {
+    auto debugTrace = sk_make_sp<SkSL::SkVMDebugTrace>();
+    debugTrace->setSource(effect->source());
+    debugTrace->setTraceCoord(coord);
+    return debugTrace;
+}
 
 static bool init_uniform_type(const SkSL::Context& ctx,
                               const SkSL::Type* type,
@@ -822,11 +831,21 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
 class SkRuntimeColorFilter : public SkColorFilterBase {
 public:
     SkRuntimeColorFilter(sk_sp<SkRuntimeEffect> effect,
+                         sk_sp<SkSL::SkVMDebugTrace> debugTrace,
                          sk_sp<SkData> uniforms,
                          SkSpan<SkRuntimeEffect::ChildPtr> children)
             : fEffect(std::move(effect))
+            , fDebugTrace(std::move(debugTrace))
             , fUniforms(std::move(uniforms))
             , fChildren(children.begin(), children.end()) {}
+
+    SkRuntimeEffect::TracedColorFilter makeTracedClone(const SkIPoint& coord) {
+        sk_sp<SkSL::SkVMDebugTrace> debugTrace = make_skvm_debug_trace(fEffect.get(), coord);
+        auto filter = sk_make_sp<SkRuntimeColorFilter>(fEffect, debugTrace, fUniforms,
+                                                       SkMakeSpan(fChildren));
+
+        return SkRuntimeEffect::TracedColorFilter{std::move(filter), std::move(debugTrace)};
+    }
 
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
@@ -885,7 +904,7 @@ public:
         // There should be no way for the color filter to use device coords, but we need to supply
         // something. (Uninitialized values can trigger asserts in skvm::Builder).
         skvm::Coord zeroCoord = { p->splat(0.0f), p->splat(0.0f) };
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, fDebugTrace.get(),
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    c, c, sampleShader, sampleColorFilter, sampleBlender);
     }
@@ -935,6 +954,7 @@ public:
 
 private:
     sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<SkSL::SkVMDebugTrace> fDebugTrace;
     sk_sp<SkData> fUniforms;
     std::vector<SkRuntimeEffect::ChildPtr> fChildren;
 };
@@ -962,15 +982,26 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
 class SkRTShader : public SkShaderBase {
 public:
     SkRTShader(sk_sp<SkRuntimeEffect> effect,
+               sk_sp<SkSL::SkVMDebugTrace> debugTrace,
                sk_sp<SkData> uniforms,
                const SkMatrix* localMatrix,
                SkSpan<SkRuntimeEffect::ChildPtr> children,
                bool isOpaque)
             : SkShaderBase(localMatrix)
             , fEffect(std::move(effect))
+            , fDebugTrace(std::move(debugTrace))
             , fIsOpaque(isOpaque)
             , fUniforms(std::move(uniforms))
             , fChildren(children.begin(), children.end()) {}
+
+    SkRuntimeEffect::TracedShader makeTracedClone(const SkIPoint& coord) {
+        sk_sp<SkSL::SkVMDebugTrace> debugTrace = make_skvm_debug_trace(fEffect.get(), coord);
+        auto shader = sk_make_sp<SkRTShader>(fEffect, debugTrace, fUniforms,
+                                             &this->getLocalMatrix(), SkMakeSpan(fChildren),
+                                             fIsOpaque);
+
+        return SkRuntimeEffect::TracedShader{std::move(shader), std::move(debugTrace)};
+    }
 
     bool isOpaque() const override { return fIsOpaque; }
 
@@ -1048,7 +1079,7 @@ public:
         std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
                                                             *inputs);
 
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, fDebugTrace.get(),
                                    SkMakeSpan(uniform), device, local, paint, paint, sampleShader,
                                    sampleColorFilter, sampleBlender);
     }
@@ -1082,6 +1113,7 @@ private:
     };
 
     sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<SkSL::SkVMDebugTrace> fDebugTrace;
     bool fIsOpaque;
 
     sk_sp<SkData> fUniforms;
@@ -1119,11 +1151,21 @@ sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
 class SkRuntimeBlender : public SkBlenderBase {
 public:
     SkRuntimeBlender(sk_sp<SkRuntimeEffect> effect,
+                     sk_sp<SkSL::SkVMDebugTrace> debugTrace,
                      sk_sp<SkData> uniforms,
                      SkSpan<SkRuntimeEffect::ChildPtr> children)
             : fEffect(std::move(effect))
+            , fDebugTrace(std::move(debugTrace))
             , fUniforms(std::move(uniforms))
             , fChildren(children.begin(), children.end()) {}
+
+    SkRuntimeEffect::TracedBlender makeTracedClone(const SkIPoint& coord) {
+        sk_sp<SkSL::SkVMDebugTrace> debugTrace = make_skvm_debug_trace(fEffect.get(), coord);
+        auto blender = sk_make_sp<SkRuntimeBlender>(fEffect, debugTrace, fUniforms,
+                                                    SkMakeSpan(fChildren));
+
+        return SkRuntimeEffect::TracedBlender{std::move(blender), std::move(debugTrace)};
+    }
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
@@ -1160,7 +1202,7 @@ public:
 
         // Emit the blend function as an SkVM program.
         skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, fDebugTrace.get(),
                                    SkMakeSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    src, dst, sampleShader, sampleColorFilter, sampleBlender);
     }
@@ -1197,6 +1239,7 @@ private:
     using INHERITED = SkBlenderBase;
 
     sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<SkSL::SkVMDebugTrace> fDebugTrace;
     sk_sp<SkData> fUniforms;
     std::vector<SkRuntimeEffect::ChildPtr> fChildren;
 };
@@ -1249,8 +1292,8 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<SkData> uniforms,
     if (uniforms->size() != this->uniformSize()) {
         return nullptr;
     }
-    return sk_sp<SkShader>(new SkRTShader(sk_ref_sp(this), std::move(uniforms), localMatrix,
-                                          children, isOpaque));
+    return sk_make_sp<SkRTShader>(sk_ref_sp(this), /*debugTrace=*/nullptr, std::move(uniforms),
+                                  localMatrix, children, isOpaque);
 }
 
 sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* rContext,
@@ -1359,8 +1402,8 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<SkData> uniforms,
     if (uniforms->size() != this->uniformSize()) {
         return nullptr;
     }
-    return sk_sp<SkColorFilter>(new SkRuntimeColorFilter(sk_ref_sp(this), std::move(uniforms),
-                                                         children));
+    return sk_make_sp<SkRuntimeColorFilter>(sk_ref_sp(this), /*debugTrace=*/nullptr,
+                                            std::move(uniforms), children);
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<SkData> uniforms) const {
@@ -1381,7 +1424,43 @@ sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<SkData> uniforms,
     if (uniforms->size() != this->uniformSize()) {
         return nullptr;
     }
-    return sk_sp<SkBlender>(new SkRuntimeBlender(sk_ref_sp(this), std::move(uniforms), children));
+    return sk_make_sp<SkRuntimeBlender>(sk_ref_sp(this), /*debugTrace=*/nullptr,std::move(uniforms),
+                                        children);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+SkRuntimeEffect::TracedShader SkRuntimeEffect::MakeTraced(sk_sp<SkShader> shader,
+                                                          const SkIPoint& traceCoord) {
+    SkRuntimeEffect* effect = as_SB(shader)->asRuntimeEffect();
+    if (!effect) {
+        return TracedShader{nullptr, nullptr};
+    }
+    // An SkShader with an attached SkRuntimeEffect must be an SkRTShader.
+    SkRTShader* rtShader = static_cast<SkRTShader*>(shader.get());
+    return rtShader->makeTracedClone(traceCoord);
+}
+
+SkRuntimeEffect::TracedColorFilter SkRuntimeEffect::MakeTraced(sk_sp<SkColorFilter> colorFilter,
+                                                               const SkIPoint& traceCoord) {
+    SkRuntimeEffect* effect = as_CFB(colorFilter)->asRuntimeEffect();
+    if (!effect) {
+        return TracedColorFilter{nullptr, nullptr};
+    }
+    // An SkColorFilter with an attached SkRuntimeEffect must be a SkRuntimeColorFilter.
+    SkRuntimeColorFilter* rtColorFilter = static_cast<SkRuntimeColorFilter*>(colorFilter.get());
+    return rtColorFilter->makeTracedClone(traceCoord);
+}
+
+SkRuntimeEffect::TracedBlender SkRuntimeEffect::MakeTraced(sk_sp<SkBlender> blender,
+                                                           const SkIPoint& traceCoord) {
+    SkRuntimeEffect* effect = as_BB(blender)->asRuntimeEffect();
+    if (!effect) {
+        return TracedBlender{nullptr, nullptr};
+    }
+    // An SkBlender with an attached SkRuntimeEffect must be a SkRuntimeBlender.
+    SkRuntimeBlender* rtBlender = static_cast<SkRuntimeBlender*>(blender.get());
+    return rtBlender->makeTracedClone(traceCoord);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
