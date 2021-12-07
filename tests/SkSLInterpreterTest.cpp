@@ -1003,8 +1003,11 @@ int main() {
                                                                      SkSL::String(kSrc), settings);
     REPORTER_ASSERT(r, program);
 
-    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
     SkSL::SkVMDebugTrace debugTrace;
+    SkDynamicMemoryWStream jsonStream;
+    debugTrace.setTraceStream(&jsonStream);
+
+    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
     SkSL::ProgramToSkVM(*program, *main, &b, &debugTrace, /*uniforms=*/{});
     skvm::Program p = b.done();
     REPORTER_ASSERT(r, p.nargs() == 1);
@@ -1012,9 +1015,11 @@ int main() {
     int result;
     p.eval(1, &result);
 
+    // Don't actually read back the JSON trace stream; we really want the human-readable dump.
+    REPORTER_ASSERT(r, jsonStream.bytesWritten() > 0);
+
     SkDynamicMemoryWStream streamDump;
     debugTrace.dump(&streamDump);
-
     sk_sp<SkData> dataDump = streamDump.detachAsData();
     skstd::string_view trace{static_cast<const char*>(dataDump->data()), dataDump->size()};
 
