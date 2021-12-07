@@ -213,6 +213,10 @@ void PipelineStageCodeGenerator::writeChildCall(const ChildCall& c) {
 void PipelineStageCodeGenerator::writeFunctionCall(const FunctionCall& c) {
     const FunctionDeclaration& function = c.function();
 
+    if (function.intrinsicKind() == IntrinsicKind::k_colorLinearSrgbToWorkingSpace_IntrinsicKind) {
+        //
+    }
+
     if (function.isBuiltin()) {
         this->write(function.name());
     } else {
