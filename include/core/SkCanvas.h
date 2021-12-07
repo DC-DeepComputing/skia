@@ -23,6 +23,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
@@ -59,6 +60,7 @@ class SkPixmap;
 class SkRegion;
 class SkRRect;
 struct SkRSXform;
+struct SkCustomMesh;
 class SkSpecialImage;
 class SkSurface;
 class SkSurface_Base;
@@ -1927,16 +1929,18 @@ public:
         If paint contains an SkShader and vertices does not contain texCoords, the shader
         is mapped using the vertices' positions.
 
-        If vertices colors are defined in vertices, and SkPaint paint contains SkShader,
-        SkBlendMode mode combines vertices colors with SkShader.
+        If vertices colors are defined in vertices they are blended using SkBlendMode with:
+            - the SkShader if SkPaint contains SkShader
+            - or the opaque SkPaint color if SkPaint does not contain SkShader.
 
         SkMaskFilter and SkPathEffect on paint are ignored.
 
         @param vertices  triangle mesh to draw
-        @param mode      combines vertices colors with SkShader, if both are present
-        @param paint     specifies the SkShader, used as SkVertices texture; may be nullptr
+        @param mode      combines vertices colors with SkShader if present or SkPaint opaque color
+                         if not. Ignored if the vertices do not contain color.
+        @param paint     specifies the SkShader, used as SkVertices texture, and SkColorFilter.
 
-        example: https://fiddle.skia.org/c/@Canvas_drawVertices
+        example: https://fiddle.skia.org/c/@Canvas_drawVertices_2
     */
     void drawVertices(const SkVertices* vertices, SkBlendMode mode, const SkPaint& paint);
 
@@ -1944,18 +1948,42 @@ public:
         If paint contains an SkShader and vertices does not contain texCoords, the shader
         is mapped using the vertices' positions.
 
-        If vertices colors are defined in vertices, and SkPaint paint contains SkShader,
-        SkBlendMode mode combines vertices colors with SkShader.
+        If vertices colors are defined in vertices they are blended using SkBlendMode with:
+           - the SkShader if SkPaint contains SkShader
+           - or the opaque SkPaint color if SkPaint does not contain SkShader.
 
         SkMaskFilter and SkPathEffect on paint are ignored.
 
         @param vertices  triangle mesh to draw
-        @param mode      combines vertices colors with SkShader, if both are present
+        @param mode      combines vertices colors with SkShader if present or SkPaint opaque color
+                         if not. Ignored if the vertices do not contain color.
         @param paint     specifies the SkShader, used as SkVertices texture, may be nullptr
 
         example: https://fiddle.skia.org/c/@Canvas_drawVertices_2
     */
     void drawVertices(const sk_sp<SkVertices>& vertices, SkBlendMode mode, const SkPaint& paint);
+
+#ifdef SK_ENABLE_EXPERIMENTAL_CUSTOM_MESH
+    /**
+        Experimental, under active development, and subject to change without notice.
+
+        Draws a mesh using a user-defined specification (see SkCustomMeshSpecification).
+
+        If a color is produced by SkCustomMesh's specification's fragment program then that color
+        is blended using SkBlender with:
+            - the SkShader if SkPaint paint contains SkShader
+            - or the opaque SkPaint color if SkPaint does not contain SkShader.
+
+        SkMaskFilter and SkPathEffect on paint are ignored.
+
+        @param cm        the custom mesh vertices and compatible specification.
+        @param blender   combines vertices colors with SkShader if present or SkPaint opaque color
+                         if not. Ignored if the custom mesh does not output color. Defaults to
+                         SkBlendMode::kModulate if nullptr.
+        @param paint     specifies the SkShader, used as SkVertices texture, may be nullptr
+    */
+    void drawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender> blender, const SkPaint& paint);
+#endif
 
     /** Draws a Coons patch: the interpolation of four cubics with shared corners,
         associating a color, and optionally a texture SkPoint, with each corner.
@@ -2176,6 +2204,11 @@ protected:
     virtual void didTranslate(SkScalar, SkScalar) {}
     virtual void didScale(SkScalar, SkScalar) {}
 
+#ifndef SK_ENABLE_EXPERIMENTAL_CUSTOM_MESH
+    // Define this in protected so we can still access internally for testing.
+    void drawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender> blender, const SkPaint& paint);
+#endif
+
     // NOTE: If you are adding a new onDraw virtual to SkCanvas, PLEASE add an override to
     // SkCanvasVirtualEnforcer (in SkCanvasVirtualEnforcer.h). This ensures that subclasses using
     // that mechanism  will be required to implement the new function.
@@ -2216,6 +2249,8 @@ protected:
 
     virtual void onDrawVerticesObject(const SkVertices* vertices, SkBlendMode mode,
                                       const SkPaint& paint);
+
+    virtual void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&);
 
     virtual void onDrawAnnotation(const SkRect& rect, const char key[], SkData* value);
     virtual void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&);

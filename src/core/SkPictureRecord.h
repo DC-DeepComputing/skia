@@ -51,6 +51,14 @@ public:
         return fVertices;
     }
 
+    const SkTArray<sk_sp<SkOwnedCustomMesh>>& getCustomMeshes() const {
+        return fCustomMeshes;
+    }
+
+    const SkTArray<sk_sp<SkBlender>>& getBlenders() const {
+        return fBlenders;
+    }
+
     const SkTArray<sk_sp<const SkImage>>& getImages() const {
         return fImages;
     }
@@ -145,6 +153,8 @@ private:
     void addText(const void* text, size_t byteLength);
     void addTextBlob(const SkTextBlob* blob);
     void addVertices(const SkVertices*);
+    void addCustomMesh(SkCustomMesh);
+    void addBlender(sk_sp<SkBlender>);
 
     int find(const SkBitmap& bitmap);
 
@@ -198,7 +208,7 @@ protected:
 
     void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&) override;
     void onDrawVerticesObject(const SkVertices*, SkBlendMode, const SkPaint&) override;
-
+    void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override;
     void onClipRect(const SkRect&, SkClipOp, ClipEdgeStyle) override;
     void onClipRRect(const SkRRect&, SkClipOp, ClipEdgeStyle) override;
     void onClipPath(const SkPath&, SkClipOp, ClipEdgeStyle) override;
@@ -242,11 +252,13 @@ private:
 
     SkWriter32 fWriter;
 
-    SkTArray<sk_sp<const SkImage>>    fImages;
-    SkTArray<sk_sp<const SkPicture>>  fPictures;
-    SkTArray<sk_sp<SkDrawable>>       fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>> fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>> fVertices;
+    SkTArray<sk_sp<const SkImage>>     fImages;
+    SkTArray<sk_sp<const SkPicture>>   fPictures;
+    SkTArray<sk_sp<SkDrawable>>        fDrawables;
+    SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
+    SkTArray<sk_sp<const SkVertices>>  fVertices;
+    SkTArray<sk_sp<SkOwnedCustomMesh>> fCustomMeshes;
+    SkTArray<sk_sp<SkBlender>>         fBlenders;
 
     uint32_t fRecordFlags;
     int      fInitialSaveCount;

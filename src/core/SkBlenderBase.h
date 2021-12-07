@@ -14,6 +14,11 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
 
+#if SK_SUPPORT_GPU
+#include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/effects/GrBlendFragmentProcessor.h"
+#endif
+
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkRuntimeEffect;
@@ -48,6 +53,13 @@ public:
             std::unique_ptr<GrFragmentProcessor> srcFP,
             std::unique_ptr<GrFragmentProcessor> dstFP,
             const GrFPArgs& fpArgs) const = 0;
+
+    /** Same as above, but if passed SkBlender is null then src-over is assumed. */
+    inline static std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(
+            SkBlender*,
+            std::unique_ptr<GrFragmentProcessor> srcFP,
+            std::unique_ptr<GrFragmentProcessor> dstFP,
+            const GrFPArgs& fpArgs);
 #endif
 
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
@@ -74,5 +86,20 @@ inline const SkBlenderBase* as_BB(const SkBlender* blend) {
 inline const SkBlenderBase* as_BB(const sk_sp<SkBlender>& blend) {
     return static_cast<SkBlenderBase*>(blend.get());
 }
+
+#if SK_SUPPORT_GPU
+std::unique_ptr<GrFragmentProcessor> SkBlenderBase::AsFragmentProcessor(
+        SkBlender* blender,
+        std::unique_ptr<GrFragmentProcessor> srcFP,
+        std::unique_ptr<GrFragmentProcessor> dstFP,
+        const GrFPArgs& fpArgs) {
+    if (blender) {
+        return as_BB(blender)->asFragmentProcessor(std::move(srcFP), std::move(dstFP), fpArgs);
+    }
+    return GrBlendFragmentProcessor::Make(std::move(srcFP),
+                                          std::move(dstFP),
+                                          SkBlendMode::kSrcOver);
+}
+#endif
 
 #endif  // SkBlenderBase_DEFINED

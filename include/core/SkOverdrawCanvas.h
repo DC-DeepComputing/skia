@@ -35,6 +35,7 @@ public:
     void onDrawRRect(const SkRRect&, const SkPaint&) override;
     void onDrawPoints(PointMode, size_t, const SkPoint[], const SkPaint&) override;
     void onDrawVerticesObject(const SkVertices*, SkBlendMode, const SkPaint&) override;
+    void onDrawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override;
     void onDrawPath(const SkPath&, const SkPaint&) override;
 
     void onDrawImage2(const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&,

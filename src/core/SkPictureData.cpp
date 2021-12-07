@@ -11,6 +11,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkPictureRecord.h"
 #include "src/core/SkReadBuffer.h"
@@ -34,15 +35,15 @@ void SkPictureData::initForPlayback() const {
     }
 }
 
-SkPictureData::SkPictureData(const SkPictureRecord& record,
-                             const SkPictInfo& info)
-    : fPictures(record.getPictures())
-    , fDrawables(record.getDrawables())
-    , fTextBlobs(record.getTextBlobs())
-    , fVertices(record.getVertices())
-    , fImages(record.getImages())
-    , fInfo(info) {
-
+SkPictureData::SkPictureData(const SkPictureRecord& record, const SkPictInfo& info)
+        : fPictures(record.getPictures())
+        , fDrawables(record.getDrawables())
+        , fTextBlobs(record.getTextBlobs())
+        , fVertices(record.getVertices())
+        , fCustomMeshes(record.getCustomMeshes())
+        , fBlenders(record.getBlenders())
+        , fImages(record.getImages())
+        , fInfo(info) {
     fOpData = record.opData();
 
     fPaints  = record.fPaints;
@@ -172,6 +173,20 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
             write_tag_size(buffer, SK_PICT_VERTICES_BUFFER_TAG, fVertices.count());
             for (const auto& vert : fVertices) {
                 vert->priv().encode(buffer);
+            }
+        }
+
+        if (!fCustomMeshes.empty()) {
+            write_tag_size(buffer, SK_PICT_CUSTOM_MESH_BUFFER_TAG, fCustomMeshes.count());
+            for (const auto& m : fCustomMeshes) {
+                m->encode(buffer);
+            }
+        }
+
+        if (!fBlenders.empty()) {
+            write_tag_size(buffer, SK_PICT_BLENDER_BUFFER_TAG, fBlenders.count());
+            for (const auto& b : fBlenders) {
+                buffer.writeFlattenable(b.get());
             }
         }
 
@@ -377,6 +392,10 @@ static sk_sp<SkImage> create_image_from_buffer(SkReadBuffer& buffer) {
     return buffer.readImage();
 }
 
+static sk_sp<SkBlender> create_blender_from_buffer(SkReadBuffer& buffer) {
+    return buffer.readBlender();
+}
+
 static sk_sp<SkDrawable> create_drawable_from_buffer(SkReadBuffer& buffer) {
     return sk_sp<SkDrawable>((SkDrawable*)buffer.readFlattenable(SkFlattenable::kSkDrawable_Type));
 }
@@ -439,6 +458,12 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             break;
         case SK_PICT_VERTICES_BUFFER_TAG:
             new_array_from_buffer(buffer, size, fVertices, SkVerticesPriv::Decode);
+            break;
+        case SK_PICT_CUSTOM_MESH_BUFFER_TAG:
+            new_array_from_buffer(buffer, size, fCustomMeshes, SkOwnedCustomMesh::Decode);
+            break;
+        case SK_PICT_BLENDER_BUFFER_TAG:
+            new_array_from_buffer(buffer, size, fBlenders, create_blender_from_buffer);
             break;
         case SK_PICT_IMAGE_BUFFER_TAG:
             new_array_from_buffer(buffer, size, fImages, create_image_from_buffer);
