@@ -47,7 +47,9 @@ protected:
         : INHERITED(std::move(typeface), effects, desc)
     {}
 
-    void generateGlyphImage(FT_Face face, const SkGlyph& glyph, const SkMatrix& bitmapTransform);
+    // fFaceRec is only in SkScalerContext_FreeType, not in _base
+    void generateGlyphImage(FT_Face face, SkColor* customPalette,
+                            const SkGlyph& glyph, const SkMatrix& bitmapTransform);
     bool generateGlyphPath(FT_Face face, SkPath* path);
     bool generateFacePath(FT_Face face, SkGlyphID glyphID, SkPath* path);
 
@@ -91,6 +93,10 @@ public:
             const SkString& name,
             const SkFontArguments::VariationPosition::Coordinate* currentPosition = nullptr);
         static bool GetAxes(FT_Face face, AxisDefinitions* axes);
+
+        static std::vector<SkColor> resolvePaletteOverride(
+                FT_Face face,
+                const SkFontArguments::PaletteOverride& paletteOverride);
 
     private:
         FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
