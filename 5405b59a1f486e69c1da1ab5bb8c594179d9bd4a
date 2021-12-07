@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d40aa57_566b8724",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-07T16:38:41Z",
+      "side": 1,
+      "message": "Does this mean \"not clamped 0~1\"? How does this interact with the transformation to working-space color? Would be nice to provide a hint to the reader.",
+      "range": {
+        "startLine": 72,
+        "startChar": 15,
+        "endLine": 72,
+        "endChar": 29
+      },
+      "revId": "5405b59a1f486e69c1da1ab5bb8c594179d9bd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "076c346b_c29b4c83",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-07T16:38:41Z",
+      "side": 1,
+      "message": "Missing space before apostrophe",
+      "range": {
+        "startLine": 90,
+        "startChar": 88,
+        "endLine": 90,
+        "endChar": 90
+      },
+      "revId": "5405b59a1f486e69c1da1ab5bb8c594179d9bd4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
