@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ab9596_9b0585f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-08T16:30:48Z",
+      "side": 1,
+      "message": "dropping out of CQ as this seems to be problematic for the canary.",
+      "revId": "ddb890b22de005aabaa42207da2b8996b4704835",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
