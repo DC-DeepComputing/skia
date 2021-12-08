@@ -16,6 +16,24 @@
       "message": "dropping out of CQ as this seems to be problematic for the canary.",
       "revId": "ddb890b22de005aabaa42207da2b8996b4704835",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "237d89b1_a5ccd51e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-08T16:48:52Z",
+      "side": 1,
+      "message": "Nah, it\u0027s just a merge conflict in the metadata. It actually passed presubmit, but the metadata file will always end up conflicting once there\u0027s another merge.\n\nBut I can hold off on this anyway due to the ongoing discussion in https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/base/+/16389548/1..2/graphics/java/android/graphics/PixelFormat.java#b168",
+      "parentUuid": "03ab9596_9b0585f8",
+      "revId": "ddb890b22de005aabaa42207da2b8996b4704835",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
