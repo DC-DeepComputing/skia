@@ -16,6 +16,138 @@
       "message": "I\u0027ll fix up the Graphite_NoGpu bot but, otherwise, I think this is good to go.",
       "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6a53661_1832bd0c",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "out of date, should be \"define a float4 stepPosition\" variable, although I\u0027d also be okay with renaming that to \"devPosition\" to emphasize it\u0027s coord system vs. that the render step is doing it.",
+      "range": {
+        "startLine": 64,
+        "startChar": 46,
+        "endLine": 64,
+        "endChar": 99
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ea72cf_fc4533a2",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "Not needed/out-of-date. Since it\u0027s SkSL, I suppose we can just assume that sk_VertexID and sk_InstanceID are available.",
+      "range": {
+        "startLine": 68,
+        "startChar": 34,
+        "endLine": 68,
+        "endChar": 96
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19a700c7_bca972f1",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "\"It has access to the variables declared by vertexAttributes(), instanceAttributes(), and uniforms().\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 33
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb840559_bb1d0628",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "I think we should just hard code this to 2 for now, have it be a static constexpr in this function.",
+      "range": {
+        "startLine": 306,
+        "startChar": 21,
+        "endLine": 306,
+        "endChar": 39
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c2a9f0_2a805b65",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "Does the generated MSL inherit just \"main\" now?",
+      "range": {
+        "startLine": 341,
+        "startChar": 80,
+        "endLine": 341,
+        "endChar": 90
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a981b4e5_915c83ca",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:03:18Z",
+      "side": 1,
+      "message": "same",
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
