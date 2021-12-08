@@ -224,15 +224,24 @@ public:
      * suitable for a debugger, or call `dump` to emit a human-readable trace.
      *
      * Debug traces are only supported on a raster (non-GPU) canvas.
-
-     * Debug traces are currently only supported on shaders. Color filter and blender tracing is a
-     * work-in-progress.
      */
     struct TracedShader {
         sk_sp<SkShader> shader;
         sk_sp<SkSL::DebugTrace> debugTrace;
     };
     static TracedShader MakeTraced(sk_sp<SkShader> shader, const SkIPoint& traceCoord);
+
+    struct TracedColorFilter {
+        sk_sp<SkColorFilter> colorFilter;
+        sk_sp<SkSL::DebugTrace> debugTrace;
+    };
+    static TracedColorFilter MakeTraced(sk_sp<SkColorFilter> shader, const SkIPoint& traceCoord);
+
+    struct TracedBlender {
+        sk_sp<SkBlender> blender;
+        sk_sp<SkSL::DebugTrace> debugTrace;
+    };
+    static TracedBlender MakeTraced(sk_sp<SkBlender> shader, const SkIPoint& traceCoord);
 
     // Returns the SkSL source of the runtime effect shader.
     const std::string& source() const;
