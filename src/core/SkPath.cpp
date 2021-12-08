@@ -500,6 +500,10 @@ int SkPath::getVerbs(uint8_t dst[], int max) const {
     return fPathRef->countVerbs();
 }
 
+int SkPath::countConicWeights() const {
+    return fPathRef->countWeights();
+}
+
 size_t SkPath::approximateBytesUsed() const {
     size_t size = sizeof (SkPath);
     if (fPathRef != nullptr) {
@@ -606,10 +610,11 @@ SkPath& SkPath::dirtyAfterEdit() {
     return *this;
 }
 
-void SkPath::incReserve(int inc) {
+void SkPath::incReserve(int extraPtCount, int extraVbCount,
+                        int extraCnCount) {
     SkDEBUGCODE(this->validate();)
-    if (inc > 0) {
-        SkPathRef::Editor(&fPathRef, inc, inc);
+    if (extraPtCount + extraVbCount + extraCnCount > 0) {
+        SkPathRef::Editor(&fPathRef, extraPtCount, extraVbCount, extraCnCount);
     }
     SkDEBUGCODE(this->validate();)
 }
@@ -799,8 +804,10 @@ SkPath& SkPath::addRect(const SkRect &rect, SkPathDirection dir, unsigned startI
 
     SkDEBUGCODE(int initialVerbCount = this->countVerbs());
 
-    const int kVerbs = 5; // moveTo + 3x lineTo + close
-    this->incReserve(kVerbs);
+    // moveTo + 3x lineTo + close
+    const int kPoints = 4;
+    const int kVerbs = 5;
+    this->incReserve(kPoints, kVerbs, 0);
 
     SkPath_RectPointIterator iter(rect, dir, startIndex);
 
@@ -955,10 +962,14 @@ SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned sta
         const SkScalar weight = SK_ScalarRoot2Over2;
 
         SkDEBUGCODE(int initialVerbCount = this->countVerbs());
+        const int kPoints = startsWithConic
+            ? 12  // moveTo + 4x conicTo + 3x lineTo + close
+            : 13; // moveTo + 4x lineTo + 4x conicTo + close
         const int kVerbs = startsWithConic
             ? 9   // moveTo + 4x conicTo + 3x lineTo + close
             : 10; // moveTo + 4x lineTo + 4x conicTo + close
-        this->incReserve(kVerbs);
+        const int kConics = 4;
+        this->incReserve(kPoints, kVerbs, kConics);
 
         SkPath_RRectPointIterator rrectIter(rrect, dir, startIndex);
         // Corner iterator indices follow the collapsed radii model,
@@ -1060,8 +1071,11 @@ SkPath& SkPath::addOval(const SkRect &oval, SkPathDirection dir, unsigned startP
     SkAutoPathBoundsUpdate apbu(this, oval);
 
     SkDEBUGCODE(int initialVerbCount = this->countVerbs());
-    const int kVerbs = 6; // moveTo + 4x conicTo + close
-    this->incReserve(kVerbs);
+    // moveTo + 4x conicTo + close
+    const int kPoints = 9;
+    const int kVerbs = 6;
+    const int kConics = 4;
+    this->incReserve(kPoints, kVerbs, kConics);
 
     SkPath_OvalPointIterator ovalIter(oval, dir, startPointIndex);
     // The corner iterator pts are tracking "behind" the oval/radii pts.
@@ -1143,7 +1157,11 @@ SkPath& SkPath::arcTo(const SkRect& oval, SkScalar startAngle, SkScalar sweepAng
     SkConic conics[SkConic::kMaxConicsForArc];
     int count = build_arc_conics(oval, startV, stopV, dir, conics, &singlePt);
     if (count) {
-        this->incReserve(count * 2 + 1);
+        // addtPt + count * conicTo
+        const int kPoints = count * 2 + 1;
+        const int kVerbs = count + 1;
+        const int kConics = count;
+        this->incReserve(kPoints, kVerbs, kConics);
         const SkPoint& pt = conics[0].fPts[0];
         addPt(pt);
         for (int i = 0; i < count; ++i) {

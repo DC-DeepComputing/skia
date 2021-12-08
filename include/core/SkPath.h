@@ -453,6 +453,12 @@ public:
     */
     int getVerbs(uint8_t verbs[], int max) const;
 
+    /** Returns the number of conic weights added to SkPath.
+
+        @return  length of conic weight array
+    */
+    int countConicWeights() const;
+
     /** Returns the approximate byte size of the SkPath in memory.
 
         @return  approximate size
@@ -538,10 +544,13 @@ public:
         reducing the number and size of allocations when creating SkPath.
 
         @param extraPtCount  number of additional SkPoint to allocate
+        @param extraVbCount  number of additional verbs to allocate
+        @param extraCnCount  number of additional conic weights to allocate
 
         example: https://fiddle.skia.org/c/@Path_incReserve
     */
-    void incReserve(int extraPtCount);
+    void incReserve(int extraPtCount, int extraVbCount,
+                    int extraCnCount);
 
 #ifdef SK_HIDE_PATH_EDIT_METHODS
 private:

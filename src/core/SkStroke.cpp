@@ -406,9 +406,11 @@ SkPathStroker::SkPathStroker(const SkPath& src,
     //
     // 3x for result == inner + outer + join (swag)
     // 1x for inner == 'wag' (worst contour length would be better guess)
-    fOuter.incReserve(src.countPoints() * 3);
+    fOuter.incReserve(src.countPoints() * 3, src.countVerbs() * 3,
+                      src.countConicWeights() * 3);
     fOuter.setIsVolatile(true);
-    fInner.incReserve(src.countPoints());
+    fInner.incReserve(src.countPoints(), src.countVerbs(),
+                      src.countConicWeights());
     fInner.setIsVolatile(true);
     // TODO : write a common error function used by stroking and filling
     // The '4' below matches the fill scan converter's error term

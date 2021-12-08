@@ -88,7 +88,8 @@ public:
     public:
         Editor(sk_sp<SkPathRef>* pathRef,
                int incReserveVerbs = 0,
-               int incReservePoints = 0);
+               int incReservePoints = 0,
+               int incReserveConics = 0);
 
         ~Editor() { SkDEBUGCODE(fPathRef->fEditorsAttached--;) }
 
@@ -383,7 +384,8 @@ private:
         SkDEBUGCODE(this->validate();)
     }
 
-    void copy(const SkPathRef& ref, int additionalReserveVerbs, int additionalReservePoints);
+    void copy(const SkPathRef& ref, int additionalReserveVerbs,
+              int additionalReservePoints, int additionalReserveConics);
 
     // Return true if the computed bounds are finite.
     static bool ComputePtBounds(SkRect* bounds, const SkPathRef& ref) {
@@ -409,17 +411,19 @@ private:
     }
 
     /** Makes additional room but does not change the counts or change the genID */
-    void incReserve(int additionalVerbs, int additionalPoints) {
+    void incReserve(int additionalVerbs, int additionalPoints,
+                    int additionalConics) {
         SkDEBUGCODE(this->validate();)
         fPoints.setReserve(fPoints.count() + additionalPoints);
         fVerbs.setReserve(fVerbs.count() + additionalVerbs);
+        fConicWeights.setReserve(fConicWeights.count() + additionalConics);
         SkDEBUGCODE(this->validate();)
     }
 
     /** Resets the path ref with verbCount verbs and pointCount points, all uninitialized. Also
      *  allocates space for reserveVerb additional verbs and reservePoints additional points.*/
     void resetToSize(int verbCount, int pointCount, int conicCount,
-                     int reserveVerbs = 0, int reservePoints = 0) {
+                     int reserveVerbs = 0, int reservePoints = 0, int reserveConics = 0) {
         SkDEBUGCODE(this->validate();)
         this->callGenIDChangeListeners();
         fBoundsIsDirty = true;      // this also invalidates fIsFinite
@@ -433,6 +437,7 @@ private:
         fPoints.setCount(pointCount);
         fVerbs.setReserve(verbCount + reserveVerbs);
         fVerbs.setCount(verbCount);
+        fConicWeights.setReserve(conicCount + reserveConics);
         fConicWeights.setCount(conicCount);
         SkDEBUGCODE(this->validate();)
     }

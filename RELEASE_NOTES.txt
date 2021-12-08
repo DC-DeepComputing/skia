@@ -29,6 +29,8 @@ Milestone 98
       - Images with an alpha type of kUnpremul are not automatically premultiplied.
       - Bicubic filtering is not supported. If SkSamplingOptions::useCubic is true, these factories
         will return nullptr.
+  * SkPath::incReserve now takes three arguments: number of points, verbs and conics in order to
+    reserve space on internal arrays more accurately.
 
 * * *
 

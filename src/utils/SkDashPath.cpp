@@ -252,7 +252,7 @@ public:
             return false;
         }
         int n = SkScalarCeilToInt(ptCount) << 2;
-        dst->incReserve(n);
+        dst->incReserve(n, n, 0);
 
         // we will take care of the stroking
         rec->setFillStyle();

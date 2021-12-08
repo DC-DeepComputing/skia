@@ -18,16 +18,16 @@
 //////////////////////////////////////////////////////////////////////////////
 SkPathRef::Editor::Editor(sk_sp<SkPathRef>* pathRef,
                           int incReserveVerbs,
-                          int incReservePoints)
+                          int incReservePoints,
+                          int incReserveConics)
 {
-    SkASSERT(incReserveVerbs >= 0);
-    SkASSERT(incReservePoints >= 0);
-
     if ((*pathRef)->unique()) {
-        (*pathRef)->incReserve(incReserveVerbs, incReservePoints);
+        (*pathRef)->incReserve(incReserveVerbs, incReservePoints,
+                               incReserveConics);
     } else {
         SkPathRef* copy = new SkPathRef;
-        copy->copy(**pathRef, incReserveVerbs, incReservePoints);
+        copy->copy(**pathRef, incReserveVerbs, incReservePoints,
+                   incReserveConics);
         pathRef->reset(copy);
     }
     fPathRef = pathRef->get();
@@ -46,7 +46,7 @@ void SkPath::shrinkToFit() {
     // any existing iterators.
     if (!fPathRef->unique()) {
         SkPathRef* pr = new SkPathRef;
-        pr->copy(*fPathRef, 0, 0);
+        pr->copy(*fPathRef, 0, 0, 0);
         fPathRef.reset(pr);
     }
     fPathRef->fPoints.shrinkToFit();
@@ -237,8 +237,9 @@ void SkPathRef::Rewind(sk_sp<SkPathRef>* pathRef) {
     } else {
         int oldVCnt = (*pathRef)->countVerbs();
         int oldPCnt = (*pathRef)->countPoints();
+        int oldCCnt = (*pathRef)->countWeights();
         pathRef->reset(new SkPathRef);
-        (*pathRef)->resetToSize(0, 0, 0, oldVCnt, oldPCnt);
+        (*pathRef)->resetToSize(0, 0, 0, oldVCnt, oldPCnt, oldCCnt);
     }
 }
 
@@ -305,10 +306,11 @@ uint32_t SkPathRef::writeSize() const {
 
 void SkPathRef::copy(const SkPathRef& ref,
                      int additionalReserveVerbs,
-                     int additionalReservePoints) {
+                     int additionalReservePoints,
+                     int additionalReserveConics) {
     SkDEBUGCODE(this->validate();)
     this->resetToSize(ref.fVerbs.count(), ref.fPoints.count(), ref.fConicWeights.count(),
-                      additionalReserveVerbs, additionalReservePoints);
+                      additionalReserveVerbs, additionalReservePoints, additionalReserveConics);
     fVerbs = ref.fVerbs;
     fPoints = ref.fPoints;
     fConicWeights = ref.fConicWeights;

@@ -537,8 +537,10 @@ bool SkRegion::getBoundaryPath(SkPath* path) const {
         SkASSERT(e->fFlags == Edge::kCompleteLink);
     }
 #endif
-
-    path->incReserve(count << 1);
+    // moveTo + 2 * count * lineTo + lineTo + close
+    const int kPoints = 2 * count + 2;
+    const int kVerbs = 2 * count + 3;
+    path->incReserve(kPoints, kVerbs, 0);
     do {
         SkASSERT(count > 1);
         count -= extract_path(start, stop, path);
