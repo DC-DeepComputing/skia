@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "665b07ed_2f9026a0",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-12-08T20:32:38Z",
+      "side": 1,
+      "message": "nit: indent",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b70a62d_3ebbdcb3",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-12-08T20:32:38Z",
+      "side": 1,
+      "message": "Still wondering if there\u0027s a way to avoid multiple inheritance here.  A couple of ideas (not for this CL):\n\n1) make SkSLEffectBase a template inheriting from DiscardableAdapterBase\n\n2) use composition instead of inheritance for SkSLEffectBase (refactored as SkSLContainer or something)",
+      "range": {
+        "startLine": 126,
+        "startChar": 32,
+        "endLine": 126,
+        "endChar": 53
+      },
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39d84aef_6fe6e762",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-12-08T20:32:38Z",
+      "side": 1,
+      "message": "Since this is no longer then only superclass, let\u0027s get rid of INHERITED (for both adapters).",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3c14f63_7c14d72f",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2021-12-08T20:32:38Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
