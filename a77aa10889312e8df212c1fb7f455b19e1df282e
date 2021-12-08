@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ccbc27e_9e6d0393",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T21:02:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b2f45a26_504ce873",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 62
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93855661_bce08dbc",
@@ -298,6 +322,30 @@
       "side": 1,
       "message": "After looking into it, this will take a serious amount of revision of how we cache the GraphicsPipelines, as they depend on a hash of the GraphicsPipelineDesc. My suggestion is that I land this as is so Michael can progress, and I\u0027ll revise in a later CL.",
       "parentUuid": "a17b7f66_0daea7da",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db88aafd_5b261585",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T21:02:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f1dc990f_b72d3b83",
       "range": {
         "startLine": 342,
         "startChar": 0,
