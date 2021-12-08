@@ -22,6 +22,30 @@
       },
       "revId": "aaba207a4cca89ae17c241b257c10f892944ccbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33169654_0b59dba2",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-08T14:56:14Z",
+      "side": 1,
+      "message": "derp. Shoulda copy pasted.",
+      "parentUuid": "036c918d_6b06ad31",
+      "range": {
+        "startLine": 1938,
+        "startChar": 49,
+        "endLine": 1938,
+        "endChar": 50
+      },
+      "revId": "aaba207a4cca89ae17c241b257c10f892944ccbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
