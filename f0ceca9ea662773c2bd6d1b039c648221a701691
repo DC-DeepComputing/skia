@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71d97230_6b39d828",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T21:19:46Z",
+      "side": 1,
+      "message": "This is decidedly less clear, since before everything was explicit and straight forward and here the same operations are performed but there is simply more cruft and machinery in the way making it more expensive to parse for both man and machine.\n\nThis form is also generally more difficult in code search situations, where if I want to know who calls the constructor of GMSlide in the old code all code searches immediately take me here instead of to sk_make_sp.",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f83920e0_5cc0fc87",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T21:19:46Z",
+      "side": 1,
+      "message": "Note sure why anything was ever reversed or why we would want to? The registries are populated by static initialization which has no defined order, though I suppose this was being reversed because some linker happened to lay things out so they were mostly alphabetical? Did we mean to sort each set of slides by name or something?",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
