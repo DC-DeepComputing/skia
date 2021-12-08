@@ -6605,3 +6605,55 @@ UNIX_ONLY_TEST(SkParagraph_RTLFollowedByLTR, reporter) {
         ++index;
     }
 }
+
+UNIX_ONLY_TEST(SkParagraph_SkipGraphemeIterator, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+
+    ParagraphStyle paragraph_style;
+    TextStyle text_style;
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontFamilies({SkString("Roboto")});
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->mayNeedGraphemeBreaks());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple ");
+        builder.pop();
+
+        text_style.setColor(SK_ColorRED);
+        builder.pushStyle(text_style);
+        builder.addText("paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+        text_style.setFontFamilies({SkString("NonExisting"), SkString("Roboto")});
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());
+    }
+}
