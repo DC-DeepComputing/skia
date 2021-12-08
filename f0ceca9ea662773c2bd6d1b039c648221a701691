@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a51f05ab_65a23137",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-08T22:17:26Z",
+      "side": 1,
+      "message": "Removed \"for clarity\". Agreed that clarity is not universal--it\u0027s easier for me to read but that\u0027s no guarantee that it is easier for you.",
+      "parentUuid": "abee0a9b_d95b05fe",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f83920e0_5cc0fc87",
