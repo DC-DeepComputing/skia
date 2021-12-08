@@ -67,10 +67,10 @@ public:
     // equivalent to the struct defined by uniforms(). If these structs would be empty, the
     // variables are unavailable. Additionally "vertexID" and "instanceID" are always available.
     //
-    // NOTE: The above contract is mainly so that the entire MSL program can be created by just str
-    // concatenating struct definitions generated from the RenderStep and paint Combination, some
-    // hardcoded MSL prefixes and suffices, and then including the function bodies returned here.
-    virtual const char* vertexMSL() const = 0;
+    // NOTE: The above contract is mainly so that the entire SkSL program can be created by just str
+    // concatenating struct definitions generated from the RenderStep and paint Combination
+    // and then including the function bodies returned here.
+    virtual const char* vertexSkSL() const = 0;
 
     bool          requiresStencil() const { return fDepthStencilSettings.fStencilTestEnabled; }
     bool          requiresDepth()   const { return fDepthStencilSettings.fDepthTestEnabled ||
