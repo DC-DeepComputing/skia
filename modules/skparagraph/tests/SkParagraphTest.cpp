@@ -6605,3 +6605,119 @@ UNIX_ONLY_TEST(SkParagraph_RTLFollowedByLTR, reporter) {
         ++index;
     }
 }
+
+UNIX_ONLY_TEST(SkParagraph_SkipGraphemeIterator, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+
+    ParagraphStyle paragraph_style;
+    TextStyle text_style;
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontFamilies({SkString("Roboto")});
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->mayNeedGraphemeBreaks());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple ");
+        builder.pop();
+
+        text_style.setColor(SK_ColorRED);
+        builder.pushStyle(text_style);
+        builder.addText("paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_CacheSkippedGraphemeIterator, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+
+    ParagraphStyle paragraph_style;
+    TextStyle text_style;
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontFamilies({SkString("Roboto")});
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->mayNeedGraphemeBreaks());
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->mayNeedGraphemeBreaks());  // We have no grapheme
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph1");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 2);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());  // We cached grapheme breaks
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph1");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 2);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());  // We have no grapheme
+    }
+}
