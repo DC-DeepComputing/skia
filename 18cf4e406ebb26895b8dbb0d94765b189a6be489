@@ -133,6 +133,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74652bfb_ecbab7fc",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:25:07Z",
+      "side": 1,
+      "message": "discussed offline, SkSLToMSL renames \"main\" automatically, so the code is correct.",
+      "parentUuid": "02c2a9f0_2a805b65",
+      "range": {
+        "startLine": 341,
+        "startChar": 80,
+        "endLine": 341,
+        "endChar": 90
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a981b4e5_915c83ca",
@@ -146,6 +170,24 @@
       "writtenOn": "2021-12-08T17:03:18Z",
       "side": 1,
       "message": "same",
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad049adb_879d423b",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:25:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a981b4e5_915c83ca",
       "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
