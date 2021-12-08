@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d9a24ec_91743fe1",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "No -- they were added to get access to the Caps and I wasn\u0027t sure if that would stick.",
+      "parentUuid": "d17d3e33_43096677",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8d6ee67_0e36ab5d",
         "filename": "experimental/graphite/src/DrawPass.h",
         "patchSetId": 4
@@ -78,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81dfb676_35d47425",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "I thought of that, but it would complicate the merge process for these flags in Renderer and DrawPass.",
+      "parentUuid": "d8d6ee67_0e36ab5d",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 62
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93855661_bce08dbc",
         "filename": "experimental/graphite/src/RenderPassTask.cpp",
         "patchSetId": 4
@@ -89,6 +131,24 @@
       "writtenOn": "2021-12-08T17:21:55Z",
       "side": 1,
       "message": "Add a TODO: for caching these? Or is that meant to be handled automatically by ResourceProvider as part of the \"find\".\n\nBased on Greg\u0027s ideas about deferring full command buffer writing until scheduling on the main thread, we wouldn\u0027t need to ref the ds texture until scheduling and it\u0027d more likely to be reused across recordings. But that\u0027s up in the air, I\u0027m only bringing up since this seems like a useful place to mark in the code for future updating.",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c4fb35_6c0cfcf7",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "\u0027find\u0027 should get a scratch texture for us, yes.",
+      "parentUuid": "93855661_bce08dbc",
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -142,6 +202,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a17b7f66_0daea7da",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "I\u0027ll try using the RenderPassDesc.",
+      "parentUuid": "a6181e15_3536e013",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29f79b3b_32c92314",
         "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
         "patchSetId": 4
@@ -159,6 +243,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c71c0264_4a7de902",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "Good catch, yes.",
+      "parentUuid": "29f79b3b_32c92314",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77b53255_fa51d075",
         "filename": "tests/graphite/CommandBufferTest.cpp",
         "patchSetId": 4
@@ -170,6 +272,30 @@
       "writtenOn": "2021-12-08T17:21:55Z",
       "side": 1,
       "message": "Wdyt about just having one static DepthStencilSettings object that\u0027s shared by the testing RenderSteps?",
+      "range": {
+        "startLine": 196,
+        "startChar": 51,
+        "endLine": 204,
+        "endChar": 26
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "680bb457_35da9287",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T18:25:56Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "77b53255_fa51d075",
       "range": {
         "startLine": 196,
         "startChar": 51,
