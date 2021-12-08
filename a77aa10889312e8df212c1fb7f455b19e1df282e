@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b926397_5514ca08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:21:55Z",
+      "side": 1,
+      "message": "Based on what Chris has done with DMSAA and consistency for ops that don\u0027t need it, RenderSteps are supposed to work visually the same whether or not they are in an msaa renderpass or not. This might mean that we need to tell the RenderStep whether or not stencil/depth/msaa are present for the renderpass when filling out its uniforms or vertices, but I think we can avoid that for now.\n\nThe RenderStep requiresStencil/MSAA are meant to be triggers so that if they are true for any recorded step in a DrawPass, then we\u0027d make sure the RenderPass was setup for stencil or msaa. The GraphicsPipeline then is set to match the RenderPassDesc, and we can assert that if the RenderStep needed stencil, etc. the RPDesc provides it. If the RS didn\u0027t need it, then the RPDesc can but doesn\u0027t have to provide it. We would just need to account for this combination during pre-compiling for the render steps that can be used in either mode.\n\n(NOTE: the fill-bounds step right now doesn\u0027t declare it requires msaa, but that\u0027s pedantic. Since it\u0027s always used with a stenciling step that does require msaa for the path curves, it would never need to be combined with a non-msaa RPDesc).",
+      "parentUuid": "4e93c2ed_d0544106",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d17d3e33_43096677",
@@ -31,6 +49,46 @@
       "writtenOn": "2021-12-08T16:42:17Z",
       "side": 1,
       "message": "Is there any reason to not mix these in w/ the other ones ?",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8d6ee67_0e36ab5d",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:21:55Z",
+      "side": 1,
+      "message": "We could easily change this to a single getter for DepthStencilType, that would simplify DrawContext::snapRenderPassTask.",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 62
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93855661_bce08dbc",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:21:55Z",
+      "side": 1,
+      "message": "Add a TODO: for caching these? Or is that meant to be handled automatically by ResourceProvider as part of the \"find\".\n\nBased on Greg\u0027s ideas about deferring full command buffer writing until scheduling on the main thread, we wouldn\u0027t need to ref the ds texture until scheduling and it\u0027d more likely to be reused across recordings. But that\u0027s up in the air, I\u0027m only bringing up since this seems like a useful place to mark in the code for future updating.",
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -60,6 +118,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6181e15_3536e013",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:21:55Z",
+      "side": 1,
+      "message": "Alternatively, maybe it\u0027s time to have ResourceProvider::findOrCreateGraphicsPipeline() pass in the RenderPassDesc, so that MtlGraphicsPipeline::Make can just rely on RPDesc\u0027s state since the RenderStep may be a non-stencil\u0027ing step that\u0027s promoted to a stencil rp.",
+      "parentUuid": "433a6e94_756c3cda",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29f79b3b_32c92314",
         "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
         "patchSetId": 4
@@ -71,6 +153,29 @@
       "writtenOn": "2021-12-08T16:42:17Z",
       "side": 1,
       "message": "In the case where it is depthOnly, do we need to set stencilAttachmentPixelFormat to MTLPixelFormatInvalid?",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b53255_fa51d075",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T17:21:55Z",
+      "side": 1,
+      "message": "Wdyt about just having one static DepthStencilSettings object that\u0027s shared by the testing RenderSteps?",
+      "range": {
+        "startLine": 196,
+        "startChar": 51,
+        "endLine": 204,
+        "endChar": 26
+      },
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
