@@ -321,6 +321,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         passBounds.join(draw.fClip.drawBounds());
         drawPass->fRequiresStencil |= draw.fRenderer.requiresStencil();
+        drawPass->fRequiresDepth |= draw.fRenderer.requiresDepth();
         drawPass->fRequiresMSAA |= draw.fRenderer.requiresMSAA();
     }
 

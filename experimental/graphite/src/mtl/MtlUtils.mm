@@ -69,6 +69,9 @@ MTLPixelFormat DepthStencilTypeToFormat(DepthStencilType type) {
         case DepthStencilType::kDepthStencil:
             // MTLPixelFormatDepth24Unorm_Stencil8 is supported on Mac family GPUs.
             return MTLPixelFormatDepth32Float_Stencil8;
+        default:
+            SkASSERT(false);
+            return MTLPixelFormatInvalid;
     }
 }
 
