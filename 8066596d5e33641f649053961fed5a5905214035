@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c497ead6_2fcc22b0",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-08T20:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "665b07ed_2f9026a0",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5b70a62d_3ebbdcb3",
         "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2021-12-08T20:32:38Z",
       "side": 1,
       "message": "Still wondering if there\u0027s a way to avoid multiple inheritance here.  A couple of ideas (not for this CL):\n\n1) make SkSLEffectBase a template inheriting from DiscardableAdapterBase\n\n2) use composition instead of inheritance for SkSLEffectBase (refactored as SkSLContainer or something)",
+      "range": {
+        "startLine": 126,
+        "startChar": 32,
+        "endLine": 126,
+        "endChar": 53
+      },
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eccbce0_334d05aa",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-08T20:46:10Z",
+      "side": 1,
+      "message": "I agree it would be nice, we can look into those options. Also just to note here, this would be easier if we had some sort of CustomRenderNode that wraps either an SkSLNode or an ExternalColorFilterNode to handle both cases.",
+      "parentUuid": "5b70a62d_3ebbdcb3",
       "range": {
         "startLine": 126,
         "startChar": 32,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f8d1e6d_7cabe9b5",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-08T20:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39d84aef_6fe6e762",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3c14f63_7c14d72f",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-12-08T20:32:38Z",
       "side": 1,
       "message": "nit: line break",
+      "revId": "8066596d5e33641f649053961fed5a5905214035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4594a2ec_cf9d6482",
+        "filename": "modules/skottie/src/effects/SkSLEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-08T20:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3c14f63_7c14d72f",
       "revId": "8066596d5e33641f649053961fed5a5905214035",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
