@@ -9,13 +9,20 @@
 
 #include "include/private/SkColorData.h"
 
+#include "experimental/graphite/include/Recorder.h"
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/DrawList.h"
 #include "experimental/graphite/src/DrawPass.h"
 #include "experimental/graphite/src/RenderPassTask.h"
+#include "experimental/graphite/src/ResourceTypes.h"
 #include "experimental/graphite/src/TextureProxy.h"
 #include "experimental/graphite/src/geom/BoundsManager.h"
 #include "experimental/graphite/src/geom/Shape.h"
+
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/ContextPriv.h"
+#include "experimental/graphite/src/Gpu.h"
 
 namespace skgpu {
 
@@ -114,9 +121,29 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
     // the moment we should have only one drawPass.
     SkASSERT(fDrawPasses.size() == 1);
     RenderPassDesc desc;
-    desc.fColorAttachment.fTextureInfo = fDrawPasses[0]->target()->textureInfo();
-    std::tie(desc.fColorAttachment.fLoadOp, desc.fColorAttachment.fStoreOp) = fDrawPasses[0]->ops();
-    desc.fClearColor = fDrawPasses[0]->clearColor();
+    auto& drawPass = fDrawPasses[0];
+    desc.fColorAttachment.fTextureInfo = drawPass->target()->textureInfo();
+    std::tie(desc.fColorAttachment.fLoadOp, desc.fColorAttachment.fStoreOp) = drawPass->ops();
+    desc.fClearColor = drawPass->clearColor();
+
+    DepthStencilType dsType = DepthStencilType::kNone;
+    if (drawPass->requiresDepth() && drawPass->requiresStencil()) {
+        dsType = DepthStencilType::kDepthStencil;
+    } else if (drawPass->requiresDepth()) {
+        dsType = DepthStencilType::kDepthOnly;
+    } else if (drawPass->requiresStencil()) {
+        dsType = DepthStencilType::kStencilOnly;
+    }
+    if (dsType != DepthStencilType::kNone) {
+        const Caps* caps = recorder->context()->priv().gpu()->caps();
+        desc.fDepthStencilAttachment.fTextureInfo =
+                caps->getDefaultDepthStencilTextureInfo(dsType,
+                                                        1 /*sampleCount*/, // TODO: MSAA
+                                                        Protected::kNo);
+        // TODO: handle clears
+        desc.fDepthStencilAttachment.fLoadOp = LoadOp::kDiscard;
+        desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
+    }
 
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
