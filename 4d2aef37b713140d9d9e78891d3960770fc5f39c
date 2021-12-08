@@ -34,6 +34,24 @@
       "parentUuid": "99c5671d_fa78b442",
       "revId": "4d2aef37b713140d9d9e78891d3960770fc5f39c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecb86cb0_9c4c9279",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-08T15:34:46Z",
+      "side": 1,
+      "message": "Yeah. The API is enormous. Neat tip: The ImGui \"demo\" that includes all of the different widgets/capabilities is included in Viewer. Just hit \u0027g\u0027 to bring it up. The code for it is in third_party/externals/imgui/imgui_demo.cpp, so you can see what API is used when you find a thing you like. 😊",
+      "parentUuid": "ebe288d9_9db08347",
+      "revId": "4d2aef37b713140d9d9e78891d3960770fc5f39c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
