@@ -94,8 +94,8 @@ public:
         return this->makeStream();
     }
     std::unique_ptr<SkFontData> onMakeFontData() const override {
-        return std::make_unique<SkFontData>(this->makeStream(), fIndex,
-                                              fAxes.begin(), fAxes.count());
+        return std::make_unique<SkFontData>(
+                this->makeStream(), fIndex, fAxes.begin(), fAxes.count(), nullptr, 0);
     }
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
         std::unique_ptr<SkFontData> data = this->cloneFontData(args);
@@ -448,7 +448,7 @@ protected:
         if (!fScanner.scanFont(stream.get(), ttcIndex, &name, &style, &isFixedPitch, nullptr)) {
             return nullptr;
         }
-        auto data = std::make_unique<SkFontData>(std::move(stream), ttcIndex, nullptr, 0);
+        auto data = std::make_unique<SkFontData>(std::move(stream), ttcIndex, nullptr, 0, nullptr, 0);
         return sk_sp<SkTypeface>(new SkTypeface_AndroidStream(std::move(data),
                                                               style, isFixedPitch, name));
     }
@@ -470,8 +470,11 @@ protected:
         Scanner::computeAxisValues(axisDefinitions, args.getVariationDesignPosition(),
                                    axisValues, name);
 
+        // TODO: Looks like font arguments should contain a fully resolved palette, and the
+        // overrides should be computed elsewhere, fontscanner?
         auto data = std::make_unique<SkFontData>(std::move(stream), args.getCollectionIndex(),
-                                                   axisValues.get(), axisDefinitions.count());
+                                                 axisValues.get(), axisDefinitions.count(),
+                                                 nullptr, 0);
         return sk_sp<SkTypeface>(new SkTypeface_AndroidStream(std::move(data),
                                                               style, isFixedPitch, name));
     }

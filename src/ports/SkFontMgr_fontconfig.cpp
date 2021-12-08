@@ -541,7 +541,9 @@ public:
             return nullptr;
         }
         // TODO: FC_VARIABLE and FC_FONT_VARIATIONS
-        return std::make_unique<SkFontData>(std::move(stream), index, nullptr, 0);
+        return std::make_unique<SkFontData>(std::move(stream), index,
+                                            nullptr, 0,
+                                            nullptr, 0);
     }
 
     ~SkTypeface_fontconfig() override {
@@ -966,7 +968,9 @@ protected:
             return nullptr;
         }
 
-        auto data = std::make_unique<SkFontData>(std::move(stream), ttcIndex, nullptr, 0);
+        auto data = std::make_unique<SkFontData>(std::move(stream), ttcIndex,
+                                                 nullptr, 0,
+                                                 nullptr, 0);
         return sk_sp<SkTypeface>(new SkTypeface_stream(std::move(data), std::move(name),
                                                        style, isFixedWidth));
     }
@@ -988,8 +992,10 @@ protected:
         Scanner::computeAxisValues(axisDefinitions, args.getVariationDesignPosition(),
                                    axisValues, name);
 
+        // TODO: Support palette overrides here.
         auto data = std::make_unique<SkFontData>(std::move(stream), args.getCollectionIndex(),
-                                                   axisValues.get(), axisDefinitions.count());
+                                                 axisValues.get(), axisDefinitions.count(),
+                                                 nullptr, 0);
         return sk_sp<SkTypeface>(new SkTypeface_stream(std::move(data), std::move(name),
                                                        style, isFixedPitch));
     }

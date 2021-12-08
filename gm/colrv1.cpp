@@ -87,6 +87,26 @@ protected:
 
         fEmojiFont.fTypeface = MakeResourceAsTypeface("fonts/more_samples-glyf_colr_1.ttf");
 
+        SkFontArguments::PaletteOverride::ColorOverride colorOverrides[10] = {{0, 0xFF001000},
+                                                                              {1, 0xFF001800},
+                                                                              {2, 0xFF002000},
+                                                                              {3, 0xFF002800},
+                                                                              {4, 0xFF003000},
+                                                                              {5, 0xFF003800},
+                                                                              {6, 0xFF004000},
+                                                                              {7, 0xFF004800},
+                                                                              {8, 0xFF005000},
+                                                                              {9, 0xFF005800}};
+        SkFontArguments::PaletteOverride paletteOverride;
+        paletteOverride.basePalette = 0;
+        paletteOverride.colorOverrides = colorOverrides;
+        paletteOverride.colorOverrideCount = 10;
+
+        SkFontArguments cloneArguments;
+        cloneArguments.setPaletteOverride(paletteOverride);
+
+        fEmojiFont.fTypeface = fEmojiFont.fTypeface->makeClone(cloneArguments);
+
         switch (fTestType) {
             case kSkiaSampleFont:
                 SkASSERT(false);
