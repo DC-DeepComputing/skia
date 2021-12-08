@@ -70,7 +70,8 @@ public:
         , fWords(paragraph->fWords)
         , fBidiRegions(paragraph->fBidiRegions)
         , fUTF8IndexForUTF16Index(paragraph->fUTF8IndexForUTF16Index)
-        , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index) { }
+        , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index)
+        , fNoFallback(paragraph->fNoFallback) { }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -83,6 +84,7 @@ public:
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
     SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
     SkTArray<size_t, true> fUTF16IndexForUTF8Index;
+    bool fNoFallback;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -248,6 +250,7 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     for (auto& run : paragraph->fRuns) {
       run.setOwner(paragraph);
     }
+    paragraph->fNoFallback = entry->fValue->fNoFallback;
 }
 
 void ParagraphCache::printStatistics() {

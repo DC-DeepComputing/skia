@@ -405,7 +405,9 @@ class SkUnicode_icu : public SkUnicode {
             const char* ch = utf8;
             while (ch < end) {
                 auto unichar = utf8_next(&ch, end);
-                if (isHardLineBreak(unichar)) {
+
+                auto property = sk_u_getIntPropertyValue(unichar, UCHAR_LINE_BREAK);
+                if ( property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK) {
                     setBreak(ch - utf8, UBRK_LINE_HARD);
                 }
             }
@@ -455,7 +457,7 @@ public:
         return sk_u_isspace(utf8);
     }
 
-    static bool isHardLineBreak(SkUnichar utf8) {
+    bool isHardLineBreak(SkUnichar utf8) override {
         auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }

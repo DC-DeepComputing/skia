@@ -80,6 +80,8 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fUnicode(std::move(unicode))
 {
     SkASSERT(fUnicode);
+    fNoFallback = false;
+    fGraphemeBreaksComputed = false;
 }
 
 ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
@@ -113,7 +115,6 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = SkScalarFloorToScalar(rawWidth);
-
     if ((!SkScalarIsFinite(rawWidth) || fLongestLine <= floorWidth) &&
         fState >= kLineBroken &&
          fLines.size() == 1 && fLines.front().ellipsis() == nullptr) {
@@ -291,6 +292,16 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                                            : CodeUnitFlags::kSoftLineBreakBefore;
     }
 
+    return true;
+}
+
+bool ParagraphImpl::computeGraphemeBreaks() {
+    if (nullptr == fUnicode) {
+        return false;
+    }
+    if (fGraphemeBreaksComputed) {
+        return true;
+    }
     // Get graphemes
     std::vector<SkUnicode::Position> graphemes;
     if (!fUnicode->getGraphemes(fText.c_str(), fText.size(), &graphemes)) {
@@ -299,7 +310,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     for (auto pos : graphemes) {
         fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
     }
-
+    fGraphemeBreaksComputed = true;
     return true;
 }
 
@@ -383,6 +394,7 @@ SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
 
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+
     int cluster_count = 1;
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
@@ -1008,6 +1020,7 @@ void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint)
 }
 
 TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
+    this->computeGraphemeBreaks();
     while (utf8 > 0 &&
           (fCodeUnitProperties[utf8] & CodeUnitFlags::kGraphemeStart) == 0) {
         --utf8;
@@ -1016,6 +1029,7 @@ TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
 }
 
 TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
+    this->computeGraphemeBreaks();
     while (utf8 < fText.size() &&
           (fCodeUnitProperties[utf8] & CodeUnitFlags::kGraphemeStart) == 0) {
         ++utf8;

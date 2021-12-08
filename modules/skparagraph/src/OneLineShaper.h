@@ -22,7 +22,7 @@ public:
         , fBaselineShift(0.0f)
         , fAdvance(SkPoint::Make(0.0f, 0.0f))
         , fUnresolvedGlyphs(0)
-        , fUniqueRunId(paragraph->fRuns.size()){ }
+        , fUniqueRunId(paragraph->fRuns.size()) { }
 
     bool shape();
 
@@ -99,6 +99,7 @@ private:
     void addFullyResolved();
     void addUnresolvedWithRun(GlyphRange glyphRange);
     void sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnresolvedBLock);
+    bool isResolved();
     ClusterRange normalizeTextRange(GlyphRange glyphRange);
     void fillGaps(size_t);
 
