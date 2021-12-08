@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "177d812a_edb14954",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "Done - went with \"devPosition\"",
+      "parentUuid": "a6a53661_1832bd0c",
+      "range": {
+        "startLine": 64,
+        "startChar": 46,
+        "endLine": 64,
+        "endChar": 99
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53ea72cf_fc4533a2",
@@ -87,6 +111,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e37891_a7d0306c",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53ea72cf_fc4533a2",
+      "range": {
+        "startLine": 68,
+        "startChar": 34,
+        "endLine": 68,
+        "endChar": 96
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ca1b731_453123b4",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19a700c7_bca972f1",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 33
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb840559_bb1d0628",
@@ -100,6 +172,30 @@
       "writtenOn": "2021-12-08T17:03:18Z",
       "side": 1,
       "message": "I think we should just hard code this to 2 for now, have it be a static constexpr in this function.",
+      "range": {
+        "startLine": 306,
+        "startChar": 21,
+        "endLine": 306,
+        "endChar": 39
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a0873ba_e6024764",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "For now, I\u0027ve just made a ShaderType enum in this file.",
+      "parentUuid": "bb840559_bb1d0628",
       "range": {
         "startLine": 306,
         "startChar": 21,
@@ -157,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a474dc70_f506164f",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "SkSL changes the name(s) for us",
+      "parentUuid": "02c2a9f0_2a805b65",
+      "range": {
+        "startLine": 341,
+        "startChar": 80,
+        "endLine": 341,
+        "endChar": 90
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a981b4e5_915c83ca",
@@ -187,6 +307,24 @@
       "writtenOn": "2021-12-08T17:25:07Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "a981b4e5_915c83ca",
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23a01cf6_2b5e2bdc",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T18:06:44Z",
+      "side": 1,
+      "message": "Same as above",
       "parentUuid": "a981b4e5_915c83ca",
       "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
