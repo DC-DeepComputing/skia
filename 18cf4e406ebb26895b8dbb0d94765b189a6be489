@@ -206,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81fd77ca_eccb67bf",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 22
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-08T18:13:20Z",
+      "side": 1,
+      "message": "Sounds good, up to you if you want to switch it to enum class.",
+      "parentUuid": "8a0873ba_e6024764",
+      "range": {
+        "startLine": 306,
+        "startChar": 21,
+        "endLine": 306,
+        "endChar": 39
+      },
+      "revId": "18cf4e406ebb26895b8dbb0d94765b189a6be489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02c2a9f0_2a805b65",
