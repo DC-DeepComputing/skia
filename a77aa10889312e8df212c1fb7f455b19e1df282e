@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e93c2ed_d0544106",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T16:33:07Z",
+      "side": 1,
+      "message": "A couple of thoughts on this:\n\nI\u0027m not 100% happy with the requiresDepth/requiresStencil translation to DepthStencilType. I\u0027m wondering if one or both should be a set of flags instead.\n\nOne thing I ran across in setting up CommandBufferTest is that the DepthStencil pixelformat needs to match in both the GraphicsPipeline and the RenderPass. So if we wanted to have multiple RenderSteps with differing stencil/depth needs in the same RenderPass, we would need some way to ensure that the stencil/depth part of the GraphicsPipeline for each one gets set up to match the RenderPass, not each RenderStep. I\u0027m not sure if there\u0027s a good way to do that, but admittedly I haven\u0027t given it much thought yet.",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
