@@ -16,6 +16,63 @@
       "message": "A couple of thoughts on this:\n\nI\u0027m not 100% happy with the requiresDepth/requiresStencil translation to DepthStencilType. I\u0027m wondering if one or both should be a set of flags instead.\n\nOne thing I ran across in setting up CommandBufferTest is that the DepthStencil pixelformat needs to match in both the GraphicsPipeline and the RenderPass. So if we wanted to have multiple RenderSteps with differing stencil/depth needs in the same RenderPass, we would need some way to ensure that the stencil/depth part of the GraphicsPipeline for each one gets set up to match the RenderPass, not each RenderStep. I\u0027m not sure if there\u0027s a good way to do that, but admittedly I haven\u0027t given it much thought yet.",
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17d3e33_43096677",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T16:42:17Z",
+      "side": 1,
+      "message": "Is there any reason to not mix these in w/ the other ones ?",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433a6e94_756c3cda",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T16:42:17Z",
+      "side": 1,
+      "message": "Since this occurs twice should it be somewhere common? Could the renderStep return it for us ?",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f79b3b_32c92314",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T16:42:17Z",
+      "side": 1,
+      "message": "In the case where it is depthOnly, do we need to set stencilAttachmentPixelFormat to MTLPixelFormatInvalid?",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
