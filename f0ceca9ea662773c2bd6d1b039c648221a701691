@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "781505a6_5ef923bf",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-08T21:36:30Z",
+      "side": 1,
+      "message": "Google style has been to prefer make_unique/make_shared over `unique_ptr\u003cT\u003e(new TSubclass)`: http://go/totw/126\n\nOf course, we generally don\u0027t hold ourselves to Google style rules, sk_sp isn\u0027t literally a shared_ptr, and sk_make_sp isn\u0027t actually make_shared. I think the rationale and principles in this TOTW are solid and still apply in this case, but I don\u0027t feel strongly. If you do, I can undo those lines.",
+      "parentUuid": "71d97230_6b39d828",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f83920e0_5cc0fc87",
         "filename": "tools/viewer/Viewer.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-08T21:19:46Z",
       "side": 1,
       "message": "Note sure why anything was ever reversed or why we would want to? The registries are populated by static initialization which has no defined order, though I suppose this was being reversed because some linker happened to lay things out so they were mostly alphabetical? Did we mean to sort each set of slides by name or something?",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3fa399e_d8f6315e",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-08T21:36:30Z",
+      "side": 1,
+      "message": "I can make it a sort instead. Previously, the orders were almost entirely reverse-alphabetical; probably the linker goes in alphabetical file order, and then the Registry reverses the order by virtue of pushing into and popping out of a singly linked list. But of course there\u0027s no guarantee.",
+      "parentUuid": "f83920e0_5cc0fc87",
       "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
