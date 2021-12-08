@@ -193,6 +193,7 @@ public:
     void resolveStrut();
 
     bool computeCodeUnitProperties();
+    bool computeGraphemeBreaks();
 
     void buildClusterTable();
     void spaceGlyphs();
@@ -222,6 +223,7 @@ public:
     }
 
     bool codeUnitHasProperty(size_t index, CodeUnitFlags property) const { return (fCodeUnitProperties[index] & property) == property; }
+    bool mayNeedGraphemeBreaks() const { return !fNoFallback || fTextStyles.size() > 1; }
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
 
@@ -274,6 +276,10 @@ private:
     SkScalar fMaxWidthWithTrailingSpaces;
 
     std::unique_ptr<SkUnicode> fUnicode;
+
+    // ICU optimizations for ICU grapheme breaks
+    bool fNoFallback;
+    bool fGraphemeBreaksComputed;
 };
 }  // namespace textlayout
 }  // namespace skia
