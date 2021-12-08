@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036c918d_6b06ad31",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-08T14:50:09Z",
+      "side": 1,
+      "message": "nit: meant to put this after \"vertices\" ? (like below)",
+      "range": {
+        "startLine": 1938,
+        "startChar": 49,
+        "endLine": 1938,
+        "endChar": 50
+      },
+      "revId": "aaba207a4cca89ae17c241b257c10f892944ccbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
