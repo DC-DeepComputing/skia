@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8661dc_d37a25d6",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T22:16:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abee0a9b_d95b05fe",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f83920e0_5cc0fc87",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "I think we want this sorted, let\u0027s just sort it. It\u0027s not like it will take a significant amount of time and will make our lives better in the future.",
       "parentUuid": "f3fa399e_d8f6315e",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3dd14a7_c858fc34",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T22:16:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf63a826_3e385c13",
       "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
