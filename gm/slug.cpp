@@ -105,4 +105,63 @@ private:
 };
 
 DEF_GM(return new SlugGM("hamburgefons");)
+
+class EmptySlugGM : public skiagm::GM {
+public:
+    EmptySlugGM() = default;
+
+protected:
+    const char* kText = " ";
+    void onOnceBeforeDraw() override {
+        fTypeface = ToolUtils::create_portable_typeface("serif", SkFontStyle());
+        SkFont font(fTypeface);
+        size_t txtLen = strlen(kText);
+        int glyphCount = font.countText(kText, txtLen, SkTextEncoding::kUTF8);
+
+        fGlyphs.append(glyphCount);
+        font.textToGlyphs(kText, txtLen, SkTextEncoding::kUTF8, fGlyphs.begin(), glyphCount);
+    }
+
+    SkString onShortName() override {
+        return SkString("slug_empty");
+    }
+
+    SkISize onISize() override {
+        return SkISize::Make(300, 100);
+    }
+
+    void onDraw(SkCanvas* canvas) override {
+        sk_sp<SkTextBlob> blob(this->makeBlob());
+        SkFont font(fTypeface);
+        SkPaint p;
+        p.setAntiAlias(true);
+        sk_sp<GrSlug> slug = GrSlug::ConvertBlob(canvas, *blob, {10, 10}, p);
+        if (slug != nullptr) {
+            canvas->drawString("Bad bad bad! Slug should not be created.", 10, 40, font, p);
+        } else {
+            canvas->drawString("this is testing the empty blob", 10, 40, font, p);
+        }
+    }
+
+private:
+    sk_sp<SkTextBlob> makeBlob() {
+        SkTextBlobBuilder builder;
+
+        SkFont font;
+        font.setSubpixel(true);
+        font.setEdging(SkFont::Edging::kAntiAlias);
+        font.setTypeface(fTypeface);
+        font.setSize(16);
+
+        const SkTextBlobBuilder::RunBuffer& buf = builder.allocRun(font, fGlyphs.count(), 0, 0);
+        memcpy(buf.glyphs, fGlyphs.begin(), fGlyphs.count() * sizeof(uint16_t));
+        return builder.make();
+    }
+
+    SkTDArray<uint16_t> fGlyphs;
+    sk_sp<SkTypeface>   fTypeface;
+    using INHERITED = skiagm::GM;
+};
+
+DEF_GM(return new EmptySlugGM();)
 #endif
