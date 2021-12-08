@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f76e2ad_9ad5d28b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-08T22:55:55Z",
+      "side": 1,
+      "message": "Things get a bit better with this. Some of the rectangles change color.",
+      "revId": "2351a44c321d63daf13c2228077d7145caaa87b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
