@@ -72,11 +72,14 @@ public:
 
 class SkSimpleMatrixProvider : public SkMatrixProvider {
 public:
-    SkSimpleMatrixProvider(const SkMatrix& localToDevice)
-        : SkMatrixProvider(localToDevice) {}
+    SkSimpleMatrixProvider(const SkMatrix& localToDevice, bool hitsPixelCenters = true)
+            : SkMatrixProvider(localToDevice), fHitsPixelsCenters(hitsPixelCenters) {}
 
-    // No trickiness to reason about here... we take this case to be axiomatically true.
-    bool localToDeviceHitsPixelCenters() const override { return true; }
+    // Usually true (when constructing a provider for a one-off draw to a bitmap, etc...).
+    bool localToDeviceHitsPixelCenters() const override { return fHitsPixelsCenters; }
+
+private:
+    bool fHitsPixelsCenters;
 };
 
 #endif
