@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fed8013d_28db180c",
+        "filename": "gm/slug.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-08T19:58:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "120e153c_1b9b5d16",
+      "revId": "0621deb9aa6ef70ccd6d0c6dd0bed6553c52dfa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b7544b3_76b64c96",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "866b8ca2_bc992fb7",
+        "filename": "gm/slug.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-08T19:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b7544b3_76b64c96",
+      "revId": "0621deb9aa6ef70ccd6d0c6dd0bed6553c52dfa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88123712_75b1f1ad",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-12-08T18:06:14Z",
       "side": 1,
       "message": "afaik we\u0027ve stopped doing this",
+      "revId": "0621deb9aa6ef70ccd6d0c6dd0bed6553c52dfa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8799354d_8cda9878",
+        "filename": "gm/slug.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-08T19:58:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "88123712_75b1f1ad",
       "revId": "0621deb9aa6ef70ccd6d0c6dd0bed6553c52dfa1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
