@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88334030_647b1605",
+        "filename": "src/gpu/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-08T15:15:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ad16d20_7ecb3bdf",
+      "range": {
+        "startLine": 181,
+        "startChar": 12,
+        "endLine": 181,
+        "endChar": 44
+      },
+      "revId": "7c6832824d502f1b57e313f7892090a6c87c4a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3125d26_631af70e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-08T14:51:24Z",
       "side": 1,
       "message": "How were we not needing to pass this in previously?\n\nI am also not clear what happens, or what the right value is, if this is an FP that\u0027s not the root. A child FP that was explicitly sampled by a parent would still have \u0027hasCoordsParam\u0027 set to true, right? but it shouldn\u0027t be invoked with the GP\u0027s local coord.",
+      "range": {
+        "startLine": 186,
+        "startChar": 28,
+        "endLine": 186,
+        "endChar": 52
+      },
+      "revId": "7c6832824d502f1b57e313f7892090a6c87c4a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f93bcefa_fdd48c7f",
+        "filename": "src/gpu/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-08T15:15:28Z",
+      "side": 1,
+      "message": "Second question: This function is only called for top-level FPs. Renamed it to make that apparent.\n\nFirst question: It was just never the case before that a top-level FP had hasCoordsParam\u003dtrue until this change.",
+      "parentUuid": "a3125d26_631af70e",
       "range": {
         "startLine": 186,
         "startChar": 28,
