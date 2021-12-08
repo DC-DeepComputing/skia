@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abee0a9b_d95b05fe",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T21:52:00Z",
+      "side": 1,
+      "message": "I disagree with a huge number of things done in google3 either because they only work in google3 or because they\u0027re just bad ideas. The whole \"use make not new\" is just knee jerk over-reaction to years of not having any good smart pointers and is wishful thinking that writing a dsl in C++ to replace C++ will make everything alright. In any event, I\u0027m don\u0027t actually care that much, I was mostly just objecting to the idea in the commit message that this is done for clarity. Maybe if the commit message said this was done for memory safety and conformity. But it isn\u0027t clarity.",
+      "parentUuid": "781505a6_5ef923bf",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f83920e0_5cc0fc87",
         "filename": "tools/viewer/Viewer.cpp",
         "patchSetId": 2
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I can make it a sort instead. Previously, the orders were almost entirely reverse-alphabetical; probably the linker goes in alphabetical file order, and then the Registry reverses the order by virtue of pushing into and popping out of a singly linked list. But of course there\u0027s no guarantee.",
       "parentUuid": "f83920e0_5cc0fc87",
+      "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf63a826_3e385c13",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-08T21:52:00Z",
+      "side": 1,
+      "message": "I think we want this sorted, let\u0027s just sort it. It\u0027s not like it will take a significant amount of time and will make our lives better in the future.",
+      "parentUuid": "f3fa399e_d8f6315e",
       "revId": "f0ceca9ea662773c2bd6d1b039c648221a701691",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
