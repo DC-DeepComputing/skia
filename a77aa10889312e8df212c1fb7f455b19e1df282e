@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da70099a_c7524817",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d9a24ec_91743fe1",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8d6ee67_0e36ab5d",
@@ -120,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2f45a26_504ce873",
+        "filename": "experimental/graphite/src/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "With the depthstencil flag changes this is possible but I\u0027d like to do it as a separate CL, this is getting complicated enough.",
+      "parentUuid": "81dfb676_35d47425",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 62
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93855661_bce08dbc",
         "filename": "experimental/graphite/src/RenderPassTask.cpp",
         "patchSetId": 4
@@ -149,6 +191,24 @@
       "side": 1,
       "message": "\u0027find\u0027 should get a scratch texture for us, yes.",
       "parentUuid": "93855661_bce08dbc",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0738cd87_f0f66fe1",
+        "filename": "experimental/graphite/src/RenderPassTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3c4fb35_6c0cfcf7",
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -226,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1dc990f_b72d3b83",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "After looking into it, this will take a serious amount of revision of how we cache the GraphicsPipelines, as they depend on a hash of the GraphicsPipelineDesc. My suggestion is that I land this as is so Michael can progress, and I\u0027ll revise in a later CL.",
+      "parentUuid": "a17b7f66_0daea7da",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29f79b3b_32c92314",
         "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
         "patchSetId": 4
@@ -255,6 +339,24 @@
       "side": 1,
       "message": "Good catch, yes.",
       "parentUuid": "29f79b3b_32c92314",
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7845381_8bdec27b",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c71c0264_4a7de902",
       "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -296,6 +398,30 @@
       "side": 1,
       "message": "Will do.",
       "parentUuid": "77b53255_fa51d075",
+      "range": {
+        "startLine": 196,
+        "startChar": 51,
+        "endLine": 204,
+        "endChar": 26
+      },
+      "revId": "a77aa10889312e8df212c1fb7f455b19e1df282e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "346fd5fb_e37d3e91",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-08T20:42:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "680bb457_35da9287",
       "range": {
         "startLine": 196,
         "startChar": 51,
