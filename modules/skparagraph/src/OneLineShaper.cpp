@@ -25,13 +25,18 @@ void OneLineShaper::commitRunBuffer(const RunInfo&) {
         SkDebugf("[%zu] %hu %u %f\n", i, fCurrentRun->fGlyphs[i], fCurrentRun->fClusterIndexes[i], fCurrentRun->fPositions[i].fX);
     }
 */
-    // Find all unresolved blocks
-    sortOutGlyphs([&](GlyphRange block){
-        if (block.width() == 0) {
-            return;
-        }
-        addUnresolvedWithRun(block);
-    });
+
+    // For a simple fully resolved run we want to avoid/postpone
+    // querying ICU for grapheme breaks
+    if (!isResolved()) {
+        // Find all unresolved blocks
+        sortOutGlyphs([&](GlyphRange block){
+            if (block.width() == 0) {
+                return;
+            }
+            addUnresolvedWithRun(block);
+        });
+    }
 
     // Fill all the gaps between unresolved blocks with resolved ones
     if (oldUnresolvedCount == fUnresolvedBlocks.size()) {
@@ -296,6 +301,17 @@ void OneLineShaper::addUnresolvedWithRun(GlyphRange glyphRange) {
         }
     }
     fUnresolvedBlocks.emplace_back(unresolved);
+}
+
+bool OneLineShaper::isResolved() {
+    for (size_t i = 0; i < fCurrentRun->size(); ++i) {
+        if (fCurrentRun->fGlyphs[i] == 0) {
+            fCurrentRun->fOwner->fNoFallback = false;
+            fCurrentRun->fOwner->computeGraphemeBreaks();
+            return false;
+        }
+    }
+    return true;
 }
 
 // Glue whitespaces to the next/prev unresolved blocks
@@ -621,6 +637,8 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
 }
 
 bool OneLineShaper::shape() {
+
+    fParagraph->fNoFallback = true;
 
     // The text can be broken into many shaping sequences
     // (by place holders, possibly, by hard line breaks or tabs, too)

@@ -852,6 +852,10 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
 
 void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisitor& visitor) const {
 
+    if (!fOwner->mayNeedGraphemeBreaks()) {
+        fOwner->computeGraphemeBreaks();
+    }
+
     // Walk through all the runs that intersect with the line in visual order
     SkScalar width = 0;
     SkScalar runOffset = 0;
