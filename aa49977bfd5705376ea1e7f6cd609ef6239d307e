@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cde4bfc_70377bcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T20:14:24Z",
+      "side": 1,
+      "message": "Nice. Other than John\u0027s nit about the string wrap, this lgtm!",
+      "revId": "aa49977bfd5705376ea1e7f6cd609ef6239d307e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96b20c43_b270542e",
