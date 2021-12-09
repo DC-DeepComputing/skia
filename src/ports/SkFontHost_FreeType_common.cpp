@@ -506,7 +506,7 @@ inline SkPoint SkVectorProjection(SkPoint a, SkPoint b) {
 }
 
 bool colrv1_configure_skpaint(FT_Face face,
-                              const SkSpan<FT_Color>& palette,
+                              const SkSpan<SkColor>& palette,
                               const SkColor foregroundColor,
                               FT_COLR_Paint colrv1_paint,
                               SkPaint* paint) {
@@ -537,12 +537,12 @@ bool colrv1_configure_skpaint(FT_Face face,
             } else if (palette_index >= palette.size()) {
                 return false;
             } else {
-                U8CPU newAlpha = palette[palette_index].alpha *
+                U8CPU newAlpha = SkColorGetA(palette[palette_index]) *
                                  SkColrV1AlphaToFloat(color_stop.color.alpha);
                 sorted_stops[index].color = SkColorSetARGB(newAlpha,
-                                                           palette[palette_index].red,
-                                                           palette[palette_index].green,
-                                                           palette[palette_index].blue);
+                                                           SkColorGetR(palette[palette_index]),
+                                                           SkColorGetG(palette[palette_index]),
+                                                           SkColorGetB(palette[palette_index]));
             }
         }
 
@@ -573,12 +573,12 @@ bool colrv1_configure_skpaint(FT_Face face,
             } else if (solid.color.palette_index >= palette.size()) {
                 return false;
             } else {
-                U8CPU newAlpha = palette[solid.color.palette_index].alpha *
+                U8CPU newAlpha = SkColorGetA(palette[solid.color.palette_index]) *
                                  SkColrV1AlphaToFloat(solid.color.alpha);
                 color = SkColorSetARGB(newAlpha,
-                                       palette[solid.color.palette_index].red,
-                                       palette[solid.color.palette_index].green,
-                                       palette[solid.color.palette_index].blue);
+                                       SkColorGetR(palette[solid.color.palette_index]),
+                                       SkColorGetG(palette[solid.color.palette_index]),
+                                       SkColorGetB(palette[solid.color.palette_index]));
             }
             paint->setShader(nullptr);
             paint->setColor(color);
@@ -726,7 +726,7 @@ bool colrv1_configure_skpaint(FT_Face face,
 }
 
 void colrv1_draw_paint(SkCanvas* canvas,
-                       const SkSpan<FT_Color>& palette,
+                       const SkSpan<SkColor>& palette,
                        const SkColor foregroundColor,
                        FT_Face face,
                        FT_COLR_Paint colrv1_paint) {
@@ -776,7 +776,7 @@ void colrv1_draw_paint(SkCanvas* canvas,
     }
 }
 
-void colrv1_draw_glyph_with_path(SkCanvas* canvas, const SkSpan<FT_Color>& palette, SkColor foregroundColor, FT_Face face,
+void colrv1_draw_glyph_with_path(SkCanvas* canvas, const SkSpan<SkColor>& palette, SkColor foregroundColor, FT_Face face,
                                  FT_COLR_Paint glyphPaint, FT_COLR_Paint fillPaint) {
     SkASSERT(glyphPaint.format == FT_COLR_PAINTFORMAT_GLYPH);
     SkASSERT(fillPaint.format == FT_COLR_PAINTFORMAT_SOLID ||
@@ -879,7 +879,7 @@ void colrv1_transform(FT_Face face,
 }
 
 bool colrv1_start_glyph(SkCanvas* canvas,
-                        const SkSpan<FT_Color>& palette,
+                        const SkSpan<SkColor>& palette,
                         const SkColor foregroundColor,
                         FT_Face ft_face,
                         uint16_t glyph_id,
@@ -887,7 +887,7 @@ bool colrv1_start_glyph(SkCanvas* canvas,
                         VisitedSet* visited_set);
 
 bool colrv1_traverse_paint(SkCanvas* canvas,
-                           const SkSpan<FT_Color>& palette,
+                           const SkSpan<SkColor>& palette,
                            const SkColor foregroundColor,
                            FT_Face face,
                            FT_OpaquePaint opaque_paint,
@@ -1078,7 +1078,7 @@ SkPath GetClipBoxPath(FT_Face ft_face, uint16_t glyph_id, bool untransformed) {
 }
 
 bool colrv1_start_glyph(SkCanvas* canvas,
-                        const SkSpan<FT_Color>& palette,
+                        const SkSpan<SkColor>& palette,
                         const SkColor foregroundColor,
                         FT_Face ft_face,
                         uint16_t glyph_id,
@@ -1288,22 +1288,32 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(
                 SkPaint paint;
                 paint.setAntiAlias(true);
 
-                FT_Color *palette;
                 FT_Palette_Data palette_data;
-
                 FT_Error err = FT_Palette_Data_Get(face, &palette_data);
                 if (err) {
-                    SK_TRACEFTR(err, "Could not get palette data from %s fontFace.", face->family_name);
+                    SK_TRACEFTR(err, "Could not get palette data from %s fontFace.",
+                                face->family_name);
                     return;
                 }
 
-                err = FT_Palette_Select(face, 0, &palette);
+                SkAutoTArray<SkColor> originalPalette;
+
+                FT_Color* ftPalette;
+                err = FT_Palette_Select(face, 0, &ftPalette);
                 if (err) {
-                    SK_TRACEFTR(err, "Could not get palette from %s fontFace.", face->family_name);
+                    SK_TRACEFTR(err, "Could not get palette colors from %s fontFace.",
+                                face->family_name);
                     return;
                 }
-
-                SkSpan<FT_Color> paletteSpan(palette, palette_data.num_palette_entries);
+                originalPalette.reset(palette_data.num_palette_entries);
+                for (int i = 0; i < palette_data.num_palette_entries; ++i) {
+                    originalPalette[i] = SkColorSetARGB(ftPalette[i].alpha,
+                                                        ftPalette[i].red,
+                                                        ftPalette[i].green,
+                                                        ftPalette[i].blue);
+                }
+                SkSpan<SkColor> paletteSpan(originalPalette.data(),
+                                            palette_data.num_palette_entries);
 
                 FT_Bool haveLayers = false;
 
@@ -1333,11 +1343,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(
                         if (layerColorIndex == 0xFFFF) {
                             paint.setColor(fRec.fForegroundColor);
                         } else {
-                            SkColor color = SkColorSetARGB(palette[layerColorIndex].alpha,
-                                                           palette[layerColorIndex].red,
-                                                           palette[layerColorIndex].green,
-                                                           palette[layerColorIndex].blue);
-                            paint.setColor(color);
+                            paint.setColor(paletteSpan[layerColorIndex]);
                         }
                         SkPath path;
                         if (this->generateFacePath(face, layerGlyphIndex, &path)) {
