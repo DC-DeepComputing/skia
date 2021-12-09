@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214b5d88_fc0b31f8",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:16:05Z",
+      "side": 1,
+      "message": "These are \"impossible\", right? (The loop on L525 verified our child types.) Should we add SkDEBUGFAIL just in case?",
+      "range": {
+        "startLine": 617,
+        "startChar": 0,
+        "endLine": 618,
+        "endChar": 88
+      },
+      "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7cb638_bf10a7fd",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2083,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:16:05Z",
+      "side": 1,
+      "message": "Just a thought, not related to this CL per se: I vaguely recall problems when returning \u0027nothing\u0027 like this. Might be safer to return the color they passed us unchanged. (The compile will fail regardless, just needs to fail safely)",
+      "range": {
+        "startLine": 2083,
+        "startChar": 19,
+        "endLine": 2083,
+        "endChar": 33
+      },
+      "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
