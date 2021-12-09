@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66892f0f_de70e95d",
+        "filename": "src/sksl/SkSLOperators.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:09:14Z",
+      "side": 1,
+      "message": "Awesome!",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 19
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260bf92c_a4513254",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:09:14Z",
+      "side": 1,
+      "message": "tiny nit: If you write the comment like this (with no spaces and an equals sign), ClangTidy will verify that the parameter names actually match the comment. i.e., if someone renames it later, ClangTidy will generate a warning.\n\n   /*foldResults\u003d*/",
+      "range": {
+        "startLine": 871,
+        "startChar": 75,
+        "endLine": 871,
+        "endChar": 85
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
