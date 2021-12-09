@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "625b341e_ecbb7278",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T17:30:28Z",
+      "side": 1,
+      "message": "Is there any way to make RuntimeEffectVMCallbacks more agnostic to the type here, to avoid messing with SkMatrixProvider at all? It feels undesirable to have this refactor change the types of matrix that need to exist.\n\nProvide it with the SkMatrixProvider* ?\nTemplate it on the matrix provider type?",
+      "parentUuid": "8614db6f_aa8128f5",
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40e6f09a_f6493b0b",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 3
