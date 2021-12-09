@@ -93,6 +93,30 @@
       },
       "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3768ddc2_d7f04de2",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2083,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:33:11Z",
+      "side": 1,
+      "message": "We could just return Coord.xxxx for sampleShader. Any valid ID works.",
+      "parentUuid": "96760e87_03ee5819",
+      "range": {
+        "startLine": 2083,
+        "startChar": 19,
+        "endLine": 2083,
+        "endChar": 33
+      },
+      "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
