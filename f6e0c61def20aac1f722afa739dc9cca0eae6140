@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cefb96b_9233932d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T17:24:25Z",
+      "side": 1,
+      "message": "OK, I think I get the rationale a bit--we wanted one MatrixProvider type that could stand in for for a SimpleMatrixProvider(I()) or an OverrideMatrixProvider(I()), so that RuntimeEffectVMCallbacks could contain less code. But it\u0027s non-obvious and def seems worthy of its own CL.",
+      "parentUuid": "94e62b93_0f49fcc9",
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40e6f09a_f6493b0b",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 3
