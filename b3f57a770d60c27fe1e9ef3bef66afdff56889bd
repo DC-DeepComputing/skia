@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a17b0b9f_b2790768",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T19:37:16Z",
+      "side": 1,
+      "message": "OK. I think this comment finally explains what\u0027s happening. More-or-less. I hope. Along the way, this CL also fixed bugs in SkParticleBinding, and several spots in runtime blenders and runtime color filters (where we used SkSimpleMatrixProvider, which wasn\u0027t correct).",
+      "revId": "b3f57a770d60c27fe1e9ef3bef66afdff56889bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
