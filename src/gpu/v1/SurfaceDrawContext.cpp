@@ -365,7 +365,7 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
                                                  control);
 
     sk_sp<GrTextBlob> blob;
-    GrTextBlobCache* textBlobCache = fContext->priv().getTextBlobCache();
+    GrTextBlobCache* const textBlobCache = fContext->priv().getTextBlobCache();
     if (canCache) {
         blob = textBlobCache->find(key);
     }
@@ -378,7 +378,9 @@ void SurfaceDrawContext::drawGlyphRunListWithCache(const GrClip* clip,
             textBlobCache->remove(blob.get());
         }
 
-        blob = GrTextBlob::Make(glyphRunList, paint, positionMatrix, control, &fGlyphPainter);
+        const bool padAtlas = fContext->priv().options().fSupportBilerpFromGlyphAtlas;
+        blob = GrTextBlob::Make(
+                glyphRunList, paint, positionMatrix, padAtlas, control, &fGlyphPainter);
 
         if (canCache) {
             blob->addKey(key);
