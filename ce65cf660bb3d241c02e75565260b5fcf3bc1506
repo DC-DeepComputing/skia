@@ -16,6 +16,24 @@
       "message": "This fixes issues locally where the error message looks like\n\n../../src/gpu/GrMemoryPool.h:91:16: error: offset of on non-standard-layout type \u0027GrMemoryPool\u0027 [-Werror,-Winvalid-offsetof]\n        return offsetof(GrMemoryPool, fAllocator) + fAllocator.preallocSize();\n               ^                      ~~~~~~~~~~\n/usr/local/google/home/bungeman/src/chromium/src/third_party/llvm-build/Release+Asserts/lib/clang/14.0.0/include/stddef.h:104:24: note: expanded from macro \u0027offsetof\u0027\n#define offsetof(t, d) __builtin_offsetof(t, d)\n",
       "revId": "ce65cf660bb3d241c02e75565260b5fcf3bc1506",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72f58095_d1c53936",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-09T18:42:55Z",
+      "side": 1,
+      "message": "Interestingly, this also appears to now happen with my system installed clang (the error my previous comment was from Chromium clang).\n\n    .\nclang++ --version\nDebian clang version 11.1.0-4+build2\n../../src/gpu/GrMemoryPool.h:91:16: error: offset of on non-standard-layout type \u0027GrMemoryPool\u0027 [-Werror,-Winvalid-offsetof]\n        return offsetof(GrMemoryPool, fAllocator) + fAllocator.preallocSize();\n               ^                      ~~~~~~~~~~\n/usr/lib/llvm-11/lib/clang/11.1.0/include/stddef.h:104:24: note: expanded from macro \u0027offsetof\u0027\n#define offsetof(t, d) __builtin_offsetof(t, d)",
+      "parentUuid": "ec9da864_dbdd04ae",
+      "revId": "ce65cf660bb3d241c02e75565260b5fcf3bc1506",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
