@@ -150,6 +150,7 @@ skia_core_sources = [
   "$_src/core/SkClipStack.h",
   "$_src/core/SkClipStackDevice.cpp",
   "$_src/core/SkClipStackDevice.h",
+  "$_src/core/SkCode.cpp",
   "$_src/core/SkColor.cpp",
   "$_src/core/SkColorFilter.cpp",
   "$_src/core/SkColorFilter_Matrix.cpp",
@@ -466,6 +467,7 @@ skia_core_sources = [
 
   # private
   "$_include/private/SkChecksum.h",
+  "$_include/private/SkCode.h",
   "$_include/private/SkColorData.h",
   "$_include/private/SkDeque.h",
   "$_include/private/SkFixed.h",

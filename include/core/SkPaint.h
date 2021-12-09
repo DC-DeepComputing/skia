@@ -25,6 +25,8 @@ class SkPath;
 class SkPathEffect;
 class SkShader;
 
+class SkCode;
+
 /** \class SkPaint
     SkPaint controls options applied when drawing. SkPaint collects all
     options outside of the SkCanvas clip and SkCanvas matrix.
@@ -37,6 +39,7 @@ class SkShader;
 */
 class SK_API SkPaint {
 public:
+    void toCode(SkCode*);
 
     /** Constructs SkPaint with default values.
 
