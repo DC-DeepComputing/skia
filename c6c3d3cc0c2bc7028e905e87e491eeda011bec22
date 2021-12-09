@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7f45667_24565449",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-09T19:39:18Z",
+      "side": 1,
+      "message": "Comment removed by: Ben Wagner; Reason: Commented on the wrong CL.",
+      "revId": "c6c3d3cc0c2bc7028e905e87e491eeda011bec22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
