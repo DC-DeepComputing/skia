@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e62b93_0f49fcc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T17:18:38Z",
+      "side": 1,
+      "message": "The changes with `hitsPixelCenters` seem to be unrelated to this CL; can we split this out to its own CL? I don\u0027t understand the rationale for this part of the change and the CL description doesn\u0027t give any reason.",
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e6f09a_f6493b0b",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T17:18:38Z",
+      "side": 1,
+      "message": "A class static method, so `IDsEqual`",
+      "range": {
+        "startLine": 585,
+        "startChar": 20,
+        "endLine": 585,
+        "endChar": 29
+      },
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
