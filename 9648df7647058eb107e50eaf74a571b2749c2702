@@ -16,6 +16,52 @@
       "message": "As discussed yesterday, PTAL.",
       "revId": "9648df7647058eb107e50eaf74a571b2749c2702",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03369cc4_3a54fe06",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-09T15:11:03Z",
+      "side": 1,
+      "message": "style nit, can this be moved down to near depthStencilSettings() since it breaks up the 1-liners right now?",
+      "range": {
+        "startLine": 77,
+        "startChar": 3,
+        "endLine": 77,
+        "endChar": 55
+      },
+      "revId": "9648df7647058eb107e50eaf74a571b2749c2702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7eb11b_1a0f75cf",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-09T15:11:03Z",
+      "side": 1,
+      "message": "style nit: can we keep the !\u003d DSFlags::kNone?",
+      "range": {
+        "startLine": 366,
+        "startChar": 8,
+        "endLine": 366,
+        "endChar": 25
+      },
+      "revId": "9648df7647058eb107e50eaf74a571b2749c2702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
