@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96b20c43_b270542e",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2021-12-09T19:40:05Z",
+      "side": 1,
+      "message": "This deviates a bit from the other similar functions in which the OutputStream version calls out to the String* version instead of the other way around. This is because there is no equivalent \"HLSLCodeGenerator\" type afaik.",
+      "range": {
+        "startLine": 678,
+        "startChar": 5,
+        "endLine": 678,
+        "endChar": 60
+      },
+      "revId": "aa49977bfd5705376ea1e7f6cd609ef6239d307e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
