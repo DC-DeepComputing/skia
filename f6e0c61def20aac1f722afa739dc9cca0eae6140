@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1185fb20_1a9232c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T17:39:56Z",
+      "side": 1,
+      "message": "Well, it turns out that this solves a really obscure bug, too. Simple and Override had different behavior for the \"hits pixel centers\", and Simple\u0027s (old) behavior was wrong in this situation. The end result was that if you made an image shader with linear filtering as a child of a blender or color filter, then sampled it (maybe as a lookup table for color re-mapping or something?), it would convert that sampling to nearest-neighbor.",
+      "parentUuid": "625b341e_ecbb7278",
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40e6f09a_f6493b0b",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 3
