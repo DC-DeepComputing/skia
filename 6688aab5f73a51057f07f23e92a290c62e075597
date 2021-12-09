@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a94041_c3168539",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-09T20:14:12Z",
+      "side": 1,
+      "message": "Just for convenience/readability, all of this was already doable as constexpr since the members are public.",
+      "revId": "6688aab5f73a51057f07f23e92a290c62e075597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
