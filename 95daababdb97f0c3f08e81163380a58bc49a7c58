@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8628fceb_7c18c98e",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:10:40Z",
+      "side": 1,
+      "message": "Do we actually need foldResults? Maybe we could just check `op.isEquality` inside the if?",
+      "range": {
+        "startLine": 845,
+        "startChar": 0,
+        "endLine": 847,
+        "endChar": 38
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "260bf92c_a4513254",
         "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
         "patchSetId": 1
