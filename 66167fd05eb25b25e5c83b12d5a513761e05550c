@@ -34,6 +34,24 @@
       "parentUuid": "e3d9a323_310df757",
       "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9006d1_276fad92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-09T16:25:48Z",
+      "side": 1,
+      "message": "Ah, I forgot that we use the override/concat matrix providers for child effects, and now I do understand what it\u0027s trying to convey, but definitely a confusing name. Unfortunately I cannot think of another better name. Maybe if we could distill your comment above into a code comment in SkMatrixProvider, that would help avoid future confusions.",
+      "parentUuid": "17a97942_ecab73b2",
+      "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
