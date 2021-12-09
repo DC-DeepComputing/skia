@@ -19,6 +19,7 @@ public:
         GrAATriangulator aaTriangulator(path, &alloc);
         aaTriangulator.fRoundVerticesToQuarterPixel = true;
         aaTriangulator.fEmitCoverage = true;
+        aaTriangulator.fClipContours = true;
         bool isLinear;
         auto [ polys, success ] = aaTriangulator.pathToPolys(tolerance, clipBounds, &isLinear);
         if (!success) {
