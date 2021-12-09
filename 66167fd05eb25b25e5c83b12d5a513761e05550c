@@ -52,6 +52,24 @@
       "parentUuid": "17a97942_ecab73b2",
       "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ef470d_bc6be070",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T16:30:10Z",
+      "side": 1,
+      "message": "Yes, I was planning to comment better, once I get all of the related issues ironed out. (I also had to tweak how the providers were being used in different kinds of child effects for a different CL: https://skia-review.googlesource.com/c/skia/+/481684), but I\u0027m hoping that the end result is either\n\n1) Remove the sampling tweak\n  -or-\n2) Simplify the providers a bit further, and comment to explain what\u0027s going on.",
+      "parentUuid": "1f9006d1_276fad92",
+      "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
