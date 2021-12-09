@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae07da46_aaf3567a",
+        "filename": "src/core/SkPicturePlayback.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-09T16:05:03Z",
+      "side": 0,
+      "message": "Do we still need to read the string so that the reader advances past the marked CTM, for older SKPs that may have recorded it?\n\n-although realistically, there probably aren\u0027t any out there.",
+      "range": {
+        "startLine": 617,
+        "startChar": 12,
+        "endLine": 620,
+        "endChar": 42
+      },
+      "revId": "97119e5b3c1e5b8636e8160af4f782a5387e1a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

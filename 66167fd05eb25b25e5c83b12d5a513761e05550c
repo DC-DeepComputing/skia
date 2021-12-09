@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d9a323_310df757",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-09T16:05:03Z",
+      "side": 1,
+      "message": "I haven\u0027t kept up to date on all the features trimmed from runtime effects, but I\u0027m assuming the ability to mark a uniform in sksl was already removed, so that\u0027s why the canvas-level marking is unused, right?\n\nI also have a hard time even understanding what localToDeviceHitsPixelsCenters is meant to imply. It\u0027s only used to make the skvm or raster pipeline program for image shaders, but if it returns true, the image shader still examines the matrix to make sure it\u0027s integer translation. To me, it seems like we could remove localToDeviceHitsPixelsCenters and just always check for integer translation, without impacting correctness.\n\nAlternatively, we could just not have skvm/image shader tweak the sampling underneath the user?",
+      "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
