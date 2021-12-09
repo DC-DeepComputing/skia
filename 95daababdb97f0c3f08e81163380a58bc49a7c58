@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f69148d7_0ea2af30",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T20:36:18Z",
+      "side": 1,
+      "message": "Ah, I didn\u0027t understand the intent of the comment, got it now.",
+      "parentUuid": "04aa8cc4_ace31c5d",
+      "range": {
+        "startLine": 845,
+        "startChar": 0,
+        "endLine": 847,
+        "endChar": 38
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260bf92c_a4513254",
