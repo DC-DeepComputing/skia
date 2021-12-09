@@ -22,6 +22,30 @@
       },
       "revId": "97119e5b3c1e5b8636e8160af4f782a5387e1a17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb22a02_77007221",
+        "filename": "src/core/SkPicturePlayback.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T16:22:07Z",
+      "side": 0,
+      "message": "I was gambling on the fact that there are no SKPS out there containing this call. (None of our known clients have ever used this API).",
+      "parentUuid": "ae07da46_aaf3567a",
+      "range": {
+        "startLine": 617,
+        "startChar": 12,
+        "endLine": 620,
+        "endChar": 42
+      },
+      "revId": "97119e5b3c1e5b8636e8160af4f782a5387e1a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -16,6 +16,24 @@
       "message": "I haven\u0027t kept up to date on all the features trimmed from runtime effects, but I\u0027m assuming the ability to mark a uniform in sksl was already removed, so that\u0027s why the canvas-level marking is unused, right?\n\nI also have a hard time even understanding what localToDeviceHitsPixelsCenters is meant to imply. It\u0027s only used to make the skvm or raster pipeline program for image shaders, but if it returns true, the image shader still examines the matrix to make sure it\u0027s integer translation. To me, it seems like we could remove localToDeviceHitsPixelsCenters and just always check for integer translation, without impacting correctness.\n\nAlternatively, we could just not have skvm/image shader tweak the sampling underneath the user?",
       "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a97942_ecab73b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T16:22:07Z",
+      "side": 1,
+      "message": "1) Yes - the matrix tagging in SkSL has been gone for a while.\n\n2) Yeah, this API (and the naming in particular) is incredibly confusing, and I had to go back and forth to re-learn how it works. It doesn\u0027t say anything in particular about the matrix. Like you said - we still examine the matrix. It really means: \"Is it safe to do that filtering change, based on the matrix?\"\n\nEventually, you realize that the name is somewhat correct - it\u0027s about whether or not the device-end of local-to-device does actually map to pixel centers. For a bitmap device, the L2D is initially identity, so this is true. If you pre-concat or post-concat that matrix... nothing has changed. It\u0027s still true.\n\nThe one place that it isn\u0027t true is when the matrix provider is lying about how sampling \"works\". So when we invoke a child from runtime effects, the coordinates passed down are (possibly) computed arbitrarily, they\u0027re not directly generated from rasterization. In that case, we have to suppress the filtering change, because seeing the L2D matrix (which happens to be identity in that case) doesn\u0027t tell us anything about where local coordinates *actually* land on device coordinates.\n\nHonestly, I\u0027d REALLY like to remove the sampling tweak. That would let us get rid of this concept, I just don\u0027t know what the performance impact would be.",
+      "parentUuid": "e3d9a323_310df757",
+      "revId": "66167fd05eb25b25e5c83b12d5a513761e05550c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
