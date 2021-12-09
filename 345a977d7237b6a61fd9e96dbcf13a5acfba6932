@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb2d4dbf_14c179b0",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-09T03:22:50Z",
+      "side": 1,
+      "message": "Probably want this to be something like\n\n    SkAutoSTArray\u003c32, SkGlyphID\u003e glyphIDs(len);\n\nso that we can avoid calling the allocator when there are many small runs (like what often happens in fallback or otherwise end up shaping something like a \"word\" at a time). Since we know the number of elements up front SkAutoSTArray is probably better than SkSTArray.",
+      "revId": "345a977d7237b6a61fd9e96dbcf13a5acfba6932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef575701_f36ab4cd",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1410,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-09T03:22:50Z",
+      "side": 1,
+      "message": "Similar\n\n    SkAutoSTArray\u003c32, SkRect\u003e glyphBounds(len);",
+      "revId": "345a977d7237b6a61fd9e96dbcf13a5acfba6932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
