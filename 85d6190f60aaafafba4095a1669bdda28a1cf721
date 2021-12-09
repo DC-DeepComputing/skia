@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71287a02_aa2ae1cb",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T17:22:40Z",
+      "side": 0,
+      "message": "This is a behavioral change; before we would call the child shader with a hits-pixel-center identity matrix provider.",
+      "range": {
+        "startLine": 819,
+        "startChar": 0,
+        "endLine": 819,
+        "endChar": 59
+      },
+      "revId": "85d6190f60aaafafba4095a1669bdda28a1cf721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
