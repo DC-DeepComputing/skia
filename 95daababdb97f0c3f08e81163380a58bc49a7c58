@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04aa8cc4_ace31c5d",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-09T20:20:54Z",
+      "side": 1,
+      "message": "As I said in the comment: I would like to be explicit about this folding.\nIn the code when we call binary is really not clear",
+      "parentUuid": "8628fceb_7c18c98e",
+      "range": {
+        "startLine": 845,
+        "startChar": 0,
+        "endLine": 847,
+        "endChar": 38
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260bf92c_a4513254",
@@ -60,6 +84,30 @@
       "writtenOn": "2021-12-09T20:09:14Z",
       "side": 1,
       "message": "tiny nit: If you write the comment like this (with no spaces and an equals sign), ClangTidy will verify that the parameter names actually match the comment. i.e., if someone renames it later, ClangTidy will generate a warning.\n\n   /*foldResults\u003d*/",
+      "range": {
+        "startLine": 871,
+        "startChar": 75,
+        "endLine": 871,
+        "endChar": 85
+      },
+      "revId": "95daababdb97f0c3f08e81163380a58bc49a7c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e48ecc7d_e7fc88ae",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-09T20:20:54Z",
+      "side": 1,
+      "message": "I didn\u0027t know that! Thank you. Done",
+      "parentUuid": "260bf92c_a4513254",
       "range": {
         "startLine": 871,
         "startChar": 75,
