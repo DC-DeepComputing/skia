@@ -16,6 +16,24 @@
       "message": "I think this is\n\n    ... \u003d SkColorSetA(palette[palette_index], newAlpha);\n    \n here and below.",
       "revId": "7ccdfea1365727eabd5282dfaed18eb85f9f0162",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8878b946_9d8f3655",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2021-12-09T18:02:04Z",
+      "side": 1,
+      "message": "Thanks, good suggestion, that looks better, done.",
+      "parentUuid": "fee20e0b_8e9f40fc",
+      "revId": "7ccdfea1365727eabd5282dfaed18eb85f9f0162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
