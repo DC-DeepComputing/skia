@@ -1137,7 +1137,7 @@ static void draw_into_mask(const SkMask& mask, const SkPath& devPath,
     matrix.setTranslate(-SkIntToScalar(mask.fBounds.fLeft),
                         -SkIntToScalar(mask.fBounds.fTop));
 
-    SkSimpleMatrixProvider matrixProvider(matrix);
+    SkMatrixProvider matrixProvider(matrix);
     draw.fRC             = &clip;
     draw.fMatrixProvider = &matrixProvider;
     paint.setAntiAlias(true);
