@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ae97a3_84bfc1b2",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-09T16:22:25Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 121,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 108
+      },
+      "revId": "6c9fe182b4195da48d741407ee4598df821676b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc7efc3_d8f8e93a",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-09T16:22:25Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 114
+      },
+      "revId": "6c9fe182b4195da48d741407ee4598df821676b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
