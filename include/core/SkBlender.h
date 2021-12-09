@@ -11,6 +11,10 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkFlattenable.h"
 
+enum class Mapping : uint8_t;
+
+class SkCode;
+
 /**
  * SkBlender represents a custom blend function in the Skia pipeline. When an SkBlender is
  * present in a paint, the SkBlendMode is ignored. A blender combines a source color (the
@@ -18,6 +22,8 @@
  */
 class SK_API SkBlender : public SkFlattenable {
 public:
+    virtual void toCodeB(Mapping, SkCode*) const = 0;
+
     /**
      * Create a blender that implements the specified BlendMode.
      */

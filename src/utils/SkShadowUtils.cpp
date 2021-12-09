@@ -45,6 +45,10 @@
 */
 class SkGaussianColorFilter : public SkColorFilterBase {
 public:
+    void toCodeCF(Mapping, SkCode*) const override {
+
+    }
+
     SkGaussianColorFilter() : INHERITED() {}
 
 #if SK_SUPPORT_GPU

@@ -12,6 +12,10 @@
 
 class SkLinearGradient : public SkGradientShaderBase {
 public:
+    void toCodeS(Mapping, SkCode*) const override {
+
+    }
+
     SkLinearGradient(const SkPoint pts[2], const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;
