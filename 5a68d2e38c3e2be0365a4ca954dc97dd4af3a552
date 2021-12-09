@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb0cf05_b78f8671",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2021-12-09T16:01:25Z",
+      "side": 1,
+      "message": "We shouldn\u0027t ever be using unpinned dependencies.  Let\u0027s get this from the pin in go.mod.",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 61
+      },
+      "revId": "5a68d2e38c3e2be0365a4ca954dc97dd4af3a552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
