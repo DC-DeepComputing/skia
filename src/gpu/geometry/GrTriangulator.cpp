@@ -452,7 +452,34 @@ Poly* GrTriangulator::makePoly(Poly** head, Vertex* v, int winding) const {
     return poly;
 }
 
-void GrTriangulator::appendPointToContour(const SkPoint& p, VertexList* contour) const {
+static bool line_segment_intersects_clip(const SkPoint& p0, const SkPoint& p1, const SkRect& clip) {
+    SkRect bbox;
+    bbox.set(p0, p1);
+    return bbox.intersects(clip);
+}
+
+void GrTriangulator::appendPointToContour(const SkPoint& p, const SkRect& clip,
+                                          VertexList* contour) const {
+    // If clipping is desired, it requires 2 previous vertices (one of which may be rewritten to p,
+    // if the last vertex is unnecessary), but it also requires p to be offscreen.
+    if (fClipContours && contour->fTail && contour->fTail != contour->fHead &&
+        (p.fX < clip.fLeft || p.fX > clip.fRight ||
+         p.fY < clip.fTop || p.fY > clip.fBottom)) {
+        SkASSERT(contour->fTail && contour->fTail->fPrev);
+        // NOTE: If p was on screen, two of the three calls to line_segment_intersects_clip would
+        // always succeed so canRewrite would be false.
+        SkPoint prev0 = contour->fTail->fPoint;
+        SkPoint prev1 = contour->fTail->fPrev->fPoint;
+        bool canRewrite = !line_segment_intersects_clip(p, prev0, clip) &&
+                          !line_segment_intersects_clip(p, prev1, clip) &&
+                          !line_segment_intersects_clip(prev0, prev1, clip);
+        if (canRewrite) {
+            TESS_LOG("Rewriting clipped vertex %f to (%f, %f)", contour->fTail->fID, p.fX, p.fY);
+            contour->fTail->fPoint = p;
+            return;
+        }
+    }
+
     Vertex* v = fAlloc->make<Vertex>(p, 255);
 #if TRIANGULATOR_LOGGING
     static float gID = 0.0f;
@@ -473,7 +500,7 @@ static SkScalar quad_error_at(const SkPoint pts[3], SkScalar t, SkScalar u) {
 }
 
 void GrTriangulator::appendQuadraticToContour(const SkPoint pts[3], SkScalar toleranceSqd,
-                                              VertexList* contour) const {
+                                              const SkRect& clip, VertexList* contour) const {
     SkQuadCoeff quad(pts);
     Sk2s aa = quad.fA * quad.fA;
     SkScalar denom = 2.0f * (aa[0] + aa[1]);
@@ -491,18 +518,19 @@ void GrTriangulator::appendQuadraticToContour(const SkPoint pts[3], SkScalar tol
         nPoints++;
     }
     for (int j = 1; j <= nPoints; j++) {
-        this->appendPointToContour(to_point(quad.eval(j * u)), contour);
+        this->appendPointToContour(to_point(quad.eval(j * u)), clip, contour);
     }
 }
 
 void GrTriangulator::generateCubicPoints(const SkPoint& p0, const SkPoint& p1, const SkPoint& p2,
-                                         const SkPoint& p3, SkScalar tolSqd, VertexList* contour,
+                                         const SkPoint& p3, SkScalar tolSqd,
+                                         const SkRect& clip, VertexList* contour,
                                          int pointsLeft) const {
     SkScalar d1 = SkPointPriv::DistanceToLineSegmentBetweenSqd(p1, p0, p3);
     SkScalar d2 = SkPointPriv::DistanceToLineSegmentBetweenSqd(p2, p0, p3);
     if (pointsLeft < 2 || (d1 < tolSqd && d2 < tolSqd) ||
         !SkScalarIsFinite(d1) || !SkScalarIsFinite(d2)) {
-        this->appendPointToContour(p3, contour);
+        this->appendPointToContour(p3, clip, contour);
         return;
     }
     const SkPoint q[] = {
@@ -516,8 +544,27 @@ void GrTriangulator::generateCubicPoints(const SkPoint& p0, const SkPoint& p1, c
     };
     const SkPoint s = { SkScalarAve(r[0].fX, r[1].fX), SkScalarAve(r[0].fY, r[1].fY) };
     pointsLeft >>= 1;
-    this->generateCubicPoints(p0, q[0], r[0], s, tolSqd, contour, pointsLeft);
-    this->generateCubicPoints(s, r[1], q[2], p3, tolSqd, contour, pointsLeft);
+    this->generateCubicPoints(p0, q[0], r[0], s, tolSqd, clip, contour, pointsLeft);
+    this->generateCubicPoints(s, r[1], q[2], p3, tolSqd, clip, contour, pointsLeft);
+}
+
+bool GrTriangulator::tryCullCurve(const SkPoint* pts, int n, const SkRect& clip,
+                                  VertexList* contour) const {
+    if (fClipContours) {
+        SkRect bbox;
+        bbox.setBounds(pts, n);
+        if (!bbox.intersects(clip)) {
+            // The curve is entirely offscreen so it can be culled. We still append the control
+            // points (which may individually be culled) so that the clipped contour wraps the
+            // clip bounds correctly.
+            for (int i = 1; i < n; ++i) {
+                this->appendPointToContour(pts[i], clip, contour);
+            }
+            return true;
+        }
+    }
+    // Not clipped, so curve will be appended normally (which may involve per-vertex clipping).
+    return false;
 }
 
 // Stage 1: convert the input path to a set of linear contours (linked list of Vertices).
@@ -533,7 +580,7 @@ void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
         SkPoint quad[4];
         clipBounds.toQuad(quad);
         for (int i = 3; i >= 0; i--) {
-            this->appendPointToContour(quad[i], contours);
+            this->appendPointToContour(quad[i], clipBounds, contours);
         }
         contour++;
     }
@@ -544,13 +591,18 @@ void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
             case SkPath::kConic_Verb: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[2], contour);
+                    this->appendPointToContour(pts[2], clipBounds, contour);
                     break;
                 }
+
+                if (this->tryCullCurve(pts, 3, clipBounds, contour)) {
+                    continue;
+                }
+
                 SkScalar weight = iter.conicWeight();
                 const SkPoint* quadPts = converter.computeQuads(pts, weight, toleranceSqd);
                 for (int i = 0; i < converter.countQuads(); ++i) {
-                    this->appendQuadraticToContour(quadPts, toleranceSqd, contour);
+                    this->appendQuadraticToContour(quadPts, toleranceSqd, clipBounds, contour);
                     quadPts += 2;
                 }
                 break;
@@ -559,30 +611,40 @@ void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
                 if (contour->fHead) {
                     contour++;
                 }
-                this->appendPointToContour(pts[0], contour);
+                this->appendPointToContour(pts[0], clipBounds, contour);
                 break;
             case SkPath::kLine_Verb: {
-                this->appendPointToContour(pts[1], contour);
+                this->appendPointToContour(pts[1], clipBounds, contour);
                 break;
             }
             case SkPath::kQuad_Verb: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[2], contour);
+                    this->appendPointToContour(pts[2], clipBounds, contour);
                     break;
                 }
-                this->appendQuadraticToContour(pts, toleranceSqd, contour);
+
+                if (this->tryCullCurve(pts, 3, clipBounds, contour)) {
+                    continue;
+                }
+
+                this->appendQuadraticToContour(pts, toleranceSqd, clipBounds, contour);
                 break;
             }
             case SkPath::kCubic_Verb: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[3], contour);
+                    this->appendPointToContour(pts[3], clipBounds, contour);
                     break;
                 }
+
+                if (this->tryCullCurve(pts, 4, clipBounds, contour)) {
+                    continue;
+                }
+
                 int pointsLeft = GrPathUtils::cubicPointCount(pts, tolerance);
-                this->generateCubicPoints(pts[0], pts[1], pts[2], pts[3], toleranceSqd, contour,
-                                          pointsLeft);
+                this->generateCubicPoints(pts[0], pts[1], pts[2], pts[3], toleranceSqd, clipBounds,
+                                          contour, pointsLeft);
                 break;
             }
             case SkPath::kClose_Verb:

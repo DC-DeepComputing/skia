@@ -138,11 +138,15 @@ protected:
     void* emitTriangle(Vertex* prev, Vertex* curr, Vertex* next, int winding, void* data) const;
     void* emitPoly(const Poly*, void *data) const;
     Poly* makePoly(Poly** head, Vertex* v, int winding) const;
-    void appendPointToContour(const SkPoint& p, VertexList* contour) const;
-    void appendQuadraticToContour(const SkPoint[3], SkScalar toleranceSqd,
+
+    void appendPointToContour(const SkPoint& p, const SkRect& clip, VertexList* contour) const;
+    void appendQuadraticToContour(const SkPoint[3], SkScalar toleranceSqd, const SkRect& clip,
                                   VertexList* contour) const;
     void generateCubicPoints(const SkPoint&, const SkPoint&, const SkPoint&, const SkPoint&,
-                             SkScalar tolSqd, VertexList* contour, int pointsLeft) const;
+                             SkScalar tolSqd, const SkRect& clip, VertexList* contour,
+                             int pointsLeft) const;
+    bool tryCullCurve(const SkPoint*, int n, const SkRect& clip, VertexList* contour) const;
+
     bool applyFillType(int winding) const;
     MonotonePoly* allocateMonotonePoly(Edge* edge, Side side, int winding);
     Edge* allocateEdge(Vertex* top, Vertex* bottom, int winding, EdgeType type);
@@ -191,6 +195,7 @@ protected:
     bool fEmitCoverage = false;
     bool fPreserveCollinearVertices = false;
     bool fCollectBreadcrumbTriangles = false;
+    bool fClipContours = false;
 
     // The breadcrumb triangles serve as a glue that erases T-junctions between a path's outer
     // curves and its inner polygon triangulation. Drawing a path's outer curves, breadcrumb
