@@ -362,14 +362,8 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Gpu* gpu,
 
     (*psoDescriptor).colorAttachments[0] = mtlColorAttachment;
 
-    Mask<DepthStencilFlags> depthStencilFlags = DepthStencilFlags::kNone;
-    if (desc.renderStep()->requiresDepth()) {
-        depthStencilFlags |= DepthStencilFlags::kDepth;
-    }
-    if (desc.renderStep()->requiresStencil()){
-        depthStencilFlags |= DepthStencilFlags::kStencil;
-    }
-    if (depthStencilFlags != DepthStencilFlags::kNone) {
+    Mask<DepthStencilFlags> depthStencilFlags = desc.renderStep()->depthStencilFlags();
+    if (depthStencilFlags) {
         skgpu::TextureInfo texInfo =
                 gpu->caps()->getDefaultDepthStencilTextureInfo(depthStencilFlags,
                                                                1 /*sampleCount*/, // TODO: MSAA
