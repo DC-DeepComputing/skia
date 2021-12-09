@@ -22,6 +22,30 @@
       },
       "revId": "5a68d2e38c3e2be0365a4ca954dc97dd4af3a552",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "944dfc80_00ad902b",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-09T16:52:25Z",
+      "side": 1,
+      "message": "As per our offline discussion, this isn\u0027t meant to be the final solution, and we would like something a bit more verifiable later.\n\nOne idea was to have the build of Skia and the build of Canvaskit be decoupled, e.g. upload the binaries to GCS and have the jsfiddle server look and serve from there.",
+      "parentUuid": "9bb0cf05_b78f8671",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 61
+      },
+      "revId": "5a68d2e38c3e2be0365a4ca954dc97dd4af3a552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
