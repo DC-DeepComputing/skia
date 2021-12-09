@@ -16,6 +16,24 @@
       "message": "Don\u0027t we have some similar logic in Ganesh to figure out if bilinear/mipmap can be downgraded to nearest? It\u0027d be nice to consolidate and only have one piece of code, if it\u0027s necessary at all.\n\nIIRC we had issues on GPUs without real highp, though, where bilinear filtering would look worse at large coords when in theory we should be hitting texel centers.",
       "revId": "ca916f705fc52db407a9f3c9bc6b1d8433971249",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce14109_0a565ca0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T17:51:24Z",
+      "side": 1,
+      "message": "I thought so, but now I can\u0027t find it. Did reed@ delete it? I have no idea.",
+      "parentUuid": "47214fd1_29eb9114",
+      "revId": "ca916f705fc52db407a9f3c9bc6b1d8433971249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
