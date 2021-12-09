@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc17aae_57720fdc",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2021-12-09T18:44:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb2d4dbf_14c179b0",
+      "revId": "345a977d7237b6a61fd9e96dbcf13a5acfba6932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef575701_f36ab4cd",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-09T03:22:50Z",
       "side": 1,
       "message": "Similar\n\n    SkAutoSTArray\u003c32, SkRect\u003e glyphBounds(len);",
+      "revId": "345a977d7237b6a61fd9e96dbcf13a5acfba6932",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae10c783_702f8f8c",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1410,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2021-12-09T18:44:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef575701_f36ab4cd",
       "revId": "345a977d7237b6a61fd9e96dbcf13a5acfba6932",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
