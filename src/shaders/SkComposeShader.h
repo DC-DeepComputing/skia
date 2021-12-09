@@ -15,6 +15,14 @@
 
 class SkShader_Blend final : public SkShaderBase {
 public:
+    static void ToCode(SkMagicCodeDictionary*, Mapping mapping, SkCode* code) {
+
+    }
+
+    void toCodeS(SkMagicCodeDictionary*, Mapping mapping, SkCode* code) const override {
+
+    }
+
     SkShader_Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))
         , fSrc(std::move(src))

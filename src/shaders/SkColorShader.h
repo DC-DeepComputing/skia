@@ -17,6 +17,10 @@
 */
 class SkColorShader : public SkShaderBase {
 public:
+    void toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+
+    }
+
     /** Create a ColorShader that ignores the color in the paint, and uses the
         specified color. Note: like all shaders, at draw time the paint's alpha
         will be respected, and is applied to the specified color.
@@ -53,6 +57,10 @@ private:
 
 class SkColor4Shader : public SkShaderBase {
 public:
+    void toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+
+    }
+
     SkColor4Shader(const SkColor4f&, sk_sp<SkColorSpace>);
 
     bool isOpaque()   const override { return fColor.isOpaque(); }

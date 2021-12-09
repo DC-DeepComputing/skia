@@ -61,4 +61,3 @@ private:
 } // namespace skgpu
 
 #endif // skgpu_BackendTexture_DEFINED
-

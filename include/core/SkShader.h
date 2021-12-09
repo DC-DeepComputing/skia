@@ -26,6 +26,11 @@ class SkPicture;
 class SkRasterPipeline;
 class GrFragmentProcessor;
 
+enum class Mapping : uint8_t;
+
+class SkCode;
+class SkMagicCodeDictionary;
+
 /** \class SkShader
  *
  *  Shaders specify the source color(s) for what is being drawn. If a paint
@@ -38,6 +43,8 @@ class GrFragmentProcessor;
  */
 class SK_API SkShader : public SkFlattenable {
 public:
+    virtual void toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const = 0;
+
     /**
      *  Returns true if the shader is guaranteed to produce only opaque
      *  colors, subject to the SkPaint using the shader to apply an opaque
