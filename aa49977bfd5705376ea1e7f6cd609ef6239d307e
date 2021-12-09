@@ -22,6 +22,53 @@
       },
       "revId": "aa49977bfd5705376ea1e7f6cd609ef6239d307e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f050a5_a5a7fd9a",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T19:42:33Z",
+      "side": 1,
+      "message": "I don\u0027t think that\u0027s a big deal either way. If we add an HLSLCodeGenerator class later we can revisit it.",
+      "parentUuid": "96b20c43_b270542e",
+      "range": {
+        "startLine": 678,
+        "startChar": 5,
+        "endLine": 678,
+        "endChar": 60
+      },
+      "revId": "aa49977bfd5705376ea1e7f6cd609ef6239d307e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8bc7de1_2da638ca",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-09T19:42:33Z",
+      "side": 1,
+      "message": "tiny nit: fix weird string wrap",
+      "range": {
+        "startLine": 514,
+        "startChar": 23,
+        "endLine": 515,
+        "endChar": 16
+      },
+      "revId": "aa49977bfd5705376ea1e7f6cd609ef6239d307e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
