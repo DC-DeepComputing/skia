@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2133aa32_513beb14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T19:56:30Z",
+      "side": 1,
+      "message": "Done. This is now rebased on my cleanup of matrix provider, which unified how each effect type operated here - so this CL ends up being a simple merging of those three blocks.",
+      "parentUuid": "1185fb20_1a9232c4",
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40e6f09a_f6493b0b",
@@ -103,6 +121,30 @@
       "writtenOn": "2021-12-09T17:18:38Z",
       "side": 1,
       "message": "A class static method, so `IDsEqual`",
+      "range": {
+        "startLine": 585,
+        "startChar": 20,
+        "endLine": 585,
+        "endChar": 29
+      },
+      "revId": "f6e0c61def20aac1f722afa739dc9cca0eae6140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d90ccb4_c0c4f557",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T19:56:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40e6f09a_f6493b0b",
       "range": {
         "startLine": 585,
         "startChar": 20,
