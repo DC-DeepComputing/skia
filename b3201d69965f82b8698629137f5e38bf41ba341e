@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c0bc483_ef8dcabf",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T20:27:37Z",
+      "side": 1,
+      "message": "Good catch, yes.",
+      "parentUuid": "214b5d88_fc0b31f8",
+      "range": {
+        "startLine": 617,
+        "startChar": 0,
+        "endLine": 618,
+        "endChar": 88
+      },
+      "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb7cb638_bf10a7fd",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-09T20:16:05Z",
       "side": 1,
       "message": "Just a thought, not related to this CL per se: I vaguely recall problems when returning \u0027nothing\u0027 like this. Might be safer to return the color they passed us unchanged. (The compile will fail regardless, just needs to fail safely)",
+      "range": {
+        "startLine": 2083,
+        "startChar": 19,
+        "endLine": 2083,
+        "endChar": 33
+      },
+      "revId": "b3201d69965f82b8698629137f5e38bf41ba341e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96760e87_03ee5819",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2083,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-09T20:27:37Z",
+      "side": 1,
+      "message": "For sampleShader, there is no incoming color to return, so we\u0027d have to manufacture a valid color (splat(1) or whatever). I\u0027m not really sure how dangerous this is - do all ops do something \"sensible\" (eg propagation) when they encounter an NA value? A quick scan of the code suggests that we always check for NA in the various passes (both in finalize, and in JIT).",
+      "parentUuid": "cb7cb638_bf10a7fd",
       "range": {
         "startLine": 2083,
         "startChar": 19,
