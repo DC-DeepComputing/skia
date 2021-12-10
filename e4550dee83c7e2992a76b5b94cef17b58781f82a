@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67015578_4499f984",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-10T19:38:22Z",
+      "side": 1,
+      "message": "Nice. Curious (not that this matters), do you see the one-frame flash of the effect drawn much smaller?",
+      "revId": "e4550dee83c7e2992a76b5b94cef17b58781f82a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
