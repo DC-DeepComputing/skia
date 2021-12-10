@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4febe9fc_ddeb58ac",
+        "filename": "src/gpu/geometry/GrTriangulator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-10T15:34:13Z",
+      "side": 1,
+      "message": "This change also allows the test case to pass. W/o it, checkForIntersection() incorrectly thought there was no intersection and fell back on intersectEdgePair\u0027s topology correction. Since there was a real intersection, the adjustment made in intersectEdgePair was pretty drastic, causing the edges to become out of order. The below fix for intersectEdgePair fixes the out-of-order issue/crash, but would still result in a less-than-ideal simplification.\n\nI had the midpoint update backwards for the binary searching along the segments. If s or t were \u003e 1/2, we want to search from the midpoint to the end vertex so the first vertex should be set to the midpoint.",
+      "range": {
+        "startLine": 218,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 24
+      },
+      "revId": "0abc8f8e95b1de6ab08a23dec215e9f07206347f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5a85621_17b74996",
+        "filename": "src/gpu/geometry/GrTriangulator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-10T15:34:13Z",
+      "side": 1,
+      "message": "This is functionally the same as the old code, except that we rewind to split-\u003efTop instead of rewinding to splitAt. I found this to be easier to read and identify what was changing in the mesh.\n\nI think this is justifiable (besides that it fixes the bug with out-of-order edges in the active edge list) because it makes it consistent with how checkForIntersection() rewinds the edge list. When that detects a intersection by solving line equations, it rewinds to the vertex that is above the split point, not just rewind to the split point. This makes sense, since if you\u0027re splitting the edge in two with an inaccurate vertex, both the (top-\u003enew) and (new-\u003ebot) edges \"move\" and could change how they are sorted relative to other edges in the list.",
+      "range": {
+        "startLine": 945,
+        "startChar": 4,
+        "endLine": 977,
+        "endChar": 68
+      },
+      "revId": "0abc8f8e95b1de6ab08a23dec215e9f07206347f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
