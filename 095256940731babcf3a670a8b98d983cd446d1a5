@@ -22,6 +22,30 @@
       },
       "revId": "095256940731babcf3a670a8b98d983cd446d1a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dfa2c51_3039f856",
+        "filename": "include/gpu/ShaderErrorHandler.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-10T19:45:08Z",
+      "side": 1,
+      "message": "Argh, typo, one sec.",
+      "parentUuid": "2ff86756_804b5bd3",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 13
+      },
+      "revId": "095256940731babcf3a670a8b98d983cd446d1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
