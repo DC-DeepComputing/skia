@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f650cadb_31216b93",
+        "filename": "src/sksl/tracing/SkVMDebugTracePlayer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-10T19:43:04Z",
+      "side": 1,
+      "message": "nit: singular position?\n\n... actually, I was going to ask how this worked (eg, how does the user ever get a position value). Then I noticed this isn\u0027t implemented. Delete it?",
+      "range": {
+        "startLine": 28,
+        "startChar": 31,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "2ec466a527755e38407b89deca5a46012155214f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
