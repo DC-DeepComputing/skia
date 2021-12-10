@@ -18,6 +18,10 @@
  */
 class SkEmptyShader : public SkShaderBase {
 public:
+    void toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+
+    }
+
     SkEmptyShader() {}
 
 protected:
