@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a624264_10199bbe",
+        "filename": "tests/sksl/shared/ReturnsValueOnEveryPathES3.hlsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-10T20:56:57Z",
+      "side": 1,
+      "message": "?????\n\nI guess, the loop is dead anyway?",
+      "range": {
+        "startLine": 122,
+        "startChar": 28,
+        "endLine": 122,
+        "endChar": 29
+      },
+      "revId": "b00f333c920e5caf8d80c4395bc66ea5a9404547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
