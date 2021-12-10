@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d53b74c2_f5f1d6e1",
+        "filename": "include/gpu/GrContextOptions.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-10T14:23:11Z",
+      "side": 1,
+      "message": "Can we clean this up a bit (at least move the #define for this somewhere else?) I see that it\u0027s currently in Device.cpp (commented out), but if someone finds that there, and tries to change it - it\u0027s not going to work.",
+      "revId": "c8e8446b184a2f7c62d34dd739ea72d231310c76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
