@@ -6,7 +6,7 @@
  */
 
 #include "src/core/SkDescriptor.h"
-#include "src/core/SkRemoteGlyphCache.h"
+#include "include/private/chromium/SkRemoteGlyphCache.h"
 
 void FuzzSkDescriptorDeserialize(sk_sp<SkData> bytes) {
     SkAutoDescriptor aDesc;
