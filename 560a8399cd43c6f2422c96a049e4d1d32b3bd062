@@ -16,6 +16,23 @@
       "message": "This seems like a pretty heavy hammer to me, and I\u0027m not familiar with the CL submitter. AFAIK we haven\u0027t experienced any linking problems in Chromium.",
       "revId": "560a8399cd43c6f2422c96a049e4d1d32b3bd062",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc4a4b46_277d9b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-10T22:46:13Z",
+      "side": 1,
+      "message": "Is there a chromium bug filed for this? I\u0027d expect that this is a short-term fix, and that we\u0027re going to root-cause this with the llvm team, as well.",
+      "revId": "560a8399cd43c6f2422c96a049e4d1d32b3bd062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
