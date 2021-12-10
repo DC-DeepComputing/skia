@@ -189,8 +189,6 @@ skia_gpu_sources = [
   "$_src/gpu/GrSemaphore.h",
   "$_src/gpu/GrShaderCaps.cpp",
   "$_src/gpu/GrShaderCaps.h",
-  "$_src/gpu/GrShaderUtils.cpp",
-  "$_src/gpu/GrShaderUtils.h",
   "$_src/gpu/GrShaderVar.cpp",
   "$_src/gpu/GrShaderVar.h",
   "$_src/gpu/GrSimpleMesh.h",

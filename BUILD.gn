@@ -648,7 +648,7 @@ if (skia_compile_sksl_tests) {
       "src/core/SkUtils.cpp",
       "src/core/SkVM.cpp",
       "src/gpu/GrMemoryPool.cpp",
-      "src/gpu/GrShaderUtils.cpp",
+      "src/gpu/SkShaderUtils.cpp",
       "src/ports/SkMemory_malloc.cpp",
       "src/ports/SkOSFile_stdio.cpp",
       "src/sksl/SkSLMain.cpp",
