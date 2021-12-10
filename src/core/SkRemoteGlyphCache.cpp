@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkRemoteGlyphCache.h"
+#include "include/private/chromium/SkRemoteGlyphCache.h"
 
 #include <bitset>
 #include <iterator>
