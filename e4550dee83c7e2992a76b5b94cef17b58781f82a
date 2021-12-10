@@ -16,6 +16,24 @@
       "message": "Nice. Curious (not that this matters), do you see the one-frame flash of the effect drawn much smaller?",
       "revId": "e4550dee83c7e2992a76b5b94cef17b58781f82a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d9c0a1_f046a04a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-10T19:39:50Z",
+      "side": 1,
+      "message": "Yes. For a single frame the shader blinks away into a tiny 4x4 rectangle.\nThis could be fixed (just paint the shape again unclipped with the regular shader) but it did not seem to matter.",
+      "parentUuid": "67015578_4499f984",
+      "revId": "e4550dee83c7e2992a76b5b94cef17b58781f82a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
