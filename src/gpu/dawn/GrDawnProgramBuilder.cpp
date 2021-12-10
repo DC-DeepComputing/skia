@@ -7,9 +7,9 @@
 
 #include "src/gpu/dawn/GrDawnProgramBuilder.h"
 
+#include "include/private/SkShaderUtils.h"
 #include "src/gpu/GrAutoLocaleSetter.h"
 #include "src/gpu/GrRenderTarget.h"
-#include "src/gpu/GrShaderUtils.h"
 #include "src/gpu/GrStencilSettings.h"
 #include "src/gpu/dawn/GrDawnGpu.h"
 #include "src/gpu/dawn/GrDawnTexture.h"
@@ -430,7 +430,7 @@ wgpu::ShaderModule GrDawnProgramBuilder::createShaderModule(const GrGLSLShaderBu
     SkString source(builder.fCompilerString.c_str());
 
 #if 0
-    SkSL::String sksl = GrShaderUtils::PrettyPrint(builder.fCompilerString);
+    SkSL::String sksl = SkShaderUtils::PrettyPrint(builder.fCompilerString);
     printf("converting program:\n%s\n", sksl.c_str());
 #endif
 
