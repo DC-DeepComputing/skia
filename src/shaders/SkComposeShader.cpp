@@ -7,6 +7,7 @@
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkString.h"
+#include "include/private/SkCode.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
@@ -66,6 +67,29 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+int SkShader_Blend::Encode1(SkMagicCodeDictionary* dict,
+                            Mapping mapping,
+                            SkCode* code,
+                            const BlendData& data) {
+     int index = code->addFoo(Foo::kBlendShader);
+     int numDstInts = data.fDst->toCodeS(dict, mapping, code);
+     int numSrcInts = data.fSrc->toCodeS(dict, mapping, code);
+     code->patchFoo(index, Foo::kBlendShader, numDstInts + numSrcInts);
+
+     return numDstInts + numSrcInts + 1;
+}
+
+int SkShader_Blend::toCodeS(SkMagicCodeDictionary* dict,
+                            Mapping mapping,
+                            SkCode* code) const {
+    if (!fBlender) {
+
+    }
+
+    return Encode1(dict, mapping, code,
+                   { fDst.get(), fSrc.get(), fMode });
+}
 
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))

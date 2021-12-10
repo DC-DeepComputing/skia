@@ -88,7 +88,7 @@ DEF_GRAPHITE_TEST(UniformTest, reporter) {
                 REPORTER_ASSERT(reporter, expected == actual);
                 REPORTER_ASSERT(reporter, expectedNumUniforms == ud->count());
                 for (int i = 0; i < ud->count(); ++i) {
-                    REPORTER_ASSERT(reporter, ud->offset(i) >= 0 && ud->offset(i) < ud->dataSize());
+                    REPORTER_ASSERT(reporter, ud->offset(i) < ud->dataSize());
                 }
             }
         }
