@@ -16,6 +16,29 @@
       "message": "I initially wrote this change while trying to debug the fuzzer cases in the linked bugs. Both crashing paths were so large (vertex count and scale) that it was very hard to grok so I did this to try and cut it down to something more manageable.\n\nAfter finishing, it turned out to just sidestep the issues and clean the paths up enough that the triangulator didn\u0027t crash. I still don\u0027t know what was causing the issue (and confirmed that https://skia-review.googlesource.com/c/skia/+/482456 wasn\u0027t sufficient for one of the crashes), but I am now having trouble reproing these in the browser.\n\nI am interested in landing this change to see if it also acts as a perf improvement because it will greatly reduce the vertex count for curves that go offscreen, which should hopefully more than make up for the increased testing done when sampling the curves at the start. I also think that this may lead to more approachable fuzzer test cases since if the fuzzer is able to find a new path triggering the original bug, but with this change, the vertex set to inspect should be more manageable.",
       "revId": "cde5db92468fe50fed542bd0522a4abaae0e7d81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3471147a_61af87e5",
+        "filename": "src/gpu/geometry/GrTriangulator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-10T16:31:51Z",
+      "side": 1,
+      "message": "Add a pt_outside_rect helper ?",
+      "range": {
+        "startLine": 466,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 49
+      },
+      "revId": "cde5db92468fe50fed542bd0522a4abaae0e7d81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
