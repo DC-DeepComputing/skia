@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d155ed07_e5b8599d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-10T22:35:45Z",
+      "side": 1,
+      "message": "This seems like a pretty heavy hammer to me, and I\u0027m not familiar with the CL submitter. AFAIK we haven\u0027t experienced any linking problems in Chromium.",
+      "revId": "560a8399cd43c6f2422c96a049e4d1d32b3bd062",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
