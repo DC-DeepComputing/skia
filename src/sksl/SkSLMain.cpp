@@ -10,7 +10,7 @@
 #include "src/opts/SkChecksum_opts.h"
 #include "src/opts/SkVM_opts.h"
 
-#include "src/gpu/GrShaderUtils.h"
+#include "include/private/SkShaderUtils.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLDehydrator.h"
 #include "src/sksl/SkSLFileOutputStream.h"
@@ -478,7 +478,7 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
                     Callbacks callbacks;
                     SkSL::PipelineStage::ConvertProgram(program, "_coords", "_inColor",
                                                         "_canvasColor", &callbacks);
-                    out.writeString(GrShaderUtils::PrettyPrint(callbacks.fOutput));
+                    out.writeString(SkShaderUtils::PrettyPrint(callbacks.fOutput));
                     return true;
                 });
     } else if (outputPath.ends_with(".dehydrated.sksl")) {

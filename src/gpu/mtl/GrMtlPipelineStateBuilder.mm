@@ -8,6 +8,7 @@
 #include "src/gpu/mtl/GrMtlPipelineStateBuilder.h"
 
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/SkShaderUtils.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkWriteBuffer.h"
@@ -15,7 +16,6 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrPersistentCacheUtils.h"
 #include "src/gpu/GrRenderTarget.h"
-#include "src/gpu/GrShaderUtils.h"
 
 #include "src/gpu/mtl/GrMtlGpu.h"
 #include "src/gpu/mtl/GrMtlPipelineState.h"
@@ -633,8 +633,8 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
                 if (fGpu->getContext()->priv().options().fShaderCacheStrategy ==
                         GrContextOptions::ShaderCacheStrategy::kSkSL) {
                     SkSL::String sksl[kGrShaderTypeCount];
-                    sksl[kVertex_GrShaderType] = GrShaderUtils::PrettyPrint(fVS.fCompilerString);
-                    sksl[kFragment_GrShaderType] = GrShaderUtils::PrettyPrint(fFS.fCompilerString);
+                    sksl[kVertex_GrShaderType] = SkShaderUtils::PrettyPrint(fVS.fCompilerString);
+                    sksl[kFragment_GrShaderType] = SkShaderUtils::PrettyPrint(fFS.fCompilerString);
                     this->storeShadersInCache(sksl, inputs, &settings,
                                               std::move(pipelineData), true);
                 } else {
