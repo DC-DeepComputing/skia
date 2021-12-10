@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkString.h"
-#include "include/gpu/GrContextOptions.h"
-#include "include/private/SkSLString.h"
-#include "src/gpu/GrShaderUtils.h"
+#include "include/private/SkShaderUtils.h"
 
-namespace GrShaderUtils {
+#include "include/core/SkString.h"
+#include "include/private/SkSLString.h"
+
+namespace SkShaderUtils {
 
 class GLSLPrettyPrint {
 public:
@@ -208,8 +208,8 @@ SkSL::String BuildShaderErrorMessage(const char* shader, const char* errors) {
     return abortText;
 }
 
-GrContextOptions::ShaderErrorHandler* DefaultShaderErrorHandler() {
-    class GrDefaultShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
+ShaderErrorHandler* DefaultShaderErrorHandler() {
+    class SkDefaultShaderErrorHandler : public ShaderErrorHandler {
     public:
         void compileError(const char* shader, const char* errors) override {
             SkSL::String message = BuildShaderErrorMessage(shader, errors);
@@ -220,7 +220,7 @@ GrContextOptions::ShaderErrorHandler* DefaultShaderErrorHandler() {
         }
     };
 
-    static GrDefaultShaderErrorHandler gHandler;
+    static SkDefaultShaderErrorHandler gHandler;
     return &gHandler;
 }
 
@@ -234,4 +234,4 @@ void PrintShaderBanner(SkSL::ProgramKind programKind) {
     SkDebugf("---- %s shader ----------------------------------------------------\n", typeName);
 }
 
-}  // namespace GrShaderUtils
+}  // namespace SkShaderUtils

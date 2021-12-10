@@ -8,13 +8,13 @@
 #include "src/gpu/vk/GrVkPipelineStateBuilder.h"
 
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/SkShaderUtils.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GrAutoLocaleSetter.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrPersistentCacheUtils.h"
 #include "src/gpu/GrShaderCaps.h"
-#include "src/gpu/GrShaderUtils.h"
 #include "src/gpu/GrStencilSettings.h"
 #include "src/gpu/vk/GrVkDescriptorSetManager.h"
 #include "src/gpu/vk/GrVkGpu.h"
@@ -272,7 +272,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
             if (fGpu->getContext()->priv().options().fShaderCacheStrategy ==
                     GrContextOptions::ShaderCacheStrategy::kSkSL) {
                 for (int i = 0; i < kGrShaderTypeCount; ++i) {
-                    shaders[i] = GrShaderUtils::PrettyPrint(*sksl[i]);
+                    shaders[i] = SkShaderUtils::PrettyPrint(*sksl[i]);
                 }
                 isSkSL = true;
             }
