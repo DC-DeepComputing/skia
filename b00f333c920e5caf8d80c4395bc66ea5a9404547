@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4765887_e5a42498",
+        "filename": "tests/sksl/shared/ReturnsValueOnEveryPathES3.hlsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-10T20:58:28Z",
+      "side": 1,
+      "message": "Another dead loop termination-case inversion!?",
+      "range": {
+        "startLine": 52,
+        "startChar": 11,
+        "endLine": 52,
+        "endChar": 12
+      },
+      "revId": "b00f333c920e5caf8d80c4395bc66ea5a9404547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a624264_10199bbe",
         "filename": "tests/sksl/shared/ReturnsValueOnEveryPathES3.hlsl",
         "patchSetId": 1
