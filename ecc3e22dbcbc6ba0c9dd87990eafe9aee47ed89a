@@ -16,6 +16,24 @@
       "message": "Do they include this file? Does this need to #include the new one?",
       "revId": "ecc3e22dbcbc6ba0c9dd87990eafe9aee47ed89a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851b89b1_f7241f43",
+        "filename": "src/core/SkRemoteGlyphCache.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2021-12-10T19:15:04Z",
+      "side": 1,
+      "message": "Yep. Had a bad typo. The latest patch fixes this problem.",
+      "parentUuid": "7dcd9e05_7515c76a",
+      "revId": "ecc3e22dbcbc6ba0c9dd87990eafe9aee47ed89a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
