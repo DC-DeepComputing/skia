@@ -10,14 +10,15 @@
 namespace SkSL {
 
 void SkVMDebugTracePlayer::reset(sk_sp<SkVMDebugTrace> debugTrace) {
+    size_t nslots = debugTrace ? debugTrace->fSlotInfo.size() : 0;
     fDebugTrace = debugTrace;
     fCursor = 0;
     fSlots.clear();
-    fSlots.resize(debugTrace->fSlotInfo.size());
+    fSlots.resize(nslots);
     fStack.clear();
     fStack.push_back({/*fFunction=*/-1,
                       /*fLine=*/-1,
-                      /*fDisplayMask=*/SkBitSet(fDebugTrace->fSlotInfo.size())});
+                      /*fDisplayMask=*/SkBitSet(nslots)});
 }
 
 void SkVMDebugTracePlayer::step() {
