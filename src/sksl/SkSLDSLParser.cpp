@@ -142,6 +142,7 @@ Token DSLParser::nextRawToken() {
     return token;
 }
 
+#pragma clang optimize off
 Token DSLParser::nextToken() {
     for (;;) {
         Token token = this->nextRawToken();
@@ -156,6 +157,7 @@ Token DSLParser::nextToken() {
         }
     }
 }
+#pragma clang optimize on
 
 void DSLParser::pushback(Token t) {
     SkASSERT(fPushback.fKind == Token::Kind::TK_NONE);
