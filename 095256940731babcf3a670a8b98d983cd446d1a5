@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ff86756_804b5bd3",
+        "filename": "include/gpu/ShaderErrorHandler.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-10T19:32:14Z",
+      "side": 1,
+      "message": "Other places use `skgpu`, is `gpu` intentional? (If so, what\u0027s the difference?)",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 13
+      },
+      "revId": "095256940731babcf3a670a8b98d983cd446d1a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
