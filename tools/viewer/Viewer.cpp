@@ -165,6 +165,7 @@ static DEFINE_string2(match, m, nullptr,
 #endif
 
 static DEFINE_string(jpgs   , PATH_PREFIX "jpgs"   , "Directory to read jpgs from.");
+static DEFINE_string(jxls   , PATH_PREFIX "jxls"   , "Directory to read jxls from.");
 static DEFINE_string(skps   , PATH_PREFIX "skps"   , "Directory to read skps from.");
 static DEFINE_string(mskps  , PATH_PREFIX "mskps"  , "Directory to read mskps from.");
 static DEFINE_string(lotties, PATH_PREFIX "lotties", "Directory to read (Bodymovin) jsons from.");
@@ -765,6 +766,10 @@ void Viewer::initSlides() {
                 return sk_make_sp<SKPSlide>(name, path);}
         },
         { ".jpg", "jpg-dir", FLAGS_jpgs,
+            [](const SkString& name, const SkString& path) -> sk_sp<Slide> {
+                return sk_make_sp<ImageSlide>(name, path);}
+        },
+        { ".jxl", "jxl-dir", FLAGS_jxls,
             [](const SkString& name, const SkString& path) -> sk_sp<Slide> {
                 return sk_make_sp<ImageSlide>(name, path);}
         },
