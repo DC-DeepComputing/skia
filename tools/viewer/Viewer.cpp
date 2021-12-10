@@ -14,6 +14,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/utils/SkShaderUtils.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkPaintFilterCanvas.h"
@@ -33,7 +34,6 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
 #include "src/gpu/GrPersistentCacheUtils.h"
-#include "src/gpu/GrShaderUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/utils/SkJSONWriter.h"
@@ -2747,7 +2747,7 @@ void Viewer::drawImGui() {
         for (int i = 0; i < gShaderErrorHandler.fErrors.count(); ++i) {
             ImGui::TextWrapped("%s", gShaderErrorHandler.fErrors[i].c_str());
             SkSL::String sksl(gShaderErrorHandler.fShaders[i].c_str());
-            GrShaderUtils::VisitLineByLine(sksl, [](int lineNumber, const char* lineText) {
+            SkShaderUtils::VisitLineByLine(sksl, [](int lineNumber, const char* lineText) {
                 ImGui::TextWrapped("%4i\t%s\n", lineNumber, lineText);
             });
         }
