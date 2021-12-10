@@ -10,6 +10,8 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkString.h"
+#include "include/core/SkColor.h"
 
 /** Represents a set of actual arguments for a font. */
 struct SkFontArguments {
@@ -22,7 +24,22 @@ struct SkFontArguments {
         int coordinateCount;
     };
 
-    SkFontArguments() : fCollectionIndex(0), fVariationDesignPosition{nullptr, 0} {}
+    // TODO: Decide whether string references can go here, or whether these need to be resolved
+    // externally?
+    struct PaletteOverride {
+        struct ColorOverride {
+            uint16_t colorIndex;
+            SkColor color;
+        };
+        uint16_t basePalette;
+        const ColorOverride* colorOverrides;
+        int colorOverrideCount;
+    };
+
+    SkFontArguments()
+            : fCollectionIndex(0)
+            , fVariationDesignPosition{nullptr, 0}
+            , fPaletteOverride{0, nullptr, 0} {}
 
     /** Specify the index of the desired font.
      *
@@ -54,9 +71,20 @@ struct SkFontArguments {
     VariationPosition getVariationDesignPosition() const {
         return fVariationDesignPosition;
     }
+
+    SkFontArguments& setPaletteOverride(PaletteOverride paletteOverride) {
+        fPaletteOverride.basePalette = paletteOverride.basePalette;
+        fPaletteOverride.colorOverrides = paletteOverride.colorOverrides;
+        fPaletteOverride.colorOverrideCount = paletteOverride.colorOverrideCount;
+        return *this;
+    }
+
+    PaletteOverride getPaletteOverride() const { return fPaletteOverride; }
+
 private:
     int fCollectionIndex;
     VariationPosition fVariationDesignPosition;
+    PaletteOverride fPaletteOverride;
 };
 
 #endif
