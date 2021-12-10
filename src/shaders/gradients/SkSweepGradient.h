@@ -12,6 +12,10 @@
 
 class SkSweepGradient final : public SkGradientShaderBase {
 public:
+    int toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+        return 0;
+    }
+
     SkSweepGradient(const SkPoint& center, SkScalar t0, SkScalar t1, const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;

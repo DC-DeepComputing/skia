@@ -14,6 +14,10 @@
 
 class SkImageShader : public SkShaderBase {
 public:
+    int toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+        return 0;
+    }
+
     static sk_sp<SkShader> Make(sk_sp<SkImage>,
                                 SkTileMode tmx,
                                 SkTileMode tmy,
