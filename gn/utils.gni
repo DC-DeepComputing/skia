@@ -29,6 +29,7 @@ skia_utils_public = [
 ]
 
 skia_utils_sources = [
+  "$_include/private/SkShaderUtils.h",
   "$_src/utils/SkAnimCodecPlayer.cpp",
   "$_src/utils/SkBase64.cpp",
   "$_src/utils/SkBitSet.h",
@@ -68,6 +69,7 @@ skia_utils_sources = [
   "$_src/utils/SkPatchUtils.h",
   "$_src/utils/SkPolyUtils.cpp",
   "$_src/utils/SkPolyUtils.h",
+  "$_src/utils/SkShaderUtils.cpp",
   "$_src/utils/SkShadowTessellator.cpp",
   "$_src/utils/SkShadowTessellator.h",
   "$_src/utils/SkShadowUtils.cpp",

@@ -5,15 +5,14 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrShaderUtils_DEFINED
-#define GrShaderUtils_DEFINED
+#ifndef SkShaderUtils_DEFINED
+#define SkShaderUtils_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrContextOptions.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/private/SkSLString.h"
 
-namespace GrShaderUtils {
+namespace SkShaderUtils {
 
 SkSL::String PrettyPrint(const SkSL::String& string);
 
@@ -30,10 +29,28 @@ inline void PrintLineByLine(const SkSL::String& text) {
 // Combines raw shader and error text into an easier-to-read error message with line numbers.
 SkSL::String BuildShaderErrorMessage(const char* shader, const char* errors);
 
-GrContextOptions::ShaderErrorHandler* DefaultShaderErrorHandler();
+/**
+ * Abstract class to report errors when compiling shaders.
+ */
+class SK_API ShaderErrorHandler {
+public:
+    virtual ~ShaderErrorHandler() = default;
+
+    virtual void compileError(const char* shader, const char* errors) = 0;
+
+protected:
+    ShaderErrorHandler() = default;
+    ShaderErrorHandler(const ShaderErrorHandler&) = delete;
+    ShaderErrorHandler& operator=(const ShaderErrorHandler&) = delete;
+};
+
+/**
+ * Used when no error handler is set. Will report failures via SkDebugf and asserts.
+ */
+ShaderErrorHandler* DefaultShaderErrorHandler();
 
 void PrintShaderBanner(SkSL::ProgramKind programKind);
 
-}  // namespace GrShaderUtils
+}  // namespace SkShaderUtils
 
 #endif
