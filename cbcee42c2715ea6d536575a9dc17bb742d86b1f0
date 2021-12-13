@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e09c28a6_ee68ca3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-13T16:24:11Z",
+      "side": 1,
+      "message": "Nice. I was going to comment on the scalars having \":0\" in the previous CL, but it seemed like a nit-pick for testing code. Still, definitely prefer this (and having it as a common utility for any other visualization built by us/others).",
+      "revId": "cbcee42c2715ea6d536575a9dc17bb742d86b1f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
