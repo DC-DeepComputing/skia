@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b3506d_dccbc68f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-13T17:28:59Z",
+      "side": 1,
+      "message": "The bug no longer occurs, but I think that\u0027s because Chris turned off distance field paths, so fixing it in case this comes back.",
+      "revId": "3538e3c8413ccbd0c713d71ee4374956e506edc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
