@@ -41,6 +41,37 @@
 // e.g. setTextSize(-1)
 //#define SK_REPORT_API_RANGE_CHECK
 
+/*
+ * So, if we ignore pre-compilation, we want to be able to slurp in an SkPaint and end up
+ * with either graphite-specific SkSL or ganesh-specific SkSL. The graphite-version is what
+ * we really want but, we're stuck, short term, reusing the Ganesh SkSL from the FPs since it
+ * is expensive to write all the uber shader SkSL. Note that there may also be a third case where
+ * we can get SkVM-specific SkSL - since the raster backend may make different decisions for
+ * efficiency.
+ *
+ * The idea is that the SkPaint and all the things that make it up can generate a set of codes that
+ * have a 1 to 1 mapping to the SkSL fragments needed. That compressed form can then be used
+ * as a unique key to represent the corresponding SkSL and can be expanded into it. (Ideally
+ * the expansion would be just stitching together the SkSL fragments.)
+ *
+ * The invariant here is that, for every SkPaint the SkCanvas sees we should be able to pre-generate
+ * and cache the SkSL for its VS and FS (ignoring ImageFilters). Then, when we see the actual
+ * code in the compilation stage, we can assert that we already saw it.
+ *
+ * Next steps:
+ */
+
+void SkPaint::toCode(SkMagicCodeDictionary* dict, Mapping mapping, SkCode* code) const {
+    if (fShader) {
+        fShader->toCodeS(dict, mapping, code);
+    }
+    if (fColorFilter) {
+        fColorFilter->toCodeCF(dict, mapping, code);
+    }
+    if (fBlender) {
+        fBlender->toCodeB(dict, mapping, code);
+    }
+}
 
 SkPaint::SkPaint()
     : fColor4f{0, 0, 0, 1}  // opaque black
