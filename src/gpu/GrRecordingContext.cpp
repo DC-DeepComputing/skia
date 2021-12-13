@@ -21,7 +21,7 @@
 #include "src/gpu/SurfaceContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "src/gpu/text/GrTextBlob.h"
-#include "src/gpu/text/GrTextBlobCache.h"
+#include "src/gpu/text/GrTextBlobRedrawCoordinator.h"
 
 #if SK_GPU_V1
 #include "src/gpu/ops/AtlasTextOp.h"
@@ -144,11 +144,11 @@ GrRecordingContext::OwnedArenas&& GrRecordingContext::detachArenas() {
     return std::move(fArenas);
 }
 
-GrTextBlobCache* GrRecordingContext::getTextBlobCache() {
+GrTextBlobRedrawCoordinator* GrRecordingContext::getTextBlobCache() {
     return fThreadSafeProxy->priv().getTextBlobCache();
 }
 
-const GrTextBlobCache* GrRecordingContext::getTextBlobCache() const {
+const GrTextBlobRedrawCoordinator* GrRecordingContext::getTextBlobCache() const {
     return fThreadSafeProxy->priv().getTextBlobCache();
 }
 
