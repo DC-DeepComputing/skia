@@ -284,6 +284,7 @@ private:
 std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
         sk_sp<SkRuntimeEffect> effect,
         const char* name,
+        sk_sp<SkColorSpace> dstColorSpace,
         std::unique_ptr<GrFragmentProcessor> inputFP,
         std::unique_ptr<GrFragmentProcessor> destColorFP,
         sk_sp<SkData> uniforms,
@@ -293,8 +294,8 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
     }
     size_t uniformSize = uniforms->size();
     size_t uniformFlagSize = effect->uniforms().size() * sizeof(UniformFlags);
-    std::unique_ptr<GrSkSLFP> fp(new (uniformSize + uniformFlagSize)
-                                         GrSkSLFP(std::move(effect), name, OptFlags::kNone));
+    std::unique_ptr<GrSkSLFP> fp(new (uniformSize + uniformFlagSize) GrSkSLFP(
+            std::move(effect), name, std::move(dstColorSpace), OptFlags::kNone));
     sk_careful_memcpy(fp->uniformData(), uniforms->data(), uniformSize);
     for (auto& childFP : childFPs) {
         fp->addChild(std::move(childFP), /*mergeOptFlags=*/true);
@@ -308,7 +309,10 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
     return fp;
 }
 
-GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags optFlags)
+GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect,
+                   const char* name,
+                   sk_sp<SkColorSpace> dstColorSpace,
+                   OptFlags optFlags)
         : INHERITED(kGrSkSLFP_ClassID,
                     static_cast<OptimizationFlags>(optFlags) |
                             (effect->getFilterColorProgram()
@@ -316,6 +320,7 @@ GrSkSLFP::GrSkSLFP(sk_sp<SkRuntimeEffect> effect, const char* name, OptFlags opt
                                      : kNone_OptimizationFlags))
         , fEffect(std::move(effect))
         , fName(name)
+        , fDstColorSpace(std::move(dstColorSpace))
         , fUniformSize(SkToU32(fEffect->uniformSize())) {
     memset(this->uniformFlags(), 0, fEffect->uniforms().size() * sizeof(UniformFlags));
     if (fEffect->usesSampleCoords()) {
