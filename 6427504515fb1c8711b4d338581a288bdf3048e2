@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "366210f1_c1ce8e76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-13T16:28:42Z",
+      "side": 1,
+      "message": "I can\u0027t verify this as the fuzzer testcase is too old, but I believe it will address the issue.",
+      "revId": "6427504515fb1c8711b4d338581a288bdf3048e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
