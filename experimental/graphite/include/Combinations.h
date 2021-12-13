@@ -1,0 +1,111 @@
+/*
+ * Copyright 2021 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_Combinations_DEFINED
+#define skgpu_Combinations_DEFINED
+
+#include "include/core/SkTileMode.h"
+#include "include/gpu/GrTypes.h"
+
+enum class Mapping : uint8_t {
+    kGanesh,
+    kGraphite,
+    kSkVM
+};
+
+/**************************************************************************************************/
+/* These logically attach to the SkTileMode enum */
+inline static constexpr int kTileModeBits = 2;
+inline static constexpr int kTileModeMask = 0x3;
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+static constexpr const char* TileModeToStr(SkTileMode tm) {
+    static_assert(kSkTileModeCount == (0x1 << (kTileModeBits)));
+    static_assert(kTileModeMask == kSkTileModeCount-1);
+
+    static_assert((int) SkTileMode::kClamp  == 0);
+    static_assert((int) SkTileMode::kRepeat == 1);
+    static_assert((int) SkTileMode::kMirror == 2);
+    static_assert((int) SkTileMode::kDecal  == 3);
+    static_assert(kSkTileModeCount == 4);
+
+    const char* kStrings[kSkTileModeCount] = { "kClamp", "kRepeat", "kMirror", "kDecal" };
+    return kStrings[(int) tm];
+}
+#endif
+
+/**************************************************************************************************/
+enum class CombinableTileMode : uint8_t {
+    kClamp  = 0x1,
+    kRepeat = 0x2,
+    kMirror = 0x4,
+    kDecal  = 0x8,
+
+    kFirst = kClamp,
+    kLast = kDecal,
+};
+static const int kCombinableTileModeCnt = 4;
+
+GR_MAKE_BITFIELD_CLASS_OPS(CombinableTileMode)
+
+inline static constexpr CombinableTileMode kAllCombinableTileModes =
+        (CombinableTileMode) (CombinableTileMode::kClamp  |
+                              CombinableTileMode::kRepeat |
+                              CombinableTileMode::kMirror |
+                              CombinableTileMode::kDecal);
+
+static constexpr SkTileMode CombinableTMToTM(CombinableTileMode tm) {
+    static_assert((0x1 << (kCombinableTileModeCnt-1)) == (int) CombinableTileMode::kLast);
+    static_assert((0x1 << (kCombinableTileModeCnt))-1 == (int) kAllCombinableTileModes);
+    SkASSERT((tm & kAllCombinableTileModes)); // should have 1 & only 1 TileMode
+
+    switch (tm) {
+        case CombinableTileMode::kClamp:  return SkTileMode::kClamp;
+        case CombinableTileMode::kRepeat: return SkTileMode::kRepeat;
+        case CombinableTileMode::kMirror: return SkTileMode::kMirror;
+        case CombinableTileMode::kDecal:  return SkTileMode::kDecal;
+    }
+
+    SkASSERT(0); // should have 1 & only 1 TileMode
+    return SkTileMode::kRepeat;
+}
+
+int FirstCombinableTileMode(CombinableTileMode combinableTileMode);
+
+/**************************************************************************************************/
+enum class GradientCode : uint8_t {
+    kLinear,
+    kRadial,
+    kConical,
+    kSweep,
+
+    kLast = kSweep,
+};
+static constexpr int kGradientCodeCount = static_cast<int>(GradientCode::kLast) + 1;
+
+inline static constexpr int kGradientCodeBits = 2;
+inline static constexpr int kGradientCodeMask = 0x3;
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+static constexpr const char* GradientTypeToStr(GradientCode gc) {
+    static_assert(kGradientCodeCount == (0x1 << (kGradientCodeBits)));
+    static_assert(kGradientCodeMask == kGradientCodeCount-1);
+
+    static_assert((int) GradientCode::kLinear  == 0);
+    static_assert((int) GradientCode::kRadial == 1);
+    static_assert((int) GradientCode::kConical == 2);
+    static_assert((int) GradientCode::kSweep  == 3);
+    static_assert(kGradientCodeCount == 4);
+
+    const char* kStrings[kGradientCodeCount] = { "kLinear", "kRadial", "kConical", "kSweep" };
+    return kStrings[(int) gc];
+}
+#endif
+
+/**************************************************************************************************/
+
+#endif // skgpu_Combinations_DEFINED

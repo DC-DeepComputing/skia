@@ -14,6 +14,24 @@
 
 class SkImageShader : public SkShaderBase {
 public:
+    int toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override;
+
+    struct ImageData {
+        bool operator==(const ImageData& rhs) const {
+            return fTileModes[0] == rhs.fTileModes[0] &&
+                   fTileModes[1] == rhs.fTileModes[1];
+        }
+        bool operator!=(const ImageData& rhs) const { return !(*this == rhs); }
+
+        SkTileMode fTileModes[2];
+    };
+
+    static int Encode1(SkMagicCodeDictionary*, Mapping, SkCode*, const ImageData&);
+    static ImageData Decode(int code);
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+    static void Dump(const uint32_t* data, int maxIndex);
+#endif
+
     static sk_sp<SkShader> Make(sk_sp<SkImage>,
                                 SkTileMode tmx,
                                 SkTileMode tmy,
