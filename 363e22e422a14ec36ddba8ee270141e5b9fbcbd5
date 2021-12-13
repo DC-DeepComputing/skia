@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64f615b_4edab181",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-13T14:54:03Z",
+      "side": 1,
+      "message": "Thanks. Fixed.",
+      "parentUuid": "262f9f54_90f30555",
+      "range": {
+        "startLine": 121,
+        "startChar": 24,
+        "endLine": 121,
+        "endChar": 35
+      },
+      "revId": "363e22e422a14ec36ddba8ee270141e5b9fbcbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1c11267_70c4e7b2",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72597f10_e14209a3",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-13T14:54:03Z",
+      "side": 1,
+      "message": "Thanks. Good to know. Added a note (at different place, though).",
+      "parentUuid": "c1c11267_70c4e7b2",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 60
+      },
+      "revId": "363e22e422a14ec36ddba8ee270141e5b9fbcbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "336883e8_59b0f1a7",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-12-10T16:59:47Z",
       "side": 1,
       "message": "Not necessarily. Skia generally operates on the [0,1] range with F16 (though rendering is allowed to go outside of those values for out-of-gamut or HDR uses). This is also somewhat up to the client, because skcms supports making PQ or HLG transfer functions that change where SDR white falls. But the standard situation is for SDR white to be 1.0.",
+      "range": {
+        "startLine": 263,
+        "startChar": 15,
+        "endLine": 263,
+        "endChar": 60
+      },
+      "revId": "363e22e422a14ec36ddba8ee270141e5b9fbcbd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57cd4896_da271023",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-13T14:54:03Z",
+      "side": 1,
+      "message": "I see. Checked references in code - indeed those two color types are (mostly) processed the same way. Perhaps it is worth adding a comment in SkImageInfo.h about that.",
+      "parentUuid": "336883e8_59b0f1a7",
       "range": {
         "startLine": 263,
         "startChar": 15,
