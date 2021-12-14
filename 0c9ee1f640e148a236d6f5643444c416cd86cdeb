@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d7c5ac_4d59c920",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T16:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54c0fd02_4a1875a5",
+      "range": {
+        "startLine": 349,
+        "startChar": 57,
+        "endLine": 349,
+        "endChar": 58
+      },
+      "revId": "0c9ee1f640e148a236d6f5643444c416cd86cdeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a3991f4_7539a64f",
@@ -70,6 +94,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f56e3dfa_4b5048db",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T16:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4eeadda_90b8e174",
+      "range": {
+        "startLine": 473,
+        "startChar": 60,
+        "endLine": 473,
+        "endChar": 61
+      },
+      "revId": "0c9ee1f640e148a236d6f5643444c416cd86cdeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe614f22_b921bb36",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T16:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a3991f4_7539a64f",
+      "range": {
+        "startLine": 473,
+        "startChar": 45,
+        "endLine": 473,
+        "endChar": 49
+      },
+      "revId": "0c9ee1f640e148a236d6f5643444c416cd86cdeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e692e4a_9ff10a1c",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe9244a_a30f799b",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2735,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T16:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e692e4a_9ff10a1c",
+      "range": {
+        "startLine": 2735,
+        "startChar": 13,
+        "endLine": 2735,
+        "endChar": 18
+      },
+      "revId": "0c9ee1f640e148a236d6f5643444c416cd86cdeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0a805ae_1cf048e3",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-12-14T16:29:08Z",
       "side": 1,
       "message": "REPORTER_ASSERT(reporter, instr.op !\u003d skvm::Op::duplicate)\n\nhere and below",
+      "range": {
+        "startLine": 2744,
+        "startChar": 0,
+        "endLine": 2746,
+        "endChar": 13
+      },
+      "revId": "0c9ee1f640e148a236d6f5643444c416cd86cdeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46228d9a_d048a855",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2746,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T16:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0a805ae_1cf048e3",
       "range": {
         "startLine": 2744,
         "startChar": 0,
