@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d12f6372_25e86036",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T22:04:02Z",
+      "side": 1,
+      "message": "Well, if I want to attach machine commands to SkVM byte code I need to catch the moment these machine commands are generated. So I will have to collect some information about machine commands (or pass down the visualizer into Jit method). So I cannot simply produce the visualization data at",
+      "parentUuid": "bd3f0df7_c40b160d",
+      "range": {
+        "startLine": 632,
+        "startChar": 16,
+        "endLine": 632,
+        "endChar": 43
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68ce87d2_b4a78483",
@@ -181,6 +205,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "68ce87d2_b4a78483",
+      "range": {
+        "startLine": 3611,
+        "startChar": 0,
+        "endLine": 3615,
+        "endChar": 33
+      },
+      "revId": "fd035816c9a3d21194e64c2e2538b885d9456026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadcb66f_313c109b",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 3615,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T22:04:02Z",
+      "side": 1,
+      "message": "I decided to move out of \"emit\" any mention of the visualizer",
+      "parentUuid": "e128461e_e4d8b76a",
       "range": {
         "startLine": 3611,
         "startChar": 0,
