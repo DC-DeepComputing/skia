@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba939699_c7b42c51",
+        "filename": "tests/SkVMDebugTracePlayerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-14T21:19:57Z",
+      "side": 1,
+      "message": "Do we show values before or after we execute the line?\nIn line #5 we do temp \u003d 1 but it does not show it...",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 53
+      },
+      "revId": "a9b4ceb4525197f045f5c4e296af22879b3b6a19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
