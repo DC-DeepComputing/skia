@@ -102,7 +102,6 @@ public:
 
 
     // TODO: Actual API to do things
-    // 1. Provide stencil settings
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
     //    way to support that. It may mean that RenderSteps get state per draw.
     //    - Does Renderer make RenderStepFactories that create steps for each DrawList::Draw?
@@ -165,7 +164,7 @@ private:
     size_t fVertexStride;   // derived from vertex attribute set
     size_t fInstanceStride; // derived from instance attribute set
 };
-SKGPU_MAKE_MASK_OPS(RenderStep::Flags);
+SKGPU_MAKE_MASK_OPS(RenderStep::Flags)
 
 /**
  * The actual technique for rasterizing a high-level draw recorded in a DrawList is handled by a

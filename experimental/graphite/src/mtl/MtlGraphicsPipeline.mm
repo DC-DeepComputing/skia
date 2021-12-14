@@ -84,6 +84,9 @@ SkSL::String emit_SkSL_attributes(SkSpan<const Attribute> vertexAttrs,
                 case SLType::kFloat4:
                     result.append("float4");
                     break;
+                case SLType::kFloat3:
+                    result.append("float3");
+                    break;
                 case SLType::kFloat2:
                     result.append("float2");
                     break;
