@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2707b398_382d1499",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:07:46Z",
+      "side": 1,
+      "message": "Please run\n  python tools/rewrite_includes.py src/sksl/SkSLMain.cpp\n",
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b577d16b_57ac7760",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:07:46Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 1018,
+        "startChar": 84,
+        "endLine": 1018,
+        "endChar": 98
+      },
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
