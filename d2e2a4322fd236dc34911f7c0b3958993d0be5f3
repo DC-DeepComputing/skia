@@ -16,6 +16,293 @@
       "message": "+scroggo, 2nd set of eyes",
       "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d0ff19_021f9721",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Line 129 suggests that a frame may have alpha",
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abeadb7_e7813097",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "For consistency with other impls, you can use SkCodec::kNoFrame. Or is it important that this value is bigger than valid values?",
+      "range": {
+        "startLine": 55,
+        "startChar": 28,
+        "endLine": 55,
+        "endChar": 45
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5591aeee_9a4b175f",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "What does this line mean? Here we specify an SkEncodedInfo::Color, and I think there was some talk of getting rid of kN32_SkColorType.",
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc60771_8bbb2465",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "How is this semantically different from kNoLastFrameIndex? (Should it be its own constant?)",
+      "range": {
+        "startLine": 206,
+        "startChar": 34,
+        "endLine": 206,
+        "endChar": 36
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf62b4f_c4597c3f",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "What does fLastDecodedFrame mean? In this case, it looks like we didn\u0027t really decode it?",
+      "range": {
+        "startLine": 212,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 40
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c77a149_6c7199cd",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Should we? Or is there a good reason that we don\u0027t? (Is this comment important?)",
+      "range": {
+        "startLine": 222,
+        "startChar": 7,
+        "endLine": 222,
+        "endChar": 50
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91604b0c_ade16eaa",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Why?",
+      "range": {
+        "startLine": 233,
+        "startChar": 58,
+        "endLine": 233,
+        "endChar": 96
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5367cb05_f0ad100e",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Is it possible to have an incomplete image?",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebf3fc02_3bbfaefe",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "What does \"zis\" mean? Is there perhaps a clearer name for this?",
+      "range": {
+        "startLine": 291,
+        "startChar": 19,
+        "endLine": 291,
+        "endChar": 22
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1696a2eb_fa65e4e1",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "This returns a pointer to a frameholder, right? Normally we spell that as\n\n  auto*",
+      "range": {
+        "startLine": 318,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 8
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c8466c_39e6ca12",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Could this be a const ref?",
+      "range": {
+        "startLine": 320,
+        "startChar": 4,
+        "endLine": 320,
+        "endChar": 8
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c03a45c_e78e3288",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "Why is this case called out if it behaves the same as the default?\n\nAlso, it looks like this method always returns true?",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 13
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d394c55c_75c3fc31",
+        "filename": "src/codec/SkJpegxlCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-14T16:29:33Z",
+      "side": 1,
+      "message": "What does this mean?",
+      "range": {
+        "startLine": 14,
+        "startChar": 39,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
