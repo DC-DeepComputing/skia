@@ -16,6 +16,24 @@
       "message": "nit: Unnecessary line removal.",
       "revId": "d26057a2c0e1e35a2f3a498769a27d8f8b6b1e62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca5cca99_cf808cb0",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-14T15:24:30Z",
+      "side": 0,
+      "message": "fixed",
+      "parentUuid": "6e3769c4_f47714a2",
+      "revId": "d26057a2c0e1e35a2f3a498769a27d8f8b6b1e62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
