@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c6d714_85b5abbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:17:01Z",
+      "side": 1,
+      "message": "I haven\u0027t had a chance to fully review this yet, just skim a bit.",
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac8531d_70f060ec",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:17:01Z",
+      "side": 1,
+      "message": "Please label arguments that aren\u0027t clear. e.g.",
+      "range": {
+        "startLine": 519,
+        "startChar": 20,
+        "endLine": 519,
+        "endChar": 25
+      },
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b577d16b_57ac7760",
@@ -36,6 +76,75 @@
         "startChar": 84,
         "endLine": 1018,
         "endChar": 98
+      },
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c1a7554_67930603",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:17:01Z",
+      "side": 1,
+      "message": "kHoisted and kDead are flag bits that can be or\u0027ed together, but kNormal is not. (It\u0027s just \"the absence of any bit\".)",
+      "range": {
+        "startLine": 23,
+        "startChar": 7,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdf250cb_b2b469fa",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:17:01Z",
+      "side": 1,
+      "message": "What prevents us from using skvm::Op directly? We definitely don\u0027t want to clone the whole enum here. (It\u0027s already out of sync with the real skvm::Op... trace_scope was added today.)",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 23
+      },
+      "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe28409_77ae4491",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:17:01Z",
+      "side": 1,
+      "message": "`else` doesn\u0027t do anything here (the if-true block returns)",
+      "range": {
+        "startLine": 166,
+        "startChar": 14,
+        "endLine": 166,
+        "endChar": 18
       },
       "revId": "1c67d63caa0bfcb0b2fcd9883570e7aba2a28eca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
