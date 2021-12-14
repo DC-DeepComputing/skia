@@ -22,6 +22,30 @@
       },
       "revId": "a9b4ceb4525197f045f5c4e296af22879b3b6a19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f588bfd_90651499",
+        "filename": "tests/SkVMDebugTracePlayerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T21:56:04Z",
+      "side": 1,
+      "message": "Good question! For the debugger, the current/highlighted line is the line that we will execute when the step button is pressed. So the information you see is the state immediately BEFORE executing line 5.",
+      "parentUuid": "ba939699_c7b42c51",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 53
+      },
+      "revId": "a9b4ceb4525197f045f5c4e296af22879b3b6a19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
