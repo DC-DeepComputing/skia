@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b67a65e3_4834e7f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-14T17:06:53Z",
+      "side": 1,
+      "message": "I am curious about people\u0027s thoughts on the Bitfield helper template, and/or if we have something similar already defined in Skia that I could use instead.",
+      "revId": "acf68b091f60d8b51c905bd6a97acc1b622dab24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
