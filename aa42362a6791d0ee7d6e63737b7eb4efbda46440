@@ -16,6 +16,23 @@
       "message": "PTAL\nNot sure what permissions I have here.",
       "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2a8279_5f6b8521",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2021-12-14T22:20:35Z",
+      "side": 1,
+      "message": "LGTM, but I don\u0027t have permissions to +1 it.",
+      "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
