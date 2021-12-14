@@ -320,21 +320,23 @@ int main() {                          // Line 6
 
 DEF_TEST(SkSLTracePlayerIfStatement, r) {
     sk_sp<SkSL::SkVMDebugTrace> trace = make_trace(r,
-R"(               // Line 1
-int main() {      // Line 2
-    int val;      // Line 3
-    if (true) {   // Line 4
-        val = 1;  // Line 5
-    } else {      // Line 6
-        val = 2;  // Line 7
-    }             // Line 8
-    if (false) {  // Line 9
-        val = 3;  // Line 10
-    } else {      // Line 11
-        val = 4;  // Line 12
-    }             // Line 13
-    return val;   // Line 14
-}                 // Line 15
+R"(                   // Line 1
+int main() {          // Line 2
+    int val;          // Line 3
+    if (true) {       // Line 4
+        int temp = 1; // Line 5
+        val = temp;   // Line 6
+    } else {          // Line 7
+        val = 2;      // Line 8
+    }                 // Line 9
+    if (false) {      // Line 10
+        int temp = 3; // Line 11
+        val = temp;   // Line 12
+    } else {          // Line 13
+        val = 4;      // Line 14
+    }                 // Line 15
+    return val;       // Line 16
+}                     // Line 17
 )");
     SkSL::SkVMDebugTracePlayer player;
     player.reset(trace);
@@ -353,18 +355,23 @@ int main() {      // Line 2
     REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 0");
     player.step();
 
+    REPORTER_ASSERT(r, player.getCurrentLine() == 6);
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##temp = 1, val = 0");
+    player.step();
+
     // We skip over the false-branch.
-    REPORTER_ASSERT(r, player.getCurrentLine() == 9);
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 1");
+    REPORTER_ASSERT(r, player.getCurrentLine() == 10);
+    // TODO(skia:12741): `temp` should fall out of scope and disappear
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 1, temp = 1");
     player.step();
 
     // We skip over the true-branch.
-    REPORTER_ASSERT(r, player.getCurrentLine() == 12);
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 1");
+    REPORTER_ASSERT(r, player.getCurrentLine() == 14);
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 1, temp = 1");
     player.step();
 
-    REPORTER_ASSERT(r, player.getCurrentLine() == 14);
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 4");
+    REPORTER_ASSERT(r, player.getCurrentLine() == 16);
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 4, temp = 1");
     player.step();
 
     REPORTER_ASSERT(r, player.traceHasCompleted());
@@ -412,6 +419,7 @@ int main() {                       // Line 2
     player.step();
 
     REPORTER_ASSERT(r, player.getCurrentLine() == 7);
+    // TODO(skia:12741): `x` should fall out of scope and disappear
     REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 2, x = 2");
     player.step();
 
