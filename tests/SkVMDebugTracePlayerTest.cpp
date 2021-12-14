@@ -361,17 +361,16 @@ int main() {          // Line 2
 
     // We skip over the false-branch.
     REPORTER_ASSERT(r, player.getCurrentLine() == 10);
-    // TODO(skia:12741): `temp` should fall out of scope and disappear
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 1, temp = 1");
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 1");
     player.step();
 
     // We skip over the true-branch.
     REPORTER_ASSERT(r, player.getCurrentLine() == 14);
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 1, temp = 1");
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 1");
     player.step();
 
     REPORTER_ASSERT(r, player.getCurrentLine() == 16);
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 4, temp = 1");
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##val = 4");
     player.step();
 
     REPORTER_ASSERT(r, player.traceHasCompleted());
@@ -419,8 +418,7 @@ int main() {                       // Line 2
     player.step();
 
     REPORTER_ASSERT(r, player.getCurrentLine() == 7);
-    // TODO(skia:12741): `x` should fall out of scope and disappear
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 2, x = 2");
+    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "val = 2");
     player.step();
 
     REPORTER_ASSERT(r, player.traceHasCompleted());
