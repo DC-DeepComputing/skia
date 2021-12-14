@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf135f0a_dd80b5a4",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-14T21:21:50Z",
+      "side": 1,
+      "message": "For a follow-up, might be nice to put all of this repeated logic in a helper, now that there are 5 copies?",
+      "range": {
+        "startLine": 692,
+        "startChar": 0,
+        "endLine": 697,
+        "endChar": 63
+      },
+      "revId": "2d8d7211a3a8bcf8732970d30f741bd82516fd5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
