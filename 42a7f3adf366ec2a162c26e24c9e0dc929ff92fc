@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a0dff6_4c5578d3",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T16:29:08Z",
+      "side": 1,
+      "message": "It couldn\u0027t happen today, but I could imagine a future where we want optimization but also want to leave these markers in for some sort of visualization purpose. It\u0027s not too weird.",
+      "parentUuid": "7402de56_eb3177d2",
+      "range": {
+        "startLine": 349,
+        "startChar": 32,
+        "endLine": 349,
+        "endChar": 37
+      },
+      "revId": "42a7f3adf366ec2a162c26e24c9e0dc929ff92fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3670529b_02b03d49",
