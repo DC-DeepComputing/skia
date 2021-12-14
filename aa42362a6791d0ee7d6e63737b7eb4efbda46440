@@ -33,6 +33,23 @@
       "message": "LGTM, but I don\u0027t have permissions to +1 it.",
       "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c4053d_6a783e62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8538
+      },
+      "writtenOn": "2021-12-14T22:37:52Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
