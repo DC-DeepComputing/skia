@@ -12,6 +12,8 @@
 
 class SkBlendModeBlender : public SkBlenderBase {
 public:
+    int toCodeB(SkMagicCodeDictionary*, Mapping, SkCode*) const override;
+
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
 
     skstd::optional<SkBlendMode> asBlendMode() const final { return fMode; }

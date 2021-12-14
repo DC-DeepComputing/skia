@@ -38,6 +38,10 @@ static const int kRandMaximum = SK_MaxS32; // 2**31 - 1
 
 class SkPerlinNoiseShaderImpl : public SkShaderBase {
 public:
+    int toCodeS(SkMagicCodeDictionary*, Mapping, SkCode*) const override {
+        return 0;
+    }
+
     struct StitchData {
         StitchData()
           : fWidth(0)
