@@ -7,6 +7,7 @@
 
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkString.h"
+#include "include/private/SkCode.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
@@ -18,6 +19,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkComposeShader.h"
+
+#include "experimental/graphite/include/Encoding.h"
 
 namespace {
 
@@ -66,6 +69,52 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**************************************************************************************************/
+int SkShader_Blend::Encode1(SkMagicCodeDictionary* dict,
+                            Mapping mapping,
+                            SkCode* code,
+                            const BlendData& data) {
+    code->addInt1((int) data.fBM);
+    int numDstInts = data.fDst->toCodeS(dict, mapping, code);
+    int numSrcInts = data.fSrc->toCodeS(dict, mapping, code);
+    return 1 + numDstInts + numSrcInts;
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkShader_Blend::Dump(const uint32_t* data, int numIntsAccessible) {
+    SkASSERT(Foo::kBlendShader == static_cast<Foo>(data[0] & kFooMask));
+
+    SkBlendMode bm = static_cast<SkBlendMode>(data[1]);
+    SkDebugf("BlendMode: %s\n", BlendModeToStr(bm));
+    SkDebugf("\nFirst:  ");
+    int numConsumed1 = SkCode::DumpFrom(&data[2]);
+    SkASSERT(1+numConsumed1 < numIntsAccessible);
+    SkDebugf("Second: ");
+    int numConsumed2 = SkCode::DumpFrom(&data[numConsumed1+2]);
+    SkASSERT(2+numConsumed1+numConsumed2 <= numIntsAccessible);
+}
+#endif
+
+int SkShader_Blend::toCodeS(SkMagicCodeDictionary* dict,
+                            Mapping mapping,
+                            SkCode* code) const {
+    if (!fBlender) {
+
+    }
+
+    int index = code->addFoo(Foo::kBlendShader);
+
+    BlendData blendData { fDst.get(), fSrc.get(), fMode };
+
+    // Maybe add a getCurIndex call and do this math independently?
+    int size = Encode1(dict, mapping, code, blendData);
+
+    code->patchFoo(index, Foo::kBlendShader, size);
+
+    return size + 1;
+}
+/**************************************************************************************************/
 
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))

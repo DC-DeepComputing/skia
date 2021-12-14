@@ -14,6 +14,12 @@
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #endif
 
+#include "experimental/graphite/include/Encoding.h"
+
+void SkBlendModeBlender::toCodeB(SkMagicCodeDictionary* dict, Mapping mapping, SkCode* code) const {
+    BlendMode::Encode1(dict, mapping, code, fMode);
+}
+
 sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                        \
     case m: {                                              \
