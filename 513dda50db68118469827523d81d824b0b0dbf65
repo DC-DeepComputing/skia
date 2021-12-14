@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "16c871b5_41d25697",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-14T16:45:59Z",
+      "side": 1,
+      "message": "nit: Update CL description",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 64
+      },
+      "revId": "513dda50db68118469827523d81d824b0b0dbf65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "869fd124_e12f8a7f",
@@ -14,6 +37,23 @@
       "writtenOn": "2021-12-14T16:23:37Z",
       "side": 1,
       "message": "It looks like there is a test class in Chrome that needs to be updated. :-/",
+      "revId": "513dda50db68118469827523d81d824b0b0dbf65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9726ad74_737c4387",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-14T16:45:59Z",
+      "side": 1,
+      "message": "lgtm, pending chromeium update...",
       "revId": "513dda50db68118469827523d81d824b0b0dbf65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
