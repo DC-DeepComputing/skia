@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a0b8d2_26188268",
+        "filename": "modules/skottie/src/effects/SharpenEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-14T19:00:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72ef8f1c_d9af7827",
+      "revId": "54d06032c347a97cc2a21385b4f8b920febf6dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a5794e6_c06632d1",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-12-14T13:49:51Z",
       "side": 1,
       "message": "nit: line break",
+      "revId": "54d06032c347a97cc2a21385b4f8b920febf6dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ece0a18_96d5c14a",
+        "filename": "modules/skottie/src/effects/SharpenEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2021-12-14T19:00:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a5794e6_c06632d1",
       "revId": "54d06032c347a97cc2a21385b4f8b920febf6dee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
