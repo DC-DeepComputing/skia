@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7181e0ab_50ffda0c",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1801,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-14T21:33:05Z",
+      "side": 1,
+      "message": "This is going to force evaluation (at the builder level, not necessarily in the real program) in all cases, right? But it\u0027s sort of unavoidable, because (IIUC), putting mask() inside emitTraceScope() (in the conditional) doesn\u0027t work for the second call in the loop case? (Because we need to restore the loop masks before popping the loop scope)?\n\nDoes it matter if we put two un-necessary trace_scope instructions for an empty loop? If not, then we could remove executionMask from the emitTraceScope args, and have it just use mask() in the call to trace_scope, right? (Assuming we moved the emitTraceScope(-1) call for loops to after the fLoopMask and fContinueMask were restored?",
+      "range": {
+        "startLine": 1801,
+        "startChar": 0,
+        "endLine": 1801,
+        "endChar": 34
+      },
+      "revId": "5c9adf4f507de78551aaa785e9664dc8ede9d71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
