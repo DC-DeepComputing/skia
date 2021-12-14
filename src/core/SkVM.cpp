@@ -274,6 +274,7 @@ namespace skvm {
                                                                   VarSlot{immB}, "=", V{z}); break;
             case Op::trace_enter: write(o, op, TraceHookID{immA}, V{x}, V{y}, FnIdx{immB}); break;
             case Op::trace_exit:  write(o, op, TraceHookID{immA}, V{x}, V{y}, FnIdx{immB}); break;
+            case Op::trace_depth: write(o, op, TraceHookID{immA}, V{x}, Shift{immB}); break;
 
             case Op::store8:   write(o, op, Ptr{immA}, V{x}               ); break;
             case Op::store16:  write(o, op, Ptr{immA}, V{x}               ); break;
@@ -398,6 +399,8 @@ namespace skvm {
                                                    R{x}, R{y}, FnIdx{immB}); break;
                 case Op::trace_exit:  write(o, op, TraceHookID{immA},
                                                    R{x}, R{y}, FnIdx{immB}); break;
+                case Op::trace_depth: write(o, op, TraceHookID{immA},
+                                                   R{x}, Shift{immB}); break;
 
                 case Op::store8:   write(o, op, Ptr{immA}, R{x}                  ); break;
                 case Op::store16:  write(o, op, Ptr{immA}, R{x}                  ); break;
@@ -672,6 +675,12 @@ namespace skvm {
         if (this->isImm(mask.id,     ~0)) { mask = traceMask; }
         if (this->isImm(traceMask.id,~0)) { traceMask = mask; }
         (void)push(Op::trace_exit, mask.id,traceMask.id,NA,NA, traceHookID, fnIdx);
+    }
+    void Builder::trace_depth(int traceHookID, I32 traceMask, int delta) {
+        SkASSERT(traceHookID >= 0);
+        SkASSERT(traceHookID < (int)fTraceHooks.size());
+        if (this->isImm(traceMask.id, 0)) { return; }
+        (void)push(Op::trace_depth, traceMask.id,NA,NA,NA, traceHookID, delta);
     }
 
     void Builder::store8 (Ptr ptr, I32 val) { (void)push(Op::store8 , val.id,NA,NA,NA, ptr.ix); }
@@ -2661,6 +2670,7 @@ namespace skvm {
                 case Op::trace_var:
                 case Op::trace_enter:
                 case Op::trace_exit:
+                case Op::trace_depth:
                     /* Force this program to run in the interpreter. */
                     return false;
 
@@ -3599,6 +3609,7 @@ namespace skvm {
                 case Op::trace_var:
                 case Op::trace_enter:
                 case Op::trace_exit:
+                case Op::trace_depth:
                     /* Force this program to run in the interpreter. */
                     return false;
 
@@ -3970,6 +3981,7 @@ namespace skvm {
                 case Op::trace_var:
                 case Op::trace_enter:
                 case Op::trace_exit:
+                case Op::trace_depth:
                     /* Force this program to run in the interpreter. */
                     return false;
 
