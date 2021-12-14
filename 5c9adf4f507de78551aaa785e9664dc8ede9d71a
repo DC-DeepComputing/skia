@@ -22,6 +22,30 @@
       },
       "revId": "5c9adf4f507de78551aaa785e9664dc8ede9d71a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41fbcf73_1b9ea448",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1801,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-14T23:40:56Z",
+      "side": 1,
+      "message": "This doesn\u0027t work because mask() also includes currentFunction().fReturned. e.g.:\n\n  {  //  scope+1\n     return 0;\n  }  //  no scope-1 because it is masked away, scopes are now unbalanced\n  \nIn practice we invoke mask() constantly and so it\u0027s extremely likely that calling mask() here will just find and reuse an existing skvm ID. It\u0027s also very likely that the next statement we encounter will also call mask() and reuse the same work.",
+      "parentUuid": "7181e0ab_50ffda0c",
+      "range": {
+        "startLine": 1801,
+        "startChar": 0,
+        "endLine": 1801,
+        "endChar": 34
+      },
+      "revId": "5c9adf4f507de78551aaa785e9664dc8ede9d71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
