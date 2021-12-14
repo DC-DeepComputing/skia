@@ -631,6 +631,7 @@ namespace skvm {
         // Returns a trace-hook ID which must be passed to the trace opcodes.
         int attachTraceHook(TraceHook*);
 
+
         // Convenience arg() wrappers for most common strides, sizeof(T) and 0.
         template <typename T>
         Ptr varying() { return this->arg(sizeof(T)); }
@@ -647,6 +648,7 @@ namespace skvm {
         void assert_true(I32 cond)            { assert_true(cond, cond); }
 
         // Insert debug traces into the instruction stream
+        bool mergeMasks(I32& mask, I32& traceMask);
         void trace_line (int traceHookID, I32 mask, I32 traceMask, int line);
         void trace_var  (int traceHookID, I32 mask, I32 traceMask, int slot, I32 val);
         void trace_enter(int traceHookID, I32 mask, I32 traceMask, int fnIdx);
