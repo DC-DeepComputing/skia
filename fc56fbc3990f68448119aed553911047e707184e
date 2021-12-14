@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f041f9_4c9a6981",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-14T16:06:50Z",
+      "side": 1,
+      "message": "😞 We\u0027ve already got SK_MAYBE_UNUSED, but that\u0027s the C++17 [[maybe_unused]] attribute, so using it in our headers is a no-go. Can we get away with not adding this to those enums? (How bad is the IDE noise?)",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 6
+      },
+      "revId": "fc56fbc3990f68448119aed553911047e707184e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
