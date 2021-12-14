@@ -77,10 +77,10 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
     class Finalizer : public ProgramWriter {
     public:
         Finalizer(const Context& context, const FunctionDeclaration& function,
-                  IntrinsicSet* referencedIntrinsics)
+                  FunctionSet* referencedBuiltinFunctions)
             : fContext(context)
             , fFunction(function)
-            , fReferencedIntrinsics(referencedIntrinsics) {}
+            , fReferencedBuiltinFunctions(referencedBuiltinFunctions) {}
 
         ~Finalizer() override {
             SkASSERT(fBreakableLevel == 0);
@@ -89,14 +89,14 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
 
         void copyIntrinsicIfNeeded(const FunctionDeclaration& function) {
             if (const ProgramElement* found =
-                    fContext.fIntrinsics->findAndInclude(function.description())) {
+                        fContext.fIntrinsics->findAndInclude(function.description())) {
                 const FunctionDefinition& original = found->as<FunctionDefinition>();
 
-                // Sort the referenced intrinsics into a consistent order; otherwise our output will
-                // become non-deterministic.
+                // Sort the referenced builtin functions into a consistent order; otherwise our
+                // output will become non-deterministic.
                 std::vector<const FunctionDeclaration*> intrinsics(
-                        original.referencedIntrinsics().begin(),
-                        original.referencedIntrinsics().end());
+                        original.referencedBuiltinFunctions().begin(),
+                        original.referencedBuiltinFunctions().end());
                 std::sort(intrinsics.begin(), intrinsics.end(),
                           [](const FunctionDeclaration* a, const FunctionDeclaration* b) {
                               if (a->isBuiltin() != b->isBuiltin()) {
@@ -130,7 +130,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                         ThreadContext::Inputs().fUseFlipRTUniform = true;
                     }
                     if (func.definition()) {
-                        fReferencedIntrinsics->insert(&func);
+                        fReferencedBuiltinFunctions->insert(&func);
                     }
                     if (!fContext.fConfig->fIsBuiltinCode && fContext.fIntrinsics) {
                         this->copyIntrinsicIfNeeded(func);
@@ -238,8 +238,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
     private:
         const Context& fContext;
         const FunctionDeclaration& fFunction;
-        // which intrinsics have we encountered in this function
-        IntrinsicSet* fReferencedIntrinsics;
+        // which builtin functions have we encountered in this function
+        FunctionSet* fReferencedBuiltinFunctions;
         // how deeply nested we are in breakable constructs (for, do, switch).
         int fBreakableLevel = 0;
         // number of slots consumed by all variables declared in the function
@@ -251,8 +251,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         using INHERITED = ProgramWriter;
     };
 
-    IntrinsicSet referencedIntrinsics;
-    Finalizer(context, function, &referencedIntrinsics).visitStatement(*body);
+    FunctionSet referencedBuiltinFunctions;
+    Finalizer(context, function, &referencedBuiltinFunctions).visitStatement(*body);
     if (function.isMain() && context.fConfig->fKind == ProgramKind::kVertex) {
         append_rtadjust_fixup_to_vertex_main(context, function, body->as<Block>());
     }
@@ -266,7 +266,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
               "Intrinsic %s should not have a definition",
               SkString(function.name()).c_str());
     return std::make_unique<FunctionDefinition>(line, &function, builtin, std::move(body),
-                                                std::move(referencedIntrinsics));
+                                                std::move(referencedBuiltinFunctions));
 }
 
 }  // namespace SkSL
