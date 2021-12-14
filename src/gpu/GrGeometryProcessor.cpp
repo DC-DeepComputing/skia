@@ -486,3 +486,91 @@ void ProgramImpl::WriteLocalCoord(GrGLSLVertexBuilder* vertBuilder,
                           &gpArgs->fLocalCoordVar,
                           localMatrixUniform);
 }
+
+//////////////////////////////////////////////////////////////////////////////
+
+using Attribute    = GrGeometryProcessor::Attribute;
+using AttributeSet = GrGeometryProcessor::AttributeSet;
+
+GrGeometryProcessor::Attribute AttributeSet::Iter::operator*() const {
+    if (fCurr->offset().has_value()) {
+        return *fCurr;
+    }
+    return Attribute(fCurr->name(), fCurr->cpuType(), fCurr->gpuType(), fImplicitOffset);
+}
+
+void AttributeSet::Iter::operator++() {
+    if (fRemaining) {
+        fRemaining--;
+        fImplicitOffset += SkAlign4(fCurr->size());
+        fCurr++;
+        this->skipUninitialized();
+    }
+}
+
+void AttributeSet::Iter::skipUninitialized() {
+    if (!fRemaining) {
+        fCurr = nullptr;
+    } else {
+        while (!fCurr->isInitialized()) {
+            ++fCurr;
+        }
+    }
+}
+
+void AttributeSet::initImplicit(const Attribute* attrs, int count) {
+    fAttributes = attrs;
+    fRawCount   = count;
+    fCount      = 0;
+    fStride     = 0;
+    for (int i = 0; i < count; ++i) {
+        if (attrs[i].isInitialized()) {
+            fCount++;
+            fStride += SkAlign4(attrs[i].size());
+        }
+    }
+}
+
+// Init with explicit offsets and stride. All attributes must be initialized and have
+// an explicit offset aligned to 4 bytes and with no attribute crossing stride boundaries.
+void AttributeSet::initExplicit(const Attribute* attrs, int count, size_t stride) {
+    fAttributes = attrs;
+    fRawCount   = count;
+    fCount      = count;
+    fStride     = stride;
+    SkASSERT(SkIsAlign4(fStride));
+    for (int i = 0; i < count; ++i) {
+        SkASSERT(attrs[i].isInitialized());
+        SkASSERT(attrs[i].offset().has_value());
+        SkASSERT(SkIsAlign4(*attrs[i].offset()));
+        SkASSERT(*attrs[i].offset() + attrs[i].size() <= fStride);
+    }
+}
+
+void AttributeSet::addToKey(GrProcessorKeyBuilder* b) const {
+    int rawCount = SkAbs32(fRawCount);
+    b->addBits(16, SkToU16(this->stride()), "stride");
+    b->addBits(16, rawCount, "attribute count");
+    size_t implicitOffset = 0;
+    for (int i = 0; i < rawCount; ++i) {
+        const Attribute& attr = fAttributes[i];
+        b->appendComment(attr.isInitialized() ? attr.name() : "unusedAttr");
+        static_assert(kGrVertexAttribTypeCount < (1 << 8), "");
+        static_assert(kGrSLTypeCount           < (1 << 8), "");
+        b->addBits(8,  attr.isInitialized() ? attr.cpuType() : 0xff, "attrType");
+        b->addBits(8 , attr.isInitialized() ? attr.gpuType() : 0xff, "attrGpuType");
+        int16_t offset = -1;
+        if (attr.isInitialized()) {
+            if (attr.offset().has_value()) {
+                offset = *attr.offset();
+            } else {
+                offset = implicitOffset;
+                implicitOffset += SkAlign4(attr.size());
+            }
+        }
+        b->addBits(16, static_cast<uint16_t>(offset), "attrOffset");
+    }
+}
+
+AttributeSet::Iter AttributeSet::begin() const { return Iter(fAttributes, fCount); }
+AttributeSet::Iter AttributeSet::end() const { return Iter(); }
