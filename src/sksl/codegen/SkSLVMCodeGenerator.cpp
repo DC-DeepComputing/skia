@@ -82,6 +82,10 @@ namespace {
             fTrace->fTraceInfo.push_back({SkSL::SkVMTraceInfo::Op::kExit,
                                           /*data=*/{fnIdx, 0}});
         }
+        void scope(int delta) override {
+            fTrace->fTraceInfo.push_back({SkSL::SkVMTraceInfo::Op::kScope,
+                                          /*data=*/{delta, 0}});
+        }
 
     private:
         SkSL::SkVMDebugTrace* fTrace;
