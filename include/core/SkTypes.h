@@ -60,6 +60,10 @@
     #define SK_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #endif
 
+#if !defined(SK_UNUSED)
+#define SK_UNUSED __attribute__((unused))
+#endif
+
 #if !defined(SK_CPU_BENDIAN) && !defined(SK_CPU_LENDIAN)
     #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
         #define SK_CPU_BENDIAN
