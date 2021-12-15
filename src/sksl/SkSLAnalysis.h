@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <set>
+#include <unordered_set>
 
 namespace SkSL {
 
@@ -22,6 +23,7 @@ class Expression;
 class ForStatement;
 class FunctionDeclaration;
 class FunctionDefinition;
+enum IntrinsicKind : int8_t;
 struct LoadedModule;
 struct Program;
 class ProgramElement;
@@ -55,6 +57,11 @@ bool ReferencesSampleCoords(const Program& program);
 bool ReferencesFragCoords(const Program& program);
 
 bool CallsSampleOutsideMain(const Program& program);
+
+/**
+ * Get a set containing all of the intrinsics referenced by the program.
+ */
+std::unordered_set<IntrinsicKind> GetReferencedIntrinsics(const Program& program);
 
 /**
  * Computes the size of the program in a completely flattened state--loops fully unrolled,
