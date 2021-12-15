@@ -16,6 +16,24 @@
       "message": "This change really motivated the rest of this CL - I got tripped up when I realized that \"intrinsics\" here meant functions *defined* in the modules. Everything else basically spider-webbed out from here.",
       "revId": "528dfd572c303f9ee36c00d513be37f367aa3953",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14de163c_7e083893",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-15T18:07:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "99c62c53_683e1306",
+      "revId": "528dfd572c303f9ee36c00d513be37f367aa3953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
