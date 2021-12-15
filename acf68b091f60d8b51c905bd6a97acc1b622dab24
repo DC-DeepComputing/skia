@@ -16,6 +16,23 @@
       "message": "I am curious about people\u0027s thoughts on the Bitfield helper template, and/or if we have something similar already defined in Skia that I could use instead.",
       "revId": "acf68b091f60d8b51c905bd6a97acc1b622dab24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b6dcaf_29c5d742",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T16:01:16Z",
+      "side": 1,
+      "message": "This LGTM, but curious why does the order matter within the key? It will be consistent for a given device and we\u0027re never trying to memcpy a sub chunk of it are we?",
+      "revId": "acf68b091f60d8b51c905bd6a97acc1b622dab24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
