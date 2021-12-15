@@ -194,6 +194,7 @@ public:
 
     bool computeCodeUnitProperties();
     bool computeGraphemeBreaks();
+    bool computeLineBreaks();
 
     void buildClusterTable();
     void spaceGlyphs();
@@ -224,6 +225,8 @@ public:
 
     bool codeUnitHasProperty(size_t index, CodeUnitFlags property) const { return (fCodeUnitProperties[index] & property) == property; }
     bool mayNeedGraphemeBreaks() const { return !fNoFallback || fTextStyles.size() > 1; }
+    bool graphemeBreaksComputed() const { return fGraphemeBreaksComputed; }
+    bool lineBreaksComputed() const { return fLineBreaksComputed; }
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
 
@@ -280,6 +283,7 @@ private:
     // ICU optimizations for ICU grapheme breaks
     bool fNoFallback;
     bool fGraphemeBreaksComputed;
+    bool fLineBreaksComputed;
 };
 }  // namespace textlayout
 }  // namespace skia

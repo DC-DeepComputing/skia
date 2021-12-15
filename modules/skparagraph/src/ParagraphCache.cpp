@@ -71,7 +71,9 @@ public:
         , fBidiRegions(paragraph->fBidiRegions)
         , fUTF8IndexForUTF16Index(paragraph->fUTF8IndexForUTF16Index)
         , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index)
-        , fNoFallback(paragraph->fNoFallback) { }
+        , fNoFallback(paragraph->fNoFallback)
+        , fGraphemeBreaksComputed(paragraph->fGraphemeBreaksComputed)
+        , fLineBreakComputed(paragraph->fLineBreaksComputed) { }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -85,6 +87,8 @@ public:
     SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
     SkTArray<size_t, true> fUTF16IndexForUTF8Index;
     bool fNoFallback;
+    bool fGraphemeBreaksComputed;
+    bool fLineBreakComputed;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -251,6 +255,8 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
       run.setOwner(paragraph);
     }
     paragraph->fNoFallback = entry->fValue->fNoFallback;
+    paragraph->fGraphemeBreaksComputed = entry->fValue->fGraphemeBreaksComputed;
+    paragraph->fLineBreaksComputed = entry->fValue->fGraphemeBreaksComputed;
 }
 
 void ParagraphCache::printStatistics() {

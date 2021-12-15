@@ -82,6 +82,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
     SkASSERT(fUnicode);
     fNoFallback = false;
     fGraphemeBreaksComputed = false;
+    fLineBreaksComputed = false;
 }
 
 ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
@@ -165,6 +166,21 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
     }
 
     if (fState < kMarked) {
+
+
+        // There is one case when we do not need words: when all the runs fit the line
+        // In two cases below line breaks already computed:
+        // if there are word spacing or letter spacing including styles or
+        // if there are hard line breaks
+        // In case we do not compute line breaks the entire text works as one long word
+        SkScalar totalWidth = 0.0f;
+        for (auto& run : fRuns) {
+            totalWidth += run.advance().fX;
+        }
+        if (totalWidth > floorWidth) {
+            this->computeLineBreaks();
+        }
+
         this->fClusters.reset();
         this->resetShifts();
         this->fClustersIndexFromCodeUnit.reset();
@@ -267,8 +283,9 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     }
 
     // Get all spaces
+    bool hasLineBreaks = false;
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
-       [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+       [this, &hasLineBreaks](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
             if (fUnicode->isWhitespace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpaceBreak;
@@ -279,8 +296,28 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
                 }
             }
+            if (fUnicode->isHardLineBreak(unichar)) {
+                hasLineBreaks = true;
+            }
        });
 
+    if (hasLineBreaks) {
+        // If the text has a hard line break we may as well compute all line breaks
+        if (!this->computeLineBreaks()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ParagraphImpl::computeLineBreaks() {
+    if (nullptr == fUnicode) {
+        return false;
+    }
+    if (fLineBreaksComputed) {
+        return true;
+    }
     // Get line breaks
     std::vector<SkUnicode::LineBreakBefore> lineBreaks;
     if (!fUnicode->getLineBreaks(fText.c_str(), fText.size(), &lineBreaks)) {
@@ -291,7 +328,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                                            ? CodeUnitFlags::kHardLineBreakBefore
                                            : CodeUnitFlags::kSoftLineBreakBefore;
     }
-
+    fLineBreaksComputed = true;
     return true;
 }
 
@@ -440,6 +477,24 @@ void ParagraphImpl::buildClusterTable() {
 }
 
 void ParagraphImpl::spaceGlyphs() {
+
+    // Let's spend some time and define if we actually need to go through all these troubles
+    bool needsSpacing = false;
+    for (const auto& style : fTextStyles) {
+        if (style.fStyle.getWordSpacing() != 0) {
+            needsSpacing = true;
+            break;
+        } else if (style.fStyle.getLetterSpacing() != 0) {
+            needsSpacing = true;
+            break;
+        }
+    }
+    if (!needsSpacing) {
+        return;
+    }
+    // For word spacing we need soft line break iterator
+    // Letter spacing style can affect the run width which we need to skip line break iterator
+    this->computeLineBreaks();
 
     // Walk through all the clusters in the direction of shaped text
     // (we have to walk through the styles in the same order, too)

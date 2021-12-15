@@ -6721,3 +6721,120 @@ UNIX_ONLY_TEST(SkParagraph_CacheSkippedGraphemeIterator, reporter) {
         REPORTER_ASSERT(reporter, impl->mayNeedGraphemeBreaks());  // We have no grapheme
     }
 }
+
+UNIX_ONLY_TEST(SkParagraph_SkipLineBreakIterator, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+
+    ParagraphStyle paragraph_style;
+    TextStyle text_style;
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontFamilies({SkString("Roboto")});
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->lineBreaksComputed());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple\nparagraph");
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lineBreaksComputed());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setLetterSpacing(2.0);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lineBreaksComputed());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+        auto paragraph = builder.Build();
+        paragraph->layout(10.0);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lineBreaksComputed());
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_CacheSkippedLineBreakIterator, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+
+    ParagraphStyle paragraph_style;
+    TextStyle text_style;
+    text_style.setColor(SK_ColorBLACK);
+    text_style.setFontFamilies({SkString("Roboto")});
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->lineBreaksComputed());
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->lineBreaksComputed());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph\n");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 2);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lineBreaksComputed());
+    }
+
+    {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Simple paragraph\n");
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 2);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lineBreaksComputed());
+    }
+}
