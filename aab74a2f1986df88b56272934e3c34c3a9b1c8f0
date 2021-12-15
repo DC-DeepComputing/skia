@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d180bc8_42ded819",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:01:36Z",
+      "side": 1,
+      "message": "I\u0027m fine with this as is, but add some comments/thoughts.",
+      "revId": "aab74a2f1986df88b56272934e3c34c3a9b1c8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42fba19_b8930cb9",
+        "filename": "src/gpu/GrGeometryProcessor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:01:36Z",
+      "side": 1,
+      "message": "It is a little unfortunate we are essentially doing this loop/calculation in three different spots (if we ever wanted/needed to change something about the alignment we\u0027d need to make sure we found all three spots). Does it make any sense to have helper aligned_size(size_t size) to use for all these spots?\n\nI don\u0027t think we want this, but would we consider storing an array of offsets on the AttributeSet itself that gets initialized during the init call?",
+      "range": {
+        "startLine": 529,
+        "startChar": 23,
+        "endLine": 529,
+        "endChar": 49
+      },
+      "revId": "aab74a2f1986df88b56272934e3c34c3a9b1c8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7049e576_d10dd71d",
+        "filename": "src/gpu/GrGeometryProcessor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:01:36Z",
+      "side": 1,
+      "message": "What will the public side of Skia look like in terms of enforcing this? I assume we\u0027ll have something that checks all the offsets and makes sure they are aligned correctly and all this other stuff?",
+      "range": {
+        "startLine": 543,
+        "startChar": 8,
+        "endLine": 543,
+        "endChar": 49
+      },
+      "revId": "aab74a2f1986df88b56272934e3c34c3a9b1c8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eefab610_7b4ea386",
+        "filename": "src/gpu/GrGeometryProcessor.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:01:36Z",
+      "side": 1,
+      "message": "any reason to do this check in the getter and not just in the explict ctor?",
+      "range": {
+        "startLine": 103,
+        "startChar": 16,
+        "endLine": 103,
+        "endChar": 46
+      },
+      "revId": "aab74a2f1986df88b56272934e3c34c3a9b1c8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
