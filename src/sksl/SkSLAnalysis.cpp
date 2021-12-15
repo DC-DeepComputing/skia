@@ -18,6 +18,7 @@
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/transform/SkSLProgramWriter.h"
 
@@ -156,6 +157,26 @@ public:
                !p.as<FunctionDefinition>().declaration().isMain() &&
                INHERITED::visitProgramElement(p);
     }
+
+    using INHERITED = ProgramVisitor;
+};
+
+// Visitor that gathers all referenced intrinsics
+class ReferencedIntrinsicsVisitor : public ProgramVisitor {
+public:
+    ReferencedIntrinsicsVisitor() {}
+
+    bool visitExpression(const Expression& e) override {
+        if (e.is<FunctionCall>()) {
+            IntrinsicKind k = e.as<FunctionCall>().function().intrinsicKind();
+            if (k != kNotIntrinsic) {
+                fIntrinsics.insert(k);
+            }
+        }
+        return INHERITED::visitExpression(e);
+    }
+
+    std::unordered_set<IntrinsicKind> fIntrinsics;
 
     using INHERITED = ProgramVisitor;
 };
@@ -334,6 +355,12 @@ bool Analysis::ReferencesFragCoords(const Program& program) {
 bool Analysis::CallsSampleOutsideMain(const Program& program) {
     SampleOutsideMainVisitor visitor;
     return visitor.visit(program);
+}
+
+std::unordered_set<IntrinsicKind> Analysis::GetReferencedIntrinsics(const Program& program) {
+    ReferencedIntrinsicsVisitor visitor;
+    visitor.visit(program);
+    return visitor.fIntrinsics;
 }
 
 bool Analysis::DetectVarDeclarationWithoutScope(const Statement& stmt, ErrorReporter* errors) {
