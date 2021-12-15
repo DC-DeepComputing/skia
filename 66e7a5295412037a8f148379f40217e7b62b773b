@@ -16,6 +16,24 @@
       "message": "If the file already exists then it is overridden?",
       "revId": "66e7a5295412037a8f148379f40217e7b62b773b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2b41736_64af6c0d",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-15T15:11:27Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "009ee3f9_2a36e1e0",
+      "revId": "66e7a5295412037a8f148379f40217e7b62b773b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
