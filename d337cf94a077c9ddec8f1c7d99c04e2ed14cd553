@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca1c04e3_d90738ef",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-15T12:43:32Z",
+      "side": 1,
+      "message": "As it currently is, only the bugs from one type of fuzzer show up on the dashboard. You might also want to add prose that asking kjlubick@, egdaniel@ or brianosman@ for view access to the bugs is required.",
+      "range": {
+        "startLine": 72,
+        "startChar": 67,
+        "endLine": 72,
+        "endChar": 75
+      },
+      "revId": "d337cf94a077c9ddec8f1c7d99c04e2ed14cd553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
