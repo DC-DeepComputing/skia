@@ -94,11 +94,14 @@ void GrVkOpsRenderPass::setAttachmentLayouts(LoadFromResolve loadFromResolve) {
         GrVkImage* resolveAttachment = fFramebuffer->resolveAttachment();
         SkASSERT(resolveAttachment);
         if (loadFromResolve == LoadFromResolve::kLoad) {
-            resolveAttachment->setImageLayout(fGpu,
-                                              VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                                              VK_ACCESS_INPUT_ATTACHMENT_READ_BIT,
-                                              VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
-                                              false);
+            // We need input access to do the shader read and color read access to do the attachment
+            // load.
+            resolveAttachment->setImageLayout(
+                    fGpu,
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                    VK_ACCESS_INPUT_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                    false);
         } else {
             resolveAttachment->setImageLayout(
                     fGpu,
