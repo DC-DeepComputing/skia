@@ -194,6 +194,7 @@ public:
 
     bool computeCodeUnitProperties();
     bool computeGraphemeBreaks();
+    bool computeLineBreaks();
 
     void buildClusterTable();
     void spaceGlyphs();
@@ -280,6 +281,7 @@ private:
     // ICU optimizations for ICU grapheme breaks
     bool fNoFallback;
     bool fGraphemeBreaksComputed;
+    bool fLineBreaksComputed;
 };
 }  // namespace textlayout
 }  // namespace skia
