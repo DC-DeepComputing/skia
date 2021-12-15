@@ -22,6 +22,30 @@
       },
       "revId": "d337cf94a077c9ddec8f1c7d99c04e2ed14cd553",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb4212ab_4ebc425b",
+        "filename": "site/docs/dev/gardening/_index.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-12-15T13:56:41Z",
+      "side": 1,
+      "message": "\u003e As it currently is, only the bugs from one type of fuzzer show up on the dashboard.\nI think that\u0027s fine. Currently we show a count of all buganizer bugs for skia and assume they are only Android bugs. If we include more queries for oss-fuzz then we will update this text.\n\n\u003e You might also want to add prose that asking kjlubick@, egdaniel@ or brianosman@ for view access to the bugs is required.\nSomething similar to that is going to go in the \"GPU Gardening\" section (coming soon CL).",
+      "parentUuid": "ca1c04e3_d90738ef",
+      "range": {
+        "startLine": 72,
+        "startChar": 67,
+        "endLine": 72,
+        "endChar": 75
+      },
+      "revId": "d337cf94a077c9ddec8f1c7d99c04e2ed14cd553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
