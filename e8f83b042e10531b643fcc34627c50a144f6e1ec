@@ -16,6 +16,69 @@
       "message": "ping",
       "revId": "e8f83b042e10531b643fcc34627c50a144f6e1ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4e952ef_2f1a8dce",
+        "filename": "experimental/graphite/src/SkStuff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-15T19:33:20Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 31,
+        "startChar": 29,
+        "endLine": 31,
+        "endChar": 35
+      },
+      "revId": "e8f83b042e10531b643fcc34627c50a144f6e1ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22fcd066_d300347e",
+        "filename": "experimental/graphite/src/SkStuff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-15T19:33:20Z",
+      "side": 1,
+      "message": "Given this, should this method actually be validate_backend_texture_for_surface ?",
+      "revId": "e8f83b042e10531b643fcc34627c50a144f6e1ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074daf92_8f4f74dc",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2021-12-15T19:33:20Z",
+      "side": 1,
+      "message": "I suspect we do need this but I just want to be sure.",
+      "range": {
+        "startLine": 60,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 37
+      },
+      "revId": "e8f83b042e10531b643fcc34627c50a144f6e1ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
