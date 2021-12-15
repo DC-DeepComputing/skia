@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009ee3f9_2a36e1e0",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-12-15T15:08:02Z",
+      "side": 1,
+      "message": "If the file already exists then it is overridden?",
+      "revId": "66e7a5295412037a8f148379f40217e7b62b773b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
