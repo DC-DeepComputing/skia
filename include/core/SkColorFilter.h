@@ -14,6 +14,14 @@
 
 class SkColorMatrix;
 
+enum class Mapping : uint8_t;
+
+class SkCode;
+namespace skgpu {
+class UniformData;
+}
+class SkMagicCodeDictionary;
+
 /**
 *  ColorFilters are optional objects in the drawing pipeline. When present in
 *  a paint, they are called with the "src" colors, and return new colors, which
@@ -24,6 +32,8 @@ class SkColorMatrix;
 */
 class SK_API SkColorFilter : public SkFlattenable {
 public:
+    virtual void toCodeCF(SkMagicCodeDictionary*, Mapping, SkCode*, std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
+
     /** If the filter can be represented by a source color plus Mode, this
      *  returns true, and sets (if not NULL) the color and mode appropriately.
      *  If not, this returns false and ignores the parameters.

@@ -48,6 +48,8 @@ public:
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
 
+    void toCodeAndUnis(SkMagicCodeDictionary*, Mapping, SkCode*) const;
+
 private:
     SkColor4f       fColor;
     SkBlendMode     fBlendMode;
