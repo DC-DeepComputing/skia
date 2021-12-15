@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e6f334e_a7f62bc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:38:00Z",
+      "side": 1,
+      "message": "Can you add a test case to the GLBackendAllocationTest in BackendAllocationTest.cpp. You\u0027ll other examples in there for other formats.",
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b686e91_1f637115",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-15T19:38:00Z",
+      "side": 1,
+      "message": "Is it safe to always set these flags even without RGBXTexSupport?",
+      "range": {
+        "startLine": 2424,
+        "startChar": 22,
+        "endLine": 2424,
+        "endChar": 80
+      },
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
