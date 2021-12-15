@@ -12,6 +12,10 @@
 
 class SkLinearGradient : public SkGradientShaderBase {
 public:
+    int toCodeS(skgpu::MagicCodeDictionary*, Mapping, SkCode*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     SkLinearGradient(const SkPoint pts[2], const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;

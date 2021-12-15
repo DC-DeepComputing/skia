@@ -18,6 +18,10 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/utils/SkShaderUtils.h"
 
+#include "include/private/SkCode.h"
+
+#include "experimental/graphite/src/ContextUtils.h"
+
 #import <Metal/Metal.h>
 #ifdef SK_BUILD_FOR_IOS
 #import <UIKit/UIApplication.h>
@@ -69,6 +73,9 @@ bool GrSkSLToMSL(const GrMtlGpu* gpu,
 #else
     const SkSL::String& src = sksl;
 #endif
+
+    skgpu::CheckCodeHasBeenSeen(sksl);
+
     SkSL::Compiler* compiler = gpu->shaderCompiler();
     std::unique_ptr<SkSL::Program> program =
             gpu->shaderCompiler()->convertProgram(programKind,

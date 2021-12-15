@@ -14,6 +14,9 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/utils/SkShaderUtils.h"
 
+#include "include/private/SkCode.h"
+#include "experimental/graphite/src/ContextUtils.h"
+
 namespace skgpu::mtl {
 
 bool FormatIsDepthOrStencil(MTLPixelFormat format) {
@@ -91,6 +94,9 @@ bool SkSLToMSL(const Gpu* gpu,
 #else
     const SkSL::String& src = sksl;
 #endif
+
+    CheckCodeHasBeenSeen(sksl);
+
     SkSL::Compiler* compiler = gpu->shaderCompiler();
     std::unique_ptr<SkSL::Program> program =
             gpu->shaderCompiler()->convertProgram(programKind,

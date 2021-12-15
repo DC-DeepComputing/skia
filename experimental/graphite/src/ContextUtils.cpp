@@ -8,6 +8,7 @@
 #include "experimental/graphite/src/ContextUtils.h"
 
 #include <string>
+#include "experimental/graphite/include/MagicCodeDictionary.h"
 #include "experimental/graphite/src/DrawList.h" // TODO: split PaintParams out into their own header
 #include "experimental/graphite/src/DrawTypes.h"
 #include "experimental/graphite/src/Uniform.h"
@@ -201,7 +202,48 @@ sk_sp<UniformData> UniformData::Make(int count,
 
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
+SkSpan<const Uniform> UniformData::asSpan() const { return SkMakeSpan(fUniforms, fCount); }
 
+
+MagicCodeDictionary gDict;
+
+void AddCodeToDictionary(const SkPaint& p) {
+
+    MagicCodeDictionary::FullCodeEntry* entry(new MagicCodeDictionary::FullCodeEntry);
+    p.toCode(&gDict, Mapping::kGanesh, &entry->fCode, nullptr);
+    entry->fSkSL = entry->fCode.toSkSL();
+
+    entry->fCode.dump();
+
+    gDict.findOrCreateFull(entry);
+
+}
+
+void CheckCodeHasBeenSeen(const SkSL::String& code) {
+    gDict.exhaustiveSearch(code);
+}
+
+std::tuple<UniqueCodeID, std::vector<sk_sp<UniformData>>> GetUniqueIDAndUniformData(const PaintParams& p) {
+    std::vector<sk_sp<UniformData>> uniforms;
+
+    SkCode code;
+
+    p.toCodeAndUnis(nullptr, Mapping::kGraphite, &code, &uniforms);
+
+    return { UniqueCodeID::InvalidID(), uniforms };
+
+}
+
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(UniqueCodeID codeID) {
+    std::vector<SkSpan<const Uniform>> uniforms;
+
+
+
+    return { "", uniforms };
+}
+
+
+#if 0
 std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     Combination result;
     sk_sp<UniformData> uniforms;
@@ -293,6 +335,7 @@ std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     result.fBlendMode = p.blendMode();
     return { result, std::move(uniforms) };
 }
+#endif
 
 SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType shaderType) {
     switch (shaderType) {

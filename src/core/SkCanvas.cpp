@@ -47,8 +47,12 @@
 #include "src/image/SkSurface_Base.h"
 #include "src/utils/SkPatchUtils.h"
 
+#include "include/private/SkCode.h"
+
 #include <memory>
 #include <new>
+
+#include "experimental/graphite/src/ContextUtils.h"
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrDirectContext.h"
@@ -1731,6 +1735,8 @@ void SkCanvas::drawPaint(const SkPaint& paint) {
 }
 
 void SkCanvas::drawRect(const SkRect& r, const SkPaint& paint) {
+    skgpu::AddCodeToDictionary(paint);
+
     TRACE_EVENT0("skia", TRACE_FUNC);
     // To avoid redundant logic in our culling code and various backends, we always sort rects
     // before passing them along.
