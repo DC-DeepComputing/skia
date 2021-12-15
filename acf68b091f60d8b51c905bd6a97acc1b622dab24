@@ -33,6 +33,24 @@
       "message": "This LGTM, but curious why does the order matter within the key? It will be consistent for a given device and we\u0027re never trying to memcpy a sub chunk of it are we?",
       "revId": "acf68b091f60d8b51c905bd6a97acc1b622dab24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eddb8ac0_0a48f1c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-15T18:10:59Z",
+      "side": 1,
+      "message": "In this case we do use the bitfield value directly as a uint64_t for the \u003c operator. W/o the guaranteed order, I was getting incorrect sorting on the M1 (it had the pipeline index as the MSB",
+      "parentUuid": "a1b6dcaf_29c5d742",
+      "revId": "acf68b091f60d8b51c905bd6a97acc1b622dab24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
