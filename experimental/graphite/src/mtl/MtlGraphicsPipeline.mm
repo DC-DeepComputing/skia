@@ -21,50 +21,52 @@ namespace skgpu::mtl {
 
 namespace {
 
-SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
+SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, std::vector<sk_sp<UniformData>> uniforms1) {
     SkSL::String result;
 
     result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
 
     int offset = 0;
-    for (auto u : uniforms) {
-        int count = u.count() ? u.count() : 1;
-        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
-        // machinery
-        result.appendf("    layout(offset=%d) ", offset);
-        switch (u.type()) {
-            case SLType::kFloat4:
-                result.append("float4");
-                offset += 16 * count;
-                break;
-            case SLType::kFloat2:
-                result.append("float2");
-                offset += 8 * count;
-                break;
-            case SLType::kFloat:
-                result.append("float");
-                offset += 4 * count;
-                break;
-            case SLType::kFloat4x4:
-                result.append("float4x4");
-                offset += 64 * count;
-                break;
-            case SLType::kHalf4:
-                result.append("half4");
-                offset += 8 * count;
-                break;
-            default:
-                SkASSERT(0);
-        }
+    for (auto uu : uniforms1) {
+        for (auto u: uniforms) {
+            int count = u.count() ? u.count() : 1;
+            // TODO: this is sufficient for the sprint but should be changed to use SkSL's
+            // machinery
+            result.appendf("    layout(offset=%d) ", offset);
+            switch (u.type()) {
+                case SLType::kFloat4:
+                    result.append("float4");
+                    offset += 16 * count;
+                    break;
+                case SLType::kFloat2:
+                    result.append("float2");
+                    offset += 8 * count;
+                    break;
+                case SLType::kFloat:
+                    result.append("float");
+                    offset += 4 * count;
+                    break;
+                case SLType::kFloat4x4:
+                    result.append("float4x4");
+                    offset += 64 * count;
+                    break;
+                case SLType::kHalf4:
+                    result.append("half4");
+                    offset += 8 * count;
+                    break;
+                default:
+                    SkASSERT(0);
+            }
 
-        result.append(" ");
-        result.append(u.name());
-        if (u.count()) {
-            result.append("[");
-            result.append(std::to_string(u.count()));
-            result.append("]");
+            result.append(" ");
+            result.append(u.name());
+            if (u.count()) {
+                result.append("[");
+                result.append(std::to_string(u.count()));
+                result.append("]");
+            }
+            result.append(";\n");
         }
-        result.append(";\n");
     }
     result.append("};\n\n");
     return result;
@@ -150,18 +152,19 @@ SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
 }
 
 SkSL::String get_sksl_fs(const GraphicsPipelineDesc& desc) {
-    SkSL::String sksl;
+    SkSL::String sksl, shaderCode;
+    std::vector<sk_sp<UniformData>> uniforms;
 
     // Typedefs needed for painting
-    auto paintUniforms = GetUniforms(desc.shaderCombo().fShaderType);
-    if (!paintUniforms.empty()) {
-        sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
+    std::tie<shaderCode, uniforms> = Gimme(desc.codeID());
+    for (auto u : uniforms) {
+        sksl += emit_SKSL_uniforms(2, "FS", uniforms);
     }
 
     sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
     sksl += "void main() {\n"
             "    half4 outColor;\n";
-    sksl += GetShaderSkSL(desc.shaderCombo().fShaderType);
+    sksl += shaderCode;
     sksl += "    sk_FragColor = outColor;\n"
             "}\n";
 

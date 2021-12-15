@@ -202,6 +202,35 @@ sk_sp<UniformData> UniformData::Make(int count,
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
 
+UniqueCodeID UniqueCodeID::Next() {
+    static std::atomic<uint32_t> nextID{1};
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id == SK_InvalidUniqueID);
+
+    return UniqueCodeID(id);
+}
+
+std::tuple<UniqueCodeID, std::vector<sk_sp<UniformData>>> DoSomething(const PaintParams& p) {
+    std::vector<sk_sp<UniformData>> uniforms;
+
+    SkCode code;
+
+    p.toCodeAndUnis(nullptr, Mapping::kGraphite, &code);
+
+    return { UniqueCodeID::InvalidID(), uniforms };
+
+}
+
+std::tuple<SkSL::String, std::vector<sk_sp<UniformData>>> Gimme(UniqueCodeID codeID) {
+    std::vector<sk_sp<UniformData>> uniforms;
+
+    return { "", uniforms };
+}
+
+
+#if 0
 std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     Combination result;
     sk_sp<UniformData> uniforms;
@@ -293,6 +322,7 @@ std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     result.fBlendMode = p.blendMode();
     return { result, std::move(uniforms) };
 }
+#endif
 
 SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType shaderType) {
     switch (shaderType) {

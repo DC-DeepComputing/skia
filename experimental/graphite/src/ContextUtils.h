@@ -19,6 +19,30 @@ namespace skgpu {
 class PaintParams;
 class Uniform;
 
+class UniqueCodeID {
+public:
+    static UniqueCodeID InvalidID() {
+        return UniqueCodeID(SK_InvalidUniqueID);
+    }
+
+    static UniqueCodeID Next();
+
+    UniqueCodeID() : fID(SK_InvalidUniqueID) {}
+
+    uint32_t asUInt() const { return fID; }
+
+    bool operator==(const UniqueCodeID& that) const { return fID == that.fID; }
+    bool operator!=(const UniqueCodeID& that) const { return !(*this == that); }
+
+    bool isValid() const { return fID != SK_InvalidUniqueID; }
+
+private:
+    explicit UniqueCodeID(uint32_t id) : fID(id) {}
+
+    uint32_t fID;
+};
+
+#if 0
 // A single, fully specified combination resulting from a PaintCombo (i.e., it corresponds to a
 // specific skgpu::PaintParams object (a subset of SkPaint))
 struct Combination {
@@ -40,6 +64,7 @@ struct Combination {
     SkTileMode fTileMode = SkTileMode::kClamp;
     SkBlendMode fBlendMode = SkBlendMode::kSrc;
 };
+#endif
 
 class UniformData : public SkRefCnt {
 public:
@@ -86,6 +111,10 @@ private:
     const size_t fDataSize;
 };
 
+std::tuple<UniqueCodeID, std::vector<sk_sp<UniformData>>> DoSomething(const PaintParams&);
+std::tuple<SkSL::String, std::vector<sk_sp<UniformData>>> Gimme(UniqueCodeID);
+
+#if 0
 std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams&);
 SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType);
 
@@ -94,6 +123,7 @@ SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType);
 // variable, and must have a statement that writes to a float4 "out.color". Its uniforms (as defined
 // by GetUniforms(type)) are available as a variable named "uniforms".
 const char* GetShaderSkSL(ShaderCombo::ShaderType);
+#endif
 
 } // namespace skgpu
 

@@ -11,7 +11,31 @@
 #include "include/core/SkShader.h"
 #include "src/gpu/BufferWriter.h"
 
+#include "include/private/SkCode.h"
+#include "experimental/graphite/include/Encoding.h"
+#include "experimental/graphite/src/ContextUtils.h"
+
 namespace skgpu {
+
+void PaintParams::toCodeAndUnis(SkMagicCodeDictionary* dict, Mapping mapping, SkCode* code) const {
+    std::vector<sk_sp<UniformData>> unis;
+
+    if (fShader) {
+        fShader->toCodeS(dict, mapping, code, &unis);
+    }
+//    if (fColorFilter) {
+//        fColorFilter->toCodeCF(dict, mapping, code);
+//    }
+//    if (fBlender) {
+//        fBlender->toCodeB(dict, mapping, code);
+//    } else
+
+    {
+        BlendMode::ToCodeB(dict, mapping, code, &unis, fBlendMode);
+    }
+
+    SkASSERT(code->numInts() > 0);
+}
 
 PaintParams::PaintParams(const SkColor4f& color,
                          SkBlendMode blendMode,
