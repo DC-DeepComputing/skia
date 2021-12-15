@@ -264,7 +264,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
         drawWriter.newPipelineState(step->primitiveType(),
                                     step->vertexStride(),
                                     step->instanceStride());
-        auto pipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        auto pipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc,
+                                                                              renderPassDesc);
         commandBuffer->bindGraphicsPipeline(std::move(pipeline));
 
         // All of the test RenderSteps ignore the transform, so just use the identity

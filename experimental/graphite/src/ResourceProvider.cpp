@@ -23,8 +23,8 @@ ResourceProvider::~ResourceProvider() {
 }
 
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
-        const GraphicsPipelineDesc& desc) {
-    return fGraphicsPipelineCache->refPipeline(desc);
+        const GraphicsPipelineDesc& pipelineDesc, const RenderPassDesc& renderPassDesc) {
+    return fGraphicsPipelineCache->refPipeline(pipelineDesc, renderPassDesc);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,15 +48,16 @@ void ResourceProvider::GraphicsPipelineCache::release() {
 }
 
 sk_sp<GraphicsPipeline> ResourceProvider::GraphicsPipelineCache::refPipeline(
-        const GraphicsPipelineDesc& desc) {
-    std::unique_ptr<Entry>* entry = fMap.find(desc);
+        const GraphicsPipelineDesc& pipelineDesc, const RenderPassDesc& renderPassDesc) {
+    auto keyPair = std::make_pair(pipelineDesc, renderPassDesc);
+    std::unique_ptr<Entry>* entry = fMap.find(keyPair);
 
     if (!entry) {
-        auto pipeline = fResourceProvider->onCreateGraphicsPipeline(desc);
+        auto pipeline = fResourceProvider->onCreateGraphicsPipeline(pipelineDesc, renderPassDesc);
         if (!pipeline) {
             return nullptr;
         }
-        entry = fMap.insert(desc, std::unique_ptr<Entry>(new Entry(std::move(pipeline))));
+        entry = fMap.insert(keyPair, std::unique_ptr<Entry>(new Entry(std::move(pipeline))));
     }
     return (*entry)->fPipeline;
 }

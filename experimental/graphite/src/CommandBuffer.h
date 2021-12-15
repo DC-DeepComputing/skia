@@ -39,6 +39,12 @@ struct AttachmentDesc {
     TextureInfo fTextureInfo;
     LoadOp fLoadOp;
     StoreOp fStoreOp;
+
+    bool operator==(const AttachmentDesc& that) const {
+        return this->fTextureInfo == that.fTextureInfo &&
+               this->fLoadOp == that.fLoadOp &&
+               this->fStoreOp == that.fStoreOp;
+    }
 };
 
 struct RenderPassDesc {
@@ -49,6 +55,15 @@ struct RenderPassDesc {
     AttachmentDesc fDepthStencilAttachment;
     float fClearDepth;
     uint32_t fClearStencil;
+
+    bool operator==(const RenderPassDesc& that) const {
+        return this->fColorAttachment == that.fColorAttachment &&
+               this->fClearColor == that.fClearColor &&
+               this->fColorResolveAttachment == that.fColorResolveAttachment &&
+               this->fDepthStencilAttachment == that.fDepthStencilAttachment &&
+               this->fClearDepth == that.fClearDepth &&
+               this->fClearStencil == that.fClearStencil;
+    }
 
     // TODO:
     // * bounds (TBD whether exact bounds vs. granular)
