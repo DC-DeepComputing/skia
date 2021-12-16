@@ -51,6 +51,23 @@
       "message": "LGTM from a Wuffs perspective.",
       "revId": "8476ffa66dd1a663fcd3a4e63f3a7211f46528a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480a8ea4_7abd9cba",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1403,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-16T15:18:41Z",
+      "side": 1,
+      "message": "remove this log",
+      "revId": "8476ffa66dd1a663fcd3a4e63f3a7211f46528a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
