@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f15709cf_becccc26",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec926dbf_186f8c3c",
+      "range": {
+        "startLine": 478,
+        "startChar": 83,
+        "endLine": 478,
+        "endChar": 97
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a1980ab_2e1adf7f",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1198aba9_d32fcdeb",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "I actually show now duplicates (as dead code) and can hide them separately from the regular dead code.\nYes, their ids are stale but I don\u0027t show ids for dead code anyway. But I do need these new ids to update live commands myself then.",
+      "parentUuid": "9a1980ab_2e1adf7f",
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fdc75db_4d63eec1",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "nit: line too long",
+      "range": {
+        "startLine": 540,
+        "startChar": 87,
+        "endLine": 540,
+        "endChar": 101
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e136707_1f7b795a",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "I am sorry. I set up the right limit but sometimes it comes up anyway...",
+      "parentUuid": "2fdc75db_4d63eec1",
       "range": {
         "startLine": 540,
         "startChar": 87,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3bb5fb4_e3975dfc",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Gladly.",
+      "parentUuid": "875b2136_f66fb530",
+      "range": {
+        "startLine": 617,
+        "startChar": 4,
+        "endLine": 617,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df1720cf_f4229c1d",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "Move into fImpl",
+      "range": {
+        "startLine": 1085,
+        "startChar": 8,
+        "endLine": 1085,
+        "endChar": 36
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c494bb6a_e5f50fa6",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 1085,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df1720cf_f4229c1d",
       "range": {
         "startLine": 1085,
         "startChar": 8,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f9e6594_424c78a5",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "I did, but you are not going to like the result :).\nThe parameter name is \"o\".",
+      "parentUuid": "5a074756_b70f3008",
+      "range": {
+        "startLine": 535,
+        "startChar": 29,
+        "endLine": 535,
+        "endChar": 36
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "370536b6_ba2906ba",
@@ -146,6 +284,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "It\u0027s a bit spooky to me that we pass in a raw pointer to the SkVMVisualizer, and the Program holds onto it forever, but there\u0027s no lifetime management. The Program could easily outlast a SkVMVisualizer.\n\nMy first inclination: what if the Program took a unique_ptr\u003cSkVMVisualizer\u003e and it took over ownership? It could be accessed later via an accessor, e.g. `program.visualizer()-\u003edump(...)`. This seems safer to me.",
+      "range": {
+        "startLine": 536,
+        "startChar": 62,
+        "endLine": 536,
+        "endChar": 73
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0de062e0_963a8c41",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "370536b6_ba2906ba",
       "range": {
         "startLine": 536,
         "startChar": 62,
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac5b9a0_ccaa5b92",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0340b1b_1f692d1a",
+      "range": {
+        "startLine": 550,
+        "startChar": 95,
+        "endLine": 550,
+        "endChar": 98
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ed25131_535cccec",
@@ -192,6 +378,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "Please use unique_ptr for any storage we control",
+      "range": {
+        "startLine": 14,
+        "startChar": 34,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9c5c73_8313634d",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "I am going to keep the pattern for dump methods in SkVM.",
+      "parentUuid": "0ed25131_535cccec",
       "range": {
         "startLine": 14,
         "startChar": 34,
@@ -225,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c38a41d_2abdbbd6",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e943eaf_2b8e8f6a",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be607dfe_16e45386",
@@ -238,6 +472,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "startCode and endCode are not checked here... if intentional, please add a comment.",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a0e54f8_12fb92a6",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be607dfe_16e45386",
       "range": {
         "startLine": 45,
         "startChar": 22,
@@ -271,6 +529,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54be76c3_aab6b51e",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f340b2a_d2323247",
+      "range": {
+        "startLine": 53,
+        "startChar": 12,
+        "endLine": 54,
+        "endChar": 71
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c9013e7_90209e03",
@@ -284,6 +566,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "Please use clang-format, this does not match our existing style",
+      "range": {
+        "startLine": 77,
+        "startChar": 90,
+        "endLine": 78,
+        "endChar": 29
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79e22e5a_2921f47a",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c9013e7_90209e03",
       "range": {
         "startLine": 77,
         "startChar": 90,
@@ -317,6 +623,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "026271df_f9bb6456",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "The name is touches_varying_memory.",
+      "parentUuid": "97e8f7fc_bb92de7a",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 73
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c0490b9_1aaf04b0",
@@ -330,6 +660,30 @@
       "writtenOn": "2021-12-16T15:30:08Z",
       "side": 1,
       "message": "Can be simplified to\n\n  return SkStringPrintf(\"v%d\", reg);",
+      "range": {
+        "startLine": 109,
+        "startChar": 16,
+        "endLine": 111,
+        "endChar": 30
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4236b18e_ad8cb9c4",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c0490b9_1aaf04b0",
       "range": {
         "startLine": 109,
         "startChar": 16,

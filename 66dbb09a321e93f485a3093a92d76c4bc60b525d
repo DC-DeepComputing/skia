@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c017a123_a9e3e4a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-16T20:12:58Z",
+      "side": 1,
+      "message": "More than anything I am worried that I have no tests for visualizer and cannot figure out how to test it properly without comparing htmls...",
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
