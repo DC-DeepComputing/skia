@@ -16,6 +16,24 @@
       "message": "Theoretically, `auto\u0026\u0026` is always what you want here. That way, if you ever do go back to returning a reference you don\u0027t force making a copy. I think this also avoids the Chromium warning. Though either way is fine for now.",
       "revId": "07600555a9cddada5534833d9f70d9a2572723c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce0be9d4_75ebda5e",
+        "filename": "src/gpu/d3d/GrD3DPipelineStateBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-16T22:41:59Z",
+      "side": 1,
+      "message": "My thought was that this is more explicit that there is a copy... but really I\u0027m not sure it matters much either way.",
+      "parentUuid": "fd9a552c_ab3e8e0a",
+      "revId": "07600555a9cddada5534833d9f70d9a2572723c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
