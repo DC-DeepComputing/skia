@@ -39,6 +39,9 @@ public:
 
     /** Breakpoints will force the simulation to stop whenever a desired line is reached. */
     void setBreakpoints(std::unordered_set<int> breakpointLines);
+    void addBreakpoint(int line);
+    void removeBreakpoint(int line);
+    const std::unordered_set<int>& getBreakpoints() { return fBreakpointLines; }
 
     /** Returns true if we have reached the end of the trace. */
     bool traceHasCompleted() const;
