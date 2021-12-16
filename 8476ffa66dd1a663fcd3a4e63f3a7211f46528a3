@@ -16,6 +16,41 @@
       "message": "Alternatively, we could make Android create the seekable stream. But they don\u0027t need a seekable stream for e.g. PNG, and only we know the format. So that would unnecessarily copy for PNG etc.\n\nlibgifcodec accomplished seekability using SkStreamBuffer, which saved the portions we needed to reuse again. It would be an invasive change to make SkWuffsCodec do that. This is simpler and will allow Android to easily make the switch.\n\nThis is somewhat wasteful in that we\u0027ll do a copy in the case where the client has a non-seekable stream and they only want the first frame. But it\u0027s only temporary memory for a compressed file.",
       "revId": "8476ffa66dd1a663fcd3a4e63f3a7211f46528a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b57c34e9_c2de43f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8223
+      },
+      "writtenOn": "2021-12-16T04:58:41Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "b097f5a7_fd43e70f",
+      "revId": "8476ffa66dd1a663fcd3a4e63f3a7211f46528a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252914fd_0460916b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8223
+      },
+      "writtenOn": "2021-12-16T04:58:41Z",
+      "side": 1,
+      "message": "LGTM from a Wuffs perspective.",
+      "revId": "8476ffa66dd1a663fcd3a4e63f3a7211f46528a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
