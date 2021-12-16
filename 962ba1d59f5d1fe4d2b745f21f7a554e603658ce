@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fd154b8_c0186f70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-16T21:25:28Z",
+      "side": 1,
+      "message": "really just starting to look at the headers so far.",
+      "revId": "962ba1d59f5d1fe4d2b745f21f7a554e603658ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6e9b88b_167da96f",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-16T21:25:28Z",
+      "side": 1,
+      "message": "should this be a little more detailed in the name, \"vertexStride\" or something like that. Or add more of a comment to the Make function here describing the params.",
+      "range": {
+        "startLine": 80,
+        "startChar": 47,
+        "endLine": 80,
+        "endChar": 53
+      },
+      "revId": "962ba1d59f5d1fe4d2b745f21f7a554e603658ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545dd800_49ee12c9",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-16T21:25:28Z",
+      "side": 1,
+      "message": "doesn\u0027t?",
+      "range": {
+        "startLine": 132,
+        "startChar": 31,
+        "endLine": 132,
+        "endChar": 35
+      },
+      "revId": "962ba1d59f5d1fe4d2b745f21f7a554e603658ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e678ec49_ec4c36c4",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-16T21:25:28Z",
+      "side": 1,
+      "message": "Before making a blender here, should we check if the cm spec does outputs color?",
+      "range": {
+        "startLine": 1807,
+        "startChar": 18,
+        "endLine": 1807,
+        "endChar": 58
+      },
+      "revId": "962ba1d59f5d1fe4d2b745f21f7a554e603658ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
