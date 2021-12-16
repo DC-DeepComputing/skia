@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2928c8c_c2db5482",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-16T14:27:21Z",
+      "side": 1,
+      "message": "PTAL.",
+      "revId": "9e14d79812ab2d5bc5cce045566b1290aca39b15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b3d408_ed68febd",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-16T14:27:21Z",
+      "side": 1,
+      "message": "I\u0027m not thrilled about this, but SkSpan doesn\u0027t support operator\u003d\u003d.",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 33
+      },
+      "revId": "9e14d79812ab2d5bc5cce045566b1290aca39b15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8453aa3_6a5fe343",
+        "filename": "experimental/graphite/src/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2021-12-16T14:27:21Z",
+      "side": 1,
+      "message": "Ran into this with an earlier version.",
+      "range": {
+        "startLine": 37,
+        "startChar": 3,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "9e14d79812ab2d5bc5cce045566b1290aca39b15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
