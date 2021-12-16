@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6025fe23_640deb31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-16T17:35:16Z",
+      "side": 1,
+      "message": "To make things consistent with other debuggers (where breakpoints always stop execution), would it make more sense to put them in the trace player, and then have the normal stepping logic check for them? As it stands, stepOver will miss breakpoints inside the called function.",
+      "revId": "d388c0365d832a125aebe138b01e6597b7b7060e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
