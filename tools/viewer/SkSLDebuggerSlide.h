@@ -12,6 +12,8 @@
 #include "src/sksl/tracing/SkVMDebugTracePlayer.h"
 #include "tools/viewer/Slide.h"
 
+#include <unordered_set>
+
 class SkSLDebuggerSlide : public Slide {
 public:
     SkSLDebuggerSlide();
