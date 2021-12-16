@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b7bc1b_de139671",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-16T14:58:13Z",
+      "side": 1,
+      "message": "Thoughts? I don\u0027t love yet another analysis pass (going to be run on RuntimeEffect programs). But I need to know which effects use the new color-transform intrinsics for two reasons:\n\n1) Disallow them from \"internal\" runtime FPs, where I wasn\u0027t planning to plumb the dst color space.\n2) More importantly - only do the work of constructing the transform objects, uniforms, etc... when the shader is going to need them.",
+      "revId": "35bd6b3a4f965cfb23a52c0589a84c9e2e16bae5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
