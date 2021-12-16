@@ -32,6 +32,9 @@ public:
                                                          uint32_t sampleCount,
                                                          Protected) const override;
 
+    std::vector<uint32_t> makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
+                                                  const RenderPassDesc&) const override;
+
     bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
     bool isApple()const  { return fGPUFamily == GPUFamily::kApple; }
 

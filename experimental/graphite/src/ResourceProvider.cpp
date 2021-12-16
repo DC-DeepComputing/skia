@@ -8,7 +8,9 @@
 #include "experimental/graphite/src/ResourceProvider.h"
 
 #include "experimental/graphite/src/Buffer.h"
+#include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/CommandBuffer.h"
+#include "experimental/graphite/src/Gpu.h"
 #include "experimental/graphite/src/GraphicsPipeline.h"
 #include "experimental/graphite/src/Texture.h"
 
@@ -23,8 +25,8 @@ ResourceProvider::~ResourceProvider() {
 }
 
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
-        const GraphicsPipelineDesc& desc) {
-    return fGraphicsPipelineCache->refPipeline(desc);
+        const GraphicsPipelineDesc& pipelineDesc, const RenderPassDesc& renderPassDesc) {
+    return fGraphicsPipelineCache->refPipeline(pipelineDesc, renderPassDesc, fGpu);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,15 +50,18 @@ void ResourceProvider::GraphicsPipelineCache::release() {
 }
 
 sk_sp<GraphicsPipeline> ResourceProvider::GraphicsPipelineCache::refPipeline(
-        const GraphicsPipelineDesc& desc) {
-    std::unique_ptr<Entry>* entry = fMap.find(desc);
+        const GraphicsPipelineDesc& pipelineDesc, const RenderPassDesc& renderPassDesc,
+        const Gpu* gpu) {
+    std::vector<uint32_t> pipelineKey = gpu->caps()->makeGraphicsPipelineKey(pipelineDesc,
+                                                                             renderPassDesc);
+    std::unique_ptr<Entry>* entry = fMap.find(pipelineKey);
 
     if (!entry) {
-        auto pipeline = fResourceProvider->onCreateGraphicsPipeline(desc);
+        auto pipeline = fResourceProvider->onCreateGraphicsPipeline(pipelineDesc, renderPassDesc);
         if (!pipeline) {
             return nullptr;
         }
-        entry = fMap.insert(desc, std::unique_ptr<Entry>(new Entry(std::move(pipeline))));
+        entry = fMap.insert(pipelineKey, std::unique_ptr<Entry>(new Entry(std::move(pipeline))));
     }
     return (*entry)->fPipeline;
 }
