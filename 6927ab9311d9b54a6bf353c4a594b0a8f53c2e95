@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f39cd6ce_ad63afac",
+        "filename": "src/gpu/GrGeometryProcessor.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2021-12-16T19:57:59Z",
+      "side": 1,
+      "message": "Chromium seems to dislike this proxy iterator returning a value (and not a reference) at places that iterate over the attribute set with `const auto\u0026` (should be `auto\u0026\u0026`). Before this returned `const Attribute\u0026` and now returns by value an `Attribute`. It seems this was intended (to always return by value now, since this may return non persistent things).\n\nNote that we explicitly don\u0027t use this (unfortunate) warning `range-loop-bind-reference` with is part of `range-loop-analysis`. It looks like Chromium turned this on, so maybe we should too.",
+      "revId": "6927ab9311d9b54a6bf353c4a594b0a8f53c2e95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
