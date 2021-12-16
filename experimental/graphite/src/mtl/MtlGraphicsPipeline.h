@@ -17,6 +17,7 @@
 
 namespace skgpu {
 class GraphicsPipelineDesc;
+struct RenderPassDesc;
 } // namespace skgpu
 
 namespace skgpu::mtl {
@@ -30,7 +31,8 @@ public:
     inline static constexpr unsigned int kVertexBufferIndex = 3;
     inline static constexpr unsigned int kInstanceBufferIndex = 4;
 
-    static sk_sp<GraphicsPipeline> Make(const Gpu*, const skgpu::GraphicsPipelineDesc&);
+    static sk_sp<GraphicsPipeline> Make(const Gpu*, const skgpu::GraphicsPipelineDesc&,
+                                        const skgpu::RenderPassDesc&);
     ~GraphicsPipeline() override {}
 
     id<MTLRenderPipelineState> mtlPipelineState() const { return fPipelineState.get(); }
