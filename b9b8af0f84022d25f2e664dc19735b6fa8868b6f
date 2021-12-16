@@ -1,0 +1,343 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec926dbf_186f8c3c",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 478,
+        "startChar": 83,
+        "endLine": 478,
+        "endChar": 97
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a1980ab_2e1adf7f",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "The program is in an interesting state right now. We\u0027ve just finished renumbering all the live instructions. We haven\u0027t yet eliminated all the dead instructions, so they\u0027re still around, but we didn\u0027t do any renumbering on them, so their IDs are stale. Is this the right time for visualization to happen? I would have thought it would be before renumbering, but I could be wrong. \n\ni.e., I would have imagined this block would go directly above \"Rewrite the program with only live Instructions.\" But I\u0027m not sure about it :)",
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fdc75db_4d63eec1",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 540,
+        "startChar": 87,
+        "endLine": 540,
+        "endChar": 101
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "875b2136_f66fb530",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "nit: please move forward decl to top (immediately after namespace)",
+      "range": {
+        "startLine": 617,
+        "startChar": 4,
+        "endLine": 617,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df1720cf_f4229c1d",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 1085,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Move into fImpl",
+      "range": {
+        "startLine": 1085,
+        "startChar": 8,
+        "endLine": 1085,
+        "endChar": 36
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a074756_b70f3008",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Please label ambiguous arguments (here and below)\n\n  /*parameter_name\u003d*/nullptr",
+      "range": {
+        "startLine": 535,
+        "startChar": 29,
+        "endLine": 535,
+        "endChar": 36
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "370536b6_ba2906ba",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "It\u0027s a bit spooky to me that we pass in a raw pointer to the SkVMVisualizer, and the Program holds onto it forever, but there\u0027s no lifetime management. The Program could easily outlast a SkVMVisualizer.\n\nMy first inclination: what if the Program took a unique_ptr\u003cSkVMVisualizer\u003e and it took over ownership? It could be accessed later via an accessor, e.g. `program.visualizer()-\u003edump(...)`. This seems safer to me.",
+      "range": {
+        "startLine": 536,
+        "startChar": 62,
+        "endLine": 536,
+        "endChar": 73
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0340b1b_1f692d1a",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 550,
+        "startChar": 95,
+        "endLine": 550,
+        "endChar": 98
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed25131_535cccec",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Please use unique_ptr for any storage we control",
+      "range": {
+        "startLine": 14,
+        "startChar": 34,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e943eaf_2b8e8f6a",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "I don\u0027t know what these do at first glance--comments could be useful.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be607dfe_16e45386",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "startCode and endCode are not checked here... if intentional, please add a comment.",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f340b2a_d2323247",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Might be clearer as \n\n    SkString result \u003d (kind \u0026 InstructionFlags::kDead) ? \"dead\" : \"normal\";",
+      "range": {
+        "startLine": 53,
+        "startChar": 12,
+        "endLine": 54,
+        "endChar": 71
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c9013e7_90209e03",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Please use clang-format, this does not match our existing style",
+      "range": {
+        "startLine": 77,
+        "startChar": 90,
+        "endLine": 78,
+        "endChar": 29
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97e8f7fc_bb92de7a",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "This seems like a generally useful gadget to have in skvm.h (near is_trace and has_side_effect)\n\n    static inline bool is_memory_access(Op op) {\n        return Op::store8 \u003c\u003d op \u0026\u0026 op \u003c\u003d Op::load128;\n    }",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 73
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0490b9_1aaf04b0",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T15:30:08Z",
+      "side": 1,
+      "message": "Can be simplified to\n\n  return SkStringPrintf(\"v%d\", reg);",
+      "range": {
+        "startLine": 109,
+        "startChar": 16,
+        "endLine": 111,
+        "endChar": 30
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
