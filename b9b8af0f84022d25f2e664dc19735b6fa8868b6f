@@ -83,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d648fbc_4f52c3d9",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T21:46:11Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "1198aba9_d32fcdeb",
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fdc75db_4d63eec1",
@@ -412,6 +430,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bd06d5e_c4a9d97f",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T21:46:11Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "7f9c5c73_8313634d",
+      "range": {
+        "startLine": 14,
+        "startChar": 34,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e943eaf_2b8e8f6a",
@@ -496,6 +538,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "be607dfe_16e45386",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64e28450_07d71376",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T21:46:11Z",
+      "side": 1,
+      "message": "`duplicates` and `comments` are still omitted. Intentional?",
+      "parentUuid": "2a0e54f8_12fb92a6",
       "range": {
         "startLine": 45,
         "startChar": 22,
@@ -637,6 +703,30 @@
       "side": 1,
       "message": "The name is touches_varying_memory.",
       "parentUuid": "97e8f7fc_bb92de7a",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 73
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a23662b_c6e8b6ff",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-16T21:46:11Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "026271df_f9bb6456",
       "range": {
         "startLine": 91,
         "startChar": 16,
