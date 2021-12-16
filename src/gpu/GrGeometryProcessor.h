@@ -117,11 +117,10 @@ public:
 
     private:
         static constexpr uint32_t kImplicitOffset = 1;  // 1 is not valid because it isn't aligned.
-
-        const char*        fName    = nullptr;
-        GrVertexAttribType fCPUType = kFloat_GrVertexAttribType;
-        GrSLType           fGPUType = kVoid_GrSLType;
-        uint32_t           fOffset  = kImplicitOffset;
+        const char*                 fName    = nullptr;
+        GrVertexAttribType          fCPUType = kFloat_GrVertexAttribType;
+        GrSLType                    fGPUType = kVoid_GrSLType;
+        uint32_t                    fOffset = kImplicitOffset;
     };
 
     /**
@@ -147,9 +146,9 @@ public:
         private:
             void skipUninitialized();
 
-            const Attribute* fCurr           = nullptr;
-            int              fRemaining      = 0;
-            size_t           fImplicitOffset = 0;
+        const Attribute* fCurr              = nullptr;
+        int              fRemaining         = 0;
+        size_t           fImplicitOffset    = 0;
         };
 
     public:
