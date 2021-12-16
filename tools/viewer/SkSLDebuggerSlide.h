@@ -12,6 +12,8 @@
 #include "src/sksl/tracing/SkVMDebugTracePlayer.h"
 #include "tools/viewer/Slide.h"
 
+#include <unordered_set>
+
 class SkSLDebuggerSlide : public Slide {
 public:
     SkSLDebuggerSlide();
@@ -40,6 +42,7 @@ private:
 
     sk_sp<SkSL::SkVMDebugTrace> fTrace;
     SkSL::SkVMDebugTracePlayer fPlayer;
+    std::unordered_set<int> fBreakpoints;
     bool fRefresh = false;
 
     char fTraceFile[256] = "SkVMDebugTrace.json";
