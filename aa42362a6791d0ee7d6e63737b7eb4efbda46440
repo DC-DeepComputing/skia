@@ -50,6 +50,23 @@
       "message": "PTAL",
       "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15c458ae_2e5630bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8538
+      },
+      "writtenOn": "2021-12-16T19:52:24Z",
+      "side": 1,
+      "message": "Changing reviewers. Brian, PTAL",
+      "revId": "aa42362a6791d0ee7d6e63737b7eb4efbda46440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
