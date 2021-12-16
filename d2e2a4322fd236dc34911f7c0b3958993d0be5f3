@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6581628b_4c0e5d64",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Right. Fixed.",
+      "parentUuid": "50d0ff19_021f9721",
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5abeadb7_e7813097",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "For consistency with other impls, you can use SkCodec::kNoFrame. Or is it important that this value is bigger than valid values?",
+      "range": {
+        "startLine": 55,
+        "startChar": 28,
+        "endLine": 55,
+        "endChar": 45
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b2cae1f_37c2da25",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "It is an internal counter that says if the requested frame before or after current decoder state. Special constant is used for uninitialised state. This ways whatever frame is requested, decoder is rewound and initialised.\nThe difference is just one extra \"if\" case, so I don\u0027t mind changing this to kNoFrame.\n\nDone.",
+      "parentUuid": "5abeadb7_e7813097",
       "range": {
         "startLine": 55,
         "startChar": 28,
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cba846b5_0ac5b0b7",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Correct. This comment is the remaining from the early development.\n\nRemoved.",
+      "parentUuid": "5591aeee_9a4b175f",
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcc60771_8bbb2465",
@@ -88,6 +148,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "How is this semantically different from kNoLastFrameIndex? (Should it be its own constant?)",
+      "range": {
+        "startLine": 206,
+        "startChar": 34,
+        "endLine": 206,
+        "endChar": 36
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff08f106_938f21f4",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Already addressed (for the comment over fLastDecodedFrame member).\n\nReplaced with assert.",
+      "parentUuid": "dcc60771_8bbb2465",
       "range": {
         "startLine": 206,
         "startChar": 34,
@@ -121,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a774e9d1_4f3f60d4",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "\"decoded\" means decoder has processed it - either skipped or really produced output. If \"last decoded\" frame index is X, then \"next decoded\" frame index will be X + 1.",
+      "parentUuid": "faf62b4f_c4597c3f",
+      "range": {
+        "startLine": 212,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 40
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c77a149_6c7199cd",
@@ -134,6 +242,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "Should we? Or is there a good reason that we don\u0027t? (Is this comment important?)",
+      "range": {
+        "startLine": 222,
+        "startChar": 7,
+        "endLine": 222,
+        "endChar": 50
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b91ceb4_66d54f12",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "That was a \"scaffolding\" comment. Callback has to be setup between \"DEC_FRAME\" and \"DEC_FULL_IMAGE\" events.\n\nRemoved.",
+      "parentUuid": "2c77a149_6c7199cd",
       "range": {
         "startLine": 222,
         "startChar": 7,
@@ -167,6 +299,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bef2bd3_1bff6c65",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "If we need color-transform (e.g. Adobe RBG to SRGB) then we could loose precision because of intermediate truncation to 8-bit.\n\nNot-bijective nature of integer-to-integer transform will cause unwanted image artefacts.\n\nCodec is initialised with skcms_PixelFormat_RGBA_16161616LE src format, so applyColorXform expects F16 input.",
+      "parentUuid": "91604b0c_ade16eaa",
+      "range": {
+        "startLine": 233,
+        "startChar": 58,
+        "endLine": 233,
+        "endChar": 96
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5367cb05_f0ad100e",
@@ -180,6 +336,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "Is it possible to have an incomplete image?",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93671abb_c8d40e65",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Yes, but not in MVP implementation.\nI\u0027m planning to add proper input streaming in following CLs.",
+      "parentUuid": "5367cb05_f0ad100e",
       "range": {
         "startLine": 254,
         "startChar": 11,
@@ -213,6 +393,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20bffdc_532a33fe",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Renamed to \"instance\".",
+      "parentUuid": "ebf3fc02_3bbfaefe",
+      "range": {
+        "startLine": 291,
+        "startChar": 19,
+        "endLine": 291,
+        "endChar": 22
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1696a2eb_fa65e4e1",
@@ -226,6 +430,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "This returns a pointer to a frameholder, right? Normally we spell that as\n\n  auto*",
+      "range": {
+        "startLine": 318,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 8
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e49f554_1633f229",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Fixed. Also fixed similar case in the code above.",
+      "parentUuid": "1696a2eb_fa65e4e1",
       "range": {
         "startLine": 318,
         "startChar": 4,
@@ -259,6 +487,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da4992cd_b98a801e",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Yup. Done.",
+      "parentUuid": "c6c8466c_39e6ca12",
+      "range": {
+        "startLine": 320,
+        "startChar": 4,
+        "endLine": 320,
+        "endChar": 8
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c03a45c_e78e3288",
@@ -282,6 +534,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96632c4_ccca9b88",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "This will be different when streaming support appears.\n\nChanged \"default\" to return false.\nIt is likely it will hold in the future. There are 2 cases:\n * incomplete stream - then it is uncertain if all frames have been seen\n * corrupted stream - likely we should mark the whole stream as corrupted",
+      "parentUuid": "6c03a45c_e78e3288",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 13
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d394c55c_75c3fc31",
@@ -295,6 +571,30 @@
       "writtenOn": "2021-12-14T16:29:33Z",
       "side": 1,
       "message": "What does this mean?",
+      "range": {
+        "startLine": 14,
+        "startChar": 39,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb1362a_13b327e9",
+        "filename": "src/codec/SkJpegxlCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2021-12-16T11:27:48Z",
+      "side": 1,
+      "message": "Ooops, this comment belongs to SkEncodedOrigin.\nAnd it seems that forward declaration on legacy c++ enums works well.\nReplaced SkEncodedOrigin include with fwd decl.",
+      "parentUuid": "d394c55c_75c3fc31",
       "range": {
         "startLine": 14,
         "startChar": 39,
