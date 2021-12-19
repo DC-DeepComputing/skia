@@ -32,7 +32,7 @@ void SkVMDebugTracePlayer::reset(sk_sp<SkVMDebugTrace> debugTrace) {
 
     for (const SkVMTraceInfo& trace : fDebugTrace->fTraceInfo) {
         if (trace.op == SkVMTraceInfo::Op::kLine) {
-            fLineNumbers.insert(trace.data[0]);
+            fLineNumbers[trace.data[0]] += 1;
         }
     }
 }
@@ -194,6 +194,7 @@ bool SkVMDebugTracePlayer::execute(size_t position) {
             SkASSERT(lineNumber >= 0);
             SkASSERT((size_t)lineNumber < fDebugTrace->fSource.size());
             fStack.back().fLine = lineNumber;
+            fLineNumbers[lineNumber] -= 1;
             return true;
         }
         case SkVMTraceInfo::Op::kVar: {  // data: slot, value
