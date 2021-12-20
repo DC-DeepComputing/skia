@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "545f4517_faa8a34d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:55:18Z",
+      "side": 1,
+      "message": "So in general the non sksl code and the high level sksl stuff lgtm. But I was planning on letting Brian handle all the main SkSL stuff.",
+      "revId": "d45c80cb40da554126e121697564b924f0d7c55a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

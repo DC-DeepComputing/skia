@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4890a584_2256ab12",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:55:18Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "289a28f5_d5ca1fba",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 78
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6e302bf_9f79f64b",
