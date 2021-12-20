@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0556a34_ce05d3cc",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-12-20T14:21:13Z",
+      "side": 1,
+      "message": "Can you summarize (for my benefit) the differences between the two task drivers (bazel vs non-bazel)? I don\u0027t see support for try jobs here but maybe I missed something.\nAsking because we will also one day need similar changes to push_apps_from_skia_image for api and fiddle.\n\nI am assuming that only the task driver had to change and docker_pushes_watcher is working unchanged.",
+      "revId": "e40e93f57972be7b387d8d96ab3e1836f265aa5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
