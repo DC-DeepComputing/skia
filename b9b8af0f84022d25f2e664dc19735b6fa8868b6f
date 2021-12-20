@@ -572,6 +572,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "826fb18d_5243d110",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "No, it\u0027s not. However, comments are obsolete now - it\u0027s from the time before you trace commands when I tried to pass some information from Code generator.",
+      "parentUuid": "64e28450_07d71376",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "b9b8af0f84022d25f2e664dc19735b6fa8868b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f340b2a_d2323247",

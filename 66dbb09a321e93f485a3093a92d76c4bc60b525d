@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ef0b7a_5765fc68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06069934_8c43f43b",
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2f5912_d89d659e",
@@ -49,6 +67,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "It looks like we actually have every single field from Instruction in here, but `op` is split up from the rest. Instead of cloning every field, would it make more sense to just include a single skvm::Instruction field in the struct? It feels like it would be simpler (and if we ever, say, added another field, like immD, we would automatically get it here).",
+      "range": {
+        "startLine": 532,
+        "startChar": 20,
+        "endLine": 533,
+        "endChar": 55
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de131e85_da71b98a",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de2f5912_d89d659e",
       "range": {
         "startLine": 532,
         "startChar": 20,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a2be25_8b7a03b8",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cedb4575_f4a7bc0e",
+      "range": {
+        "startLine": 594,
+        "startChar": 0,
+        "endLine": 600,
+        "endChar": 9
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eed3fa2c_6ee61f46",
@@ -95,6 +161,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "/*visualizer\u003d*/nullptr",
+      "range": {
+        "startLine": 613,
+        "startChar": 49,
+        "endLine": 613,
+        "endChar": 56
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9035f385_2f70b86b",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eed3fa2c_6ee61f46",
       "range": {
         "startLine": 613,
         "startChar": 49,
@@ -128,6 +218,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0508318_ace2b528",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "I think it\u0027s even worser; it depends on a implementation. This is very embarrassing.",
+      "parentUuid": "d1b2ac01_e812ce1b",
+      "range": {
+        "startLine": 625,
+        "startChar": 0,
+        "endLine": 626,
+        "endChar": 36
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85927afd_a2c73bd6",
@@ -141,6 +255,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "tiny nit: `!\u003d nullptr` is usually omitted in Skia style",
+      "range": {
+        "startLine": 4354,
+        "startChar": 38,
+        "endLine": 4354,
+        "endChar": 48
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "946a5243_fe811613",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 4354,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "I know, but for some reason implicit conversion of a pointer to a boolean gives me shivers...\nBut you are right - it\u0027s the Skia style, so I should follow it.",
+      "parentUuid": "85927afd_a2c73bd6",
       "range": {
         "startLine": 4354,
         "startChar": 38,
@@ -174,6 +312,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c80805a_07c3da95",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 4355,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "This is why I wanted a separate object: to avoid any interference with SkVM. I do not change any data outside SkVisualizer (there are tests checking that duplicate instructions disappear as dead code).\nIt should work but I need to add tests on that. Here however I only make sure I can get to JIT to show machine commands.",
+      "parentUuid": "a55b79d1_6763e6a8",
+      "range": {
+        "startLine": 4355,
+        "startChar": 23,
+        "endLine": 4355,
+        "endChar": 74
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbd7e0e7_7cd05a16",
@@ -187,6 +349,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "I think you should still be able to use default args here, instead of an overload...?\n\n   std::unique_ptr\u003cSkVMVisualizer\u003e visualizer \u003d nullptr",
+      "range": {
+        "startLine": 626,
+        "startChar": 21,
+        "endLine": 626,
+        "endChar": 63
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f11e8030_7febe473",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "I started from that but then in many places a compiler complained about SkVisualizer.h not included (needed a definition even to pass a default null value). I didn\u0027t want to include SkVisualizer.h into random shaper files.\nAlso, SkVisualizer.h includes SkVm.h and to avoid a loop requires some changes I think we better avoid.\nThis is why I came up with such a clumsy workaround.",
+      "parentUuid": "cbd7e0e7_7cd05a16",
       "range": {
         "startLine": 626,
         "startChar": 21,
@@ -220,6 +406,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9a2985b_b96f95e8",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b8452f4_b0effceb",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70655221_28090dff",
@@ -233,6 +443,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "Spooky--should we be calling `SkGraphics::Init()` and `SkGraphics::AllowJIT()` instead? (If this doesn\u0027t work, that\u0027s OK, just seems like we should use the methods if they do work)",
+      "range": {
+        "startLine": 520,
+        "startChar": 7,
+        "endLine": 521,
+        "endChar": 29
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c436e4ae_16ce1406",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Tried that; SkGraphics.cpp file that required for SkGraphics methods pulls out many other cpp files (I stopped after 5). Don\u0027t want to add them to SkSLC.",
+      "parentUuid": "70655221_28090dff",
       "range": {
         "startLine": 520,
         "startChar": 7,
@@ -266,6 +500,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9c3715_6813ac32",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Absolutely",
+      "parentUuid": "afbff4c4_c7fdcc3f",
+      "range": {
+        "startLine": 525,
+        "startChar": 20,
+        "endLine": 525,
+        "endChar": 65
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2ab9947_d65587c8",
@@ -279,6 +537,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "/*createDuplicates\u003d*/true",
+      "range": {
+        "startLine": 529,
+        "startChar": 56,
+        "endLine": 529,
+        "endChar": 60
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d21a4485_ce0d9e34",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2ab9947_d65587c8",
       "range": {
         "startLine": 529,
         "startChar": 56,
@@ -312,6 +594,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd79819_739eeee3",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4cad6c9_9fc7206d",
+      "range": {
+        "startLine": 535,
+        "startChar": 47,
+        "endLine": 535,
+        "endChar": 60
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84844283_e965f907",
@@ -325,6 +631,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "Please use static_cast or reinterpret_cast for pointers.",
+      "range": {
+        "startLine": 540,
+        "startChar": 39,
+        "endLine": 540,
+        "endChar": 52
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f19ba0_9b43d6be",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84844283_e965f907",
       "range": {
         "startLine": 540,
         "startChar": 39,
@@ -358,6 +688,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a9d1ed_d78e2e1e",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "For me auto always makes the program sage :) But since you object - apparently, it does not make the code clearer to readers.",
+      "parentUuid": "aee8d0f4_830c2ff0",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 13
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd171e78_95388f74",
@@ -371,6 +725,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "Skia style requires a `this-\u003e` prefix on class method calls:\n\n   this-\u003eparseDisassembler\n   this-\u003edumpInstruction\n   this-\u003edumpTail\n   \netc",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 21
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce1dbeda_33b0e766",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "There is one switch (starting L#232) that would require a full reformatting if I add this-\u003e; I will if you think it\u0027s necessary.",
+      "parentUuid": "cd171e78_95388f74",
       "range": {
         "startLine": 80,
         "startChar": 4,
@@ -404,6 +782,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c42da2_d39e4b30",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a0bd06e_39d30a8c",
+      "range": {
+        "startLine": 280,
+        "startChar": 64,
+        "endLine": 280,
+        "endChar": 80
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f27f2bce_56aa8e3c",
@@ -417,6 +819,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "tiny nit: Weird case mixing--why not just all lowercase? HTML allows any case.",
+      "range": {
+        "startLine": 332,
+        "startChar": 6,
+        "endLine": 332,
+        "endChar": 17
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c312928d_bcabf611",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f27f2bce_56aa8e3c",
       "range": {
         "startLine": 332,
         "startChar": 6,
@@ -450,6 +876,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7beadf_30c129a2",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "I think nesting sub-namespace works the best.",
+      "parentUuid": "9adb8b67_fbf8265f",
+      "range": {
+        "startLine": 35,
+        "startChar": 11,
+        "endLine": 35,
+        "endChar": 15
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c90484e6_e430b6e6",
@@ -463,6 +913,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "spelling nit:\n   disassembling",
+      "range": {
+        "startLine": 38,
+        "startChar": 39,
+        "endLine": 38,
+        "endChar": 52
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd1f81d_f9b6431e",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c90484e6_e430b6e6",
       "range": {
         "startLine": 38,
         "startChar": 39,
@@ -496,6 +970,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b26b5238_be78910c",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa4a39ac_f5380d21",
+      "range": {
+        "startLine": 57,
+        "startChar": 11,
+        "endLine": 75,
+        "endChar": 24
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5660b7a_431af555",
@@ -509,6 +1007,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "Please move logic to cpp",
+      "range": {
+        "startLine": 86,
+        "startChar": 10,
+        "endLine": 114,
+        "endChar": 13
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e3f2da_c4693c75",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5660b7a_431af555",
       "range": {
         "startLine": 86,
         "startChar": 10,
@@ -542,6 +1064,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e46aa2_183ad17c",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 2723,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "CLion thinks that if the code fits a single line it should stay on single line. (This is the case when I disagree with it).",
+      "parentUuid": "4dd6dd2f_107905d3",
+      "range": {
+        "startLine": 2723,
+        "startChar": 20,
+        "endLine": 2723,
+        "endChar": 26
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "266cfecd_0f0abfcd",
@@ -555,6 +1101,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "Revert formatting?",
+      "range": {
+        "startLine": 2749,
+        "startChar": 8,
+        "endLine": 2749,
+        "endChar": 9
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0ad9fd3_40866ddc",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 2749,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "266cfecd_0f0abfcd",
       "range": {
         "startLine": 2749,
         "startChar": 8,
@@ -588,6 +1158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce661ef_2002fd3b",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 2764,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa751a1f_57f6f03f",
+      "range": {
+        "startLine": 2760,
+        "startChar": 0,
+        "endLine": 2764,
+        "endChar": 37
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b70274e_9ddb8fa6",
@@ -601,6 +1195,30 @@
       "writtenOn": "2021-12-16T21:46:11Z",
       "side": 1,
       "message": "As discussed in earlier comment, please update test to check for a few expected snippets.",
+      "range": {
+        "startLine": 2794,
+        "startChar": 4,
+        "endLine": 2794,
+        "endChar": 42
+      },
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae99e0d9_c91d4c4f",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 2794,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b70274e_9ddb8fa6",
       "range": {
         "startLine": 2794,
         "startChar": 4,
