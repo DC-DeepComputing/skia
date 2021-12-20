@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfa72c7d_b3444d2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T14:59:29Z",
+      "side": 1,
+      "message": "Trying Android build to make sure this new API call is in Android ICU API.",
+      "revId": "7b6375bdb34c7c6bd9c236c8390999fc564c446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
