@@ -71,20 +71,6 @@ func buildPushSkottieImage(ctx context.Context, tag, repo, wasmProductsDir, conf
 	return docker.BuildPushImageFromInfraImage(ctx, "Skottie", image, tag, repo, configDir, tempDir, "prod", topic, cmd, volumes, infraCommonEnv, nil)
 }
 
-func buildPushParticlesImage(ctx context.Context, tag, repo, wasmProductsDir, configDir string, topic *pubsub.Topic) error {
-	tempDir, err := os_steps.TempDir(ctx, "", "")
-	if err != nil {
-		return err
-	}
-	image := fmt.Sprintf("gcr.io/skia-public/%s", particlesImageName)
-	cmd := []string{"/bin/sh", "-c", "cd /home/skia/golib/src/go.skia.org/infra/particles && make release_ci"}
-	volumes := []string{
-		fmt.Sprintf("%s:/OUT", wasmProductsDir),
-		fmt.Sprintf("%s:/WORKSPACE", tempDir),
-	}
-	return docker.BuildPushImageFromInfraImage(ctx, "Particles", image, tag, repo, configDir, tempDir, "prod", topic, cmd, volumes, infraCommonEnv, nil)
-}
-
 func buildPushDebuggerImage(ctx context.Context, tag, repo, wasmProductsDir, configDir string, topic *pubsub.Topic) error {
 	tempDir, err := os_steps.TempDir(ctx, "", "")
 	if err != nil {
