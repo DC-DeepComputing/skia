@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "957eef18_a1abc4b1",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:08:08Z",
+      "side": 1,
+      "message": "Should this info be in the public header so clients know? I think the alignment stuff is. Or have a way to make it queryable so we can decide later if we want to vary these based on backends?",
+      "range": {
+        "startLine": 118,
+        "startChar": 1,
+        "endLine": 125,
+        "endChar": 49
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb424558_f949105f",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:08:08Z",
+      "side": 1,
+      "message": "also should this be exposed publicly?",
+      "range": {
+        "startLine": 153,
+        "startChar": 24,
+        "endLine": 153,
+        "endChar": 40
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e8e4c9_6166d8e1",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:08:08Z",
+      "side": 1,
+      "message": "do we have to have a varying struct at all? Could we just only add the struct if !varyings.empty()?",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 78
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e302bf_9f79f64b",
+        "filename": "src/gpu/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-20T21:08:08Z",
+      "side": 1,
+      "message": "what does rtmgp mean here? As i scrolled away from here and looked at the variable the name didn\u0027t really do a good job reminding me what this was",
+      "range": {
+        "startLine": 135,
+        "startChar": 32,
+        "endLine": 135,
+        "endChar": 37
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
