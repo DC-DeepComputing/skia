@@ -108,6 +108,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "724612c5_cbd77b73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T21:37:40Z",
+      "side": 1,
+      "message": "Yes, we can postpone goldens for now. Def not required to land this. Although the good thing about goldens is that they take very little maintenance on our part--you make your code changes, build Skia, and the goldens just update themselves. So I would recommend adding them when you have the time.",
+      "parentUuid": "58972ef9_a8e4e765",
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2f5912_d89d659e",

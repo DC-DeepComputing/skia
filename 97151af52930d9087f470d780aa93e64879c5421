@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7221d96_df825556",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T21:37:40Z",
+      "side": 1,
+      "message": "tiny nit: Skia style for a local static function should be \"get_addr\"",
+      "range": {
+        "startLine": 13,
+        "startChar": 7,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "97151af52930d9087f470d780aa93e64879c5421",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
