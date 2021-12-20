@@ -9,6 +9,7 @@
 
 #include "src/core/SkMatrixPriv.h"
 #include "src/gpu/GrPipeline.h"
+#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/glsl/GrGLSLUniformHandler.h"
@@ -31,6 +32,26 @@ uint32_t GrGeometryProcessor::ComputeCoordTransformsKey(const GrFragmentProcesso
         key |= 0b1;
     }
     return key;
+}
+
+void GrGeometryProcessor::getAttributeKey(skgpu::KeyBuilder* b) const {
+    // Ensure that our CPU and GPU type fields fit together in a 32-bit value, and we never
+    // collide with the "uninitialized" value.
+    static_assert(kGrVertexAttribTypeCount < (1 << 8), "");
+    static_assert(kGrSLTypeCount           < (1 << 8), "");
+
+    auto add_attributes = [=](const Attribute* attrs, int attrCount) {
+        for (int i = 0; i < attrCount; ++i) {
+            const Attribute& attr = attrs[i];
+            b->appendComment(attr.isInitialized() ? attr.name() : "unusedAttr");
+            b->addBits(8, attr.isInitialized() ? attr.cpuType() : 0xff, "attrType");
+            b->addBits(8, attr.isInitialized() ? attr.gpuType() : 0xff, "attrGpuType");
+        }
+    };
+    b->add32(fVertexAttributes.fRawCount, "numVertexAttributes");
+    add_attributes(fVertexAttributes.fAttributes, fVertexAttributes.fRawCount);
+    b->add32(fInstanceAttributes.fRawCount, "numInstanceAttributes");
+    add_attributes(fInstanceAttributes.fAttributes, fInstanceAttributes.fRawCount);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

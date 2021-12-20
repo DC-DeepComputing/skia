@@ -194,30 +194,12 @@ public:
     inline static constexpr int kCoordTransformKeyBits = 4;
 
     /**
-     * Adds a key on the GrProcessorKeyBuilder that reflects any variety in the code that the
+     * Adds a key on the skgpu::KeyBuilder that reflects any variety in the code that the
      * geometry processor subclass can emit.
      */
-    virtual void addToKey(const GrShaderCaps&, GrProcessorKeyBuilder*) const = 0;
+    virtual void addToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const = 0;
 
-    void getAttributeKey(GrProcessorKeyBuilder* b) const {
-        // Ensure that our CPU and GPU type fields fit together in a 32-bit value, and we never
-        // collide with the "uninitialized" value.
-        static_assert(kGrVertexAttribTypeCount < (1 << 8), "");
-        static_assert(kGrSLTypeCount           < (1 << 8), "");
-
-        auto add_attributes = [=](const Attribute* attrs, int attrCount) {
-            for (int i = 0; i < attrCount; ++i) {
-                const Attribute& attr = attrs[i];
-                b->appendComment(attr.isInitialized() ? attr.name() : "unusedAttr");
-                b->addBits(8, attr.isInitialized() ? attr.cpuType() : 0xff, "attrType");
-                b->addBits(8, attr.isInitialized() ? attr.gpuType() : 0xff, "attrGpuType");
-            }
-        };
-        b->add32(fVertexAttributes.fRawCount, "numVertexAttributes");
-        add_attributes(fVertexAttributes.fAttributes, fVertexAttributes.fRawCount);
-        b->add32(fInstanceAttributes.fRawCount, "numInstanceAttributes");
-        add_attributes(fInstanceAttributes.fAttributes, fInstanceAttributes.fRawCount);
-    }
+    void getAttributeKey(skgpu::KeyBuilder* b) const;
 
     /**
      * Returns a new instance of the appropriate implementation class for the given
