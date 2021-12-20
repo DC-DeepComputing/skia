@@ -1,0 +1,337 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e26e28d_188e8bbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "We are almost there (once the assertion is fixed)! These are mostly just nits.",
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ede5254_69be2e49",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Please add comment mentioning the fields that are not checked, so a future reader does not think it is a mistake.",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96362035_8e80243d",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Comment is too broad to be helpful to a reader--can we add more detail?\n\ne.g. in this block, why are we looking for `\u003c_skvm_jit\u003e`? What comes before it (we are skipping over that)? What do we expect to come after?\n\nA brief example snippet of what we think the disassembled code should look like would be great to capture in a comment. Especially since this could change one day!",
+      "range": {
+        "startLine": 44,
+        "startChar": 11,
+        "endLine": 44,
+        "endChar": 37
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "481bfce5_b5d00fb1",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Right now we are just assuming success. Would it be better to assert it? i.e. after `ss \u003e\u003e something;` we could do:\n\n  SkASSERT(!ss.fail());\n  \nThis should hopefully only come up if the disassembly format changes (which should be super rare!) \nAlso, might be useful to assert the 0th character, which we always blindly skip over. Is it supposed to be `$`?\n(Same comments apply to matching block at L70... might want to move this logic to a helper function?)",
+      "range": {
+        "startLine": 60,
+        "startChar": 39,
+        "endLine": 60,
+        "endChar": 40
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76e2b12_02b75f42",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "tiny nit: `len` is unused if prev.command is not empty; move `len` inside if block.",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 42
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d391bf_0bea9ca0",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Is this going to eliminate whitespace between tokens? Is that OK?",
+      "range": {
+        "startLine": 87,
+        "startChar": 12,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1e8de8c_8583e88f",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "tiny nit: remove blank line",
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2802bb32_a28a0999",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "tiny nit: `len` is unused if prev.command is not empty; move `len` inside if block.",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 62
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07237c3b_2a6196a6",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "nit: There\u0027s no comment here or inside `struct viz::Instruction` explaining what it means when the instruction index is negative. Please document this somewhere.",
+      "range": {
+        "startLine": 117,
+        "startChar": 12,
+        "endLine": 117,
+        "endChar": 20
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa5a5c5_9cfd3f6e",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "nit: guaranteed to be true based on previous if statement.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 52
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a350ee23_36c05eaf",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "-2 feels very spooky/magic. Why -2?",
+      "range": {
+        "startLine": 128,
+        "startChar": 43,
+        "endLine": 128,
+        "endChar": 45
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0ce1bcd_2325689e",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "tiny nit: `else` unnecessary after if block which unconditionally returns",
+      "range": {
+        "startLine": 229,
+        "startChar": 6,
+        "endLine": 229,
+        "endChar": 10
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8b0c98_d3b74a5a",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "tiny nit: SkString constructs to the empty string by default",
+      "range": {
+        "startLine": 255,
+        "startChar": 18,
+        "endLine": 255,
+        "endChar": 22
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea97af3a_a8265450",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Can be simplified: \n   label.appendf(\"*%d\", instruction.duplicates + 1);",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 262,
+        "endChar": 27
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b57815_b1a2b098",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-20T19:06:38Z",
+      "side": 1,
+      "message": "Remove",
+      "range": {
+        "startLine": 263,
+        "startChar": 5,
+        "endLine": 265,
+        "endChar": 5
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
