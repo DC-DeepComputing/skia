@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b63ebf0e_5f30b900",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-20T21:37:41Z",
+      "side": 1,
+      "message": "Done. No plans to add queries so just moved these to public. Also I checked the ES2 spec again and 8 is the max attributes.",
+      "parentUuid": "957eef18_a1abc4b1",
+      "range": {
+        "startLine": 118,
+        "startChar": 1,
+        "endLine": 125,
+        "endChar": 49
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb424558_f949105f",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-20T21:08:08Z",
       "side": 1,
       "message": "also should this be exposed publicly?",
+      "range": {
+        "startLine": 153,
+        "startChar": 24,
+        "endLine": 153,
+        "endChar": 40
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e68ef50e_198fa33e",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-20T21:37:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb424558_f949105f",
       "range": {
         "startLine": 153,
         "startChar": 24,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "289a28f5_d5ca1fba",
+        "filename": "src/core/SkCustomMesh.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-20T21:37:41Z",
+      "side": 1,
+      "message": "If we don\u0027t have a type called \"Varyings\" then the user\u0027s main() signatures for VS and FS would have to change, which we could do. I was hesitant to do that because it requires extra documentation and also more complexity in the main signature checks. Or we could require at least one varying and skirt this problem.",
+      "parentUuid": "89e8e4c9_6166d8e1",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 78
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6e302bf_9f79f64b",
         "filename": "src/gpu/ops/DrawCustomMeshOp.cpp",
         "patchSetId": 6
@@ -83,6 +155,30 @@
       "writtenOn": "2021-12-20T21:08:08Z",
       "side": 1,
       "message": "what does rtmgp mean here? As i scrolled away from here and looked at the variable the name didn\u0027t really do a good job reminding me what this was",
+      "range": {
+        "startLine": 135,
+        "startChar": 32,
+        "endLine": 135,
+        "endChar": 37
+      },
+      "revId": "75a61121889e8f40e913e91046c955e397429487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54dfd62b_2a93a568",
+        "filename": "src/gpu/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-20T21:37:41Z",
+      "side": 1,
+      "message": "At some point I changed from \"runtime mesh\" to \"custom mesh\" and missed this. Done.",
+      "parentUuid": "f6e302bf_9f79f64b",
       "range": {
         "startLine": 135,
         "startChar": 32,
