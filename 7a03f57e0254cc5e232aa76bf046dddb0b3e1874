@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd705642_e639e2ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:40:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b78fa388_eea3731c",
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2eef8eca_f0e29640",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-12-20T18:27:19Z",
       "side": 1,
       "message": "Looks like you\u0027re hitting this assertion...?",
+      "range": {
+        "startLine": 326,
+        "startChar": 8,
+        "endLine": 326,
+        "endChar": 33
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3aa698e_bf79c5e1",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T18:40:48Z",
+      "side": 1,
+      "message": "No, I don\u0027t.\nTrace commands get sorted out earlier.\nOp::duplicate does not get to the visualizer as an op code.\nOnly new commands will assert and this is what I want.",
+      "parentUuid": "2eef8eca_f0e29640",
       "range": {
         "startLine": 326,
         "startChar": 8,
