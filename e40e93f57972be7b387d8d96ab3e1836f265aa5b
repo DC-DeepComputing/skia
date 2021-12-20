@@ -16,6 +16,24 @@
       "message": "Can you summarize (for my benefit) the differences between the two task drivers (bazel vs non-bazel)? I don\u0027t see support for try jobs here but maybe I missed something.\nAsking because we will also one day need similar changes to push_apps_from_skia_image for api and fiddle.\n\nI am assuming that only the task driver had to change and docker_pushes_watcher is working unchanged.",
       "revId": "e40e93f57972be7b387d8d96ab3e1836f265aa5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efae8a95_a39e4820",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-20T14:33:54Z",
+      "side": 1,
+      "message": "1) push_bazel_apps does not use the Docker image of the infra repo - it checks out the infra repo at ToT (by default) and runs bazel_release_ci. \n\n2) It tags pushed image with the githash that was passed in via --skia_revision, which controls which skia-wasm-release image to use as the source. I was not clear on the benefits of deploying a non-checked in version (i.e. a Tryjob version) of the wasm products, so I made it easiest to just push images built from checked in code. We can control this via the --skia_revision flag, which is set via gen_tasks_logic.\n\nNo changes needed to docker_pushes_watcher.",
+      "parentUuid": "d0556a34_ce05d3cc",
+      "revId": "e40e93f57972be7b387d8d96ab3e1836f265aa5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
