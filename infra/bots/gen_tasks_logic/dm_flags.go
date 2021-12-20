@@ -988,6 +988,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~Threaded")
 	}
 
+	// TODO(jcgregorio) remove, only for testing
+	if b.model("JioNext") {
+		match = append(match, "mobi_")
+	}
+
 	if b.extraConfig("Valgrind") && b.extraConfig("PreAbandonGpuContext") {
 		// skia:6575
 		match = append(match, "~multipicturedraw_")
