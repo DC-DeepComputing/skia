@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d4c4512_f80ff81c",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "None. Thank you!",
+      "parentUuid": "108b3250_53839e54",
+      "range": {
+        "startLine": 527,
+        "startChar": 20,
+        "endLine": 527,
+        "endChar": 29
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ae164eb_62e73bd2",
@@ -72,6 +96,30 @@
       "writtenOn": "2021-12-20T18:42:22Z",
       "side": 1,
       "message": "Idea: is there any reason for this logic to live here instead of inside the Visualizer itself? Looking at it closely, all it seems to use is program/live/new_id, and we could just pass those in. It\u0027s not a big deal (it\u0027s not in the main loop and isn\u0027t intrusive) but it seems better for visualization-only stuff to live in the Visualizer. If there\u0027s a reason that this is complex and I\u0027m not seeing it, feel free to disagree.",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 534,
+        "endChar": 53
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22ebc46_7ed71630",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "I moved the logic but kept 2 methods: addInstructions and markAsDeadCode.",
+      "parentUuid": "8ae164eb_62e73bd2",
       "range": {
         "startLine": 518,
         "startChar": 0,
@@ -153,6 +201,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5dfd6c3_c2db3dba",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "It\u0027s trace_scope. I forgot to rebase.",
+      "parentUuid": "db5ffb63_3f782de6",
+      "range": {
+        "startLine": 326,
+        "startChar": 8,
+        "endLine": 326,
+        "endChar": 33
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df2c7b72_3c23c543",
@@ -166,6 +238,30 @@
       "writtenOn": "2021-12-20T18:42:22Z",
       "side": 1,
       "message": "Move nontrivial functions to cpp",
+      "range": {
+        "startLine": 66,
+        "startChar": 47,
+        "endLine": 76,
+        "endChar": 56
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa6937d2_f6499c0f",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df2c7b72_3c23c543",
       "range": {
         "startLine": 66,
         "startChar": 47,
@@ -199,6 +295,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffa4f58b_9f1205c8",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02209d5e_fc022ffe",
+      "range": {
+        "startLine": 101,
+        "startChar": 11,
+        "endLine": 106,
+        "endChar": 48
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e272aacd_c7bcfe33",
@@ -212,6 +332,30 @@
       "writtenOn": "2021-12-20T18:42:22Z",
       "side": 1,
       "message": "nit: using both SkTHashMap\u003c\u003e and unordered_map\u003c\u003e is quirky unless there is a good reason.",
+      "range": {
+        "startLine": 110,
+        "startChar": 8,
+        "endLine": 110,
+        "endChar": 18
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf54011d_0cfdf2f1",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e272aacd_c7bcfe33",
       "range": {
         "startLine": 110,
         "startChar": 8,
@@ -245,6 +389,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77fe4a5_4b02d126",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f2a747b_7b8aea3f",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 32
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "218263bf_53c3a9cf",
@@ -258,6 +426,30 @@
       "writtenOn": "2021-12-20T18:42:22Z",
       "side": 1,
       "message": "Remove `const` from `dumpInstruction` instead; we shouldn\u0027t be using `mutable` unless there is a very strong justification.",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 15
+      },
+      "revId": "7a03f57e0254cc5e232aa76bf046dddb0b3e1874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "027ce53c_0d863f92",
+        "filename": "src/utils/SkVMVisualizer.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "dumpInstruction should be const method. I can easily imagine somebody using it inside another const function. It\u0027s going to be really unpleasant for this somebody to discover that a simple dump is not const...",
+      "parentUuid": "218263bf_53c3a9cf",
       "range": {
         "startLine": 115,
         "startChar": 8,

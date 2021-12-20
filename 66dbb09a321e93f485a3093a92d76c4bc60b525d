@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58972ef9_a8e4e765",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Sorry, I skipped the outputs part.\nAt this moment the output is so fluid I don\u0027t think I can keep up with it.\nCan we postpone the golden outputs and stay with strstr for a while?\nI can add more of them.",
+      "parentUuid": "6b3f6ccd_497151b4",
+      "revId": "66dbb09a321e93f485a3093a92d76c4bc60b525d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2f5912_d89d659e",

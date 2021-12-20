@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9fada5_ce0fb6de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "On my side I can promise you that I will never ever try to submit such a big CL again.",
+      "parentUuid": "2e26e28d_188e8bbb",
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ede5254_69be2e49",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "Please add comment mentioning the fields that are not checked, so a future reader does not think it is a mistake.",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "708dfd44_02f21f82",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "I would but at this moment all of them are checked (as they should be).",
+      "parentUuid": "5ede5254_69be2e49",
       "range": {
         "startLine": 14,
         "startChar": 1,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a2f3c3_4b1b0741",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96362035_8e80243d",
+      "range": {
+        "startLine": 44,
+        "startChar": 11,
+        "endLine": 44,
+        "endChar": 37
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "481bfce5_b5d00fb1",
@@ -77,6 +143,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "Right now we are just assuming success. Would it be better to assert it? i.e. after `ss \u003e\u003e something;` we could do:\n\n  SkASSERT(!ss.fail());\n  \nThis should hopefully only come up if the disassembly format changes (which should be super rare!) \nAlso, might be useful to assert the 0th character, which we always blindly skip over. Is it supposed to be `$`?\n(Same comments apply to matching block at L70... might want to move this logic to a helper function?)",
+      "range": {
+        "startLine": 60,
+        "startChar": 39,
+        "endLine": 60,
+        "endChar": 40
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "140cf88e_e44e9b5a",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "481bfce5_b5d00fb1",
       "range": {
         "startLine": 60,
         "startChar": 39,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "352f43ee_42cd75f0",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a76e2b12_02b75f42",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 42
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9d391bf_0bea9ca0",
@@ -123,6 +237,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "Is this going to eliminate whitespace between tokens? Is that OK?",
+      "range": {
+        "startLine": 87,
+        "startChar": 12,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61af2cac_6b7a1ac0",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "These tokens are machine commands. There are no spaces between them... At least, I didn\u0027t find any.",
+      "parentUuid": "d9d391bf_0bea9ca0",
       "range": {
         "startLine": 87,
         "startChar": 12,
@@ -150,6 +288,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f50f28c_c4b4cf7f",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1e8de8c_8583e88f",
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2802bb32_a28a0999",
@@ -163,6 +319,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "tiny nit: `len` is unused if prev.command is not empty; move `len` inside if block.",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 62
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83a61805_4e98a11b",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2802bb32_a28a0999",
       "range": {
         "startLine": 94,
         "startChar": 8,
@@ -196,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c9de91_856a1fe7",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07237c3b_2a6196a6",
+      "range": {
+        "startLine": 117,
+        "startChar": 12,
+        "endLine": 117,
+        "endChar": 20
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaa5a5c5_9cfd3f6e",
@@ -209,6 +413,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "nit: guaranteed to be true based on previous if statement.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 52
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc7fee8_b64d92f3",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaa5a5c5_9cfd3f6e",
       "range": {
         "startLine": 119,
         "startChar": 0,
@@ -242,6 +470,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0feb3aec_6fda2feb",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Because -1 already taken for duplicates. -2 for dead. Honestly, we only check instructionIndex for \u003c 0, so it does not matter.",
+      "parentUuid": "a350ee23_36c05eaf",
+      "range": {
+        "startLine": 128,
+        "startChar": 43,
+        "endLine": 128,
+        "endChar": 45
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0ce1bcd_2325689e",
@@ -255,6 +507,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "tiny nit: `else` unnecessary after if block which unconditionally returns",
+      "range": {
+        "startLine": 229,
+        "startChar": 6,
+        "endLine": 229,
+        "endChar": 10
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53ed0180_00dc324d",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "I like to keep it and it actually grows (as you keep adding trace commands).\nThat shows that these commands exist (and should be dealt with later).",
+      "parentUuid": "f0ce1bcd_2325689e",
       "range": {
         "startLine": 229,
         "startChar": 6,
@@ -288,6 +564,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4005466_b57ad93f",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff8b0c98_d3b74a5a",
+      "range": {
+        "startLine": 255,
+        "startChar": 18,
+        "endLine": 255,
+        "endChar": 22
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea97af3a_a8265450",
@@ -311,6 +611,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72540c98_382d260c",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea97af3a_a8265450",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 262,
+        "endChar": 27
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15b57815_b1a2b098",
@@ -324,6 +648,30 @@
       "writtenOn": "2021-12-20T19:06:38Z",
       "side": 1,
       "message": "Remove",
+      "range": {
+        "startLine": 263,
+        "startChar": 5,
+        "endLine": 265,
+        "endChar": 5
+      },
+      "revId": "32b63669301218184680cbaf7fbcd0d457fdd61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a98e8b49_e78a35a1",
+        "filename": "src/utils/SkVMVisualizer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2021-12-20T19:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15b57815_b1a2b098",
       "range": {
         "startLine": 263,
         "startChar": 5,
