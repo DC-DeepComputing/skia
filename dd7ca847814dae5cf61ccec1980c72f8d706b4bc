@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c2b4b9_ab5bde54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-21T13:56:27Z",
+      "side": 1,
+      "message": "SkSL changes look good.",
+      "revId": "dd7ca847814dae5cf61ccec1980c72f8d706b4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
