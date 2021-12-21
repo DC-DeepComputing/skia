@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21499662_8ebef797",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-21T17:31:16Z",
+      "side": 1,
+      "message": "This is fine for now, but eventually I think we want need the Visualizer to work on more platforms than just Linux. How hard will it be to support Mac/Windows?",
+      "revId": "20187a27b3526bb5173fd62313dc172c3170d659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
