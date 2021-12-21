@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a60bdca_fb6879be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-21T23:02:53Z",
+      "side": 1,
+      "message": "This CL is essentially a file move, renames, and some formatting. There isn\u0027t any logical changes in it.",
+      "revId": "fd0505c2675e29710e33b0dbceddb01b926c61ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
