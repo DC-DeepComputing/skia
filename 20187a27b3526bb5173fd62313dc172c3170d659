@@ -16,6 +16,24 @@
       "message": "This is fine for now, but eventually I think we want need the Visualizer to work on more platforms than just Linux. How hard will it be to support Mac/Windows?",
       "revId": "20187a27b3526bb5173fd62313dc172c3170d659",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f45add_731f28e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-21T17:57:51Z",
+      "side": 1,
+      "message": "I think it will work today? The bots that failed are ones that specifically limit the CPU architecture level (such that we can\u0027t JIT), but Mac and Windows in general do support it (as long as your CPU has the right features).",
+      "parentUuid": "21499662_8ebef797",
+      "revId": "20187a27b3526bb5173fd62313dc172c3170d659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
