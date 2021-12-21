@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6414960a_cb9a7eb7",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-21T15:02:40Z",
+      "side": 1,
+      "message": "It is there, just unexported. I can certainly make it exported to be more obvious.",
+      "parentUuid": "5773e2f5_1b1cc7fb",
+      "range": {
+        "startLine": 121,
+        "startChar": 14,
+        "endLine": 121,
+        "endChar": 34
+      },
+      "revId": "1f32f8a357f2c3c67a5d8acaabd0af79364b4eef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4675303_3c4be78c",
@@ -54,6 +78,24 @@
       "writtenOn": "2021-12-21T14:36:47Z",
       "side": 1,
       "message": "There is lots of overlap between this and the above buildPushParticles. You can probably create a single function called buildPushApp and pass in name of the app.",
+      "revId": "1f32f8a357f2c3c67a5d8acaabd0af79364b4eef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54e0557f_b8452b3c",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2021-12-21T15:02:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4675303_3c4be78c",
       "revId": "1f32f8a357f2c3c67a5d8acaabd0af79364b4eef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
