@@ -18,6 +18,7 @@
 #include "include/utils/SkShadowUtils.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkDrawProcs.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkGlyphRunPainter.h"
@@ -30,6 +31,7 @@
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrClip.h"
 #include "src/gpu/GrColor.h"
+#include "src/gpu/GrColorSpaceXform.h"
 #include "src/gpu/GrDataUtils.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrDrawingManager.h"
@@ -964,6 +966,17 @@ void SurfaceDrawContext::drawCustomMesh(const GrClip* clip,
 
     AutoCheckFlush acf(this->drawingManager());
 
+    sk_sp<GrColorSpaceXform> xform;
+    if (!SkCustomMeshSpecificationPriv::HasColors(*cm.spec) ||
+        (SkCustomMeshSpecificationPriv::ColorSpace(*cm.spec)->isSRGB() &&
+         SkCustomMeshSpecificationPriv::AlphaType(*cm.spec) == kPremul_SkAlphaType)) {
+        xform = this->colorInfo().refColorSpaceXformFromSRGB();
+    } else {
+        xform = GrColorSpaceXform::Make(SkCustomMeshSpecificationPriv::ColorSpace(*cm.spec),
+                                        SkCustomMeshSpecificationPriv::AlphaType(*cm.spec),
+                                        this->colorInfo().colorSpace(),
+                                        this->colorInfo().alphaType());
+    }
     SkASSERT(cm.vb);
     GrAAType aaType = fCanUseDynamicMSAA ? GrAAType::kMSAA : this->chooseAAType(GrAA::kNo);
     GrOp::Owner op = DrawCustomMeshOp::Make(fContext,
@@ -971,7 +984,7 @@ void SurfaceDrawContext::drawCustomMesh(const GrClip* clip,
                                             std::move(cm),
                                             matrixProvider,
                                             aaType,
-                                            this->colorInfo().refColorSpaceXformFromSRGB());
+                                            std::move(xform));
     this->addDrawOp(clip, std::move(op));
 }
 
