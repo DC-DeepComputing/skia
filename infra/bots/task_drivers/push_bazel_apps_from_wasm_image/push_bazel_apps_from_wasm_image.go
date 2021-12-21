@@ -16,6 +16,8 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"go.skia.org/infra/task_driver/go/lib/bazel"
+
 	"cloud.google.com/go/pubsub"
 	"google.golang.org/api/option"
 
@@ -115,7 +117,10 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 
-	if err := changeBazelCacheDir(ctx, "/mnt/pd0/bazel_cache"); err != nil {
+	opts := bazel.BazelOptions{
+		CachePath: "/mnt/pd0/bazel_cache",
+	}
+	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
 		td.Fatal(ctx, err)
 	}
 
@@ -125,6 +130,10 @@ func main() {
 	}
 
 	if err := buildPushParticles(ctx, wasmProductsDir, checkoutDir, *skiaRevision, topic); err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	if err := buildPushShaders(ctx, wasmProductsDir, checkoutDir, *skiaRevision, topic); err != nil {
 		td.Fatal(ctx, err)
 	}
 
@@ -188,18 +197,30 @@ func buildPushParticles(ctx context.Context, wasmProductsDir, checkoutDir, skiaR
 	return publishToTopic(ctx, "gcr.io/skia-public/particles", skiaRevision, topic)
 }
 
-// changeBazelCacheDir writes an entry to the user's bazelrc file that will make all invocations of
-// bazel use the given directory as their cache file.
-// TODO(kjlubick) Migrate this to be something more generic like "Ensure BazelRC file" and take in
-//   an options struct.
-func changeBazelCacheDir(ctx context.Context, path string) error {
-	// https://docs.bazel.build/versions/main/guide.html#where-are-the-bazelrc-files
-	// We go for the user's .bazelrc file instead of the system one because the swarming user does
-	// not have access to write to /etc/bazel.bazelrc
-	const userBazelRCLocation = "/home/chrome-bot/.bazelrc"
-	const bazelRCFileContents = `startup --output_user_root=%s
-`
-	return os_steps.WriteFile(ctx, userBazelRCLocation, []byte(fmt.Sprintf(bazelRCFileContents, path)), 0666)
+func buildPushShaders(ctx context.Context, wasmProductsDir, checkoutDir, skiaRevision string, topic *pubsub.Topic) error {
+	err := td.Do(ctx, td.Props("Build shaders image").Infra(), func(ctx context.Context) error {
+		runCmd := &sk_exec.Command{
+			Name:       "make",
+			Args:       []string{"bazel_release_ci"},
+			InheritEnv: true,
+			Env: []string{
+				"COPY_FROM_DIR=" + wasmProductsDir,
+				"STABLE_DOCKER_TAG=" + skiaRevision,
+			},
+			Dir:       filepath.Join(checkoutDir, "shaders"),
+			LogStdout: true,
+			LogStderr: true,
+		}
+		_, err := sk_exec.RunCommand(ctx, runCmd)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return publishToTopic(ctx, "gcr.io/skia-public/shaders", skiaRevision, topic)
 }
 
 func publishToTopic(ctx context.Context, image, tag string, topic *pubsub.Topic) error {
