@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32b69738_74258813",
+        "filename": "tests/SkVMTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2830,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-21T18:33:24Z",
+      "side": 1,
+      "message": "This is a spooky way to create an empty string. We should use the default ctor.",
+      "range": {
+        "startLine": 2830,
+        "startChar": 26,
+        "endLine": 2830,
+        "endChar": 38
+      },
+      "revId": "f60ef60add11704fea1be09bc6f3ffe6191a4127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
