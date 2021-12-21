@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22c85de7_23f8b2d3",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-21T21:06:12Z",
+      "side": 1,
+      "message": "I\u0027m okay with this for now, but also don\u0027t love it because of the heavyweight-ness of it. Given that the GPDesc\u0027s key length is 2 uint32_t\u0027s and at least Metal\u0027s RPDesc\u0027s key length is 1 uint32_t, could we just enforce that all backend\u0027s GP keys fit into 3-4 uint32_t\u0027s? 2 words for the GP, 2 words for the backend to fill out for the render pass?\n\nThen it\u0027s a relatively small value type that cna define it\u0027s own \u003d\u003d and hash function?",
+      "parentUuid": "75b3d408_ed68febd",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 33
+      },
+      "revId": "9e14d79812ab2d5bc5cce045566b1290aca39b15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8453aa3_6a5fe343",
         "filename": "experimental/graphite/src/TextureInfo.cpp",
         "patchSetId": 4
