@@ -34,6 +34,24 @@
       "parentUuid": "21499662_8ebef797",
       "revId": "20187a27b3526bb5173fd62313dc172c3170d659",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb31a99_3f9b16a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-21T18:04:16Z",
+      "side": 1,
+      "message": "OK, maybe limiting the test to UNIX_ONLY is too restrictive then. We do have a #if for SKVM JIT availability that we could use, IIRC.  \n\nAt the very least, we should run *most* of this test on all platforms. The only limitation is JITting, but most of the test is not about JITting at all. We could easily split it into two tests, right? (shared tests in SkVM_Visualizer, jit-specific tests in SkVM_Visualizer_JIT)",
+      "parentUuid": "96f45add_731f28e0",
+      "revId": "20187a27b3526bb5173fd62313dc172c3170d659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
