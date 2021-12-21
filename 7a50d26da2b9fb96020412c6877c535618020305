@@ -86,6 +86,30 @@
       },
       "revId": "7a50d26da2b9fb96020412c6877c535618020305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd87748_b4158ab9",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-21T15:09:58Z",
+      "side": 1,
+      "message": "The depthFail is specifically for the case where stencil passes but the depth fails. So when this gets updtate to use stencil compare of kGreater that means the stencil specifically won\u0027t have a value of 0. Now it may be the case we never hits this use case in practice but I think we should treat it like the stencil is not zero since it passed the stencil test. Thus it needs to be reset to 0.",
+      "parentUuid": "9beb34b6_d8c43aa4",
+      "range": {
+        "startLine": 33,
+        "startChar": 27,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "revId": "7a50d26da2b9fb96020412c6877c535618020305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
