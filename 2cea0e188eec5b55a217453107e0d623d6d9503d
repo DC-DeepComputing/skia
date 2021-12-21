@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc26ff8a_a40a4286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-21T15:38:00Z",
+      "side": 1,
+      "message": "Really minor fix here. When the user\u0027s color is float4 we need to make a half4 when invoking the colorspace xform helper as it expects a half4.\n\nFix diff: https://skia-review.googlesource.com/c/skia/+/487220/1..3",
+      "revId": "2cea0e188eec5b55a217453107e0d623d6d9503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
