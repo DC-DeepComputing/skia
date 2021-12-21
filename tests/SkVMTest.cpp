@@ -2799,7 +2799,7 @@ DEF_TEST(SkVM_duplicates, reporter) {
     }
 }
 
-UNIX_ONLY_TEST(SkVM_Visualizer, r) {
+DEF_TEST(SkVM_Visualizer, r) {
     const char* src =
             "int main(int x, int y) {\n"
             "   int a = 99;\n"
