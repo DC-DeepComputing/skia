@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8bf9875_b3e009a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-22T16:21:48Z",
+      "side": 1,
+      "message": "I ended up doing this in the bindings, so that we could catch other surface factories (including those that don\u0027t currently take a color space at all).",
+      "revId": "bb0c89596318de9ee6ad1c5fd37692ef5d6fdd2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
