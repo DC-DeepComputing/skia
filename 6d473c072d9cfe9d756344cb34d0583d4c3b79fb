@@ -39,6 +39,30 @@
       },
       "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d48a08d0_0fbe7812",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2424,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2021-12-22T17:02:58Z",
+      "side": 1,
+      "message": "They should be set only when the extension is enabled. Fixed.",
+      "parentUuid": "1b686e91_1f637115",
+      "range": {
+        "startLine": 2424,
+        "startChar": 22,
+        "endLine": 2424,
+        "endChar": 80
+      },
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
