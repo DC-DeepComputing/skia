@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d16113_1393188e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-22T20:40:14Z",
+      "side": 1,
+      "message": "Adapted from aosp/1818180: Fix skia RLE input \u003e width use case",
+      "revId": "b8f702f10521bdea1fd8c88e0d8e519c6e5ed4cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
