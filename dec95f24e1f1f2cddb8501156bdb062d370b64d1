@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc10ab81_7950884c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-22T19:36:06Z",
+      "side": 1,
+      "message": "It seems like we need to update some stuff in platform_tools:\n\n $ python2 platform_tools/android/bin/android_build_app -C out/ARelease viewer\n...\n  \u003e Task :viewer:compileArm64DebugJavaWithJavac FAILED\n /home/bsalomon/src/skia/platform_tools/android/apps/viewer/src/main/java/org/skia/viewer/ViewerActivity.java:24: error: package androidx.core.widget does not exist\nimport androidx.core.widget.DrawerLayout;\n",
+      "revId": "dec95f24e1f1f2cddb8501156bdb062d370b64d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
