@@ -16,6 +16,24 @@
       "message": "FYI: I just bisected to this CL - this actually broke text_editor (but not editor). Running text_editor after this CL seg-faults immediately, because we try to use fFormattedText before it\u0027s allocated (when calling lastElement in the Editor constructor). I didn\u0027t debug further than that.",
       "revId": "9d0d4260281d6a1653aba43f3e84f15232d4ce30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f8c1a25_0efe86a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2021-12-22T16:20:42Z",
+      "side": 1,
+      "message": "Sorry, it\u0027s fSelectableText that\u0027s not initialized.",
+      "parentUuid": "538d7bbd_b8b105c7",
+      "revId": "9d0d4260281d6a1653aba43f3e84f15232d4ce30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
