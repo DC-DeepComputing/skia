@@ -39,22 +39,34 @@ static bool has_main(const SkSL::Program& p) {
     return false;
 }
 
-static SkCustomMeshSpecificationPriv::ColorType color_type(const SkSL::Program& fsProgram) {
+using ColorType = SkCustomMeshSpecificationPriv::ColorType;
+
+static std::tuple<ColorType, bool>
+get_fs_color_type_and_local_coords(const SkSL::Program& fsProgram) {
     for (const SkSL::ProgramElement* elem : fsProgram.elements()) {
         if (elem->is<SkSL::FunctionDefinition>()) {
             const SkSL::FunctionDefinition& defn = elem->as<SkSL::FunctionDefinition>();
             const SkSL::FunctionDeclaration& decl = defn.declaration();
             if (decl.isMain()) {
                 SkASSERT(decl.parameters().size() == 1 || decl.parameters().size() == 2);
+                SkCustomMeshSpecificationPriv::ColorType ct;
                 if (decl.parameters().size() == 1) {
-                    return SkCustomMeshSpecificationPriv::ColorType::kNone;
+                    ct = ColorType::kNone;
+                } else {
+                    const SkSL::Type& paramType = decl.parameters()[1]->type();
+                    SkASSERT(paramType == *fsProgram.fContext->fTypes.fHalf4 ||
+                             paramType == *fsProgram.fContext->fTypes.fFloat4);
+                    ct = (paramType == *fsProgram.fContext->fTypes.fHalf4)
+                                 ? ColorType::kHalf4
+                                 : ColorType::kFloat4;
+                    SkASSERT(paramType == *fsProgram.fContext->fTypes.fHalf4 ||
+                             paramType == *fsProgram.fContext->fTypes.fFloat4);
                 }
-                const SkSL::Type& type = decl.parameters()[1]->type();
-                SkASSERT(type == *fsProgram.fContext->fTypes.fHalf4 ||
-                         type == *fsProgram.fContext->fTypes.fFloat4);
-                return type == *fsProgram.fContext->fTypes.fHalf4
-                               ? SkCustomMeshSpecificationPriv::ColorType::kHalf4
-                               : SkCustomMeshSpecificationPriv::ColorType::kFloat4;
+                const SkSL::Type& returnType = decl.returnType();
+                SkASSERT(returnType == *fsProgram.fContext->fTypes.fVoid ||
+                         returnType == *fsProgram.fContext->fTypes.fFloat2);
+                bool hasLocalCoords = returnType == *fsProgram.fContext->fTypes.fFloat2;
+                return std::make_tuple(ct, hasLocalCoords);
             }
         }
     }
@@ -122,8 +134,9 @@ check_vertex_offsets_and_stride(SkSpan<const Attribute> attributes,
     // Four bytes alignment is required by Metal.
     static_assert(SkCustomMeshSpecification::kStrideAlignment >= 4);
     static_assert(SkCustomMeshSpecification::kOffsetAlignment >= 4);
-    // ES2 has a minimum maximum of 8. We may need one for a broken gl_FragCoord workaround.
-    static_assert(SkCustomMeshSpecification::kMaxVaryings     <= 7);
+    // ES2 has a minimum maximum of 8. We may need one for a broken gl_FragCoord workaround and
+    // one for local coords.
+    static_assert(SkCustomMeshSpecification::kMaxVaryings     <= 6);
 
     if (attributes.empty()) {
         RETURN_ERROR("At least 1 attribute is required.");
@@ -256,7 +269,7 @@ SkCustomMeshSpecification::Result SkCustomMeshSpecification::MakeFromSourceWithS
         }
     }
 
-    ColorType ct = color_type(*fsProgram);
+    auto [ct, hasLocalCoords] = get_fs_color_type_and_local_coords(*fsProgram);
 
     if (ct == ColorType::kNone) {
         cs = nullptr;
@@ -276,6 +289,7 @@ SkCustomMeshSpecification::Result SkCustomMeshSpecification::MakeFromSourceWithS
                                                                            std::move(vsProgram),
                                                                            std::move(fsProgram),
                                                                            ct,
+                                                                           hasLocalCoords,
                                                                            std::move(cs),
                                                                            at)),
             /*error=*/ {}};
@@ -289,6 +303,7 @@ SkCustomMeshSpecification::SkCustomMeshSpecification(SkSpan<const Attribute>    
                                                      std::unique_ptr<SkSL::Program> vs,
                                                      std::unique_ptr<SkSL::Program> fs,
                                                      ColorType                      ct,
+                                                     bool                           hasLocalCoords,
                                                      sk_sp<SkColorSpace>            cs,
                                                      SkAlphaType                    at)
         : fAttributes(attributes.begin(), attributes.end())
@@ -297,6 +312,7 @@ SkCustomMeshSpecification::SkCustomMeshSpecification(SkSpan<const Attribute>    
         , fFS(std::move(fs))
         , fStride(stride)
         , fColorType(ct)
+        , fHasLocalCoords(hasLocalCoords)
         , fColorSpace(std::move(cs))
         , fAlphaType(at) {
     fHash = SkOpts::hash_fn(fVS->fSource->c_str(), fVS->fSource->size(), 0);
