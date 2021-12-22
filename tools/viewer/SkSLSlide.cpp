@@ -83,9 +83,12 @@ void SkSLSlide::unload() {
 
 bool SkSLSlide::rebuild() {
     // Some of the standard shadertoy inputs:
-    SkString sksl("uniform float3 iResolution;\n"
-                  "uniform float  iTime;\n"
-                  "uniform float4 iMouse;\n");
+    SkString sksl;
+    if (fShadertoyUniforms) {
+        sksl = "uniform float3 iResolution;\n"
+               "uniform float  iTime;\n"
+               "uniform float4 iMouse;\n";
+    }
     sksl.append(fSkSL);
 
     // It shouldn't happen, but it's possible to assert in the compiler, especially mid-edit.
@@ -132,6 +135,10 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         fCodeIsDirty = true;
     }
 
+    if (ImGui::Checkbox("ShaderToy Uniforms (iResolution/iTime/iMouse)", &fShadertoyUniforms)) {
+        fCodeIsDirty = true;
+    }
+
     if (fCodeIsDirty || !fEffect) {
         this->rebuild();
     }
@@ -161,6 +168,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     }
     fMousePos.z = abs(fMousePos.z) * (ImGui::IsMouseDown(0)    ? 1 : -1);
     fMousePos.w = abs(fMousePos.w) * (ImGui::IsMouseClicked(0) ? 1 : -1);
+
 
     for (const auto& v : fEffect->uniforms()) {
         char* data = fInputs.get() + v.offset;
