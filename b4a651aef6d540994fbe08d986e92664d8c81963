@@ -20,6 +20,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1fdb33c_ebfc47ce",
+        "filename": "fuzz/oss_fuzz/FuzzSKSL2Pipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "Should these take `const String\u0026`? Seems like an unnecessary copy. \n(Although that could apply to the other methods too)",
+      "range": {
+        "startLine": 53,
+        "startChar": 28,
+        "endLine": 53,
+        "endChar": 34
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2003344a_6e1b209c",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "Took me a while to recognize this as \"N-dot-L\".\nUnicode? N·L",
+      "range": {
+        "startLine": 772,
+        "startChar": 15,
+        "endLine": 772,
+        "endChar": 16
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b7dd2f7_beac79d4",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "Transform",
+      "range": {
+        "startLine": 290,
+        "startChar": 18,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85a77e78_325c45e1",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "No better suggestions here, but these swizzles are a bummer.\n\nReminds me of a suggestion bsalomon@ had a while back (when Runtime Blender was being designed) about how we should eventually aim to allow any signature, but obviously that\u0027s its own nontrivial project.",
+      "range": {
+        "startLine": 165,
+        "startChar": 40,
+        "endLine": 165,
+        "endChar": 49
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12498835_8e2b1b05",
         "filename": "src/gpu/effects/GrSkSLFP.cpp",
         "patchSetId": 16
@@ -36,6 +128,98 @@
         "startChar": 4,
         "endLine": 388,
         "endChar": 66
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8347c1_9c50a2f8",
+        "filename": "src/gpu/effects/GrSkSLFP.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "tiny nit: no need to indent these further? (guessing you added a new member briefly and removed it)",
+      "range": {
+        "startLine": 409,
+        "startChar": 27,
+        "endLine": 409,
+        "endChar": 29
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff953438_a20b631b",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "Should this be `const auto\u0026`? Not 100% sure.",
+      "range": {
+        "startLine": 340,
+        "startChar": 9,
+        "endLine": 340,
+        "endChar": 13
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84eafeb9_a51c923c",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "tiny boring nit: consider moving the count check to the top of the `if` expression. That makes rejection simpler (just checking a local variable instead of invoking accessor)",
+      "range": {
+        "startLine": 343,
+        "startChar": 12,
+        "endLine": 343,
+        "endChar": 22
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d4ebfb_bfc54443",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-22T20:48:59Z",
+      "side": 1,
+      "message": "Might be simpler to read without involving an IIFE? I thought this was making a lambda at first glance, and it ends up being ~the same code with fewer punctuation marks around the edges.\n\n  String colorArg; \n  {\n    AutoOutputBuffer exprBuffer(this);\n    this-\u003ewriteExpression(*c.arguments()[0], Precedence::kSequence);\n    colorArg \u003d exprBuffer.fBuffer.str();\n  }",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 12
       },
       "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
