@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "041bc91e_56537281",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2021-12-22T14:29:09Z",
+      "side": 1,
+      "message": "The Test-Debug version of the bot will be added after the Test-Release has landed and all the hashes are in Gold. Right now the -Debug version of the bot fails trying to upload too many images.",
+      "revId": "7d489ce048e99d29cc4ac986ea7fc69b056a860c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
