@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c20e66_e4ea7fba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-22T20:23:26Z",
+      "side": 1,
+      "message": "Semi-related, but not critical function: do we already have functions for doing the gamma correction and vice versa?",
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12498835_8e2b1b05",
+        "filename": "src/gpu/effects/GrSkSLFP.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-22T20:23:26Z",
+      "side": 1,
+      "message": "Am I correct in understanding that any runtime FP in the tree that uses toLinearSrgb() or fromLinearSrgb() will automatically get 2 additional children added to it?\n\nIf multiple nodes in the tree use these, we\u0027d end up effectively duplicating everything, since the color spaces should be the same (working won\u0027t be changing over the course of the tree). I don\u0027t have a better alternative given how FPs are structured, we\u0027d need to have a way to register a \"global\" uniform that can change based on the dst color space but be referenced by the color transform intrinsic sksl.\n\nMostly, I want to be aware of the cost of this model, since it\u0027s maybe something we could hoist more easily in graphite if its shader model is designed with that capability in mind.",
+      "range": {
+        "startLine": 386,
+        "startChar": 4,
+        "endLine": 388,
+        "endChar": 66
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e8204d_4ff92dfa",
+        "filename": "src/sksl/sksl_public.sksl",
+        "patchSetId": 16
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-22T20:23:26Z",
+      "side": 1,
+      "message": "(destination or surface)",
+      "range": {
+        "startLine": 235,
+        "startChar": 56,
+        "endLine": 235,
+        "endChar": 57
+      },
+      "revId": "b4a651aef6d540994fbe08d986e92664d8c81963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
