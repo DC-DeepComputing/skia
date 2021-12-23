@@ -16,6 +16,23 @@
       "message": "This CL is essentially a file move, renames, and some formatting. There isn\u0027t any logical changes in it.",
       "revId": "fd0505c2675e29710e33b0dbceddb01b926c61ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0afb88_1b195a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2021-12-23T20:58:30Z",
+      "side": 1,
+      "message": "I am good with doing this generalization, since it seems likely we will need aspects of it as resources get more complex. However, I don\u0027t want to forgo re-examining how we key resources in graphite, since maybe we can get away with a simpler unique key model (and not need scratch keys at all?).\n\nThe main complex cases would be for mask filter results (keys are based on params, not identity), paths from path effects (other path caching won\u0027t be needed unless we push SkPath\u0027s to the GPU, but I\u0027d rather have a separate gpu-ified path object), and proxies. But if we aren\u0027t doing inline uploads and automatic raster-\u003egpu conversion, our proxy model maybe will be much simpler?",
+      "revId": "fd0505c2675e29710e33b0dbceddb01b926c61ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
