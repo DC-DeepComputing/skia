@@ -58,4 +58,7 @@ RUN cd /tmp/skia/skia \
   && ./bin/gn gen out/Static \
   && git rev-parse HEAD > VERSION \
   && /tmp/depot_tools/ninja -C out/Static \
-  && chown -R skia:skia .
+  && chown -R skia:skia . \
+  # gen is created in readable only by the skia user. It needs additional
+  # permissions to be accessible by other developers.
+  && chmod 644 -R out/Static/gen

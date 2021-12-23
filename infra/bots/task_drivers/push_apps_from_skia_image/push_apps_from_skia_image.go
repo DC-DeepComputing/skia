@@ -11,19 +11,22 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 
 	"cloud.google.com/go/pubsub"
 	"google.golang.org/api/option"
 
 	"go.skia.org/infra/go/auth"
 	docker_pubsub "go.skia.org/infra/go/docker/build/pubsub"
+	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/util"
 	"go.skia.org/infra/task_driver/go/lib/auth_steps"
+	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/checkout"
 	"go.skia.org/infra/task_driver/go/lib/docker"
 	"go.skia.org/infra/task_driver/go/lib/golang"
@@ -48,6 +51,9 @@ var (
 const (
 	fiddlerImageName = "fiddler"
 	apiImageName     = "api"
+
+	infraRepo = "https://skia.googlesource.com/buildbot.git"
+	skiaRepo  = "https://skia.googlesource.com/skia.git"
 )
 
 var (
@@ -75,6 +81,7 @@ func buildPushFiddlerImage(ctx context.Context, tag, repo, configDir string, top
 	return cleanupTempFiles(ctx, configDir, volumes)
 }
 
+// Not needed?
 func cleanupTempFiles(ctx context.Context, configDir string, volumes []string) error {
 	// Remove all temporary files from the host machine. Swarming gets upset if there are root-owned
 	// files it cannot clean up.
@@ -101,6 +108,7 @@ func buildPushApiImage(ctx context.Context, tag, repo, configDir, checkoutDir st
 		"OUTPUT_DIRECTORY=/OUT",
 	}
 	doxygenCmd := []string{"/bin/sh", "-c", "cd /CHECKOUT/tools/doxygen && doxygen ProdDoxyfile"}
+	// DO THIS BUT USE "dkr" instead!
 	if err := docker.Run(ctx, "gcr.io/skia-public/doxygen:testing-slim", configDir, doxygenCmd, volumes, env); err != nil {
 		return err
 	}
@@ -154,35 +162,126 @@ func main() {
 	}
 	topic := client.Topic(docker_pubsub.TOPIC)
 
-	// Figure out which tag to use for docker build and push.
+	// Figure out which tag to use for the skia_release image.
 	tag := rs.Revision
 	if rs.Issue != "" && rs.Patchset != "" {
 		tag = fmt.Sprintf("%s_%s", rs.Issue, rs.Patchset)
 	}
-	// Add the tag to infraCommonBuildArgs.
-	infraCommonBuildArgs["SKIA_IMAGE_TAG"] = tag
 
-	// Create a temporary config dir for Docker.
-	configDir, err := ioutil.TempDir("", "")
+	// Instantiate docker.
+	dkr, err := docker.New(ctx, ts)
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
-	defer util.RemoveAll(configDir)
 
-	// Login to docker (required to push to docker).
-	token, err := ts.Token()
+	// Run skia-release image and extract products out of it.
+	skiaProductsDir, err := os_steps.TempDir(ctx, "", "")
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
-	if err := docker.Login(ctx, token.AccessToken, "gcr.io/skia-public/", configDir); err != nil {
+	volumes := []string{
+		fmt.Sprintf("%s:/OUT", skiaProductsDir),
+	}
+	skiaCopyCmd := []string{"/bin/sh", "-c", "cp -r /tmp/* /OUT"}
+	releaseImg := fmt.Sprintf("gcr.io/skia-public/skia-release:%s", tag)
+	if err := dkr.Run(ctx, releaseImg, skiaCopyCmd, volumes, nil); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// Ensure that the bazel cache is setup.
+	opts := bazel.BazelOptions{
+		CachePath: "/mnt/pd0/bazel_cache",
+	}
+	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	// // Add the tag to infraCommonBuildArgs.
+	// infraCommonBuildArgs["SKIA_IMAGE_TAG"] = tag
+
+	// // Create a temporary config dir for Docker.
+	// configDir, err := ioutil.TempDir("", "")
+	// if err != nil {
+	// 	td.Fatal(ctx, err)
+	// }
+	// defer util.RemoveAll(configDir)
+
+	// // Login to docker (required to push to docker).
+	// token, err := ts.Token()
+	// if err != nil {
+	// 	td.Fatal(ctx, err)
+	// }
+	// if err := docker.Login(ctx, token.AccessToken, "gcr.io/skia-public/", configDir); err != nil {
+	// 	td.Fatal(ctx, err)
+	// }
 
 	// Build and push all apps of interest below.
-	if err := buildPushFiddlerImage(ctx, tag, rs.Repo, configDir, topic); err != nil {
+	if err := buildPush(ctx, fiddlerImageName, skiaProductsDir, co.Dir(), tag, topic); err != nil {
 		td.Fatal(ctx, err)
 	}
-	if err := buildPushApiImage(ctx, tag, rs.Repo, configDir, co.Dir(), topic); err != nil {
+	// CANNOT USE ABOCVE RIGHT NOW BECUAE THIS IS DOING SOME DOXYGEN STUFF!
+	if err := buildPushApiImage(ctx, tag, rs.Repo, co.Dir(), tag, topic); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// NEW
+	// Remove all temporary files from the host machine. Swarming gets upset if there are root-owned
+	// files it cannot clean up.
+	cleanupCmd := []string{"/bin/sh", "-c", "rm -rf /OUT/*"}
+	if err := dkr.Run(ctx, releaseImg, cleanupCmd, volumes, nil); err != nil {
+		td.Fatal(ctx, err)
+	}
+}
+
+// PUT IN A UTIL!
+// buildPush pushes the app in the given skia-infra folder using `make bazel_release_ci`.
+// By convention, all of these apps should have the k8s deployment name be the same as the app
+// name and be built using the same Make target.
+func buildPush(ctx context.Context, appName, productsDir, checkoutDir, skiaRevision string, topic *pubsub.Topic) error {
+	err := td.Do(ctx, td.Props("Build "+appName+" image").Infra(), func(ctx context.Context) error {
+		runCmd := &sk_exec.Command{
+			Name:       "make",
+			Args:       []string{"bazel_release_ci"},
+			InheritEnv: true,
+			Env: []string{
+				"COPY_FROM_DIR=" + productsDir,
+				"STABLE_DOCKER_TAG=" + skiaRevision,
+			},
+			Dir:       filepath.Join(checkoutDir, appName),
+			LogStdout: true,
+			LogStderr: true,
+		}
+		_, err := sk_exec.RunCommand(ctx, runCmd)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return publishToTopic(ctx, "gcr.io/skia-public/"+appName, skiaRevision, topic)
+}
+
+// Update to use new docker.PublicToTopic
+func publishToTopic(ctx context.Context, image, tag string, topic *pubsub.Topic) error {
+	return td.Do(ctx, td.Props(fmt.Sprintf("Publish pubsub msg to %s", docker_pubsub.TOPIC)).Infra(), func(ctx context.Context) error {
+		b, err := json.Marshal(&docker_pubsub.BuildInfo{
+			ImageName: image,
+			Tag:       tag,
+			Repo:      skiaRepo,
+		})
+		if err != nil {
+			return err
+		}
+		msg := &pubsub.Message{
+			Data: b,
+		}
+		res := topic.Publish(ctx, msg)
+		// Synchronously wait to make sure the publishing actually happens.
+		if _, err := res.Get(ctx); err != nil {
+			return err
+		}
+		return nil
+	})
 }
