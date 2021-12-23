@@ -10,7 +10,11 @@ import os
 import shutil
 import sys
 import tempfile
-import urllib2
+
+if sys.version_info[0] < 3:
+  from urllib2 import urlopen
+else:
+  from urllib.request import urlopen
 
 def checksum(path):
     if not os.path.exists(path):
@@ -33,7 +37,7 @@ def download(md5, path):
                 pass  # ignore race condition
         url = 'https://storage.googleapis.com/skia-skqp-assets/' + md5
         with open(path, 'wb') as o:
-            shutil.copyfileobj(urllib2.urlopen(url), o)
+            shutil.copyfileobj(urlopen(url), o)
 
 def tmp(prefix):
     fd, path = tempfile.mkstemp(prefix=prefix)
