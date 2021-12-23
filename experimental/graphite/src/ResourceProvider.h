@@ -32,6 +32,12 @@ public:
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(const GraphicsPipelineDesc&);
 
     sk_sp<Texture> findOrCreateTexture(SkISize, const TextureInfo&);
+
+    sk_sp<Texture> findOrCreateDiscardableMSAATexture(SkISize, const TextureInfo&);
+
+    sk_sp<Texture> findOrCreateDiscardableDepthStencilAttachment(SkISize,
+                                                                 const TextureInfo&);
+
     virtual sk_sp<Texture> createWrappedTexture(const BackendTexture&) = 0;
 
     sk_sp<Buffer> findOrCreateBuffer(size_t size, BufferType type, PrioritizeGpuReads);

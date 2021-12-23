@@ -53,7 +53,7 @@ void RenderPassTask::addCommands(ResourceProvider* resourceProvider, CommandBuff
     sk_sp<Texture> depthStencilTexture;
     if (fRenderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()) {
         // TODO: ensure this is a scratch/recycled texture
-        depthStencilTexture = resourceProvider->findOrCreateTexture(
+        depthStencilTexture = resourceProvider->findOrCreateDiscardableDepthStencilAttachment(
                 fTarget->dimensions(), fRenderPassDesc.fDepthStencilAttachment.fTextureInfo);
         SkASSERT(depthStencilTexture);
     }

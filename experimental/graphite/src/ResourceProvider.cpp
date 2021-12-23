@@ -65,6 +65,25 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(SkISize dimensions, const T
     return this->createTexture(dimensions, info);
 }
 
+sk_sp<Texture> findOrCreateDiscardableMSAATexture(SkISize dimensions, const TextureInfo& info) {
+    if (info.numSamples() <= 1) {
+        return nullptr;
+    }
+
+    return this->createTexture(dimensions, info);
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateDiscardableDepthStencilAttachment(
+        SkISize dimensions,
+        Mask<DepthStencilFlags> flags,
+        uint32_t sampleCount,
+        Protected isProtected) {
+    TextureInfo info = fGpu->caps()->getDefaultDepthStencilTextureInfo(flags,
+                                                                       sampleCount,
+                                                                       isProtected));
+    return this->createTexture(dimensions, info);
+}
+
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
                                                    BufferType type,
                                                    PrioritizeGpuReads prioritizeGpuReads) {
