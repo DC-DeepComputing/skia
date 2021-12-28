@@ -16,6 +16,24 @@
       "message": "Are there cases in Android where we expect to wrap a texture and it not be fatal if we fail?  I think I\u0027m good with this, because I can\u0027t think of any but wanted to run it by you to be sure.  For example, in HWUI what happens if we are given a TextureView that is configured in a way we don\u0027t support?",
       "revId": "d500e8fb7a1f7daad6e17e78a0e19ce45e7f36a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b387a216_ce5a2fe4",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-28T19:03:45Z",
+      "side": 1,
+      "message": "I am not aware of any cases where we expect it to not be fatal. That said, we\u0027re just submitting this to master, so this would at worst just affect dogfooders. (I wouldn\u0027t want to e.g. submit this to AOSP right now.) I\u0027ve also included this in a local build; I can try out TextureView-using apps to see if I hit anything. (Any suggestions?)\n\nOnce we find the source of this bug, I would be fine with removing these completely or converting them back to log statements, and we may want to do so just in case anyway.\n\nWe could also make this abort only for the version of Skia used by RenderEngine.",
+      "parentUuid": "0b954218_27bfc3f4",
+      "revId": "d500e8fb7a1f7daad6e17e78a0e19ce45e7f36a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
