@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6b9888a7_5ef50d27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-28T15:09:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6606a11f_a4cb804a",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 14
+      },
+      "revId": "bfa494f7f78c49deefc6f7f78a1d4506b73d6332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7d9a72b7_2fa51ade",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2021-12-28T15:06:54Z",
       "side": 1,
       "message": "Assuming this fixes the spurious multiple-trace issue?",
+      "revId": "bfa494f7f78c49deefc6f7f78a1d4506b73d6332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ec071a0_c434604f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-28T15:09:15Z",
+      "side": 1,
+      "message": "Yeah, this was the issue. The trace-mask boolean value (coord.x \u003d\u003d traceCoord.x) would be true for a neighboring lane.",
+      "parentUuid": "7d9a72b7_2fa51ade",
       "revId": "bfa494f7f78c49deefc6f7f78a1d4506b73d6332",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
