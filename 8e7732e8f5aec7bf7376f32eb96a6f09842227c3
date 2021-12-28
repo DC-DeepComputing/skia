@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ffae683_a02c7db9",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-28T19:37:36Z",
+      "side": 0,
+      "message": "Wasn\u0027t referenced anywhere",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 5
+      },
+      "revId": "8e7732e8f5aec7bf7376f32eb96a6f09842227c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
