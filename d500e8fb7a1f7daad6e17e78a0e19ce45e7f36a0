@@ -52,6 +52,24 @@
       "parentUuid": "b387a216_ce5a2fe4",
       "revId": "d500e8fb7a1f7daad6e17e78a0e19ce45e7f36a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97eb15b_4c11bace",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-28T19:42:20Z",
+      "side": 1,
+      "message": "Why wait til then? I\u0027ve added a new flag so that we will only abort in RenderEngine, which resolves your original concern. (We can still remove it after fixing the bug, if desired.)",
+      "parentUuid": "a1b46b27_415fe075",
+      "revId": "d500e8fb7a1f7daad6e17e78a0e19ce45e7f36a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
