@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b954218_27bfc3f4",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2021-12-28T18:32:53Z",
+      "side": 1,
+      "message": "Are there cases in Android where we expect to wrap a texture and it not be fatal if we fail?  I think I\u0027m good with this, because I can\u0027t think of any but wanted to run it by you to be sure.  For example, in HWUI what happens if we are given a TextureView that is configured in a way we don\u0027t support?",
+      "revId": "d500e8fb7a1f7daad6e17e78a0e19ce45e7f36a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
