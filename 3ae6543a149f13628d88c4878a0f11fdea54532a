@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "445028be_71d2ce9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2021-12-29T14:31:21Z",
+      "side": 1,
+      "message": "FYI: There are some merge errors happening on the roller that I am trying to chase down: https://bugs.chromium.org/p/skia/issues/detail?id\u003d12772\nI think that is what caused failures when making the Canary roll. I cleaned out the checkout to see what happens and retriggered the roll.",
+      "revId": "3ae6543a149f13628d88c4878a0f11fdea54532a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
