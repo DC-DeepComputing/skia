@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c5f7ca_2bbb346b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2021-12-29T22:09:18Z",
+      "side": 1,
+      "message": "The inline settings and scope are unnecessary copy paste residue from SkRuntimeEffect.",
+      "revId": "21f12a43140e519af67e730e15519fb3a1d882fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
