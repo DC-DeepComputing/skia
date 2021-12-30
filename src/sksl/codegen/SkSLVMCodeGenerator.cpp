@@ -360,7 +360,8 @@ private:
     };
 };
 
-static Type::NumberKind base_number_kind(const Type& type) {
+static Type::NumberKind base_number_kind(const Type& raw) {
+    const Type& type = raw.resolve();
     if (type.typeKind() == Type::TypeKind::kMatrix || type.typeKind() == Type::TypeKind::kVector) {
         return base_number_kind(type.componentType());
     }
@@ -577,10 +578,11 @@ void SkVMGenerator::writeToSlot(int slot, skvm::Val value) {
 }
 
 void SkVMGenerator::addDebugSlotInfo(String varName,
-                                     const Type& type,
+                                     const Type& raw,
                                      int line,
                                      int fnReturnValue) {
     SkASSERT(fDebugTrace);
+    const Type& type = raw.resolve();
     switch (type.typeKind()) {
         case Type::TypeKind::kArray: {
             int nslots = type.columns();
@@ -681,13 +683,15 @@ size_t SkVMGenerator::getSlot(const FunctionDefinition& fn) {
 
 void SkVMGenerator::recursiveBinaryCompare(
         const Value& lVal,
-        const Type& lType,
+        const Type& rawLType,
         const Value& rVal,
-        const Type& rType,
+        const Type& rawRType,
         size_t* slotOffset,
         Value* result,
         const std::function<Value(skvm::F32 x, skvm::F32 y)>& float_comp,
         const std::function<Value(skvm::I32 x, skvm::I32 y)>& int_comp) {
+    const Type& lType = rawLType.resolve();
+    const Type& rType = rawRType.resolve();
     switch (lType.typeKind()) {
         case Type::TypeKind::kStruct:
             SkASSERT(rType.typeKind() == Type::TypeKind::kStruct);

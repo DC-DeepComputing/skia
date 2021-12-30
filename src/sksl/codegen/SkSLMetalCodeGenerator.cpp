@@ -93,7 +93,8 @@ void MetalCodeGenerator::writeExtension(const Extension& ext) {
     this->writeLine("#extension " + ext.name() + " : enable");
 }
 
-String MetalCodeGenerator::typeName(const Type& type) {
+String MetalCodeGenerator::typeName(const Type& raw) {
+    const Type& type = raw.resolve();
     switch (type.typeKind()) {
         case Type::TypeKind::kArray:
             SkASSERTF(type.columns() > 0, "invalid array size: %s", type.description().c_str());
@@ -972,7 +973,7 @@ void MetalCodeGenerator::assembleMatrixFromExpressions(const AnyConstructor& cto
             columnSeparator = ", ";
 
             if (argIndex < args.size()) {
-                const Type& argType = args[argIndex]->type();
+                const Type& argType = args[argIndex]->type().resolve();
                 switch (argType.typeKind()) {
                     case Type::TypeKind::kScalar: {
                         fExtraFunctions.printf("x%zu", argIndex);

@@ -75,6 +75,7 @@ public:
     };
 
     enum class TypeKind : int8_t {
+        kAlias,
         kArray,
         kGeneric,
         kLiteral,
@@ -110,6 +111,11 @@ public:
 
     /** Converts a component type and a size (float, 10) into an array name ("float[10]"). */
     String getArrayName(int arraySize) const;
+
+    /**
+     * Creates an alias which maps to another type.
+     */
+    static std::unique_ptr<Type> MakeAliasType(const char* name, const Type& targetType);
 
     /**
      * Create a generic type which maps to the listed types--e.g. $genType is a generic type which
@@ -206,8 +212,12 @@ public:
         return this->name().starts_with("$");
     }
 
+    virtual const Type& resolve() const {
+        return *this;
+    }
+
     bool matches(const Type& other) const {
-        return this->name() == other.name();
+        return this->resolve().name() == other.resolve().name();
     }
 
     /**

@@ -542,7 +542,7 @@ const Type& SPIRVCodeGenerator::getActualType(const Type& type) {
             return fContext.fTypes.fUInt->toCompound(fContext, type.columns(), type.rows());
         }
     }
-    return type;
+    return type.resolve();
 }
 
 SpvId SPIRVCodeGenerator::getType(const Type& type) {
