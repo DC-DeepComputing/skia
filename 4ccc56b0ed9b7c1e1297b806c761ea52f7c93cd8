@@ -93,6 +93,30 @@
       },
       "revId": "4ccc56b0ed9b7c1e1297b806c761ea52f7c93cd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66ab8d21_bf7c933f",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2021-12-30T21:35:35Z",
+      "side": 1,
+      "message": "\u003e Do these two variables need to be wrapped in SK_IN_RENDERENGINE so that we don\u0027t get unused variable warnings?\n\nDone.\n\n\u003e Also this could cause issues if we aren\u0027t in GL because textureInfo does initialize its members by default. But if we just are doing this for now to debug and will later remove this is probably fine since if we\u0027re protected by SK_IN_RENDERENGINE, currently render engine only uses gl.\n\nSgtm.",
+      "parentUuid": "1d815c87_0dca1235",
+      "range": {
+        "startLine": 524,
+        "startChar": 8,
+        "endLine": 524,
+        "endChar": 71
+      },
+      "revId": "4ccc56b0ed9b7c1e1297b806c761ea52f7c93cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
