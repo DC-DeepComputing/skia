@@ -344,13 +344,41 @@ cc_defaults {
         enabled: true,
       },
     },
+
+    data: [
+        "resources/**/*",
+    ],
+}
+
+cc_defaults {
+    name: "skia_gm_srcs",
+    local_include_dirs: [
+        $gm_includes
+    ],
+
+    srcs: [
+        $gm_srcs
+    ],
+}
+
+cc_defaults {
+    name: "skia_test_no_gm_srcs",
+    local_include_dirs: [
+        $test_no_gm_includes
+    ],
+
+    srcs: [
+        $test_no_gm_srcs
+    ],
 }
 
 cc_test {
     name: "skia_dm",
 
     defaults: [
-        "skia_tool_deps"
+        "skia_gm_srcs",
+        "skia_test_no_gm_srcs",
+        "skia_tool_deps",
     ],
 
     local_include_dirs: [
@@ -371,6 +399,7 @@ cc_test {
     name: "skia_nanobench",
 
     defaults: [
+        "skia_gm_srcs",
         "skia_tool_deps"
     ],
 
@@ -381,11 +410,36 @@ cc_test {
     srcs: [
         $nanobench_srcs
     ],
+}
 
-    data: [
-        "resources/**/*",
+cc_library_shared {
+    name: "libskqp_jni",
+    stl: "libc++_static",
+    compile_multilib: "both",
+
+    defaults: [
+        "skia_gm_srcs",
+        "skia_test_no_gm_srcs",
+        "skia_tool_deps",
     ],
-}''')
+
+    cflags: [
+        "-DSK_BUILD_FOR_SKQP",
+        "-DSK_ENABLE_DUMP_GPU",
+    ],
+
+    header_libs: ["jni_headers"],
+
+    local_include_dirs: [
+        $skqp_includes
+    ],
+
+    srcs: [
+        $skqp_srcs
+    ],
+}
+
+''')
 
 # We'll run GN to get the main source lists and include directories for Skia.
 def generate_args(target_os, enable_gpu, renderengine = False):
@@ -475,6 +529,15 @@ cflags_cc       = strip_slashes(js['targets']['//:skia']['cflags_cc'])
 local_includes  = strip_slashes(js['targets']['//:skia']['include_dirs'])
 export_includes = strip_slashes(js['targets']['//:public']['include_dirs'])
 
+gm_srcs         = strip_slashes(js['targets']['//:gm']['sources'])
+gm_includes     = strip_slashes(js['targets']['//:gm']['include_dirs'])
+
+test_srcs         = strip_slashes(js['targets']['//:tests']['sources'])
+test_includes     = strip_slashes(js['targets']['//:tests']['include_dirs'])
+
+skqp_srcs       = strip_slashes(js['targets']['//:libskqp_app']['sources'])
+skqp_includes   = strip_slashes(js['targets']['//:libskqp_app']['include_dirs'])
+
 dm_srcs         = strip_slashes(js['targets']['//:dm']['sources'])
 dm_includes     = strip_slashes(js['targets']['//:dm']['include_dirs'])
 
@@ -482,13 +545,19 @@ nanobench_target = js['targets']['//:nanobench']
 nanobench_srcs     = strip_slashes(nanobench_target['sources'])
 nanobench_includes = strip_slashes(nanobench_target['include_dirs'])
 
-gn_to_bp_utils.GrabDependentValues(js, '//:dm', 'sources', dm_srcs, 'skia')
+
+gn_to_bp_utils.GrabDependentValues(js, '//:gm', 'sources', gm_srcs, 'skia')
+gn_to_bp_utils.GrabDependentValues(js, '//:tests', 'sources', test_srcs, 'skia')
+gn_to_bp_utils.GrabDependentValues(js, '//:libskqp_app', 'sources',
+                                   skqp_srcs,['skia', 'gm', 'tests'])
+gn_to_bp_utils.GrabDependentValues(js, '//:dm', 'sources',
+                                   dm_srcs, ['skia', 'gm', 'tests'])
 gn_to_bp_utils.GrabDependentValues(js, '//:nanobench', 'sources',
-                                   nanobench_srcs, 'skia')
+                                   nanobench_srcs, ['skia', 'gm'])
 
 # skcms is a little special, kind of a second-party library.
 local_includes.add("include/third_party/skcms")
-dm_includes   .add("include/third_party/skcms")
+gm_includes   .add("include/third_party/skcms")
 
 # Android's build will choke if we list headers.
 def strip_headers(sources):
@@ -529,8 +598,14 @@ gn_to_bp_utils.GrabDependentValues(js_renderengine, '//:skia', 'sources',
                                    renderengine_srcs, None)
 renderengine_srcs = strip_headers(renderengine_srcs)
 
-dm_srcs         = strip_headers(dm_srcs)
-nanobench_srcs  = strip_headers(nanobench_srcs)
+gm_srcs         = strip_headers(gm_srcs)
+test_srcs       = strip_headers(test_srcs)
+skqp_srcs       = strip_headers(skqp_srcs).difference(gm_srcs).difference(test_srcs)
+dm_srcs         = strip_headers(dm_srcs).difference(gm_srcs).difference(test_srcs)
+nanobench_srcs  = strip_headers(nanobench_srcs).difference(gm_srcs)
+
+test_no_gm_includes = test_includes.difference(gm_includes)
+test_no_gm_srcs = test_srcs.difference(gm_srcs)
 
 cflags = gn_to_bp_utils.CleanupCFlags(cflags)
 cflags_cc = gn_to_bp_utils.CleanupCCFlags(cflags_cc)
@@ -630,6 +705,15 @@ with open('Android.bp', 'w') as Android_bp:
                                              defs['avx'  ] +
                                              defs['hsw'  ] +
                                              defs['skx'  ])),
+
+    'gm_includes'       : bpfmt(8, gm_includes),
+    'gm_srcs'           : bpfmt(8, gm_srcs),
+
+    'test_no_gm_includes' : bpfmt(8, test_no_gm_includes),
+    'test_no_gm_srcs'     : bpfmt(8, test_no_gm_srcs),
+
+    'skqp_includes'     : bpfmt(8, skqp_includes),
+    'skqp_srcs'         : bpfmt(8, skqp_srcs),
 
     'dm_includes'       : bpfmt(8, dm_includes),
     'dm_srcs'           : bpfmt(8, dm_srcs),
