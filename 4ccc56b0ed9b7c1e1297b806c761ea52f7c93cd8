@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "09858480_f6ee053e",
+        "filename": "src/gpu/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-30T21:17:45Z",
+      "side": 1,
+      "message": "Yeah there definitely seems like something is going wrong with logs here to not see stuff before the crash, but that\u0027s another issue for another time.",
+      "parentUuid": "e260bec2_2e868d24",
+      "range": {
+        "startLine": 1225,
+        "startChar": 8,
+        "endLine": 1225,
+        "endChar": 27
+      },
+      "revId": "4ccc56b0ed9b7c1e1297b806c761ea52f7c93cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9cfa2d4d_00d82ceb",
         "filename": "src/image/SkSurface_Gpu.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-30T20:45:32Z",
       "side": 1,
       "message": "FYI: I print this out because it can fail. That way we\u0027ll know that fFormat and fTarget are not valid.\n\nI haven\u0027t seen the crash myself (or we wouldn\u0027t need all this!), but I converted it to an SkDebugf just above the call to wrapRenderableBackendTexture. It often (but not always) failed. Let me know if you think I\u0027m doing something wrong here.",
+      "range": {
+        "startLine": 524,
+        "startChar": 8,
+        "endLine": 524,
+        "endChar": 71
+      },
+      "revId": "4ccc56b0ed9b7c1e1297b806c761ea52f7c93cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d815c87_0dca1235",
+        "filename": "src/image/SkSurface_Gpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2021-12-30T21:17:45Z",
+      "side": 1,
+      "message": "Do these two variables need to be wrapped in SK_IN_RENDERENGINE so that we don\u0027t get unused variable warnings? Also this could cause issues if we aren\u0027t in GL because textureInfo does initialize its members by default. But if we just are doing this for now to debug and will later remove this is probably fine since if we\u0027re protected by SK_IN_RENDERENGINE, currently render engine only uses gl.",
+      "parentUuid": "9cfa2d4d_00d82ceb",
       "range": {
         "startLine": 524,
         "startChar": 8,
