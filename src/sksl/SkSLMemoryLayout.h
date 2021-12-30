@@ -46,8 +46,9 @@ public:
     /**
      * Returns a type's required alignment when used as a standalone variable.
      */
-    size_t alignment(const Type& type) const {
+    size_t alignment(const Type& raw) const {
         // See OpenGL Spec 7.6.2.2 Standard Uniform Block Layout
+        const Type& type = raw.resolve();
         switch (type.typeKind()) {
             case Type::TypeKind::kScalar:
                 return this->size(type);
