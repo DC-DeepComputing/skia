@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "644f3f80_37b5fb31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2021-12-30T22:26:36Z",
+      "side": 1,
+      "message": "I did a quick side-review as well to check for any preexisting cases where we compared two Type pointers instead of comparing by value. I couldn\u0027t find any. I wish there were a way to prevent it from occurring entirely but I don\u0027t think there is a way, but at least going forward `typePtr \u003d\u003d otherTypePtr` will look obviously wrong.",
+      "revId": "2560805a94b90b709dda4c9aab037a8f0cf83cce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
