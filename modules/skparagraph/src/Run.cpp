@@ -289,6 +289,15 @@ SkScalar Cluster::trimmedWidth(size_t pos) const {
     return std::min(run.positionX(pos) - run.positionX(fStart), fWidth);
 }
 
+bool Run::isResolved() const {
+    for (const auto glyph : fGlyphs) {
+        if (glyph == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 SkScalar Run::positionX(size_t pos) const {
     return posX(pos) + fShifts[pos] +
             (fJustificationShifts.empty() ? 0 : fJustificationShifts[pos].fY);

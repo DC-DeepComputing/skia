@@ -198,7 +198,7 @@ private:
 UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     if (!fontCollection->fontsFound()) return;
-    const char* text = "Hello World Text Dialog";
+    const char* text = "12345"; // "Hello World Text Dialog";
     const size_t len = strlen(text);
 
     ParagraphStyle paragraph_style;

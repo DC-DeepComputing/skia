@@ -18,6 +18,13 @@ void OneLineShaper::commitRunBuffer(const RunInfo&) {
 
     fCurrentRun->commit();
 
+    // Check if we have anything unresolved at all
+    if (fCurrentRun->isResolved()) {
+        addFullyResolved();
+        return;
+    }
+    fParagraph->computeCodeUnitIterators();
+
     auto oldUnresolvedCount = fUnresolvedBlocks.size();
 /*
     SkDebugf("Run [%zu:%zu)\n", fCurrentRun->fTextRange.start, fCurrentRun->fTextRange.end);
@@ -34,11 +41,7 @@ void OneLineShaper::commitRunBuffer(const RunInfo&) {
     });
 
     // Fill all the gaps between unresolved blocks with resolved ones
-    if (oldUnresolvedCount == fUnresolvedBlocks.size()) {
-        // No unresolved blocks added - we resolved the block with one run entirely
-        addFullyResolved();
-        return;
-    } else if (oldUnresolvedCount == fUnresolvedBlocks.size() - 1) {
+    if (oldUnresolvedCount == fUnresolvedBlocks.size() - 1) {
         auto& unresolved = fUnresolvedBlocks.back();
         if (fCurrentRun->textRange() == unresolved.fText) {
             // Nothing was resolved; preserve the initial run if it makes sense
@@ -303,7 +306,6 @@ void OneLineShaper::addUnresolvedWithRun(GlyphRange glyphRange) {
 #ifndef SK_PARAGRAPH_GRAPHEME_EDGES
 void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnresolvedBLock) {
 
-    auto text = fCurrentRun->fOwner->text();
     size_t unresolvedGlyphs = 0;
 
     GlyphRange block = EMPTY_RANGE;
@@ -321,9 +323,7 @@ void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnres
         if ((fCurrentRun->leftToRight() ? gi > graphemeStart : gi < graphemeStart) || graphemeStart == EMPTY_INDEX) {
             // This is the Flutter change
             // Do not count control codepoints as unresolved
-            const char* cluster = text.begin() + ci;
-            SkUnichar codepoint = nextUtf8Unit(&cluster, text.end());
-            bool isControl8 = fParagraph->getUnicode()->isControl(codepoint);
+            bool isControl8 = fParagraph->codeUnitHasProperty(ci, CodeUnitFlags::kContol);
             // We only count glyph resolved if all the glyphs in its grapheme are resolved
             graphemeResolved = glyph != 0 || isControl8;
             graphemeStart = gi;

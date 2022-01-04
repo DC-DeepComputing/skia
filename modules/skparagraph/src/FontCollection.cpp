@@ -1,6 +1,7 @@
 // Copyright 2019 Google LLC.
-#include "include/core/SkTypeface.h"
 #include "modules/skparagraph/include/FontCollection.h"
+#include <FontCollection.h>
+#include "include/core/SkTypeface.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
@@ -171,6 +172,59 @@ void FontCollection::clearCaches() {
     fTypefaces.reset();
     SkShaper::PurgeCaches();
 }
-
+/*
+void FontCollection::addNotOptimized(ParagraphImpl* paragraph) {
+    ++stats.not_optimized;
+    if (paragraph->styles().size() != 1) {
+        ++stats.many_styles;
+    } else {
+        const auto& block = paragraph->styles().front();
+        if (block.fRange.width() != paragraph->text().size()) {
+            ++stats.many_styles;
+        }
+        if (!SkScalarNearlyZero(block.fStyle.getLetterSpacing())) {
+            ++stats.letter_spacings;
+        }
+        if (!SkScalarNearlyZero(block.fStyle.getWordSpacing())) {
+            ++stats.word_spacings;
+        }
+        if (!SkScalarNearlyZero(block.fStyle.getBaselineShift())) {
+            ++stats.baseline_shifts;
+        }
+    }
+    if (!paragraph->getEllipsis().isEmpty()) {
+        ++stats.ellipsis;
+    }
+    if (paragraph->paragraphStyle().effective_align() != TextAlign::kLeft) {
+        ++stats.text_aligns;
+    }
+    if (paragraph->placeholders().size() > 1) {
+        ++stats.place_holders;
+    }
+    if (paragraph->hasLineBreaks()) {
+        ++stats.line_breaks;
+    }
+    if (paragraph->runs().size() != 1) {
+        ++stats.many_runs;
+    } else {
+        const auto& run = paragraph->run(0);
+        if (run.advance().x() > paragraph->getMaxWidth()) {
+            ++stats.run_sizes;
+        }
+    }
+    if (paragraph->lines().size() != 1) {
+        const auto& line = paragraph->lines().front();
+        if (line.hasBackground()) {
+            ++stats.backgrounds;
+        }
+        if (line.hasDecorations()) {
+            ++stats.decorations;
+        }
+        if (line.hasShadows()) {
+           ++stats.shadows;
+        }
+    }
+}
+*/
 }  // namespace textlayout
 }  // namespace skia

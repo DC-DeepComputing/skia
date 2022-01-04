@@ -121,6 +121,10 @@ public:
 
     bool endsWithHardLineBreak() const;
 
+    bool hasBackground() const { return fHasBackground; }
+    bool hasShadows() const { return fHasShadows; }
+    bool hasDecorations() const { return fHasDecorations; }
+
 private:
 
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Run& run);

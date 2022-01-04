@@ -43,6 +43,11 @@ public:
 
     void clearCaches();
 
+    void addOptimizedLayout() { ++stats.optimized_layout; }
+    void addOptimizedPaint() { ++stats.optimized_paint; }
+    void addQueries() { ++stats.queries; }
+    void addNotOptimized(ParagraphImpl* paragraph);
+
 private:
     std::vector<sk_sp<SkFontMgr>> getFontManagerOrder() const;
 
@@ -73,6 +78,29 @@ private:
 
     std::vector<SkString> fDefaultFamilyNames;
     ParagraphCache fParagraphCache;
+
+    static struct {
+        size_t optimized_layout = 0;
+        size_t optimized_paint = 0;
+        size_t not_optimized = 0;
+        size_t queries = 0;
+
+        size_t many_styles = 0;
+        size_t letter_spacings = 0;
+        size_t word_spacings = 0;
+        size_t baseline_shifts = 0;
+        size_t ellipsis = 0;
+        size_t text_aligns = 0;
+        size_t backgrounds = 0;
+        size_t decorations = 0;
+        size_t shadows = 0;
+        size_t many_runs = 0;
+        size_t run_sizes = 0;
+        size_t many_lines = 0;
+        size_t line_breaks = 0;
+        size_t place_holders = 0;
+
+    } stats;
 };
 }  // namespace textlayout
 }  // namespace skia
