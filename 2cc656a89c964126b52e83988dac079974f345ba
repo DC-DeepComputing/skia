@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e055814_76bd3f90",
+        "filename": "tools/skqp/README_ALGORITHM.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-04T14:44:35Z",
+      "side": 0,
+      "message": "Should the main README.md be updated?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 26
+      },
+      "revId": "2cc656a89c964126b52e83988dac079974f345ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

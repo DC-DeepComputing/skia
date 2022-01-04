@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0127eaea_07e20b8c",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/rendertests.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-04T14:44:35Z",
+      "side": 1,
+      "message": "What\u0027s this file for?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 6
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c0516f_34fdc1e4",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-04T14:44:35Z",
+      "side": 1,
+      "message": "I take it the intent here is to put all the info about a test on a single line? Maybe worth mentioning (and explaining why) in the commit message?",
+      "range": {
+        "startLine": 120,
+        "startChar": 47,
+        "endLine": 120,
+        "endChar": 51
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
