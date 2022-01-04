@@ -82,6 +82,8 @@ skia_graphite_sources = [
   "$_src/UniformCache.h",
   "$_src/UniformManager.cpp",
   "$_src/UniformManager.h",
+  "$_src/UniquePaintParamsID.cpp",
+  "$_src/UniquePaintParamsID.h",
   "$_src/geom/BoundsManager.h",
   "$_src/geom/IntersectionTree.cpp",
   "$_src/geom/IntersectionTree.h",
