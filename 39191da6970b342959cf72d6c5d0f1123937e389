@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61eee01b_ea18b6a9",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/rendertests.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-04T17:40:26Z",
+      "side": 1,
+      "message": "Is it possible to add comments to this file? I guess some code reads this to determine which tests to run, and in the future, you\u0027ll add tests here?",
+      "parentUuid": "0425a0bf_c4d257ff",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 6
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97c0516f_34fdc1e4",
         "filename": "tools/skqp/src/skqp_main.cpp",
         "patchSetId": 10
