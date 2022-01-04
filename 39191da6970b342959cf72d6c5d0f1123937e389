@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0425a0bf_c4d257ff",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/rendertests.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-04T15:02:04Z",
+      "side": 1,
+      "message": "If this file isn\u0027t present the current code will attempt to run all the GMs just to make sure they don\u0027t crash.  However, they do crash on a Pixel 6 so I can\u0027t just leave the file empty.\n\nAs I move further with SkQP I want to run some GMs in pass/fail mode so this code will need additional updates, but for now it keeps it from crashing.\n\nI\u0027ll make note of that in the CL description.",
+      "parentUuid": "0127eaea_07e20b8c",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 6
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97c0516f_34fdc1e4",
         "filename": "tools/skqp/src/skqp_main.cpp",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-04T14:44:35Z",
       "side": 1,
       "message": "I take it the intent here is to put all the info about a test on a single line? Maybe worth mentioning (and explaining why) in the commit message?",
+      "range": {
+        "startLine": 120,
+        "startChar": 47,
+        "endLine": 120,
+        "endChar": 51
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d683b6c9_6326cc9c",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-04T15:02:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97c0516f_34fdc1e4",
       "range": {
         "startLine": 120,
         "startChar": 47,
