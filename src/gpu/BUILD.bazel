@@ -147,7 +147,6 @@ cc_library(
         "//src/gpu/ops:DefaultPathRenderer_src",
         "//src/gpu/ops:DrawAtlasOp_src",
         "//src/gpu/ops:DrawAtlasPathOp_src",
-        "//src/gpu/ops:DrawVerticesOp_src",
         "//src/gpu/ops:DrawableOp_src",
         "//src/gpu/ops:FillRRectOp_src",
         "//src/gpu/ops:FillRectOp_src",
