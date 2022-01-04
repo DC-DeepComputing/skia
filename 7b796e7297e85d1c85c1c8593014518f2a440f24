@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b028626_160dccc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-04T15:29:57Z",
+      "side": 1,
+      "message": "The motivation here is drawVertices doesn\u0027t require tex coords and so this is necessary to retrofit drawVertices implementation on top of drawCustomMesh.",
+      "revId": "7b796e7297e85d1c85c1c8593014518f2a440f24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b14ae0c_f395cc31",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-04T15:29:57Z",
+      "side": 1,
+      "message": "void main(Varyings) is a completely useless function. I have a follow up change mostly done that would come after the change that moves the GPU implementation of drawVertices to the custom mesh implementation. It allows omission of a FS and a VS signature of float2 main(Attributes) with no varyings. I\u0027m thinking it\u0027s not really  worth the complexity in the implementation, though, for something a real user would probably never use.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "7b796e7297e85d1c85c1c8593014518f2a440f24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
