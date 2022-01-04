@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a636b71_e30e7459",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/rendertests.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-04T17:58:39Z",
+      "side": 1,
+      "message": "Not as SkQP is currently written.  We need to extend it to remove the -1 and also add support for comments.  I\u0027ve file a bug for that at skbug.com/12779",
+      "parentUuid": "61eee01b_ea18b6a9",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 6
+      },
+      "revId": "39191da6970b342959cf72d6c5d0f1123937e389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97c0516f_34fdc1e4",
