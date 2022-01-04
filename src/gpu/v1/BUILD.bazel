@@ -300,7 +300,6 @@ generated_cc_atom(
         "//src/gpu/geometry:GrStyledShape_hdr",
         "//src/gpu/ops:ClearOp_hdr",
         "//src/gpu/ops:DrawAtlasOp_hdr",
-        "//src/gpu/ops:DrawVerticesOp_hdr",
         "//src/gpu/ops:DrawableOp_hdr",
         "//src/gpu/ops:FillRRectOp_hdr",
         "//src/gpu/ops:FillRectOp_hdr",
