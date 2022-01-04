@@ -10,6 +10,7 @@
 
 #include "include/core/SkTypes.h"
 
+#include "experimental/graphite/include/MagicCodeDictionary.h"
 #include "experimental/graphite/src/Attribute.h"
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/DrawTypes.h"
@@ -44,16 +45,17 @@ public:
     // (except for renderpass-level state that will never change between draws).
     const RenderStep* renderStep() const { return fRenderStep; }
     // Key describing the color shading tree of the pipeline's program
-    Combination shaderCombo() const { return fCombination; }
+    UniqueCodeID codeID() const { return fUniqueCodeID; }
+//    Combination shaderCombo() const { return fCombination; }
 
-    void setProgram(const RenderStep* step, const Combination& shaderCombo) {
+    void setProgram(const RenderStep* step, UniqueCodeID uniqueCodeID) {
         SkASSERT(step);
         fRenderStep = step;
-        fCombination = shaderCombo;
+        fUniqueCodeID = uniqueCodeID;
 
         uintptr_t addr = reinterpret_cast<uintptr_t>(fRenderStep);
         memcpy(fKey.data(), &addr, sizeof(uintptr_t));
-        fKey[kWords - 1] = shaderCombo.key();
+        fKey[kWords - 1] = fUniqueCodeID.asUInt();
     }
 
     struct Hash {
@@ -84,7 +86,7 @@ private:
     // eventually it won't be a fixed size, as it can eventually represent arbitrary shader trees.
     // However, in that world, each PaintBlob structure will have a unique ID and a map from ID to
     // blob, so the GraphicsPipelineDesc can be reduced to just storing RenderStep + unique ID int.
-    Combination fCombination;
+    UniqueCodeID fUniqueCodeID;
 };
 
 } // namespace skgpu

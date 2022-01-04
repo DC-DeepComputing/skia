@@ -12,6 +12,10 @@
 
 class SkModeColorFilter : public SkColorFilterBase {
 public:
+    void toCodeCF(skgpu::MagicCodeDictionary*, Mapping, SkCode*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     static sk_sp<SkColorFilter> Make(SkColor color, SkBlendMode mode) {
         return sk_sp<SkColorFilter>(new SkModeColorFilter(color, mode));
     }
