@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1164fd4d_a4bcf5f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-04T19:24:37Z",
+      "side": 1,
+      "message": "If you want to see the resulting Android.bp file check out the link below.  It is about 600 fewer lines.\n\nhttps://googleplex-android-review.googlesource.com/c/platform/external/skia/+/16565303/1/Android.bp",
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
