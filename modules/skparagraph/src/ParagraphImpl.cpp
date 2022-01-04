@@ -73,6 +73,8 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fText(text)
         , fState(kUnknown)
         , fUnresolvedGlyphs(0)
+        , fCodeUnitIteratorsComputed(false)
+        , fHasLineBreaks(false)
         , fPicture(nullptr)
         , fStrutMetrics(false)
         , fOldWidth(0)
@@ -136,7 +138,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         this->fUTF8IndexForUTF16Index.reset();
         this->fUTF16IndexForUTF8Index.reset();
         this->fRuns.reset();
-        if (!this->shapeTextIntoEndlessLine()) {
+        if (!this->shapeTextIntoEndlessLine(floorWidth)) {
             this->resetContext();
             // TODO: merge the two next calls - they always come together
             this->resolveStrut();
@@ -265,6 +267,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         return false;
     }
 
+
     // Get all spaces
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
        [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
@@ -278,7 +281,28 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
                 }
             }
+            if (fUnicode->isControl(unichar)) {
+                for (auto i = start; i < end; ++i) {
+                    fCodeUnitProperties[i] |=  CodeUnitFlags::kContol;
+                }
+            }
+            if (fUnicode->isHardLineBreak(unichar)) {
+                fHasLineBreaks = true;
+            }
        });
+
+    return true;
+}
+
+bool ParagraphImpl::computeCodeUnitIterators() {
+
+    if (nullptr == fUnicode) {
+        return false;
+    }
+
+    if (fCodeUnitIteratorsComputed) {
+        return true;
+    }
 
     // Get line breaks
     std::vector<SkUnicode::LineBreakBefore> lineBreaks;
@@ -300,6 +324,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
     }
 
+    fCodeUnitIteratorsComputed = true;
     return true;
 }
 
@@ -473,7 +498,7 @@ void ParagraphImpl::spaceGlyphs() {
     }
 }
 
-bool ParagraphImpl::shapeTextIntoEndlessLine() {
+bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar maxWidth) {
 
     if (fText.size() == 0) {
         return false;
@@ -484,22 +509,36 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         return true;
     }
 
-    if (!computeCodeUnitProperties()) {
+    if (!this->computeCodeUnitProperties()) {
         return false;
+    }
+
+    if (!this->isSimpleInputText()) {
+        // Skip iterators for simple texts
+        if (!this->computeCodeUnitIterators()) {
+            return false;
+        }
     }
 
     fFontSwitches.reset();
 
     OneLineShaper oneLineShaper(this);
     auto result = oneLineShaper.shape();
-    fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
 
-    // It's possible that one grapheme includes few runs; we cannot handle it
-    // so we break graphemes by the runs instead
-    // It's not the ideal solution and has to be revisited later
-    for (auto& run : fRuns) {
-        fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
+    if (!this->isSimpleShapedText(maxWidth)) {
+        // Computer iterators if the shaped text is not simple
+        if (!this->computeCodeUnitIterators()) {
+            return false;
+        }
+        fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
+        // It's possible that one grapheme includes few runs; we cannot handle it
+        // so we break graphemes by the runs instead
+        // It's not the ideal solution and has to be revisited later
+        for (auto& run : fRuns) {
+            fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
+        }
     }
+
 
     if (!result) {
         return false;
@@ -508,6 +547,22 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         fFontCollection->getParagraphCache()->updateParagraph(this);
         return true;
     }
+}
+
+bool ParagraphImpl::isSimpleInputText() {
+    return fPlaceholders.size() == 1 &&
+           !fHasLineBreaks &&
+           fTextStyles.size() == 1 && fTextStyles[0].fRange.width() == fText.size() &&
+           SkScalarNearlyZero(fTextStyles[0].fStyle.getLetterSpacing()) &&
+           SkScalarNearlyZero(fTextStyles[0].fStyle.getWordSpacing()) &&
+           SkScalarNearlyZero(fTextStyles[0].fStyle.getBaselineShift()) &&
+           fParagraphStyle.getEllipsis().isEmpty() &&
+           fParagraphStyle.effective_align() == TextAlign::kLeft;
+}
+
+bool ParagraphImpl::isSimpleShapedText(SkScalar maxWidth) {
+    // Single run shorter that a required with (and no styles that would inflate it)
+    return fRuns.size() == 1 && fRuns[0].advance().x() < maxWidth;
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
@@ -670,7 +725,8 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
         return results;
     }
 
-    ensureUTF16Mapping();
+    this->ensureUTF16Mapping();
+    this->computeCodeUnitIterators();
 
     if (start >= end || start > fUTF8IndexForUTF16Index.size() || end == 0) {
         return results;
@@ -756,7 +812,8 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
         return {0, Affinity::kDownstream};
     }
 
-    ensureUTF16Mapping();
+    this->ensureUTF16Mapping();
+    this->computeCodeUnitIterators();
 
     for (auto& line : fLines) {
         // Let's figure out if we can stop looking

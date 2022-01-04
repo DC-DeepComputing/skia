@@ -43,6 +43,7 @@ enum CodeUnitFlags {
     kSoftLineBreakBefore = 0x04,
     kHardLineBreakBefore = 0x08,
     kPartOfIntraWordBreak = 0x10,
+    kContol = 0x20,
 };
 }  // namespace textlayout
 }  // namespace skia
@@ -193,10 +194,11 @@ public:
     void resolveStrut();
 
     bool computeCodeUnitProperties();
+    bool computeCodeUnitIterators();
 
     void buildClusterTable();
     void spaceGlyphs();
-    bool shapeTextIntoEndlessLine();
+    bool shapeTextIntoEndlessLine(SkScalar maxWidth);
     void breakShapedTextIntoLines(SkScalar maxWidth);
     void paintLinesIntoPicture(SkScalar x, SkScalar y);
     void paintLines(SkCanvas* canvas, SkScalar x, SkScalar y);
@@ -222,6 +224,8 @@ public:
     }
 
     bool codeUnitHasProperty(size_t index, CodeUnitFlags property) const { return (fCodeUnitProperties[index] & property) == property; }
+    bool isSimpleInputText();
+    bool isSimpleShapedText(SkScalar maxWidth);
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
 
@@ -237,12 +241,6 @@ private:
     void computeEmptyMetrics();
 
     // Input
-    SkTArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
-    SkTArray<StyleBlock<SkScalar>> fWordSpaceStyles;
-    SkTArray<StyleBlock<SkPaint>> fBackgroundStyles;
-    SkTArray<StyleBlock<SkPaint>> fForegroundStyles;
-    SkTArray<StyleBlock<std::vector<TextShadow>>> fShadowStyles;
-    SkTArray<StyleBlock<Decoration>> fDecorationStyles;
     SkTArray<Block, true> fTextStyles; // TODO: take out only the font stuff
     SkTArray<Placeholder, true> fPlaceholders;
     SkString fText;
@@ -260,6 +258,8 @@ private:
     SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
     SkTArray<size_t, true> fUTF16IndexForUTF8Index;
     size_t fUnresolvedGlyphs;
+    bool fCodeUnitIteratorsComputed;
+    bool fHasLineBreaks;
 
     SkTArray<TextLine, false> fLines;   // kFormatted   (cached: width, max lines, ellipsis, text align)
     sk_sp<SkPicture> fPicture;          // kRecorded    (cached: text styles)

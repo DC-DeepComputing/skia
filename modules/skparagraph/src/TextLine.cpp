@@ -224,6 +224,16 @@ void TextLine::ensureTextBlobCachePopulated() {
     if (fTextBlobCachePopulated) {
         return;
     }
+
+    if (!fHasDecorations && !fHasShadows && !fHasBackground &&
+        fOwner->isSimpleShapedText(fOwner->getMaxWidth())) {
+        // One run, one style
+        ClipContext context =
+                this->measureTextInsideOneRun(fText, &fOwner->run(0), 0.0f, 0, false, true);
+        this->buildTextBlob(fText, fOwner->styles().front().fStyle, context);
+        return;
+    }
+
     this->iterateThroughVisualRuns(false,
             [this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -851,6 +861,9 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
 }
 
 void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisitor& visitor) const {
+
+    // To make sure we have all the unicode iterators
+    fOwner->computeCodeUnitIterators();
 
     // Walk through all the runs that intersect with the line in visual order
     SkScalar width = 0;
