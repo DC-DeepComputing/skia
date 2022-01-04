@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9612b1e5_9e4f46d3",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-04T15:48:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe6bea13_0cea1118",
+      "range": {
+        "startLine": 215,
+        "startChar": 24,
+        "endLine": 215,
+        "endChar": 31
+      },
+      "revId": "0068d7650b05f2daff3f67123509b72337858e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2264df0f_ac9c6d09",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-30T22:41:40Z",
       "side": 1,
       "message": "This CL makes `t.typeKind() \u003d\u003d kMatrix` differ from `t.isMatrix()`. This is fundamentally weird. It looks like you\u0027ve added in strategic calls to resolve() in various places to handle this, but it feels like an unnecessary pain point.\n\nCould we make `t.typeKind()` return kMatrix for both aliased and non-aliased matrices?  Or does this break something? Is there ever a situation where we have to differentiate between an aliased type and non-aliased outside of resolve() (which doesn\u0027t actually rely on the fTypeKind)?",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 5
+      },
+      "revId": "0068d7650b05f2daff3f67123509b72337858e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d1cedd6_d1e5591c",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-04T15:48:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2264df0f_ac9c6d09",
       "range": {
         "startLine": 233,
         "startChar": 0,
