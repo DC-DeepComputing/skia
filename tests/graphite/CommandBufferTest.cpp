@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/src/CodeDictionary.h"
 #include "experimental/graphite/src/ContextPriv.h"
 
 #include "experimental/graphite/include/mtl/MtlTypes.h"
@@ -241,6 +242,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     TextureInfo textureInfo;
 #endif
 
+    Combination shader1{ShaderCombo::ShaderType::kSolidColor};
+    auto entry = context->priv().codeDictionary()->findOrCreate(shader1);
+
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo));
     REPORTER_ASSERT(reporter, target);
 
@@ -276,9 +280,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     };
 
     auto draw = [&](const RenderStep* step, std::vector<RectAndColor> draws) {
-        Combination shader{ShaderCombo::ShaderType::kSolidColor};
         GraphicsPipelineDesc pipelineDesc;
-        pipelineDesc.setProgram(step, shader);
+        pipelineDesc.setProgram(step, entry->uniqueID());
         drawWriter.newPipelineState(step->primitiveType(),
                                     step->vertexStride(),
                                     step->instanceStride());

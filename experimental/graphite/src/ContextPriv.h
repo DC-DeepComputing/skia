@@ -12,8 +12,10 @@
 
 namespace skgpu {
 
+struct Combination;
 class Gpu;
 class ResourceProvider;
+class UniquePaintParamsID;
 
 /** Class that adds methods to Context that are only intended for use internal to Skia.
     This class is purely a privileged window into Context. It should never have additional
@@ -24,6 +26,9 @@ public:
     const Gpu* gpu() const;
 
     ResourceProvider* resourceProvider();
+
+    CodeDictionary* codeDictionary();
+    const CodeDictionary* codeDictionary() const;
 
 private:
     friend class Context; // to construct/copy this type.
