@@ -82,6 +82,7 @@ protected:
         const char* text = "Hamburgefons";
         const size_t textLen = strlen(text);
 
+#if 0
         // check scaling up
         SkScalar x = SkIntToScalar(0);
         SkScalar y = SkIntToScalar(78);
@@ -221,6 +222,7 @@ protected:
             font.setSize(0.1f);
             canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, 0, 0, font, paint);
         }
+#endif
 
         // check color emoji
         if (fEmojiTypeface) {
