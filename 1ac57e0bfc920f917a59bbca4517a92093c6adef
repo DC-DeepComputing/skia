@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8560567_660cdb0e",
+        "filename": "src/gpu/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-05T18:12:44Z",
+      "side": 1,
+      "message": "Right SkColor is different than GrColor order (also it\u0027s unpremul). We *could* do it during the upload but not sure that it\u0027s better to.\n\nI thought about folding both of these into the spec\u0027s colorspace and alpha type. But that means we would always inject a full GrColorSpaceXformHelper which is way more general/costly. We could detect whether the GrColorSpaceXformHelper is already necessary but that seems like over-optimization.",
+      "parentUuid": "c05a2a74_f2c526ae",
+      "range": {
+        "startLine": 546,
+        "startChar": 37,
+        "endLine": 546,
+        "endChar": 40
+      },
+      "revId": "1ac57e0bfc920f917a59bbca4517a92093c6adef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7058faa7_de6f90e3",
         "filename": "src/gpu/v1/SurfaceDrawContext.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-05T14:07:34Z",
       "side": 1,
       "message": "move?",
+      "range": {
+        "startLine": 949,
+        "startChar": 45,
+        "endLine": 949,
+        "endChar": 52
+      },
+      "revId": "1ac57e0bfc920f917a59bbca4517a92093c6adef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b299baa_712c4196",
+        "filename": "src/gpu/v1/SurfaceDrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-05T18:12:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7058faa7_de6f90e3",
       "range": {
         "startLine": 949,
         "startChar": 45,
