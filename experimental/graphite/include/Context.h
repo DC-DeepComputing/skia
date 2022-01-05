@@ -19,6 +19,7 @@
 namespace skgpu {
 
 class BackendTexture;
+class CodeDictionary;
 class ContextPriv;
 class Gpu;
 class Recorder;
@@ -102,6 +103,7 @@ private:
     std::vector<std::unique_ptr<Recording>> fRecordings;
     sk_sp<Gpu> fGpu;
     BackendApi fBackend;
+    std::unique_ptr<CodeDictionary> fCodeDictionary;
 };
 
 } // namespace skgpu
