@@ -82,6 +82,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f9c3f2_52b00583",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-05T15:58:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd929b38_b16a6be1",
+      "range": {
+        "startLine": 365,
+        "startChar": 20,
+        "endLine": 365,
+        "endChar": 24
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e40a01_ca1e77e0",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-05T15:58:49Z",
+      "side": 1,
+      "message": "it mirrors the :test target in the BUILD.gn file.  I was attempting to keep the GN and BP target names as close as possible.",
+      "parentUuid": "1a417ac2_26d6e7a2",
+      "range": {
+        "startLine": 365,
+        "startChar": 16,
+        "endLine": 365,
+        "endChar": 20
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf927187_0741c7b6",
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f25b7eac_896cdd03",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-05T15:58:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf927187_0741c7b6",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 30
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d18bdd9_4dd87575",
@@ -118,6 +190,30 @@
       "writtenOn": "2022-01-04T20:17:46Z",
       "side": 1,
       "message": "This looks correct, but I wonder if it could be simpler?\n\n(Racking my brain to see if I can think of a pythonic idiom...)\n\nIf I print out all the values of \u0027dep\u0027 locally, I see\n\n//:android_utils\n//:arm64\n//:armv7\n//:avx\n//:crc32\n//:dehydrate_sksl\n//:fontmgr_FontConfigInterface\n//:fontmgr_android\n//:fontmgr_custom_directory\n//:fontmgr_custom_embedded\n//:fontmgr_custom_empty\n//:fontmgr_factory\n//:fontmgr_empty_factory\n//:fontmgr_fontconfig\n//:fontmgr_fuchsia\n//:fontmgr_mac_ct\n//:fontmgr_win\n//:fontmgr_win_gdi\n//:gif\n//:gpu\n//:compile_sksl_glsl_nosettings_tests\n//:compile_sksl_glsl_tests\n//:compile_sksl_metal_tests\n//:compile_sksl_skvm_tests\n//:compile_sksl_spirv_tests\n//:dehydrate_sksl\n//:gpu_shared\n//:run_sksllex\n//third_party/vulkanmemoryallocator:vulkanmemoryallocator\n//:graphite\n//:heif\n//:hsw\n//:jpeg_decode\n//:jpeg_encode\n//:ndk_images\n//:none\n//:pdf\n//:png_decode\n//:png_encode\n//third_party/libpng:libpng\n//:raw\n//:skcms\n//:skvm_jit\n//:skx\n//:sse2\n//:sse41\n//:sse42\n//:ssse3\n//:webp_decode\n//:webp_encode\n//:wuffs\n//:xml\n//:xps\n//third_party/expat:expat\n\nIf we edited it to take off the start (usually \u0027//:\u0027), it seems like we might be able to turn the \u0027in\u0027 around, e.g.\n\n  if exclude and isinstance(exclude, list):\n    if shortened_dep in exclude:\n      continue\n\n(This assumes that an item in \u0027exclude\u0027 exactly matches \u0027shortened_dep\u0027. Not sure whether that\u0027s the case.)\n\nOn a tangential note - I don\u0027t know how relevant the existing code is - that list doesn\u0027t include \u0027skia\u0027 or \u0027freetype\u0027, which I think are the only values we ever pass in today?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 18
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84a0de9_5b3753fd",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-05T15:58:49Z",
+      "side": 1,
+      "message": "I found a way to clean it up in the next patch set.  However, I don\u0027t get the same output as you when I run locally and if I drop \"//:skia\" as a param then I get all the skia build sources included.  So it looks like Skia and Freetype are both doing what I expected.",
+      "parentUuid": "9d18bdd9_4dd87575",
       "range": {
         "startLine": 45,
         "startChar": 0,
