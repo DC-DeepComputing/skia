@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "286fe372_9eb24e0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-05T19:34:50Z",
+      "side": 1,
+      "message": "The handling of errors may still be somewhat visually noisy, but it\u0027s much less so than having the other window pop-up. Now, the lines just highlight (or not) as the errors appear and disappear. Requires a mouse-over on the offending lines to see what\u0027s wrong, though...\n\nAlso, I didn\u0027t yet investigate customizing the syntax highlighting, etc... Even without that, this is a big step forward, I think.",
+      "revId": "c8a9c5f39c976031ffc2b7a72f0894bc1faae94a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
