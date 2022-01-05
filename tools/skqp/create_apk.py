@@ -39,7 +39,7 @@ import sys
 import shutil
 import time
 
-import skqp_gn_args
+import ../../gn/skqp_gn_args
 
 def print_cmd(cmd, o):
     m = re.compile('[^A-Za-z0-9_./-]')
