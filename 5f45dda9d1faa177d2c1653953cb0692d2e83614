@@ -33,6 +33,24 @@
       "message": "Missing tab?",
       "revId": "5f45dda9d1faa177d2c1653953cb0692d2e83614",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ef8389_07f7254e",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-05T15:54:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f467225_bb7afe30",
+      "revId": "5f45dda9d1faa177d2c1653953cb0692d2e83614",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
