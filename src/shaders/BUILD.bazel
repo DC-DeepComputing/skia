@@ -154,6 +154,7 @@ generated_cc_atom(
         ":SkBitmapProcShader_hdr",
         ":SkShaderBase_hdr",
         "//include/core:SkImage_hdr",
+        "//include/core:SkM44_hdr",
     ],
 )
 
@@ -170,7 +171,6 @@ generated_cc_atom(
         "//src/core:SkArenaAlloc_hdr",
         "//src/core:SkColorSpacePriv_hdr",
         "//src/core:SkColorSpaceXformSteps_hdr",
-        "//src/core:SkImagePriv_hdr",
         "//src/core:SkMatrixPriv_hdr",
         "//src/core:SkMatrixProvider_hdr",
         "//src/core:SkMipmapAccessor_hdr",
@@ -181,8 +181,6 @@ generated_cc_atom(
         "//src/core:SkScopeExit_hdr",
         "//src/core:SkVM_hdr",
         "//src/core:SkWriteBuffer_hdr",
-        "//src/gpu:GrColorInfo_hdr",
-        "//src/gpu/effects:GrBlendFragmentProcessor_hdr",
         "//src/image:SkImage_Base_hdr",
     ],
 )
@@ -232,6 +230,7 @@ generated_cc_atom(
         "//src/core:SkWriteBuffer_hdr",
         "//src/gpu:GrFragmentProcessor_hdr",
         "//src/gpu:GrRecordingContextPriv_hdr",
+        "//src/gpu:KeyBuilder_hdr",
         "//src/gpu:SkGr_hdr",
         "//src/gpu/effects:GrMatrixEffect_hdr",
         "//src/gpu/effects:GrTextureEffect_hdr",
