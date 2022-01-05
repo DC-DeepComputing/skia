@@ -136,6 +136,10 @@ SkScalar SkFont::setupForAsPaths(SkPaint* paint) {
     return textSize / SkFontPriv::kCanonicalTextSizeForPaths;
 }
 
+SkScalar SkFont::approximateTransformedTextSize(const SkMatrix& matrix) const {
+    return fSize * matrix.getMaxScale();
+}
+
 bool SkFont::hasSomeAntiAliasing() const {
     Edging edging = this->getEdging();
     return edging == SkFont::Edging::kAntiAlias

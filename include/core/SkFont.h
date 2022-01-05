@@ -498,6 +498,13 @@ public:
      */
     void dump() const;
 
+    /** Return the approximate largest dimension of typical text when transformed by the matrix.
+     *
+     * @param matrix  used to transform size
+     * @return  typical largest dimension
+     */
+    SkScalar approximateTransformedTextSize(const SkMatrix& matrix) const;
+
 private:
     enum PrivFlags {
         kForceAutoHinting_PrivFlag      = 1 << 0,
