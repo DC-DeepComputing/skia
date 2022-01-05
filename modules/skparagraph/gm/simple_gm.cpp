@@ -96,6 +96,7 @@ protected:
     void drawFromVisitor(SkCanvas* canvas, skia::textlayout::Paragraph* para) const {
         SkPaint p, p2;
         p.setColor(0xFF0000FF);
+        p.setAntiAlias(true);
         p2.setColor(0xFFFF0000);
         p2.setStrokeWidth(4);
         p2.setStrokeCap(SkPaint::kSquare_Cap);
