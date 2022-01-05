@@ -694,7 +694,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextAsDFT, reporter, c
     // A scale transform forces fallback to dft.
     SkMatrix matrix = SkMatrix::Scale(16, 16);
     GrSDFTControl control = direct->priv().asRecordingContext()->priv().getSDFTControl(true);
-    REPORTER_ASSERT(reporter, control.drawingType(font, paint, matrix) == GrSDFTControl::kSDFT);
+    SkScalar approximateDeviceTextSize = font.approximateTransformedTextSize(matrix);
+    REPORTER_ASSERT(reporter, control.isSDFT(approximateDeviceTextSize, paint));
 
     // Server.
     auto serverTf = SkTypeface::MakeFromName("monospace", SkFontStyle());
