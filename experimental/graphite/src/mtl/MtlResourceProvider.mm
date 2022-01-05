@@ -33,7 +33,7 @@ sk_sp<skgpu::CommandBuffer> ResourceProvider::createCommandBuffer() {
 
 sk_sp<skgpu::GraphicsPipeline> ResourceProvider::onCreateGraphicsPipeline(
         const GraphicsPipelineDesc& desc) {
-    return GraphicsPipeline::Make(this->mtlGpu(), desc);
+    return GraphicsPipeline::Make(nullptr, this->mtlGpu(), desc);
 }
 
 sk_sp<skgpu::Texture> ResourceProvider::createTexture(SkISize dimensions,
