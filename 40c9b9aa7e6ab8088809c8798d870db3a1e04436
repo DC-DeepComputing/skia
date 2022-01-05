@@ -22,6 +22,53 @@
       },
       "revId": "40c9b9aa7e6ab8088809c8798d870db3a1e04436",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "292d15fc_937f015f",
+        "filename": "gm/runtimeimagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-05T14:27:15Z",
+      "side": 1,
+      "message": "I think that\u0027s only possible right now because the late-bound \"content\" image happens to be equivalent to \u0027image\u0027 since that\u0027s all that is drawn to the layer. Additionally, the current API only lets you have one such bind target that can be set to an image filter. This new API lets you have N image filters as children, and automatically late-binds their evaluated images as children to the program (so roughly equivalent to makeShader() except the image isn\u0027t known until the filter is executed).",
+      "parentUuid": "eb2315ee_fdbe2e0a",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 87
+      },
+      "revId": "40c9b9aa7e6ab8088809c8798d870db3a1e04436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaba4d7b_6830a97e",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-05T14:27:15Z",
+      "side": 1,
+      "message": "Could this not just be\n\n   return SkImageFilters::RuntimeShader(builder, \u0026childShaderName, \u0026input, 1);\n   \nIt looks like the new API for N filters doesn\u0027t let you specify a null name, so the implicit assignment to the only child seems to need to stay, but this change would consolidate validation into one factory even if the null childShaderName case automatically produces a valid name.\n\nAlternatively (and not pushing strongly for this), we could have the new API treat null names as picking the name for the ith child, where i is the index of the null name. This would let you specify null for childShaderNames[] or null for each childShaderName if you provided \u0027inputs\u0027 in the same order as `children()` (unless that\u0027s a set and not a list matching declaration order in the shader...)",
+      "range": {
+        "startLine": 236,
+        "startChar": 6,
+        "endLine": 241,
+        "endChar": 96
+      },
+      "revId": "40c9b9aa7e6ab8088809c8798d870db3a1e04436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
