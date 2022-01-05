@@ -12,6 +12,7 @@
 #include "experimental/graphite/include/Recording.h"
 #include "experimental/graphite/include/TextureInfo.h"
 #include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/CodeDictionary.h"
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/Gpu.h"
@@ -25,7 +26,11 @@
 
 namespace skgpu {
 
-Context::Context(sk_sp<Gpu> gpu, BackendApi backend) : fGpu(std::move(gpu)), fBackend(backend) {}
+Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
+        : fGpu(std::move(gpu))
+        , fBackend(backend)
+        , fCodeDictionary(new CodeDictionary) {
+}
 Context::~Context() {}
 
 #ifdef SK_METAL
@@ -77,7 +82,9 @@ void Context::preCompile(const PaintCombo& paintCombo) {
                     for (const Renderer* r : kRenderers) {
                         for (auto&& s : r->steps()) {
                             if (s->performsShading()) {
-                                desc.setProgram(s, c);
+
+                                auto entry = fCodeDictionary->findOrCreate(c);
+                                desc.setProgram(s, entry->uniqueID());
                             }
                             // TODO: Combine with renderpass description set to generate full
                             // GraphicsPipeline and MSL program. Cache that compiled pipeline on

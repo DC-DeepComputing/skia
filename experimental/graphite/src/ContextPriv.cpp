@@ -7,7 +7,9 @@
 
 #include "experimental/graphite/src/ContextPriv.h"
 
+#include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/Gpu.h"
+#include "experimental/graphite/src/UniquePaintParamsID.h"
 
 namespace skgpu {
 
@@ -23,5 +25,12 @@ ResourceProvider* ContextPriv::resourceProvider() {
     return this->gpu()->resourceProvider();
 }
 
+CodeDictionary* ContextPriv::codeDictionary() {
+    return fContext->fCodeDictionary.get();
+}
+
+const CodeDictionary* ContextPriv::codeDictionary() const {
+    return fContext->fCodeDictionary.get();
+}
 
 } // namespace skgpu
