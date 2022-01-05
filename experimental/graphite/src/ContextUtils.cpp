@@ -12,6 +12,7 @@
 #include "experimental/graphite/src/DrawTypes.h"
 #include "experimental/graphite/src/Uniform.h"
 #include "experimental/graphite/src/UniformManager.h"
+#include "experimental/graphite/src/UniquePaintParamsID.h"
 #include "include/core/SkPaint.h"
 
 namespace skgpu {
@@ -202,7 +203,7 @@ sk_sp<UniformData> UniformData::Make(int count,
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
 
-std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
+std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     Combination result;
     sk_sp<UniformData> uniforms;
 
@@ -291,6 +292,8 @@ std::tuple<Combination, sk_sp<UniformData>> ExtractCombo(const PaintParams& p) {
     }
 
     result.fBlendMode = p.blendMode();
+
+
     return { result, std::move(uniforms) };
 }
 

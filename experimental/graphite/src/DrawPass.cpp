@@ -284,11 +284,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
-        Combination shader;
+        UniquePaintParamsID shaderID;
         sk_sp<UniformData> shadingUniforms = nullptr;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
-            std::tie(shader, shadingUniforms) = ExtractCombo(draw.fPaintParams.value());
+            std::tie(shaderID, shadingUniforms) = ExtractCombo(draw.fPaintParams.value());
             shadingIndex = shadingUniformBindings.addUniforms(shadingUniforms);
         } // else depth-only
 
@@ -296,10 +296,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             const RenderStep* const step = draw.fRenderer.steps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
-            Combination stepShader;
+            UniquePaintParamsID stepShaderID;
             uint32_t stepShadingIndex = UniformCache::kInvalidUniformID;
             if (performsShading) {
-                stepShader = shader;
+                stepShaderID = shaderID;
                 stepShadingIndex = shadingIndex;
             } // else depth-only draw or stencil-only step of renderer so no shading is needed
 
@@ -314,7 +314,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
 
             GraphicsPipelineDesc desc;
-            desc.setProgram(step, stepShader);
+            desc.setProgram(step, stepShaderID);
             uint32_t pipelineIndex = 0;
             auto pipelineLookup = pipelineDescToIndex.find(&desc);
             if (pipelineLookup == pipelineDescToIndex.end()) {

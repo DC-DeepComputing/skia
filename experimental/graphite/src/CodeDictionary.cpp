@@ -1,0 +1,45 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "experimental/graphite/src/CodeDictionary.h"
+
+#include "src/core/SkOpts.h"
+#include "src/utils/SkShaderUtils.h"
+
+namespace skgpu {
+
+CodeDictionary::CodeDictionary() {
+    // The 0th index is reserved as invalid
+    fEntryVector.push_back(nullptr);
+}
+
+size_t CodeDictionary::Hash::operator()(SkCode code) const {
+    return SkOpts::hash_fn(code.data(), code.sizeInBytes(), 0);
+}
+
+const CodeDictionary::Entry* CodeDictionary::findOrCreateFull(Entry *newEntry) {
+    auto iter = fFullCodeHash.find(newEntry->fCode);
+    if (iter != fFullCodeHash.end()) {
+        SkASSERT(fEntryVector[iter->second->fUniqueCodeID.asUInt()] == iter->second);
+        return iter->second;
+    }
+
+    newEntry->setUniqueCodeID(fEntryVector.size());
+    fFullCodeHash.insert(std::make_pair(newEntry->fCode, newEntry));
+    fEntryVector.push_back(newEntry);
+
+    return newEntry;
+}
+
+const CodeDictionary::Entry* CodeDictionary::lookup(UniquePaintParamsID codeID) const {
+    SkASSERT(codeID.isValid());
+    SkASSERT(codeID.asUInt() < fEntryVector.size());
+
+    return fEntryVector[codeID.asUInt()];
+}
+
+} // namespace skgpu
