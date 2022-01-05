@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73db59c_03cb6f5e",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-05T22:08:01Z",
+      "side": 1,
+      "message": "Assert it is empty here?",
+      "revId": "a0b9900a521423d550907708a58bbff31dc217d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ec45c3f_dde3d561",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-05T22:08:01Z",
+      "side": 1,
+      "message": "Check whether subset is contained by the image bounds?",
+      "revId": "a0b9900a521423d550907708a58bbff31dc217d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11f978c3_55980756",
+        "filename": "src/shaders/SkImageShader.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-05T22:08:01Z",
+      "side": 1,
+      "message": "It seems a little unusual to have a MakeSubset factory where the subset is optional. What if subset were required and instead of using an empty rect signal the whole image just use the image bounds when calling this from Make()?",
+      "range": {
+        "startLine": 38,
+        "startChar": 38,
+        "endLine": 38,
+        "endChar": 59
+      },
+      "revId": "a0b9900a521423d550907708a58bbff31dc217d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
