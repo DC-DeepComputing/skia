@@ -32,6 +32,11 @@ public:
                       SkScalar* textRatio) const;
     std::pair<SkScalar, SkScalar> computeSDFMinMaxScale(
             SkScalar textSize, const SkMatrix& viewMatrix) const;
+    bool useSDFTToDraw(SkScalar size) const {
+        return fAbleToUseSDFT &&
+               fMinDistanceFieldFontSize <= size && size <= fMaxDistanceFieldFontSize;
+    }
+
 private:
     static SkScalar MinSDFTRange(bool useSDFTForSmallText, SkScalar min);
 
