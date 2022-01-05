@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2315ee_fdbe2e0a",
+        "filename": "gm/runtimeimagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-05T14:13:43Z",
+      "side": 1,
+      "message": "Can\u0027t you achieve the same thing without this new API?\n\nbuilder.child(\"content\") \u003d image-\u003emakeShader(SkSamplingOptions());\nauto sharpened \u003d SkImageFilters::RuntimeShader(builder, \"blurred, blurredSrc);",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 87
+      },
+      "revId": "40c9b9aa7e6ab8088809c8798d870db3a1e04436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
