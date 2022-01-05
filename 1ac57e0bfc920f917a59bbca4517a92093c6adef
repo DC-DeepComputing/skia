@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c05a2a74_f2c526ae",
+        "filename": "src/gpu/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-05T14:07:34Z",
+      "side": 1,
+      "message": "I see we did a swizzle in the old code as well, but why do we need that? Is SkColor actually always swizzled opposite than what we expect in the shader? And we don\u0027t swizzle on the cpu because this is coming from the color on each of the vertices passed in by client right?",
+      "range": {
+        "startLine": 546,
+        "startChar": 37,
+        "endLine": 546,
+        "endChar": 40
+      },
+      "revId": "1ac57e0bfc920f917a59bbca4517a92093c6adef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7058faa7_de6f90e3",
+        "filename": "src/gpu/v1/SurfaceDrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-05T14:07:34Z",
+      "side": 1,
+      "message": "move?",
+      "range": {
+        "startLine": 949,
+        "startChar": 45,
+        "endLine": 949,
+        "endChar": 52
+      },
+      "revId": "1ac57e0bfc920f917a59bbca4517a92093c6adef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
