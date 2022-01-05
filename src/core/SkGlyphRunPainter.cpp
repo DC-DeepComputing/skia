@@ -253,12 +253,10 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
     // Only consider using direct or SDFT drawing if not drawing hairlines and not perspective.
     if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0)
              && !drawMatrix.hasPerspective()) {
-        SkScalar scaledTextSize = drawMatrix.getMaxScale() * runFont.getSize();
+        SkScalar approximateDeviceTextSize =
+                SkFontPriv::ApproximateTransformedTextSize(runFont, drawMatrix);
 
-        if (control.useSDFTToDraw(scaledTextSize) &&
-            runPaint.getMaskFilter() == nullptr &&
-            runPaint.getStyle() == SkPaint::kFill_Style)
-        {
+        if (control.isSDFT(approximateDeviceTextSize, runPaint)) {
             // Process SDFT - This should be the .009% case.
             const auto& [strikeSpec, strikeToSourceScale, minScale, maxScale] =
                     SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, drawMatrix, control);
@@ -289,7 +287,8 @@ void SkGlyphRunListPainter::processGlyphRun(const SkGlyphRun& glyphRun,
             }
         }
 
-        if (!fRejects.source().empty() && scaledTextSize < SkStrikeCommon::kSkSideTooBigForAtlas) {
+        if (!fRejects.source().empty() &&
+            approximateDeviceTextSize <= SkStrikeCommon::kSkSideTooBigForAtlas) {
             // Process masks including ARGB - this should be the 99.99% case.
             // This will handle medium size emoji that are sharing the run with SDFT drawn text.
             // If things are too big they will be passed along to the drawing of last resort below.
