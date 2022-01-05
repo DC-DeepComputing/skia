@@ -160,11 +160,8 @@ sk_sp<SkSpecialImage> SkRuntimeImageFilter::onFilterImage(const Context& ctx,
     SkMatrix inverse;
     SkAssertResult(ctm.invert(&inverse));
 
-    SkMatrix localM = inverse *
-                      SkMatrix::Translate(inputOffset) *
-                      SkMatrix::Translate(-input->subset().topLeft());
-    sk_sp<SkShader> inputShader =
-            input->asImage()->makeShader(SkSamplingOptions(SkFilterMode::kLinear), &localM);
+    SkMatrix localM = inverse * SkMatrix::Translate(inputOffset);
+    sk_sp<SkShader> inputShader = input->asShader(SkSamplingOptions(SkFilterMode::kLinear), localM);
     SkASSERT(inputShader);
 
     // lock the mutation of the builder and creation of the shader so that the builder's state is

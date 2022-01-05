@@ -22,6 +22,7 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrTextureProxy.h"
 #include "src/image/SkImage_Gpu.h"
+#include "src/shaders/SkImageShader.h"
 #endif
 
 // Currently the raster imagefilters can only handle certain imageinfos. Call this to know if
@@ -63,6 +64,10 @@ public:
     // This subset (when not null) is relative to the backing store's coordinate frame, it has
     // already been mapped from the content rect by the non-virtual asImage().
     virtual sk_sp<SkImage> onAsImage(const SkIRect* subset) const = 0;
+
+    virtual sk_sp<SkShader> onAsShader(SkTileMode,
+                                       const SkSamplingOptions&,
+                                       const SkMatrix&) const = 0;
 
     virtual sk_sp<SkSurface> onMakeTightSurface(
             SkColorType colorType, const SkColorSpace* colorSpace,
@@ -136,6 +141,12 @@ sk_sp<SkImage> SkSpecialImage::asImage(const SkIRect* subset) const {
     } else {
         return as_SIB(this)->onAsImage(nullptr);
     }
+}
+
+sk_sp<SkShader> SkSpecialImage::asShader(SkTileMode tileMode,
+                                         const SkSamplingOptions& sampling,
+                                         const SkMatrix& lm) const {
+    return as_SIB(this)->onAsShader(tileMode, sampling, lm);
 }
 
 #if defined(SK_DEBUG) || SK_SUPPORT_GPU
@@ -252,7 +263,19 @@ public:
         return fBitmap.asImage();
     }
 
-sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
+    sk_sp<SkShader> onAsShader(SkTileMode tileMode,
+                               const SkSamplingOptions& sampling,
+                               const SkMatrix& lm) const override {
+        // TODO(skbug.com/12784): SkImage::makeShader() doesn't support a subset yet, but SkBitmap
+        // supports subset views so create the shader from the subset bitmap instead of fBitmap.
+        SkBitmap subsetBM;
+        if (!this->getROPixels(&subsetBM)) {
+            return nullptr;
+        }
+        return subsetBM.asImage()->makeShader(tileMode, tileMode, sampling, lm);
+    }
+
+    sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
                                         const SkISize& size, SkAlphaType at) const override {
         // Ignore the requested color type, the raster backend currently only supports N32
         colorType = kN32_SkColorType;   // TODO: find ways to allow f16
@@ -436,6 +459,19 @@ public:
         proxy->priv().exactify(true);
 
         return wrap_proxy_in_image(fContext, fView, this->colorType(), fAlphaType, fColorSpace);
+    }
+
+    sk_sp<SkShader> onAsShader(SkTileMode tileMode,
+                               const SkSamplingOptions& sampling,
+                               const SkMatrix& lm) const override {
+        // asImage() w/o a subset makes no copy; create the SkImageShader directly to remember the
+        // subset used to access the image.
+        SkMatrix subsetOrigin = SkMatrix::Translate(-this->subset().topLeft());
+        subsetOrigin.postConcat(lm);
+
+        SkRect subset = SkRect::MakeIWH(this->subset().width(), this->subset().height());
+        return SkImageShader::MakeSubset(this->asImage(), tileMode, tileMode, sampling,
+                                         &subsetOrigin, &subset);
     }
 
     sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
