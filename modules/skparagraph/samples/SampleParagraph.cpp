@@ -3620,11 +3620,6 @@ protected:
     void onDrawContent(SkCanvas* canvas) override {
 
         canvas->drawColor(SK_ColorWHITE);
-        /*
-        auto fontCollection = getFontCollection();
-        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
-        fontCollection->enableFontFallback();
-        */
         auto fontCollection = sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), true, true);
         TextStyle text_style;
         text_style.setFontFamilies({SkString("Ahem")});
@@ -3634,19 +3629,23 @@ protected:
         paragraph_style.setTextStyle(text_style);
         paragraph_style.setTextDirection(TextDirection::kLtr);
         ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setFontSize(30.0);
         builder.pushStyle(text_style);
-        builder.addText(u"\u05D0\u05D0\u05D0ABC");
+        builder.addText(u"Atwater Peel ");
+        text_style.setFontSize(15.0);
+        builder.pushStyle(text_style);
+        builder.addText(u"Sherbrooke Bonaventure ");
+        text_style.setFontSize(10.0);
+        builder.pushStyle(text_style);
+        builder.addText(u"hi wassup!");
+
         auto paragraph = builder.Build();
-        paragraph->layout(100);
+        paragraph->layout(797);
         paragraph->paint(canvas, 0, 0);
-        auto boxes = paragraph->getRectsForRange(0, paragraph->getMaxWidth(), RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto boxes = paragraph->getRectsForRange(0, 46,
+                                                 RectHeightStyle::kIncludeLineSpacingTop, RectWidthStyle::kMax);
         for (auto& box : boxes) {
             SkDebugf("[%f, %f, %f, %f]: %s\n", box.rect.left(), box.rect.top(), box.rect.right(), box.rect.bottom(), box.direction == TextDirection::kLtr ? "left" : "right");
-        }
-        std::vector<SkScalar> widths = { -10, 0, 10, 20, 30, 40, 50, 60 };
-        for (auto w : widths) {
-            auto pos = paragraph->getGlyphPositionAtCoordinate(w, 0);
-            SkDebugf("%f: %d, %s\n", w, pos.position, pos.affinity == Affinity::kDownstream ? "down" : "up");
         }
     }
 

@@ -168,6 +168,10 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
         return bounds;
     }
 
+    if (this->simplePaint(textCanvas, x, y, &bounds)) {
+        return bounds;
+    }
+
     if (fHasBackground) {
         this->iterateThroughVisualRuns(false,
             [textCanvas, x, y, this]
@@ -178,7 +182,7 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
                     this->paintBackground(textCanvas, x, y, textRange, style, context);
                 });
             return true;
-            });
+        });
     }
 
     if (fHasShadows) {
@@ -195,8 +199,9 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
             });
     }
 
-    ensureTextBlobCachePopulated();
+    this->ensureTextBlobCachePopulated();
 
+    // Paint the text blobs
     for (auto& record : fTextBlobCache) {
         record.paint(textCanvas, x, y);
         SkRect recordBounds = record.fBounds;
@@ -224,6 +229,7 @@ void TextLine::ensureTextBlobCachePopulated() {
     if (fTextBlobCachePopulated) {
         return;
     }
+
     this->iterateThroughVisualRuns(false,
             [this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -850,6 +856,48 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
     return textOffsetInRun;
 }
 
+bool TextLine::simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect* bounds) {
+    if (fOwner->styles().size() != 1 ||
+        fOwner->runs().size() != 1 ||
+        fOwner->placeholders().size() != 1) {
+        return false;
+    }
+
+    // One style (no decorations, no shadow) and one run for the entire paragraph
+    auto& style = fOwner->styles().front().fStyle;
+    if (style.getDecorationType() != TextDecoration::kNoDecoration) {
+        return false;
+    }
+    if (style.getShadowNumber() != 0) {
+        return false;
+    }
+
+    auto& run = fOwner->runs().front();
+    ClipContext context = this->measureTextInsideOneRun(fText,
+                                                        &run,
+                                                        /*runOffsetInLine=*/0.0f,
+                                                        /*textOffsetInRunInLine=*/0,
+                                                        /*includeGhostSpaces=*/false,
+                                                        /*limitToGraphemes=*/false);
+
+    if (fHasBackground) {
+        this->paintBackground(textCanvas, x, y, fText, style, context);
+    }
+
+    if (!fTextBlobCachePopulated) {
+        this->buildTextBlob(fText, style, context);
+        fTextBlobCachePopulated = true;
+    }
+
+    auto& record = fTextBlobCache.back();
+    record.paint(textCanvas, x, y);
+    SkRect recordBounds = record.fBounds;
+    recordBounds.offset(x + this->offset().fX, y + this->offset().fY);
+    bounds->joinPossiblyEmptyRect(recordBounds);
+
+    return true;
+}
+
 void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisitor& visitor) const {
 
     // Walk through all the runs that intersect with the line in visual order
@@ -997,8 +1045,10 @@ void TextLine::getRectsForRange(TextRange textRange0,
                     clip.fTop = this->sizes().delta();
                     break;
                 case RectHeightStyle::kIncludeLineSpacingTop: {
+                    clip.fBottom = this->height();
+                    clip.fTop = this->sizes().delta();
                     if (isFirstLine()) {
-                        auto verticalShift =  this->sizes().runTop(context.run, LineMetricStyle::Typographic);
+                        auto verticalShift =  this->sizes().ascent() - this->sizes().rawAscent();
                         clip.fTop += verticalShift;
                     }
                     break;

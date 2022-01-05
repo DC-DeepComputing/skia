@@ -82,6 +82,7 @@ public:
     using RunStyleVisitor = std::function<void(TextRange textRange, const TextStyle& style, const ClipContext& context)>;
     SkScalar iterateThroughSingleRunByStyles(const Run* run, SkScalar runOffset, TextRange textRange,
                                          StyleType styleType, const RunStyleVisitor& visitor) const;
+    bool simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect* bounds);
 
     using ClustersVisitor = std::function<bool(const Cluster* cluster, bool ghost)>;
     void iterateThroughClustersInGlyphsOrder(bool reverse, bool includeGhosts, const ClustersVisitor& visitor) const;
@@ -90,6 +91,7 @@ public:
     SkRect paint(SkCanvas* canvas, SkScalar x, SkScalar y);
     void visit(SkScalar x, SkScalar y);
     void ensureTextBlobCachePopulated();
+    SkRect paintTextBlobs();
 
     void createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool ltr);
 
