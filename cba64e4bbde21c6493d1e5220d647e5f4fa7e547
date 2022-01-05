@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e9a7c7_cd877b5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-05T21:19:37Z",
+      "side": 1,
+      "message": "This CL just may replace the CL \"Fully inline drawingType into processGlyphRun\" if you prefer this whole CL. ",
+      "revId": "cba64e4bbde21c6493d1e5220d647e5f4fa7e547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
