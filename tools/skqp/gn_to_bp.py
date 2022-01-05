@@ -116,21 +116,7 @@ cc_library_shared {
 }''')
 
 # We'll run GN to get the main source lists and include directories for Skia.
-gn_args = {
-  'target_cpu': '"none"',
-  'target_os':  '"android"',
 
-  # setup skqp
-  'is_debug':   'false',
-  'ndk_api':    '26',
-
-  # specify that the Android.bp will supply the necessary components
-  'skia_use_system_expat':         'true', # removed this when gn is fixed
-  'skia_use_system_libpng':        'true',
-  'skia_use_system_libwebp':       'true',
-  'skia_use_system_libjpeg_turbo': 'true',
-  'skia_use_system_zlib':          'true',
-}
 
 for k, v in SkqpGnArgs.iteritems():
     gn_args[k] = v
