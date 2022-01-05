@@ -372,7 +372,7 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
     fTransferFromBufferToTextureSupport = true;
     fTransferFromSurfaceToBufferSupport = true;
 
-    fTextureBarrierSupport = false; // Need to figure out if we can do this
+    fTextureBarrierSupport = true; // Need to figure out if we can do this
 
     fSampleLocationsSupport = false;
 
@@ -1130,6 +1130,13 @@ GrCaps::SupportedRead GrMtlCaps::onSupportedReadPixelsColorType(
         }
     }
     return {GrColorType::kUnknown, 0};
+}
+
+GrDstSampleFlags GrMtlCaps::onGetDstSampleFlagsForProxy(const GrRenderTargetProxy* rt) const {
+    if (rt->asTextureProxy()) {
+        return GrDstSampleFlags::kRequiresTextureBarrier;
+    }
+    return GrDstSampleFlags::kNone;
 }
 
 /**

@@ -1706,6 +1706,11 @@ GrMtlRenderCommandEncoder* GrMtlGpu::loadMSAAFromResolve(
     return renderCmdEncoder;
 }
 
+void GrMtlGpu::xferBarrier(GrRenderTarget*, GrXferBarrierType type)  {
+    SkASSERT(type == GrXferBarrierType::kTexture_GrXferBarrierType);
+    //fCurrentCmdBuffer->addTextureBarrier();
+}
+
 #if GR_TEST_UTILS
 void GrMtlGpu::testingOnly_startCapture() {
     if (@available(macOS 10.13, iOS 11.0, *)) {

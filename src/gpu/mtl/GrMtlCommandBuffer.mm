@@ -228,4 +228,9 @@ void GrMtlCommandBuffer::encodeWaitForEvent(sk_sp<GrMtlEvent> event, uint64_t ev
     fHasWork = true;
 }
 
+void GrMtlCommandBuffer::addTextureBarrier() {
+    SkASSERT(fActiveRenderCommandEncoder);
+    fActiveRenderCommandEncoder->addTextureBarrier();
+}
+
 GR_NORETAIN_END

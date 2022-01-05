@@ -131,7 +131,7 @@ private:
 
     void destroyResources();
 
-    void xferBarrier(GrRenderTarget*, GrXferBarrierType) override {}
+    void xferBarrier(GrRenderTarget*, GrXferBarrierType) override;
 
     void takeOwnershipOfBuffer(sk_sp<GrGpuBuffer>) override;
 
