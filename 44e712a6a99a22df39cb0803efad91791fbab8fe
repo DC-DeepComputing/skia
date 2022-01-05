@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f145c03d_69af8703",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-05T18:59:14Z",
+      "side": 0,
+      "message": "Can this method be deleted now ?",
+      "range": {
+        "startLine": 257,
+        "startChar": 57,
+        "endLine": 257,
+        "endChar": 68
+      },
+      "revId": "44e712a6a99a22df39cb0803efad91791fbab8fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
