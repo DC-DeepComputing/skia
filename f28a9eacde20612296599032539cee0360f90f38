@@ -130,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d1c298_a54df81d",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-05T16:39:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "22e40a01_ca1e77e0",
+      "range": {
+        "startLine": 365,
+        "startChar": 16,
+        "endLine": 365,
+        "endChar": 20
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf927187_0741c7b6",
@@ -214,6 +238,30 @@
       "side": 1,
       "message": "I found a way to clean it up in the next patch set.  However, I don\u0027t get the same output as you when I run locally and if I drop \"//:skia\" as a param then I get all the skia build sources included.  So it looks like Skia and Freetype are both doing what I expected.",
       "parentUuid": "9d18bdd9_4dd87575",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 18
+      },
+      "revId": "f28a9eacde20612296599032539cee0360f90f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077c4397_5ca2b870",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-05T16:39:39Z",
+      "side": 1,
+      "message": "Great! This is much cleaner, thanks!",
+      "parentUuid": "f84a0de9_5b3753fd",
       "range": {
         "startLine": 45,
         "startChar": 0,
