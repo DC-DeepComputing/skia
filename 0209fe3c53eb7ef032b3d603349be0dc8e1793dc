@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ae8fb79_ca2f6636",
+        "filename": "site/docs/dev/design/text_c2d.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-01-06T20:36:09Z",
+      "side": 1,
+      "message": "drive by nit: trailing space",
+      "range": {
+        "startLine": 64,
+        "startChar": 6,
+        "endLine": 64,
+        "endChar": 7
+      },
+      "revId": "0209fe3c53eb7ef032b3d603349be0dc8e1793dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
