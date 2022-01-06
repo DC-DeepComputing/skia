@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c7e2f47_29c180e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-06T16:42:01Z",
+      "side": 1,
+      "message": "nit: http:go/cl-descriptions#firstline : please move `Bug: skia:12712` to the bottom of the description and replace the first-line with meaningful text. \n\nGerrit/CodeSearch history/Pinpoint/etc. are all designed to show long lists of CL first-lines; readers want to quickly understand a CL\u0027s main idea without following a link. e.g. \"Add test for structs with duplicated identifiers\" or something would be an OK description.",
+      "revId": "ce84ac0384c730bb3f358bd2d370a5741540a534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7699f5be_6fa0068c",
+        "filename": "resources/sksl/errors/MultipleFields.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-06T16:42:01Z",
+      "side": 1,
+      "message": "nit: Tests in /errors/ aren\u0027t ever run, so you don\u0027t need to include main() or uniforms here.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 1
+      },
+      "revId": "ce84ac0384c730bb3f358bd2d370a5741540a534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
