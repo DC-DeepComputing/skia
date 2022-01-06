@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a9d101c_cd5db579",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T17:43:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb3a22d4_ebcb7da3",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9617f312_f89c5757",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-06T17:27:08Z",
       "side": 1,
       "message": "2022 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17be7cb8_63850a09",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T17:43:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9617f312_f89c5757",
       "range": {
         "startLine": 2,
         "startChar": 13,
@@ -83,6 +131,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98cbf01d_ab434879",
+        "filename": "experimental/graphite/src/mtl/MtlBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T17:43:10Z",
+      "side": 1,
+      "message": "The odd thing here is that it is not for SkRefCnt (which would make sense for higher up classes to have already include), but for sk_sp which shows up in the factory functions. So the include now just happens down in the sub classes.",
+      "parentUuid": "4bce8523_0f857a44",
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "553c84ee_a58f8b9a",
         "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.h",
         "patchSetId": 4
@@ -94,6 +160,24 @@
       "writtenOn": "2022-01-06T17:27:08Z",
       "side": 1,
       "message": "Same here ?",
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9990e8ee_b9364819",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T17:43:10Z",
+      "side": 1,
+      "message": "same",
+      "parentUuid": "553c84ee_a58f8b9a",
       "revId": "518c498e4775b234f3bf74018747f5091fc38055",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -111,6 +195,24 @@
       "writtenOn": "2022-01-06T17:27:08Z",
       "side": 1,
       "message": "Can we rm this #include ?",
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0db211c_0ce7db20",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T17:43:10Z",
+      "side": 1,
+      "message": "Need it for sk_sp",
+      "parentUuid": "85800c82_d3c664a8",
       "revId": "518c498e4775b234f3bf74018747f5091fc38055",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
