@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "192e6c56_91f08f31",
+        "filename": "experimental/graphite/src/CodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "CodeDictionary needs a destructor to clean up these Entry objects. Or we could consider having an SkArenaAlloc stored on the CodeDictionary? \n\nI kind of like that, since it will keep most Entries together, and autoclean up, but still lets us have the vector and map store Entry* for the random accesses. It\u0027s too bad we can\u0027t have one of the map or vector store plain Entry to manage lifetime, but they would move the data potentially, and SkTBlockList isn\u0027t set up for the index\u0027ed access we want for the uniqueID lookup.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d75eb938_00f55359",
+        "filename": "experimental/graphite/src/CodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "Should have a poll on this name? \"Code\" is a little ambiguous since it\u0027s specific to shaders, sksl, painting, etc, and one or more of those terms might help clarify the scope of the code that is stored in it.",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b206cd24_27ad1639",
+        "filename": "experimental/graphite/src/CodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "Private with CodeDictionary having friend access? Or have it as part of the constructor, and make the constructor private so that the only source of Entries is the CodeDictionary?\n\n(caveat: private ctor would mean you\u0027d have to friend the SkArenaAlloc if you go that route in my later comment)",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1f3e538_fade3020",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 8
@@ -19,6 +88,76 @@
         "startChar": 79,
         "endLine": 430,
         "endChar": 86
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d10393eb_b61200ed",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "I think for now I\u0027m okay with passing in the Context. I\u0027m wary of us getting complacent and starting to do things with the Context that we\u0027d want to discourage from a threading/access POV. But while we\u0027re still establishing everything, I think having the Context will make it easier to iterate and then we can come back and harden it if needed.",
+      "parentUuid": "e1f3e538_fade3020",
+      "range": {
+        "startLine": 430,
+        "startChar": 79,
+        "endLine": 430,
+        "endChar": 86
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41bd815a_68a790f0",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "Now that we have moved off of Combination, I think this TODO can be addressed and fKey can go away.\n\nProbably another CL, if you want to tackle that?",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 55
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3563fc3_706f9f8c",
+        "filename": "experimental/graphite/src/UniquePaintParamsID.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T15:29:14Z",
+      "side": 1,
+      "message": "Can we make this whole class constexpr\u0027ed?",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 26
       },
       "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
