@@ -24,6 +24,10 @@ class SkPicture;
  */
 class SkPictureShader : public SkShaderBase {
 public:
+    int toCodeS(skgpu::CodeDictionary*, Mapping, SkCode*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     static sk_sp<SkShader> Make(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
                                 const SkMatrix*, const SkRect*);
 
