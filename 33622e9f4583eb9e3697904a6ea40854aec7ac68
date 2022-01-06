@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56e98e7c_e9de76ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-06T20:32:23Z",
+      "side": 1,
+      "message": "Required after https://skia-review.googlesource.com/c/buildbot/+/487217 is live",
+      "revId": "33622e9f4583eb9e3697904a6ea40854aec7ac68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
