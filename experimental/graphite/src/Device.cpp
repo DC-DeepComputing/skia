@@ -40,9 +40,20 @@ namespace {
 
 static const SkStrokeRec kFillStyle(SkStrokeRec::kFill_InitStyle);
 
+// TODO: if the chosen Renderer for a draw uses coverage AA, then it cannot be considered opaque
+// regardless of what the PaintParams would do.
 bool is_opaque(const PaintParams& paint) {
-    // TODO: implement this
-    return false;
+    if (paint.blendMode() == SkBlendMode::kSrc) {
+        // src and clear blending never depends on dst
+        return true;
+    } else if (paint.blendMode() == SkBlendMode::kSrcOver) {
+        // src-over does not depend on dst if src is opaque (a = 1)
+        // TODO: This will get more complicated when PaintParams has color filters
+        return paint.color().isOpaque() && (!paint.shader() || paint.shader()->isOpaque());
+    } else {
+        // TODO: Are their other modes that don't depend on dst that can be trivially detected?
+        return false;
+    }
 }
 
 } // anonymous namespace
