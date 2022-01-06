@@ -1,0 +1,10 @@
+uniform half4 colorRed, colorGreen;
+
+struct Varyings {
+  float var;
+  float var;
+};
+
+half4 main(float2 xy) {
+    return colorGreen;
+}
