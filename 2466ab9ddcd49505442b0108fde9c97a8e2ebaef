@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f512478_87e79734",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-06T17:25:09Z",
+      "side": 1,
+      "message": "gold diffs seem okay to me; it\u0027s expected that the DDL tiling images are wonky, since they have a pretty limited backdrop to sample from. The remaining diffs seem low-bit changes in blurs. Will land if chrome canary doesn\u0027t have layout failures",
+      "revId": "2466ab9ddcd49505442b0108fde9c97a8e2ebaef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
