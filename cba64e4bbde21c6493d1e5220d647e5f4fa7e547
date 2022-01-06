@@ -33,6 +33,24 @@
       "message": "I don\u0027t know if this should go in the public API",
       "revId": "cba64e4bbde21c6493d1e5220d647e5f4fa7e547",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e5b809_f70bafe0",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-06T17:54:24Z",
+      "side": 1,
+      "message": "Moved to SkFontPriv",
+      "parentUuid": "c681da8d_1897ac3c",
+      "revId": "cba64e4bbde21c6493d1e5220d647e5f4fa7e547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
