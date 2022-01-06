@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1f3e538_fade3020",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T13:57:49Z",
+      "side": 1,
+      "message": "Alternatively, we could pass down the CodeDictionary here.",
+      "range": {
+        "startLine": 430,
+        "startChar": 79,
+        "endLine": 430,
+        "endChar": 86
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
