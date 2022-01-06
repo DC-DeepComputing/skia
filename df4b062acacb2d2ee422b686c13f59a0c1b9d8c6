@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "943f8314_cb72dce3",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T20:00:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d73915ce_dad5b973",
+      "range": {
+        "startLine": 59,
+        "startChar": 24,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "df4b062acacb2d2ee422b686c13f59a0c1b9d8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fa55ddf_e527529d",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-01-06T19:28:06Z",
       "side": 1,
       "message": "rm ?",
+      "revId": "df4b062acacb2d2ee422b686c13f59a0c1b9d8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a771d5d_1b207703",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T20:00:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fa55ddf_e527529d",
       "revId": "df4b062acacb2d2ee422b686c13f59a0c1b9d8c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
