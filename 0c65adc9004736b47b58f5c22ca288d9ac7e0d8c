@@ -85,6 +85,29 @@
       },
       "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed052fff_d01c330e",
+        "filename": "tests/sksl/errors/MultipleFields.glsl",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-06T20:39:19Z",
+      "side": 1,
+      "message": "This makes it sound like a field with the same name was found in a _different_ struct (which isn\u0027t an error), maybe needs to be rephrased?",
+      "range": {
+        "startLine": 3,
+        "startChar": 42,
+        "endLine": 3,
+        "endChar": 66
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
