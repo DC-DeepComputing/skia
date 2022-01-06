@@ -16,6 +16,23 @@
       "message": "fix is in ps2",
       "revId": "8ac2c45e17c55b66164a0bfc60f8890fd686ffdf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c33a2d_f737c66f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-06T21:03:49Z",
+      "side": 1,
+      "message": "You could also make this:\n\n SK_MAYBE_UNUSED static bool needs_subet(...",
+      "revId": "8ac2c45e17c55b66164a0bfc60f8890fd686ffdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
