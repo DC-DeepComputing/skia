@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b8f9435_db20cb3b",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T21:22:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8fe8fcb3_72c150ec",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 38
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7aca7c6_428f64ec",
@@ -206,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a670b45f_4802643d",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T21:22:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "97cc276b_efcb2027",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 41
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd5280d4_15151d25",
@@ -243,6 +291,30 @@
       "side": 1,
       "message": "I think it is best to be defensive because the presence of this will break the build.  The only reason it doesn\u0027t happen for dm and nanobench is that those targets don\u0027t read their CFLAGS.  I think that may be a bug, but that is how it currently works.  If dm and nanobench were to recursively find their CFLAGS then this would be an error there too.",
       "parentUuid": "cd5280d4_15151d25",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 33
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "731b5c94_51318c6a",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T21:22:15Z",
+      "side": 1,
+      "message": "\u003e I think it is best to be defensive because the presence of this will break the build. \n\nSgtm.\n\n\u003e I think that may be a bug, but that is how it currently works.\n\nI think this was just the simplest way to do it, and the Android build didn\u0027t care about those flags.",
+      "parentUuid": "98c29cd4_796cf0cf",
       "range": {
         "startLine": 74,
         "startChar": 0,

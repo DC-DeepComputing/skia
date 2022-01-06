@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba6b0335_4ed24f27",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T21:22:15Z",
+      "side": 1,
+      "message": "nit: These aren\u0027t supposed to be referenced from outside the file, right?\n\nI think the convention would be to name them like\n\n  _SkqpGnArgs\n  _SkqpBp_args\n\n(Another option might be to declare/define them inside GetGNArgs.)",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 10
+      },
+      "revId": "98bfbb40e252ce5d00cf03d2cf99fc5ce935bec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8debab3d_1c683b34",
+        "filename": "tools/skqp/create_apk.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T21:22:15Z",
+      "side": 1,
+      "message": "nit: it looks like this line is too long?",
+      "range": {
+        "startLine": 219,
+        "startChar": 100,
+        "endLine": 219,
+        "endChar": 102
+      },
+      "revId": "98bfbb40e252ce5d00cf03d2cf99fc5ce935bec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
