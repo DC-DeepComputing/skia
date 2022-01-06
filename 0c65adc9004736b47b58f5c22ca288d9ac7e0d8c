@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc785fb7_fe211ebe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:49:21Z",
+      "side": 1,
+      "message": "I think it\u0027s better to fix them separately (but I will).",
+      "parentUuid": "63286748_99643bd2",
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d28d655_bc40ba28",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-06T20:38:20Z",
       "side": 1,
       "message": "key",
+      "range": {
+        "startLine": 648,
+        "startChar": 36,
+        "endLine": 648,
+        "endChar": 58
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ff52bd5_75831682",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:49:21Z",
+      "side": 1,
+      "message": "Not in this case: we pass this parameter as skstd::string_view.",
+      "parentUuid": "3d28d655_bc40ba28",
       "range": {
         "startLine": 648,
         "startChar": 36,
@@ -82,6 +124,54 @@
         "startChar": 99,
         "endLine": 653,
         "endChar": 100
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5342e57e_59a94b5b",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:49:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e58fc0e_a4ca3de4",
+      "range": {
+        "startLine": 653,
+        "startChar": 99,
+        "endLine": 653,
+        "endChar": 100
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43582a7_e464db25",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:49:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b843dde_d9cca03a",
+      "range": {
+        "startLine": 653,
+        "startChar": 40,
+        "endLine": 653,
+        "endChar": 63
       },
       "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
