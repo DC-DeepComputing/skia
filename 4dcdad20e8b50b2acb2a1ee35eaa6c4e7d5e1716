@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46372e0d_0e8d6ee7",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7230d899_30a02c7b",
+      "range": {
+        "startLine": 422,
+        "startChar": 18,
+        "endLine": 422,
+        "endChar": 20
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83e9723b_cb460fb2",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fe8fcb3_72c150ec",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "the libwebp ones do build an ndk-compatible one and I have a CL out for WUFFS",
+      "parentUuid": "83e9723b_cb460fb2",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 38
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7aca7c6_428f64ec",
         "filename": "gn/gn_to_bp.py",
         "patchSetId": 4
@@ -77,6 +125,30 @@
       "writtenOn": "2022-01-06T20:20:41Z",
       "side": 1,
       "message": "This is quite hard to follow. Can you add the argument names? i.e.\n\n  (arch\u003dNone, api_level\u003d\u003cconstant_passed_in\u003e, debug\u003dFalse, is_android_bp\u003dTrue)",
+      "range": {
+        "startLine": 639,
+        "startChar": 67,
+        "endLine": 639,
+        "endChar": 88
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1148567f_5a4a7d4c",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7aca7c6_428f64ec",
       "range": {
         "startLine": 639,
         "startChar": 67,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97cc276b_efcb2027",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "We use SK_BUILD_FOR_ANDROID_FRAMEWORK to indicate that it can build non-NDK code.  I\u0027m not aware of any cases where our plans for testing SkQP will involve framework specific code.",
+      "parentUuid": "9f6bd4f2_203db1fa",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 41
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd5280d4_15151d25",
         "filename": "gn/gn_to_bp_utils.py",
         "patchSetId": 4
@@ -123,6 +219,30 @@
       "writtenOn": "2022-01-06T20:20:41Z",
       "side": 1,
       "message": "Are these only relevant for SkQP? Or perhaps it\u0027s better to be defensive for the others, too? Or does this change otherwise add -Weverything?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 33
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c29cd4_796cf0cf",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "I think it is best to be defensive because the presence of this will break the build.  The only reason it doesn\u0027t happen for dm and nanobench is that those targets don\u0027t read their CFLAGS.  I think that may be a bug, but that is how it currently works.  If dm and nanobench were to recursively find their CFLAGS then this would be an error there too.",
+      "parentUuid": "cd5280d4_15151d25",
       "range": {
         "startLine": 74,
         "startChar": 0,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd838d77_195d0069",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "480d0dc3_f590066e",
+      "range": {
+        "startLine": 36,
+        "startChar": 45,
+        "endLine": 36,
+        "endChar": 76
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baf9d46d_566010da",
@@ -169,6 +313,30 @@
       "writtenOn": "2022-01-06T20:20:41Z",
       "side": 1,
       "message": "Here\u0027s the signature I see at the declaration:\n\n  def GetGNArgs(arch, api_level, debug, is_android_bp):\n\nThese values seem to match the old signature, but not the new one.",
+      "range": {
+        "startLine": 219,
+        "startChar": 28,
+        "endLine": 219,
+        "endChar": 77
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ba5a33_918dfb2a",
+        "filename": "tools/skqp/create_apk.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:08:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baf9d46d_566010da",
       "range": {
         "startLine": 219,
         "startChar": 28,
