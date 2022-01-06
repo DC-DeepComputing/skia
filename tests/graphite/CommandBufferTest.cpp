@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/src/CodeDictionary.h"
 #include "experimental/graphite/src/ContextPriv.h"
 
 #include "experimental/graphite/include/mtl/MtlTypes.h"
@@ -241,6 +242,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     TextureInfo textureInfo;
 #endif
 
+    Combination shader{ShaderCombo::ShaderType::kSolidColor};
+    auto entry = context->priv().codeDictionary()->findOrCreate(shader);
+
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo));
     REPORTER_ASSERT(reporter, target);
 
@@ -276,13 +280,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     };
 
     auto draw = [&](const RenderStep* step, std::vector<RectAndColor> draws) {
-        Combination shader{ShaderCombo::ShaderType::kSolidColor};
         GraphicsPipelineDesc pipelineDesc;
-        pipelineDesc.setProgram(step, shader);
+        pipelineDesc.setProgram(step, entry->uniqueID());
         drawWriter.newPipelineState(step->primitiveType(),
                                     step->vertexStride(),
                                     step->instanceStride());
-        auto pipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(pipelineDesc);
+        auto pipeline = gpu->resourceProvider()->findOrCreateGraphicsPipeline(context,
+                                                                              pipelineDesc);
         commandBuffer->bindGraphicsPipeline(std::move(pipeline));
 
         // All of the test RenderSteps ignore the transform, so just use the identity
