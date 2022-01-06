@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f34a836a_e23953e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16d390f6_1ae2f326",
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "192e6c56_91f08f31",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-06T15:29:14Z",
       "side": 1,
       "message": "CodeDictionary needs a destructor to clean up these Entry objects. Or we could consider having an SkArenaAlloc stored on the CodeDictionary? \n\nI kind of like that, since it will keep most Entries together, and autoclean up, but still lets us have the vector and map store Entry* for the random accesses. It\u0027s too bad we can\u0027t have one of the map or vector store plain Entry to manage lifetime, but they would move the data potentially, and SkTBlockList isn\u0027t set up for the index\u0027ed access we want for the uniqueID lookup.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14447d71_2dec2e90",
+        "filename": "experimental/graphite/src/CodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "I\u0027ve gone w/ an ArenaAlloc in the ShaderCodeDictionary for now.",
+      "parentUuid": "192e6c56_91f08f31",
       "range": {
         "startLine": 30,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cbf44cc_1780b99e",
+        "filename": "experimental/graphite/src/CodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "As discussed offline, I\u0027ve gone with ShaderCodeDictionary.",
+      "parentUuid": "d75eb938_00f55359",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b206cd24_27ad1639",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-01-06T15:29:14Z",
       "side": 1,
       "message": "Private with CodeDictionary having friend access? Or have it as part of the constructor, and make the constructor private so that the only source of Entries is the CodeDictionary?\n\n(caveat: private ctor would mean you\u0027d have to friend the SkArenaAlloc if you go that route in my later comment)",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50393527_90002c76",
+        "filename": "experimental/graphite/src/CodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "For now, I\u0027ve made setUniqueID private and friended CodeDictionary.",
+      "parentUuid": "b206cd24_27ad1639",
       "range": {
         "startLine": 26,
         "startChar": 8,
@@ -157,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ebf821_090c7377",
+        "filename": "experimental/graphite/src/GraphicsPipelineDesc.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "Definitely a separate CL. Let me think about it.",
+      "parentUuid": "41bd815a_68a790f0",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 55
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3563fc3_706f9f8c",
@@ -170,6 +284,30 @@
       "writtenOn": "2022-01-06T15:29:14Z",
       "side": 1,
       "message": "Can we make this whole class constexpr\u0027ed?",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "7e08e4c4cb36f91c1ab8e8049434266898ec123c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f92b592_7f9ce9dc",
+        "filename": "experimental/graphite/src/UniquePaintParamsID.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T16:50:25Z",
+      "side": 1,
+      "message": "As discussed offline, holding off on this.",
+      "parentUuid": "e3563fc3_706f9f8c",
       "range": {
         "startLine": 17,
         "startChar": 6,
