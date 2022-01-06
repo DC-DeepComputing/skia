@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63286748_99643bd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-06T20:24:58Z",
+      "side": 1,
+      "message": "It appears that the same issue affects interface blocks too.\n\nhttp://screen/6yRRUcJnLPcwK87",
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
