@@ -60,6 +60,34 @@ def _build_cpp_toolchain_impl(ctx):
     for file in ["crt1.o", "crtn.o", "Scrt1.o", "crti.o", "rcrt1.o"]:
         ctx.execute(["cp", "usr/lib/x86_64-linux-musl/" + file, "usr/lib/"])
 
+    # These put the X11 include files in ${PWD}/usr/include/X11
+    _download_and_extract_deb(
+        ctx,
+        ctx.attr.x11_dev_url,
+        ctx.attr.x11_dev_sha256,
+        ".",
+    )
+    _download_and_extract_deb(
+        ctx,
+        ctx.attr.x11proto_dev_url,
+        ctx.attr.x11proto_dev_sha256,
+        ".",
+    )
+
+    # This puts the GL include files in ${PWD}/usr/include/GL/
+    _download_and_extract_deb(
+        ctx,
+        ctx.attr.libglx_dev_url,
+        ctx.attr.libglx_dev_sha256,
+        ".",
+    )
+    _download_and_extract_deb(
+        ctx,
+        ctx.attr.libgl_dev_url,
+        ctx.attr.libgl_dev_sha256,
+        ".",
+    )
+
     # Create a BUILD.bazel file that makes all the files in this subfolder
     # available for use in rules, i.e. in the toolchain declaration.
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#file
@@ -80,11 +108,19 @@ filegroup(
 build_cpp_toolchain = repository_rule(
     implementation = _build_cpp_toolchain_impl,
     attrs = {
-        "clang_url": attr.string(mandatory = True),
-        "clang_sha256": attr.string(mandatory = True),
         "clang_prefix": attr.string(mandatory = True),
-        "musl_dev_url": attr.string(mandatory = True),
+        "clang_sha256": attr.string(mandatory = True),
+        "clang_url": attr.string(mandatory = True),
+        "libgl_dev_sha256": attr.string(mandatory = True),
+        "libgl_dev_url": attr.string(mandatory = True),
+        "libglx_dev_sha256": attr.string(mandatory = True),
+        "libglx_dev_url": attr.string(mandatory = True),
         "musl_dev_sha256": attr.string(mandatory = True),
+        "musl_dev_url": attr.string(mandatory = True),
+        "x11_dev_sha256": attr.string(mandatory = True),
+        "x11_dev_url": attr.string(mandatory = True),
+        "x11proto_dev_sha256": attr.string(mandatory = True),
+        "x11proto_dev_url": attr.string(mandatory = True),
     },
     doc = "",
 )

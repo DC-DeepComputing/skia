@@ -26,9 +26,21 @@ build_cpp_toolchain(
     clang_prefix = "clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/",
     clang_sha256 = "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8",
     clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz",
+    # From https://packages.debian.org/bullseye/amd64/libgl-dev/download
+    libgl_dev_sha256 = "a6487873f2706bbabf9346cdb190f47f23a1464f31cecf92c363bac37c342f2f",
+    libgl_dev_url = "http://ftp.debian.org/debian/pool/main/libg/libglvnd/libgl-dev_1.3.2-1_amd64.deb",
+    # From https://packages.debian.org/bullseye/amd64/libglx-dev/download
+    libglx_dev_sha256 = "5a50549948bc4363eab32b1083dad2165402c3628f2ee85e9a32563228cc61c1",
+    libglx_dev_url = "http://ftp.debian.org/debian/pool/main/libg/libglvnd/libglx-dev_1.3.2-1_amd64.deb",
     # From https://packages.debian.org/bullseye/amd64/musl-dev/download
     musl_dev_sha256 = "b017792ad6ba3650b4889238c73cd19c1d6b0e39ca8319cdd3ad9e16374e614e",
     musl_dev_url = "http://ftp.debian.org/debian/pool/main/m/musl/musl-dev_1.2.2-1_amd64.deb",
+    # From https://packages.debian.org/bullseye/amd64/libx11-dev/download
+    x11_dev_sha256 = "11e5f9dcded1a1226b3ee02847b86edce525240367b3989274a891a43dc49f5f",
+    x11_dev_url = "http://ftp.debian.org/debian/pool/main/libx/libx11/libx11-dev_1.7.2-1_amd64.deb",
+    # From https://packages.debian.org/bullseye/all/x11proto-dev/download
+    x11proto_dev_sha256 = "d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5",
+    x11proto_dev_url = "http://ftp.debian.org/debian/pool/main/x/xorgproto/x11proto-dev_2020.1-1_all.deb",
 )
 
 http_archive(
