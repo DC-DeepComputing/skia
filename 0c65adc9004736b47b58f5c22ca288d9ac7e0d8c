@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0a9963_3d00cc80",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:56:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ff52bd5_75831682",
+      "range": {
+        "startLine": 648,
+        "startChar": 36,
+        "endLine": 648,
+        "endChar": 58
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b843dde_d9cca03a",
@@ -214,6 +238,30 @@
       "writtenOn": "2022-01-06T20:39:19Z",
       "side": 1,
       "message": "This makes it sound like a field with the same name was found in a _different_ struct (which isn\u0027t an error), maybe needs to be rephrased?",
+      "range": {
+        "startLine": 3,
+        "startChar": 42,
+        "endLine": 3,
+        "endChar": 66
+      },
+      "revId": "0c65adc9004736b47b58f5c22ca288d9ac7e0d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "930e3d4a_17666a63",
+        "filename": "tests/sksl/errors/MultipleFields.glsl",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T21:56:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed052fff_d01c330e",
       "range": {
         "startLine": 3,
         "startChar": 42,
