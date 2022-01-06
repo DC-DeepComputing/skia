@@ -39,6 +39,7 @@ import sys
 import shutil
 import time
 
+sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../gn"))
 import skqp_gn_args
 
 def print_cmd(cmd, o):
