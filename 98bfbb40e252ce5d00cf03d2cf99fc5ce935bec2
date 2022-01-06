@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "243d651e_93741663",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba6b0335_4ed24f27",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 10
+      },
+      "revId": "98bfbb40e252ce5d00cf03d2cf99fc5ce935bec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8debab3d_1c683b34",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-06T21:22:15Z",
       "side": 1,
       "message": "nit: it looks like this line is too long?",
+      "range": {
+        "startLine": 219,
+        "startChar": 100,
+        "endLine": 219,
+        "endChar": 102
+      },
+      "revId": "98bfbb40e252ce5d00cf03d2cf99fc5ce935bec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9387c1_b96a4233",
+        "filename": "tools/skqp/create_apk.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-06T21:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8debab3d_1c683b34",
       "range": {
         "startLine": 219,
         "startChar": 100,
