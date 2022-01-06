@@ -12,6 +12,8 @@
 
 class SkBlendModeBlender : public SkBlenderBase {
 public:
+    int toCodeB(skgpu::CodeDictionary*, Mapping, SkCode*, std::vector<sk_sp<skgpu::UniformData>>*) const override;
+
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
 
     skstd::optional<SkBlendMode> asBlendMode() const final { return fMode; }
