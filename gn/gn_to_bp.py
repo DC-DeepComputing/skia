@@ -628,6 +628,7 @@ def write_android_config(config_path, defines):
 
 write_android_config('android/include/config/SkUserConfig.h', android_defines)
 write_android_config('renderengine/include/config/SkUserConfig.h', renderengine_defines)
+write_android_config('non-existant/include/config/SkUserConfig.h', renderengine_defines)
 
 def write_config(config_path, defines, platform):
   gn_to_bp_utils.WriteUserConfig(config_path, defines)
