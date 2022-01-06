@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3dccd97_236633c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-06T16:34:32Z",
+      "side": 1,
+      "message": "Note that this CL doesn\u0027t add any unit tests yet. In this CL the Resource class is mostly just an overly complicated SkRefCnt. This is getting tested by all our other tests that are creating objects and successfully delete them. As I land follow CLs where these Resources start to interact with the Cache and keys I will have unit tests to test all those interactions.",
+      "revId": "518c498e4775b234f3bf74018747f5091fc38055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
