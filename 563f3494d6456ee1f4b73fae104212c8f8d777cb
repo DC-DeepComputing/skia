@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0791ae53_68c4d2c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5095
+      },
+      "writtenOn": "2022-01-06T15:53:30Z",
+      "side": 1,
+      "message": "Note that for release notes, I\u0027ve stopped referring to that page and was debating removing it just having folks use the living text file.. but since you\u0027ve updated it, leave for now",
+      "revId": "563f3494d6456ee1f4b73fae104212c8f8d777cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
