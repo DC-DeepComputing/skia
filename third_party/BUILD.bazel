@@ -2359,6 +2359,7 @@ HARFBUZZ_SRCS = [
     "externals/harfbuzz/src/hb-ot-tag-table.hh",
     "externals/harfbuzz/src/hb-ot-tag.cc",
     "externals/harfbuzz/src/hb-ot-var-avar-table.hh",
+    "externals/harfbuzz/src/hb-ot-var-common.hh",
     "externals/harfbuzz/src/hb-ot-var-fvar-table.hh",
     "externals/harfbuzz/src/hb-ot-var-gvar-table.hh",
     "externals/harfbuzz/src/hb-ot-var-hvar-table.hh",
