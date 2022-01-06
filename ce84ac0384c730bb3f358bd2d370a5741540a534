@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d4498b5_219c58ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T19:00:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c7e2f47_29c180e7",
+      "revId": "ce84ac0384c730bb3f358bd2d370a5741540a534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7699f5be_6fa0068c",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-06T16:42:01Z",
       "side": 1,
       "message": "nit: Tests in /errors/ aren\u0027t ever run, so you don\u0027t need to include main() or uniforms here.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 1
+      },
+      "revId": "ce84ac0384c730bb3f358bd2d370a5741540a534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10775e95_fa182845",
+        "filename": "resources/sksl/errors/MultipleFields.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-06T19:00:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7699f5be_6fa0068c",
       "range": {
         "startLine": 7,
         "startChar": 0,
