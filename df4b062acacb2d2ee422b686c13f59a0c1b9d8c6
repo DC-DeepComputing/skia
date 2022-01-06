@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73915ce_dad5b973",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T19:28:06Z",
+      "side": 1,
+      "message": "Where is this even defined? Should it be:\nSkASSERT(this-\u003ehasCommandBufferRef());\n?",
+      "range": {
+        "startLine": 59,
+        "startChar": 24,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "df4b062acacb2d2ee422b686c13f59a0c1b9d8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa55ddf_e527529d",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-06T19:28:06Z",
+      "side": 1,
+      "message": "rm ?",
+      "revId": "df4b062acacb2d2ee422b686c13f59a0c1b9d8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
