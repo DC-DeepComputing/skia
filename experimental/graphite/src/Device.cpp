@@ -41,8 +41,17 @@ namespace {
 static const SkStrokeRec kFillStyle(SkStrokeRec::kFill_InitStyle);
 
 bool is_opaque(const PaintParams& paint) {
-    // TODO: implement this
-    return false;
+    if (paint.blendMode() == SkBlendMode::kSrc || paint.blendMode() == SkBlendMode::kClear) {
+        // src and clear blending never depends on dst
+        return true;
+    } else if (paint.blendMode() == SkBlendMode::kSrcOver) {
+        // src-over does not depend on dst if src is opaque (a = 1)
+        // TODO: This will get more complicated when PaintParams has color filters
+        return paint.color().isOpaque() && (!paint.shader() || paint.shader()->isOpaque());
+    } else {
+        // TODO: Are their other modes that don't depend on dst that can be trivially detected?
+        return false;
+    }
 }
 
 } // anonymous namespace
@@ -307,6 +316,9 @@ void Device::drawShape(const Shape& shape,
     if (!opaque) {
         order.dependsOnPaintersOrder(prevDraw);
     }
+    // TODO: if the chosen Renderer for a draw uses coverage AA, then it cannot be considered opaque
+    // regardless of what the PaintParams would do, but we won't know that until after the Renderer
+    // has been selected for the draw.
 
     if (styleType == SkStrokeRec::kStroke_Style ||
         styleType == SkStrokeRec::kHairline_Style ||
