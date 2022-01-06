@@ -16,6 +16,167 @@
       "message": "This requires that ag/16576061 land before this CL will work",
       "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7230d899_30a02c7b",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "Down below, you pass this as a parameter to GetGNArgs. Can you use the same value for both, rather than hardcoding this one?",
+      "range": {
+        "startLine": 422,
+        "startChar": 18,
+        "endLine": 422,
+        "endChar": 20
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e9723b_cb460fb2",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "It\u0027s okay that these aren\u0027t ndk versions (which I presume don\u0027t exist for these)?",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 38
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7aca7c6_428f64ec",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "This is quite hard to follow. Can you add the argument names? i.e.\n\n  (arch\u003dNone, api_level\u003d\u003cconstant_passed_in\u003e, debug\u003dFalse, is_android_bp\u003dTrue)",
+      "range": {
+        "startLine": 639,
+        "startChar": 67,
+        "endLine": 639,
+        "endChar": 88
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6bd4f2_203db1fa",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "Why does SkQP behave differently? Is this because it\u0027s using the NDK for some things?\n\nIs it possible there are cases where we want it to behave the same as the framework version?",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 715,
+        "endChar": 41
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd5280d4_15151d25",
+        "filename": "gn/gn_to_bp_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "Are these only relevant for SkQP? Or perhaps it\u0027s better to be defensive for the others, too? Or does this change otherwise add -Weverything?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 33
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480d0dc3_f590066e",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "What needs to be fixed? Can you add a bug id?",
+      "range": {
+        "startLine": 36,
+        "startChar": 45,
+        "endLine": 36,
+        "endChar": 76
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf9d46d_566010da",
+        "filename": "tools/skqp/create_apk.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-06T20:20:41Z",
+      "side": 1,
+      "message": "Here\u0027s the signature I see at the declaration:\n\n  def GetGNArgs(arch, api_level, debug, is_android_bp):\n\nThese values seem to match the old signature, but not the new one.",
+      "range": {
+        "startLine": 219,
+        "startChar": 28,
+        "endLine": 219,
+        "endChar": 77
+      },
+      "revId": "4dcdad20e8b50b2acb2a1ee35eaa6c4e7d5e1716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
