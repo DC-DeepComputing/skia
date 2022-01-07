@@ -1,5 +1,4 @@
+### Compilation failed:
 
-IB {
-    float f;
-    float f;
-} ib;
+error: 1: field 'f' was already defined in the same interface block ('IB')
+1 error
