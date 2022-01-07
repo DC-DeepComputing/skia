@@ -130,6 +130,9 @@ public:
                       ClusterRange clusters, ClusterRange clustersWithGhosts, SkScalar widthWithSpaces,
                       InternalLineMetrics sizes);
 
+    bool simplify() const { return fSimplify; }
+    void setSimplify(bool value) { fSimplify = value; }
+
     SkSpan<const char> text() const { return SkSpan<const char>(fText.c_str(), fText.size()); }
     InternalState state() const { return fState; }
     SkSpan<Run> runs() { return SkSpan<Run>(fRuns.data(), fRuns.size()); }
@@ -274,6 +277,8 @@ private:
     SkScalar fMaxWidthWithTrailingSpaces;
 
     std::unique_ptr<SkUnicode> fUnicode;
+
+    bool fSimplify = true;
 };
 }  // namespace textlayout
 }  // namespace skia
