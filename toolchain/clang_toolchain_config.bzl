@@ -239,20 +239,21 @@ def _make_default_flags():
             flag_group(
                 flags = [
                     "-fuse-ld=lld",
-                    # This is the path to libc.a and other libraries.
+                    # This is the path to libc.a
                     "-L" + EXTERNAL_TOOLCHAIN + "/usr/lib/x86_64-linux-musl",
-                    "-L" + EXTERNAL_TOOLCHAIN + "/lib",
+                    # "-L" + EXTERNAL_TOOLCHAIN + "/lib",
                     # We chose to use the llvm runtime, not the gcc one because it is already
                     # included in the clang binary
                     "--rtlib=compiler-rt",
                     # In order to run our executables, they need to be statically linked,
                     # otherwise, the libc++.so and friends will not be found if they are
                     # not installed on the user's machine.
-                    "-static",
+                    # "-static",
                     "-std=c++14",
-                    "-lc++abi",
-                    "-lunwind",
-                    "-lc++",
+                    EXTERNAL_TOOLCHAIN + "/lib/libc++abi.a",
+                    EXTERNAL_TOOLCHAIN + "/lib/libc++.a",
+                    EXTERNAL_TOOLCHAIN + "/lib/libunwind.a",
+                    #EXTERNAL_TOOLCHAIN + "/usr/lib/x86_64-linux-musl/libc.a",
                 ],
             ),
         ],
@@ -313,7 +314,7 @@ def _make_diagnostic_flags():
             "diagnostic",
             enabled = False,
             flag_sets = [
-                cxx_diagnostic,
+                #cxx_diagnostic,
                 link_diagnostic,
             ],
         ),

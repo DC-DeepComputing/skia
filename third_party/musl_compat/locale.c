@@ -5,6 +5,11 @@
  * found in the LICENSE file.
  *
  * Fixes linking issues with musl due to missing locale-specific string functions.
+ *
+ * The symbols defined here:
+ * https://github.com/llvm/llvm-project/blob/main/libcxx/include/__support/musl/xlocale.h
+ * are defined to be inlined, however they are missing during the final linking of a static
+ * executable. By re-defining them in our own .a file, this makes the linker happy.
  */
 
 #include <stdlib.h>

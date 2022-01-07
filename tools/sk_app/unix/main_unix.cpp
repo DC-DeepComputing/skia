@@ -13,6 +13,7 @@
 #include "tools/timer/Timer.h"
 
 int main(int argc, char**argv) {
+    printf("Hello main\n");
     XInitThreads();
     Display* display = XOpenDisplay(nullptr);
 
