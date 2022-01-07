@@ -857,6 +857,9 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
 }
 
 bool TextLine::simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect* bounds) {
+    if (!fOwner->simplify()) {
+        return false;
+    }
     if (fOwner->styles().size() != 1 ||
         fOwner->runs().size() != 1 ||
         fOwner->placeholders().size() != 1) {
@@ -871,7 +874,27 @@ bool TextLine::simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect*
     if (style.getShadowNumber() != 0) {
         return false;
     }
-
+    if (!SkScalarNearlyEqual(style.getLetterSpacing(), 0.0f)) {
+        return false;
+    }
+    if (!SkScalarNearlyEqual(style.getWordSpacing(), 0.0f)) {
+        return false;
+    }
+    if (!SkScalarNearlyEqual(style.getBaselineShift(), 0.0f)) {
+        return false;
+    }
+    if (fOwner->paragraphStyle().effective_align() != TextAlign::kLeft) {
+        return false;
+    }
+    if (!fOwner->paragraphStyle().getEllipsis().isEmpty()) {
+        return false;
+    }
+    if (fOwner->paragraphStyle().getStrutStyle().getStrutEnabled()) {
+        return false;
+    }
+    if (style.getHeightOverride()) {
+        return false;
+    }
     auto& run = fOwner->runs().front();
     ClipContext context = this->measureTextInsideOneRun(fText,
                                                         &run,
@@ -884,16 +907,19 @@ bool TextLine::simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect*
         this->paintBackground(textCanvas, x, y, fText, style, context);
     }
 
-    if (!fTextBlobCachePopulated) {
-        this->buildTextBlob(fText, style, context);
-        fTextBlobCachePopulated = true;
+    auto glyphs = &run.fGlyphs[context.pos];
+    auto points = &run.fPositions[context.pos];
+    auto correctedBaseline = SkScalarFloorToScalar(this->baseline() +  0.5);
+    auto offset = SkPoint::Make(this->offset().fX + context.fTextShift + x,
+                                this->offset().fY + correctedBaseline + y);
+    SkPaint foreground;
+    if (style.hasForeground()) {
+        foreground = style.getForeground();
+    } else {
+        foreground.setColor(style.getColor());
     }
 
-    auto& record = fTextBlobCache.back();
-    record.paint(textCanvas, x, y);
-    SkRect recordBounds = record.fBounds;
-    recordBounds.offset(x + this->offset().fX, y + this->offset().fY);
-    bounds->joinPossiblyEmptyRect(recordBounds);
+    textCanvas->drawGlyphs(context.size, glyphs, points, offset, context.run->fFont, foreground);
 
     return true;
 }
