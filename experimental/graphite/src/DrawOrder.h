@@ -46,6 +46,10 @@ private:
 
     uint16_t fIndex = 0;
 };
+template<typename Sequence>
+struct std::hash<MonotonicValue<Sequence>> {
+    size_t operator()(const MonotonicValue<Sequence>& s) const noexcept { return s.bits(); }
+};
 
 /**
  * CompressedPaintersOrder is an ordinal number that allows draw commands to be re-ordered so long
