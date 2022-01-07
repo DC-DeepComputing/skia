@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4a020c0_db82a986",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-07T14:17:00Z",
+      "side": 1,
+      "message": "Interesting... I suspect this is more skbug.com/12761. Can probably fix by using float4 instead of half4 in the specs for drawVertices calls.",
+      "revId": "5bb80e1ee0115103bf5274132614e71f4f748063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
