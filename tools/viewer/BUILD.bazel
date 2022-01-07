@@ -234,6 +234,7 @@ generated_cc_atom(
         ":Slide_hdr",
         "//include/core:SkM44_hdr",
         "//include/effects:SkRuntimeEffect_hdr",
+        "//third_party/externals/ImGuiColorTextEdit:TextEditor_hdr",
     ],
 )
 
@@ -243,7 +244,6 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLSlide_hdr",
-        ":Viewer_hdr",
         "//include/core:SkCanvas_hdr",
         "//include/core:SkFont_hdr",
         "//include/effects:SkGradientShader_hdr",
