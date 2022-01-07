@@ -16,6 +16,24 @@
       "message": "Given this, should this method be named something like does_paint_depend_on_dest ?",
       "revId": "ae4a844fc078554a63b9c231e21027ec23ae8f9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "678f44e9_efcb93d6",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-07T14:50:45Z",
+      "side": 1,
+      "message": "Yep, that is more accurate. PTAL, since that also flips the logical condition around.",
+      "parentUuid": "2393a7e7_82dadd2c",
+      "revId": "ae4a844fc078554a63b9c231e21027ec23ae8f9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
