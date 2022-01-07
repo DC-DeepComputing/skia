@@ -857,6 +857,9 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
 }
 
 bool TextLine::simplePaint(SkCanvas* textCanvas, SkScalar x, SkScalar y, SkRect* bounds) {
+    if (!fOwner->simplify()) {
+        return false;
+    }
     if (fOwner->styles().size() != 1 ||
         fOwner->runs().size() != 1 ||
         fOwner->placeholders().size() != 1) {
