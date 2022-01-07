@@ -16,6 +16,7 @@
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/Gpu.h"
 #include "experimental/graphite/src/GraphicsPipelineDesc.h"
+#include "experimental/graphite/src/PaintParams.h"
 #include "experimental/graphite/src/Renderer.h"
 #include "experimental/graphite/src/ShaderCodeDictionary.h"
 #include "include/core/SkPathTypes.h"
@@ -75,7 +76,9 @@ void Context::preCompile(const PaintCombo& paintCombo) {
         for (auto& shaderCombo: paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
-                    Combination c {shaderType, tm, bm};
+                    PaintParams pp;
+                    pp.setBlendMode(bm);
+                    //Combination c {shaderType, tm, bm};
 
                     GraphicsPipelineDesc desc;
 
