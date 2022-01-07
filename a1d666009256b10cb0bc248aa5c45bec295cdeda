@@ -81,6 +81,24 @@
       "parentUuid": "d8065c26_30580afd",
       "revId": "a1d666009256b10cb0bc248aa5c45bec295cdeda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9900449_d1ef066a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-07T16:00:31Z",
+      "side": 1,
+      "message": "Yes. It fails with\n\"symbol \u0027f\u0027 was already defined\".\nI added a test to the same test file (to keep these cases close).",
+      "parentUuid": "fd00599b_a1699131",
+      "revId": "a1d666009256b10cb0bc248aa5c45bec295cdeda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
