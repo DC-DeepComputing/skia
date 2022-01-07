@@ -87,7 +87,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
                 expected.fBlendMode = bm;
 
                 auto [ p, expectedNumUniforms ] = create_paint(expected);
-                auto [ actualID, ud] = ExtractCombo(context, PaintParams(p));
+                auto [ actualID, ud] = GetUniqueIDAndUniformData(context, PaintParams(p));
 
                 auto entry = context->priv().shaderCodeDictionary()->lookup(actualID);
                 Combination actual = entry->combo();
