@@ -23,37 +23,34 @@ namespace skgpu::mtl {
 
 namespace {
 
-SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
+SkSL::String foo(SkSpan<const Uniform> unis, int* offset) {
     SkSL::String result;
 
-    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
-
-    int offset = 0;
-    for (auto u : uniforms) {
+    for (auto u: unis) {
         int count = u.count() ? u.count() : 1;
         // TODO: this is sufficient for the sprint but should be changed to use SkSL's
         // machinery
-        result.appendf("    layout(offset=%d) ", offset);
+        result.appendf("    layout(offset=%d) ", *offset);
         switch (u.type()) {
             case SLType::kFloat4:
                 result.append("float4");
-                offset += 16 * count;
+                *offset += 16 * count;
                 break;
             case SLType::kFloat2:
                 result.append("float2");
-                offset += 8 * count;
+                *offset += 8 * count;
                 break;
             case SLType::kFloat:
                 result.append("float");
-                offset += 4 * count;
+                *offset += 4 * count;
                 break;
             case SLType::kFloat4x4:
                 result.append("float4x4");
-                offset += 64 * count;
+                *offset += 64 * count;
                 break;
             case SLType::kHalf4:
                 result.append("half4");
-                offset += 8 * count;
+                *offset += 8 * count;
                 break;
             default:
                 SkASSERT(0);
@@ -67,6 +64,29 @@ SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uni
             result.append("]");
         }
         result.append(";\n");
+    }
+
+    return result;
+}
+
+SkSL::String emit_SKSL_uniforms_orig(int bufferID, const char* name, SkSpan<const Uniform> unis) {
+    SkSL::String result;
+
+    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+    int offset = 0;
+    result += foo(unis, &offset);
+    result.append("};\n\n");
+    return result;
+}
+
+SkSL::String emit_SKSL_uniforms_new(int bufferID, const char* name, std::vector<SkSpan<const Uniform>> uniforms1) {
+    SkSL::String result;
+
+    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+
+    int offset = 0;
+    for (auto uu : uniforms1) {
+        result += foo(uu, &offset);
     }
     result.append("};\n\n");
     return result;
@@ -141,7 +161,7 @@ SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
 
     // Uniforms needed by RenderStep
     if (step->numUniforms() > 0) {
-        sksl += emit_SKSL_uniforms(1, "Step", step->uniforms());
+        sksl += emit_SKSL_uniforms_orig(1, "Step", step->uniforms());
     }
 
     // Vertex shader function declaration
@@ -158,27 +178,31 @@ SkSL::String get_sksl_fs(const Context* context,
                          const GraphicsPipelineDesc& desc,
                          bool* writesColor) {
     SkSL::String sksl;
+//    SkSL::String shaderCode;
+//    std::vector<sk_sp<UniformData>> uniforms;
+    SkSL::String shaderCode;
+    std::vector<SkSpan<const Uniform>> uniforms;
 
+#if 0
     Combination combo;
     auto entry = context->priv().shaderCodeDictionary()->lookup(desc.paintParamsID());
     if (entry) {
         combo = entry->combo();
     }
+#endif
 
     // Typedefs needed for painting
-    auto paintUniforms = GetUniforms(combo.fShaderType);
-    if (!paintUniforms.empty()) {
-        sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
-    }
+    std::tie(shaderCode, uniforms) = GetSkSLAndUniformDescription(desc.paintParamsID());
+    sksl += emit_SKSL_uniforms_new(2, "FS", uniforms);
 
     sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
     sksl += "void main() {\n"
             "    half4 outColor;\n";
-    sksl += GetShaderSkSL(combo.fShaderType);
+    sksl += shaderCode;
     sksl += "    sk_FragColor = outColor;\n"
             "}\n";
 
-    *writesColor = combo.fShaderType != ShaderCombo::ShaderType::kNone;
+    *writesColor = true; // desc.shaderCombo().fShaderType != ShaderCombo::ShaderType::kNone;
     return sksl;
 }
 

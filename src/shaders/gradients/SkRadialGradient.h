@@ -12,6 +12,10 @@
 
 class SkRadialGradient final : public SkGradientShaderBase {
 public:
+    int toCodeS(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;
