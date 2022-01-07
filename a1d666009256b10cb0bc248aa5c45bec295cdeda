@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0c4e35_098c7e44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-07T15:39:09Z",
+      "side": 1,
+      "message": "no longer allow",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "a1d666009256b10cb0bc248aa5c45bec295cdeda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
