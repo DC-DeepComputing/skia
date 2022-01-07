@@ -248,7 +248,7 @@ def _make_default_flags():
                     # In order to run our executables, they need to be statically linked,
                     # otherwise, the libc++.so and friends will not be found if they are
                     # not installed on the user's machine.
-                    "-static",
+                    # "-static",
                     "-std=c++14",
                     "-lc++abi",
                     "-lunwind",
