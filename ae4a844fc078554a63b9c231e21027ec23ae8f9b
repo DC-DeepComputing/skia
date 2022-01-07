@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2393a7e7_82dadd2c",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-07T13:30:47Z",
+      "side": 1,
+      "message": "Given this, should this method be named something like does_paint_depend_on_dest ?",
+      "revId": "ae4a844fc078554a63b9c231e21027ec23ae8f9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
