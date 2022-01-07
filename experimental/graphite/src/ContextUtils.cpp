@@ -205,9 +205,9 @@ sk_sp<UniformData> UniformData::Make(int count,
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
 
-std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* context,
-                                                                 const PaintParams& p) {
-    Combination combo;
+std::tuple<UniquePaintParamsID, sk_sp<UniformData>> GetUniqueIDAndUniformData(Context* context,
+                                                                              const PaintParams& p) {
+    SkPaintParamsKey key;
     sk_sp<UniformData> uniforms;
 
     if (auto s = p.shader()) {
@@ -296,7 +296,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
 
     combo.fBlendMode = p.blendMode();
 
-    auto entry = context->priv().shaderCodeDictionary()->findOrCreate(combo);
+    auto entry = context->priv().shaderCodeDictionary()->findOrCreate(key);
 
     return { entry->uniqueID(), std::move(uniforms) };
 }
