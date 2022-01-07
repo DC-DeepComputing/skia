@@ -117,12 +117,29 @@ public:
         return this->appendData(VertexMode::kInstances, fInstanceStride, numInstances);
     }
 
+    VertexWriter appendDynamicTemplateInstances(unsigned int indexCount, unsigned int numInstances) {
+        SkASSERT(fInstanceStride > 0);
+        SkASSERT(fFixedVertexCount <= 0); // signals dynamic template
+
+        VertexWriter w = this->appendData(VertexMode::kInstances, fInstanceStride, numInstances);
+
+        int realCount = std::max(-fFixedVertexCount, SkTo<int>(indexCount));
+
+        fFixedVertexCount = -realCount;
+        // return std::move(w);
+        return w;
+    }
+
     // Set the fixed vertex and index buffers referenced when appending instance data or calling
     // drawIndexed(). 'count' is the number of vertices in the template, which is either the
     // vertex count (when 'indices' has a null buffer), or the index count when 'indices' are
     // provided.
     void setInstanceTemplate(BindBufferInfo vertices, BindBufferInfo indices, unsigned int count) {
         this->setTemplateInternal(vertices, indices, count, /*drawPending=*/true);
+    }
+
+    void setDynamicInstanceTemplate(BindBufferInfo vertices, BindBufferInfo indices) {
+        this->setTemplateInternal(vertices, indices, 0, /*drawPending=*/true);
     }
 
     // Issues a draw with fully specified data. This can be used when all instance data has already
@@ -176,7 +193,7 @@ private:
     // drawIndexed()) are treated as drawing one instance, with no extra instance attributes.
     BindBufferInfo fFixedVertexBuffer = {};
     BindBufferInfo fFixedIndexBuffer  = {};
-    unsigned int   fFixedVertexCount  = 0; // or index count if fFixedIndexBuffer is non-null
+    int   fFixedVertexCount  = 0; // or index count if fFixedIndexBuffer is non-null
 
     bool fFixedBuffersDirty = true;
 
@@ -186,7 +203,7 @@ private:
 
     VertexWriter appendData(VertexMode mode, size_t stride, unsigned int count);
     void setTemplateInternal(BindBufferInfo vertices, BindBufferInfo indices,
-                             unsigned int count, bool drawPending);
+                             int count, bool drawPending);
     void drawInternal(BindBufferInfo instances, unsigned int base, unsigned int instanceCount);
     void drawPendingVertices();
 };

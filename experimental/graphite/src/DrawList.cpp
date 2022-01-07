@@ -48,6 +48,9 @@ void DrawList::stencilAndFillPath(const Transform& localToDevice,
     SkASSERT(localToDevice.valid());
     SkASSERT(!shape.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
 
+    // TODO: StencilAndFillPath() expects all the patches to be chopped so that we
+    // don't exceed a max tessellation count. This pre-chopping needs to happen now
+    // because it produces a new shape that must be consistent across all steps.
     const Renderer& renderer = Renderer::StencilAndFillPath(shape.fillType());
     fDraws.push_back({renderer, this->deduplicateTransform(localToDevice),
                       shape, clip, ordering, paint, nullptr});

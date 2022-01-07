@@ -20,6 +20,36 @@ class PathTessellator;
 class StrokeTessellator;
 #endif
 
+class VertexStore {
+public:
+
+    virtual ~VertexStore() {}
+
+    virtual VertexWriter appendVertex(float fixedSegments_pow4) = 0;
+
+    virtual size_t stride() const = 0;
+};
+
+class VertexChunkArrayStore : public VertexStore {
+public:
+    VertexChunkArrayStore(GrMeshDrawTarget* target,
+                          GrVertexChunkArray* vertexChunkArray,
+                          size_t patchStride,
+                          int initialAllocCount)
+            : fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {}
+
+    ~VertexChunkArrayStore() override {}
+
+    VertexWriter appendVertex(float fixedSegments_pow4) override {
+        return fChunker.appendVertex();
+    }
+
+    size_t stride() const override { return fChunker.stride(); }
+
+private:
+    GrVertexChunkBuilder fChunker;
+};
+
 // Writes out tessellation patches, formatted with their specific attribs, to a GPU buffer.
 class PatchWriter {
 public:
@@ -29,8 +59,15 @@ public:
                 size_t patchStride,
                 int initialAllocCount)
             : fAttribs(attribs)
-            , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
-    }
+            , fVertexStore(new VertexChunkArrayStore(target, vertexChunkArray, patchStride, initialAllocCount))
+            , fOwnsStore(true) {}
+            // , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
+    // }
+
+    PatchWriter(VertexStore* vertexStore, PatchAttribs attribs)
+            : fAttribs(attribs)
+            , fVertexStore(vertexStore)
+            , fOwnsStore(false) {}
 
 #if SK_GPU_V1
     // Create PatchWriters that write directly to the GrVertexChunkArrays stored on the provided
@@ -39,7 +76,17 @@ public:
     PatchWriter(GrMeshDrawTarget*, StrokeTessellator*, int initialPatchAllocCount);
 #endif
 
+    ~PatchWriter() {
+        if (fOwnsStore) {
+            delete fVertexStore;
+        }
+    }
+
     PatchAttribs attribs() const { return fAttribs; }
+
+    void updateFixedSegments(float fixedSegments_pow4) {
+        fFixedSegments_pow4 = std::max(fixedSegments_pow4, fFixedSegments_pow4);
+    }
 
     // Updates the fan point that will be written out with each patch (i.e., the point that wedges
     // fan around).
@@ -135,12 +182,12 @@ public:
 
 private:
     VertexWriter appendPatch() {
-        VertexWriter vertexWriter = fChunker.appendVertex();
+        VertexWriter vertexWriter = fVertexStore->appendVertex(fFixedSegments_pow4);
         if (!vertexWriter) {
             // Failed to allocate GPU storage for the patch. Write to a throwaway location so the
             // callsites don't have to do null checks.
             if (!fFallbackPatchStorage) {
-                fFallbackPatchStorage.reset(fChunker.stride());
+                fFallbackPatchStorage.reset(fVertexStore->stride());
             }
             vertexWriter = fFallbackPatchStorage.data();
         }
@@ -161,8 +208,11 @@ private:
     SkPoint fFanPointAttrib;
     StrokeParams fStrokeParamsAttrib;
     VertexColor fColorAttrib;
+    float fFixedSegments_pow4 = 0.f;
 
-    GrVertexChunkBuilder fChunker;
+    // GrVertexChunkBuilder fChunker;
+    VertexStore* fVertexStore;
+    bool fOwnsStore;
 
     // For when fChunker fails to allocate a patch in GPU memory.
     SkAutoTMalloc<char> fFallbackPatchStorage;

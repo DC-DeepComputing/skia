@@ -30,22 +30,34 @@ DrawWriter::DrawWriter(DrawDispatcher* dispatcher,
 
 void DrawWriter::setTemplateInternal(BindBufferInfo vertices,
                                      BindBufferInfo indices,
-                                     unsigned int count,
+                                     int count,
                                      bool drawPendingVertices) {
     SkASSERT(!vertices || fVertexStride > 0);
-    if (vertices != fFixedVertexBuffer ||
-        indices != fFixedIndexBuffer ||
-        count != fFixedVertexCount) {
-        // Issue any accumulated data that referred to the old template.
-        if (drawPendingVertices) {
-            this->drawPendingVertices();
+    if (count > 0) {
+        if (vertices != fFixedVertexBuffer ||
+            indices != fFixedIndexBuffer ||
+            count != fFixedVertexCount) {
+            // Issue any accumulated data that referred to the old template.
+            if (drawPendingVertices) {
+                this->drawPendingVertices();
+            }
+
+            fFixedBuffersDirty = true;
+
+            fFixedVertexBuffer = vertices;
+            fFixedIndexBuffer = indices;
+            fFixedVertexCount = count;
         }
-
-        fFixedBuffersDirty = true;
-
-        fFixedVertexBuffer = vertices;
-        fFixedIndexBuffer = indices;
-        fFixedVertexCount = count;
+    } else {
+        if (vertices != fFixedVertexBuffer ||
+            indices != fFixedIndexBuffer ||
+            fFixedVertexCount > 0) {
+            if (drawPendingVertices) { this->drawPendingVertices(); }
+            fFixedBuffersDirty = true;
+            fFixedVertexBuffer = vertices;
+            fFixedIndexBuffer = indices;
+            fFixedVertexCount = count;
+        }
     }
 }
 
@@ -69,25 +81,31 @@ void DrawWriter::drawInternal(BindBufferInfo instances,
         fLastInstanceBuffer = instances;
     }
 
+    int realVertexCount = std::abs(fFixedVertexCount);
     if (useInstancedDraw) {
         // 'base' offsets accumulated instance data (or is 0 for a direct instanced draw). It is
         // assumed that any base vertex and index have been folded into the BindBufferInfos already.
         if (fFixedIndexBuffer) {
-            fDispatcher->drawIndexedInstanced(fPrimitiveType, 0, fFixedVertexCount, 0,
+            fDispatcher->drawIndexedInstanced(fPrimitiveType, 0, realVertexCount, 0,
                                               base, instanceCount);
         } else {
-            fDispatcher->drawInstanced(fPrimitiveType, 0, fFixedVertexCount, base, instanceCount);
+            fDispatcher->drawInstanced(fPrimitiveType, 0, realVertexCount, base, instanceCount);
         }
     } else {
         if (fFixedIndexBuffer) {
             // Should only get here from a direct draw, in which case base should be 0 and any
             // offset needs to be embedded in the BindBufferInfo by caller.
             SkASSERT(base == 0);
-            fDispatcher->drawIndexed(fPrimitiveType, 0, fFixedVertexCount, 0);
+            fDispatcher->drawIndexed(fPrimitiveType, 0, realVertexCount, 0);
         } else {
             // 'base' offsets accumulated vertex data from another DrawWriter across a state change.
-            fDispatcher->draw(fPrimitiveType, base, fFixedVertexCount);
+            fDispatcher->draw(fPrimitiveType, base, realVertexCount);
         }
+    }
+
+    if (fFixedVertexCount <= 0) {
+        // Reset to 0 to start re-accumulating the max number of vertices to draw on next push
+        fFixedVertexCount = 0;
     }
 }
 

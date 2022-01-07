@@ -144,4 +144,28 @@ void DrawBufferManager::transferToCommandBuffer(CommandBuffer* commandBuffer) {
     fUsedBuffers.clear();
 }
 
+BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
+                                                  InitializeBufferFn initFn,
+                                                  BufferSizeFn sizeFn) {
+    uintptr_t key = reinterpret_cast<uintptr_t>(initFn);
+    auto cachedBuffer = fStaticBuffers.find(key);
+    if (cachedBuffer != fStaticBuffers.end()) {
+        return {cachedBuffer->second.get(), 0};
+    }
+
+    // Create a new one and add it to the DBM
+    // TODO: These should probably be REsourceProvider cached, but that requires multithread safety
+    // since multiple recordings may want to init the buffer at the same time.
+    size_t size = sizeFn();
+    sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(size, type, PrioritizeGpuReads::kNo);
+    if (!buffer) {
+        return {nullptr, 0};
+    }
+
+    BindBufferInfo bindInfo = {buffer.get(), 0};
+    initFn(VertexWriter(map_offset(bindInfo)), size);
+    fStaticBuffers.insert({key, buffer});
+    return bindInfo;
+}
+
 } // namespace skgpu

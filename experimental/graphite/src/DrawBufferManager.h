@@ -9,9 +9,11 @@
 #define skgpu_DrawBufferManager_DEFINED
 
 #include "experimental/graphite/src/DrawTypes.h"
+#include "experimental/graphite/src/ResourceTypes.h"
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/BufferWriter.h"
 
+#include <unordered_map>
 #include <vector>
 
 namespace skgpu {
@@ -32,6 +34,10 @@ public:
     // Finalizes all buffers and transfers ownership of them to the CommandBuffer.
     void transferToCommandBuffer(CommandBuffer*);
 
+    using BufferSizeFn = size_t(*)();
+    using InitializeBufferFn = void(*)(skgpu::VertexWriter, size_t bufferSize);
+    BindBufferInfo getStaticBuffer(BufferType type, InitializeBufferFn, BufferSizeFn);
+
 private:
     ResourceProvider* fResourceProvider;
 
@@ -47,6 +53,8 @@ private:
     size_t fUniformStartAlignment;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
+    // TODO: How does this play with transferToCommandBuffer?
+    std::unordered_map<uintptr_t, sk_sp<Buffer>> fStaticBuffers;
 };
 
 } // namespace skgpu

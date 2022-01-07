@@ -28,12 +28,27 @@ public:
                          PatchAttribs attribs = PatchAttribs::kNone)
             : PathTessellator(infinitySupport, attribs) {}
 
-    int patchPreallocCount(int totalCombinedPathVerbCnt) const final;
+    int patchPreallocCount(int totalCombinedPathVerbCnt) const final {
+        return PatchPreallocCount(totalCombinedPathVerbCnt);
+    }
+    static int PatchPreallocCount(int totalCombinedPathVerbCnt);
 
     void writePatches(PatchWriter& patchWriter,
                       int maxTessellationSegments,
                       const SkMatrix& shaderMatrix,
-                      const PathDrawList& pathDrawList) final;
+                      const PathDrawList& pathDrawList) final {
+        int fixedResolveLevel = WritePatches(patchWriter, maxTessellationSegments, fAttribs, shaderMatrix, pathDrawList);
+        fFixedResolveLevel = SkTPin(fixedResolveLevel,
+                                    fFixedResolveLevel,
+                                    int(kMaxFixedResolveLevel));
+    }
+
+    // For DrawWriter and RenderStep to not need to create a tessellator or deal with vertex chunks
+    static int WritePatches(PatchWriter& patchWriter,
+                            int maxTessellationSegments,
+                            PatchAttribs attribs,
+                            const SkMatrix& shaderMatrix,
+                            const PathDrawList& pathDrawList);
 
     // Size of the vertex buffer to use when rendering with a fixed count shader.
     constexpr static int FixedVertexBufferSize(int maxFixedResolveLevel) {
