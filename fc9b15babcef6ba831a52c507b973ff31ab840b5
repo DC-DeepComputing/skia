@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e48d1e4_6c0dc95c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-07T14:56:54Z",
+      "side": 1,
+      "message": "So I\u0027m trying to see if we can get a Gen12 bot to add to our test lab. With the issues of intel MSAA in the past, I am a little hesitant to enable it without anyway for us to test or verify things look good.",
+      "revId": "fc9b15babcef6ba831a52c507b973ff31ab840b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "add4d73f_e0d52234",
@@ -31,6 +48,30 @@
       "writtenOn": "2022-01-07T14:13:35Z",
       "side": 1,
       "message": "Hmm when I search online most thinks label Ice Lake as 10th Gen intel chip, https://en.wikipedia.org/wiki/Ice_Lake_(microprocessor)? I know in our code we have a comment that it is 11th but is that accurate, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/gl/GrGLUtil.h;l\u003d187?\n\nIf this is really mean to just enable this for 12+ do we need to add another GrGLRenderer::kIntelRocketLake (i.e. the real Gen11)?",
+      "range": {
+        "startLine": 4233,
+        "startChar": 45,
+        "endLine": 4233,
+        "endChar": 58
+      },
+      "revId": "fc9b15babcef6ba831a52c507b973ff31ab840b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d58a85c7_61e034a9",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-07T14:56:54Z",
+      "side": 1,
+      "message": "Ahh nevermind I was mixing up the cpu Gens and Gpu gens. Ice Lake does use an 11th Gen gpu architecture.",
+      "parentUuid": "add4d73f_e0d52234",
       "range": {
         "startLine": 4233,
         "startChar": 45,
