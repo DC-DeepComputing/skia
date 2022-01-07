@@ -46,6 +46,23 @@
       },
       "revId": "a1d666009256b10cb0bc248aa5c45bec295cdeda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8065c26_30580afd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-07T15:42:30Z",
+      "side": 1,
+      "message": "We should also add a test for unnamed interface blocks. This should fail:\n\n  IB1 { float f; };\n  IB2 { float f; };\n\nHopefully this is already caught when we add `f` to the SymbolTable.",
+      "revId": "a1d666009256b10cb0bc248aa5c45bec295cdeda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
