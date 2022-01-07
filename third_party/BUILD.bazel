@@ -208,6 +208,7 @@ cc_library(
 cc_library(
     name = "musl_compat",
     srcs = [
+        "musl_compat/check.c",
         "musl_compat/locale.c",
     ],
 )
