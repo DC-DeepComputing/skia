@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "363756fa_04e7898c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-07T17:09:39Z",
+      "side": 1,
+      "message": "Looks like the bad GMs were caused by the relaxed precision out param issue. Updated the drawVertices specs to use float4 instead of half4.",
+      "revId": "c23081bb079f73db6a0d9495100bf67ce2cd804d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
