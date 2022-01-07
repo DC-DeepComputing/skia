@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c705c0bf_0da4e31d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-01-07T07:14:01Z",
+      "side": 1,
+      "message": "Hi Greg, this CL tries to enable MSAA for new Intel gpus like Gen 12th Graphics. With MSAA enabled, it is noticed that new Intel gpus has an obvious performance improvement because of using some fast MSAA algorithms. The performance data is attached in the listed bug entry.\nThanks.",
+      "revId": "fc9b15babcef6ba831a52c507b973ff31ab840b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
