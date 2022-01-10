@@ -63,19 +63,6 @@ private:
     using INHERITED = SkXfermode;
 };
 
-const char* SkBlendMode_Name(SkBlendMode mode) {
-    SkASSERT((unsigned) mode <= (unsigned)SkBlendMode::kLastMode);
-    const char* gModeStrings[] = {
-        "Clear", "Src", "Dst", "SrcOver", "DstOver", "SrcIn", "DstIn",
-        "SrcOut", "DstOut", "SrcATop", "DstATop", "Xor", "Plus",
-        "Modulate", "Screen", "Overlay", "Darken", "Lighten", "ColorDodge",
-        "ColorBurn", "HardLight", "SoftLight", "Difference", "Exclusion",
-        "Multiply", "Hue", "Saturation", "Color",  "Luminosity"
-    };
-    return gModeStrings[(int)mode];
-    static_assert(SK_ARRAY_COUNT(gModeStrings) == (size_t)SkBlendMode::kLastMode + 1, "mode_count");
-}
-
 sk_sp<SkXfermode> SkXfermode::Make(SkBlendMode mode) {
     if ((unsigned)mode > (unsigned)SkBlendMode::kLastMode) {
         // report error
@@ -149,4 +136,3 @@ const GrXPFactory* SkBlendMode_AsXPFactory(SkBlendMode mode) {
     return GrCustomXfermode::Get(mode);
 }
 #endif
-
