@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "711f2214_f8e2614b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-10T16:27:26Z",
+      "side": 1,
+      "message": "I noticed I\u0027d forgotten to reset Device\u0027s tracking when it moved on to its next DrawPass. This state is all specific to what\u0027s going into the current list.",
+      "revId": "9300d84460a237c40cdd1f5403f321e83d984dad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
