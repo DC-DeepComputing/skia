@@ -25,6 +25,15 @@ class SkPath;
 class SkPathEffect;
 class SkShader;
 
+enum class Mapping : uint8_t;
+
+class SkPaintParamsKey;
+
+namespace skgpu {
+    class ShaderCodeDictionary;
+    class UniformData;
+};
+
 /** \class SkPaint
     SkPaint controls options applied when drawing. SkPaint collects all
     options outside of the SkCanvas clip and SkCanvas matrix.
@@ -37,6 +46,7 @@ class SkShader;
 */
 class SK_API SkPaint {
 public:
+    void toCode(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const;
 
     /** Constructs SkPaint with default values.
 

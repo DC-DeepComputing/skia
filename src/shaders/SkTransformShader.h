@@ -15,6 +15,10 @@
 // coordinates associated with each vertex change with each new triangle.
 class SkTransformShader : public SkUpdatableShader {
 public:
+    int toCodeS(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     explicit SkTransformShader(const SkShaderBase& shader);
 
     // Adds instructions to use the mapping stored in the uniforms represented by fMatrix. After

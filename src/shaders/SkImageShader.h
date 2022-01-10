@@ -15,6 +15,23 @@
 
 class SkImageShader : public SkShaderBase {
 public:
+    struct ImageData {
+        bool operator==(const ImageData& rhs) const {
+            return fTileModes[0] == rhs.fTileModes[0] &&
+                   fTileModes[1] == rhs.fTileModes[1];
+        }
+        bool operator!=(const ImageData& rhs) const { return !(*this == rhs); }
+
+        SkTileMode fTileModes[2];
+    };
+
+    static int Encode1(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, const ImageData&);
+    static ImageData Decode(int code);
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+    static void Dump(const uint32_t* data, int numIntsAccessible);
+#endif
+    int toCodeS(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override;
+
     static sk_sp<SkShader> Make(sk_sp<SkImage>,
                                 SkTileMode tmx,
                                 SkTileMode tmy,

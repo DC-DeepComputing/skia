@@ -45,6 +45,10 @@
 */
 class SkGaussianColorFilter : public SkColorFilterBase {
 public:
+    void toCodeCF(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     SkGaussianColorFilter() : INHERITED() {}
 
 #if SK_SUPPORT_GPU

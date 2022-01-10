@@ -10,7 +10,53 @@
 #include "experimental/graphite/src/Renderer.h"
 #include "src/gpu/BufferWriter.h"
 
+#include "experimental/graphite/include/Encoding.h"
+#include "experimental/graphite/src/ContextUtils.h"
+#include "include/private/SkPaintParamsKey.h"
+
 namespace skgpu {
+
+#if 0
+void PaintParams::toCodeAndUnis(ShaderCodeDictionary* dict,
+                                Mapping mapping,
+                                SkPaintParamsKey* key,
+                                std::vector<sk_sp<UniformData>>* uniforms) const {
+
+    if (fShader) {
+        fShader->toCodeS(dict, mapping, key, uniforms);
+    }
+//    if (fColorFilter) {
+//        fColorFilter->toCodeCF(dict, mapping, code);
+//    }
+//    if (fBlender) {
+//        fBlender->toCodeB(dict, mapping, code);
+//    } else
+
+    {
+        BlendMode::ToCodeB(dict, mapping, key, uniforms, fBlendMode);
+    }
+
+    SkASSERT(key->numInts() > 0);
+}
+
+PaintParams::PaintParams(const SkColor4f& color,
+                         SkBlendMode blendMode,
+                         sk_sp<SkShader> shader)
+        : fColor(color)
+        , fBlendMode(blendMode)
+        , fShader(std::move(shader)) {}
+
+PaintParams::PaintParams(const SkPaint& paint)
+        : fColor(paint.getColor4f())
+        , fBlendMode(paint.getBlendMode_or(SkBlendMode::kSrcOver))
+        , fShader(paint.refShader()) {}
+
+PaintParams::PaintParams(const PaintParams& other) = default;
+PaintParams::~PaintParams() = default;
+PaintParams& PaintParams::operator=(const PaintParams& other) = default;
+
+sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
+#endif
 
 const Transform& DrawList::deduplicateTransform(const Transform& localToDevice) {
     // TODO: This is a pretty simple deduplication strategy and doesn't take advantage of the stack
