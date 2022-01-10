@@ -65,6 +65,14 @@ public:
 
     virtual void onWritePixels(const SkPixmap&, int x, int y) = 0;
 
+#ifdef SK_GRAPHITE_ENABLED
+    // Don't use outside of skia tests. For now this is a temporary api so we can do read pixels in
+    // early phases of graphite
+    virtual bool onReadPixels(skgpu::Context*, const SkPixmap& dst, int srcX, int srcY) {
+        return false;
+    }
+#endif
+
     /**
      * Default implementation does a rescale/read and then calls the callback.
      */

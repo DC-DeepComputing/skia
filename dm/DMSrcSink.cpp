@@ -2179,7 +2179,7 @@ Result GraphiteSink::draw(const Src& src,
             return result;
         }
 
-        if (!surface->readPixels(*dst, 0, 0)) {
+        if (!surface->readPixels(context.get(), *dst, 0, 0)) {
             return Result::Fatal("Could not readback from surface.");
         }
     }
