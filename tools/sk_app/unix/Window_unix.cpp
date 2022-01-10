@@ -78,8 +78,10 @@ bool Window_unix::initWindow(Display* display) {
         GLX_STENCIL_SIZE, 8,
         None
     };
+    SkDebugf("alpha\n");
     SkASSERT(nullptr == fVisualInfo);
     if (fRequestedDisplayParams.fMSAASampleCount > 1) {
+        SkDebugf("beta\n");
         static const GLint kChooseFBConifgAttCnt = SK_ARRAY_COUNT(kChooseFBConfigAtt);
         GLint msaaChooseFBConfigAtt[kChooseFBConifgAttCnt + 4];
         memcpy(msaaChooseFBConfigAtt, kChooseFBConfigAtt, sizeof(kChooseFBConfigAtt));
@@ -109,6 +111,8 @@ bool Window_unix::initWindow(Display* display) {
         }
     }
     if (nullptr == fVisualInfo) {
+        SkDebugf("gamma\n");
+        SkDebugf("display %p, screen %d\n", fDisplay, DefaultScreen(fDisplay));
         int n;
         fFBConfig = glXChooseFBConfig(fDisplay, DefaultScreen(fDisplay), kChooseFBConfigAtt, &n);
         if (n > 0) {

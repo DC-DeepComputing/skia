@@ -40,11 +40,11 @@ def _clang_impl(ctx):
         abi_libc_version = "unknown",
         abi_version = "unknown",
         action_configs = action_configs,
-        builtin_sysroot = EXTERNAL_TOOLCHAIN + "/usr",
+        builtin_sysroot = EXTERNAL_TOOLCHAIN,
         compiler = "clang",
         host_system_name = "local",
         target_cpu = "k8",
-        target_libc = "musl",
+        target_libc = "glibc-2.31",
         target_system_name = "local",
         toolchain_identifier = "clang-toolchain",
     )
@@ -194,6 +194,9 @@ def _make_default_flags():
         flag_groups = [
             flag_group(
                 flags = [
+                    # We do not want clang to search in absolute paths for files. This makes
+                    # Bazel think we are using an outside resource.
+                    "-no-canonical-prefixes",
                     # THIS ORDER MATTERS GREATLY. If these are in the wrong order, the
                     # #include_next directives will walk off the end of the specified system
                     # folders here and look in the absolute path that happens to contain
@@ -203,9 +206,11 @@ def _make_default_flags():
                     "-isystem",
                     EXTERNAL_TOOLCHAIN + "/include/c++/v1",
                     "-isystem",
+                    EXTERNAL_TOOLCHAIN + "/usr/include",
+                    "-isystem",
                     EXTERNAL_TOOLCHAIN + "/lib/clang/13.0.0/include",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/usr/include/x86_64-linux-musl",
+                    EXTERNAL_TOOLCHAIN + "/usr/include/x86_64-linux-gnu",
                 ],
             ),
         ],
@@ -222,12 +227,6 @@ def _make_default_flags():
                     "-std=c++14",
                     "-Wno-c++17-extensions",
                     "-Wno-psabi",  # noisy
-                    # This define allows libc++ to work with musl. They were discovered by
-                    # trying to compile without them, reading errors and source code, e.g.
-                    # https://github.com/llvm/llvm-project/blob/f4c1258d5633fcf06385ff3fd1f4bf57ab971964/libcxx/include/__locale#L513
-                    # https://github.com/llvm/llvm-project/blob/f4c1258d5633fcf06385ff3fd1f4bf57ab971964/libcxx/include/__config#L1155
-                    # https://github.com/llvm/llvm-project/blob/f4c1258d5633fcf06385ff3fd1f4bf57ab971964/libcxx/include/__support/musl/xlocale.h
-                    "-D_LIBCPP_HAS_MUSL_LIBC",
                 ],
             ),
         ],
@@ -239,20 +238,19 @@ def _make_default_flags():
             flag_group(
                 flags = [
                     "-fuse-ld=lld",
-                    # This is the path to libc.a and other libraries.
-                    "-L" + EXTERNAL_TOOLCHAIN + "/usr/lib/x86_64-linux-musl",
-                    "-L" + EXTERNAL_TOOLCHAIN + "/lib",
+                    # This is the path to libc.a
+                    #"-L" + EXTERNAL_TOOLCHAIN + "/lib",
                     # We chose to use the llvm runtime, not the gcc one because it is already
                     # included in the clang binary
                     "--rtlib=compiler-rt",
-                    # In order to run our executables, they need to be statically linked,
-                    # otherwise, the libc++.so and friends will not be found if they are
-                    # not installed on the user's machine.
-                    "-static",
                     "-std=c++14",
-                    "-lc++abi",
-                    "-lunwind",
-                    "-lc++",
+                    EXTERNAL_TOOLCHAIN + "/lib/libc++.a",
+                    EXTERNAL_TOOLCHAIN + "/lib/libc++abi.a",
+                    EXTERNAL_TOOLCHAIN + "/lib/libunwind.a",
+                    # Dynamically Link in the other parts of glibc (not needed in glibc 2.34+)
+                    "-lpthread",
+                    "-lm",
+                    "-ldl",
                 ],
             ),
         ],
@@ -313,7 +311,7 @@ def _make_diagnostic_flags():
             "diagnostic",
             enabled = False,
             flag_sets = [
-                cxx_diagnostic,
+                #cxx_diagnostic,
                 link_diagnostic,
             ],
         ),
