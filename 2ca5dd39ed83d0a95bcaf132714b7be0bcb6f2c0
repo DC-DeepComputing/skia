@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2018e67_dd32c923",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-10T20:20:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb6786be_e0855c25",
+      "range": {
+        "startLine": 443,
+        "startChar": 31,
+        "endLine": 443,
+        "endChar": 38
+      },
+      "revId": "2ca5dd39ed83d0a95bcaf132714b7be0bcb6f2c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84163249_0b27457d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-10T20:09:16Z",
       "side": 1,
       "message": "newDigest ?",
+      "range": {
+        "startLine": 450,
+        "startChar": 34,
+        "endLine": 450,
+        "endChar": 40
+      },
+      "revId": "2ca5dd39ed83d0a95bcaf132714b7be0bcb6f2c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd8edb7_c8dba2f3",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-10T20:20:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84163249_0b27457d",
       "range": {
         "startLine": 450,
         "startChar": 34,
