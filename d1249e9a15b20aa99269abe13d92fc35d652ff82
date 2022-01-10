@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b2fa71_5d49a74b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-10T20:53:40Z",
+      "side": 1,
+      "message": "While I could probably stare at this for a while and come up with something to tweak, this is already so much more straight forward and cleaner than I thought it would be.",
+      "revId": "d1249e9a15b20aa99269abe13d92fc35d652ff82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
