@@ -455,7 +455,6 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
     bool get_option_graphite_api(const char*                               optionKey,
                                  SkCommandLineConfigGraphite::ContextType* outContextType) const {
-        using ContextType = skiatest::graphite::ContextFactory::ContextType;
 
         SkString* optionValue = fOptionsMap.find(SkString(optionKey));
         if (optionValue == nullptr) {
@@ -463,19 +462,19 @@ public:
         }
 #ifdef SK_VULKAN
         if (optionValue->equals("vulkan")) {
-            *outContextType = ContextType::kVulkan;
+            *outContextType = SkCommandLineConfigGraphite::ContextType::kVulkan;
             return true;
         }
 #endif
 #ifdef SK_METAL
         if (optionValue->equals("metal")) {
-            *outContextType = ContextType::kMetal;
+            *outContextType = SkCommandLineConfigGraphite::ContextType::kMetal;
             return true;
         }
 #endif
 #ifdef SK_DIRECT3D
         if (optionValue->equals("direct3d")) {
-            *outContextType = ContextType::kDirect3D;
+            *outContextType = SkCommandLineConfigGraphite::ContextType::kDirect3D;
             return true;
         }
 #endif
