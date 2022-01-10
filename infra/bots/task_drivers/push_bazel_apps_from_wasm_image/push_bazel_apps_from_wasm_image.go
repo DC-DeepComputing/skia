@@ -151,6 +151,8 @@ func main() {
 	}
 }
 
+// PUT IN A UTIL!
+//
 // buildPush pushes the app in the given skia-infra folder using `make bazel_release_ci`.
 // By convention, all of these apps should have the k8s deployment name be the same as the app
 // name and be built using the same Make target.
@@ -184,6 +186,8 @@ func buildPush(ctx context.Context, appName, wasmProductsDir, checkoutDir, skiaR
 // https://github.com/google/skia-buildbot/blob/cd593cf6c534ba7a1bd2d88a488d37840663230d/docker_pushes_watcher/go/docker_pushes_watcher/main.go#L335
 // The tag will be used to determine if the image should be updated, as such, it is the
 // skia revision that was used to build the wasm components.
+
+// Update to use new docker.PublicToTopic
 func publishToTopic(ctx context.Context, image, tag string, topic *pubsub.Topic) error {
 	return td.Do(ctx, td.Props(fmt.Sprintf("Publish pubsub msg to %s", docker_pubsub.TOPIC)).Infra(), func(ctx context.Context) error {
 		b, err := json.Marshal(&docker_pubsub.BuildInfo{
