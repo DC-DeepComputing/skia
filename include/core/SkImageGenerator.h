@@ -186,6 +186,8 @@ protected:
     // returns nullptr
     virtual GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
                                                  const SkIPoint&, GrMipmapped, GrImageTexGenPolicy);
+
+    virtual GrSurfaceOrigin origin() const { return kTopLeft_GrSurfaceOrigin; }
 #endif
 
 private:
