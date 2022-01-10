@@ -12,12 +12,19 @@
 
 void inline ignoreResult(bool ) {}
 
+// clamps the point to the nearest 16th of a pixel
+static void sanitize_point(const SkPoint& in, SkPoint* out) {
+    out->fX = SkScalarRoundToScalar(16.f*in.fX)*0.0625f;
+    out->fY = SkScalarRoundToScalar(16.f*in.fY)*0.0625f;
+}
+
 DEF_FUZZ(PolyUtils, fuzz) {
     int count;
     fuzz->nextRange(&count, 0, 512);
     SkAutoSTMalloc<64, SkPoint> polygon(count);
     for (int index = 0; index < count; ++index) {
         fuzz->next(&polygon[index].fX, &polygon[index].fY);
+        sanitize_point(polygon[index], &polygon[index]);
     }
     SkRect bounds;
     bounds.setBoundsCheck(polygon, count);
