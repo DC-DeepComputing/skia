@@ -186,6 +186,10 @@ protected:
     // returns nullptr
     virtual GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
                                                  const SkIPoint&, GrMipmapped, GrImageTexGenPolicy);
+
+    // All SkImageGenerators produce textures and views that use kTopLeft_GrSurfaceOrigin except
+    // for GrAHarwareBufferImageGenerator. In that case the origin is passed in by the client.
+    virtual GrSurfaceOrigin origin() const { return kTopLeft_GrSurfaceOrigin; }
 #endif
 
 private:
