@@ -250,6 +250,13 @@ bool SkSurface::readPixels(const SkBitmap& bitmap, int srcX, int srcY) {
     return bitmap.peekPixels(&pm) && this->readPixels(pm, srcX, srcY);
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+bool SkSurface::readPixels(skgpu::Context* context, const SkBitmap& bitmap, int srcX, int srcY) {
+    SkPixmap pm;
+    return bitmap.peekPixels(&pm) && asSB(this)->onReadPixels(context, pm, srcX, srcY);
+}
+#endif
+
 void SkSurface::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                           const SkIRect& srcRect,
                                           RescaleGamma rescaleGamma,
