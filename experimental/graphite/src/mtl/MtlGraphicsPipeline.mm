@@ -159,12 +159,13 @@ SkSL::String get_sksl_fs(const Context* context,
                          bool* writesColor) {
     SkSL::String sksl;
 
-    Combination combo;
+    SkPaintParamsKey key;
     auto entry = context->priv().shaderCodeDictionary()->lookup(desc.paintParamsID());
     if (entry) {
-        combo = entry->combo();
+        key = entry->paintParamsKey();
     }
 
+#if 0
     // Typedefs needed for painting
     auto paintUniforms = GetUniforms(combo.fShaderType);
     if (!paintUniforms.empty()) {
@@ -179,6 +180,7 @@ SkSL::String get_sksl_fs(const Context* context,
             "}\n";
 
     *writesColor = combo.fShaderType != ShaderCombo::ShaderType::kNone;
+#endif
     return sksl;
 }
 

@@ -1,0 +1,54 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "src/core/SkPaintParamsKey.h"
+
+#include "include/private/SkSLString.h"
+#include "src/core/SkKeyHelpers.h"
+
+#ifdef SK_DEBUG
+typedef void (*Dumper)(const SkPaintParamsKey&, uint32_t headerOffset);
+
+static Dumper gDumpers[kCodeSnippetIDCount] = {
+        SolidShaderBlock::Dump,       // kNoneShader
+        GradientShaderBlocks::Dump,   // kLinearGradientShader
+        GradientShaderBlocks::Dump,   // kRadialGradientShader
+        GradientShaderBlocks::Dump,   // kSweepGradientShader
+        GradientShaderBlocks::Dump,   // kConicalGradientShader
+
+        BlendModeBlock::Dump,         // kSimpleBlendMode
+};
+
+// This just iterates over the top-level blocks calling DumpBlock.
+void SkPaintParamsKey::dump() const {
+    SkDebugf("SkPaintParamsKey %dB:\n", this->sizeInBytes());
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        (gDumpers[(int) codeSnippetID])(*this, curHeaderOffset);
+
+        curHeaderOffset += blockSize;
+    }
+}
+#endif
+
+SkSL::String SkPaintParamsKey::toSkSL() const {
+    SkSL::String result;
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        // Call the block's toSkSL function
+
+        curHeaderOffset += blockSize;
+    }
+
+    return result;
+}

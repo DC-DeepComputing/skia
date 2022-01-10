@@ -28,7 +28,7 @@ class TextureInfo;
 namespace mtl { struct BackendContext; }
 
 struct ShaderCombo {
-    enum class ShaderType {
+    enum class ShaderType : uint8_t {
         kNone, // does not modify color buffer, e.g. depth and/or stencil only
         kSolidColor,
         kLinearGradient,

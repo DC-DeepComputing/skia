@@ -20,28 +20,6 @@ class PaintParams;
 class Uniform;
 class UniquePaintParamsID;
 
-// A single, fully specified combination resulting from a PaintCombo (i.e., it corresponds to a
-// specific skgpu::PaintParams object (a subset of SkPaint))
-struct Combination {
-    bool operator==(const Combination& other) const {
-        return fShaderType == other.fShaderType &&
-               fTileMode == other.fTileMode &&
-               fBlendMode == other.fBlendMode;
-    }
-
-    uint32_t key() const {
-        return (static_cast<int>(fShaderType) << 9) | // 6 values  -> 3 bits
-               (static_cast<int>(fTileMode)   << 7) | // 4 values  -> 2 bits
-               (static_cast<int>(fBlendMode)  << 2);  // 29 values -> 5 bits
-    }
-
-    ShaderCombo::ShaderType fShaderType = ShaderCombo::ShaderType::kNone;
-    // Tile mode and blend mode are ignored if shader type is kNone; tile mode is ignored if
-    // shader type is kSolidColor.
-    SkTileMode fTileMode = SkTileMode::kClamp;
-    SkBlendMode fBlendMode = SkBlendMode::kSrc;
-};
-
 class UniformData : public SkRefCnt {
 public:
 
