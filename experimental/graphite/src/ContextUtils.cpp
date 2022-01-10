@@ -16,6 +16,7 @@
 #include "experimental/graphite/src/UniformManager.h"
 #include "experimental/graphite/src/UniquePaintParamsID.h"
 #include "include/core/SkPaint.h"
+#include "src/core/SkKeyHelpers.h"
 
 namespace skgpu {
 
@@ -207,7 +208,7 @@ sk_sp<UniformData> UniformData::Make(int count,
 
 std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* context,
                                                                  const PaintParams& p) {
-    Combination combo;
+    SkPaintParamsKey key;
     sk_sp<UniformData> uniforms;
 
     if (auto s = p.shader()) {
@@ -230,8 +231,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
                 expand_stops(gradInfo.fColorCount, offsets);
 
-                combo.fShaderType = ShaderCombo::ShaderType::kLinearGradient;
-                combo.fTileMode = gradInfo.fTileMode;
+                GradientShaderBlocks::AddToKey(&key, nullptr, type, gradInfo.fTileMode);
 
                 uniforms = make_linear_gradient_uniform_data(gradInfo.fPoint[0],
                                                              gradInfo.fPoint[1],
@@ -242,8 +242,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
                 expand_stops(gradInfo.fColorCount, offsets);
 
-                combo.fShaderType = ShaderCombo::ShaderType::kRadialGradient;
-                combo.fTileMode = gradInfo.fTileMode;
+                GradientShaderBlocks::AddToKey(&key, nullptr, type, gradInfo.fTileMode);
 
                 uniforms =  make_radial_gradient_uniform_data(gradInfo.fPoint[0],
                                                               gradInfo.fRadius[0],
@@ -254,8 +253,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
                 expand_stops(gradInfo.fColorCount, offsets);
 
-                combo.fShaderType = ShaderCombo::ShaderType::kSweepGradient;
-                combo.fTileMode = gradInfo.fTileMode;
+                GradientShaderBlocks::AddToKey(&key, nullptr, type, gradInfo.fTileMode);
 
                 uniforms = make_sweep_gradient_uniform_data(gradInfo.fPoint[0],
                                                             color4fs,
@@ -265,8 +263,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
                 expand_stops(gradInfo.fColorCount, offsets);
 
-                combo.fShaderType = ShaderCombo::ShaderType::kConicalGradient;
-                combo.fTileMode = gradInfo.fTileMode;
+                GradientShaderBlocks::AddToKey(&key, nullptr, type, gradInfo.fTileMode);
 
                 uniforms = make_conical_gradient_uniform_data(gradInfo.fPoint[0],
                                                               gradInfo.fPoint[1],
@@ -280,52 +277,50 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
                 // the paint color
             case SkShader::GradientType::kNone_GradientType:
             default:
-                combo.fShaderType = ShaderCombo::ShaderType::kSolidColor;
-                combo.fTileMode = SkTileMode::kClamp;
+                SolidShaderBlock::AddToKey(&key, nullptr);
 
                 uniforms = make_solid_uniform_data(p.color());
                 break;
         }
     } else {
         // Solid colored paint
-        combo.fShaderType = ShaderCombo::ShaderType::kSolidColor;
-        combo.fTileMode = SkTileMode::kClamp;
+        SolidShaderBlock::AddToKey(&key, nullptr);
 
         uniforms = make_solid_uniform_data(p.color());
     }
 
-    combo.fBlendMode = p.blendMode();
+    BlendModeBlock::AddToKey(&key, nullptr, p.blendMode());
 
-    auto entry = context->priv().shaderCodeDictionary()->findOrCreate(combo);
+    auto entry = context->priv().shaderCodeDictionary()->findOrCreate(key);
 
     return { entry->uniqueID(), std::move(uniforms) };
 }
 
-SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType shaderType) {
-    switch (shaderType) {
-        case ShaderCombo::ShaderType::kNone:
+SkSpan<const Uniform> GetUniforms(CodeSnippetID snippetID) {
+    switch (snippetID) {
+        case CodeSnippetID::kStencilOnlyDraw:
             return {nullptr, 0};
-        case ShaderCombo::ShaderType::kLinearGradient:
+        case CodeSnippetID::kLinearGradientShader:
             return SkMakeSpan(kGradientUniforms, kNumGradientUniforms);
-        case ShaderCombo::ShaderType::kRadialGradient:
-        case ShaderCombo::ShaderType::kSweepGradient:
-        case ShaderCombo::ShaderType::kConicalGradient:
-        case ShaderCombo::ShaderType::kSolidColor:
+        case CodeSnippetID::kNoneShader1:
+        case CodeSnippetID::kRadialGradientShader:
+        case CodeSnippetID::kSweepGradientShader:
+        case CodeSnippetID::kConicalGradientShader:
         default:
             return SkMakeSpan(kSolidUniforms, kNumSolidUniforms);
     }
 }
 
-const char* GetShaderSkSL(ShaderCombo::ShaderType shaderType) {
-    switch (shaderType) {
-        case ShaderCombo::ShaderType::kNone:
+const char* GetShaderSkSL(CodeSnippetID snippetID) {
+    switch (snippetID) {
+        case CodeSnippetID::kStencilOnlyDraw:
             return kNoneSkSL;
-        case ShaderCombo::ShaderType::kLinearGradient:
+        case CodeSnippetID::kLinearGradientShader:
             return kGradientSkSL;
-        case ShaderCombo::ShaderType::kRadialGradient:
-        case ShaderCombo::ShaderType::kSweepGradient:
-        case ShaderCombo::ShaderType::kConicalGradient:
-        case ShaderCombo::ShaderType::kSolidColor:
+        case CodeSnippetID::kNoneShader1:
+        case CodeSnippetID::kRadialGradientShader:
+        case CodeSnippetID::kSweepGradientShader:
+        case CodeSnippetID::kConicalGradientShader:
         default:
             return kSolidColorSkSL;
     }

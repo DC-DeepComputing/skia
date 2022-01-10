@@ -23,55 +23,6 @@ namespace skgpu::mtl {
 
 namespace {
 
-SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
-    SkSL::String result;
-
-    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
-
-    int offset = 0;
-    for (auto u : uniforms) {
-        int count = u.count() ? u.count() : 1;
-        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
-        // machinery
-        result.appendf("    layout(offset=%d) ", offset);
-        switch (u.type()) {
-            case SLType::kFloat4:
-                result.append("float4");
-                offset += 16 * count;
-                break;
-            case SLType::kFloat2:
-                result.append("float2");
-                offset += 8 * count;
-                break;
-            case SLType::kFloat:
-                result.append("float");
-                offset += 4 * count;
-                break;
-            case SLType::kFloat4x4:
-                result.append("float4x4");
-                offset += 64 * count;
-                break;
-            case SLType::kHalf4:
-                result.append("half4");
-                offset += 8 * count;
-                break;
-            default:
-                SkASSERT(0);
-        }
-
-        result.append(" ");
-        result.append(u.name());
-        if (u.count()) {
-            result.append("[");
-            result.append(std::to_string(u.count()));
-            result.append("]");
-        }
-        result.append(";\n");
-    }
-    result.append("};\n\n");
-    return result;
-}
-
 SkSL::String emit_SkSL_attributes(SkSpan<const Attribute> vertexAttrs,
                                   SkSpan<const Attribute> instanceAttrs) {
     SkSL::String result;
@@ -141,7 +92,7 @@ SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
 
     // Uniforms needed by RenderStep
     if (step->numUniforms() > 0) {
-        sksl += emit_SKSL_uniforms(1, "Step", step->uniforms());
+        sksl += EmitSKSLUniforms(1, "Step", step->uniforms());
     }
 
     // Vertex shader function declaration
@@ -157,29 +108,14 @@ SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
 SkSL::String get_sksl_fs(const Context* context,
                          const GraphicsPipelineDesc& desc,
                          bool* writesColor) {
-    SkSL::String sksl;
-
-    Combination combo;
+    SkPaintParamsKey key;
     auto entry = context->priv().shaderCodeDictionary()->lookup(desc.paintParamsID());
     if (entry) {
-        combo = entry->combo();
+        key = entry->paintParamsKey();
     }
 
-    // Typedefs needed for painting
-    auto paintUniforms = GetUniforms(combo.fShaderType);
-    if (!paintUniforms.empty()) {
-        sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
-    }
+    return entry->toSkSL(writesColor);
 
-    sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
-    sksl += "void main() {\n"
-            "    half4 outColor;\n";
-    sksl += GetShaderSkSL(combo.fShaderType);
-    sksl += "    sk_FragColor = outColor;\n"
-            "}\n";
-
-    *writesColor = combo.fShaderType != ShaderCombo::ShaderType::kNone;
-    return sksl;
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
@@ -313,6 +249,55 @@ MTLVertexDescriptor* create_vertex_descriptor(const RenderStep* step) {
 }
 
 } // anonymous namespace
+
+SkSL::String EmitSKSLUniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
+    SkSL::String result;
+
+    result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+
+    int offset = 0;
+    for (auto u : uniforms) {
+        int count = u.count() ? u.count() : 1;
+        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
+        // machinery
+        result.appendf("    layout(offset=%d) ", offset);
+        switch (u.type()) {
+            case SLType::kFloat4:
+                result.append("float4");
+                offset += 16 * count;
+                break;
+            case SLType::kFloat2:
+                result.append("float2");
+                offset += 8 * count;
+                break;
+            case SLType::kFloat:
+                result.append("float");
+                offset += 4 * count;
+                break;
+            case SLType::kFloat4x4:
+                result.append("float4x4");
+                offset += 64 * count;
+                break;
+            case SLType::kHalf4:
+                result.append("half4");
+                offset += 8 * count;
+                break;
+            default:
+                SkASSERT(0);
+        }
+
+        result.append(" ");
+        result.append(u.name());
+        if (u.count()) {
+            result.append("[");
+            result.append(std::to_string(u.count()));
+            result.append("]");
+        }
+        result.append(";\n");
+    }
+    result.append("};\n\n");
+    return result;
+}
 
 enum ShaderType {
     kVertex_ShaderType = 0,
