@@ -38,6 +38,12 @@ class GrRecordingContext;
 class GrRenderTarget;
 enum GrSurfaceOrigin: int;
 
+#ifdef SK_GRAPHITE_ENABLED
+namespace skgpu {
+class Context;
+}
+#endif
+
 /** \class SkSurface
     SkSurface is responsible for managing the pixels that a canvas draws into. The pixels can be
     allocated either in CPU memory (a raster surface) or on the GPU (a GrRenderTarget surface).
@@ -762,6 +768,14 @@ public:
         example: https://fiddle.skia.org/c/@Surface_readPixels_3
     */
     bool readPixels(const SkBitmap& dst, int srcX, int srcY);
+
+#ifdef SK_GRAPHITE_ENABLED
+    // Don't use outside of skia tests. For now this is a temporary api so we can do read pixels in
+    // early phases of graphite. The graphite Context and Surface (and its associated Recorder) as
+    // not thread safe so this must be called where all these objects can safely be used on the
+    // current thread.
+    bool readPixels(skgpu::Context*, const SkBitmap& dst, int srcX, int srcY);
+#endif
 
     using AsyncReadResult = SkImage::AsyncReadResult;
 
