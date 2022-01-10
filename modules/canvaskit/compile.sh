@@ -280,7 +280,7 @@ echo "Compiling bitcode"
   --args="cc=\"${EMCC}\" \
   cxx=\"${EMCXX}\" \
   ar=\"${EMAR}\" \
-  extra_cflags=[\"-s\", \"WARN_UNALIGNED=1\", \"-s\", \"MAIN_MODULE=1\",
+  extra_cflags=[\"-s\", \"MAIN_MODULE=1\",
     \"-DSKNX_NO_SIMD\", \"-DSK_DISABLE_AAA\",
     \"-DSK_FORCE_8_BYTE_ALIGNMENT\",
     ${GN_GPU_FLAGS}
@@ -405,6 +405,7 @@ EMCC_DEBUG=1 ${EMCXX} \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
     -s NO_EXIT_RUNTIME=1 \
+    -sDYNAMIC_EXECUTION=0 \
     -s INITIAL_MEMORY=128MB \
     -s WASM=1 \
     $STRICTNESS \
