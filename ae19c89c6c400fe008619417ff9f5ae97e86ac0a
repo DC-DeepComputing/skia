@@ -16,6 +16,29 @@
       "message": "PTAL.",
       "revId": "ae19c89c6c400fe008619417ff9f5ae97e86ac0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526f6551_96e7b278",
+        "filename": "fuzz/FuzzPolyUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-10T16:29:38Z",
+      "side": 1,
+      "message": "I find this signature a little odd, given that in \u003d\u003d out in the only place it\u0027s used. Could we either update it to be explicitly in-place, or switch to\n\n   SkPoint sanitize_point(SkPoint p)\n   \nand then calling code would be:\n\n   polygon[index] \u003d sanitize_point(polygon[index])",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 1
+      },
+      "revId": "ae19c89c6c400fe008619417ff9f5ae97e86ac0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
