@@ -27,4 +27,3 @@ bool SkStrikeForGPU::CanDrawAsPath(const SkGlyph& glyph) {
 bool SkStrikeForGPU::FitsInAtlas(const SkGlyph& glyph) {
     return glyph.maxDimension() <= SkStrikeCommon::kSkSideTooBigForAtlas;
 }
-

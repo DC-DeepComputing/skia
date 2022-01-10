@@ -12,6 +12,7 @@
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsQuad.h"
 
+
 SkMask SkGlyph::mask() const {
     SkMask mask;
     mask.fImage = (uint8_t*)fImage;
@@ -349,3 +350,12 @@ void SkGlyph::ensureIntercepts(const SkScalar* bounds, SkScalar scale, SkScalar 
     }
     offsetResults(intercept, array, count);
 }
+
+SkGlyphDigest::SkGlyphDigest(size_t index, const SkGlyph& glyph)
+        : fPackedGlyphID{glyph.getPackedID().value()}
+        , fIndex{SkTo<uint32_t>(index)}
+        , fIsEmpty(glyph.isEmpty())
+        , fIsColor(glyph.isColor())
+        , fCanDrawAsMask{SkStrikeForGPU::CanDrawAsMask(glyph)}
+        , fCanDrawAsSDFT{SkStrikeForGPU::CanDrawAsSDFT(glyph)}
+        , fMaxDimension{(uint16_t)glyph.maxDimension()} {}
