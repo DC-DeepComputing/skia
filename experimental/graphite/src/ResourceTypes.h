@@ -56,6 +56,8 @@ enum class Ownership {
     kWrapped,
 };
 
+using GraphicsPipelineKey = std::vector<uint32_t>;
+
 };  // namespace skgpu
 
 #endif // skgpu_ResourceTypes_DEFINED
