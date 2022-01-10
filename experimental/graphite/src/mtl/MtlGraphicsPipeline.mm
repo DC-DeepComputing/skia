@@ -159,10 +159,10 @@ SkSL::String get_sksl_fs(const Context* context,
                          bool* writesColor) {
     SkSL::String sksl;
 
-    Combination combo;
+    SkPaintParamsKey key;
     auto entry = context->priv().shaderCodeDictionary()->lookup(desc.paintParamsID());
     if (entry) {
-        combo = entry->combo();
+        key = entry->paintParamsKey();
     }
 
     // Typedefs needed for painting
