@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e965bb82_c4041bcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-10T14:06:05Z",
+      "side": 1,
+      "message": "Very nice! I found the descriptions and reasoning to be simple, but also shed light on the nuances that come into the guts of color managemment",
+      "revId": "c55c9c67a925f0d2bf05590fa15bca36369021f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
