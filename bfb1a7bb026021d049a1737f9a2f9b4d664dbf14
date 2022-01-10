@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "778ce150_cf7f388b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-10T21:40:58Z",
+      "side": 1,
+      "message": "The option I would be fine with, besides adding a guarded function to SkSurface, is just have the graphite dm src/sink cast to SkSurface_Graphite and have it hold on to the readPixels function that eventually will migrate to the public API when we know it\u0027s ready",
+      "revId": "bfb1a7bb026021d049a1737f9a2f9b4d664dbf14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41b94484_05924a55",
