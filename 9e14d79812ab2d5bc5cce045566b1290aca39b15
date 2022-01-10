@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67f91ddb_7bc1bddc",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-10T21:58:58Z",
+      "side": 1,
+      "message": "Switched to use UniqueKey instead.",
+      "parentUuid": "22c85de7_23f8b2d3",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 33
+      },
+      "revId": "9e14d79812ab2d5bc5cce045566b1290aca39b15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8453aa3_6a5fe343",
         "filename": "experimental/graphite/src/TextureInfo.cpp",
         "patchSetId": 4

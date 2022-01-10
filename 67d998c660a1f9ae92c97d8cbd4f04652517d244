@@ -22,6 +22,30 @@
       },
       "revId": "67d998c660a1f9ae92c97d8cbd4f04652517d244",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c28ec7a_e6f99e1f",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-10T21:58:58Z",
+      "side": 1,
+      "message": "Fixed below (line 399).",
+      "parentUuid": "31fa3e99_54cc9df1",
+      "range": {
+        "startLine": 385,
+        "startChar": 8,
+        "endLine": 385,
+        "endChar": 23
+      },
+      "revId": "67d998c660a1f9ae92c97d8cbd4f04652517d244",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
