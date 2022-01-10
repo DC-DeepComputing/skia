@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "78ada7d5_a4238bb1",
+        "filename": "include/core/SkImageGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-10T15:26:53Z",
+      "side": 1,
+      "message": "Updated the comment to make it more general.",
+      "parentUuid": "de5ddabb_e38c22c5",
+      "range": {
+        "startLine": 190,
+        "startChar": 1,
+        "endLine": 191,
+        "endChar": 94
+      },
+      "revId": "51ac8849e7dec5afe7bb45583e8e9ed03ab3d35a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "04ab36c5_394e9686",
         "filename": "tests/GrAHardwareBufferTest.cpp",
         "patchSetId": 2
