@@ -38,4 +38,10 @@ enum class SkTileMode {
 
 static constexpr int kSkTileModeCount = static_cast<int>(SkTileMode::kLastTileMode) + 1;
 
+/** Returns name of tileMode as null-terminated C string.
+
+    @return           C string
+*/
+SK_API const char* SkTileMode_Name(SkTileMode tileMode);
+
 #endif
