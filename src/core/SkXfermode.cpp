@@ -63,17 +63,63 @@ private:
     using INHERITED = SkXfermode;
 };
 
-const char* SkBlendMode_Name(SkBlendMode mode) {
-    SkASSERT((unsigned) mode <= (unsigned)SkBlendMode::kLastMode);
-    const char* gModeStrings[] = {
-        "Clear", "Src", "Dst", "SrcOver", "DstOver", "SrcIn", "DstIn",
-        "SrcOut", "DstOut", "SrcATop", "DstATop", "Xor", "Plus",
-        "Modulate", "Screen", "Overlay", "Darken", "Lighten", "ColorDodge",
-        "ColorBurn", "HardLight", "SoftLight", "Difference", "Exclusion",
-        "Multiply", "Hue", "Saturation", "Color",  "Luminosity"
+const char* SkTileMode_Name(SkTileMode tm) {
+    static_assert((int) SkTileMode::kClamp  == 0);
+    static_assert((int) SkTileMode::kRepeat == 1);
+    static_assert((int) SkTileMode::kMirror == 2);
+    static_assert((int) SkTileMode::kDecal  == 3);
+    static_assert(kSkTileModeCount == 4);
+
+    static const char* kModeStrings[kSkTileModeCount] = { "Clamp", "Repeat", "Mirror", "Decal" };
+    return kModeStrings[(int) tm];
+}
+
+const char* SkBlendMode_Name(SkBlendMode bm) {
+    static_assert(static_cast<int>(SkBlendMode::kClear)       == 0);
+    static_assert(static_cast<int>(SkBlendMode::kSrc)         == 1);
+    static_assert(static_cast<int>(SkBlendMode::kDst)         == 2);
+    static_assert(static_cast<int>(SkBlendMode::kSrcOver)     == 3);
+    static_assert(static_cast<int>(SkBlendMode::kDstOver)     == 4);
+    static_assert(static_cast<int>(SkBlendMode::kSrcIn)       == 5);
+    static_assert(static_cast<int>(SkBlendMode::kDstIn)       == 6);
+    static_assert(static_cast<int>(SkBlendMode::kSrcOut)      == 7);
+    static_assert(static_cast<int>(SkBlendMode::kDstOut)      == 8);
+    static_assert(static_cast<int>(SkBlendMode::kSrcATop)     == 9);
+    static_assert(static_cast<int>(SkBlendMode::kDstATop)     == 10);
+    static_assert(static_cast<int>(SkBlendMode::kXor)         == 11);
+    static_assert(static_cast<int>(SkBlendMode::kPlus)        == 12);
+    static_assert(static_cast<int>(SkBlendMode::kModulate)    == 13);
+    static_assert(static_cast<int>(SkBlendMode::kScreen)      == 14);
+
+    static_assert(static_cast<int>(SkBlendMode::kOverlay)     == 15);
+    static_assert(static_cast<int>(SkBlendMode::kDarken)      == 16);
+    static_assert(static_cast<int>(SkBlendMode::kLighten)     == 17);
+    static_assert(static_cast<int>(SkBlendMode::kColorDodge)  == 18);
+    static_assert(static_cast<int>(SkBlendMode::kColorBurn)   == 19);
+    static_assert(static_cast<int>(SkBlendMode::kHardLight)   == 20);
+    static_assert(static_cast<int>(SkBlendMode::kSoftLight)   == 21);
+    static_assert(static_cast<int>(SkBlendMode::kDifference)  == 22);
+    static_assert(static_cast<int>(SkBlendMode::kExclusion)   == 23);
+    static_assert(static_cast<int>(SkBlendMode::kMultiply)    == 24);
+
+    static_assert(static_cast<int>(SkBlendMode::kHue)         == 25);
+    static_assert(static_cast<int>(SkBlendMode::kSaturation)  == 26);
+    static_assert(static_cast<int>(SkBlendMode::kColor)       == 27);
+    static_assert(static_cast<int>(SkBlendMode::kLuminosity)  == 28);
+    static_assert(kSkBlendModeCount == 29);
+
+    static const char* kModeStrings[kSkBlendModeCount] = {
+        "Clear",     "Src",        "Dst",        "SrcOver",    "DstOver",
+        "SrcIn",     "DstIn",      "SrcOut",     "DstOut",     "SrcATop",
+        "DstATop",   "Xor",        "Plus",       "Modulate",   "Screen",
+
+        "Overlay",   "Darken",     "Lighten",    "ColorDodge", "ColorBurn",
+        "HardLight", "SoftLight",  "Difference", "Exclusion",  "Multiply",
+
+        "Hue",       "Saturation", "Color",      "Luminosity"
     };
-    return gModeStrings[(int)mode];
-    static_assert(SK_ARRAY_COUNT(gModeStrings) == (size_t)SkBlendMode::kLastMode + 1, "mode_count");
+
+    return kModeStrings[(int) bm];
 }
 
 sk_sp<SkXfermode> SkXfermode::Make(SkBlendMode mode) {
@@ -149,4 +195,3 @@ const GrXPFactory* SkBlendMode_AsXPFactory(SkBlendMode mode) {
     return GrCustomXfermode::Get(mode);
 }
 #endif
-
