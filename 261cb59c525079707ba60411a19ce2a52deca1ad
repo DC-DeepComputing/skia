@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc3522d8_862324ec",
+        "filename": "resources/sksl/shared/MatrixScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-11T21:21:04Z",
+      "side": 1,
+      "message": "`mat2` generates compile errors in skslc here, please use `float2x2`. I\u0027m very curious to see the generated output (does SPIR-V Validator complain?)",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 8
+      },
+      "revId": "261cb59c525079707ba60411a19ce2a52deca1ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
