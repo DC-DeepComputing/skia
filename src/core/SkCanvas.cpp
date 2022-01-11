@@ -48,8 +48,12 @@
 #include "src/image/SkSurface_Base.h"
 #include "src/utils/SkPatchUtils.h"
 
+#include "include/private/SkPaintParamsKey.h"
+
 #include <memory>
 #include <new>
+
+#include "experimental/graphite/src/ContextUtils.h"
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrDirectContext.h"

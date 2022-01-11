@@ -18,6 +18,10 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/utils/SkShaderUtils.h"
 
+#include "include/private/SkPaintParamsKey.h"
+
+#include "experimental/graphite/src/ContextUtils.h"
+
 #import <Metal/Metal.h>
 #ifdef SK_BUILD_FOR_IOS
 #import <UIKit/UIApplication.h>

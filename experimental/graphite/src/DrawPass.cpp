@@ -285,12 +285,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
         UniquePaintParamsID shaderID;
-        sk_sp<UniformData> shadingUniforms = nullptr;
+        std::vector<sk_sp<UniformData>> uniformVector;
+
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
-            std::tie(shaderID, shadingUniforms) = ExtractCombo(recorder->context(),
-                                                               draw.fPaintParams.value());
-            shadingIndex = shadingUniformBindings.addUniforms(shadingUniforms);
+            shaderID = GetUniqueIDAndUniformData(draw.fPaintParams.value(), &uniformVector);
+            shadingIndex = shadingUniformBindings.addUniforms(uniformVector[0]); // Sigh!
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {

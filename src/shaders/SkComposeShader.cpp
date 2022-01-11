@@ -8,6 +8,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
+#include "include/private/SkPaintParamsKey.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
@@ -18,6 +19,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkComposeShader.h"
+
+#include "experimental/graphite/include/Encoding.h"
 
 namespace {
 
@@ -66,6 +69,53 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**************************************************************************************************/
+int SkShader_Blend::Encode1(skgpu::ShaderCodeDictionary* dict,
+                            SkBackend backend,
+                            SkPaintParamsKey* key,
+                            const BlendData& data) {
+    key->addInt1((int) data.fBM);
+    int numDstInts = data.fDst->addToKeyS(dict, backend, key, nullptr);
+    int numSrcInts = data.fSrc->addToKeyS(dict, backend, key, nullptr);
+    return 1 + numDstInts + numSrcInts;
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkShader_Blend::Dump(const uint32_t* data, int numIntsAccessible) {
+    SkASSERT(CodeSnippetID::kBlendShader == ExtractCodeSnippetID(data[0]));
+
+    SkBlendMode bm = ExtractBlendMode(data[1]);
+    SkDebugf("BlendMode: %s\n", SkBlendMode_Name(bm));
+    SkDebugf("\nFirst:  ");
+    int numConsumed1 = SkPaintParamsKey::DumpFrom(&data[2]);
+    SkASSERT(1+numConsumed1 < numIntsAccessible);
+    SkDebugf("Second: ");
+    int numConsumed2 = SkPaintParamsKey::DumpFrom(&data[numConsumed1+2]);
+    SkASSERT(2+numConsumed1+numConsumed2 <= numIntsAccessible);
+}
+#endif
+
+int SkShader_Blend::addToKeyS(skgpu::ShaderCodeDictionary* dict,
+                              SkBackend backend,
+                              SkPaintParamsKey* key,
+                              std::vector<sk_sp<skgpu::UniformData>>*) const {
+    if (!fBlender) {
+
+    }
+
+    int index = key->writeBlockHeader(CodeSnippetID::kBlendShader);
+
+    BlendData blendData { fDst.get(), fSrc.get(), fMode };
+
+    // Maybe add a getCurIndex call and do this math independently?
+    int size = Encode1(dict, backend, key, blendData);
+
+    key->patchBlockHeader(index, CodeSnippetID::kBlendShader, size);
+
+    return size + 1;
+}
+/**************************************************************************************************/
 
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))
