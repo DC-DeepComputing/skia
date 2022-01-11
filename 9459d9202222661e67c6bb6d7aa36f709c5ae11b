@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97bc80b8_03025f86",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-11T22:06:06Z",
+      "side": 1,
+      "message": "ErrorReporter isn\u0027t a public type, right? But it\u0027s OK to expose this in a public API regardless (it\u0027s not useful without access to private types, but it\u0027s harmless)?",
+      "range": {
+        "startLine": 173,
+        "startChar": 64,
+        "endLine": 173,
+        "endChar": 83
+      },
+      "revId": "9459d9202222661e67c6bb6d7aa36f709c5ae11b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f471d23_03a3661a",
+        "filename": "src/sksl/dsl/DSLRuntimeEffects.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-11T22:06:06Z",
+      "side": 1,
+      "message": "could just be PositionInfo{}, these are the defaults",
+      "range": {
+        "startLine": 32,
+        "startChar": 32,
+        "endLine": 32,
+        "endChar": 58
+      },
+      "revId": "9459d9202222661e67c6bb6d7aa36f709c5ae11b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebf088ee_ff440699",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-11T22:06:06Z",
+      "side": 1,
+      "message": "Took me a long time to understand why this is a useful test. I\u0027m guessing this fails inside EndRuntimeShader and the earlier test fails sooner. A comment might be handy here.",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 76
+      },
+      "revId": "9459d9202222661e67c6bb6d7aa36f709c5ae11b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
