@@ -33,6 +33,23 @@
       "message": "Those are a result of DrawVerticesOp going away in https://skia-review.googlesource.com/c/skia/+/492357",
       "revId": "62a8323d22626424a4c30ed302c92972d6d31b0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "631b8d96_1d7e9d5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-11T14:43:05Z",
+      "side": 1,
+      "message": "FYI Brian for some Bazel changes as a result of https://skia-review.googlesource.com/c/skia/+/492357\n\nEventually, our Bazel rules will be stable enough for us to add the gazelle generate to our presubmit script (it runs in a few seconds), but for now I\u0027m fine with manually running this from time to time.",
+      "revId": "62a8323d22626424a4c30ed302c92972d6d31b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
