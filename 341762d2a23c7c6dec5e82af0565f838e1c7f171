@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b88c6b6_7f0467a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "While early, I\u0027m adding Brian O for his thoughts, since we want to end up in a place where this key building system can be used for cpu, ganesh, and graphite.",
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526243e4_725203b0",
+        "filename": "experimental/graphite/src/ContextUtils.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "Rename to ExtractPaintData?",
+      "range": {
+        "startLine": 70,
+        "startChar": 52,
+        "endLine": 70,
+        "endChar": 64
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc7e462_358ad76b",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "The unordered_map\u0027s hash supposedly takes a const\u0026, and if the key is variable length, I think const\u0026 makes sense.",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2af1fbe_badf1e26",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "Can we add a comment after each field like\n\n    UniquePaintParamsID fUniqueID;       // fixed-size unique ID assigned to a key\n    SkPaintParamsKey    fPaintParamsKey; // variable-length paint key descriptor\n    \nAs it currently is, both types could be construed as the primary key.",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c43c077e_8fd7c740",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28e813e_129d66a1",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "Wdyt about having these be structs with functions to get the snippet ID and data. Then add a \n \n   template\u003cBlock\u003e SkPaintParamsKey::add(Block\u0026 b);\n   \nto the key, which should also let you hide a lot of the byte manipulation functions from the public interface of the key.",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95eb0bb6_47009d69",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "You are right; in graphite, these are recorded into the DrawList with a null PaintParams* and originate from clip operations. An equivalent source in graphite would be stencil-only steps for path renderers (either as part of eventually filling the path, or to set the clip stencil bit); in these cases there is also no SkPaint associated with the stencil-only draw portion.\n\nDo we need a way to describe this concept as part of the code snippet IDs? Or should it be represented in the SkPaintParamsKey itself, with a reserved \"no-shading\" key?",
+      "range": {
+        "startLine": 17,
+        "startChar": 57,
+        "endLine": 18,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c38d07_22967a8f",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "I think I prefer kSolidColor here, even if the RenderStep or GeometryProcessor (in ganesh) consumes the functionality. Behaviorally there\u0027s no difference between a paint with the color and a null shader, and a paint with a solid-color SkShader set on it.\n\nIt also lets us use the kNoneShader for kDepthStencilOnlyDraws, which makes it a little more generalizable to ganesh when its path renderers do stencil-only draws.",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 69
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54855820_33927295",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "Is the eventual intent to replace these code snippet IDs with the optimized variations as we implement them?\n\nIf so, it seems like the specific code snippets we\u0027d choose for cpu-backend vs. gpu backend would differ. But then those variations and flexibility should be handeable by the same system that will let us assign snippet IDs to runtime sksl.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d51a1d7_53930299",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "1 byte seems very likely to be exceeded once we add runtime sksl; should we just stick to uint32 for snippet IDs?",
+      "range": {
+        "startLine": 37,
+        "startChar": 39,
+        "endLine": 37,
+        "endChar": 61
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b56340_9d2d050e",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "Should we add a SkSpan\u003cconst uint8_t\u003e here?",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 53
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d33ca056_7dfd1779",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "It seems clearer to me to use std::numeric_limits\u003cuint8_t\u003e::max() and then change the comparisons to \u003c\u003d, since a kMaxFoo sounds like it should still be a valid value for foos.",
+      "range": {
+        "startLine": 91,
+        "startChar": 37,
+        "endLine": 91,
+        "endChar": 40
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "868805ae_0aea76c8",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-11T16:23:34Z",
+      "side": 1,
+      "message": "fNumBytes since that\u0027s what all functions use in their names?",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 18
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
