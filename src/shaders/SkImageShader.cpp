@@ -26,6 +26,9 @@
 #include "src/shaders/SkEmptyShader.h"
 #include "src/shaders/SkTransformShader.h"
 
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Encoding.h"
+
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
 #if 0
     constexpr SkM44 kMitchell = SkM44( 1.f/18.f, -9.f/18.f,  15.f/18.f,  -7.f/18.f,
@@ -276,6 +279,65 @@ SkImage* SkImageShader::onIsAImage(SkMatrix* texM, SkTileMode xy[]) const {
     }
     return const_cast<SkImage*>(fImage.get());
 }
+
+/**************************************************************************************************/
+static const int kXTileModeShift = 0;
+static const int kYTileModeShift = kTileModeBits;
+
+int SkImageShader::Encode1(skgpu::ShaderCodeDictionary*,
+                           Mapping mapping,
+                           SkPaintParamsKey* key,
+                           const ImageData& data) {
+    switch (mapping) {
+        case Mapping::kGraphite:
+            return 0;
+        case Mapping::kGanesh: {
+            int code = ((int) data.fTileModes[0] << kXTileModeShift) |
+                       ((int) data.fTileModes[1] << kYTileModeShift);
+            SkASSERT(data == Decode(code));
+
+            key->addInt1(code);
+            return 1;
+        }
+        case Mapping::kSkVM:
+            return 0;
+    }
+
+    SkUNREACHABLE;
+}
+
+SkImageShader::ImageData SkImageShader::Decode(int code) {
+    SkTileMode tmX = (SkTileMode) (((code) >> kXTileModeShift) & kTileModeMask);
+    SkTileMode tmY = (SkTileMode) (((code) >> kYTileModeShift) & kTileModeMask);
+
+    return { tmX, tmY };
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkImageShader::Dump(const uint32_t* data, int numIntsAccessible) {
+    SkASSERT(CodeSnippetID::kImageShader == ExtractCodeSnippetID(data[0]));
+    SkASSERT(numIntsAccessible == 2);
+
+    ImageData imgData = Decode(data[1]);
+
+    SkDebugf("tileModes(%s, %s) ",
+             TileModeToStr(imgData.fTileModes[0]),
+             TileModeToStr(imgData.fTileModes[1]));
+}
+#endif
+
+int SkImageShader::addToKeyS(skgpu::ShaderCodeDictionary* dict, Mapping mapping, SkPaintParamsKey* key, std::vector<sk_sp<skgpu::UniformData>>*) const {
+
+    int index = key->writeBlockHeader(CodeSnippetID::kImageShader);
+
+    ImageData imgData{ fTileModeX, fTileModeY };
+    int size = Encode1(dict, mapping, key, imgData);
+
+    key->patchBlockHeader(index, CodeSnippetID::kImageShader, size);
+    return size + 1;
+}
+
+/**************************************************************************************************/
 
 sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
                                     SkTileMode tmx, SkTileMode tmy,

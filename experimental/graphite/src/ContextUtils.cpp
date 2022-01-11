@@ -204,7 +204,35 @@ sk_sp<UniformData> UniformData::Make(int count,
 
     return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
 }
+SkSpan<const Uniform> UniformData::asSpan() const { return SkMakeSpan(fUniforms, fCount); }
 
+ShaderCodeDictionary gDict;
+
+UniquePaintParamsID GetUniqueIDAndUniformData(const PaintParams& p,
+                                              std::vector<sk_sp<UniformData>>* uniforms) {
+    SkPaintParamsKey key;
+    p.toCodeAndUnis(nullptr, Mapping::kGraphite, &key, uniforms);
+
+    key.dump();
+
+    auto entry = gDict.findOrCreate(key);
+
+    return entry->uniqueID();
+}
+
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(UniquePaintParamsID uniqueID) {
+    std::vector<SkSpan<const Uniform>> uniforms;
+
+    auto entry = gDict.lookup(uniqueID);
+
+    // TODO: cache this
+    SkSL::String skslCode = entry->paintParamsKey().toSkSL();
+
+    return { skslCode, uniforms };
+}
+
+
+#if 0
 std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* context,
                                                                  const PaintParams& p) {
     Combination combo;
@@ -300,6 +328,7 @@ std::tuple<UniquePaintParamsID, sk_sp<UniformData>> ExtractCombo(Context* contex
 
     return { entry->uniqueID(), std::move(uniforms) };
 }
+#endif
 
 SkSpan<const Uniform> GetUniforms(ShaderCombo::ShaderType shaderType) {
     switch (shaderType) {

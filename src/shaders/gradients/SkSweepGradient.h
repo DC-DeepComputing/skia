@@ -12,6 +12,10 @@
 
 class SkSweepGradient final : public SkGradientShaderBase {
 public:
+    int addToKeyS(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     SkSweepGradient(const SkPoint& center, SkScalar t0, SkScalar t1, const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;

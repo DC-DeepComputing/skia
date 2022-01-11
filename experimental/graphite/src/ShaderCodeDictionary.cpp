@@ -6,34 +6,39 @@
  */
 
 #include "experimental/graphite/src/ShaderCodeDictionary.h"
+#include "src/core/SkOpts.h"
+
+//#include "src/utils/SkShaderUtils.h"
 
 namespace skgpu {
+
 
 ShaderCodeDictionary::ShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
 }
 
-ShaderCodeDictionary::Entry* ShaderCodeDictionary::makeEntry(Combination combo) {
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(combo); });
+ShaderCodeDictionary::Entry* ShaderCodeDictionary::makeEntry(SkPaintParamsKey key) {
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(key); });
 }
 
-size_t ShaderCodeDictionary::Hash::operator()(Combination combo) const {
-    return combo.key();
+// TODO: const& ??
+size_t ShaderCodeDictionary::Hash::operator()(SkPaintParamsKey key) const {
+    return SkOpts::hash_fn(key.data(), key.sizeInBytes(), 0);
 }
 
-const ShaderCodeDictionary::Entry* ShaderCodeDictionary::findOrCreate(Combination combo) {
+const ShaderCodeDictionary::Entry* ShaderCodeDictionary::findOrCreate(SkPaintParamsKey key) {
     SkAutoSpinlock lock{fSpinLock};
 
-    auto iter = fHash.find(combo);
+    auto iter = fHash.find(key);
     if (iter != fHash.end()) {
         SkASSERT(fEntryVector[iter->second->uniqueID().asUInt()] == iter->second);
         return iter->second;
     }
 
-    Entry* newEntry = this->makeEntry(combo);
+    Entry* newEntry = this->makeEntry(key);
     newEntry->setUniqueID(fEntryVector.size());
-    fHash.insert(std::make_pair(newEntry->combo(), newEntry));
+    fHash.insert(std::make_pair(newEntry->paintParamsKey(), newEntry));
     fEntryVector.push_back(newEntry);
 
     return newEntry;
@@ -50,5 +55,32 @@ const ShaderCodeDictionary::Entry* ShaderCodeDictionary::lookup(UniquePaintParam
 
     return fEntryVector[codeID.asUInt()];
 }
+
+#if 0
+const CodeDictionary::FullCodeEntry *
+CodeDictionary::exhaustiveSearch(const SkSL::String &code) const {
+
+    for (const auto &e: fFullCodeHash) {
+        if (code == e.second->fSkSL) {
+            return e.second;
+        }
+    }
+
+    SkDebugf("------------------------------\n");
+    SkDebugf("Didn't find this code:\n");
+    SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(code));
+
+    SkDebugf("------------------------------\n");
+    SkDebugf("in this %d list:\n", (int) fFullCodeHash.size());
+
+    int index = 0;
+    for (const auto &e: fFullCodeHash) {
+        SkDebugf("%d ------------------------------\n", index++);
+        SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(e.second->fSkSL));
+    }
+
+    return nullptr;
+}
+#endif
 
 } // namespace skgpu

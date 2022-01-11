@@ -26,6 +26,15 @@ class SkPicture;
 class SkRasterPipeline;
 class GrFragmentProcessor;
 
+enum class Mapping : uint8_t;
+
+class SkPaintParamsKey;
+
+namespace skgpu {
+    class ShaderCodeDictionary;
+    class UniformData;
+}
+
 /** \class SkShader
  *
  *  Shaders specify the source color(s) for what is being drawn. If a paint
@@ -38,6 +47,8 @@ class GrFragmentProcessor;
  */
 class SK_API SkShader : public SkFlattenable {
 public:
+    virtual int addToKeyS(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
+
     /**
      *  Returns true if the shader is guaranteed to produce only opaque
      *  colors, subject to the SkPaint using the shader to apply an opaque

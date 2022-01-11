@@ -1,0 +1,99 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_Encoding_DEFINED
+#define skgpu_Encoding_DEFINED
+
+#include <vector>
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTileMode.h"
+
+/**************************************************************************************************/
+enum class Mapping : uint8_t {
+    kGanesh,
+    kGraphite,
+    kSkVM
+};
+
+/**************************************************************************************************/
+/* These logically attach to the SkTileMode enum */
+inline static constexpr int kTileModeBits = 2;
+inline static constexpr int kTileModeMask = 0x3;
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+static constexpr const char* TileModeToStr(SkTileMode tm) {
+    static_assert(kSkTileModeCount == (0x1 << (kTileModeBits)));
+    static_assert(kTileModeMask == kSkTileModeCount-1);
+
+    static_assert((int) SkTileMode::kClamp  == 0);
+    static_assert((int) SkTileMode::kRepeat == 1);
+    static_assert((int) SkTileMode::kMirror == 2);
+    static_assert((int) SkTileMode::kDecal  == 3);
+    static_assert(kSkTileModeCount == 4);
+
+    const char* kStrings[kSkTileModeCount] = { "kClamp", "kRepeat", "kMirror", "kDecal" };
+    return kStrings[(int) tm];
+}
+#endif
+
+/**************************************************************************************************/
+enum class GradientCode : uint8_t {
+    kLinear,
+    kRadial,
+    kConical,
+    kSweep,
+
+    kLast = kSweep,
+};
+static constexpr int kGradientCodeCount = static_cast<int>(GradientCode::kLast) + 1;
+
+inline static constexpr int kGradientCodeBits = 2;
+inline static constexpr int kGradientCodeMask = (0x1 << kGradientCodeBits) - 1;
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+static constexpr const char* GradientTypeToStr(GradientCode gc) {
+    static_assert(kGradientCodeCount <= (0x1 << (kGradientCodeBits)));
+
+    static_assert((int) GradientCode::kLinear  == 0);
+    static_assert((int) GradientCode::kRadial == 1);
+    static_assert((int) GradientCode::kConical == 2);
+    static_assert((int) GradientCode::kSweep  == 3);
+    static_assert(kGradientCodeCount == 4);
+
+    const char* kStrings[kGradientCodeCount] = { "kLinear", "kRadial", "kConical", "kSweep" };
+    return kStrings[(int) gc];
+}
+#endif
+
+/**************************************************************************************************/
+/* These logically attach to the SkBlendMode enum */
+static constexpr int kSkBlendModeCount = static_cast<int>(SkBlendMode::kLastMode) + 1;
+static const int kBlendModeBits = 5;
+static const int kBlendModeMask =  (0x1 << kBlendModeBits) - 1;
+
+SkBlendMode ExtractBlendMode(uint32_t code);
+
+class SkPaintParamsKey;
+
+namespace skgpu {
+    class ShaderCodeDictionary;
+    class UniformData;
+};
+
+namespace BlendMode {
+
+    int addToKeyB(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*, SkBlendMode);
+
+    int Encode2(skgpu::ShaderCodeDictionary*, Mapping, SkPaintParamsKey*, SkBlendMode);
+    void Dump(const uint32_t* data, int maxIndex);
+
+} // namespace BlendMode
+
+/**************************************************************************************************/
+
+#endif // skgpu_Encoding_DEFINED

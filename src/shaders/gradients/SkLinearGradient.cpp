@@ -11,6 +11,9 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
 
+#include "experimental/graphite/include/Encoding.h"
+#include "include/private/SkPaintParamsKey.h"
+
 static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
     SkVector    vec = pts[1] - pts[0];
     SkScalar    mag = vec.length();
@@ -25,6 +28,75 @@ static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// TODO: For the sprint we only support 4 stops in the gradients
+static constexpr int kMaxStops1 = 4;
+
+struct GradData {
+    SkColor4f fColors[kMaxStops1];
+    float     fOffsets[kMaxStops1];
+    SkPoint   fStartPoint;
+    SkPoint   fEndPoint;
+    float     fRadius0;
+    float     fRadius1;
+};
+
+int SkLinearGradient::Encode1(skgpu::ShaderCodeDictionary*,
+                              Mapping mapping,
+                              SkPaintParamsKey* key,
+                              const GradData& data) {
+    switch (mapping) {
+        case Mapping::kGraphite: {
+            int code = 7;
+//            SkASSERT(data == Decode(code));
+            key->addInt1(code);
+            return 1;
+        }
+        case Mapping::kGanesh:
+        case Mapping::kSkVM:
+            return 0;
+    }
+
+    SkUNREACHABLE;
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkLinearGradient::Dump(const uint32_t* data, int numIntsAccessible) {
+    SkASSERT(CodeSnippetID::kBlendShader == ExtractCodeSnippetID(data[0]));
+
+    SkBlendMode bm = ExtractBlendMode(data[1]);
+    SkDebugf("BlendMode: %s\n", SkBlendMode_Name(bm));
+    SkDebugf("\nFirst:  ");
+    int numConsumed1 = SkPaintParamsKey::DumpFrom(&data[2]);
+    SkASSERT(1+numConsumed1 < numIntsAccessible);
+    SkDebugf("Second: ");
+    int numConsumed2 = SkPaintParamsKey::DumpFrom(&data[numConsumed1+2]);
+    SkASSERT(2+numConsumed1+numConsumed2 <= numIntsAccessible);
+}
+#endif
+
+int SkLinearGradient::addToKeyS(skgpu::ShaderCodeDictionary* dict,
+                              Mapping mapping,
+                              SkPaintParamsKey* key,
+                              std::vector<sk_sp<skgpu::UniformData>>*) const {
+    switch (mapping) {
+        case Mapping::kGraphite: {
+            GradData data;
+            data.fStartPoint = fStart;
+            data.fEndPoint = fEnd;
+            data.fRadius0 = 0.0f; // unused
+            data.fRadius1 = 0.0f; // unused
+
+            int index = key->writeBlockHeader(CodeSnippetID::kLinearGradientShader);
+            int size = Encode1(dict, mapping, key, data);
+            key->patchBlockHeader(index, CodeSnippetID::kLinearGradientShader, size);
+            return size + 1;
+        }
+        default:
+            break;
+    }
+    return 0;
+}
 
 SkLinearGradient::SkLinearGradient(const SkPoint pts[2], const Descriptor& desc)
     : SkGradientShaderBase(desc, pts_to_unit_matrix(pts))
