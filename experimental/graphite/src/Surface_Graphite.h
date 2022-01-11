@@ -24,6 +24,7 @@ public:
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     bool onCopyOnWrite(ContentChangeMode) override;
+    bool onReadPixels(Context*, const SkPixmap& dst, int srcX, int srcY);
 
 private:
     sk_sp<Device> fDevice;
