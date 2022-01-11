@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "221157ac_f706fc51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-11T22:27:04Z",
+      "side": 1,
+      "message": "Ah you\u0027re right we don\u0027t currently test angle going to vulkan. We definitely should test that if that is something that is being used in Skia. We don\u0027t need to block this CL on adding that bot/testing though.\n\nSo we need to update our GLTestContext_angle.cpp, do you know if it is simple as updating this one switch statement here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/gpu/gl/angle/GLTestContext_angle.cpp;l\u003d76, to get the vulkan equivalent EGL_PLATFORM_ANGLE_*? Or are there other things we\u0027ll need to do to set up angle vulkan?",
+      "parentUuid": "986b33f5_c20d9595",
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b686e91_1f637115",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
         "patchSetId": 2
