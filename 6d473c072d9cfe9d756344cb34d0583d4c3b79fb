@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "986b33f5_c20d9595",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2022-01-11T22:15:05Z",
+      "side": 1,
+      "message": "I\u0027ve updated the test, but I\u0027m not sure it will actually do anything. The new extension is only supported for ANGLE when it runs on Vulkan, but AFAICT this configuration isn\u0027t currently used in tests: I don\u0027t see it listed in `dm --help config` output. Is there any way to run Skia tests with ANGLE/Vulkan?",
+      "parentUuid": "b33da7e4_0f51bc80",
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b686e91_1f637115",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
         "patchSetId": 2
