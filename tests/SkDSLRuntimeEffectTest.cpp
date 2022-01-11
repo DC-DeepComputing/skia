@@ -216,6 +216,13 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
         );
         effect.end(false);
         REPORTER_ASSERT(r, errorReporter.fMsg == "expected 'half4', but found 'int'");
+        errorReporter.fMsg = "";
+        errorReporter.resetErrorCount();
+
+        effect.start();
+        SetErrorReporter(&errorReporter);
+        effect.end(false);
+        REPORTER_ASSERT(r, errorReporter.fMsg == "missing 'main' function");
     }
 
     // Mutating coords should work. (skbug.com/10918)
