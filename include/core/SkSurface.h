@@ -38,6 +38,12 @@ class GrRecordingContext;
 class GrRenderTarget;
 enum GrSurfaceOrigin: int;
 
+#ifdef SK_GRAPHITE_ENABLED
+namespace skgpu {
+class Context;
+}
+#endif
+
 /** \class SkSurface
     SkSurface is responsible for managing the pixels that a canvas draws into. The pixels can be
     allocated either in CPU memory (a raster surface) or on the GPU (a GrRenderTarget surface).
