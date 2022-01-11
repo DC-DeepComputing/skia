@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6bc8f2f_55df642a",
+        "filename": "experimental/graphite/src/ContextUtils.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "526243e4_725203b0",
+      "range": {
+        "startLine": 70,
+        "startChar": 52,
+        "endLine": 70,
+        "endChar": 64
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecc7e462_358ad76b",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "The unordered_map\u0027s hash supposedly takes a const\u0026, and if the key is variable length, I think const\u0026 makes sense.",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "200c22b1_70e908bb",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecc7e462_358ad76b",
       "range": {
         "startLine": 22,
         "startChar": 3,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5728958_7a0bdf29",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2af1fbe_badf1e26",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c43c077e_8fd7c740",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "nit: space",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "877a53db_7e06d866",
+        "filename": "experimental/graphite/src/ShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c43c077e_8fd7c740",
       "range": {
         "startLine": 61,
         "startChar": 21,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cad446e6_986d390a",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "That\u0027s a good idea. I would like to hold off until I get further into the key creation though. I don\u0027t think things are going remain this cheery/simple for very long.",
+      "parentUuid": "f28e813e_129d66a1",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3a9aca33_e0487522",
         "filename": "src/core/SkKeyHelpers.h",
         "patchSetId": 21
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7f21c2c_0eb9812c",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Right now:\nContext::preCompile\nCommandBufferTest\nand UniformTest",
+      "parentUuid": "3a9aca33_e0487522",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 6
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "517ed244_b54f2be6",
         "filename": "src/core/SkPaintParamsKey.cpp",
         "patchSetId": 21
@@ -169,6 +313,30 @@
       "writtenOn": "2022-01-11T18:11:24Z",
       "side": 1,
       "message": "This feels like a maintenance burden going forward. I don\u0027t have a great solution here (C++ is poor at solving this problem). Traits classes seem appealing (templated on the snippetID or similar), but that doesn\u0027t really work, because the ID here is unknown at compile time.\n\nI wonder if we can leverage X-Macros here to make it easier to extend?\n\nIf nothing else, the Key::dump() can have a fallback for new/unsupported key data that just consumes the ID and block size, then prints out the bytes with no decoding.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1152845_a52bde9b",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Right - if this persists beyond helping bring up the key system we need a fallback that can just dump the bytes.",
+      "parentUuid": "517ed244_b54f2be6",
       "range": {
         "startLine": 21,
         "startChar": 0,
@@ -228,6 +396,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f3c1481_92cd3956",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "As discussed offline, we hope to go with a \"no-shading\" key and just omit code generation. To be done in a follow up cl.",
+      "parentUuid": "95eb0bb6_47009d69",
+      "range": {
+        "startLine": 17,
+        "startChar": 57,
+        "endLine": 18,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52c38d07_22967a8f",
         "filename": "src/core/SkPaintParamsKey.h",
         "patchSetId": 21
@@ -239,6 +431,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "I think I prefer kSolidColor here, even if the RenderStep or GeometryProcessor (in ganesh) consumes the functionality. Behaviorally there\u0027s no difference between a paint with the color and a null shader, and a paint with a solid-color SkShader set on it.\n\nIt also lets us use the kNoneShader for kDepthStencilOnlyDraws, which makes it a little more generalizable to ganesh when its path renderers do stencil-only draws.",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 69
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93daf454_c2685036",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done - I\u0027ve gone with kSolidColorShader",
+      "parentUuid": "52c38d07_22967a8f",
       "range": {
         "startLine": 22,
         "startChar": 4,
@@ -262,6 +478,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "Is the eventual intent to replace these code snippet IDs with the optimized variations as we implement them?\n\nIf so, it seems like the specific code snippets we\u0027d choose for cpu-backend vs. gpu backend would differ. But then those variations and flexibility should be handeable by the same system that will let us assign snippet IDs to runtime sksl.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbc3577_2a6a5121",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "The intent is that each code snippet will capture a block of code. In the omnibus CL, the addToKey methods on SkShader, etc take an SkMapping parameter that allows a given shader to break down the implementation differently for the different back ends. But, yeah, if the cpu backend wants to generate some code on the fly and store it in the code dictionary that should work.",
+      "parentUuid": "54855820_33927295",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -321,6 +561,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3248cb9_74e200f0",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "I was going to wait and see. Certainly 1 byte won\u0027t last but I was hoping for fewer than 65535 code snippets.",
+      "parentUuid": "0d51a1d7_53930299",
+      "range": {
+        "startLine": 37,
+        "startChar": 39,
+        "endLine": 37,
+        "endChar": 61
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4b56340_9d2d050e",
         "filename": "src/core/SkPaintParamsKey.h",
         "patchSetId": 21
@@ -332,6 +596,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "Should we add a SkSpan\u003cconst uint8_t\u003e here?",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 53
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720639bc_d601cf68",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Maybe. One thing I have to sort out is the alignment of larger things when they are added to the key (e.g., ints). I suspect I\u0027ll want to align them appropriately in which case some sort of more structured (addInt, getInt) interface might be more appropriate.\n\nI guess another aspect of this I\u0027ve been thinking about is giving each block a view into the key to provide better control over which bits each block can access. Here too though, it seems like we may want something more structured than raw bytes.",
+      "parentUuid": "a4b56340_9d2d050e",
       "range": {
         "startLine": 81,
         "startChar": 4,
@@ -365,6 +653,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e2b20d0_e83a69e5",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d33ca056_7dfd1779",
+      "range": {
+        "startLine": 91,
+        "startChar": 37,
+        "endLine": 91,
+        "endChar": 40
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "868805ae_0aea76c8",
@@ -378,6 +690,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "fNumBytes since that\u0027s what all functions use in their names?",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 18
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c975ec_e546e6e1",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-11T18:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "868805ae_0aea76c8",
       "range": {
         "startLine": 93,
         "startChar": 8,
