@@ -135,6 +135,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a9aca33_e0487522",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-11T18:11:24Z",
+      "side": 1,
+      "message": "Are there still places not converted by this CL relying on this?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 6
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517ed244_b54f2be6",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-11T18:11:24Z",
+      "side": 1,
+      "message": "This feels like a maintenance burden going forward. I don\u0027t have a great solution here (C++ is poor at solving this problem). Traits classes seem appealing (templated on the snippetID or similar), but that doesn\u0027t really work, because the ID here is unknown at compile time.\n\nI wonder if we can leverage X-Macros here to make it easier to extend?\n\nIf nothing else, the Key::dump() can have a fallback for new/unsupported key data that just consumes the ID and block size, then prints out the bytes with no decoding.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "95eb0bb6_47009d69",
         "filename": "src/core/SkPaintParamsKey.h",
         "patchSetId": 21
@@ -146,6 +192,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "You are right; in graphite, these are recorded into the DrawList with a null PaintParams* and originate from clip operations. An equivalent source in graphite would be stencil-only steps for path renderers (either as part of eventually filling the path, or to set the clip stencil bit); in these cases there is also no SkPaint associated with the stencil-only draw portion.\n\nDo we need a way to describe this concept as part of the code snippet IDs? Or should it be represented in the SkPaintParamsKey itself, with a reserved \"no-shading\" key?",
+      "range": {
+        "startLine": 17,
+        "startChar": 57,
+        "endLine": 18,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a2ed36_ccbc1f92",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-11T18:11:24Z",
+      "side": 1,
+      "message": "My gut feeling (and I hate to say this) is that we\u0027re missing a level of abstraction to differentiate between \"the thing that describes the components of the paint\", and \"how this paint happens to be implemented on the GPU backend\". Maybe some of the other changes proposed would help (and make this type more clearly align with the first goal), but as it stands:\n  - DepthStencilOnly is a GPU-only concept. That\u0027s an implementation detail of how a particular paint (or lack thereof?) gets rendered\n  - Yes, the set of actual specializations is going to be different between CPU and GPU.\n  \n... or maybe sharing keys is a pipe-dream? Even if we don\u0027t share the same *actual* keys, though, I\u0027d like to be able to share the types involved, and describe things for the CPU backend, where the set of implementation strategies for a particular SkShader won\u0027t be the same as it is for GPU.",
+      "parentUuid": "95eb0bb6_47009d69",
       "range": {
         "startLine": 17,
         "startChar": 57,
@@ -215,6 +285,30 @@
       "writtenOn": "2022-01-11T16:23:34Z",
       "side": 1,
       "message": "1 byte seems very likely to be exceeded once we add runtime sksl; should we just stick to uint32 for snippet IDs?",
+      "range": {
+        "startLine": 37,
+        "startChar": 39,
+        "endLine": 37,
+        "endChar": 61
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3f7fea_b6d1f405",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-11T18:11:24Z",
+      "side": 1,
+      "message": "I think the other option is that \"custom\" is a single snippet ID, followed by N bytes as a key for the particular custom SkSL? (note that this, and many other shader use-cases, is going to require putting values bigger than 1 byte into the key, which is easy but not yet present).",
+      "parentUuid": "0d51a1d7_53930299",
       "range": {
         "startLine": 37,
         "startChar": 39,
