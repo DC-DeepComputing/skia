@@ -16,6 +16,23 @@
       "message": "Thank you for fixing the SkGlyph problem, and that is LGTM. But, I don\u0027t understand the other GPU changes you have in this CL, and probably should add a member of the GPU team for those.",
       "revId": "62a8323d22626424a4c30ed302c92972d6d31b0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "828b6bc9_d60bb63b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-11T14:40:34Z",
+      "side": 1,
+      "message": "Those are a result of DrawVerticesOp going away in https://skia-review.googlesource.com/c/skia/+/492357",
+      "revId": "62a8323d22626424a4c30ed302c92972d6d31b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
