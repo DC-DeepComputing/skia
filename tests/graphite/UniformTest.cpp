@@ -15,6 +15,7 @@
 #include "include/core/SkPaint.h"
 #include "include/effects/SkGradientShader.h"
 
+#if 0
 namespace {
 
 std::tuple<SkPaint, int> create_paint(skgpu::Combination combo) {
@@ -94,9 +95,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
                 REPORTER_ASSERT(reporter, expected == actual);
                 REPORTER_ASSERT(reporter, expectedNumUniforms == ud->count());
                 for (int i = 0; i < ud->count(); ++i) {
-                    REPORTER_ASSERT(reporter, ud->offset(i) >= 0 && ud->offset(i) < ud->dataSize());
+                    REPORTER_ASSERT(reporter, ud->offset(i) < ud->dataSize());
                 }
             }
         }
     }
 }
+#endif

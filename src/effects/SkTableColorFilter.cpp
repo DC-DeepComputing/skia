@@ -20,6 +20,10 @@
 
 class SkTable_ColorFilter : public SkColorFilterBase {
 public:
+    void toCodeCF(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     SkTable_ColorFilter(const uint8_t tableA[], const uint8_t tableR[],
                         const uint8_t tableG[], const uint8_t tableB[]) {
         fBitmap.allocPixels(SkImageInfo::MakeA8(256, 4));
