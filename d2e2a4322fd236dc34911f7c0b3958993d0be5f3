@@ -231,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a93c4115_7d552514",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-11T22:25:17Z",
+      "side": 1,
+      "message": "Maybe it should be\n\n  fLastProcessedFrame\n\n?",
+      "parentUuid": "a774e9d1_4f3f60d4",
+      "range": {
+        "startLine": 212,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 40
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c77a149_6c7199cd",
         "filename": "src/codec/SkJpegxlCodec.cpp",
         "patchSetId": 2
@@ -325,6 +349,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da3e0e89_4852713d",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-11T22:25:17Z",
+      "side": 1,
+      "message": "Ah, sorry. I meant, will you please update the comment to explain why?",
+      "parentUuid": "1bef2bd3_1bff6c65",
+      "range": {
+        "startLine": 233,
+        "startChar": 58,
+        "endLine": 233,
+        "endChar": 96
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5367cb05_f0ad100e",
         "filename": "src/codec/SkJpegxlCodec.cpp",
         "patchSetId": 2
@@ -360,6 +408,30 @@
       "side": 1,
       "message": "Yes, but not in MVP implementation.\nI\u0027m planning to add proper input streaming in following CLs.",
       "parentUuid": "5367cb05_f0ad100e",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a788867_90a20497",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-11T22:25:17Z",
+      "side": 1,
+      "message": "Maybe add a TODO/FIXME here?",
+      "parentUuid": "93671abb_c8d40e65",
       "range": {
         "startLine": 254,
         "startChar": 11,
