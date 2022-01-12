@@ -11,9 +11,9 @@
 #include <unordered_map>
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/UniquePaintParamsID.h"
+#include "include/private/SkPaintParamsKey.h"
 #include "include/private/SkSpinlock.h"
 #include "src/core/SkArenaAlloc.h"
-#include "src/core/SkPaintParamsKey.h"
 
 namespace skgpu {
 
@@ -41,6 +41,7 @@ public:
 
         UniquePaintParamsID fUniqueID;    // fixed-size (uint32_t) unique ID assigned to a key
         SkPaintParamsKey fPaintParamsKey; // variable-length paint key descriptor
+        // TODO: we could also lazily cache the generated SkSL here
     };
 
     const Entry* findOrCreate(const SkPaintParamsKey&) SK_EXCLUDES(fSpinLock);
@@ -59,7 +60,6 @@ private:
 
     std::unordered_map<SkPaintParamsKey, Entry*, Hash> fHash SK_GUARDED_BY(fSpinLock);
     std::vector<Entry*> fEntryVector SK_GUARDED_BY(fSpinLock);
-
     SkArenaAlloc fArena{256};
 };
 

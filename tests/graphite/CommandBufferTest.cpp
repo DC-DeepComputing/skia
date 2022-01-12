@@ -29,6 +29,7 @@
 #include "experimental/graphite/src/geom/Transform_graphite.h"
 #include "src/core/SkKeyHelpers.h"
 
+#if 0
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
 #define CAPTURE_COMMANDBUFFER 0
@@ -380,3 +381,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     gpu->testingOnly_endCapture();
 #endif
 }
+#endif

@@ -144,6 +144,13 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
 
 class SkComposeColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(skgpu::ShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     bool onIsAlphaUnchanged() const override {
         // Can only claim alphaunchanged support if both our proxys do.
         return fOuter->isAlphaUnchanged() && fInner->isAlphaUnchanged();
@@ -230,6 +237,13 @@ sk_sp<SkColorFilter> SkColorFilter::makeComposed(sk_sp<SkColorFilter> inner) con
 
 class SkSRGBGammaColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(skgpu::ShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     enum class Direction {
         kLinearToSRGB,
         kSRGBToLinear,
@@ -323,6 +337,13 @@ sk_sp<SkColorFilter> SkColorFilters::SRGBToLinearGamma() {
 }
 
 struct SkWorkingFormatColorFilter : public SkColorFilterBase {
+    void addToKeyCF(skgpu::ShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     sk_sp<SkColorFilter>   fChild;
     skcms_TransferFunction fTF;     bool fUseDstTF    = true;
     skcms_Matrix3x3        fGamut;  bool fUseDstGamut = true;

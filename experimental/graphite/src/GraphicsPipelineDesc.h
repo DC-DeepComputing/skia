@@ -13,6 +13,7 @@
 #include "experimental/graphite/src/Attribute.h"
 #include "experimental/graphite/src/ContextUtils.h"
 #include "experimental/graphite/src/DrawTypes.h"
+#include "experimental/graphite/src/ShaderCodeDictionary.h"
 #include "experimental/graphite/src/UniquePaintParamsID.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkOpts_spi.h"
