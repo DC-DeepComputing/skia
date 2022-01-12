@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a9e7c23_7705c1ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-01-12T04:33:07Z",
+      "side": 1,
+      "message": "Hi Greg, as updated in the bug entry, I took a look on both Gen11(IceLake) and Gen9(CoffeeLake), Gen11 still has performance improvement while Gen9 hasn\u0027t. It seems that the improvement starts from Gen11. So I modify this limit to \u003c\u003d Gen9.\nBTW, is there any feedback or performance data with your testing devices?\n\nThanks",
+      "revId": "d00afe144a77359f07262662b80cfd6e2e72af08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
