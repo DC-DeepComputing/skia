@@ -39,7 +39,7 @@ HelloWorld::~HelloWorld() {
 }
 
 void HelloWorld::updateTitle() {
-    if (!fWindow || fWindow->sampleCount() <= 1) {
+    if (!fWindow) {
         return;
     }
 
