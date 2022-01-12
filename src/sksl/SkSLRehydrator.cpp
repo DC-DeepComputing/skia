@@ -364,7 +364,7 @@ std::unique_ptr<Statement> Rehydrator::statement() {
             StatementArray cases;
             cases.reserve_back(caseCount);
             for (int i = 0; i < caseCount; ++i) {
-                std::unique_ptr<Expression> value = this->expression();
+                SKSL_INT value = this->readS32();
                 std::unique_ptr<Statement> statement = this->statement();
                 cases.push_back(std::make_unique<SwitchCase>(/*line=*/-1, std::move(value),
                                                              std::move(statement)));

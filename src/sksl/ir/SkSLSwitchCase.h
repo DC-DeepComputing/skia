@@ -20,17 +20,24 @@ class SwitchCase final : public Statement {
 public:
     inline static constexpr Kind kStatementKind = Kind::kSwitchCase;
 
-    // null value implies "default" case
-    SwitchCase(int line, std::unique_ptr<Expression> value, std::unique_ptr<Statement> statement)
+    SwitchCase(int line, SKSL_INT value, std::unique_ptr<Statement> statement)
         : INHERITED(line, kStatementKind)
+        , fDefault(false)
         , fValue(std::move(value))
         , fStatement(std::move(statement)) {}
 
-    std::unique_ptr<Expression>& value() {
-        return fValue;
+    // Default case
+    SwitchCase(int line, std::unique_ptr<Statement> statement)
+        : INHERITED(line, kStatementKind)
+        , fDefault(true)
+        , fStatement(std::move(statement)) {}
+
+    bool isDefault() const {
+        return fDefault;
     }
 
-    const std::unique_ptr<Expression>& value() const {
+    SKSL_INT value() const {
+        SkASSERT(!this->isDefault());
         return fValue;
     }
 
@@ -44,22 +51,23 @@ public:
 
     std::unique_ptr<Statement> clone() const override {
         return std::make_unique<SwitchCase>(fLine,
-                                            this->value() ? this->value()->clone() : nullptr,
+                                            this->value(),
                                             this->statement()->clone());
     }
 
     String description() const override {
-        if (this->value()) {
-            return String::printf("case %s:\n%s",
-                                  this->value()->description().c_str(),
-                                  fStatement->description().c_str());
-        } else {
+        if (this->isDefault()) {
             return String::printf("default:\n%s", fStatement->description().c_str());
+        } else {
+            return String::printf("case %lld:\n%s",
+                                  this->value(),
+                                  fStatement->description().c_str());
         }
     }
 
 private:
-    std::unique_ptr<Expression> fValue;
+    bool fDefault;
+    SKSL_INT fValue;
     std::unique_ptr<Statement> fStatement;
 
     using INHERITED = Statement;
