@@ -155,6 +155,30 @@
       },
       "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "716e44ec_10e18177",
+        "filename": "src/sksl/ir/SkSLSwitchStatement.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T19:24:33Z",
+      "side": 1,
+      "message": "We support this today, only thing to change is the comment is misleading",
+      "parentUuid": "2406b62b_cbfc6379",
+      "range": {
+        "startLine": 177,
+        "startChar": 11,
+        "endLine": 177,
+        "endChar": 85
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
