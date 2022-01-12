@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eb8c4eb_da657349",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2167,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-12T21:20:23Z",
+      "side": 1,
+      "message": "I just switched this to make since we often use make to mean the thing that is returned manages its own lifetime versus a raw pointer that you have to manually unref or delete",
+      "range": {
+        "startLine": 2167,
+        "startChar": 57,
+        "endLine": 2167,
+        "endChar": 61
+      },
+      "revId": "00f592c515725de50144ef847273525219ddedb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
