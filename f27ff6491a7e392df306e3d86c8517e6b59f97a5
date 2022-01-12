@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b48555e_b62bcdd6",
+        "filename": "src/sksl/ir/SkSLSwitchCase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T18:41:51Z",
+      "side": 1,
+      "message": "What happens if you try to clone the default case?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 72
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed55d32_eeca7f26",
+        "filename": "src/sksl/ir/SkSLSwitchStatement.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T18:41:51Z",
+      "side": 1,
+      "message": "\u0027continue\u0027 is now redundant with the \u0027else\u0027 below",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 20
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
