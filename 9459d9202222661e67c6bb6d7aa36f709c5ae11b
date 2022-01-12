@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76f8910f_47cbada6",
+        "filename": "src/sksl/dsl/DSLRuntimeEffects.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T14:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f471d23_03a3661a",
+      "range": {
+        "startLine": 32,
+        "startChar": 32,
+        "endLine": 32,
+        "endChar": 58
+      },
+      "revId": "9459d9202222661e67c6bb6d7aa36f709c5ae11b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebf088ee_ff440699",
@@ -101,6 +125,30 @@
       "writtenOn": "2022-01-11T22:06:06Z",
       "side": 1,
       "message": "Took me a long time to understand why this is a useful test. I\u0027m guessing this fails inside EndRuntimeShader and the earlier test fails sooner. A comment might be handy here.",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 76
+      },
+      "revId": "9459d9202222661e67c6bb6d7aa36f709c5ae11b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dff5d7ac_a6b58336",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T14:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebf088ee_ff440699",
       "range": {
         "startLine": 221,
         "startChar": 0,
