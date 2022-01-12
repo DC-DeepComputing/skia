@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7620aba6_7716f673",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-12T21:34:55Z",
+      "side": 1,
+      "message": "lgtm but are we holding off on adding the abandoned checks?",
+      "revId": "438ddee2f05e8eb05d872d11d8741d5c1040ed79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c031e73f_f0fb0795",
+        "filename": "experimental/graphite/src/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-12T21:34:55Z",
+      "side": 1,
+      "message": "Can\u0027t we just put this in the loop ?",
+      "revId": "438ddee2f05e8eb05d872d11d8741d5c1040ed79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
