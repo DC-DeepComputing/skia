@@ -12,6 +12,7 @@
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/GpuWorkSubmission.h"
+#include "experimental/graphite/src/Log.h"
 #include "experimental/graphite/src/ResourceProvider.h"
 #include "src/sksl/SkSLCompiler.h"
 
@@ -52,7 +53,9 @@ bool Gpu::submit(sk_sp<CommandBuffer> commandBuffer) {
         return false;
     }
 
-    SkDEBUGCODE(if (!commandBuffer->hasWork()) SkDebugf("Submitting empty command buffer!\n");)
+    if (!commandBuffer->hasWork()) {
+        SKGPU_LOG(Priority::kWarning, "Submitting empty command buffer!");
+    }
 
     return this->onSubmit(std::move(commandBuffer));
 }
