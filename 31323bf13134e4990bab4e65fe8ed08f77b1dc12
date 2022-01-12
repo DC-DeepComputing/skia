@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dacab65_d55cb254",
+        "filename": "experimental/graphite/src/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-12T17:29:02Z",
+      "side": 1,
+      "message": "Leaving this and similar errors as NSLog, as it\u0027s more likely to pop up for iOS developers.",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "31323bf13134e4990bab4e65fe8ed08f77b1dc12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
