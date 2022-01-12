@@ -56,7 +56,7 @@ bool paint_depends_on_dst(const PaintParams& paint) {
 
 } // anonymous namespace
 
-sk_sp<Device> Device::Make(sk_sp<Recorder> recorder, const SkImageInfo& ii) {
+sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii) {
     if (!recorder) {
         return nullptr;
     }
@@ -64,14 +64,14 @@ sk_sp<Device> Device::Make(sk_sp<Recorder> recorder, const SkImageInfo& ii) {
     auto textureInfo = gpu->caps()->getDefaultSampledTextureInfo(ii.colorType(), /*levelCount=*/1,
                                                                  Protected::kNo, Renderable::kYes);
     sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo));
-    return Make(std::move(recorder),
+    return Make(recorder,
                 std::move(target),
                 ii.refColorSpace(),
                 ii.colorType(),
                 ii.alphaType());
 }
 
-sk_sp<Device> Device::Make(sk_sp<Recorder> recorder,
+sk_sp<Device> Device::Make(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            sk_sp<SkColorSpace> colorSpace,
                            SkColorType colorType,
@@ -88,21 +88,30 @@ sk_sp<Device> Device::Make(sk_sp<Recorder> recorder,
         return nullptr;
     }
 
-    return sk_sp<Device>(new Device(std::move(recorder), std::move(dc)));
+    return sk_sp<Device>(new Device(recorder, std::move(dc)));
 }
 
-Device::Device(sk_sp<Recorder> recorder, sk_sp<DrawContext> dc)
+Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         : SkBaseDevice(dc->imageInfo(), SkSurfaceProps())
-        , fRecorder(std::move(recorder))
+        , fRecorder(recorder)
         , fDC(std::move(dc))
         , fColorDepthBoundsManager(std::make_unique<NaiveBoundsManager>())
         , fCurrentDepth(DrawOrder::kClearDepth)
         , fMaxStencilIndex(DrawOrder::kUnassigned)
         , fDrawsOverlap(false) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
+    fRecorder->registerDevice(this);
 }
 
-Device::~Device() = default;
+Device::~Device() {
+    if (fRecorder) {
+        fRecorder->deregisterDevice(this);
+    }
+}
+
+void Device::abandonRecorder() {
+    fRecorder = nullptr;
+}
 
 SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // TODO: Inspect the paint and create info to determine if there's anything that has to be
@@ -395,7 +404,7 @@ void Device::flushPendingWorkToRecorder() {
 
     // TODO: iterate the clip stack and issue a depth-only draw for every clip element that has
     // a non-empty usage bounds, using that bounds as the scissor.
-    auto drawTask = fDC->snapRenderPassTask(fRecorder.get(), fColorDepthBoundsManager.get());
+    auto drawTask = fDC->snapRenderPassTask(fRecorder, fColorDepthBoundsManager.get());
     if (drawTask) {
         fRecorder->add(std::move(drawTask));
     }
