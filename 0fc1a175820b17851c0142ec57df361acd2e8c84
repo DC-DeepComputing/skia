@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75358aa_dc680ff0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T21:39:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cb744d0_d7135c4d",
+      "revId": "0fc1a175820b17851c0142ec57df361acd2e8c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "382f78cd_99f71cd3",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-01-12T19:28:30Z",
       "side": 1,
       "message": "I expect Ethan\u0027s CL will fix this",
+      "range": {
+        "startLine": 14,
+        "startChar": 13,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "0fc1a175820b17851c0142ec57df361acd2e8c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b295a10_9be3419c",
+        "filename": "tests/sksl/folding/SwitchCaseFolding.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T21:39:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "382f78cd_99f71cd3",
       "range": {
         "startLine": 14,
         "startChar": 13,
