@@ -52,4 +52,31 @@ const ShaderCodeDictionary::Entry* ShaderCodeDictionary::lookup(UniquePaintParam
     return fEntryVector[codeID.asUInt()];
 }
 
+#if 0
+const CodeDictionary::FullCodeEntry *
+CodeDictionary::exhaustiveSearch(const SkSL::String &code) const {
+
+    for (const auto &e: fFullCodeHash) {
+        if (code == e.second->fSkSL) {
+            return e.second;
+        }
+    }
+
+    SkDebugf("------------------------------\n");
+    SkDebugf("Didn't find this code:\n");
+    SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(code));
+
+    SkDebugf("------------------------------\n");
+    SkDebugf("in this %d list:\n", (int) fFullCodeHash.size());
+
+    int index = 0;
+    for (const auto &e: fFullCodeHash) {
+        SkDebugf("%d ------------------------------\n", index++);
+        SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(e.second->fSkSL));
+    }
+
+    return nullptr;
+}
+#endif
+
 } // namespace skgpu

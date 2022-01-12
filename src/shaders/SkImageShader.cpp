@@ -11,6 +11,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkDebugUtils.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkMipmapAccessor.h"
@@ -25,6 +26,9 @@
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkEmptyShader.h"
 #include "src/shaders/SkTransformShader.h"
+
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Encoding.h"
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
 #if 0
@@ -276,6 +280,68 @@ SkImage* SkImageShader::onIsAImage(SkMatrix* texM, SkTileMode xy[]) const {
     }
     return const_cast<SkImage*>(fImage.get());
 }
+
+/**************************************************************************************************/
+static const int kXTileModeShift = 0;
+static const int kYTileModeShift = kTileModeBits;
+
+void SkImageShader::Encode1(skgpu::ShaderCodeDictionary*,
+                            SkBackend backend,
+                            SkPaintParamsKey* key,
+                            const ImageData& data) {
+    switch (backend) {
+        case SkBackend::kGraphite:
+            return;
+        case SkBackend::kGanesh: {
+            int code = ((int) data.fTileModes[0] << kXTileModeShift) |
+                       ((int) data.fTileModes[1] << kYTileModeShift);
+            SkASSERT(data == Decode(code));
+
+            key->addInt1(code);
+            return;
+        }
+        case SkBackend::kSkVM:
+            return;
+    }
+
+    SkUNREACHABLE;
+}
+
+SkImageShader::ImageData SkImageShader::Decode(int code) {
+    SkTileMode tmX = (SkTileMode) (((code) >> kXTileModeShift) & kTileModeMask);
+    SkTileMode tmY = (SkTileMode) (((code) >> kYTileModeShift) & kTileModeMask);
+
+    return { tmX, tmY };
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkImageShader::Dump(const uint32_t* data, int numIntsAccessible) {
+    SkASSERT(CodeSnippetID::kImageShader == ExtractCodeSnippetID(data[0]));
+    SkASSERT(numIntsAccessible == 2);
+
+    ImageData imgData = Decode(data[1]);
+
+    SkDebugf("tileModes(%s, %s) ",
+             SkTileModeToStr(imgData.fTileModes[0]),
+             SkTileModeToStr(imgData.fTileModes[1]));
+}
+#endif
+
+int SkImageShader::addToKeyS(skgpu::ShaderCodeDictionary* dict,
+                             SkBackend backend,
+                             SkPaintParamsKey* key,
+                             std::vector<sk_sp<skgpu::UniformData>>*) const {
+
+    int headerOffset = key->beginBlock(CodeSnippetID::kImageShader);
+
+    ImageData imgData{ fTileModeX, fTileModeY };
+    Encode1(dict, backend, key, imgData);
+
+    key->endBlock(headerOffset, CodeSnippetID::kImageShader);
+    return 0;
+}
+
+/**************************************************************************************************/
 
 sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
                                     SkTileMode tmx, SkTileMode tmy,

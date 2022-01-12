@@ -15,6 +15,19 @@
 
 class SkShader_Blend final : public SkShaderBase {
 public:
+    struct BlendData {
+        SkShader* fDst;
+        SkShader* fSrc;
+        SkBlendMode fBM;
+    };
+
+    static void Encode1(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, const BlendData&);
+    static BlendData Decode();
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+    static void Dump(const SkPaintParamsKey&, uint32_t headerOffset);
+#endif
+    int addToKeyS(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override;
+
     SkShader_Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))
         , fSrc(std::move(src))

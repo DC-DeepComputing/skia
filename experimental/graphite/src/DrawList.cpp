@@ -10,6 +10,10 @@
 #include "experimental/graphite/src/Renderer.h"
 #include "src/gpu/BufferWriter.h"
 
+#include "experimental/graphite/include/Encoding.h"
+#include "experimental/graphite/src/ContextUtils.h"
+#include "include/private/SkPaintParamsKey.h"
+
 namespace skgpu {
 
 const Transform& DrawList::deduplicateTransform(const Transform& localToDevice) {
