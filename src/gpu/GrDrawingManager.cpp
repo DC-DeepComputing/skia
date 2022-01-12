@@ -63,7 +63,7 @@ GrDrawingManager::GrDrawingManager(GrRecordingContext* rContext,
 #else
 
 GrDrawingManager::GrDrawingManager(GrRecordingContext* rContext, bool reduceOpsTaskSplitting)
-        : fContext(rContext)
+        : fGLContext(rContext)
         , fReduceOpsTaskSplitting(reduceOpsTaskSplitting) {
 }
 

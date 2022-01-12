@@ -309,7 +309,7 @@ private:
     std::unique_ptr<SkScalerContext> fContext;
 
     // fStrikeSpec is set every time getOrCreateCache is called. This allows the code to maintain
-    // the fContext as lazy as possible.
+    // the fGLContext as lazy as possible.
     const SkStrikeSpec* fStrikeSpec;
 
     // Have the metrics been sent for this strike. Only send them once.

@@ -115,7 +115,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     // care so much about getImageData performance. However, in order to ensure putImageData/
     // getImageData in "legacy" mode are round-trippable we use the GPU to do the complementary
     // unpremul step to writeSurfacePixels's premul step (which is determined empirically in
-    // fContext->vaildaPMUPMConversionExists()).
+    // fGLContext->vaildaPMUPMConversionExists()).
     GrBackendFormat defaultRGBAFormat = caps->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                       GrRenderable::kYes);
     GrColorType srcColorType = this->colorInfo().colorType();
