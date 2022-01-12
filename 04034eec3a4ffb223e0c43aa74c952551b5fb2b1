@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbbf2384_c8850fb0",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T15:10:53Z",
+      "side": 1,
+      "message": "tiny nit: Just use fNumBytes here (to be consistent with the previous line?)",
+      "range": {
+        "startLine": 15,
+        "startChar": 52,
+        "endLine": 15,
+        "endChar": 71
+      },
+      "revId": "04034eec3a4ffb223e0c43aa74c952551b5fb2b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

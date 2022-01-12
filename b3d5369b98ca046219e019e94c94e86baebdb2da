@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8b20de_1227043a",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T15:10:53Z",
+      "side": 1,
+      "message": "Putting aside the byte math, etc... I think the callers of this would read more naturally if these were named \u0027beginBlock\u0027 and \u0027endBlock\u0027, maybe?",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 74
+      },
+      "revId": "b3d5369b98ca046219e019e94c94e86baebdb2da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

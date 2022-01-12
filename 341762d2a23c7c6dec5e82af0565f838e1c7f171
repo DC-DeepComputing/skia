@@ -277,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d1748f_0943f6b4",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T15:10:53Z",
+      "side": 1,
+      "message": "As long as this gets addressed at some point, I\u0027m okay. The hard-coded sizes with magic numbers and math in the helper functions give me the heebie-jeebies.",
+      "parentUuid": "ceafa533_9220fbaf",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a9aca33_e0487522",
@@ -324,6 +348,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09aaf79e_7e9b488a",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T15:10:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e7f21c2c_0eb9812c",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 6
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "517ed244_b54f2be6",
@@ -361,6 +409,30 @@
       "side": 1,
       "message": "Right - if this persists beyond helping bring up the key system we need a fallback that can just dump the bytes.",
       "parentUuid": "517ed244_b54f2be6",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd3fe845_0f3843e3",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-12T15:10:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f1152845_a52bde9b",
       "range": {
         "startLine": 21,
         "startChar": 0,
