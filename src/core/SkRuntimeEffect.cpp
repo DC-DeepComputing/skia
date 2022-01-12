@@ -190,7 +190,6 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
         SkSL::SharedCompiler compiler;
         SkSL::Program::Settings settings = MakeSettings(options, /*optimize=*/true);
         program = compiler->convertProgram(kind, SkSL::String(sksl.c_str(), sksl.size()), settings);
-
         if (!program) {
             RETURN_FAILURE("%s", compiler->errorText().c_str());
         }
