@@ -34,8 +34,7 @@ half4 main(float2 p) {
 }`;
 
     // TODO(kjlubick) rewrite testRTShader and callers to use gm.
-    const testRTShader = (name, done, localMatrix) => {
-        const surface = CanvasKit.MakeCanvasSurface('test');
+    const testRTShader = (name, surface, done, localMatrix) => {
         expect(surface).toBeTruthy('Could not make surface');
         if (!surface) {
             return;
@@ -80,11 +79,16 @@ half4 main(float2 p) {
     };
 
     it('can compile custom shader code', (done) => {
-        testRTShader('rtshader_spiral', done);
+        testRTShader('rtshader_spiral', CanvasKit.MakeCanvasSurface('test'), done);
+    });
+
+    it('can use runtime effects in software', (done) => {
+        testRTShader('rtshader_spiral', CanvasKit.MakeSWCanvasSurface('test'), done);
     });
 
     it('can apply a matrix to the shader', (done) => {
-        testRTShader('rtshader_spiral_translated', done, CanvasKit.Matrix.translated(-200, 100));
+        testRTShader('rtshader_spiral_translated', CanvasKit.MakeCanvasSurface('test'),
+                     done, CanvasKit.Matrix.translated(-200, 100));
     });
 
     it('can provide a error handler for compilation errors', () => {
