@@ -420,6 +420,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1c350d5_cbe3955c",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-12T14:36:10Z",
+      "side": 1,
+      "message": "In reply to Brian O.\u0027s comment, a follow up CL will add a SkBackend parameter to the SkShader::addToKey methods giving some flexibility wrt the mapping from PaintParams to code snippets.",
+      "parentUuid": "8f3c1481_92cd3956",
+      "range": {
+        "startLine": 17,
+        "startChar": 57,
+        "endLine": 18,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52c38d07_22967a8f",
         "filename": "src/core/SkPaintParamsKey.h",
         "patchSetId": 21
