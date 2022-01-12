@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fad9790_786b60c2",
+        "filename": "infra/bots/gen_tasks_logic/job_builder.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-12T13:05:29Z",
+      "side": 1,
+      "message": "👍",
+      "range": {
+        "startLine": 227,
+        "startChar": 18,
+        "endLine": 227,
+        "endChar": 35
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c009cd51_c07d6f9a",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-12T13:05:29Z",
+      "side": 1,
+      "message": "IIUC, this tars up the contents of /tmp (location of the skia build products?) and copies the tar to /OUT/ which is where the task driver can access it. Right?\n\nPlease add a small comment about the contents of /tmp. Maybe just make the location explicit on line 85",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 12
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e06689d_efc08290",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-12T13:05:29Z",
+      "side": 1,
+      "message": "missing a word?",
+      "range": {
+        "startLine": 135,
+        "startChar": 44,
+        "endLine": 135,
+        "endChar": 47
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d370f8_147d78ce",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-12T13:05:29Z",
+      "side": 1,
+      "message": "Is this not the same as cleanupTempFiles()?",
+      "range": {
+        "startLine": 136,
+        "startChar": 1,
+        "endLine": 136,
+        "endChar": 11
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f13132c_2d868d44",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-12T13:05:29Z",
+      "side": 1,
+      "message": "Does the order change matter?",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 28
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
