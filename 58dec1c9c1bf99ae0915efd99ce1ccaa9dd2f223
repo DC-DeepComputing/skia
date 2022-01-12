@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7767667_65c11e74",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T19:59:14Z",
+      "side": 1,
+      "message": "Can be moved outside of the if/else, it\u0027s identical on both branches",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 369,
+        "endChar": 77
+      },
+      "revId": "58dec1c9c1bf99ae0915efd99ce1ccaa9dd2f223",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b474c80_a0cd34dd",
+        "filename": "src/sksl/ir/SkSLSwitchCase.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T19:59:14Z",
+      "side": 1,
+      "message": "I feel like this\u0027d be easier to read if we had static functions Make(line, value, stmt) and MakeDefault(line, stmt), but that\u0027s not a big deal.",
+      "range": {
+        "startLine": 31,
+        "startChar": 7,
+        "endLine": 31,
+        "endChar": 19
+      },
+      "revId": "58dec1c9c1bf99ae0915efd99ce1ccaa9dd2f223",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
