@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7560dc00_a4a5e0f6",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-12T14:32:27Z",
+      "side": 1,
+      "message": "Yes, that is correct. Done.",
+      "parentUuid": "c009cd51_c07d6f9a",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 12
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e06689d_efc08290",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-01-12T13:05:29Z",
       "side": 1,
       "message": "missing a word?",
+      "range": {
+        "startLine": 135,
+        "startChar": 44,
+        "endLine": 135,
+        "endChar": 47
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a475aa_f7d2b9c0",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-12T14:32:27Z",
+      "side": 1,
+      "message": "Oops. Done.",
+      "parentUuid": "7e06689d_efc08290",
       "range": {
         "startLine": 135,
         "startChar": 44,
@@ -93,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4fe3db_56f705f8",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-12T14:32:27Z",
+      "side": 1,
+      "message": "cleanupTempFiles runs the command in the infra:prod docker image (required for api right now). This code runs it in the skia-release docker image.",
+      "parentUuid": "d9d370f8_147d78ce",
+      "range": {
+        "startLine": 136,
+        "startChar": 1,
+        "endLine": 136,
+        "endChar": 11
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f13132c_2d868d44",
@@ -106,6 +178,30 @@
       "writtenOn": "2022-01-12T13:05:29Z",
       "side": 1,
       "message": "Does the order change matter?",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 28
+      },
+      "revId": "6bf281a7d9b0a920e0faef562aeb5d28e7f8c6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d123b6bd_92fd9403",
+        "filename": "infra/bots/task_drivers/push_apps_from_skia_image/push_apps_from_skia_image.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-12T14:32:27Z",
+      "side": 1,
+      "message": "Sadly yes. In the previous way, pushing fiddler took so long that the login docker token expired and pushing api failed. This should not (hopefully) matter after api is migrated to bazel and I uncomment lines 247:251. Plus hopefully we figure out how to reduce the pushing fiddler time in the infra repo.",
+      "parentUuid": "4f13132c_2d868d44",
       "range": {
         "startLine": 254,
         "startChar": 11,
