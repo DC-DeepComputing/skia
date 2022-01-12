@@ -364,9 +364,12 @@ std::unique_ptr<Statement> Rehydrator::statement() {
             StatementArray cases;
             cases.reserve_back(caseCount);
             for (int i = 0; i < caseCount; ++i) {
-                std::unique_ptr<Expression> value = this->expression();
+                bool isDefault = this->readU8();
+                SKSL_INT value = this->readS32();
                 std::unique_ptr<Statement> statement = this->statement();
-                cases.push_back(std::make_unique<SwitchCase>(/*line=*/-1, std::move(value),
+                cases.push_back(
+                    isDefault ? std::make_unique<SwitchCase>(/*line=*/-1, std::move(statement))
+                              : std::make_unique<SwitchCase>(/*line=*/-1, std::move(value),
                                                              std::move(statement)));
             }
             return SwitchStatement::Make(fContext, /*line=*/-1, isStatic, std::move(expr),
