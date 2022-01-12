@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceafa533_9220fbaf",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-12T14:39:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cad446e6_986d390a",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 32
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a9aca33_e0487522",
@@ -442,6 +466,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef4b9b5b_e46d11e6",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-12T14:39:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a1c350d5_cbe3955c",
+      "range": {
+        "startLine": 17,
+        "startChar": 57,
+        "endLine": 18,
+        "endChar": 47
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52c38d07_22967a8f",
@@ -536,6 +584,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6ef9408_1475354f",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-12T14:39:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8bbc3577_2a6a5121",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d51a1d7_53930299",
@@ -607,6 +679,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb92dfe_16f38565",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-12T14:39:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e3248cb9_74e200f0",
+      "range": {
+        "startLine": 37,
+        "startChar": 39,
+        "endLine": 37,
+        "endChar": 61
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4b56340_9d2d050e",
@@ -644,6 +740,30 @@
       "side": 1,
       "message": "Maybe. One thing I have to sort out is the alignment of larger things when they are added to the key (e.g., ints). I suspect I\u0027ll want to align them appropriately in which case some sort of more structured (addInt, getInt) interface might be more appropriate.\n\nI guess another aspect of this I\u0027ve been thinking about is giving each block a view into the key to provide better control over which bits each block can access. Here too though, it seems like we may want something more structured than raw bytes.",
       "parentUuid": "a4b56340_9d2d050e",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 53
+      },
+      "revId": "341762d2a23c7c6dec5e82af0565f838e1c7f171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b46400c2_025cbe78",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-12T14:39:39Z",
+      "side": 1,
+      "message": "Talking offline, we think memcpy\u0027ing bytes is worth any minor performance hit since we can avoid having to track/zero-out the alignment padding bytes.",
+      "parentUuid": "720639bc_d601cf68",
       "range": {
         "startLine": 81,
         "startChar": 4,
