@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6441e2_e422c0fd",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T20:00:17Z",
+      "side": 1,
+      "message": "Oh, we got rid of the omni blend() method.",
+      "parentUuid": "4d7481b5_ee25d441",
+      "range": {
+        "startLine": 513,
+        "startChar": 19,
+        "endLine": 514,
+        "endChar": 69
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b48555e_b62bcdd6",
