@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d7481b5_ee25d441",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T19:55:40Z",
+      "side": 1,
+      "message": "1. They were regenerated; there are no switches in our source, so nothing changed.\n2. Done.",
+      "parentUuid": "97f97c5b_e4faa0d6",
+      "range": {
+        "startLine": 513,
+        "startChar": 19,
+        "endLine": 514,
+        "endChar": 69
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b48555e_b62bcdd6",
@@ -96,6 +120,30 @@
       "writtenOn": "2022-01-12T18:41:51Z",
       "side": 1,
       "message": "What happens if you try to clone the default case?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 72
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a85d53c_e86fdae6",
+        "filename": "src/sksl/ir/SkSLSwitchCase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T19:55:40Z",
+      "side": 1,
+      "message": "Oops, fixed.",
+      "parentUuid": "1b48555e_b62bcdd6",
       "range": {
         "startLine": 54,
         "startChar": 0,
@@ -129,6 +177,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02fd8a5c_e5ded1ca",
+        "filename": "src/sksl/ir/SkSLSwitchStatement.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T19:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ed55d32_eeca7f26",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 20
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bebfb73_19130b4a",
@@ -142,6 +214,30 @@
       "writtenOn": "2022-01-12T18:42:53Z",
       "side": 1,
       "message": "nit: no need for `else` after a `continue`, it\u0027s redundant. Remove either the `else` or `continue`.",
+      "range": {
+        "startLine": 65,
+        "startChar": 10,
+        "endLine": 65,
+        "endChar": 16
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64124ba4_8002fcee",
+        "filename": "src/sksl/ir/SkSLSwitchStatement.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T19:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bebfb73_19130b4a",
       "range": {
         "startLine": 65,
         "startChar": 10,
@@ -189,6 +285,30 @@
       "side": 1,
       "message": "We support this today, only thing to change is the comment is misleading",
       "parentUuid": "2406b62b_cbfc6379",
+      "range": {
+        "startLine": 177,
+        "startChar": 11,
+        "endLine": 177,
+        "endChar": 85
+      },
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6067625d_847851c8",
+        "filename": "src/sksl/ir/SkSLSwitchStatement.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-12T19:55:40Z",
+      "side": 1,
+      "message": "Fixed the comment.",
+      "parentUuid": "716e44ec_10e18177",
       "range": {
         "startLine": 177,
         "startChar": 11,
