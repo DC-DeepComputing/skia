@@ -22,6 +22,30 @@
       },
       "revId": "261cb59c525079707ba60411a19ce2a52deca1ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a340dc_b04c5606",
+        "filename": "resources/sksl/shared/MatrixScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-12T23:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc3522d8_862324ec",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 8
+      },
+      "revId": "261cb59c525079707ba60411a19ce2a52deca1ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
