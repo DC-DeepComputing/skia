@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c392885a_151f1b1a",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-12T15:12:42Z",
+      "side": 1,
+      "message": "nit: I\u0027m guessing you put it here because it follows jpeg? I might put it lower in the list; in theory the list is roughly sorted by frequency of use.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 10
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88783cdd_cf0b1010",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-12T15:12:42Z",
+      "side": 1,
+      "message": "nit: can*",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7bac0a_4d91c754",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-12T15:12:42Z",
+      "side": 1,
+      "message": "nit: I might put more descriptive messages here, so that if it *did* happen, we\u0027d know which line caused the abort.\n\nGiven that we don\u0027t expect it to happen, I might also switch this to SkDEBUGFAIL, so that it\u0027s stripped out of release builds.",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 35
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d2031f_ab7dae67",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-12T15:12:42Z",
+      "side": 1,
+      "message": "nit: dimensions*",
+      "range": {
+        "startLine": 122,
+        "startChar": 24,
+        "endLine": 122,
+        "endChar": 35
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70e4d362_07083d9e",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-12T15:12:42Z",
+      "side": 1,
+      "message": "I\u0027m still confused. I thought you said this meant that this frame had been processed, but the line above says \"SkipFrames\". Does \"Skip\" process them?",
+      "range": {
+        "startLine": 212,
+        "startChar": 14,
+        "endLine": 212,
+        "endChar": 33
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
