@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95b20f22_f8be0568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2022-01-12T21:06:43Z",
+      "side": 1,
+      "message": "It\u0027s probably a bit more complex than just adding the flag. I think at least ANGLE flags will need to be updated to compile with Vulkan backend.",
+      "parentUuid": "221157ac_f706fc51",
+      "revId": "6d473c072d9cfe9d756344cb34d0583d4c3b79fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b686e91_1f637115",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
         "patchSetId": 2
