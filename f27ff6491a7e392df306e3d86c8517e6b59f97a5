@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cc570e3_4fb9b5c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-12T19:04:26Z",
+      "side": 1,
+      "message": "Please add a test file demonstrating a switch that uses const variables as its case values. Doesn\u0027t need to be complex, and should work in ES2 (since we transform it to chained-if form as needed)",
+      "revId": "f27ff6491a7e392df306e3d86c8517e6b59f97a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28bb2264_c720214f",
         "filename": "src/sksl/SkSLDehydrator.cpp",
         "patchSetId": 3
