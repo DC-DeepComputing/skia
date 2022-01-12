@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "facd05dc_1b1cbfc6",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-12T11:31:20Z",
+      "side": 1,
+      "message": "Makes sense. Done.",
+      "parentUuid": "a93c4115_7d552514",
+      "range": {
+        "startLine": 212,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 40
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c77a149_6c7199cd",
@@ -371,6 +395,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b012b4_2cddc790",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-12T11:31:20Z",
+      "side": 1,
+      "message": "Sure.",
+      "parentUuid": "da3e0e89_4852713d",
+      "range": {
+        "startLine": 233,
+        "startChar": 58,
+        "endLine": 233,
+        "endChar": 96
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5367cb05_f0ad100e",
@@ -432,6 +480,30 @@
       "side": 1,
       "message": "Maybe add a TODO/FIXME here?",
       "parentUuid": "93671abb_c8d40e65",
+      "range": {
+        "startLine": 254,
+        "startChar": 11,
+        "endLine": 254,
+        "endChar": 19
+      },
+      "revId": "d2e2a4322fd236dc34911f7c0b3958993d0be5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a6e9dfb_de6f74b1",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-12T11:31:20Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "8a788867_90a20497",
       "range": {
         "startLine": 254,
         "startChar": 11,

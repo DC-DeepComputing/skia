@@ -91,6 +91,30 @@
       },
       "revId": "74d0c04747f07c67a47f07f684df1d7e211770f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fe8b92e_e032c3c5",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-12T11:31:20Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "19591c1a_eb488aab",
+      "range": {
+        "startLine": 322,
+        "startChar": 9,
+        "endLine": 322,
+        "endChar": 43
+      },
+      "revId": "74d0c04747f07c67a47f07f684df1d7e211770f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
