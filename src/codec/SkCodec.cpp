@@ -31,6 +31,10 @@
 #include "src/codec/SkJpegCodec.h"
 #endif
 
+#ifdef SK_CODEC_DECODES_JPEGXL
+#include "src/codec/SkJpegxlCodec.h"
+#endif
+
 #ifdef SK_CODEC_DECODES_PNG
 #include "src/codec/SkIcoCodec.h"
 #include "src/codec/SkPngCodec.h"
@@ -59,6 +63,9 @@ static std::vector<DecoderProc>* decoders() {
     static auto* decoders = new std::vector<DecoderProc> {
     #ifdef SK_CODEC_DECODES_JPEG
         { SkJpegCodec::IsJpeg, SkJpegCodec::MakeFromStream },
+    #endif
+    #ifdef SK_CODEC_DECODES_JPEGXL
+        { SkJpegxlCodec::IsJpegxl, SkJpegxlCodec::MakeFromStream },
     #endif
     #ifdef SK_CODEC_DECODES_WEBP
         { SkWebpCodec::IsWebp, SkWebpCodec::MakeFromStream },
