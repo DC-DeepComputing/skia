@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7224c8c2_3f01ac0a",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-13T15:38:15Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "f0a4308f_416f71a0",
+      "range": {
+        "startLine": 12,
+        "startChar": 15,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "814a5246_e7ca614e",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-13T01:09:44Z",
       "side": 1,
       "message": "Should we guard this whole default setting with an #if !defined(SKGPU_MAX_PRIORITY)?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 6
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6d27bcf_53273c8b",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-13T15:38:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "814a5246_e7ca614e",
       "range": {
         "startLine": 19,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9690f791_51ee9598",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-13T15:38:15Z",
+      "side": 1,
+      "message": "Done. I used LOWEST instead of MIN, because MIN to me implies a mathematical relationship. And the ordering here is consistent with the usual defs in syslog, where LOG_EMERG is set to 0, and LOG_DEBUG is 7.",
+      "parentUuid": "acdab94c_ac95cc5c",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 72
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d2152b8_fd51564b",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-01-13T01:09:44Z",
       "side": 1,
       "message": "can we include the priority in the logged message automatically?",
+      "range": {
+        "startLine": 25,
+        "startChar": 51,
+        "endLine": 25,
+        "endChar": 73
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cafde07e_223c7f88",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-13T15:38:15Z",
+      "side": 1,
+      "message": "Done, though I\u0027m not sure how I feel about it. There might be cases where I want to put something in the Error or Warning stream without a prefix (for example, when dumping shader compiler errors), but I think I can work around it.",
+      "parentUuid": "2d2152b8_fd51564b",
       "range": {
         "startLine": 25,
         "startChar": 51,
