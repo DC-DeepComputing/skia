@@ -16,6 +16,23 @@
       "message": "Rob do you know if this will mess up your tests at all? Is the data uploaded assuming Cosited even locations or will it also work sampling from midpoint?",
       "revId": "af58a7d6bd14318bea2156e1d016c30c3235304d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18cc6399_8b1d1805",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-13T15:52:20Z",
+      "side": 1,
+      "message": "+Brian since he may have actually written the original code. Will using midpoint break things? Should the helper just fail if cosited isn\u0027t supported",
+      "revId": "af58a7d6bd14318bea2156e1d016c30c3235304d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
