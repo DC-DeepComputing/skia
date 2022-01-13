@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2905bad7_069714f1",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-01-13T15:51:07Z",
+      "side": 1,
+      "message": "Do you need a defer that removes workDir?",
+      "revId": "499b317c65e03a8863877fe45a1602b34608c5d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
