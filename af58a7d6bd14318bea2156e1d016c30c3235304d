@@ -33,6 +33,23 @@
       "message": "+Brian since he may have actually written the original code. Will using midpoint break things? Should the helper just fail if cosited isn\u0027t supported",
       "revId": "af58a7d6bd14318bea2156e1d016c30c3235304d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58ba838a_fa5f16a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-13T17:34:11Z",
+      "side": 1,
+      "message": "It will just make the YUV-\u003eRGB image reconstruction slightly different. What\u0027s correct depends on how the RGB-\u003eYUV image conversion was done. Looks like this was added here:\nhttps://skia-review.googlesource.com/c/skia/+/233776\n\nNote that our SkYUVAInfo-based APIs currently only support one siting: centered.\n\nWe could probably just always set this to midpoint. AFAICT this is just used to create test textures and so what value is used may not matter at all. ",
+      "revId": "af58a7d6bd14318bea2156e1d016c30c3235304d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
