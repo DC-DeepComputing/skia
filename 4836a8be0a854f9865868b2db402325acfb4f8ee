@@ -69,6 +69,30 @@
       },
       "revId": "4836a8be0a854f9865868b2db402325acfb4f8ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7aa315b_abb7dec4",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 3341,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-13T14:06:39Z",
+      "side": 1,
+      "message": "As you mentioned, DebugTrace won\u0027t have its data until the shader runs.",
+      "parentUuid": "030ec251_51fde923",
+      "range": {
+        "startLine": 3341,
+        "startChar": 16,
+        "endLine": 3341,
+        "endChar": 26
+      },
+      "revId": "4836a8be0a854f9865868b2db402325acfb4f8ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
