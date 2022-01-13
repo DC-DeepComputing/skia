@@ -178,7 +178,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	sampleCount := 0
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
-		configs = append(configs, "gles", "glesdft", "glesdmsaa")
+		configs = append(configs, "vk", "vkmsaa4")
 	} else if b.cpu() {
 		args = append(args, "--nogpu")
 
