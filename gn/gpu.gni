@@ -817,7 +817,6 @@ skia_native_gpu_sources = [
 skia_shared_gpu_sources = [
   "$_include/gpu/ShaderErrorHandler.h",
   "$_src/gpu/BufferWriter.h",
-  "$_src/gpu/KeyBuilder.h",
   "$_src/gpu/ResourceKey.cpp",
   "$_src/gpu/ResourceKey.h",
   "$_src/gpu/ShaderErrorHandler.cpp",
