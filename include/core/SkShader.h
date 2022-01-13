@@ -24,7 +24,16 @@ class SkImage;
 class SkPath;
 class SkPicture;
 class SkRasterPipeline;
+class SkShaderCodeDictionary;
 class GrFragmentProcessor;
+
+enum class SkBackend : uint8_t;
+
+class SkPaintParamsKey;
+
+namespace skgpu {
+    class UniformData;
+}
 
 /** \class SkShader
  *
@@ -38,6 +47,11 @@ class GrFragmentProcessor;
  */
 class SK_API SkShader : public SkFlattenable {
 public:
+    virtual void addToKeyS(SkShaderCodeDictionary*,
+                           SkBackend,
+                           SkPaintParamsKey*,
+                           std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
+
     /**
      *  Returns true if the shader is guaranteed to produce only opaque
      *  colors, subject to the SkPaint using the shader to apply an opaque

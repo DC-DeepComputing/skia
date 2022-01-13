@@ -14,6 +14,7 @@
 #include "include/private/SkTOptional.h"
 #include "include/private/SkTo.h"
 
+enum class SkBackend : uint8_t;
 class SkBlender;
 class SkColorFilter;
 class SkColorSpace;
@@ -21,9 +22,15 @@ struct SkRect;
 class SkImageFilter;
 class SkMaskFilter;
 class SkMatrix;
+class SkPaintParamsKey;
 class SkPath;
 class SkPathEffect;
 class SkShader;
+class SkShaderCodeDictionary;
+
+namespace skgpu {
+    class UniformData;
+};
 
 /** \class SkPaint
     SkPaint controls options applied when drawing. SkPaint collects all
@@ -37,7 +44,6 @@ class SkShader;
 */
 class SK_API SkPaint {
 public:
-
     /** Constructs SkPaint with default values.
 
         @return  default initialized SkPaint
@@ -690,6 +696,11 @@ public:
     */
     const SkRect& doComputeFastBounds(const SkRect& orig, SkRect* storage,
                                       Style style) const;
+
+    void toKey(SkShaderCodeDictionary*,
+               SkBackend,
+               SkPaintParamsKey*,
+               std::vector<sk_sp<skgpu::UniformData>>*) const;
 
 private:
     sk_sp<SkPathEffect>   fPathEffect;
