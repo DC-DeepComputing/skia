@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb1f03f8_67dfc1c3",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-13T16:38:57Z",
+      "side": 1,
+      "message": "typo ?",
+      "range": {
+        "startLine": 493,
+        "startChar": 49,
+        "endLine": 493,
+        "endChar": 60
+      },
+      "revId": "15142a83b15320c9c4714737b1ecc21b7e20acba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab6809b3_2d8202ce",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-13T16:38:57Z",
+      "side": 1,
+      "message": "Do you want to have a matching comment over in SkScalarCache::prepareForMaskDrawing pointing back here ?",
+      "revId": "15142a83b15320c9c4714737b1ecc21b7e20acba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2bdd26a_9200f215",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-13T16:38:57Z",
+      "side": 1,
+      "message": "typo ?",
+      "range": {
+        "startLine": 199,
+        "startChar": 57,
+        "endLine": 199,
+        "endChar": 68
+      },
+      "revId": "15142a83b15320c9c4714737b1ecc21b7e20acba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
