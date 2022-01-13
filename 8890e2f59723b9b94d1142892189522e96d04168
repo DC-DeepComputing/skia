@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05a9ceb_2cbfed7c",
+        "filename": "resources/sksl/errors/Comparison_Dimensional.rts",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-13T14:51:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b611f9a_c78c19eb",
+      "range": {
+        "startLine": 1,
+        "startChar": 23,
+        "endLine": 1,
+        "endChar": 24
+      },
+      "revId": "8890e2f59723b9b94d1142892189522e96d04168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c093728b_eaac2a17",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2e2883a_e2ae9218",
+        "filename": "resources/sksl/shared/MatrixScalarMath.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-13T14:51:01Z",
+      "side": 1,
+      "message": "I actually like them separate - some constant, other not.",
+      "parentUuid": "c093728b_eaac2a17",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 7
+      },
+      "revId": "8890e2f59723b9b94d1142892189522e96d04168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f49b994_c7514ac6",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-01-12T23:56:41Z",
       "side": 1,
       "message": "optional/up to you: it should be safe to follow the pattern used by the other cases, i.e.:\n\n            test(slash, f1, f2, f3, f4, float2x2(f1/2, f2/2, f3/2, f4/2)\n            \nThere\u0027s no precision concern with very simple numbers like 0.5 and 1.5.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 74
+      },
+      "revId": "8890e2f59723b9b94d1142892189522e96d04168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73e140fd_0be6bc50",
+        "filename": "resources/sksl/shared/MatrixScalarMath.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-01-13T14:51:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f49b994_c7514ac6",
       "range": {
         "startLine": 36,
         "startChar": 0,
