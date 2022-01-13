@@ -36,6 +36,11 @@ public:
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
 
+    void toCodeAndUnis(SkShaderCodeDictionary*,
+                       SkBackend,
+                       SkPaintParamsKey*,
+                       std::vector<sk_sp<UniformData>>*) const;
+
 private:
     SkColor4f       fColor;
     SkBlendMode     fBlendMode;
