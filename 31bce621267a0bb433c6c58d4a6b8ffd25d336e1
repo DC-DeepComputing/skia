@@ -39,6 +39,30 @@
       },
       "revId": "31bce621267a0bb433c6c58d4a6b8ffd25d336e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d4f8201_2c9570da",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-13T14:50:22Z",
+      "side": 1,
+      "message": "I don\u0027t see why this shouldn\u0027t be public? Who are we trying to hide it from, ourselves? I think in Ganesh there are a bunch of places we added extra complexity in source only files to hide certain functionality. TBH a lot of this came from the fact that certain classes use to be public facing (e.g. GrTexture/GrGpuResource). But in general I don\u0027t want to add extra priv layers just because we don\u0027t trust ourselves not to call this at bad times. I mean there are a lot of functions on a lot of objects that would cause issues if we randomly called them.\n\nIt may not just be the deletion of the recorder. Eventually we\u0027ll also handle the case where the backend gpu device is lost and we\u0027ll need to abandon all our stuff. So the recorder will still exists but will abandon all its devices.\n\nI added a comment saying what its intended use is.",
+      "parentUuid": "3e0542ff_5dc13fbf",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 27
+      },
+      "revId": "31bce621267a0bb433c6c58d4a6b8ffd25d336e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
