@@ -310,6 +310,16 @@ public:
         return {};
     }
 
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+        // TODO?
+        return {};
+    }
+
+    bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+        // TODO?
+        return false;
+    }
+
 protected:
     void flatten(SkWriteBuffer&) const override;
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT

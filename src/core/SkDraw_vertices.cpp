@@ -12,6 +12,7 @@
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
@@ -99,6 +100,8 @@ protected:
                           const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
                           skvm::Uniforms*, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
 private:
     bool isOpaque() const override { return fIsOpaque; }
     // For serialization.  This will never be called.
@@ -155,6 +158,50 @@ skvm::Color SkTriColorShader::onProgram(skvm::Builder* b,
     color.b = colorDot(2);
     color.a = colorDot(3);
     return color;
+}
+
+skvm::Color SkTriColorShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    skvm::Builder* b = builder;
+    fColorMatrix = uniforms->pushPtr(/*&fM43*/);
+
+    skvm::F32 x = local.x,
+              y = local.y;
+
+    if (fUsePersp) {
+        fCoordMatrix = uniforms->pushPtr(/*&fM33*/);
+        auto dot = [&, x, y](int row) {
+            return b->mad(x, b->arrayF(fCoordMatrix, row),
+                             b->mad(y, b->arrayF(fCoordMatrix, row + 3),
+                                       b->arrayF(fCoordMatrix, row + 6)));
+        };
+
+        x = dot(0);
+        y = dot(1);
+        x = x * (1.0f / dot(2));
+        y = y * (1.0f / dot(2));
+    }
+
+    auto colorDot = [&, x, y](int row) {
+        return b->mad(x, b->arrayF(fColorMatrix, row),
+                         b->mad(y, b->arrayF(fColorMatrix, row + 4),
+                                   b->arrayF(fColorMatrix, row + 8)));
+    };
+
+    skvm::Color color;
+    color.r = colorDot(0);
+    color.g = colorDot(1);
+    color.b = colorDot(2);
+    color.a = colorDot(3);
+    return color;
+}
+
+bool SkTriColorShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    uniforms->pushPtr(&fM43);
+    key->addBool(fUsePersp, "perspective");
+    if (fUsePersp) {
+        uniforms->pushPtr(&fM33);
+    }
+    return true;
 }
 
 bool SkTriColorShader::update(const SkMatrix& ctmInv, const SkPoint pts[],

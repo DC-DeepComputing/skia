@@ -13,6 +13,7 @@
 #include "include/private/SkImageInfoPriv.h"
 #include "src/core/SkVM_fwd.h"
 
+class SkKeyBuilder;
 class SkRasterPipeline;
 
 struct SkColorSpaceXformSteps {
@@ -44,6 +45,9 @@ struct SkColorSpaceXformSteps {
     void apply(float rgba[4]) const;
     void apply(SkRasterPipeline*) const;
     skvm::Color program(skvm::Builder*, skvm::Uniforms*, skvm::Color) const;
+
+    skvm::Color program2(skvm::Builder*, skvm::UniformsAllocator*, skvm::Color) const;
+    void keyAndUniforms(SkKeyBuilder*, skvm::UniformsData*) const;
 
     Flags flags;
 

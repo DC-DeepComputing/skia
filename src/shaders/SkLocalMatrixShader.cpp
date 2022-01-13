@@ -91,6 +91,23 @@ skvm::Color SkLocalMatrixShader::onProgram(skvm::Builder* p,
                                         uniforms,alloc);
 }
 
+skvm::Color SkLocalMatrixShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
+    if (localM) {
+        lm.writable()->preConcat(*localM);
+    }
+    return as_SB(fProxyShader)
+            ->program2(builder, device, local, paint, matrices, lm.get(), dstInfo, uniforms);
+}
+
+bool SkLocalMatrixShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
+    if (localM) {
+        lm.writable()->preConcat(*localM);
+    }
+    return as_SB(fProxyShader)->keyAndUniforms(key, uniforms, matrices, lm.get(), dstInfo, alloc);
+}
+
 sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
     if (localMatrix.isIdentity()) {
         return sk_ref_sp(const_cast<SkShader*>(this));
@@ -164,6 +181,19 @@ protected:
         return as_SB(fProxyShader)->program(p, device,local, paint,
                                             matrixProvider,localM, dst,
                                             uniforms,alloc);
+    }
+
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+        SkOverrideDeviceMatrixProvider matrixProvider(fCTM);
+        return as_SB(fProxyShader)->program2(builder, device,local, paint,
+                                             matrixProvider,localM, dstInfo,
+                                             uniforms);
+    }
+
+    bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+        SkOverrideDeviceMatrixProvider matrixProvider(fCTM);
+        return as_SB(fProxyShader)
+                ->keyAndUniforms(key, uniforms, matrixProvider, localM, dstInfo, alloc);
     }
 
 private:

@@ -18,6 +18,7 @@ class GrRecordingContext;
 class SkArenaAlloc;
 class SkBitmap;
 class SkColorSpace;
+class SkKeyBuilder;
 class SkRuntimeEffect;
 struct SkStageRec;
 using GrFPResult = std::tuple<bool, std::unique_ptr<GrFragmentProcessor>>;
@@ -30,6 +31,20 @@ public:
     SK_WARN_UNUSED_RESULT
     skvm::Color program(skvm::Builder*, skvm::Color,
                         const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const;
+
+#define COLOR_FILTER_PROGRAM_ARGS skvm::Builder* builder,           \
+                                  skvm::Color c,                    \
+                                  const SkColorInfo& dstInfo,       \
+                                  skvm::UniformsAllocator* uniforms
+
+#define COLOR_FILTER_KEY_UNI_ARGS SkKeyBuilder* key,            \
+                                  skvm::UniformsData* uniforms, \
+                                  const SkColorInfo& dstInfo,   \
+                                  SkArenaAlloc* alloc
+
+    SK_WARN_UNUSED_RESULT
+    skvm::Color program2(COLOR_FILTER_PROGRAM_ARGS) const;
+    bool keyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const;
 
     /** Returns the flags for this filter. Override in subclasses to return custom flags.
     */
@@ -86,6 +101,9 @@ private:
 
     virtual skvm::Color onProgram(skvm::Builder*, skvm::Color,
                                   const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const = 0;
+
+    virtual skvm::Color onProgram2(COLOR_FILTER_PROGRAM_ARGS) const = 0;
+    virtual bool onKeyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const = 0;
 
     friend class SkColorFilter;
 

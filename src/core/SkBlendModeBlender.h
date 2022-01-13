@@ -34,6 +34,9 @@ private:
                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                           SkArenaAlloc* alloc) const override;
 
+    skvm::Color onProgram2(BLENDER_PROGRAM_ARGS) const override;
+    bool onKeyAndUniforms(BLENDER_KEY_UNI_ARGS) const override;
+
     SkBlendMode fMode;
 };
 

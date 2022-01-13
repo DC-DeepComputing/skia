@@ -417,6 +417,16 @@ public:
                 b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
     }
 
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+        return fImageShader.makeProgram2(
+                builder, device, local, paint, matrices, localM, dstInfo, uniforms, this);
+    }
+
+    bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+        return fImageShader.makeKeyAndUniforms(
+                key, uniforms, matrices, localM, dstInfo, alloc, this);
+    }
+
 private:
     const SkImageShader& fImageShader;
 };
@@ -746,6 +756,15 @@ skvm::Color SkImageShader::onProgram(skvm::Builder* b,
             b, device, origLocal, paint, matrices, localM, dst, uniforms, nullptr, alloc);
 }
 
+skvm::Color SkImageShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    return this->makeProgram2(
+            builder, device, local, paint, matrices, localM, dstInfo, uniforms, nullptr);
+}
+
+bool SkImageShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    return this->makeKeyAndUniforms(key, uniforms, matrices, localM, dstInfo, alloc, nullptr);
+}
+
 skvm::Color SkImageShader::makeProgram(
         skvm::Builder* p, skvm::Coord device, skvm::Coord origLocal, skvm::Color paint,
         const SkMatrixProvider& matrices, const SkMatrix* localM, const SkColorInfo& dst,
@@ -1011,4 +1030,16 @@ skvm::Color SkImageShader::makeProgram(
     return fRaw ? c
                 : SkColorSpaceXformSteps{cs, at, dst.colorSpace(), dst.alphaType()}.program(
                           p, uniforms, c);
+}
+
+skvm::Color SkImageShader::makeProgram2(SHADER_PROGRAM_ARGS,
+                                        const TransformShader* coordShader) const {
+    // TODO(skia:12824)
+    return {};
+}
+
+bool SkImageShader::makeKeyAndUniforms(SHADER_KEY_UNI_ARGS,
+                                       const TransformShader* coordShader) const {
+    // TODO(skia:12824)
+    return false;
 }

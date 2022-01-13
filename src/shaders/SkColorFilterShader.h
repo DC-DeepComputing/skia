@@ -30,6 +30,8 @@ private:
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
     SK_FLATTENABLE_HOOKS(SkColorFilterShader)
 
     sk_sp<SkShader>          fShader;
