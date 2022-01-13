@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a4308f_416f71a0",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-13T01:09:44Z",
+      "side": 1,
+      "message": "I like having priority in logs, and I like having it in C++ types, but could we also add some macros like SKGPU_LOG_E,_W,_D that automatically insert Priority::kFoo? W/o that the preamble is pretty long at the usages.",
+      "range": {
+        "startLine": 12,
+        "startChar": 15,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814a5246_e7ca614e",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-13T01:09:44Z",
+      "side": 1,
+      "message": "Should we guard this whole default setting with an #if !defined(SKGPU_MAX_PRIORITY)?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 6
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acdab94c_ac95cc5c",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-13T01:09:44Z",
+      "side": 1,
+      "message": "Having kError \u003d 0 and its value increase for labels that are arguably of lower priority threw me for a loop. I suppose it is inline with bug priorities, where p0 is highest.\n\nThat being said, I think SKGPU_MAX_PRIORITY is more understandable as SKGPU_MIN_PRIORITY, since it is the lowest priority that is logged. It\u0027s then an implementation detail that we use \u0027\u003c\u003d\u0027 for performing that test.\n \nwdyt?",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 72
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2152b8_fd51564b",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-13T01:09:44Z",
+      "side": 1,
+      "message": "can we include the priority in the logged message automatically?",
+      "range": {
+        "startLine": 25,
+        "startChar": 51,
+        "endLine": 25,
+        "endChar": 73
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
