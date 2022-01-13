@@ -22,6 +22,30 @@
       },
       "revId": "5cb331ffe3388ef532bf25845c87a10a6ee92b6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43db8014_6530d2d6",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-13T14:53:44Z",
+      "side": 1,
+      "message": "SkSurfaces can be made with wrapped BackendTextures. So the client would still assume the draws updated the BackendTexture even if they can\u0027t directly snap an SkImage from the SkSurface anymore",
+      "parentUuid": "ba78ee49_402ba36f",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 43
+      },
+      "revId": "5cb331ffe3388ef532bf25845c87a10a6ee92b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
