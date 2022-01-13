@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5550ab_358b6684",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-01-13T21:39:09Z",
+      "side": 1,
+      "message": "Friendly ping whenever you get a chance",
+      "revId": "4e76c2ab5d7b1aa4980d003e9a53c1523950ab4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
