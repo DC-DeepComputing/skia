@@ -69,6 +69,7 @@ declare_args() {
   skia_use_xps = true
   skia_enable_graphite = false
   skia_use_zlib = true
+  skia_sk_app_use_sdl2 = false
 
   skia_vtune_path = ""
 
