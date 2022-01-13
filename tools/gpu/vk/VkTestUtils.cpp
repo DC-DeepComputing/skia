@@ -11,11 +11,14 @@
 
 #ifndef SK_GPU_TOOLS_VK_LIBRARY_NAME
     #if defined _WIN32
-        #define SK_GPU_TOOLS_VK_LIBRARY_NAME "vulkan-1.dll"
+        #define SK_GPU_TOOLS_VK_LIBRARY_NAME vulkan-1.dll
     #else
-        #define SK_GPU_TOOLS_VK_LIBRARY_NAME "libvulkan.so"
+        #define SK_GPU_TOOLS_VK_LIBRARY_NAME libvulkan.so
     #endif
 #endif
+
+#define STRINGIFY2(S) #S
+#define STRINGIFY(S) STRINGIFY2(S)
 
 #include <algorithm>
 
@@ -39,8 +42,10 @@ bool LoadVkLibraryAndGetProcAddrFuncs(PFN_vkGetInstanceProcAddr* instProc,
     static PFN_vkGetInstanceProcAddr localInstProc = nullptr;
     static PFN_vkGetDeviceProcAddr localDevProc = nullptr;
     if (!vkLib) {
-        vkLib = SkLoadDynamicLibrary(SK_GPU_TOOLS_VK_LIBRARY_NAME);
+        SkDebugf("@@@@@> loading %s\n", STRINGIFY(SK_GPU_TOOLS_VK_LIBRARY_NAME));
+        vkLib = SkLoadDynamicLibrary(STRINGIFY(SK_GPU_TOOLS_VK_LIBRARY_NAME));
         if (!vkLib) {
+            SkDebugf("@@@@@> lib didnt load\n");
             return false;
         }
         localInstProc = (PFN_vkGetInstanceProcAddr) SkGetProcedureAddress(vkLib,
@@ -48,6 +53,7 @@ bool LoadVkLibraryAndGetProcAddrFuncs(PFN_vkGetInstanceProcAddr* instProc,
         localDevProc = (PFN_vkGetDeviceProcAddr) SkGetProcedureAddress(vkLib,
                                                                      "vkGetDeviceProcAddr");
     }
+    SkDebugf("@@@@@> LoadVkLibraryAndGetProcAddrFuncs -- %p %p\n", localInstProc, localDevProc);
     if (!localInstProc || !localDevProc) {
         return false;
     }

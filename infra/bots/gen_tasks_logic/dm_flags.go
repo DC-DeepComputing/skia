@@ -178,7 +178,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	sampleCount := 0
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
-		configs = append(configs, "gles", "glesdft", "glesdmsaa")
+		configs = append(configs, "vk", "vkmsaa4")
+		// skia/src/gpu/vk/GrVkSamplerYcbcrConversion.cpp:26: fatal error: "assert(featureFlags & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT)"
+		skip("_ gm _ ycbcrimage")
 	} else if b.cpu() {
 		args = append(args, "--nogpu")
 
