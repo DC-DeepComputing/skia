@@ -453,6 +453,12 @@ const SkRect& SkPaint::doComputeFastBounds(const SkRect& origSrc,
     return *storage;
 }
 
+std::vector<SkPaintParamsKey> SkPaint::experimental_toKeys(SkShaderCodeDictionary* dictionary,
+                                                           SkBackend backend) const {
+    std::vector<SkPaintParamsKey> keys;
+
+    return keys;
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 // return true if the filter exists, and may affect alpha
