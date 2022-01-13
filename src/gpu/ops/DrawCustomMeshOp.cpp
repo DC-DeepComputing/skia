@@ -15,7 +15,7 @@
 #include "src/gpu/GrGeometryProcessor.h"
 #include "src/gpu/GrOpFlushState.h"
 #include "src/gpu/GrProgramInfo.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
@@ -53,7 +53,7 @@ public:
 
     const char* name() const override { return "CustomMeshGP"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->add32(SkCustomMeshSpecificationPriv::Hash(*fSpec), "custom mesh spec hash");
         b->add32(ProgramImpl::ComputeMatrixKey(caps, fViewMatrix), "view matrix key");
         if (SkCustomMeshSpecificationPriv::GetColorType(*fSpec) !=

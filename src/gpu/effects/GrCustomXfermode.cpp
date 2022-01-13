@@ -13,7 +13,7 @@
 #include "src/gpu/GrProcessor.h"
 #include "src/gpu/GrShaderCaps.h"
 #include "src/gpu/GrXferProcessor.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLBlend.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
@@ -92,7 +92,7 @@ public:
 private:
     bool hasHWBlendEquation() const { return skgpu::BlendEquation::kIllegal != fHWBlendEquation; }
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     void onGetBlendInfo(BlendInfo*) const override;
 
@@ -104,7 +104,7 @@ private:
     using INHERITED = GrXferProcessor;
 };
 
-void CustomXP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void CustomXP::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = 0;
     if (this->hasHWBlendEquation()) {
         SkASSERT(caps.advBlendEqInteraction() > 0);  // 0 will mean !xp.hasHWBlendEquation().

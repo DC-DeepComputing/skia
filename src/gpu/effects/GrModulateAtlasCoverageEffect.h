@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const override;
 
     bool onIsEqual(const GrFragmentProcessor& that) const override {
         auto fp = that.cast<GrModulateAtlasCoverageEffect>();
