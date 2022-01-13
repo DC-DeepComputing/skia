@@ -806,7 +806,6 @@ skia_shared_gpu_sources = [
   "$_include/private/SingleOwner.h",
   "$_src/gpu/Blend.h",
   "$_src/gpu/BufferWriter.h",
-  "$_src/gpu/KeyBuilder.h",
   "$_src/gpu/RefCntedCallback.h",
   "$_src/gpu/ResourceKey.cpp",
   "$_src/gpu/ResourceKey.h",

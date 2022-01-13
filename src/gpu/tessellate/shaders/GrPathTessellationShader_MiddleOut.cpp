@@ -8,7 +8,7 @@
 #include "src/gpu/tessellate/shaders/GrPathTessellationShader.h"
 
 #include "src/core/SkMathPriv.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
 #include "src/gpu/tessellate/FixedCountBufferUtils.h"
 #include "src/gpu/tessellate/Tessellation.h"
@@ -74,7 +74,7 @@ public:
 
 private:
     const char* name() const final { return "tessellate_MiddleOutShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const final {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const final {
         // When color is in a uniform, it's always wide so we need to ignore kWideColorIfEnabled.
         // When color is in an attrib, its wideness is accounted for as part of the attrib key in
         // GrGeometryProcessor::getAttributeKey().

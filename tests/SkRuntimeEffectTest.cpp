@@ -25,7 +25,7 @@
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrImageInfo.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrSkSLFP.h"
 #include "tests/Test.h"
@@ -1151,7 +1151,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSkSLFP_Specialized, r, ctxInfo) {
         result.fp = GrSkSLFP::Make(std::move(effect), "color_fp", /*inputFP=*/nullptr,
                                    GrSkSLFP::OptFlags::kNone,
                                    "color", GrSkSLFP::SpecializeIf(specialize, color));
-        skgpu::KeyBuilder builder(&result.key);
+        SkKeyBuilder builder(&result.key);
         result.fp->addToKey(*ctxInfo.directContext()->priv().caps()->shaderCaps(), &builder);
         builder.flush();
         return result;

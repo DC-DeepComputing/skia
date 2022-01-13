@@ -9,7 +9,7 @@
 
 #include "src/core/SkMatrixPriv.h"
 #include "src/gpu/GrTexture.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/effects/GrMatrixEffect.h"
 #include "src/gpu/glsl/GrGLSLProgramBuilder.h"
 #include "src/sksl/SkSLUtil.h"
@@ -722,7 +722,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrTextureEffect::onMakeProgram
     return std::make_unique<Impl>();
 }
 
-void GrTextureEffect::onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const {
+void GrTextureEffect::onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const {
     auto m0 = static_cast<uint32_t>(fShaderModes[0]);
     b->addBits(8, m0, "shaderMode0");
 

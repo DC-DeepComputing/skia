@@ -32,7 +32,7 @@ public:
 
 private:
     const char* name() const final { return "tessellate_SimpleTriangleShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const final {}
+    void addToKey(const GrShaderCaps&, SkKeyBuilder*) const final {}
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const final;
 };
 

@@ -8,7 +8,7 @@
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 
 #include "src/gpu/GrFragmentProcessor.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/glsl/GrGLSLBlend.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -162,7 +162,7 @@ private:
         return flags;
     }
 
-    void onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         if (fShareBlendLogic) {
             b->add32(-1);
         } else {

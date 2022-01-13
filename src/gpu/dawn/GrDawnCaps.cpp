@@ -11,7 +11,7 @@
 #include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/GrRenderTarget.h"
 #include "src/gpu/GrStencilSettings.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 
 GrDawnCaps::GrDawnCaps(const GrContextOptions& contextOptions) : INHERITED(contextOptions) {
     fMipmapSupport = true;
@@ -181,7 +181,7 @@ GrProgramDesc GrDawnCaps::makeDesc(GrRenderTarget* rt,
         return desc;
     }
 
-    skgpu::KeyBuilder b(desc.key());
+    SkKeyBuilder b(desc.key());
     GrStencilSettings stencil = programInfo.nonGLStencilSettings();
     stencil.genKey(&b, true);
 

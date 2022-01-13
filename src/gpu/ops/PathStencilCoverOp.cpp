@@ -48,7 +48,7 @@ public:
 
 private:
     const char* name() const final { return "tessellate_BoundingBoxShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const final {}
+    void addToKey(const GrShaderCaps&, SkKeyBuilder*) const final {}
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const final;
 
     const SkPMColor4f fColor;

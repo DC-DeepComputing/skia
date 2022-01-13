@@ -11,7 +11,7 @@
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrYUVATextureProxies.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/effects/GrMatrixEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -340,7 +340,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
     return std::make_unique<Impl>();
 }
 
-void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t packed = 0;
     int i = 0;
     for (auto [plane, channel] : fLocations) {

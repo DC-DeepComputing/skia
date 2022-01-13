@@ -49,7 +49,7 @@ public:
     }
 
     // Adds bits to the shader key that uniquely identify this specific helper's shader code.
-    void getKeyBits(KeyBuilder* b) const;
+    void getKeyBits(SkKeyBuilder* b) const;
 
     // Appends the instanced input attribs to the back of the array that we will need in order to
     // locate our path in the atlas.
