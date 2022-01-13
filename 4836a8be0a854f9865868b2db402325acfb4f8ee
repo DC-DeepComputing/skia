@@ -22,6 +22,53 @@
       },
       "revId": "4836a8be0a854f9865868b2db402325acfb4f8ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72b3ebda_e2a4ab8f",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-13T12:50:56Z",
+      "side": 1,
+      "message": "I feel embarrassed for mispronouncing this vital, historic piece of infrastructure my whole professional career.",
+      "parentUuid": "5bac4d03_b5e5f9c4",
+      "range": {
+        "startLine": 410,
+        "startChar": 54,
+        "endLine": 410,
+        "endChar": 74
+      },
+      "revId": "4836a8be0a854f9865868b2db402325acfb4f8ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030ec251_51fde923",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 3341,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-13T12:50:56Z",
+      "side": 1,
+      "message": "Possible concerns about exposing DebugTrace instead of just a string (the result of writeTrace()):\n - If writeTrace() is run multiple times, I believe memory needs to be allocated on the wasm heap for the string and string memory is not freed.\n - Wider API than necessary if writeTrace() will be called only 1 time.",
+      "range": {
+        "startLine": 3341,
+        "startChar": 16,
+        "endLine": 3341,
+        "endChar": 26
+      },
+      "revId": "4836a8be0a854f9865868b2db402325acfb4f8ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
