@@ -20,6 +20,33 @@ cc_library(
     ],
 )
 
+cc_library(
+    # TODO(bsalomon) This should just be the wasm port of "sk_app" rather than its own
+    name = "sk_app_wasm",
+    visibility = ["//:__subpackages__"],
+    copts = ["-sUSE_SDL=2",
+             #"-g"
+             "-O3"
+             ],
+    linkopts = ["-sUSE_SDL=2",
+                #"-g",
+                #"-gsource-map",
+                ],
+    deps = [
+        ":Application_hdr",
+        ":CommandSet_src",
+        ":RasterWindowContext_hdr",
+        ":WindowContext_src",
+        ":GLWindowContext_src",
+        ":Window_src",
+    ] + [
+        "//tools/sk_app/sdl2:GLWindowContext_sdl2_src",
+        "//tools/sk_app/sdl2:RasterWindowContext_sdl2_src",
+        "//tools/sk_app/sdl2:Window_sdl2_src",
+        "//tools/sk_app/sdl2:main_sdl2_src",
+    ],
+)
+
 generated_cc_atom(
     name = "Application_hdr",
     hdrs = ["Application.h"],
