@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba78ee49_402ba36f",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-13T02:35:06Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to flush pending work when the device is deleted? Regular frame contents would have been flushed as part of Recorder::snap(), and image snapshots already trigger the flush.\n\nIf the device has pending work and it gets deleted, presumably the owning surface has been discarded, so there\u0027s no point in adding it to the task graph, right?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 43
+      },
+      "revId": "5cb331ffe3388ef532bf25845c87a10a6ee92b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
