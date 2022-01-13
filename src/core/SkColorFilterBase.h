@@ -18,6 +18,7 @@ class GrRecordingContext;
 class SkArenaAlloc;
 class SkBitmap;
 class SkColorSpace;
+class SkKeyBuilder;
 class SkRuntimeEffect;
 struct SkStageRec;
 using GrFPResult = std::tuple<bool, std::unique_ptr<GrFragmentProcessor>>;
@@ -28,8 +29,14 @@ public:
     bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const;
 
     SK_WARN_UNUSED_RESULT
-    skvm::Color program(skvm::Builder*, skvm::Color,
-                        const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const;
+    skvm::Color program(skvm::Builder* builder,
+                        skvm::Color c,
+                        const SkColorInfo& dstInfo,
+                        skvm::UniformsAllocator* uniforms) const;
+    bool keyAndUniforms(SkKeyBuilder* key,
+                        skvm::UniformsData* uniforms,
+                        const SkColorInfo& dstInfo,
+                        SkArenaAlloc* alloc) const;
 
     /** Returns the flags for this filter. Override in subclasses to return custom flags.
     */
@@ -84,8 +91,14 @@ protected:
 private:
     virtual bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const = 0;
 
-    virtual skvm::Color onProgram(skvm::Builder*, skvm::Color,
-                                  const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const = 0;
+    virtual skvm::Color onProgram(skvm::Builder* builder,
+                                  skvm::Color c,
+                                  const SkColorInfo& dstInfo,
+                                  skvm::UniformsAllocator* uniforms) const = 0;
+    virtual bool onKeyAndUniforms(SkKeyBuilder* key,
+                                  skvm::UniformsData* uniforms,
+                                  const SkColorInfo& dstInfo,
+                                  SkArenaAlloc* alloc) const = 0;
 
     friend class SkColorFilter;
 

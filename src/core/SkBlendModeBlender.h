@@ -30,8 +30,14 @@ private:
 
     void flatten(SkWriteBuffer& buffer) const override;
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                          const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color src,
+                          skvm::Color dst,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
                           SkArenaAlloc* alloc) const override;
 
     SkBlendMode fMode;

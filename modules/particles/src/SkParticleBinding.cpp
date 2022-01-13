@@ -187,6 +187,8 @@ public:
         SkOverrideDeviceMatrixProvider matrixProvider(SkMatrix::I());
         SkColorInfo colorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType, /*cs=*/nullptr);
 
+// TODO(skia:12824): Need to rework this whole thing.
+#if 0
         skvm::Color result = as_SB(fShader)->program(
                 builder, /*device=*/coord, /*local=*/coord, /*paint=*/{zero, zero, zero, zero},
                 matrixProvider, /*localM=*/nullptr, colorInfo, fUniforms,
@@ -196,6 +198,7 @@ public:
         outResult[1] = result.g;
         outResult[2] = result.b;
         outResult[3] = result.a;
+#endif
     }
 
 private:

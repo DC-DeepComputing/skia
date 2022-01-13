@@ -68,6 +68,11 @@ skvm::F32 SkRadialGradient::transformT(skvm::Builder* p, skvm::Uniforms*,
     return sqrt(coord.x*coord.x + coord.y*coord.y);
 }
 
+skvm::F32 SkRadialGradient::transformT(skvm::Builder* p, skvm::UniformsAllocator*,
+                                       skvm::Coord coord, skvm::I32* mask) const {
+    return sqrt(coord.x*coord.x + coord.y*coord.y);
+}
+
 /////////////////////////////////////////////////////////////////////
 
 #if SK_SUPPORT_GPU

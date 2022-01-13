@@ -5,27 +5,68 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/shaders/SkTransformShader.h"
 
 SkTransformShader::SkTransformShader(const SkShaderBase& shader) : fShader{shader} {}
 
-skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
-                      skvm::Coord device, skvm::Coord local, skvm::Color color,
-                      const SkMatrixProvider& matrices, const SkMatrix* localM,
-                      const SkColorInfo& dst,
-                      skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
-    skvm::Coord newLocal = this->applyMatrix(b, matrices.localToDevice(), local, uniforms);
+skvm::Color SkTransformShader::onProgram(skvm::Builder* builder,
+                                         skvm::Coord device,
+                                         skvm::Coord local,
+                                         skvm::Color paint,
+                                         const SkMatrixProvider& matrices,
+                                         const SkMatrix* localM,
+                                         const SkColorInfo& dstInfo,
+                                         skvm::UniformsAllocator* uniforms) const {
+    skvm::Coord newLocal = this->applyMatrix(builder, matrices.localToDevice(), local, uniforms);
     SkMatrixProvider matrixProvider{SkMatrix::I()};
     return fShader.program(
-            b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+            builder, device, newLocal, paint, matrixProvider, localM, dstInfo, uniforms);
+}
+
+bool SkTransformShader::onKeyAndUniforms(SkKeyBuilder* key,
+                                         skvm::UniformsData* uniforms,
+                                         const SkMatrixProvider& matrices,
+                                         const SkMatrix* localM,
+                                         const SkColorInfo& dstInfo,
+                                         SkArenaAlloc* alloc) const {
+    this->applyKeyAndUniforms(key, uniforms, matrices.localToDevice());
+    SkMatrixProvider matrixProvider{SkMatrix::I()};
+    return fShader.keyAndUniforms(key, uniforms, matrixProvider, localM, dstInfo, alloc);
 }
 
 skvm::Coord SkTransformShader::applyMatrix(
         skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
         skvm::Uniforms* uniforms) const {
     fMatrix = uniforms->pushPtr(&fMatrixStorage);
+
+    skvm::F32 x = local.x,
+              y = local.y;
+
+    auto dot = [&,x,y](int row) {
+        return b->mad(x, b->arrayF(fMatrix, 3*row+0),
+                      b->mad(y, b->arrayF(fMatrix, 3*row+1),
+                             b->arrayF(fMatrix, 3*row+2)));
+    };
+
+    x = dot(0);
+    y = dot(1);
+    // TODO(skia:12824) Remove this from here once we're fully switched to onProgram
+    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    if (fProcessingAsPerspective) {
+        x = x * (1.0f / dot(2));
+        y = y * (1.0f / dot(2));
+    }
+
+    return {x, y};
+}
+
+skvm::Coord SkTransformShader::applyMatrix(
+        skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+        skvm::UniformsAllocator* uniforms) const {
+    fMatrix = uniforms->pushPtr(/*&fMatrixStorage*/);
 
     skvm::F32 x = local.x,
               y = local.y;
@@ -45,6 +86,14 @@ skvm::Coord SkTransformShader::applyMatrix(
     }
 
     return {x, y};
+}
+
+void SkTransformShader::applyKeyAndUniforms(SkKeyBuilder* key,
+                                            skvm::UniformsData* uniforms,
+                                            const SkMatrix& matrix) const {
+    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    key->addBool(fProcessingAsPerspective, "perspective");
+    uniforms->pushPtr(&fMatrixStorage);
 }
 
 void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const {

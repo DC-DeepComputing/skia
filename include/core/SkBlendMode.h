@@ -35,7 +35,7 @@
  *  ra : result alpha component
  *  rc : result "color": red, green, blue components
  */
-enum class SkBlendMode {
+enum class SkBlendMode : int {
     kClear,         //!< r = 0
     kSrc,           //!< r = s
     kDst,           //!< r = d
