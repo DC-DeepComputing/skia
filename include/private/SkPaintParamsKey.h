@@ -11,6 +11,13 @@
 #include <array>
 #include <limits>
 #include "include/core/SkTypes.h"
+#include "include/private/SkSLString.h"
+
+enum class SkBackend : uint8_t {
+    kGanesh,
+    kGraphite,
+    kSkVM
+};
 
 // TODO: this needs to be expanded into a more flexible dictionary (esp. for user-supplied SkSL)
 // TODO: should this enum actually be in ShaderCodeDictionary.h?
@@ -26,12 +33,17 @@ enum class CodeSnippetID : uint8_t {
     kSweepGradientShader,
     kConicalGradientShader,
 
+    kImageShader,
+    kBlendShader,     // aka ComposeShader for now just driven by an SkBlendMode
+
     // BlendMode code snippets
     kSimpleBlendMode,
 
     kLast = kSimpleBlendMode
 };
 static constexpr int kCodeSnippetIDCount = static_cast<int>(CodeSnippetID::kLast) + 1;
+static const int kCodeSnippetIDBits = 16;
+static const uint32_t kCodeSnippetIDMask = 0xFFFF;
 
 // This class is a compact representation of the shader needed to implement a given
 // PaintParams. Its structure is a series of blocks where each block has a
@@ -39,16 +51,19 @@ static constexpr int kCodeSnippetIDCount = static_cast<int>(CodeSnippetID::kLast
 // block field. The rest of the data in the block is dependent on the individual code snippet.
 class SkPaintParamsKey {
 public:
+    static const int kBlockHeaderSizeInBytes = 2;
+
     // Block headers have the following structure:
     //  1st byte: codeSnippetID
     //  2nd byte: total blockSize in bytes
     // Returns the header's offset in the key - to be passed back into endBlock
+    //  TODO: maybe jam encoding in here? That should go at the start of the entire key though.
     int beginBlock(CodeSnippetID codeSnippetID) {
         SkASSERT(fNumBytes < kMaxKeySize);
 
         this->addByte((uint8_t) codeSnippetID);
         this->addByte(0); // this needs to be patched up with a call to endBlock
-        return fNumBytes - 2;
+        return fNumBytes - kBlockHeaderSizeInBytes;
     }
 
     // Update the size byte of a block header
@@ -60,13 +75,19 @@ public:
     }
 
     std::pair<CodeSnippetID, uint8_t> readCodeSnippetID(int headerOffset) const {
-        SkASSERT(headerOffset < kMaxKeySize - 2);
+        SkASSERT(headerOffset < kMaxKeySize - kBlockHeaderSizeInBytes);
 
         CodeSnippetID id = static_cast<CodeSnippetID>(fData[headerOffset]);
         uint8_t blockSize = fData[headerOffset+1];
         SkASSERT(headerOffset + blockSize <= this->sizeInBytes());
 
         return { id, blockSize };
+    }
+
+    void addInt1(int iFoo) {
+//        SkASSERT(fNumInts < kMaxInts);
+        fData[fNumBytes] = iFoo;
+        fNumBytes += 4;
     }
 
     void addByte(uint8_t byte) {
@@ -76,8 +97,10 @@ public:
     }
 
 #ifdef SK_DEBUG
+    static int DumpBlock(const SkPaintParamsKey&, int headerOffset);
     void dump() const;
 #endif
+    SkSL::String toSkSL() const;
 
     uint8_t byte(int offset) const { SkASSERT(offset < fNumBytes); return fData[offset]; }
     const void* data() const { return fData.data(); }
@@ -87,6 +110,8 @@ public:
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
 
 private:
+    static void BlockToSkSL(const SkPaintParamsKey&, uint32_t headerOffset, SkSL::String* result);
+
     // TODO: need to make it so the key can can dynamically grow
     static const int kMaxKeySize = 32;
     static const int kMaxBlockSize = std::numeric_limits<uint8_t>::max();

@@ -24,6 +24,15 @@ class SkMatrix;
 class SkPath;
 class SkPathEffect;
 class SkShader;
+class SkShaderCodeDictionary;
+
+enum class SkBackend : uint8_t;
+
+class SkPaintParamsKey;
+
+namespace skgpu {
+    class UniformData;
+};
 
 /** \class SkPaint
     SkPaint controls options applied when drawing. SkPaint collects all
@@ -37,6 +46,7 @@ class SkShader;
 */
 class SK_API SkPaint {
 public:
+    void toCode(SkShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const;
 
     /** Constructs SkPaint with default values.
 

@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkSLString.h"
 
 enum class CodeSnippetID : uint8_t;
 class SkUniquePaintParamsID;
@@ -37,6 +38,7 @@ public:
         delete [] fData;
     }
 
+    SkSpan<const Uniform> asSpan() const;
     int count() const { return fCount; }
     const Uniform* uniforms() const { return fUniforms; }
     uint32_t* offsets() { return fOffsets; }
@@ -67,6 +69,13 @@ private:
     const size_t fDataSize;
 };
 
+SkUniquePaintParamsID GetUniqueIDAndUniformData(Context*, const PaintParams&,
+                                                std::vector<sk_sp<UniformData>>*);
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(
+        Context*,
+        SkUniquePaintParamsID);
+
+#if 0
 std::tuple<SkUniquePaintParamsID, sk_sp<UniformData>> ExtractPaintData(Context*,
                                                                        const PaintParams&);
 SkSpan<const Uniform> GetUniforms(CodeSnippetID);
@@ -76,6 +85,7 @@ SkSpan<const Uniform> GetUniforms(CodeSnippetID);
 // variable, and must have a statement that writes to a float4 "out.color". Its uniforms (as defined
 // by GetUniforms(type)) are available as a variable named "uniforms".
 const char* GetShaderSkSL(CodeSnippetID);
+#endif
 
 } // namespace skgpu
 
