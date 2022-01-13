@@ -12,6 +12,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
@@ -249,6 +250,47 @@ skvm::Color SkShaderBase::program(skvm::Builder* p,
     return {};
 }
 
+skvm::Color SkShaderBase::program2(SHADER_PROGRAM_ARGS) const {
+    // Shader subclasses should always act as if the destination were premul or opaque.
+    // SkVMBlitter handles all the coordination of unpremul itself, via premul.
+    SkColorInfo tweaked = dstInfo.alphaType() == kUnpremul_SkAlphaType
+                           ? dstInfo.makeAlphaType(kPremul_SkAlphaType)
+                           : dstInfo;
+
+    // Force opaque alpha for all opaque shaders.
+    //
+    // This is primarily nice in that we usually have a 1.0f constant splat
+    // somewhere in the program anyway, and this will let us drop the work the
+    // shader notionally does to produce alpha, p->extract(...), etc. in favor
+    // of that simple hoistable splat.
+    //
+    // TODO(skia:12824): Rewrite this comment to be correct?
+    // More subtly, it makes isOpaque() a parameter to all shader program
+    // generation, guaranteeing that is-opaque bit is mixed into the overall
+    // shader program hash and blitter Key.  This makes it safe for us to use
+    // that bit to make decisions when constructing an SkVMBlitter, like doing
+    // SrcOver -> Src strength reduction.
+    if (auto color = this->onProgram2(SHADER_PROGRAM_ARGS_FWD)) {
+        if (this->isOpaque()) {
+            color.a = builder->splat(1.0f);
+        }
+        return color;
+    }
+    return {};
+}
+
+bool SkShaderBase::keyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    // Use the factory pointer as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper. Avoid needing to create
+    // factory functions for each 
+    auto factory = this->getFactory();
+    SkASSERT(factory);
+    key->addBytes(sizeof(factory), &factory, "factory");
+
+    key->addBool(this->isOpaque(), "opaque");
+    return this->onKeyAndUniforms(SHADER_KEY_UNI_ARGS_FWD);
+}
+
 // need a cheap way to invert the alpha channel of a shader (i.e. 1 - a)
 sk_sp<SkShader> SkShaderBase::makeInvertAlpha() const {
     return this->makeWithColorFilter(SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
@@ -283,12 +325,84 @@ skvm::Coord SkShaderBase::ApplyMatrix(skvm::Builder* p, const SkMatrix& m,
     return {x,y};
 }
 
+skvm::Coord SkShaderBase::ApplyMatrix2(skvm::Builder* p, const SkMatrix& m,
+                                       skvm::Coord coord, skvm::UniformsAllocator* uniforms) {
+    skvm::F32 x = coord.x,
+              y = coord.y;
+    if (m.isIdentity()) {
+        // That was easy.
+    } else if (m.isTranslate()) {
+        x = p->add(x, p->uniformF(uniforms->pushF()));
+        y = p->add(y, p->uniformF(uniforms->pushF()));
+    } else if (m.isScaleTranslate()) {
+        skvm::F32 m0 = p->uniformF(uniforms->pushF()),
+                  m2 = p->uniformF(uniforms->pushF()),
+                  m4 = p->uniformF(uniforms->pushF()),
+                  m5 = p->uniformF(uniforms->pushF());
+        x = p->mad(x, m0, m2);
+        y = p->mad(y, m4, m5);
+    } else {  // Affine or perspective.
+        skvm::F32 m_[9];
+        for (int i = 0; i < 9; i++) {
+            m_[i] = p->uniformF(uniforms->pushF());
+        }
+        auto dot = [&,x,y](int row) {
+            return p->mad(x, m_[3*row+0],
+                   p->mad(y, m_[3*row+1],
+                             m_[3*row+2]));
+        };
+        x = dot(0);
+        y = dot(1);
+        if (m.hasPerspective()) {
+            x = x * (1.0f / dot(2));
+            y = y * (1.0f / dot(2));
+        }
+    }
+    return {x,y};
+}
+
+void SkShaderBase::MatrixKeyAndUniforms(SkKeyBuilder* key,
+                                        skvm::UniformsData* uniforms,
+                                        const SkMatrix& m) {
+    uint32_t matrixType = 0;
+    if (m.isIdentity()) {
+        // That was easy.
+    } else if (m.isTranslate()) {
+        matrixType = 1;
+        uniforms->pushF(m[2]);
+        uniforms->pushF(m[5]);
+    } else if (m.isScaleTranslate()) {
+        matrixType = 2;
+        uniforms->pushF(m[0]);
+        uniforms->pushF(m[2]);
+        uniforms->pushF(m[4]);
+        uniforms->pushF(m[5]);
+    } else {
+        matrixType = 3;
+        if (m.hasPerspective()) {
+            matrixType = 4;
+        }
+        for (int i = 0; i < 9; i++) {
+            uniforms->pushF(m[i]);
+        }
+    }
+    key->addBits(3, matrixType, "matrixType");
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 skvm::Color SkEmptyShader::onProgram(skvm::Builder*, skvm::Coord, skvm::Coord, skvm::Color,
                                      const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
                                      skvm::Uniforms*, SkArenaAlloc*) const {
     return {};  // signal failure
+}
+
+skvm::Color SkEmptyShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    return {};  // signal failure
+}
+
+bool SkEmptyShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    return false;
 }
 
 sk_sp<SkFlattenable> SkEmptyShader::CreateProc(SkReadBuffer&) {

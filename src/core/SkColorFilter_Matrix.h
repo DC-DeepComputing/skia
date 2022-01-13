@@ -36,6 +36,9 @@ private:
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
+    skvm::Color onProgram2(COLOR_FILTER_PROGRAM_ARGS) const override;
+    bool onKeyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const override;
+
     float   fMatrix[20];
     bool    fAlphaIsUnchanged;
     Domain  fDomain;

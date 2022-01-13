@@ -112,6 +112,28 @@ skvm::Color SkColor4Shader::onProgram(skvm::Builder* p,
     return p->uniformColor(color, uniforms);
 }
 
+skvm::Color SkColorShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    return builder->uniformColor(uniforms);
+}
+skvm::Color SkColor4Shader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    return builder->uniformColor(uniforms);
+}
+
+bool SkColorShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    SkColor4f color = SkColor4f::FromColor(fColor);
+    SkColorSpaceXformSteps( sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           dstInfo.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    uniforms->pushColor(color);
+    return true;
+}
+bool SkColor4Shader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    SkColor4f color = fColor;
+    SkColorSpaceXformSteps(   fColorSpace.get(), kUnpremul_SkAlphaType,
+                           dstInfo.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    uniforms->pushColor(color);
+    return true;
+}
+
 #if SK_SUPPORT_GPU
 
 #include "src/gpu/GrColorInfo.h"

@@ -1471,6 +1471,15 @@ namespace skvm {
         };
     }
 
+    Color Builder::uniformColor(UniformsAllocator* uniforms) {
+        return {
+            uniformF(uniforms->pushF(/*r*/)),
+            uniformF(uniforms->pushF(/*g*/)),
+            uniformF(uniforms->pushF(/*b*/)),
+            uniformF(uniforms->pushF(/*a*/)),
+        };
+    }
+
     F32 Builder::lerp(F32 lo, F32 hi, F32 t) {
         if (this->isImm(t.id, 0.0f)) { return lo; }
         if (this->isImm(t.id, 1.0f)) { return hi; }

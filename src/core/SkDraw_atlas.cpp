@@ -67,6 +67,21 @@ public:
         return {r, g, b, a};
     }
 
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+        skvm::Uniform color = uniforms->pushPtr();
+        skvm::F32 r = builder->arrayF(color, 0);
+        skvm::F32 g = builder->arrayF(color, 1);
+        skvm::F32 b = builder->arrayF(color, 2);
+        skvm::F32 a = builder->arrayF(color, 3);
+
+        return {r, g, b, a};
+    }
+
+    bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+        uniforms->pushPtr(fValues);
+        return true;
+    }
+
     void updateColor(SkColor c) const {
         SkColor4f c4 = SkColor4f::FromColor(c);
         fSteps.apply(c4.vec());

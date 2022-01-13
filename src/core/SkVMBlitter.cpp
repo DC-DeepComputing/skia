@@ -14,6 +14,7 @@
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
@@ -51,6 +52,12 @@ namespace {
             return c;
         }
 
+        skvm::Color onProgram2(COLOR_FILTER_PROGRAM_ARGS) const override {
+            return c;
+        }
+
+        bool onKeyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const override { return true; }
+
         bool onAppendStages(const SkStageRec&, bool) const override { return true; }
 
         // Only created here, should never be flattened / unflattened.
@@ -81,6 +88,22 @@ namespace {
             skvm::Color c = p->load(fmt, p->varying(SkColorTypeBytesPerPixel(ct)));
 
             return SkColorSpaceXformSteps{fSprite, dst}.program(p, uniforms, c);
+        }
+
+        skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+            const SkColorType ct = fSprite.colorType();
+
+            skvm::PixelFormat fmt = skvm::SkColorType_to_PixelFormat(ct);
+
+            skvm::Color c = builder->load(fmt, builder->varying(SkColorTypeBytesPerPixel(ct)));
+
+            return SkColorSpaceXformSteps{fSprite, dstInfo}.program2(builder, uniforms, c);
+        }
+
+        bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+            key->addColorType(fSprite.colorType());
+            SkColorSpaceXformSteps{fSprite, dstInfo}.keyAndUniforms(key, uniforms);
+            return true;
         }
     };
 
@@ -168,6 +191,83 @@ namespace {
             c.b = clamp(c.b, 0.0f, c.a);
             return c;
         }
+
+        skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+            // Run our wrapped shader.
+            skvm::Color c = as_SB(fShader)->program2(SHADER_PROGRAM_ARGS_FWD);
+            if (!c) {
+                return {};
+            }
+
+            float rate = 0.0f;
+            switch (dstInfo.colorType()) {
+                case kARGB_4444_SkColorType:    rate =   1/15.0f; break;
+                case   kRGB_565_SkColorType:    rate =   1/63.0f; break;
+                case    kGray_8_SkColorType:
+                case  kRGB_888x_SkColorType:
+                case kRGBA_8888_SkColorType:
+                case kBGRA_8888_SkColorType:
+                case kSRGBA_8888_SkColorType:   rate =  1/255.0f; break;
+                case kRGB_101010x_SkColorType:
+                case kRGBA_1010102_SkColorType:
+                case kBGR_101010x_SkColorType:
+                case kBGRA_1010102_SkColorType: rate = 1/1023.0f; break;
+
+                case kUnknown_SkColorType:
+                case kAlpha_8_SkColorType:
+                case kRGBA_F16_SkColorType:
+                case kRGBA_F16Norm_SkColorType:
+                case kRGBA_F32_SkColorType:
+                case kR8G8_unorm_SkColorType:
+                case kA16_float_SkColorType:
+                case kA16_unorm_SkColorType:
+                case kR16G16_float_SkColorType:
+                case kR16G16_unorm_SkColorType:
+                case kR16G16B16A16_unorm_SkColorType: return c;
+            }
+
+            // See SkRasterPipeline dither stage.
+            // This is 8x8 ordered dithering.  From here we'll only need dx and dx^dy.
+            SkASSERT(local.x.id == device.x.id);
+            SkASSERT(local.y.id == device.y.id);
+            skvm::I32 X =     trunc(device.x - 0.5f),
+                      Y = X ^ trunc(device.y - 0.5f);
+
+            // If X's low bits are abc and Y's def, M is fcebda,
+            // 6 bits producing all values [0,63] shuffled over an 8x8 grid.
+            skvm::I32 M = shl(Y & 1, 5)
+                        | shl(X & 1, 4)
+                        | shl(Y & 2, 2)
+                        | shl(X & 2, 1)
+                        | shr(Y & 4, 1)
+                        | shr(X & 4, 2);
+
+            // Scale to [0,1) by /64, then to (-0.5,0.5) using 63/128 (~0.492) as 0.5-ε,
+            // and finally scale all that by rate.  We keep dither strength strictly
+            // within ±0.5 to not change exact values like 0 or 1.
+
+            // rate could be a uniform, but since it's based on the destination SkColorType,
+            // we can bake it in without hurting the cache hit rate.
+            float scale = rate * (  2/128.0f),
+                  bias  = rate * (-63/128.0f);
+            skvm::F32 dither = to_F32(M) * scale + bias;
+            c.r += dither;
+            c.g += dither;
+            c.b += dither;
+
+            c.r = clamp(c.r, 0.0f, c.a);
+            c.g = clamp(c.g, 0.0f, c.a);
+            c.b = clamp(c.b, 0.0f, c.a);
+            return c;
+        }
+
+        bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+            if (!as_SB(fShader)->keyAndUniforms(SHADER_KEY_UNI_ARGS_FWD)) {
+                return false;
+            }
+            key->addColorType(dstInfo.colorType());  // TODO(skia:12824): Not really required
+            return true;
+        }
     };
 
     // This is similar to using SkShaders::Color(paint.getColor4f(), nullptr),
@@ -191,6 +291,14 @@ namespace {
             // so we just need to premul it.
             return premul(paint);
         }
+
+        skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+            // Incoming `paint` is unpremul in the destination color space,
+            // so we just need to premul it.
+            return premul(paint);
+        }
+
+        bool onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override { return true; }
     };
 }  // namespace
 

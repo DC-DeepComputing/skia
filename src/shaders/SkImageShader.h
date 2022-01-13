@@ -73,11 +73,16 @@ private:
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
     class TransformShader;
     skvm::Color makeProgram(
             skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
             const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
             skvm::Uniforms* uniforms, const TransformShader* coordShader, SkArenaAlloc*) const;
+
+    skvm::Color makeProgram2(SHADER_PROGRAM_ARGS, const TransformShader* coordShader) const;
+    bool makeKeyAndUniforms(SHADER_KEY_UNI_ARGS, const TransformShader* coordShader) const;
 
     bool doStages(const SkStageRec&, TransformShader* = nullptr) const;
 

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/shaders/SkTransformShader.h"
@@ -22,10 +23,53 @@ skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
             b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
 }
 
+skvm::Color SkTransformShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    skvm::Coord newLocal = this->applyMatrix(builder, matrices.localToDevice(), local, uniforms);
+    SkMatrixProvider matrixProvider{SkMatrix::I()};
+    return fShader.program2(
+            builder, device, newLocal, paint, matrixProvider, localM, dstInfo, uniforms);
+}
+
+bool SkTransformShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    fProcessingAsPerspective = matrices.localToDevice().hasPerspective() ||
+                               fShader.getLocalMatrix().hasPerspective();
+
+    key->addBool(fProcessingAsPerspective, "perspective");
+    uniforms->pushPtr(&fMatrixStorage);
+    SkMatrixProvider matrixProvider{SkMatrix::I()};
+    return fShader.keyAndUniforms(key, uniforms, matrixProvider, localM, dstInfo, alloc);
+}
+
 skvm::Coord SkTransformShader::applyMatrix(
         skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
         skvm::Uniforms* uniforms) const {
     fMatrix = uniforms->pushPtr(&fMatrixStorage);
+
+    skvm::F32 x = local.x,
+              y = local.y;
+
+    auto dot = [&,x,y](int row) {
+        return b->mad(x, b->arrayF(fMatrix, 3*row+0),
+                      b->mad(y, b->arrayF(fMatrix, 3*row+1),
+                             b->arrayF(fMatrix, 3*row+2)));
+    };
+
+    x = dot(0);
+    y = dot(1);
+    // TODO(skia:12824) Remove this from here once we're fully switched to onProgram2
+    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    if (fProcessingAsPerspective) {
+        x = x * (1.0f / dot(2));
+        y = y * (1.0f / dot(2));
+    }
+
+    return {x, y};
+}
+
+skvm::Coord SkTransformShader::applyMatrix(
+        skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+        skvm::UniformsAllocator* uniforms) const {
+    fMatrix = uniforms->pushPtr(/*&fMatrixStorage*/);
 
     skvm::F32 x = local.x,
               y = local.y;

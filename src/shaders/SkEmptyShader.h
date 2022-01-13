@@ -41,6 +41,8 @@ protected:
                           const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
                           skvm::Uniforms*, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
 private:
     SK_FLATTENABLE_HOOKS(SkEmptyShader)
 
