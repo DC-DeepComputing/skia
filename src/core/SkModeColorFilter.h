@@ -32,8 +32,15 @@ protected:
     bool onAsAColorMode(SkColor*, SkBlendMode*) const override;
 
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
-    skvm::Color onProgram(skvm::Builder*, skvm::Color,
-                          const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override;
+
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
 private:
     SkColor     fColor;

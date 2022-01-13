@@ -62,22 +62,33 @@ public:
         return true;
     }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override {
-
-        auto apply_table_to_component = [&](skvm::F32 c, const uint8_t* bytePtr) -> skvm::F32 {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
+        auto apply_table_to_component = [&](skvm::F32 c) -> skvm::F32 {
             skvm::I32     index = to_unorm(8, clamp01(c));
-            skvm::Uniform table = uniforms->pushPtr(bytePtr);
+            skvm::Uniform table = uniforms->pushPtr(/*bytePtr*/);
             return from_unorm(8, gather8(table, index));
         };
 
         c = unpremul(c);
-        c.a = apply_table_to_component(c.a, fBitmap.getAddr8(0,0));
-        c.r = apply_table_to_component(c.r, fBitmap.getAddr8(0,1));
-        c.g = apply_table_to_component(c.g, fBitmap.getAddr8(0,2));
-        c.b = apply_table_to_component(c.b, fBitmap.getAddr8(0,3));
+        c.a = apply_table_to_component(c.a);
+        c.r = apply_table_to_component(c.r);
+        c.g = apply_table_to_component(c.g);
+        c.b = apply_table_to_component(c.b);
         return premul(c);
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        uniforms->pushPtr(fBitmap.getAddr8(0, 0));  // A
+        uniforms->pushPtr(fBitmap.getAddr8(0, 1));  // R
+        uniforms->pushPtr(fBitmap.getAddr8(0, 2));  // G
+        uniforms->pushPtr(fBitmap.getAddr8(0, 3));  // B
+        return true;
     }
 
     void flatten(SkWriteBuffer& buffer) const override {

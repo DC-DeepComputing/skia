@@ -11,6 +11,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -151,22 +152,45 @@ bool SkShader_Blend::onAppendStages(const SkStageRec& orig_rec) const {
     return true;
 }
 
-skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
-                                      skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                                      const SkMatrixProvider& mats, const SkMatrix* localM,
-                                      const SkColorInfo& cinfo,
-                                      skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkShader_Blend::onProgram(skvm::Builder* builder,
+                                      skvm::Coord device,
+                                      skvm::Coord local,
+                                      skvm::Color paint,
+                                      const SkMatrixProvider& matrices,
+                                      const SkMatrix* localM,
+                                      const SkColorInfo& dstInfo,
+                                      skvm::UniformsAllocator* uniforms) const {
     skvm::Color d,s;
-    if ((d = as_SB(fDst)->program(p, device,local, paint, mats,localM, cinfo, uniforms,alloc)) &&
-        (s = as_SB(fSrc)->program(p, device,local, paint, mats,localM, cinfo, uniforms,alloc)))
-    {
+    if ((d = as_SB(fDst)->program(
+                 builder, device, local, paint, matrices, localM, dstInfo, uniforms)) &&
+        (s = as_SB(fSrc)->program(
+                 builder, device, local, paint, matrices, localM, dstInfo, uniforms))) {
         if (fBlender) {
-            return as_BB(fBlender)->program(p, s,d, cinfo, uniforms,alloc);
+            return as_BB(fBlender)->program(builder, s, d, dstInfo, uniforms);
         } else {
-            return p->blend(fMode, s,d);
+            return builder->blend(fMode, s,d);
         }
     }
     return {};
+}
+
+bool SkShader_Blend::onKeyAndUniforms(SkKeyBuilder* key,
+                                      skvm::UniformsData* uniforms,
+                                      const SkMatrixProvider& matrices,
+                                      const SkMatrix* localM,
+                                      const SkColorInfo& dstInfo,
+                                      SkArenaAlloc* alloc) const {
+    if (as_SB(fDst)->keyAndUniforms(key, uniforms, matrices, localM, dstInfo, alloc) &&
+        as_SB(fSrc)->keyAndUniforms(key, uniforms, matrices, localM, dstInfo, alloc)) {
+        key->addBool(SkToBool(fBlender), "blender");
+        if (fBlender) {
+            return as_BB(fBlender)->keyAndUniforms(key, uniforms, dstInfo, alloc);
+        } else {
+            key->addBlendMode(fMode);
+            return true;
+        }
+    }
+    return false;
 }
 
 #if SK_SUPPORT_GPU

@@ -105,9 +105,6 @@ skvm::F32 sk_program_transfer_fn(
     skvm::F32 v, TFKind,
     skvm::F32 G, skvm::F32 A, skvm::F32 B, skvm::F32 C, skvm::F32 D, skvm::F32 E, skvm::F32 F);
 
-skvm::Color sk_program_transfer_fn(skvm::Builder*, skvm::Uniforms*,
-                                   const skcms_TransferFunction&, skvm::Color);
-
 // Return raw pointers to commonly used SkColorSpaces.
 // No need to ref/unref these, but if you do, do it in pairs.
 SkColorSpace* sk_srgb_singleton();
