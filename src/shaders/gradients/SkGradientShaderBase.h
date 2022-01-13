@@ -101,16 +101,28 @@ protected:
 
     bool onAppendStages(const SkStageRec&) const override;
 
-    skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dstCS,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
     virtual void appendGradientStages(SkArenaAlloc* alloc, SkRasterPipeline* tPipeline,
                                       SkRasterPipeline* postPipeline) const = 0;
 
     // Produce t from (x,y), modifying mask if it should be anything other than ~0.
-    virtual skvm::F32 transformT(skvm::Builder*, skvm::Uniforms*,
+    virtual skvm::F32 transformT(skvm::Builder*, skvm::UniformsAllocator*,
                                  skvm::Coord coord, skvm::I32* mask) const = 0;
+    virtual void transformTKeyAndUniforms(SkKeyBuilder*, skvm::UniformsData*) const = 0;
 
     template <typename T, typename... Args>
     static Context* CheckedMakeContext(SkArenaAlloc* alloc, Args&&... args) {

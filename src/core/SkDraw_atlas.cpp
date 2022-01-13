@@ -53,17 +53,31 @@ class UpdatableColorShader : public SkShaderBase {
 public:
     explicit UpdatableColorShader(SkColorSpace* cs)
         : fSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType, cs, kUnpremul_SkAlphaType} {}
-    skvm::Color onProgram(
-            skvm::Builder* builder, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-            const SkMatrixProvider& provider, const SkMatrix* localM, const SkColorInfo& dst,
-            skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        skvm::Uniform color = uniforms->pushPtr(fValues);
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
+        skvm::Uniform color = uniforms->pushPtr();
         skvm::F32 r = builder->arrayF(color, 0);
         skvm::F32 g = builder->arrayF(color, 1);
         skvm::F32 b = builder->arrayF(color, 2);
         skvm::F32 a = builder->arrayF(color, 3);
 
         return {r, g, b, a};
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        uniforms->pushPtr(fValues);
+        return true;
     }
 
     void updateColor(SkColor c) const {
@@ -79,7 +93,7 @@ public:
 private:
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
+    const char* getTypeName() const override { return "UpdatableColorShader"; }
 
     SkColorSpaceXformSteps fSteps;
     mutable float fValues[4];

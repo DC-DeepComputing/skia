@@ -27,7 +27,8 @@ namespace SkSL {
 }  // namespace SkSL
 
 namespace skvm {
-    struct Uniforms;
+    struct UniformsAllocator;
+    struct UniformsData;
 }  // namespace skvm
 
 class SkParticleExternalFunction : public SkSL::ExternalFunction {
@@ -35,17 +36,20 @@ public:
     SkParticleExternalFunction(const char* name,
                                SkSL::Compiler& compiler,
                                const SkSL::Type& type,
-                               skvm::Uniforms* uniforms,
+                               skvm::UniformsAllocator* uniforms,
+                               skvm::UniformsData* uniformData,
                                SkArenaAlloc* alloc)
             : SkSL::ExternalFunction(name, type)
             , fCompiler(compiler)
             , fUniforms(uniforms)
+            , fUniformData(uniformData)
             , fAlloc(alloc) {}
 
 protected:
-    SkSL::Compiler& fCompiler;
-    skvm::Uniforms* fUniforms;
-    SkArenaAlloc*   fAlloc;
+    SkSL::Compiler&          fCompiler;
+    skvm::UniformsAllocator* fUniforms;
+    skvm::UniformsData*      fUniformData;
+    SkArenaAlloc*            fAlloc;
 };
 
 class SkParticleBinding : public SkReflected {
@@ -57,7 +61,8 @@ public:
     void visitFields(SkFieldVisitor* v) override;
 
     virtual std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler&,
-                                                                   skvm::Uniforms*,
+                                                                   skvm::UniformsAllocator*,
+                                                                   skvm::UniformsData*,
                                                                    SkArenaAlloc*) = 0;
     virtual void prepare(const skresources::ResourceProvider*) = 0;
 

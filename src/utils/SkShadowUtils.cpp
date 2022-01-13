@@ -87,18 +87,27 @@ protected:
         return true;
     }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c, const SkColorInfo& dst, skvm::Uniforms*,
-                          SkArenaAlloc*) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         // x = 1 - x;
         // exp(-x * x * 4) - 0.018f;
         // ... now approximate with quartic
         //
-        skvm::F32 x = p->splat(-2.26661229133605957031f);
+        skvm::F32 x = builder->splat(-2.26661229133605957031f);
                   x = c.a * x + 2.89795351028442382812f;
                   x = c.a * x + 0.21345567703247070312f;
                   x = c.a * x + 0.15489584207534790039f;
                   x = c.a * x + 0.00030726194381713867f;
         return {x, x, x, x};
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        return true;
     }
 
 private:

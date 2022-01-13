@@ -939,11 +939,15 @@ DEF_TEST(SkSLInterpreterExternalFunction, r) {
 
 class ExternalTable : public SkSL::ExternalFunction {
 public:
-    ExternalTable(const char* name, SkSL::Compiler& compiler, skvm::Uniforms* uniforms)
+    ExternalTable(const char* name,
+                  SkSL::Compiler& compiler,
+                  skvm::UniformsAllocator* uniforms,
+                  skvm::UniformsData* uniformData)
             : INHERITED(name, *compiler.context().fTypes.fFloat)
             , fCompiler(compiler)
             , fTable{1, 2, 4, 8} {
-        fAddr = uniforms->pushPtr(fTable);
+        fAddr = uniforms->pushPtr();
+        uniformData->pushPtr(fTable);
     }
 
     int callParameterCount() const override { return 1; }
@@ -977,9 +981,10 @@ DEF_TEST(SkSLInterpreterExternalTable, r) {
     std::vector<std::unique_ptr<SkSL::ExternalFunction>> externalFunctions;
 
     skvm::Builder b;
-    skvm::Uniforms u(b.uniform(), 0);
+    skvm::UniformsAllocator u(b.uniform(), 0);
+    skvm::UniformsData uData(0);
 
-    externalFunctions.push_back(std::make_unique<ExternalTable>("table", compiler, &u));
+    externalFunctions.push_back(std::make_unique<ExternalTable>("table", compiler, &u, &uData));
     settings.fExternalFunctions = &externalFunctions;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(
             SkSL::ProgramKind::kGeneric, std::string(src), settings);
@@ -991,7 +996,7 @@ DEF_TEST(SkSLInterpreterExternalTable, r) {
     skvm::Program p = b.done();
 
     float out[4];
-    p.eval(1, u.buf.data(), &out[0], &out[1], &out[2], &out[3]);
+    p.eval(1, uData.buf.data(), &out[0], &out[1], &out[2], &out[3]);
     REPORTER_ASSERT(r, out[0] == 8.0);
     REPORTER_ASSERT(r, out[1] == 1.0);
     REPORTER_ASSERT(r, out[2] == 2.0);

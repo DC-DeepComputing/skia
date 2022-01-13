@@ -12,6 +12,7 @@
 #include "include/private/SkFloatingPoint.h"
 #include "modules/skcms/skcms.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkVM.h"
 
@@ -182,15 +183,17 @@ skvm::F32 sk_program_transfer_fn(
     return pun_to_F32(sign | pun_to_I32(v));
 }
 
-skvm::Color sk_program_transfer_fn(skvm::Builder* p, skvm::Uniforms* uniforms,
-                                   const skcms_TransferFunction& tf, skvm::Color c) {
-    skvm::F32 G = p->uniformF(uniforms->pushF(tf.g)),
-              A = p->uniformF(uniforms->pushF(tf.a)),
-              B = p->uniformF(uniforms->pushF(tf.b)),
-              C = p->uniformF(uniforms->pushF(tf.c)),
-              D = p->uniformF(uniforms->pushF(tf.d)),
-              E = p->uniformF(uniforms->pushF(tf.e)),
-              F = p->uniformF(uniforms->pushF(tf.f));
+static skvm::Color sk_program_transfer_fn(skvm::Builder* p,
+                                          skvm::UniformsAllocator* uniforms,
+                                          const skcms_TransferFunction& tf,
+                                          skvm::Color c) {
+    skvm::F32 G = p->uniformF(uniforms->pushF()),
+              A = p->uniformF(uniforms->pushF()),
+              B = p->uniformF(uniforms->pushF()),
+              C = p->uniformF(uniforms->pushF()),
+              D = p->uniformF(uniforms->pushF()),
+              E = p->uniformF(uniforms->pushF()),
+              F = p->uniformF(uniforms->pushF());
     TFKind tf_kind = classify_transfer_fn(tf);
     return {
         sk_program_transfer_fn(c.r, tf_kind, G,A,B,C,D,E,F),
@@ -200,28 +203,58 @@ skvm::Color sk_program_transfer_fn(skvm::Builder* p, skvm::Uniforms* uniforms,
     };
 }
 
-skvm::Color SkColorSpaceXformSteps::program(skvm::Builder* p, skvm::Uniforms* uniforms,
+static void transfer_fn_uniforms(skvm::UniformsData* uniforms, const skcms_TransferFunction& tf) {
+    uniforms->pushF(tf.g);
+    uniforms->pushF(tf.a);
+    uniforms->pushF(tf.b);
+    uniforms->pushF(tf.c);
+    uniforms->pushF(tf.d);
+    uniforms->pushF(tf.e);
+    uniforms->pushF(tf.f);
+}
+
+skvm::Color SkColorSpaceXformSteps::program(skvm::Builder* builder,
+                                            skvm::UniformsAllocator* uniforms,
                                             skvm::Color c) const {
     if (flags.unpremul) {
         c = unpremul(c);
     }
     if (flags.linearize) {
-        c = sk_program_transfer_fn(p, uniforms, srcTF, c);
+        c = sk_program_transfer_fn(builder, uniforms, srcTF, c);
     }
     if (flags.gamut_transform) {
-        auto m = [&](int index) {
-            return p->uniformF(uniforms->pushF(src_to_dst_matrix[index]));
-        };
-        auto R = c.r * m(0) + c.g * m(3) + c.b * m(6),
-             G = c.r * m(1) + c.g * m(4) + c.b * m(7),
-             B = c.r * m(2) + c.g * m(5) + c.b * m(8);
+        skvm::F32 m[9];
+        for (int i = 0; i < 9; i++) {
+            m[i] = builder->uniformF(uniforms->pushF());
+        }
+        auto R = c.r * m[0] + c.g * m[3] + c.b * m[6],
+             G = c.r * m[1] + c.g * m[4] + c.b * m[7],
+             B = c.r * m[2] + c.g * m[5] + c.b * m[8];
         c = {R, G, B, c.a};
     }
     if (flags.encode) {
-        c = sk_program_transfer_fn(p, uniforms, dstTFInv, c);
+        c = sk_program_transfer_fn(builder, uniforms, dstTFInv, c);
     }
     if (flags.premul) {
         c = premul(c);
     }
     return c;
+}
+
+void SkColorSpaceXformSteps::keyAndUniforms(SkKeyBuilder* key, skvm::UniformsData* uniforms) const {
+    uint32_t bits = flags.mask();
+    if (flags.linearize) {
+        bits |= classify_transfer_fn(srcTF) << 8;
+        transfer_fn_uniforms(uniforms, srcTF);
+    }
+    if (flags.gamut_transform) {
+        for (int i = 0; i < 9; i++) {
+            uniforms->pushF(src_to_dst_matrix[i]);
+        }
+    }
+    if (flags.encode) {
+        bits |= classify_transfer_fn(dstTFInv) << 16;
+        transfer_fn_uniforms(uniforms, dstTFInv);
+    }
+    key->add32(bits, "colorSpaceXform");
 }

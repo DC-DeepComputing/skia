@@ -13,6 +13,7 @@
 #include "include/private/SkColorData.h"
 #include "src/core/SkColorFilter_Matrix.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -76,31 +77,30 @@ bool SkColorFilter_Matrix::onAppendStages(const SkStageRec& rec, bool shaderIsOp
     return true;
 }
 
-
-skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* p, skvm::Color c,
-                                            const SkColorInfo& /*dst*/,
-                                            skvm::Uniforms* uniforms, SkArenaAlloc*) const {
+skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* builder,
+                                            skvm::Color c,
+                                            const SkColorInfo& dstInfo,
+                                            skvm::UniformsAllocator* uniforms) const {
+    // TODO(skia:12824): Bring back some of the optimizations? Requires careful synchronization of
+    // this code and the key/uniform stuff below.
     auto apply_matrix = [&](auto xyzw) {
+        skvm::F32 m[20];
+        for (int i = 0; i < 20; i++) {
+            m[i] = builder->uniformF(uniforms->pushF(/*fMatrix[i]*/));
+        }
+
         auto dot = [&](int j) {
-            auto custom_mad = [&](float f, skvm::F32 m, skvm::F32 a) {
-                // skvm::Builder won't fold f*0 == 0, but we shouldn't encounter NaN here.
-                // While looking, also simplify f == ±1.  Anything else becomes a uniform.
-                return f ==  0.0f ? a
-                     : f == +1.0f ? a + m
-                     : f == -1.0f ? a - m
-                     : m * p->uniformF(uniforms->pushF(f)) + a;
+            auto custom_mad = [&](skvm::F32 f, skvm::F32 m, skvm::F32 a) {
+                return m * f + a;
             };
 
-            // Similarly, let skvm::Builder fold away the additive bias when zero.
-            const float b = fMatrix[4+j*5];
-            skvm::F32 bias = b == 0.0f ? p->splat(0.0f)
-                                       : p->uniformF(uniforms->pushF(b));
+            skvm::F32 bias = m[4+j*5];
 
             auto [x,y,z,w] = xyzw;
-            return custom_mad(fMatrix[0+j*5], x,
-                   custom_mad(fMatrix[1+j*5], y,
-                   custom_mad(fMatrix[2+j*5], z,
-                   custom_mad(fMatrix[3+j*5], w, bias))));
+            return custom_mad(m[0+j*5], x,
+                   custom_mad(m[1+j*5], y,
+                   custom_mad(m[2+j*5], z,
+                   custom_mad(m[3+j*5], w, bias))));
         };
         return std::make_tuple(dot(0), dot(1), dot(2), dot(3));
     };
@@ -108,8 +108,8 @@ skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* p, skvm::Color c,
     c = unpremul(c);
 
     if (fDomain == Domain::kHSLA) {
-        auto [h,s,l,a] = apply_matrix(p->to_hsla(c));
-        c = p->to_rgba({h,s,l,a});
+        auto [h,s,l,a] = apply_matrix(builder->to_hsla(c));
+        c = builder->to_rgba({h,s,l,a});
     } else {
         auto [r,g,b,a] = apply_matrix(c);
         c = {r,g,b,a};
@@ -117,6 +117,18 @@ skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* p, skvm::Color c,
 
     return premul(clamp01(c));
 }
+
+bool SkColorFilter_Matrix::onKeyAndUniforms(SkKeyBuilder* key,
+                                            skvm::UniformsData* uniforms,
+                                            const SkColorInfo& dstInfo,
+                                            SkArenaAlloc* alloc) const {
+    key->addBool(fDomain == Domain::kHSLA, "HSLA");
+    for (int i = 0; i < 20; i++) {
+        uniforms->pushF(fMatrix[i]);
+    }
+    return true;
+}
+
 
 #if SK_SUPPORT_GPU
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"

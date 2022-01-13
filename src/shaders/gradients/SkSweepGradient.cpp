@@ -8,6 +8,7 @@
 #include "src/shaders/gradients/SkSweepGradient.h"
 
 #include "include/private/SkFloatingPoint.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
@@ -69,7 +70,7 @@ void SkSweepGradient::appendGradientStages(SkArenaAlloc* alloc, SkRasterPipeline
     p->append_matrix(alloc, SkMatrix::Scale(fTScale, 1) * SkMatrix::Translate(fTBias, 0));
 }
 
-skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::Uniforms* uniforms,
+skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::UniformsAllocator* uniforms,
                                       skvm::Coord coord, skvm::I32* mask) const {
     skvm::F32 xabs = abs(coord.x),
               yabs = abs(coord.y),
@@ -92,10 +93,19 @@ skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::Uniforms* uniforms
                                     , phi);
 
     if (fTScale != 1.0f || fTBias != 0.0f) {
-        t = t * p->uniformF(uniforms->pushF(fTScale))
-              + p->uniformF(uniforms->pushF(fTScale*fTBias));
+        skvm::F32 scale = p->uniformF(uniforms->pushF(/*fTScale*/)),
+                  scale_bias = p->uniformF(uniforms->pushF(/*fTScale*fTBias*/));
+        t = t * scale + scale_bias;
     }
     return t;
+}
+
+void SkSweepGradient::transformTKeyAndUniforms(SkKeyBuilder* key,
+                                               skvm::UniformsData* uniforms) const {
+    if (key->addBool(fTScale != 1.0f || fTBias != 0.0f, "needScaleBias")) {
+        uniforms->pushF(fTScale);
+        uniforms->pushF(fTScale*fTBias);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////

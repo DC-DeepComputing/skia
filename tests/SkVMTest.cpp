@@ -776,17 +776,18 @@ DEF_TEST(SkVM_NewOps, r) {
 }
 
 DEF_TEST(SKVM_array32, r) {
-
-
-
     skvm::Builder b;
-    skvm::Uniforms uniforms(b.uniform(), 0);
+    skvm::UniformsAllocator uniforms(b.uniform(), 0);
+    skvm::UniformsData uniformData(0);
     // Take up the first slot, so other uniforms are not at 0 offset.
-    uniforms.push(0);
+    uniforms.push();
+    uniformData.push(0);
     int i[] = {3, 7};
-    skvm::Uniform array = uniforms.pushArray(i);
+    skvm::Uniform array = uniforms.pushArray();
+    uniformData.pushArray(i);
     float f[] = {5, 9};
-    skvm::Uniform arrayF = uniforms.pushArrayF(f);
+    skvm::Uniform arrayF = uniforms.pushArrayF();
+    uniformData.pushArrayF(f);
     {
         skvm::Ptr buf0     = b.varying<int32_t>(),
                   buf1     = b.varying<int32_t>(),
@@ -811,7 +812,7 @@ DEF_TEST(SKVM_array32, r) {
         // reset the i[0] for the two tests.
         i[0] = 3;
         f[1] = 9;
-        program.eval(K, uniforms.buf.data(), buf0, buf1, buf2);
+        program.eval(K, uniformData.buf.data(), buf0, buf1, buf2);
         for (auto v : buf0) {
             REPORTER_ASSERT(r, v == 3);
         }
@@ -823,7 +824,7 @@ DEF_TEST(SKVM_array32, r) {
         }
         i[0] = 4;
         f[1] = 10;
-        program.eval(K, uniforms.buf.data(), buf0, buf1, buf2);
+        program.eval(K, uniformData.buf.data(), buf0, buf1, buf2);
         for (auto v : buf0) {
             REPORTER_ASSERT(r, v == 4);
         }

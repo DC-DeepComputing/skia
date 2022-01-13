@@ -17,6 +17,7 @@
 #include "include/utils/SkTextUtils.h"
 #include "modules/particles/include/SkReflected.h"
 #include "modules/skresources/include/SkResources.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkVM.h"
 #include "src/shaders/SkShaderBase.h"
@@ -51,10 +52,15 @@ public:
     SkPathExternalFunction(const char* name,
                            SkSL::Compiler& compiler,
                            const LinearizedPath& path,
-                           skvm::Uniforms* uniforms,
+                           skvm::UniformsAllocator* uniforms,
+                           skvm::UniformsData* uniformData,
                            SkArenaAlloc* alloc)
-            : SkParticleExternalFunction(
-                      name, compiler, *compiler.context().fTypes.fFloat4, uniforms, alloc)
+            : SkParticleExternalFunction(name,
+                                         compiler,
+                                         *compiler.context().fTypes.fFloat4,
+                                         uniforms,
+                                         uniformData,
+                                         alloc)
             , fPath(path) {}
 
     int callParameterCount() const override { return 1; }
@@ -70,7 +76,8 @@ public:
             return;
         }
 
-        skvm::Uniform ptr = fUniforms->pushPtr(fPath.data());
+        skvm::Uniform ptr = fUniforms->pushPtr();
+        fUniformData->pushPtr(fPath.data());
         skvm::I32 index = trunc(clamp(arguments[0] * fPath.size(), 0, fPath.size() - 1));
 
         outResult[0] = builder->gatherF(ptr, (index<<2)+0);
@@ -99,10 +106,11 @@ public:
     }
 
     std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler& compiler,
-                                                           skvm::Uniforms* uniforms,
+                                                           skvm::UniformsAllocator* uniforms,
+                                                           skvm::UniformsData* uniformData,
                                                            SkArenaAlloc* alloc) override {
-        return std::make_unique<SkPathExternalFunction>(fName.c_str(), compiler, fData, uniforms,
-                                                        alloc);
+        return std::make_unique<SkPathExternalFunction>(
+                fName.c_str(), compiler, fData, uniforms, uniformData, alloc);
     }
 
     void prepare(const skresources::ResourceProvider* resourceProvider) override {
@@ -138,10 +146,11 @@ public:
     }
 
     std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler& compiler,
-                                                           skvm::Uniforms* uniforms,
+                                                           skvm::UniformsAllocator* uniforms,
+                                                           skvm::UniformsData* uniformData,
                                                            SkArenaAlloc* alloc) override {
-        return std::make_unique<SkPathExternalFunction>(fName.c_str(), compiler, fData, uniforms,
-                                                        alloc);
+        return std::make_unique<SkPathExternalFunction>(
+                fName.c_str(), compiler, fData, uniforms, uniformData, alloc);
     }
 
     void prepare(const skresources::ResourceProvider*) override {
@@ -169,10 +178,15 @@ public:
     SkShaderExternalFunction(const char* name,
                              SkSL::Compiler& compiler,
                              sk_sp<SkShader> shader,
-                             skvm::Uniforms* uniforms,
+                             skvm::UniformsAllocator* uniforms,
+                             skvm::UniformsData* uniformData,
                              SkArenaAlloc* alloc)
-            : SkParticleExternalFunction(
-                      name, compiler, *compiler.context().fTypes.fFloat4, uniforms, alloc)
+            : SkParticleExternalFunction(name,
+                                         compiler,
+                                         *compiler.context().fTypes.fFloat4,
+                                         uniforms,
+                                         uniformData,
+                                         alloc)
             , fShader(std::move(shader)) {}
 
     int callParameterCount() const override { return 1; }
@@ -189,10 +203,14 @@ public:
         SkOverrideDeviceMatrixProvider matrixProvider(SkMatrix::I());
         SkColorInfo colorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType, /*cs=*/nullptr);
 
+        SkTArray<uint32_t, true> keyBuffer;
+        SkKeyBuilder key(&keyBuffer);
+        SkAssertResult(as_SB(fShader)->keyAndUniforms(
+                &key, fUniformData, matrixProvider, /*localM=*/nullptr, colorInfo, fAlloc));
+
         skvm::Color result = as_SB(fShader)->program(
                 builder, /*device=*/coord, /*local=*/coord, /*paint=*/{zero, zero, zero, zero},
-                matrixProvider, /*localM=*/nullptr, colorInfo, fUniforms,
-                fAlloc);
+                matrixProvider, /*localM=*/nullptr, colorInfo, fUniforms);
         SkASSERT(result);
         outResult[0] = result.r;
         outResult[1] = result.g;
@@ -220,10 +238,11 @@ public:
     }
 
     std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler& compiler,
-                                                           skvm::Uniforms* uniforms,
+                                                           skvm::UniformsAllocator* uniforms,
+                                                           skvm::UniformsData* uniformData,
                                                            SkArenaAlloc* alloc) override {
-        return std::make_unique<SkShaderExternalFunction>(fName.c_str(), compiler, fShader,
-                                                          uniforms, alloc);
+        return std::make_unique<SkShaderExternalFunction>(
+                fName.c_str(), compiler, fShader, uniforms, uniformData, alloc);
     }
 
     void prepare(const skresources::ResourceProvider* resourceProvider) override {

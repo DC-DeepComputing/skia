@@ -534,39 +534,63 @@ namespace skvm {
         UPtr ptr;
         int offset;
     };
-    struct Uniforms {
-        UPtr             base;
-        std::vector<int> buf;
 
-        Uniforms(UPtr ptr, int init) : base(ptr), buf(init) {}
+    struct UniformsAllocator {
+        UPtr base;
+        int  offset;
 
-        Uniform push(int val) {
-            buf.push_back(val);
-            return {base, (int)( sizeof(int)*(buf.size() - 1) )};
+        UniformsAllocator(UPtr ptr, int init)
+                : base(ptr), offset(static_cast<int>(init * sizeof(int))) {}
+
+        Uniform push() {
+            Uniform result = {base, offset};
+            offset += sizeof(int);
+            return result;
+        }
+        Uniform pushF() { return this->push(); }
+
+        Uniform pushPtr() {
+            Uniform result = {base, offset};
+            offset += sizeof(void*);
+            return result;
         }
 
-        Uniform pushF(float val) {
+        Uniform pushArray() { return this->pushPtr(); }
+        Uniform pushArrayF() { return this->pushPtr(); }
+    };
+
+    struct UniformsData {
+//        std::vector<int> buf;
+        SkSTArray<64, int, true> buf;
+
+//        UniformsData(int init) : buf(init) {}
+        UniformsData(int init) { buf.resize_back(init); }
+
+        void push(int val) { buf.push_back(val); }
+
+        void pushF(float val) {
             int bits;
             memcpy(&bits, &val, sizeof(int));
-            return this->push(bits);
+            this->push(bits);
         }
 
-        Uniform pushPtr(const void* ptr) {
+        void pushPtr(const void* ptr) {
             // Jam the pointer into 1 or 2 ints.
             int ints[sizeof(ptr) / sizeof(int)];
             memcpy(ints, &ptr, sizeof(ptr));
             for (int bits : ints) {
                 buf.push_back(bits);
             }
-            return {base, (int)( sizeof(int)*(buf.size() - std::size(ints)) )};
         }
 
-        Uniform pushArray(int32_t a[]) {
-            return this->pushPtr(a);
-        }
+        void pushArray(int32_t a[]) { this->pushPtr(a); }
+        void pushArrayF(float a[]) { this->pushPtr(a); }
 
-        Uniform pushArrayF(float a[]) {
-            return this->pushPtr(a);
+        void pushColor(SkColor4f c) {
+            this->pushF(c.fR);
+            this->pushF(c.fG);
+            this->pushF(c.fB);
+            this->pushF(c.fA);
         }
     };
 
@@ -685,8 +709,8 @@ namespace skvm {
             return pun_to_F32(array32(ptr, offset, index));
         }
 
-        // Push and load this color as a uniform.
-        Color uniformColor(SkColor4f, Uniforms*);
+        // Reserve space for a (four float) color uniform
+        Color uniformColor(UniformsAllocator*);
 
         // Gather u8,u16,i32 with varying element-count index from *(ptr + byte-count offset).
         I32 gather8 (UPtr ptr, int offset, I32 index);

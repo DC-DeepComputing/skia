@@ -18,6 +18,7 @@ enum class SkBackend : uint8_t;
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkColorInfo;
+class SkKeyBuilder;
 class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
 class SkRuntimeEffect;
@@ -38,11 +39,18 @@ public:
 
     /** Creates the blend program in SkVM. */
     SK_WARN_UNUSED_RESULT
-    skvm::Color program(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                        const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
-                        SkArenaAlloc* alloc) const {
-        return this->onProgram(p, src, dst, colorInfo, uniforms, alloc);
+    skvm::Color program(skvm::Builder* builder,
+                        skvm::Color src,
+                        skvm::Color dst,
+                        const SkColorInfo& dstInfo,
+                        skvm::UniformsAllocator* uniforms) const {
+        return this->onProgram(builder, src, dst, dstInfo, uniforms);
     }
+
+    bool keyAndUniforms(SkKeyBuilder* key,
+                        skvm::UniformsData* uniforms,
+                        const SkColorInfo& dstInfo,
+                        SkArenaAlloc* alloc) const;
 
 #if SK_SUPPORT_GPU
     /**
@@ -68,8 +76,14 @@ public:
     Type getFlattenableType() const override { return GetFlattenableType(); }
 
 private:
-    virtual skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                                  const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
+    virtual skvm::Color onProgram(skvm::Builder* builder,
+                                  skvm::Color src,
+                                  skvm::Color dst,
+                                  const SkColorInfo& dstInfo,
+                                  skvm::UniformsAllocator* uniforms) const = 0;
+    virtual bool onKeyAndUniforms(SkKeyBuilder* key,
+                                  skvm::UniformsData* uniforms,
+                                  const SkColorInfo& dstInfo,
                                   SkArenaAlloc* alloc) const = 0;
 
     using INHERITED = SkFlattenable;

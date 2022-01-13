@@ -14,6 +14,7 @@
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkModeColorFilter.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
@@ -70,15 +71,25 @@ bool SkModeColorFilter::onAppendStages(const SkStageRec& rec, bool shaderIsOpaqu
     return true;
 }
 
-skvm::Color SkModeColorFilter::onProgram(skvm::Builder* p, skvm::Color c,
+skvm::Color SkModeColorFilter::onProgram(skvm::Builder* builder,
+                                         skvm::Color c,
                                          const SkColorInfo& dstInfo,
-                                         skvm::Uniforms* uniforms, SkArenaAlloc*) const {
+                                         skvm::UniformsAllocator* uniforms) const {
+    skvm::Color dstColor = c,
+                srcColor = builder->uniformColor(uniforms);
+    return builder->blend(fMode, srcColor, dstColor);
+}
+
+bool SkModeColorFilter::onKeyAndUniforms(SkKeyBuilder* key,
+                                         skvm::UniformsData* uniforms,
+                                         const SkColorInfo& dstInfo,
+                                         SkArenaAlloc* alloc) const {
     SkColor4f color = SkColor4f::FromColor(fColor);
     SkColorSpaceXformSteps( sk_srgb_singleton(), kUnpremul_SkAlphaType,
                            dstInfo.colorSpace(), kPremul_SkAlphaType).apply(color.vec());
-    skvm::Color dst = c,
-                src = p->uniformColor(color, uniforms);
-    return p->blend(fMode, src,dst);
+    key->addBlendMode(fMode);
+    uniforms->pushColor(color);
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

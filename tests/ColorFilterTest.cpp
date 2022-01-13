@@ -136,9 +136,15 @@ struct FailureColorFilter : public SkColorFilterBase {
     skvm::Color onProgram(skvm::Builder*,
                           skvm::Color c,
                           const SkColorInfo&,
-                          skvm::Uniforms*,
-                          SkArenaAlloc*) const override {
+                          skvm::UniformsAllocator*) const override {
         return {};
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder*,
+                          skvm::UniformsData*,
+                          const SkColorInfo&,
+                          SkArenaAlloc*) const override {
+        return false;
     }
 
     bool onAppendStages(const SkStageRec&, bool) const override { return false; }

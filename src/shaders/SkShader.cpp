@@ -11,6 +11,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
@@ -215,16 +216,19 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
     return false;
 }
 
-skvm::Color SkShaderBase::program(skvm::Builder* p,
-                                  skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                                  const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                  const SkColorInfo& dst,
-                                  skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkShaderBase::program(skvm::Builder* builder,
+                                  skvm::Coord device,
+                                  skvm::Coord local,
+                                  skvm::Color paint,
+                                  const SkMatrixProvider& matrices,
+                                  const SkMatrix* localM,
+                                  const SkColorInfo& dstInfo,
+                                  skvm::UniformsAllocator* uniforms) const {
     // Shader subclasses should always act as if the destination were premul or opaque.
     // SkVMBlitter handles all the coordination of unpremul itself, via premul.
-    SkColorInfo tweaked = dst.alphaType() == kUnpremul_SkAlphaType
-                           ? dst.makeAlphaType(kPremul_SkAlphaType)
-                           : dst;
+    SkColorInfo tweaked = dstInfo.alphaType() == kUnpremul_SkAlphaType
+                           ? dstInfo.makeAlphaType(kPremul_SkAlphaType)
+                           : dstInfo;
 
     // Force opaque alpha for all opaque shaders.
     //
@@ -233,19 +237,36 @@ skvm::Color SkShaderBase::program(skvm::Builder* p,
     // shader notionally does to produce alpha, p->extract(...), etc. in favor
     // of that simple hoistable splat.
     //
+    // TODO(skia:12824): Rewrite this comment to be correct?
     // More subtly, it makes isOpaque() a parameter to all shader program
     // generation, guaranteeing that is-opaque bit is mixed into the overall
     // shader program hash and blitter Key.  This makes it safe for us to use
     // that bit to make decisions when constructing an SkVMBlitter, like doing
     // SrcOver -> Src strength reduction.
-    if (auto color = this->onProgram(p, device,local, paint, matrices,localM, tweaked,
-                                     uniforms,alloc)) {
+    if (auto color = this->onProgram(
+                builder, device, local, paint, matrices, localM, dstInfo, uniforms)) {
         if (this->isOpaque()) {
-            color.a = p->splat(1.0f);
+            color.a = builder->splat(1.0f);
         }
         return color;
     }
     return {};
+}
+
+bool SkShaderBase::keyAndUniforms(SkKeyBuilder* key,
+                                  skvm::UniformsData* uniforms,
+                                  const SkMatrixProvider& matrices,
+                                  const SkMatrix* localM,
+                                  const SkColorInfo& dstInfo,
+                                  SkArenaAlloc* alloc) const {
+    // Use the type name (pointer) as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper.
+    const char* typeName = this->getTypeName();
+    SkASSERT(typeName);
+    key->addBytes(sizeof(typeName), &typeName, typeName);
+
+    key->addBool(this->isOpaque(), "opaque");
+    return this->onKeyAndUniforms(key, uniforms, matrices, localM, dstInfo, alloc);
 }
 
 // need a cheap way to invert the alpha channel of a shader (i.e. 1 - a)
@@ -253,24 +274,33 @@ sk_sp<SkShader> SkShaderBase::makeInvertAlpha() const {
     return this->makeWithColorFilter(SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
 }
 
-
-skvm::Coord SkShaderBase::ApplyMatrix(skvm::Builder* p, const SkMatrix& m,
-                                      skvm::Coord coord, skvm::Uniforms* uniforms) {
+skvm::Coord SkShaderBase::ApplyMatrix(skvm::Builder* p,
+                                      const SkMatrix& m,
+                                      skvm::Coord coord,
+                                      skvm::UniformsAllocator* uniforms) {
     skvm::F32 x = coord.x,
               y = coord.y;
     if (m.isIdentity()) {
         // That was easy.
     } else if (m.isTranslate()) {
-        x = p->add(x, p->uniformF(uniforms->pushF(m[2])));
-        y = p->add(y, p->uniformF(uniforms->pushF(m[5])));
+        x = p->add(x, p->uniformF(uniforms->pushF()));
+        y = p->add(y, p->uniformF(uniforms->pushF()));
     } else if (m.isScaleTranslate()) {
-        x = p->mad(x, p->uniformF(uniforms->pushF(m[0])), p->uniformF(uniforms->pushF(m[2])));
-        y = p->mad(y, p->uniformF(uniforms->pushF(m[4])), p->uniformF(uniforms->pushF(m[5])));
+        skvm::F32 m0 = p->uniformF(uniforms->pushF()),
+                  m2 = p->uniformF(uniforms->pushF()),
+                  m4 = p->uniformF(uniforms->pushF()),
+                  m5 = p->uniformF(uniforms->pushF());
+        x = p->mad(x, m0, m2);
+        y = p->mad(y, m4, m5);
     } else {  // Affine or perspective.
+        skvm::F32 m_[9];
+        for (int i = 0; i < 9; i++) {
+            m_[i] = p->uniformF(uniforms->pushF());
+        }
         auto dot = [&,x,y](int row) {
-            return p->mad(x, p->uniformF(uniforms->pushF(m[3*row+0])),
-                   p->mad(y, p->uniformF(uniforms->pushF(m[3*row+1])),
-                             p->uniformF(uniforms->pushF(m[3*row+2]))));
+            return p->mad(x, m_[3*row+0],
+                   p->mad(y, m_[3*row+1],
+                             m_[3*row+2]));
         };
         x = dot(0);
         y = dot(1);
@@ -280,4 +310,32 @@ skvm::Coord SkShaderBase::ApplyMatrix(skvm::Builder* p, const SkMatrix& m,
         }
     }
     return {x,y};
+}
+
+void SkShaderBase::MatrixKeyAndUniforms(SkKeyBuilder* key,
+                                        skvm::UniformsData* uniforms,
+                                        const SkMatrix& m) {
+    uint32_t matrixType = 0;
+    if (m.isIdentity()) {
+        // That was easy.
+    } else if (m.isTranslate()) {
+        matrixType = 1;
+        uniforms->pushF(m[2]);
+        uniforms->pushF(m[5]);
+    } else if (m.isScaleTranslate()) {
+        matrixType = 2;
+        uniforms->pushF(m[0]);
+        uniforms->pushF(m[2]);
+        uniforms->pushF(m[4]);
+        uniforms->pushF(m[5]);
+    } else {
+        matrixType = 3;
+        if (m.hasPerspective()) {
+            matrixType = 4;
+        }
+        for (int i = 0; i < 9; i++) {
+            uniforms->pushF(m[i]);
+        }
+    }
+    key->addBits(3, matrixType, "matrixType");
 }

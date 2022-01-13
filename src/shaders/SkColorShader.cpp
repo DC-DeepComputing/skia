@@ -65,9 +65,20 @@ private:
 
     bool onAppendStages(const SkStageRec&) const override;
 
-    skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
     SkColor fColor;
 };
@@ -95,9 +106,20 @@ private:
     void flatten(SkWriteBuffer&) const override;
     bool onAppendStages(const SkStageRec&) const override;
 
-    skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
     sk_sp<SkColorSpace> fColorSpace;
     const SkColor4f     fColor;
@@ -171,25 +193,50 @@ bool SkColor4Shader::onAppendStages(const SkStageRec& rec) const {
     return true;
 }
 
-skvm::Color SkColorShader::onProgram(skvm::Builder* p,
-                                     skvm::Coord /*device*/, skvm::Coord /*local*/,
-                                     skvm::Color /*paint*/, const SkMatrixProvider&,
-                                     const SkMatrix* /*localM*/, const SkColorInfo& dst,
-                                     skvm::Uniforms* uniforms, SkArenaAlloc*) const {
-    SkColor4f color = SkColor4f::FromColor(fColor);
-    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                              dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
-    return p->uniformColor(color, uniforms);
+skvm::Color SkColorShader::onProgram(skvm::Builder* builder,
+                                     skvm::Coord device,
+                                     skvm::Coord local,
+                                     skvm::Color paint,
+                                     const SkMatrixProvider& matrices,
+                                     const SkMatrix* localM,
+                                     const SkColorInfo& dstInfo,
+                                     skvm::UniformsAllocator* uniforms) const {
+    return builder->uniformColor(uniforms);
 }
-skvm::Color SkColor4Shader::onProgram(skvm::Builder* p,
-                                      skvm::Coord /*device*/, skvm::Coord /*local*/,
-                                      skvm::Color /*paint*/, const SkMatrixProvider&,
-                                      const SkMatrix* /*localM*/, const SkColorInfo& dst,
-                                      skvm::Uniforms* uniforms, SkArenaAlloc*) const {
+skvm::Color SkColor4Shader::onProgram(skvm::Builder* builder,
+                                      skvm::Coord device,
+                                      skvm::Coord local,
+                                      skvm::Color paint,
+                                      const SkMatrixProvider& matrices,
+                                      const SkMatrix* localM,
+                                      const SkColorInfo& dstInfo,
+                                      skvm::UniformsAllocator* uniforms) const {
+    return builder->uniformColor(uniforms);
+}
+
+bool SkColorShader::onKeyAndUniforms(SkKeyBuilder* key,
+                                     skvm::UniformsData* uniforms,
+                                     const SkMatrixProvider& matrices,
+                                     const SkMatrix* localM,
+                                     const SkColorInfo& dstInfo,
+                                     SkArenaAlloc* alloc) const {
+    SkColor4f color = SkColor4f::FromColor(fColor);
+    SkColorSpaceXformSteps( sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           dstInfo.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    uniforms->pushColor(color);
+    return true;
+}
+bool SkColor4Shader::onKeyAndUniforms(SkKeyBuilder* key,
+                                      skvm::UniformsData* uniforms,
+                                      const SkMatrixProvider& matrices,
+                                      const SkMatrix* localM,
+                                      const SkColorInfo& dstInfo,
+                                      SkArenaAlloc* alloc) const {
     SkColor4f color = fColor;
-    SkColorSpaceXformSteps(fColorSpace.get(), kUnpremul_SkAlphaType,
-                            dst.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
-    return p->uniformColor(color, uniforms);
+    SkColorSpaceXformSteps(   fColorSpace.get(), kUnpremul_SkAlphaType,
+                           dstInfo.colorSpace(),   kPremul_SkAlphaType).apply(color.vec());
+    uniforms->pushColor(color);
+    return true;
 }
 
 #if SK_SUPPORT_GPU

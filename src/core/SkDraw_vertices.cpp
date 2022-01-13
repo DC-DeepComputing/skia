@@ -14,6 +14,7 @@
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
@@ -96,16 +97,26 @@ protected:
         return true;
     }
 
-    skvm::Color onProgram(skvm::Builder*,
-                          skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
-                          skvm::Uniforms*, SkArenaAlloc*) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
 private:
     bool isOpaque() const override { return fIsOpaque; }
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
+    const char* getTypeName() const override { return "TriColorShader"; }
 
     // If fUsePersp, we need both of these matrices,
     // otherwise we can combine them, and only use fM43
@@ -120,19 +131,22 @@ private:
     using INHERITED = SkShaderBase;
 };
 
-skvm::Color SkTriColorShader::onProgram(skvm::Builder* b,
-                                        skvm::Coord device, skvm::Coord local, skvm::Color,
-                                        const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                        const SkColorInfo&, skvm::Uniforms* uniforms,
-                                        SkArenaAlloc* alloc) const {
-
-    fColorMatrix = uniforms->pushPtr(&fM43);
+skvm::Color SkTriColorShader::onProgram(skvm::Builder* builder,
+                                        skvm::Coord device,
+                                        skvm::Coord local,
+                                        skvm::Color paint,
+                                        const SkMatrixProvider& matrices,
+                                        const SkMatrix* localM,
+                                        const SkColorInfo& dstInfo,
+                                        skvm::UniformsAllocator* uniforms) const {
+    skvm::Builder* b = builder;
+    fColorMatrix = uniforms->pushPtr(/*&fM43*/);
 
     skvm::F32 x = local.x,
               y = local.y;
 
     if (fUsePersp) {
-        fCoordMatrix = uniforms->pushPtr(&fM33);
+        fCoordMatrix = uniforms->pushPtr(/*&fM33*/);
         auto dot = [&, x, y](int row) {
             return b->mad(x, b->arrayF(fCoordMatrix, row),
                              b->mad(y, b->arrayF(fCoordMatrix, row + 3),
@@ -157,6 +171,20 @@ skvm::Color SkTriColorShader::onProgram(skvm::Builder* b,
     color.b = colorDot(2);
     color.a = colorDot(3);
     return color;
+}
+
+bool SkTriColorShader::onKeyAndUniforms(SkKeyBuilder* key,
+                                        skvm::UniformsData* uniforms,
+                                        const SkMatrixProvider& matrices,
+                                        const SkMatrix* localM,
+                                        const SkColorInfo& dstInfo,
+                                        SkArenaAlloc* alloc) const {
+    uniforms->pushPtr(&fM43);
+    key->addBool(fUsePersp, "perspective");
+    if (fUsePersp) {
+        uniforms->pushPtr(&fM33);
+    }
+    return true;
 }
 
 bool SkTriColorShader::update(const SkMatrix& ctmInv, const SkPoint pts[],

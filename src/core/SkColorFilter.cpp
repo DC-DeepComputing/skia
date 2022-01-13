@@ -16,6 +16,7 @@
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
@@ -71,11 +72,12 @@ bool SkColorFilterBase::appendStages(const SkStageRec& rec, bool shaderIsOpaque)
     return this->onAppendStages(rec, shaderIsOpaque);
 }
 
-skvm::Color SkColorFilterBase::program(skvm::Builder* p, skvm::Color c,
-                                       const SkColorInfo& dst,
-                                       skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkColorFilterBase::program(skvm::Builder* builder,
+                                       skvm::Color c,
+                                       const SkColorInfo& dstInfo,
+                                       skvm::UniformsAllocator* uniforms) const {
     skvm::F32 original = c.a;
-    if ((c = this->onProgram(p,c, dst, uniforms,alloc))) {
+    if ((c = this->onProgram(builder, c, dstInfo, uniforms))) {
         if (this->isAlphaUnchanged()) {
             c.a = original;
         }
@@ -83,6 +85,20 @@ skvm::Color SkColorFilterBase::program(skvm::Builder* p, skvm::Color c,
     }
     //SkDebugf("cannot onProgram %s\n", this->getTypeName());
     return {};
+}
+
+bool SkColorFilterBase::keyAndUniforms(SkKeyBuilder* key,
+                                       skvm::UniformsData* uniforms,
+                                       const SkColorInfo& dstInfo,
+                                       SkArenaAlloc* alloc) const {
+    // Use the type name (pointer) as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper.
+    const char* typeName = this->getTypeName();
+    SkASSERT(typeName);
+    key->addBytes(sizeof(typeName), &typeName, typeName);
+
+    key->addBool(this->isAlphaUnchanged(), "alphaUnchanged");
+    return this->onKeyAndUniforms(key, uniforms, dstInfo, alloc);
 }
 
 SkColor SkColorFilter::filterColor(SkColor c) const {
@@ -122,17 +138,24 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
 
     // This filter doesn't support SkRasterPipeline... try skvm.
     skvm::Builder b;
-    skvm::Uniforms uni(b.uniform(), 4);
+    skvm::UniformsAllocator uniAlloc(b.uniform(), 4);
+    skvm::UniformsData uniData(0);
     SkColor4f uniColor = {color.fR, color.fG, color.fB, color.fA};
     SkColorInfo dstInfo = {kRGBA_F32_SkColorType, kPremul_SkAlphaType, sk_ref_sp(dstCS)};
-    if (skvm::Color filtered =
-            as_CFB(this)->program(&b, b.uniformColor(uniColor, &uni), dstInfo, &uni, &alloc)) {
+    SkSTArray<16, uint32_t, true> keyBuffer;
+    SkKeyBuilder key(&keyBuffer);
+    uniData.pushColor(uniColor);
+    if (as_CFB(this)->keyAndUniforms(&key, &uniData, dstInfo, &alloc)) {
+        skvm::Color filtered =
+                as_CFB(this)->program(&b, b.uniformColor(&uniAlloc), dstInfo, &uniAlloc);
+        SkASSERT(filtered);
 
-        b.store({skvm::PixelFormat::FLOAT, 32,32,32,32, 0,32,64,96},
-                b.varying<SkColor4f>(), filtered);
+        b.store({skvm::PixelFormat::FLOAT, 32, 32, 32, 32, 0, 32, 64, 96},
+                b.varying<SkColor4f>(),
+                filtered);
 
         const bool allow_jit = false;  // We're only filtering one color, no point JITing.
-        b.done("filterColor4f", allow_jit).eval(1, uni.buf.data(), &color);
+        b.done("filterColor4f", allow_jit).eval(1, uniData.buf.data(), &color);
         return color;
     }
 
@@ -158,11 +181,20 @@ public:
                fOuter->appendStages(rec, innerIsOpaque);
     }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-               c = fInner->program(p, c, dst, uniforms, alloc);
-        return c ? fOuter->program(p, c, dst, uniforms, alloc) : skvm::Color{};
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
+        c = fInner->program(builder, c, dstInfo, uniforms);
+        return c ? fOuter->program(builder, c, dstInfo, uniforms) : skvm::Color{};
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        return fInner->keyAndUniforms(key, uniforms, dstInfo, alloc) &&
+               fOuter->keyAndUniforms(key, uniforms, dstInfo, alloc);
     }
 
 #if SK_SUPPORT_GPU
@@ -279,9 +311,19 @@ public:
         return true;
     }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c, const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        return premul(fSteps.program(p, uniforms, unpremul(c)));
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
+        return premul(fSteps.program(builder, uniforms, unpremul(c)));
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        fSteps.keyAndUniforms(key, uniforms);
+        return true;
     }
 
     SK_FLATTENABLE_HOOKS(SkSRGBGammaColorFilter)
@@ -372,21 +414,47 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
 
     bool onAppendStages(const SkStageRec&, bool) const override { return false; }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c, const SkColorInfo& rawDst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        sk_sp<SkColorSpace> dstCS = rawDst.refColorSpace();
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
+        sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
         if (!dstCS) { dstCS = SkColorSpace::MakeSRGB(); }
 
         SkAlphaType workingAT;
         sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
 
-        SkColorInfo dst = {rawDst.colorType(), kPremul_SkAlphaType, dstCS},
-                working = {rawDst.colorType(), workingAT, workingCS};
+        SkColorInfo newDst = {dstInfo.colorType(), kPremul_SkAlphaType, dstCS},
+                    working = {dstInfo.colorType(), workingAT, workingCS};
 
-        c = SkColorSpaceXformSteps{dst,working}.program(p, uniforms, c);
-        c = as_CFB(fChild)->program(p, c, working, uniforms, alloc);
-        return c ? SkColorSpaceXformSteps{working,dst}.program(p, uniforms, c)
-                 : c;
+        c = SkColorSpaceXformSteps{newDst, working}.program(builder, uniforms, c);
+        c = as_CFB(fChild)->program(builder, c, working, uniforms);
+        c = SkColorSpaceXformSteps{working, newDst}.program(builder, uniforms, c);
+        return c;
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
+        if (!dstCS) { dstCS = SkColorSpace::MakeSRGB(); }
+
+        // TODO(skia:12824): Do we need to put our own fields in the key? I think that the steps
+        // will handle it below?
+        SkAlphaType workingAT;
+        sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
+
+        SkColorInfo newDst = {dstInfo.colorType(), kPremul_SkAlphaType, dstCS},
+                    working = {dstInfo.colorType(), workingAT, workingCS};
+
+        // TODO(skia:12824): Sync up these calls with onProgram, checking for failure?
+        SkColorSpaceXformSteps{newDst, working}.keyAndUniforms(key, uniforms);
+        if (!as_CFB(fChild)->keyAndUniforms(key, uniforms, working, alloc)) {
+            return false;
+        }
+        SkColorSpaceXformSteps{working, newDst}.keyAndUniforms(key, uniforms);
+        return true;
     }
 
     SkPMColor4f onFilterColor4f(const SkPMColor4f& origColor,

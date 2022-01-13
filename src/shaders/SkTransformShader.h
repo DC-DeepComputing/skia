@@ -20,21 +20,39 @@ public:
     // Adds instructions to use the mapping stored in the uniforms represented by fMatrix. After
     // generating a new skvm::Coord, it passes the mapped coordinates to fShader's onProgram
     // along with the identity matrix.
-    skvm::Color onProgram(skvm::Builder* b,
-                          skvm::Coord device, skvm::Coord local, skvm::Color color,
-                          const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
     // Add code to calculate a new coordinate given local using the mapping in fMatrix.
-    skvm::Coord applyMatrix(
-            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
-            skvm::Uniforms* uniforms) const;
     void appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const;
+
+    skvm::Coord applyMatrix(skvm::Builder* b,
+                            const SkMatrix& matrix,
+                            skvm::Coord local,
+                            skvm::UniformsAllocator* uniforms) const;
+    void applyKeyAndUniforms(SkKeyBuilder* key,
+                             skvm::UniformsData* uniforms,
+                             const SkMatrix& matrix) const;
 
     // Change the values represented by the uniforms in fMatrix.
     bool update(const SkMatrix& ctm) const override;
     bool onAppendStages(const SkStageRec& rec) const override;
+
+    // For serialization. This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return "TransformShader"; }
 
 private:
     const SkShaderBase& fShader;

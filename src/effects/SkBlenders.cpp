@@ -8,6 +8,8 @@
 #include "include/core/SkScalar.h"
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/core/SkBlenderBase.h"
+#include "src/core/SkKeyBuilder.h"
 
 sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
                                         bool enforcePremul) {
@@ -65,4 +67,17 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
     // TODO(skia:12197)
     return nullptr;
 #endif
+}
+
+bool SkBlenderBase::keyAndUniforms(SkKeyBuilder* key,
+                                   skvm::UniformsData* uniforms,
+                                   const SkColorInfo& dstInfo,
+                                   SkArenaAlloc* alloc) const {
+    // Use the type name (pointer) as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper.
+    const char* typeName = this->getTypeName();
+    SkASSERT(typeName);
+    key->addBytes(sizeof(typeName), &typeName, typeName);
+
+    return this->onKeyAndUniforms(key, uniforms, dstInfo, alloc);
 }

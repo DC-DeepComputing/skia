@@ -1507,13 +1507,12 @@ namespace skvm {
         *b *= a;
     }
 
-    Color Builder::uniformColor(SkColor4f color, Uniforms* uniforms) {
-        auto [r,g,b,a] = color;
+    Color Builder::uniformColor(UniformsAllocator* uniforms) {
         return {
-            uniformF(uniforms->pushF(r)),
-            uniformF(uniforms->pushF(g)),
-            uniformF(uniforms->pushF(b)),
-            uniformF(uniforms->pushF(a)),
+            uniformF(uniforms->pushF(/*r*/)),
+            uniformF(uniforms->pushF(/*g*/)),
+            uniformF(uniforms->pushF(/*b*/)),
+            uniformF(uniforms->pushF(/*a*/)),
         };
     }
 

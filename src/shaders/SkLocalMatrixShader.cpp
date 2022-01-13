@@ -95,19 +95,33 @@ bool SkLocalMatrixShader::onAppendStages(const SkStageRec& rec) const {
     return as_SB(fProxyShader)->appendStages(newRec);
 }
 
-
-skvm::Color SkLocalMatrixShader::onProgram(skvm::Builder* p,
-                                           skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                                           const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                           const SkColorInfo& dst,
-                                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkLocalMatrixShader::onProgram(skvm::Builder* builder,
+                                           skvm::Coord device,
+                                           skvm::Coord local,
+                                           skvm::Color paint,
+                                           const SkMatrixProvider& matrices,
+                                           const SkMatrix* localM,
+                                           const SkColorInfo& dstInfo,
+                                           skvm::UniformsAllocator* uniforms) const {
     SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
     if (localM) {
         lm.writable()->preConcat(*localM);
     }
-    return as_SB(fProxyShader)->program(p, device,local, paint,
-                                        matrices,lm.get(), dst,
-                                        uniforms,alloc);
+    return as_SB(fProxyShader)
+            ->program(builder, device, local, paint, matrices, lm.get(), dstInfo, uniforms);
+}
+
+bool SkLocalMatrixShader::onKeyAndUniforms(SkKeyBuilder* key,
+                                           skvm::UniformsData* uniforms,
+                                           const SkMatrixProvider& matrices,
+                                           const SkMatrix* localM,
+                                           const SkColorInfo& dstInfo,
+                                           SkArenaAlloc* alloc) const {
+    SkTCopyOnFirstWrite<SkMatrix> lm(this->getLocalMatrix());
+    if (localM) {
+        lm.writable()->preConcat(*localM);
+    }
+    return as_SB(fProxyShader)->keyAndUniforms(key, uniforms, matrices, lm.get(), dstInfo, alloc);
 }
 
 sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const {
@@ -174,15 +188,28 @@ protected:
         return as_SB(fProxyShader)->appendStages(newRec);
     }
 
-    skvm::Color onProgram(skvm::Builder* p,
-                          skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         SkOverrideDeviceMatrixProvider matrixProvider(fCTM);
-        return as_SB(fProxyShader)->program(p, device,local, paint,
-                                            matrixProvider,localM, dst,
-                                            uniforms,alloc);
+        return as_SB(fProxyShader)
+                ->program(builder, device, local, paint, matrixProvider, localM, dstInfo, uniforms);
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        SkOverrideDeviceMatrixProvider matrixProvider(fCTM);
+        return as_SB(fProxyShader)
+                ->keyAndUniforms(key, uniforms, matrixProvider, localM, dstInfo, alloc);
     }
 
 private:

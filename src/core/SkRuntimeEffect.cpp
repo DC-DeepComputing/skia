@@ -286,19 +286,15 @@ static void write_child_effects(SkWriteBuffer& buffer,
 }
 
 static std::vector<skvm::Val> make_skvm_uniforms(skvm::Builder* p,
-                                                 skvm::Uniforms* uniforms,
-                                                 size_t inputSize,
-                                                 const SkData& inputs) {
+                                                 skvm::UniformsAllocator* uniforms,
+                                                 size_t inputSize) {
     SkASSERTF(!(inputSize & 3), "inputSize was %zu, expected a multiple of 4", inputSize);
 
-    const int32_t* data = reinterpret_cast<const int32_t*>(inputs.data());
     const size_t uniformCount = inputSize / sizeof(int32_t);
     std::vector<skvm::Val> uniform;
     uniform.reserve(uniformCount);
     for (size_t index = 0; index < uniformCount; ++index) {
-        int32_t bits;
-        memcpy(&bits, data + index, sizeof(int32_t));
-        uniform.push_back(p->uniform32(uniforms->push(bits)).id);
+        uniform.push_back(p->uniform32(uniforms->push()).id);
     }
 
     return uniform;
@@ -679,12 +675,12 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
     // For SkSL uniforms, we reserve space and allocate skvm Uniform ids for each one. When we run
     // the program, these ids will be loads from the *first* arg ptr, the uniform data of the
     // specific color filter instance.
-    skvm::Uniforms skslUniforms{p.uniform(), 0};
+    skvm::UniformsAllocator skslUniforms{p.uniform(), 0};
     const size_t uniformCount = effect->uniformSize() / 4;
     std::vector<skvm::Val> uniform;
     uniform.reserve(uniformCount);
     for (size_t i = 0; i < uniformCount; i++) {
-        uniform.push_back(p.uniform32(skslUniforms.push(/*placeholder*/ 0)).id);
+        uniform.push_back(p.uniform32(skslUniforms.push()).id);
     }
 
     // We reserve a uniform color for each child invocation. While processing the SkSL, we record
@@ -694,15 +690,15 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
     // If the color being passed is too complex for us to describe and re-create using SampleCall,
     // we are unable to use this per-effect program, and callers will need to fall back to another
     // (slower) implementation.
-    skvm::Uniforms childColorUniforms{p.uniform(), 0};
-    skvm::Color inputColor = p.uniformColor(/*placeholder*/ SkColors::kWhite, &childColorUniforms);
+    skvm::UniformsAllocator childColorUniforms{p.uniform(), 0};
+    skvm::Color inputColor = p.uniformColor(&childColorUniforms);
     std::vector<SkFilterColorProgram::SampleCall> sampleCalls;
 
     class Callbacks : public SkSL::SkVMCallbacks {
     public:
         Callbacks(skvm::Builder* builder,
-                  const skvm::Uniforms* skslUniforms,
-                  skvm::Uniforms* childColorUniforms,
+                  const skvm::UniformsAllocator* skslUniforms,
+                  skvm::UniformsAllocator* childColorUniforms,
                   skvm::Color inputColor,
                   std::vector<SkFilterColorProgram::SampleCall>* sampleCalls)
                 : fBuilder(builder)
@@ -731,8 +727,7 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
         }
 
         skvm::Color sampleColorFilter(int ix, skvm::Color c) override {
-            skvm::Color result =
-                    fBuilder->uniformColor(/*placeholder*/ SkColors::kWhite, fChildColorUniforms);
+            skvm::Color result = fBuilder->uniformColor(fChildColorUniforms);
             SkFilterColorProgram::SampleCall call;
             call.fChild = ix;
             if (IDsEqual(c, fInputColor)) {
@@ -781,8 +776,8 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
         }
 
         skvm::Builder* fBuilder;
-        const skvm::Uniforms* fSkslUniforms;
-        skvm::Uniforms* fChildColorUniforms;
+        const skvm::UniformsAllocator* fSkslUniforms;
+        skvm::UniformsAllocator* fChildColorUniforms;
         skvm::Color fInputColor;
         std::vector<SkFilterColorProgram::SampleCall>* fSampleCalls;
 
@@ -922,14 +917,12 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
 class RuntimeEffectVMCallbacks : public SkSL::SkVMCallbacks {
 public:
     RuntimeEffectVMCallbacks(skvm::Builder* builder,
-                             skvm::Uniforms* uniforms,
-                             SkArenaAlloc* alloc,
+                             skvm::UniformsAllocator* uniforms,
                              const std::vector<SkRuntimeEffect::ChildPtr>& children,
                              skvm::Color inColor,
                              const SkColorInfo& colorInfo)
             : fBuilder(builder)
             , fUniforms(uniforms)
-            , fAlloc(alloc)
             , fChildren(children)
             , fInColor(inColor)
             , fColorInfo(colorInfo) {}
@@ -937,22 +930,28 @@ public:
     skvm::Color sampleShader(int ix, skvm::Coord coord) override {
         if (SkShader* shader = fChildren[ix].shader()) {
             SkOverrideDeviceMatrixProvider matrixProvider(SkMatrix::I());
-            return as_SB(shader)->program(fBuilder, coord, coord, fInColor, matrixProvider,
-                                          /*localM=*/nullptr, fColorInfo, fUniforms, fAlloc);
+            return as_SB(shader)->program(fBuilder,
+                                          coord,
+                                          coord,
+                                          fInColor,
+                                          matrixProvider,
+                                          /*localM=*/nullptr,
+                                          fColorInfo,
+                                          fUniforms);
         }
         return fInColor;
     }
 
     skvm::Color sampleColorFilter(int ix, skvm::Color color) override {
         if (SkColorFilter* colorFilter = fChildren[ix].colorFilter()) {
-            return as_CFB(colorFilter)->program(fBuilder, color, fColorInfo, fUniforms, fAlloc);
+            return as_CFB(colorFilter)->program(fBuilder, color, fColorInfo, fUniforms);
         }
         return color;
     }
 
     skvm::Color sampleBlender(int ix, skvm::Color src, skvm::Color dst) override {
         if (SkBlender* blender = fChildren[ix].blender()) {
-            return as_BB(blender)->program(fBuilder, src, dst, fColorInfo, fUniforms, fAlloc);
+            return as_BB(blender)->program(fBuilder, src, dst, fColorInfo, fUniforms);
         }
         return blend(SkBlendMode::kSrcOver, src, dst);
     }
@@ -962,8 +961,10 @@ public:
             // These intrinsics do nothing when color management is disabled
             return color;
         }
-        return SkColorSpaceXformSteps{fColorInfo.colorSpace(),    kUnpremul_SkAlphaType,
-                                      sk_srgb_linear_singleton(), kUnpremul_SkAlphaType}
+        return SkColorSpaceXformSteps{fColorInfo.colorSpace(),
+                                      kUnpremul_SkAlphaType,
+                                      sk_srgb_linear_singleton(),
+                                      kUnpremul_SkAlphaType}
                 .program(fBuilder, fUniforms, color);
     }
 
@@ -972,14 +973,15 @@ public:
             // These intrinsics do nothing when color management is disabled
             return color;
         }
-        return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
-                                      fColorInfo.colorSpace(),    kUnpremul_SkAlphaType}
+        return SkColorSpaceXformSteps{sk_srgb_linear_singleton(),
+                                      kUnpremul_SkAlphaType,
+                                      fColorInfo.colorSpace(),
+                                      kUnpremul_SkAlphaType}
                 .program(fBuilder, fUniforms, color);
     }
 
     skvm::Builder* fBuilder;
-    skvm::Uniforms* fUniforms;
-    SkArenaAlloc* fAlloc;
+    skvm::UniformsAllocator* fUniforms;
     const std::vector<SkRuntimeEffect::ChildPtr>& fChildren;
     const skvm::Color fInColor;
     const SkColorInfo& fColorInfo;
@@ -1020,28 +1022,36 @@ public:
         return false;
     }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
-                          const SkColorInfo& colorInfo,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color c,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         SkASSERT(
                 SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get()));
 
-        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
-                fEffect->uniforms(),
-                fUniforms,
-                colorInfo.colorSpace());
-        SkASSERT(inputs);
-
-        RuntimeEffectVMCallbacks callbacks(p, uniforms, alloc, fChildren, c, colorInfo);
-        std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
-                                                            *inputs);
+        RuntimeEffectVMCallbacks callbacks(builder, uniforms, fChildren, c, dstInfo);
+        std::vector<skvm::Val> uniform =
+                make_skvm_uniforms(builder, uniforms, fEffect->uniformSize());
 
         // There should be no way for the color filter to use device coords, but we need to supply
         // something. (Uninitialized values can trigger asserts in skvm::Builder).
-        skvm::Coord zeroCoord = { p->splat(0.0f), p->splat(0.0f) };
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
-                                   SkSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
+        skvm::Coord zeroCoord = { builder->splat(0.0f), builder->splat(0.0f) };
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, builder,
+                                   /*debugTrace=*/nullptr, SkSpan(uniform),
+                                   /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    c, c, &callbacks);
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(), fUniforms, dstInfo.colorSpace());
+        SkASSERT(inputs);
+
+        // TODO(skia:12824): Stuff uniforms, add sksl->key logic
+        return false;
     }
 
     SkPMColor4f onFilterColor4f(const SkPMColor4f& color, SkColorSpace* dstCS) const override {
@@ -1193,32 +1203,59 @@ public:
         return false;
     }
 
-    skvm::Color onProgram(skvm::Builder* p,
-                          skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& colorInfo,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
             return {};
         }
-
-        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
-                                                                            fUniforms,
-                                                                            colorInfo.colorSpace());
-        SkASSERT(inputs);
 
         SkMatrix inv;
         if (!this->computeTotalInverse(matrices.localToDevice(), localM, &inv)) {
             return {};
         }
-        local = SkShaderBase::ApplyMatrix(p,inv,local,uniforms);
+        local = SkShaderBase::ApplyMatrix(builder, inv, local, uniforms);
 
-        RuntimeEffectVMCallbacks callbacks(p, uniforms, alloc, fChildren, paint, colorInfo);
-        std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
-                                                            *inputs);
+        RuntimeEffectVMCallbacks callbacks(builder, uniforms, fChildren, paint, dstInfo);
+        std::vector<skvm::Val> uniform =
+                make_skvm_uniforms(builder, uniforms, fEffect->uniformSize());
 
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p, fDebugTrace.get(),
-                                   SkSpan(uniform), device, local, paint, paint, &callbacks);
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, builder,
+                                   fDebugTrace.get(), SkSpan(uniform), device, local,
+                                   paint, paint, &callbacks);
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(), fUniforms, dstInfo.colorSpace());
+        SkASSERT(inputs);
+
+        SkMatrix inv;
+        if (!this->computeTotalInverse(matrices.localToDevice(), localM, &inv)) {
+            return false;
+        }
+
+        SkShaderBase::MatrixKeyAndUniforms(key, uniforms, inv);
+
+        // TODO(skia:12824) Start out with callbacks that propagate to keyAndUniforms calls...
+        // TODO(skia:12824) Investigate optimizing this to pre-compute the calls? Not sure I can?
+        // ACK. There is no way to do this, without the builder. Can't run the ProgramToSkVM!
+        // And no way (?) to pre-compute the calls so I can do them without going through the gen?
+        // Maybe there is. I think that's the only way to make this work. Need to know how many
+        // calls, and in what sequence. Do an analysis pass to figure that out, produce a list of
+        // child indices...
+        // Also, remember to stuff inputs into uniforms!
+        return false;
     }
 
     void flatten(SkWriteBuffer& buffer) const override {
@@ -1308,27 +1345,37 @@ public:
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
-    skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                          const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
-                          SkArenaAlloc* alloc) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Color src,
+                          skvm::Color dst,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
             return {};
         }
 
-        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
-                                                                            fUniforms,
-                                                                            colorInfo.colorSpace());
-        SkASSERT(inputs);
-
-        RuntimeEffectVMCallbacks callbacks(p, uniforms, alloc, fChildren, src, colorInfo);
-        std::vector<skvm::Val> uniform = make_skvm_uniforms(p, uniforms, fEffect->uniformSize(),
-                                                            *inputs);
+        RuntimeEffectVMCallbacks callbacks(builder, uniforms, fChildren, src, dstInfo);
+        std::vector<skvm::Val> uniform =
+                make_skvm_uniforms(builder, uniforms, fEffect->uniformSize());
 
         // Emit the blend function as an SkVM program.
-        skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
-        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
-                                   SkSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
+        skvm::Coord zeroCoord = {builder->splat(0.0f), builder->splat(0.0f)};
+        return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, builder,
+                                   /*debugTrace=*/nullptr, SkSpan(uniform),
+                                   /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    src, dst, &callbacks);
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(), fUniforms, dstInfo.colorSpace());
+        SkASSERT(inputs);
+
+        // TODO(skia:12824): Stuff uniforms, figure out sksl -> key flow.
+        return false;
     }
 
 #if SK_SUPPORT_GPU

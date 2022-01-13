@@ -35,9 +35,20 @@ protected:
         return false;
     }
 
-    skvm::Color onProgram(skvm::Builder*, skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
-                          skvm::Uniforms*, SkArenaAlloc*) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
 private:
     friend void ::SkRegisterEmptyShaderFlattenable();
@@ -46,10 +57,24 @@ private:
     using INHERITED = SkShaderBase;
 };
 
-skvm::Color SkEmptyShader::onProgram(skvm::Builder*, skvm::Coord, skvm::Coord, skvm::Color,
-                                     const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
-                                     skvm::Uniforms*, SkArenaAlloc*) const {
+skvm::Color SkEmptyShader::onProgram(skvm::Builder* builder,
+                                     skvm::Coord device,
+                                     skvm::Coord local,
+                                     skvm::Color paint,
+                                     const SkMatrixProvider& matrices,
+                                     const SkMatrix* localM,
+                                     const SkColorInfo& dstInfo,
+                                     skvm::UniformsAllocator* uniforms) const {
     return {};  // signal failure
+}
+
+bool SkEmptyShader::onKeyAndUniforms(SkKeyBuilder* key,
+                                     skvm::UniformsData* uniforms,
+                                     const SkMatrixProvider& matrices,
+                                     const SkMatrix* localM,
+                                     const SkColorInfo& dstInfo,
+                                     SkArenaAlloc* alloc) const {
+    return false;
 }
 
 sk_sp<SkFlattenable> SkEmptyShader::CreateProc(SkReadBuffer&) {

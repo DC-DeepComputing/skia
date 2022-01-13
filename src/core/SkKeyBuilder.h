@@ -11,6 +11,10 @@
 #include "include/core/SkString.h"
 #include "include/private/SkTArray.h"
 
+enum class SkBlendMode : int;
+enum SkColorType : int;
+enum class SkTileMode : int;
+
 class SkKeyBuilder {
 public:
     SkKeyBuilder(SkTArray<uint32_t, true>* data) : fData(data) {}
@@ -45,12 +49,28 @@ public:
         }
     }
 
-    void addBool(bool b, std::string_view label) {
+    bool addBool(bool b, std::string_view label) {
         this->addBits(1, b, label);
+        return b;
     }
 
     void add32(uint32_t v, std::string_view label = "unknown") {
         this->addBits(32, v, label);
+    }
+
+    void addColorType(SkColorType ct) {
+        constexpr uint32_t kColorTypeBits = 5;
+        this->addBits(kColorTypeBits, ct, "colorType");
+    }
+
+    void addBlendMode(SkBlendMode bm) {
+        constexpr uint32_t kBlendModeBits = 5;
+        this->addBits(kBlendModeBits, static_cast<uint32_t>(bm), "blendMode");
+    }
+
+    void addTileMode(SkTileMode tm) {
+        constexpr uint32_t kTileModeBits = 2;
+        this->addBits(kTileModeBits, static_cast<uint32_t>(tm), "tileMode");
     }
 
     virtual void appendComment(const char* comment) {}

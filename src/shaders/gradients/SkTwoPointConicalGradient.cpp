@@ -8,6 +8,7 @@
 #include "src/shaders/gradients/SkTwoPointConicalGradient.h"
 
 #include "include/private/SkFloatingPoint.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
@@ -215,7 +216,7 @@ void SkTwoPointConicalGradient::appendGradientStages(SkArenaAlloc* alloc, SkRast
     }
 }
 
-skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::Uniforms* uniforms,
+skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::UniformsAllocator* uniforms,
                                                 skvm::Coord coord, skvm::I32* mask) const {
     auto mag = [](skvm::F32 x, skvm::F32 y) { return sqrt(x*x + y*y); };
 
@@ -226,22 +227,24 @@ skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::Uniforms
     const skvm::F32 x = coord.x,
                     y = coord.y;
     if (fType == Type::kRadial) {
-        float denom = 1.0f / (fRadius2 - fRadius1),
-              scale = std::max(fRadius1, fRadius2) * denom,
-               bias =                  -fRadius1 * denom;
-        return mag(x,y) * p->uniformF(uniforms->pushF(scale))
-                        + p->uniformF(uniforms->pushF(bias ));
+        /* float denom = 1.0f / (fRadius2 - fRadius1),         */
+        /*       scale = std::max(fRadius1, fRadius2) * denom, */
+        /*        bias =                  -fRadius1 * denom;   */
+        skvm::F32 u_scale = p->uniformF(uniforms->pushF(/*scale*/)),
+                  u_bias = p->uniformF(uniforms->pushF(/*bias*/));
+        return mag(x, y) * u_scale + u_bias;
     }
 
     if (fType == Type::kStrip) {
-        float r = fRadius1 / this->getCenterX1();
-        skvm::F32 t = x + sqrt(p->uniformF(uniforms->pushF(r*r)) - y*y);
+        /* float r = fRadius1 / this->getCenterX1(); */
+        skvm::F32 u_r2 = p->uniformF(uniforms->pushF(/*r*r*/));
+        skvm::F32 t = x + sqrt(u_r2 - y*y);
 
         *mask = (t == t);   // t != NaN
         return t;
     }
 
-    const skvm::F32 invR1 = p->uniformF(uniforms->pushF(1 / fFocalData.fR1));
+    const skvm::F32 invR1 = p->uniformF(uniforms->pushF(/*1 / fFocalData.fR1*/));
 
     skvm::F32 t;
     if (fFocalData.isFocalOnCircle()) {
@@ -261,13 +264,41 @@ skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::Uniforms
         *mask = (t > 0.0f);  // and implicitly, t != NaN
     }
 
-    const skvm::F32 focalX = p->uniformF(uniforms->pushF(fFocalData.fFocalX));
+    const skvm::F32 focalX = p->uniformF(uniforms->pushF(/*fFocalData.fFocalX*/));
     if (1 - fFocalData.fFocalX < 0)    { t = -t; }
     if (!fFocalData.isNativelyFocal()) { t += focalX; }
     if ( fFocalData.isSwapped())       { t = 1.0f - t; }
     return t;
 }
 
+void SkTwoPointConicalGradient::transformTKeyAndUniforms(SkKeyBuilder* key, skvm::UniformsData* uniforms) const {
+    constexpr uint32_t kTypeBits = 2;
+    key->addBits(kTypeBits, static_cast<uint32_t>(fType), "conicalType");
+
+    if (fType == Type::kRadial) {
+        float denom = 1.0f / (fRadius2 - fRadius1),
+              scale = std::max(fRadius1, fRadius2) * denom,
+               bias =                  -fRadius1 * denom;
+        uniforms->pushF(scale);
+        uniforms->pushF(bias);
+        return;
+    }
+
+    if (fType == Type::kStrip) {
+        float r = fRadius1 / this->getCenterX1();
+        uniforms->pushF(r*r);
+        return;
+    }
+
+    uniforms->pushF(1 / fFocalData.fR1);
+    uniforms->pushF(fFocalData.fFocalX);
+
+    key->addBool(fFocalData.isFocalOnCircle(), "onCircle");
+    key->addBool(fFocalData.isWellBehaved(), "wellBehaved");
+    key->addBool(fFocalData.isSwapped(), "isSwapped");
+    key->addBool(fFocalData.isNativelyFocal(), "nativelyFocal");
+    key->addBool(1 - fFocalData.fFocalX < 0, "negate");
+}
 /////////////////////////////////////////////////////////////////////
 
 #if SK_SUPPORT_GPU

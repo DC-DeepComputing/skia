@@ -50,4 +50,27 @@ public:
     SkMipmapAccessor(const SkImage_Base*, const SkMatrix& inv, SkMipmapMode requestedMode);
 };
 
+class SkMipmapAccessorLite : ::SkNoncopyable {
+public:
+    SkMipmapAccessorLite(const SkImage*, const SkMatrix& inv, SkMipmapMode requestedMode);
+
+    std::pair<SkImageInfo, SkMatrix> level() const {
+        return std::make_pair(fUpper, fUpperInv);
+    }
+
+    std::pair<SkImageInfo, SkMatrix> lowerLevel() const {
+        return std::make_pair(fLower, fLowerInv);
+    }
+
+    // 0....1. Will be 0 if there is no lowerLevel
+    float lowerWeight() const { return fLowerWeight; }
+
+private:
+    SkImageInfo fUpper,
+                fLower; // only valid for mip_linear
+    float       fLowerWeight;   // lower * weight + upper * (1 - weight)
+    SkMatrix    fUpperInv,
+                fLowerInv;
+};
+
 #endif

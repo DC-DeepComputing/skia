@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkBlendModeBlender.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
@@ -96,8 +97,18 @@ std::unique_ptr<GrFragmentProcessor> SkBlendModeBlender::asFragmentProcessor(
 }
 #endif
 
-skvm::Color SkBlendModeBlender::onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                                          const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
+skvm::Color SkBlendModeBlender::onProgram(skvm::Builder* builder,
+                                          skvm::Color src,
+                                          skvm::Color dst,
+                                          const SkColorInfo& dstInfo,
+                                          skvm::UniformsAllocator* uniforms) const {
+    return builder->blend(fMode, src, dst);
+}
+
+bool SkBlendModeBlender::onKeyAndUniforms(SkKeyBuilder* key,
+                                          skvm::UniformsData* uniforms,
+                                          const SkColorInfo& dstInfo,
                                           SkArenaAlloc* alloc) const {
-    return p->blend(fMode, src, dst);
+    key->addBlendMode(fMode);
+    return true;
 }

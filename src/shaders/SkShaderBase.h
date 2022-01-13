@@ -28,6 +28,7 @@ enum class SkBackend : uint8_t;
 class SkColorSpace;
 class SkImage;
 struct SkImageInfo;
+class SkKeyBuilder;
 class SkPaint;
 class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
@@ -208,12 +209,6 @@ public:
         return this->onAppendUpdatableStages(rec);
     }
 
-    SK_WARN_UNUSED_RESULT
-    skvm::Color program(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                        const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
-
-
 #ifdef SK_ENABLE_SKSL
     /**
         Add implementation details, for the specified backend, of this SkShader to the
@@ -227,6 +222,23 @@ public:
                           SkPaintParamsKeyBuilder* builder,
                           SkPipelineDataGatherer* gatherer) const;
 #endif
+
+    SK_WARN_UNUSED_RESULT
+    skvm::Color program(skvm::Builder* builder,
+                        skvm::Coord device,
+                        skvm::Coord local,
+                        skvm::Color paint,
+                        const SkMatrixProvider& matrices,
+                        const SkMatrix* localM,
+                        const SkColorInfo& dstInfo,
+                        skvm::UniformsAllocator* uniforms) const;
+
+    bool keyAndUniforms(SkKeyBuilder* key,
+                        skvm::UniformsData* uniforms,
+                        const SkMatrixProvider& matrices,
+                        const SkMatrix* localM,
+                        const SkColorInfo& dstInfo,
+                        SkArenaAlloc* alloc) const;
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
@@ -252,17 +264,31 @@ protected:
 
     virtual SkStageUpdater* onAppendUpdatableStages(const SkStageRec&) const { return nullptr; }
 
+    virtual skvm::Color onProgram(skvm::Builder* builder,
+                                  skvm::Coord device,
+                                  skvm::Coord local,
+                                  skvm::Color paint,
+                                  const SkMatrixProvider& matrices,
+                                  const SkMatrix* localM,
+                                  const SkColorInfo& dstInfo,
+                                  skvm::UniformsAllocator* uniforms) const = 0;
+    virtual bool onKeyAndUniforms(SkKeyBuilder* key,
+                                  skvm::UniformsData* uniforms,
+                                  const SkMatrixProvider& matrices,
+                                  const SkMatrix* localM,
+                                  const SkColorInfo& dstInfo,
+                                  SkArenaAlloc* alloc) const = 0;
+
 protected:
-    static skvm::Coord ApplyMatrix(skvm::Builder*, const SkMatrix&, skvm::Coord, skvm::Uniforms*);
+    static skvm::Coord ApplyMatrix(skvm::Builder*,
+                                   const SkMatrix&,
+                                   skvm::Coord,
+                                   skvm::UniformsAllocator*);
+    static void MatrixKeyAndUniforms(SkKeyBuilder*, skvm::UniformsData*, const SkMatrix&);
 
 private:
     // This is essentially const, but not officially so it can be modified in constructors.
     SkMatrix fLocalMatrix;
-
-    virtual skvm::Color onProgram(skvm::Builder*,
-                                  skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                                  const SkMatrixProvider&, const SkMatrix* localM,
-                                  const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const = 0;
 
     using INHERITED = SkShader;
 };
@@ -285,12 +311,7 @@ public:
 
 // TODO: use the SkStageUpdater as an interface until all the code is converted over to use
 //       SkUpdatableShader.
-class SkUpdatableShader : public SkShaderBase, public SkStageUpdater {
-private:
-    // For serialization.  This will never be called.
-    Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
-};
+class SkUpdatableShader : public SkShaderBase, public SkStageUpdater {};
 
 inline SkShaderBase* as_SB(SkShader* shader) {
     return static_cast<SkShaderBase*>(shader);
