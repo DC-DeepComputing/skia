@@ -11,7 +11,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkHalf.h"
 #include "src/core/SkColorSpacePriv.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrMemoryPool.h"
@@ -95,7 +95,7 @@ public:
         return std::make_unique<Impl>();
     }
 
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         b->add32(fMode);
         b->add32(GrColorSpaceXform::XformKey(fColorSpaceXform.get()));
     }

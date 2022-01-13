@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/dawn/GrDawnCaps.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrProgramDesc.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
@@ -188,7 +188,7 @@ GrProgramDesc GrDawnCaps::makeDesc(GrRenderTarget* rt,
         return desc;
     }
 
-    skgpu::KeyBuilder b(desc.key());
+    SkKeyBuilder b(desc.key());
     GrStencilSettings stencil = programInfo.nonGLStencilSettings();
     stencil.genKey(&b, true);
 

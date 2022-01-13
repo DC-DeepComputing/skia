@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrXferProcessor.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrPipeline.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -32,7 +32,7 @@ bool GrXferProcessor::hasSecondaryOutput() const {
 }
 
 void GrXferProcessor::addToKey(const GrShaderCaps& caps,
-                               skgpu::KeyBuilder* b,
+                               SkKeyBuilder* b,
                                const GrSurfaceOrigin* originIfDstTexture,
                                bool usesInputAttachmentForDstRead) const {
     uint32_t key = this->willReadDstColor() ? 0x1 : 0x0;

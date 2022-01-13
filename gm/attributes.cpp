@@ -10,7 +10,7 @@
 #include "include/core/SkRect.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
@@ -49,7 +49,7 @@ public:
 
     const char* name() const final { return "AttributeTestProcessor"; }
 
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const final {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const final {
         b->add32(static_cast<uint32_t>(fMode));
     }
 

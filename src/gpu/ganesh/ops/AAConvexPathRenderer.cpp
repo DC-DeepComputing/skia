@@ -10,11 +10,11 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkGeometry.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
@@ -563,7 +563,7 @@ public:
 
     const char* name() const override { return "QuadEdge"; }
 
-    void addToKey(const GrShaderCaps& caps, KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBool(fUsesLocalCoords, "usesLocalCoords");
         b->addBits(ProgramImpl::kMatrixKeyBits,
                    ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix),

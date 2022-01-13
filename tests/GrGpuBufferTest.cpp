@@ -133,7 +133,7 @@ private:
             return std::make_unique<Impl>();
         }
 
-        void addToKey(const GrShaderCaps &caps, skgpu::KeyBuilder *builder) const override {}
+        void addToKey(const GrShaderCaps &caps, SkKeyBuilder *builder) const override {}
 
     private:
         static constexpr Attribute kPos = {"pos", kFloat2_GrVertexAttribType, SkSLType::kFloat2};

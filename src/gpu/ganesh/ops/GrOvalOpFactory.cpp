@@ -8,10 +8,10 @@
 #include "src/gpu/ganesh/ops/GrOvalOpFactory.h"
 
 #include "include/core/SkStrokeRec.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
@@ -79,7 +79,7 @@ public:
 
     const char* name() const override { return "CircleGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBool(fStroke,                             "stroked"        );
         b->addBool(fInClipPlane.isInitialized(),        "clipPlane"      );
         b->addBool(fInIsectPlane.isInitialized(),       "isectPlane"     );
@@ -281,7 +281,7 @@ public:
 
     const char* name() const override { return "ButtCapDashedCircleGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBits(ProgramImpl::kMatrixKeyBits,
                    ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix),
                    "localMatrixType");
@@ -537,7 +537,7 @@ public:
 
     const char* name() const override { return "EllipseGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBool(fStroke, "stroked");
         b->addBits(ProgramImpl::kMatrixKeyBits,
                    ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix),
@@ -734,7 +734,7 @@ public:
 
     const char* name() const override { return "DIEllipseGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBits(2, static_cast<uint32_t>(fStyle), "style");
         b->addBits(ProgramImpl::kMatrixKeyBits,
                    ProgramImpl::ComputeMatrixKey(caps, fViewMatrix),

@@ -16,7 +16,7 @@
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
@@ -176,7 +176,7 @@ private:
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override;
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onIsEqual(const GrFragmentProcessor&) const override;
 
@@ -450,7 +450,7 @@ GrDisplacementMapEffect::onMakeProgramImpl() const {
     return std::make_unique<Impl>();
 }
 
-void GrDisplacementMapEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrDisplacementMapEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     static constexpr int kChannelSelectorKeyBits = 2;  // Max value is 3, so 2 bits are required
 
     uint32_t xKey = static_cast<uint32_t>(fXChannelSelector);

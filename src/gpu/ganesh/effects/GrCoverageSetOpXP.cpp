@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrCoverageSetOpXP.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrPipeline.h"
@@ -28,7 +28,7 @@ public:
     std::unique_ptr<ProgramImpl> makeProgramImpl() const override;
 
 private:
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     void onGetBlendInfo(skgpu::BlendInfo* blendInfo) const override;
 
@@ -44,7 +44,7 @@ private:
     using INHERITED = GrXferProcessor;
 };
 
-void CoverageSetOpXP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void CoverageSetOpXP::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     b->addBool(fInvertCoverage, "invert coverage");
 }
 

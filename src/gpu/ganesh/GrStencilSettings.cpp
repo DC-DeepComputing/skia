@@ -8,7 +8,7 @@
 
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrProcessor.h"
 
 constexpr const GrUserStencilSettings gUnused(
@@ -244,7 +244,7 @@ const GrUserStencilSettings* GrStencilSettings::SetClipBitSettings(bool setToIns
     return setToInside ? &gSetStencilClipBit : &gZeroStencilClipBit;
 }
 
-void GrStencilSettings::genKey(skgpu::KeyBuilder* b, bool includeRefs) const {
+void GrStencilSettings::genKey(SkKeyBuilder* b, bool includeRefs) const {
     b->addBits(6, fFlags, "stencilFlags");
     if (this->isDisabled()) {
         return;

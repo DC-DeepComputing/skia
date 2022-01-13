@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrBezierEffect.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
@@ -153,7 +153,7 @@ void GrConicEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
 
 GrConicEffect::~GrConicEffect() = default;
 
-void GrConicEffect::addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrConicEffect::addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = 0;
     key |= fCoverageScale == 0xff ? 0x8  : 0x0;
     key |= fUsesLocalCoords       ? 0x10 : 0x0;
@@ -306,7 +306,7 @@ void GrQuadEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
 
 GrQuadEffect::~GrQuadEffect() = default;
 
-void GrQuadEffect::addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrQuadEffect::addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = 0;
     key |= fCoverageScale != 0xff ? 0x8  : 0x0;
     key |= fUsesLocalCoords       ? 0x10 : 0x0;

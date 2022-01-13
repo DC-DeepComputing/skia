@@ -6,7 +6,7 @@
  */
 
 #include "src/core/SkDistanceFieldGen.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/GrTexture.h"
@@ -266,7 +266,7 @@ void GrDistanceFieldA8TextGeoProc::addNewViews(const GrSurfaceProxyView* views,
 }
 
 void GrDistanceFieldA8TextGeoProc::addToKey(const GrShaderCaps& caps,
-                                            skgpu::KeyBuilder* b) const {
+                                            SkKeyBuilder* b) const {
     uint32_t key = 0;
     key |= fFlags;
     key |= ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix) << 16;
@@ -533,7 +533,7 @@ void GrDistanceFieldPathGeoProc::addNewViews(const GrSurfaceProxyView* views,
 }
 
 void GrDistanceFieldPathGeoProc::addToKey(const GrShaderCaps& caps,
-                                          skgpu::KeyBuilder* b) const {
+                                          SkKeyBuilder* b) const {
     uint32_t key = fFlags;
     key |= ProgramImpl::ComputeMatrixKey(caps, fMatrix) << 16;
     key |= fMatrix.hasPerspective() << (16 + ProgramImpl::kMatrixKeyBits);
@@ -846,7 +846,7 @@ void GrDistanceFieldLCDTextGeoProc::addNewViews(const GrSurfaceProxyView* views,
 }
 
 void GrDistanceFieldLCDTextGeoProc::addToKey(const GrShaderCaps& caps,
-                                             skgpu::KeyBuilder* b) const {
+                                             SkKeyBuilder* b) const {
     uint32_t key = 0;
     key |= ProgramImpl::ComputeMatrixKey(caps, fLocalMatrix);
     key |= fFlags << 16;

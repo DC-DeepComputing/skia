@@ -8,8 +8,8 @@
 #include "src/gpu/ganesh/effects/GrYUVtoRGBEffect.h"
 
 #include "include/core/SkYUVAInfo.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkYUVMath.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/GrYUVATextureProxies.h"
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
@@ -340,7 +340,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
     return std::make_unique<Impl>();
 }
 
-void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t packed = 0;
     int i = 0;
     for (auto [plane, channel] : fLocations) {

@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/tessellate/GrStrokeTessellationShader.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
@@ -683,7 +683,7 @@ void GrStrokeTessellationShader::Impl::setData(const GrGLSLProgramDataManager& p
     }
 }
 
-void GrStrokeTessellationShader::addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const {
+void GrStrokeTessellationShader::addToKey(const GrShaderCaps&, SkKeyBuilder* b) const {
     bool keyNeedsJoin = !(fPatchAttribs & PatchAttribs::kStrokeParams);
     SkASSERT(fStroke.getJoin() >> 2 == 0);
     // Attribs get worked into the key automatically during GrGeometryProcessor::getAttributeKey().

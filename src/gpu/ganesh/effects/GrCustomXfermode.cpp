@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrCustomXfermode.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrPipeline.h"
@@ -92,7 +92,7 @@ public:
 private:
     bool hasHWBlendEquation() const { return skgpu::BlendEquation::kIllegal != fHWBlendEquation; }
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     void onGetBlendInfo(skgpu::BlendInfo*) const override;
 
@@ -104,7 +104,7 @@ private:
     using INHERITED = GrXferProcessor;
 };
 
-void CustomXP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void CustomXP::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     if (this->hasHWBlendEquation()) {
         SkASSERT(caps.fAdvBlendEqInteraction > 0);  // 0 will mean !xp.hasHWBlendEquation().
         b->addBool(true, "has hardware blend equation");

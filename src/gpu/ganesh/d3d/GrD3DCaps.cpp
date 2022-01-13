@@ -11,7 +11,7 @@
 #include "include/gpu/d3d/GrD3DTypes.h"
 
 #include "src/core/SkCompressedDataUtils.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrProgramDesc.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
@@ -1047,7 +1047,7 @@ GrCaps::SupportedRead GrD3DCaps::onSupportedReadPixelsColorType(
     return { GrColorType::kUnknown, 0 };
 }
 
-void GrD3DCaps::addExtraSamplerKey(skgpu::KeyBuilder* b,
+void GrD3DCaps::addExtraSamplerKey(SkKeyBuilder* b,
                                    GrSamplerState samplerState,
                                    const GrBackendFormat& format) const {
     // TODO
@@ -1063,7 +1063,7 @@ GrProgramDesc GrD3DCaps::makeDesc(GrRenderTarget* rt,
     GrProgramDesc desc;
     GrProgramDesc::Build(&desc, programInfo, *this);
 
-    skgpu::KeyBuilder b(desc.key());
+    SkKeyBuilder b(desc.key());
 
     GrD3DRenderTarget* d3dRT = (GrD3DRenderTarget*) rt;
     d3dRT->genKey(&b);

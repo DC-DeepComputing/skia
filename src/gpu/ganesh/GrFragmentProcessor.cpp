@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRuntimeEffectPriv.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrPipeline.h"
 #include "src/gpu/ganesh/GrProcessorAnalysis.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
@@ -288,7 +288,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::SwizzleOutput(
             return std::make_unique<Impl>();
         }
 
-        void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override {
+        void onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
             b->add32(fSwizzle.asKey());
         }
 
@@ -405,7 +405,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::Compose(
 
         ComposeProcessor(const ComposeProcessor& that) : INHERITED(that) {}
 
-        void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+        void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
         bool onIsEqual(const GrFragmentProcessor&) const override { return true; }
 
@@ -530,7 +530,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::SurfaceColor() {
             this->setWillReadDstColor();
         }
 
-        void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+        void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
         bool onIsEqual(const GrFragmentProcessor&) const override { return true; }
 
@@ -582,7 +582,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DeviceSpace(
             return std::make_unique<Impl>();
         }
 
-        void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+        void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
         bool onIsEqual(const GrFragmentProcessor& processor) const override { return true; }
 
@@ -831,7 +831,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::HighPrecision(
             return std::make_unique<Impl>();
         }
 
-        void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+        void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
         bool onIsEqual(const GrFragmentProcessor& other) const override { return true; }
 
         SkPMColor4f constantOutputForConstantInput(const SkPMColor4f& input) const override {

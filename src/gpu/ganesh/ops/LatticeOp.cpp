@@ -9,10 +9,10 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkRect.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
@@ -44,7 +44,7 @@ public:
 
     const char* name() const override { return "LatticeGP"; }
 
-    void addToKey(const GrShaderCaps&, KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         b->add32(GrColorSpaceXform::XformKey(fColorSpaceXform.get()));
     }
 

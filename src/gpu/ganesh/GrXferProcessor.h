@@ -68,10 +68,10 @@ public:
     class ProgramImpl;
 
     /**
-     * Adds a key on the skgpu::KeyBuilder calls onAddToKey(...) to get the specific subclass's key.
+     * Adds a key on the SkKeyBuilder calls onAddToKey(...) to get the specific subclass's key.
      */
     void addToKey(const GrShaderCaps&,
-                  skgpu::KeyBuilder*,
+                  SkKeyBuilder*,
                   const GrSurfaceOrigin* originIfDstTexture,
                   bool usesInputAttachmentForDstRead) const;
 
@@ -134,10 +134,10 @@ protected:
 
 private:
     /**
-     * Adds a key on the skgpu::KeyBuilder that reflects any variety in the code that may be emitted
+     * Adds a key on the SkKeyBuilder that reflects any variety in the code that may be emitted
      * by the xfer processor subclass.
      */
-    virtual void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const = 0;
+    virtual void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const = 0;
 
     /**
      * If we are not performing a dst read, returns whether the subclass will set a secondary

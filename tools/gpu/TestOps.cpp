@@ -7,9 +7,9 @@
 
 #include "tools/gpu/TestOps.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrMemoryPool.h"
@@ -69,7 +69,7 @@ public:
         return std::make_unique<Impl>();
     }
 
-    void addToKey(const GrShaderCaps& shaderCaps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& shaderCaps, SkKeyBuilder* b) const override {
         b->add32(ProgramImpl::ComputeMatrixKey(shaderCaps, fLocalMatrix));
     }
 

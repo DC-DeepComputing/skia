@@ -21,7 +21,7 @@
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/SkGr.h"
@@ -624,7 +624,7 @@ private:
         return std::make_unique<Impl>();
     }
 
-    void onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override;
+    void onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override;
 
     bool onIsEqual(const GrFragmentProcessor& sBase) const override {
         const GrPerlinNoise2Effect& s = sBase.cast<GrPerlinNoise2Effect>();
@@ -895,7 +895,7 @@ void GrPerlinNoise2Effect::Impl::onSetData(const GrGLSLProgramDataManager& pdman
     }
 }
 
-void GrPerlinNoise2Effect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrPerlinNoise2Effect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = fNumOctaves;
     key = key << 3;  // Make room for next 3 bits
     switch (fType) {

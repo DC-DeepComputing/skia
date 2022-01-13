@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/Blend.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/glsl/GrGLSLBlend.h"
@@ -153,7 +153,7 @@ private:
         return flags;
     }
 
-    void onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         if (fShareBlendLogic) {
             b->add32(GrGLSLBlend::BlendKey(fMode));
         } else {

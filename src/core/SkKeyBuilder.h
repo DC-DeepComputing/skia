@@ -5,19 +5,17 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_KeyBuilder_DEFINED
-#define skgpu_KeyBuilder_DEFINED
+#ifndef SkKeyBuilder_DEFINED
+#define SkKeyBuilder_DEFINED
 
 #include "include/core/SkString.h"
 #include "include/private/SkTArray.h"
 
-namespace skgpu {
-
-class KeyBuilder {
+class SkKeyBuilder {
 public:
-    KeyBuilder(SkTArray<uint32_t, true>* data) : fData(data) {}
+    SkKeyBuilder(SkTArray<uint32_t, true>* data) : fData(data) {}
 
-    virtual ~KeyBuilder() {
+    virtual ~SkKeyBuilder() {
         // Ensure that flush was called before we went out of scope
         SkASSERT(fBitsUsed == 0);
     }
@@ -73,12 +71,12 @@ private:
     uint32_t fBitsUsed = 0;  // ... in current value
 };
 
-class StringKeyBuilder : public KeyBuilder {
+class SkStringKeyBuilder : public SkKeyBuilder {
 public:
-    StringKeyBuilder(SkTArray<uint32_t, true>* data) : KeyBuilder(data) {}
+    SkStringKeyBuilder(SkTArray<uint32_t, true>* data) : SkKeyBuilder(data) {}
 
     void addBits(uint32_t numBits, uint32_t val, std::string_view label) override {
-        KeyBuilder::addBits(numBits, val, label);
+        SkKeyBuilder::addBits(numBits, val, label);
         fDescription.appendf("%.*s: %u\n", (int)label.size(), label.data(), val);
     }
 
@@ -92,6 +90,4 @@ private:
     SkString fDescription;
 };
 
-} // namespace skgpu
-
-#endif // skgpu_KeyBuilder_DEFINED
+#endif // SkKeyBuilder_DEFINED

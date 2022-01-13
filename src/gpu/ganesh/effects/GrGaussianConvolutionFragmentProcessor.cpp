@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/effects/GrGaussianConvolutionFragmentProcessor.h"
 
 #include "src/core/SkGpuBlurUtils.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
@@ -205,7 +205,7 @@ GrGaussianConvolutionFragmentProcessor::GrGaussianConvolutionFragmentProcessor(
 }
 
 void GrGaussianConvolutionFragmentProcessor::onAddToKey(const GrShaderCaps& shaderCaps,
-                                                        skgpu::KeyBuilder* b) const {
+                                                        SkKeyBuilder* b) const {
     if (!should_use_variable_length_loop(shaderCaps)) {
         b->add32(fRadius);
     }

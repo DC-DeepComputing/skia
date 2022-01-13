@@ -9,9 +9,9 @@
 
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkVx.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrMemoryPool.h"
@@ -363,7 +363,7 @@ public:
 
     const char* name() const override { return "FillRRectOp::Processor"; }
 
-    void addToKey(const GrShaderCaps& caps, KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->addBits(kNumProcessorFlags, (uint32_t)fFlags,  "flags");
     }
 

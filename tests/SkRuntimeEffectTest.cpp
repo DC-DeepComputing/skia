@@ -18,9 +18,9 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkTLazy.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -1335,7 +1335,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSkSLFP_Specialized, r, ctxInfo) {
         result.fp = GrSkSLFP::Make(effect, "color_fp", /*inputFP=*/nullptr,
                                    GrSkSLFP::OptFlags::kNone,
                                    "color", GrSkSLFP::SpecializeIf(specialize, color));
-        skgpu::KeyBuilder builder(&result.key);
+        SkKeyBuilder builder(&result.key);
         result.fp->addToKey(*ctxInfo.directContext()->priv().caps()->shaderCaps(), &builder);
         builder.flush();
         return result;

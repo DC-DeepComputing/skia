@@ -8,7 +8,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/private/SkHalf.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
@@ -303,7 +303,7 @@ std::unique_ptr<GrFragmentProcessor> GrMatrixConvolutionEffect::clone() const {
 }
 
 void GrMatrixConvolutionEffect::onAddToKey(const GrShaderCaps& caps,
-                                           skgpu::KeyBuilder* b) const {
+                                           SkKeyBuilder* b) const {
     SkASSERT(this->fKernel.size().width() <= 0x7FFF && this->fKernel.size().height() <= 0xFFFF);
     uint32_t key = this->fKernel.size().width() << 16 | this->fKernel.size().height();
     key |= fConvolveAlpha ? 1U << 31 : 0;

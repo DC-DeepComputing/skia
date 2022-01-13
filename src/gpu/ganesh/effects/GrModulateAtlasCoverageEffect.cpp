@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrModulateAtlasCoverageEffect.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrDynamicAtlas.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 
@@ -34,7 +34,7 @@ GrModulateAtlasCoverageEffect::GrModulateAtlasCoverageEffect(
         , fBounds(that.fBounds) {}
 
 void GrModulateAtlasCoverageEffect::onAddToKey(const GrShaderCaps&,
-                                               skgpu::KeyBuilder* b) const {
+                                               SkKeyBuilder* b) const {
     b->add32(fFlags & Flags::kCheckBounds);
 }
 

@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrPipeline.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
@@ -75,7 +75,7 @@ GrPipeline::GrPipeline(GrScissorTest scissorTest,
     }
 }
 
-void GrPipeline::genKey(skgpu::KeyBuilder* b, const GrCaps& caps) const {
+void GrPipeline::genKey(SkKeyBuilder* b, const GrCaps& caps) const {
     // kSnapVerticesToPixelCenters is implemented in a shader.
     InputFlags ignoredFlags = InputFlags::kSnapVerticesToPixelCenters;
     b->add32((uint32_t)fFlags & ~(uint32_t)ignoredFlags, "flags");

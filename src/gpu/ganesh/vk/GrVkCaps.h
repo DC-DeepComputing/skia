@@ -244,7 +244,7 @@ public:
     int getFragmentUniformBinding() const;
     int getFragmentUniformSet() const;
 
-    void addExtraSamplerKey(skgpu::KeyBuilder*,
+    void addExtraSamplerKey(SkKeyBuilder*,
                             GrSamplerState,
                             const GrBackendFormat&) const override;
 

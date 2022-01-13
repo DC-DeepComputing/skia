@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMatrixPriv.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
@@ -212,7 +212,7 @@ GrBicubicEffect::GrBicubicEffect(const GrBicubicEffect& that)
         , fDirection(that.fDirection)
         , fClamp(that.fClamp) {}
 
-void GrBicubicEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrBicubicEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = (static_cast<uint32_t>(fDirection) << 0) | (static_cast<uint32_t>(fClamp) << 2);
     b->add32(key);
 }

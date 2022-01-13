@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/tessellate/GrPathTessellationShader.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMathPriv.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/effects/GrDisableColorXP.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
@@ -37,7 +37,7 @@ public:
 
 private:
     const char* name() const final { return "tessellate_SimpleTriangleShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const final {}
+    void addToKey(const GrShaderCaps&, SkKeyBuilder*) const final {}
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const final;
 };
 
@@ -111,7 +111,7 @@ public:
 
 private:
     const char* name() const final { return "tessellate_MiddleOutShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const final {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const final {
         // When color is in a uniform, it's always wide so we need to ignore kWideColorIfEnabled.
         // When color is in an attrib, its wideness is accounted for as part of the attrib key in
         // GrGeometryProcessor::getAttributeKey().

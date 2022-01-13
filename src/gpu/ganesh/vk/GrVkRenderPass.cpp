@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/vk/GrVkRenderPass.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrProcessor.h"
 #include "src/gpu/ganesh/vk/GrVkFramebuffer.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
@@ -442,12 +442,12 @@ bool GrVkRenderPass::equalLoadStoreOps(const LoadStoreOps& colorOps,
     return true;
 }
 
-void GrVkRenderPass::genKey(skgpu::KeyBuilder* b) const {
+void GrVkRenderPass::genKey(SkKeyBuilder* b) const {
     GenKey(b, fAttachmentFlags, fAttachmentsDescriptor, fSelfDepFlags,
            fLoadFromResolve, (uint64_t)fRenderPass);
 }
 
-void GrVkRenderPass::GenKey(skgpu::KeyBuilder* b,
+void GrVkRenderPass::GenKey(SkKeyBuilder* b,
                             AttachmentFlags attachmentFlags,
                             const AttachmentsDescriptor& attachmentsDescriptor,
                             SelfDependencyFlags selfDepFlags,

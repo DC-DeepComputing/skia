@@ -9,7 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
@@ -101,7 +101,7 @@ public:
 
     const char* name() const override { return "test"; }
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override {
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         static std::atomic<int32_t> nextKey{0};
         b->add32(nextKey++);
     }

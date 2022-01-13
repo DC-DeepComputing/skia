@@ -21,7 +21,7 @@
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -73,7 +73,7 @@ public:
 
     const char* name() const final { return "ClockwiseTestProcessor"; }
 
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const final {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const final {
         b->add32(fReadSkFragCoord);
     }
 

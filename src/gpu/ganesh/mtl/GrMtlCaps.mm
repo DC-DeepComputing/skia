@@ -10,8 +10,8 @@
 #include "include/core/SkRect.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "src/core/SkCompressedDataUtils.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrProcessor.h"
 #include "src/gpu/ganesh/GrProgramDesc.h"
@@ -1162,7 +1162,7 @@ GrProgramDesc GrMtlCaps::makeDesc(GrRenderTarget*, const GrProgramInfo& programI
     GrProgramDesc desc;
     GrProgramDesc::Build(&desc, programInfo, *this);
 
-    skgpu::KeyBuilder b(desc.key());
+    SkKeyBuilder b(desc.key());
 
     // If ordering here is changed, update getStencilPixelFormat() below
     b.add32(programInfo.backendFormat().asMtlFormat());

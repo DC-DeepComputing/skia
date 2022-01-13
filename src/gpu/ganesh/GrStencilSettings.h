@@ -12,9 +12,7 @@
 #include "include/core/SkRegion.h"
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 
-namespace skgpu {
-class KeyBuilder;
-}
+class SkKeyBuilder;
 
 enum class GrStencilTest : uint16_t {
     kAlways,
@@ -70,7 +68,7 @@ public:
     bool usesWrapOp() const { SkASSERT(this->isValid());
                               return !(fFlags & kNoWrapOps_StencilFlag); }
 
-    void genKey(skgpu::KeyBuilder* b, bool includeRefsAndMasks) const;
+    void genKey(SkKeyBuilder* b, bool includeRefsAndMasks) const;
 
     bool operator!=(const GrStencilSettings& that) const { return !(*this == that); }
     bool operator==(const GrStencilSettings&) const;

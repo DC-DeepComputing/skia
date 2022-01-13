@@ -10,11 +10,11 @@
 #include "include/core/SkData.h"
 #include "include/core/SkMesh.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
@@ -58,7 +58,7 @@ public:
 
     const char* name() const override { return "MeshGP"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->add32(SkMeshSpecificationPriv::Hash(*fSpec), "custom mesh spec hash");
         b->add32(ProgramImpl::ComputeMatrixKey(caps, fViewMatrix), "view matrix key");
         if (SkMeshSpecificationPriv::GetColorType(*fSpec) !=

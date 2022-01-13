@@ -79,7 +79,7 @@ public:
     }
 
 private:
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
     bool onIsEqual(const GrFragmentProcessor&) const override { return true; }
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override {

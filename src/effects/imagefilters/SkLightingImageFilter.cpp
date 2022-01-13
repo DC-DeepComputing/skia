@@ -18,7 +18,7 @@
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrPaint.h"
@@ -637,7 +637,7 @@ protected:
     bool onIsEqual(const GrFragmentProcessor&) const override;
 
 private:
-    void onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         b->add32(fBoundaryMode << 2 | fLight->type());
     }
 

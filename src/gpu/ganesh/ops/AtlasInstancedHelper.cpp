@@ -7,15 +7,15 @@
 
 #include "src/gpu/ganesh/ops/AtlasInstancedHelper.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
 namespace skgpu::v1 {
 
-void AtlasInstancedHelper::getKeyBits(KeyBuilder* b) const {
+void AtlasInstancedHelper::getKeyBits(SkKeyBuilder* b) const {
     b->addBits(kNumShaderFlags, (int)fShaderFlags, "atlasFlags");
 }
 

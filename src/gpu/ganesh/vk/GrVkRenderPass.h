@@ -17,9 +17,7 @@
 
 class GrVkGpu;
 class GrVkRenderTarget;
-namespace skgpu {
-class KeyBuilder;
-}
+class SkKeyBuilder;
 
 class GrVkRenderPass : public GrVkManagedResource {
 public:
@@ -158,9 +156,9 @@ public:
     uint32_t clearValueCount() const { return fClearValueCount; }
 
 
-    void genKey(skgpu::KeyBuilder*) const;
+    void genKey(SkKeyBuilder*) const;
 
-    static void GenKey(skgpu::KeyBuilder*,
+    static void GenKey(SkKeyBuilder*,
                        AttachmentFlags,
                        const AttachmentsDescriptor&,
                        SelfDependencyFlags selfDepFlags,

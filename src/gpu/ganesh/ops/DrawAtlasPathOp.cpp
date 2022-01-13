@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/ops/DrawAtlasPathOp.h"
 
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrOpsRenderPass.h"
@@ -54,7 +54,7 @@ private:
 
     int colorAttribIdx() const { return fUsesLocalCoords ? 3 : 1; }
     const char* name() const override { return "DrawAtlasPathShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         b->addBits(1, fUsesLocalCoords, "localCoords");
         fAtlasHelper->getKeyBits(b);
     }

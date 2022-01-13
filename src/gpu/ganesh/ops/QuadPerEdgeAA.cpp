@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
 
 #include "include/private/SkVx.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/SkGr.h"
@@ -625,7 +625,7 @@ public:
 
     const char* name() const override { return "QuadPerEdgeAAGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps&, KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         // texturing, device-dimensions are single bit flags
         b->addBool(fTexSubset.isInitialized(),    "subset");
         b->addBool(fSampler.isInitialized(),      "textured");

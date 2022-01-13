@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrBitmapTextGeoProc.h"
 
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/GrTexture.h"
@@ -179,7 +179,7 @@ void GrBitmapTextGeoProc::addNewViews(const GrSurfaceProxyView* views,
     this->setTextureSamplerCnt(numActiveViews);
 }
 
-void GrBitmapTextGeoProc::addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrBitmapTextGeoProc::addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     b->addBool(fUsesW, "usesW");
     static_assert(static_cast<int>(MaskFormat::kLast) < (1u << 2));
     b->addBits(2, static_cast<int>(fMaskFormat), "maskFormat");

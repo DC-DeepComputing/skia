@@ -9,7 +9,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "src/core/SkArenaAlloc.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -49,7 +49,7 @@ public:
 
     const char* name() const override { return "DefaultGeometryProcessor"; }
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         uint32_t key = fFlags;
         key |= fCoverage == 0xff      ?  0x80 : 0;
         key |= fLocalCoordsWillBeRead ? 0x100 : 0;
