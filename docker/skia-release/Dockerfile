@@ -39,12 +39,12 @@ RUN mkdir -p /tmp/skia/skia/out/Static
 RUN echo '  \n\
 cc = "clang"  \n\
 cxx = "clang++"  \n\
-skia_use_egl = true  \n\
-is_debug = false  \n\
+is_debug = true  \n\
 skia_use_system_freetype2 = false  \n\
+skia_use_vulkan = true  \n\
 extra_cflags = [  \n\
   "-I/tmp/swiftshader/include",  \n\
-  "-DGR_EGL_TRY_GLES3_THEN_GLES2",  \n\
+  "-DSK_GPU_TOOLS_VK_LIBRARY_NAME=\"libvk_swiftshader.so\",  \n\
   "-g0",  \n\
 ]  \n\
 extra_ldflags = [  \n\
