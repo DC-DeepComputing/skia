@@ -16,6 +16,23 @@
       "message": "Friendly ping whenever you get a chance",
       "revId": "4e76c2ab5d7b1aa4980d003e9a53c1523950ab4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d4204c4_7f7f0914",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-13T22:33:46Z",
+      "side": 1,
+      "message": "Sorry, thought I had already reviewed",
+      "revId": "4e76c2ab5d7b1aa4980d003e9a53c1523950ab4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
