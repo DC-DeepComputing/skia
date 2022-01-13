@@ -6,6 +6,7 @@
  */
 
 #include "include/private/SkFloatingPoint.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
@@ -90,6 +91,47 @@ skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::Uniforms* uniforms
               + p->uniformF(uniforms->pushF(fTScale*fTBias));
     }
     return t;
+}
+
+skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::UniformsAllocator* uniforms,
+                                      skvm::Coord coord, skvm::I32* mask) const {
+    skvm::F32 xabs = abs(coord.x),
+              yabs = abs(coord.y),
+             slope = min(xabs, yabs) / max(xabs, yabs);
+    skvm::F32 s = slope * slope;
+
+    // Use a 7th degree polynomial to approximate atan.
+    // This was generated using sollya.gforge.inria.fr.
+    // A float optimized polynomial was generated using the following command.
+    // P1 = fpminimax((1/(2*Pi))*atan(x),[|1,3,5,7|],[|24...|],[2^(-40),1],relative);
+    skvm::F32 phi = slope * poly(s, -7.0547382347285747528076171875e-3f,
+                                    +2.476101927459239959716796875e-2f,
+                                    -5.185396969318389892578125e-2f,
+                                    +0.15912117063999176025390625f);
+    phi = select(   xabs < yabs, (1/4.0f) - phi, phi);
+    phi = select(coord.x < 0.0f, (1/2.0f) - phi, phi);
+    phi = select(coord.y < 0.0f, (1/1.0f) - phi, phi);
+
+    skvm::F32 t = select(is_NaN(phi), p->splat(0.0f)
+                                    , phi);
+
+    if (fTScale != 1.0f || fTBias != 0.0f) {
+        skvm::F32 scale = p->uniformF(uniforms->pushF(/*fTScale*/)),
+                  scale_bias = p->uniformF(uniforms->pushF(/*fTScale*fTBias*/));
+        t = t * scale + scale_bias;
+    }
+    return t;
+}
+
+void SkSweepGradient::transformTKeyAndUniforms(SkKeyBuilder* key,
+                                               skvm::UniformsData* uniforms) const {
+    bool needScaleBias = (fTScale != 1.0f && fTBias != 0.0f);
+    key->addBool(needScaleBias, "needScaleBias");
+
+    if (needScaleBias) {
+        uniforms->pushF(fTScale);
+        uniforms->pushF(fTScale*fTBias);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////

@@ -26,10 +26,15 @@ public:
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
     // Add code to calculate a new coordinate given local using the mapping in fMatrix.
     skvm::Coord applyMatrix(
             skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
             skvm::Uniforms* uniforms) const;
+    skvm::Coord applyMatrix(
+            skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
+            skvm::UniformsAllocator* uniforms) const;
     void appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const;
 
     // Change the values represented by the uniforms in fMatrix.

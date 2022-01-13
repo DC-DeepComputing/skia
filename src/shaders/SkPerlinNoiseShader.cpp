@@ -310,6 +310,15 @@ public:
         return {};
     }
 
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override {
+        // TODO?
+        return {};
+    }
+
+    void onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override {
+        // TODO(skia:12824): Signal failure?
+    }
+
 protected:
     void flatten(SkWriteBuffer&) const override;
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT

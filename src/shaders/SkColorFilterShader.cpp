@@ -9,6 +9,7 @@
 #include "include/core/SkString.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorFilterBase.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkVM.h"
@@ -85,6 +86,40 @@ skvm::Color SkColorFilterShader::onProgram(skvm::Builder* p,
 
     // Finally run that through the color filter.
     return fFilter->program(p,c, dst, uniforms,alloc);
+}
+
+skvm::Color SkColorFilterShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    // Run the shader.
+    skvm::Color c = as_SB(fShader)->program2(SHADER_PROGRAM_ARGS_FWD);
+    if (!c) {
+        return {};
+    }
+    // Scale that by alpha.
+    if (fAlpha != 1.0f) {
+        skvm::F32 A = builder->uniformF(uniforms->pushF(/*fAlpha*/));
+        c.r *= A;
+        c.g *= A;
+        c.b *= A;
+        c.a *= A;
+    }
+
+    // TODO(skia:12824): Connect to CF::program2
+    // Finally run that through the color filter.
+    return {};
+    //return fFilter->program(p,c, dst, uniforms,alloc);
+}
+
+void SkColorFilterShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    as_SB(fShader)->keyAndUniforms(SHADER_KEY_UNI_ARGS_FWD);
+
+    bool scaleByAlpha = fAlpha != 1.0f;
+    key->addBool(scaleByAlpha, "scaleAlpha");
+    if (scaleByAlpha) {
+        uniforms->pushF(fAlpha);
+    }
+
+    // TODO(skia:12824): Need the CF's key and uniforms now:
+    //fFilter->keyAndUniforms(...);
 }
 
 #if SK_SUPPORT_GPU

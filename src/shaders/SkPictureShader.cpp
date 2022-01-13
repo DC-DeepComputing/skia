@@ -313,6 +313,37 @@ skvm::Color SkPictureShader::onProgram(skvm::Builder* p,
                                         uniforms,alloc);
 }
 
+skvm::Color SkPictureShader::onProgram2(SHADER_PROGRAM_ARGS) const {
+    auto lm = this->totalLocalMatrix(localM);
+
+    // TODO(skia:12824): We can't keep the shader alive here. Is it safe to make a new (different)
+    // instance. Doesn't feel like it. Need a way to get back to alloc'd objects created during
+    // keyAndUniforms pass? We should hit the image cache, but still...
+    sk_sp<SkShader> bitmapShader = this->rasterShader(matrices.localToDevice(), &lm,
+                                                      dstInfo.colorType(), dstInfo.colorSpace());
+    if (!bitmapShader) {
+        return {};
+    }
+
+    return as_SB(bitmapShader)
+            ->program2(builder, device, local, paint, matrices, lm, dstInfo, uniforms);
+}
+
+void SkPictureShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    auto lm = this->totalLocalMatrix(localM);
+
+    // Keep bitmapShader alive by using alloc instead of stack memory
+    auto& bitmapShader = *alloc->make<sk_sp<SkShader>>();
+    bitmapShader = this->rasterShader(matrices.localToDevice(), &lm,
+                                      dstInfo.colorType(), dstInfo.colorSpace());
+    if (!bitmapShader) {
+        // TODO(skia:12824): Another case where failing from keyAndUniforms is needed?
+        return;
+    }
+
+    as_SB(bitmapShader)->keyAndUniforms(key, uniforms, matrices, lm, dstInfo, alloc);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT

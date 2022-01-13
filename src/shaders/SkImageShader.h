@@ -73,6 +73,8 @@ private:
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
     class TransformShader;
     skvm::Color makeProgram(
             skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,

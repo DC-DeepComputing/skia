@@ -35,6 +35,9 @@ protected:
     skvm::Color onProgram(skvm::Builder*, skvm::Color,
                           const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override;
 
+    skvm::Color onProgram2(COLOR_FILTER_PROGRAM_ARGS) const override;
+    void onKeyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const override;
+
 private:
     SkColor     fColor;
     SkBlendMode fMode;

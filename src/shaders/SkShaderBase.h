@@ -27,6 +27,7 @@ class SkArenaAlloc;
 class SkColorSpace;
 class SkImage;
 struct SkImageInfo;
+class SkKeyBuilder;
 class SkPaint;
 class SkRasterPipeline;
 class SkRuntimeEffect;
@@ -209,6 +210,30 @@ public:
                         const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                         skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
 
+#define SHADER_PROGRAM_ARGS skvm::Builder* builder,           \
+                            skvm::Coord device,               \
+                            skvm::Coord local,                \
+                            skvm::Color paint,                \
+                            const SkMatrixProvider& matrices, \
+                            const SkMatrix* localM,           \
+                            const SkColorInfo& dstInfo,       \
+                            skvm::UniformsAllocator* uniforms
+
+#define SHADER_KEY_UNI_ARGS SkKeyBuilder* key,                \
+                            skvm::UniformsData* uniforms,     \
+                            const SkMatrixProvider& matrices, \
+                            const SkMatrix* localM,           \
+                            const SkColorInfo& dstInfo,       \
+                            SkArenaAlloc* alloc
+
+#define SHADER_PROGRAM_ARGS_FWD builder, device, local, paint, matrices, localM, dstInfo, uniforms
+#define SHADER_KEY_UNI_ARGS_FWD key, uniforms, matrices, localM, dstInfo, alloc
+
+    SK_WARN_UNUSED_RESULT
+    skvm::Color program2(SHADER_PROGRAM_ARGS) const;
+
+    void keyAndUniforms(SHADER_KEY_UNI_ARGS) const;
+
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
 
@@ -233,8 +258,21 @@ protected:
 
     virtual SkStageUpdater* onAppendUpdatableStages(const SkStageRec&) const { return nullptr; }
 
+    virtual skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const = 0;
+    virtual void onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const = 0;
+
+#define DECLARE_SHADER_VIRTUALS                                 \
+    skvm::Color onProgram2(SHADER_PROGRAM_ARGS) const override; \
+    void onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const override;
+
 protected:
     static skvm::Coord ApplyMatrix(skvm::Builder*, const SkMatrix&, skvm::Coord, skvm::Uniforms*);
+
+    static skvm::Coord ApplyMatrix2(skvm::Builder*,
+                                    const SkMatrix&,
+                                    skvm::Coord,
+                                    skvm::UniformsAllocator*);
+    static void MatrixKeyAndUniforms(SkKeyBuilder*, skvm::UniformsData*, const SkMatrix&);
 
 private:
     // This is essentially const, but not officially so it can be modified in constructors.

@@ -18,6 +18,8 @@ namespace skvm {
     struct Color;
     struct Coord;
     struct Uniforms;
+    struct UniformsAllocator;
+    struct UniformsData;
 }  // namespace skvm
 
 #endif//SkVM_fwd_DEFINED

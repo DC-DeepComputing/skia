@@ -39,6 +39,8 @@ protected:
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
     Context* onMakeContext(const ContextRec&, SkArenaAlloc*) const override;
 #endif

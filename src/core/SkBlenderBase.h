@@ -16,6 +16,7 @@
 
 struct GrFPArgs;
 class GrFragmentProcessor;
+class SkKeyBuilder;
 class SkRuntimeEffect;
 
 /**
@@ -39,6 +40,24 @@ public:
         return this->onProgram(p, src, dst, colorInfo, uniforms, alloc);
     }
 
+#define BLENDER_PROGRAM_ARGS skvm::Builder* builder,           \
+                             skvm::Color src,                  \
+                             skvm::Color dst,                  \
+                             const SkColorInfo& dstInfo,       \
+                             skvm::UniformsAllocator* uniforms
+
+#define BLENDER_KEY_UNI_ARGS SkKeyBuilder* key,            \
+                             skvm::UniformsData* uniforms, \
+                             const SkColorInfo& dstInfo,   \
+                             SkArenaAlloc* alloc
+
+    SK_WARN_UNUSED_RESULT
+    skvm::Color program2(BLENDER_PROGRAM_ARGS) const {
+        return this->onProgram2(builder, src, dst, dstInfo, uniforms);
+    }
+
+    void keyAndUniforms(BLENDER_KEY_UNI_ARGS) const;
+
 #if SK_SUPPORT_GPU
     /**
      * Returns a GrFragmentProcessor that implements this blend for the GPU backend.
@@ -59,6 +78,9 @@ private:
     virtual skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
                                   const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                                   SkArenaAlloc* alloc) const = 0;
+
+    virtual skvm::Color onProgram2(BLENDER_PROGRAM_ARGS) const = 0;
+    virtual void onKeyAndUniforms(BLENDER_KEY_UNI_ARGS) const = 0;
 
     using INHERITED = SkFlattenable;
 };

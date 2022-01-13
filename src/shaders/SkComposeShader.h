@@ -36,6 +36,8 @@ protected:
                           const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                           skvm::Uniforms*, SkArenaAlloc*) const override;
 
+    DECLARE_SHADER_VIRTUALS
+
 private:
     SK_FLATTENABLE_HOOKS(SkShader_Blend)
 

@@ -11,6 +11,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -163,6 +164,29 @@ skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
         }
     }
     return {};
+}
+
+skvm::Color SkShader_Blend::onProgram2(SHADER_PROGRAM_ARGS) const {
+    skvm::Color d,s;
+    if ((d = as_SB(fDst)->program2(SHADER_PROGRAM_ARGS_FWD)) &&
+        (s = as_SB(fSrc)->program2(SHADER_PROGRAM_ARGS_FWD)))
+    {
+        if (fBlender) {
+            return as_BB(fBlender)->program2(builder, s, d, dstInfo, uniforms);
+        } else {
+            return builder->blend(fMode, s,d);
+        }
+    }
+    return {};
+}
+
+void SkShader_Blend::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
+    key->addBool(SkToBool(fBlender), "blender");
+    if (fBlender) {
+        as_BB(fBlender)->keyAndUniforms(key, uniforms, dstInfo, alloc);
+    } else {
+        key->addBlendMode(fMode);
+    }
 }
 
 #if SK_SUPPORT_GPU

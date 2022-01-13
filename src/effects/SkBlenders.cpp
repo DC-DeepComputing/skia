@@ -8,6 +8,8 @@
 #include "include/core/SkScalar.h"
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/core/SkBlenderBase.h"
+#include "src/core/SkKeyBuilder.h"
 
 sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
                                         bool enforcePremul) {
@@ -65,4 +67,15 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
     // TODO(skia:12197)
     return nullptr;
 #endif
+}
+
+void SkBlenderBase::keyAndUniforms(BLENDER_KEY_UNI_ARGS) const {
+    // Use the factory pointer as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper. Avoid needing to create
+    // factory functions for each 
+    auto factory = this->getFactory();
+    SkASSERT(factory);
+    key->addBytes(sizeof(factory), &factory, "factory");
+
+    this->onKeyAndUniforms(key, uniforms, dstInfo, alloc);
 }

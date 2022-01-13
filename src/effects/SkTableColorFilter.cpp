@@ -80,6 +80,28 @@ public:
         return premul(c);
     }
 
+    skvm::Color onProgram2(COLOR_FILTER_PROGRAM_ARGS) const override {
+        auto apply_table_to_component = [&](skvm::F32 c) -> skvm::F32 {
+            skvm::I32     index = to_unorm(8, clamp01(c));
+            skvm::Uniform table = uniforms->pushPtr(/*bytePtr*/);
+            return from_unorm(8, gather8(table, index));
+        };
+
+        c = unpremul(c);
+        c.a = apply_table_to_component(c.a);
+        c.r = apply_table_to_component(c.r);
+        c.g = apply_table_to_component(c.g);
+        c.b = apply_table_to_component(c.b);
+        return premul(c);
+    }
+
+    void onKeyAndUniforms(COLOR_FILTER_KEY_UNI_ARGS) const override {
+        uniforms->pushPtr(fBitmap.getAddr8(0, 0));  // A
+        uniforms->pushPtr(fBitmap.getAddr8(0, 1));  // R
+        uniforms->pushPtr(fBitmap.getAddr8(0, 2));  // G
+        uniforms->pushPtr(fBitmap.getAddr8(0, 3));  // B
+    }
+
     void flatten(SkWriteBuffer& buffer) const override {
         buffer.writeByteArray(fBitmap.getAddr8(0,0), 4*256);
     }

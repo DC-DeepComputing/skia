@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkBlendModeBlender.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
@@ -81,4 +82,12 @@ skvm::Color SkBlendModeBlender::onProgram(skvm::Builder* p, skvm::Color src, skv
                                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                                           SkArenaAlloc* alloc) const {
     return p->blend(fMode, src, dst);
+}
+
+skvm::Color SkBlendModeBlender::onProgram2(BLENDER_PROGRAM_ARGS) const {
+    return builder->blend(fMode, src, dst);
+}
+
+void SkBlendModeBlender::onKeyAndUniforms(BLENDER_KEY_UNI_ARGS) const {
+    key->addBlendMode(fMode);
 }
