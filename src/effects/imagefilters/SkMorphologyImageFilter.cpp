@@ -22,7 +22,7 @@
 #include "src/gpu/GrRecordingContextPriv.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/GrTextureProxy.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/SkGr.h"
 #include "src/gpu/SurfaceFillContext.h"
 #include "src/gpu/effects/GrTextureEffect.h"
@@ -208,7 +208,7 @@ private:
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override;
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onIsEqual(const GrFragmentProcessor&) const override;
     GrMorphologyEffect(std::unique_ptr<GrFragmentProcessor> inputFP, GrSurfaceProxyView,
@@ -287,7 +287,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrMorphologyEffect::onMakeProg
     return std::make_unique<Impl>();
 }
 
-void GrMorphologyEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void GrMorphologyEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     uint32_t key = static_cast<uint32_t>(fRadius);
     key |= (static_cast<uint32_t>(fType) << 8);
     key |= (static_cast<uint32_t>(fDirection) << 9);

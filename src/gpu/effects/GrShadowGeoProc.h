@@ -34,7 +34,7 @@ public:
     const Attribute& inShadowParams() const { return fInShadowParams; }
     GrColor color() const { return fColor; }
 
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+    void addToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override;
 
