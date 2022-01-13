@@ -16,6 +16,24 @@
       "message": "Are you able to confirm if this fixes the msan issue?",
       "revId": "a7ee859c9ebf52efac437dcdb22517e738e35135",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25e78af6_f003aa5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-13T16:18:25Z",
+      "side": 1,
+      "message": "It appears like it might fix it, but the quickly hits another MSAN crash.",
+      "parentUuid": "767b515b_5a2ae84b",
+      "revId": "a7ee859c9ebf52efac437dcdb22517e738e35135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
