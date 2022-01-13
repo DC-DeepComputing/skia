@@ -14,6 +14,12 @@
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #endif
 
+#include "experimental/graphite/include/Encoding.h"
+
+int SkBlendModeBlender::addToKeyB(SkShaderCodeDictionary* dict, SkBackend backend, SkPaintParamsKey* key, std::vector<sk_sp<skgpu::UniformData>>* unis) const {
+    return BlendMode::addToKeyB(dict, backend, key, unis, fMode);
+}
+
 sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                        \
     case m: {                                              \

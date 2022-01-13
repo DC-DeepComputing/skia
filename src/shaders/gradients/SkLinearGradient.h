@@ -8,10 +8,22 @@
 #ifndef SkLinearGradient_DEFINED
 #define SkLinearGradient_DEFINED
 
+struct GradData;
+
 #include "src/shaders/gradients/SkGradientShaderPriv.h"
 
 class SkLinearGradient : public SkGradientShaderBase {
 public:
+    static int Encode1(SkShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, const GradData&);
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+    static void Dump(const uint32_t* data, int numIntsAccessible);
+#endif
+
+    int addToKeyS(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  std::vector<sk_sp<skgpu::UniformData>>*) const override;
+
     SkLinearGradient(const SkPoint pts[2], const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;

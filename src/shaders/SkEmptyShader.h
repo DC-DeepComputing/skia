@@ -18,6 +18,10 @@
  */
 class SkEmptyShader : public SkShaderBase {
 public:
+    int addToKeyS(SkShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        return 0;
+    }
+
     SkEmptyShader() {}
 
 protected:

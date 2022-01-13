@@ -15,6 +15,7 @@
 #include "experimental/graphite/src/DrawTypes.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkOpts_spi.h"
+#include "include/private/SkShaderCodeDictionary.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkUniquePaintParamsID.h"
 

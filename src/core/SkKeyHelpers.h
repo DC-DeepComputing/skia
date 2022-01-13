@@ -9,7 +9,7 @@
 #define SkKeyHelpers_DEFINED
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "experimental/graphite/include/Context.h"
+//#include "experimental/graphite/include/Context.h"
 #endif
 
 #include "include/core/SkBlendMode.h"
@@ -41,7 +41,20 @@ namespace SolidColorShaderBlock {
 // TODO: move this functionality to the SkLinearGradient, SkRadialGradient, etc classes
 namespace GradientShaderBlocks {
 
-    void AddToKey(SkPaintParamsKey*, SkShader::GradientType, SkTileMode);
+    struct GradData {
+        bool operator==(const GradData& rhs) const {
+            return fType == rhs.fType &&
+                   fTM == rhs.fTM &&
+                   fNumStops == rhs.fNumStops;
+        }
+        bool operator!=(const GradData& rhs) const { return !(*this == rhs); }
+
+        SkShader::GradientType fType;
+        SkTileMode             fTM;
+        int                    fNumStops;
+    };
+
+    void AddToKey(SkPaintParamsKey*, const GradData&);
 #ifdef SK_DEBUG
     void Dump(const SkPaintParamsKey&, int headerOffset);
 #endif
@@ -57,9 +70,9 @@ namespace BlendModeBlock {
 
 } // namespace BlendModeBlock
 
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 // def SK_GRAPHITE_ENABLED
 // Bridge between the combinations system and the SkPaintParamsKey
-SkPaintParamsKey CreateKey(skgpu::ShaderCombo::ShaderType, SkTileMode, SkBlendMode);
+SkPaintParamsKey CreateKey(SkBackend, skgpu::ShaderCombo::ShaderType, SkTileMode, SkBlendMode);
 #endif
 
 #endif // SkKeyHelpers_DEFINED
