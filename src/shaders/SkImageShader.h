@@ -75,15 +75,39 @@ private:
 
     SkUpdatableShader* onUpdatableShader(SkArenaAlloc* alloc) const override;
 
-    skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override;
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override;
 
     class TransformShader;
-    skvm::Color makeProgram(
-            skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-            const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
-            skvm::Uniforms* uniforms, const TransformShader* coordShader, SkArenaAlloc*) const;
+
+    skvm::Color makeProgram2(skvm::Builder* builder,
+                             skvm::Coord device,
+                             skvm::Coord local,
+                             skvm::Color paint,
+                             const SkMatrixProvider& matrices,
+                             const SkMatrix* localM,
+                             const SkColorInfo& dstInfo,
+                             skvm::UniformsAllocator* uniforms,
+                             const TransformShader* coordShader) const;
+    bool makeKeyAndUniforms(SkKeyBuilder* key,
+                            skvm::UniformsData* uniforms,
+                            const SkMatrixProvider& matrices,
+                            const SkMatrix* localM,
+                            const SkColorInfo& dstInfo,
+                            SkArenaAlloc* alloc,
+                            const TransformShader* coordShader) const;
 
     bool doStages(const SkStageRec&, TransformShader* = nullptr) const;
 

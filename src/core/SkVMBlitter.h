@@ -77,10 +77,13 @@ private:
                                   const SkMatrixProvider& matrices,
                                   sk_sp<SkShader> clip);
     static skvm::Color DstColor(skvm::Builder* p, const Params& params);
-    static void BuildProgram(skvm::Builder* p, const Params& params,
-                             skvm::Uniforms* uniforms, SkArenaAlloc* alloc);
+    static void BuildProgram(skvm::Builder* p,
+                             const Params& params,
+                             skvm::UniformsAllocator* uniforms);
     static Key CacheKey(const Params& params,
-                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc, bool* ok);
+                        skvm::UniformsData* uniforms,
+                        SkArenaAlloc* alloc,
+                        bool* ok);
     static SkLRUCache<Key, skvm::Program>* TryAcquireProgramCache();
     static SkString DebugName(const Key& key);
     static void ReleaseProgramCache();
@@ -95,14 +98,14 @@ private:
 private:
     void blitMask(const SkMask& mask, const SkIRect& clip) override;
 
-    SkPixmap        fDevice;
-    const SkPixmap  fSprite;                  // See isSprite().
-    const SkIPoint  fSpriteOffset;
-    skvm::Uniforms  fUniforms;                // Most data is copied directly into fUniforms,
-    SkArenaAlloc    fAlloc{2*sizeof(void*)};  // but a few effects need to ref large content.
-    const Params    fParams;
-    const Key       fKey;
-    bool            fStoreToCache = false;
+    SkPixmap               fDevice;
+    const SkPixmap         fSprite;                  // See isSprite().
+    const SkIPoint         fSpriteOffset;
+    skvm::UniformsData     fUniforms;                // Most data is copied directly into fUniforms,
+    SkArenaAlloc           fAlloc{2*sizeof(void*)};  // but a few effects need to ref large content.
+    const Params           fParams;
+    const Key              fKey;
+    bool                   fStoreToCache = false;
     skvm::Program*         fProgramPtrs[Coverage::kCount] = {nullptr};
     SkTLazy<skvm::Program> fPrograms[Coverage::kCount];
 

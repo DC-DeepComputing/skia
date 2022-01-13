@@ -10,7 +10,7 @@
 
 #include "include/core/SkTypes.h"
 
-enum class SkTileMode {
+enum class SkTileMode : int {
     /**
      *  Replicate the edge color if the shader draws outside of its
      *  original bounds.

@@ -302,12 +302,26 @@ public:
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
 
-    skvm::Color onProgram(skvm::Builder*,
-                          skvm::Coord, skvm::Coord, skvm::Color,
-                          const SkMatrixProvider&, const SkMatrix*, const SkColorInfo&,
-                          skvm::Uniforms*, SkArenaAlloc*) const override {
+    skvm::Color onProgram(skvm::Builder* builder,
+                          skvm::Coord device,
+                          skvm::Coord local,
+                          skvm::Color paint,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          skvm::UniformsAllocator* uniforms) const override {
         // TODO?
         return {};
+    }
+
+    bool onKeyAndUniforms(SkKeyBuilder* key,
+                          skvm::UniformsData* uniforms,
+                          const SkMatrixProvider& matrices,
+                          const SkMatrix* localM,
+                          const SkColorInfo& dstInfo,
+                          SkArenaAlloc* alloc) const override {
+        // TODO?
+        return false;
     }
 
 protected:

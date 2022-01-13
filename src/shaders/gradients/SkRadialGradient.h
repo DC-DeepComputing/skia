@@ -32,8 +32,9 @@ protected:
     void appendGradientStages(SkArenaAlloc* alloc, SkRasterPipeline* tPipeline,
                               SkRasterPipeline* postPipeline) const override;
 
-    skvm::F32 transformT(skvm::Builder*, skvm::Uniforms*,
+    skvm::F32 transformT(skvm::Builder*, skvm::UniformsAllocator*,
                          skvm::Coord coord, skvm::I32* mask) const final;
+    void transformTKeyAndUniforms(SkKeyBuilder*, skvm::UniformsData*) const final {}
 
 private:
     SK_FLATTENABLE_HOOKS(SkRadialGradient)

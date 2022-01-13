@@ -2285,9 +2285,9 @@ bool testingOnly_ProgramToSkVMShader(const Program& program,
         }
     }
 
-    skvm::Uniforms uniforms(builder->uniform(), 0);
+    skvm::UniformsAllocator uniforms(builder->uniform(), 0);
 
-    auto new_uni = [&]() { return builder->uniformF(uniforms.pushF(0.0f)); };
+    auto new_uni = [&]() { return builder->uniformF(uniforms.pushF()); };
 
     // Assume identity CTM
     skvm::Coord device = {pun_to_F32(builder->index()), new_uni()};
@@ -2295,10 +2295,10 @@ bool testingOnly_ProgramToSkVMShader(const Program& program,
 
     class Callbacks : public SkVMCallbacks {
     public:
-        Callbacks(skvm::Builder* builder, skvm::Uniforms* uniforms, int numChildren) {
+        Callbacks(skvm::Builder* builder, skvm::UniformsAllocator* uniforms, int numChildren) {
             for (int i = 0; i < numChildren; ++i) {
                 fChildren.push_back(
-                        {uniforms->pushPtr(nullptr), builder->uniform32(uniforms->push(0))});
+                        {uniforms->pushPtr(), builder->uniform32(uniforms->push())});
             }
         }
 
@@ -2339,8 +2339,8 @@ bool testingOnly_ProgramToSkVMShader(const Program& program,
         uniformVals.push_back(new_uni().id);
     }
 
-    skvm::Color inColor = builder->uniformColor(SkColors::kWhite, &uniforms);
-    skvm::Color destColor = builder->uniformColor(SkColors::kBlack, &uniforms);
+    skvm::Color inColor = builder->uniformColor(&uniforms);
+    skvm::Color destColor = builder->uniformColor(&uniforms);
 
     skvm::Color result = SkSL::ProgramToSkVM(program, *main, builder, debugTrace,
                                              SkMakeSpan(uniformVals), device, local, inColor,
