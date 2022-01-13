@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8abfa6fd_c0f075de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-13T20:35:00Z",
+      "side": 1,
+      "message": "Please run \n\n  go run infra/bots/gen_tasks.go\n  \nAnd fix errors as needed.\nThis will also generate useful diffs once the errors are fixed. (The bot task JSON will update)",
+      "revId": "506a0c559df7624c1e4c868cb6616b32c1ea214f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
