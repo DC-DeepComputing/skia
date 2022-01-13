@@ -28,15 +28,15 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPaint p1, p2, p3;
+        SkPaint p1; //, p2, p3;
 
         p1.setColor(SK_ColorRED);
-        p2.setColor(SK_ColorGREEN);
-        p3.setColor(SK_ColorBLUE);
+        //p2.setColor(SK_ColorGREEN);
+        //p3.setColor(SK_ColorBLUE);
 
         canvas->drawRect({10, 10, 100, 100}, p1);
-        canvas->drawRect({50, 50, 150, 150}, p2);
-        canvas->drawRect({100, 100, 200, 200}, p3);
+        //canvas->drawRect({50, 50, 150, 150}, p2);
+        //canvas->drawRect({100, 100, 200, 200}, p3);
     }
 };
 

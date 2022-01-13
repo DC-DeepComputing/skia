@@ -11,6 +11,9 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
 
+#include "experimental/graphite/include/Encoding.h"
+#include "include/private/SkPaintParamsKey.h"
+
 static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
     SkVector    vec = pts[1] - pts[0];
     SkScalar    mag = vec.length();
@@ -25,6 +28,60 @@ static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// TODO: For the sprint we only support 4 stops in the gradients
+static constexpr int kMaxStops1 = 4;
+
+struct GradData {
+    SkColor4f fColors[kMaxStops1];
+    float     fOffsets[kMaxStops1];
+    SkPoint   fStartPoint;
+    SkPoint   fEndPoint;
+    float     fRadius0;
+    float     fRadius1;
+};
+
+int SkLinearGradient::Encode1(skgpu::ShaderCodeDictionary*,
+                              SkBackend backend,
+                              SkPaintParamsKey* key,
+                              const GradData& data) {
+    switch (backend) {
+        case SkBackend::kGraphite: {
+            int code = 7;
+//            SkASSERT(data == Decode(code));
+            key->addInt1(code);
+            return 1;
+        }
+        case SkBackend::kGanesh:
+        case SkBackend::kSkVM:
+            return 0;
+    }
+
+    SkUNREACHABLE;
+}
+
+int SkLinearGradient::addToKeyS(skgpu::ShaderCodeDictionary* dict,
+                                SkBackend backend,
+                                SkPaintParamsKey* key,
+                                std::vector<sk_sp<skgpu::UniformData>>*) const {
+    switch (backend) {
+        case SkBackend::kGraphite: {
+            GradData data;
+            data.fStartPoint = fStart;
+            data.fEndPoint = fEnd;
+            data.fRadius0 = 0.0f; // unused
+            data.fRadius1 = 0.0f; // unused
+
+            int headerOffset = key->beginBlock(CodeSnippetID::kLinearGradientShader);
+            Encode1(dict, backend, key, data);
+            key->endBlock(headerOffset, CodeSnippetID::kLinearGradientShader);
+            return 0;
+        }
+        default:
+            break;
+    }
+    return 0;
+}
 
 SkLinearGradient::SkLinearGradient(const SkPoint pts[2], const Descriptor& desc)
     : SkGradientShaderBase(desc, pts_to_unit_matrix(pts))

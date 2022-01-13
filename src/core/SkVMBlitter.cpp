@@ -46,6 +46,13 @@ namespace {
     }
 
     struct NoopColorFilter : public SkColorFilterBase {
+        void addToKeyCF(skgpu::ShaderCodeDictionary*,
+                        SkBackend,
+                        SkPaintParamsKey*,
+                        std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+        }
+
         skvm::Color onProgram(skvm::Builder*, skvm::Color c,
                               const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override {
             return c;
@@ -59,6 +66,10 @@ namespace {
     };
 
     struct SpriteShader : public SkShaderBase {
+        int addToKeyS(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+            return 0;
+        }
+
         explicit SpriteShader(SkPixmap sprite) : fSprite(sprite) {}
 
         SkPixmap fSprite;
@@ -85,6 +96,10 @@ namespace {
     };
 
     struct DitherShader : public SkShaderBase {
+        int addToKeyS(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+            return 0;
+        }
+
         explicit DitherShader(sk_sp<SkShader> shader) : fShader(std::move(shader)) {}
 
         sk_sp<SkShader> fShader;
@@ -173,6 +188,10 @@ namespace {
     // This is similar to using SkShaders::Color(paint.getColor4f(), nullptr),
     // but uses the blitter-provided paint color uniforms instead of pushing its own.
     struct PaintColorShader : public SkShaderBase {
+        int addToKeyS(skgpu::ShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, std::vector<sk_sp<skgpu::UniformData>>*) const override {
+            return 0;
+        }
+
         explicit PaintColorShader(bool isOpaque) : fIsOpaque(isOpaque) {}
 
         const bool fIsOpaque;

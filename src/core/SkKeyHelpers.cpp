@@ -14,8 +14,8 @@
 namespace DepthStencilOnlyBlock {
 
 void AddToKey(SkPaintParamsKey* key) {
-    int blockIndex = key->beginBlock(CodeSnippetID::kDepthStencilOnlyDraw);
-    key->endBlock(blockIndex, CodeSnippetID::kDepthStencilOnlyDraw);
+    int headerOffset = key->beginBlock(CodeSnippetID::kDepthStencilOnlyDraw);
+    key->endBlock(headerOffset, CodeSnippetID::kDepthStencilOnlyDraw);
 }
 
 #ifdef SK_DEBUG
@@ -33,8 +33,8 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 namespace SolidColorShaderBlock {
 
 void AddToKey(SkPaintParamsKey* key) {
-    int blockIndex = key->beginBlock(CodeSnippetID::kSolidColorShader);
-    key->endBlock(blockIndex, CodeSnippetID::kSolidColorShader);
+    int headerOffset = key->beginBlock(CodeSnippetID::kSolidColorShader);
+    key->endBlock(headerOffset, CodeSnippetID::kSolidColorShader);
 }
 
 #ifdef SK_DEBUG
@@ -126,11 +126,11 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 namespace BlendModeBlock {
 
 void AddToKey(SkPaintParamsKey *key, SkBlendMode bm) {
-    int blockIndex = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
+    int headerOffset = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
 
     key->addByte(static_cast<uint8_t>(bm));
 
-    key->endBlock(blockIndex, CodeSnippetID::kSimpleBlendMode);
+    key->endBlock(headerOffset, CodeSnippetID::kSimpleBlendMode);
 }
 
 #ifdef SK_DEBUG
