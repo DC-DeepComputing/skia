@@ -13,7 +13,7 @@
 #include "src/gpu/GrOpsRenderPass.h"
 #include "src/gpu/GrProgramInfo.h"
 #include "src/gpu/GrResourceProvider.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLVarying.h"
 #include "src/gpu/glsl/GrGLSLVertexGeoBuilder.h"
@@ -54,7 +54,7 @@ private:
 
     int colorAttribIdx() const { return fUsesLocalCoords ? 3 : 1; }
     const char* name() const override { return "DrawAtlasPathShader"; }
-    void addToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const override {
+    void addToKey(const GrShaderCaps&, SkKeyBuilder* b) const override {
         b->addBits(1, fUsesLocalCoords, "localCoords");
         fAtlasHelper->getKeyBits(b);
     }

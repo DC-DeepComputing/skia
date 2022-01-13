@@ -94,7 +94,7 @@ public:
 
     uint64_t computeFormatKey(const GrBackendFormat&) const override;
 
-    void addExtraSamplerKey(skgpu::KeyBuilder*,
+    void addExtraSamplerKey(SkKeyBuilder*,
                             GrSamplerState,
                             const GrBackendFormat&) const override;
 

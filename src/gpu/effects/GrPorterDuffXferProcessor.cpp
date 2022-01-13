@@ -16,7 +16,7 @@
 #include "src/gpu/GrProcessor.h"
 #include "src/gpu/GrProcessorAnalysis.h"
 #include "src/gpu/GrXferProcessor.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/glsl/GrGLSLBlend.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/glsl/GrGLSLProgramDataManager.h"
@@ -386,7 +386,7 @@ public:
     BlendFormula getBlendFormula() const { return fBlendFormula; }
 
 private:
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onHasSecondaryOutput() const override { return fBlendFormula.hasSecondaryOutput(); }
 
@@ -440,7 +440,7 @@ static void append_color_output(const PorterDuffXferProcessor& xp,
     }
 }
 
-void PorterDuffXferProcessor::onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const {
+void PorterDuffXferProcessor::onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const {
     b->add32(fBlendFormula.primaryOutput() | (fBlendFormula.secondaryOutput() << 3));
     static_assert(BlendFormula::kLast_OutputType < 8);
 }
@@ -487,7 +487,7 @@ public:
     std::unique_ptr<ProgramImpl> makeProgramImpl() const override;
 
 private:
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onIsEqual(const GrXferProcessor& xpBase) const override {
         const ShaderPDXferProcessor& xp = xpBase.cast<ShaderPDXferProcessor>();
@@ -502,7 +502,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 
-void ShaderPDXferProcessor::onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder* b) const {
+void ShaderPDXferProcessor::onAddToKey(const GrShaderCaps&, SkKeyBuilder* b) const {
     b->add32(static_cast<int>(fXfermode));
 }
 
@@ -548,7 +548,7 @@ public:
 private:
     PDLCDXferProcessor(const SkPMColor4f& blendConstant, float alpha);
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
     void onGetBlendInfo(GrXferProcessor::BlendInfo* blendInfo) const override {
         blendInfo->fSrcBlend = kConstC_GrBlendCoeff;

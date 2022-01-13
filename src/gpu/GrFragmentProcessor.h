@@ -23,10 +23,7 @@ class GrPipeline;
 struct GrShaderCaps;
 class GrSwizzle;
 class GrTextureEffect;
-
-namespace skgpu {
-class KeyBuilder;
-}
+class SkKeyBuilder;
 
 /**
  * Some fragment-processor creation methods have preconditions that might not be satisfied by the
@@ -182,7 +179,7 @@ public:
 
     std::unique_ptr<ProgramImpl> makeProgramImpl() const;
 
-    void addToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+    void addToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
         this->onAddToKey(caps, b);
         for (const auto& child : fChildProcessors) {
             if (child) {
@@ -429,7 +426,7 @@ private:
      */
     virtual std::unique_ptr<ProgramImpl> onMakeProgramImpl() const = 0;
 
-    virtual void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const = 0;
+    virtual void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const = 0;
 
     /**
      * Subclass implements this to support isEqual(). It will only be called if it is known that

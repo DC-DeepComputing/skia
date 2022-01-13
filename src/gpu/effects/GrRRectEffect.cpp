@@ -11,7 +11,7 @@
 #include "src/core/SkTLazy.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrShaderCaps.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/effects/GrConvexPolyEffect.h"
 #include "src/gpu/effects/GrOvalEffect.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -63,7 +63,7 @@ private:
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override;
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onIsEqual(const GrFragmentProcessor& other) const override;
 
@@ -372,7 +372,7 @@ void CircularRRectEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdman,
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CircularRRectEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void CircularRRectEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     static_assert(kGrClipEdgeTypeCnt <= 8);
     b->add32((fCircularCornerFlags << 3) | static_cast<int>(fEdgeType));
 }
@@ -402,7 +402,7 @@ private:
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override;
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override;
 
     bool onIsEqual(const GrFragmentProcessor& other) const override;
 
@@ -664,7 +664,7 @@ void EllipticalRRectEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdma
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void EllipticalRRectEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
+void EllipticalRRectEffect::onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const {
     static_assert((int)GrClipEdgeType::kLast < (1 << 3));
     b->add32(fRRect.getType() | static_cast<int>(fEdgeType) << 3);
 }

@@ -20,7 +20,7 @@
 #include "src/gpu/GrPipeline.h"
 #include "src/gpu/GrProxyProvider.h"
 #include "src/gpu/GrXferProcessor.h"
-#include "src/gpu/KeyBuilder.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/effects/GrPorterDuffXferProcessor.h"
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
@@ -64,7 +64,7 @@ public:
 
 private:
     BigKeyProcessor() : INHERITED(kBigKeyProcessor_ClassID, kNone_OptimizationFlags) {}
-    void onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const override {
+    void onAddToKey(const GrShaderCaps& caps, SkKeyBuilder* b) const override {
         for (uint32_t i = 0; i < kMaxKeySize; i++) {
             b->add32(i);
         }
@@ -120,7 +120,7 @@ private:
         this->registerChild(std::move(child));
     }
 
-    void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
+    void onAddToKey(const GrShaderCaps&, SkKeyBuilder*) const override {}
 
     bool onIsEqual(const GrFragmentProcessor&) const override { return true; }
 
