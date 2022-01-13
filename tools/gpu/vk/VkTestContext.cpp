@@ -38,9 +38,12 @@ public:
         } else {
             PFN_vkGetInstanceProcAddr instProc;
             PFN_vkGetDeviceProcAddr devProc;
+            SkDebugf("@> <try to load vk?>\n");
             if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc, &devProc)) {
+                SkDebugf("@> fail\n");
                 return nullptr;
             }
+            SkDebugf("@> </try to load vk>\n");
             auto getProc = [instProc, devProc](const char* proc_name,
                                                VkInstance instance, VkDevice device) {
                 if (device != VK_NULL_HANDLE) {
@@ -56,12 +59,14 @@ public:
                 sk_gpu_test::FreeVulkanFeaturesStructs(features);
                 delete features;
                 delete extensions;
+                SkDebugf("@> createcontext fail\n");
                 return nullptr;
             }
             if (debugCallback != VK_NULL_HANDLE) {
                 destroyCallback = (PFN_vkDestroyDebugReportCallbackEXT) instProc(
                         backendContext.fInstance, "vkDestroyDebugReportCallbackEXT");
             }
+                SkDebugf("@> success!!!!!!! \n");
         }
         return new VkTestContextImpl(backendContext, extensions, features, ownsContext,
                                      debugCallback, destroyCallback);

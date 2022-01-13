@@ -17,5 +17,4 @@ RUN cd /tmp \
 
 ENV PATH=${PATH}:/tmp/depot_tools
 
-ADD --chown=skia:skia https://storage.googleapis.com/skia-swiftshader/libGLESv2.so /usr/local/lib/libGLESv2.so
-ADD --chown=skia:skia  https://storage.googleapis.com/skia-swiftshader/libEGL.so /usr/local/lib/libEGL.so
+ADD --chown=skia:skia https://storage.googleapis.com/skia-swiftshader/libvk_swiftshader.so /usr/local/lib/libvk_swiftshader.so
