@@ -175,13 +175,22 @@ bool VkYcbcrSamplerHelper::createBackendTexture(uint32_t width, uint32_t height)
         return false;
     }
 
+    VkChromaLocation chromaLocation;
+    if (formatProperties.linearTilingFeatures & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT) {
+        chromaLocation = VK_CHROMA_LOCATION_COSITED_EVEN;
+    } else {
+        SkASSERT(formatProperties.linearTilingFeatures &
+                 VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT);
+        chromaLocation = VK_CHROMA_LOCATION_MIDPOINT;
+    }
+
     // Wrap the image into SkImage.
     GrVkYcbcrConversionInfo ycbcrInfo = {vkImageInfo.format,
                                          /*externalFormat=*/0,
                                          VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
                                          VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
-                                         VK_CHROMA_LOCATION_COSITED_EVEN,
-                                         VK_CHROMA_LOCATION_COSITED_EVEN,
+                                         chromaLocation,
+                                         chromaLocation,
                                          VK_FILTER_LINEAR,
                                          false,
                                          formatProperties.linearTilingFeatures};
