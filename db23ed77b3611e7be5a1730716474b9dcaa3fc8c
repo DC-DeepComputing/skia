@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2fa1e77_04478301",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-13T11:06:29Z",
+      "side": 1,
+      "message": "Good to know \u003d) Fixed.",
+      "parentUuid": "c392885a_151f1b1a",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 10
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88783cdd_cf0b1010",
         "filename": "src/codec/SkJpegxlCodec.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-12T15:12:42Z",
       "side": 1,
       "message": "nit: can*",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0adc95ef_1a43e39c",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-13T11:06:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88783cdd_cf0b1010",
       "range": {
         "startLine": 86,
         "startChar": 34,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bc0d259_515cc66a",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-13T11:06:29Z",
+      "side": 1,
+      "message": "Sure. Updated message to \"libjxl returned unexpected status\" and annotated each site with an explanation comment, why it is unexpected.",
+      "parentUuid": "9a7bac0a_4d91c754",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 35
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9d2031f_ab7dae67",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a9bc6c3_9fd6be60",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-13T11:06:29Z",
+      "side": 1,
+      "message": "Ooops. Thanks.",
+      "parentUuid": "d9d2031f_ab7dae67",
+      "range": {
+        "startLine": 122,
+        "startChar": 24,
+        "endLine": 122,
+        "endChar": 35
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70e4d362_07083d9e",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-01-12T15:12:42Z",
       "side": 1,
       "message": "I\u0027m still confused. I thought you said this meant that this frame had been processed, but the line above says \"SkipFrames\". Does \"Skip\" process them?",
+      "range": {
+        "startLine": 212,
+        "startChar": 14,
+        "endLine": 212,
+        "endChar": 33
+      },
+      "revId": "db23ed77b3611e7be5a1730716474b9dcaa3fc8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a08e96_4be94d42",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 18014
+      },
+      "writtenOn": "2022-01-13T11:06:29Z",
+      "side": 1,
+      "message": "Actually, it only records how many frames to skip.\nMoved assignment after JxlProcessInput (5 lines below) and added clarification/todo - \"LastProcessedFrame\" might point to in-flight (incomplete) frame...",
+      "parentUuid": "70e4d362_07083d9e",
       "range": {
         "startLine": 212,
         "startChar": 14,
