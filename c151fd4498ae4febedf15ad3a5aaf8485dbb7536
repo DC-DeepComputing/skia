@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf4f37a0_a6021b06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-13T13:04:53Z",
+      "side": 1,
+      "message": "I think we may want to land as-is and then ignore the SwiftShader_MSAN bot \runtil it can be fixed. Thoughts?\n\nGreg, are you OK with the change in GrVkTestUtils.cpp?",
+      "revId": "c151fd4498ae4febedf15ad3a5aaf8485dbb7536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e65db821_d63dd4ae",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-13T13:04:53Z",
+      "side": 1,
+      "message": "We can delete these two lines instead of adding -Wno-unused-command-line-argument, but I\u0027m not sure if any compilation units actually do use these flags, or how to tell.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 17
+      },
+      "revId": "c151fd4498ae4febedf15ad3a5aaf8485dbb7536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
