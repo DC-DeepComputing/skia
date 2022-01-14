@@ -142,11 +142,13 @@ static bool compare_colors(int x, int y,
     float diffs[4];
     bool bad = false;
     for (int i = 0; i < 4; ++i) {
+        SkDebugf("checking component: %d\n", i);
         diffs[i] = rgbaB[i] - rgbaA[i];
         if (std::abs(diffs[i]) > std::abs(tolRGBA[i])) {
             bad = true;
         }
     }
+    SkDebugf("Finished pixel check\n");
     if (bad) {
         error(x, y, diffs);
         return false;
@@ -195,6 +197,7 @@ bool ComparePixels(const GrCPixmap& a,
         for (int x = 0; x < floatA.width(); ++x) {
             const float* rgbaA = at(floatA.addr(), x, y);
             const float* rgbaB = at(floatB.addr(), x, y);
+            SkDebugf("about to compare pixel (%d, %d)\n", x, y);
             if (!compare_colors(x, y, rgbaA, rgbaB, tolRGBA, error)) {
                 return false;
             }
