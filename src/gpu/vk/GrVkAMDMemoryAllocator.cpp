@@ -117,6 +117,7 @@ VkResult GrVkAMDMemoryAllocator::allocateImageMemory(VkImage image, AllocationPr
     if (AllocationPropertyFlags::kDedicatedAllocation & flags) {
         info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
     }
+    info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
 
     if (AllocationPropertyFlags::kLazyAllocation & flags) {
         info.requiredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
