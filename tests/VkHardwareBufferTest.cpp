@@ -508,17 +508,9 @@ private:
 
 bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     PFN_vkGetInstanceProcAddr instProc;
-    PFN_vkGetDeviceProcAddr devProc;
-    if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc, &devProc)) {
+    if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         return false;
     }
-    auto getProc = [&instProc, &devProc](const char* proc_name,
-                                         VkInstance instance, VkDevice device) {
-        if (device != VK_NULL_HANDLE) {
-            return devProc(device, proc_name);
-        }
-        return instProc(instance, proc_name);
-    };
 
     fExtensions = new GrVkExtensions();
     fFeatures = new VkPhysicalDeviceFeatures2;
@@ -534,6 +526,7 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
         return false;
     }
     fDevice = fBackendContext.fDevice;
+    auto getProc = fBackendContext.fGetProc;
 
     if (fDebugCallback != VK_NULL_HANDLE) {
         fDestroyDebugCallback = (PFN_vkDestroyDebugReportCallbackEXT) instProc(
