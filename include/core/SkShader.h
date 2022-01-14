@@ -16,14 +16,17 @@
 #include "include/core/SkTileMode.h"
 
 class SkArenaAlloc;
+enum class SkBackend : uint8_t;
 class SkBitmap;
 class SkBlender;
 class SkColorFilter;
 class SkColorSpace;
 class SkImage;
+class SkPaintParamsKey;
 class SkPath;
 class SkPicture;
 class SkRasterPipeline;
+class SkShaderCodeDictionary;
 class GrFragmentProcessor;
 
 /** \class SkShader
@@ -125,6 +128,18 @@ public:
      *  the colorfilter.
      */
     sk_sp<SkShader> makeWithColorFilter(sk_sp<SkColorFilter>) const;
+
+    /**     (experimental - do not use)
+        Add implementation details, for the specified backend, of this SkShader to the
+        provided key.
+
+        @param dictionary dictionary of code fragments available to be used in the key
+        @param backend    the backend that would be carrying out the drawing
+        @param key        destination for implementation details of this SkShader
+    */
+    virtual void experimental_addToKey(SkShaderCodeDictionary* dictionary,
+                                       SkBackend backend,
+                                       SkPaintParamsKey* key) const;
 
 private:
     SkShader() = default;

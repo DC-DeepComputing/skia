@@ -17,12 +17,14 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkPaintParamsKey.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPaintDefaults.h"
@@ -453,6 +455,34 @@ const SkRect& SkPaint::doComputeFastBounds(const SkRect& origSrc,
     return *storage;
 }
 
+std::vector<SkPaintParamsKey> SkPaint::experimental_toKeys(SkShaderCodeDictionary* dict,
+                                                           SkBackend backend) const {
+    std::vector<SkPaintParamsKey> keys;
+
+    // TODO: actually split the SkPaint into multiple PaintParams and generate the keys
+    // for them separately.
+    {
+        SkPaintParamsKey key;
+
+        if (fShader) {
+            fShader->experimental_addToKey(dict, backend, &key);
+        } else {
+            SolidColorShaderBlock::AddToKey(&key);
+        }
+
+        if (fBlender) {
+            as_BB(fBlender)->addToKey(dict, backend, &key);
+        } else {
+            BlendModeBlock::AddToKey(&key, SkBlendMode::kSrcOver);
+        }
+
+        SkASSERT(key.sizeInBytes() > 0);
+
+        keys.push_back(key);
+    }
+
+    return keys;
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 // return true if the filter exists, and may affect alpha

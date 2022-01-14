@@ -12,6 +12,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
@@ -124,6 +125,13 @@ SkImage* SkShader::isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const {
 
 SkShader::GradientType SkShader::asAGradient(GradientInfo* info) const {
     return kNone_GradientType;
+}
+
+// TODO: add implementations for derived classes
+void SkShader::experimental_addToKey(SkShaderCodeDictionary* dictionary,
+                                     SkBackend backend,
+                                     SkPaintParamsKey* key) const {
+    SolidColorShaderBlock::AddToKey(key);
 }
 
 #if SK_SUPPORT_GPU
