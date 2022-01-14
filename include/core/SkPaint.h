@@ -14,6 +14,9 @@
 #include "include/private/SkTOptional.h"
 #include "include/private/SkTo.h"
 
+#include <vector>
+
+enum class SkBackend : uint8_t;
 class SkBlender;
 class SkColorFilter;
 class SkColorSpace;
@@ -21,9 +24,11 @@ struct SkRect;
 class SkImageFilter;
 class SkMaskFilter;
 class SkMatrix;
+class SkPaintParamsKey;
 class SkPath;
 class SkPathEffect;
 class SkShader;
+class SkShaderCodeDictionary;
 
 /** \class SkPaint
     SkPaint controls options applied when drawing. SkPaint collects all
@@ -690,6 +695,17 @@ public:
     */
     const SkRect& doComputeFastBounds(const SkRect& orig, SkRect* storage,
                                       Style style) const;
+
+
+    /**     (experimental - do not use)
+        Return the SkPaintParamsKeys that would be needed to draw this paint.
+
+        @param dictionary dictionary of code fragments available to be used in the SkPaintParamKeys
+        @param backend    the backend that would be carrying out the drawing
+        @return           the SkPaintParamsKeys that would be needed to draw this paint
+    */
+    std::vector<SkPaintParamsKey> experimental_toKeys(SkShaderCodeDictionary* dictionary,
+                                                      SkBackend backend) const;
 
 private:
     sk_sp<SkPathEffect>   fPathEffect;
