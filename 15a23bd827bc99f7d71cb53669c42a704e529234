@@ -187,6 +187,30 @@
       },
       "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c100c2_8b14d86a",
+        "filename": "experimental/graphite/src/Log.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-14T01:34:48Z",
+      "side": 1,
+      "message": "That\u0027s a fair point. I like this fine for now, and seems like the call sites are in a good spot for us to continue adding as needed, and not be too difficult to refine the actual log mechanism and formatting down the road.\n\nThat being said, one option that shouldn\u0027t be too much extra work right now, would be to have the labels get inserted into the string as part of the SKGPU_LOG_x macros, and have SKGPU_LOG(priority) do nothing extra for the message. That might let you get rid of the priority label array, depending on the macro foo required to get that to work.",
+      "parentUuid": "cafde07e_223c7f88",
+      "range": {
+        "startLine": 25,
+        "startChar": 51,
+        "endLine": 25,
+        "endChar": 73
+      },
+      "revId": "15a23bd827bc99f7d71cb53669c42a704e529234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
