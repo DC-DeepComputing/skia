@@ -8,6 +8,7 @@
 #include "src/core/SkBlendModeBlender.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/core/SkKeyHelpers.h"
 
 #if SK_SUPPORT_GPU
 #include "src/gpu/GrFragmentProcessor.h"
@@ -57,6 +58,17 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
     return nullptr;
 
 #undef RETURN_SINGLETON_BLENDER
+}
+
+void SkBlenderBase::addToKey(SkShaderCodeDictionary* dict,
+                             SkBackend backend,
+                             SkPaintParamsKey* key) const {
+
+    if (skstd::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
+        BlendModeBlock::AddToKey(key, bm.value());
+    } else {
+        BlendModeBlock::AddToKey(key, SkBlendMode::kSrcOver);
+    }
 }
 
 sk_sp<SkFlattenable> SkBlendModeBlender::CreateProc(SkReadBuffer& buffer) {

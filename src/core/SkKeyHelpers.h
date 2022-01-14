@@ -41,7 +41,9 @@ namespace SolidColorShaderBlock {
 // TODO: move this functionality to the SkLinearGradient, SkRadialGradient, etc classes
 namespace GradientShaderBlocks {
 
-    void AddToKey(SkPaintParamsKey*, SkShader::GradientType, SkTileMode);
+    void AddToKey(SkPaintParamsKey*,
+                  SkShader::GradientType,
+                  SkTileMode);
 #ifdef SK_DEBUG
     void Dump(const SkPaintParamsKey&, int headerOffset);
 #endif

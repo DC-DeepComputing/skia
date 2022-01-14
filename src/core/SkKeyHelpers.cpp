@@ -51,7 +51,9 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 //--------------------------------------------------------------------------------------------------
 namespace GradientShaderBlocks {
 
-void AddToKey(SkPaintParamsKey *key, SkShader::GradientType type, SkTileMode tm) {
+void AddToKey(SkPaintParamsKey *key,
+              SkShader::GradientType type,
+              SkTileMode tm) {
 
     CodeSnippetID id = CodeSnippetID::kSolidColorShader;
     switch (type) {

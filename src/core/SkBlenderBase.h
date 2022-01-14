@@ -52,6 +52,11 @@ public:
 
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
+    // TODO: make pure virtual
+    virtual void addToKey(SkShaderCodeDictionary* dictionary,
+                          SkBackend backend,
+                          SkPaintParamsKey* key) const;
+
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
     Type getFlattenableType() const override { return GetFlattenableType(); }
 
