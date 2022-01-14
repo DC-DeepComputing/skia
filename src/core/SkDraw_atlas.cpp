@@ -115,24 +115,9 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
                           nullptr,
                           *fMatrixProvider};
 
-        SkStageUpdater* updator = as_SB(atlasShader.get())->appendUpdatableStages(rec);
-        if (!updator) {
-            SkDraw draw(*this);
-
-            p.setShader(atlasShader);
-            for (int i = 0; i < count; ++i) {
-                if (colors) {
-                    p.setShader(
-                            SkShaders::Blend(blender, SkShaders::Color(colors[i]), atlasShader));
-                }
-                SkMatrix mx;
-                mx.setRSXform(xform[i]);
-                mx.preTranslate(-textures[i].fLeft, -textures[i].fTop);
-                SkPreConcatMatrixProvider matrixProvider(*fMatrixProvider, mx);
-                draw.fMatrixProvider = &matrixProvider;
-                draw.drawRect(textures[i], p);
-            }
-            return true;
+        SkUpdatableShader* updateShader = as_SB(atlasShader)->updatableShader(rec.fAlloc);
+        if (!updateShader->appendStages(rec)) {
+            return false;
         }
 
         SkRasterPipeline_UniformColorCtx* uniformCtx = nullptr;
@@ -176,7 +161,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
             mx.preTranslate(-textures[i].fLeft, -textures[i].fTop);
             mx.postConcat(fMatrixProvider->localToDevice());
 
-            if (updator->update(mx)) {
+            if (updateShader->update(mx)) {
                 fill_rect(mx, *fRC, textures[i], blitter, &scratchPath);
             }
         }
@@ -184,7 +169,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     };
 
     if (gUseSkVMBlitter || !rpblit()) {
-        auto updateShader = as_SB(atlasShader)->updatableShader(&alloc);
+        SkUpdatableShader* updateShader = as_SB(atlasShader)->updatableShader(&alloc);
         UpdatableColorShader* colorShader = nullptr;
         SkShaderBase* shader = nullptr;
         if (colors) {

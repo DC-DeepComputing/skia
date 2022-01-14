@@ -30,7 +30,6 @@ struct SkImageInfo;
 class SkPaint;
 class SkRasterPipeline;
 class SkRuntimeEffect;
-class SkStageUpdater;
 
 class SkUpdatableShader;
 
@@ -200,10 +199,6 @@ public:
     SkUpdatableShader* updatableShader(SkArenaAlloc* alloc) const;
     virtual SkUpdatableShader* onUpdatableShader(SkArenaAlloc* alloc) const;
 
-    SkStageUpdater* appendUpdatableStages(const SkStageRec& rec) const {
-        return this->onAppendUpdatableStages(rec);
-    }
-
     SK_WARN_UNUSED_RESULT
     skvm::Color program(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
                         const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
@@ -231,8 +226,6 @@ protected:
     // Default impl creates shadercontext and calls that (not very efficient)
     virtual bool onAppendStages(const SkStageRec&) const;
 
-    virtual SkStageUpdater* onAppendUpdatableStages(const SkStageRec&) const { return nullptr; }
-
 protected:
     static skvm::Coord ApplyMatrix(skvm::Builder*, const SkMatrix&, skvm::Coord, skvm::Uniforms*);
 
@@ -248,25 +241,10 @@ private:
     using INHERITED = SkShader;
 };
 
-/**
- *  Shaders can optionally return a subclass of this when appending their stages.
- *  Doing so tells the caller that the stages can be reused with different CTMs (but nothing
- *  else can change), by calling the updater's update() method before each use.
- *
- *  This can be a perf-win bulk draws like drawAtlas and drawVertices, where most of the setup
- *  (i.e. uniforms) are constant, and only something small is changing (i.e. matrices). This
- *  reuse skips the cost of computing the stages (and/or avoids having to allocate a separate
- *  shader for each small draw.
- */
-class SkStageUpdater {
+class SkUpdatableShader : public SkShaderBase {
 public:
-    virtual ~SkStageUpdater() {}
     virtual bool SK_WARN_UNUSED_RESULT update(const SkMatrix& ctm) const = 0;
-};
 
-// TODO: use the SkStageUpdater as an interface until all the code is converted over to use
-//       SkUpdatableShader.
-class SkUpdatableShader : public SkShaderBase, public SkStageUpdater {
 private:
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }

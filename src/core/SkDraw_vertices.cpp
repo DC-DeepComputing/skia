@@ -412,64 +412,39 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
                           shaderPaint,
                           nullptr,
                           *fMatrixProvider};
-        if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
-            bool isOpaque = shader->isOpaque();
-            if (triColorShader) {
-                isOpaque = false;  // unless we want to walk all the colors, and see if they are
-                                   // all opaque (and the blend mode will keep them that way
+        SkUpdatableShader* texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
+        if (!texCoordShader->appendStages(rec)) {
+            return false;
+        }
+
+        bool isOpaque = shader->isOpaque();
+        if (triColorShader) {
+            isOpaque = false;  // unless we want to walk all the colors, and see if they are
+                                // all opaque (and the blend mode will keep them that way
+        }
+
+        // Positions as texCoords? The local matrix is always identity, so update once
+        if (texCoords == positions) {
+            if (!texCoordShader->update(ctm)) {
+                return true;
+            }
+        }
+
+        auto blitter = SkCreateRasterPipelineBlitter(
+                fDst, shaderPaint, pipeline, isOpaque, outerAlloc, fRC->clipShader());
+        if (!blitter) {
+            return false;
+        }
+        while (vertProc(&state)) {
+            if (triColorShader && !triColorShader->update(ctmInverse, positions, dstColors,
+                                                            state.f0, state.f1, state.f2)) {
+                continue;
             }
 
-            // Positions as texCoords? The local matrix is always identity, so update once
-            if (texCoords == positions) {
-                if (!updater->update(ctm)) {
-                    return true;
-                }
-            }
-
-            auto blitter = SkCreateRasterPipelineBlitter(
-                    fDst, shaderPaint, pipeline, isOpaque, outerAlloc, fRC->clipShader());
-            if (!blitter) {
-                return false;
-            }
-            while (vertProc(&state)) {
-                if (triColorShader && !triColorShader->update(ctmInverse, positions, dstColors,
-                                                              state.f0, state.f1, state.f2)) {
-                    continue;
-                }
-
-                SkMatrix localM;
-                if ((texCoords == positions) ||
-                    (texture_to_matrix(state, positions, texCoords, &localM) &&
-                     updater->update(SkMatrix::Concat(ctm, localM)))) {
-                    fill_triangle(state, blitter, *fRC, dev2, dev3);
-                }
-            }
-        } else {
-            // must rebuild pipeline for each triangle, to pass in the computed ctm
-            while (vertProc(&state)) {
-                if (triColorShader && !triColorShader->update(ctmInverse, positions, dstColors,
-                                                              state.f0, state.f1, state.f2)) {
-                    continue;
-                }
-
-                SkSTArenaAlloc<2048> innerAlloc;
-
-                const SkMatrixProvider* matrixProvider = fMatrixProvider;
-                SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
-                if (texCoords && (texCoords != positions)) {
-                    SkMatrix localM;
-                    if (!texture_to_matrix(state, positions, texCoords, &localM)) {
-                        continue;
-                    }
-                    matrixProvider = preConcatMatrixProvider.init(*matrixProvider, localM);
-                }
-
-                // It'd be nice if we could detect this will fail earlier.
-                auto blitter = SkCreateRasterPipelineBlitter(
-                        fDst, shaderPaint, *matrixProvider, &innerAlloc, this->fRC->clipShader());
-                if (!blitter) {
-                    return false;
-                }
+            SkMatrix localM;
+            if ((texCoords == positions) ||
+                (texture_to_matrix(state, positions, texCoords, &localM) &&
+                    texCoordShader->update(SkMatrix::Concat(ctm, localM)))) {
                 fill_triangle(state, blitter, *fRC, dev2, dev3);
             }
         }
