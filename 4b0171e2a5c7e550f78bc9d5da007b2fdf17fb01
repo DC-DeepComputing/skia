@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "967e6736_74b187ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-14T18:42:29Z",
+      "side": 1,
+      "message": "With the recent fixes to Device flushing this CL now works (with all the previous hacky stuff removed). PTAL.",
+      "revId": "4b0171e2a5c7e550f78bc9d5da007b2fdf17fb01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
