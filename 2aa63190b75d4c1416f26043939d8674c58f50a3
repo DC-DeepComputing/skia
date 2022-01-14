@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86db93a1_7e7e5727",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-14T20:47:16Z",
+      "side": 1,
+      "message": "Rob, is there a newer/better way of updating an image\u0027s texture that exists (or will be coming)? I know you \u0026 Greg have talked about this before.",
+      "revId": "2aa63190b75d4c1416f26043939d8674c58f50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b00bde_14d692e7",
+        "filename": "demos.skia.org/.gitignore",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-14T20:47:16Z",
+      "side": 1,
+      "message": "Want to just put this in the top-level .gitignore? It\u0027s already got quite a few rules for other files in sub-directories.",
+      "revId": "2aa63190b75d4c1416f26043939d8674c58f50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
