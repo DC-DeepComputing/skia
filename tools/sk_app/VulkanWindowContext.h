@@ -48,7 +48,7 @@ public:
     using CanPresentFn = sk_gpu_test::CanPresentFn;
 
     VulkanWindowContext(const DisplayParams&, CreateVkSurfaceFn, CanPresentFn,
-                        PFN_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr);
+                        PFN_vkGetInstanceProcAddr);
 
 private:
     void initializeContext();
