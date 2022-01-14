@@ -410,6 +410,10 @@ public:
                 b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
     }
 
+    bool onAppendStages(const SkStageRec& rec) const override {
+        return fImageShader.doStages(rec, this);
+    }
+
 private:
     const SkImageShader& fImageShader;
 };
@@ -443,7 +447,7 @@ static SkMatrix tweak_inv_matrix(SkFilterMode filter, SkMatrix matrix) {
     return matrix;
 }
 
-bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) const {
+bool SkImageShader::doStages(const SkStageRec& rec, const TransformShader* updater) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
     auto sampling = fSampling;
