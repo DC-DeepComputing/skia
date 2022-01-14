@@ -8,6 +8,8 @@
 #include "experimental/graphite/src/PaintParams.h"
 
 #include "include/core/SkShader.h"
+#include "include/private/SkPaintParamsKey.h"
+#include "src/core/SkKeyHelpers.h"
 
 namespace skgpu {
 
@@ -28,5 +30,24 @@ PaintParams::~PaintParams() = default;
 PaintParams& PaintParams::operator=(const PaintParams& other) = default;
 
 sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
+
+void PaintParams::toKey(SkShaderCodeDictionary* dict,
+                        SkBackend backend,
+                        SkPaintParamsKey* key) const {
+
+    if (fShader) {
+        fShader->addToKey_experimental(dict, backend, key);
+    }
+
+//   if (fBlender) {
+//        fBlender->addToKeyB(dict, backend, key);
+//    } else {
+
+    {
+        BlendModeBlock::AddToKey(dict, backend, key, fBlendMode);
+    }
+
+    SkASSERT(key->sizeInBytes() > 0);
+}
 
 } // namespace skgpu

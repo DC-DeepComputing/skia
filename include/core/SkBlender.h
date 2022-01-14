@@ -11,6 +11,10 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkFlattenable.h"
 
+enum class SkBackend : uint8_t;
+class SkPaintParamsKey;
+class SkShaderCodeDictionary;
+
 /**
  * SkBlender represents a custom blend function in the Skia pipeline. When an SkBlender is
  * present in a paint, the SkBlendMode is ignored. A blender combines a source color (the
@@ -22,6 +26,18 @@ public:
      * Create a blender that implements the specified BlendMode.
      */
     static sk_sp<SkBlender> Mode(SkBlendMode mode);
+
+    /**     (experimental - do not use)
+        Add implementation details, for the specified backend, of this SkBlender to the
+        provided key.
+
+        @param dictionary dictionary of code fragments available to be used in the key
+        @param backend    the backend that would be carrying out the drawing
+        @param key        destination for implementation details of this SkBlender
+    */
+    virtual void addToKey_experimental(SkShaderCodeDictionary* dictionary,
+                                       SkBackend backend,
+                                       SkPaintParamsKey* end) const;
 
 private:
     SkBlender() = default;

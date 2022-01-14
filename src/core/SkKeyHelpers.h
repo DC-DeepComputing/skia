@@ -31,7 +31,9 @@ namespace DepthStencilOnlyBlock {
 
 namespace SolidColorShaderBlock {
 
-    void AddToKey(SkPaintParamsKey*);
+    void AddToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*);
 #ifdef SK_DEBUG
     void Dump(const SkPaintParamsKey&, int headerOffset);
 #endif
@@ -41,7 +43,11 @@ namespace SolidColorShaderBlock {
 // TODO: move this functionality to the SkLinearGradient, SkRadialGradient, etc classes
 namespace GradientShaderBlocks {
 
-    void AddToKey(SkPaintParamsKey*, SkShader::GradientType, SkTileMode);
+    void AddToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkShader::GradientType,
+                  SkTileMode);
 #ifdef SK_DEBUG
     void Dump(const SkPaintParamsKey&, int headerOffset);
 #endif
@@ -50,7 +56,10 @@ namespace GradientShaderBlocks {
 
 namespace BlendModeBlock {
 
-    void AddToKey(SkPaintParamsKey*, SkBlendMode);
+    void AddToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkBlendMode);
 #ifdef SK_DEBUG
     void Dump(const SkPaintParamsKey&, int headerOffset);
 #endif

@@ -211,6 +211,8 @@ std::tuple<SkUniquePaintParamsID, sk_sp<UniformData>> ExtractPaintData(Context* 
     SkPaintParamsKey key;
     sk_sp<UniformData> uniforms;
 
+    auto dict = context->priv().shaderCodeDictionary();
+
     if (auto s = p.shader()) {
         SkColor colors[kMaxStops];
         SkColor4f color4fs[kMaxStops];
@@ -231,7 +233,7 @@ std::tuple<SkUniquePaintParamsID, sk_sp<UniformData>> ExtractPaintData(Context* 
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
                 expand_stops(gradInfo.fColorCount, offsets);
 
-                GradientShaderBlocks::AddToKey(&key, type, gradInfo.fTileMode);
+                GradientShaderBlocks::AddToKey(dict, &key, type, gradInfo.fTileMode);
 
                 uniforms = make_linear_gradient_uniform_data(gradInfo.fPoint[0],
                                                              gradInfo.fPoint[1],

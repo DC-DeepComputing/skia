@@ -36,6 +36,10 @@ public:
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
 
+    void toKey(SkShaderCodeDictionary*,
+               SkBackend,
+               SkPaintParamsKey*) const;
+
 private:
     SkColor4f       fColor;
     SkBlendMode     fBlendMode;
