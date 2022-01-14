@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b261766_c2918e0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 41
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-14T17:59:57Z",
+      "side": 1,
+      "message": "This looks ready to land. We will add an ignore for SwiftShader_MSAN while we sync with the SwiftShader team.",
+      "revId": "ce385c734aef6c4f7be5fbb0eafe2c27043a7dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
