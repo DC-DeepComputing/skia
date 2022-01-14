@@ -1477,7 +1477,7 @@ static bool newer_is_always_better(SkData* /* incumbent */, SkData* /* challenge
     return true;
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(GrThreadSafeCache16Verts, reporter, ctxInfo) {
     skgpu::UniqueKey key;
     create_vert_key(&key, kImageWH, kNoID);
 
