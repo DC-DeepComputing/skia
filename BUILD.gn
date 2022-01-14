@@ -2609,7 +2609,16 @@ if (skia_enable_tools) {
     libs = []
     frameworks = []
 
-    if (is_android) {
+    if (skia_sk_app_use_sdl2) {
+      sources += [
+        "tools/sk_app/sdl2/RasterWindowContext_sdl2.cpp",
+        "tools/sk_app/sdl2/WindowContextFactory_sdl2.h",
+        "tools/sk_app/sdl2/Window_sdl2.cpp",
+        "tools/sk_app/sdl2/Window_sdl2.h",
+        "tools/sk_app/sdl2/main_sdl2.cpp",
+      ]
+      libs += [ "SDL2" ]
+    } else if (is_android) {
       sources += [
         "tools/sk_app/android/RasterWindowContext_android.cpp",
         "tools/sk_app/android/WindowContextFactory_android.h",
@@ -2667,7 +2676,9 @@ if (skia_enable_tools) {
     if (skia_use_gl) {
       sources += [ "tools/sk_app/GLWindowContext.cpp" ]
       sources += [ "tools/sk_app/GLWindowContext.h" ]
-      if (is_android) {
+      if (skia_sk_app_use_sdl2) {
+        sources += [ "tools/sk_app/sdl2/GLWindowContext_sdl2.cpp" ]
+      } else if (is_android) {
         sources += [ "tools/sk_app/android/GLWindowContext_android.cpp" ]
       } else if (is_linux) {
         sources += [ "tools/sk_app/unix/GLWindowContext_unix.cpp" ]
@@ -2692,7 +2703,9 @@ if (skia_enable_tools) {
     if (skia_use_vulkan) {
       sources += [ "tools/sk_app/VulkanWindowContext.cpp" ]
       sources += [ "tools/sk_app/VulkanWindowContext.h" ]
-      if (is_android) {
+      if (skia_sk_app_use_sdl2) {
+        sources += [ "tools/sk_app/sdl2/VulkanWindowContext_sdl2.cpp" ]
+      } else if (is_android) {
         sources += [ "tools/sk_app/android/VulkanWindowContext_android.cpp" ]
       } else if (is_linux) {
         sources += [ "tools/sk_app/unix/VulkanWindowContext_unix.cpp" ]
@@ -2702,7 +2715,7 @@ if (skia_enable_tools) {
       }
     }
 
-    if (skia_use_metal) {
+    if (skia_use_metal && !skia_sk_app_use_sdl2) {
       sources += [ "tools/sk_app/MetalWindowContext.mm" ]
       sources += [ "tools/sk_app/MetalWindowContext.h" ]
       if (skia_enable_graphite) {
@@ -2719,11 +2732,11 @@ if (skia_enable_tools) {
       }
     }
 
-    if (skia_use_direct3d) {
+    if (skia_use_direct3d && !skia_sk_app_use_sdl2) {
       sources += [ "tools/sk_app/win/D3D12WindowContext_win.cpp" ]
     }
 
-    if (skia_use_dawn) {
+    if (skia_use_dawn && !skia_sk_app_use_sdl2) {
       sources += [ "tools/sk_app/DawnWindowContext.cpp" ]
       sources += [ "tools/sk_app/DawnWindowContext.h" ]
       if (is_linux) {
