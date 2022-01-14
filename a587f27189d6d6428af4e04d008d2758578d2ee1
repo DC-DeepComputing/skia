@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20034d7e_e60b9c9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-14T21:31:09Z",
+      "side": 1,
+      "message": "Note to self: This doesn\u0027t work for vertices. Atlas is fine, because the paint\u0027s shader is always an image shader (though we\u0027d like to change that, too). For vertices, that isn\u0027t the case.\n\nSkVM gets away with this because the updatable shader computes new local coords, and those are fed to the children. RP doesn\u0027t do this - each child shader ends up calling seed_shader again, so any matrix stage appended by the updatable shader at the root is ignored (thrown away). The cases that fail with this CL are situations where we hit the expensive case previously (eg, re-make the blitter for each triangle). Is there a model that makes this work with RP without needing that fallback? I can\u0027t think of one that isn\u0027t extremely invasive (threading through state so that every seed_shader + matrix combination gets replaced, regardless of which shader in the tree is doing it). It might actually be better to just fallback to skvm in this case?\n\nProbably worth profiling interpreted skvm with the single (updatable) shader vs. draw-per-triangle with a new RP blitter each time.",
+      "revId": "a587f27189d6d6428af4e04d008d2758578d2ee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
