@@ -167,7 +167,11 @@
       CanvasKit.Surface.prototype.makeImageFromTexture = function(tex, info) {
         CanvasKit.setCurrentContext(this._context);
         var texHandle = pushTexture(tex);
-        return this._makeImageFromTexture(this._context, texHandle, info);
+        var img = this._makeImageFromTexture(this._context, texHandle, info);
+        if (img) {
+          img._tex = texHandle;
+        }
+        return img;
       };
 
       // We try to find the natural media type (for <img> and <video>), display* for
@@ -210,6 +214,24 @@
         glCtx.bindTexture(glCtx.TEXTURE_2D, null);
         return this.makeImageFromTexture(newTex, info);
       };
+
+      CanvasKit.Surface.prototype.updateTextureFromSource = function(img, src) {
+        if (!img._tex) {
+          Debug('Image is not backed by a user-provided texture');
+          return;
+        }
+        CanvasKit.setCurrentContext(this._context);
+        var glCtx = GL.currentContext.GLctx;
+        glCtx.bindTexture(glCtx.TEXTURE_2D, GL.textures[img._tex]);
+        if (GL.currentContext.version === 2) {
+          glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, getWidth(src), getHeight(src), 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+        } else {
+          glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+        }
+        glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+        // Tell Skia we messed with the currently bound texture.
+        this._resetContext();
+      }
 
       CanvasKit.MakeLazyImageFromTextureSource = function(src, info) {
         if (!info) {
