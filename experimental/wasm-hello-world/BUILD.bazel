@@ -13,13 +13,20 @@ LINKOPTS = [
     "-sASSERTIONS",  # Turn on assertions
     "-sGL_ASSERTIONS",
     "-sEXPORT_NAME=HelloWorld",
+    "-oformat=js",
+    "-O3",
+    #"-g",
+    #"-gsource-map",
 ]
 
 cc_binary_with_flags(
     name = "hello_world.webgl",
     srcs = [
         "//example:HelloWorld_src",
-        "//tools/sk_app/wasm:main_wasm_src",
+    ],
+    copts = [
+#      "-g"
+      "-O3",
     ],
     linkopts = LINKOPTS,
     set_flags = {
@@ -35,6 +42,7 @@ cc_binary_with_flags(
     tags = ["manual"],
     deps = [
         "//:skia_core",
+        "//tools/sk_app:sk_app_wasm",
     ],
 )
 

@@ -71,8 +71,11 @@ void HelloWorld::onPaint(SkSurface* surface) {
     {
         SkPoint linearPoints[] = { { 0, 0 }, { 300, 300 } };
         SkColor linearColors[] = { SK_ColorGREEN, SK_ColorBLACK };
-        paint.setShader(SkGradientShader::MakeLinear(linearPoints, linearColors, nullptr, 2,
-                                                     SkTileMode::kMirror));
+        auto shader = SkGradientShader::MakeLinear(linearPoints, linearColors, nullptr, 2,
+                                     SkTileMode::kMirror);
+        SkMatrix m;
+        m.setRotate(150, 150, fRotationAngle);
+        paint.setShader(shader->makeWithLocalMatrix(m));
         paint.setAntiAlias(true);
 
         canvas->drawCircle(200, 200, 64, paint);
