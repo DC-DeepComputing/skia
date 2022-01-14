@@ -1477,7 +1477,7 @@ static bool newer_is_always_better(SkData* /* incumbent */, SkData* /* challenge
     return true;
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(GrThreadSafeCache16Verts, reporter, ctxInfo) {
     skgpu::UniqueKey key;
     create_vert_key(&key, kImageWH, kNoID);
 
@@ -1489,6 +1489,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts, reporter, ctxInfo) 
     REPORTER_ASSERT(reporter, helper.checkVert(helper.ddlCanvas1(), kImageWH,
                                                /*hits*/ 0, /*misses*/ 1, /*refs*/ 1, kNoID));
     sk_sp<SkDeferredDisplayList> ddl1 = helper.snap1();
+    //helper.checkImage(reporter, std::move(ddl1));
 
     {
         REPORTER_ASSERT(reporter, helper.numCacheEntries() == 1);

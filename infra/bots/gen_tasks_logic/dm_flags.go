@@ -178,7 +178,18 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	sampleCount := 0
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
-		configs = append(configs, "gles", "glesdft", "glesdmsaa")
+		args = append(args, "--nocpu")
+		configs = append(configs, "vk", "vkdmsaa")
+		// skbug.com/12820
+		skip("_ gm _ ycbcrimage")
+		// skbug.com/12820
+		skip("_ test _ VkYCbcrSampler_DrawImageWithYcbcrSampler")
+		// skbug.com/12826
+		//skip("_ test _ GrThreadSafeCache16Verts")
+		// skbug.com/12827
+		skip("_ gm _ verylarge_picture_image")
+		// skbug.com/XXXXX
+		skip("_ test _ GrStyledShape")
 	} else if b.cpu() {
 		args = append(args, "--nogpu")
 
@@ -978,7 +989,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	match := []string{}
-	if b.extraConfig("Valgrind") { // skia:3021
+	match = append(match, "GrThreadSafeCache16Verts")
+/*
+        if b.extraConfig("Valgrind") { // skia:3021
 		match = append(match, "~Threaded")
 	}
 
@@ -1113,7 +1126,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
                 // skia:12813
 		match = append(match, "~async_rescale_and_read")
         }
-
+*/
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
 		args = append(args, skipped...)
