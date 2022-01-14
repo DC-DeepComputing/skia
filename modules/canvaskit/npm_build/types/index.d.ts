@@ -2675,6 +2675,18 @@ export interface Surface extends EmbindObject<Surface> {
     sampleCnt(): number;
 
     /**
+     * Updates the underlying GPU texture of the image to be the contents of the provided
+     * TextureSource. Has no effect on CPU backend or if img was not created with either
+     * makeImageFromTextureSource or makeImageFromTexture.
+     * If the provided TextureSource is of different dimensions than the Image, the contents
+     * will be deformed (e.g. squished).
+     *
+     * @param img - A texture-backed Image.
+     * @param src - A valid texture source of any dimensions.
+     */
+    updateTextureFromSource(img: Image, src: TextureSource): void;
+
+    /**
      * Returns the width of this surface in pixels.
      */
     width(): number;
