@@ -11,18 +11,7 @@
 
 </style>
 
-<canvas id=api1 width=300 height=300></canvas>
-<canvas id=api2 width=300 height=300></canvas>
-<canvas id=api3 width=300 height=300></canvas>
-
-<br>
-
-<img id="src" src="https://storage.googleapis.com/skia-cdn/misc/test.png"
-  width=40 height=40 crossorigin="anonymous">
-
-<canvas id=api4 width=300 height=300></canvas>
-<canvas id=api5 width=300 height=300></canvas>
-<canvas id=api6 width=300 height=300></canvas>
+<canvas id=api1 width=600 height=600></canvas>
 
 <script type="text/javascript" src="/build/canvaskit.js"></script>
 <script type="text/javascript" charset="utf-8">
@@ -32,99 +21,114 @@
   const loadTestImage = fetch(cdn + 'test.png').then((response) => response.arrayBuffer());
   const imageEle = document.getElementById("src");
 
-  Promise.all([ckLoaded, loadTestImage, imageEle.decode()]).then((results) => {
+  Promise.all([ckLoaded]).then((results) => {
     ContextSharingExample(results[0]);
-    MultiCanvasExample(...results);
   });
 
-  // This example shows how CanvasKit can automatically switch between multiple canvases
-  // with different WebGL contexts.
-  function MultiCanvasExample(CanvasKit, imgBytes) {
-    const paint = new CanvasKit.Paint();
-
-    const surfOne = CanvasKit.MakeWebGLCanvasSurface("api1");
-    const canvasOne = surfOne.getCanvas();
-    const surfTwo = CanvasKit.MakeWebGLCanvasSurface("api2");
-    const canvasTwo = surfTwo.getCanvas();
-    const surfThree = CanvasKit.MakeWebGLCanvasSurface("api3");
-    const canvasThree = surfThree.getCanvas();
-
-    function firstFrame() {
-      paint.setColor(CanvasKit.Color4f(1, 0, 0, 1)); // red
-      canvasOne.drawRect(CanvasKit.LTRBRect(0, 0, 300, 300), paint);
-      surfOne.flush();
-
-      paint.setColor(CanvasKit.Color4f(0, 1, 0, 1)); // green
-      canvasTwo.drawRect(CanvasKit.LTRBRect(0, 0, 300, 300), paint);
-      surfTwo.flush();
-
-      paint.setColor(CanvasKit.Color4f(0, 0, 1, 1)); // blue
-      canvasThree.drawRect(CanvasKit.LTRBRect(0, 0, 300, 300), paint);
-      surfThree.flush();
-
-      window.requestAnimationFrame(secondFrame);
-    }
-
-    let img;
-    function secondFrame() {
-      img = CanvasKit.MakeImageFromEncoded(imgBytes);
-
-      canvasOne.drawImageCubic(img, 10, 10, 0.3, 0.3, null);
-      surfOne.flush();
-
-      canvasTwo.drawImageCubic(img, 10, 10, 0.3, 0.3, null);
-      surfTwo.flush();
-
-      canvasThree.drawImageCubic(img, 10, 10, 0.3, 0.3, null);
-      surfThree.flush();
-
-      window.requestAnimationFrame(thirdFrame);
-    }
-
-    function thirdFrame() {
-      canvasOne.drawImageCubic(img, 100, 100, 0.3, 0.3, null);
-      surfOne.flush();
-
-      canvasTwo.drawImageCubic(img, 100, 100, 0.3, 0.3, null);
-      surfTwo.flush();
-
-      canvasThree.drawImageCubic(img, 100, 100, 0.3, 0.3, null);
-      surfThree.flush();
-      img.delete();
-    }
-
-    window.requestAnimationFrame(firstFrame);
-  }
-
   function ContextSharingExample(CanvasKit) {
-    const img = CanvasKit.MakeLazyImageFromTextureSource(imageEle);
+    async function decodeImageFromBuffer(data, contentType, width, height) {
+      const imageDecoder = new ImageDecoder({
+        type: contentType,
+        data,
+        premultiplyAlpha: "premultiply",
+        desiredWidth: width,
+        desiredHeight: height,
+        colorSpaceConversion: 'default',
+      });
+      const {
+        image,
+        complete,
+      } = await imageDecoder.decode();
+      console.log(image);
 
-    const surfOne = CanvasKit.MakeWebGLCanvasSurface("api4");
-    const surfTwo = CanvasKit.MakeWebGLCanvasSurface("api5");
-    const surfThree = CanvasKit.MakeWebGLCanvasSurface("api6");
+      imageDecoder.close();
 
-    let i = 0;
-    function drawFrame(canvas) {
-      canvas.drawImageCubic(img, 5+i, 5+i, 0.3, 0.3, null);
-      i += 1
-      if (i >= 3) {
-        if (i > 60) {
-          img.delete();
-          return;
-        }
-        if (i % 2) {
-          surfOne.requestAnimationFrame(drawFrame);
-        } else {
-          surfTwo.requestAnimationFrame(drawFrame);
-        }
-
+      if (!complete) {
+        throw new Error('Image decoding failed');
       }
+      return image;
     }
 
-    surfOne.requestAnimationFrame(drawFrame);
-    surfTwo.requestAnimationFrame(drawFrame);
-    surfThree.requestAnimationFrame(drawFrame);
+
+    const surface = CanvasKit.MakeCanvasSurface("api1");
+    if (!surface) {
+      throw 'Could not make surface';
+    }
+
+    async function run() {
+      console.log('run');
+      const images = await Promise.all([
+        "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wikipedia-logo-v2-en.svg/1200px-Wikipedia-logo-v2-en.svg.png",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Coat_of_arms_of_Canada_%281921-1957%29.svg/774px-Coat_of_arms_of_Canada_%281921-1957%29.svg.png",
+        //"https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
+        //"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wikipedia-logo-v2-en.svg/1200px-Wikipedia-logo-v2-en.svg.png",
+      ].map(async (url, idx) => {
+        console.log(`index ${idx} loaded`);
+        const buffer = await fetch(url).then((response) => response.arrayBuffer());
+        const image = await decodeImageFromBuffer(buffer, "image/png");
+        console.log(image);
+        const canvasKitImage = surface.makeImageFromTextureSource(image, {
+          alphaType: CanvasKit.AlphaType.Premul,
+          colorType: CanvasKit.ColorType.RGBA_8888,
+          height: image.displayHeight,
+          width: image.displayWidth,
+        });
+        return {
+          canvasKitImage,
+          height: image.displayHeight,
+          width: image.displayWidth,
+        }
+      }));
+      console.log("About to start drawing!!!", images);
+
+      const paint = new CanvasKit.Paint();
+      paint.setColor(CanvasKit.RED);
+      paint.setStyle(CanvasKit.PaintStyle.Stroke);
+      function tick(canvas) {
+        //surface.requestAnimationFrame(tick);
+
+        let img = images[0];
+        // canvas.drawImageRectOptions(
+        //     img.canvasKitImage,
+        //     // Fit the whole image...
+        //     CanvasKit.LTRBRect(0, 0, img.width, img.height),
+        //     // ..into this location.
+        //     CanvasKit.LTRBRect(0, 0, 100, 100),
+        //   CanvasKit.FilterMode.Linear,
+        //   CanvasKit.MipmapMode.None,
+        // );
+        // canvas.drawRect(CanvasKit.LTRBRect(0, 0, 100, 100), paint);
+        //
+        // img = images[1];
+        // canvas.drawImageRectOptions(
+        //     img.canvasKitImage,
+        //     // Fit the whole image...
+        //     CanvasKit.LTRBRect(0, 0, img.width, img.height),
+        //     // ..into this location.
+        //     CanvasKit.LTRBRect(100, 0, 200, 100),
+        //   CanvasKit.FilterMode.Linear,
+        //   CanvasKit.MipmapMode.None,
+        // );
+        // canvas.drawRect(CanvasKit.LTRBRect(100, 0, 200, 100), paint);
+
+        img = images[2];
+        canvas.drawImageRectOptions(
+            img.canvasKitImage,
+            // Fit the whole image...
+            CanvasKit.LTRBRect(0, 0, img.width, img.height),
+            // ..into this location.
+            CanvasKit.LTRBRect(200, 0, 300, 100),
+          CanvasKit.FilterMode.Linear,
+          CanvasKit.MipmapMode.Linear,
+        );
+        canvas.drawRect(CanvasKit.LTRBRect(200, 0, 300, 100), paint);
+      }
+      surface.requestAnimationFrame(tick);
+    }
+    run();
   }
+  // GR_GL_TEXTURE_2D is  0x0DE1 or 3553
 
 
 </script>
