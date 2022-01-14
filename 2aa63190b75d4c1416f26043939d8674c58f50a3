@@ -33,6 +33,24 @@
       "message": "Want to just put this in the top-level .gitignore? It\u0027s already got quite a few rules for other files in sub-directories.",
       "revId": "2aa63190b75d4c1416f26043939d8674c58f50a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "240ed3b9_7f4523c6",
+        "filename": "demos.skia.org/.gitignore",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-14T21:09:47Z",
+      "side": 1,
+      "message": "Unintentional change.",
+      "parentUuid": "49b00bde_14d692e7",
+      "revId": "2aa63190b75d4c1416f26043939d8674c58f50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
