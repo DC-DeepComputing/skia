@@ -399,6 +399,8 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(const Context* context,
     renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&mtlTexInfo);
 
     mtlColorAttachment.pixelFormat = (MTLPixelFormat)mtlTexInfo.fFormat;
+    //mtlColorAttachment.pixelFormat = MTLPixelFormatBGRA8Unorm;
+
     mtlColorAttachment.blendingEnabled = FALSE;
 
     mtlColorAttachment.writeMask = writesColor ? MTLColorWriteMaskAll : MTLColorWriteMaskNone;
