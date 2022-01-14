@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750f63f2_18ea51cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-01-14T15:04:29Z",
+      "side": 1,
+      "message": "The motivation here is that SDL2 is ported to WASM. So this could be a way to get viewer running as a web app. Locally I was able to get HelloWorld working as a web app via SDL (with some further changes to this code).\n\nThat said, maybe over time we consider just leaning into SDL for other or all platforms as well.",
+      "revId": "f8880270806ed7684049b1c63be5e1136fa355b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
