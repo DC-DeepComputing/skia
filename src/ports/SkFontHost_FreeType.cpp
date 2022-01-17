@@ -186,6 +186,7 @@ public:
     SkUniqueFTFace fFace;
     FT_StreamRec fFTStream;
     std::unique_ptr<SkStreamAsset> fSkStream;
+    SkAutoSTArray<0, SkColor> fCustomPalette;
 
     static std::unique_ptr<FaceRec> Make(const SkTypeface_FreeType* typeface);
     ~FaceRec();
@@ -193,6 +194,7 @@ public:
 private:
     FaceRec(std::unique_ptr<SkStreamAsset> stream);
     void setupAxes(const SkFontData& data);
+    void setupPalette(const SkFontData& data);
 
     // Private to ref_ft_library and unref_ft_library
     static int gFTCount;
@@ -301,6 +303,20 @@ void SkTypeface_FreeType::FaceRec::setupAxes(const SkFontData& data) {
     }
 }
 
+void SkTypeface_FreeType::FaceRec::setupPalette(const SkFontData& data) {
+
+  if (!data.getPaletteEntryCount()) {
+    return;
+  }
+
+  fCustomPalette.reset(data.getPaletteEntryCount());
+
+  for (int i = 0; i < data.getPaletteEntryCount(); ++i) {
+    fCustomPalette[i] = data.getPalette()[i];
+  }
+}
+
+
 // Will return nullptr on failure
 // Caller must lock f_t_mutex() before calling this function.
 std::unique_ptr<SkTypeface_FreeType::FaceRec>
@@ -338,6 +354,8 @@ SkTypeface_FreeType::FaceRec::Make(const SkTypeface_FreeType* typeface) {
     SkASSERT(rec->fFace);
 
     rec->setupAxes(*data);
+
+    rec->setupPalette(*data);
 
     // FreeType will set the charmap to the "most unicode" cmap if it exists.
     // If there are no unicode cmaps, the charmap is set to nullptr.
@@ -662,7 +680,15 @@ std::unique_ptr<SkFontData> SkTypeface_FreeType::cloneFontData(const SkFontArgum
                                currentAxisCount == axisCount ? currentPosition.get() : nullptr);
     int ttcIndex;
     std::unique_ptr<SkStreamAsset> stream = this->openStream(&ttcIndex);
-    return std::make_unique<SkFontData>(std::move(stream), ttcIndex, axisValues.get(), axisCount);
+
+    auto newPalette = SkTypeface_FreeType::Scanner::resolvePaletteOverride(face, args.getPaletteOverride());
+
+    return std::make_unique<SkFontData>(std::move(stream),
+                                        ttcIndex,
+                                        axisValues.get(),
+                                        axisCount,
+                                        newPalette.data(),
+                                        newPalette.size());
 }
 
 void SkTypeface_FreeType::onFilterRec(SkScalerContextRec* rec) const {
@@ -1332,7 +1358,10 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
                                            SkFixedToScalar(glyph.getSubYFixed()));
         bitmapMatrix = &subpixelBitmapMatrix;
     }
-    generateGlyphImage(fFace, glyph, *bitmapMatrix);
+
+    generateGlyphImage(fFace, SkSpan<SkColor>(
+        fFaceRec->fCustomPalette.get(), fFaceRec->fCustomPalette.size()),
+        glyph, *bitmapMatrix);
 }
 
 
@@ -2044,4 +2073,37 @@ bool SkTypeface_FreeType::Scanner::GetAxes(FT_Face face, AxisDefinitions* axes) 
             }
         }
     )
+}
+
+std::vector<SkColor> SkTypeface_FreeType::Scanner::resolvePaletteOverride(
+        FT_Face face,
+        const SkFontArguments::PaletteOverride& paletteOverride) {
+
+  FT_Palette_Data paletteData;
+  if (FT_Palette_Data_Get(face, &paletteData)){
+    return {};
+  }
+
+  std::vector<SkColor> newPalette;
+  newPalette.resize(paletteData.num_palette_entries);
+
+  FT_Color* originalPalette;
+
+  if (FT_Palette_Select(face, paletteOverride.basePalette, &originalPalette)) {
+    return {};
+  }
+
+  for (int i = 0; i < paletteData.num_palette_entries; ++i) {
+      newPalette[i] = SkColorSetARGB(originalPalette[i].alpha,
+                                     originalPalette[i].red,
+                                     originalPalette[i].green,
+                                     originalPalette[i].blue);
+  }
+
+  for (int j = 0; j < paletteOverride.colorOverrideCount; ++j) {
+      newPalette[paletteOverride.colorOverrides[j].colorIndex] =
+              paletteOverride.colorOverrides[j].color;
+  }
+
+  return newPalette;
 }
