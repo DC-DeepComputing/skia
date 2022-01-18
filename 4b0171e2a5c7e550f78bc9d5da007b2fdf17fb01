@@ -39,6 +39,30 @@
       },
       "revId": "4b0171e2a5c7e550f78bc9d5da007b2fdf17fb01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d703f9f_04e06937",
+        "filename": "tools/sk_app/WindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-18T15:12:49Z",
+      "side": 1,
+      "message": "Yes we need them since the member variables are sk_sp/u_p. Since we forward declare the objects in the header, we need the includes here for the ctor and dtor to be able to delete them.",
+      "parentUuid": "fe45d8b5_ea62009b",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 51
+      },
+      "revId": "4b0171e2a5c7e550f78bc9d5da007b2fdf17fb01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
