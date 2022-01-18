@@ -39,12 +39,12 @@ void PaintParams::toKey(SkShaderCodeDictionary* dict,
     if (fShader) {
         as_SB(fShader)->addToKey(dict, backend, key);
     } else {
-        SolidColorShaderBlock::AddToKey(key);
+        SolidColorShaderBlock::AddToKey(backend, key);
     }
 
     // TODO: add blender support to PaintParams
     {
-        BlendModeBlock::AddToKey(key, fBlendMode);
+        BlendModeBlock::AddToKey(backend, key, fBlendMode);
     }
 
     SkASSERT(key->sizeInBytes() > 0);
