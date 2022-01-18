@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dd48d7_9e9b0198",
+        "filename": "experimental/graphite/src/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T20:48:55Z",
+      "side": 1,
+      "message": "Can we name this \u0027blender()\u0027 to match shader(), and add a matching refBlender()?",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "7e6cb6b5d8023ac987f22a8bb9fa18215f619474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e33692_7016b422",
+        "filename": "experimental/graphite/src/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T20:48:55Z",
+      "side": 1,
+      "message": "comment that a null blender is equal to kSrcOver?",
+      "range": {
+        "startLine": 51,
+        "startChar": 21,
+        "endLine": 51,
+        "endChar": 30
+      },
+      "revId": "7e6cb6b5d8023ac987f22a8bb9fa18215f619474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4013f5eb_635cdbcb",
+        "filename": "experimental/graphite/src/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T20:48:55Z",
+      "side": 1,
+      "message": "nit: removable now",
+      "range": {
+        "startLine": 53,
+        "startChar": 42,
+        "endLine": 53,
+        "endChar": 56
+      },
+      "revId": "7e6cb6b5d8023ac987f22a8bb9fa18215f619474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
