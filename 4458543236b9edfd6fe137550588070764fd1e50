@@ -33,6 +33,24 @@
       "message": "This will add these bots to the list of tryjobs selectable on Gerrit right? (In theory it would work on this CL if they were manually selected from the command line?)",
       "revId": "4458543236b9edfd6fe137550588070764fd1e50",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6ad55dc_fd40f975",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-01-18T15:05:54Z",
+      "side": 1,
+      "message": "I believe so. I\u0027ll check once it lands. Let me know if we should have these tasks run automatically on every CL; I assumed not but for no particular reason.",
+      "parentUuid": "ebea1fb0_8e4d281a",
+      "revId": "4458543236b9edfd6fe137550588070764fd1e50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
