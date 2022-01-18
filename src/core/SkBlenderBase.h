@@ -21,6 +21,10 @@ class SkPaintParamsKey;
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
 
+namespace skgpu {
+class UniformData;
+};
+
 /**
  * Encapsulates a blend function, including non-public APIs.
  * Blends combine a source color (the result of our paint) and destination color (from the canvas)
@@ -56,9 +60,10 @@ public:
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
     // TODO: make pure virtual
-    virtual void addToKey(SkShaderCodeDictionary*,
-                          SkBackend,
-                          SkPaintParamsKey*) const;
+    virtual void addToKeyB(SkShaderCodeDictionary*,
+                           SkBackend,
+                           SkPaintParamsKey*,
+                           std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
     Type getFlattenableType() const override { return GetFlattenableType(); }

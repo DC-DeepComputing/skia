@@ -34,17 +34,25 @@ sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
 
 void PaintParams::toKey(SkShaderCodeDictionary* dict,
                         SkBackend backend,
-                        SkPaintParamsKey* key) const {
-
+                        SkPaintParamsKey* key,
+                        std::vector<sk_sp<UniformData>>* uniforms) const {
     if (fShader) {
-        as_SB(fShader)->addToKey(dict, backend, key);
+        as_SB(fShader)->addToKeyS(dict, backend, key, uniforms);
     } else {
-        SolidColorShaderBlock::AddToKey(key);
+        SolidColorShaderBlock::AddToKey(backend, key);
     }
+
+    //    if (fColorFilter) {
+    //        fColorFilter->addToKeyCF(dict, mapping, code);
+    //    }
+    //    if (fBlender) {
+    //        fBlender->addToKeyB(dict, mapping, code);
+    //    } else
+
 
     // TODO: add blender support to PaintParams
     {
-        BlendModeBlock::AddToKey(key, fBlendMode);
+        BlendModeBlock::AddToKey(backend, key, uniforms, fBlendMode);
     }
 
     SkASSERT(key->sizeInBytes() > 0);
