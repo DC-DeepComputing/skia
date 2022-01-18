@@ -11,9 +11,14 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 
+enum class SkBackend : uint8_t;
+class SkPaintParamsKey;
 class SkShader;
+class SkShaderCodeDictionary;
 
 namespace skgpu {
+
+class UniformData;
 
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
@@ -35,6 +40,11 @@ public:
     SkBlendMode blendMode() const { return fBlendMode; }
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
+
+    void toKey(SkShaderCodeDictionary*,
+               SkBackend,
+               SkPaintParamsKey*,
+               std::vector<sk_sp<UniformData>>*) const;
 
 private:
     SkColor4f       fColor;

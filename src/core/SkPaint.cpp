@@ -37,10 +37,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkShaderBase.h"
 
-// define this to get a printf for out-of-range parameter in setters
-// e.g. setTextSize(-1)
-//#define SK_REPORT_API_RANGE_CHECK
-
+#include "experimental/graphite/include/Encoding.h"
+#include "include/private/SkPaintParamsKey.h"
 
 SkPaint::SkPaint()
     : fColor4f{0, 0, 0, 1}  // opaque black
@@ -452,6 +450,10 @@ const SkRect& SkPaint::doComputeFastBounds(const SkRect& origSrc,
 
     return *storage;
 }
+
+// define this to get a printf for out-of-range parameter in setters
+// e.g. setTextSize(-1)
+//#define SK_REPORT_API_RANGE_CHECK
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -37,7 +37,6 @@ class SkShader;
 */
 class SK_API SkPaint {
 public:
-
     /** Constructs SkPaint with default values.
 
         @return  default initialized SkPaint

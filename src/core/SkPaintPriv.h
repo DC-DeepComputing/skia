@@ -10,8 +10,15 @@
 
 #include "include/core/SkPaint.h"
 
+enum class SkBackend : uint8_t;
+class SkPaintParamsKey;
 class SkReadBuffer;
 class SkWriteBuffer;
+class SkShaderCodeDictionary;
+
+namespace skgpu {
+class UniformData;
+};
 
 class SkPaintPriv {
 public:
@@ -58,6 +65,13 @@ public:
     static void RemoveColorFilter(SkPaint*, SkColorSpace* dstCS);
 
     static SkScalar ComputeResScaleForStroking(const SkMatrix&);
+
+    static void ToKey(const SkPaint&,
+                      SkShaderCodeDictionary*,
+                      SkBackend,
+                      SkPaintParamsKey*,
+                      std::vector<sk_sp<skgpu::UniformData>>*);
+
 };
 
 #endif

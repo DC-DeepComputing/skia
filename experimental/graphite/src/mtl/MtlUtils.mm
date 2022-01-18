@@ -18,6 +18,9 @@
 #import <UIKit/UIApplication.h>
 #endif
 
+#include "experimental/graphite/src/ContextUtils.h"
+#include "include/private/SkPaintParamsKey.h"
+
 namespace skgpu::mtl {
 
 bool FormatIsDepthOrStencil(MTLPixelFormat format) {

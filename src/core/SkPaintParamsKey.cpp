@@ -9,6 +9,8 @@
 
 #include <cstring>
 #include "src/core/SkKeyHelpers.h"
+#include "src/shaders/SkComposeShader.h"
+//#include "src/shaders/SkImageShader.h"
 
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&
@@ -40,6 +42,9 @@ DumpMethod get_dump_method(CodeSnippetID id) {
         case CodeSnippetID::kSweepGradientShader:   [[fallthrough]];
         case CodeSnippetID::kConicalGradientShader: return GradientShaderBlocks::Dump;
 
+        case CodeSnippetID::kImageShader:           return ImageShaderBlock::Dump;
+        case CodeSnippetID::kBlendShader:           return SkShader_Blend::Dump;
+
         // BlendMode code snippets
         case CodeSnippetID::kSimpleBlendMode:       return BlendModeBlock::Dump;
 
@@ -49,17 +54,49 @@ DumpMethod get_dump_method(CodeSnippetID id) {
 
 } // anonymous namespace
 
+int SkPaintParamsKey::DumpBlock(const SkPaintParamsKey& key, int headerOffset) {
+    auto [codeSnippetID, blockSize] = key.readCodeSnippetID(headerOffset);
+
+    get_dump_method(codeSnippetID)(key, headerOffset);
+
+    return blockSize;
+}
+
 // This just iterates over the top-level blocks calling block-specific dump methods.
 void SkPaintParamsKey::dump() const {
     SkDebugf("SkPaintParamsKey %dB:\n", this->sizeInBytes());
 
     int curHeaderOffset = 0;
     while (curHeaderOffset < this->sizeInBytes()) {
-        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
-
-        get_dump_method(codeSnippetID)(*this, curHeaderOffset);
+        int blockSize = DumpBlock(*this, curHeaderOffset);
 
         curHeaderOffset += blockSize;
     }
 }
 #endif
+
+void SkPaintParamsKey::BlockToSkSL(const SkPaintParamsKey& key,
+                                   uint32_t headerOffset,
+                                   SkSL::String* result) {
+//    auto[id, numIntsOfData] = ReadCodeSnippetID(data[0]);
+
+//    result->appendf("%s %d\n", gNames[(int) id], numIntsOfData);
+}
+
+SkSL::String SkPaintParamsKey::toSkSL() const {
+    SkSL::String result;
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        BlockToSkSL(*this, curHeaderOffset, &result);
+
+//        uint32_t numIntsConsumed = ToSkSLFrom(&data[curIndex], &result);
+//        SkASSERT(curIndex + numIntsConsumed <= this->numInts());
+
+        curHeaderOffset += blockSize;
+    }
+
+    return result;
+}

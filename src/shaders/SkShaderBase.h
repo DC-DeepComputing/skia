@@ -24,15 +24,22 @@
 
 class GrFragmentProcessor;
 class SkArenaAlloc;
+enum class SkBackend : uint8_t;
 class SkColorSpace;
 class SkImage;
 struct SkImageInfo;
 class SkPaint;
+class SkPaintParamsKey;
 class SkRasterPipeline;
 class SkRuntimeEffect;
+class SkShaderCodeDictionary;
 class SkStageUpdater;
 
 class SkUpdatableShader;
+
+namespace skgpu {
+class UniformData;
+}
 
 class SkShaderBase : public SkShader {
 public:
@@ -208,6 +215,11 @@ public:
     skvm::Color program(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
                         const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                         skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
+
+    virtual void addToKeyS(SkShaderCodeDictionary*,
+                           SkBackend,
+                           SkPaintParamsKey*,
+                           std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
