@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7db51bc_2a17a10d",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-18T17:23:19Z",
+      "side": 1,
+      "message": "Consider skstd::optional\u003cbool\u003e here?\nIf that\u0027s no good, let\u0027s put kFalse before kTrue so that 0 and 1 map directly to bool equivalents.",
+      "range": {
+        "startLine": 259,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 2
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8528061b_575fb01a",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-18T17:23:19Z",
+      "side": 1,
+      "message": "Not a new issue, but can this be a const\u0026 ? Makes the rest of the function way easier to reason about.",
+      "range": {
+        "startLine": 277,
+        "startChar": 26,
+        "endLine": 277,
+        "endChar": 27
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1471dc4a_d74e18ea",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-18T17:23:19Z",
+      "side": 1,
+      "message": "nit: This works, but I think we can do the same thing with a little less code?\nBefore the loop:\n\n  vector\u003cSkSL::String\u003e paths;\n\nHere:\n   \n  paths.push_back(arg);\n  \nAfter the loop:\n\n  if (paths.size() !\u003d 2) { show_usage(); return kInputError; }\n  const SkSL::String\u0026 inputPath \u003d paths[0];\n  const SkSL::String\u0026 outputPath \u003d paths[1];",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 13
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2f1616_c12bbf7d",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-18T17:23:19Z",
+      "side": 1,
+      "message": "nit: .empty() is more idiomatic (here and above)",
+      "range": {
+        "startLine": 305,
+        "startChar": 8,
+        "endLine": 305,
+        "endChar": 43
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
