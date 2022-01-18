@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7866118_5fcfe869",
+        "filename": "experimental/graphite/src/PaintParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T16:09:18Z",
+      "side": 1,
+      "message": "Does it make sense to take a backend here? Is the eventual plan to move PaintParams to more core, since it\u0027s the stripped down SkPaint?",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ed7628e_758392bb",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 708,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T16:09:18Z",
+      "side": 1,
+      "message": "We could put this in SkPaintPriv for now.",
+      "range": {
+        "startLine": 707,
+        "startChar": 5,
+        "endLine": 708,
+        "endChar": 79
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7886208_44a48220",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-18T16:09:18Z",
+      "side": 1,
+      "message": "on SkShaderBase instead?",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 68
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c72bcc6_e8bb442e",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 7
