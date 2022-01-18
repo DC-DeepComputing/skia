@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d40230_d2674d13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-18T14:48:42Z",
+      "side": 1,
+      "message": "There is not a better way and, although we have talked about alternatives, none are scheduled.",
+      "parentUuid": "86db93a1_7e7e5727",
+      "revId": "2aa63190b75d4c1416f26043939d8674c58f50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49b00bde_14d692e7",
