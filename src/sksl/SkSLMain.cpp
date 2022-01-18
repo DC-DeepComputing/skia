@@ -256,30 +256,61 @@ static void show_usage() {
            "--nosettings: ignore /*#pragma settings*/ comments\n");
 }
 
+enum class BoolFlag {
+    kTrue,
+    kFalse,
+    kUnspecified
+};
+
+static bool set_flag(BoolFlag* flag, const char* name, bool value) {
+    if (*flag != BoolFlag::kUnspecified) {
+        printf("%s flag was specified multiple times\n", name);
+        return false;
+    }
+    *flag = value ? BoolFlag::kTrue : BoolFlag::kFalse;
+    return true;
+}
+
 /**
  * Handle a single input.
  */
 ResultCode processCommand(std::vector<SkSL::String>& args) {
-    bool honorSettings = true;
-    if (args.size() == 4) {
-        // Handle four-argument case: `skslc in.sksl out.glsl --settings`
-        const SkSL::String& settingsArg = args[3];
-        if (settingsArg == "--settings") {
-            honorSettings = true;
-        } else if (settingsArg == "--nosettings") {
-            honorSettings = false;
+    BoolFlag honorSettings = BoolFlag::kUnspecified;
+    SkSL::String inputPath;
+    SkSL::String outputPath;
+    for (size_t i = 1; i < args.size(); ++i) {
+        const SkSL::String& arg = args[i];
+        if (arg == "--settings") {
+            if (!set_flag(&honorSettings, "settings", true)) {
+                return ResultCode::kInputError;
+            }
+        } else if (arg == "--nosettings") {
+            if (!set_flag(&honorSettings, "settings", false)) {
+                return ResultCode::kInputError;
+            }
+        } else if (!arg.starts_with("--")) {
+            if (inputPath == "") {
+                inputPath = arg;
+            } else if (outputPath == "") {
+                outputPath = arg;
+            } else {
+                show_usage();
+                return ResultCode::kInputError;
+            }
         } else {
-            printf("unrecognized flag: %s\n\n", settingsArg.c_str());
             show_usage();
             return ResultCode::kInputError;
         }
-    } else if (args.size() != 3) {
+    }
+    if (inputPath == "" || outputPath == "") {
         show_usage();
         return ResultCode::kInputError;
     }
+    if (honorSettings == BoolFlag::kUnspecified) {
+        honorSettings = BoolFlag::kTrue;
+    }
 
     SkSL::ProgramKind kind;
-    const SkSL::String& inputPath = args[1];
     if (inputPath.ends_with(".vert")) {
         kind = SkSL::ProgramKind::kVertex;
     } else if (inputPath.ends_with(".frag") || inputPath.ends_with(".sksl")) {
@@ -308,7 +339,7 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
     auto standaloneCaps = SkSL::ShaderCapsFactory::Standalone();
     const SkSL::ShaderCaps* caps = standaloneCaps.get();
     std::unique_ptr<SkSL::SkVMDebugTrace> debugTrace;
-    if (honorSettings) {
+    if (honorSettings == BoolFlag::kTrue) {
         if (!detect_shader_settings(text, &settings, &caps, &debugTrace)) {
             return ResultCode::kInputError;
         }
@@ -320,8 +351,6 @@ ResultCode processCommand(std::vector<SkSL::String>& args) {
     settings.fRTFlipOffset  = 16384;
     settings.fRTFlipSet     = 0;
     settings.fRTFlipBinding = 0;
-
-    const SkSL::String& outputPath = args[2];
 
     auto emitCompileError = [&](SkSL::FileOutputStream& out, const char* errorText) {
         // Overwrite the compiler output, if any, with an error message.
