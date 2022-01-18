@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c72bcc6_e8bb442e",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-18T15:02:50Z",
+      "side": 1,
+      "message": "This else case feels strange - can\u0027t we instead assert that this-\u003easBlendMode() succeeds? (Or I guess if/once this function becomes pure virtual, we get the same effect)?",
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
