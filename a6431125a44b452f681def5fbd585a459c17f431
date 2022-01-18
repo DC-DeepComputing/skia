@@ -16,6 +16,24 @@
       "message": "This else case feels strange - can\u0027t we instead assert that this-\u003easBlendMode() succeeds? (Or I guess if/once this function becomes pure virtual, we get the same effect)?",
       "revId": "a6431125a44b452f681def5fbd585a459c17f431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d38b811d_ed204542",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-18T15:37:35Z",
+      "side": 1,
+      "message": "This is just an artifact of non-blend-mode blenders not being handled yet. Once they are, and the appropriate virtual methods are implemented, the fallback won\u0027t exist anymore.",
+      "parentUuid": "9c72bcc6_e8bb442e",
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
