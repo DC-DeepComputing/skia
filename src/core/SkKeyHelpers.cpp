@@ -123,6 +123,62 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace GradientShaderBlocks
 
 //--------------------------------------------------------------------------------------------------
+namespace ImageShaderBlock {
+
+inline static constexpr int kTileModeBits = 2;
+inline static constexpr int kTileModeMask = 0x3;
+
+static const int kXTileModeShift = 0;
+static const int kYTileModeShift = kTileModeBits;
+
+ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
+    CodeSnippetID id = static_cast<CodeSnippetID>(key.byte(headerOffset));
+    SkASSERT(id == CodeSnippetID::kImageShader);
+    SkASSERT(key.byte(headerOffset+1) == SkPaintParamsKey::kBlockHeaderSizeInBytes+1);
+
+    uint8_t byte = key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes);
+
+    SkTileMode tmX = (SkTileMode) (((byte) >> kXTileModeShift) & kTileModeMask);
+    SkTileMode tmY = (SkTileMode) (((byte) >> kYTileModeShift) & kTileModeMask);
+
+    return { tmX, tmY };
+}
+
+void AddToKey(SkBackend backend, SkPaintParamsKey* key, const ImageData& imgData) {
+
+    if (backend == SkBackend::kGraphite) {
+        int headerOffset = key->beginBlock(CodeSnippetID::kImageShader);
+
+        uint8_t byte = ((uint8_t) imgData.fTileModes[0] << kXTileModeShift) |
+                       ((uint8_t) imgData.fTileModes[1] << kYTileModeShift);
+
+        key->addByte(byte);
+
+        key->endBlock(headerOffset, CodeSnippetID::kImageShader);
+
+        SkASSERT(imgData == ExtractFromKey(*key, headerOffset));
+    } else {
+        // TODO: add implementation for other backends
+        SolidColorShaderBlock::AddToKey(key);
+    }
+}
+
+#ifdef SK_DEBUG
+void Dump(const SkPaintParamsKey& key, int headerOffset) {
+    auto [id, blockSize] = key.readCodeSnippetID(headerOffset);
+    SkASSERT(id == CodeSnippetID::kImageShader);
+
+    ImageData imgData = ExtractFromKey(key, headerOffset);
+
+    SkDebugf("kImageShader: tileModes(%s, %s) ",
+             SkTileModeToStr(imgData.fTileModes[0]),
+             SkTileModeToStr(imgData.fTileModes[1]));
+}
+#endif
+
+} // namespace ImageShaderBlock
+
+//--------------------------------------------------------------------------------------------------
 namespace BlendModeBlock {
 
 void AddToKey(SkPaintParamsKey *key, SkBlendMode bm) {
