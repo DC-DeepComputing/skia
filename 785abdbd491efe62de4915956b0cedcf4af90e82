@@ -39,6 +39,30 @@
       },
       "revId": "785abdbd491efe62de4915956b0cedcf4af90e82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab376dd_60d3fa8e",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-18T21:03:54Z",
+      "side": 1,
+      "message": "That\u0027s kinda already covered below by #define\u0027ing SKVX_USE_SIMD to something in all cases. If someone sets it externally there should be a \"multiple define\" error.",
+      "parentUuid": "14bbb739_455affb4",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 81
+      },
+      "revId": "785abdbd491efe62de4915956b0cedcf4af90e82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
