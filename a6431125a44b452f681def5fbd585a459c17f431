@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1789ac5_25b513c4",
+        "filename": "experimental/graphite/src/PaintParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-18T17:04:36Z",
+      "side": 1,
+      "message": "Right - the plan is to move PaintParams to core. I believe SkVM will also have the need for splitting an SkPaint into its component PaintParams - for ImageFilters, etc - and then need to convert those into shaders.",
+      "parentUuid": "f7866118_5fcfe869",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3ed7628e_758392bb",
         "filename": "include/core/SkPaint.h",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-18T16:09:18Z",
       "side": 1,
       "message": "We could put this in SkPaintPriv for now.",
+      "range": {
+        "startLine": 707,
+        "startChar": 5,
+        "endLine": 708,
+        "endChar": 79
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "701a3224_af9baf5a",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 708,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-18T17:04:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ed7628e_758392bb",
       "range": {
         "startLine": 707,
         "startChar": 5,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-01-18T16:09:18Z",
       "side": 1,
       "message": "on SkShaderBase instead?",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 68
+      },
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea10a461_1d6b1dbf",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-18T17:04:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7886208_44a48220",
       "range": {
         "startLine": 140,
         "startChar": 4,
