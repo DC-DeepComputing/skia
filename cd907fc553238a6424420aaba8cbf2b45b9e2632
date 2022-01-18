@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ee8519_6b8ea197",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-18T13:06:12Z",
+      "side": 1,
+      "message": "Is there a bug that is associated with this CL?",
+      "revId": "cd907fc553238a6424420aaba8cbf2b45b9e2632",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
