@@ -34,6 +34,23 @@
       "parentUuid": "75ee8519_6b8ea197",
       "revId": "cd907fc553238a6424420aaba8cbf2b45b9e2632",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f88b682_412e39d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-18T16:35:36Z",
+      "side": 1,
+      "message": "If you had one in buganizer I was going to have you link to it.  If no bug exists I don\u0027t feel the need to create one for a CL whose description basically covers what would be in the bug.",
+      "revId": "cd907fc553238a6424420aaba8cbf2b45b9e2632",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
