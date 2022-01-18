@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd4f6c16_bc666672",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-18T18:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7db51bc_2a17a10d",
+      "range": {
+        "startLine": 259,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 2
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8528061b_575fb01a",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c4fb057_23067c21",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-18T18:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8528061b_575fb01a",
+      "range": {
+        "startLine": 277,
+        "startChar": 26,
+        "endLine": 277,
+        "endChar": 27
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1471dc4a_d74e18ea",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-01-18T17:23:19Z",
       "side": 1,
       "message": "nit: This works, but I think we can do the same thing with a little less code?\nBefore the loop:\n\n  vector\u003cSkSL::String\u003e paths;\n\nHere:\n   \n  paths.push_back(arg);\n  \nAfter the loop:\n\n  if (paths.size() !\u003d 2) { show_usage(); return kInputError; }\n  const SkSL::String\u0026 inputPath \u003d paths[0];\n  const SkSL::String\u0026 outputPath \u003d paths[1];",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 13
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ae54ec9_1fbf2a9d",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-18T18:47:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1471dc4a_d74e18ea",
       "range": {
         "startLine": 292,
         "startChar": 0,
@@ -107,6 +179,30 @@
       "side": 1,
       "message": "(this falls away if we adopt the simpler form)",
       "parentUuid": "8b2f1616_c12bbf7d",
+      "range": {
+        "startLine": 305,
+        "startChar": 8,
+        "endLine": 305,
+        "endChar": 43
+      },
+      "revId": "50cddd7246ff768aed7f6e6d8f506ee882d470de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5660126d_ed476d8c",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-18T18:47:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ee667397_9523c531",
       "range": {
         "startLine": 305,
         "startChar": 8,
