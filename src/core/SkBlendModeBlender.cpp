@@ -15,6 +15,15 @@
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #endif
 
+#include "experimental/graphite/include/Encoding.h"
+
+void SkBlendModeBlender::addToKeyB(SkShaderCodeDictionary* dict,
+                                   SkBackend backend,
+                                   SkPaintParamsKey* key,
+                                   std::vector<sk_sp<skgpu::UniformData>>* unis) const {
+    BlendMode::addToKeyB(dict, backend, key, unis, fMode);
+}
+
 sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                        \
     case m: {                                              \
@@ -65,9 +74,9 @@ void SkBlenderBase::addToKey(SkShaderCodeDictionary* dict,
                              SkPaintParamsKey* key) const {
 
     if (skstd::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
-        BlendModeBlock::AddToKey(key, bm.value());
+        BlendModeBlock::AddToKey(backend, key, nullptr, bm.value());
     } else {
-        BlendModeBlock::AddToKey(key, SkBlendMode::kSrcOver);
+        BlendModeBlock::AddToKey(backend, key, nullptr, SkBlendMode::kSrcOver);
     }
 }
 

@@ -17,6 +17,11 @@ class SkPaintParamsKey;
 class SkReadBuffer;
 class SkShaderCodeDictionary;
 class SkWriteBuffer;
+class SkShaderCodeDictionary;
+
+namespace skgpu {
+class UniformData;
+};
 
 class SkPaintPriv {
 public:
@@ -70,11 +75,13 @@ public:
         @param paint      the paint to be decomposed
         @param dictionary dictionary of code fragments available to be used in the SkPaintParamKeys
         @param backend    the backend that would be carrying out the drawing
+        @param uniforms
         @return           the SkPaintParamsKeys that would be needed to draw this paint
     */
     static std::vector<SkPaintParamsKey> ToKeys(const SkPaint& paint,
                                                 SkShaderCodeDictionary* dictionary,
-                                                SkBackend backend);
+                                                SkBackend backend,
+                                                std::vector<sk_sp<skgpu::UniformData>>* uniforms);
 };
 
 #endif
