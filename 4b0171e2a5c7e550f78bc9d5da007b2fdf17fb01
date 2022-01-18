@@ -16,6 +16,29 @@
       "message": "With the recent fixes to Device flushing this CL now works (with all the previous hacky stuff removed). PTAL.",
       "revId": "4b0171e2a5c7e550f78bc9d5da007b2fdf17fb01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe45d8b5_ea62009b",
+        "filename": "tools/sk_app/WindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-18T14:11:09Z",
+      "side": 1,
+      "message": "Are these needed?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 51
+      },
+      "revId": "4b0171e2a5c7e550f78bc9d5da007b2fdf17fb01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
