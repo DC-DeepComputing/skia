@@ -16,6 +16,29 @@
       "message": "Can\u0027t add a test as part of this CL, but it was caught by my in-progress dehydrate / rehydrate round trip test and will be properly tested when that lands.",
       "revId": "592ad5ab2955333f86c0bb6a8b8faa52ed0f86d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbe1176_e6ba5f66",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-18T17:56:43Z",
+      "side": 1,
+      "message": "/*symbols\u003d*/",
+      "range": {
+        "startLine": 138,
+        "startChar": 66,
+        "endLine": 138,
+        "endChar": 73
+      },
+      "revId": "592ad5ab2955333f86c0bb6a8b8faa52ed0f86d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
