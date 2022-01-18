@@ -16,6 +16,24 @@
       "message": "Is there a bug that is associated with this CL?",
       "revId": "cd907fc553238a6424420aaba8cbf2b45b9e2632",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "498ba99e_29a25d66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9470
+      },
+      "writtenOn": "2022-01-18T15:54:34Z",
+      "side": 1,
+      "message": "No. Should I create it in internal buganizer or the skia bug tracker?",
+      "parentUuid": "75ee8519_6b8ea197",
+      "revId": "cd907fc553238a6424420aaba8cbf2b45b9e2632",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
