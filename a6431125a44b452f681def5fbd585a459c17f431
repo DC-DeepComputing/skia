@@ -34,6 +34,24 @@
       "parentUuid": "9c72bcc6_e8bb442e",
       "revId": "a6431125a44b452f681def5fbd585a459c17f431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d967c940_4c3789b2",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-18T15:45:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d38b811d_ed204542",
+      "revId": "a6431125a44b452f681def5fbd585a459c17f431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
