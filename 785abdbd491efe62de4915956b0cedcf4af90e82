@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65d05685_6a705181",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-18T20:47:13Z",
+      "side": 1,
+      "message": "Note that this actually turns off the vector instruction use in SkVx.h, instead of just kinda turning it off. It looks like the wasm builds (and for some reason the iOS builds in out build.bazel) are setting SKNX_NO_SIMD so this may affect them.\n\nIs there a build for wasm which doesn\u0027t set SKNX_NO_SIMD? I\u0027m wondering what is testing the __wasm_simd128__ guarded code.\n\nThe setting for iOS in public.bzl seems to come from d2ccc772d4fb4d1ad97024f95d61de79e4c9954e (https://codereview.chromium.org/1639443002) and maybe this can be revisited now five years later?",
+      "revId": "785abdbd491efe62de4915956b0cedcf4af90e82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
