@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9785bbd8_da73bf6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-01-19T14:15:22Z",
+      "side": 1,
+      "message": "I am waiting for release manager approval for the merge, but it would help if you could already rubberstamp this, Ben, so that I\u0027d be ready to merge once approval is granted. Thanks.",
+      "revId": "68a2835c4c30b3f107cd9b331ed01cee88ac39ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
