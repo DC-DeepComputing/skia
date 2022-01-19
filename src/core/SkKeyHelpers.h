@@ -49,6 +49,40 @@ namespace GradientShaderBlocks {
 
 } // namespace GradientShaderBlocks
 
+namespace ImageShaderBlock {
+
+    struct ImageData {
+        bool operator==(const ImageData& rhs) const {
+            return fTileModes[0] == rhs.fTileModes[0] &&
+                   fTileModes[1] == rhs.fTileModes[1];
+        }
+        bool operator!=(const ImageData& rhs) const { return !(*this == rhs); }
+
+        SkTileMode fTileModes[2];
+    };
+
+    void AddToKey(SkBackend, SkPaintParamsKey*, const ImageData&);
+#ifdef SK_DEBUG
+    void Dump(const SkPaintParamsKey&, int headerOffset);
+#endif
+
+} // namespace ImageShaderBlock
+
+namespace BlendShaderBlock {
+
+    struct BlendData {
+
+        SkShader* fDst;
+        SkShader* fSrc;
+        SkBlendMode fBM;
+    };
+
+#ifdef SK_DEBUG
+    void Dump(const SkPaintParamsKey&, int headerOffset);
+#endif
+
+} // namespace BlendShaderBlock
+
 namespace BlendModeBlock {
 
     void AddToKey(SkBackend, SkPaintParamsKey*, SkBlendMode);

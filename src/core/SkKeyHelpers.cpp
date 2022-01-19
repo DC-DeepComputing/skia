@@ -9,6 +9,33 @@
 
 #include "include/private/SkPaintParamsKey.h"
 #include "src/core/SkDebugUtils.h"
+#include "src/shaders/SkShaderBase.h"
+
+namespace {
+
+CodeSnippetID read_code_snippet_id(const SkPaintParamsKey& key, int headerOffset) {
+    uint8_t byte = key.byte(headerOffset);
+
+    SkASSERT(byte <= static_cast<int>(CodeSnippetID::kLast));
+
+    return static_cast<CodeSnippetID>(byte);
+}
+
+// This can be used to catch errors in blocks that have a fixed, known block data size
+void validate_block_header(const SkPaintParamsKey& key, int headerOffset,
+                           CodeSnippetID codeSnippetID, int blockDataSize) {
+    SkASSERT(key.byte(headerOffset) == (uint8_t) codeSnippetID);
+    SkASSERT(key.byte(headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes) ==
+             SkPaintParamsKey::kBlockHeaderSizeInBytes + blockDataSize);
+}
+
+void add_blendmode_to_key(SkPaintParamsKey* key, SkBlendMode bm) {
+    SkASSERT(static_cast<int>(bm) <= std::numeric_limits<uint8_t>::max());
+
+    key->addByte(static_cast<uint8_t>(bm));
+}
+
+} // anonymous namespace
 
 //--------------------------------------------------------------------------------------------------
 namespace DepthStencilOnlyBlock {
@@ -32,16 +59,20 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 //--------------------------------------------------------------------------------------------------
 namespace SolidColorShaderBlock {
 
+#ifdef SK_DEBUG
+static const int kBlockDataSize = 0;
+#endif
+
 void AddToKey(SkBackend backend, SkPaintParamsKey* key) {
     int headerOffset = key->beginBlock(CodeSnippetID::kSolidColorShader);
     key->endBlock(headerOffset, CodeSnippetID::kSolidColorShader);
+
+    validate_block_header(*key, headerOffset,
+                          CodeSnippetID::kSolidColorShader, kBlockDataSize);
 }
 
 #ifdef SK_DEBUG
 void Dump(const SkPaintParamsKey& key, int headerOffset) {
-    SkASSERT(key.byte(headerOffset) == (uint8_t) CodeSnippetID::kSolidColorShader);
-    SkASSERT(key.byte(headerOffset+1) == 2);
-
     SkDebugf("kSolidColorShader\n");
 }
 #endif
@@ -92,13 +123,13 @@ void AddToKey(SkBackend backend,
 #ifdef SK_DEBUG
 std::pair<CodeSnippetID, SkTileMode> ExtractFromKey(const SkPaintParamsKey& key,
                                                     uint32_t headerOffset) {
-    CodeSnippetID id = static_cast<CodeSnippetID>(key.byte(headerOffset));
+    CodeSnippetID id = read_code_snippet_id(key, headerOffset);
 
     SkASSERT(id == CodeSnippetID::kLinearGradientShader ||
              id == CodeSnippetID::kRadialGradientShader ||
              id == CodeSnippetID::kSweepGradientShader ||
              id == CodeSnippetID::kConicalGradientShader);
-    SkASSERT(key.byte(headerOffset+1) == 3);
+    SkASSERT(key.byte(headerOffset+1) == SkPaintParamsKey::kBlockHeaderSizeInBytes+1);
 
     SkTileMode tm = static_cast<SkTileMode>(key.byte(headerOffset+2));
 
@@ -131,21 +162,111 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace GradientShaderBlocks
 
 //--------------------------------------------------------------------------------------------------
+namespace ImageShaderBlock {
+
+inline static constexpr int kTileModeBits = 2;
+inline static constexpr int kTileModeMask = 0x3;
+
+static const int kXTileModeShift = 0;
+static const int kYTileModeShift = kTileModeBits;
+
+ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
+    CodeSnippetID id = read_code_snippet_id(key, headerOffset);
+    SkASSERT(id == CodeSnippetID::kImageShader);
+    SkASSERT(key.byte(headerOffset+1) == SkPaintParamsKey::kBlockHeaderSizeInBytes+1);
+
+    uint8_t byte = key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes);
+
+    SkTileMode tmX = (SkTileMode) (((byte) >> kXTileModeShift) & kTileModeMask);
+    SkTileMode tmY = (SkTileMode) (((byte) >> kYTileModeShift) & kTileModeMask);
+
+    return { tmX, tmY };
+}
+
+void AddToKey(SkBackend backend, SkPaintParamsKey* key, const ImageData& imgData) {
+
+    if (backend == SkBackend::kGraphite) {
+        int headerOffset = key->beginBlock(CodeSnippetID::kImageShader);
+
+        uint8_t byte = ((uint8_t) imgData.fTileModes[0] << kXTileModeShift) |
+                       ((uint8_t) imgData.fTileModes[1] << kYTileModeShift);
+
+        key->addByte(byte);
+
+        key->endBlock(headerOffset, CodeSnippetID::kImageShader);
+
+        SkASSERT(imgData == ExtractFromKey(*key, headerOffset));
+    } else {
+        // TODO: add implementation for other backends
+        SolidColorShaderBlock::AddToKey(backend, key);
+    }
+}
+
+#ifdef SK_DEBUG
+void Dump(const SkPaintParamsKey& key, int headerOffset) {
+    auto [id, blockSize] = key.readCodeSnippetID(headerOffset);
+    SkASSERT(id == CodeSnippetID::kImageShader);
+
+    ImageData imgData = ExtractFromKey(key, headerOffset);
+
+    SkDebugf("kImageShader: tileModes(%s, %s) ",
+             SkTileModeToStr(imgData.fTileModes[0]),
+             SkTileModeToStr(imgData.fTileModes[1]));
+}
+#endif
+
+} // namespace ImageShaderBlock
+
+//--------------------------------------------------------------------------------------------------
+namespace BlendShaderBlock {
+
+void AddToKey(SkBackend backend, SkPaintParamsKey *key, const BlendData& blendData) {
+
+    int headerOffset = key->beginBlock(CodeSnippetID::kBlendShader);
+
+    add_blendmode_to_key(key, blendData.fBM);
+    as_SB(blendData.fDst)->addToKey(nullptr, backend, key);
+    int firstShader = key->sizeInBytes();
+    as_SB(blendData.fSrc)->addToKey(nullptr, backend, key);
+    int secondShader = key->sizeInBytes();
+
+    key->endBlock(headerOffset, CodeSnippetID::kBlendShader);
+
+//    validate_block_header(*key, headerOffset,
+//                          CodeSnippetID::kBlendShader, kBlockDataSize);
+}
+
+#ifdef SK_DEBUG
+void Dump(const SkPaintParamsKey&, int headerOffset) {
+
+}
+#endif
+
+} // namespace BlendShaderBlock
+
+//--------------------------------------------------------------------------------------------------
 namespace BlendModeBlock {
 
+static const int kBlockDataSize = 1;
+
 void AddToKey(SkBackend backend, SkPaintParamsKey *key, SkBlendMode bm) {
+
     int headerOffset = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
-
-    key->addByte(static_cast<uint8_t>(bm));
-
+    add_blendmode_to_key(key, bm);
     key->endBlock(headerOffset, CodeSnippetID::kSimpleBlendMode);
+
+    validate_block_header(*key, headerOffset,
+                          CodeSnippetID::kSimpleBlendMode, kBlockDataSize);
 }
 
 #ifdef SK_DEBUG
 SkBlendMode ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
-    SkASSERT(key.byte(headerOffset) == (uint8_t) CodeSnippetID::kSimpleBlendMode);
-    SkASSERT(key.byte(headerOffset+1) == 3);
-    return static_cast<SkBlendMode>(key.byte(headerOffset+2));
+    validate_block_header(key, headerOffset,
+                          CodeSnippetID::kSimpleBlendMode, kBlockDataSize);
+
+    uint8_t data = key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes);
+    SkASSERT(data <= static_cast<int>(SkBlendMode::kLastMode));
+    return static_cast<SkBlendMode>(data);
 }
 
 void Dump(const SkPaintParamsKey& key, int headerOffset) {
