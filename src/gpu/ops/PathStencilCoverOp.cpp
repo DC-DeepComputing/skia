@@ -270,10 +270,10 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
 
     if (fCoverBBoxProgram) {
         size_t instanceStride = fCoverBBoxProgram->geomProc().instanceStride();
-        VertexWriter vertexWriter = flushState->makeVertexSpace(instanceStride,
-                                                                fPathCount,
-                                                                &fBBoxBuffer,
-                                                                &fBBoxBaseInstance);
+        VertexWriter vertexWriter = flushState->makeVertexWriter(instanceStride,
+                                                                 fPathCount,
+                                                                 &fBBoxBuffer,
+                                                                 &fBBoxBaseInstance);
         SkDEBUGCODE(int pathCount = 0;)
         for (auto [pathMatrix, path, color] : *fPathDrawList) {
             SkDEBUGCODE(auto end = vertexWriter.makeOffset(instanceStride));
