@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e37152_8ee175fb",
+        "filename": "tests/JSONTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T15:07:41Z",
+      "side": 1,
+      "message": "I couldn\u0027t find any existing unit tests which verified the non-short-string case.",
+      "range": {
+        "startLine": 195,
+        "startChar": 19,
+        "endLine": 195,
+        "endChar": 38
+      },
+      "revId": "96d9cf18db96dbe52ae12dcf4a28ed0f9f4f86ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
