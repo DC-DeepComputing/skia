@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec2a28b4_1f208443",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-19T19:29:42Z",
+      "side": 1,
+      "message": "In this case the codeSnippetID could be any one of the gradient shaders. This should break up later on and then validate_block_header can be used.",
+      "parentUuid": "512c9ffa_ffe010d2",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 71
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af6629f2_49f802f6",
         "filename": "src/core/SkKeyHelpers.cpp",
         "patchSetId": 10
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d43373d2_d5e26338",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-19T19:29:42Z",
+      "side": 1,
+      "message": "As discussed offline, I\u0027ve gone with to_blendmode and to_tilemode helpers that just take a byte and check for castability. For now, the caller will just access the appropriate byte themselves.",
+      "parentUuid": "af6629f2_49f802f6",
+      "range": {
+        "startLine": 205,
+        "startChar": 40,
+        "endLine": 205,
+        "endChar": 94
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9082216e_1014972c",
         "filename": "src/core/SkKeyHelpers.h",
         "patchSetId": 10
@@ -77,6 +125,30 @@
       "writtenOn": "2022-01-19T18:31:57Z",
       "side": 1,
       "message": "nit: Can we name it GradientData? I\u0027m not aware of other places that use \"Grad\" shortening.",
+      "range": {
+        "startLine": 45,
+        "startChar": 11,
+        "endLine": 45,
+        "endChar": 20
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b89b3a2_29e9e5e4",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-19T19:29:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9082216e_1014972c",
       "range": {
         "startLine": 45,
         "startChar": 11,
