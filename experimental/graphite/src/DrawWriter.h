@@ -191,6 +191,280 @@ private:
     void drawPendingVertices();
 };
 
+class DrawWriter3 {
+public:
+    class Vertices : private Appender {
+    public:
+        explicit Vertices(DrawWriter3& w) : Appender(w, true) {
+            w.setMode(w.fVertices, {}, {}, 0);
+        }
+
+        void reserve(unsigned int count) { this->Appender::reserve(count); }
+
+        VertexWriter append(unsigned int count) { return this->Appender::append(count); }
+    };
+
+    class PseudoInstances : private Appender {
+    public:
+        PseudoInstances(DrawWriter3& w,
+                        BindBufferInfo indices,
+                        unsigned int vertexCount,
+                        unsigned int maxInstances)
+                : Appender(w, true)
+                , fMaxVertices(vertexCount * maxInstances) {
+            SkASSERT(vertexCount > 0 && maxInstances > 0);
+            w.setMode(w.fVertices, {}, indices, vertexCount);
+        }
+
+        void reserve(unsigned int count) {
+            unsigned int newVerts = this->vertexCount(count);
+            this->flushIfNeeded(newVerts);
+            this->Appender::reserve(newVerts);
+        }
+
+        VertexWriter append(unsigned int count) {
+            unsigned int newVerts = this->vertexCount(count);
+            this->flushIfNeeded(newVerts);
+            return this->Appender::append(newVerts);
+        }
+
+    private:
+        unsigned int vertexCount(unsigned int instanceCount) const {
+            unsigned int vertexCount = fWriter.fTemplateCount * instanceCount;
+            SkASSERT(vertexCount <= fMaxVertices);
+            return vertexCount;
+        }
+
+        void flushIfNeeded(unsigned int newVerts) {
+            if (fWriter.fPendingCount + newVerts > fMaxVertices) {
+                fWriter.flush();
+            }
+        }
+
+        unsigned int fMaxVertices;
+    };
+
+    class Instances : private Appender {
+        Instances(DrawWriter3& w,
+                  BindBufferInfo vertices,
+                  BindBufferInfo indices,
+                  unsigned int vertexCount)
+                : Appender(w, false) {
+            SkASSERT(vertexCount > 0);
+            w.setMode(vertices, w.fInstances, indices, vertexCount);
+        }
+
+        void reserve(unsigned int count) { this->Appender::reserve(count); }
+
+        VertexWriter append(unsigned int count) { return this->Appender::append(count); }
+    };
+
+    class DynamicInstances {
+        DynamicInstances(DrawWriter3& w,
+                         BindBufferInfo vertices,
+                         BindBufferInfo indices)
+                : Appender(w, false) {
+            w.setMode(vertices, w.fInstances, indices, -1);
+        }
+
+        void reserve(unsigned int count) { this->Appender::reserve(count); }
+
+        VertexWriter append(unsigned int vertexCount, unsigned int instanceCount) {
+            SkASSERT(vertexCount > 0);
+            VertexWriter newInstances = this->Appender::append(instanceCount);
+            fWriter.fTemplateCount = std::min(fWriter.fTemplateCount, -vertexCount - 1);
+        }
+    };
+
+    void draw(BindBufferInfo vertices, unsigned int count) {
+        this->setMode(vertices, {}, {}, 0);
+        fPendingBase = 0;
+        fPendingCount = count;
+        this->flush();
+    }
+
+    void drawIndexed(BindBufferInfo vertices, BindBufferInfo indices, unsigned int count) {
+        this->setMode(vertices, {}, indices, 0);
+        fPendingBase = 0;
+        fPendingCount = count;
+        this->flush();
+    }
+
+    void drawInstanced(BindBufferInfo vertices, unsigned int vertexCount, BindBufferInfo instances, unsigned int count) {
+        this->setMode(vertices, instances, {}, vertexCount);
+        fPendingBase = 0;
+        fPendingCount = count;
+        this->flush();
+    }
+
+    void drawIndexedInstanced(BindBufferInfo vertices, BindBufferInfo indices, unsigned int vertexCount, BindBufferInfo instances, unsigned int count) {
+        this->setMode(vertices, instances, indices, vertexCount);
+        fPendingBase = 0;
+        fPendingCount = count;
+        this->flush();
+    }
+
+    void newDynamicState() { this->flush(); }
+
+    void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
+        this->flush();
+
+        fPrimitiveType = type;
+        fVertexStride = vertexStride;
+        fInstanceStride = instanceStride;
+
+        fPendingBase = 0;
+        SkASSERT(fPendingCount == 0);
+    }
+
+private:
+    // Pipeline state
+    PrimitiveType fPrimitiveType;
+    size_t fVertexStride;
+    size_t fInstanceStride;
+
+    // Draw buffer binding state for pending draws
+    BindBufferInfo fVertices;
+    BindBufferInfo fIndices;
+    BindBufferInfo fInstances;
+    // Sign-encoded vertex/index count for [pseudo]-instanced rendering.
+    // == 0 is vertex-only drawing; > 0 is regular or pseudo-instanced drawing; < 0 is the current
+    // vertex count for dynamic instances, as (-count - 1).
+    int fTemplateCount;
+
+    unsigned int fPendingCount; // # of vertices or instances (depending on mode) to be drawn
+    unsigned int fPendingBase; // vertex/instance offset (depending on mode) applied to buffer
+    bool fPendingBufferBinds; // true if {fVertices,fIndices,fInstances} has changed since last draw
+
+    void setMode(BindBufferInfo vertices, BindBufferInfo instances, BindBufferInfo indices,
+                 int vertexCount) {
+        if (vertices != fVertices || instances != fInstances || fIndices != indices) {
+            if (fPendingCount > 0) {
+                this->flush();
+            }
+
+            bool willAppendVertices = vertexCount == 0;
+            bool isAppendingVertices = fTemplatecount == 0;
+            if (willAppendVertices != isAppendingVertices ||
+                (isAppendingVertices && fVertices != vertices) ||
+                (!isAppendingVertices && fInstances != instances)) {
+                // The buffer binding target for appended data is changing, so reset the base offset
+                fPendingBase = 0;
+            }
+
+            fVertices = vertices;
+            fInstances = instances;
+            fIndices = indices;
+
+            fTemplateCount = vertexCount;
+
+            fPendingBufferBinds = true;
+        } else if (vertexCount < 0 && fTemplateCount >= 0) || (vertexCount >= 0 && vertexCount != fTemplateCount)) {
+            if (fPendingCount > 0) {
+                this->flush();
+            }
+            if ((vertexCount == 0) != (fTemplateCount == 0)) {
+                // Switching from appending vertices to instances, or vice versa, so the pending
+                // base vertex for appended data is invalid
+                fPendingBase = 0;
+            }
+            fTemplateCount = vertexCount;
+        }
+
+        SkASSERT(fVertices == vertices);
+        SkASSERT(fInstances == instances);
+        SkASSERT(fIndices == indices);
+        SkASSERT((vertexCount < 0) == (fTemplateCount < 0));
+        SkASSERT((fTemplateCount < 0 && vertexCount == -1) || (fTemplateCount >= 0 && fTemplateCount == vertexCount));
+    }
+
+    void flush() {
+        if (fPendingCount == 0) {
+            return;
+        }
+        if (fPendingBufferBinds) {
+            fDispatcher->bindDrawBuffers(fVertices, fInstances, fIndices);
+            fPendingBufferBinds = false;
+        }
+
+        if (fTemplateCount == 0) {
+            SkASSERT(!fIndices && !fInstances && fMaxCount == 0);
+            fDispatcher->draw(fPrimitiveType, fPendingBaseVertex, fPendingCount);
+        } else if (fMaxCount > 0) {
+            SkASSERT(fPendingCount <= fMaxCount && !fInstances);
+            fDispatcher->drawIndexed(fPrimitiveType, 0, fPendingCount, fPendingBaseVertex);
+        } else {
+            unsigned int vertexCount;
+            if (fTemplateCount < 0) {
+                vertexCount = -fTemplateCount - 1;
+                fTemplateCount = -1; // reset to re-accumulate max count for next flush
+            } else {
+                vertexCount = fTemplateCount;
+            }
+            if (fIndices) {
+                fDispatcher->drawIndexedInstanced(fPrimitiveType, 0, vertexCount, 0, fPendingBaseVertex, fPendingCount);
+            } else {
+                fDispatcher->drawInstanced(fPrimitiveType, 0, vertexCount, fPendingBaseVertex, fPendingCount);
+            }
+        }
+
+        fPendingBase += fPendingCount;
+        fPendingCount = 0;
+    }
+
+    class Appender {
+    public:
+        Appender(DrawWriter& w, bool appendToVertices) : fWriter(w), fTargetBinding(appendToVertices ? fWriter.fVertices : fWriter.fInstances), fTargetStride(appendToVertices ? fWriter.fVertexStride : fWriter.fInstanceStride) {}
+        ~Appender() {
+            if (fReservedCount > 0) {
+                fWriter.fManager.returnVertices(fReserveCount * fTargetStride);
+            }
+        }
+
+        void reserve(unsigned int count) {
+            if (fReservedCount >= count) {
+                return;
+            } else if (fReservedCount > 0) {
+                // Have contiguous bytes that can't satisfy request, so return them in the event the
+                // DBM has additional contiguous bytes after the prior reserved range.
+                fWriter.fManager.returnVertices(fReservedCount * fTargetStride);
+            }
+
+            fReservedCount = count;
+            auto [fReservedWriter, reservedChunk] = fWriter.fManager->getVertexWriter(count * fTargetStride);
+            if (reservedChunk.fBuffer != fTargetBinding.fBuffer ||
+                reservedChunk.fOffset != fTargetBinding.fOffset + (fWriter.fPendingBase + fWriter.fPendingCount) * fTargetStride) {
+            if (writer != fReservedWriter) {
+                // Not contiguous, so must update the binding
+                fWriter.flush();
+                fTargetBinding = reservedChunk;
+                fWriter.fPendingBase = 0;
+                fWriter.fPendingBufferBinds = true;
+                fReservedWriter = std::move(writer);
+            }
+        }
+
+        VertexWriter append(unsigned int count) {
+            SkASSERT(count > 0);
+            this->reserve(count);
+
+            SkASSERT(fReservedCount >= count);
+            fReservedCount -= count;
+            fWriter.fPendingCount += count;
+            return std::exchange(fReservedWriter, fReservedWriter.makeOffset(count * fTargetStride));
+        }
+
+    private:
+        DrawWriter& fWriter;
+        BindBufferInfo& fTargetBinding;
+        size_t fTargetStride;
+
+        unsigned int fReservedCount;
+        VertexWriter fReservedWriter;
+    };
+
+};
+
 // Mirrors the CommandBuffer API, since a DrawWriter is meant to aggregate and then map onto
 // CommandBuffer commands, although these are virtual to allow for recording to intermediate
 // storage before a CommandBuffer is available.
