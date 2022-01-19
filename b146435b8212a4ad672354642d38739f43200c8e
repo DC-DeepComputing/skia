@@ -16,6 +16,52 @@
       "message": "More of the same, PTAL.",
       "revId": "b146435b8212a4ad672354642d38739f43200c8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd1618a7_f30f1eb1",
+        "filename": "src/utils/SkPolyUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T21:07:17Z",
+      "side": 1,
+      "message": "Assuming that bounds is already sorted, could drop the abs?\n\nAlso SkRectPriv::HalfWidth/HalfHeight are available that do the halving before the subtraction to avoid overflow. I\u0027m not sure if that is a scenario we want to guard against here, since the fuzzer could come up with large bounds?",
+      "range": {
+        "startLine": 1182,
+        "startChar": 26,
+        "endLine": 1182,
+        "endChar": 62
+      },
+      "revId": "b146435b8212a4ad672354642d38739f43200c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b489887d_a0102453",
+        "filename": "src/utils/SkPolyUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T21:07:17Z",
+      "side": 1,
+      "message": "I can see where this is ensured in the fuzzer itself, but it looks like the use in shadow tessellator uses the local path bounds to limit the inset value (which also seems like it should limit it to half bounds, unless we want the offsetting to fail in that case).\n\nAre there other limits to the inset/outset (like the height function or Z) that ensure that this is safe? If it\u0027s hoping that callers don\u0027t give us junk input, I\u0027ve never been that lucky when it came to blurs and image filters :P\n\nI\u0027m wondering if we should move this into an if and return false?",
+      "range": {
+        "startLine": 1187,
+        "startChar": 4,
+        "endLine": 1187,
+        "endChar": 48
+      },
+      "revId": "b146435b8212a4ad672354642d38739f43200c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
