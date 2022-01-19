@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adc2c4a7_847e68a7",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T20:55:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ec2a28b4_1f208443",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 71
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af6629f2_49f802f6",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "As discussed offline, I\u0027ve gone with to_blendmode and to_tilemode helpers that just take a byte and check for castability. For now, the caller will just access the appropriate byte themselves.",
       "parentUuid": "af6629f2_49f802f6",
+      "range": {
+        "startLine": 205,
+        "startChar": 40,
+        "endLine": 205,
+        "endChar": 94
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d48134fa_838efc9e",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T20:55:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d43373d2_d5e26338",
       "range": {
         "startLine": 205,
         "startChar": 40,
