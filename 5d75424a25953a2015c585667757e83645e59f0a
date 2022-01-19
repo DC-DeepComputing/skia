@@ -16,6 +16,24 @@
       "message": "This may need a little more polish and minor tweaks to get the bots to green, but can I ask you to do an initial review of this, Ben? Thank you in advance.",
       "revId": "5d75424a25953a2015c585667757e83645e59f0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f05d8b7f_52acf853",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-01-19T18:29:34Z",
+      "side": 1,
+      "message": "I am hoping to find out if this matches what we had discussed regarding changes: now makeFromStreamArgs() and makeClone() worked and resolving moved to the scanner, scanFont adapted accordingly.",
+      "parentUuid": "ff21251e_a22db0e5",
+      "revId": "5d75424a25953a2015c585667757e83645e59f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
