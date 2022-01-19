@@ -254,7 +254,33 @@ static void show_usage() {
            "\n"
            "Allowed flags:\n"
            "--settings:   honor embedded /*#pragma settings*/ comments.\n"
-           "--nosettings: ignore /*#pragma settings*/ comments\n");
+           "--nosettings: ignore /*#pragma settings*/ comments\n"
+           "--test:       perform internal tests using the specified input\n");
+}
+
+// Test that programs are unchanged by cloning
+static void test_idempotence(SkSL::ProgramKind kind, const SkSL::String& text,
+        const SkSL::ShaderCaps& caps, const SkSL::Program::Settings& settings) {
+    SkSL::Compiler compiler(&caps);
+    std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, text, settings);
+    if (!program) {
+        printf("Skipping tests because of errors in input\n");
+        return;
+    }
+    SkSL::String original = program->description();
+
+    std::vector<std::unique_ptr<SkSL::ProgramElement>> clonedElements;
+    for (const std::unique_ptr<SkSL::ProgramElement>& element : program->fOwnedElements) {
+        clonedElements.push_back(element->clone());
+    }
+    SkSL::Program clone(/*source=*/nullptr, /*config=*/nullptr, program->fContext,
+            std::move(clonedElements), program->fSharedElements, /*modifiers=*/nullptr,
+            program->fSymbols, /*pool=*/nullptr, program->fInputs);
+    if (clone.description() != original) {
+        printf("Cloned program does not match original!\n\nOriginal:\n%s\n\nClone:\n%s\n",
+                program->description().c_str(), original.c_str());
+        SK_ABORT();
+    }
 }
 
 static bool set_flag(skstd::optional<bool>* flag, const char* name, bool value) {
@@ -271,6 +297,7 @@ static bool set_flag(skstd::optional<bool>* flag, const char* name, bool value) 
  */
 ResultCode processCommand(const std::vector<SkSL::String>& args) {
     skstd::optional<bool> honorSettings;
+    skstd::optional<bool> test;
     std::vector<SkSL::String> paths;
     for (size_t i = 1; i < args.size(); ++i) {
         const SkSL::String& arg = args[i];
@@ -282,6 +309,10 @@ ResultCode processCommand(const std::vector<SkSL::String>& args) {
             if (!set_flag(&honorSettings, "settings", false)) {
                 return ResultCode::kInputError;
             }
+        } else if (arg == "--test") {
+            if (!set_flag(&test, "test", true)) {
+                return ResultCode::kInputError;
+            }
         } else if (!arg.starts_with("--")) {
             paths.push_back(arg);
         } else {
@@ -289,17 +320,20 @@ ResultCode processCommand(const std::vector<SkSL::String>& args) {
             return ResultCode::kInputError;
         }
     }
-    if (paths.size() != 2) {
+    if (!honorSettings.has_value()) {
+        honorSettings = true;
+    }
+    if (!test.has_value()) {
+        test = false;
+    }
+    // we need two paths, unless --test has been specified, in which case we also accept just one
+    if (paths.size() != 2 && (paths.size() != 1 || !*test)) {
         show_usage();
         return ResultCode::kInputError;
     }
 
-    if (!honorSettings.has_value()) {
-        honorSettings = true;
-    }
-
     const SkSL::String& inputPath = paths[0];
-    const SkSL::String& outputPath = paths[1];
+    const SkSL::String& outputPath = paths.size() > 1 ? paths[1] : "";
     SkSL::ProgramKind kind;
     if (inputPath.ends_with(".vert")) {
         kind = SkSL::ProgramKind::kVertex;
@@ -333,6 +367,13 @@ ResultCode processCommand(const std::vector<SkSL::String>& args) {
         if (!detect_shader_settings(text, &settings, &caps, &debugTrace)) {
             return ResultCode::kInputError;
         }
+    }
+    if (*test) {
+        test_idempotence(kind, text, *caps, settings);
+    }
+    if (outputPath == "") {
+        SkASSERT(*test);
+        return ResultCode::kSuccess;
     }
 
     // This tells the compiler where the rt-flip uniform will live should it be required. For

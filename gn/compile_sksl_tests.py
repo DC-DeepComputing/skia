@@ -54,6 +54,7 @@ if settings != "--settings" and settings != "--nosettings":
 
 targets = []
 worklist = tempfile.NamedTemporaryFile(suffix='.worklist', delete=False, mode='w')
+settings += "\n--test"
 
 # The `inputs` array pairs off input files with their matching output directory, e.g.:
 #     //skia/tests/sksl/shared/test.sksl
@@ -69,7 +70,7 @@ for input, targetDir in pairwise(inputs):
         os.mkdir(targetDir)
 
     target = os.path.join(targetDir, tail)
-    if settings == "--nosettings":
+    if "--nosettings" in settings:
         target += "StandaloneSettings"
 
     targets.append(target)
