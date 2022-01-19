@@ -16,6 +16,75 @@
       "message": "add_blendmode_to_key and read_blendmode_from_key will be used in more places in a follow up CL",
       "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "512c9ffa_ffe010d2",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T18:31:57Z",
+      "side": 1,
+      "message": "validate_block_header?",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 71
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6629f2_49f802f6",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T18:31:57Z",
+      "side": 1,
+      "message": "This addition is coming up in both the blendmode and tile mode reading. Wdyt about having helper function that returns key.byte(headerOffset+kBLockHeaderSizeInbytes) and then the read_blendmode etc. work off that byte*?",
+      "range": {
+        "startLine": 205,
+        "startChar": 40,
+        "endLine": 205,
+        "endChar": 94
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9082216e_1014972c",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T18:31:57Z",
+      "side": 1,
+      "message": "nit: Can we name it GradientData? I\u0027m not aware of other places that use \"Grad\" shortening.",
+      "range": {
+        "startLine": 45,
+        "startChar": 11,
+        "endLine": 45,
+        "endChar": 20
+      },
+      "revId": "1b5d4cf2bb613bd2842068809a5e594af9dc1939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
