@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b07c884_aca38f73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T19:52:35Z",
+      "side": 1,
+      "message": "Honestly after doing this review, I think we would be better served to have this as a unit test in dm. Putting test-specific code into skslc feels wrong. But it seems like a test like this could fit neatly into SkSLTest.cpp. We\u0027ve got test_cpu and test_gpu in there, test_clone would work too. It would need to be structured slightly differently (can\u0027t use test_one_permutation) but it will probably be a  tighet/simpler CL overall.",
+      "revId": "dafef95a928787cc667d1d15b3898f6e39bac379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da3e1272_91855fd5",
+        "filename": "gn/compile_sksl_tests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T19:52:35Z",
+      "side": 1,
+      "message": "Feels unnecessary to jam two things into `settings`, and it forces ripple effects elsewhere in the code. I think it\u0027d be clearer to just change each of the trailing worklist.write lines to\n\n        worklist.write(settings + \"\\n\");\n        worklist.write(\"--test\\n\\n\");",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 22
+      },
+      "revId": "dafef95a928787cc667d1d15b3898f6e39bac379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05746f4a_b6f89a33",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T19:52:35Z",
+      "side": 1,
+      "message": "This is fine, but you can make it smaller if you want:\n\n  honorSettings \u003d honorSettings.value_or(true);\n  test \u003d test.value_or(false);",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 318,
+        "endChar": 5
+      },
+      "revId": "dafef95a928787cc667d1d15b3898f6e39bac379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db502cc0_acac0826",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T19:52:35Z",
+      "side": 1,
+      "message": "I think it would be simpler to understand if we just added a second empty path when it is needed, rather than working around its absence in multiple places:\n\n  // if --test has been specified, the output path is optional.\n  if (*test \u0026\u0026 paths.size() \u003d\u003d 1) {\n    paths.push_back(\"\");\n  }\n  \nThen you can leave L320 and L326 as before.",
+      "range": {
+        "startLine": 320,
+        "startChar": 4,
+        "endLine": 320,
+        "endChar": 61
+      },
+      "revId": "dafef95a928787cc667d1d15b3898f6e39bac379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dc56dda_de0fc57b",
+        "filename": "src/sksl/SkSLMain.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T19:52:35Z",
+      "side": 1,
+      "message": "nit: undo whitespace removal?",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 6
+      },
+      "revId": "dafef95a928787cc667d1d15b3898f6e39bac379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
