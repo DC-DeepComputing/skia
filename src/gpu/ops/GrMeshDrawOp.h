@@ -61,7 +61,7 @@ protected:
         void recordDraw(GrMeshDrawTarget*, const GrGeometryProcessor*,
                         const GrSurfaceProxy* const primProcProxies[]) const;
 
-        void* vertices() const { return fVertices; }
+        void* vertices() { return fVertices; }
         GrSimpleMesh* mesh() { return fMesh; }
 
     protected:

@@ -233,7 +233,7 @@ DEF_PATH_TESS_BENCH(middle_out_triangulation,
                     SkMatrix::I()) {
     sk_sp<const GrBuffer> buffer;
     int baseVertex;
-    VertexWriter vertexWriter = static_cast<SkPoint*>(fTarget->makeVertexSpace(
+    VertexWriter vertexWriter =  fTarget->makeVertexWriter(
             sizeof(SkPoint), kNumCubicsInChalkboard, &buffer, &baseVertex));
     AffineMatrix m(gAlmostIdentity);
     for (PathMiddleOutFanIter it(fPath); !it.done();) {

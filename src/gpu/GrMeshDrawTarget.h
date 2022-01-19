@@ -15,7 +15,12 @@ class GrAtlasManager;
 class GrStrikeCache;
 class GrThreadSafeCache;
 
-namespace skgpu { namespace v1 { class SmallPathAtlasMgr; }}
+namespace skgpu {
+    namespace v1 { class SmallPathAtlasMgr; }
+
+    struct IndexWriter;
+    struct VertexWriter;
+} // namespace skgpu
 
 /*
  * Abstract interface that supports creating vertices, indices, and meshes, as well as
@@ -99,6 +104,17 @@ public:
     virtual void putBackVertices(int vertices, size_t vertexStride) = 0;
     virtual void putBackIndirectDraws(int count) = 0;
     virtual void putBackIndexedIndirectDraws(int count) = 0;
+
+    /** Helpers for ops that only need to use the VertexWriter to fill the data directly. */
+    skgpu::VertexWriter makeVertexWriter(size_t vertexSize, int vertexCount,
+                                         sk_sp<const GrBuffer>*, int* startVertex);
+    skgpu::IndexWriter makeIndexWriter(int indexCount, sk_sp<const GrBuffer>*, int* startIndex);
+    skgpu::VertexWriter makeVertexWriterAtLeast(size_t vertexSize, int minVertexCount,
+                                                int fallbackVertexCount, sk_sp<const GrBuffer>*,
+                                                int* startVertex, int* actualVertexCount);
+    skgpu::IndexWriter makeIndexWriter(int minIndexCount, int fallbackIndexCount,
+                                       sk_sp<const GrBuffer>*, int* startIndex,
+                                       int* actualIndexCount);
 
     GrSimpleMesh* allocMesh() { return this->allocator()->make<GrSimpleMesh>(); }
     GrSimpleMesh* allocMeshes(int n) { return this->allocator()->makeArray<GrSimpleMesh>(n); }
