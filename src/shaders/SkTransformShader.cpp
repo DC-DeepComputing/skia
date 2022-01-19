@@ -31,11 +31,7 @@ skvm::Color SkTransformShader::onProgram2(SHADER_PROGRAM_ARGS) const {
 }
 
 bool SkTransformShader::onKeyAndUniforms(SHADER_KEY_UNI_ARGS) const {
-    fProcessingAsPerspective = matrices.localToDevice().hasPerspective() ||
-                               fShader.getLocalMatrix().hasPerspective();
-
-    key->addBool(fProcessingAsPerspective, "perspective");
-    uniforms->pushPtr(&fMatrixStorage);
+    this->applyKeyAndUniforms(key, uniforms, matrices.localToDevice());
     SkMatrixProvider matrixProvider{SkMatrix::I()};
     return fShader.keyAndUniforms(key, uniforms, matrixProvider, localM, dstInfo, alloc);
 }
@@ -89,6 +85,14 @@ skvm::Coord SkTransformShader::applyMatrix(
     }
 
     return {x, y};
+}
+
+void SkTransformShader::applyKeyAndUniforms(SkKeyBuilder* key,
+                                            skvm::UniformsData* uniforms,
+                                            const SkMatrix& matrix) const {
+    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    key->addBool(fProcessingAsPerspective, "perspective");
+    uniforms->pushPtr(&fMatrixStorage);
 }
 
 void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const {

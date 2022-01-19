@@ -320,12 +320,7 @@ public:
 
 // TODO: use the SkStageUpdater as an interface until all the code is converted over to use
 //       SkUpdatableShader.
-class SkUpdatableShader : public SkShaderBase, public SkStageUpdater {
-private:
-    // For serialization.  This will never be called.
-    Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
-};
+class SkUpdatableShader : public SkShaderBase, public SkStageUpdater {};
 
 inline SkShaderBase* as_SB(SkShader* shader) {
     return static_cast<SkShaderBase*>(shader);

@@ -106,7 +106,7 @@ private:
     bool isOpaque() const override { return fIsOpaque; }
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
+    const char* getTypeName() const override { return "TriColorShader"; }
 
     // If fUsePersp, we need both of these matrices,
     // otherwise we can combine them, and only use fM43

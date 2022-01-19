@@ -32,14 +32,22 @@ public:
     skvm::Coord applyMatrix(
             skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
             skvm::Uniforms* uniforms) const;
+    void appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const;
+
     skvm::Coord applyMatrix(
             skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
             skvm::UniformsAllocator* uniforms) const;
-    void appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const;
+    void applyKeyAndUniforms(SkKeyBuilder* key,
+                             skvm::UniformsData* uniforms,
+                             const SkMatrix& matrix) const;
 
     // Change the values represented by the uniforms in fMatrix.
     bool update(const SkMatrix& ctm) const override;
     bool onAppendStages(const SkStageRec& rec) const override;
+
+    // For serialization. This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return "TransformShader"; }
 
 private:
     const SkShaderBase& fShader;

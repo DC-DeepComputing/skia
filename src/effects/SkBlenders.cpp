@@ -70,12 +70,11 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
 }
 
 bool SkBlenderBase::keyAndUniforms(BLENDER_KEY_UNI_ARGS) const {
-    // Use the factory pointer as our type identifier.
-    // TODO(skia:12824): Replace this with something stable and cheaper. Avoid needing to create
-    // factory functions for each 
-    auto factory = this->getFactory();
-    SkASSERT(factory);
-    key->addBytes(sizeof(factory), &factory, "factory");
+    // Use the type name (pointer) as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper.
+    const char* typeName = this->getTypeName();
+    SkASSERT(typeName);
+    key->addBytes(sizeof(typeName), &typeName, typeName);
 
     return this->onKeyAndUniforms(key, uniforms, dstInfo, alloc);
 }
