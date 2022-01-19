@@ -56,6 +56,29 @@
       },
       "revId": "d00afe144a77359f07262662b80cfd6e2e72af08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def685e5_4ce57b94",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 4233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-19T14:44:41Z",
+      "side": 1,
+      "message": "Another question, currently in our code the check for IceLake is:\n\"if (intelNumber \u003e\u003d 910 \u0026\u0026 intelNumber \u003c\u003d 950)\" (in GrGLUtil.cpp). Is this check correct? Looking online I can\u0027t figure out where we got these numbers from and if that\u0027s the right thing to do. Like for gen12 devices it looks like we should be looking for chips with values in the 7** range which matches closer to our values for other generations.\n\nIs there something else we could look at in the intel GL string to determine this?\n\nAlso what should we be doing for Vulkan? I assume we want to enable msaa for gen 11 and 12 there, but what is the best thing to check in the vulkan properties to tell us this?",
+      "range": {
+        "startLine": 4233,
+        "startChar": 44,
+        "endLine": 4233,
+        "endChar": 57
+      },
+      "revId": "d00afe144a77359f07262662b80cfd6e2e72af08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
