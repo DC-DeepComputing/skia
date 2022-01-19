@@ -33,6 +33,29 @@
       "message": "Friendly ping, egdaniel@.",
       "revId": "d00afe144a77359f07262662b80cfd6e2e72af08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b243a67d_241ae63b",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 4233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-19T14:32:17Z",
+      "side": 1,
+      "message": "As we figure out our testing of this, can we add a GrContextOptions::fAllowMSAAOnNewerIntel member. I would default that value to false and then I would change the check here to be,\n\nif ((ctxInfo.vendor() \u003d\u003d GrGLVendor::kIntel ||\n     ctxInfo.angleVendor() \u003d\u003d GrGLVendor::kIntel) \u0026\u0026\n     (ctxInfo.renderer() \u003c GrGLRenderer::kIntelIceLake || \n      !options.fAllowMSAAOnNewerIntel)) {...}\n\nThis will give us an easy runtime flag to enable msaa support to enable experiments with.",
+      "range": {
+        "startLine": 4233,
+        "startChar": 9,
+        "endLine": 4233,
+        "endChar": 57
+      },
+      "revId": "d00afe144a77359f07262662b80cfd6e2e72af08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
