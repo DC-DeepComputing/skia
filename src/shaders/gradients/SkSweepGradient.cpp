@@ -125,10 +125,7 @@ skvm::F32 SkSweepGradient::transformT(skvm::Builder* p, skvm::UniformsAllocator*
 
 void SkSweepGradient::transformTKeyAndUniforms(SkKeyBuilder* key,
                                                skvm::UniformsData* uniforms) const {
-    bool needScaleBias = (fTScale != 1.0f && fTBias != 0.0f);
-    key->addBool(needScaleBias, "needScaleBias");
-
-    if (needScaleBias) {
+    if (key->addBool(fTScale != 1.0f || fTBias != 0.0f, "needScaleBias")) {
         uniforms->pushF(fTScale);
         uniforms->pushF(fTScale*fTBias);
     }

@@ -95,7 +95,7 @@ public:
 private:
     // For serialization.  This will never be called.
     Factory getFactory() const override { return nullptr; }
-    const char* getTypeName() const override { return nullptr; }
+    const char* getTypeName() const override { return "UpdatableColorShader"; }
 
     SkColorSpaceXformSteps fSteps;
     mutable float fValues[4];
