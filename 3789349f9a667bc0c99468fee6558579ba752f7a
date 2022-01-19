@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc54e30_15f56df3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T21:59:18Z",
+      "side": 1,
+      "message": "Nice! This looks great!",
+      "revId": "3789349f9a667bc0c99468fee6558579ba752f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52fbf20e_e2f948ce",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T21:59:18Z",
+      "side": 1,
+      "message": "We don\u0027t want the test to pass here.\n\n   ERRORF(r, \"failed to compile...\")",
+      "range": {
+        "startLine": 194,
+        "startChar": 7,
+        "endLine": 194,
+        "endChar": 8
+      },
+      "revId": "3789349f9a667bc0c99468fee6558579ba752f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b92d937_bf4c256d",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T21:59:18Z",
+      "side": 1,
+      "message": "Up to you: AFAICS we can just compare the clone of each element individually and skip assembling a fake program? \n\n    for (const std::unique_ptr\u003cSkSL::ProgramElement\u003e\u0026 element : program-\u003efOwnedElements) {\n        if (element-\u003edescription() !\u003d element-\u003eclone()-\u003edescription()) {\n           ERRORF(r, \"Cloned element...\");\n        }\n    }",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 5
+      },
+      "revId": "3789349f9a667bc0c99468fee6558579ba752f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ef0842_b1415f66",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T21:59:18Z",
+      "side": 1,
+      "message": "Let\u0027s use the Reporter:\n\n  ERRORF(r, \"Cloned program...\")",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 204,
+        "endChar": 16
+      },
+      "revId": "3789349f9a667bc0c99468fee6558579ba752f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
