@@ -11,6 +11,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyBuilder.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixProvider.h"
@@ -426,6 +427,10 @@ public:
         return fImageShader.makeKeyAndUniforms(
                 key, uniforms, matrices, localM, dstInfo, alloc, this);
     }
+
+    // For serialization. This will never be called.
+    Factory getFactory() const override { return nullptr; }
+    const char* getTypeName() const override { return "ImageTransformShader"; }
 
 private:
     const SkImageShader& fImageShader;
@@ -1034,12 +1039,386 @@ skvm::Color SkImageShader::makeProgram(
 
 skvm::Color SkImageShader::makeProgram2(SHADER_PROGRAM_ARGS,
                                         const TransformShader* coordShader) const {
-    // TODO(skia:12824)
-    return {};
+    skvm::Builder* p = builder;
+    skvm::Coord origLocal = local;
+
+    SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
+    SkMatrix baseInv;
+    if (!this->computeTotalInverse(matrices.localToDevice(), localM, &baseInv)) {
+        return {};
+    }
+    baseInv.normalizePerspective();
+
+    auto sampling = fSampling;
+    SkMipmapAccessorLite access(fImage.get(), baseInv, sampling.mipmap);
+    auto [upper, upperInv] = access.level();
+    // If we are using a coordShader, then we can't make guesses about the state of the matrix.
+    if (!sampling.useCubic && !coordShader) {
+        // TODO: can tweak_sampling sometimes for cubic too when B=0
+        if (matrices.localToDeviceHitsPixelCenters()) {
+            sampling = tweak_sampling(sampling, upperInv);
+        }
+        upperInv = tweak_inv_matrix(sampling.filter, upperInv);
+    }
+
+    SkImageInfo lowerInfo;
+    SkMatrix lowerInv;
+    SkImageInfo* lower = nullptr;
+    float lowerWeight = access.lowerWeight();
+    if (lowerWeight > 0) {
+        std::tie(lowerInfo, lowerInv) = access.lowerLevel();
+        lower = &lowerInfo;
+    }
+
+    skvm::Coord upperLocal;
+    if (coordShader != nullptr) {
+        upperLocal = coordShader->applyMatrix(p, upperInv, origLocal, uniforms);
+    } else {
+        upperLocal = SkShaderBase::ApplyMatrix2(p, upperInv, origLocal, uniforms);
+    }
+
+    // We can exploit image opacity to skip work unpacking alpha channels.
+    const bool input_is_opaque = SkAlphaTypeIsOpaque(upper.alphaType())
+                              || SkColorTypeIsAlwaysOpaque(upper.colorType());
+
+    // Each call to sample() will try to rewrite the same uniforms over and over,
+    // so remember where we start and reset back there each time.  That way each
+    // sample() call uses the same uniform offsets.
+
+    auto compute_clamp_limit = [&](/*float limit*/) {
+        // Subtract an ulp so the upper clamp limit excludes limit itself.
+        /* int bits;                 */
+        /* memcpy(&bits, &limit, 4); */
+        return p->uniformF(uniforms->push(/*bits-1*/));
+    };
+
+    // Except in the simplest case (no mips, no filtering), we reference uniforms
+    // more than once. To avoid adding/registering them multiple times, we pre-load them
+    // into a struct (just to logically group them together), based on the "current"
+    // pixmap (level of a mipmap).
+    //
+    struct Uniforms {
+        skvm::F32   w, iw, i2w,
+                    h, ih, i2h;
+
+        skvm::F32   clamp_w,
+                    clamp_h;
+
+        skvm::Uniform addr;
+        skvm::I32     rowBytesAsPixels;
+
+        skvm::PixelFormat pixelFormat;  // not a uniform, but needed for each texel sample,
+                                        // so we store it here, since it is also dependent on
+                                        // the current pixmap (level).
+    };
+
+    auto setup_uniforms = [&](const SkImageInfo& ii) -> Uniforms {
+        skvm::PixelFormat pixelFormat = skvm::SkColorType_to_PixelFormat(ii.colorType());
+        return {
+            p->uniformF(uniforms->pushF(/*     pm.width()*/)),
+            p->uniformF(uniforms->pushF(/*1.0f/pm.width()*/)), // iff tileX == kRepeat
+            p->uniformF(uniforms->pushF(/*0.5f/pm.width()*/)), // iff tileX == kMirror
+
+            p->uniformF(uniforms->pushF(/*     pm.height()*/)),
+            p->uniformF(uniforms->pushF(/*1.0f/pm.height()*/)), // iff tileY == kRepeat
+            p->uniformF(uniforms->pushF(/*0.5f/pm.height()*/)), // iff tileY == kMirror
+
+            compute_clamp_limit(/*pm. width()*/),
+            compute_clamp_limit(/*pm.height()*/),
+
+            uniforms->pushPtr(/*pm.addr()*/),
+            p->uniform32(uniforms->push(/*pm.rowBytesAsPixels()*/)),
+
+            pixelFormat,
+        };
+    };
+
+    auto sample_texel = [&](const Uniforms& u, skvm::F32 sx, skvm::F32 sy) -> skvm::Color {
+        // repeat() and mirror() are written assuming they'll be followed by a [0,scale) clamp.
+        auto repeat = [&](skvm::F32 v, skvm::F32 S, skvm::F32 I) {
+            return v - floor(v * I) * S;
+        };
+        auto mirror = [&](skvm::F32 v, skvm::F32 S, skvm::F32 I2) {
+            // abs( (v-scale) - (2*scale)*floor((v-scale)*(0.5f/scale)) - scale )
+            //      {---A---}   {------------------B------------------}
+            skvm::F32 A = v - S,
+                      B = (S + S) * floor(A * I2);
+            return abs(A - B - S);
+        };
+        switch (fTileModeX) {
+            case SkTileMode::kDecal:  /* handled after gather */ break;
+            case SkTileMode::kClamp:  /*    we always clamp   */ break;
+            case SkTileMode::kRepeat: sx = repeat(sx, u.w, u.iw);  break;
+            case SkTileMode::kMirror: sx = mirror(sx, u.w, u.i2w); break;
+        }
+        switch (fTileModeY) {
+            case SkTileMode::kDecal:  /* handled after gather */  break;
+            case SkTileMode::kClamp:  /*    we always clamp   */  break;
+            case SkTileMode::kRepeat: sy = repeat(sy, u.h, u.ih);  break;
+            case SkTileMode::kMirror: sy = mirror(sy, u.h, u.i2h); break;
+        }
+
+        // Always clamp sample coordinates to [0,width), [0,height), both for memory
+        // safety and to handle the clamps still needed by kClamp, kRepeat, and kMirror.
+        skvm::F32 clamped_x = clamp(sx, 0, u.clamp_w),
+                  clamped_y = clamp(sy, 0, u.clamp_h);
+
+        // Load pixels from pm.addr()[(int)sx + (int)sy*stride].
+        skvm::I32 index = trunc(clamped_x) +
+                          trunc(clamped_y) * u.rowBytesAsPixels;
+        skvm::Color c = gather(u.pixelFormat, u.addr, index);
+
+        // If we know the image is opaque, jump right to alpha = 1.0f, skipping work to unpack it.
+        if (input_is_opaque) {
+            c.a = p->splat(1.0f);
+        }
+
+        // Mask away any pixels that we tried to sample outside the bounds in kDecal.
+        if (fTileModeX == SkTileMode::kDecal || fTileModeY == SkTileMode::kDecal) {
+            skvm::I32 mask = p->splat(~0);
+            if (fTileModeX == SkTileMode::kDecal) { mask &= (sx == clamped_x); }
+            if (fTileModeY == SkTileMode::kDecal) { mask &= (sy == clamped_y); }
+            c.r = pun_to_F32(p->bit_and(mask, pun_to_I32(c.r)));
+            c.g = pun_to_F32(p->bit_and(mask, pun_to_I32(c.g)));
+            c.b = pun_to_F32(p->bit_and(mask, pun_to_I32(c.b)));
+            c.a = pun_to_F32(p->bit_and(mask, pun_to_I32(c.a)));
+            // Notice that even if input_is_opaque, c.a might now be 0.
+        }
+
+        return c;
+    };
+
+    auto sample_level = [&](const SkImageInfo& ii, const SkMatrix& inv, skvm::Coord local) {
+        const Uniforms u = setup_uniforms(ii);
+
+        if (sampling.useCubic) {
+            // All bicubic samples have the same fractional offset (fx,fy) from the center.
+            // They're either the 16 corners of a 3x3 grid/ surrounding (x,y) at (0.5,0.5) off-center.
+            skvm::F32 fx = fract(local.x + 0.5f),
+                      fy = fract(local.y + 0.5f);
+            skvm::F32 wx[4],
+                      wy[4];
+
+            /* SkM44 weights = CubicResamplerMatrix(sampling.cubic.B, sampling.cubic.C); */
+
+            auto dot = [](const skvm::F32 a[], const skvm::F32 b[]) {
+                return a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3];
+            };
+            const skvm::F32 tmpx[] =  { p->splat(1.0f), fx, fx*fx, fx*fx*fx };
+            const skvm::F32 tmpy[] =  { p->splat(1.0f), fy, fy*fy, fy*fy*fy };
+
+            for (int row = 0; row < 4; ++row) {
+                /* SkV4 r = weights.row(row); */
+                skvm::F32 ru[] = {
+                    p->uniformF(uniforms->pushF(/*r[0]*/)),
+                    p->uniformF(uniforms->pushF(/*r[1]*/)),
+                    p->uniformF(uniforms->pushF(/*r[2]*/)),
+                    p->uniformF(uniforms->pushF(/*r[3]*/)),
+                };
+                wx[row] = dot(ru, tmpx);
+                wy[row] = dot(ru, tmpy);
+            }
+
+            skvm::Color c;
+            c.r = c.g = c.b = c.a = p->splat(0.0f);
+
+            skvm::F32 sy = local.y - 1.5f;
+            for (int j = 0; j < 4; j++, sy += 1.0f) {
+                skvm::F32 sx = local.x - 1.5f;
+                for (int i = 0; i < 4; i++, sx += 1.0f) {
+                    skvm::Color s = sample_texel(u, sx,sy);
+                    skvm::F32   w = wx[i] * wy[j];
+
+                    c.r += s.r * w;
+                    c.g += s.g * w;
+                    c.b += s.b * w;
+                    c.a += s.a * w;
+                }
+            }
+            return c;
+        } else if (sampling.filter == SkFilterMode::kLinear) {
+            // Our four sample points are the corners of a logical 1x1 pixel
+            // box surrounding (x,y) at (0.5,0.5) off-center.
+            skvm::F32 left   = local.x - 0.5f,
+                      top    = local.y - 0.5f,
+                      right  = local.x + 0.5f,
+                      bottom = local.y + 0.5f;
+
+            // The fractional parts of right and bottom are our lerp factors in x and y respectively.
+            skvm::F32 fx = fract(right ),
+                      fy = fract(bottom);
+
+            return lerp(lerp(sample_texel(u, left,top   ), sample_texel(u, right,top   ), fx),
+                        lerp(sample_texel(u, left,bottom), sample_texel(u, right,bottom), fx), fy);
+        } else {
+            SkASSERT(sampling.filter == SkFilterMode::kNearest);
+            return sample_texel(u, local.x,local.y);
+        }
+    };
+
+    skvm::Color c = sample_level(upper, upperInv, upperLocal);
+    if (lower) {
+        auto lowerLocal = SkShaderBase::ApplyMatrix2(p, lowerInv, origLocal, uniforms);
+        // lower * weight + upper * (1 - weight)
+        skvm::F32 weight = p->uniformF(uniforms->pushF(/*lowerWeight*/));
+        c = lerp(c, sample_level(*lower, lowerInv, lowerLocal), weight);
+    }
+
+    // If the input is opaque and we're not in decal mode, that means the output is too.
+    // Forcing *a to 1.0 here will retroactively skip any work we did to interpolate sample alphas.
+    if (input_is_opaque
+            && fTileModeX != SkTileMode::kDecal
+            && fTileModeY != SkTileMode::kDecal) {
+        c.a = p->splat(1.0f);
+    }
+
+    // Alpha-only images get their color from the paint (already converted to dst color space).
+    SkColorSpace* cs = upper.colorSpace();
+    SkAlphaType   at = upper.alphaType();
+    if (SkColorTypeIsAlphaOnly(upper.colorType()) && !fRaw) {
+        c.r = paint.r;
+        c.g = paint.g;
+        c.b = paint.b;
+
+        cs = dstInfo.colorSpace();
+        at = kUnpremul_SkAlphaType;
+    }
+
+    if (sampling.useCubic) {
+        // Bicubic filtering naturally produces out of range values on both sides of [0,1].
+        c.a = clamp01(c.a);
+
+        skvm::F32 limit = (at == kUnpremul_SkAlphaType || fClampAsIfUnpremul)
+                        ? p->splat(1.0f)
+                        : c.a;
+        c.r = clamp(c.r, 0.0f, limit);
+        c.g = clamp(c.g, 0.0f, limit);
+        c.b = clamp(c.b, 0.0f, limit);
+    }
+
+    return fRaw ? c
+                : SkColorSpaceXformSteps{cs, at, dstInfo.colorSpace(), dstInfo.alphaType()}
+                           .program2(p, uniforms, c);
 }
 
 bool SkImageShader::makeKeyAndUniforms(SHADER_KEY_UNI_ARGS,
                                        const TransformShader* coordShader) const {
-    // TODO(skia:12824)
-    return false;
+    SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
+    SkMatrix baseInv;
+    if (!this->computeTotalInverse(matrices.localToDevice(), localM, &baseInv)) {
+        return false;
+    }
+    baseInv.normalizePerspective();
+
+    auto sampling = fSampling;
+    auto* access = SkMipmapAccessor::Make(alloc, fImage.get(), baseInv, sampling.mipmap);
+    if (!access) {
+        return false;
+    }
+    auto [upper, upperInv] = access->level();
+    // If we are using a coordShader, then we can't make guesses about the state of the matrix.
+    if (!sampling.useCubic && !coordShader) {
+        // TODO: can tweak_sampling sometimes for cubic too when B=0
+        if (matrices.localToDeviceHitsPixelCenters()) {
+            sampling = tweak_sampling(sampling, upperInv);
+        }
+        upperInv = tweak_inv_matrix(sampling.filter, upperInv);
+    }
+
+    SkPixmap lowerPixmap;
+    SkMatrix lowerInv;
+    SkPixmap* lower = nullptr;
+    float lowerWeight = access->lowerWeight();
+    if (lowerWeight > 0) {
+        std::tie(lowerPixmap, lowerInv) = access->lowerLevel();
+        lower = &lowerPixmap;
+    }
+
+    if (key->addBool(coordShader != nullptr, "coordShader")) {
+        coordShader->applyKeyAndUniforms(key, uniforms, upperInv);
+    } else {
+        SkShaderBase::MatrixKeyAndUniforms(key, uniforms, upperInv);
+    }
+
+    // We can exploit image opacity to skip work unpacking alpha channels.
+    const bool input_is_opaque = SkAlphaTypeIsOpaque(upper.alphaType())
+                              || SkColorTypeIsAlwaysOpaque(upper.colorType());
+
+    key->addBool(input_is_opaque, "opaqueInput");
+    key->addTileMode(fTileModeX);
+    key->addTileMode(fTileModeY);
+    key->addColorType(upper.colorType());
+    SkASSERT(!lower || lower->colorType() == upper.colorType());
+    if (!key->addBool(sampling.useCubic, "cubic")) {
+        key->addBool(sampling.filter == SkFilterMode::kLinear, "linear");
+    }
+
+    // Each call to sample() will try to rewrite the same uniforms over and over,
+    // so remember where we start and reset back there each time.  That way each
+    // sample() call uses the same uniform offsets.
+
+    auto compute_clamp_limit = [&](float limit) {
+        // Subtract an ulp so the upper clamp limit excludes limit itself.
+        int bits;
+        memcpy(&bits, &limit, 4);
+        return bits - 1;
+    };
+
+    auto setup_uniforms = [&](const SkPixmap& pm) {
+        uniforms->pushF(     pm.width());
+        uniforms->pushF(1.0f/pm.width()); // iff tileX == kRepeat
+        uniforms->pushF(0.5f/pm.width()); // iff tileX == kMirror
+
+        uniforms->pushF(     pm.height());
+        uniforms->pushF(1.0f/pm.height()); // iff tileY == kRepeat
+        uniforms->pushF(0.5f/pm.height()); // iff tileY == kMirror
+
+        uniforms->push(compute_clamp_limit(pm. width()));
+        uniforms->push(compute_clamp_limit(pm.height()));
+
+        uniforms->pushPtr(pm.addr());
+        uniforms->push(pm.rowBytesAsPixels());
+    };
+
+    auto sample_level = [&](const SkPixmap& pm) {
+        setup_uniforms(pm);
+
+        if (sampling.useCubic) {
+            SkM44 weights = CubicResamplerMatrix(sampling.cubic.B, sampling.cubic.C);
+
+            for (int row = 0; row < 4; ++row) {
+                SkV4 r = weights.row(row);
+                uniforms->pushF(r[0]);
+                uniforms->pushF(r[1]);
+                uniforms->pushF(r[2]);
+                uniforms->pushF(r[3]);
+            }
+        }
+    };
+
+    sample_level(upper);
+    if (key->addBool(lower != nullptr, "hasLower")) {
+        SkShaderBase::MatrixKeyAndUniforms(key, uniforms, lowerInv);
+        uniforms->pushF(lowerWeight);
+        sample_level(*lower);
+    }
+
+    // Alpha-only images get their color from the paint (already converted to dst color space).
+    SkColorSpace* cs = upper.colorSpace();
+    SkAlphaType   at = upper.alphaType();
+    if (SkColorTypeIsAlphaOnly(upper.colorType()) && !fRaw) {
+        cs = dstInfo.colorSpace();
+        at = kUnpremul_SkAlphaType;
+    }
+
+    if (sampling.useCubic) {
+        key->addBool(at == kUnpremul_SkAlphaType || fClampAsIfUnpremul, "bicubicUnpremulClamp");
+    }
+
+    if (!key->addBool(fRaw, "raw")) {
+        SkColorSpaceXformSteps{cs, at, dstInfo.colorSpace(), dstInfo.alphaType()}.keyAndUniforms(
+                key, uniforms);
+    }
+
+    return true;
 }

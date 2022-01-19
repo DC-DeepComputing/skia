@@ -46,6 +46,16 @@ namespace {
         };
     }
 
+    static skvm::Coord device_coord(skvm::Builder* p, skvm::UniformsAllocator* uniforms) {
+        skvm::I32 dx = p->uniform32(uniforms->base, offsetof(BlitterUniforms, right))
+                     - p->index(),
+                  dy = p->uniform32(uniforms->base, offsetof(BlitterUniforms, y));
+        return {
+            to_F32(dx) + 0.5f,
+            to_F32(dy) + 0.5f,
+        };
+    }
+
     struct NoopColorFilter : public SkColorFilterBase {
         skvm::Color onProgram(skvm::Builder*, skvm::Color c,
                               const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override {
@@ -528,6 +538,133 @@ void SkVMBlitter::BuildProgram(skvm::Builder* p, const Params& params,
     store(dstFormat, dst_ptr, src);
 }
 
+void SkVMBlitter::BuildProgram(skvm::Builder* p,
+                               const Params& params,
+                               skvm::UniformsAllocator* uniforms) {
+    // First two arguments are always uniforms and the destination buffer.
+    uniforms->base    = p->uniform();
+    skvm::Ptr dst_ptr = p->varying(SkColorTypeBytesPerPixel(params.dst.colorType()));
+    // A SpriteShader (in this file) may next use one argument as its varying source.
+    // Subsequent arguments depend on params.coverage:
+    //    - Full:      (no more arguments)
+    //    - Mask3D:    mul varying, add varying, 8-bit coverage varying
+    //    - MaskA8:    8-bit coverage varying
+    //    - MaskLCD16: 565 coverage varying
+    //    - UniformF:  float coverage uniform
+
+    skvm::Coord device = device_coord(p, uniforms);
+    skvm::Color paint = p->uniformColor(/*params.paint,*/ uniforms);
+
+    // See note about arguments above: a SpriteShader will call p->arg() once during program().
+    skvm::Color src = as_SB(params.shader)->program2(p, device, /*local=*/device, paint,
+                                                     params.matrices, /*localM=*/nullptr,
+                                                     params.dst, uniforms);
+    SkASSERT(src);
+    if (params.coverage == Coverage::Mask3D) {
+        skvm::F32 M = from_unorm(8, p->load8(p->varying<uint8_t>())),
+                  A = from_unorm(8, p->load8(p->varying<uint8_t>()));
+
+        src.r = min(src.r * M + A, src.a);
+        src.g = min(src.g * M + A, src.a);
+        src.b = min(src.b * M + A, src.a);
+    }
+
+    // GL clamps all its color channels to limits of the format just before the blend step (~here).
+    // TODO: Below, we also clamp after the blend step. If we can prove that none of the work here
+    // (especially blending, for built-in blend modes) will produce colors outside [0, 1] we may be
+    // able to skip the second clamp. For now, we clamp twice.
+    if (SkColorTypeIsNormalized(params.dst.colorType())) {
+        src = clamp01(src);
+    }
+
+    // Load the destination color.
+    skvm::PixelFormat dstFormat = skvm::SkColorType_to_PixelFormat(params.dst.colorType());
+    skvm::Color dst = p->load(dstFormat, dst_ptr);
+    if (params.dst.isOpaque()) {
+        // When a destination is known opaque, we may assume it both starts and stays fully
+        // opaque, ignoring any math that disagrees.  This sometimes trims a little work.
+        dst.a = p->splat(1.0f);
+    } else if (params.dst.alphaType() == kUnpremul_SkAlphaType) {
+        // All our blending works in terms of premul.
+        dst = premul(dst);
+    }
+
+    // Load coverage.
+    skvm::Color cov;
+    switch (params.coverage) {
+        case Coverage::Full:
+            cov.r = cov.g = cov.b = cov.a = p->splat(1.0f);
+            break;
+
+        case Coverage::UniformF:
+            cov.r = cov.g = cov.b = cov.a = p->uniformF(p->uniform(), 0);
+            break;
+
+        case Coverage::Mask3D:
+        case Coverage::MaskA8:
+            cov.r = cov.g = cov.b = cov.a = from_unorm(8, p->load8(p->varying<uint8_t>()));
+            break;
+
+        case Coverage::MaskLCD16: {
+            skvm::PixelFormat fmt = skvm::SkColorType_to_PixelFormat(kRGB_565_SkColorType);
+            cov = p->load(fmt, p->varying<uint16_t>());
+            cov.a = select(src.a < dst.a, min(cov.r, min(cov.g, cov.b)),
+                           max(cov.r, max(cov.g, cov.b)));
+        } break;
+    }
+    if (params.clip) {
+        skvm::Color clip = as_SB(params.clip)->program2(p, device, /*local=*/device, paint,
+                                                        params.matrices, /*localM=*/nullptr,
+                                                        params.dst, uniforms);
+        SkAssertResult(clip);
+        cov.r *= clip.a;  // We use the alpha channel of clip for all four.
+        cov.g *= clip.a;
+        cov.b *= clip.a;
+        cov.a *= clip.a;
+    }
+
+    const SkBlenderBase* blender = as_BB(params.blender);
+    const auto as_blendmode = blender->asBlendMode();
+
+    // The math for some blend modes lets us fold coverage into src before the blend, which is
+    // simpler than the canonical post-blend lerp().
+    bool applyPostBlendCoverage = true;
+    if (as_blendmode &&
+        SkBlendMode_ShouldPreScaleCoverage(as_blendmode.value(),
+                                           params.coverage == Coverage::MaskLCD16)) {
+        applyPostBlendCoverage = false;
+        src.r *= cov.r;
+        src.g *= cov.g;
+        src.b *= cov.b;
+        src.a *= cov.a;
+    }
+
+    // Apply our blend function to the computed color.
+    src = blender->program2(p, src, dst, params.dst, uniforms);
+
+    if (applyPostBlendCoverage) {
+        src.r = lerp(dst.r, src.r, cov.r);
+        src.g = lerp(dst.g, src.g, cov.g);
+        src.b = lerp(dst.b, src.b, cov.b);
+        src.a = lerp(dst.a, src.a, cov.a);
+    }
+
+    if (params.dst.isOpaque()) {
+        // (See the note above when loading the destination color.)
+        src.a = p->splat(1.0f);
+    } else if (params.dst.alphaType() == kUnpremul_SkAlphaType) {
+        src = unpremul(src);
+    }
+
+    // Clamp to fit destination color format if needed.
+    if (SkColorTypeIsNormalized(params.dst.colorType())) {
+        src = clamp01(src);
+    }
+
+    // Write it out!
+    store(dstFormat, dst_ptr, src);
+}
+
 // If BuildProgram() can't build this program, CacheKey() sets *ok to false.
 SkVMBlitter::Key SkVMBlitter::CacheKey(
         const Params& params, skvm::Uniforms* uniforms, SkArenaAlloc* alloc, bool* ok) {
@@ -633,6 +770,74 @@ SkVMBlitter::Key SkVMBlitter::CacheKey(
     };
 }
 
+static uint64_t hash_key_data(const SkTArray<uint32_t, true>* data) {
+    uint32_t lo = SkOpts::hash(data->data(), data->size() * sizeof(uint32_t), 0),
+             hi = SkOpts::hash(data->data(), data->size() * sizeof(uint32_t), 1);
+    return (uint64_t)lo | (uint64_t)hi << 32;
+}
+
+SkVMBlitter::Key SkVMBlitter::CacheKey(const Params& params,
+                                       skvm::UniformsData* uniforms,
+                                       SkArenaAlloc* alloc,
+                                       bool* ok) {
+    // Take care to match buildProgram()'s reuse of the paint color uniforms.
+    uniforms->pushF(params.paint.fR);
+    uniforms->pushF(params.paint.fG);
+    uniforms->pushF(params.paint.fB);
+    uniforms->pushF(params.paint.fA);
+
+    auto hash_shader = [&](const sk_sp<SkShader>& shader) {
+        const SkShaderBase* sb = as_SB(shader);
+
+        SkSTArray<16, uint32_t, true> keyBuffer;
+        SkKeyBuilder key(&keyBuffer);
+        *ok = sb->keyAndUniforms(
+                &key, uniforms, params.matrices, /*localM=*/nullptr, params.dst, alloc);
+        key.flush();
+        return hash_key_data(&keyBuffer);
+    };
+
+    // Calculate a hash for the color shader.
+    SkASSERT(params.shader);
+    uint64_t shaderHash = hash_shader(params.shader);
+
+    // Calculate a hash for the clip shader, if one exists.
+    uint64_t clipHash = 0;
+    if (params.clip) {
+        clipHash = hash_shader(params.clip);
+        if (clipHash == 0) {
+            clipHash = 1;
+        }
+    }
+
+    // Calculate a hash for the blender.
+    uint64_t blendHash = 0;
+    if (auto bm = as_BB(params.blender)->asBlendMode()) {
+        blendHash = static_cast<uint8_t>(bm.value());
+    } else if (*ok) {
+        const SkBlenderBase* blender = as_BB(params.blender);
+
+        SkSTArray<16, uint32_t, true> keyBuffer;
+        SkKeyBuilder key(&keyBuffer);
+        *ok = blender->keyAndUniforms(&key, uniforms, params.dst, alloc);
+        key.flush();
+        blendHash = hash_key_data(&keyBuffer);
+        if (blendHash == 0) {
+            blendHash = 1;
+        }
+    }
+
+    return {
+        shaderHash,
+        clipHash,
+        blendHash,
+        params.dst.colorSpace() ? params.dst.colorSpace()->hash() : 0,
+        SkToU8(params.dst.colorType()),
+        SkToU8(params.dst.alphaType()),
+        SkToU8(params.coverage),
+    };
+}
+
 SkVMBlitter::SkVMBlitter(const SkPixmap& device,
                          const SkPaint& paint,
                          const SkPixmap* sprite,
@@ -643,7 +848,7 @@ SkVMBlitter::SkVMBlitter(const SkPixmap& device,
         : fDevice(device)
         , fSprite(sprite ? *sprite : SkPixmap{})
         , fSpriteOffset(spriteOffset)
-        , fUniforms(skvm::UPtr{0}, kBlitterUniformsCount)
+        , fUniforms(/*skvm::UPtr{0},*/ kBlitterUniformsCount)
         , fParams(EffectiveParams(device, sprite, paint, matrices, std::move(clip)))
         , fKey(CacheKey(fParams, &fUniforms, &fAlloc, ok)) {}
 
@@ -704,16 +909,22 @@ skvm::Program SkVMBlitter::buildProgram(Coverage coverage) {
             return p;
         }
     }
+    // TODO(skia:12824): Update this comment and code-flow a bit!
     // We don't really _need_ to rebuild fUniforms here.
     // It's just more natural to have effects unconditionally emit them,
     // and more natural to rebuild fUniforms than to emit them into a temporary buffer.
     // fUniforms should reuse the exact same memory, so this is very cheap.
-    SkDEBUGCODE(size_t prev = fUniforms.buf.size();)
-    fUniforms.buf.resize(kBlitterUniformsCount);
+    /* SkDEBUGCODE(size_t prev = fUniforms.buf.size();) */
+    /* fUniforms.buf.resize(kBlitterUniformsCount);     */
     skvm::Builder builder;
-    BuildProgram(&builder, fParams.withCoverage(coverage), &fUniforms, &fAlloc);
-    SkASSERTF(fUniforms.buf.size() == prev,
-              "%zu, prev was %zu", fUniforms.buf.size(), prev);
+    skvm::UniformsAllocator uniformsAllocator(skvm::UPtr{0}, kBlitterUniformsCount);
+    BuildProgram(&builder, fParams.withCoverage(coverage), &uniformsAllocator);
+    size_t numExpected = uniformsAllocator.offset / sizeof(int);
+    if (fUniforms.buf.size() != numExpected) {
+        SkASSERTF(fUniforms.buf.size() == numExpected,
+                "Data size: %zu, Expected: %zu",
+                fUniforms.buf.size(), numExpected);
+    }
 
     skvm::Program program = builder.done(DebugName(key).c_str());
     if (false) {

@@ -602,9 +602,11 @@ namespace skvm {
     };
 
     struct UniformsData {
-        std::vector<int> buf;
+        SkSTArray<64, int, true> buf;
+//        std::vector<int> buf;
 
-        UniformsData(int init) : buf(init) {}
+        UniformsData(int init) { buf.resize_back(init); }
+//        UniformsData(int init) : buf(init) {}
 
         void push(int val) { buf.push_back(val); }
 

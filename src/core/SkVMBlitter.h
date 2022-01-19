@@ -78,8 +78,14 @@ private:
     static skvm::Color DstColor(skvm::Builder* p, const Params& params);
     static void BuildProgram(skvm::Builder* p, const Params& params,
                              skvm::Uniforms* uniforms, SkArenaAlloc* alloc);
+    static void BuildProgram(skvm::Builder* p, const Params& params,
+                             skvm::UniformsAllocator* uniforms);
     static Key CacheKey(const Params& params,
                         skvm::Uniforms* uniforms, SkArenaAlloc* alloc, bool* ok);
+    static Key CacheKey(const Params& params,
+                        skvm::UniformsData* uniforms,
+                        SkArenaAlloc* alloc,
+                        bool* ok);
     static SkLRUCache<Key, skvm::Program>* TryAcquireProgramCache();
     static SkString DebugName(const Key& key);
     static void ReleaseProgramCache();
@@ -92,18 +98,18 @@ private:
     void blitAntiH(int x, int y, const SkAlpha cov[], const int16_t runs[]) override;
     void blitMask(const SkMask& mask, const SkIRect& clip) override;
 
-    SkPixmap        fDevice;
-    const SkPixmap  fSprite;                  // See isSprite().
-    const SkIPoint  fSpriteOffset;
-    skvm::Uniforms  fUniforms;                // Most data is copied directly into fUniforms,
-    SkArenaAlloc    fAlloc{2*sizeof(void*)};  // but a few effects need to ref large content.
-    const Params    fParams;
-    const Key       fKey;
-    skvm::Program   fBlitH,
-                    fBlitAntiH,
-                    fBlitMaskA8,
-                    fBlitMask3D,
-                    fBlitMaskLCD16;
+    SkPixmap           fDevice;
+    const SkPixmap     fSprite;                  // See isSprite().
+    const SkIPoint     fSpriteOffset;
+    skvm::UniformsData fUniforms;                // Most data is copied directly into fUniforms,
+    SkArenaAlloc       fAlloc{2*sizeof(void*)};  // but a few effects need to ref large content.
+    const Params       fParams;
+    const Key          fKey;
+    skvm::Program      fBlitH,
+                       fBlitAntiH,
+                       fBlitMaskA8,
+                       fBlitMask3D,
+                       fBlitMaskLCD16;
 
     friend class Viewer;
 };

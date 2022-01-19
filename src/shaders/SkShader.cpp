@@ -280,12 +280,11 @@ skvm::Color SkShaderBase::program2(SHADER_PROGRAM_ARGS) const {
 }
 
 bool SkShaderBase::keyAndUniforms(SHADER_KEY_UNI_ARGS) const {
-    // Use the factory pointer as our type identifier.
-    // TODO(skia:12824): Replace this with something stable and cheaper. Avoid needing to create
-    // factory functions for each 
-    auto factory = this->getFactory();
-    SkASSERT(factory);
-    key->addBytes(sizeof(factory), &factory, "factory");
+    // Use the type name (pointer) as our type identifier.
+    // TODO(skia:12824): Replace this with something stable and cheaper.
+    const char* typeName = this->getTypeName();
+    SkASSERT(typeName);
+    key->addBytes(sizeof(typeName), &typeName, typeName);
 
     key->addBool(this->isOpaque(), "opaque");
     return this->onKeyAndUniforms(SHADER_KEY_UNI_ARGS_FWD);
