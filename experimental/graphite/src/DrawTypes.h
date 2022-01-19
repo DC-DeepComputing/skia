@@ -208,6 +208,8 @@ static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
         case VertexAttribType::kUShort4_norm:
             return 4 * sizeof(uint16_t);
     }
+
+    SkUNREACHABLE;
 }
 
 /*

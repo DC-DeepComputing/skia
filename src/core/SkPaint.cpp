@@ -41,7 +41,6 @@
 // e.g. setTextSize(-1)
 //#define SK_REPORT_API_RANGE_CHECK
 
-
 SkPaint::SkPaint()
     : fColor4f{0, 0, 0, 1}  // opaque black
     , fWidth{0}

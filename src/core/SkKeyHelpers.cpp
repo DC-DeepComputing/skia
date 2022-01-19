@@ -53,12 +53,11 @@ namespace GradientShaderBlocks {
 
 void AddToKey(SkBackend backend,
               SkPaintParamsKey *key,
-              SkShader::GradientType type,
-              SkTileMode tm) {
+              const GradData& data) {
 
     if (backend == SkBackend::kGraphite) {
         CodeSnippetID codeSnippetID = CodeSnippetID::kSolidColorShader;
-        switch (type) {
+        switch (data.fType) {
             case SkShader::kLinear_GradientType:
                 codeSnippetID = CodeSnippetID::kLinearGradientShader;
                 break;
@@ -80,7 +79,7 @@ void AddToKey(SkBackend backend,
 
         int headerOffset = key->beginBlock(codeSnippetID);
 
-        key->addByte(static_cast<uint8_t>(tm));
+        key->addByte(static_cast<uint8_t>(data.fTM));
 
         key->endBlock(headerOffset, codeSnippetID);
     } else {
@@ -131,9 +130,60 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace GradientShaderBlocks
 
 //--------------------------------------------------------------------------------------------------
+namespace ImageShaderBlock {
+
+inline static constexpr int kTileModeBits = 2;
+inline static constexpr int kTileModeMask = 0x3;
+
+static const int kXTileModeShift = 0;
+static const int kYTileModeShift = kTileModeBits;
+
+ImageData Decode(uint8_t byte) {
+    SkTileMode tmX = (SkTileMode) (((byte) >> kXTileModeShift) & kTileModeMask);
+    SkTileMode tmY = (SkTileMode) (((byte) >> kYTileModeShift) & kTileModeMask);
+
+    return { tmX, tmY };
+}
+
+void AddToKey(SkBackend backend, SkPaintParamsKey* key, const ImageData& imgData) {
+
+    if (backend == SkBackend::kGraphite) {
+        int headerOffset = key->beginBlock(CodeSnippetID::kImageShader);
+
+        uint8_t byte = ((uint8_t) imgData.fTileModes[0] << kXTileModeShift) |
+                       ((uint8_t) imgData.fTileModes[1] << kYTileModeShift);
+        SkASSERT(imgData == Decode(byte));
+
+        key->addByte(byte);
+
+        key->endBlock(headerOffset, CodeSnippetID::kImageShader);
+    } else {
+        SolidColorShaderBlock::AddToKey(backend, key);
+    }
+}
+
+#ifdef SK_DEBUG
+void Dump(const SkPaintParamsKey& key, int headerOffset) {
+    auto [id, blockSize] = key.readCodeSnippetID(headerOffset);
+    SkASSERT(id == CodeSnippetID::kImageShader);
+
+    ImageData imgData = Decode(key.byte(SkPaintParamsKey::kBlockHeaderSizeInBytes));
+
+    SkDebugf("kImageShader: tileModes(%s, %s) ",
+             SkTileModeToStr(imgData.fTileModes[0]),
+             SkTileModeToStr(imgData.fTileModes[1]));
+}
+#endif
+
+} // namespace ImageShaderBlock
+
+//--------------------------------------------------------------------------------------------------
 namespace BlendModeBlock {
 
-void AddToKey(SkBackend backend, SkPaintParamsKey *key, SkBlendMode bm) {
+void AddToKey(SkBackend backend,
+              SkPaintParamsKey *key,
+              std::vector<sk_sp<skgpu::UniformData>>* uniforms,
+              SkBlendMode bm) {
     int headerOffset = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
 
     key->addByte(static_cast<uint8_t>(bm));
@@ -158,7 +208,7 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace BlendModeBlock
 
 //--------------------------------------------------------------------------------------------------
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 //def SK_GRAPHITE_ENABLED
 SkPaintParamsKey CreateKey(SkBackend backend,
                            skgpu::ShaderCombo::ShaderType s,
                            SkTileMode tm,

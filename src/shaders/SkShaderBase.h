@@ -37,6 +37,10 @@ class SkStageUpdater;
 
 class SkUpdatableShader;
 
+namespace skgpu {
+class UniformData;
+}
+
 class SkShaderBase : public SkShader {
 public:
     ~SkShaderBase() override;
@@ -212,7 +216,6 @@ public:
                         const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
                         skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
 
-
     /**
         Add implementation details, for the specified backend, of this SkShader to the
         provided key.
@@ -221,9 +224,10 @@ public:
         @param backend    the backend that would be carrying out the drawing
         @param key        destination for implementation details of this SkShader
     */
-    virtual void addToKey(SkShaderCodeDictionary* dictionary,
-                          SkBackend backend,
-                          SkPaintParamsKey* key) const;
+    virtual void addToKeyS(SkShaderCodeDictionary* dictionary,
+                           SkBackend backend,
+                           SkPaintParamsKey* key,
+                           std::vector<sk_sp<skgpu::UniformData>>*) const = 0;
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);

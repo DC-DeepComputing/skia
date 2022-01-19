@@ -121,6 +121,12 @@ sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const
  */
 class SkCTMShader final : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   std::vector<sk_sp<skgpu::UniformData>>*) const override {
+    }
+
     SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm)
     : fProxyShader(std::move(proxy))
     , fCTM(ctm)
