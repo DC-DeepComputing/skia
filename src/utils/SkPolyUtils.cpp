@@ -1180,9 +1180,11 @@ bool SkOffsetSimplePolygon(const SkPoint* inputPolygonVerts, int inputPolygonSiz
 
     // can't inset more than the half bounds of the polygon
     if (offset > std::min(SkTAbs(SK_ScalarHalf*bounds.width()),
-                        SkTAbs(SK_ScalarHalf*bounds.height()))) {
+                          SkTAbs(SK_ScalarHalf*bounds.height()))) {
         return false;
     }
+    // this can probably handle offsets beyond this range but no one should be calling it that way
+    SkASSERT(offset >= -1000 && offset <= 1000);
 
     // offsetting close to zero just returns the original poly
     if (SkScalarNearlyZero(offset)) {
