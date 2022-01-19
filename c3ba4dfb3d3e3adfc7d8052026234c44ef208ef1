@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ddf16f_aa6ec7c4",
+        "filename": "src/sksl/tracing/SkVMDebugTrace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-01-19T15:23:28Z",
+      "side": 1,
+      "message": "Can this be a semantic version, i.e. https://semver.org/.\n\nWe can even drop the patch and just use major.minor, e.g.: \"1.0\".",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "c3ba4dfb3d3e3adfc7d8052026234c44ef208ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
