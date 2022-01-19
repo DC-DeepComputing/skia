@@ -22,6 +22,30 @@
       },
       "revId": "c3ba4dfb3d3e3adfc7d8052026234c44ef208ef1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a91f2506_be74f792",
+        "filename": "src/sksl/tracing/SkVMDebugTrace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-19T15:56:31Z",
+      "side": 1,
+      "message": "I don\u0027t think semantic versions make sense in this case? Semantic Versioning is about public API and backwards compatibility guarantees.\n\nThis JSON format is not intended to be a public API and promises zero backwards compatibility. Debug traces are ephemeral/kleenex. They exist as a way to transport semi-structured data out of C++ (SkVM/CanvasKit) and into Javascript (debugger-app-sk) at the moment the Debug button is clicked. The trace data only needs to exist for that brief moment in time.\n\nBackwards compatibility with JSON data from a different version isn\u0027t a planned feature because we don\u0027t have a use case for it. If version mismatches, we will reject the trace. \n\nVersion mismatches are only expected to happen when the Javascript and C++ code fall out of sync. The Javascript and C++ live in different repos, and CanvasKit updates require manual intervention, so sync issues are likely to occur occasionally and trigger a version-mismatch error. But the fix there is to update CanvasKit and re-push.",
+      "parentUuid": "d2ddf16f_aa6ec7c4",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "c3ba4dfb3d3e3adfc7d8052026234c44ef208ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
