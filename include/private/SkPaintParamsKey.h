@@ -32,6 +32,9 @@ enum class CodeSnippetID : uint8_t {
     kSweepGradientShader,
     kConicalGradientShader,
 
+    kImageShader,
+    kBlendShader,     // aka ComposeShader
+
     // BlendMode code snippets
     kSimpleBlendMode,
 
@@ -45,6 +48,8 @@ static constexpr int kCodeSnippetIDCount = static_cast<int>(CodeSnippetID::kLast
 // block field. The rest of the data in the block is dependent on the individual code snippet.
 class SkPaintParamsKey {
 public:
+    static const int kBlockHeaderSizeInBytes = 2;
+
     // Block headers have the following structure:
     //  1st byte: codeSnippetID
     //  2nd byte: total blockSize in bytes
