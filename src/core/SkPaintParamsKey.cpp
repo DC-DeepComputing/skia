@@ -9,6 +9,8 @@
 
 #include <cstring>
 #include "src/core/SkKeyHelpers.h"
+#include "src/shaders/SkComposeShader.h"
+//#include "src/shaders/SkImageShader.h"
 
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&
@@ -40,6 +42,9 @@ DumpMethod get_dump_method(CodeSnippetID id) {
         case CodeSnippetID::kSweepGradientShader:   [[fallthrough]];
         case CodeSnippetID::kConicalGradientShader: return GradientShaderBlocks::Dump;
 
+        case CodeSnippetID::kImageShader:           return ImageShaderBlock::Dump;
+        case CodeSnippetID::kBlendShader:           return SkShader_Blend::Dump;
+
         // BlendMode code snippets
         case CodeSnippetID::kSimpleBlendMode:       return BlendModeBlock::Dump;
 
@@ -68,3 +73,29 @@ void SkPaintParamsKey::dump() const {
     }
 }
 #endif
+
+void SkPaintParamsKey::BlockToSkSL(const SkPaintParamsKey& key,
+                                   uint32_t headerOffset,
+                                   SkSL::String* result) {
+//    auto[id, numIntsOfData] = ReadCodeSnippetID(data[0]);
+
+//    result->appendf("%s %d\n", gNames[(int) id], numIntsOfData);
+}
+
+SkSL::String SkPaintParamsKey::toSkSL() const {
+    SkSL::String result;
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        BlockToSkSL(*this, curHeaderOffset, &result);
+
+//        uint32_t numIntsConsumed = ToSkSLFrom(&data[curIndex], &result);
+//        SkASSERT(curIndex + numIntsConsumed <= this->numInts());
+
+        curHeaderOffset += blockSize;
+    }
+
+    return result;
+}
