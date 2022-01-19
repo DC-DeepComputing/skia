@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "476e4903_33c69cf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-19T19:10:27Z",
+      "side": 1,
+      "message": "This is a little clean up that I found useful before later CLs that add overrun validation to VertexWriter and remove the last direct accesses to the VW\u0027s pointer.\n\nThere are ops and one-offs in tests/benchmarks that still use the vertex-space functions directly, but this helps by moving the easy sites closer to a VW-only system.",
+      "revId": "b5ce09615178ba47e62cbb7fc1a8dbd5a33a088c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
