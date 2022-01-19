@@ -220,6 +220,7 @@ public:
         @param dictionary dictionary of code fragments available to be used in the key
         @param backend    the backend that would be carrying out the drawing
         @param key        destination for implementation details of this SkShader
+        @return           the size, in bytes, of the block written to the key
     */
     virtual void addToKey(SkShaderCodeDictionary* dictionary,
                           SkBackend backend,
