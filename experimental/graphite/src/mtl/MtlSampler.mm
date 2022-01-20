@@ -11,7 +11,9 @@
 
 namespace skgpu::mtl {
 
-sk_cfp<id<MTLSamplerState>> Sampler::MakeMtlSamplerState(const Gpu* gpu) {
+sk_cfp<id<MTLSamplerState>> Sampler::MakeMtlSamplerState(const Gpu* gpu,
+                                                         const SkSamplingOptions& samplingOptions,
+                                                         SkTileMode tm) {
     sk_cfp<MTLSamplerDescriptor*> desc([[MTLSamplerDescriptor alloc] init]);
 
     sk_cfp<id<MTLSamplerState>> sampler([gpu->device() newSamplerStateWithDescriptor:desc.get()]);
@@ -28,8 +30,10 @@ Sampler::Sampler(const Gpu* gpu,
         : skgpu::Sampler(gpu)
         , fSamplerState(std::move(samplerState)) {}
 
-sk_sp<Sampler> Sampler::Make(const Gpu* gpu) {
-    sk_cfp<id<MTLSamplerState>> samplerState = MakeMtlSamplerState(gpu);
+sk_sp<Sampler> Sampler::Make(const Gpu* gpu,
+                             const SkSamplingOptions& samplingOptions,
+                             SkTileMode tm) {
+    sk_cfp<id<MTLSamplerState>> samplerState = MakeMtlSamplerState(gpu, samplingOptions, tm);
     if (!samplerState) {
         return nullptr;
     }
