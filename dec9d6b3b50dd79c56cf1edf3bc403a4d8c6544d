@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ba52b61_ac99629f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-20T20:39:34Z",
+      "side": 1,
+      "message": "Adding Brian to discuss the intent/scope and location of the SLType enum (or SkSLType enum)",
+      "revId": "dec9d6b3b50dd79c56cf1edf3bc403a4d8c6544d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

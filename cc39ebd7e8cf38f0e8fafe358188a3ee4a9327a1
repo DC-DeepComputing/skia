@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "995211e0_40f01e2c",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-20T20:39:34Z",
+      "side": 1,
+      "message": "SkSLTypeShared_DEFINED?",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4f3e33_d35bd81a",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-20T20:39:34Z",
+      "side": 1,
+      "message": "Are they shader-language specific? Or do these match the types in SkSL?\n\nOr am I being confused by the renaming from SLType to SkSLType and now reading it as [SkSL]Type. This list is pretty close to what\u0027s in SkSLBuiltinTypes.h but those go beyond what maybe should be allowed here? (e.g. SkCaps, colorfilter, shader, etc.)\n\nMight be worth talking with Brian about what this should be as well, if it should reflect SkSL or reflect the underlying backend\u0027s types. And if it is meant to reflect SkSL, should it be in src/sksl or does src/sksl already provide an enum for us?",
+      "range": {
+        "startLine": 14,
+        "startChar": 12,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
