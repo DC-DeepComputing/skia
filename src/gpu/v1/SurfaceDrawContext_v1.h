@@ -642,6 +642,9 @@ public:
     void testingOnly_SetPreserveOpsOnFullClear() { fPreserveOpsOnFullClear_TestingOnly = true; }
 #endif
 
+    void drawStrokedLine(const GrClip*, GrPaint&&, GrAA, const SkMatrix&, const SkPoint[2],
+                         const SkStrokeRec&);
+
 private:
     enum class QuadOptimization;
 
@@ -688,9 +691,6 @@ private:
                           GrAA aa,
                           DrawQuad* quad,
                           const SkRect* subset = nullptr);
-
-    void drawStrokedLine(const GrClip*, GrPaint&&, GrAA, const SkMatrix&, const SkPoint[2],
-                         const SkStrokeRec&);
 
     // Tries to detect if the given shape is a simple, and draws it without path rendering if
     // we know how.
