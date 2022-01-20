@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a23608_bc71c3a2",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-20T17:58:35Z",
+      "side": 1,
+      "message": "I would like to name this file SkSLType.h but there is an existing header of that name in SkSL so, given the uniquely named files requirement, I had to innovate.",
+      "revId": "af66be879e7dff5a159e0d00ab54ec0cc04560df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
