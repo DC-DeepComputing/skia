@@ -9,8 +9,8 @@
 #define skgpu_UniformManager_DEFINED
 
 #include "experimental/graphite/src/DrawTypes.h"
-#include "experimental/graphite/src/Uniform.h"
 #include "include/core/SkSpan.h"
+#include "src/core/SkUniform.h"
 
 namespace skgpu {
 
@@ -33,7 +33,7 @@ public:
      *   // allocate dst and offsets memory
      *   writeUniforms(definitions, src, offsets, dst);
      */
-    uint32_t writeUniforms(SkSpan<const Uniform> definitions,
+    uint32_t writeUniforms(SkSpan<const SkUniform> definitions,
                            const void** srcs,
                            uint32_t* offsets,
                            void *dst);
