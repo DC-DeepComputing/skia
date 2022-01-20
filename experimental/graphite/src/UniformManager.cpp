@@ -70,7 +70,7 @@ struct Rules140 {
      * that for single (non-array) scalars or vectors we don't require a stride.
      */
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == Uniform::kNonArray);
+        SkASSERT(count >= 1 || count == SkUniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
         if (Cols != 1) {
@@ -105,7 +105,7 @@ struct Rules140 {
 template<typename BaseType, int RowsOrVecLength = 1, int Cols = 1>
 struct Rules430 {
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == Uniform::kNonArray);
+        SkASSERT(count >= 1 || count == SkUniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
 
@@ -129,7 +129,7 @@ struct Rules430 {
 template<typename BaseType, int RowsOrVecLength = 1, int Cols = 1>
 struct RulesMetal {
     static constexpr size_t Stride(int count) {
-        SkASSERT(count >= 1 || count == Uniform::kNonArray);
+        SkASSERT(count >= 1 || count == SkUniform::kNonArray);
         static_assert(RowsOrVecLength >= 1 && RowsOrVecLength <= 4);
         static_assert(Cols >= 1 && Cols <= 4);
         if (Cols != 1) {
@@ -173,7 +173,7 @@ private:
     template <typename MemType, typename UniformType, int RowsOrVecLength = 1, int Cols = 1>
     static uint32_t Write(void *dst, int n, const MemType src[]) {
         size_t stride = Rules<UniformType, RowsOrVecLength, Cols>::Stride(n);
-        n = (n == Uniform::kNonArray) ? 1 : n;
+        n = (n == SkUniform::kNonArray) ? 1 : n;
         n *= Cols;
 
         if (dst) {
@@ -224,7 +224,7 @@ public:
                                  void *dest,
                                  int n,
                                  const void *src) {
-        SkASSERT(n >= 1 || n == Uniform::kNonArray);
+        SkASSERT(n >= 1 || n == SkUniform::kNonArray);
         switch (type) {
             case SLType::kInt:
                 return Write<int32_t, int32_t>(dest, n, static_cast<const int32_t *>(src));
@@ -490,7 +490,7 @@ SLType UniformManager::getUniformTypeForLayout(SLType type) {
     return type;
 }
 
-uint32_t UniformManager::writeUniforms(SkSpan<const Uniform> uniforms,
+uint32_t UniformManager::writeUniforms(SkSpan<const SkUniform> uniforms,
                                        const void** srcs,
                                        uint32_t* offsets,
                                        void *dst) {
@@ -515,7 +515,7 @@ uint32_t UniformManager::writeUniforms(SkSpan<const Uniform> uniforms,
     uint32_t offset = 0;
 
     for (int i = 0; i < (int) uniforms.size(); ++i) {
-        const Uniform& u = uniforms[i];
+        const SkUniform& u = uniforms[i];
         SLType uniformType = this->getUniformTypeForLayout(u.type());
 
 #ifdef SK_DEBUG

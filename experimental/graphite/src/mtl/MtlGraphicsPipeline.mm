@@ -24,7 +24,7 @@ namespace skgpu::mtl {
 
 namespace {
 
-SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const Uniform> uniforms) {
+SkSL::String emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUniform> uniforms) {
     SkSL::String result;
 
     result.appendf("layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
