@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daa65c31_ec693fb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18620
+      },
+      "writtenOn": "2022-01-20T17:36:19Z",
+      "side": 1,
+      "message": "I have two points, one small and one large.\n\nThe small point is, file `skia-bindings/skia/src/pathops/SkPathOpsAsWinding.cpp` defines `struct Contour`, which contains `fDirection`. Why this wasn\u0027t removed from the struct? `Contour::Direction getDirection` doesn\u0027t set the value, and it\u0027s not AFAICT set anywhere anymore, so is confusing to remain.\n\nIn terms of API coherence…I wonder why we don\u0027t have as part of this change a way to get direction of SkPath, that\u0027s the large point.",
+      "revId": "1e6af4e62c777a34a4545d536178d863b6ef3578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
