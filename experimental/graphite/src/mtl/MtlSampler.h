@@ -11,9 +11,12 @@
 #include "experimental/graphite/src/Sampler.h"
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTileMode.h"
 #include "include/ports/SkCFObject.h"
 
 #import <Metal/Metal.h>
+
+class SkSamplingOptions;
 
 namespace skgpu::mtl {
 
@@ -21,9 +24,13 @@ class Gpu;
 
 class Sampler : public skgpu::Sampler {
 public:
-    static sk_cfp<id<MTLSamplerState>> MakeMtlSamplerState(const Gpu*);
+    static sk_cfp<id<MTLSamplerState>> MakeMtlSamplerState(const Gpu*,
+                                                           const SkSamplingOptions&,
+                                                           SkTileMode);
 
-    static sk_sp<Sampler> Make(const Gpu*);
+    static sk_sp<Sampler> Make(const Gpu*,
+                               const SkSamplingOptions& samplingOptions,
+                               SkTileMode tm);
 
     ~Sampler() override {}
 
