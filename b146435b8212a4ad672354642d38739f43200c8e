@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2844bd16_60bc9243",
+        "filename": "src/utils/SkPolyUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-20T14:17:34Z",
+      "side": 1,
+      "message": "*Can* we assume that it\u0027s sorted?",
+      "parentUuid": "bd1618a7_f30f1eb1",
+      "range": {
+        "startLine": 1182,
+        "startChar": 26,
+        "endLine": 1182,
+        "endChar": 62
+      },
+      "revId": "b146435b8212a4ad672354642d38739f43200c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b489887d_a0102453",
         "filename": "src/utils/SkPolyUtils.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-19T21:07:17Z",
       "side": 1,
       "message": "I can see where this is ensured in the fuzzer itself, but it looks like the use in shadow tessellator uses the local path bounds to limit the inset value (which also seems like it should limit it to half bounds, unless we want the offsetting to fail in that case).\n\nAre there other limits to the inset/outset (like the height function or Z) that ensure that this is safe? If it\u0027s hoping that callers don\u0027t give us junk input, I\u0027ve never been that lucky when it came to blurs and image filters :P\n\nI\u0027m wondering if we should move this into an if and return false?",
+      "range": {
+        "startLine": 1187,
+        "startChar": 4,
+        "endLine": 1187,
+        "endChar": 48
+      },
+      "revId": "b146435b8212a4ad672354642d38739f43200c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c9294d_811fe4d2",
+        "filename": "src/utils/SkPolyUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-20T14:17:34Z",
+      "side": 1,
+      "message": "After thinking about it a bit, I don\u0027t think the assert is necessary. The code should work, it\u0027ll just take a very long time. That said, there are two limits on it. In Ambient shadow generation, it\u0027s limited to 150. In Spot shadow generation, it\u0027s limited to whatever the radius of the light is, which in Android I believe is 800. For the directional light, the radius is a lot smaller.",
+      "parentUuid": "b489887d_a0102453",
       "range": {
         "startLine": 1187,
         "startChar": 4,
