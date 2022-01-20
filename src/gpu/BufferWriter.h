@@ -43,21 +43,55 @@ public:
 
     explicit operator bool() const { return fPtr != nullptr; }
 
-    Mark mark(size_t offset=0) const { return Mark(fPtr, offset); }
+    Mark mark(size_t offset=0) const {
+        this->validate(offset);
+        return Mark(fPtr, offset);
+    }
 
 protected:
     BufferWriter() = default;
-    BufferWriter(void* ptr) : fPtr(ptr) {}
+    BufferWriter(void* ptr, size_t size) : fPtr(ptr) {
+        SkDEBUGCODE(fEnd = Mark(ptr, ptr ? size : 0);)
+    }
+    BufferWriter(void* ptr, Mark end = {}) : fPtr(ptr) {
+        SkDEBUGCODE(fEnd = end;)
+    }
 
     BufferWriter& operator=(const BufferWriter&) = delete;
     BufferWriter& operator=(BufferWriter&& that) {
         fPtr = that.fPtr;
         that.fPtr = nullptr;
+        SkDEBUGCODE(fEnd = that.fEnd;)
+        SkDEBUGCODE(that.fEnd = Mark();)
         return *this;
     }
 
+    // Validates that there is at least offsetInBytes remaining in the writer. Changes this writer's
+    // mark to end at that offset, allowing the new writer to write to this writer's old end mark.
+    // This is templated so that subclasses can construct themselves directly.
+    template<typename W>
+    W makeOffset(size_t offsetInBytes) const {
+        this->validate(offsetInBytes);
+        // makeOffset effectively splits the current writer from {fPtr, fEnd} into {fPtr, p} and
+        // a new writer {p, fEnd}. The same data range is accessible, but each byte can only be
+        // set by a single writer.
+        void* p = SkTAddOffset<void>(fPtr, offsetInBytes);
+        Mark end{SkDEBUGCODE(fEnd)};
+        SkDEBUGCODE(fEnd = Mark(p);)
+        return W{p, end};
+    }
+
+    void validate(size_t bytesToWrite) const {
+        // If the buffer writer had an end marked, make sure we're not crossing it.
+        // Ideally, all creators of BufferWriters mark the end, but a lot of legacy code is not set
+        // up to easily do this.
+        SkASSERT(fPtr || bytesToWrite == 0);
+        SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) <= fEnd);
+    }
+
 protected:
-    void* fPtr;
+    void* fPtr = nullptr;
+    SkDEBUGCODE(mutable Mark fEnd = {};)
 };
 
 /**
@@ -72,7 +106,9 @@ struct VertexWriter : public BufferWriter {
     inline constexpr static uint32_t kIEEE_32_infinity = 0x7f800000;
 
     VertexWriter() = default;
-    VertexWriter(void* ptr) : BufferWriter(ptr) {}
+    VertexWriter(void* ptr, size_t size) : BufferWriter(ptr, size) {}
+    VertexWriter(void* ptr, Mark end = {}) : BufferWriter(ptr, end) {}
+
     VertexWriter(const VertexWriter&) = delete;
     VertexWriter(VertexWriter&& that) { *this = std::move(that); }
 
@@ -82,8 +118,8 @@ struct VertexWriter : public BufferWriter {
         return *this;
     }
 
-    VertexWriter makeOffset(ptrdiff_t offsetInBytes) const {
-        return {SkTAddOffset<void>(fPtr, offsetInBytes)};
+    VertexWriter makeOffset(size_t offsetInBytes) const {
+        return this->BufferWriter::makeOffset<VertexWriter>(offsetInBytes);
     }
 
     template <typename T>
@@ -219,6 +255,7 @@ private:
 template <typename T>
 inline VertexWriter& operator<<(VertexWriter& w, const T& val) {
     static_assert(std::is_pod<T>::value, "");
+    w.validate(sizeof(T));
     memcpy(w.fPtr, &val, sizeof(T));
     w = w.makeOffset(sizeof(T));
     return w;
@@ -242,6 +279,7 @@ inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::Skip<T>& va
 template <typename T>
 inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::ArrayDesc<T>& array) {
     static_assert(std::is_pod<T>::value, "");
+    w.validate(array.fCount * sizeof(T));
     memcpy(w.fPtr, array.fArray, array.fCount * sizeof(T));
     w = w.makeOffset(sizeof(T) * array.fCount);
     return w;
@@ -257,6 +295,7 @@ inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::RepeatDesc<
 
 template <>
 SK_MAYBE_UNUSED inline VertexWriter& operator<<(VertexWriter& w, const Sk4f& vector) {
+    w.validate(sizeof(vector));
     vector.store(w.fPtr);
     w = w.makeOffset(sizeof(vector));
     return w;
@@ -315,7 +354,9 @@ SK_MAYBE_UNUSED inline VertexWriter& operator<<(VertexWriter& w, const VertexCol
 
 struct IndexWriter : public BufferWriter {
     IndexWriter() = default;
-    IndexWriter(void* ptr) : BufferWriter(ptr) {}
+    IndexWriter(void* ptr, size_t size) : BufferWriter(ptr, size) {}
+    IndexWriter(void* ptr, Mark end) : BufferWriter(ptr, end) {}
+
     IndexWriter(const IndexWriter&) = delete;
     IndexWriter(IndexWriter&& that) { *this = std::move(that); }
 
@@ -325,21 +366,24 @@ struct IndexWriter : public BufferWriter {
         return *this;
     }
 
-    IndexWriter makeAdvance(int numIndices) const {
-        return {SkTAddOffset<void>(fPtr, numIndices * sizeof(uint16_t))};
+    IndexWriter makeOffset(int numIndices) const {
+        return this->BufferWriter::makeOffset<IndexWriter>(numIndices * sizeof(uint16_t));
     }
 
     void writeArray(const uint16_t* array, int count) {
-        memcpy(fPtr, array, count * sizeof(uint16_t));
-        fPtr = SkTAddOffset<void>(fPtr, count * sizeof(uint16_t));
+        size_t arraySize = count * sizeof(uint16_t);
+        this->validate(arraySize);
+        memcpy(fPtr, array, arraySize);
+        fPtr = SkTAddOffset<void>(fPtr, arraySize);
     }
 
     friend IndexWriter& operator<<(IndexWriter& w, uint16_t val);
 };
 
 inline IndexWriter& operator<<(IndexWriter& w, uint16_t val) {
+    w.validate(sizeof(uint16_t));
     memcpy(w.fPtr, &val, sizeof(uint16_t));
-    w = w.makeAdvance(1);
+    w = w.makeOffset(1);
     return w;
 }
 
@@ -349,7 +393,9 @@ inline IndexWriter& operator<<(IndexWriter& w, int val) { return (w << SkTo<uint
 
 struct UniformWriter : public BufferWriter {
     UniformWriter() = default;
-    UniformWriter(void* ptr) : BufferWriter(ptr) {}
+    UniformWriter(void* ptr, size_t size) : BufferWriter(ptr, size) {}
+    UniformWriter(void* ptr, Mark end) : BufferWriter(ptr, end) {}
+
     UniformWriter(const UniformWriter&) = delete;
     UniformWriter(UniformWriter&& that) { *this = std::move(that); }
 
@@ -360,6 +406,7 @@ struct UniformWriter : public BufferWriter {
     }
 
     void write(const void* src, size_t bytes) {
+        this->validate(bytes);
         memcpy(fPtr, src, bytes);
         fPtr = SkTAddOffset<void>(fPtr, bytes);
     }
