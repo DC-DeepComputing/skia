@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71097f91_f2b141c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-20T13:34:31Z",
+      "side": 1,
+      "message": "lgtm. Not necessary, but did you consider just having getCallStack() return a vector\u003cStackFrame\u003e (or not quite - probably a new type that\u0027s just the function index and line)?",
+      "revId": "e3830af7d233166a68e02254ed72bf4360a552c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
