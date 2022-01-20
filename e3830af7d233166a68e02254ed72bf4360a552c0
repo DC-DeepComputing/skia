@@ -16,6 +16,24 @@
       "message": "lgtm. Not necessary, but did you consider just having getCallStack() return a vector\u003cStackFrame\u003e (or not quite - probably a new type that\u0027s just the function index and line)?",
       "revId": "e3830af7d233166a68e02254ed72bf4360a552c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ccb2e9_5f8181ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-20T14:57:22Z",
+      "side": 1,
+      "message": "Interesting idea, I hadn\u0027t considered it. I don\u0027t honestly think it would make much of a difference. In practice we don\u0027t ever need a vector of all the current-lines, we just need one particular frame\u0027s current-line at a time. Just returning a `span\u003cconst StackFrame\u003e` and letting the caller figure it out wouldn\u0027t be so bad, I guess, but it would turn StackFrame into API instead of implementation detail, so it\u0027s not really ideal.",
+      "parentUuid": "71097f91_f2b141c9",
+      "revId": "e3830af7d233166a68e02254ed72bf4360a552c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
