@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d493f92_adfcf9a0",
+        "filename": "src/gpu/GrMeshDrawTarget.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-20T21:11:14Z",
+      "side": 1,
+      "message": "Is this supposed to be named makeIndexWriterAtLeast ?",
+      "range": {
+        "startLine": 109,
+        "startChar": 23,
+        "endLine": 109,
+        "endChar": 38
+      },
+      "revId": "cb702d5f87f2d38e24817088a2699b7ca72367e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff63d2b_3105314d",
+        "filename": "src/gpu/ops/FillRRectOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-20T21:11:14Z",
+      "side": 1,
+      "message": "makeVertexWriter here?\n\nGenerally, now that you\u0027ve got the other methods, maybe mark the VertexWriter constructor (from pointer) as explicit, so this sort of thing can\u0027t happen accidentally?",
+      "range": {
+        "startLine": 523,
+        "startChar": 46,
+        "endLine": 523,
+        "endChar": 61
+      },
+      "revId": "cb702d5f87f2d38e24817088a2699b7ca72367e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
