@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dbb30ad_a20c2891",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-20T21:25:39Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 11,
+        "startChar": 49,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "revId": "10abf51bde114312a8b9d48684dcc5c91c7258df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9407f9fe_b7754f53",
+        "filename": "src/gpu/ops/QuadPerEdgeAA.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-20T21:25:39Z",
+      "side": 1,
+      "message": "Should this be \u0027vertexMark\u0027 ?",
+      "range": {
+        "startLine": 149,
+        "startChar": 46,
+        "endLine": 149,
+        "endChar": 54
+      },
+      "revId": "10abf51bde114312a8b9d48684dcc5c91c7258df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "212a4e74_ff6d0955",
+        "filename": "src/gpu/ops/TextureOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-20T21:25:39Z",
+      "side": 1,
+      "message": "Should there be some explicit constiness applied to this?\nMaybe vertexStartMark?\nMaybe an explicit Mark type?",
+      "range": {
+        "startLine": 724,
+        "startChar": 20,
+        "endLine": 724,
+        "endChar": 24
+      },
+      "revId": "10abf51bde114312a8b9d48684dcc5c91c7258df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
