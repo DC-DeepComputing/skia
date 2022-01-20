@@ -344,20 +344,54 @@ void Device::drawPoints(SkCanvas::PointMode mode,
 
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
 
-    if (paint.getPathEffect() && 2 == count && SkCanvas::kLines_PointMode == mode) {
-        GrStyle style(paint, SkPaint::kStroke_Style);
-        GrPaint grPaint;
-        if (!SkPaintToGrPaint(this->recordingContext(), fSurfaceDrawContext->colorInfo(), paint,
-                              this->asMatrixProvider(), &grPaint)) {
+    const SkMatrixProvider* matrixProvider = this;
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    SkTLazy<SkPostTranslateMatrixProvider> postTranslateMatrixProvider;
+    // This offsetting in device space matches the expectations of the Android framework for non-AA
+    // points and lines.
+    if (GrIsPrimTypeLines(primitiveType) || GrPrimitiveType::kPoints == primitiveType) {
+        static const SkScalar kOffset = 0.063f; // Just greater than 1/16.
+        matrixProvider = postTranslateMatrixProvider.init(*matrixProvider, kOffset, kOffset);
+    }
+#endif
+
+    GrPaint grPaint;
+    if (!SkPaintToGrPaint(this->recordingContext(), fSurfaceDrawContext->colorInfo(), paint,
+                          *matrixProvider, &grPaint)) {
+        return;
+    }
+
+    if (2 == count && SkCanvas::kLines_PointMode == mode) {
+        if (paint.getPathEffect()) {
+            // Probably a dashed line. Draw as a path.
+            GrStyle style(paint, SkPaint::kStroke_Style);
+            SkPath path;
+            path.setIsVolatile(true);
+            path.moveTo(pts[0]);
+            path.lineTo(pts[1]);
+            fSurfaceDrawContext->drawPath(this->clip(),
+                                          std::move(grPaint),
+                                          aa,
+                                          this->localToDevice(),
+                                          path,
+                                          style);
             return;
         }
-        SkPath path;
-        path.setIsVolatile(true);
-        path.moveTo(pts[0]);
-        path.lineTo(pts[1]);
-        fSurfaceDrawContext->drawPath(this->clip(), std::move(grPaint), aa, this->localToDevice(),
-                                      path, style);
-        return;
+        if (!paint.getMaskFilter() && paint.getStrokeCap() != SkPaint::kRound_Cap) {
+            // Simple stroked line. Bypass path rendering.
+            GrStyle style(paint, SkPaint::kStroke_Style);
+            SkPath path;
+            path.setIsVolatile(true);
+            path.moveTo(pts[0]);
+            path.lineTo(pts[1]);
+            fSurfaceDrawContext->drawStrokedLine(this->clip(),
+                                                 std::move(grPaint),
+                                                 aa,
+                                                 this->localToDevice(),
+                                                 pts,
+                                                 SkStrokeRec(paint));
+            return;
+        }
     }
 
     SkScalar scales[2];
@@ -380,23 +414,6 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     }
 
     GrPrimitiveType primitiveType = point_mode_to_primitive_type(mode);
-
-    const SkMatrixProvider* matrixProvider = this;
-#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-    SkTLazy<SkPostTranslateMatrixProvider> postTranslateMatrixProvider;
-    // This offsetting in device space matches the expectations of the Android framework for non-AA
-    // points and lines.
-    if (GrIsPrimTypeLines(primitiveType) || GrPrimitiveType::kPoints == primitiveType) {
-        static const SkScalar kOffset = 0.063f; // Just greater than 1/16.
-        matrixProvider = postTranslateMatrixProvider.init(*matrixProvider, kOffset, kOffset);
-    }
-#endif
-
-    GrPaint grPaint;
-    if (!SkPaintToGrPaint(this->recordingContext(), fSurfaceDrawContext->colorInfo(), paint,
-                          *matrixProvider, &grPaint)) {
-        return;
-    }
 
     static constexpr SkVertices::VertexMode kIgnoredMode = SkVertices::kTriangles_VertexMode;
     sk_sp<SkVertices> vertices = SkVertices::MakeCopy(kIgnoredMode, SkToS32(count), pts, nullptr,
