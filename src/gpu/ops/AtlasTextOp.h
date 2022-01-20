@@ -20,17 +20,10 @@ class AtlasTextOp final : public GrMeshDrawOp {
 public:
     DEFINE_OP_CLASS_ID
 
-    ~AtlasTextOp() override {
-        for (const Geometry* g = fHead; g != nullptr;) {
-            const Geometry* next = g->fNext;
-            g->~Geometry();
-            g = next;
-        }
-    }
+    ~AtlasTextOp() override;
 
     void* operator new(size_t s);
     void operator delete(void* b) noexcept;
-    static void ClearCache();
 
     static const int kVerticesPerGlyph = GrAtlasSubRun::kVerticesPerGlyph;
     static const int kIndicesPerGlyph = 6;
@@ -117,6 +110,8 @@ public:
                                            int y);
 #endif
 
+    static void SetRecordingContext(GrRecordingContext* context);
+
 private:
     friend class GrOp; // for ctor
 
@@ -130,14 +125,16 @@ private:
         int fNumDraws = 0;
     };
 
-    AtlasTextOp(MaskType maskType,
+    AtlasTextOp(GrRecordingContext* recordingContext,
+                MaskType maskType,
                 bool needsTransform,
                 int glyphCount,
                 SkRect deviceRect,
                 Geometry* geo,
                 GrPaint&& paint);
 
-    AtlasTextOp(MaskType maskType,
+    AtlasTextOp(GrRecordingContext* recordingContext,
+                MaskType maskType,
                 bool needsTransform,
                 int glyphCount,
                 SkRect deviceRect,
@@ -252,9 +249,18 @@ private:
     Geometry* fHead{nullptr};
     Geometry** fTail{&fHead};
 
+    GrRecordingContext* const fRecordingContext;
+
     using INHERITED = GrMeshDrawOp;
 };
 
 } // namespace skgpu::v1
+
+template<typename... Args>
+GrOp::Owner GrOp::MakeAtlasTextOp(GrRecordingContext* context, Args&&... args) {
+    using AtlasTextOp = skgpu::v1::AtlasTextOp;
+    AtlasTextOp::SetRecordingContext(context);
+    return Owner{new AtlasTextOp(context, std::forward<Args>(args)...)};
+}
 
 #endif // AtlasTextOp_DEFINED
