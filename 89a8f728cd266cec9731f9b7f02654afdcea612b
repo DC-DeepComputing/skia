@@ -39,6 +39,30 @@
       },
       "revId": "89a8f728cd266cec9731f9b7f02654afdcea612b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6622e4fc_8ff066cf",
+        "filename": "fuzz/FuzzPolyUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-20T20:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d63b04c_e23b88c9",
+      "range": {
+        "startLine": 47,
+        "startChar": 33,
+        "endLine": 47,
+        "endChar": 44
+      },
+      "revId": "89a8f728cd266cec9731f9b7f02654afdcea612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
