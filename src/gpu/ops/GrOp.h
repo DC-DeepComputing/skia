@@ -73,8 +73,12 @@ public:
 
     template<typename Op, typename... Args>
     static Owner Make(GrRecordingContext* context, Args&&... args) {
+        // Use MakeAtlasTextOp to take advantage of caching for AtlasTextOp.
         return Owner{new Op(std::forward<Args>(args)...)};
     }
+
+    template<typename... Args>
+    static Owner MakeAtlasTextOp(GrRecordingContext* context, Args&&... args);
 
     template<typename Op, typename... Args>
     static Owner MakeWithProcessorSet(

@@ -18,6 +18,9 @@ class GrImageInfo;
 class GrSwizzle;
 class SkDeferredDisplayList;
 namespace skgpu {
+    namespace v1 {
+        class AtlasTextOp;
+    }
     class SurfaceContext;
     class SurfaceFillContext;
 }
@@ -202,6 +205,9 @@ public:
             int sampleCount,
             GrSurfaceOrigin,
             sk_sp<GrRefCntedCallback> releaseHelper);
+
+    void* newAtlasTextOpBytes(size_t size);
+    void deleteAtlasTextOp(void*);
 
 protected:
     explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {}
