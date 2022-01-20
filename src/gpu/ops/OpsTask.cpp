@@ -24,6 +24,7 @@
 #include "src/gpu/GrResourceProvider.h"
 #include "src/gpu/GrTexture.h"
 #include "src/gpu/geometry/GrRect.h"
+#include "src/gpu/ops/AtlasTextOp.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -408,6 +409,8 @@ void OpsTask::deleteOps() {
 }
 
 OpsTask::~OpsTask() {
+    skgpu::v1::AtlasTextOp::ResetCaching(*this);
+    ::operator delete(fAtlasTextOpCache);
     this->deleteOps();
 }
 

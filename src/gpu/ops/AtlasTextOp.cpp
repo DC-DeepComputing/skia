@@ -32,30 +32,61 @@
 
 namespace skgpu::v1 {
 
-// If we have thread local, then cache memory for a single AtlasTextOp.
-static thread_local void* gCache = nullptr;
-void* AtlasTextOp::operator new(size_t s) {
-    if (gCache != nullptr) {
-        return std::exchange(gCache, nullptr);
+void* OpsTask::newAtlasTextOpBytes(size_t size) {
+    if (this->fAtlasTextOpCache != nullptr) {
+        return std::exchange(this->fAtlasTextOpCache, nullptr);
     }
 
-    return ::operator new(s);
+    return ::operator new(size);
 }
 
-void AtlasTextOp::operator delete(void* bytes) noexcept {
-    if (gCache == nullptr) {
-        gCache = bytes;
+void OpsTask::deleteAtlasTextOpBytes(void* bytes) {
+    if (this->fAtlasTextOpCache == nullptr) {
+        this->fAtlasTextOpCache = bytes;
         return;
     }
+
     ::operator delete(bytes);
 }
 
-void AtlasTextOp::ClearCache() {
-    ::operator delete(gCache);
-    gCache = nullptr;
+// Thread local holding the recording context which has the AtlasTextOp memory cache.
+thread_local skgpu::v1::OpsTask* AtlasTextOp::tlsOpsTask = nullptr;
+void AtlasTextOp::ResetCaching(const skgpu::v1::OpsTask& opsTask) {
+    if (tlsOpsTask == &opsTask) {
+        tlsOpsTask = nullptr;
+    }
 }
 
-AtlasTextOp::AtlasTextOp(MaskType maskType,
+AtlasTextOp::~AtlasTextOp() {
+    for (const Geometry* g = fHead; g != nullptr;) {
+        const Geometry* next = g->fNext;
+        g->~Geometry();
+        g = next;
+    }
+    tlsOpsTask = fOpsTask;
+}
+
+void* AtlasTextOp::operator new(size_t size) {
+    auto context = tlsOpsTask;
+    if (context != nullptr) {
+        return context->newAtlasTextOpBytes(size);
+    }
+
+    return ::operator new(size);
+}
+
+void AtlasTextOp::operator delete(void* bytes) noexcept {
+    auto context = tlsOpsTask;
+    if (context != nullptr) {
+        context->deleteAtlasTextOpBytes(bytes);
+        return;
+    }
+
+    ::operator delete(bytes);
+}
+
+AtlasTextOp::AtlasTextOp(SurfaceDrawContext* sdc,
+                         MaskType maskType,
                          bool needsTransform,
                          int glyphCount,
                          SkRect deviceRect,
@@ -71,13 +102,15 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fHasPerspective(needsTransform && geo->fDrawMatrix.hasPerspective())
         , fUseGammaCorrectDistanceTable(false)
         , fHead{geo}
-        , fTail{&fHead->fNext} {
+        , fTail{&fHead->fNext}
+        , fOpsTask{sdc->getOpsTask()} {
     // We don't have tight bounds on the glyph paths in device space. For the purposes of bounds
     // we treat this as a set of non-AA rects rendered with a texture.
     this->setBounds(deviceRect, HasAABloat::kNo, IsHairline::kNo);
 }
 
-AtlasTextOp::AtlasTextOp(MaskType maskType,
+AtlasTextOp::AtlasTextOp(SurfaceDrawContext* sdc,
+                         MaskType maskType,
                          bool needsTransform,
                          int glyphCount,
                          SkRect deviceRect,
@@ -97,7 +130,8 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fUseGammaCorrectDistanceTable(useGammaCorrectDistanceTable)
         , fLuminanceColor(luminanceColor)
         , fHead{geo}
-        , fTail{&fHead->fNext} {
+        , fTail{&fHead->fNext}
+        , fOpsTask{sdc->getOpsTask()} {
     // We don't have tight bounds on the glyph paths in device space. For the purposes of bounds
     // we treat this as a set of non-AA rects rendered with a texture.
     this->setBounds(deviceRect, HasAABloat::kNo, IsHairline::kNo);
