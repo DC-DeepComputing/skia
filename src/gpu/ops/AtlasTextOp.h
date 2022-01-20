@@ -11,26 +11,28 @@
 #include "src/gpu/effects/GrDistanceFieldGeoProc.h"
 #include "src/gpu/ops/GrMeshDrawOp.h"
 #include "src/gpu/text/GrTextBlob.h"
+#include "src/gpu/v1/SurfaceDrawContext_v1.h"
 
 class GrRecordingContext;
 
 namespace skgpu::v1 {
+class OpsTask;
 
 class AtlasTextOp final : public GrMeshDrawOp {
 public:
     DEFINE_OP_CLASS_ID
 
-    ~AtlasTextOp() override {
-        for (const Geometry* g = fHead; g != nullptr;) {
-            const Geometry* next = g->fNext;
-            g->~Geometry();
-            g = next;
-        }
+    template <typename... Args>
+    static GrOp::Owner Make(skgpu::v1::SurfaceDrawContext* context, Args&&... args) {
+        tlsOpsTask = context->getOpsTask();
+        return Owner{new skgpu::v1::AtlasTextOp(context, std::forward<Args>(args)...)};
     }
 
+    ~AtlasTextOp() override;
+
+    static void ResetCaching(const skgpu::v1::OpsTask& opsTask);
     void* operator new(size_t s);
     void operator delete(void* b) noexcept;
-    static void ClearCache();
 
     static const int kVerticesPerGlyph = GrAtlasSubRun::kVerticesPerGlyph;
     static const int kIndicesPerGlyph = 6;
@@ -120,6 +122,11 @@ public:
 private:
     friend class GrOp; // for ctor
 
+    // tlsOpsTask communicates the OpsTask from the Make and the dtor to new
+    // and delete. This allows new and delete to use a cache of AtlasTextOp memory which is
+    // stored on the OpsTask.
+    static thread_local OpsTask* tlsOpsTask;
+
     struct FlushInfo {
         sk_sp<const GrBuffer> fVertexBuffer;
         sk_sp<const GrBuffer> fIndexBuffer;
@@ -130,14 +137,16 @@ private:
         int fNumDraws = 0;
     };
 
-    AtlasTextOp(MaskType maskType,
+    AtlasTextOp(SurfaceDrawContext* sdc,
+                MaskType maskType,
                 bool needsTransform,
                 int glyphCount,
                 SkRect deviceRect,
                 Geometry* geo,
                 GrPaint&& paint);
 
-    AtlasTextOp(MaskType maskType,
+    AtlasTextOp(SurfaceDrawContext* sdc,
+                MaskType maskType,
                 bool needsTransform,
                 int glyphCount,
                 SkRect deviceRect,
@@ -252,9 +261,19 @@ private:
     Geometry* fHead{nullptr};
     Geometry** fTail{&fHead};
 
+    skgpu::v1::OpsTask* const fOpsTask;
+
     using INHERITED = GrMeshDrawOp;
 };
 
 } // namespace skgpu::v1
+
+
+// MakeAtlasTextOp needs to be located in this file to use the definition of AtlasTextOp because
+// including AtlasTextOp.h in GrOp.h produces an include cycle.
+template<typename... Args>
+GrOp::Owner GrOp::MakeAtlasTextOp(skgpu::v1::SurfaceDrawContext* context, Args&&... args) {
+    return skgpu::v1::AtlasTextOp::Make(context, std::forward<Args>(args)...);
+}
 
 #endif // AtlasTextOp_DEFINED

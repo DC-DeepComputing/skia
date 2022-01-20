@@ -100,6 +100,9 @@ public:
     // renderPass compatible. Return the number of tasks merged into 'this'.
     int mergeFrom(SkSpan<const sk_sp<GrRenderTask>> tasks);
 
+    void* newAtlasTextOpBytes(size_t size);
+    void deleteAtlasTextOpBytes(void* bytes);
+
 #ifdef SK_DEBUG
     int numClips() const override { return fNumClips; }
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override;
@@ -278,6 +281,10 @@ private:
     SkSTArray<25, OpChain> fOpChains;
 
     sk_sp<GrArenas> fArenas;
+
+    // Cache a single AtlasTextOp's worth of memory to improve op merging performance.
+    void* fAtlasTextOpCache = nullptr;
+
     SkDEBUGCODE(int fNumClips;)
 
     // TODO: We could look into this being a set if we find we're adding a lot of duplicates that is

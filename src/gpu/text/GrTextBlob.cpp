@@ -722,14 +722,13 @@ DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        drawingColor,
                                                        sdc->arenaAlloc());
 
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             false,
-                                             this->glyphCount(),
-                                             subRunBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           false,
+                                           this->glyphCount(),
+                                           subRunBounds,
+                                           geometry,
+                                           std::move(grPaint));
 
     return {clip, std::move(op)};
 }
@@ -1018,14 +1017,13 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        drawingColor,
                                                        sdc->arenaAlloc());
 
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           geometry,
+                                           std::move(grPaint));
     return {clip, std::move(op)};
 }
 
@@ -1331,17 +1329,16 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        drawingColor,
                                                        sdc->arenaAlloc());
 
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             maskType,
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             SkPaintPriv::ComputeLuminanceColor(paint),
-                                             useGammaCorrectDistanceTable,
-                                             DFGPFlags,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           maskType,
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           SkPaintPriv::ComputeLuminanceColor(paint),
+                                           useGammaCorrectDistanceTable,
+                                           DFGPFlags,
+                                           geometry,
+                                           std::move(grPaint));
 
     return {clip, std::move(op)};
 }
@@ -1887,8 +1884,6 @@ DirectMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
     const SkPMColor4f drawingColor =
             calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
 
-    GrRecordingContext* const rContext = sdc->recordingContext();
-
     auto geometry = new ((void*)fGeom) AtlasTextOp::Geometry{
             *this,
             drawMatrix,
@@ -1899,13 +1894,13 @@ DirectMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
             drawingColor
     };
 
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             false,
-                                             this->glyphCount(),
-                                             fGlyphDeviceBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           false,
+                                           this->glyphCount(),
+                                           fGlyphDeviceBounds,
+                                           geometry,
+                                           std::move(grPaint));
 
     return {clip, std::move(op)};
 }
@@ -2106,14 +2101,13 @@ TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
             drawingColor
     };
 
-    GrRecordingContext* rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           geometry,
+                                           std::move(grPaint));
     return {clip, std::move(op)};
 }
 
@@ -2352,17 +2346,16 @@ SDFTSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
             drawingColor
     };
 
-    GrRecordingContext* rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             maskType,
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             SkPaintPriv::ComputeLuminanceColor(paint),
-                                             useGammaCorrectDistanceTable,
-                                             DFGPFlags,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           maskType,
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           SkPaintPriv::ComputeLuminanceColor(paint),
+                                           useGammaCorrectDistanceTable,
+                                           DFGPFlags,
+                                           geometry,
+                                           std::move(grPaint));
 
     return {clip, std::move(op)};
 }
@@ -2805,14 +2798,13 @@ DirectMaskSubRunSlug::makeAtlasTextOp(const GrClip* clip,
                                                        drawingColor,
                                                        sdc->arenaAlloc());
 
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             !integerTranslate,
-                                             this->glyphCount(),
-                                             subRunDeviceBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           !integerTranslate,
+                                           this->glyphCount(),
+                                           subRunDeviceBounds,
+                                           geometry,
+                                           std::move(grPaint));
     return {clip, std::move(op)};
 }
 
@@ -3234,18 +3226,16 @@ SDFTSubRunSlug::makeAtlasTextOp(const GrClip* clip,
                                                        sk_ref_sp<Slug>(fSlug),
                                                        drawingColor,
                                                        sdc->arenaAlloc());
-
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             maskType,
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             SkPaintPriv::ComputeLuminanceColor(paint),
-                                             useGammaCorrectDistanceTable,
-                                             DFGPFlags,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           maskType,
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           SkPaintPriv::ComputeLuminanceColor(paint),
+                                           useGammaCorrectDistanceTable,
+                                           DFGPFlags,
+                                           geometry,
+                                           std::move(grPaint));
 
     return {clip, std::move(op)};
 }
@@ -3447,15 +3437,13 @@ TransformedMaskSubRunSlug::makeAtlasTextOp(const GrClip* clip,
                                                        sk_ref_sp<Slug>(fSlug),
                                                        drawingColor,
                                                        sdc->arenaAlloc());
-
-    GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op = GrOp::MakeAtlasTextOp(sdc,
+                                           op_mask_type(fMaskFormat),
+                                           true,
+                                           this->glyphCount(),
+                                           this->deviceRect(drawMatrix, drawOrigin),
+                                           geometry,
+                                           std::move(grPaint));
     return {clip, std::move(op)};
 }
 
