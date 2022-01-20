@@ -141,12 +141,12 @@ sk_sp<UniformData> make_sweep_gradient_uniform_data(SkPoint point,
     return make_gradient_uniform_data_common(srcs);
 };
 
-sk_sp<UniformData> make_conical_gradient_uniform_data(SkPoint point0,
-                                                      SkPoint point1,
-                                                      float radius0,
-                                                      float radius1,
-                                                      SkColor4f colors[kMaxStops],
-                                                      float offsets[kMaxStops]) {
+sk_sp<SkUniformData> make_conical_gradient_uniform_data(SkPoint point0,
+                                                        SkPoint point1,
+                                                        float radius0,
+                                                        float radius1,
+                                                        SkColor4f colors[kMaxStops],
+                                                        float offsets[kMaxStops]) {
 
     const void* srcs[kNumGradientUniforms] = {
             colors,
@@ -180,13 +180,13 @@ void expand_stops(int numStops, float offsets[kMaxStops]) {
     }
 }
 
-sk_sp<UniformData> make_solid_uniform_data(SkColor4f color) {
+sk_sp<SkUniformData> make_solid_uniform_data(SkColor4f color) {
     UniformManager mgr(Layout::kMetal);
 
     size_t dataSize = mgr.writeUniforms(SkSpan<const Uniform>(kSolidUniforms, kNumSolidUniforms),
                                         nullptr, nullptr, nullptr);
 
-    sk_sp<UniformData> result = UniformData::Make(kNumSolidUniforms, kSolidUniforms, dataSize);
+    sk_sp<SkUniformData> result = SkUniformData::Make(kNumSolidUniforms, kSolidUniforms, dataSize);
 
     const void* srcs[kNumSolidUniforms] = { &color };
 
@@ -197,9 +197,9 @@ sk_sp<UniformData> make_solid_uniform_data(SkColor4f color) {
 
 } // anonymous namespace
 
-sk_sp<UniformData> UniformData::Make(int count,
-                                     const Uniform* uniforms,
-                                     size_t dataSize) {
+sk_sp<SkUniformData> SkUniformData::Make(int count,
+                                         const Uniform* uniforms,
+                                         size_t dataSize) {
     // TODO: the offsets and data should just be allocated right after UniformData in an arena
     uint32_t* offsets = new uint32_t[count];
     char* data = new char[dataSize];

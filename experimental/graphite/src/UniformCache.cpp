@@ -7,12 +7,13 @@
 
 #include "experimental/graphite/src/UniformCache.h"
 
-#include "experimental/graphite/src/ContextUtils.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkUniformData.h"
+//#include "experimental/graphite/src/ContextUtils.h"
 
 namespace skgpu {
 
-size_t UniformCache::Hash::operator()(UniformData* ud) const {
+size_t UniformCache::Hash::operator()(SkUniformData* ud) const {
     if (!ud) {
         return 0;
     }
