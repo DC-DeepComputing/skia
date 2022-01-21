@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "576043cf_4a29b661",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-21T15:43:47Z",
+      "side": 1,
+      "message": "Take 2 fixes the Release-Build issue",
+      "revId": "0bfbe3a7648c85ca0d960398e65861f0e7f413be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
