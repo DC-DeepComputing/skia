@@ -198,6 +198,50 @@ sk_sp<SkUniformData> make_solid_uniform_data(SkColor4f color) {
 
 } // anonymous namespace
 
+sk_sp<UniformData> UniformData::Make(int count,
+                                     const Uniform* uniforms,
+                                     size_t dataSize) {
+    // TODO: the offsets and data should just be allocated right after UniformData in an arena
+    uint32_t* offsets = new uint32_t[count];
+    char* data = new char[dataSize];
+
+    return sk_sp<UniformData>(new UniformData(count, uniforms, offsets, data, dataSize));
+}
+SkSpan<const Uniform> UniformData::asSpan() const { return SkMakeSpan(fUniforms, fCount); }
+
+SkUniquePaintParamsID GetUniqueIDAndUniformData(Context* context,
+                                                const PaintParams& p,
+                                                SkBackend backend,
+                                                std::vector<sk_sp<UniformData>>* uniforms) {
+    auto dict = context->priv().shaderCodeDictionary();
+
+    SkPaintParamsKey key;
+    p.toKey(dict, backend, &key, uniforms);
+
+//    key.dump();
+
+    auto entry = dict->findOrCreate(key);
+
+    return entry->uniqueID();
+}
+
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(
+        Context* context,
+        SkUniquePaintParamsID uniqueID) {
+    auto dict = context->priv().shaderCodeDictionary();
+
+    std::vector<SkSpan<const Uniform>> uniforms;
+
+    auto entry = dict->lookup(uniqueID);
+
+    // TODO: cache this
+    SkSL::String skslCode = entry->paintParamsKey().toSkSL();
+
+    return { skslCode, uniforms };
+}
+
+
+#if 0
 std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context* context,
                                                                          const PaintParams& p) {
     SkPaintParamsKey key;
@@ -302,6 +346,7 @@ std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context
 
     return { entry->uniqueID(), std::move(uniforms) };
 }
+#endif
 
 SkSpan<const SkUniform> GetUniforms(CodeSnippetID snippetID) {
     switch (snippetID) {
