@@ -12,6 +12,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkSLString.h"
 
 enum class CodeSnippetID : uint8_t;
 class SkUniform;
@@ -22,15 +23,25 @@ namespace skgpu {
 
 class PaintParams;
 
+SkUniquePaintParamsID GetUniqueIDAndUniformData(Context*,
+                                                const PaintParams&,
+                                                SkBackend,
+                                                std::vector<sk_sp<UniformData>>*);
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(
+        Context*,
+        SkUniquePaintParamsID);
+
+#if 0
 std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context*,
                                                                          const PaintParams&);
-SkSpan<const SkUniform> GetUniforms(CodeSnippetID);
+SkSpan<const Uniform> GetUniforms(CodeSnippetID);
 
 // TODO: Temporary way to get at SkSL snippet for handling the given shader type, which will be
 // embedded in the fragment function's body. It has access to the vertex output via a "interpolated"
 // variable, and must have a statement that writes to a float4 "out.color". Its uniforms (as defined
 // by GetUniforms(type)) are available as a variable named "uniforms".
 const char* GetShaderSkSL(CodeSnippetID);
+#endif
 
 } // namespace skgpu
 

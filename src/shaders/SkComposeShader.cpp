@@ -8,6 +8,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
+#include "include/private/SkPaintParamsKey.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
@@ -19,6 +20,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkComposeShader.h"
+
+#include "experimental/graphite/include/Encoding.h"
 
 namespace {
 
@@ -67,6 +70,51 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**************************************************************************************************/
+void SkShader_Blend::Encode1(SkShaderCodeDictionary* dict,
+                             SkBackend backend,
+                             SkPaintParamsKey* key,
+                             const BlendData& data) {
+    key->addByte(static_cast<uint8_t>(data.fBM));
+    as_SB(data.fDst)->addToKeyS(dict, backend, key, nullptr);
+    as_SB(data.fSrc)->addToKeyS(dict, backend, key, nullptr);
+}
+
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+void SkShader_Blend::Dump(const SkPaintParamsKey& key, int headerOffset) {
+    auto [id, blockSize] = key.readCodeSnippetID(headerOffset);
+    SkASSERT(id == CodeSnippetID::kBlendShader);
+
+    SkBlendMode bm = static_cast<SkBlendMode>(key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes));
+    SkDebugf("BlendMode: %s\n", SkBlendMode_Name(bm));
+
+    SkDebugf("\nFirst:  ");
+    int firstBlockSize = SkPaintParamsKey::DumpBlock(key, headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes+1);
+//    SkASSERT(1+numConsumed1 < numIntsAccessible);
+    SkDebugf("Second: ");
+    int secondBlockSize = SkPaintParamsKey::DumpBlock(key, headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes+1+firstBlockSize);
+//    SkASSERT(2+numConsumed1+numConsumed2 <= numIntsAccessible);
+}
+#endif
+
+void SkShader_Blend::addToKeyS(SkShaderCodeDictionary* dict,
+                               SkBackend backend,
+                               SkPaintParamsKey* key,
+                               std::vector<sk_sp<skgpu::UniformData>>*) const {
+    if (!fBlender) {
+
+    }
+
+    int headerOffset = key->beginBlock(CodeSnippetID::kBlendShader);
+
+    BlendData blendData { fDst.get(), fSrc.get(), fMode };
+
+    Encode1(dict, backend, key, blendData);
+
+    key->endBlock(headerOffset, CodeSnippetID::kBlendShader);
+}
+/**************************************************************************************************/
 
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))

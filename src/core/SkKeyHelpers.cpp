@@ -215,7 +215,6 @@ ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
 void AddToKey(SkBackend backend, SkPaintParamsKey* key, const ImageData& imgData) {
 
     if (backend == SkBackend::kGraphite) {
-
         uint8_t data = (static_cast<uint8_t>(imgData.fTileModes[0]) << kXTileModeShift) |
                        (static_cast<uint8_t>(imgData.fTileModes[1]) << kYTileModeShift);
 
@@ -305,8 +304,10 @@ namespace BlendModeBlock {
 
 static const int kBlockDataSize = 1;
 
-void AddToKey(SkBackend /* backend */, SkPaintParamsKey *key, SkBlendMode bm) {
-
+void AddToKey(SkBackend /* backend */,
+              SkPaintParamsKey *key,
+              std::vector<sk_sp<skgpu::UniformData>>* uniforms,
+              SkBlendMode bm) {
     int headerOffset = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
     add_blendmode_to_key(key, bm);
     key->endBlock(headerOffset, CodeSnippetID::kSimpleBlendMode);
@@ -334,7 +335,7 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace BlendModeBlock
 
 //--------------------------------------------------------------------------------------------------
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 //def SK_GRAPHITE_ENABLED
 SkPaintParamsKey CreateKey(SkBackend backend,
                            skgpu::ShaderCombo::ShaderType s,
                            SkTileMode tm,

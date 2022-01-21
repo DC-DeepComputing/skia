@@ -150,9 +150,10 @@ SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
 }
 
 // TODO: add implementations for derived classes
-void SkShaderBase::addToKey(SkShaderCodeDictionary* dictionary,
-                            SkBackend backend,
-                            SkPaintParamsKey* key) const {
+void SkShaderBase::addToKeyS(SkShaderCodeDictionary* dictionary,
+                             SkBackend backend,
+                             SkPaintParamsKey* key,
+                             std::vector<sk_sp<skgpu::UniformData>>*) const {
     SolidColorShaderBlock::AddToKey(backend, key);
 }
 
