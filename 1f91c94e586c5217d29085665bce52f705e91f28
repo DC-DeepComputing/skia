@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b848f5_e9a3889a",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-21T21:12:11Z",
+      "side": 1,
+      "message": "It\u0027s in the Metal Feature Tables.",
+      "parentUuid": "c6d59310_14bed707",
+      "range": {
+        "startLine": 234,
+        "startChar": 50,
+        "endLine": 234,
+        "endChar": 67
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "254d5c0d_7b6839d6",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-21T20:35:53Z",
       "side": 1,
       "message": "Is this going to be called externally ever? or is it just what\u0027s used by the mtl Sampler implementation?",
+      "range": {
+        "startLine": 27,
+        "startChar": 39,
+        "endLine": 27,
+        "endChar": 58
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00035b3f_a7bd0689",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-21T21:12:11Z",
+      "side": 1,
+      "message": "Yeah, this was a copy-paste from MtlTexture which does need external raw creation. I\u0027ve removed it and put the code directly in Make().",
+      "parentUuid": "254d5c0d_7b6839d6",
       "range": {
         "startLine": 27,
         "startChar": 39,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9902405_39e636d1",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-21T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc383827_b05754b5",
+      "range": {
+        "startLine": 27,
+        "startChar": 16,
+        "endLine": 27,
+        "endChar": 54
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77421051_c7ef63b1",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab72c6d3_5f356b99",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-21T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77421051_c7ef63b1",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 56
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6858227d_e9783c8d",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-01-21T20:35:53Z",
       "side": 1,
       "message": "nit: SkUNREACHABLE should still work, right?",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2b7732e_88f61d8f",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-21T21:12:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6858227d_e9783c8d",
       "range": {
         "startLine": 34,
         "startChar": 3,
