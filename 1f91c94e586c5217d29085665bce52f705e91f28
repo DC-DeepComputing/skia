@@ -16,6 +16,121 @@
       "message": "PTAL.",
       "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d59310_14bed707",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T20:35:53Z",
+      "side": 1,
+      "message": "For my own education, where do you know what the family requirement is?\n\nhttps://developer.apple.com/documentation/metal/mtlsampleraddressmode/mtlsampleraddressmodeclamptobordercolor?language\u003dobjc only shows the availability.",
+      "range": {
+        "startLine": 234,
+        "startChar": 50,
+        "endLine": 234,
+        "endChar": 67
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254d5c0d_7b6839d6",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T20:35:53Z",
+      "side": 1,
+      "message": "Is this going to be called externally ever? or is it just what\u0027s used by the mtl Sampler implementation?",
+      "range": {
+        "startLine": 27,
+        "startChar": 39,
+        "endLine": 27,
+        "endChar": 58
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc383827_b05754b5",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T20:35:53Z",
+      "side": 1,
+      "message": "Since the availibility check isn\u0027t 100% consistent with the caps, should we add a comment saying that if kDecal made it to this point, caps should already have been checked for shader fallback?",
+      "range": {
+        "startLine": 27,
+        "startChar": 16,
+        "endLine": 27,
+        "endChar": 54
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77421051_c7ef63b1",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T20:35:53Z",
+      "side": 1,
+      "message": "Maybe a similar note here, or just one note for the whole kDecal case, since we know that if the availibility check fails, caps.clampToBorderSupport() is always false and should have been checked earlier. It may also be useful to point out the flaw in clamp-to-zero since it\u0027s (0,0,0,1) for opaque images types :(",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 56
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6858227d_e9783c8d",
+        "filename": "experimental/graphite/src/mtl/MtlSampler.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T20:35:53Z",
+      "side": 1,
+      "message": "nit: SkUNREACHABLE should still work, right?",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "1f91c94e586c5217d29085665bce52f705e91f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
