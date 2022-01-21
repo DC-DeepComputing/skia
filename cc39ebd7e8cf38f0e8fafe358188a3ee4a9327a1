@@ -117,6 +117,30 @@
       },
       "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "168043ab_3ee1d520",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-21T15:54:39Z",
+      "side": 1,
+      "message": "That sounds fine - as long as there\u0027s one copy, I think it\u0027s okay. Honestly, having it in either place is probably okay - it\u0027s really a boundary type.",
+      "parentUuid": "c3237313_95961f44",
+      "range": {
+        "startLine": 14,
+        "startChar": 12,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
