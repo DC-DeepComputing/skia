@@ -52,6 +52,24 @@
       "parentUuid": "7f20020e_eafe81ff",
       "revId": "f6bb619a1629dc5a3935b5ae384be25eb038acd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "212ec12c_18ab6691",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-21T15:38:32Z",
+      "side": 1,
+      "message": "Yeah. I had to read the code, then come back later once my brain had processed for a bit.\n\nJust looked at the implementation of `round` and it looks like there\u0027s no guarantee for what it does for out-of-range values. At least, for immediates, it calls lrintf. \n\nhttps://en.cppreference.com/w/cpp/numeric/math/rint : \"If the result of the rounding is outside the range of the return type, FE_INVALID is raised and an implementation-defined value is returned\"\n\nActually, that is a concern, it\u0027s not guaranteed to be consistent from run to run. We do want reproducible results.",
+      "parentUuid": "ff2287a9_95aab99a",
+      "revId": "f6bb619a1629dc5a3935b5ae384be25eb038acd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
