@@ -15,6 +15,7 @@ enum class SkBackend : uint8_t;
 class SkPaintParamsKey;
 class SkShader;
 class SkShaderCodeDictionary;
+class SkUniformData;
 
 namespace skgpu {
 
@@ -45,7 +46,8 @@ public:
 
     void toKey(SkShaderCodeDictionary*,
                SkBackend,
-               SkPaintParamsKey*) const;
+               SkPaintParamsKey*,
+               std::vector<sk_sp<SkUniformData>>* uniforms) const;
 
 private:
     SkColor4f        fColor;
