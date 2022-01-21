@@ -23,62 +23,62 @@
 // https://www.khronos.org/registry/vulkan/specs/1.0-wsi_extensions/html/vkspec.html#interfaces-resources-layout
 static uint32_t grsltype_to_alignment_mask(GrSLType type) {
     switch(type) {
-        case kShort_GrSLType: // fall through
-        case kUShort_GrSLType:
+        case SkSLType::kShort: // fall through
+        case SkSLType::kUShort:
             return 0x1;
-        case kShort2_GrSLType: // fall through
-        case kUShort2_GrSLType:
+        case SkSLType::kShort2: // fall through
+        case SkSLType::kUShort2:
             return 0x3;
-        case kShort3_GrSLType: // fall through
-        case kShort4_GrSLType:
-        case kUShort3_GrSLType:
-        case kUShort4_GrSLType:
+        case SkSLType::kShort3: // fall through
+        case SkSLType::kShort4:
+        case SkSLType::kUShort3:
+        case SkSLType::kUShort4:
             return 0x7;
-        case kInt_GrSLType:
-        case kUInt_GrSLType:
+        case SkSLType::kInt:
+        case SkSLType::kUInt:
             return 0x3;
-        case kInt2_GrSLType:
-        case kUInt2_GrSLType:
+        case SkSLType::kInt2:
+        case SkSLType::kUInt2:
             return 0x7;
-        case kInt3_GrSLType:
-        case kUInt3_GrSLType:
-        case kInt4_GrSLType:
-        case kUInt4_GrSLType:
+        case SkSLType::kInt3:
+        case SkSLType::kUInt3:
+        case SkSLType::kInt4:
+        case SkSLType::kUInt4:
             return 0xF;
-        case kHalf_GrSLType: // fall through
-        case kFloat_GrSLType:
+        case SkSLType::kHalf: // fall through
+        case SkSLType::kFloat:
             return 0x3;
-        case kHalf2_GrSLType: // fall through
-        case kFloat2_GrSLType:
+        case SkSLType::kHalf2: // fall through
+        case SkSLType::kFloat2:
             return 0x7;
-        case kHalf3_GrSLType: // fall through
-        case kFloat3_GrSLType:
+        case SkSLType::kHalf3: // fall through
+        case SkSLType::kFloat3:
             return 0xF;
-        case kHalf4_GrSLType: // fall through
-        case kFloat4_GrSLType:
+        case SkSLType::kHalf4: // fall through
+        case SkSLType::kFloat4:
             return 0xF;
-        case kHalf2x2_GrSLType: // fall through
-        case kFloat2x2_GrSLType:
+        case SkSLType::kHalf2x2: // fall through
+        case SkSLType::kFloat2x2:
             return 0x7;
-        case kHalf3x3_GrSLType: // fall through
-        case kFloat3x3_GrSLType:
+        case SkSLType::kHalf3x3: // fall through
+        case SkSLType::kFloat3x3:
             return 0xF;
-        case kHalf4x4_GrSLType: // fall through
-        case kFloat4x4_GrSLType:
+        case SkSLType::kHalf4x4: // fall through
+        case SkSLType::kFloat4x4:
             return 0xF;
 
         // This query is only valid for certain types.
-        case kVoid_GrSLType:
-        case kBool_GrSLType:
-        case kBool2_GrSLType:
-        case kBool3_GrSLType:
-        case kBool4_GrSLType:
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
-        case kSampler_GrSLType:
-        case kTexture2D_GrSLType:
-        case kInput_GrSLType:
+        case SkSLType::kVoid:
+        case SkSLType::kBool:
+        case SkSLType::kBool2:
+        case SkSLType::kBool3:
+        case SkSLType::kBool4:
+        case SkSLType::kTexture2DSampler:
+        case SkSLType::kTextureExternalSampler:
+        case SkSLType::kTexture2DRectSampler:
+        case SkSLType::kSampler:
+        case SkSLType::kTexture2D:
+        case SkSLType::kInput:
             break;
     }
     SK_ABORT("Unexpected type");
@@ -87,72 +87,72 @@ static uint32_t grsltype_to_alignment_mask(GrSLType type) {
 /** Returns the size in bytes taken up in vulkanbuffers for GrSLTypes. */
 static inline uint32_t grsltype_to_vk_size(GrSLType type, int layout) {
     switch(type) {
-        case kShort_GrSLType:
+        case SkSLType::kShort:
             return sizeof(int16_t);
-        case kShort2_GrSLType:
+        case SkSLType::kShort2:
             return 2 * sizeof(int16_t);
-        case kShort3_GrSLType:
+        case SkSLType::kShort3:
             return 3 * sizeof(int16_t);
-        case kShort4_GrSLType:
+        case SkSLType::kShort4:
             return 4 * sizeof(int16_t);
-        case kUShort_GrSLType:
+        case SkSLType::kUShort:
             return sizeof(uint16_t);
-        case kUShort2_GrSLType:
+        case SkSLType::kUShort2:
             return 2 * sizeof(uint16_t);
-        case kUShort3_GrSLType:
+        case SkSLType::kUShort3:
             return 3 * sizeof(uint16_t);
-        case kUShort4_GrSLType:
+        case SkSLType::kUShort4:
             return 4 * sizeof(uint16_t);
-        case kHalf_GrSLType: // fall through
-        case kFloat_GrSLType:
+        case SkSLType::kHalf: // fall through
+        case SkSLType::kFloat:
             return sizeof(float);
-        case kHalf2_GrSLType: // fall through
-        case kFloat2_GrSLType:
+        case SkSLType::kHalf2: // fall through
+        case SkSLType::kFloat2:
             return 2 * sizeof(float);
-        case kHalf3_GrSLType: // fall through
-        case kFloat3_GrSLType:
+        case SkSLType::kHalf3: // fall through
+        case SkSLType::kFloat3:
             return 3 * sizeof(float);
-        case kHalf4_GrSLType: // fall through
-        case kFloat4_GrSLType:
+        case SkSLType::kHalf4: // fall through
+        case SkSLType::kFloat4:
             return 4 * sizeof(float);
-        case kInt_GrSLType: // fall through
-        case kUInt_GrSLType:
+        case SkSLType::kInt: // fall through
+        case SkSLType::kUInt:
             return sizeof(int32_t);
-        case kInt2_GrSLType: // fall through
-        case kUInt2_GrSLType:
+        case SkSLType::kInt2: // fall through
+        case SkSLType::kUInt2:
             return 2 * sizeof(int32_t);
-        case kInt3_GrSLType: // fall through
-        case kUInt3_GrSLType:
+        case SkSLType::kInt3: // fall through
+        case SkSLType::kUInt3:
             return 3 * sizeof(int32_t);
-        case kInt4_GrSLType: // fall through
-        case kUInt4_GrSLType:
+        case SkSLType::kInt4: // fall through
+        case SkSLType::kUInt4:
             return 4 * sizeof(int32_t);
-        case kHalf2x2_GrSLType: // fall through
-        case kFloat2x2_GrSLType:
+        case SkSLType::kHalf2x2: // fall through
+        case SkSLType::kFloat2x2:
             if (layout == GrVkUniformHandler::kStd430Layout) {
                 return 4 * sizeof(float);
             } else {
                 return 8 * sizeof(float);
             }
-        case kHalf3x3_GrSLType: // fall through
-        case kFloat3x3_GrSLType:
+        case SkSLType::kHalf3x3: // fall through
+        case SkSLType::kFloat3x3:
             return 12 * sizeof(float);
-        case kHalf4x4_GrSLType: // fall through
-        case kFloat4x4_GrSLType:
+        case SkSLType::kHalf4x4: // fall through
+        case SkSLType::kFloat4x4:
             return 16 * sizeof(float);
 
         // This query is only valid for certain types.
-        case kVoid_GrSLType:
-        case kBool_GrSLType:
-        case kBool2_GrSLType:
-        case kBool3_GrSLType:
-        case kBool4_GrSLType:
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
-        case kSampler_GrSLType:
-        case kTexture2D_GrSLType:
-        case kInput_GrSLType:
+        case SkSLType::kVoid:
+        case SkSLType::kBool:
+        case SkSLType::kBool2:
+        case SkSLType::kBool3:
+        case SkSLType::kBool4:
+        case SkSLType::kTexture2DSampler:
+        case SkSLType::kTextureExternalSampler:
+        case SkSLType::kTexture2DRectSampler:
+        case SkSLType::kSampler:
+        case SkSLType::kTexture2D:
+        case SkSLType::kInput:
             break;
     }
     SK_ABORT("Unexpected type");
@@ -167,7 +167,7 @@ static uint32_t get_aligned_offset(uint32_t* currentOffset,
                                    int layout) {
     uint32_t alignmentMask = grsltype_to_alignment_mask(type);
     // For std140 layout we must make arrays align to 16 bytes.
-    if (layout == GrVkUniformHandler::kStd140Layout && (arrayCount || type == kFloat2x2_GrSLType)) {
+    if (layout == GrVkUniformHandler::kStd140Layout && (arrayCount || type == SkSLType::kFloat2x2)) {
         alignmentMask = 0xF;
     }
     uint32_t offsetDiff = *currentOffset & alignmentMask;
@@ -293,7 +293,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
 GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addInputSampler(const GrSwizzle& swizzle,
                                                                         const char* name) {
     SkASSERT(name && strlen(name));
-    SkASSERT(fInputUniform.fVariable.getType() == kVoid_GrSLType);
+    SkASSERT(fInputUniform.fVariable.getType() == SkSLType::kVoid);
 
     const char prefix = 'u';
     SkString mangleName = fProgramBuilder->nameVariable(prefix, name, /*mangle=*/true);
@@ -303,7 +303,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addInputSampler(const Gr
                             kDstInputAttachmentIndex, kInputDescSet, kInputBinding);
 
     fInputUniform = {
-            GrShaderVar{std::move(mangleName), kInput_GrSLType, GrShaderVar::TypeModifier::Uniform,
+            GrShaderVar{std::move(mangleName), SkSLType::kInput, GrShaderVar::TypeModifier::Uniform,
                         GrShaderVar::kNonArray, std::move(layoutQualifier), SkString()},
             kFragment_GrShaderFlag, nullptr, SkString(name)};
     fInputSwizzle = swizzle;
@@ -312,14 +312,14 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addInputSampler(const Gr
 
 void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* out) const {
     for (const VkUniformInfo& sampler : fSamplers.items()) {
-        SkASSERT(sampler.fVariable.getType() == kTexture2DSampler_GrSLType ||
-                 sampler.fVariable.getType() == kTextureExternalSampler_GrSLType);
+        SkASSERT(sampler.fVariable.getType() == SkSLType::kTexture2DSampler ||
+                 sampler.fVariable.getType() == SkSLType::kTextureExternalSampler);
         if (visibility == sampler.fVisibility) {
             sampler.fVariable.appendDecl(fProgramBuilder->shaderCaps(), out);
             out->append(";\n");
         }
     }
-    if (fInputUniform.fVariable.getType() == kInput_GrSLType) {
+    if (fInputUniform.fVariable.getType() == SkSLType::kInput) {
         if (visibility == fInputUniform.fVisibility) {
             SkASSERT(visibility == kFragment_GrShaderFlag);
             fInputUniform.fVariable.appendDecl(fProgramBuilder->shaderCaps(), out);
@@ -371,7 +371,7 @@ void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* 
 uint32_t GrVkUniformHandler::getRTFlipOffset() const {
     Layout layout = fUsePushConstants ? kStd430Layout : kStd140Layout;
     uint32_t currentOffset = fCurrentOffsets[layout];
-    return get_aligned_offset(&currentOffset, kFloat2_GrSLType, 0, layout);
+    return get_aligned_offset(&currentOffset, SkSLType::kFloat2, 0, layout);
 }
 
 void GrVkUniformHandler::determineIfUsePushConstants() const {

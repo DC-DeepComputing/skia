@@ -66,7 +66,7 @@ public:
                     isArray = true;
                 }
 
-                GrSLType gpuType;
+                SkSLType gpuType;
                 SkAssertResult(SkSL::type_to_grsltype(fContext, *type, &gpuType));
 
                 if (*fUniformFlags++ & GrSkSLFP::kSpecialize_Flag) {
@@ -74,7 +74,7 @@ public:
                     String value = GrGLSLTypeString(gpuType);
                     value.append("(");
 
-                    bool isFloat = GrSLTypeIsFloatType(gpuType);
+                    bool isFloat = SkSLTypeIsFloatType(gpuType);
                     size_t slots = type->slotCount();
                     for (size_t i = 0; i < slots; ++i) {
                         value.append(isFloat ? SkSL::to_string(floatData[i])
@@ -217,7 +217,7 @@ public:
         SkString inputColorName;
         if (fp.fEffect->samplesOutsideMain()) {
             GrShaderVar inputColorCopy(args.fFragBuilder->getMangledFunctionName("inColor"),
-                                       kHalf4_GrSLType);
+                                       SkSLType::kHalf4);
             args.fFragBuilder->declareGlobal(inputColorCopy);
             inputColorName = inputColorCopy.getName();
             args.fFragBuilder->codeAppendf("%s = %s;\n", inputColorName.c_str(), args.fInputColor);

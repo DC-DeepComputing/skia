@@ -11,6 +11,6 @@
 #include "include/private/GrTypesPriv.h"
 #include "src/sksl/SkSLGLSL.h"
 
-const char* GrGLSLTypeString(GrSLType);
+const char* GrGLSLTypeString(SkSLType);
 
 #endif
