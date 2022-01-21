@@ -46,6 +46,30 @@
       },
       "revId": "6658fd1584e052788e289cd7e2c622d6ff25287d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b470aa54_eb5a30c2",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-21T20:20:46Z",
+      "side": 0,
+      "message": "Ok, let\u0027s not touch it.",
+      "parentUuid": "dffcbc49_cad10ebb",
+      "range": {
+        "startLine": 384,
+        "startChar": 4,
+        "endLine": 399,
+        "endChar": 5
+      },
+      "revId": "6658fd1584e052788e289cd7e2c622d6ff25287d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
