@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b170b7_6d6e69a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-21T20:16:23Z",
+      "side": 1,
+      "message": "It was a 5% improvement on the desk_nytimes.skp.",
+      "parentUuid": "ebeff8e0_6390d997",
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d30be75e_c2d063b9",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-01-21T18:46:10Z",
       "side": 1,
       "message": "Can we add a comment summarizing my comment below? About being used to communicate between [~]AtlasTextOp and operator new/delete.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 85
+      },
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a0e67f_31590d37",
+        "filename": "src/gpu/ops/AtlasTextOp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-21T20:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d30be75e_c2d063b9",
       "range": {
         "startLine": 52,
         "startChar": 0,
@@ -142,6 +184,30 @@
       "writtenOn": "2022-01-21T18:46:10Z",
       "side": 1,
       "message": "Can we get rid of this if we define GrOp::MakeAtlasTextOp in AtlasTextOp.cpp? I don\u0027t think we need MakeAtlasTextOp to be a template, and I\u0027d rather lock down the context storing business as much as possible.",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 65
+      },
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1e23525_7aca7660",
+        "filename": "src/gpu/ops/AtlasTextOp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-21T20:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09310900_8052efb8",
       "range": {
         "startLine": 113,
         "startChar": 4,
