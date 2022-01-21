@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebeff8e0_6390d997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T18:46:10Z",
+      "side": 1,
+      "message": "Made some more comments. I think I\u0027m okay moving forward with this, but would also like a reminder on how much performance gain we got from doing this caching? Would we be better off just going back to no caching and having simpler code?",
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d30be75e_c2d063b9",
+        "filename": "src/gpu/ops/AtlasTextOp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T18:46:10Z",
+      "side": 1,
+      "message": "Can we add a comment summarizing my comment below? About being used to communicate between [~]AtlasTextOp and operator new/delete.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 85
+      },
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0227b37_44644009",
@@ -60,6 +100,53 @@
         "startChar": 0,
         "endLine": 85,
         "endChar": 1
+      },
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8d884fe_18f31995",
+        "filename": "src/gpu/ops/AtlasTextOp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T18:46:10Z",
+      "side": 1,
+      "message": "After talking offline, we realized that my hope of removing gRecordingContext entirely doesn\u0027t work because the ops are managed by std::unique_ptr, so it will always use the delete operator after running ~AtlasTextOp. The delete operator obviously doesn\u0027t have access to the context to stash the void* on, so the thread_local communicates between the destructor and operator.",
+      "parentUuid": "5413820f_fec80e81",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09310900_8052efb8",
+        "filename": "src/gpu/ops/AtlasTextOp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-21T18:46:10Z",
+      "side": 1,
+      "message": "Can we get rid of this if we define GrOp::MakeAtlasTextOp in AtlasTextOp.cpp? I don\u0027t think we need MakeAtlasTextOp to be a template, and I\u0027d rather lock down the context storing business as much as possible.",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 65
       },
       "revId": "5b9d59da65358ac80a5b0ff714c1a20392f12cfb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
