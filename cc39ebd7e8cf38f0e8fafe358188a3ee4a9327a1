@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8896a485_b360eb60",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-21T15:41:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "995211e0_40f01e2c",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d4f3e33_d35bd81a",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "I went down this train of thought a couple months ago, but I\u0027m having a hard time remembering all of my conclusions. I think it went something like this:\n\n1) Why do we have both GrSLType, and SkSL::Type. Can we somehow merge things to avoid going back and forth? (See also, type_to_grsltype in SkSLUtil.cpp, and GrGLSLTypeString in GrGLSL.cpp). [Bringing this up because SLType appears to be a direct copy of GrSLType, and the same arguments hold].\n\n2) ... Pretty sure my reasoning was that it would be nice, but SkSL::Type is more complex (and there are types dynamically added, etc...). GrSLType (/SLType) are really about enumerating the set of types that we allow on the shader/API boundary (uniforms, varyings, etc.)\n\nEven so - it\u0027s still a property of the shading language at this point, so it probably makes more sense to move it into SkSL (so it would be parsed as SkSL-Type, rather than Sk-SLType). I think I even started trying to do this at one point, but ran into a variety of circular dependency issues. Jim was also involved (I think we were ultimately trying to move shader caps so it could be shared). He completed some of that work after my first stab, and I never went back. I\u0027m sure it\u0027s possible, I just tried to move too many things at once.\n\nTL;DR - I think it does belong in SkSL, which would be nice, as we could share one definition with Ganesh.",
       "parentUuid": "5d4f3e33_d35bd81a",
+      "range": {
+        "startLine": 14,
+        "startChar": 12,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "cc39ebd7e8cf38f0e8fafe358188a3ee4a9327a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3237313_95961f44",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-21T15:41:38Z",
+      "side": 1,
+      "message": "I was planning on trying to remove GrSLType and use SkSLType in Ganesh regardless - since SkSLType should be accessible by everyone.\n\nI can also follow up with a CL to move SkSLType into SkSL and see what issues pop up.",
+      "parentUuid": "f21607a9_6f2ca25a",
       "range": {
         "startLine": 14,
         "startChar": 12,
