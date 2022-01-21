@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14b25dd5_4ffd9e24",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-21T16:14:28Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "9ac736f8_49c54133",
+      "range": {
+        "startLine": 51,
+        "startChar": 40,
+        "endLine": 51,
+        "endChar": 57
+      },
+      "revId": "25965d1eef18e68ba4ade57b7bde99bc1c8de5ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77449b22_672ea22b",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-20T16:22:52Z",
       "side": 1,
       "message": "Oh, you need to return here, or you\u0027ll read through null when `program-\u003efOwnedElements` executes below. (ERRORF doesn\u0027t abort)",
+      "range": {
+        "startLine": 194,
+        "startChar": 53,
+        "endLine": 194,
+        "endChar": 54
+      },
+      "revId": "25965d1eef18e68ba4ade57b7bde99bc1c8de5ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "415a83d4_b5d338ac",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-21T16:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77449b22_672ea22b",
       "range": {
         "startLine": 194,
         "startChar": 53,
@@ -84,6 +132,30 @@
       "side": 1,
       "message": "Active",
       "parentUuid": "7269a003_f5a9526e",
+      "range": {
+        "startLine": 197,
+        "startChar": 84,
+        "endLine": 197,
+        "endChar": 85
+      },
+      "revId": "25965d1eef18e68ba4ade57b7bde99bc1c8de5ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "007de108_80e0c6ae",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-21T16:14:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1caf69ec_70118a6b",
       "range": {
         "startLine": 197,
         "startChar": 84,
