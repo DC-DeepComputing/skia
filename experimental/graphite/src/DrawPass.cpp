@@ -174,7 +174,7 @@ public:
     UniformBindingCache(DrawBufferManager* bufferMgr, UniformCache* cache)
             : fBufferMgr(bufferMgr), fCache(cache) {}
 
-    uint32_t addUniforms(sk_sp<SkUniformData> data) {
+    uint32_t addUniforms(const std::vector<sk_sp<SkUniformData>>& uniforms) {
         if (!data) {
             return UniformCache::kInvalidUniformID;
         }
@@ -285,7 +285,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
         SkUniquePaintParamsID shaderID;
-        sk_sp<SkUniformData> shadingUniforms = nullptr;
+        std::vector<sk_sp<SkUniformData>> shadingUniforms;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
             std::tie(shaderID, shadingUniforms) = ExtractPaintData(recorder->context(),
