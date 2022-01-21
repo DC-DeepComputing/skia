@@ -13,7 +13,10 @@
 #include "experimental/graphite/src/mtl/MtlCommandBuffer.h"
 #include "experimental/graphite/src/mtl/MtlGpu.h"
 #include "experimental/graphite/src/mtl/MtlGraphicsPipeline.h"
+#include "experimental/graphite/src/mtl/MtlSampler.h"
 #include "experimental/graphite/src/mtl/MtlTexture.h"
+
+#include "include/core/SkSamplingOptions.h"
 
 #import <Metal/Metal.h>
 
@@ -58,6 +61,12 @@ sk_sp<skgpu::Buffer> ResourceProvider::createBuffer(size_t size,
                                                     BufferType type,
                                                     PrioritizeGpuReads prioritizeGpuReads) {
     return Buffer::Make(this->mtlGpu(), size, type, prioritizeGpuReads);
+}
+
+sk_sp<skgpu::Sampler> ResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
+                                                      SkTileMode xTileMode,
+                                                      SkTileMode yTileMode) {
+    return Sampler::Make(this->mtlGpu(), samplingOptions, xTileMode, yTileMode);
 }
 
 namespace {
