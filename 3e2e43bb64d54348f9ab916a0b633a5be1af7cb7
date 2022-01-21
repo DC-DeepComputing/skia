@@ -34,6 +34,24 @@
       "parentUuid": "435f2244_037eb5e8",
       "revId": "3e2e43bb64d54348f9ab916a0b633a5be1af7cb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f2a5a43_6a68c37a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-21T14:55:06Z",
+      "side": 1,
+      "message": "PTAL http://review.skia.org/497452 for the parallel skcms fix.",
+      "parentUuid": "39435aef_e737e2eb",
+      "revId": "3e2e43bb64d54348f9ab916a0b633a5be1af7cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
