@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "173de0b6_71641700",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-21T16:15:41Z",
+      "side": 1,
+      "message": "Doesn\u0027t look like the root cause is actually fixed? We work around the issue by avoiding early str() calls, but we still can\u0027t call str() and then append to the buffer.",
+      "range": {
+        "startLine": 11,
+        "startChar": 3,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "1a4f15d1e8b99fb59f1f280fe000fdb23fc7b7f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
