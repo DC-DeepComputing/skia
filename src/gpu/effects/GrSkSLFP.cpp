@@ -217,7 +217,7 @@ public:
         SkString inputColorName;
         if (fp.fEffect->samplesOutsideMain()) {
             GrShaderVar inputColorCopy(args.fFragBuilder->getMangledFunctionName("inColor"),
-                                       kHalf4_GrSLType);
+                                       SkSLType::kHalf4);
             args.fFragBuilder->declareGlobal(inputColorCopy);
             inputColorName = inputColorCopy.getName();
             args.fFragBuilder->codeAppendf("%s = %s;\n", inputColorName.c_str(), args.fInputColor);

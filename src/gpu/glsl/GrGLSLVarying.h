@@ -19,12 +19,12 @@ class GrGLSLProgramBuilder;
 #ifdef SK_DEBUG
 static bool is_matrix(GrSLType type) {
     switch (type) {
-        case kFloat2x2_GrSLType:
-        case kFloat3x3_GrSLType:
-        case kFloat4x4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
+        case SkSLType::kFloat2x2:
+        case SkSLType::kFloat3x3:
+        case SkSLType::kFloat4x4:
+        case SkSLType::kHalf2x2:
+        case SkSLType::kHalf3x3:
+        case SkSLType::kHalf4x4:
             return true;
         default:
             return false;
@@ -75,7 +75,7 @@ public:
     }
 
 private:
-    GrSLType fType = kVoid_GrSLType;
+    GrSLType fType = SkSLType::kVoid;
     Scope fScope = Scope::kVertToFrag;
     const char* fVsOut = nullptr;
     const char* fFsIn = nullptr;

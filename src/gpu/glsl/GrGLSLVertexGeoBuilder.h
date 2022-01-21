@@ -30,12 +30,12 @@ protected:
     GrGLSLVertexGeoBuilder(GrGLSLProgramBuilder* program) : INHERITED(program) {}
 
     void emitNormalizedSkPosition(const char* devPos,
-                                  GrSLType devPosType = GrSLType::kFloat2_GrSLType) {
+                                  GrSLType devPosType = GrSLType::SkSLType::kFloat2) {
         this->emitNormalizedSkPosition(&this->code(), devPos, devPosType);
     }
 
     void emitNormalizedSkPosition(SkString* out, const char* devPos,
-                                  GrSLType devPosType = GrSLType::kFloat2_GrSLType);
+                                  GrSLType devPosType = GrSLType::SkSLType::kFloat2);
 
     friend class GrGeometryProcessor::ProgramImpl;
 

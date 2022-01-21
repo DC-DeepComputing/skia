@@ -61,9 +61,9 @@ private:
                 auto& fp = args.fFp.cast<VisualizeCrossProductSignFP>();
                 const char *a, *b;
                 fAUniform = args.fUniformHandler->addUniform(&fp, kFragment_GrShaderFlag,
-                                                             GrSLType::kFloat2_GrSLType, "a", &a);
+                                                             GrSLType::SkSLType::kFloat2, "a", &a);
                 fBUniform = args.fUniformHandler->addUniform(&fp, kFragment_GrShaderFlag,
-                                                             GrSLType::kFloat2_GrSLType, "b", &b);
+                                                             GrSLType::SkSLType::kFloat2, "b", &b);
                 args.fFragBuilder->codeAppendf(R"(
                     float crossProduct = cross_length_2d(%s, %s);
                     float2 visualization = clamp(float2(-sign(crossProduct), sign(crossProduct)),

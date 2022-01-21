@@ -33,7 +33,7 @@ public:
 
     /** Defaults to a void with no type modifier or layout qualifier. */
     GrShaderVar()
-            : fType(kVoid_GrSLType)
+            : fType(SkSLType::kVoid)
             , fTypeModifier(TypeModifier::None)
             , fCount(kNonArray) {}
 
@@ -76,7 +76,7 @@ public:
     /** Sets as a non-array. */
     void set(GrSLType type,
              const char* name) {
-        SkASSERT(kVoid_GrSLType != type);
+        SkASSERT(SkSLType::kVoid != type);
         fType = type;
         fName = name;
     }

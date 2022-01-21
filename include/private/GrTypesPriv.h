@@ -289,56 +289,6 @@ static inline GrQuadAAFlags SkToGrQuadAAFlags(unsigned flags) {
 }
 
 /**
- * Types of shader-language-specific boxed variables we can create.
- */
-enum GrSLType {
-    kVoid_GrSLType,
-    kBool_GrSLType,
-    kBool2_GrSLType,
-    kBool3_GrSLType,
-    kBool4_GrSLType,
-    kShort_GrSLType,
-    kShort2_GrSLType,
-    kShort3_GrSLType,
-    kShort4_GrSLType,
-    kUShort_GrSLType,
-    kUShort2_GrSLType,
-    kUShort3_GrSLType,
-    kUShort4_GrSLType,
-    kFloat_GrSLType,
-    kFloat2_GrSLType,
-    kFloat3_GrSLType,
-    kFloat4_GrSLType,
-    kFloat2x2_GrSLType,
-    kFloat3x3_GrSLType,
-    kFloat4x4_GrSLType,
-    kHalf_GrSLType,
-    kHalf2_GrSLType,
-    kHalf3_GrSLType,
-    kHalf4_GrSLType,
-    kHalf2x2_GrSLType,
-    kHalf3x3_GrSLType,
-    kHalf4x4_GrSLType,
-    kInt_GrSLType,
-    kInt2_GrSLType,
-    kInt3_GrSLType,
-    kInt4_GrSLType,
-    kUInt_GrSLType,
-    kUInt2_GrSLType,
-    kUInt3_GrSLType,
-    kUInt4_GrSLType,
-    kTexture2DSampler_GrSLType,
-    kTextureExternalSampler_GrSLType,
-    kTexture2DRectSampler_GrSLType,
-    kTexture2D_GrSLType,
-    kSampler_GrSLType,
-    kInput_GrSLType,
-
-    kLast_GrSLType = kInput_GrSLType
-};
-static const int kGrSLTypeCount = kLast_GrSLType + 1;
-
-/**
  * The type of texture. Backends other than GL currently only use the 2D value but the type must
  * still be known at the API-neutral layer as it used to determine whether MIP maps, renderability,
  * and sampling parameters are legal for proxies that will be instantiated with wrapped textures.
@@ -368,108 +318,6 @@ enum GrShaderFlags {
 };
 SK_MAKE_BITFIELD_OPS(GrShaderFlags)
 
-/** Is the shading language type float (including vectors/matrices)? */
-static constexpr bool GrSLTypeIsFloatType(GrSLType type) {
-    switch (type) {
-        case kFloat_GrSLType:
-        case kFloat2_GrSLType:
-        case kFloat3_GrSLType:
-        case kFloat4_GrSLType:
-        case kFloat2x2_GrSLType:
-        case kFloat3x3_GrSLType:
-        case kFloat4x4_GrSLType:
-        case kHalf_GrSLType:
-        case kHalf2_GrSLType:
-        case kHalf3_GrSLType:
-        case kHalf4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
-            return true;
-
-        case kVoid_GrSLType:
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
-        case kBool_GrSLType:
-        case kBool2_GrSLType:
-        case kBool3_GrSLType:
-        case kBool4_GrSLType:
-        case kShort_GrSLType:
-        case kShort2_GrSLType:
-        case kShort3_GrSLType:
-        case kShort4_GrSLType:
-        case kUShort_GrSLType:
-        case kUShort2_GrSLType:
-        case kUShort3_GrSLType:
-        case kUShort4_GrSLType:
-        case kInt_GrSLType:
-        case kInt2_GrSLType:
-        case kInt3_GrSLType:
-        case kInt4_GrSLType:
-        case kUInt_GrSLType:
-        case kUInt2_GrSLType:
-        case kUInt3_GrSLType:
-        case kUInt4_GrSLType:
-        case kTexture2D_GrSLType:
-        case kSampler_GrSLType:
-        case kInput_GrSLType:
-            return false;
-    }
-    SkUNREACHABLE;
-}
-
-/** Is the shading language type integral (including vectors)? */
-static constexpr bool GrSLTypeIsIntegralType(GrSLType type) {
-    switch (type) {
-        case kShort_GrSLType:
-        case kShort2_GrSLType:
-        case kShort3_GrSLType:
-        case kShort4_GrSLType:
-        case kUShort_GrSLType:
-        case kUShort2_GrSLType:
-        case kUShort3_GrSLType:
-        case kUShort4_GrSLType:
-        case kInt_GrSLType:
-        case kInt2_GrSLType:
-        case kInt3_GrSLType:
-        case kInt4_GrSLType:
-        case kUInt_GrSLType:
-        case kUInt2_GrSLType:
-        case kUInt3_GrSLType:
-        case kUInt4_GrSLType:
-            return true;
-
-        case kFloat_GrSLType:
-        case kFloat2_GrSLType:
-        case kFloat3_GrSLType:
-        case kFloat4_GrSLType:
-        case kFloat2x2_GrSLType:
-        case kFloat3x3_GrSLType:
-        case kFloat4x4_GrSLType:
-        case kHalf_GrSLType:
-        case kHalf2_GrSLType:
-        case kHalf3_GrSLType:
-        case kHalf4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
-        case kVoid_GrSLType:
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
-        case kBool_GrSLType:
-        case kBool2_GrSLType:
-        case kBool3_GrSLType:
-        case kBool4_GrSLType:
-        case kTexture2D_GrSLType:
-        case kSampler_GrSLType:
-        case kInput_GrSLType:
-            return false;
-    }
-    SkUNREACHABLE;
-}
-
 /**
  * Is the shading language type supported as a uniform (ie, does it have a corresponding set
  * function on GrGLSLProgramDataManager)?
@@ -481,55 +329,55 @@ static constexpr bool GrSLTypeCanBeUniformValue(GrSLType type) {
 /** If the type represents a single value or vector return the vector length, else -1. */
 static constexpr int GrSLTypeVecLength(GrSLType type) {
     switch (type) {
-        case kFloat_GrSLType:
-        case kHalf_GrSLType:
-        case kBool_GrSLType:
-        case kShort_GrSLType:
-        case kUShort_GrSLType:
-        case kInt_GrSLType:
-        case kUInt_GrSLType:
+        case SkSLType::kFloat:
+        case SkSLType::kHalf:
+        case SkSLType::kBool:
+        case SkSLType::kShort:
+        case SkSLType::kUShort:
+        case SkSLType::kInt:
+        case SkSLType::kUInt:
             return 1;
 
-        case kFloat2_GrSLType:
-        case kHalf2_GrSLType:
-        case kBool2_GrSLType:
-        case kShort2_GrSLType:
-        case kUShort2_GrSLType:
-        case kInt2_GrSLType:
-        case kUInt2_GrSLType:
+        case SkSLType::kFloat2:
+        case SkSLType::kHalf2:
+        case SkSLType::kBool2:
+        case SkSLType::kShort2:
+        case SkSLType::kUShort2:
+        case SkSLType::kInt2:
+        case SkSLType::kUInt2:
             return 2;
 
-        case kFloat3_GrSLType:
-        case kHalf3_GrSLType:
-        case kBool3_GrSLType:
-        case kShort3_GrSLType:
-        case kUShort3_GrSLType:
-        case kInt3_GrSLType:
-        case kUInt3_GrSLType:
+        case SkSLType::kFloat3:
+        case SkSLType::kHalf3:
+        case SkSLType::kBool3:
+        case SkSLType::kShort3:
+        case SkSLType::kUShort3:
+        case SkSLType::kInt3:
+        case SkSLType::kUInt3:
             return 3;
 
-        case kFloat4_GrSLType:
-        case kHalf4_GrSLType:
-        case kBool4_GrSLType:
-        case kShort4_GrSLType:
-        case kUShort4_GrSLType:
-        case kInt4_GrSLType:
-        case kUInt4_GrSLType:
+        case SkSLType::kFloat4:
+        case SkSLType::kHalf4:
+        case SkSLType::kBool4:
+        case SkSLType::kShort4:
+        case SkSLType::kUShort4:
+        case SkSLType::kInt4:
+        case SkSLType::kUInt4:
             return 4;
 
-        case kFloat2x2_GrSLType:
-        case kFloat3x3_GrSLType:
-        case kFloat4x4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
-        case kVoid_GrSLType:
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
-        case kTexture2D_GrSLType:
-        case kSampler_GrSLType:
-        case kInput_GrSLType:
+        case SkSLType::kFloat2x2:
+        case SkSLType::kFloat3x3:
+        case SkSLType::kFloat4x4:
+        case SkSLType::kHalf2x2:
+        case SkSLType::kHalf3x3:
+        case SkSLType::kHalf4x4:
+        case SkSLType::kVoid:
+        case SkSLType::kTexture2DSampler:
+        case SkSLType::kTextureExternalSampler:
+        case SkSLType::kTexture2DRectSampler:
+        case SkSLType::kTexture2D:
+        case SkSLType::kSampler:
+        case SkSLType::kInput:
             return -1;
     }
     SkUNREACHABLE;
@@ -538,11 +386,11 @@ static constexpr int GrSLTypeVecLength(GrSLType type) {
 static inline GrSLType GrSLCombinedSamplerTypeForTextureType(GrTextureType type) {
     switch (type) {
         case GrTextureType::k2D:
-            return kTexture2DSampler_GrSLType;
+            return SkSLType::kTexture2DSampler;
         case GrTextureType::kRectangle:
-            return kTexture2DRectSampler_GrSLType;
+            return SkSLType::kTexture2DRectSampler;
         case GrTextureType::kExternal:
-            return kTextureExternalSampler_GrSLType;
+            return SkSLType::kTextureExternalSampler;
         default:
             SK_ABORT("Unexpected texture type");
     }
@@ -566,49 +414,49 @@ static inline bool GrTextureTypeHasRestrictedSampling(GrTextureType type) {
 
 static constexpr bool GrSLTypeIsCombinedSamplerType(GrSLType type) {
     switch (type) {
-        case kTexture2DSampler_GrSLType:
-        case kTextureExternalSampler_GrSLType:
-        case kTexture2DRectSampler_GrSLType:
+        case SkSLType::kTexture2DSampler:
+        case SkSLType::kTextureExternalSampler:
+        case SkSLType::kTexture2DRectSampler:
             return true;
 
-        case kVoid_GrSLType:
-        case kFloat_GrSLType:
-        case kFloat2_GrSLType:
-        case kFloat3_GrSLType:
-        case kFloat4_GrSLType:
-        case kFloat2x2_GrSLType:
-        case kFloat3x3_GrSLType:
-        case kFloat4x4_GrSLType:
-        case kHalf_GrSLType:
-        case kHalf2_GrSLType:
-        case kHalf3_GrSLType:
-        case kHalf4_GrSLType:
-        case kHalf2x2_GrSLType:
-        case kHalf3x3_GrSLType:
-        case kHalf4x4_GrSLType:
-        case kInt_GrSLType:
-        case kInt2_GrSLType:
-        case kInt3_GrSLType:
-        case kInt4_GrSLType:
-        case kUInt_GrSLType:
-        case kUInt2_GrSLType:
-        case kUInt3_GrSLType:
-        case kUInt4_GrSLType:
-        case kBool_GrSLType:
-        case kBool2_GrSLType:
-        case kBool3_GrSLType:
-        case kBool4_GrSLType:
-        case kShort_GrSLType:
-        case kShort2_GrSLType:
-        case kShort3_GrSLType:
-        case kShort4_GrSLType:
-        case kUShort_GrSLType:
-        case kUShort2_GrSLType:
-        case kUShort3_GrSLType:
-        case kUShort4_GrSLType:
-        case kTexture2D_GrSLType:
-        case kSampler_GrSLType:
-        case kInput_GrSLType:
+        case SkSLType::kVoid:
+        case SkSLType::kFloat:
+        case SkSLType::kFloat2:
+        case SkSLType::kFloat3:
+        case SkSLType::kFloat4:
+        case SkSLType::kFloat2x2:
+        case SkSLType::kFloat3x3:
+        case SkSLType::kFloat4x4:
+        case SkSLType::kHalf:
+        case SkSLType::kHalf2:
+        case SkSLType::kHalf3:
+        case SkSLType::kHalf4:
+        case SkSLType::kHalf2x2:
+        case SkSLType::kHalf3x3:
+        case SkSLType::kHalf4x4:
+        case SkSLType::kInt:
+        case SkSLType::kInt2:
+        case SkSLType::kInt3:
+        case SkSLType::kInt4:
+        case SkSLType::kUInt:
+        case SkSLType::kUInt2:
+        case SkSLType::kUInt3:
+        case SkSLType::kUInt4:
+        case SkSLType::kBool:
+        case SkSLType::kBool2:
+        case SkSLType::kBool3:
+        case SkSLType::kBool4:
+        case SkSLType::kShort:
+        case SkSLType::kShort2:
+        case SkSLType::kShort3:
+        case SkSLType::kShort4:
+        case SkSLType::kUShort:
+        case SkSLType::kUShort2:
+        case SkSLType::kUShort3:
+        case SkSLType::kUShort4:
+        case SkSLType::kTexture2D:
+        case SkSLType::kSampler:
+        case SkSLType::kInput:
             return false;
     }
     SkUNREACHABLE;
