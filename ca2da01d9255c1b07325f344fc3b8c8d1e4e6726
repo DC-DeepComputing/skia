@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "593c725e_fa04e02e",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-21T15:56:59Z",
+      "side": 1,
+      "message": "This seems like a better comment than the above \"// Validates ...\" comment. Maybe combine them w/ this one first?",
+      "revId": "ca2da01d9255c1b07325f344fc3b8c8d1e4e6726",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
