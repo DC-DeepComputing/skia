@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "435f2244_037eb5e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-21T13:57:09Z",
+      "side": 1,
+      "message": "Nice catch. I was going to suggest that we should add this to skcms (it has a parallel copy of similar code). Interestingly:\n\n- The vector code in skcms has the clamp against 0, but not against infinity: https://skia.googlesource.com/skcms/+/refs/heads/main/src/Transform_inl.h#297\n\n- The scalar code in skcm has both clamps: https://skia.googlesource.com/skcms/+/refs/heads/main/skcms.cc#94",
+      "revId": "3e2e43bb64d54348f9ab916a0b633a5be1af7cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
