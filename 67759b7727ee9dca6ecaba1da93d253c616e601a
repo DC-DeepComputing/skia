@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56da5e4c_6b31d375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-21T20:56:51Z",
+      "side": 1,
+      "message": "Of the suspiciously similar helper functions:\n\nGrSPIRVUniformHandler\n  sksltype_to_alignment_mask\n  sksltype_to_size\n\nUniformManager\n  sksltype_to_alignment_mask\n  sksltype_to_mtl_size\n\nGrSPIRVVaryingHandler\n  sksltype_to_location_size\n\nGrMtlUniformHandler\n  sksltype_to_alignment_mask\n  sksltype_to_mtl_size\n\nGrVkUniformHandler\n  sksltype_to_alignment_mask\n  sksltype_to_vk_size\n  sksltype_to_location_size\n\nProbably only the UniformManager and GrMtlUniformHandler ones could be shared.",
+      "revId": "67759b7727ee9dca6ecaba1da93d253c616e601a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
