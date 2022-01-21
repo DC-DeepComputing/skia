@@ -370,7 +370,7 @@ static uint32_t sltype_to_alignment_mask(SkSLType type) {
     SK_ABORT("Unexpected type");
 }
 
-/** Returns the size in bytes taken up in Metal buffers for GrSLTypes. */
+/** Returns the size in bytes taken up in Metal buffers for SkSLTypes. */
 inline uint32_t sltype_to_mtl_size(SkSLType type) {
     switch (type) {
         case SkSLType::kInt:

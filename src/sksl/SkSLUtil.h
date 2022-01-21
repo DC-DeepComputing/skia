@@ -416,7 +416,7 @@ private:
 };
 
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-bool type_to_grsltype(const Context& context, const Type& type, GrSLType* outType);
+bool type_to_sksltype(const Context& context, const Type& type, SkSLType* outType);
 #endif
 
 void write_stringstream(const StringStream& d, OutputStream& out);
