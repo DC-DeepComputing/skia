@@ -534,6 +534,22 @@
     "name": "Make code size treemap [START_DIR]/build/dm"
   },
   {
+    "cmd": [
+      "python",
+      "-u",
+      "[START_DIR]/cache/work/skia/infra/bots/buildstats/codesize.py",
+      "[START_DIR]/build/dm",
+      "[START_DIR]/[SWARM_OUT_DIR]",
+      "[START_DIR]/bloaty/bloaty"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "Make files for codesize.skia.org [START_DIR]/build/dm"
+  },
+  {
     "name": "$result"
   }
 ]
