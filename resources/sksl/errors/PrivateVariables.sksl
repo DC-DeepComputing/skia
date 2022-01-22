@@ -1,0 +1,5 @@
+int $a, b$;
+void main(float2 $b) {
+    float $c[2], d$[3];
+    bool4 $e, f$;
+}
