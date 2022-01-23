@@ -1960,7 +1960,7 @@ namespace skvm {
 
     void Assembler::op(int opcode, Operand dst, GP64 x) {
         if (dst.kind == Operand::REG) {
-            this->byte(rex(W1,x>>3,0,dst.reg>>3));
+            this->byte(rex(W1, x >> 3, false, dst.reg >> 3));
             this->bytes(&opcode, SkTFitsIn<uint8_t>(opcode) ? 1 : 2);
             this->byte(mod_rm(Mod::Direct, x, dst.reg&7));
         } else {
@@ -2186,8 +2186,7 @@ namespace skvm {
     void Assembler::op(int prefix, int map, int opcode, int dst, int x, Operand y, W w, L l) {
         switch (y.kind) {
             case Operand::REG: {
-                VEX v = vex(w, dst>>3, 0, y.reg>>3,
-                            map, x, l, prefix);
+                VEX v = vex(w, dst >> 3, false, y.reg >> 3, map, x, l, prefix);
                 this->bytes(v.bytes, v.len);
                 this->byte(opcode);
                 this->byte(mod_rm(Mod::Direct, dst&7, y.reg&7));
@@ -2216,8 +2215,7 @@ namespace skvm {
                 // IP-relative addressing uses Mod::Indirect with the R/M encoded as-if rbp or r13.
                 const int rip = rbp;
 
-                VEX v = vex(w, dst>>3, 0, rip>>3,
-                            map, x, l, prefix);
+                VEX v = vex(w, dst >> 3, false, rip >> 3, map, x, l, prefix);
                 this->bytes(v.bytes, v.len);
                 this->byte(opcode);
                 this->byte(mod_rm(Mod::Indirect, dst&7, rip&7));
@@ -2303,8 +2301,7 @@ namespace skvm {
         int prefix = 0x66,
             map    = 0x380f,
             opcode = 0x92;
-        VEX v = vex(0, dst>>3, ix>>3, base>>3,
-                    map, mask, /*ymm?*/1, prefix);
+        VEX v = vex(false, dst >> 3, ix >> 3, base >> 3, map, mask, /*ymm?*/ true, prefix);
         this->bytes(v.bytes, v.len);
         this->byte(opcode);
         this->byte(mod_rm(Mod::Indirect, dst&7, rsp/*use SIB*/));

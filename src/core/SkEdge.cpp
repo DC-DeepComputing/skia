@@ -214,8 +214,7 @@ bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift)
     int bot = SkFDot6Round(y2);
 
     // are we a zero-height quad (line)?
-    if (top == bot)
-        return 0;
+    if (top == bot) return false;
 
     // compute number of steps needed (1 << shift)
     {
@@ -389,8 +388,7 @@ bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool so
     int bot = SkFDot6Round(y3);
 
     // are we a zero-height cubic (line)?
-    if (sortY && top == bot)
-        return 0;
+    if (sortY && top == bot) return false;
 
     // compute number of steps needed (1 << shift)
     {

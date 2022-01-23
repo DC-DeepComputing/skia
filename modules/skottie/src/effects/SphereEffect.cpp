@@ -130,7 +130,7 @@ static sk_sp<SkRuntimeEffect> sphere_fancylight_effect() {
     static const SkRuntimeEffect* effect =
             SkRuntimeEffect::MakeForShader(SkStringPrintf(gSphereSkSL, gFancyLightSkSL), {})
                     .effect.release();
-    if (0 && !effect) {
+    if (false && !effect) {
         printf("!!! %s\n",
                SkRuntimeEffect::MakeForShader(SkStringPrintf(gSphereSkSL, gFancyLightSkSL), {})
                        .errorText.c_str());

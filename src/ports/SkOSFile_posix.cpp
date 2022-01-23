@@ -59,11 +59,11 @@ typedef struct {
 static bool sk_ino(FILE* a, SkFILEID* id) {
     int fd = fileno(a);
     if (fd < 0) {
-        return 0;
+        return false;
     }
     struct stat status;
     if (0 != fstat(fd, &status)) {
-        return 0;
+        return false;
     }
     id->dev = status.st_dev;
     id->ino = status.st_ino;

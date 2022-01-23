@@ -138,7 +138,7 @@ void SkShaperPrimitive::shape(const char* utf8, size_t utf8Bytes,
         skfont.setTypeface(sk_ref_sp(skfont.getTypefaceOrDefault()));
     }
     SkASSERT(skfont.getTypeface());
-    bool skbidi = 0;
+    bool skbidi = false;
     if (!bidi.atEnd()) {
         bidi.consume();
         skbidi = (bidi.currentLevel() % 2) == 0;
