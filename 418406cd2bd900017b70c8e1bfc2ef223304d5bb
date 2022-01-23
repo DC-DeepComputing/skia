@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "032b58d1_39dfee67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-23T19:11:38Z",
+      "side": 1,
+      "message": "I couldn\u0027t auto-revert https://skia-review.googlesource.com/c/skia/+/496880 because I didn\u0027t see the tree failures until \u003e24 hours had passed. But it also wasn\u0027t a bug in that CL, that just uncovered an incorrect vertex count requested in the failing benchmark.",
+      "revId": "418406cd2bd900017b70c8e1bfc2ef223304d5bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
