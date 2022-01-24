@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000019654564",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/498916?revision\u003d2",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "c0a8ce53_16eee2f6",
+        "filename": "tests/PolyUtilsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2022-01-24T19:56:34Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027complex\u0027, \u0027unexpected\u0027, or \u0027placeholder\u0027; see https://developers.google.com/style/inclusive-documentation#ableist-language for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 272,
+        "startChar": 7,
+        "endLine": 272,
+        "endChar": 12
+      },
+      "revId": "7ed43bf6dd6b6c025e8f690f23eae379ebb6c3da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
