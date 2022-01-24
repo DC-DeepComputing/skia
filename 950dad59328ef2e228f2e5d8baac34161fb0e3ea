@@ -16,6 +16,24 @@
       "message": "Starting with a small change. Am I doing everything correctly?",
       "revId": "950dad59328ef2e228f2e5d8baac34161fb0e3ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81629f99_4ad9933b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-24T18:34:55Z",
+      "side": 1,
+      "message": "Yep - lgtm",
+      "parentUuid": "8e8317e4_1bac9229",
+      "revId": "950dad59328ef2e228f2e5d8baac34161fb0e3ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
