@@ -234,9 +234,12 @@ protected:
         SkString name;
         SkFontStyle style;
         bool isFixedPitch = false;
-        if (!fScanner.scanFont(stream.get(), 0, &name, &style, &isFixedPitch, nullptr)) {
+        // TODO: Incorrect to use ttcIndex 0 here - this will lead to determining style attributes from incorrect font
+        // index, worse in the case of ttc-index-funneled named instances.
+        if (!fScanner.scanFont(stream.get(), ttcIndex, &name, &style, &isFixedPitch, nullptr)) {
             return nullptr;
         }
+        printf("style after scanning: %d %d %d\n", style.weight(), style.width(), style.slant());
 
         auto fontData = std::make_unique<SkFontData>(std::move(stream), ttcIndex, nullptr, 0);
         return sk_sp<SkTypeface>(SkTypeface_FCI::Create(std::move(fontData), std::move(name),

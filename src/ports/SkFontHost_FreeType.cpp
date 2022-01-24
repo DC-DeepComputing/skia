@@ -15,6 +15,7 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkTOptional.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -1880,9 +1881,47 @@ bool SkTypeface_FreeType::Scanner::scanFont(
         slant = SkFontStyle::kItalic_Slant;
     }
 
+    printf("weight, italic from flags: %d %d\n", weight, slant);
+
     PS_FontInfoRec psFontInfo;
+    // TODO: These are just taken from OS2 table without taking variation alternatives into account. - Alternatively,
+    // Noto Sans CJK needs to place POST info with weight info so that the second branch can run?  Should derive the
+    // weight from wght and wdth variation axes, see note:
+    // https://docs.microsoft.com/en-us/typography/opentype/spec/os2#os2-table-and-opentype-font-variations
+
+    // "Note: The usWeightClass and usWidthClass values are not adjusted by variation data since these correspond to
+    // 'wght' and 'wdth' variation axes that can be used to define a font’s variation space. Appropriate usWeightClass
+    // and usWidthClass values for a variation instance can be derived from 'wght' and 'wdth' user coordinates that are
+    // used to select a particular variation instance. "
+
     TT_OS2* os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(face.get(), ft_sfnt_os2));
-    if (os2 && os2->version != 0xffff) {
+    if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS) {
+      // TODO, try to reduce to one GetAxes call?
+      AxisDefinitions axisDefinitions;
+      if (GetAxes(face.get(), &axisDefinitions)) {
+        size_t numAxes = axisDefinitions.size();
+        static constexpr SkFourByteTag wghtTag = SkSetFourByteTag('w', 'g', 'h', 't');
+        static constexpr SkFourByteTag wdthTag = SkSetFourByteTag('w', 'd', 't', 'h');
+        skstd::optional<int> wghtIndex;
+        skstd::optional<int> wdthIndex;
+        for(int i = 0; i < numAxes; ++i) {
+          if (axisDefinitions[i].fTag == wghtTag)
+            wghtIndex = i;
+          if (axisDefinitions[i].fTag == wdthTag)
+            wdthIndex = i;
+        }
+        SkAutoSTMalloc<4, FT_Fixed> coords(numAxes);
+        if ((wghtIndex || wdthIndex) &&
+            !FT_Get_Var_Design_Coordinates(face.get(), numAxes, coords.get())) {
+            if (wghtIndex && *wghtIndex < numAxes) {
+                weight = SkFixedToScalar(coords[*wghtIndex]);
+            }
+            if (wdthIndex && *wdthIndex < numAxes) {
+                width = SkFixedToScalar(coords[*wdthIndex]);
+            }
+        }
+      }
+    } else if (os2 && os2->version != 0xffff) {
         weight = os2->usWeightClass;
         width = os2->usWidthClass;
 
@@ -1930,6 +1969,8 @@ bool SkTypeface_FreeType::Scanner::scanFont(
             LOG_INFO("Do not know weight for: %s (%s) \n", face->family_name, psFontInfo.weight);
         }
     }
+
+    printf("style after os/2 post: %d %d %d\n", weight, width, slant);
 
     if (name != nullptr) {
         name->set(face->family_name);
