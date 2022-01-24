@@ -94,10 +94,10 @@ static std::unique_ptr<Expression> simplify_constant_equality(const Context& con
     return nullptr;
 }
 
-static std::unique_ptr<Expression> simplify_compound(const Context& context,
-                                                     const Expression& left,
-                                                     Operator op,
-                                                     const Expression& right) {
+static std::unique_ptr<Expression> simplify_componentwise(const Context& context,
+                                                          const Expression& left,
+                                                          Operator op,
+                                                          const Expression& right) {
     SkASSERT(is_vec_or_mat(left.type()));
     SkASSERT(left.type().matches(right.type()));
     const Type& type = left.type();
@@ -529,10 +529,16 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
         #undef RESULT
     }
 
-    // Perform constant folding on pairs of vectors.
-    if (leftType.isVector() && leftType.matches(rightType)) {
+    // Perform matrix * matrix multiplication.
+    if (op.kind() == Token::Kind::TK_STAR && leftType.isMatrix() && rightType.isMatrix()) {
+        // TODO(skia:12819): Implement matrix * matrix multiplication.
+        return nullptr;
+    }
+
+    // Perform constant folding on pairs of vectors/matrices.
+    if (is_vec_or_mat(leftType) && leftType.matches(rightType)) {
         if (leftType.componentType().isNumber()) {
-            return simplify_compound(context, *left, op, *right);
+            return simplify_componentwise(context, *left, op, *right);
         }
         if (leftType.componentType().isBoolean()) {
             return simplify_constant_equality(context, *left, op, *right);
@@ -544,8 +550,8 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     if (rightType.isScalar() && is_vec_or_mat(leftType) &&
         leftType.componentType().matches(rightType)) {
         if (rightType.isNumber()) {
-            return simplify_compound(context, *left, op,
-                                     *splat_scalar(context, *right, left->type()));
+            return simplify_componentwise(context, *left, op,
+                                          *splat_scalar(context, *right, left->type()));
         }
         if (rightType.isBoolean()) {
             return simplify_constant_equality(context, *left, op,
@@ -558,8 +564,8 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     if (leftType.isScalar() && is_vec_or_mat(rightType) &&
         rightType.componentType().matches(leftType)) {
         if (leftType.isNumber()) {
-            return simplify_compound(context, *splat_scalar(context, *left, right->type()),
-                                     op, *right);
+            return simplify_componentwise(context, *splat_scalar(context, *left, right->type()),
+                                          op, *right);
         }
         if (leftType.isBoolean()) {
             return simplify_constant_equality(context, *splat_scalar(context, *left, right->type()),
