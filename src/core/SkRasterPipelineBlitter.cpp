@@ -25,6 +25,7 @@
 uint64_t gRPBlitterCycles = 0;
 uint64_t gRPBlitterScanlines = 0;
 uint64_t gRPPixels = 0;
+uint64_t gRPPathScanlines = 0;
 
 class SkRasterPipelineBlitter final : public SkBlitter {
 public:
@@ -336,6 +337,7 @@ void SkRasterPipelineBlitter::blitH(int x, int y, int w) {
 void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
     if (fMemset2D) {
         gRPBlitterScanlines += h;
+        //SkDebugf("blitRect1 scanlines += %d, %lu\n", h, gRPBlitterScanlines);
         gRPPixels += w * h;
         auto before = SkCycles::Now();
         fMemset2D(&fDst, x,y, w,h, fMemsetColor);
@@ -373,6 +375,7 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
     }
 
     gRPBlitterScanlines += h;
+    //SkDebugf("blitRect2 scanlines += %d, %lu\n", h, gRPBlitterScanlines);
     gRPPixels += w * h;
     auto before = SkCycles::Now();
     fBlitRect(x,y,w,h);
@@ -418,6 +421,7 @@ void SkRasterPipelineBlitter::blitHNoCounting(int x, int y, int w) {
 }
 
 void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const int16_t runs[]) {
+
     if (!fBlitAntiH) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
@@ -437,10 +441,11 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
         this->append_store(&p);
         fBlitAntiH = p.compile();
     }
-
+    gRPBlitterScanlines += 1;
     auto before = SkCycles::Now();
+    int count = 0;
     for (int16_t run = *runs; run > 0; run = *runs) {
-        gRPBlitterScanlines += 1;
+        ++count;
         gRPPixels += run;
         switch (*aa) {
             case 0x00:                       break;
@@ -454,6 +459,7 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
         runs += run;
         aa   += run;
     }
+    //SkDebugf("blitAntiH scanlines += %d, %lu\n", count, gRPBlitterScanlines);
     gRPBlitterCycles += SkCycles::Now() - before;
 }
 
@@ -598,9 +604,9 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
             SkASSERT(false);
             return;
     }
-
     SkASSERT(blitter);
     gRPBlitterScanlines += clip.height();
+    //SkDebugf("blitMask scanlines += %d, %lu\n", clip.height(), gRPBlitterScanlines);
     gRPPixels += clip.width() * clip.height();
     auto before = SkCycles::Now();
     (*blitter)(clip.left(),clip.top(), clip.width(),clip.height());
