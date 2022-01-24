@@ -120,8 +120,6 @@ static std::unique_ptr<Expression> simplify_componentwise(const Context& context
     }
 
     const Type& componentType = type.componentType();
-    SkASSERT(componentType.isNumber());
-
     double minimumValue = -INFINITY, maximumValue = INFINITY;
     if (componentType.isInteger()) {
         minimumValue = componentType.minimumValue();
@@ -533,21 +531,41 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
 
     // Perform constant folding on pairs of vectors.
     if (leftType.isVector() && leftType.matches(rightType)) {
-        return simplify_componentwise(context, *left, op, *right);
+        if (leftType.componentType().isNumber()) {
+            return simplify_componentwise(context, *left, op, *right);
+        }
+        if (leftType.componentType().isBoolean()) {
+            return simplify_constant_equality(context, *left, op, *right);
+        }
+        return nullptr;
     }
 
     // Perform constant folding on vectors/matrices against scalars, e.g.: half4(2) + 2
     if (rightType.isScalar() && is_vec_or_mat(leftType) &&
         leftType.componentType().matches(rightType)) {
-        return simplify_componentwise(context, *left, op,
-                                      *splat_scalar(context, *right, left->type()));
+        if (rightType.isNumber()) {
+            return simplify_componentwise(context, *left, op,
+                                          *splat_scalar(context, *right, left->type()));
+        }
+        if (rightType.isBoolean()) {
+            return simplify_constant_equality(context, *left, op,
+                                              *splat_scalar(context, *right, left->type()));
+        }
+        return nullptr;
     }
 
     // Perform constant folding on scalars against vectors/matrices, e.g.: 2 + half4(2)
     if (leftType.isScalar() && is_vec_or_mat(rightType) &&
         rightType.componentType().matches(leftType)) {
-        return simplify_componentwise(context, *splat_scalar(context, *left, right->type()),
-                                      op, *right);
+        if (leftType.isNumber()) {
+            return simplify_componentwise(context, *splat_scalar(context, *left, right->type()),
+                                          op, *right);
+        }
+        if (leftType.isBoolean()) {
+            return simplify_constant_equality(context, *splat_scalar(context, *left, right->type()),
+                                              op, *right);
+        }
+        return nullptr;
     }
 
     // Perform constant folding on pairs of matrices or arrays.
