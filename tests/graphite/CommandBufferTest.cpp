@@ -193,8 +193,7 @@ public:
                     << 2 << 1 << 3;
 
         DrawWriter::Instances instances{*writer, {}, indices, 6};
-        auto instanceWriter = instances.append(1);
-        instanceWriter << shape.rect().topLeft() << shape.rect().size();
+        instances.append(1) << shape.rect().topLeft() << shape.rect().size();
     }
 
     sk_sp<UniformData> writeUniforms(Layout,
