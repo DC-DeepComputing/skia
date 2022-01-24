@@ -16,6 +16,7 @@
 #include "include/core/SkRect.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
+#include "src/gpu/tessellate/PathTessellator.h"
 
 namespace skgpu {
 
@@ -152,7 +153,13 @@ public:
         // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non
         // paths to SkPath just to iterate their pts/verbs
         SkPath path = shape.asPath();
+
+        const int maxCombinedFanEdges =
+                PathTessellator::MaxCombinedFanEdgesInPathDrawList(path.countVerbs());
+        const int maxTrianglesInFans = std::max(maxCombinedFanEdges - 2, 0);
+
         DrawWriter::Vertices verts{*writer};
+        verts.reserve(maxTrianglesInFans * 3);
         for (PathMiddleOutFanIter it(path); !it.done();) {
             for (auto [p0, p1, p2] : it.nextStack()) {
                 // TODO: PathMiddleOutFanIter should use SkV2 instead of SkPoint?
@@ -160,13 +167,9 @@ public:
                 SkV4 devPoints[3];
                 localToDevice.mapPoints(p, devPoints, 3);
 
-                // TODO: Support reserving maxTrianglesInFans*3 vertices outside the loop, with
-                // automatic returns of unused verts.
-                auto vw = verts.append(3);
-
-                vw << devPoints[0].x << devPoints[0].y << devPoints[0].w  // p0
-                   << devPoints[1].x << devPoints[1].y << devPoints[1].w  // p1
-                   << devPoints[2].x << devPoints[2].y << devPoints[2].w; // p2
+                verts.append(3) << devPoints[0].x << devPoints[0].y << devPoints[0].w  // p0
+                                << devPoints[1].x << devPoints[1].y << devPoints[1].w  // p1
+                                << devPoints[2].x << devPoints[2].y << devPoints[2].w; // p2
             }
         }
     }
@@ -238,13 +241,12 @@ public:
         }
 
         DrawWriter::Vertices verts{*writer};
-        auto vw = verts.append(6);
-        vw << devPoints[0].x << devPoints[0].y << devPoints[0].w // TL
-           << devPoints[3].x << devPoints[3].y << devPoints[3].w // BL
-           << devPoints[1].x << devPoints[1].y << devPoints[1].w // TR
-           << devPoints[1].x << devPoints[1].y << devPoints[1].w // TR
-           << devPoints[3].x << devPoints[3].y << devPoints[3].w // BL
-           << devPoints[2].x << devPoints[2].y << devPoints[2].w;// BR
+        verts.append(6) << devPoints[0].x << devPoints[0].y << devPoints[0].w // TL
+                        << devPoints[3].x << devPoints[3].y << devPoints[3].w // BL
+                        << devPoints[1].x << devPoints[1].y << devPoints[1].w // TR
+                        << devPoints[1].x << devPoints[1].y << devPoints[1].w // TR
+                        << devPoints[3].x << devPoints[3].y << devPoints[3].w // BL
+                        << devPoints[2].x << devPoints[2].y << devPoints[2].w;// BR
     }
 
     sk_sp<UniformData> writeUniforms(Layout layout,

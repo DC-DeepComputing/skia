@@ -70,6 +70,11 @@ std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size
     return {VertexWriter(map_offset(bindInfo), requiredBytes), bindInfo};
 }
 
+void DrawBufferManager::getVertexWriter(size_t unusedBytes) {
+    SkASSERT(fVertexOffset >= unusedBytes);
+    fVertexOffset -= unusedBytes;
+}
+
 std::tuple<IndexWriter, BindBufferInfo> DrawBufferManager::getIndexWriter(size_t requiredBytes) {
     if (!requiredBytes) {
         return {IndexWriter(), BindBufferInfo()};
