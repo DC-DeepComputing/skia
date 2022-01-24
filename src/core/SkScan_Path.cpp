@@ -41,6 +41,15 @@
     #define validate_sort(edge)
 #endif
 
+extern uint64_t gVMBlitterCycles;
+extern uint64_t gVMBlitterScanlines;
+extern uint64_t gVMPixels;
+extern bool gVMTrace;
+extern bool gSkVMInterpreterUsed;
+extern uint64_t gRPBlitterCycles;
+extern uint64_t gRPBlitterScanlines;
+extern uint64_t gRPPixels;
+
 static void insert_new_edges(SkEdge* newEdge, int curr_y) {
     if (newEdge->fFirstY != curr_y) {
         return;
@@ -394,6 +403,10 @@ static SkEdge* sort_edges(SkEdge* list[], int count, SkEdge** last) {
 // clipRect has not been shifted up
 void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitter,
                   int start_y, int stop_y, int shiftEdgesUp, bool pathContainedInClip) {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
     SkASSERT(blitter);
 
     SkIRect shiftedClip = clipRect;
@@ -428,6 +441,15 @@ void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitte
                                   rect.height() << shiftEdgesUp);
             }
         }
+
+        if (rp != gRPBlitterScanlines)
+            SkDebugf("RP Path1 %lu + %lu = %lu\n", rp, gRPBlitterScanlines - rp,
+                     gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+            SkDebugf("VM Path1 %lu + %lu = %lu\n", vm, gVMBlitterScanlines - vm,
+                     gVMBlitterScanlines);
+
+        gVMTrace = true;
         return;
     }
 
@@ -473,6 +495,15 @@ void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitte
         walk_edges(&headEdge, path.getFillType(), blitter, start_y, stop_y, proc,
                    shiftedClip.right());
     }
+
+    if (rp != gRPBlitterScanlines) SkDebugf("RP Path2 %lu + %lu = %lu\n", rp, gRPBlitterScanlines -
+                                                                                    rp,
+                                                                             gRPBlitterScanlines);
+    if (vm != gVMBlitterScanlines) SkDebugf("VM Path2 %lu + %lu = %lu\n", vm, gVMBlitterScanlines -
+                                                                                    vm,
+                                                                             gVMBlitterScanlines);
+
+    gVMTrace = true;
 }
 
 void sk_blit_above(SkBlitter* blitter, const SkIRect& ir, const SkRegion& clip) {

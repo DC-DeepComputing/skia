@@ -36,6 +36,16 @@
 //#define FORCE_RLE
 
 ///////////////////////////////////////////////////////////////////////////////
+extern uint64_t gVMBlitterCycles;
+extern uint64_t gVMBlitterScanlines;
+extern uint64_t gVMPixels;
+extern bool gVMTrace;
+extern uint64_t gVMPathScanlines;
+extern bool gSkVMInterpreterUsed;
+extern uint64_t gRPBlitterCycles;
+extern uint64_t gRPBlitterScanlines;
+extern uint64_t gRPPixels;
+extern uint64_t gRPPathScanlines;
 
 /// Base class for a single-pass supersampled blitter.
 class BaseSuperBlitter : public SkBlitter {
@@ -164,7 +174,9 @@ SuperBlitter::SuperBlitter(SkBlitter* realBlitter, const SkIRect& ir, const SkIR
 
 void SuperBlitter::flush() {
     if (fCurrIY >= fTop) {
-
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
         SkASSERT(fCurrentRun < fRunsToBuffer);
         if (!fRuns.empty()) {
             // SkDEBUGCODE(fRuns.dump();)
@@ -175,7 +187,22 @@ void SuperBlitter::flush() {
 
         fCurrIY = fTop - 1;
         SkDEBUGCODE(fCurrX = -1;)
+    /*
+    gVMPathScanlines += (gVMBlitterScanlines - vm);
+    gRPPathScanlines += (gRPBlitterScanlines - rp);
+    if (rp != gRPBlitterScanlines)
+        SkDebugf("RP flush %lu + %lu = %lu (%lu)\n", rp, gRPBlitterScanlines - rp,
+                 gRPBlitterScanlines,
+                 gRPPathScanlines);
+    if (vm != gVMBlitterScanlines)
+        SkDebugf("VM flush %lu + %lu = %lu (%lu)\n", vm, gVMBlitterScanlines - vm,
+                 gVMBlitterScanlines,
+                 gVMPathScanlines);
+    gVMTrace = true;
+
+    */
     }
+
 }
 
 /** coverage_to_partial_alpha() is being used by SkAlphaRuns, which
@@ -782,6 +809,10 @@ void SkScan::AntiFillPath(const SkPath& path, const SkRegion& origClip,
         sk_blit_above(blitter, ir, *clipRgn);
     }
 
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
+
     SkScalar avgLength, complexity;
     compute_complexity(path, avgLength, complexity);
 
@@ -796,6 +827,19 @@ void SkScan::AntiFillPath(const SkPath& path, const SkRegion& origClip,
     if (isInverse) {
         sk_blit_below(blitter, ir, *clipRgn);
     }
+    /*
+    gVMPathScanlines += (gVMBlitterScanlines - vm);
+    gRPPathScanlines += (gRPBlitterScanlines - rp);
+    if (rp != gRPBlitterScanlines)
+        SkDebugf("RP fill %lu + %lu = %lu (%lu)\n", rp, gRPBlitterScanlines - rp,
+                 gRPBlitterScanlines,
+                 gRPPathScanlines);
+    if (vm != gVMBlitterScanlines)
+        SkDebugf("VM fill %lu + %lu = %lu (%lu)\n", vm, gVMBlitterScanlines - vm,
+                 gVMBlitterScanlines,
+                 gVMPathScanlines);
+    */
+    gVMTrace = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

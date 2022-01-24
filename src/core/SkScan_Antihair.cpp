@@ -66,6 +66,17 @@ static inline int SmallDot6Scale(int value, int dot6) {
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
+extern uint64_t gVMBlitterCycles;
+extern uint64_t gVMBlitterScanlines;
+extern uint64_t gVMPixels;
+extern bool gVMTrace;
+extern uint64_t gVMPathScanlines;
+
+extern bool gSkVMInterpreterUsed;
+extern uint64_t gRPBlitterCycles;
+extern uint64_t gRPBlitterScanlines;
+extern uint64_t gRPPixels;
+extern uint64_t gRPPathScanlines;
 
 static void call_hline_blitter(SkBlitter* blitter, int x, int y, int count,
                                U8CPU alpha) {
@@ -115,6 +126,11 @@ private:
 class HLine_SkAntiHairBlitter : public SkAntiHairBlitter {
 public:
     SkFixed drawCap(int x, SkFixed fy, SkFixed slope, int mod64) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
+
         fy += SK_Fixed1/2;
 
         int y = fy >> 16;
@@ -131,11 +147,25 @@ public:
         if (ma) {
             call_hline_blitter(this->getBlitter(), x, y - 1, 1, ma);
         }
-
+/*
+        if (rp != gRPBlitterScanlines) SkDebugf("RP HLine %lu + %lu = %lu\n", rp, gRPBlitterScanlines
+                                                                                         -rp,
+                                                                                 gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines) SkDebugf("VM HLine %lu + %lu = %lu\n", vm, gVMBlitterScanlines
+                                                                                         -vm,
+                                                                                 gVMBlitterScanlines);
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        gVMTrace = true;
+*/
         return fy - SK_Fixed1/2;
     }
 
     SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed slope) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
         SkASSERT(x < stopx);
         int count = stopx - x;
         fy += SK_Fixed1/2;
@@ -153,7 +183,17 @@ public:
         if (a) {
             call_hline_blitter(this->getBlitter(), x, y - 1, count, a);
         }
-
+        /*
+        if (rp != gRPBlitterScanlines) SkDebugf("RP HLine %lu + %lu = %lu\n", rp, gRPBlitterScanlines
+                                                                                         -rp,
+                                                                                 gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines) SkDebugf("VM HLine %lu + %lu = %lu\n", vm, gVMBlitterScanlines
+                                                                                         -vm,
+                                                                                 gVMBlitterScanlines);
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        */
+        gVMTrace = true;
         return fy - SK_Fixed1/2;
     }
 };
@@ -161,6 +201,11 @@ public:
 class Horish_SkAntiHairBlitter : public SkAntiHairBlitter {
 public:
     SkFixed drawCap(int x, SkFixed fy, SkFixed dy, int mod64) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
+
         fy += SK_Fixed1/2;
 
         int lower_y = fy >> 16;
@@ -168,11 +213,26 @@ public:
         unsigned a0 = SmallDot6Scale(255 - a, mod64);
         unsigned a1 = SmallDot6Scale(a, mod64);
         this->getBlitter()->blitAntiV2(x, lower_y - 1, a0, a1);
-
+        /*
+        if (rp != gRPBlitterScanlines) SkDebugf("RP Horish %lu + %lu = %lu\n", rp, gRPBlitterScanlines
+                                                                                         -rp,
+                                                                                 gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines) SkDebugf("VM Horish %lu + %lu = %lu\n", vm, gVMBlitterScanlines
+                                                                                         -vm,
+                                                                                 gVMBlitterScanlines);
+        gVMTrace = true;
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        */
+        gVMTrace = true;
         return fy + dy - SK_Fixed1/2;
     }
 
     SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed dy) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
         SkASSERT(x < stopx);
 
         fy += SK_Fixed1/2;
@@ -183,7 +243,15 @@ public:
             blitter->blitAntiV2(x, lower_y - 1, 255 - a, a);
             fy += dy;
         } while (++x < stopx);
-
+        /*
+        if (rp != gRPBlitterScanlines)
+         SkDebugf("RP Horish %lu + %lu = %lu\n", rp, gRPBlitterScanlines -rp, gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+         SkDebugf("VM Horish %lu + %lu = %lu\n", vm, gVMBlitterScanlines -vm, gVMBlitterScanlines);
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        */
+        gVMTrace = true;
         return fy - SK_Fixed1/2;
     }
 };
@@ -191,6 +259,11 @@ public:
 class VLine_SkAntiHairBlitter : public SkAntiHairBlitter {
 public:
     SkFixed drawCap(int y, SkFixed fx, SkFixed dx, int mod64) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
+
         SkASSERT(0 == dx);
         fx += SK_Fixed1/2;
 
@@ -205,11 +278,29 @@ public:
         if (ma) {
             this->getBlitter()->blitV(x - 1, y, 1, ma);
         }
-
+        /*
+        if (rp != gRPBlitterScanlines)
+            SkDebugf("RP VLine %lu + %lu = %lu\n",
+                     rp,
+                     gRPBlitterScanlines - rp,
+                     gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+            SkDebugf("VM VLine %lu + %lu = %lu\n",
+                     vm,
+                     gVMBlitterScanlines - vm,
+                     gVMBlitterScanlines);
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        */
+        gVMTrace = true;
         return fx - SK_Fixed1/2;
     }
 
     SkFixed drawLine(int y, int stopy, SkFixed fx, SkFixed dx) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
         SkASSERT(y < stopy);
         SkASSERT(0 == dx);
         fx += SK_Fixed1/2;
@@ -224,7 +315,21 @@ public:
         if (a) {
             this->getBlitter()->blitV(x - 1, y, stopy - y, a);
         }
-
+        /*
+        if (rp != gRPBlitterScanlines)
+            SkDebugf("RP VLine %lu + %lu = %lu\n",
+                     rp,
+                     gRPBlitterScanlines - rp,
+                     gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+            SkDebugf("VM VLine %lu + %lu = %lu\n",
+                     vm,
+                     gVMBlitterScanlines - vm,
+                     gVMBlitterScanlines);
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        */
+        gVMTrace = true;
         return fx - SK_Fixed1/2;
     }
 };
@@ -232,6 +337,11 @@ public:
 class Vertish_SkAntiHairBlitter : public SkAntiHairBlitter {
 public:
     SkFixed drawCap(int y, SkFixed fx, SkFixed dx, int mod64) override {
+
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
+
         fx += SK_Fixed1/2;
 
         int x = fx >> 16;
@@ -239,10 +349,27 @@ public:
         this->getBlitter()->blitAntiH2(x - 1, y,
                                        SmallDot6Scale(255 - a, mod64), SmallDot6Scale(a, mod64));
 
+        if (rp != gRPBlitterScanlines)
+            SkDebugf("RP Vertish Cap %lu + %lu = %lu\n",
+                     rp,
+                     gRPBlitterScanlines - rp,
+                     gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+            SkDebugf("VM Vertish Cap %lu + %lu = %lu\n",
+                     vm,
+                     gVMBlitterScanlines - vm,
+                     gVMBlitterScanlines);
+
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
+        gVMTrace = true;
         return fx + dx - SK_Fixed1/2;
     }
 
     SkFixed drawLine(int y, int stopy, SkFixed fx, SkFixed dx) override {
+    auto rp = gRPBlitterScanlines;
+    auto vm = gVMBlitterScanlines;
+    gVMTrace = false;
         SkASSERT(y < stopy);
         fx += SK_Fixed1/2;
         do {
@@ -252,6 +379,19 @@ public:
             fx += dx;
         } while (++y < stopy);
 
+        if (rp != gRPBlitterScanlines)
+            SkDebugf("RP Vertish Line %lu + %lu = %lu\n",
+                     rp,
+                     gRPBlitterScanlines - rp,
+                     gRPBlitterScanlines);
+        if (vm != gVMBlitterScanlines)
+            SkDebugf("VM Vertish Line %lu + %lu = %lu\n",
+                     vm,
+                     gVMBlitterScanlines - vm,
+                     gVMBlitterScanlines);
+        gVMTrace = true;
+        gVMPathScanlines += (gVMBlitterScanlines - vm);
+        gRPPathScanlines += (gRPBlitterScanlines - rp);
         return fx - SK_Fixed1/2;
     }
 };

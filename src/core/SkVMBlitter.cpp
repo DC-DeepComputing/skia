@@ -28,6 +28,10 @@
 uint64_t gVMBlitterCycles = 0;
 uint64_t gVMBlitterScanlines = 0;
 uint64_t gVMPixels = 0;
+uint64_t gVMPathScanlines = 0;
+uint64_t gVMFlushScanlines = 0;
+
+bool gVMTrace = true;
 
 namespace {
 
@@ -651,12 +655,14 @@ void SkVMBlitter::blitH(int x, int y, int w) {
     this->updateUniforms(x+w, y);
     if (const void* sprite = this->isSprite(x,y)) {
         gVMBlitterScanlines += 1;
+        //SkDebugf("blitH1 gVMBlitterScanlines += 1, %lu\n", gVMBlitterScanlines);
         gVMPixels += w;
         auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
         gVMBlitterCycles += SkCycles::Now() - before;
     } else {
         gVMBlitterScanlines += 1;
+        //SkDebugf("blitH2 gVMBlitterScanlines += 1, %lu\n", gVMBlitterScanlines);
         gVMPixels += w;
         auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
@@ -672,8 +678,10 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         fBlitH = this->buildProgram(Coverage::Full);
     }
     auto before = SkCycles::Now();
+    int count = 0;
     for (int16_t run = *runs; run > 0; run = *runs) {
         gVMBlitterScanlines += 1;
+        ++count;
         gVMPixels += run;
         const SkAlpha coverage = *cov;
         if (coverage != 0x00) {
@@ -698,6 +706,9 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         runs += run;
         cov  += run;
     }
+    if (gVMTrace) {
+        SkDebugf("blitAntiH gVMBlitterScanlines += %d, %lu\n", count, gVMBlitterScanlines);
+    }
     gVMBlitterCycles += SkCycles::Now() - before;
 }
 
@@ -707,6 +718,7 @@ void SkVMBlitter::blitRect(int x, int y, int width, int height) {
     }
     if (const void* sprite = this->isSprite(x,y)) {
         gVMBlitterScanlines += height;
+        //SkDebugf("blitRect1 gVMBlitterScanlines += %d, %lu\n", height, gVMBlitterScanlines);
         gVMPixels += width * height;
         auto before = SkCycles::Now();
         for (; y < height; y++) {
@@ -716,6 +728,7 @@ void SkVMBlitter::blitRect(int x, int y, int width, int height) {
         gVMBlitterCycles += SkCycles::Now() - before;
     } else {
         gVMBlitterScanlines += height;
+        //SkDebugf("blitRect2 gVMBlitterScanlines += %d, %lu\n", height, gVMBlitterScanlines);
         gVMPixels += width * height;
         auto before = SkCycles::Now();
         for (; y < height; y++) {
@@ -761,6 +774,7 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
     if (program) {
         gVMBlitterScanlines += clip.height();
         gVMPixels += clip.width() * clip.height();
+        //SkDebugf("blitMask gVMBlitterScanlines += %d, %lu\n", clip.height(), gVMBlitterScanlines);
         auto before = SkCycles::Now();
         for (int y = clip.top(); y < clip.bottom(); y++) {
              int x = clip.left(),

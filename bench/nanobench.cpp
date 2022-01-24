@@ -75,10 +75,13 @@ extern bool gSkVMJITViaDylib;
 extern uint64_t gVMBlitterCycles;
 extern uint64_t gVMBlitterScanlines;
 extern uint64_t gVMPixels;
+extern uint64_t gVMPathScanlines;
+
 extern bool gSkVMInterpreterUsed;
 extern uint64_t gRPBlitterCycles;
 extern uint64_t gRPBlitterScanlines;
 extern uint64_t gRPPixels;
+extern uint64_t gRPPathScanlines;
 
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
@@ -308,12 +311,17 @@ static double time(int loops, Benchmark* bench, Target* target) {
     canvas = target->beginTiming(canvas);
     gVMBlitterCycles = 0;
     gVMBlitterScanlines = 0;
+    gVMPathScanlines = 0;
     gVMPixels = 0;
     gSkVMInterpreterUsed = false;
     gRPBlitterCycles = 0;
     gRPBlitterScanlines = 0;
+    gRPPathScanlines = 0;
     gRPPixels = 0;
     bench->draw(loops, canvas);
+    if (gVMPathScanlines > 0) SkDebugf("gVMPathScanlines: %lu\n", gVMPathScanlines);
+    if (gRPPathScanlines > 0) SkDebugf("gRPPathScanlines: %lu\n", gRPPathScanlines);
+
     gVMBlitterCyclesCapture = gVMBlitterCycles;
     gVMBlitterScanlinesCapture = gVMBlitterScanlines;
     gVMPixelsCapture = gVMPixels;
@@ -322,6 +330,7 @@ static double time(int loops, Benchmark* bench, Target* target) {
     gRPBlitterScanlinesCapture = gRPBlitterScanlines;
     gRPPixelsCapture = gRPPixels;
     target->endTiming();
+
     double elapsed = now_ms() - start;
     bench->postDraw(canvas);
     return elapsed;
