@@ -350,7 +350,8 @@ public:
                                 SkScalar strikeToSourceScale,
                                 GrSubRunAllocator* alloc);
 
-    void submitOps(const GrClip* clip,
+    void submitOps(SkCanvas*,
+                   const GrClip* clip,
                    const SkMatrixProvider& viewMatrix,
                    SkPoint drawOrigin,
                    const SkPaint& paint,
@@ -400,7 +401,8 @@ PathOpSubmitter PathOpSubmitter::Make(const SkZip<SkGlyphVariant, SkPoint>& draw
     return PathOpSubmitter{isAntiAliased, strikeToSourceScale, paths, std::move(pathData)};
 }
 
-void PathOpSubmitter::submitOps(const GrClip* clip,
+void PathOpSubmitter::submitOps(SkCanvas* canvas,
+                                const GrClip* clip,
                                 const SkMatrixProvider& viewMatrix,
                                 SkPoint drawOrigin,
                                 const SkPaint& paint,
@@ -423,14 +425,14 @@ void PathOpSubmitter::submitOps(const GrClip* clip,
     if (!needsExactCTM) {
         for (const auto& pathPos : fPaths) {
             const SkPath& path = pathPos.fPath;
-            const SkPoint pos = pathPos.fPosition;  // Transform the glyph to source space.
+            const SkPoint pos = pathPos.fPosition;
+            // Transform the glyph to source space.
             SkMatrix pathMatrix = strikeToSource;
             pathMatrix.postTranslate(pos.x(), pos.y());
-            SkPreConcatMatrixProvider strikeToDevice(viewMatrix, pathMatrix);
 
-            GrStyledShape shape(path, paint);
-            GrBlurUtils::drawShapeWithMaskFilter(
-                    sdc->recordingContext(), sdc, clip, runPaint, strikeToDevice, shape);
+            SkAutoCanvasRestore acr(canvas, true);
+            canvas->concat(pathMatrix);
+            canvas->drawPath(path, runPaint);
         }
     } else {
         // Transform the path to device because the deviceMatrix must be unchanged to
@@ -445,9 +447,7 @@ void PathOpSubmitter::submitOps(const GrClip* clip,
             SkPath deviceOutline;
             path.transform(pathMatrix, &deviceOutline);
             deviceOutline.setIsVolatile(true);
-            GrStyledShape shape(deviceOutline, paint);
-            GrBlurUtils::drawShapeWithMaskFilter(
-                    sdc->recordingContext(), sdc, clip, runPaint, viewMatrix, shape);
+            canvas->drawPath(deviceOutline, runPaint);
         }
     }
 }
@@ -466,12 +466,13 @@ public:
                 PathOpSubmitter::Make(drawables, isAntiAliased, strikeToSourceScale, alloc));
     }
 
-    void draw(const GrClip* clip,
+    void draw(SkCanvas* canvas,
+              const GrClip* clip,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc) const override {
-        fPathDrawing.submitOps(clip, viewMatrix, drawOrigin, paint, sdc);
+        fPathDrawing.submitOps(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
     }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
@@ -646,7 +647,8 @@ public:
                               GrTextBlob* blob,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip*,
+    void draw(SkCanvas*,
+              const GrClip*,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
@@ -776,7 +778,8 @@ int DirectMaskSubRun::glyphCount() const {
     return SkCount(fGlyphs.glyphs());
 }
 
-void DirectMaskSubRun::draw(const GrClip* clip,
+void DirectMaskSubRun::draw(SkCanvas*,
+                            const GrClip* clip,
                             const SkMatrixProvider& viewMatrix,
                             SkPoint drawOrigin,
                             const SkPaint& paint,
@@ -1041,7 +1044,8 @@ public:
                               GrTextBlob* blob,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip*,
+    void draw(SkCanvas*,
+              const GrClip*,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
@@ -1133,7 +1137,8 @@ GrSubRunOwner TransformedMaskSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& 
             GlyphVector::Make(std::move(strike), drawables.get<0>(), alloc));
 }
 
-void TransformedMaskSubRun::draw(const GrClip* clip,
+void TransformedMaskSubRun::draw(SkCanvas*,
+                                 const GrClip* clip,
                                  const SkMatrixProvider& viewMatrix,
                                  SkPoint drawOrigin,
                                  const SkPaint& paint,
@@ -1263,7 +1268,8 @@ public:
                               GrTextBlob* blob,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip*,
+    void draw(SkCanvas*,
+              const GrClip*,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint&,
@@ -1373,7 +1379,8 @@ GrSubRunOwner SDFTSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& drawables,
             has_some_antialiasing(runFont));
 }
 
-void SDFTSubRun::draw(const GrClip* clip,
+void SDFTSubRun::draw(SkCanvas*,
+                      const GrClip* clip,
                       const SkMatrixProvider& viewMatrix,
                       SkPoint drawOrigin,
                       const SkPaint& paint,
@@ -1717,11 +1724,11 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
     for (auto& glyphRun : glyphRunList) {
-        painter->processGlyphRun(glyphRun,
+        painter->processGlyphRun(blob.get(),
+                                 glyphRun,
                                  positionMatrix,
                                  paint,
                                  control,
-                                 blob.get(),
                                  "GrTextBlob",
                                  uniqueID);
     }
@@ -1765,13 +1772,14 @@ bool GrTextBlob::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) 
 const GrTextBlob::Key& GrTextBlob::key() const { return fKey; }
 size_t GrTextBlob::size() const { return fSize; }
 
-void GrTextBlob::draw(const GrClip* clip,
+void GrTextBlob::draw(SkCanvas* canvas,
+                      const GrClip* clip,
                       const SkMatrixProvider& viewMatrix,
                       SkPoint drawOrigin,
                       const SkPaint& paint,
                       skgpu::v1::SurfaceDrawContext* sdc) {
     for (const GrSubRun& subRun : fSubRunList) {
-        subRun.draw(clip, viewMatrix, drawOrigin, paint, sdc);
+        subRun.draw(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
     }
 }
 
@@ -2492,13 +2500,15 @@ SkRect SDFTSubRunNoCache::deviceRect(const SkMatrix& drawMatrix, SkPoint drawOri
 }
 }  // namespace
 
-GrSubRunNoCachePainter::GrSubRunNoCachePainter(skgpu::v1::SurfaceDrawContext* sdc,
+GrSubRunNoCachePainter::GrSubRunNoCachePainter(SkCanvas* canvas,
+                                               skgpu::v1::SurfaceDrawContext* sdc,
                                                GrSubRunAllocator* alloc,
                                                const GrClip* clip,
                                                const SkMatrixProvider& viewMatrix,
                                                const SkGlyphRunList& glyphRunList,
                                                const SkPaint& paint)
-            : fSDC{sdc}
+            : fCanvas{canvas}
+            , fSDC{sdc}
             , fAlloc{alloc}
             , fClip{clip}
             , fViewMatrix{viewMatrix}
@@ -2540,7 +2550,7 @@ void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPo
                                   strikeToSourceScale,
                                   fAlloc);
 
-    pathDrawing.submitOps(fClip, fViewMatrix, fGlyphRunList.origin(), fPaint, fSDC);
+    pathDrawing.submitOps(fCanvas, fClip, fViewMatrix, fGlyphRunList.origin(), fPaint, fSDC);
 }
 
 void GrSubRunNoCachePainter::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
@@ -2587,7 +2597,8 @@ public:
          int allocSize);
     ~Slug() override = default;
 
-    void surfaceDraw(const GrClip* clip,
+    void surfaceDraw(SkCanvas*,
+                     const GrClip* clip,
                      const SkMatrixProvider& viewMatrix,
                      skgpu::v1::SurfaceDrawContext* sdc);
 
@@ -2637,10 +2648,10 @@ Slug::Slug(SkRect sourceBounds,
            , fOrigin{origin}
            , fAlloc {SkTAddOffset<char>(this, sizeof(Slug)), allocSize, allocSize/2} { }
 
-void Slug::surfaceDraw(const GrClip* clip, const SkMatrixProvider& viewMatrix,
+void Slug::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
                        skgpu::v1::SurfaceDrawContext* sdc) {
     for (const GrSubRun& subRun : fSubRuns) {
-        subRun.draw(clip, viewMatrix, fOrigin, fPaint, sdc);
+        subRun.draw(canvas, clip, viewMatrix, fOrigin, fPaint, sdc);
     }
 }
 
@@ -2661,7 +2672,8 @@ public:
                               GrMaskFormat format,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip* clip,
+    void draw(SkCanvas*,
+              const GrClip* clip,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
@@ -3062,11 +3074,11 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
     for (auto& glyphRun : glyphRunList) {
-        painter->processGlyphRun(glyphRun,
+        painter->processGlyphRun(slug.get(),
+                                 glyphRun,
                                  positionMatrix,
                                  paint,
                                  control,
-                                 slug.get(),
                                  "Slug",
                                  uniqueID);
     }
@@ -3086,14 +3098,16 @@ public:
                                 GrSubRunAllocator* alloc) {
         return alloc->makeUnique<PathSubRunSlug>(
                 PathOpSubmitter::Make(drawables, isAntiAliased, strikeToSourceScale, alloc));
+
     }
 
-    void draw(const GrClip* clip,
+    void draw(SkCanvas* canvas,
+              const GrClip* clip,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc) const override {
-        fPathDrawing.submitOps(clip, viewMatrix, drawOrigin, paint, sdc);
+        fPathDrawing.submitOps(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
     }
 
 private:
@@ -3135,7 +3149,8 @@ public:
                               SkScalar strikeToSourceScale,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip* clip,
+    void draw(SkCanvas*,
+              const GrClip* clip,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
@@ -3235,11 +3250,12 @@ GrSubRunOwner SDFTSubRunSlug::Make(Slug* slug,
             has_some_antialiasing(runFont));
 }
 
-void SDFTSubRunSlug::draw(const GrClip* clip,
-                      const SkMatrixProvider& viewMatrix,
-                      SkPoint drawOrigin,
-                      const SkPaint& paint,
-                      skgpu::v1::SurfaceDrawContext* sdc) const {
+void SDFTSubRunSlug::draw(SkCanvas*,
+                          const GrClip* clip,
+                          const SkMatrixProvider& viewMatrix,
+                          SkPoint drawOrigin,
+                          const SkPaint& paint,
+                          skgpu::v1::SurfaceDrawContext* sdc) const {
     auto[drawingClip, op] = this->makeAtlasTextOp(
             clip, viewMatrix, drawOrigin, paint, sdc, nullptr);
     if (op != nullptr) {
@@ -3359,7 +3375,8 @@ public:
                               GrMaskFormat format,
                               GrSubRunAllocator* alloc);
 
-    void draw(const GrClip*,
+    void draw(SkCanvas*,
+              const GrClip*,
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint&,
@@ -3447,7 +3464,8 @@ GrSubRunOwner TransformedMaskSubRunSlug::Make(Slug* slug,
             GlyphVector::Make(std::move(strike), drawables.get<0>(), alloc));
 }
 
-void TransformedMaskSubRunSlug::draw(const GrClip* clip,
+void TransformedMaskSubRunSlug::draw(SkCanvas*,
+                                     const GrClip* clip,
                                      const SkMatrixProvider& viewMatrix,
                                      SkPoint drawOrigin,
                                      const SkPaint& paint,
@@ -3564,8 +3582,8 @@ Device::convertGlyphRunListToSlug(const SkGlyphRunList& glyphRunList, const SkPa
             this->asMatrixProvider(), glyphRunList, paint);
 }
 
-void Device::drawSlug(GrSlug* slug) {
-    fSurfaceDrawContext->drawSlug(this->clip(), this->asMatrixProvider(), slug);
+void Device::drawSlug(SkCanvas* canvas, GrSlug* slug) {
+    fSurfaceDrawContext->drawSlug(canvas, this->clip(), this->asMatrixProvider(), slug);
 }
 
 sk_sp<GrSlug>
@@ -3581,12 +3599,13 @@ SurfaceDrawContext::convertGlyphRunListToSlug(const SkMatrixProvider& viewMatrix
     return Slug::Make(viewMatrix, glyphRunList, paint, control, &fGlyphPainter);
 }
 
-void SurfaceDrawContext::drawSlug(const GrClip* clip,
+void SurfaceDrawContext::drawSlug(SkCanvas* canvas,
+                                  const GrClip* clip,
                                   const SkMatrixProvider& viewMatrix,
                                   GrSlug* slugPtr) {
     Slug* slug = static_cast<Slug*>(slugPtr);
 
-    slug->surfaceDraw(clip, viewMatrix, this);
+    slug->surfaceDraw(canvas, clip, viewMatrix, this);
 }
 }  // namespace skgpu::v1
 
