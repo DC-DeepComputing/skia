@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c41d65_5b61c86e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-24T20:49:55Z",
+      "side": 1,
+      "message": "Ok. So this version move the cache from the GrRecordingContext to the OpsTask. The life time of the OpsTask, and the AtlasTextOps seem bound.\n\nPTAL",
+      "revId": "29bb4dbcc949b06e82d4c2da4c58023620ef60da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
