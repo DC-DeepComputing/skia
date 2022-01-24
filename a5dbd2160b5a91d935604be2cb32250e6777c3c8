@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa67b157_4d84ce40",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-24T21:29:20Z",
+      "side": 1,
+      "message": "Any way to add comments to this file so we have additional context in the code for why we excluded these? Something like...\n\n# Exclude all unit tests that end with the ES3 suffix because Android does not\n# require ES3 support.\n.+ES3",
+      "revId": "a5dbd2160b5a91d935604be2cb32250e6777c3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
