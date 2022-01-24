@@ -531,6 +531,12 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
         #undef RESULT
     }
 
+    // Perform matrix * matrix multiplication.
+    if (op.kind() == Token::Kind::TK_STAR && leftType.isMatrix() && rightType.isMatrix()) {
+        // TODO(skia:12819): Implement matrix * matrix multiplication.
+        return nullptr;
+    }
+
     // Perform constant folding on pairs of vectors.
     if (leftType.isVector() && leftType.matches(rightType)) {
         return simplify_componentwise(context, *left, op, *right);
