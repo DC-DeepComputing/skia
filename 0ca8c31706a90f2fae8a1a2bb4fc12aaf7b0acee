@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba4d4fab_b8407521",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-24T14:03:55Z",
+      "side": 1,
+      "message": "I was initially worried about the prefix/postfix case (possibly smashing multiple prefix operators together to create invalid tokens), but I see that it was already handled via precedence, so nothing has really changed there.",
+      "revId": "0ca8c31706a90f2fae8a1a2bb4fc12aaf7b0acee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
