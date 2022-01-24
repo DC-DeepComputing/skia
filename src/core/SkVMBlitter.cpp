@@ -28,7 +28,22 @@
 uint64_t gVMBlitterCycles = 0;
 uint64_t gVMBlitterScanlines = 0;
 uint64_t gVMPixels = 0;
+uint64_t gVMPathScanlines = 0;
+uint64_t gVMRect1Cycles = 0;
+uint64_t gVMRect2Cycles = 0;
+uint64_t gVMMaskCycles = 0;
+uint64_t gVMAntiHCycles = 0;
+uint64_t gVMHCycles = 0;
+int gVMRect1Num = 0;
+int gVMRect2Num = 0;
+int gVMMaskNum = 0;
+int gVMAntiHNum = 0;
 
+#if defined(SK_RELEASE)
+bool gVMTrace = false;
+#else
+bool gVMTrace = true;
+#endif
 namespace {
 
     // Uniforms set by the Blitter itself,
@@ -654,13 +669,31 @@ void SkVMBlitter::blitH(int x, int y, int w) {
         gVMPixels += w;
         auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
-        gVMBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gVMBlitterCycles += diff;
+        gVMHCycles += diff;
+        if (gVMTrace) {
+            SkDebugf("blitH1 gVMBlitterCycles += %lu, %lu %lu + %d\n",
+                     diff,
+                     gVMBlitterCycles,
+                     gVMBlitterScanlines - 1,
+                     1);
+        }
     } else {
         gVMBlitterScanlines += 1;
         gVMPixels += w;
         auto before = SkCycles::Now();
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
-        gVMBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gVMBlitterCycles += diff;
+        gVMHCycles += diff;
+        if (gVMTrace) {
+            SkDebugf("blitH2 gVMBlitterCycles += %lu, %lu %lu + %d\n",
+                     diff,
+                     gVMBlitterCycles,
+                     gVMBlitterScanlines - 1,
+                     1);
+        }
     }
 }
 
@@ -671,9 +704,9 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
     if (fBlitH.empty()) {
         fBlitH = this->buildProgram(Coverage::Full);
     }
+    gVMBlitterScanlines += 1;
     auto before = SkCycles::Now();
     for (int16_t run = *runs; run > 0; run = *runs) {
-        gVMBlitterScanlines += 1;
         gVMPixels += run;
         const SkAlpha coverage = *cov;
         if (coverage != 0x00) {
@@ -698,31 +731,70 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         runs += run;
         cov  += run;
     }
-    gVMBlitterCycles += SkCycles::Now() - before;
+    auto diff = SkCycles::Now() - before;
+    gVMBlitterCycles += diff;
+    gVMAntiHCycles += diff;
+    ++gVMAntiHNum;
+    if (gVMTrace) {
+        SkDebugf("blitAntiH gVMBlitterCycles += %lu, %lu %lu + %d\n",
+                 diff,
+                 gVMBlitterCycles,
+                 gVMBlitterScanlines - 1,
+                 1);
+    }
 }
 
 void SkVMBlitter::blitRect(int x, int y, int width, int height) {
     if (fBlitH.empty()) {
         fBlitH = this->buildProgram(Coverage::Full);
     }
+    auto height0 = y + height;
     if (const void* sprite = this->isSprite(x,y)) {
         gVMBlitterScanlines += height;
         gVMPixels += width * height;
         auto before = SkCycles::Now();
-        for (; y < height; y++) {
-            this->updateUniforms(x+width, y);
-            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+        fUniforms.buf[0] = x + width;
+        for (; y < height0; y++) {
+            //this->updateUniforms(x+width, y);
+            //fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+            fUniforms.buf[1] = y;
+            void* args[] = { (void*)fUniforms.buf.data(), (void*)fDevice.addr(x,y), (void*)sprite, nullptr };
+            fBlitH.eval(width, args);
         }
-        gVMBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gVMBlitterCycles += diff;
+        gVMRect1Cycles += diff;
+        ++gVMRect1Num;
+        if (gVMTrace) {
+            SkDebugf("blitRect1 gVMBlitterCycles += %lu, %lu %lu + %d*\n",
+                     diff,
+                     gVMBlitterCycles,
+                     gVMBlitterScanlines - height,
+                     height);
+        }
     } else {
         gVMBlitterScanlines += height;
         gVMPixels += width * height;
         auto before = SkCycles::Now();
-        for (; y < height; y++) {
-            this->updateUniforms(x+width, y);
-            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y));
+        fUniforms.buf[0] = x + width;
+        for (; y < height0; y++) {
+            //this->updateUniforms(x+width, y);
+            //fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y));
+            fUniforms.buf[1] = y;
+            void* args[] = { (void*)fUniforms.buf.data(), (void*)fDevice.addr(x,y), nullptr };
+            fBlitH.eval(width, args);
         }
-        gVMBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gVMBlitterCycles += diff;
+        gVMRect2Cycles += diff;
+        ++gVMRect2Num;
+        if (gVMTrace) {
+            SkDebugf("blitRect2 gVMBlitterCycles += %lu, %lu %lu + %d*\n",
+                     diff,
+                     gVMBlitterCycles,
+                     gVMBlitterScanlines - height,
+                     height);
+        }
     }
 }
 
@@ -788,7 +860,17 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
                 }
             }
         }
-        gVMBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gVMBlitterCycles += diff;
+        gVMMaskCycles += diff;
+        ++gVMMaskNum;
+        if (gVMTrace) {
+            SkDebugf("blitMask gVMBlitterCycles += %lu, %lu %lu + %d*\n",
+                     diff,
+                     gVMBlitterCycles,
+                     gVMBlitterScanlines - clip.height(),
+                     clip.height());
+        }
     }
 }
 

@@ -1080,6 +1080,7 @@ namespace skvm {
         viz::Visualizer* visualizer();
 
     private:
+        friend class SkVMBlitter;
         void setupInterpreter(const std::vector<OptimizedInstruction>&);
         void setupJIT        (const std::vector<OptimizedInstruction>&, const char* debug_name);
         void setupLLVM       (const std::vector<OptimizedInstruction>&, const char* debug_name);

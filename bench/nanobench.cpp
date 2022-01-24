@@ -75,10 +75,31 @@ extern bool gSkVMJITViaDylib;
 extern uint64_t gVMBlitterCycles;
 extern uint64_t gVMBlitterScanlines;
 extern uint64_t gVMPixels;
+extern uint64_t gVMPathScanlines;
+
 extern bool gSkVMInterpreterUsed;
 extern uint64_t gRPBlitterCycles;
 extern uint64_t gRPBlitterScanlines;
 extern uint64_t gRPPixels;
+extern uint64_t gRPPathScanlines;
+
+extern uint64_t gVMRect1Cycles;
+extern uint64_t gVMRect2Cycles;
+extern uint64_t gVMMaskCycles;
+extern uint64_t gVMAntiHCycles;
+extern int gVMRect1Num;
+extern int gVMRect2Num;
+extern int gVMMaskNum;
+extern int gVMAntiHNum;
+
+extern uint64_t gRPRect1Cycles;
+extern uint64_t gRPRect2Cycles;
+extern uint64_t gRPMaskCycles;
+extern uint64_t gRPAntiHCycles;
+extern int gRPRect1Num;
+extern int gRPRect2Num;
+extern int gRPMaskNum;
+extern int gRPAntiHNum;
 
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
@@ -308,12 +329,34 @@ static double time(int loops, Benchmark* bench, Target* target) {
     canvas = target->beginTiming(canvas);
     gVMBlitterCycles = 0;
     gVMBlitterScanlines = 0;
+    gVMPathScanlines = 0;
     gVMPixels = 0;
     gSkVMInterpreterUsed = false;
     gRPBlitterCycles = 0;
     gRPBlitterScanlines = 0;
+    gRPPathScanlines = 0;
     gRPPixels = 0;
+    
+    gVMRect1Cycles = 0;
+    gVMRect2Cycles = 0;
+    gVMMaskCycles = 0;
+    gVMAntiHCycles = 0;
+    gRPRect1Cycles = 0;
+    gRPRect2Cycles = 0;
+    gRPMaskCycles = 0;
+    gRPAntiHCycles = 0;
+
+    gVMRect1Num = 0;
+    gVMRect2Num = 0;
+    gVMMaskNum = 0;
+    gVMAntiHNum = 0;
+    gRPRect1Num = 0;
+    gRPRect2Num = 0;
+    gRPMaskNum = 0;
+    gRPAntiHNum = 0;
+
     bench->draw(loops, canvas);
+
     gVMBlitterCyclesCapture = gVMBlitterCycles;
     gVMBlitterScanlinesCapture = gVMBlitterScanlines;
     gVMPixelsCapture = gVMPixels;
@@ -322,7 +365,34 @@ static double time(int loops, Benchmark* bench, Target* target) {
     gRPBlitterScanlinesCapture = gRPBlitterScanlines;
     gRPPixelsCapture = gRPPixels;
     target->endTiming();
+
     double elapsed = now_ms() - start;
+
+    if (gVMBlitterScanlines > 0) {
+        SkDebugf("Average VM Cycles: %lu = "
+                "{Rect1}: %lu %lu * %d + "
+                "{Rect2}: %lu %lu * %d + "
+                "{Mask}:  %lu %lu * %d + "
+                "{AntiH}: %lu %lu * %d \n",
+                 gVMBlitterCycles,
+                 gVMRect1Cycles * 100 / gVMBlitterCycles, gVMRect1Cycles / gVMRect1Num, gVMRect1Num,
+                 gVMRect2Cycles * 100 / gVMBlitterCycles, gVMRect2Cycles / gVMRect2Num, gVMRect2Num,
+                 gVMMaskCycles * 100 / gVMBlitterCycles, gVMMaskCycles / gVMMaskNum, gVMMaskNum,
+                 gVMAntiHCycles * 100 / gVMBlitterCycles, gVMAntiHCycles / gVMAntiHNum, gVMAntiHNum);
+    }
+    if (gRPBlitterScanlines > 0) {
+        SkDebugf("Average RP Cycles: %lu = "
+                "{Rect1}: %lu %lu * %d + "
+                "{Rect2}: %lu %lu * %d + "
+                "{Mask}:  %lu %lu * %d + "
+                "{AntiH}: %lu %lu * %d \n",
+                 gRPBlitterCycles,
+                 gRPRect1Cycles * 100 / gRPBlitterCycles, gRPRect1Cycles / gRPRect1Num, gRPRect1Num,
+                 gRPRect2Cycles * 100 / gRPBlitterCycles, gRPRect2Cycles / gRPRect2Num, gRPRect2Num,
+                 gRPMaskCycles * 100 / gRPBlitterCycles, gRPMaskCycles / gRPMaskNum, gRPMaskNum,
+                 gRPAntiHCycles * 100 / gRPBlitterCycles, gRPAntiHCycles / gRPAntiHNum, gRPAntiHNum);
+    }
+
     bench->postDraw(canvas);
     return elapsed;
 }

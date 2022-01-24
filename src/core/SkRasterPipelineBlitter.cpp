@@ -25,7 +25,21 @@
 uint64_t gRPBlitterCycles = 0;
 uint64_t gRPBlitterScanlines = 0;
 uint64_t gRPPixels = 0;
+uint64_t gRPPathScanlines = 0;
+uint64_t gRPRect1Cycles = 0;
+uint64_t gRPRect2Cycles = 0;
+uint64_t gRPMaskCycles = 0;
+uint64_t gRPAntiHCycles = 0;
+int gRPRect1Num = 0;
+int gRPRect2Num = 0;
+int gRPMaskNum = 0;
+int gRPAntiHNum = 0;
 
+#if defined(SK_RELEASE)
+bool gRPTrace = false;
+#else
+bool gRPTrace = true;
+#endif
 class SkRasterPipelineBlitter final : public SkBlitter {
 public:
     // This is our common entrypoint for creating the blitter once we've sorted out shaders.
@@ -339,7 +353,17 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
         gRPPixels += w * h;
         auto before = SkCycles::Now();
         fMemset2D(&fDst, x,y, w,h, fMemsetColor);
-        gRPBlitterCycles += SkCycles::Now() - before;
+        auto diff = SkCycles::Now() - before;
+        gRPBlitterCycles += diff;
+        gRPRect1Cycles += diff;
+        ++gRPRect1Num;
+        if (gRPTrace) {
+            SkDebugf("blitRect1 gRPBlitterCycles += %lu, %lu %lu + %d\n",
+                     diff,
+                     gRPBlitterCycles,
+                     gRPBlitterScanlines - h,
+                     h);
+        }
         return;
     }
 
@@ -376,7 +400,17 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
     gRPPixels += w * h;
     auto before = SkCycles::Now();
     fBlitRect(x,y,w,h);
-    gRPBlitterCycles += SkCycles::Now() - before;
+    auto diff = SkCycles::Now() - before;
+    gRPBlitterCycles += diff;
+    gRPRect2Cycles += diff;
+    ++gRPRect2Num;
+    if (gRPTrace) {
+        SkDebugf("blitRect2 gRPBlitterCycles += %lu, %lu %lu + %d\n",
+                 diff,
+                 gRPBlitterCycles,
+                 gRPBlitterScanlines - h,
+                 h);
+    }
 }
 
 void SkRasterPipelineBlitter::blitHNoCounting(int x, int y, int w) {
@@ -418,6 +452,7 @@ void SkRasterPipelineBlitter::blitHNoCounting(int x, int y, int w) {
 }
 
 void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const int16_t runs[]) {
+
     if (!fBlitAntiH) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
@@ -437,10 +472,9 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
         this->append_store(&p);
         fBlitAntiH = p.compile();
     }
-
+    gRPBlitterScanlines += 1;
     auto before = SkCycles::Now();
     for (int16_t run = *runs; run > 0; run = *runs) {
-        gRPBlitterScanlines += 1;
         gRPPixels += run;
         switch (*aa) {
             case 0x00:                       break;
@@ -454,7 +488,17 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
         runs += run;
         aa   += run;
     }
-    gRPBlitterCycles += SkCycles::Now() - before;
+    auto diff = SkCycles::Now() - before;
+    gRPBlitterCycles += diff;
+    gRPAntiHCycles += diff;
+    ++gRPAntiHNum;
+    if (gRPTrace) {
+        SkDebugf("blitAntiH gRPBlitterCycles += %lu, %lu %lu + %d\n",
+                 diff,
+                 gRPBlitterCycles,
+                 gRPBlitterScanlines - 1,
+                 1);
+    }
 }
 
 void SkRasterPipelineBlitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
@@ -500,7 +544,6 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
         // TODO: native BW masks?
         return INHERITED::blitMask(mask, clip);
     }
-
     // ARGB and SDF masks shouldn't make it here.
     SkASSERT(mask.fFormat == SkMask::kA8_Format
           || mask.fFormat == SkMask::kLCD16_Format
@@ -598,11 +641,20 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
             SkASSERT(false);
             return;
     }
-
     SkASSERT(blitter);
     gRPBlitterScanlines += clip.height();
     gRPPixels += clip.width() * clip.height();
     auto before = SkCycles::Now();
     (*blitter)(clip.left(),clip.top(), clip.width(),clip.height());
-    gRPBlitterCycles += SkCycles::Now() - before;
+    auto diff = SkCycles::Now() - before;
+    gRPBlitterCycles += diff;
+    gRPMaskCycles += diff;
+    ++gRPMaskNum;
+    if (gRPTrace) {
+        SkDebugf("blitMask gRPBlitterCycles += %lu, %lu %lu + %d\n",
+                 diff,
+                 gRPBlitterCycles,
+                 gRPBlitterScanlines - clip.height(),
+                 clip.height());
+    }
 }
