@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c97232ee_c988d85c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-24T15:29:10Z",
+      "side": 1,
+      "message": "I\u0027m fine with this for now to get this working. It would be nice in the future to make the ports sources more granular so this wouldn\u0027t be treated like an entirely separate platform. But I suppose that\u0027s what the bazel build it trying to get to.",
+      "revId": "97eb05e63062ac1c2e3d03f493357798a1384500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
