@@ -72,7 +72,7 @@ public:
                        const Transform&,
                        const Shape&) const override {
         // The shape is upload via uniforms, so this just needs to record 4 data-less vertices
-        writer->draw({}, {}, 4);
+        writer->draw({}, 4);
     }
 
     sk_sp<SkUniformData> writeUniforms(Layout layout,
@@ -138,7 +138,7 @@ public:
         indexWriter << 0 << 1 << 2
                     << 2 << 1 << 3;
 
-        writer->draw(vertices, indices, 6);
+        writer->drawIndexed(vertices, indices, 6);
     }
 
     sk_sp<SkUniformData> writeUniforms(Layout layout,
