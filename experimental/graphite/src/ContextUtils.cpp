@@ -198,10 +198,10 @@ sk_sp<SkUniformData> make_solid_uniform_data(SkColor4f color) {
 
 } // anonymous namespace
 
-std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context* context,
-                                                                         const PaintParams& p) {
+std::tuple<SkUniquePaintParamsID, std::vector<sk_sp<SkUniformData>>> ExtractPaintData(Context* context,
+                                                                                      const PaintParams& p) {
     SkPaintParamsKey key;
-    sk_sp<SkUniformData> uniforms;
+    std::vector<sk_sp<SkUniformData>> uniforms;
 
     auto dict = context->priv().shaderCodeDictionary();
 
@@ -228,12 +228,14 @@ std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context
 
                 GradientShaderBlocks::AddToKey(SkBackend::kGraphite,
                                                &key,
+                                               &uniforms,
                                                { type, gradInfo.fTileMode, gradInfo.fColorCount });
 
-                uniforms = make_linear_gradient_uniform_data(gradInfo.fPoint[0],
-                                                             gradInfo.fPoint[1],
-                                                             color4fs,
-                                                             offsets);
+                // TODO: move this into GradientShaderBlocks::AddToKey
+                uniforms.push_back(make_linear_gradient_uniform_data(gradInfo.fPoint[0],
+                                                                     gradInfo.fPoint[1],
+                                                                     color4fs,
+                                                                     offsets));
             } break;
             case SkShader::kRadial_GradientType: {
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
@@ -241,12 +243,14 @@ std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context
 
                 GradientShaderBlocks::AddToKey(SkBackend::kGraphite,
                                                &key,
+                                               &uniforms,
                                                { type, gradInfo.fTileMode, gradInfo.fColorCount });
 
-                uniforms =  make_radial_gradient_uniform_data(gradInfo.fPoint[0],
-                                                              gradInfo.fRadius[0],
-                                                              color4fs,
-                                                              offsets);
+                // TODO: move this into GradientShaderBlocks::AddToKey
+                uniforms.push_back(make_radial_gradient_uniform_data(gradInfo.fPoint[0],
+                                                                     gradInfo.fRadius[0],
+                                                                     color4fs,
+                                                                     offsets));
             } break;
             case SkShader::kSweep_GradientType:
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
@@ -254,11 +258,13 @@ std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context
 
                 GradientShaderBlocks::AddToKey(SkBackend::kGraphite,
                                                &key,
+                                               &uniforms,
                                                { type, gradInfo.fTileMode, gradInfo.fColorCount });
 
-                uniforms = make_sweep_gradient_uniform_data(gradInfo.fPoint[0],
-                                                            color4fs,
-                                                            offsets);
+                // TODO: move this into GradientShaderBlocks::AddToKey
+                uniforms.push_back(make_sweep_gradient_uniform_data(gradInfo.fPoint[0],
+                                                                    color4fs,
+                                                                    offsets));
                 break;
             case SkShader::GradientType::kConical_GradientType:
                 to_color4fs(gradInfo.fColorCount, colors, color4fs);
@@ -266,36 +272,40 @@ std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context
 
                 GradientShaderBlocks::AddToKey(SkBackend::kGraphite,
                                                &key,
+                                               &uniforms,
                                                { type, gradInfo.fTileMode, gradInfo.fColorCount });
 
-                uniforms = make_conical_gradient_uniform_data(gradInfo.fPoint[0],
-                                                              gradInfo.fPoint[1],
-                                                              gradInfo.fRadius[0],
-                                                              gradInfo.fRadius[1],
-                                                              color4fs,
-                                                              offsets);
+                // TODO: move this into GradientShaderBlocks::AddToKey
+                uniforms.push_back(make_conical_gradient_uniform_data(gradInfo.fPoint[0],
+                                                                      gradInfo.fPoint[1],
+                                                                      gradInfo.fRadius[0],
+                                                                      gradInfo.fRadius[1],
+                                                                      color4fs,
+                                                                      offsets));
                 break;
-            case SkShader::GradientType::kColor_GradientType:
+            case SkShader::GradientType::kColor_GradientType: [[fallthrough]];
                 // TODO: The solid color gradient type should use its color, not
                 // the paint color
-            case SkShader::GradientType::kNone_GradientType:
+            case SkShader::GradientType::kNone_GradientType:  [[fallthrough]];
             default:
-                SolidColorShaderBlock::AddToKey(SkBackend::kGraphite, &key);
+                SolidColorShaderBlock::AddToKey(SkBackend::kGraphite, &key, &uniforms, p.color());
 
-                uniforms = make_solid_uniform_data(p.color());
+                // TODO: move this into SolidColorShaderBlock::AddToKey
+                uniforms.push_back(make_solid_uniform_data(p.color()));
                 break;
         }
     } else {
         // Solid colored paint
-        SolidColorShaderBlock::AddToKey(SkBackend::kGraphite, &key);
+        SolidColorShaderBlock::AddToKey(SkBackend::kGraphite, &key, &uniforms, p.color());
 
-        uniforms = make_solid_uniform_data(p.color());
+        // TODO: move this into SolidColorShaderBlock::AddToKey
+        uniforms.push_back(make_solid_uniform_data(p.color()));
     }
 
     if (p.blender()) {
-        as_BB(p.blender())->addToKey(dict, SkBackend::kGraphite, &key);
+        as_BB(p.blender())->addToKey(dict, SkBackend::kGraphite, &key, &uniforms);
     } else {
-        BlendModeBlock::AddToKey(SkBackend::kGraphite, &key, SkBlendMode::kSrcOver);
+        BlendModeBlock::AddToKey(SkBackend::kGraphite, &key, &uniforms, SkBlendMode::kSrcOver);
     }
 
     auto entry = context->priv().shaderCodeDictionary()->findOrCreate(key);

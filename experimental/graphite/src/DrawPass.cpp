@@ -169,21 +169,35 @@ private:
 
 namespace {
 
+size_t total_uniform_data_size(const std::vector<sk_sp<SkUniformData>>& uniforms) {
+    size_t total = 0;
+
+    // TODO: It seems like we need to worry about alignment between the separate sets of uniforms
+    for (auto& u : uniforms) {
+        total += u->dataSize();
+    }
+
+    return total;
+}
+
 class UniformBindingCache {
 public:
     UniformBindingCache(DrawBufferManager* bufferMgr, UniformCache* cache)
             : fBufferMgr(bufferMgr), fCache(cache) {}
 
-    uint32_t addUniforms(sk_sp<SkUniformData> data) {
-        if (!data) {
+    uint32_t addUniforms(const std::vector<sk_sp<SkUniformData>>& uniforms) {
+        if (!uniforms.empty()) {
             return UniformCache::kInvalidUniformID;
         }
 
         uint32_t index = fCache->insert(data);
         if (fBindings.find(index) == fBindings.end()) {
             // First time encountering this data, so upload to the GPU
-            auto [writer, bufferInfo] = fBufferMgr->getUniformWriter(data->dataSize());
-            writer.write(data->data(), data->dataSize());
+            size_t totalDataSize = total_uniform_data_size(uniforms);
+            auto [writer, bufferInfo] = fBufferMgr->getUniformWriter(totalDataSize);
+            for (auto& u : uniforms) {
+                writer.write(u->data(), u->dataSize());
+            }
             fBindings.insert({index, bufferInfo});
         }
 
@@ -285,7 +299,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
         SkUniquePaintParamsID shaderID;
-        sk_sp<SkUniformData> shadingUniforms = nullptr;
+        std::vector<sk_sp<SkUniformData>> shadingUniforms;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
             std::tie(shaderID, shadingUniforms) = ExtractPaintData(recorder->context(),

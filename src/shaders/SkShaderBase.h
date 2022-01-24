@@ -22,6 +22,8 @@
 #include "src/gpu/GrFPArgs.h"
 #endif
 
+//#include <vector>
+
 class GrFragmentProcessor;
 class SkArenaAlloc;
 enum class SkBackend : uint8_t;
@@ -33,6 +35,7 @@ class SkPaintParamsKey;
 class SkRasterPipeline;
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
+class SkUniformData;
 class SkStageUpdater;
 
 class SkUpdatableShader;
@@ -223,7 +226,8 @@ public:
     */
     virtual void addToKey(SkShaderCodeDictionary* dictionary,
                           SkBackend backend,
-                          SkPaintParamsKey* key) const;
+                          SkPaintParamsKey* key,
+                          std::vector<sk_sp<SkUniformData>>*) const;
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
