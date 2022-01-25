@@ -1,0 +1,11 @@
+// Expect 1 error, in "testOut"
+
+void testIn(in float2 p)       {}
+void testOut(out float2 p)     {}
+void testInout(inout float2 p) {}
+
+void main(float2 p) {
+    testIn(p);
+    testOut(p);
+    testInout(p);
+}
