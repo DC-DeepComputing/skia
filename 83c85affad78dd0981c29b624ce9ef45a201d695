@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c246de_77043245",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-25T21:46:07Z",
+      "side": 0,
+      "message": "So, do we not get a code size dividend by being able to remove this static functions?",
+      "range": {
+        "startLine": 1067,
+        "startChar": 12,
+        "endLine": 1067,
+        "endChar": 40
+      },
+      "revId": "83c85affad78dd0981c29b624ce9ef45a201d695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
