@@ -32,7 +32,10 @@ class Type;
  */
 class Rehydrator {
 public:
-    static constexpr uint16_t kVersion = 1;
+    static constexpr uint16_t kVersion = 2;
+    // If this ID appears in a symbol table, it means the corresponding symbol isn't actually
+    // present in the file as it's a system type.
+    static constexpr uint16_t kBuiltinType_Symbol = 65535;
 
     enum Command {
         // uint16 id, Type componentType, uint8 count
@@ -146,7 +149,7 @@ public:
 
     std::vector<std::unique_ptr<ProgramElement>> elements();
 
-    std::shared_ptr<SymbolTable> symbolTable(bool inherit = true);
+    std::shared_ptr<SymbolTable> symbolTable();
 
 private:
     int8_t readS8() {
