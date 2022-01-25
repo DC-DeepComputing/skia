@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "602ed55f_2c5d68de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-25T16:38:44Z",
+      "side": 1,
+      "message": "I ran into a situation where my local files weren\u0027t being regenerated despite having the correct gn setting, and wasted some time trying to figure out the parse error before realizing it wasn\u0027t even my fault. Not the first time I\u0027ve run into that (or forgotten I didn\u0027t have the gn setting enabled), so it seemed worth having a mechanism to get immediate errors.\n\nOn top of that, according to Brian there\u0027s some interest in having a binary format for SkSL, so now that it\u0027s actually capable of handling everything we throw at it, seemed worth spending a couple of bytes on a version number to prepare for that possibility.",
+      "parentUuid": "4646fe6a_d1747d02",
+      "revId": "5ba718bf07490e0f1b72f0dc83b2ec6221df2131",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "65de3e87_f912d304",
         "filename": "src/sksl/SkSLDehydrator.cpp",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-25T16:35:12Z",
       "side": 1,
       "message": "not necessary for this CL: it would be cool if we could say `out.bytesWritten()` here instead of hard-coding a 4. `OutputStream` doesn\u0027t expose that today, but it could--StringStream already has it, and FileStream could call `ftell`.",
+      "range": {
+        "startLine": 599,
+        "startChar": 25,
+        "endLine": 599,
+        "endChar": 26
+      },
+      "revId": "5ba718bf07490e0f1b72f0dc83b2ec6221df2131",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ca7606c_322b787c",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-25T16:38:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65de3e87_f912d304",
       "range": {
         "startLine": 599,
         "startChar": 25,
