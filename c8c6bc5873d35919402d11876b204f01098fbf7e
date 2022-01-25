@@ -22,6 +22,30 @@
       },
       "revId": "c8c6bc5873d35919402d11876b204f01098fbf7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e00a318_6b66845c",
+        "filename": "src/sksl/ir/SkSLConstructorScalarCast.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-25T23:13:20Z",
+      "side": 1,
+      "message": "I tried it and it causes `float[40000000000];` to go off the rails in the Parser, but I really like the idea. Maybe I\u0027ll see if I can make the parser work better in a followup so I can make that change.",
+      "parentUuid": "19acceac_4d673ce9",
+      "range": {
+        "startLine": 73,
+        "startChar": 64,
+        "endLine": 73,
+        "endChar": 96
+      },
+      "revId": "c8c6bc5873d35919402d11876b204f01098fbf7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
