@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29722fe9_572d2d42",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-25T22:08:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6377963b_0ec01447",
+      "revId": "1614ab5f4e15a23374412bd6382338d2547951eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ad6b7aa_d77505ab",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c19b88_2ca4f217",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-25T22:08:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ad6b7aa_d77505ab",
+      "revId": "1614ab5f4e15a23374412bd6382338d2547951eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5cc8be4_9b048ef5",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-01-25T21:46:07Z",
       "side": 1,
       "message": "positionMatrix ?",
+      "range": {
+        "startLine": 182,
+        "startChar": 57,
+        "endLine": 182,
+        "endChar": 63
+      },
+      "revId": "1614ab5f4e15a23374412bd6382338d2547951eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad7f21e_347a2f63",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-25T22:08:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5cc8be4_9b048ef5",
       "range": {
         "startLine": 182,
         "startChar": 57,
