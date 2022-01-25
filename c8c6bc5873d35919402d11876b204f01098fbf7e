@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19acceac_4d673ce9",
+        "filename": "src/sksl/ir/SkSLConstructorScalarCast.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-25T22:48:59Z",
+      "side": 1,
+      "message": "Up to you, but returning 1 might be better as it avoids some potential errors like divide by zero and the \"array size must be positive\" still occurring in a couple of the tests.",
+      "range": {
+        "startLine": 73,
+        "startChar": 64,
+        "endLine": 73,
+        "endChar": 96
+      },
+      "revId": "c8c6bc5873d35919402d11876b204f01098fbf7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
