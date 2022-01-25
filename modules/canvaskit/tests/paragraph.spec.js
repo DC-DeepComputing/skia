@@ -983,4 +983,70 @@ describe('Paragraph Behavior', function() {
         fontMgr.delete();
         builder.delete();
     });
+
+    it('can reset paragraph builder', () => {
+        const surface = CanvasKit.MakeCanvasSurface('test');
+        expect(surface).toBeTruthy('Could not make surface');
+
+        const canvas = surface.getCanvas();
+        const paint = new CanvasKit.Paint();
+
+        paint.setColor(CanvasKit.RED);
+        paint.setStyle(CanvasKit.PaintStyle.Stroke);
+
+        const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
+
+        const wrapTo = 250;
+
+        const paraStyle = new CanvasKit.ParagraphStyle({
+            textStyle: {
+                fontSize: 20,
+            },
+            textDirection: CanvasKit.TextDirection.RTL,
+            disableHinting: true,
+        });
+
+        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
+        builder.addText('Default text\n');
+
+        const boldItalic = new CanvasKit.TextStyle({
+            fontStyle: {
+                weight: CanvasKit.FontWeight.Bold,
+                slant: CanvasKit.FontSlant.Italic,
+            }
+        });
+        builder.pushStyle(boldItalic);
+        builder.addText(`Bold, Italic\n`);
+        builder.pop();
+        const paragraph = builder.build();
+
+        paragraph.layout(wrapTo);
+
+        builder.reset();
+        builder.addText('More Default text\n');
+
+        const boldItalic = new CanvasKit.TextStyle({
+            fontStyle: {
+                weight: CanvasKit.FontWeight.Bold,
+                slant: CanvasKit.FontSlant.Italic,
+            }
+        });
+        builder.pushStyle(boldItalic);
+        builder.addText(`Bold, Italic\n`);
+        builder.pop();
+        builder.addText(`back to normal`);
+        const paragraph2 = builder.build();
+
+        canvas.clear(CanvasKit.WHITE);
+        canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, wrapTo+10), paint);
+        canvas.drawParagraph(paragraph, 10, 10);
+        canvas.drawParagraph(paragraph2, 30, 10);
+
+        surface.flush();
+
+        paragraph.delete();
+        paint.delete();
+        fontMgr.delete();
+        builder.delete();
+    });
 });
