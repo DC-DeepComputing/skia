@@ -16,6 +16,29 @@
       "message": "This change seems harmless enough, but I don\u0027t understand the motivation. What do we gain?\n\nWe already have a bot which fails if you don\u0027t regenerate the dehydrated files, and I don\u0027t see anything here which guards against future-proofing--the dehydrated data is baked directly into the lib, there isn\u0027t any way to mix and match. ",
       "revId": "5ba718bf07490e0f1b72f0dc83b2ec6221df2131",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65de3e87_f912d304",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-25T16:35:12Z",
+      "side": 1,
+      "message": "not necessary for this CL: it would be cool if we could say `out.bytesWritten()` here instead of hard-coding a 4. `OutputStream` doesn\u0027t expose that today, but it could--StringStream already has it, and FileStream could call `ftell`.",
+      "range": {
+        "startLine": 599,
+        "startChar": 25,
+        "endLine": 599,
+        "endChar": 26
+      },
+      "revId": "5ba718bf07490e0f1b72f0dc83b2ec6221df2131",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
