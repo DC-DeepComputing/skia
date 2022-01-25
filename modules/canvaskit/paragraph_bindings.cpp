@@ -521,6 +521,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                           return self.addText(text.c_str(), text.length());
                       }))
             .function("build", &para::ParagraphBuilderImpl::Build, allow_raw_pointers())
+            .function("reset", &para::ParagraphBuilderImpl::Reset, allow_raw_pointers())
             .function("pop", &para::ParagraphBuilderImpl::pop)
             .function("_pushStyle", optional_override([](para::ParagraphBuilderImpl& self,
                                                          SimpleTextStyle textStyle) {
