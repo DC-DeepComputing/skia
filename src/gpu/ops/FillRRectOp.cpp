@@ -78,7 +78,7 @@ private:
     enum class ProcessorFlags {
         kNone             = 0,
         kUseHWDerivatives = 1 << 0,
-        kHasLocalCoords   = 1 << 1,
+        kHasLocalMatrix   = 1 << 1,
         kWideColor        = 1 << 2,
         kMSAAEnabled      = 1 << 3,
         kFakeNonAA        = 1 << 4,
@@ -112,13 +112,27 @@ private:
     Helper         fHelper;
     ProcessorFlags fProcessorFlags;
 
+    struct LocalMatrix {
+        LocalMatrix() = default;
+        // Maps from normalized shape coordinates (-1..+1) to localRect.
+        LocalMatrix(const SkRect& localRect)
+                : fMatrix{localRect.width() * .5f, 0, 0, localRect.height() * .5f}
+                , fTranslate{localRect.centerX(), localRect.centerY()} {}
+        std::array<float,4> fMatrix;
+        std::array<float,2> fTranslate;
+    };
+
     struct Instance {
         Instance(const SkMatrix& viewMatrix, const SkRRect& rrect, const SkRect& localRect,
                  const SkPMColor4f& color)
-                : fViewMatrix(viewMatrix), fRRect(rrect), fLocalRect(localRect), fColor(color) {}
+                : fViewMatrix(viewMatrix)
+                , fRRect(rrect)
+                , fLocalMatrix(localRect)
+                , fColor(color) {
+        }
         SkMatrix fViewMatrix;
         SkRRect fRRect;
-        SkRect fLocalRect;
+        LocalMatrix fLocalMatrix;
         SkPMColor4f fColor;
         Instance* fNext = nullptr;
     };
@@ -196,7 +210,7 @@ FillRRectOpImpl::FillRRectOpImpl(GrProcessorSet* processorSet,
                   (processorFlags & ProcessorFlags::kFakeNonAA)
                           ? GrAAType::kNone
                           : GrAAType::kCoverage)  // Use analytic AA even if the RT is MSAA.
-        , fProcessorFlags(processorFlags & ~(ProcessorFlags::kHasLocalCoords |
+        , fProcessorFlags(processorFlags & ~(ProcessorFlags::kHasLocalMatrix |
                                              ProcessorFlags::kWideColor |
                                              ProcessorFlags::kMSAAEnabled))
         , fHeadInstance(arena->make<Instance>(viewMatrix, rrect, localRect, paintColor))
@@ -283,13 +297,17 @@ GrDrawOp::ClipResult FillRRectOpImpl::clipToShape(skgpu::v1::SurfaceDrawContext*
             return ClipResult::kFail;
         }
 
-        // Update the local rect.
-        auto rect = skvx::bit_pun<grvx::float4>(fHeadInstance->fRRect.rect());
-        auto local = skvx::bit_pun<grvx::float4>(fHeadInstance->fLocalRect);
-        auto isect = skvx::bit_pun<grvx::float4>(isectRRect.rect());
-        auto rectToLocalSize = (local - skvx::shuffle<2,3,0,1>(local)) /
-                               (rect - skvx::shuffle<2,3,0,1>(rect));
-        fHeadInstance->fLocalRect = skvx::bit_pun<SkRect>((isect - rect) * rectToLocalSize + local);
+        // Update the local matrix.
+        using grvx::float4, grvx::float2;
+        float4 M = float4::Load(fHeadInstance->fLocalMatrix.fMatrix.data());
+        float2 T = float2::Load(fHeadInstance->fLocalMatrix.fTranslate.data());
+        float4 oldBounds = skvx::bit_pun<grvx::float4>(fHeadInstance->fRRect.rect());
+        float4 newBounds = skvx::bit_pun<grvx::float4>(isectRRect.rect());
+        float4 diff = newBounds - oldBounds;
+        auto [s,t] = join(newBounds.hi - newBounds.lo, diff.hi + diff.lo) /
+                     (oldBounds.hi - oldBounds.lo).xyxy();
+        (M * skvx::shuffle<0,0,1,1>(s)).store(fHeadInstance->fLocalMatrix.fMatrix.data());
+        (M.lo * t.x() + M.hi * t.y() + T).store(fHeadInstance->fLocalMatrix.fTranslate.data());
 
         // Update the round rect.
         fHeadInstance->fRRect = isectRRect;
@@ -312,7 +330,7 @@ GrProcessorSet::Analysis FillRRectOpImpl::finalize(const GrCaps& caps, const GrA
         fProcessorFlags |= ProcessorFlags::kWideColor;
     }
     if (analysis.usesLocalCoords()) {
-        fProcessorFlags |= ProcessorFlags::kHasLocalCoords;
+        fProcessorFlags |= ProcessorFlags::kHasLocalMatrix;
     }
     return analysis;
 }
@@ -363,9 +381,11 @@ private:
         fInstanceAttribs.emplace_back("radii_y", kFloat4_GrVertexAttribType, kFloat4_GrSLType);
         fColorAttrib = &fInstanceAttribs.push_back(
                 MakeColorAttribute("color", (fFlags & ProcessorFlags::kWideColor)));
-        if (fFlags & ProcessorFlags::kHasLocalCoords) {
+        if (fFlags & ProcessorFlags::kHasLocalMatrix) {
             fInstanceAttribs.emplace_back(
-                    "local_rect", kFloat4_GrVertexAttribType, kFloat4_GrSLType);
+                    "local_matrix", kFloat4_GrVertexAttribType, kFloat4_GrSLType);
+            fInstanceAttribs.emplace_back(
+                    "local_translate", kFloat2_GrVertexAttribType, kFloat2_GrSLType);
         }
         SkASSERT(fInstanceAttribs.count() <= kMaxInstanceAttribs);
         this->setInstanceAttributesWithImplicitOffsets(fInstanceAttribs.begin(),
@@ -380,7 +400,7 @@ private:
 
     const ProcessorFlags fFlags;
 
-    constexpr static int kMaxInstanceAttribs = 6;
+    constexpr static int kMaxInstanceAttribs = 7;
     SkSTArray<kMaxInstanceAttribs, Attribute> fInstanceAttribs;
     const Attribute* fColorAttrib;
 };
@@ -543,8 +563,8 @@ void FillRRectOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
                           << m.getTranslateX() << m.getTranslateY()
                           << radiiX << radiiY
                           << VertexColor(i->fColor, fProcessorFlags & ProcessorFlags::kWideColor)
-                          << VertexWriter::If(fProcessorFlags & ProcessorFlags::kHasLocalCoords,
-                                              i->fLocalRect);
+                          << VertexWriter::If(fProcessorFlags & ProcessorFlags::kHasLocalMatrix,
+                                              i->fLocalMatrix);
         }
         SkASSERT(instanceWrter == end);
     }
@@ -691,9 +711,9 @@ private:
 
         // Write positions
         GrShaderVar localCoord("", kFloat2_GrSLType);
-        if (proc.fFlags & ProcessorFlags::kHasLocalCoords) {
-            v->codeAppend("float2 localcoord = (local_rect.xy * (1 - vertexpos) + "
-                                               "local_rect.zw * (1 + vertexpos)) * .5;");
+        if (proc.fFlags & ProcessorFlags::kHasLocalMatrix) {
+            v->codeAppend(
+                    "float2 localcoord = float2x2(local_matrix) * vertexpos + local_translate;");
             gpArgs->fLocalCoordVar.set(kFloat2_GrSLType, "localcoord");
         }
 
