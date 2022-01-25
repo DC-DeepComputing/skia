@@ -412,10 +412,17 @@ String FunctionDeclaration::mangledName() const {
         // Builtins without a definition (like `sin` or `sqrt`) must use their real names.
         return String(this->name());
     }
+    // We can't pass a $ prefix to the GPU driver.
+    skstd::string_view name = this->name();
+    const char* builtinMarker = "";
+    if (name.starts_with('$')) {
+        name.remove_prefix(1);
+        builtinMarker = "p";
+    }
     // GLSL forbids two underscores in a row; add an extra character if necessary to avoid this.
-    const char* splitter = this->name().ends_with("_") ? "x_" : "_";
+    const char* splitter = name.ends_with('_') ? "x_" : "_";
     // Rename function to `funcname_returntypeparamtypes`.
-    String result = this->name() + splitter + this->returnType().abbreviatedName();
+    String result = name + splitter + builtinMarker + this->returnType().abbreviatedName();
     for (const Variable* p : this->parameters()) {
         result += p->type().abbreviatedName();
     }
