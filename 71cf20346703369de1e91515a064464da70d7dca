@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "36724972_858fc994",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-01-25T18:44:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce0add49_069f7a52",
+      "revId": "71cf20346703369de1e91515a064464da70d7dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "da8d00aa_7bebb9ef",
         "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-25T15:10:35Z",
       "side": 1,
       "message": "This comment scared me a little. The paragraph style should count (the default text style in it) if we didn\u0027t set the other text style. In this case we did but if you do builder.addText(\"something\") before line 6721, we will get 2 styles.",
+      "range": {
+        "startLine": 6734,
+        "startChar": 67,
+        "endLine": 6734,
+        "endChar": 97
+      },
+      "revId": "71cf20346703369de1e91515a064464da70d7dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba0ee95b_f63768f8",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 6734,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-01-25T18:44:55Z",
+      "side": 1,
+      "message": "This was copy-pasted from the first test in this file. If it should be changed perhaps we should change both in a separate patch?",
+      "parentUuid": "da8d00aa_7bebb9ef",
       "range": {
         "startLine": 6734,
         "startChar": 67,
