@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0612bc49_067d7b2a",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T16:49:25Z",
+      "side": 1,
+      "message": "Was it the aliases from `ThreadContext::setupSymbolTable` maybe?",
+      "parentUuid": "274cdad5_0231c51c",
+      "range": {
+        "startLine": 248,
+        "startChar": 12,
+        "endLine": 252,
+        "endChar": 9
+      },
+      "revId": "4c6b1ece45b0b44a299fd0c94de5f15c527fa414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3ee58f1_d29c60d7",
         "filename": "src/sksl/SkSLRehydrator.h",
         "patchSetId": 3
