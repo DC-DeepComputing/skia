@@ -34,6 +34,24 @@
       "parentUuid": "646e4869_928d119c",
       "revId": "57ef9668b86552573c4758df04adb8919e01c6ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54ae713c_82ec0b2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-26T14:36:13Z",
+      "side": 1,
+      "message": "Yeah, the chat history is gone, but Greg (?) pointed out that even with the context reset being performed, we can\u0027t guarantee that we won\u0027t have copies of the old texture data floating around in other caches.\n\nI think the idea was to re-wrap the texture in a new image each frame?",
+      "parentUuid": "8b96dff6_71ed71ab",
+      "revId": "57ef9668b86552573c4758df04adb8919e01c6ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
