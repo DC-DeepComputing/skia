@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2783c294_a49ed364",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-26T23:57:40Z",
+      "side": 1,
+      "message": "Do these actually have to be different? In Ganesh they\u0027re the same buffer, and the API determines whether it is accessed per vertex or per instance.",
+      "range": {
+        "startLine": 213,
+        "startChar": 54,
+        "endLine": 213,
+        "endChar": 82
+      },
+      "revId": "12050942f0d1abb3f53117a0d2e3aa439ba69b82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6fb87c_e326ef54",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-26T23:57:40Z",
+      "side": 1,
+      "message": "Is this w the Z painter\u0027s order? Or perspective?",
+      "range": {
+        "startLine": 170,
+        "startChar": 71,
+        "endLine": 170,
+        "endChar": 85
+      },
+      "revId": "12050942f0d1abb3f53117a0d2e3aa439ba69b82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
