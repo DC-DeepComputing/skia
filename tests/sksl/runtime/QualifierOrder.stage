@@ -1,14 +1,14 @@
 uniform half4 colorGreen;
 noinline void const_after_in_0(const float2 x);
 noinline void inout_after_high_precision_0(inout float2 x);
-noinline void out_after_high_precision_0(out float2 x);
+noinline void out_after_high_precision_0($maybe_unused out float2 x);
 noinline void const_after_in_0(const float2 x)
 {
 }
 noinline void inout_after_high_precision_0(inout float2 x)
 {
 }
-noinline void out_after_high_precision_0(out float2 x)
+noinline void out_after_high_precision_0($maybe_unused out float2 x)
 {
 }
 float4 main(float2 coords)
