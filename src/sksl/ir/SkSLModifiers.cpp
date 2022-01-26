@@ -28,6 +28,7 @@ bool Modifiers::checkPermitted(const Context& context, int line, int permittedMo
         { Modifiers::kMediump_Flag,        "mediump" },
         { Modifiers::kLowp_Flag,           "lowp" },
         { Modifiers::kES3_Flag,            "$es3" },
+        { Modifiers::kUnused_Flag,         "$unused" },
     };
 
     bool success = true;

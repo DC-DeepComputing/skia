@@ -45,9 +45,10 @@ struct Modifiers {
         kLowp_Flag           = 1 <<  8,
         // SkSL extensions, not present in GLSL
         kES3_Flag            = 1 <<  9,
-        kHasSideEffects_Flag = 1 <<  10,
-        kInline_Flag         = 1 <<  11,
-        kNoInline_Flag       = 1 <<  12,
+        kUnused_Flag         = 1 <<  10,
+        kHasSideEffects_Flag = 1 <<  11,
+        kInline_Flag         = 1 <<  12,
+        kNoInline_Flag       = 1 <<  13,
     };
 
     Modifiers()
@@ -64,6 +65,9 @@ struct Modifiers {
         // SkSL extensions
         if (fFlags & kES3_Flag) {
             result += "$es3 ";
+        }
+        if (fFlags & kUnused_Flag) {
+            result += "$unused ";
         }
         if (fFlags & kHasSideEffects_Flag) {
             result += "sk_has_side_effects ";
