@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "274cdad5_0231c51c",
+        "filename": "src/sksl/SkSLDehydrator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-26T16:38:54Z",
+      "side": 1,
+      "message": "The symbol table handling for the modules is simple - we can just dump their one symbol table and be done with it.\n\nFor real programs, they need to reference not just their own symbols, but also the symbols from imported modules, so if we just dumped their main symbol table there would be a lot of unresolved references. There are obviously various ways we could potentially handle that, but after *a lot* of struggles with different approaches, what I ended up settling on was to just dump the whole symbol table stack. This is reliable, but hits this case. I\u0027m afraid don\u0027t remember the full reason it was happening, but IIRC it was occurring for the GLSL type aliases, and this was the simplest way I found to fix it.",
+      "parentUuid": "f5dadb27_68558f99",
+      "range": {
+        "startLine": 248,
+        "startChar": 12,
+        "endLine": 252,
+        "endChar": 9
+      },
+      "revId": "4c6b1ece45b0b44a299fd0c94de5f15c527fa414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3ee58f1_d29c60d7",
         "filename": "src/sksl/SkSLRehydrator.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-26T15:20:57Z",
       "side": 1,
       "message": "builtin",
+      "range": {
+        "startLine": 37,
+        "startChar": 37,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "4c6b1ece45b0b44a299fd0c94de5f15c527fa414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "200c45a3_d0816c77",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-26T16:38:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3ee58f1_d29c60d7",
       "range": {
         "startLine": 37,
         "startChar": 37,
