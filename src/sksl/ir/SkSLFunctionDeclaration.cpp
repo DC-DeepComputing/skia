@@ -34,10 +34,11 @@ static IntrinsicKind identify_intrinsic(skstd::string_view functionName) {
 static bool check_modifiers(const Context& context,
                             int line,
                             const Modifiers& modifiers) {
+    const int kBuiltinFlags = Modifiers::kES3_Flag;
     const int permitted = Modifiers::kHasSideEffects_Flag |
                           Modifiers::kInline_Flag |
                           Modifiers::kNoInline_Flag |
-                          (context.fConfig->fIsBuiltinCode ? Modifiers::kES3_Flag : 0);
+                          (context.fConfig->fIsBuiltinCode ? kBuiltinFlags : 0);
     modifiers.checkPermitted(context, line, permitted, /*permittedLayoutFlags=*/0);
     if ((modifiers.fFlags & Modifiers::kInline_Flag) &&
         (modifiers.fFlags & Modifiers::kNoInline_Flag)) {
