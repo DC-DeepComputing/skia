@@ -16,6 +16,24 @@
       "message": "This seems like it\u0027ll have a pretty substantial cost for all of our Modules. sksl_public and sksl_gpu contain hundreds of FunctionPrototypes. That\u0027s going to make LoadedModule::fElements contain many many more ProgramElements than before. \n\nCan we make this optional in the dehydrator?",
       "revId": "2786a92bbd7d493bd14a97f99e6e9174f1d425b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0d5b7d_7a8e7955",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T21:19:32Z",
+      "side": 1,
+      "message": "Alternatively--we could tackle this in skslc: https://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLMain.cpp;l\u003d526;drc\u003decc319f52e92fd59d9d545c7204b79d5c060a7e0\n\nWe control the program elements that we send into the dehydrator, so we could just strip out the FunctionPrototypes.",
+      "parentUuid": "d6fdb75a_3f4ebe74",
+      "revId": "2786a92bbd7d493bd14a97f99e6e9174f1d425b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
