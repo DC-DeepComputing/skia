@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abebec9_4678295d",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-01-26T19:27:26Z",
+      "side": 1,
+      "message": "TODO: I am a bit surprised this passes already without the change in https://skia-review.googlesource.com/c/skia/+/498516/1/src/ports/SkFontHost_FreeType.cpp#1898",
+      "revId": "6a1b6a4e4abcecbeede3b414f7ca6da9913af988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
