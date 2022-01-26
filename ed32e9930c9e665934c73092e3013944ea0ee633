@@ -16,6 +16,23 @@
       "message": "Still a few things to look into here at Patchset 5.\n\nDoes it actually save time to detect when the path can be drawn directly through a transformed canvas? Or is it better to just always run the path through the transform to source space and draw it through an untransformed canvas (which needs to be done anyway when there are things like path effects, strokes, mask filters, or shaders).\n\nStaging. There are a few gms with slight [1,1,1] differences due to taking a different code path to draw a path. It may be necessary to roll this out behind a flag.\n",
       "revId": "ed32e9930c9e665934c73092e3013944ea0ee633",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53618ae_50a711a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-26T20:28:36Z",
+      "side": 1,
+      "message": "Of course, there is the option of delaying the actual changes to path glyphs and just use all this now verified plumbing to do the drawable stuff.",
+      "revId": "ed32e9930c9e665934c73092e3013944ea0ee633",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
