@@ -481,54 +481,10 @@ GrGeometryProcessor* AtlasTextOp::setupDfProcessor(SkArenaAlloc* arena,
 #endif
     }
 }
-
-#if GR_TEST_UTILS
-#include "src/gpu/GrDrawOpTest.h"
-
-GrOp::Owner AtlasTextOp::CreateOpTestingOnly(SurfaceDrawContext* sdc,
-                                             const SkPaint& skPaint,
-                                             const SkFont& font,
-                                             const SkMatrixProvider& mtxProvider,
-                                             const char* text,
-                                             int x,
-                                             int y) {
-    size_t textLen = (int)strlen(text);
-
-    SkMatrix drawMatrix(mtxProvider.localToDevice());
-    drawMatrix.preTranslate(x, y);
-    auto drawOrigin = SkPoint::Make(x, y);
-    SkGlyphRunBuilder builder;
-    auto glyphRunList = builder.textToGlyphRunList(font, skPaint, text, textLen, drawOrigin);
-    if (glyphRunList.empty()) {
-        return nullptr;
-    }
-
-    auto rContext = sdc->recordingContext();
-    GrSDFTControl control =
-            rContext->priv().getSDFTControl(sdc->surfaceProps().isUseDeviceIndependentFonts());
-
-    SkGlyphRunListPainter* painter = sdc->glyphRunPainter();
-    sk_sp<GrTextBlob> blob = GrTextBlob::Make(
-            glyphRunList, skPaint, drawMatrix, false, control, painter);
-
-    if (blob->subRunList().isEmpty()) {
-        return nullptr;
-    }
-
-    GrAtlasSubRun* subRun = blob->subRunList().front().testingOnly_atlasSubRun();
-    SkASSERT(subRun);
-    GrOp::Owner op;
-    std::tie(std::ignore, op) = subRun->makeAtlasTextOp(
-            nullptr, mtxProvider, glyphRunList.origin(), skPaint, sdc, nullptr);
-    return op;
-}
-
-#endif
-
 } // namespace skgpu::v1
 
 #if GR_TEST_UTILS
-
+#include "src/gpu/GrDrawOpTest.h"
 GR_DRAW_OP_TEST_DEFINE(AtlasTextOp) {
     SkMatrixProvider matrixProvider(GrTest::TestMatrixInvertible(random));
 
