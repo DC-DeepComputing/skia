@@ -16,6 +16,24 @@
       "message": "Are there blockers to me landing this?",
       "revId": "57ef9668b86552573c4758df04adb8919e01c6ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b96dff6_71ed71ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-26T14:28:07Z",
+      "side": 1,
+      "message": "I thought we had talked about an alternative approach.",
+      "parentUuid": "646e4869_928d119c",
+      "revId": "57ef9668b86552573c4758df04adb8919e01c6ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
