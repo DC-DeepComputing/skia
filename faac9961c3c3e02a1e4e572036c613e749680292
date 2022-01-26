@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee1da896_8d72b38d",
+        "filename": "src/sksl/lex/sksl.lex",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T16:18:34Z",
+      "side": 1,
+      "message": "The modifiers were previously split up and in a slightly mixed-up order. I rearranged them to be in the same order as in SkSLModifiers.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 4
+      },
+      "revId": "faac9961c3c3e02a1e4e572036c613e749680292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
