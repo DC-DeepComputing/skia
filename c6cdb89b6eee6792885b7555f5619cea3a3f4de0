@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fcd3d2a_da4dbc5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-26T20:24:22Z",
+      "side": 1,
+      "message": "Thanks for the quick review.",
+      "revId": "c6cdb89b6eee6792885b7555f5619cea3a3f4de0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c168869_c3d31006",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-01-26T20:13:47Z",
       "side": 1,
       "message": "Do you intend to have two versions of AtlasPt? Here and at line 231.",
+      "revId": "c6cdb89b6eee6792885b7555f5619cea3a3f4de0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be57fe1c_2e9f7c00",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-26T20:24:22Z",
+      "side": 1,
+      "message": "Yes. The one below will disappear when I gather up all the vertex filling code.",
+      "parentUuid": "9c168869_c3d31006",
       "revId": "c6cdb89b6eee6792885b7555f5619cea3a3f4de0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
