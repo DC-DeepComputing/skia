@@ -109,18 +109,6 @@ private:
     GrSubRunOwner fNext;
 };
 
-// -- GrBlobSubRun ---------------------------------------------------------------------------------
-class GrBlobSubRun : public GrSubRun {
-public:
-    // Given an already cached subRun, can this subRun handle this combination paint, matrix, and
-    // position.
-    virtual bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const = 0;
-
-    // Return the underlying atlas SubRun if it exists. Otherwise, return nullptr.
-    // * Don't use this API. It is only to support testing.
-    virtual GrAtlasSubRun* testingOnly_atlasSubRun() = 0;
-};
-
 // -- GrSubRunList ---------------------------------------------------------------------------------
 class GrSubRunList {
 public:

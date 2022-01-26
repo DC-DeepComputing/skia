@@ -55,6 +55,18 @@ template <typename T> T& GrSubRun::downCast() { return static_cast<T&>(*this); }
 template <typename T> const T& GrSubRun::downCast() const { return static_cast<const T&>(*this); }
 
 namespace {
+// -- BlobSubRun -----------------------------------------------------------------------------------
+class BlobSubRun : public GrSubRun {
+public:
+    // Given an already cached subRun, can this subRun handle this combination paint, matrix, and
+    // position.
+    virtual bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const = 0;
+
+    // Return the underlying atlas SubRun if it exists. Otherwise, return nullptr.
+    // * Don't use this API. It is only to support testing.
+    virtual GrAtlasSubRun* testingOnly_atlasSubRun() = 0;
+};
+
 // -- TransformedMaskVertexFiller ------------------------------------------------------------------
 class TransformedMaskVertexFiller {
 public:
@@ -453,7 +465,7 @@ void PathOpSubmitter::submitOps(const GrClip* clip,
 }
 
 // -- PathSubRun -----------------------------------------------------------------------------------
-class PathSubRun final : public GrBlobSubRun {
+class PathSubRun final : public BlobSubRun {
 public:
     PathSubRun(PathOpSubmitter&& pathDrawing)
             : fPathDrawing(std::move(pathDrawing)) {}
@@ -629,7 +641,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
 }
 
 // -- DirectMaskSubRun -----------------------------------------------------------------------------
-class DirectMaskSubRun final : public GrBlobSubRun, public GrAtlasSubRun {
+class DirectMaskSubRun final : public BlobSubRun, public GrAtlasSubRun {
 public:
     using DevicePosition = skvx::Vec<2, int16_t>;
 
@@ -1023,7 +1035,7 @@ GrAtlasSubRun* DirectMaskSubRun::testingOnly_atlasSubRun() {
 }
 
 // -- TransformedMaskSubRun ------------------------------------------------------------------------
-class TransformedMaskSubRun final : public GrBlobSubRun, public GrAtlasSubRun {
+class TransformedMaskSubRun final : public BlobSubRun, public GrAtlasSubRun {
 public:
     using VertexData = TransformedMaskVertexFiller::PositionAndExtent;
 
@@ -1239,7 +1251,7 @@ GrAtlasSubRun* TransformedMaskSubRun::testingOnly_atlasSubRun() {
 }
 
 // -- SDFTSubRun -----------------------------------------------------------------------------------
-class SDFTSubRun final : public GrBlobSubRun, public GrAtlasSubRun {
+class SDFTSubRun final : public BlobSubRun, public GrAtlasSubRun {
 public:
     struct VertexData {
         const SkPoint pos;
@@ -1754,7 +1766,7 @@ bool GrTextBlob::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) 
     }
 
     for (const GrSubRun& subRun : fSubRunList) {
-        if (!subRun.downCast<GrBlobSubRun>().canReuse(paint, positionMatrix)) {
+        if (!subRun.downCast<BlobSubRun>().canReuse(paint, positionMatrix)) {
             return false;
         }
     }
@@ -1780,7 +1792,7 @@ GrAtlasSubRun* GrTextBlob::testingOnlyFirstSubRun() const {
         return nullptr;
     }
 
-    return fSubRunList.front().downCast<GrBlobSubRun>().testingOnly_atlasSubRun();
+    return fSubRunList.front().downCast<BlobSubRun>().testingOnly_atlasSubRun();
 }
 
 GrTextBlob::GrTextBlob(int allocSize,
@@ -2568,10 +2580,6 @@ void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
 }
 
 namespace {
-// ----------------------------- Begin slug implementation -----------------------------------------
-
-class SlugAtlasSubRun : public GrSubRun, public GrAtlasSubRun { };
-
 // -- Slug -----------------------------------------------------------------------------------------
 class Slug final : public GrSlug, public SkGlyphRunPainterInterface {
 public:
@@ -2645,7 +2653,7 @@ void Slug::surfaceDraw(const GrClip* clip, const SkMatrixProvider& viewMatrix,
 }
 
 // -- DirectMaskSubRunSlug -------------------------------------------------------------------------
-class DirectMaskSubRunSlug final : public SlugAtlasSubRun {
+class DirectMaskSubRunSlug final : public GrSubRun, public GrAtlasSubRun {
 public:
     using DevicePosition = skvx::Vec<2, int16_t>;
 
@@ -3111,7 +3119,7 @@ void Slug::processSourcePaths(const SkZip<SkGlyphVariant,
 }
 
 // -- SDFTSubRunSlug -------------------------------------------------------------------------------
-class SDFTSubRunSlug final : public SlugAtlasSubRun {
+class SDFTSubRunSlug final : public GrSubRun, public GrAtlasSubRun {
 public:
     struct VertexData {
         const SkPoint pos;
@@ -3341,7 +3349,7 @@ void Slug::processSourceSDFT(const SkZip<SkGlyphVariant, SkPoint>& drawables,
             this, drawables, runFont, std::move(strike), strikeToSourceScale, &fAlloc));
 }
 
-class TransformedMaskSubRunSlug final : public SlugAtlasSubRun {
+class TransformedMaskSubRunSlug final : public GrSubRun, public GrAtlasSubRun {
 public:
     using VertexData = TransformedMaskVertexFiller::PositionAndExtent;
 
@@ -3589,6 +3597,3 @@ void SurfaceDrawContext::drawSlug(const GrClip* clip,
     slug->surfaceDraw(clip, viewMatrix, this);
 }
 }  // namespace skgpu::v1
-
-
-
