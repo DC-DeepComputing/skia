@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c168869_c3d31006",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-26T20:13:47Z",
+      "side": 1,
+      "message": "Do you intend to have two versions of AtlasPt? Here and at line 231.",
+      "revId": "c6cdb89b6eee6792885b7555f5619cea3a3f4de0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
