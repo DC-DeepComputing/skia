@@ -16,3 +16,46 @@ sk_sp<SkUniformData> SkUniformData::Make(int count,
 
     return sk_sp<SkUniformData>(new SkUniformData(count, uniforms, offsets, data, dataSize));
 }
+
+void SkUniformBlock::add(sk_sp<SkUniformData> uniforms) {
+    fUniformData.push_back(std::move(uniforms));
+}
+
+size_t SkUniformBlock::totalSize() const {
+    size_t total = 0;
+
+    // TODO: It seems like we need to worry about alignment between the separate sets of uniforms
+    for (auto& u : fUniformData) {
+        total += u->dataSize();
+    }
+
+    return total;
+}
+
+int SkUniformBlock::count() const {
+    int total = 0;
+
+    for (auto& u : fUniformData) {
+        total += u->count();
+    }
+
+    return total;
+}
+
+bool SkUniformBlock::operator==(const SkUniformBlock& other) const {
+    if (fUniformData.size() != other.fUniformData.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < fUniformData.size(); ++i) {
+        if (fUniformData[i] != other.fUniformData[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+size_t SkUniformBlock::hash() const {
+    return 0;
+}

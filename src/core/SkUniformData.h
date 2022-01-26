@@ -9,6 +9,7 @@
 #define SkUniformData_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include <vector>
 
 class SkUniform;
 
@@ -70,6 +71,21 @@ private:
     uint32_t* fOffsets; // offset of each uniform in 'fData'
     char* fData;
     const size_t fDataSize;
+};
+
+class SkUniformBlock {
+public:
+    void add(sk_sp<SkUniformData>);
+
+    bool empty() const { return fUniformData.empty(); }
+    size_t totalSize() const;
+    int count() const;
+
+    bool operator==(const SkUniformBlock&) const;
+    size_t hash() const;
+
+private:
+    std::vector<sk_sp<SkUniformData>> fUniformData;
 };
 
 #endif // SkUniformData_DEFINED
