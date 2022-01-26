@@ -1228,6 +1228,7 @@ func (b *jobBuilder) compile() string {
 				}
 				if b.extraConfig("SwiftShader") {
 					b.asset("cmake_linux")
+					b.dimension("id:skia-e-gce-303")
 				}
 				b.asset("ccache_linux")
 				b.usesCCache()
