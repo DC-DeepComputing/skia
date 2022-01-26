@@ -13,33 +13,70 @@
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
+#include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
+#include "src/sksl/ir/SkSLVariable.h"
 
 namespace SkSL {
 namespace {
 
 class FinalizationVisitor : public ProgramVisitor {
 public:
-    FinalizationVisitor(const Context& ctx) : fContext(ctx) {}
+    FinalizationVisitor(const Context& c, const ProgramUsage& u) : fContext(c), fUsage(u) {}
 
     bool visitProgramElement(const ProgramElement& pe) override {
-        if (pe.kind() == ProgramElement::Kind::kGlobalVar) {
-            const VarDeclaration& decl =
-                    pe.as<GlobalVarDeclaration>().declaration()->as<VarDeclaration>();
-
-            size_t prevSlotsUsed = fGlobalSlotsUsed;
-            fGlobalSlotsUsed = SkSafeMath::Add(fGlobalSlotsUsed, decl.var().type().slotCount());
-            // To avoid overzealous error reporting, only trigger the error at the first
-            // place where the global limit is exceeded.
-            if (prevSlotsUsed < kVariableSlotLimit && fGlobalSlotsUsed >= kVariableSlotLimit) {
-                fContext.fErrors->error(pe.fLine, "global variable '" + decl.var().name() +
-                                                  "' exceeds the size limit");
+        switch (pe.kind()) {
+            case ProgramElement::Kind::kGlobalVar: {
+                this->checkGlobalVariableSizeLimit(pe.as<GlobalVarDeclaration>());
+                break;
             }
+            case ProgramElement::Kind::kFunction: {
+                this->checkOutParamsAreAssigned(pe.as<FunctionDefinition>());
+                break;
+            }
+            default:
+                break;
         }
         return INHERITED::visitProgramElement(pe);
+    }
+
+    void checkGlobalVariableSizeLimit(const GlobalVarDeclaration& globalDecl) {
+        const VarDeclaration& decl = globalDecl.declaration()->as<VarDeclaration>();
+
+        size_t prevSlotsUsed = fGlobalSlotsUsed;
+        fGlobalSlotsUsed = SkSafeMath::Add(fGlobalSlotsUsed, decl.var().type().slotCount());
+        // To avoid overzealous error reporting, only trigger the error at the first place where the
+        // global limit is exceeded.
+        if (prevSlotsUsed < kVariableSlotLimit && fGlobalSlotsUsed >= kVariableSlotLimit) {
+            fContext.fErrors->error(decl.fLine, "global variable '" + decl.var().name() +
+                                                "' exceeds the size limit");
+        }
+    }
+
+    void checkOutParamsAreAssigned(const FunctionDefinition& funcDef) {
+        const FunctionDeclaration& funcDecl = funcDef.declaration();
+
+        // Searches for `out` parameters that are not written to. According to the GLSL spec,
+        // the value of an out-param that's never assigned to is unspecified, so report it.
+        // The $maybe_unused modifier provides an escape hatch for code which intentionally
+        // contains an out-parameter but does not assign anything to it.
+        for (const Variable* param : funcDecl.parameters()) {
+            const int paramFlags = param->modifiers().fFlags;
+            const int paramInout = paramFlags & (Modifiers::Flag::kIn_Flag |
+                                                 Modifiers::Flag::kOut_Flag);
+            const int paramUnused = paramFlags & Modifiers::Flag::kMaybeUnused_Flag;
+            if (!paramUnused && paramInout == Modifiers::Flag::kOut_Flag) {
+                ProgramUsage::VariableCounts counts = fUsage.get(*param);
+                if (counts.fWrite <= 0) {
+                    fContext.fErrors->error(funcDecl.fLine,
+                                            "function '" + funcDecl.name() + "' never assigns a "
+                                            "value to out parameter '" + param->name() + "'");
+                }
+            }
+        }
     }
 
     bool visitStatement(const Statement& stmt) override {
@@ -53,8 +90,7 @@ public:
 
                 case Statement::Kind::kSwitch:
                     if (stmt.as<SwitchStatement>().isStatic()) {
-                        fContext.fErrors->error(stmt.fLine,
-                                                "static switch has non-static test");
+                        fContext.fErrors->error(stmt.fLine, "static switch has non-static test");
                     }
                     break;
 
@@ -95,13 +131,14 @@ private:
     using INHERITED = ProgramVisitor;
     size_t fGlobalSlotsUsed = 0;
     const Context& fContext;
+    const ProgramUsage& fUsage;
 };
 
 }  // namespace
 
 void Analysis::DoFinalizationChecks(const Program& program) {
     // Check all of the program's owned elements. (Built-in elements are assumed to be valid.)
-    FinalizationVisitor visitor{*program.fContext};
+    FinalizationVisitor visitor{*program.fContext, *program.usage()};
     for (const std::unique_ptr<ProgramElement>& element : program.fOwnedElements) {
         visitor.visitProgramElement(*element);
     }
