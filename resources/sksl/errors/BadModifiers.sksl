@@ -1,6 +1,8 @@
-const in out uniform flat noperspective sk_has_side_effects inline noinline void func1() {}
+const in out uniform flat noperspective sk_has_side_effects inline noinline $maybe_unused
+    void func1() {}
 
 void func2(const in out uniform flat noperspective sk_has_side_effects
-           inline noinline float test) {}
+           inline noinline $maybe_unused float test) {}
 
-const in out uniform flat noperspective sk_has_side_effects inline noinline float var;
+const in out uniform flat noperspective sk_has_side_effects inline noinline $maybe_unused
+    float var;

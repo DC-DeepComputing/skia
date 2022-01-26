@@ -1,21 +1,23 @@
 ### Compilation failed:
 
-error: 1: 'const' is not permitted here
-error: 1: 'in' is not permitted here
-error: 1: 'out' is not permitted here
-error: 1: 'uniform' is not permitted here
-error: 1: 'flat' is not permitted here
-error: 1: 'noperspective' is not permitted here
-error: 1: functions cannot be both 'inline' and 'noinline'
-error: 4: 'uniform' is not permitted here
-error: 4: 'flat' is not permitted here
-error: 4: 'noperspective' is not permitted here
-error: 4: 'sk_has_side_effects' is not permitted here
-error: 4: 'inline' is not permitted here
-error: 4: 'noinline' is not permitted here
-error: 6: 'in uniform' variables not permitted
-error: 6: 'sk_has_side_effects' is not permitted here
-error: 6: 'inline' is not permitted here
-error: 6: 'noinline' is not permitted here
-error: 6: 'const' variables must be initialized
-18 errors
+error: 2: 'const' is not permitted here
+error: 2: 'in' is not permitted here
+error: 2: 'out' is not permitted here
+error: 2: 'uniform' is not permitted here
+error: 2: 'flat' is not permitted here
+error: 2: 'noperspective' is not permitted here
+error: 2: '$maybe_unused' is not permitted here
+error: 2: functions cannot be both 'inline' and 'noinline'
+error: 5: 'uniform' is not permitted here
+error: 5: 'flat' is not permitted here
+error: 5: 'noperspective' is not permitted here
+error: 5: 'sk_has_side_effects' is not permitted here
+error: 5: 'inline' is not permitted here
+error: 5: 'noinline' is not permitted here
+error: 8: 'in uniform' variables not permitted
+error: 8: 'sk_has_side_effects' is not permitted here
+error: 8: 'inline' is not permitted here
+error: 8: 'noinline' is not permitted here
+error: 8: '$maybe_unused' is not permitted here
+error: 8: 'const' variables must be initialized
+20 errors
