@@ -22,6 +22,30 @@
       },
       "revId": "6aaf36970c96edd9a1b6dd21fde23873d9a51ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18b4d83a_0954a691",
+        "filename": "src/gpu/gl/builders/GrGLProgramBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-26T17:14:23Z",
+      "side": 1,
+      "message": "Yes, I feel like that change does need to be made, but wanted to do it separately.",
+      "parentUuid": "e5e455f3_bae48741",
+      "range": {
+        "startLine": 282,
+        "startChar": 35,
+        "endLine": 282,
+        "endChar": 50
+      },
+      "revId": "6aaf36970c96edd9a1b6dd21fde23873d9a51ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
