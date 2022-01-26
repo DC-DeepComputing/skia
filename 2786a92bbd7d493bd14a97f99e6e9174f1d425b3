@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fdb75a_3f4ebe74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T21:17:15Z",
+      "side": 1,
+      "message": "This seems like it\u0027ll have a pretty substantial cost for all of our Modules. sksl_public and sksl_gpu contain hundreds of FunctionPrototypes. That\u0027s going to make LoadedModule::fElements contain many many more ProgramElements than before. \n\nCan we make this optional in the dehydrator?",
+      "revId": "2786a92bbd7d493bd14a97f99e6e9174f1d425b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
