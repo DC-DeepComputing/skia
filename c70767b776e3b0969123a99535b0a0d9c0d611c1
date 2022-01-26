@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71d3bf4d_0d86ab70",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-26T20:50:15Z",
+      "side": 1,
+      "message": "PTAL: We now create a new image using the same texture (but a different texture ID, so the old image\u0027s deletion doesn\u0027t clean up this texture we want to reuse).",
+      "revId": "c70767b776e3b0969123a99535b0a0d9c0d611c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
