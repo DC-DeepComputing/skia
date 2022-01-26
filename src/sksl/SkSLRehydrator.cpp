@@ -36,6 +36,7 @@
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
+#include "src/sksl/ir/SkSLFunctionPrototype.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInlineMarker.h"
@@ -277,6 +278,12 @@ std::unique_ptr<ProgramElement> Rehydrator::element() {
                                                       std::move(body), /*builtin=*/true);
             decl->setDefinition(result.get());
             return std::move(result);
+        }
+        case Rehydrator::kFunctionPrototype_Command: {
+            const FunctionDeclaration* decl = this->symbolRef<FunctionDeclaration>(
+                                                                Symbol::Kind::kFunctionDeclaration);
+            bool isBuiltin = this->readU8();
+            return std::make_unique<FunctionPrototype>(/*line=*/-1, decl, isBuiltin);
         }
         case Rehydrator::kInterfaceBlock_Command: {
             const Symbol* var = this->symbol();
