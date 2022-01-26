@@ -744,6 +744,7 @@ func (b *taskBuilder) swarmDimensions() {
 func (b *taskBuilder) defaultSwarmDimensions() {
 	d := map[string]string{
 		"pool": b.cfg.Pool,
+		"id":   "skia-e-gce-303",
 	}
 	if os, ok := b.parts["os"]; ok {
 		d["os"], ok = map[string]string{
