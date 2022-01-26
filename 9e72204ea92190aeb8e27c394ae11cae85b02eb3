@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa649dd7_f3291c5e",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T17:00:36Z",
+      "side": 1,
+      "message": "Should we restrict our search to just the root symbol table?",
+      "range": {
+        "startLine": 569,
+        "startChar": 12,
+        "endLine": 569,
+        "endChar": 52
+      },
+      "revId": "9e72204ea92190aeb8e27c394ae11cae85b02eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "029fa4a0_7abafff8",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-26T17:00:36Z",
+      "side": 1,
+      "message": "Why is this public? Seems like implementation detail...",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 58
+      },
+      "revId": "9e72204ea92190aeb8e27c394ae11cae85b02eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
