@@ -535,7 +535,8 @@ static sk_sp<SkCustomMeshSpecification> make_vertices_spec(bool hasColors, bool 
     std::vector<Varying> varyings;
     attributes.reserve(2);
 
-    SkString vs("float2 main(Attributes a, out Varyings v) {\n");
+    // The $unused modifier prevents SkSL from reporting an error if `v` is never written to.
+    SkString vs("float2 main(Attributes a, $unused out Varyings v) {\n");
     SkString fs(hasTex ? "float2 " : "void ");
 
     if (hasColors) {

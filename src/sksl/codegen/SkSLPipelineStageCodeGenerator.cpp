@@ -636,6 +636,9 @@ void PipelineStageCodeGenerator::writePostfixExpression(const PostfixExpression&
 
 String PipelineStageCodeGenerator::modifierString(const Modifiers& modifiers) {
     String result;
+    if (modifiers.fFlags & Modifiers::kUnused_Flag) {
+        result.append("$unused ");
+    }
     if (modifiers.fFlags & Modifiers::kConst_Flag) {
         result.append("const ");
     }
