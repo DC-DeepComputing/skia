@@ -79,8 +79,9 @@ static bool check_parameters(const Context& context,
     // Check modifiers on each function parameter.
     for (auto& param : parameters) {
         param->modifiers().checkPermitted(context, param->fLine,
-                Modifiers::kConst_Flag | Modifiers::kIn_Flag | Modifiers::kOut_Flag,
-                /*permittedLayoutFlags=*/0);
+                                          Modifiers::kConst_Flag | Modifiers::kIn_Flag |
+                                          Modifiers::kOut_Flag | Modifiers::kMaybeUnused_Flag,
+                                          /*permittedLayoutFlags=*/0);
         const Type& type = param->type();
         // Only the (builtin) declarations of 'sample' are allowed to have shader/colorFilter or FP
         // parameters. You can pass other opaque types to functions safely; this restriction is
@@ -151,38 +152,42 @@ static bool check_main_signature(const Context& context, int line, const Type& r
         return type.isStruct() && type.name() == "Varyings";
     };
 
+    auto paramFlags = [](const Variable& p) {
+        return (p.modifiers().fFlags & ~Modifiers::kMaybeUnused_Flag);
+    };
+
     auto paramIsCoords = [&](int idx) {
         const Variable& p = *parameters[idx];
         return p.type().matches(*context.fTypes.fFloat2) &&
-               p.modifiers().fFlags == 0 &&
+               paramFlags(p) == 0 &&
                p.modifiers().fLayout.fBuiltin == SK_MAIN_COORDS_BUILTIN;
     };
 
     auto paramIsBuiltinColor = [&](int idx, int builtinID) {
         const Variable& p = *parameters[idx];
         return typeIsValidForColor(p.type()) &&
-               p.modifiers().fFlags == 0 &&
+               paramFlags(p) == 0 &&
                p.modifiers().fLayout.fBuiltin == builtinID;
     };
 
     auto paramIsInAttributes = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForAttributes(p.type()) && p.modifiers().fFlags == 0;
+        return typeIsValidForAttributes(p.type()) && paramFlags(p) == 0;
     };
 
     auto paramIsOutVaryings = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == Modifiers::kOut_Flag;
+        return typeIsValidForVaryings(p.type()) && paramFlags(p) == Modifiers::kOut_Flag;
     };
 
     auto paramIsInVaryings = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == 0;
+        return typeIsValidForVaryings(p.type()) && paramFlags(p) == 0;
     };
 
     auto paramIsOutColor = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForColor(p.type()) && p.modifiers().fFlags == Modifiers::kOut_Flag;
+        return typeIsValidForColor(p.type()) && paramFlags(p) == Modifiers::kOut_Flag;
     };
 
     auto paramIsInputColor = [&](int n) { return paramIsBuiltinColor(n, SK_INPUT_COLOR_BUILTIN); };
@@ -239,7 +244,7 @@ static bool check_main_signature(const Context& context, int line, const Type& r
                 return false;
             }
             if (!(parameters.size() == 2 && paramIsInAttributes(0) && paramIsOutVaryings(1))) {
-                errors.error(line, "'main' parameters must be (Attributes, out Varyings");
+                errors.error(line, "'main' parameters must be (Attributes, out Varyings)");
                 return false;
             }
             break;
