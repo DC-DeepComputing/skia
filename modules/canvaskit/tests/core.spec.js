@@ -1450,4 +1450,31 @@ describe('Core canvas behavior', () => {
             img.delete();
         });
     });
+
+    it('encodes images in three different ways', () => {
+        // This creates and draws an Image that is 1 pixel wide, 4 pixels tall with
+        // the colors listed below.
+        const pixels = Uint8Array.from([
+            255,   0,   0, 255, // opaque red
+              0, 255,   0, 255, // opaque green
+              0,   0, 255, 255, // opaque blue
+            255,   0, 255, 100, // transparent purple
+        ]);
+        const img = CanvasKit.MakeImage({
+          'width': 1,
+          'height': 4,
+          'alphaType': CanvasKit.AlphaType.Unpremul,
+          'colorType': CanvasKit.ColorType.RGBA_8888,
+          'colorSpace': CanvasKit.ColorSpace.SRGB
+        }, pixels, 4);
+
+        let bytes = img.encodeToBytes(CanvasKit.ImageFormat.PNG, 100);
+        expect(bytes).toBeTruthy();
+        bytes = img.encodeToBytes(CanvasKit.ImageFormat.JPEG, 90);
+        expect(bytes).toBeTruthy();
+        bytes = img.encodeToBytes(CanvasKit.ImageFormat.WEBP, 100);
+        expect(bytes).toBeTruthy();
+
+        img.delete();
+    });
 });

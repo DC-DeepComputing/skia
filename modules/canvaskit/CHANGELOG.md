@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Surface factories always produce a surface with an attached color space. Specifying `null` to
    `CanvasKit.MakeWebGLCanvasSurface` or calling any factory that does not take a color space
    will now create a surface with a color space of `CanvasKit.ColorSpace.SRGB`.
+ - JPEG and WEBP encoding are turned on by default in full version (in /bin/full/).
 
 ## [0.32.0] - 2021-12-15
 
