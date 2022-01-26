@@ -873,6 +873,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 			if b.model("GCE") && d["cpu"] == "x86-64-Haswell_GCE" {
 				d["machine_type"] = MACHINE_TYPE_MEDIUM
+				d["id"] = "skia-e-gce-303"
 			}
 		} else {
 			if b.matchOs("Win") {
