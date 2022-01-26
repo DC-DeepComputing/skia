@@ -152,7 +152,9 @@ struct SpotVerticesFactory {
         // It is known that the entire umbra is occluded.
         kOpaqueNoUmbra,
         // The light is directional
-        kDirectional
+        kDirectional,
+        // The umbra can't be dropped out and the light is directional
+        kDirectionalTransparent,
     };
 
     SkVector fOffset;
@@ -183,6 +185,7 @@ struct SpotVerticesFactory {
                 }
                 return false;
             case OccluderType::kDirectional:
+            case OccluderType::kDirectionalTransparent:
                 *translate = that.fOffset - fOffset;
                 return true;
         }
@@ -191,8 +194,10 @@ struct SpotVerticesFactory {
 
     sk_sp<SkVertices> makeVertices(const SkPath& path, const SkMatrix& ctm,
                                    SkVector* translate) const {
-        bool transparent = OccluderType::kTransparent == fOccluderType;
-        bool directional = OccluderType::kDirectional == fOccluderType;
+        bool transparent = fOccluderType == OccluderType::kTransparent ||
+                           fOccluderType == OccluderType::kDirectionalTransparent;
+        bool directional = fOccluderType == OccluderType::kDirectional ||
+                           fOccluderType == OccluderType::kDirectionalTransparent;
         SkPoint3 zParams = SkPoint3::Make(0, 0, fOccluderHeight);
         if (directional) {
             translate->set(0, 0);
@@ -793,14 +798,19 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
 
             SkRect devBounds;
             viewMatrix.mapRect(&devBounds, path.getBounds());
-            if (directional) {
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kDirectional;
-            } else if (transparent ||
-                       SkTAbs(factory.fOffset.fX) > 0.5f*devBounds.width() ||
-                       SkTAbs(factory.fOffset.fY) > 0.5f*devBounds.height()) {
+            if (transparent ||
+                SkTAbs(factory.fOffset.fX) > 0.5f*devBounds.width() ||
+                SkTAbs(factory.fOffset.fY) > 0.5f*devBounds.height()) {
                 // if the translation of the shadow is big enough we're going to end up
-                // filling the entire umbra, so we can treat these as all the same
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kTransparent;
+                // filling the entire umbra, we can treat these as all the same
+                if (directional) {
+                    factory.fOccluderType =
+                            SpotVerticesFactory::OccluderType::kDirectionalTransparent;
+                } else {
+                    factory.fOccluderType = SpotVerticesFactory::OccluderType::kTransparent;
+                }
+            } else if (directional) {
+                factory.fOccluderType = SpotVerticesFactory::OccluderType::kDirectional;
             } else if (factory.fOffset.length()*scale + scale < radius) {
                 // if we don't translate more than the blur distance, can assume umbra is covered
                 factory.fOccluderType = SpotVerticesFactory::OccluderType::kOpaqueNoUmbra;
@@ -826,6 +836,7 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
                     color = 0xFFE5E500;  // corn yellow for covered
                     break;
                 case SpotVerticesFactory::OccluderType::kDirectional:
+                case SpotVerticesFactory::OccluderType::kDirectionalTransparent:
                     color = 0xFF550000;  // dark red for directional
                     break;
             }
