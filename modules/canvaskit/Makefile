@@ -65,7 +65,7 @@ npm:
 	cp ./CHANGELOG.md ./npm_build/
 
 	mkdir -p ./npm_build/bin/full
-	./compile.sh release
+	./compile.sh release force_encode_jpeg force_encode_webp
 	cp ../../out/canvaskit_wasm/canvaskit.js       ./npm_build/bin/full
 	cp ../../out/canvaskit_wasm/canvaskit.wasm     ./npm_build/bin/full
 
