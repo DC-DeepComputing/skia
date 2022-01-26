@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8849a96_93f5e86f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-26T13:31:25Z",
+      "side": 1,
+      "message": "Please add reset() to \n - externs.js https://github.com/google/skia/blob/2b80cb6636efda8e6635809f937ca50f259f792a/modules/canvaskit/externs.js#L156\n - https://github.com/google/skia/blob/main/modules/canvaskit/CHANGELOG.md\n - the Typescript definitions https://github.com/google/skia/blob/2b80cb6636efda8e6635809f937ca50f259f792a/modules/canvaskit/npm_build/types/index.d.ts#L879",
+      "revId": "e32badd0d76dd5926fec567b9f8a977f6e42c869",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4060af4_ee04d07f",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-26T13:31:25Z",
+      "side": 1,
+      "message": "I think it would be good to feed this test into Gold. Change it to gm() and add a \"canvas\" parameter to the callback (see gm(\u0027paragraph_basic\u0027 above).\n\nThen, remove any code dealing with surface.",
+      "range": {
+        "startLine": 987,
+        "startChar": 4,
+        "endLine": 987,
+        "endChar": 6
+      },
+      "revId": "e32badd0d76dd5926fec567b9f8a977f6e42c869",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
