@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f012a447_4c82b211",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-26T17:57:30Z",
+      "side": 1,
+      "message": "I think the assert that restricts this case to built-in types makes it impossible to find them outside of the root table, because we shouldn\u0027t be able to reuse those names for other symbols. But I suppose it can\u0027t hurt to double-check.",
+      "parentUuid": "fa649dd7_f3291c5e",
+      "range": {
+        "startLine": 569,
+        "startChar": 12,
+        "endLine": 569,
+        "endChar": 52
+      },
+      "revId": "9e72204ea92190aeb8e27c394ae11cae85b02eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "029fa4a0_7abafff8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-26T17:00:36Z",
       "side": 1,
       "message": "Why is this public? Seems like implementation detail...",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 58
+      },
+      "revId": "9e72204ea92190aeb8e27c394ae11cae85b02eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71fa5005_b6ddbfbf",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-26T17:57:30Z",
+      "side": 1,
+      "message": "It was being accessed from Dehydrator. I made it a friend to make this private instead.",
+      "parentUuid": "029fa4a0_7abafff8",
       "range": {
         "startLine": 38,
         "startChar": 0,
