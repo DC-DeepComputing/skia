@@ -34,6 +34,24 @@
       "parentUuid": "d6fdb75a_3f4ebe74",
       "revId": "2786a92bbd7d493bd14a97f99e6e9174f1d425b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62c2292d_7efffe3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-26T21:37:14Z",
+      "side": 1,
+      "message": "I think the easiest way to address this is just skip over the builtin prototypes in the dehydrator - that avoids bloating the modules while still working properly for the corpus, and doesn\u0027t require any changes elsewhere. Sound good?",
+      "parentUuid": "0d0d5b7d_7a8e7955",
+      "revId": "2786a92bbd7d493bd14a97f99e6e9174f1d425b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
