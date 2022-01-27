@@ -16,6 +16,29 @@
       "message": "PTAL. Let me know if you have questions.",
       "revId": "fffb0a1ed79a4ef06118a0f9d0ae3eb22eb399ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d804d73_b3b1d02d",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-27T15:06:50Z",
+      "side": 1,
+      "message": "I wonder if this name should be disambiguated a bit (e.g. `kFixedTransparent`)? I can imagine reading this list, stopping right away at `kTransparent` because your spot is transparent, and assume it\u0027s a match instead of reading on to find `kDirectionalTransparent` below. Not very familiar with this system though, so this might not be important.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 21
+      },
+      "revId": "fffb0a1ed79a4ef06118a0f9d0ae3eb22eb399ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
