@@ -27,7 +27,7 @@ ThreadContext::ThreadContext(SkSL::Compiler* compiler, SkSL::ProgramKind kind,
     fOldConfig = fCompiler->fContext->fConfig;
 
     if (!isModule) {
-        if (compiler->context().fCaps.useNodePools() && settings.fDSLUseMemoryPool) {
+        if (compiler->context()->fCaps.useNodePools() && settings.fDSLUseMemoryPool) {
             fPool = Pool::Create();
             fPool->attachToThread();
         }
@@ -124,7 +124,7 @@ void ThreadContext::setupSymbolTable() {
 }
 
 SkSL::Context& ThreadContext::Context() {
-    return Compiler().context();
+    return *Compiler().context();
 }
 
 SkSL::ProgramSettings& ThreadContext::Settings() {

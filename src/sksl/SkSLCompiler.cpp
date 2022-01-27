@@ -255,7 +255,8 @@ const ParsedModule& Compiler::loadVertexModule() {
     return fVertexModule;
 }
 
-static void add_glsl_type_aliases(SkSL::SymbolTable* symbols, const SkSL::BuiltinTypes& types) {
+void Compiler::addGLSLTypeAliases(SkSL::SymbolTable* symbols) {
+    const BuiltinTypes& types = fContext->fTypes;
     // Add some aliases to the runtime effect modules so that it's friendlier, and more like GLSL.
     symbols->addWithoutOwnership(types.fVec2.get());
     symbols->addWithoutOwnership(types.fVec3.get());
@@ -283,7 +284,7 @@ static void add_glsl_type_aliases(SkSL::SymbolTable* symbols, const SkSL::Builti
 const ParsedModule& Compiler::loadPublicModule() {
     if (!fPublicModule.fSymbols) {
         fPublicModule = this->parseModule(ProgramKind::kGeneric, MODULE_DATA(public), fRootModule);
-        add_glsl_type_aliases(fPublicModule.fSymbols.get(), fContext->fTypes);
+        this->addGLSLTypeAliases(fPublicModule.fSymbols.get());
     }
     return fPublicModule;
 }

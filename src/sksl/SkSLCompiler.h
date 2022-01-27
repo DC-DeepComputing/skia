@@ -175,8 +175,8 @@ public:
         this->errorReporter().resetErrorCount();
     }
 
-    Context& context() {
-        return *fContext;
+    std::shared_ptr<Context> context() {
+        return fContext;
     }
 
     // When  SKSL_STANDALONE, fPath is used. (fData, fSize) will be (nullptr, 0)
@@ -201,6 +201,10 @@ public:
 
     const ParsedModule& moduleForProgramKind(ProgramKind kind);
 
+    std::shared_ptr<SymbolTable> makeRootSymbolTable();
+
+    void addGLSLTypeAliases(SymbolTable* symbolTable);
+
 private:
     class CompilerErrorReporter : public ErrorReporter {
     public:
@@ -221,7 +225,6 @@ private:
     const ParsedModule& loadPublicModule();
     const ParsedModule& loadRuntimeShaderModule();
 
-    std::shared_ptr<SymbolTable> makeRootSymbolTable();
     std::shared_ptr<SymbolTable> makePrivateSymbolTable(std::shared_ptr<SymbolTable> parent);
 
     /** Optimize every function in the program. */
