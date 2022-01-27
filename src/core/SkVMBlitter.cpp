@@ -21,8 +21,11 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
 #include "src/shaders/SkColorFilterShader.h"
+#include "src/utils/SkBlitterTrace.h"
 
 #include <cinttypes>
+
+SkBlitterTrace gSkVMBlitterTrace("VM", false);
 
 namespace {
 
@@ -645,8 +648,10 @@ void SkVMBlitter::blitH(int x, int y, int w) {
     }
     this->updateUniforms(x+w, y);
     if (const void* sprite = this->isSprite(x,y)) {
+        SkBlitterTrace::Step trace(&gSkVMBlitterTrace, "blitH1", /*scanlines=*/1, /*pixels=*/w);
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
     } else {
+        SkBlitterTrace::Step trace(&gSkVMBlitterTrace, "blitH2", /*scanlines=*/1, /*pixels=*/w);
         fBlitH.eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
     }
 }
@@ -658,7 +663,10 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
     if (fBlitH.empty()) {
         fBlitH = this->buildProgram(Coverage::Full);
     }
+
+    SkBlitterTrace::Step trace(&gSkVMBlitterTrace, "blitAntiH", /*scanlines=*/1ul, /*pixels=*/0ul);
     for (int16_t run = *runs; run > 0; run = *runs) {
+        trace.add(/*scanlines=*/0, /*pixels=*/run);
         const SkAlpha coverage = *cov;
         if (coverage != 0x00) {
             this->updateUniforms(x+run, y);
@@ -681,6 +689,31 @@ void SkVMBlitter::blitAntiH(int x, int y, const SkAlpha cov[], const int16_t run
         x    += run;
         runs += run;
         cov  += run;
+    }
+}
+
+void SkVMBlitter::blitRect(int x, int y, int width, int height) {
+    if (fBlitH.empty()) {
+        fBlitH = this->buildProgram(Coverage::Full);
+    }
+    if (const void* sprite = this->isSprite(x,y)) {
+        SkBlitterTrace::Step trace(&gSkVMBlitterTrace,
+                                   "blitRect1",
+                                   /*scanlines=*/height,
+                                   /*pixels=*/width * height);
+        for (; y < height; y++) {
+            this->updateUniforms(x+width, y);
+            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
+        }
+    } else {
+        SkBlitterTrace::Step trace(&gSkVMBlitterTrace,
+                                   "blitRect2",
+                                   /*scanlines=*/height,
+                                   /*pixels=*/width * height);
+        for (; y < height; y++) {
+            this->updateUniforms(x+width, y);
+            fBlitH.eval(width, fUniforms.buf.data(), fDevice.addr(x,y));
+        }
     }
 }
 
@@ -717,6 +750,11 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
 
     SkASSERT(program);
     if (program) {
+        SkBlitterTrace::Step trace(&gSkVMBlitterTrace,
+                                   "blitMask",
+                                   /*scanlines=*/clip.height(),
+                                   /*pixels=*/clip.width() * clip.height());
+
         for (int y = clip.top(); y < clip.bottom(); y++) {
              int x = clip.left(),
                  w = clip.width();
