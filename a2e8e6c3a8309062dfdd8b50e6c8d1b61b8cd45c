@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b72527f_39f24e7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-27T14:44:37Z",
+      "side": 1,
+      "message": "I rewrote the GM to directly exercise the underlying problem - the stroker produces an incorrect filled path once the resScale is large enough.",
+      "revId": "a2e8e6c3a8309062dfdd8b50e6c8d1b61b8cd45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
