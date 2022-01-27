@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc2e6beb_88e5fa86",
+        "filename": "gm/bug12866.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-27T14:29:49Z",
+      "side": 1,
+      "message": "MSVC is unhappy about these",
+      "range": {
+        "startLine": 40,
+        "startChar": 6,
+        "endLine": 43,
+        "endChar": 49
+      },
+      "revId": "7efb78b578bd5412f95298c8dd98f1fc54b2a57d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
