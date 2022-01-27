@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6acd45_9d093032",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-27T18:28:48Z",
+      "side": 1,
+      "message": "nit: This is only needed in the\n\n  if (needsColorXform) {\n\nbranch. But it\u0027s harmless to have it here.",
+      "range": {
+        "startLine": 225,
+        "startChar": 12,
+        "endLine": 225,
+        "endChar": 65
+      },
+      "revId": "5c7d564849fc24f5438ede4e746adc7336f367c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
