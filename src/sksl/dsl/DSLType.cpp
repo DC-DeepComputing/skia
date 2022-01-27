@@ -55,8 +55,10 @@ static const SkSL::Type* find_type(const Context& context,
                                    Modifiers* modifiers,
                                    PositionInfo pos) {
     const Type* type = find_type(context, name, pos);
-    type = type->applyPrecisionQualifiers(context, modifiers, ThreadContext::SymbolTable().get(),
-                                          pos.line());
+    if (modifiers) {
+        type = type->applyPrecisionQualifiers(context, modifiers,
+                ThreadContext::SymbolTable().get(), pos.line());
+    }
     ThreadContext::ReportErrors(pos);
     return type;
 }
