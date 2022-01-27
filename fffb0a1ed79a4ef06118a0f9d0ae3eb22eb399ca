@@ -39,6 +39,30 @@
       },
       "revId": "fffb0a1ed79a4ef06118a0f9d0ae3eb22eb399ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4587aa7f_9a5ed7b0",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-01-27T16:00:03Z",
+      "side": 1,
+      "message": "Good idea, done.",
+      "parentUuid": "1d804d73_b3b1d02d",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 21
+      },
+      "revId": "fffb0a1ed79a4ef06118a0f9d0ae3eb22eb399ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
