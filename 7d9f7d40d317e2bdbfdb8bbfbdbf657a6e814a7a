@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ec111e_29603939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-27T22:40:02Z",
+      "side": 1,
+      "message": "This appears to more or less work. There is some definite strangeness around how SkDrawables are handled on the various backends (run viewer with --nonativeFonts and look at GM_coloremoji_blendmodes at large sizes in CPU and GPU and GM_mixedtextblobs in GPU). Will need to investigate that.",
+      "revId": "7d9f7d40d317e2bdbfdb8bbfbdbf657a6e814a7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
