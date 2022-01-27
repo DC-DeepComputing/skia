@@ -870,13 +870,13 @@ DEF_TEST(SkSLInterpreterDot, r) {
 class ExternalSqrt : public SkSL::ExternalFunction {
 public:
     ExternalSqrt(const char* name, SkSL::Compiler& compiler)
-        : INHERITED(name, *compiler.context().fTypes.fFloat)
+        : INHERITED(name, *compiler.context()->fTypes.fFloat)
         , fCompiler(compiler) {}
 
     int callParameterCount() const override { return 1; }
 
     void getCallParameterTypes(const SkSL::Type** outTypes) const override {
-        outTypes[0] = fCompiler.context().fTypes.fFloat.get();
+        outTypes[0] = fCompiler.context()->fTypes.fFloat.get();
     }
 
     void call(skvm::Builder* b,
@@ -917,7 +917,7 @@ DEF_TEST(SkSLInterpreterExternalFunction, r) {
 class ExternalTable : public SkSL::ExternalFunction {
 public:
     ExternalTable(const char* name, SkSL::Compiler& compiler, skvm::Uniforms* uniforms)
-            : INHERITED(name, *compiler.context().fTypes.fFloat)
+            : INHERITED(name, *compiler.context()->fTypes.fFloat)
             , fCompiler(compiler)
             , fTable{1, 2, 4, 8} {
         fAddr = uniforms->pushPtr(fTable);
@@ -926,7 +926,7 @@ public:
     int callParameterCount() const override { return 1; }
 
     void getCallParameterTypes(const SkSL::Type** outTypes) const override {
-        outTypes[0] = fCompiler.context().fTypes.fFloat.get();
+        outTypes[0] = fCompiler.context()->fTypes.fFloat.get();
     }
 
     void call(skvm::Builder* b,
