@@ -20,8 +20,10 @@
 
 namespace skgpu {
 
-using CubicPatch = PatchWriter::CubicPatch;
-using ConicPatch = PatchWriter::ConicPatch;
+using Conic = PatchWriter::Conic;
+using Cubic = PatchWriter::Cubic;
+using Line = PatchWriter::Line;
+using Quadratic = PatchWriter::Quadratic;
 
 namespace {
 
@@ -133,12 +135,8 @@ int PathWedgeTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const
 }
 
 void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
-                                        int maxTessellationSegments,
                                         const SkMatrix& shaderMatrix,
                                         const PathDrawList& pathDrawList) {
-    float maxSegments_pow2 = pow2(maxTessellationSegments);
-    float maxSegments_pow4 = pow2(maxSegments_pow2);
-
     // If using fixed count, this is the number of segments we need to emit per instance. Always
     // emit at least 1 segment.
     float numFixedSegments_pow4 = 1;
@@ -162,7 +160,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     }
 
                     case SkPathVerb::kLine: {
-                        CubicPatch(patchWriter) << LineToCubic{m.map2Points(pts)};
+                        patchWriter << Line{m.map2Points(pts)};
                         lastPoint = pts[1];
                         break;
                     }
@@ -170,21 +168,9 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kQuad: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
-                        float n4 = wangs_formula::quadratic_pow4(kTessellationPrecision,
-                                                                 pts,
-                                                                 totalXform);
-                        if (n4 <= maxSegments_pow4) {
-                            // This quad already fits in "maxTessellationSegments".
-                            CubicPatch(patchWriter) << QuadToCubic{p0, p1, p2};
-                        } else {
-                            // The path should have been pre-chopped if needed, so all curves fit in
-                            // kMaxTessellationSegmentsPerCurve.
-                            n4 = std::min(n4, pow4(kMaxTessellationSegmentsPerCurve));
-                            // Chop until each quad tessellation requires "maxSegments" or fewer.
-                            int numPatches =
-                                    SkScalarCeilToInt(wangs_formula::root4(n4/maxSegments_pow4));
-                            patchWriter.chopAndWriteQuads(p0, p1, p2, numPatches);
-                        }
+
+                        float n4 = wangs_formula::quadratic_pow4(kTessellationPrecision, pts, totalXform);
+                        patchWriter << Quadratic(p0, p1, p2, n4);
                         numFixedSegments_pow4 = std::max(n4, numFixedSegments_pow4);
                         lastPoint = pts[2];
                         break;
@@ -193,22 +179,10 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kConic: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
-                        float n2 = wangs_formula::conic_pow2(kTessellationPrecision,
-                                                             pts,
-                                                             *w,
-                                                             totalXform);
-                        if (n2 <= maxSegments_pow2) {
-                            // This conic already fits in "maxTessellationSegments".
-                            ConicPatch(patchWriter) << p0 << p1 << p2 << *w;
-                        } else {
-                            // The path should have been pre-chopped if needed, so all curves fit in
-                            // kMaxTessellationSegmentsPerCurve.
-                            n2 = std::min(n2, pow2(kMaxTessellationSegmentsPerCurve));
-                            // Chop until each conic tessellation requires "maxSegments" or fewer.
-                            int numPatches = SkScalarCeilToInt(sqrtf(n2/maxSegments_pow2));
-                            patchWriter.chopAndWriteConics(p0, p1, p2, *w, numPatches);
-                        }
-                        numFixedSegments_pow4 = std::max(n2*n2, numFixedSegments_pow4);
+
+                        float n2 = wangs_formula::conic_pow2(kTessellationPrecision, pts, *w, totalXform);
+                        patchWriter << Conic(p0, p1, p2, *w, n2);
+                        numFixedSegments_pow4 = std::max(n2 * n2, numFixedSegments_pow4);
                         lastPoint = pts[2];
                         break;
                     }
@@ -216,21 +190,9 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kCubic: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto [p2, p3] = m.map2Points(pts+2);
-                        float n4 = wangs_formula::cubic_pow4(kTessellationPrecision,
-                                                             pts,
-                                                             totalXform);
-                        if (n4 <= maxSegments_pow4) {
-                            // This cubic already fits in "maxTessellationSegments".
-                            CubicPatch(patchWriter) << p0 << p1 << p2 << p3;
-                        } else {
-                            // The path should have been pre-chopped if needed, so all curves fit in
-                            // kMaxTessellationSegmentsPerCurve.
-                            n4 = std::min(n4, pow4(kMaxTessellationSegmentsPerCurve));
-                            // Chop until each cubic tessellation requires "maxSegments" or fewer.
-                            int numPatches =
-                                    SkScalarCeilToInt(wangs_formula::root4(n4/maxSegments_pow4));
-                            patchWriter.chopAndWriteCubics(p0, p1, p2, p3, numPatches);
-                        }
+
+                        float n4 = wangs_formula::cubic_pow4(kTessellationPrecision, pts, totalXform);
+                        patchWriter << Cubic(p0, p1, p2, p3, n4);
                         numFixedSegments_pow4 = std::max(n4, numFixedSegments_pow4);
                         lastPoint = pts[3];
                         break;
@@ -243,7 +205,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
             }
             if (lastPoint != startPoint) {
                 SkPoint pts[2] = {lastPoint, startPoint};
-                CubicPatch(patchWriter) << LineToCubic{m.map2Points(pts)};
+                patchWriter << Line{m.map2Points(pts)};
             }
         }
     }

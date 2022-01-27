@@ -322,7 +322,7 @@ public:
 
 private:
     struct HwPatch : public PatchWriter::Patch {
-        HwPatch(PatchWriter& w) : Patch(w, 0/*explicitCurveType unused*/) {
+        HwPatch(PatchWriter& w) : Patch(w, 0/*explicitCurveType unused*/, 0/*n4 unused*/) {
             SkASSERT(!(w.attribs() & PatchAttribs::kExplicitCurveType));
         }
     };
@@ -858,7 +858,7 @@ int StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target,
                                        std::array<float,2> matrixMinMaxScales,
                                        PathStrokeList* pathStrokeList,
                                        int totalCombinedStrokeVerbCnt) {
-    PatchWriter patchWriter(target, this, this->patchPreallocCount(totalCombinedStrokeVerbCnt));
+    PatchWriter patchWriter(target, this, 0, this->patchPreallocCount(totalCombinedStrokeVerbCnt));
     return this->writePatches(patchWriter, shaderMatrix, matrixMinMaxScales, pathStrokeList);
 }
 
