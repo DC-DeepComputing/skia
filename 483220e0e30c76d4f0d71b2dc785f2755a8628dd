@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc2f6ff_e214f133",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-27T17:59:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccc1d0ca_1b17f23e",
+      "range": {
+        "startLine": 761,
+        "startChar": 9,
+        "endLine": 761,
+        "endChar": 23
+      },
+      "revId": "483220e0e30c76d4f0d71b2dc785f2755a8628dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c37478fe_ffacffc4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-27T17:14:44Z",
       "side": 1,
       "message": "I\u0027d still like to see a check for `srcIsOpaque`. I know it\u0027s asserted above, but `SkASSERT`s on Android compile to nothing.",
+      "range": {
+        "startLine": 235,
+        "startChar": 12,
+        "endLine": 236,
+        "endChar": 79
+      },
+      "revId": "483220e0e30c76d4f0d71b2dc785f2755a8628dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29fad1e_42cfe435",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-27T17:59:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c37478fe_ffacffc4",
       "range": {
         "startLine": 235,
         "startChar": 12,
