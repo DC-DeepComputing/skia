@@ -16,6 +16,23 @@
       "message": "+bungeman",
       "revId": "a509e3872d94b5ffe00bd9fbd23bf5777bb0c197",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f2a12f_5a853c75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-27T13:55:40Z",
+      "side": 1,
+      "message": "I\u0027ve also triggered all four canaries, just to be sure.",
+      "revId": "a509e3872d94b5ffe00bd9fbd23bf5777bb0c197",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
