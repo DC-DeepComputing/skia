@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bedb30f1_25994c90",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-27T20:37:29Z",
+      "side": 0,
+      "message": "Can this helper go away ?",
+      "range": {
+        "startLine": 1193,
+        "startChar": 45,
+        "endLine": 1193,
+        "endChar": 57
+      },
+      "revId": "a2672102702d7b11cbd70c465fceb3fb9e58f88f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
