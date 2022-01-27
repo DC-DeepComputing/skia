@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "64e914a4_50d8ccd1",
+        "filename": "experimental/graphite/src/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-27T15:11:44Z",
+      "side": 1,
+      "message": "These are BufferBindInfo\u0027s, so just a Buffer* and an offset, that tracks what the last binding was for the vertex usage and instance usage was. DrawWriter tracks both separately so it stays in sync with the underlying command stream. The DrawBufferManager that actually allocates the buffers treats vertex and instance data the same.",
+      "parentUuid": "2783c294_a49ed364",
+      "range": {
+        "startLine": 213,
+        "startChar": 54,
+        "endLine": 213,
+        "endChar": 82
+      },
+      "revId": "12050942f0d1abb3f53117a0d2e3aa439ba69b82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ab6fb87c_e326ef54",
         "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-01-26T23:57:40Z",
       "side": 1,
       "message": "Is this w the Z painter\u0027s order? Or perspective?",
+      "range": {
+        "startLine": 170,
+        "startChar": 71,
+        "endLine": 170,
+        "endChar": 85
+      },
+      "revId": "12050942f0d1abb3f53117a0d2e3aa439ba69b82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce90da6_dc2e9e41",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-01-27T15:11:44Z",
+      "side": 1,
+      "message": "This is the perspective w; Z painter\u0027s order isn\u0027t being written by RenderSteps yet.",
+      "parentUuid": "ab6fb87c_e326ef54",
       "range": {
         "startLine": 170,
         "startChar": 71,
