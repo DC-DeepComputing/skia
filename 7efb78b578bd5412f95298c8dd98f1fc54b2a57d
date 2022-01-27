@@ -22,6 +22,30 @@
       },
       "revId": "7efb78b578bd5412f95298c8dd98f1fc54b2a57d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e3d21a3_5b8c734a",
+        "filename": "gm/bug12866.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-27T14:43:59Z",
+      "side": 1,
+      "message": "Yeah, and I\u0027ve been iterating further to really narrow down the bug (which is just related to the stroker once resScale exceeds a threshold).",
+      "parentUuid": "dc2e6beb_88e5fa86",
+      "range": {
+        "startLine": 40,
+        "startChar": 6,
+        "endLine": 43,
+        "endChar": 49
+      },
+      "revId": "7efb78b578bd5412f95298c8dd98f1fc54b2a57d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
