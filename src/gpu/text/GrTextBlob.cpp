@@ -84,7 +84,7 @@ public:
     };
 
     size_t vertexStride(const SkMatrix& matrix) const {
-        if (fMaskFormat != kARGB_GrMaskFormat) {
+        if (fMaskType != kARGB_GrMaskFormat) {
             // For formats kA565_GrMaskFormat and kA8_GrMaskFormat where A8 include SDFT.
             return matrix.hasPerspective() ? sizeof(Mask3DVertex) : sizeof(Mask2DVertex);
         } else {
@@ -99,6 +99,9 @@ public:
                         const SkMatrix& positionMatrix,
                         SkIRect clip,
                         void* vertexBuffer) const;
+
+    AtlasTextOp::MaskType opMaskType() const;
+    GrMaskFormat grMaskType() const {return fMaskType;}
 
 private:
     struct AtlasPt {
@@ -146,7 +149,7 @@ private:
                 GrColor color,
                 const SkMatrix& matrix) const;
 
-    const GrMaskFormat fMaskFormat;
+    const GrMaskFormat fMaskType;
     const SkPoint fPaddingInset;
     const SkScalar fStrikeToSourceScale;
 };
@@ -154,7 +157,7 @@ private:
 TransformedMaskVertexFiller::TransformedMaskVertexFiller(GrMaskFormat maskFormat,
                                                          int dstPadding,
                                                          SkScalar strikeToSourceScale)
-        : fMaskFormat{maskFormat}
+        : fMaskType{maskFormat}
         , fPaddingInset{SkPoint::Make(dstPadding, dstPadding)}
         , fStrikeToSourceScale{strikeToSourceScale} {}
 
@@ -169,7 +172,7 @@ void TransformedMaskVertexFiller::fillVertexData(SkSpan<const GrGlyph*> glyphs,
     };
 
     if (!positionMatrix.hasPerspective()) {
-        if (fMaskFormat == GrMaskFormat::kARGB_GrMaskFormat) {
+        if (fMaskType == GrMaskFormat::kARGB_GrMaskFormat) {
             using Quad = ARGB2DVertex[4];
             SkASSERT(sizeof(ARGB2DVertex) == this->vertexStride(positionMatrix));
             this->fill2D(quadData((Quad*) vertexBuffer), color, positionMatrix);
@@ -179,7 +182,7 @@ void TransformedMaskVertexFiller::fillVertexData(SkSpan<const GrGlyph*> glyphs,
             this->fill2D(quadData((Quad*) vertexBuffer), color, positionMatrix);
         }
     } else {
-        if (fMaskFormat == GrMaskFormat::kARGB_GrMaskFormat) {
+        if (fMaskType == GrMaskFormat::kARGB_GrMaskFormat) {
             using Quad = ARGB3DVertex[4];
             SkASSERT(sizeof(ARGB3DVertex) == this->vertexStride(positionMatrix));
             this->fill3D(quadData((Quad*) vertexBuffer), color, positionMatrix);
@@ -240,6 +243,15 @@ void TransformedMaskVertexFiller::fill3D(SkZip<Quad, const GrGlyph*, const Verte
         quad[2] = {rt, color, {ar, at}};  // R,T
         quad[3] = {rb, color, {ar, ab}};  // R,B
     }
+}
+
+AtlasTextOp::MaskType TransformedMaskVertexFiller::opMaskType() const {
+    switch (fMaskType) {
+        case kA8_GrMaskFormat:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
+        case kA565_GrMaskFormat: return AtlasTextOp::MaskType::kLCDCoverage;
+        case kARGB_GrMaskFormat: return AtlasTextOp::MaskType::kColorBitmap;
+    }
+    SkUNREACHABLE;
 }
 
 struct AtlasPt {
@@ -1097,11 +1109,9 @@ private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
 
-    const GrMaskFormat fMaskFormat;
-    GrTextBlob* fBlob;
+    const TransformedMaskVertexFiller fVertexFiller;
 
-    // The scale factor between the strike size, and the source size.
-    const SkScalar fStrikeToSourceScale;
+    GrTextBlob* fBlob;
 
     // The bounds in source space. The bounds are the joined rectangles of all the glyphs.
     const SkRect fVertexBounds;
@@ -1118,9 +1128,8 @@ TransformedMaskSubRun::TransformedMaskSubRun(GrMaskFormat format,
                                              const SkRect& bounds,
                                              SkSpan<const VertexData> vertexData,
                                              GlyphVector&& glyphs)
-        : fMaskFormat{format}
+        : fVertexFiller{format, 0, strikeToSourceScale}
         , fBlob{blob}
-        , fStrikeToSourceScale{strikeToSourceScale}
         , fVertexBounds{bounds}
         , fVertexData{vertexData}
         , fGlyphs{std::move(glyphs)} { }
@@ -1178,7 +1187,8 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
     const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
     GrPaint grPaint;
-    SkPMColor4f drawingColor = calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
+    SkPMColor4f drawingColor = calculate_colors(
+            sdc, paint, viewMatrix, fVertexFiller.grMaskType(), &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::MakeForBlob(*this,
                                                        drawMatrix,
@@ -1190,7 +1200,7 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
 
     GrRecordingContext* const rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
+                                             fVertexFiller.opMaskType(),
                                              true,
                                              this->glyphCount(),
                                              this->deviceRect(drawMatrix, drawOrigin),
@@ -1214,17 +1224,15 @@ void TransformedMaskSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *ca
 
 std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
                                                              GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target, true);
 }
 
 void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
                                            GrColor color,
                                            const SkMatrix& drawMatrix, SkPoint drawOrigin,
                                            SkIRect clip) const {
-    TransformedMaskVertexFiller filler{fMaskFormat, 0, fStrikeToSourceScale};
-
     const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
-    filler.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
+    fVertexFiller.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
                           fVertexData.subspan(offset, count),
                           color,
                           positionMatrix,
@@ -1233,16 +1241,7 @@ void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int coun
 }
 
 size_t TransformedMaskSubRun::vertexStride(const SkMatrix& drawMatrix) const {
-    switch (fMaskFormat) {
-        case kA8_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(Mask3DVertex) : sizeof(Mask2DVertex);
-        case kARGB_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(ARGB3DVertex) : sizeof(ARGB2DVertex);
-        default:
-            SkASSERT(!drawMatrix.hasPerspective());
-            return sizeof(Mask2DVertex);
-    }
-    SkUNREACHABLE;
+    return fVertexFiller.vertexStride(drawMatrix);
 }
 
 int TransformedMaskSubRun::glyphCount() const {
@@ -2165,10 +2164,7 @@ private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
 
-    const GrMaskFormat fMaskFormat;
-
-    // The scale factor between the strike size, and the source size.
-    const SkScalar fStrikeToSourceScale;
+    const TransformedMaskVertexFiller fVertexFiller;
 
     // The bounds in source space. The bounds are the joined rectangles of all the glyphs.
     const SkRect fVertexBounds;
@@ -2187,8 +2183,7 @@ TransformedMaskSubRunNoCache::TransformedMaskSubRunNoCache(GrMaskFormat format,
                                                            const SkRect& bounds,
                                                            SkSpan<const VertexData> vertexData,
                                                            GlyphVector&& glyphs)
-        : fMaskFormat{format}
-        , fStrikeToSourceScale{strikeToSourceScale}
+        : fVertexFiller{format, 0, strikeToSourceScale}
         , fVertexBounds{bounds}
         , fVertexData{vertexData}
         , fGlyphs{std::move(glyphs)} {}
@@ -2233,7 +2228,8 @@ TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
     const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
     GrPaint grPaint;
-    SkPMColor4f drawingColor = calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
+    SkPMColor4f drawingColor = calculate_colors(
+            sdc, paint, viewMatrix, fVertexFiller.grMaskType(), &grPaint);
 
     // We can clip geometrically using clipRect and ignore clip if we're not using SDFs or
     // transformed glyphs, and we have an axis-aligned rectangular non-AA clip.
@@ -2249,7 +2245,7 @@ TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
 
     GrRecordingContext* rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
+                                             fVertexFiller.opMaskType(),
                                              true,
                                              this->glyphCount(),
                                              this->deviceRect(drawMatrix, drawOrigin),
@@ -2264,7 +2260,7 @@ void TransformedMaskSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCa
 
 std::tuple<bool, int> TransformedMaskSubRunNoCache::regenerateAtlas(
         int begin, int end, GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target, true);
 }
 
 void TransformedMaskSubRunNoCache::fillVertexData(
@@ -2272,28 +2268,17 @@ void TransformedMaskSubRunNoCache::fillVertexData(
         GrColor color,
         const SkMatrix& drawMatrix, SkPoint drawOrigin,
         SkIRect clip) const {
-    TransformedMaskVertexFiller filler{fMaskFormat, 0, fStrikeToSourceScale};
-
     const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
-    filler.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
-                          fVertexData.subspan(offset, count),
-                          color,
-                          positionMatrix,
-                          clip,
-                          vertexDst);
+    fVertexFiller.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
+                                 fVertexData.subspan(offset, count),
+                                 color,
+                                 positionMatrix,
+                                 clip,
+                                 vertexDst);
 }
 
 size_t TransformedMaskSubRunNoCache::vertexStride(const SkMatrix& drawMatrix) const {
-    switch (fMaskFormat) {
-        case kA8_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(Mask3DVertex) : sizeof(Mask2DVertex);
-        case kARGB_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(ARGB3DVertex) : sizeof(ARGB2DVertex);
-        default:
-            SkASSERT(!drawMatrix.hasPerspective());
-            return sizeof(Mask2DVertex);
-    }
-    SkUNREACHABLE;
+    return fVertexFiller.vertexStride(drawMatrix);
 }
 
 int TransformedMaskSubRunNoCache::glyphCount() const {
@@ -3374,14 +3359,10 @@ public:
     int glyphCount() const override;
 
 private:
-    Slug* const fSlug;
     // The rectangle that surrounds all the glyph bounding boxes in device space.
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
-
-    const GrMaskFormat fMaskFormat;
-
-    // The scale factor between the strike size, and the source size.
-    const SkScalar fStrikeToSourceScale;
+    const TransformedMaskVertexFiller fVertexFiller;
+    Slug* const fSlug;
 
     // The bounds in source space. The bounds are the joined rectangles of all the glyphs.
     const SkRect fVertexBounds;
@@ -3399,9 +3380,8 @@ TransformedMaskSubRunSlug::TransformedMaskSubRunSlug(
         const SkRect& bounds,
         SkSpan<const VertexData> vertexData,
         GlyphVector&& glyphs)
-            : fSlug{slug}
-            , fMaskFormat{format}
-            , fStrikeToSourceScale{strikeToSourceScale}
+            : fVertexFiller{format, 0, strikeToSourceScale}
+            , fSlug{slug}
             , fVertexBounds{bounds}
             , fVertexData{vertexData}
             , fGlyphs{std::move(glyphs)} { }
@@ -3459,7 +3439,8 @@ TransformedMaskSubRunSlug::makeAtlasTextOp(const GrClip* clip,
     const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
     GrPaint grPaint;
-    SkPMColor4f drawingColor = calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
+    SkPMColor4f drawingColor = calculate_colors(
+            sdc, paint, viewMatrix, fVertexFiller.grMaskType(), &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::MakeForBlob(*this,
                                                        drawMatrix,
@@ -3471,7 +3452,7 @@ TransformedMaskSubRunSlug::makeAtlasTextOp(const GrClip* clip,
 
     GrRecordingContext* const rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
+                                             fVertexFiller.opMaskType(),
                                              true,
                                              this->glyphCount(),
                                              this->deviceRect(drawMatrix, drawOrigin),
@@ -3486,35 +3467,24 @@ void TransformedMaskSubRunSlug::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache
 
 std::tuple<bool, int> TransformedMaskSubRunSlug::regenerateAtlas(
         int begin, int end, GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target, true);
 }
 
 void TransformedMaskSubRunSlug::fillVertexData(void* vertexDst, int offset, int count,
                                                GrColor color,
                                                const SkMatrix& drawMatrix, SkPoint drawOrigin,
                                                SkIRect clip) const {
-    TransformedMaskVertexFiller filler{fMaskFormat, 0, fStrikeToSourceScale};
-
     const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
-    filler.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
-                          fVertexData.subspan(offset, count),
-                          color,
-                          positionMatrix,
-                          clip,
-                          vertexDst);
+    fVertexFiller.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
+                                 fVertexData.subspan(offset, count),
+                                 color,
+                                 positionMatrix,
+                                 clip,
+                                 vertexDst);
 }
 
 size_t TransformedMaskSubRunSlug::vertexStride(const SkMatrix& drawMatrix) const {
-    switch (fMaskFormat) {
-        case kA8_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(Mask3DVertex) : sizeof(Mask2DVertex);
-        case kARGB_GrMaskFormat:
-            return drawMatrix.hasPerspective() ? sizeof(ARGB3DVertex) : sizeof(ARGB2DVertex);
-        default:
-            SkASSERT(!drawMatrix.hasPerspective());
-            return sizeof(Mask2DVertex);
-    }
-    SkUNREACHABLE;
+    return fVertexFiller.vertexStride(drawMatrix);
 }
 
 int TransformedMaskSubRunSlug::glyphCount() const {
