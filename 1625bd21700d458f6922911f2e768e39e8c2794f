@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f752b9_47eb3d32",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-27T18:10:31Z",
+      "side": 1,
+      "message": "Come to think of it, SkCodec can be reused (on Android, that\u0027s specifically through BitmapRegionDecoder). And since we\u0027ll potentially change this for each call, we\u0027ll need to call setSrcXformFormat for each case.",
+      "range": {
+        "startLine": 216,
+        "startChar": 13,
+        "endLine": 216,
+        "endChar": 35
+      },
+      "revId": "1625bd21700d458f6922911f2e768e39e8c2794f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
