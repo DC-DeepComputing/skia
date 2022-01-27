@@ -583,6 +583,7 @@ void SkBitmapDevice::drawSpecial(SkSpecialImage* src,
         draw.fMatrixProvider = &matrixProvider;
         draw.fRC = &fRCStack.rc();
         draw.drawBitmap(resultBM, SkMatrix::I(), nullptr, sampling, paint);
+        fBitmap.notifyPixelsChanged();
     }
 }
 sk_sp<SkSpecialImage> SkBitmapDevice::makeSpecial(const SkBitmap& bitmap) {
