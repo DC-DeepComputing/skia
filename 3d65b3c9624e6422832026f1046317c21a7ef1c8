@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d17fd9b_a396c382",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-27T20:24:23Z",
+      "side": 1,
+      "message": "Fix this indentation?",
+      "revId": "3d65b3c9624e6422832026f1046317c21a7ef1c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
