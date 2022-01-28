@@ -33,6 +33,24 @@
       "message": "Because I was curious, the clang package does depend on and bring in all of the stuff like libstdc++-11-dev (the system development headers).",
       "revId": "2e180013d503d3c5ca35d35ef14323e12df85b9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4148aff_f2e81d8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-28T16:47:02Z",
+      "side": 1,
+      "message": "The following CL was a canary (it won\u0027t build if C++17 isn\u0027t functional)",
+      "parentUuid": "c9576fb1_f6a9d711",
+      "revId": "2e180013d503d3c5ca35d35ef14323e12df85b9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
