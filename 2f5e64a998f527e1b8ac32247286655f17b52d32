@@ -16,6 +16,29 @@
       "message": "These are all optimizations I made to the VM blitter after my big keying refactor. These can be done separately, though.",
       "revId": "2f5e64a998f527e1b8ac32247286655f17b52d32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd33ce91_71c59dba",
+        "filename": "src/core/SkVMBlitter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-28T18:26:22Z",
+      "side": 1,
+      "message": "fProgramPtrs[Coverage::kCount] \u003d {nullptr};\nInstead of memset.",
+      "range": {
+        "startLine": 104,
+        "startChar": 27,
+        "endLine": 104,
+        "endChar": 58
+      },
+      "revId": "2f5e64a998f527e1b8ac32247286655f17b52d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
