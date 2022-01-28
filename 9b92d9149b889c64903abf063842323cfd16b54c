@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccce16d_e9792317",
+        "filename": "include/private/SkTOptional.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-28T19:49:09Z",
+      "side": 1,
+      "message": "I suppose the idea is to do this, then maybe have a change later to just do the rename and remove this file?",
+      "revId": "9b92d9149b889c64903abf063842323cfd16b54c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
