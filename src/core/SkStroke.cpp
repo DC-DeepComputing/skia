@@ -12,6 +12,8 @@
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPointPriv.h"
+// need SkDVector
+#include "src/pathops/SkPathOpsPoint.h"
 
 #include <utility>
 
@@ -190,7 +192,7 @@ private:
     SkScalar    fInvMiterLimit;
     SkScalar    fResScale;
     SkScalar    fInvResScale;
-    SkScalar    fInvResScaleSquared;
+    double      fInvResScaleSquared;
 
     SkVector    fFirstNormal, fPrevNormal, fFirstUnitNormal, fPrevUnitNormal;
     SkPoint     fFirstPt, fPrevPt;  // on original path
@@ -413,7 +415,7 @@ SkPathStroker::SkPathStroker(const SkPath& src,
     // TODO : write a common error function used by stroking and filling
     // The '4' below matches the fill scan converter's error term
     fInvResScale = SkScalarInvert(resScale * 4);
-    fInvResScaleSquared = fInvResScale * fInvResScale;
+    fInvResScaleSquared = SkScalarToDouble(fInvResScale) * SkScalarToDouble(fInvResScale);
     fRecursionDepth = 0;
 }
 
@@ -530,19 +532,26 @@ void SkPathStroker::init(StrokeType strokeType, SkQuadConstruct* quadPts, SkScal
 }
 
 // returns the distance squared from the point to the line
-static SkScalar pt_to_line(const SkPoint& pt, const SkPoint& lineStart, const SkPoint& lineEnd) {
-    SkVector dxy = lineEnd - lineStart;
-    SkVector ab0 = pt - lineStart;
-    SkScalar numer = dxy.dot(ab0);
-    SkScalar denom = dxy.dot(dxy);
-    SkScalar t = sk_ieee_float_divide(numer, denom);
+// This requires double precision. The results are often compared against fInvResScaleSquared,
+// which can be **tiny**, even for moderately large resScale.
+static double pt_to_line(const SkPoint& pt, const SkPoint& lineStart, const SkPoint& lineEnd) {
+    SkDPoint d_pt, d_lineStart, d_lineEnd;
+    d_pt.set(pt);
+    d_lineStart.set(lineStart);
+    d_lineEnd.set(lineEnd);
+
+    SkDVector dxy = d_lineEnd - d_lineStart;
+    SkDVector ab0 = d_pt - d_lineStart;
+    double numer = dxy.dot(ab0);
+    double denom = dxy.dot(dxy);
+    double t = sk_ieee_double_divide(numer, denom);
     if (t >= 0 && t <= 1) {
-        SkPoint hit;
+        SkDPoint hit;
         hit.fX = lineStart.fX * (1 - t) + lineEnd.fX * t;
         hit.fY = lineStart.fY * (1 - t) + lineEnd.fY * t;
-        return SkPointPriv::DistanceToSqd(hit, pt);
+        return d_pt.distanceSquared(hit);
     } else {
-        return SkPointPriv::DistanceToSqd(pt, lineStart);
+        return d_pt.distanceSquared(d_lineStart);
     }
 }
 
@@ -928,8 +937,8 @@ SkPathStroker::ResultType SkPathStroker::intersectRay(SkQuadConstruct* quadPts,
     if ((numerA >= 0) == (numerB >= 0)) { // if the control point is outside the quad ends
         // if the perpendicular distances from the quad points to the opposite tangent line
         // are small, a straight line is good enough
-        SkScalar dist1 = pt_to_line(start, end, quadPts->fTangentEnd);
-        SkScalar dist2 = pt_to_line(end, start, quadPts->fTangentStart);
+        double dist1 = pt_to_line(start, end, quadPts->fTangentEnd);
+        double dist2 = pt_to_line(end, start, quadPts->fTangentStart);
         if (std::max(dist1, dist2) <= fInvResScaleSquared) {
             return STROKER_RESULT(kDegenerate_ResultType, depth, quadPts,
                     "std::max(dist1=%g, dist2=%g) <= fInvResScaleSquared", dist1, dist2);
@@ -1139,7 +1148,7 @@ void SkPathStroker::addDegenerateLine(const SkQuadConstruct* quadPts) {
 bool SkPathStroker::cubicMidOnLine(const SkPoint cubic[4], const SkQuadConstruct* quadPts) const {
     SkPoint strokeMid;
     this->cubicQuadMid(cubic, quadPts, &strokeMid);
-    SkScalar dist = pt_to_line(strokeMid, quadPts->fQuad[0], quadPts->fQuad[2]);
+    double dist = pt_to_line(strokeMid, quadPts->fQuad[0], quadPts->fQuad[2]);
     return dist < fInvResScaleSquared;
 }
 
