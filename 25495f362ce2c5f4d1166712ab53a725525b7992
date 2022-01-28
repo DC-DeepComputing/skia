@@ -22,6 +22,52 @@
       },
       "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e24dba2_c3d4a05c",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-28T16:14:58Z",
+      "side": 1,
+      "message": "We are reassigning `symbols` on every pass through the loop... this is very hard to understand.",
+      "range": {
+        "startLine": 227,
+        "startChar": 8,
+        "endLine": 227,
+        "endChar": 43
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8d9f6d_b7f8c66b",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-28T16:14:58Z",
+      "side": 1,
+      "message": "This stuff feels like it is breaking the encapsulation pretty severely on Compiler and Rehydrator implementation details. (Needing to expose `makeRootSymbolTable` and `addGLSLTypeAliases`, needing to manually set up the modifier pool, etc)\n\nLet\u0027s find a better factoring for this? Either Rehydrator or Compiler should own this fixup logic, not the test harness. Ideally we could say `rehydrator.buildProgram` or something and it just works.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 5
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
