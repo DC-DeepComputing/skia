@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f805796_8e4e6364",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-28T19:06:21Z",
+      "side": 1,
+      "message": "Actually replacing all of our SkTLazy usage with std::optional is a possible follow-up, but substantially more typing. (There\u0027s quite a bit of it).",
+      "revId": "538a56a46464cc4746a95c0e58cf7955da76d796",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
