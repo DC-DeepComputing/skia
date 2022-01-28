@@ -278,7 +278,7 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
     std::vector<Child> children;
     std::vector<SkSL::SampleUsage> sampleUsages;
     int elidedSampleCoords = 0;
-    const SkSL::Context& ctx(compiler->context());
+    const SkSL::Context& ctx(*compiler->context());
 
     // Go through program elements, pulling out information that we need
     for (const SkSL::ProgramElement* elem : program->elements()) {

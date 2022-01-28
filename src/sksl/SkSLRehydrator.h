@@ -123,8 +123,8 @@ public:
         kSwizzle_Command,
         // uint16 id
         kSymbolRef_Command,
-        // uint16 owned symbol count, Symbol[] ownedSymbols, uint16 symbol count,
-        // (String, uint16/*index*/)[].
+        // u8 builtin, uint16 owned symbol count, Symbol[] ownedSymbols, uint16 symbol count,
+        // (uint16/*index*/ | { uint16 kBuiltin_Symbol, String name })[].
         kSymbolTable_Command,
         // uint16 id, String name
         kSystemType_Command,
