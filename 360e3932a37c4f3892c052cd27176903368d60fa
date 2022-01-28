@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c110119e_59fb3222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-01-28T12:44:19Z",
+      "side": 1,
+      "message": "See the link below for the particular test cases that are failing.\n\nhttps://android-build.googleplex.com/builds/tests/view?invocationId\u003dI67000010012690179\u0026testResultId\u003dTR16327874342047784\n\n",
+      "revId": "360e3932a37c4f3892c052cd27176903368d60fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
