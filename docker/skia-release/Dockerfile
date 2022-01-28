@@ -1,5 +1,5 @@
 # Dockerfile for building Skia in release mode, using 3rd party libs from DEPS, with SwiftShader.
-FROM gcr.io/skia-public/skia-build-tools:latest
+FROM gcr.io/skia-public/skia-build-tools:testing-clang-ubuntu
 
 RUN cd /tmp \
   && git clone https://swiftshader.googlesource.com/SwiftShader swiftshader
