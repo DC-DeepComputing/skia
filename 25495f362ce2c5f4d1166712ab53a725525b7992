@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d09ddf9d_166f50e6",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-28T16:00:12Z",
+      "side": 1,
+      "message": "This change causes tons of ripple effects within the CL and is not obviously related to dehydration (although I assume you needed it for something).\n\nWhat motivated the change?\n\nCan this change and the related dot-to-arrow changes be its own CL?",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 38
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
