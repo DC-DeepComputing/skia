@@ -22,6 +22,47 @@
       },
       "revId": "ab87d6cb2a4247c12ab443225d1b0596c831abed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d797c24f_46932982",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-28T21:56:12Z",
+      "side": 1,
+      "message": "This is still using the term \u0027picture\u0027 where it conflicts with existing code using the identifier \u0027drawable\u0027 for something else.",
+      "parentUuid": "5f08aa69_bdfd8426",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 62
+      },
+      "revId": "ab87d6cb2a4247c12ab443225d1b0596c831abed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc0bd282_eb2bb14f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-28T21:56:12Z",
+      "side": 1,
+      "message": "Aside from defining the destructors in the right place, this now mostly works but seems to be uncovering a limitation in the remote glyph cache, causing one test failure. Looking into that. Other than that, this actually works unreasonably well.",
+      "revId": "ab87d6cb2a4247c12ab443225d1b0596c831abed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
