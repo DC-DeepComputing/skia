@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3787b243_e44faaf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-28T19:14:48Z",
+      "side": 1,
+      "message": "Is it on the user to compile swiftshader and configure LD_LIBRARY_PATH (or copy libvk_swiftshader.dylib)?",
+      "revId": "801140fce4705299088c8fad5481390f55dd4ad1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
