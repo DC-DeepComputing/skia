@@ -1208,13 +1208,10 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const Expression& arg,
 
     if (is_out(paramModifiers)) {
         std::unique_ptr<LValue> lv = this->getLValue(arg, out);
-        SpvId ptr = lv->getPointer();
-        if (ptr != (SpvId) -1 && lv->isMemoryObjectPointer()) {
-            return ptr;
-        }
-
-        // lvalue cannot simply be read and written via a pointer (e.g. it's a swizzle). We need to
-        // to use a temp variable.
+        // We handle out params with a temp var that we copy back to the original variable at the
+        // end of the call. GLSL guarantees that the original variable will be unchanged until the
+        // end of the call, and also that out params are written back to their original variables in
+        // a specific order (left-to-right), so it's unsafe to pass a pointer to the original value.
         if (is_in(paramModifiers)) {
             tmpValueId = lv->load(out);
         }
