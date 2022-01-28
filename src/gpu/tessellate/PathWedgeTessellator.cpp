@@ -20,8 +20,10 @@
 
 namespace skgpu {
 
-using CubicPatch = PatchWriter::CubicPatch;
-using ConicPatch = PatchWriter::ConicPatch;
+using Conic = PatchWriter::Conic;
+using Cubic = PatchWriter::Cubic;
+using Line = PatchWriter::Line;
+using Quadratic = PatchWriter::Quadratic;
 
 namespace {
 
@@ -152,6 +154,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
         MidpointContourParser parser(path);
         while (parser.parseNextContour()) {
             patchWriter.updateFanPointAttrib(m.mapPoint(parser.currentMidpoint()));
+            // FIXME pack lastPoint/startPoint into float4?
             SkPoint lastPoint = {0, 0};
             SkPoint startPoint = {0, 0};
             for (auto [verb, pts, w] : parser.currentContour()) {
@@ -162,12 +165,13 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     }
 
                     case SkPathVerb::kLine: {
-                        CubicPatch(patchWriter) << LineToCubic{m.map2Points(pts)};
+                        patchWriter << Line{m.map2Points(pts)};
                         lastPoint = pts[1];
                         break;
                     }
 
                     case SkPathVerb::kQuad: {
+                        // FIXME keep p01 as float4?
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
                         float n4 = wangs_formula::quadratic_pow4(kTessellationPrecision,
@@ -175,7 +179,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                                                                  totalXform);
                         if (n4 <= maxSegments_pow4) {
                             // This quad already fits in "maxTessellationSegments".
-                            CubicPatch(patchWriter) << QuadToCubic{p0, p1, p2};
+                            patchWriter << Quadratic(p0, p1, p2);
                         } else {
                             // The path should have been pre-chopped if needed, so all curves fit in
                             // kMaxTessellationSegmentsPerCurve.
@@ -191,6 +195,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     }
 
                     case SkPathVerb::kConic: {
+                        // FIXME: keep p01 as float4?
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
                         float n2 = wangs_formula::conic_pow2(kTessellationPrecision,
@@ -199,7 +204,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                                                              totalXform);
                         if (n2 <= maxSegments_pow2) {
                             // This conic already fits in "maxTessellationSegments".
-                            ConicPatch(patchWriter) << p0 << p1 << p2 << *w;
+                            patchWriter << Conic(p0, p1, p2, *w);
                         } else {
                             // The path should have been pre-chopped if needed, so all curves fit in
                             // kMaxTessellationSegmentsPerCurve.
@@ -221,7 +226,8 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                                                              totalXform);
                         if (n4 <= maxSegments_pow4) {
                             // This cubic already fits in "maxTessellationSegments".
-                            CubicPatch(patchWriter) << p0 << p1 << p2 << p3;
+                            // FIXME move these to float4s?
+                            patchWriter << Cubic(p0, p1, p2, p3);
                         } else {
                             // The path should have been pre-chopped if needed, so all curves fit in
                             // kMaxTessellationSegmentsPerCurve.
@@ -243,7 +249,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
             }
             if (lastPoint != startPoint) {
                 SkPoint pts[2] = {lastPoint, startPoint};
-                CubicPatch(patchWriter) << LineToCubic{m.map2Points(pts)};
+                patchWriter << Line{m.map2Points(pts)};
             }
         }
     }
