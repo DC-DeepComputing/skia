@@ -1,5 +1,5 @@
 # Dockerfile for building an image with all the tools needed to checkout and build Skia.
-FROM launcher.gcr.io/google/clang-debian9 AS build
+FROM launcher.gcr.io/google/clang-ubuntu AS build
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
   git \
   python \
