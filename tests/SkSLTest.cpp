@@ -248,8 +248,8 @@ SKSL_TEST_ES3(SkSLWhileBodyMustBeInlinedIntoAScope,
 SKSL_TEST_ES3(SkSLWhileTestCannotBeInlined,       "inliner/WhileTestCannotBeInlined.sksl")
 
 // TODO(skia:11052): SPIR-V does not yet honor `out` param semantics correctly
-SKSL_TEST_CPU(SkSLInlinerHonorsGLSLOutParamSemantics,
-         "inliner/InlinerHonorsGLSLOutParamSemantics.sksl")
+SKSL_TEST(SkSLInlinerHonorsGLSLOutParamSemantics,
+     "inliner/InlinerHonorsGLSLOutParamSemantics.sksl")
 
 SKSL_TEST(SkSLIntrinsicAbsFloat,               "intrinsics/AbsFloat.sksl")
 SKSL_TEST(SkSLIntrinsicCeil,                   "intrinsics/Ceil.sksl")
