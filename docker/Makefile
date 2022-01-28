@@ -2,8 +2,8 @@
 # Skia in Google Cloud Build.
 push-skia-build-tools:
 	docker build -t skia-build-tools ./skia-build-tools
-	docker tag skia-build-tools gcr.io/skia-public/skia-build-tools:latest
-	docker push gcr.io/skia-public/skia-build-tools:latest
+	docker tag skia-build-tools gcr.io/skia-public/skia-build-tools:testing-debian11
+	docker push gcr.io/skia-public/skia-build-tools:testing-debian11
 
 CMAKE_VERSION=3.13.4_v4
 
