@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e47cb6a1_213016d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-28T19:45:44Z",
+      "side": 1,
+      "message": "Seems good to me (esp the \u0027const T*\u0027 on the \u0027const\u0027 method which should probably be done anyway), but yeah, waiting on our ChromiumOS build roots to get updated... I seem to remember they were also getting in the way last time we were doing C++17.",
+      "revId": "5747664e02dded583e15333d841c92efbddfd913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
