@@ -16,6 +16,23 @@
       "message": "I believe in it, though I don\u0027t know how to test it.",
       "revId": "2e180013d503d3c5ca35d35ef14323e12df85b9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30e5508c_8919326f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-28T16:36:50Z",
+      "side": 1,
+      "message": "Because I was curious, the clang package does depend on and bring in all of the stuff like libstdc++-11-dev (the system development headers).",
+      "revId": "2e180013d503d3c5ca35d35ef14323e12df85b9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
