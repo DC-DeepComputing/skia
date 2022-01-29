@@ -29,6 +29,7 @@ public:
                 size_t patchStride,
                 int initialAllocCount)
             : fAttribs(attribs)
+            , fJoinControlPointAttrib{SK_ScalarNaN, SK_ScalarNaN}
             , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
     }
 
@@ -41,23 +42,44 @@ public:
 
     PatchAttribs attribs() const { return fAttribs; }
 
+    // Updates the stroke's join control point that will be written out with each patch. This is
+    // automatically adjusted when appending various geometries (e.g. Conic/Cubic), but sometimes
+    // must be set explicitly.
+    //
+    // PatchAttribs::kJoinControlPoint must be enabled.
+    void updateJoinControlPointAttrib(SkPoint lastControlPoint) {
+        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
+        fJoinControlPointAttrib = lastControlPoint;
+    }
+    // Completes a closed contour of a stroke by rewriting a deferred patch with now-available
+    // join control point information.
+    //
+    // PatchAttribs::kJoinControlPoint must be enabled.
+    void finishStrokeContour() {
+        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
+        // TODO: This will also handle writing a deferred patch when that is moved into PatchWriter
+        fJoinControlPointAttrib = {SK_ScalarNaN, SK_ScalarNaN};
+    }
+    // TODO: This is only used while migrating from InstanceWriter
+    SkPoint joinControlPoint() const { return fJoinControlPointAttrib; }
+
     // Updates the fan point that will be written out with each patch (i.e., the point that wedges
     // fan around).
-    // PathPatchAttrib::kFanPoint must be enabled.
+    // PatchAttribs::kFanPoint must be enabled.
     void updateFanPointAttrib(SkPoint fanPoint) {
         SkASSERT(fAttribs & PatchAttribs::kFanPoint);
         fFanPointAttrib = fanPoint;
     }
 
     // Updates the stroke params that are written out with each patch.
-    // PathPatchAttrib::kStrokeParams must be enabled.
+    // PatchAttribs::kStrokeParams must be enabled.
     void updateStrokeParamsAttrib(StrokeParams strokeParams) {
         SkASSERT(fAttribs & PatchAttribs::kStrokeParams);
         fStrokeParamsAttrib = strokeParams;
     }
 
     // Updates the color that will be written out with each patch.
-    // PathPatchAttrib::kColor must be enabled.
+    // PatchAttribs::kColor must be enabled.
     void updateColorAttrib(const SkPMColor4f& color) {
         SkASSERT(fAttribs & PatchAttribs::kColor);
         fColorAttrib.set(color, fAttribs & PatchAttribs::kWideColorIfEnabled);
@@ -151,7 +173,13 @@ private:
     static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
 
     void emitPatchAttribs(VertexWriter vertexWriter, float explicitCurveType) {
-        vertexWriter << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
+        // TODO: For now, the join control point must be explicitly provided by caller *before*
+        // they write any patch, and are responsible for deferring data on their own. This assert
+        // will relax when PatchWriter automates the deferring.
+        SkASSERT(!(fAttribs & PatchAttribs::kJoinControlPoint) ||
+                 fJoinControlPointAttrib.isFinite());
+        vertexWriter << If((fAttribs & PatchAttribs::kJoinControlPoint), fJoinControlPointAttrib)
+                     << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
                      << If((fAttribs & PatchAttribs::kStrokeParams), fStrokeParamsAttrib)
                      << If((fAttribs & PatchAttribs::kColor), fColorAttrib)
                      << If((fAttribs & PatchAttribs::kExplicitCurveType), explicitCurveType);
@@ -161,6 +189,10 @@ private:
     SkPoint fFanPointAttrib;
     StrokeParams fStrokeParamsAttrib;
     VertexColor fColorAttrib;
+
+    // Stores NaN until it's been updated by the last written patch or set explicitly by controlling
+    // code. It must be reset to NaN when a stroked contour is closed.
+    SkPoint fJoinControlPointAttrib;
 
     GrVertexChunkBuilder fChunker;
 
