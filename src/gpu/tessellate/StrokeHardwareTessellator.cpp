@@ -862,7 +862,8 @@ int StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target,
                                        std::array<float,2> matrixMinMaxScales,
                                        PathStrokeList* pathStrokeList,
                                        int totalCombinedStrokeVerbCnt) {
-    PatchWriter patchWriter(target, this, this->patchPreallocCount(totalCombinedStrokeVerbCnt));
+    PatchWriter patchWriter(target, this, 0.f, /* unused max segment tracking */
+                            this->patchPreallocCount(totalCombinedStrokeVerbCnt));
     return this->writePatches(patchWriter, shaderMatrix, matrixMinMaxScales, pathStrokeList);
 }
 
