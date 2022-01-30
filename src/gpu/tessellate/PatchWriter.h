@@ -23,6 +23,7 @@ class StrokeTessellator;
 
 // Writes out tessellation patches, formatted with their specific attribs, to a GPU buffer.
 class PatchWriter {
+    using VectorXform = wangs_formula::VectorXform;
 public:
     PatchWriter(GrMeshDrawTarget* target,
                 GrVertexChunkArray* vertexChunkArray,
@@ -155,6 +156,14 @@ public:
         Cubic(const SkPoint p[4], float n4=0.f)
                 : Cubic(float4::Load(p), float4::Load(p + 2), n4) {}
 
+        // Helper to compute and set N^4 from Wang's formula with this cubic's control points,
+        // assuming that 'shaderXform' will be applied later to the points, in a GPU shader.
+        Cubic& segmentedFor(const VectorXform& shaderXform,
+                            float precision = kTessellationPrecision) {
+            fN4 = wangs_formula::cubic_pow4(precision, fP0, fP1, fP2, fP3, shaderXform);
+            return *this;
+        }
+
         float2 fP0, fP1, fP2, fP3;
         float  fN4;
     };
@@ -169,6 +178,14 @@ public:
                 , fP2(float2::Load(p + 2))
                 , fW(w)
                 , fN2(n2) {}
+
+        // Helper to compute and set N^4 from Wang's formula with this conic's control points,
+        // assuming that 'shaderXform' will be applied later to the points, in a GPU shader.
+        Conic& segmentedFor(const VectorXform& shaderXform,
+                            float precision = kTessellationPrecision) {
+            fN2 = wangs_formula::conic_pow2(precision, fP0, fP1, fP2, fW, shaderXform);
+            return *this;
+        }
 
         float2 fP0, fP1, fP2;
         float  fW;
@@ -188,6 +205,13 @@ public:
 
         Cubic asCubic() const {
             return Cubic(fP0, mix(float4(fP0, fP2), fP1.xyxy(), 2/3.f), fP2, fN4);
+        }
+
+        // Helper to compute and set N^4 from Wang's formula with this cubic's control points
+        Quadratic& segmentedFor(const VectorXform& shaderXform,
+                                float precision = kTessellationPrecision) {
+            fN4 = wangs_formula::quadratic_pow4(precision, fP0, fP1, fP2, shaderXform);
+            return *this;
         }
 
         float2 fP0, fP1, fP2;
@@ -233,6 +257,14 @@ public:
     // operator<< definitions for the patch geometry types.
 
     SK_ALWAYS_INLINE void operator<<(const Cubic& cubic) {
+        if (!(fAttribs & PatchAttribs::kFanPoint) &&
+            !(fAttribs & PatchAttribs::kJoinControlPoint)) {
+            if (cubic.fN4 <= 1.f) {
+                // This cubic only needs one segment (e.g. a line) but we're not filling space with
+                // fans or stroking, so nothing actually needs to be drawn.
+                return;
+            }
+        }
         if (cubic.fN4 <= fMaxSegments_pow4) {
             this->writePatch(cubic.fP0, cubic.fP1, cubic.fP2, cubic.fP3,
                              cubic.fN4, kCubicCurveType);
@@ -244,6 +276,14 @@ public:
     }
 
     SK_ALWAYS_INLINE void operator<<(const Conic& conic) {
+        if (!(fAttribs & PatchAttribs::kFanPoint) &&
+            !(fAttribs & PatchAttribs::kJoinControlPoint)) {
+            if (conic.fN2 <= 1.f) {
+                // This conic only needs one segment (e.g. a line) but we're not filling space with
+                // fans or stroking, so nothing actually needs to be drawn.
+                return;
+            }
+        }
         if (conic.fN2 <= fMaxSegments_pow2) {
             this->writePatch(conic.fP0, conic.fP1, conic.fP2, {conic.fW, SK_FloatInfinity},
                              conic.fN2 * conic.fN2, kConicCurveType);
@@ -255,6 +295,14 @@ public:
     }
 
     SK_ALWAYS_INLINE void operator<<(const Quadratic& quad) {
+        if (!(fAttribs & PatchAttribs::kFanPoint) &&
+            !(fAttribs & PatchAttribs::kJoinControlPoint)) {
+            if (quad.fN4 <= 1.f) {
+                // This quad only needs one segment (e.g. a line) but we're not filling space with
+                // fans or stroking, so nothing actually needs to be drawn.
+                return;
+            }
+        }
         if (quad.fN4 <= fMaxSegments_pow4) {
             // This won't chop, since we know n^4 <= maxSegments^4
             *this << quad.asCubic();

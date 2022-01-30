@@ -32,6 +32,7 @@ using Quadratic = PatchWriter::Quadratic;
 // require 32 parametric segments or less. (We don't consider radial segments here. The tessellator
 // will just add enough additional segments to handle a worst-case 180 degree stroke.)
 class InstanceWriter {
+    using VectorXform = wangs_formula::VectorXform;
 public:
     InstanceWriter(PatchWriter& patchWriter, float matrixMaxScale)
             : fPatchWriter(patchWriter)
@@ -47,18 +48,15 @@ public:
     }
 
     SK_ALWAYS_INLINE void quadraticTo(const SkPoint p[3]) {
-        float numParametricSegments_pow4 = wangs_formula::quadratic_pow4(fParametricPrecision, p);
-        fPatchWriter << Quadratic(p, numParametricSegments_pow4);
+        fPatchWriter << Quadratic(p).segmentedFor(VectorXform(), fParametricPrecision);
     }
 
     SK_ALWAYS_INLINE void conicTo(const SkPoint p[3], float w) {
-        float n2 = wangs_formula::conic_pow2(fParametricPrecision, p, w);
-        fPatchWriter << Conic(p, w, n2);
+        fPatchWriter << Conic(p, w).segmentedFor(VectorXform(), fParametricPrecision);
     }
 
     SK_ALWAYS_INLINE void cubicConvex180To(const SkPoint p[4]) {
-        float numParametricSegments_pow4 = wangs_formula::cubic_pow4(fParametricPrecision, p);
-        fPatchWriter << Cubic(p, numParametricSegments_pow4);
+        fPatchWriter << Cubic(p).segmentedFor(VectorXform(), fParametricPrecision);
     }
 
     // Called when we encounter the verb "kMoveWithinContour". Moves invalidate the previous control

@@ -39,9 +39,9 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
     // emit at least 2 segments so we can support triangles.
     patchWriter.resetFixedSegments(2);
 
+    wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
-        wangs_formula::VectorXform totalXform(SkMatrix::Concat(shaderMatrix, pathMatrix));
         if (fAttribs & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
@@ -50,43 +50,21 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
                 case SkPathVerb::kQuad: {
                     auto [p0, p1] = m.map2Points(pts);
                     auto p2 = m.map1Point(pts+2);
-                    float n4 = wangs_formula::quadratic_pow4(kTessellationPrecision,
-                                                             pts,
-                                                             totalXform);
-                    if (n4 <= 1) {
-                        break;  // This quad only needs 1 segment, which is empty.
-                    }
-
-                    patchWriter << Quadratic(p0, p1, p2, n4);
+                    patchWriter << Quadratic(p0, p1, p2).segmentedFor(shaderXform);
                     break;
                 }
 
                 case SkPathVerb::kConic: {
                     auto [p0, p1] = m.map2Points(pts);
                     auto p2 = m.map1Point(pts+2);
-                    float n2 = wangs_formula::conic_pow2(kTessellationPrecision,
-                                                         pts,
-                                                         *w,
-                                                         totalXform);
-                    if (n2 <= 1) {
-                        break;  // This conic only needs 1 segment, which is empty.
-                    }
-
-                    patchWriter << Conic(p0, p1, p2, *w, n2);
+                    patchWriter << Conic(p0, p1, p2, *w).segmentedFor(shaderXform);
                     break;
                 }
 
                 case SkPathVerb::kCubic: {
                     auto [p0, p1] = m.map2Points(pts);
                     auto [p2, p3] = m.map2Points(pts+2);
-                    float n4 = wangs_formula::cubic_pow4(kTessellationPrecision,
-                                                         pts,
-                                                         totalXform);
-                    if (n4 <= 1) {
-                        break;  // This cubic only needs 1 segment, which is empty.
-                    }
-
-                    patchWriter << Cubic(p0, p1, p2, p3, n4);
+                    patchWriter << Cubic(p0, p1, p2, p3).segmentedFor(shaderXform);
                     break;
                 }
 
