@@ -28,56 +28,6 @@ using Cubic = PatchWriter::Cubic;
 using Line = PatchWriter::Line;
 using Quadratic = PatchWriter::Quadratic;
 
-// Writes out strokes to the given instance chunk array, chopping if necessary so that all instances
-// require 32 parametric segments or less. (We don't consider radial segments here. The tessellator
-// will just add enough additional segments to handle a worst-case 180 degree stroke.)
-class InstanceWriter {
-    using VectorXform = wangs_formula::VectorXform;
-public:
-    InstanceWriter(PatchWriter& patchWriter, const SkMatrix& shaderMatrix)
-            : fPatchWriter(patchWriter)
-            , fShaderXform(shaderMatrix) {
-        SkASSERT(fPatchWriter.attribs() & PatchAttribs::kJoinControlPoint);
-        fPatchWriter.resetFixedSegments(1);
-    }
-
-    SK_ALWAYS_INLINE void lineTo(SkPoint start, SkPoint end) {
-        fPatchWriter << Line(start, end);
-    }
-
-    SK_ALWAYS_INLINE void quadraticTo(const SkPoint p[3]) {
-        fPatchWriter << Quadratic(p).segmentedFor(fShaderXform);
-    }
-
-    SK_ALWAYS_INLINE void conicTo(const SkPoint p[3], float w) {
-        fPatchWriter << Conic(p, w).segmentedFor(fShaderXform);
-    }
-
-    SK_ALWAYS_INLINE void cubicConvex180To(const SkPoint p[4]) {
-        fPatchWriter << Cubic(p).segmentedFor(fShaderXform);
-    }
-
-    // Called when we encounter the verb "kMoveWithinContour". Moves invalidate the previous control
-    // point. The stroke iterator tells us the new value to use for the previous control point.
-    void setLastControlPoint(SkPoint newLastControlPoint) {
-        fPatchWriter.updateJoinControlPointAttrib(newLastControlPoint);
-    }
-
-    // Draws a circle whose diameter is equal to the stroke width. We emit circles at cusp points
-    // round caps, and empty strokes that are specified to be drawn as circles.
-    void writeCircle(SkPoint location) {
-        fPatchWriter << Circle(location);
-    }
-
-    void finishContour() {
-        fPatchWriter.finishStrokeContour();
-    }
-
-private:
-    PatchWriter& fPatchWriter;
-    wangs_formula::VectorXform fShaderXform;
-};
-
 // Returns the worst-case number of edges we will need in order to draw a join of the given type.
 int worst_case_edges_in_join(SkPaint::Join joinType, float numRadialSegmentsPerRadian) {
     int numEdges = StrokeFixedCountTessellator::NumFixedEdgesInJoin(joinType);
@@ -110,7 +60,6 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
 
     float approxParametricPrecision =
             StrokeTolerances::CalcParametricPrecision(matrixMinMaxScales[1]);
-    InstanceWriter instanceWriter(patchWriter, shaderMatrix);
 
     if (!(fAttribs & PatchAttribs::kStrokeParams)) {
         // Strokes are static. Calculate tolerances once.
@@ -127,6 +76,11 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
     // have dynamic stroke.
     StrokeToleranceBuffer toleranceBuffer(approxParametricPrecision);
 
+    // The vector xform approximates how the control points are transformed by the shader to
+    // more accurately compute how many segments are needed.
+    wangs_formula::VectorXform shaderXform{shaderMatrix};
+    // Reset fixed segment tracking, we always need at least 1 for lines
+    patchWriter.resetFixedSegments(1);
     for (PathStrokeList* pathStroke = pathStrokeList; pathStroke; pathStroke = pathStroke->fNext) {
         const SkStrokeRec& stroke = pathStroke->fStroke;
         if (fAttribs & PatchAttribs::kStrokeParams) {
@@ -143,6 +97,7 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
         if (fAttribs & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(pathStroke->fColor);
         }
+
         StrokeIterator strokeIter(pathStroke->fPath, &pathStroke->fStroke, &shaderMatrix);
         while (strokeIter.next()) {
             const SkPoint* p = strokeIter.pts();
@@ -150,28 +105,30 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
                 using Verb = StrokeIterator::Verb;
                 int numChops;
                 case Verb::kContourFinished:
-                    instanceWriter.finishContour();
+                    patchWriter.finishStrokeContour();
                     break;
                 case Verb::kCircle:
                     // Round cap or else an empty stroke that is specified to be drawn as a circle.
-                    instanceWriter.writeCircle(p[0]);
+                    patchWriter << Circle(p[0]);
                     [[fallthrough]];
                 case Verb::kMoveWithinContour:
-                    instanceWriter.setLastControlPoint(p[0]);
+                    // A regular kMove invalidates the previous control point; the stroke iterator
+                    // tells us a new value to use.
+                    patchWriter.updateJoinControlPointAttrib(p[0]);
                     break;
                 case Verb::kLine:
-                    instanceWriter.lineTo(p[0], p[1]);
+                    patchWriter << Line(p[0], p[1]);
                     break;
                 case Verb::kQuad:
                     if (ConicHasCusp(p)) {
                         // The cusp is always at the midtandent.
                         SkPoint cusp = SkEvalQuadAt(p, SkFindQuadMidTangent(p));
-                        instanceWriter.writeCircle(cusp);
+                        patchWriter << Circle(cusp);
                         // A quad can only have a cusp if it's flat with a 180-degree turnaround.
-                        instanceWriter.lineTo(p[0], cusp);
-                        instanceWriter.lineTo(cusp, p[2]);
+                        patchWriter << Line(p[0], cusp);
+                        patchWriter << Line(cusp, p[2]);
                     } else {
-                        instanceWriter.quadraticTo(p);
+                        patchWriter << Quadratic(p).segmentedFor(shaderXform);
                     }
                     break;
                 case Verb::kConic:
@@ -179,12 +136,12 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
                         // The cusp is always at the midtandent.
                         SkConic conic(p, strokeIter.w());
                         SkPoint cusp = conic.evalAt(conic.findMidTangent());
-                        instanceWriter.writeCircle(cusp);
+                        patchWriter << Circle(cusp);
                         // A conic can only have a cusp if it's flat with a 180-degree turnaround.
-                        instanceWriter.lineTo(p[0], cusp);
-                        instanceWriter.lineTo(cusp, p[2]);
+                        patchWriter << Line(p[0], cusp);
+                        patchWriter << Line(cusp, p[2]);
                     } else {
-                        instanceWriter.conicTo(p, strokeIter.w());
+                        patchWriter << Conic(p, strokeIter.w()).segmentedFor(shaderXform);
                     }
                     break;
                 case Verb::kCubic:
@@ -193,32 +150,32 @@ int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
                     bool areCusps;
                     numChops = FindCubicConvex180Chops(p, T, &areCusps);
                     if (numChops == 0) {
-                        instanceWriter.cubicConvex180To(p);
+                        patchWriter << Cubic(p).segmentedFor(shaderXform);
                     } else if (numChops == 1) {
                         SkChopCubicAt(p, chops, T[0]);
                         if (areCusps) {
-                            instanceWriter.writeCircle(chops[3]);
+                            patchWriter << Circle(chops[3]);
                             // In a perfect world, these 3 points would be be equal after chopping
                             // on a cusp.
                             chops[2] = chops[4] = chops[3];
                         }
-                        instanceWriter.cubicConvex180To(chops);
-                        instanceWriter.cubicConvex180To(chops + 3);
+                        patchWriter << Cubic(chops).segmentedFor(shaderXform);
+                        patchWriter << Cubic(chops + 3).segmentedFor(shaderXform);
                     } else {
                         SkASSERT(numChops == 2);
                         SkChopCubicAt(p, chops, T[0], T[1]);
                         if (areCusps) {
-                            instanceWriter.writeCircle(chops[3]);
-                            instanceWriter.writeCircle(chops[6]);
+                            patchWriter << Circle(chops[3]);
+                            patchWriter << Circle(chops[6]);
                             // Two cusps are only possible if it's a flat line with two 180-degree
                             // turnarounds.
-                            instanceWriter.lineTo(chops[0], chops[3]);
-                            instanceWriter.lineTo(chops[3], chops[6]);
-                            instanceWriter.lineTo(chops[6], chops[9]);
+                            patchWriter << Line(chops[0], chops[3]);
+                            patchWriter << Line(chops[3], chops[6]);
+                            patchWriter << Line(chops[6], chops[9]);
                         } else {
-                            instanceWriter.cubicConvex180To(chops);
-                            instanceWriter.cubicConvex180To(chops + 3);
-                            instanceWriter.cubicConvex180To(chops + 6);
+                            patchWriter << Cubic(chops).segmentedFor(shaderXform);
+                            patchWriter << Cubic(chops + 3).segmentedFor(shaderXform);
+                            patchWriter << Cubic(chops + 6).segmentedFor(shaderXform);
                         }
                     }
                     break;
