@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b14360f_1d4c2976",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T21:12:14Z",
+      "side": 1,
+      "message": "No, if the requestedColorType is F16, we should give them F16. This should just say\n\n  return kRGBA_1010102_SkColorType;\n\nI was suggesting that we should change the code on what is now line 149:\n\n  return highPrecision ? kRGBA_F16_SkColorType : kN32_SkColorType;\n\nWe hit this case if you asked for `N32` or some format not listed here. `N32` is the exceptional case, *because* it\u0027s the default. This method gets called with `N32 to determine the default color type to use. If the client asks for `N32`, but it\u0027s a \"highPrecision\" image (which, until now, meant a PNG with 16 bits per component), we give them F16. I would expect that for a 10 bit image, we would default to 1010102, at least for an opaque image.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 13
+      },
+      "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

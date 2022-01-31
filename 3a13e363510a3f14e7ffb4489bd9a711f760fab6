@@ -103,6 +103,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a96b6c81_2abda8e6",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T21:12:14Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not very clear why \"this code let us default 16 bit PNGs to F16\". Even without this change, 16 bit PNG will set highPrecision to true, and return F16.\n\nRight. When I say \"this code\", I mean \"SkAndroidCodec::computeOutputColorType\".\nIt\u0027s called by all our Java APIs for decoding, including here[1] for BitmapFactory.\n \n\u003e This change  doesn\u0027t change this logic.\n\n+1\n\n\u003e I think your point is for RGBA_1010102, if hasAlpha, return F16 instead of RGBA_1010102?\n\nNo, if the encoded data is 10 bit, we really ought to set the default Config, e.g. `BitmapFactory.Options.outConfig` [2], as well as the default for `ImageDecoder` to ten bit. But this relies on actually knowing the data is ten bit.\n\n\u003e \n\u003e I didn\u0027t change bitsPerComponent to 10 for RGBA_1010102 because it\u0027s still 32 bits in total for RGBA four channels and 8 bits on average. I\u0027m afraid its potential risk of calculate bits per pixel\n\nInteresting. I\u0027m not aware of any code that would be broken by this change, but I see your point that it\u0027s at least potentially misleading to say it\u0027s 10 bits per component. Maybe there should be a new API(s) that\u0027s more explicit, specifying how many bits per red, green, blue, alpha. (OTOH, not all images have these components...)\n\n[1] https://source.corp.google.com/android/frameworks/base/libs/hwui/jni/BitmapFactory.cpp;bpv\u003d1;bpt\u003d1;l\u003d276?q\u003dSkAndroidCodec::computeOutputColorType\u0026ct\u003dos\u0026sq\u003dpackage:%5Eandroid$%20-file:external%2Fskqp%20-file:external%2Fqt\n[2] https://source.corp.google.com/android/frameworks/base/graphics/java/android/graphics/BitmapFactory.java;l\u003d391?q\u003dbitmapfactory.java\u0026ct\u003dos\u0026sq\u003dpackage:%5Eandroid$%20-file:external%2Fskqp%20-file:external%2Fqt",
+      "parentUuid": "6c0d7d0c_ec033a6d",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4df1575_ee3f7cef",
         "filename": "src/codec/SkHeifCodec.cpp",
         "patchSetId": 1
