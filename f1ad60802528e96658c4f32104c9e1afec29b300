@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e4a33c_6841c560",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-31T19:14:19Z",
+      "side": 1,
+      "message": "This is interesting and seems more or less the right way to do things on the gn side (modulo Kevin\u0027s comments). However, Kevin should probably make sure we have a bot building this way as part of this change. Otherwise we won\u0027t be able to keep this working.",
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4920ad7_40f47f02",
