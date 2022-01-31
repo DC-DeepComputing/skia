@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aa56078_16123342",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T14:30:28Z",
+      "side": 1,
+      "message": "This doesn\u0027t fix anything, but reduces my search space.",
+      "revId": "5db96ac9020f1f08e0d1118eb11eb2827d229a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
