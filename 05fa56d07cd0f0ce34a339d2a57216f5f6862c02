@@ -22,6 +22,30 @@
       },
       "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5da4e10f_79c6db9d",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T21:59:24Z",
+      "side": 1,
+      "message": "\"No, if the requestedColorType is F16, we should give them F16. This should just say\n  return kRGBA_1010102_SkColorType;\"\nThis happens in line 142.\n\n\"I would expect that for a 10 bit image, we would default to 1010102, at least for an opaque image.\"\nIf user config N32 or some other color types that are not listed here with PNG 16 bits input, current logic will go to F16 while you prefer to change it to RGBA_1010102? This is good, but currently we don\u0027t have means to know if the input is 10-bit or 8-bit without user config. That is, for decoding 10-bit input, user must config as ag/16741689, or framework will have error in the decoding stage. This is disappointing though, however it\u0027s the best we can do for now. Releasing the bit-depth key is planned, but not for T.",
+      "parentUuid": "7b14360f_1d4c2976",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 13
+      },
+      "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

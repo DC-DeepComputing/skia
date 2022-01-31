@@ -127,6 +127,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "87112fe4_a7dcad36",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T21:59:24Z",
+      "side": 1,
+      "message": "Here are two places I think will be broken:\n(1) https://source.corp.google.com/android/external/skia/include/private/SkEncodedInfo.h;l\u003d188;bpv\u003d0;bpt\u003d1;rcl\u003dHEAD\n(2) https://source.corp.google.com/android/external/skia/include/private/SkEncodedInfo.h;l\u003d105;bpv\u003d0;bpt\u003d1;rcl\u003dHEAD\n\n\"No, if the encoded data is 10 bit, we really ought to set the default Config, e.g.  BitmapFactory.Options.outConfig  [2], as well as the default for  ImageDecoder  to ten bit. But this relies on actually knowing the data is ten bit.\"\nCan\u0027t agree more, however our current limitation is we don\u0027t actually know the data is 10-bit or 8-bit without users\u0027 input. Please refer to ag/16741689. This is how 10-bit decoding will be looking like.",
+      "parentUuid": "a96b6c81_2abda8e6",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4df1575_ee3f7cef",
         "filename": "src/codec/SkHeifCodec.cpp",
         "patchSetId": 1
