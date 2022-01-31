@@ -46,6 +46,30 @@
       },
       "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f17bed99_e1bd9811",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T22:18:55Z",
+      "side": 1,
+      "message": "Okay, but I still think that if the client asks for 1010102, we should give them 1010102.\n\nUnless you disagree, Brian? I know we\u0027ve discovered that 1010102 often looks bad due to the mismatch in precision, but I think that in most cases we should give the client what they asked for.\n\nIf we think that 1010102 is so bad that that we should override their preference, I\u0027m still not sure we should override it with F16, which results in double the memory use.\n\n\u003e Releasing the bit-depth key is planned, but not for T.\n\nIs there a bug filed for that? I think there should be a FIXME/TODO somewhere, with a reference to the bug.",
+      "parentUuid": "5da4e10f_79c6db9d",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 13
+      },
+      "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
