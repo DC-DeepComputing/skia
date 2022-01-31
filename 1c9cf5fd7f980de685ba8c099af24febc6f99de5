@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e340c8b_02c2341c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T21:37:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3da99011_b7bd6935",
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb1dbbcb_65979436",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-31T17:56:39Z",
       "side": 1,
       "message": "tiny nit: `this-\u003e`",
+      "range": {
+        "startLine": 270,
+        "startChar": 8,
+        "endLine": 270,
+        "endChar": 19
+      },
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "622a247d_03c96377",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T21:37:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb1dbbcb_65979436",
       "range": {
         "startLine": 270,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29da1c8a_225816fb",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T21:37:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93aca543_65359ffa",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 11
+      },
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d536d51_d511fd6c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-01-31T17:56:39Z",
       "side": 1,
       "message": "- Is `program-\u003efContext` the same Context as `compiler.context()` here?\n- This part feels super touchy, I don\u0027t really 100% understand what\u0027s going on. It seems like we\u0027re resetting the Compiler to a clean slate somehow; comments would really be appreciated. Ideally `Rehydrator.program()` should be able to correctly deserialize a program in any context (not just for this one test) but I would be unsure how to do it correctly based on this example.",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 46
+      },
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c4aecd_052b6248",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T21:37:49Z",
+      "side": 1,
+      "message": "Good point, should have moved this setup into program() sooner. Hopefully clear now?",
+      "parentUuid": "2d536d51_d511fd6c",
       "range": {
         "startLine": 221,
         "startChar": 0,
