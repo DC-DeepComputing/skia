@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21ef025c_14cd2bbb",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-01-31T20:30:37Z",
+      "side": 1,
+      "message": "Can this be private now?",
+      "revId": "36cec6a05069e7556a4e888ffac0649390bd875e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
