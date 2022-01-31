@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<title>Spreadsheet Demo</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" src="https://unpkg.com/canvaskit-wasm@0.32.0/bin/full/canvaskit.js"></script>
+
+<style>
+  body {
+      background-color: black;
+  }
+  h1 {
+      color: white;
+  }
+</style>
+
+<body>
+  <h1>Large canvas with many numbers, like a spreadsheet</h1>
+
+  <canvas id=draw width=2000 height=1400></canvas>
+</body>
+
+<script type="text/javascript" charset="utf-8">
+  const ckLoaded = CanvasKitInit({ locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.32.0/bin/full/' + file });
+
+  ckLoaded.then((CanvasKit) => {
+    const surface = CanvasKit.MakeCanvasSurface('draw');
+    if (!surface) {
+      throw 'Could not make surface';
+    }
+
+    const greyPaint = new CanvasKit.Paint();
+    greyPaint.setColor(CanvasKit.Color4f(0.3, 0.3, 0.3, 1.0));
+    const blackPaint = new CanvasKit.Paint();
+    blackPaint.setColor(CanvasKit.BLACK);
+    const whitePaint = new CanvasKit.Paint();
+    whitePaint.setColor(CanvasKit.WHITE);
+    const springGreenPaint = new CanvasKit.Paint();
+    springGreenPaint.setColor(CanvasKit.Color(0, 255, 127));
+    const tomatoPaint = new CanvasKit.Paint();
+    tomatoPaint.setColor(CanvasKit.Color(255, 99, 71));
+
+    const textFont = new CanvasKit.Font(null, 12);
+    // Maybe use https://storage.googleapis.com/skia-cdn/google-web-fonts/NotoSans-Regular.ttf
+
+    const data = [];
+    const WIDTH = 2000, HEIGHT = 1000;
+    const ROWS = 100;
+    const ROW_HEIGHT = 15;
+    const COLS = 200;
+    const COL_WIDTH = 50;
+    for (let row = 0; row < ROWS; row++) {
+      data[row] = [];
+      for (let col = 0; col < COLS; col++) {
+        data[row][col] = Math.random() * Math.PI;
+      }
+    }
+
+    function drawFrame(canvas) {
+      canvas.clear(CanvasKit.BLACK);
+      const timer = performance.now() / 10000;
+      for (let row = 0; row < ROWS; row++) {
+        if (row % 2) {
+          canvas.drawRect(CanvasKit.XYWHRect(0, row * ROW_HEIGHT + 2, WIDTH, ROW_HEIGHT), greyPaint);
+        }
+        for (let col = 0; col < COLS; col++) {
+          let n = Math.abs(Math.sin(timer + data[row][col]));
+          let useWhiteFont = true;
+          if (n < 0.05) {
+            canvas.drawRect(CanvasKit.XYWHRect(col * COL_WIDTH - 2, (row-1) * ROW_HEIGHT + 2, COL_WIDTH, ROW_HEIGHT), tomatoPaint);
+            useWhiteFont = false;
+          } else if (n > 0.95) {
+            canvas.drawRect(CanvasKit.XYWHRect(col * COL_WIDTH - 2, (row-1) * ROW_HEIGHT + 2, COL_WIDTH, ROW_HEIGHT), springGreenPaint);
+            useWhiteFont = false;
+          }
+          canvas.drawText(n.toFixed(4).padStart(6, "0"), col * COL_WIDTH, row * ROW_HEIGHT,
+            useWhiteFont ? whitePaint : blackPaint, textFont);
+        }
+      }
+      surface.requestAnimationFrame(drawFrame)
+    }
+    surface.requestAnimationFrame(drawFrame);
+  });
+
+</script>
