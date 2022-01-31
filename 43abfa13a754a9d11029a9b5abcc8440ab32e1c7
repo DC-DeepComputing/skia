@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5eb8818_82ff9305",
+        "filename": "src/sksl/SkSLDehydrator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-31T17:56:39Z",
+      "side": 0,
+      "message": "Ideally I think we\u0027d still want to exclude this code from non-test, non-skslc targets just for build size reasons, but I don\u0027t know how to express that here. (We have GR_TEST_UTILS but mysteriously have never had SK_TEST_UTILS) Brian, any idea?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "43abfa13a754a9d11029a9b5abcc8440ab32e1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
