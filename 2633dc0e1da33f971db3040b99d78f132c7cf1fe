@@ -141,6 +141,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2652ca53_3f0ebae8",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-31T17:37:39Z",
+      "side": 1,
+      "message": "So this is part of the last remaining issue with the test around serialization. The whole isColor thing here in the existing code is super subtle. It doesn\u0027t actually mean the glyph is color, it means that any non-existent path should be considered implicitly non-existent. It\u0027s really tight coupling between here, the implementation of SkGlyphRunListPainter::processGlyphRun, SkStrikeClientImpl::readStrikeData, and SkScalerCache::mergeGlyphAndImage. This same thing is quite awkward with regard to the existing path code as well. I think the right thing here is to allow a glyph to have new information added to it in deserialization, but check to see if that information is already present and assert that existing information is never overwritten.",
+      "parentUuid": "f409aef3_bb87c266",
+      "range": {
+        "startLine": 277,
+        "startChar": 17,
+        "endLine": 277,
+        "endChar": 33
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1d1147b8_6f576f3b",
         "filename": "src/core/SkScalerContext.cpp",
         "patchSetId": 1
@@ -215,6 +239,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4213e72_e55be4c2",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-31T17:37:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1390f54_747f088d",
+      "range": {
+        "startLine": 297,
+        "startChar": 100,
+        "endLine": 297,
+        "endChar": 104
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b789c633_47c41623",
@@ -228,6 +276,30 @@
       "writtenOn": "2021-06-01T16:47:20Z",
       "side": 1,
       "message": "Line length",
+      "range": {
+        "startLine": 341,
+        "startChar": 100,
+        "endLine": 341,
+        "endChar": 112
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34b92a2c_2995fb3a",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-31T17:37:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b789c633_47c41623",
       "range": {
         "startLine": 341,
         "startChar": 100,

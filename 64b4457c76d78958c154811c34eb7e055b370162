@@ -16,6 +16,24 @@
       "message": "Suggest to add:\n\"Bug: skia:12121\"",
       "revId": "64b4457c76d78958c154811c34eb7e055b370162",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "667be430_858a7b3c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-01-31T17:37:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f29d4456_bff2d1f8",
+      "revId": "64b4457c76d78958c154811c34eb7e055b370162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
