@@ -2588,7 +2588,9 @@ void GrSubRunNoCachePainter::draw(GrAtlasSubRunOwner subRun) {
 
 namespace {
 // -- Slug -----------------------------------------------------------------------------------------
-class Slug final : public GrSlug, public SkGlyphRunPainterInterface {
+class Slug final : public GrSlug,
+                   public GrTextReferenceFrame,
+                   public SkGlyphRunPainterInterface {
 public:
     static sk_sp<Slug> Make(const SkMatrixProvider& viewMatrix,
                             const SkGlyphRunList& glyphRunList,
@@ -2624,7 +2626,7 @@ public:
             SkScalar strikeToSourceScale, const SkFont& runFont, SkScalar minScale,
             SkScalar maxScale) override;
 
-    const SkMatrix& initialPositionMatrix() const { return fInitialPositionMatrix; }
+    const SkMatrix& initialPositionMatrix() const override { return fInitialPositionMatrix; }
     SkPoint origin() const { return fOrigin; }
 
     // Change memory management to handle the data after Slug, but in the same allocation
@@ -2634,11 +2636,13 @@ public:
     void* operator new(size_t, void* p) { return p; }
 
 private:
+    // The allocator must come first because it needs to be destroyed last. Other fields of this
+    // structure may have pointers into it.
+    GrSubRunAllocator fAlloc;
     const SkRect fSourceBounds;
     const SkPaint fPaint;
     const SkMatrix fInitialPositionMatrix;
     const SkPoint fOrigin;
-    GrSubRunAllocator fAlloc;
     GrSubRunList fSubRuns;
 };
 
@@ -2647,11 +2651,11 @@ Slug::Slug(SkRect sourceBounds,
            const SkMatrix& positionMatrix,
            SkPoint origin,
            int allocSize)
-           : fSourceBounds{sourceBounds}
+           : fAlloc {SkTAddOffset<char>(this, sizeof(Slug)), allocSize, allocSize/2}
+           , fSourceBounds{sourceBounds}
            , fPaint{paint}
            , fInitialPositionMatrix{positionMatrix}
-           , fOrigin{origin}
-           , fAlloc {SkTAddOffset<char>(this, sizeof(Slug)), allocSize, allocSize/2} { }
+           , fOrigin{origin} { }
 
 void Slug::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
                        skgpu::v1::SurfaceDrawContext* sdc) {

@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 
 class SkCanvas;
+class SkMatrix;
 class SkPaint;
 class SkTextBlob;
 
@@ -19,6 +20,13 @@ class SkTextBlob;
 //    SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG
 // For Skia, add this to your args.gn file.
 //    extra_cflags = ["-D", "SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG"]
+
+class SK_API GrSubRunSupport : public SkRefCnt {
+public:
+    virtual ~GrSubRunSupport() = default;
+    virtual const SkMatrix& initialPositionMatrix() const = 0;
+    virtual bool needsBilerpPadding() const = 0;
+};
 
 // GrSlug encapsulates an SkTextBlob at a specific origin, using a specific paint. It can be
 // manipulated using matrix and clip changes to the canvas. If the canvas is transformed, then

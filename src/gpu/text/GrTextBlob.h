@@ -148,6 +148,14 @@ private:
     GrSubRunOwner* fTail{&fHead};
 };
 
+// -- GrTextReferenceFrame -------------------------------------------------------------------------
+class GrTextReferenceFrame {
+public:
+    virtual ~GrTextReferenceFrame() = default;
+    virtual const SkMatrix& initialPositionMatrix() const = 0;
+    virtual bool needsBilerpPadding() const = 0;
+};
+
 // -- GrTextBlob -----------------------------------------------------------------------------------
 // A GrTextBlob contains a fully processed SkTextBlob, suitable for nearly immediate drawing
 // on the GPU.  These are initially created with valid positions and colors, but with invalid
@@ -165,7 +173,8 @@ private:
 //                    with.
 //
 //
-class GrTextBlob final : public SkRefCnt, public SkGlyphRunPainterInterface {
+class GrTextBlob final : public SkRefCnt, public GrTextReferenceFrame,
+                         public SkGlyphRunPainterInterface {
 public:
 
     // Key is not used as part of a hash map, so the hash is never taken. It's only used in a
