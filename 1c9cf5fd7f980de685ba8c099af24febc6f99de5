@@ -175,6 +175,30 @@
       },
       "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fcca472_d97e859b",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-31T21:51:46Z",
+      "side": 1,
+      "message": "Oh yeah, that\u0027s way cleaner. Thank you.\n\nI\u0027m happy with the CL as-is, but it might be interesting in a followup to increment the dehydrated version number and store the symbol-table-count inside the dehydrated data proper, since AFAICS that\u0027s all that is left to having an actual viable binary format.",
+      "parentUuid": "f9c4aecd_052b6248",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 46
+      },
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
