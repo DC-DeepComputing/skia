@@ -22,6 +22,30 @@
       },
       "revId": "43abfa13a754a9d11029a9b5abcc8440ab32e1c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6a68861_51380bde",
+        "filename": "src/sksl/SkSLDehydrator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-31T23:00:26Z",
+      "side": 0,
+      "message": "Two thoughts:\n1) Linker should be able to nuke all of this code, as long as a client doesn\u0027t use it. If we see that isn\u0027t working, though...\n2) All of our test targets require GPU support, so GR_TEST_UTILS might be okay to check. (It\u0027s not the best, as it doesn\u0027t really indicate intent.)",
+      "parentUuid": "c5eb8818_82ff9305",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "43abfa13a754a9d11029a9b5abcc8440ab32e1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

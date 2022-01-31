@@ -199,6 +199,30 @@
       },
       "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72acbe04_05758fc5",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-01-31T23:00:26Z",
+      "side": 1,
+      "message": "Yeah, this was actually going to relate to my last concern - which is that the code to dehydrate a program lives in the test code, but the rehydration mirror of that is actually in rehydrator. I\u0027d definitely prefer it if the code that\u0027s in test_rehydrate and write_symbol_tables were encapsulated in the dehydrator (which would require - as John said, putting the symbol table count into the binary).",
+      "parentUuid": "9fcca472_d97e859b",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 46
+      },
+      "revId": "1c9cf5fd7f980de685ba8c099af24febc6f99de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
