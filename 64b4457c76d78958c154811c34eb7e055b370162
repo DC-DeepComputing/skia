@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f29d4456_bff2d1f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-01-31T11:30:51Z",
+      "side": 1,
+      "message": "Suggest to add:\n\"Bug: skia:12121\"",
+      "revId": "64b4457c76d78958c154811c34eb7e055b370162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
