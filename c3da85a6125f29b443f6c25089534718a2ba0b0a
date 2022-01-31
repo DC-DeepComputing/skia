@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "337cde74_db26179a",
+        "filename": "toolchain/clang_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-31T21:01:52Z",
+      "side": 1,
+      "message": "Please remove (this link explains our old C++14/17 hybrid state)",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 66
+      },
+      "revId": "c3da85a6125f29b443f6c25089534718a2ba0b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
