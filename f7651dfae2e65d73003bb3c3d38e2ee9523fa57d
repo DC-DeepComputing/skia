@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d762b6e7_e9189f38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-01-31T22:47:06Z",
+      "side": 1,
+      "message": "You could make a case for making some of these transformations at the SkSL level, e.g. we could replace `pow(2, x)` with `exp2(x)` unilaterally--but this seems less useful, since SkVM propagates immediates so aggressively and SkSL does not.",
+      "revId": "f7651dfae2e65d73003bb3c3d38e2ee9523fa57d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
