@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4fb4eb3_9fb60c3e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-01-31T21:15:21Z",
+      "side": 1,
+      "message": "Might be nice to include the motivation here: AFAIK, to be able to use \u003coptional\u003e and other C++17 things.",
+      "revId": "d68cad99844e6318dd07fd0c44e5a3653ef3e6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91e8aaa5_617807fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-01-31T21:15:21Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "d68cad99844e6318dd07fd0c44e5a3653ef3e6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
