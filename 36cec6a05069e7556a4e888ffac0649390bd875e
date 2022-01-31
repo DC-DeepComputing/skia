@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e673967d_f20e62bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-31T20:56:30Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "36cec6a05069e7556a4e888ffac0649390bd875e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21ef025c_14cd2bbb",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-01-31T20:30:37Z",
       "side": 1,
       "message": "Can this be private now?",
+      "revId": "36cec6a05069e7556a4e888ffac0649390bd875e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49053404_dcfa8922",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-01-31T20:56:30Z",
+      "side": 1,
+      "message": "Nope. The makeUnique call needs it to be public. This is in a .cpp file. There really are no scoping issues here.",
+      "parentUuid": "21ef025c_14cd2bbb",
       "revId": "36cec6a05069e7556a4e888ffac0649390bd875e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
