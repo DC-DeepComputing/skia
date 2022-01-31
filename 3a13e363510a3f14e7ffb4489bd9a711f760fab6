@@ -175,6 +175,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "842e39f3_473d951e",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T22:32:14Z",
+      "side": 1,
+      "message": "Yes these two places are easy to be modified. My afraid is that if there is other places I don\u0027t know, and may break things.\n\n\"This means that ImageDecoder  won\u0027t have any way to give you 10 bit. Instead of asking for a preferred config, like  BitmapFactory ,  ImageDecoder  is supposed to give you the highest quality by default.\"\nThat\u0027s true.",
+      "parentUuid": "9e0ce7ec_3f4ca9fb",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4df1575_ee3f7cef",
         "filename": "src/codec/SkHeifCodec.cpp",
         "patchSetId": 1

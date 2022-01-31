@@ -70,6 +70,30 @@
       },
       "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d22616_56dbcb9e",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T22:32:14Z",
+      "side": 1,
+      "message": "\"Okay, but I still think that if the client asks for 1010102, we should give them 1010102.\"\nYes I agree. Changed.\n\n\"Is there a bug filed for that? I think there should be a FIXME/TODO somewhere, with a reference to the bug.\"\nI will chat with the Media Metadata owner.",
+      "parentUuid": "f17bed99_e1bd9811",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 13
+      },
+      "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
