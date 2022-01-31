@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ab8ced_c1184244",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-31T18:39:46Z",
+      "side": 0,
+      "message": "This is a relic from before we had PreChopPathCurves. Glad you cleaned it out.",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 162,
+        "endChar": 5
+      },
+      "revId": "fc48cb5b39c22519680678ffa6d4c34c7d6f0c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

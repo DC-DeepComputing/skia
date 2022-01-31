@@ -16,6 +16,46 @@
       "message": "This is the start of the PatchWriter refactor that simplifies chopping and iteration logic across the fixed count tessellators",
       "revId": "6cbe0dbaa8c7ce6cd69a394e993776e3599ce8f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fa32880_36eb41a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-31T18:39:46Z",
+      "side": 1,
+      "message": "Whenever you touch StrokeHardwareTessellator it\u0027s good to run the \"GpuTess\" bot. This one runs with \"--hwtess\" to allow hardware tessellation.",
+      "revId": "6cbe0dbaa8c7ce6cd69a394e993776e3599ce8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1f225f8_7fb5bd96",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-31T18:39:46Z",
+      "side": 1,
+      "message": "What do you think about:\n\n writeDeferredStrokePatch()\n writeDeferredFirstStrokePatch()\n emitDeferred...\n flushDeferred...",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "6cbe0dbaa8c7ce6cd69a394e993776e3599ce8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
