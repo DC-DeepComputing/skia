@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baf31060_cbda6178",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T17:09:56Z",
+      "side": 1,
+      "message": "Program requires a shared_ptr to Context, and Compiler.context() was handing out a reference, so I had changed Compiler.context() to expose the shared_ptr instead.\n\nThis latest patch set moves all of these changes into Rehydrator where it\u0027s both more contained and hopefully more clear. I can of course still break them out into a separate CL if you\u0027d prefer, but it should at least be less objectionable now.",
+      "parentUuid": "d09ddf9d_166f50e6",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 38
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e24dba2_c3d4a05c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13256b5d_bdcb8dc8",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T17:09:56Z",
+      "side": 1,
+      "message": "This has been refactored away.",
+      "parentUuid": "9e24dba2_c3d4a05c",
+      "range": {
+        "startLine": 227,
+        "startChar": 8,
+        "endLine": 227,
+        "endChar": 43
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b8d9f6d_b7f8c66b",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-01-28T16:14:58Z",
       "side": 1,
       "message": "This stuff feels like it is breaking the encapsulation pretty severely on Compiler and Rehydrator implementation details. (Needing to expose `makeRootSymbolTable` and `addGLSLTypeAliases`, needing to manually set up the modifier pool, etc)\n\nLet\u0027s find a better factoring for this? Either Rehydrator or Compiler should own this fixup logic, not the test harness. Ideally we could say `rehydrator.buildProgram` or something and it just works.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 5
+      },
+      "revId": "25495f362ce2c5f4d1166712ab53a725525b7992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "045770fe_630221e1",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-01-31T17:09:56Z",
+      "side": 1,
+      "message": "Better?",
+      "parentUuid": "1b8d9f6d_b7f8c66b",
       "range": {
         "startLine": 219,
         "startChar": 0,
