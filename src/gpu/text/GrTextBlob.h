@@ -13,6 +13,7 @@
 
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkMaskFilterBase.h"
@@ -148,14 +149,6 @@ private:
     GrSubRunOwner* fTail{&fHead};
 };
 
-// -- GrTextReferenceFrame -------------------------------------------------------------------------
-class GrTextReferenceFrame {
-public:
-    virtual ~GrTextReferenceFrame() = default;
-    virtual const SkMatrix& initialPositionMatrix() const = 0;
-    virtual bool needsBilerpPadding() const = 0;
-};
-
 // -- GrTextBlob -----------------------------------------------------------------------------------
 // A GrTextBlob contains a fully processed SkTextBlob, suitable for nearly immediate drawing
 // on the GPU.  These are initially created with valid positions and colors, but with invalid
@@ -173,8 +166,7 @@ public:
 //                    with.
 //
 //
-class GrTextBlob final : public SkRefCnt, public GrTextReferenceFrame,
-                         public SkGlyphRunPainterInterface {
+class GrTextBlob final : public GrTextReferenceFrame, public SkGlyphRunPainterInterface {
 public:
 
     // Key is not used as part of a hash map, so the hash is never taken. It's only used in a
@@ -229,7 +221,7 @@ public:
 
     void addKey(const Key& key);
     bool hasPerspective() const;
-    const SkMatrix& initialPositionMatrix() const { return fInitialPositionMatrix; }
+    const SkMatrix& initialPositionMatrix() const override { return fInitialPositionMatrix; }
     bool supportBilerpAtlas() const { return fSupportBilerpAtlas; }
 
     std::tuple<SkScalar, SkScalar> scaleBounds() const { return {fMaxMinScale, fMinMaxScale}; }
