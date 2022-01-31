@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStringView.h"
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLOperators.h"
@@ -135,8 +136,8 @@ const char* Operator::operatorName() const {
     }
 }
 
-skstd::string_view Operator::tightOperatorName() const {
-    skstd::string_view name = this->operatorName();
+std::string_view Operator::tightOperatorName() const {
+    std::string_view name = this->operatorName();
     if (skstd::starts_with(name, ' ')) {
         name.remove_prefix(1);
     }
