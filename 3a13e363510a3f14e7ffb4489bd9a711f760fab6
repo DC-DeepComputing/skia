@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d6fe5e_78acfad7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T18:23:12Z",
+      "side": 1,
+      "message": "Yes. Framework side, if config decoding 10-bit color format on a 8-bit source, decoder will fail decoding. A better solution will be checking bit depth metadata, however framework currently doesn\u0027t have this key. So an alternative solution is using RGBA_1010102 color format specially for 10-bit heif source.\n\nI tried treehugger with this change, and it passed.",
+      "parentUuid": "32c1ded8_8a651733",
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "128ba111_e8a3c5a4",
@@ -61,6 +79,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c0d7d0c_ec033a6d",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T18:23:12Z",
+      "side": 1,
+      "message": "I\u0027m not very clear why \"this code let us default 16 bit PNGs to F16\". Even without this change, 16 bit PNG will set highPrecision to true, and return F16. This change  doesn\u0027t change this logic. I think your point is for RGBA_1010102, if hasAlpha, return F16 instead of RGBA_1010102?\n\nI didn\u0027t change bitsPerComponent to 10 for RGBA_1010102 because it\u0027s still 32 bits in total for RGBA four channels and 8 bits on average. I\u0027m afraid its potential risk of calculate bits per pixel",
+      "parentUuid": "128ba111_e8a3c5a4",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4df1575_ee3f7cef",
         "filename": "src/codec/SkHeifCodec.cpp",
         "patchSetId": 1
@@ -72,6 +114,30 @@
       "writtenOn": "2022-01-31T17:30:09Z",
       "side": 1,
       "message": "F16 is currently setting the src xform format to 8888 (regardless of opacity).",
+      "range": {
+        "startLine": 439,
+        "startChar": 17,
+        "endLine": 439,
+        "endChar": 61
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29d3e631_6db2bee2",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-01-31T18:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4df1575_ee3f7cef",
       "range": {
         "startLine": 439,
         "startChar": 17,
