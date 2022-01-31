@@ -225,7 +225,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			glPrefix = "gles"
 			// MSAA is disabled on Pixel3a (https://b.corp.google.com/issues/143074513).
 			// MSAA is disabled on Pixel5 (https://skbug.com/11152).
-			if b.model("Pixel3a", "Pixel5") {
+			if b.model("Pixel3a", "Pixel5", "Pixel6") {
 				sampleCount = 0
 			}
 		} else if b.matchGpu("Intel") {
@@ -1142,9 +1142,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~VkPrepareForExternalIOQueueTransitionTest")
 	}
 	if b.matchExtraConfig("Graphite") {
-                // skia:12813
+		// skia:12813
 		match = append(match, "~async_rescale_and_read")
-        }
+	}
 
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
