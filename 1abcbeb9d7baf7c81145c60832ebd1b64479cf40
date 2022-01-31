@@ -16,6 +16,23 @@
       "message": "ping",
       "revId": "1abcbeb9d7baf7c81145c60832ebd1b64479cf40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1417b4f_669a1ec1",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 1472,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-01-31T13:39:44Z",
+      "side": 1,
+      "message": "Can you make the test confirm anything more definitive about the encoded data, say by decoding it with something?",
+      "revId": "1abcbeb9d7baf7c81145c60832ebd1b64479cf40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
