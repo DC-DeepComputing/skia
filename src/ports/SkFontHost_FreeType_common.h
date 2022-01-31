@@ -50,6 +50,7 @@ protected:
     void generateGlyphImage(FT_Face face, const SkGlyph& glyph, const SkMatrix& bitmapTransform);
     bool generateGlyphPath(FT_Face face, SkPath* path);
     bool generateFacePath(FT_Face face, SkGlyphID glyphID, SkPath* path);
+    sk_sp<SkDrawable> generateGlyphDrawable(FT_Face face, const SkGlyph&);
 
     // Computes a bounding box for a COLRv1 glyph id in FT_BBox 26.6 format and FreeType's y-up
     // coordinate space.

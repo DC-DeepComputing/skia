@@ -9,7 +9,9 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
@@ -1575,6 +1577,49 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(
     }
 #endif
 }
+
+sk_sp<SkDrawable> SkScalerContext_FreeType_Base::generateGlyphDrawable(FT_Face face, const SkGlyph& glyph) {
+  if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE)
+    return nullptr;
+
+  FT_Palette_Data palette_data;
+  FT_Error err = FT_Palette_Data_Get(face, &palette_data);
+  if (err) {
+      SK_TRACEFTR(err, "Could not get palette data from %s fontFace.", face->family_name);
+      return nullptr;
+  }
+
+  SkAutoTArray<SkColor> originalPalette;
+
+  FT_Color* ftPalette;
+  err = FT_Palette_Select(face, 0, &ftPalette);
+  if (err) {
+      SK_TRACEFTR(err, "Could not get palette colors from %s fontFace.", face->family_name);
+      return nullptr;
+  }
+  originalPalette.reset(palette_data.num_palette_entries);
+  for (int i = 0; i < palette_data.num_palette_entries; ++i) {
+      originalPalette[i] = SkColorSetARGB(
+              ftPalette[i].alpha, ftPalette[i].red, ftPalette[i].green, ftPalette[i].blue);
+  }
+  SkSpan<SkColor> paletteSpan(originalPalette.data(), palette_data.num_palette_entries);
+
+  SkPictureRecorder recorder;
+  SkCanvas* recordingCanvas = recorder.beginRecording(SkRect::Make(glyph.mask().fBounds));
+  VisitedSet visitedSet;
+  bool haveLayers = colrv1_start_glyph(recordingCanvas,
+                                       paletteSpan,
+                                       fRec.fForegroundColor,
+                                       face,
+                                       glyph.getGlyphID(),
+                                       FT_COLOR_INCLUDE_ROOT_TRANSFORM,
+                                       &visitedSet);
+  sk_sp<SkDrawable> glyphDrawable = recorder.finishRecordingAsDrawable();
+
+  return haveLayers ? glyphDrawable : nullptr;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
