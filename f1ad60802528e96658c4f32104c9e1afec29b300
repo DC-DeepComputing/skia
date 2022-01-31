@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67d03241_fa63a861",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T13:09:59Z",
+      "side": 1,
+      "message": "Does //modules/canvaskit/compile.sh need to be modified to make use of this?",
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4920ad7_40f47f02",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 2978,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T13:09:59Z",
+      "side": 1,
+      "message": "I think we should just change this to is_wasm",
+      "range": {
+        "startLine": 2978,
+        "startChar": 8,
+        "endLine": 2978,
+        "endChar": 50
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b929629_45845404",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T13:09:59Z",
+      "side": 1,
+      "message": "Use https://skia.googlesource.com/external/github.com/emscripten-core/emsdk.git instead",
+      "range": {
+        "startLine": 26,
+        "startChar": 53,
+        "endLine": 26,
+        "endChar": 59
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55c19663_083b760e",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T13:09:59Z",
+      "side": 1,
+      "message": "I don\u0027t think this should be declared here - it\u0027s not clear that this only affects the wasm/webgl build of viewer. Put it in the canvaskit BUILD.gn file",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "229b1881_0ae4828d",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-01-31T13:09:59Z",
+      "side": 1,
+      "message": "2022?",
+      "range": {
+        "startLine": 1,
+        "startChar": 16,
+        "endLine": 1,
+        "endChar": 20
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
