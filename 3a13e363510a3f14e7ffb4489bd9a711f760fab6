@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c1ded8_8a651733",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T17:30:09Z",
+      "side": 1,
+      "message": "Did you figure out the test failures Derek linked to in in https://skia-review.googlesource.com/c/skia/+/501676 ?\n\n(Actually, it looks like they might be failing independent of that change? It shows a post-submit test history that is all red.)",
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "128ba111_e8a3c5a4",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T17:30:09Z",
+      "side": 1,
+      "message": "This code lets us default 16 bit PNGs to F16. As I recall, it also results in forcing BitmapFactory to decode to F16 even if you asked for 8888. To get similar behavior for 1010102, perhaps we should update this?\n\nWe would update SkHeifCodec to set bitsPerComponent to 10, and then change this to something like:\n\n  if (bitsPerComponent \u003e 8) {\n    if (hasAlpha || bitsPerComponent \u003e 10) {\n      return F16;\n    }\n    return 1010102;\n  }\n\nOr maybe we should make a larger change that lets you get 8888 from 10bit, while still defaulting to 10bit.",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4df1575_ee3f7cef",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-01-31T17:30:09Z",
+      "side": 1,
+      "message": "F16 is currently setting the src xform format to 8888 (regardless of opacity).",
+      "range": {
+        "startLine": 439,
+        "startChar": 17,
+        "endLine": 439,
+        "endChar": 61
+      },
+      "revId": "3a13e363510a3f14e7ffb4489bd9a711f760fab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
