@@ -16,6 +16,29 @@
       "message": "The non-Vulkan Perf tests aren\u0027t added here because they are failing, so I am moving that to a separate CL.",
       "revId": "e049166e835a577ba48374d03028919a4a010601",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82eabafc_90645641",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-01-31T19:10:15Z",
+      "side": 1,
+      "message": "does this have the same issues as the 3a or 5? If so can you add pixel 6 to the comment and connected bug?",
+      "range": {
+        "startLine": 228,
+        "startChar": 35,
+        "endLine": 228,
+        "endChar": 42
+      },
+      "revId": "e049166e835a577ba48374d03028919a4a010601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
