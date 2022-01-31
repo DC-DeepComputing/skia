@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1642a1e_46bd0ac7",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-01-31T19:06:41Z",
+      "side": 1,
+      "message": "Any reason to keep the \"\u003c\u003c\" syntax instead of\n\n patchWriter.writeTriangle()\n patchWriter.writeCubic()\n patchWriter.write...()\n \n?",
+      "range": {
+        "startLine": 145,
+        "startChar": 20,
+        "endLine": 145,
+        "endChar": 56
+      },
+      "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
