@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2454d8e_9b114877",
+        "filename": "src/gpu/text/GrSDFTControl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T17:59:47Z",
+      "side": 0,
+      "message": "I just simplified this to just use limit of things. Having a separate limit and size didn\u0027t help me understand the code.",
+      "range": {
+        "startLine": 23,
+        "startChar": 39,
+        "endLine": 31,
+        "endChar": 0
+      },
+      "revId": "98d664096d4035fc8936788b100167de68cab8fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
