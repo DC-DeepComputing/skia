@@ -106,6 +106,56 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 //--------------------------------------------------------------------------------------------------
 namespace GradientShaderBlocks {
 
+
+GradientData::GradientData(SkShader::GradientType type,
+                           SkTileMode tm,
+                           int numStops)
+        : fType(type)
+        , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
+        , fRadii{0.0f, 0.0f}
+        , fTM(tm)
+        , fNumStops(numStops) {
+    sk_bzero(fColor4fs, sizeof(fColor4fs));
+    sk_bzero(fOffsets, sizeof(fOffsets));
+}
+
+GradientData::GradientData(SkShader::GradientType type,
+                           SkPoint points[2],
+                           float radii[2],
+                           SkTileMode tm,
+                           int numStops,
+                           SkColor colors[kMaxStops],
+                           float offsets[kMaxStops])
+        : fType(type)
+        , fTM(tm)
+        , fNumStops(numStops) {
+    memcpy(fPoints, points, sizeof(fPoints));
+    memcpy(fRadii, radii, sizeof(fRadii));
+    this->toColor4fs(fNumStops, colors);
+    this->toOffsets(fNumStops, offsets);
+}
+
+void GradientData::toColor4fs(int numColors, SkColor colors[kMaxStops]) {
+    SkASSERT(numColors >= 2 && numColors <= kMaxStops);
+
+    int i;
+    for (i = 0; i < numColors; ++i) {
+        fColor4fs[i] = SkColor4f::FromColor(colors[i]);
+    }
+    for ( ; i < kMaxStops; ++i) {
+        fColor4fs[i] = fColor4fs[numColors-1];
+    }
+}
+
+void GradientData::toOffsets(int numStops, float inputOffsets[kMaxStops]) {
+    SkASSERT(numStops >= 2 && numStops <= kMaxStops);
+
+    memcpy(fOffsets, inputOffsets, numStops * sizeof(float));
+    for (int i = numStops ; i < kMaxStops; ++i) {
+        fOffsets[i] = fOffsets[numStops-1];
+    }
+}
+
 static const int kBlockDataSize = 1;
 
 void AddToKey(SkBackend backend,
