@@ -2,54 +2,174 @@
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+import("//gn/skia.gni")
+import("//gn/toolchain/wasm.gni")
 
-component("viewer_wasm") {
-  testonly = true
-  include_dirs = [ "../.." ]
-  sources = [
-    "../../modules/svg/src/SkSVGAttribute.cpp",
-    "../../modules/svg/src/SkSVGAttributeParser.cpp",
-    "../../modules/svg/src/SkSVGCircle.cpp",
-    "../../modules/svg/src/SkSVGClipPath.cpp",
-    "../../modules/svg/src/SkSVGContainer.cpp",
-    "../../modules/svg/src/SkSVGDOM.cpp",
-    "../../modules/svg/src/SkSVGEllipse.cpp",
-    "../../modules/svg/src/SkSVGFe.cpp",
-    "../../modules/svg/src/SkSVGFeColorMatrix.cpp",
-    "../../modules/svg/src/SkSVGFeComposite.cpp",
-    "../../modules/svg/src/SkSVGFeTurbulence.cpp",
-    "../../modules/svg/src/SkSVGFilter.cpp",
-    "../../modules/svg/src/SkSVGFilterContext.cpp",
-    "../../modules/svg/src/SkSVGGradient.cpp",
-    "../../modules/svg/src/SkSVGLine.cpp",
-    "../../modules/svg/src/SkSVGLinearGradient.cpp",
-    "../../modules/svg/src/SkSVGNode.cpp",
-    "../../modules/svg/src/SkSVGPath.cpp",
-    "../../modules/svg/src/SkSVGPattern.cpp",
-    "../../modules/svg/src/SkSVGPoly.cpp",
-    "../../modules/svg/src/SkSVGRadialGradient.cpp",
-    "../../modules/svg/src/SkSVGRect.cpp",
-    "../../modules/svg/src/SkSVGRenderContext.cpp",
-    "../../modules/svg/src/SkSVGSVG.cpp",
-    "../../modules/svg/src/SkSVGShape.cpp",
-    "../../modules/svg/src/SkSVGStop.cpp",
-    "../../modules/svg/src/SkSVGText.cpp",
-    "../../modules/svg/src/SkSVGTransformableNode.cpp",
-    "../../modules/svg/src/SkSVGUse.cpp",
-    "../../modules/svg/src/SkSVGValue.cpp",
-    "../../tools/viewer/SKPSlide.cpp",
-    "../../tools/viewer/SampleSlide.cpp",
-    "../../tools/viewer/SvgSlide.cpp",
-  ]
-  deps = [ "../..:samples" ]
+# These targets depend on components that are only declared if
+# `skia_enable_tools` is true.
+if (skia_enable_tools) {
+  component("viewer_wasm") {
+    testonly = true
+    include_dirs = [ "../.." ]
+    sources = [
+      "../../modules/svg/src/SkSVGAttribute.cpp",
+      "../../modules/svg/src/SkSVGAttributeParser.cpp",
+      "../../modules/svg/src/SkSVGCircle.cpp",
+      "../../modules/svg/src/SkSVGClipPath.cpp",
+      "../../modules/svg/src/SkSVGContainer.cpp",
+      "../../modules/svg/src/SkSVGDOM.cpp",
+      "../../modules/svg/src/SkSVGEllipse.cpp",
+      "../../modules/svg/src/SkSVGFe.cpp",
+      "../../modules/svg/src/SkSVGFeColorMatrix.cpp",
+      "../../modules/svg/src/SkSVGFeComposite.cpp",
+      "../../modules/svg/src/SkSVGFeTurbulence.cpp",
+      "../../modules/svg/src/SkSVGFilter.cpp",
+      "../../modules/svg/src/SkSVGFilterContext.cpp",
+      "../../modules/svg/src/SkSVGGradient.cpp",
+      "../../modules/svg/src/SkSVGLine.cpp",
+      "../../modules/svg/src/SkSVGLinearGradient.cpp",
+      "../../modules/svg/src/SkSVGNode.cpp",
+      "../../modules/svg/src/SkSVGPath.cpp",
+      "../../modules/svg/src/SkSVGPattern.cpp",
+      "../../modules/svg/src/SkSVGPoly.cpp",
+      "../../modules/svg/src/SkSVGRadialGradient.cpp",
+      "../../modules/svg/src/SkSVGRect.cpp",
+      "../../modules/svg/src/SkSVGRenderContext.cpp",
+      "../../modules/svg/src/SkSVGSVG.cpp",
+      "../../modules/svg/src/SkSVGShape.cpp",
+      "../../modules/svg/src/SkSVGStop.cpp",
+      "../../modules/svg/src/SkSVGText.cpp",
+      "../../modules/svg/src/SkSVGTransformableNode.cpp",
+      "../../modules/svg/src/SkSVGUse.cpp",
+      "../../modules/svg/src/SkSVGValue.cpp",
+      "../../tools/viewer/SKPSlide.cpp",
+      "../../tools/viewer/SampleSlide.cpp",
+      "../../tools/viewer/SvgSlide.cpp",
+    ]
+    deps = [ "../..:samples" ]
+  }
+
+  component("gm_wasm") {
+    testonly = true
+    include_dirs = [ "../.." ]
+    deps = [
+      "../..:hash_and_encode",
+      "../..:tool_utils",
+      "../../modules/svg:svg",
+    ]
+  }
 }
 
-component("gm_wasm") {
-  testonly = true
-  include_dirs = [ "../.." ]
+action("create_notomono_cpp") {
+  script = "../../tools/embed_resources.py"
+
+  inputs = [ "fonts/NotoMono-Regular.ttf" ]
+
+  outputs =
+      [ "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp" ]
+
+  args = [
+    "--name=SK_EMBEDDED_FONTS",
+    "--input",
+    rebase_path("fonts/NotoMono-Regular.ttf"),
+    "--output",
+    "modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
+    "--align=4",
+  ]
+}
+
+wasm_lib("canvaskit") {
   deps = [
-    "../..:hash_and_encode",
-    "../..:tool_utils",
-    "../../modules/svg:svg",
+    ":create_notomono_cpp",
+    "../..:skia",
+    "../../modules/skparagraph:skparagraph",
+  ]
+  sources = [
+    "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
+    "WasmCommon.h",
+    "canvaskit_bindings.cpp",
+    "paragraph_bindings.cpp",
+    "paragraph_bindings_gen.cpp",
+  ]
+
+  ldflags = []
+  if (is_debug) {
+    ldflags += [
+      "-O0",
+      "-sDEMANGLE_SUPPORT=1",
+      "-sASSERTIONS=1",
+      "-sGL_ASSERTIONS=1",
+      "-g3",
+      "--pre-js",
+      rebase_path("debug.js"),
+    ]
+  } else {
+    externs_path = rebase_path("externs.js")
+    ldflags += [
+      "-Oz",
+      "--closure=1",
+      "--pre-js",
+      rebase_path("release.js"),
+      "--closure-args=--externs=$externs_path",
+    ]
+  }
+  ldflags += [
+    "-fno-rtti",
+    "-lGL",
+    "--pre-js",
+    rebase_path("cpu.js"),
+    "--pre-js",
+    rebase_path("gpu.js"),
+    "-sUSE_WEBGL2=1",
+    "-std=c++17",
+    "--bind",
+    "--no-entry",
+    "--pre-js",
+    rebase_path("preamble.js"),
+    "--pre-js",
+    rebase_path("color.js"),
+    "--pre-js",
+    rebase_path("memory.js"),
+    "--pre-js",
+    rebase_path("util.js"),
+    "--pre-js",
+    rebase_path("interface.js"),
+    "--pre-js",
+    rebase_path("matrix.js"),
+    "--pre-js",
+    rebase_path("paragraph.js"),
+    "--pre-js",
+    rebase_path("font.js"),
+    "--pre-js",
+    rebase_path("postamble.js"),
+    "-sLLD_REPORT_UNDEFINED",
+    "-sALLOW_MEMORY_GROWTH=1",
+    "-sEXPORT_NAME=CanvasKitInit",
+    "-sEXPORTED_FUNCTIONS=[_malloc,_free]",
+    "-sFORCE_FILESYSTEM=0",
+    "-sFILESYSTEM=0",
+    "-sMODULARIZE=1",
+    "-sNO_EXIT_RUNTIME=1",
+    "-sINITIAL_MEMORY=128MB",
+    "-sWASM=1",
+    "-sSTRICT=1",
+  ]
+
+  defines = []
+  if (is_debug) {
+    defines += [ "SK_DEBUG" ]
+  } else {
+    defines += [ "SK_RELEASE" ]
+  }
+  defines += [
+    "SK_INCLUDE_PARAGRAPH=1",
+    "SK_DISABLE_AAA",
+    "SK_FORCE_8_BYTE_ALIGNMENT",
+    "EMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",
+    "SK_HAS_ANDROID_CODEC",
+    "SK_SUPPORT_GPU=1",
+    "SK_SHAPER_HARFBUZZ_AVAILABLE",
+    "SK_GL",
+    "SK_DISABLE_LEGACY_SHADERCONTEXT",
   ]
 }
