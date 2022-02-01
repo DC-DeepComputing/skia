@@ -16,6 +16,24 @@
       "message": "This is misleading, it doesn\u0027t really matter if we\u0027re in nativeFonts mode, what matters to this test is if the default font manager understands that upper bits of collection indexes should be used to select named instances.",
       "revId": "52f2bafc6981ab44afc419b0242bbd67b1b41851",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0247f4b_f0ea13e6",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T17:15:51Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "eb175483_15215772",
+      "revId": "52f2bafc6981ab44afc419b0242bbd67b1b41851",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

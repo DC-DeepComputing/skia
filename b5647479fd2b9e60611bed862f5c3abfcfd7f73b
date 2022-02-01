@@ -168,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4563336_4c4d1a89",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T17:15:51Z",
+      "side": 1,
+      "message": "Done, in a separate function.",
+      "parentUuid": "e0d83e1a_1267a1d7",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdce2a20_5f6429b4",
         "filename": "tests/FontMgrFontConfigTest.cpp",
         "patchSetId": 9
@@ -179,6 +203,30 @@
       "writtenOn": "2022-02-01T16:13:59Z",
       "side": 1,
       "message": "g",
+      "range": {
+        "startLine": 152,
+        "startChar": 94,
+        "endLine": 152,
+        "endChar": 95
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fe18584_db7bde37",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T17:15:51Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "cdce2a20_5f6429b4",
       "range": {
         "startLine": 152,
         "startChar": 94,
