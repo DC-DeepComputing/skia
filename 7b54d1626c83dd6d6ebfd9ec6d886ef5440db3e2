@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa8e4c92_3e36122e",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-01T19:24:01Z",
+      "side": 0,
+      "message": "Does this set mUnitTests to null or string[0]?  I don\u0027t think the java side of the code will work if this returns null.",
+      "range": {
+        "startLine": 131,
+        "startChar": 24,
+        "endLine": 131,
+        "endChar": 44
+      },
+      "revId": "7b54d1626c83dd6d6ebfd9ec6d886ef5440db3e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
