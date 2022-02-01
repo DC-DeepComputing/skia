@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2f3111_21aed9d4",
+        "filename": "src/core/SkEnumerate.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T21:38:25Z",
+      "side": 1,
+      "message": "Wow, MB of overhead to parse through to get\n\n    namespace std { struct monostate {}; }",
+      "revId": "eabe26c0de98eaf019ed12f1541fb3a61ea6ef99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
