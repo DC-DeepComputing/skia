@@ -381,3 +381,71 @@ DEF_BENCH(return new BlitMaskBench(SkCanvas::kPoints_PointMode,
 DEF_BENCH(return new BlitMaskBench(SkCanvas::kPoints_PointMode,
                                    BlitMaskBench::KMaskShader,
                                    "maskshader");)
+
+class FillRateBench : public Benchmark {
+public:
+    inline static constexpr int kWidth  = 1024;
+    inline static constexpr int kHeight = 1024;
+
+    enum class Mode {
+        kFull,
+        kWide,
+        kTall,
+    };
+
+    FillRateBench(Mode mode) : fMode(mode) {
+        fName = "fill_rate_";
+        switch (fMode) {
+            case Mode::kFull: fName += "full"; break;
+            case Mode::kWide: fName += "wide"; break;
+            case Mode::kTall: fName += "tall"; break;
+        }
+    }
+
+protected:
+    const char* onGetName() override { return fName.c_str(); }
+
+    SkIPoint onGetSize() override { return SkIPoint::Make(kWidth, kHeight); }
+
+    void onDraw(int loops, SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setColor(0x7F7F7F7F);
+        switch (fMode) {
+            case Mode::kFull: {
+                SkRect rect = SkRect::MakeWH(kWidth, kHeight);
+                for (int i = 0; i < loops; i++) {
+                    canvas->drawRect(rect, paint);
+                }
+                break;
+            }
+            case Mode::kWide: {
+                SkRect rect = SkRect::MakeWH(kWidth, 2);
+                for (int i = 0; i < loops; i++) {
+                    for (int y = 0; y < kHeight; y += 2) {
+                        canvas->drawRect(rect.makeOffset(0, y), paint);
+                    }
+                }
+                break;
+            }
+            case Mode::kTall: {
+                SkRect rect = SkRect::MakeWH(2, kHeight);
+                for (int i = 0; i < loops; i++) {
+                    for (int x = 0; x < kWidth; x += 2) {
+                        canvas->drawRect(rect.makeOffset(x, 0), paint);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+private:
+    Mode fMode;
+    SkString fName;
+
+    using INHERITED = Benchmark;
+};
+
+DEF_BENCH(return new FillRateBench(FillRateBench::Mode::kFull);)
+DEF_BENCH(return new FillRateBench(FillRateBench::Mode::kWide);)
+DEF_BENCH(return new FillRateBench(FillRateBench::Mode::kTall);)
