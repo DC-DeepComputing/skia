@@ -39,6 +39,30 @@
       },
       "revId": "e049166e835a577ba48374d03028919a4a010601",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c52cf7_875c8c16",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-02-01T13:43:27Z",
+      "side": 1,
+      "message": "Looks like this wasn\u0027t needed, removed.",
+      "parentUuid": "82eabafc_90645641",
+      "range": {
+        "startLine": 228,
+        "startChar": 35,
+        "endLine": 228,
+        "endChar": 42
+      },
+      "revId": "e049166e835a577ba48374d03028919a4a010601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
