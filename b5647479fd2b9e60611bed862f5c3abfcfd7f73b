@@ -140,6 +140,53 @@
       },
       "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0d83e1a_1267a1d7",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T16:13:59Z",
+      "side": 1,
+      "message": "Actually, should just copy the preamble to the TypefaceVariationIndex test here (return early if a simple 0x0001000 index isn\u0027t understood).\n\nAlso, should assert below which resultIdentity.fTTCIndex should have upper bits set. This would make it clearer what is actually being tested here.",
+      "parentUuid": "6cc026f1_0bff1f23",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdce2a20_5f6429b4",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T16:13:59Z",
+      "side": 1,
+      "message": "g",
+      "range": {
+        "startLine": 152,
+        "startChar": 94,
+        "endLine": 152,
+        "endChar": 95
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
