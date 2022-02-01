@@ -39,6 +39,30 @@
       },
       "revId": "9ff02d35f6d2a81510b508c7530dde9fff8bd881",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b07377_d636b771",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 5646
+      },
+      "writtenOn": "2022-02-01T18:57:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c0814bd_fac90b6a",
+      "range": {
+        "startLine": 582,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 37
+      },
+      "revId": "9ff02d35f6d2a81510b508c7530dde9fff8bd881",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
