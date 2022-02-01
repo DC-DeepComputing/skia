@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54b57188_11ca8141",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T16:12:52Z",
+      "side": 1,
+      "message": "Name updated, left in this file as discussed in chat, as testing FCI.",
+      "parentUuid": "808f296a_c12d7d56",
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b0194847_c6b3736c",
         "filename": "tests/FontMgrFontConfigTest.cpp",
         "patchSetId": 9
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-01T15:51:27Z",
       "side": 1,
       "message": "Best not to output on a \u0027normal` situation.",
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f054c28_a0ded216",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T16:12:52Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "b0194847_c6b3736c",
       "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -72,6 +108,30 @@
       "side": 1,
       "message": "Might be able to use `DECLARE_bool(nativeFonts)`. Though should probably be testing that the default fontmgr can load ttf by making a really simple ttf font first, like `MakeResourceAsTypeface(\"fonts/Em.ttf\")` and if that comes back nullptr, just return from the test.",
       "parentUuid": "267aaa3f_734a6b92",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d87fa04b_b0cab9f4",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T16:12:52Z",
+      "side": 1,
+      "message": "As discsued in chat, now done by accessing the external flag. Not the prettiest approach, but might work for now.",
+      "parentUuid": "6cc026f1_0bff1f23",
       "range": {
         "startLine": 120,
         "startChar": 0,
