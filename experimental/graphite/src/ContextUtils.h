@@ -14,6 +14,7 @@
 #include "include/core/SkTileMode.h"
 
 enum class CodeSnippetID : uint8_t;
+class SkShaderCodeDictionary;
 class SkUniform;
 class SkUniformData;
 class SkUniquePaintParamsID;
@@ -22,7 +23,7 @@ namespace skgpu {
 
 class PaintParams;
 
-std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(Context*,
+std::tuple<SkUniquePaintParamsID, sk_sp<SkUniformData>> ExtractPaintData(SkShaderCodeDictionary*,
                                                                          const PaintParams&);
 SkSpan<const SkUniform> GetUniforms(CodeSnippetID);
 
