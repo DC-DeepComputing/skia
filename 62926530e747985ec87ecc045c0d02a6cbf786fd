@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c95c8453_8cd7a7b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-01T16:03:14Z",
+      "side": 1,
+      "message": "Please take a look at this change along with its follow on change to get the full context of what is changing.\n\nI\u0027ve cc\u0027d everyone on the change because these two CLs will change how you should access things in Graphite and everyone should be aware of it.",
+      "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
