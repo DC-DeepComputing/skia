@@ -182,15 +182,6 @@ static void test_es3(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
     test_permutations(r, surface.get(), testFile, /*worksInES2=*/false);
 }
 
-static int write_symbol_tables(SkSL::Dehydrator& dehydrator, const SkSL::SymbolTable& s) {
-    int count = 1;
-    if (s.fParent) {
-        count += write_symbol_tables(dehydrator, *s.fParent);
-    }
-    dehydrator.write(s);
-    return count;
-}
-
 static void test_rehydrate(skiatest::Reporter* r, const char* testFile) {
     SkString shaderString = load_source(r, testFile, "");
     if (shaderString.isEmpty()) {
@@ -211,16 +202,13 @@ static void test_rehydrate(skiatest::Reporter* r, const char* testFile) {
         return;
     }
     SkSL::Dehydrator dehydrator;
-    int symbolTableCount = write_symbol_tables(dehydrator, *program->fSymbols);
-    dehydrator.write(program->fOwnedElements);
+    dehydrator.write(*program);
     SkSL::StringStream stream;
     dehydrator.finish(stream);
 
     SkSL::Rehydrator rehydrator(compiler, (const uint8_t*) stream.str().data(),
             stream.str().length());
-    std::unique_ptr<SkSL::Program> rehydrated = rehydrator.program(symbolTableCount,
-            /*source=*/nullptr, std::make_unique<SkSL::ProgramConfig>(), program->fSharedElements,
-            std::make_unique<SkSL::ModifiersPool>(), /*pool=*/nullptr, program->fInputs);
+    std::unique_ptr<SkSL::Program> rehydrated = rehydrator.program(&program->fSharedElements);
     REPORTER_ASSERT(r, rehydrated->description() == program->description(),
             "Mismatch between original and dehydrated/rehydrated:\n-- Original:\n%s\n"
             "-- Rehydrated:\n%s", program->description().c_str(),

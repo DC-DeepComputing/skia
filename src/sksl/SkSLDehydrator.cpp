@@ -603,6 +603,30 @@ void Dehydrator::write(const std::vector<std::unique_ptr<ProgramElement>>& eleme
     this->writeCommand(Rehydrator::kElementsComplete_Command);
 }
 
+void Dehydrator::write(const Program& program) {
+    this->writeCommand(Rehydrator::kProgram_Command);
+
+    // Collect the symbol tables so we can write out the count
+    std::vector<SymbolTable*> symbolTables;
+    SymbolTable* symbols = program.fSymbols.get();
+    while (symbols) {
+        symbolTables.push_back(symbols);
+        symbols = symbols->fParent.get();
+    }
+    this->writeU8(symbolTables.size());
+
+    // Write the symbol tables from the root down
+    for (int i = symbolTables.size() - 1; i >= 0; --i) {
+        this->write(*symbolTables[i]);
+    }
+
+    // Write the elements
+    this->write(program.fOwnedElements);
+
+    // Write the inputs
+    this->writeU8(program.fInputs.fUseFlipRTUniform);
+}
+
 void Dehydrator::finish(OutputStream& out) {
     out.write16(Rehydrator::kVersion);
     String stringBuffer = fStringBuffer.str();
