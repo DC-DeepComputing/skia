@@ -1,6 +1,9 @@
 if (is_fuchsia) {
   import("//build/fuchsia/sdk.gni")
 }
+if (is_wasm) {
+  import("wasm.gni")
+}
 
 declare_args() {
   host_ar = ar
@@ -418,4 +421,13 @@ gcc_like_toolchain("gcc_like_host") {
   cc = host_cc
   cxx = host_cxx
   link = host_link
+}
+
+gcc_like_toolchain("wasm") {
+  cpu = "wasm"
+  os = "wasm"
+  ar = "$emsdk_dir/upstream/emscripten/emar"
+  cc = "$emsdk_dir/upstream/emscripten/emcc"
+  cxx = "$emsdk_dir/upstream/emscripten/em++"
+  link = cxx
 }

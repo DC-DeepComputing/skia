@@ -2,6 +2,8 @@
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+import("//gn/skia.gni")
+import("//gn/toolchain/wasm.gni")
 
 component("viewer_wasm") {
   testonly = true
@@ -51,5 +53,119 @@ component("gm_wasm") {
     "../..:hash_and_encode",
     "../..:tool_utils",
     "../../modules/svg:svg",
+  ]
+}
+
+action("create_notomono_cpp") {
+  script = "../../tools/embed_resources.py"
+
+  inputs = [ "fonts/NotoMono-Regular.ttf" ]
+
+  outputs =
+      [ "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp" ]
+
+  args = [
+    "--name=SK_EMBEDDED_FONTS",
+    "--input",
+    rebase_path("fonts/NotoMono-Regular.ttf"),
+    "--output",
+    "modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
+    "--align=4",
+  ]
+}
+
+wasm_lib("canvaskit") {
+  deps = [
+    ":create_notomono_cpp",
+    "../..:skia",
+    "../../modules/skparagraph:skparagraph",
+  ]
+  sources = [
+    "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
+    "WasmCommon.h",
+    "canvaskit_bindings.cpp",
+    "paragraph_bindings.cpp",
+    "paragraph_bindings_gen.cpp",
+  ]
+
+  ldflags = []
+  if (is_debug) {
+    ldflags += [
+      "-O0",
+      "-sDEMANGLE_SUPPORT=1",
+      "-sASSERTIONS=1",
+      "-sGL_ASSERTIONS=1",
+      "-g3",
+      "--pre-js",
+      rebase_path("debug.js"),
+    ]
+  } else {
+    externs_path = rebase_path("externs.js")
+    ldflags += [
+      "-Oz",
+      "--closure=1",
+      "--pre-js",
+      rebase_path("release.js"),
+      "--closure-args=--externs=$externs_path",
+    ]
+  }
+  ldflags += [
+    "-fno-rtti",
+    "-lGL",
+    "--pre-js",
+    rebase_path("cpu.js"),
+    "--pre-js",
+    rebase_path("gpu.js"),
+    "-sUSE_WEBGL2=1",
+    "-std=c++17",
+    "--bind",
+    "--no-entry",
+    "--pre-js",
+    rebase_path("preamble.js"),
+    "--pre-js",
+    rebase_path("color.js"),
+    "--pre-js",
+    rebase_path("memory.js"),
+    "--pre-js",
+    rebase_path("util.js"),
+    "--pre-js",
+    rebase_path("interface.js"),
+    "--pre-js",
+    rebase_path("matrix.js"),
+    "--pre-js",
+    rebase_path("paragraph.js"),
+    "--pre-js",
+    rebase_path("font.js"),
+    "--pre-js",
+    rebase_path("postamble.js"),
+    "-sLLD_REPORT_UNDEFINED",
+    "-sALLOW_MEMORY_GROWTH=1",
+    "-sEXPORT_NAME=CanvasKitInit",
+    "-sEXPORTED_FUNCTIONS=[_malloc,_free]",
+    "-sFORCE_FILESYSTEM=0",
+    "-sFILESYSTEM=0",
+    "-sMODULARIZE=1",
+    "-sNO_EXIT_RUNTIME=1",
+    "-sINITIAL_MEMORY=128MB",
+    "-sWASM=1",
+    "-sSTRICT=1",
+  ]
+
+  defines = []
+  if (is_debug) {
+    defines += [ "SK_DEBUG" ]
+  } else {
+    defines += [ "SK_RELEASE" ]
+  }
+  defines += [
+    "SK_INCLUDE_PARAGRAPH=1",
+    "SK_DISABLE_AAA",
+    "SK_FORCE_8_BYTE_ALIGNMENT",
+    "EMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",
+    "SK_HAS_ANDROID_CODEC",
+    "SK_SUPPORT_GPU=1",
+    "SK_SHAPER_HARFBUZZ_AVAILABLE",
+    "SK_GL",
+    "SK_DISABLE_LEGACY_SHADERCONTEXT",
   ]
 }
