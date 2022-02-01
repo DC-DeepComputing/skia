@@ -70,21 +70,17 @@ static const char* kSolidColorSkSL = "    outColor = half4(color);\n";
 // that only defines a [[depth]] attribute but no color calculation.
 static const char* kNoneSkSL = "outColor = half4(0.0, 0.0, 1.0, 1.0);\n";
 
-sk_sp<SkUniformData> make_gradient_uniform_data_common(const void* srcs[kNumGradientUniforms]) {
+sk_sp<SkUniformData> make_gradient_uniform_data_common(SkSpan<const SkUniform> uniforms,
+                                                       const void* srcs[kNumGradientUniforms]) {
     UniformManager mgr(Layout::kMetal);
 
     // TODO: Given that, for the sprint, we always know the uniforms we could cache 'dataSize'
     // for each layout and skip the first call.
-    size_t dataSize = mgr.writeUniforms(SkSpan<const SkUniform>(kGradientUniforms,
-                                                                kNumGradientUniforms),
-                                        nullptr, nullptr, nullptr);
+    size_t dataSize = mgr.writeUniforms(uniforms, nullptr, nullptr, nullptr);
 
-    sk_sp<SkUniformData> result = SkUniformData::Make(kNumGradientUniforms,
-                                                      kGradientUniforms,
-                                                      dataSize);
+    sk_sp<SkUniformData> result = SkUniformData::Make(uniforms, dataSize);
 
-    mgr.writeUniforms(SkSpan<const SkUniform>(kGradientUniforms, kNumGradientUniforms),
-                      srcs, result->offsets(), result->data());
+    mgr.writeUniforms(result->uniforms(), srcs, result->offsets(), result->data());
     return result;
 }
 
@@ -92,8 +88,13 @@ sk_sp<SkUniformData> make_linear_gradient_uniform_data(SkPoint startPoint,
                                                        SkPoint endPoint,
                                                        SkColor4f colors[kMaxStops],
                                                        float offsets[kMaxStops]) {
+    static constexpr size_t kExpectedNumUniforms = 6;
+
+    SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kLinearGradientShader);
+    SkASSERT(uniforms.size() == kExpectedNumUniforms);
+
     float unusedRadii[2] = { 0.0f, 0.0f };
-    const void* srcs[kNumGradientUniforms] = {
+    const void* srcs[kExpectedNumUniforms] = {
             colors,
             offsets,
             &startPoint,
@@ -102,17 +103,22 @@ sk_sp<SkUniformData> make_linear_gradient_uniform_data(SkPoint startPoint,
             &unusedRadii[1],
     };
 
-    return make_gradient_uniform_data_common(srcs);
+    return make_gradient_uniform_data_common(uniforms, srcs);
 };
 
 sk_sp<SkUniformData> make_radial_gradient_uniform_data(SkPoint point,
                                                        float radius,
                                                        SkColor4f colors[kMaxStops],
                                                        float offsets[kMaxStops]) {
+    static constexpr size_t kExpectedNumUniforms = 6;
+
+    SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kRadialGradientShader);
+    SkASSERT(uniforms.size() == kExpectedNumUniforms);
+
     SkPoint unusedPoint = {0.0f, 0.0f};
     float unusedRadius = 0.0f;
 
-    const void* srcs[kNumGradientUniforms] = {
+    const void* srcs[kExpectedNumUniforms] = {
             colors,
             offsets,
             &point,
@@ -121,16 +127,21 @@ sk_sp<SkUniformData> make_radial_gradient_uniform_data(SkPoint point,
             &unusedRadius,
     };
 
-    return make_gradient_uniform_data_common(srcs);
+    return make_gradient_uniform_data_common(uniforms, srcs);
 };
 
 sk_sp<SkUniformData> make_sweep_gradient_uniform_data(SkPoint point,
                                                       SkColor4f colors[kMaxStops],
                                                       float offsets[kMaxStops]) {
+    static constexpr size_t kExpectedNumUniforms = 6;
+
+    SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kSweepGradientShader);
+    SkASSERT(uniforms.size() == kExpectedNumUniforms);
+
     SkPoint unusedPoint = {0.0f, 0.0f};
     float unusedRadii[2] = {0.0f, 0.0f};
 
-    const void* srcs[kNumGradientUniforms] = {
+    const void* srcs[kExpectedNumUniforms] = {
             colors,
             offsets,
             &point,
@@ -139,7 +150,7 @@ sk_sp<SkUniformData> make_sweep_gradient_uniform_data(SkPoint point,
             &unusedRadii[1],
     };
 
-    return make_gradient_uniform_data_common(srcs);
+    return make_gradient_uniform_data_common(uniforms, srcs);
 };
 
 sk_sp<SkUniformData> make_conical_gradient_uniform_data(SkPoint point0,
@@ -148,8 +159,12 @@ sk_sp<SkUniformData> make_conical_gradient_uniform_data(SkPoint point0,
                                                         float radius1,
                                                         SkColor4f colors[kMaxStops],
                                                         float offsets[kMaxStops]) {
+    static constexpr size_t kExpectedNumUniforms = 6;
 
-    const void* srcs[kNumGradientUniforms] = {
+    SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kConicalGradientShader);
+    SkASSERT(uniforms.size() == kExpectedNumUniforms);
+
+    const void* srcs[kExpectedNumUniforms] = {
             colors,
             offsets,
             &point0,
@@ -158,7 +173,7 @@ sk_sp<SkUniformData> make_conical_gradient_uniform_data(SkPoint point0,
             &radius1,
     };
 
-    return make_gradient_uniform_data_common(srcs);
+    return make_gradient_uniform_data_common(uniforms, srcs);
 };
 
 void to_color4fs(int numColors, SkColor colors[kMaxStops], SkColor4f color4fs[kMaxStops]) {
@@ -182,17 +197,20 @@ void expand_stops(int numStops, float offsets[kMaxStops]) {
 }
 
 sk_sp<SkUniformData> make_solid_uniform_data(SkColor4f color) {
+    static constexpr size_t kExpectedNumUniforms = 1;
+
+    SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kSolidColorShader);
+    SkASSERT(uniforms.size() == kExpectedNumUniforms);
+
     UniformManager mgr(Layout::kMetal);
 
-    size_t dataSize = mgr.writeUniforms(SkSpan<const SkUniform>(kSolidUniforms, kNumSolidUniforms),
-                                        nullptr, nullptr, nullptr);
+    size_t dataSize = mgr.writeUniforms(uniforms, nullptr, nullptr, nullptr);
 
-    sk_sp<SkUniformData> result = SkUniformData::Make(kNumSolidUniforms, kSolidUniforms, dataSize);
+    sk_sp<SkUniformData> result = SkUniformData::Make(uniforms, dataSize);
 
-    const void* srcs[kNumSolidUniforms] = { &color };
+    const void* srcs[kExpectedNumUniforms] = { &color };
 
-    mgr.writeUniforms(SkSpan<const SkUniform>(kSolidUniforms, kNumSolidUniforms),
-                      srcs, result->offsets(), result->data());
+    mgr.writeUniforms(result->uniforms(), srcs, result->offsets(), result->data());
     return result;
 }
 
@@ -321,12 +339,12 @@ SkSpan<const SkUniform> GetUniforms(CodeSnippetID snippetID) {
     switch (snippetID) {
         case CodeSnippetID::kDepthStencilOnlyDraw:
             return {nullptr, 0};
-        case CodeSnippetID::kLinearGradientShader:
+        case CodeSnippetID::kLinearGradientShader: [[fallthrough]];
+        case CodeSnippetID::kRadialGradientShader: [[fallthrough]];
+        case CodeSnippetID::kSweepGradientShader:  [[fallthrough]];
+        case CodeSnippetID::kConicalGradientShader:
             return SkMakeSpan(kGradientUniforms, kNumGradientUniforms);
         case CodeSnippetID::kSolidColorShader:
-        case CodeSnippetID::kRadialGradientShader:
-        case CodeSnippetID::kSweepGradientShader:
-        case CodeSnippetID::kConicalGradientShader:
         default:
             return SkMakeSpan(kSolidUniforms, kNumSolidUniforms);
     }
@@ -336,12 +354,12 @@ const char* GetShaderSkSL(CodeSnippetID snippetID) {
     switch (snippetID) {
         case CodeSnippetID::kDepthStencilOnlyDraw:
             return kNoneSkSL;
-        case CodeSnippetID::kLinearGradientShader:
+        case CodeSnippetID::kLinearGradientShader: [[fallthrough]];
+        case CodeSnippetID::kRadialGradientShader: [[fallthrough]];
+        case CodeSnippetID::kSweepGradientShader:  [[fallthrough]];
+        case CodeSnippetID::kConicalGradientShader:
             return kGradientSkSL;
         case CodeSnippetID::kSolidColorShader:
-        case CodeSnippetID::kRadialGradientShader:
-        case CodeSnippetID::kSweepGradientShader:
-        case CodeSnippetID::kConicalGradientShader:
         default:
             return kSolidColorSkSL;
     }
