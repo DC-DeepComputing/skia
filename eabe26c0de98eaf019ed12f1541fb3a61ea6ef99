@@ -16,6 +16,24 @@
       "message": "Wow, MB of overhead to parse through to get\n\n    namespace std { struct monostate {}; }",
       "revId": "eabe26c0de98eaf019ed12f1541fb3a61ea6ef99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56925ba5_bbf269a7",
+        "filename": "src/core/SkEnumerate.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-01T21:51:12Z",
+      "side": 1,
+      "message": "I actually got inspired to look at the dependencies of variant, and it\u0027s not so bad.\n`\n#include \u003c__config\u003e\n#include \u003c__tuple\u003e\n#include \u003carray\u003e\n#include \u003cexception\u003e\n#include \u003cfunctional\u003e\n#include \u003cinitializer_list\u003e\n#include \u003cnew\u003e\n#include \u003ctuple\u003e\n#include \u003ctype_traits\u003e\n#include \u003cutility\u003e\n#include \u003climits\u003e\n#include \u003cversion\u003e\n`\nI would imagine that the majority of these are already found in most/all of our translation units anyway; __tuple might be an exception but it\u0027s small and doesn\u0027t have any significant sub-dependencies. I bet in reality the delta here is very small vs the prior state.",
+      "parentUuid": "4f2f3111_21aed9d4",
+      "revId": "eabe26c0de98eaf019ed12f1541fb3a61ea6ef99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
