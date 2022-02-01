@@ -289,8 +289,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         sk_sp<SkUniformData> shadingUniforms = nullptr;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
-            SkShaderCodeDictionary* dict =
-                    recorder->context()->priv().globalCache()->shaderCodeDictionary();
+            SkShaderCodeDictionary* dict = recorder->resourceProvider()->shaderCodeDictionary();
             std::tie(shaderID, shadingUniforms) = ExtractPaintData(dict, draw.fPaintParams.value());
             shadingIndex = shadingUniformBindings.addUniforms(shadingUniforms);
         } // else depth-only
@@ -418,10 +417,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     return drawPass;
 }
 
-void DrawPass::addCommands(Context* context, CommandBuffer* buffer,
+void DrawPass::addCommands(ResourceProvider* resourceProvider,
+                           CommandBuffer* buffer,
                            const RenderPassDesc& renderPassDesc) const {
-    auto resourceProvider = context->priv().resourceProvider();
-
     // TODO: Validate RenderPass state against DrawPass's target and requirements?
     // Generate actual GraphicsPipeline objects combining the target-level properties and each of
     // the GraphicsPipelineDesc's referenced in this DrawPass.
@@ -430,10 +428,8 @@ void DrawPass::addCommands(Context* context, CommandBuffer* buffer,
     std::vector<sk_sp<GraphicsPipeline>> fullPipelines;
     fullPipelines.reserve(fPipelineDescs.count());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs.items()) {
-        fullPipelines.push_back(resourceProvider->findOrCreateGraphicsPipeline(
-                context->priv().globalCache()->shaderCodeDictionary(),
-                pipelineDesc,
-                renderPassDesc));
+        fullPipelines.push_back(resourceProvider->findOrCreateGraphicsPipeline(pipelineDesc,
+                                                                               renderPassDesc));
     }
 
     // Set viewport to the entire texture for now (eventually, we may have logically smaller bounds
