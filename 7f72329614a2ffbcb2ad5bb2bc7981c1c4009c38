@@ -16,6 +16,23 @@
       "message": "part 2",
       "revId": "7f72329614a2ffbcb2ad5bb2bc7981c1c4009c38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bcb68b8_90bd5579",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-01T18:33:01Z",
+      "side": 1,
+      "message": "Just so I understand the implications of this -- what happens if we need to create a resource in Gpu somewhere, e.g., a Buffer for transfers? It looks like Caps is also on the Recorder -- should Gpu still have Caps? It also doesn\u0027t look Context does much of anything anymore other than be a wrapper around Gpu and hold Recordings.\n\nI don\u0027t have a problem with any of it (except maybe not being able to create resources for the backend without a Recorder) I\u0027m just trying to figure out how it all will work.",
+      "revId": "7f72329614a2ffbcb2ad5bb2bc7981c1c4009c38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
