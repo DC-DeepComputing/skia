@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe233b2d_5a2fd168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:17:16Z",
+      "side": 1,
+      "message": "None of the snippets are using this to actually write their uniforms at the moment, right? That needs to still be filled out, and moved out of ExtractPaintData in ContextUtils?",
+      "revId": "d6232b3323b8a8521d511b5dad4b85c6e9cff63a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9cd6b9b_2f49f05f",
+        "filename": "experimental/graphite/src/UniformCache.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:17:16Z",
+      "side": 1,
+      "message": "nit: rename this and related fields to fUniformBlocks?",
+      "range": {
+        "startLine": 70,
+        "startChar": 61,
+        "endLine": 70,
+        "endChar": 62
+      },
+      "revId": "d6232b3323b8a8521d511b5dad4b85c6e9cff63a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd66505_22c19795",
+        "filename": "src/core/SkUniformData.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:17:16Z",
+      "side": 1,
+      "message": "We definitely will need to, but I think it will resolve itself pretty easily if we adapt SkUniformBlock to be the owner of the data array, and each SkUniformData is just a view on top of that. When a code snippet starts to write its uniforms, it could ask the skUniformBlock for a new data starting at the alignment required for its first uniform, and then when it\u0027s done appending values, the uniform data knows the size for that snippet.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 97
+      },
+      "revId": "d6232b3323b8a8521d511b5dad4b85c6e9cff63a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
