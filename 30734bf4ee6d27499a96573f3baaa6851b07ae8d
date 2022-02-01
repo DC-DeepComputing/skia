@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d68de2b_fecf1a59",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-01T21:01:13Z",
+      "side": 1,
+      "message": "This is OK, but I prefer [[maybe_unused]] for this, feels less weird than splitting statements in two:\n\n  [[maybe_unused]] uint8_t command \u003d this-\u003ereadU8();",
+      "range": {
+        "startLine": 265,
+        "startChar": 4,
+        "endLine": 265,
+        "endChar": 50
+      },
+      "revId": "30734bf4ee6d27499a96573f3baaa6851b07ae8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "079cbdd1_1eecacf4",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-01T21:01:13Z",
+      "side": 1,
+      "message": "This will go stale if Program::Inputs changes. The persistent cache had a similar issue so I added a guard for it:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/GrPersistentCacheUtils.cpp;l\u003d19-24\n\nWe should do something similar here to prevent a super-subtle bug if any Inputs are ever added. (Might need some thought as to the proper factoring.)",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 46
+      },
+      "revId": "30734bf4ee6d27499a96573f3baaa6851b07ae8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
