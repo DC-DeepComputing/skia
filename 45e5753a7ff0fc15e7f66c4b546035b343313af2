@@ -16,6 +16,24 @@
       "message": "Apparently our clang-tidy bot wants a `// namespace` comment here or something.",
       "revId": "45e5753a7ff0fc15e7f66c4b546035b343313af2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5f74a3_844c6253",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T18:53:41Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "46fa0d26_b544b323",
+      "revId": "45e5753a7ff0fc15e7f66c4b546035b343313af2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
