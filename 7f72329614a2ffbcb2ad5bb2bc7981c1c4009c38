@@ -33,6 +33,24 @@
       "message": "Just so I understand the implications of this -- what happens if we need to create a resource in Gpu somewhere, e.g., a Buffer for transfers? It looks like Caps is also on the Recorder -- should Gpu still have Caps? It also doesn\u0027t look Context does much of anything anymore other than be a wrapper around Gpu and hold Recordings.\n\nI don\u0027t have a problem with any of it (except maybe not being able to create resources for the backend without a Recorder) I\u0027m just trying to figure out how it all will work.",
       "revId": "7f72329614a2ffbcb2ad5bb2bc7981c1c4009c38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0837715_c9eb5819",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-01T21:28:05Z",
+      "side": 1,
+      "message": "The caps are not on the Recorder. The Recorder accesses the caps via the Gpu. The Gpu is still able to create resources like Buffers and Textures (that actually will be one of its main jobs). However, it can\u0027t enqueue uploads/copies from those buffers since it needs the Recorder to record those commands. Thus we will manage this up near the Device/Recorder level. They will ask the ResourceProvider for the resources Textures/Buffers. Then they will create copy commands to copy data from the Buffer to Texture (we talked offline about how to batch these uploads together in an upload list).\n\nThe Context will do more things, but in general its main usage is to create Recorders (which involves passing them the Gpu and GlobalCache) and then managing the queue/command buffers which we play Recordings back into. That second part will involve things like allocating MSAA/Stencil buffers, setting mutable Texture state (e.g. VkImageLayout), etc. So yeah the Context is very slimmed down compared to a Ganesh Gr*Context (a lot was moved to Recorder), but still does a bunch of key work.",
+      "parentUuid": "9bcb68b8_90bd5579",
+      "revId": "7f72329614a2ffbcb2ad5bb2bc7981c1c4009c38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
