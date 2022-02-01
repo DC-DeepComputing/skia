@@ -94,6 +94,30 @@
       },
       "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b1821c_bd33dfda",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-02-01T17:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38d22616_56dbcb9e",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 13
+      },
+      "revId": "05fa56d07cd0f0ce34a339d2a57216f5f6862c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
