@@ -79,6 +79,9 @@
       }
 
       CanvasKit.MakeOnScreenGLSurface = function(grCtx, w, h, colorspace) {
+        if (!this.setCurrentContext(grCtx._context)) {
+          return null;
+        }
         var surface = this._MakeOnScreenGLSurface(grCtx, w, h, colorspace);
         if (!surface) {
           return null;
@@ -88,6 +91,9 @@
       }
 
       CanvasKit.MakeRenderTarget = function(grCtx, w, h) {
+        if (!this.setCurrentContext(grCtx._context)) {
+          return null;
+        }
         var surface = this._MakeRenderTargetWH(grCtx, w, h);
         if (!surface) {
           return null;
@@ -97,6 +103,9 @@
       }
 
       CanvasKit.MakeRenderTarget = function(grCtx, imageInfo) {
+        if (!this.setCurrentContext(grCtx._context)) {
+          return null;
+        }
         var surface = this._MakeRenderTargetII(grCtx, imageInfo);
         if (!surface) {
           return null;
