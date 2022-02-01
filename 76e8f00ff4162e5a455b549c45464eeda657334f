@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc54d3a_68bf324e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T16:04:47Z",
+      "side": 1,
+      "message": "Updated with access to nativeFonts flag directly at the beginning of the test. ",
+      "revId": "76e8f00ff4162e5a455b549c45464eeda657334f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
