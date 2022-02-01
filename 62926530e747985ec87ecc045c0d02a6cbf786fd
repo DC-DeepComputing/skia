@@ -16,6 +16,46 @@
       "message": "Please take a look at this change along with its follow on change to get the full context of what is changing.\n\nI\u0027ve cc\u0027d everyone on the change because these two CLs will change how you should access things in Graphite and everyone should be aware of it.",
       "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e45a2a7e_c399681a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:28:57Z",
+      "side": 1,
+      "message": "I could see static buffers for fixed index patterns or tessellation being stored in the global cache instead of per recorder as well.",
+      "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b5200cf_3ce90c8d",
+        "filename": "experimental/graphite/src/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:28:57Z",
+      "side": 1,
+      "message": "I think this will be fun to figure out how to do well and efficiently. A few things come to mind to me:\n1. If we return members, like shaderCodeDictionary() currently, we\u0027ll need some way of locking the global cache externally so that the recorder ResourceProviders can lock, use, and unlock.\n2. We could instead choose to replicate/union all the member APIs onto GlobalCache and have it internally do the locking, delegation, and then unlock.\n3. We could require any class that is part of the GlobalCache to be thread safe on its own.\n4. I would bet that these will be predominantly reading from the global cache, vs. writing, so we may want to explore another thread safety mechanism than just exclusive mutexes.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 78
+      },
+      "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
