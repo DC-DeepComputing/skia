@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "808f296a_c12d7d56",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T15:51:27Z",
+      "side": 1,
+      "message": "This should be FontConfigInterface_MatchStyleNamedInstance. And maybe even be in a different file. This test doesn\u0027t even necessarily create or test an SkFontMgrFontConfig. (Easy to make this mistake due to the poor naming of the classes.)",
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0194847_c6b3736c",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T15:51:27Z",
+      "side": 1,
+      "message": "Best not to output on a \u0027normal` situation.",
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "267aaa3f_734a6b92",
         "filename": "tests/FontMgrFontConfigTest.cpp",
         "patchSetId": 9
@@ -14,6 +48,30 @@
       "writtenOn": "2022-02-01T15:07:39Z",
       "side": 1,
       "message": "PTAL if this is okay or what else you suggest to detect this situation and not have this test be a hard failure on noNativeFonts bots.",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "b5647479fd2b9e60611bed862f5c3abfcfd7f73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cc026f1_0bff1f23",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-01T15:51:27Z",
+      "side": 1,
+      "message": "Might be able to use `DECLARE_bool(nativeFonts)`. Though should probably be testing that the default fontmgr can load ttf by making a really simple ttf font first, like `MakeResourceAsTypeface(\"fonts/Em.ttf\")` and if that comes back nullptr, just return from the test.",
+      "parentUuid": "267aaa3f_734a6b92",
       "range": {
         "startLine": 120,
         "startChar": 0,
