@@ -19,6 +19,7 @@ namespace skgpu {
 
 class BackendTexture;
 class Buffer;
+class Caps;
 class Gpu;
 class GraphicsPipeline;
 class Texture;
@@ -30,7 +31,8 @@ public:
 
     virtual sk_sp<CommandBuffer> createCommandBuffer() = 0;
 
-    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(Context*, const GraphicsPipelineDesc&,
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(SkShaderCodeDictionary*,
+                                                         const GraphicsPipelineDesc&,
                                                          const RenderPassDesc&);
 
     sk_sp<Texture> findOrCreateTexture(SkISize, const TextureInfo&);
@@ -44,7 +46,7 @@ protected:
     const Gpu* fGpu;
 
 private:
-    virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(Context*,
+    virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(SkShaderCodeDictionary*,
                                                              const GraphicsPipelineDesc&,
                                                              const RenderPassDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
@@ -56,7 +58,9 @@ private:
         ~GraphicsPipelineCache();
 
         void release();
-        sk_sp<GraphicsPipeline> refPipeline(Context*, const GraphicsPipelineDesc&,
+        sk_sp<GraphicsPipeline> refPipeline(SkShaderCodeDictionary*,
+                                            const Caps* caps,
+                                            const GraphicsPipelineDesc&,
                                             const RenderPassDesc&);
 
     private:
