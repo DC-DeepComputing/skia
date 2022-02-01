@@ -178,15 +178,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	sampleCount := 0
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
-		configs = append(configs, "vk", "vkdmsaa")
-		// skbug.com/12820
-		skip("_ gm _ ycbcrimage")
-		// skbug.com/12820
-		skip("_ test _ VkYCbcrSampler_DrawImageWithYcbcrSampler")
-		// skbug.com/12826
-		skip("_ test _ GrThreadSafeCache16Verts")
-		// skbug.com/12829
-		skip("_ test _ image_subset")
+		configs = append(configs, "gles", "glesdft", "glesdmsaa")
 	} else if b.cpu() {
 		args = append(args, "--nogpu")
 
@@ -251,7 +243,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// The Tegra3 doesn't support MSAA
 		if b.gpu("Tegra3") ||
 			// We aren't interested in fixing msaa bugs on current iOS devices.
-			b.model("iPad4", "iPadPro", "iPhone7") ||
+			b.model("iPad4", "iPadPro", "iPhone6", "iPhone7") ||
 			// skia:5792
 			b.gpu("IntelHD530", "IntelIris540") {
 			configs = removeContains(configs, "msaa")
@@ -348,7 +340,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			}
 		}
 
-		if b.model("AndroidOne", "Nexus5", "Nexus7", "JioNext") {
+		if b.model("AndroidOne", "Nexus5", "Nexus7") {
 			// skbug.com/9019
 			skip("_ test _ ProcessorCloneTest")
 			skip("_ test _ Programs")
@@ -656,7 +648,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("_ test _ InitialTextureClear")
 	}
 
-	if b.model("Wembley", "JioNext") {
+	if b.model("Wembley") {
 		// These tests run forever on the Wembley.
 		skip("_ gm _ async_rescale_and_read")
 	}
@@ -828,6 +820,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip("serialize-8888", "gm", "_", test)
 		}
 	}
+	if b.model("iPhone6") {
+		skip("_", "gm", "_", "verylargebitmap")
+		skip("_", "gm", "_", "verylarge_picture_image")
+		skip("_", "svg", "_", "A_large_blank_world_map_with_oceans_marked_in_blue.svg")
+		skip("_", "tests", "_", "ImageFilterBlurLargeImage_Gpu")
+	}
 	if b.matchOs("Mac") && b.cpu() {
 		// skia:6992
 		skip("pic-8888", "gm", "_", "encode-platform")
@@ -895,7 +893,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 	}
 
-	if b.model("Nexus5", "Nexus5x", "JioNext") && b.gpu() {
+	if b.model("Nexus5", "Nexus5x") && b.gpu() {
 		// skia:5876
 		skip("_", "gm", "_", "encode-platform")
 	}
@@ -935,39 +933,21 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("_", "tests", "_", "SkSLIntrinsicIsInf_GPU") // skia:12377
 	}
 
-	if b.matchGpu("Adreno[56]") && b.extraConfig("Vulkan") { // disable broken tests on Adreno 5/6xx Vulkan
-		skip("_", "tests", "_", "SkSLInoutParameters_GPU")   // skia:12869
-		skip("_", "tests", "_", "SkSLOutParams_GPU")         // skia:11919
-		skip("_", "tests", "_", "SkSLOutParamsTricky_GPU")   // skia:11919
-		skip("_", "tests", "_", "SkSLOutParamsNoInline_GPU") // skia:11919
-	}
-
 	if (b.matchGpu("Adreno3") || b.matchGpu("Mali400")) && !b.extraConfig("Vulkan") {
 		skip("_", "tests", "_", "SkSLMatrices") // skia:12456
 	}
 
-	// disable broken tests on Mali400 || Tegra3
-	if b.matchGpu("Mali400") || b.matchGpu("Tegra3") {
-		skip("_", "tests", "_", "SkSLMatrixScalarMath") // skia:12681
-	}
-
 	if b.gpu("IntelIris6100", "IntelHD4400") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
-		skip("_", "tests", "_", "SkSLVectorToMatrixCast_GPU") // skia:12179, vec4(mat2) crash
-		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
-		skip("_", "tests", "_", "SkSLMatrixFoldingES2_GPU") // skia:11919
+		skip("_", "tests", "_", "SkSLVectorToMatrixCast_GPU") // skia:12179
 	}
 
 	if b.matchGpu("Intel") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
 		skip("_", "tests", "_", "SkSLReturnsValueOnEveryPathES3_GPU") // skia:12465
 	}
 
-	if b.extraConfig("Vulkan") && b.isLinux() && b.matchGpu("Intel") {
+	if (b.extraConfig("Vulkan") && b.isLinux() && b.matchGpu("Intel")) ||
+		(b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)")) {
 		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU") // skia:12465
-	}
-
-	if b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)") {
-		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU") // skia:12465
-		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
 	}
 
 	if b.gpu("Tegra3") {
@@ -976,23 +956,16 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU")
 		skip("_", "tests", "_", "SkSLSwitchWithFallthrough_GPU")
 		skip("_", "tests", "_", "SkSLSwitchWithLoops_GPU")
-		skip("_", "tests", "_", "SkSLSwitchCaseFolding_GPU")
 		skip("_", "tests", "_", "SkSLLoopFloat_GPU")
 		skip("_", "tests", "_", "SkSLLoopInt_GPU")
 	}
 
-	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") {
-        if !b.extraConfig("Vulkan") {
-            // Various Nvidia GPUs crash or generate errors when assembling weird matrices
-            skip("_", "tests", "_", "SkSLMatrixConstructorsES2_GPU") // skia:12443
-            skip("_", "tests", "_", "SkSLMatrixConstructorsES3_GPU") // skia:12443
-        }
-		skip("_", "tests", "_", "SkSLMatrixFoldingES2_GPU") // skia:11919
+	if !b.extraConfig("Vulkan") &&
+		(b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3")) {
+		// Various Nvidia GPUs crash or generate errors when assembling weird matrices (skia:12443)
+		skip("_", "tests", "_", "SkSLMatrixConstructorsES2_GPU")
+		skip("_", "tests", "_", "SkSLMatrixConstructorsES3_GPU")
 	}
-
-	if b.gpu("PowerVRGE8320") || b.gpu("Tegra3") || b.gpu("Adreno308") {
-		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
-    }
 
 	if !b.extraConfig("Vulkan") && (b.gpu("RadeonR9M470X") || b.gpu("RadeonHD7770")) {
 		// Some AMD GPUs can get the wrong result when assembling non-square matrices (skia:12443)
@@ -1141,10 +1114,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// skia:10247
 		match = append(match, "~VkPrepareForExternalIOQueueTransitionTest")
 	}
-	if b.matchExtraConfig("Graphite") {
-                // skia:12813
-		match = append(match, "~async_rescale_and_read")
-        }
 
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
@@ -1161,7 +1130,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	// TODO(borenet): Previously this was `'Nexus5' in bot or 'Nexus9' in bot`
 	// which also matched 'Nexus5x'. I added That here to maintain the
 	// existing behavior, but we should verify that it's needed.
-	if b.model("Nexus5", "Nexus5x", "Nexus9", "JioNext") {
+	if b.model("Nexus5", "Nexus5x", "Nexus9") {
 		args = append(args, "--noRAW_threading")
 	}
 
