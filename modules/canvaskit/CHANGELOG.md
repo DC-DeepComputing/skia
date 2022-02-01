@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - Supplying textures via `Surface.makeImageFromTextureSource` should not cause issues with
    Mipmaps or other places where Skia needs to create textures (skbug.com/12797)
+ - `CanvasKit.MakeOnScreenGLSurface` and other gpu surface constructors correctly adjust the
+   underlying WebGL context, avoiding corruption and mismatched textures
+   (https://github.com/flutter/flutter/issues/95259).
 
 ## [0.32.0] - 2021-12-15
 
