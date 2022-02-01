@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b23566d1_550cfd77",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T09:55:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8a41fab_54904b87",
+      "range": {
+        "startLine": 1906,
+        "startChar": 66,
+        "endLine": 1906,
+        "endChar": 84
+      },
+      "revId": "25af678e2eb59632121db43f1b464f60aafd73f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1b356275_56f93d6a",
         "filename": "src/ports/SkFontHost_FreeType.cpp",
         "patchSetId": 6
@@ -37,6 +61,24 @@
       "writtenOn": "2022-01-31T16:49:28Z",
       "side": 1,
       "message": "We are currently vacillating on std::optional... I think this is still fine for now.",
+      "revId": "25af678e2eb59632121db43f1b464f60aafd73f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc52347a_43bec346",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T09:55:32Z",
+      "side": 1,
+      "message": "Moved to std::optional, not sure if that was what you were hinting at.",
+      "parentUuid": "1b356275_56f93d6a",
       "revId": "25af678e2eb59632121db43f1b464f60aafd73f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +96,24 @@
       "writtenOn": "2022-01-31T16:49:28Z",
       "side": 1,
       "message": "I would probably put some sort of heuristic here... like if the range is the min and max is more than five and in the range 0 to 1000 or something? Or maybe always take believe the font id there is a STAT table or some other indication of being modern? Same for weight.",
+      "revId": "25af678e2eb59632121db43f1b464f60aafd73f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d3c1694_bf748c6f",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1921,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-01T09:55:32Z",
+      "side": 1,
+      "message": "Done, let me know if these work for you. I am a little concerned we have to come back here for a font for which the heuristics don\u0027t make sense but which still has okay axis definitions.",
+      "parentUuid": "4e310c83_1cdf9333",
       "revId": "25af678e2eb59632121db43f1b464f60aafd73f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
