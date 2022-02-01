@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66ff2fd2_13621c74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:03:38Z",
+      "side": 1,
+      "message": "That is a great find! I have one minor request for how drawSpecial handles notifying the bitmap that pixels are changed. It turns out every other draw all in SkBitmapDevice goes through \"accessPixels()\", which automatically notifies the bitmap has changed. Fundamentally, where I commented, achieves the same fix that you made, so should still resolve the gen ID issue causing problems in chromium.",
+      "revId": "9ff02d35f6d2a81510b508c7530dde9fff8bd881",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c0814bd_fac90b6a",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T16:03:38Z",
+      "side": 1,
+      "message": "To make this line up with how the rest of SkBitmapDevice configures SkDraws, can you change this to be:\n\n   if (!this-\u003eaccessPixels(\u0026draw.fDst)) {\n       return; // no pixels to draw to so skip it\n   }\n   \naccessPixels() is the gate that notifies that pixels are drawn (done in BDDraw or SkDrawTiler). Unfortunately neither of these helpers are applicable for drawSpecial, but the manual setting of the SkDraw missed this step!  If we do it this way, drawSpecial\u0027s access is handled the same way as every where else, and the l586 you added can be deleted then.",
+      "range": {
+        "startLine": 582,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 37
+      },
+      "revId": "9ff02d35f6d2a81510b508c7530dde9fff8bd881",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
