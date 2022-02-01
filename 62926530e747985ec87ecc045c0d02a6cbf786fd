@@ -56,6 +56,30 @@
       },
       "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69664689_90968645",
+        "filename": "experimental/graphite/src/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-01T16:42:04Z",
+      "side": 1,
+      "message": "FWIW I wasn\u0027t going to return shaderCodeDictionary() directly (was going to do something like 2), but then I realized that is already a thread safe class. So there was no extra thread safety that needed to be managed by the GlobalCache class itself.\n\nSo my gut feeling is that most things will fall into something like 2, but I don\u0027t think we have to use that model for everything so for things that are already thread safe, I think 3 is a fine thing as well.\n\nBut yes I agree this will be a fun little project(s) to figure out how to best optimize each use case we have.",
+      "parentUuid": "2b5200cf_3ce90c8d",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 78
+      },
+      "revId": "62926530e747985ec87ecc045c0d02a6cbf786fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
