@@ -20,7 +20,8 @@ std::unique_ptr<Statement> VarDeclaration::clone() const {
     return std::make_unique<VarDeclaration>(&this->var(),
                                             &this->baseType(),
                                             fArraySize,
-                                            this->value() ? this->value()->clone() : nullptr);
+                                            this->value() ? this->value()->clone() : nullptr,
+                                            /*isClone=*/true);
 }
 
 String VarDeclaration::description() const {
