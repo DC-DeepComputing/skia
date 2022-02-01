@@ -56,6 +56,30 @@
       },
       "revId": "6cbe0dbaa8c7ce6cd69a394e993776e3599ce8f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9645c09e_c88bd3d8",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-01T15:48:11Z",
+      "side": 1,
+      "message": "Went with writeDeferredStrokePatch()",
+      "parentUuid": "d1f225f8_7fb5bd96",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "6cbe0dbaa8c7ce6cd69a394e993776e3599ce8f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
