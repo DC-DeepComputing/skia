@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1a09f01_b3ef656a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "I would include these lines to the top of SkBlitterTrace and add instruction about how to use it.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 399
+      },
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c47d180_426bc727",
@@ -14,6 +37,138 @@
       "writtenOn": "2022-02-01T14:39:56Z",
       "side": 1,
       "message": "Technically it\u0027s based on Herb CL but I it was so much easier to start it from scratch... ",
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f30175_5647e171",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "I suspect that some of the tracing will slow down CPU blitting, but I think that is fine until we sort out RP and VM.",
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c1becdf_e60dae4d",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "Can this be private?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 26
+      },
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480ae86e_782427a3",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "blitRectByMemset?",
+      "range": {
+        "startLine": 341,
+        "startChar": 37,
+        "endLine": 341,
+        "endChar": 46
+      },
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c47b644_c16cde05",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "blitRect",
+      "range": {
+        "startLine": 378,
+        "startChar": 33,
+        "endLine": 378,
+        "endChar": 42
+      },
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8afded9_45302f6e",
+        "filename": "src/core/SkVMBlitter.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "Add newline above private:",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 8
+      },
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8091cb_e89c36d3",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-01T15:17:28Z",
+      "side": 1,
+      "message": "line length",
+      "range": {
+        "startLine": 37,
+        "startChar": 80,
+        "endLine": 37,
+        "endChar": 100
+      },
       "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
