@@ -475,7 +475,26 @@ public:
                 filename = resolvedFilename.c_str();
             }
         }
+
+        SkDebugf("MakeFromFile %s\n", filename);
+
         return SkStream::MakeFromFile(filename);
+    }
+
+    std::unique_ptr<SkStreamAsset> openExistingStream(int* ttcIndex) const override {
+
+        if (fFontData) {
+            *ttcIndex = fFontData->getIndex();
+            SkStreamAsset* stream = fFontData->getStream();
+            if (!stream) {
+                return nullptr;
+            }
+            SkDebugf("openExistingStream: Yes\n");
+            return stream->duplicate();
+        }
+        SkDebugf("openExistingStream: No\n");
+        *ttcIndex = get_int(fPattern, FC_INDEX, 0);
+        return nullptr;
     }
 
     void onFilterRec(SkScalerContextRec* rec) const override {
@@ -535,13 +554,18 @@ public:
     }
 
     std::unique_ptr<SkFontData> onMakeFontData() const override {
-        int index;
-        std::unique_ptr<SkStreamAsset> stream(this->onOpenStream(&index));
-        if (!stream) {
-            return nullptr;
+
+        if (!fFontData) {
+            int index;
+            std::unique_ptr<SkStreamAsset> stream(this->onOpenStream(&index));
+            if (!stream) {
+                return nullptr;
+            }
+            // TODO: FC_VARIABLE and FC_FONT_VARIATIONS
+            fFontData = std::make_unique<SkFontData>(std::move(stream), index, nullptr, 0);
         }
-        // TODO: FC_VARIABLE and FC_FONT_VARIATIONS
-        return std::make_unique<SkFontData>(std::move(stream), index, nullptr, 0);
+
+        return std::make_unique<SkFontData>(*fFontData);
     }
 
     ~SkTypeface_fontconfig() override {
@@ -558,6 +582,7 @@ private:
         , fSysroot(std::move(sysroot))
     { }
 
+    mutable std::unique_ptr<SkFontData> fFontData;
     using INHERITED = SkTypeface_FreeType;
 };
 

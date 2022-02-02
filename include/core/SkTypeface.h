@@ -320,6 +320,11 @@ public:
     std::unique_ptr<SkStreamAsset> openStream(int* ttcIndex) const;
 
     /**
+     *
+     */
+    virtual std::unique_ptr<SkStreamAsset> openExistingStream(int* ttcIndex) const;
+
+    /**
      *  Return a scalercontext for the given descriptor. It may return a
      *  stub scalercontext that will not crash, but will draw nothing.
      */
