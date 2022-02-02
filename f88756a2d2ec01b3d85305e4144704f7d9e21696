@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2171aa5f_61698d4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T18:44:58Z",
+      "side": 1,
+      "message": "+∞ after comments!",
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e79c66_5d6026e1",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T18:44:58Z",
+      "side": 1,
+      "message": "SkASSERT(fChunker.stride() \u003c kMaxStride)\n \nMight be nice to have the assert exactly where it matters, which is here?",
+      "range": {
+        "startLine": 280,
+        "startChar": 43,
+        "endLine": 280,
+        "endChar": 61
+      },
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40b00b9c_6006bfa2",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T18:44:58Z",
+      "side": 1,
+      "message": "fJoinControlPointAttrib?\n\nShould we move this comment down to \"vw \u003c\u003c fJoinControlPointAttrib\"?\n\nIs there a reason we need to create \"nextControlPoint\" instead of just assigning directly to fJoinControlPointAttrib after emitting it?",
+      "range": {
+        "startLine": 305,
+        "startChar": 25,
+        "endLine": 305,
+        "endChar": 50
+      },
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
