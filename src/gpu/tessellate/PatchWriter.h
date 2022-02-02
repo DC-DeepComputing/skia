@@ -13,6 +13,8 @@
 #include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
 #include "src/gpu/tessellate/Tessellation.h"
 
+#define AI SK_ALWAYS_INLINE
+
 namespace skgpu {
 
 #if SK_GPU_V1
@@ -111,143 +113,99 @@ public:
     }
 
     /**
-     * Helper structs that represent a path verb and geometry, that can be used to convert to
-     * patches of instance data using operator<< on the PatchWriter, e.g.
-     *
-     *   patchWriter << Cubic(p0, p1, p2, p3);
-     *   patchWriter << Conic(p0, p1, p2, w);
-     *   patchWriter << Quadratic(p0, p1, p2);
-     *   patchWriter << Line(p0, p1);
-     *   patchWriter << Triangle(p0, p1, p2);
-     *   patchWriter << Circle(p); // only for strokes
-     *
-     * Every geometric type is converted to an equivalent cubic or conic, so this will always
-     * write at minimum 8 floats for the four control points (cubic) or three control points and
-     * {w, inf} (conics). The PatchWriter additionally writes the current values of all attributes
-     * enabled in its PatchAttribs flags.
+     * writeX functions for supported patch geometry types. Every geometric type is converted to an
+     * equivalent cubic or conic, so this will always write at minimum 8 floats for the four control
+     * points (cubic) or three control points and {w, inf} (conics). The PatchWriter additionally
+     * writes the current values of all attributes enabled in its PatchAttribs flags.
      */
 
-    // Defines a cubic curve from four control points.
-    struct Cubic {
-        Cubic(float2 p0, float2 p1, float2 p2, float2 p3) : fP0(p0), fP1(p1), fP2(p2), fP3(p3) {}
-        Cubic(float4 p0p1, float4 p2p3) : fP0(p0p1.lo), fP1(p0p1.hi), fP2(p2p3.lo), fP3(p2p3.hi) {}
-        Cubic(float2 p0, float4 p1p2, float2 p3) : fP0(p0), fP1(p1p2.lo), fP2(p1p2.hi), fP3(p3) {}
-        Cubic(const SkPoint p[4]) : Cubic(float4::Load(p), float4::Load(p + 2)) {}
-
-        float2 fP0, fP1, fP2, fP3;
-    };
-
-    // Defines a conic curve from three control points and 'w'.
-    struct Conic {
-        Conic(float2 p0, float2 p1, float2 p2, float w) : fP0(p0), fP1(p1), fP2(p2), fW(w) {}
-        Conic(const SkPoint p[3], float w)
-                : fP0(float2::Load(p))
-                , fP1(float2::Load(p + 1))
-                , fP2(float2::Load(p + 2))
-                , fW(w) {}
-
-        float2 fP0, fP1, fP2;
-        float  fW;
-    };
-
-
-    // Defines a quadratic curve that is automatically converted into an equivalent cubic.
-    struct Quadratic {
-        Quadratic(float2 p0, float2 p1, float2 p2) : fP0(p0), fP1(p1), fP2(p2) {}
-        Quadratic(const SkPoint p[3])
-                : fP0(float2::Load(p))
-                , fP1(float2::Load(p + 1))
-                , fP2(float2::Load(p + 2)) {}
-
-        Cubic asCubic() const {
-            return Cubic(fP0, mix(float4(fP0, fP2), fP1.xyxy(), 2/3.f), fP2);
-        }
-
-        float2 fP0, fP1, fP2;
-    };
-
-    // Defines a line that will be automatically converted into an equivalent cubic patch.
-    struct Line {
-        Line(float4 p0p1) : fP0{p0p1.lo}, fP1{p0p1.hi} {}
-        Line(float2 p0, float2 p1) : fP0{p0}, fP1{p1} {}
-        Line(SkPoint p0, SkPoint p1)
-                : fP0{skvx::bit_pun<float2>(p0)}
-                , fP1{skvx::bit_pun<float2>(p1)} {}
-
-        Cubic asCubic() const {
-            float4 p0p1{fP0, fP1};
-            return Cubic(fP0, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, fP1);
-        }
-
-        float2 fP0, fP1;
-    };
-
-    // Defines a triangle that will be automatically converted into a conic patch (w = inf).
-    struct Triangle {
-        Triangle(float2 p0, float2 p1, float2 p2) : fP0(p0), fP1(p1), fP2(p2) {}
-        Triangle(SkPoint p0, SkPoint p1, SkPoint p2)
-                : fP0(skvx::bit_pun<float2>(p0))
-                , fP1(skvx::bit_pun<float2>(p1))
-                , fP2(skvx::bit_pun<float2>(p2)) {}
-
-        float2 fP0, fP1, fP2;
-    };
-
-    // Defines a circle used for round caps and joins in stroking, encoded as a cubic with
-    // identical control points and an empty join.
-    struct Circle {
-        Circle(float2 p) : fP(p) {}
-        Circle(SkPoint p) : fP(skvx::bit_pun<float2>(p)) {}
-
-        float2 fP;
-    };
-
-    // operator<< definitions for the patch geometry types.
-
-    SK_ALWAYS_INLINE void operator<<(const Cubic& cubic) {
+    // Write a cubic curve with its four control points.
+    AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3) {
         // TODO: Have cubic store or automatically compute wang's formula so this can automatically
         // call into chopAndWriteCubics.
-        this->writePatch(cubic.fP0, cubic.fP1, cubic.fP2, cubic.fP3,
-                         kCubicCurveType);
+        this->writePatch(p0, p1, p2, p3, kCubicCurveType);
+    }
+    AI void writeCubic(float4 p0p1, float4 p2p3) {
+        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi);
+    }
+    AI void writeCubic(float2 p0, float4 p1p2, float2 p3) {
+        this->writeCubic(p0, p1p2.lo, p1p2.hi, p3);
+    }
+    AI void writeCubic(const SkPoint pts[4]) {
+        this->writeCubic(float4::Load(pts), float4::Load(pts + 2));
     }
 
-    SK_ALWAYS_INLINE void operator<<(const Conic& conic) {
+    // Write a conic curve with three control points and 'w', with the last coord of the last
+    // control point signaling a conic by being set to infinity.
+    AI void writeConic(float2 p0, float2 p1, float2 p2, float w) {
         // TODO: Have Conic store or automatically compute Wang's formula so this can automatically
         // call into chopAndWriteConics.
-        this->writePatch(conic.fP0, conic.fP1, conic.fP2, {conic.fW, SK_FloatInfinity},
-                         kConicCurveType);
+        this->writePatch(p0, p1, p2, {w, SK_FloatInfinity}, kConicCurveType);
+    }
+    AI void writeConic(const SkPoint pts[3], float w) {
+        this->writeConic(skvx::bit_pun<float2>(pts[0]),
+                         skvx::bit_pun<float2>(pts[1]),
+                         skvx::bit_pun<float2>(pts[2]),
+                         w);
     }
 
-    // TODO: Have Quadratic store or automatically compute Wang's formula so this can automatically
-    // call into chopAndWriteQuadratics *before* it is converted to an equivalent cubic if needed.
-    SK_ALWAYS_INLINE void operator<<(const Quadratic& quad) { *this << quad.asCubic(); }
-
-    SK_ALWAYS_INLINE void operator<<(const Line& line) {
-        // Lines are specially encoded as [p0,p0,p1,p1] and detected in the shaders; if that
-        // isn't desired, convert to a Cubic directly with Line::asCubic().
-        this->writePatch(line.fP0, line.fP0, line.fP1, line.fP1, kCubicCurveType);
+    // Write a quadratic curve that automatically converts its three control points into an
+    // equivalent cubic.
+    AI void writeQuadratic(float2 p0, float2 p1, float2 p2) {
+        // TODO: Have Quadratic store or automatically compute Wang's formula so this can
+        // automatically  call into chopAndWriteQuadratics *before* it is converted to an equivalent
+        // cubic if needed.
+        this->writeCubic(p0, mix(float4(p0, p2), p1.xyxy(), 2/3.f), p2);
+    }
+    AI void writeQuadratic(const SkPoint pts[3]) {
+        this->writeQuadratic(skvx::bit_pun<float2>(pts[0]),
+                             skvx::bit_pun<float2>(pts[1]),
+                             skvx::bit_pun<float2>(pts[2]));
     }
 
-    SK_ALWAYS_INLINE void operator<<(const Triangle& tri) {
-        // Mark this patch as a triangle by setting it to a conic with w=Inf, and use a distinct
-        // explicit curve type for when inf isn't supported in shaders.
-        this->writePatch(tri.fP0, tri.fP1, tri.fP2, {SK_FloatInfinity, SK_FloatInfinity},
+    // TODO: Currently stroked lines are encoded as [p0,p0,p1,p1] and detected in the shaders;
+    // usage of this should be converted over to writeLineAsCubic() and that should be how all
+    // lines are handled w/o any need for shader detection.
+    AI void writeLine(float2 p0, float2 p1) {
+        this->writePatch(p0, p0, p1, p1, kCubicCurveType);
+    }
+    AI void writeLine(SkPoint p0, SkPoint p1) {
+        this->writeLine(skvx::bit_pun<float2>(p0), skvx::bit_pun<float2>(p1));
+    }
+    // Write a line that is automatically converted into an equivalent cubic.
+    AI void writeLineAsCubic(float4 p0p1) {
+        this->writeCubic(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi);
+    }
+    AI void writeLineAsCubic(float2 p0, float2 p1) { this->writeLineAsCubic({p0, p1}); }
+
+    // Write a triangle by setting it to a conic with w=Inf, and using a distinct
+    // explicit curve type for when inf isn't supported in shaders.
+    AI void writeTriangle(float2 p0, float2 p1, float2 p2) {
+        this->writePatch(p0, p1, p2, {SK_FloatInfinity, SK_FloatInfinity},
                          kTriangularConicCurveType);
     }
+    AI void writeTriangle(SkPoint p0, SkPoint p1, SkPoint p2) {
+        this->writeTriangle(skvx::bit_pun<float2>(p0),
+                            skvx::bit_pun<float2>(p1),
+                            skvx::bit_pun<float2>(p2));
+    }
 
-    SK_ALWAYS_INLINE void operator<<(const Circle& circle) {
+    // Writes a circle used for round caps and joins in stroking, encoded as a cubic with
+    // identical control points and an empty join.
+    AI void writeCircle(float2 p) {
         // This does not use writePatch() because it uses its own location as the join attribute
         // value instead of fJoinControlPointAttrib.
         SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
         if (VertexWriter vw = this->appendPatch(/*defer=*/false)) {
-            vw << VertexWriter::Repeat<5>(circle.fP); // p0,p1,p2,p3,join = p -> 5 copies
+            vw << VertexWriter::Repeat<5>(p); // p0,p1,p2,p3,join = p -> 5 copies
             this->emitSimplePatchAttribs(std::move(vw), kCubicCurveType);
         }
     }
+    AI void writeCircle(SkPoint p) { this->writeCircle(skvx::bit_pun<float2>(p)); }
 
     SK_ALWAYS_INLINE void operator<<(MiddleOutPolygonTriangulator::PoppedTriangleStack&& stack) {
         for (auto [p0, p1, p2] : stack) {
-            *this << Triangle(p0, p1, p2);
+            this->writeTriangle(p0, p1, p2);
         }
     }
 
@@ -350,5 +308,7 @@ private:
 };
 
 }  // namespace skgpu
+
+#undef AI
 
 #endif  // tessellate_PatchWriter_DEFINED
