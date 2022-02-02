@@ -87,6 +87,8 @@ public:
                                   OpszVariation opszVariation,
                                   std::unique_ptr<SkStreamAsset> providedData);
 
+    std::unique_ptr<SkStreamAsset> openExistingStream(int* ttcIndex) const override;
+
     SkUniqueCFRef<CTFontRef> fFontRef;
     const OpszVariation fOpszVariation;
     const bool fHasColorGlyphs;

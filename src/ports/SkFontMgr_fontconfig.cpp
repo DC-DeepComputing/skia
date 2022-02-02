@@ -475,6 +475,7 @@ public:
                 filename = resolvedFilename.c_str();
             }
         }
+
         return SkStream::MakeFromFile(filename);
     }
 

@@ -290,6 +290,10 @@ std::unique_ptr<SkStreamAsset> SkTypeface::openStream(int* ttcIndex) const {
     return this->onOpenStream(ttcIndex);
 }
 
+std::unique_ptr<SkStreamAsset> SkTypeface::openExistingStream(int* ttcIndex) const {
+    return this->openStream(ttcIndex);
+}
+
 std::unique_ptr<SkScalerContext> SkTypeface::createScalerContext(
         const SkScalerContextEffects& effects, const SkDescriptor* desc) const {
     std::unique_ptr<SkScalerContext> scalerContext = this->onCreateScalerContext(effects, desc);

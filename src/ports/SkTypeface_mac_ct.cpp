@@ -772,7 +772,13 @@ std::unique_ptr<SkStreamAsset> SkTypeface_Mac::onOpenStream(int* ttcIndex) const
         ++entry;
     }
     });
+
     return fStream->duplicate();
+}
+
+std::unique_ptr<SkStreamAsset> SkTypeface_Mac::openExistingStream(int* ttcIndex) const {
+    *ttcIndex = 0;
+    return fStream ? fStream->duplicate() : nullptr;
 }
 
 int SkTypeface_Mac::onGetVariationDesignPosition(
