@@ -748,6 +748,11 @@
       ],
       "trigger": "on demand"
     },
+    "CodeSize-Debian10-Clang-x86_64-Release": {
+      "tasks": [
+        "CodeSize-Debian10-Clang-x86_64-Release"
+      ]
+    },
     "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {
       "tasks": [
         "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All"
@@ -18226,6 +18231,51 @@
       "io_timeout_ns": 10800000000000,
       "max_attempts": 1,
       "service_account": "skia-g3-framework-compile@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "CodeSize-Debian10-Clang-x86_64-Release": {
+      "casSpec": "empty",
+      "cipd_packages": [
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:aa47e6be98046ddf930042773df0bd2b768e3d99"
+        }
+      ],
+      "command": [
+        "./codesize",
+        "--local=false",
+        "--project_id",
+        "skia-swarming-bots",
+        "--task_id",
+        "<(TASK_ID)",
+        "--task_name",
+        "CodeSize-Debian10-Clang-x86_64-Release",
+        "--repo",
+        "<(REPO)",
+        "--revision",
+        "<(REVISION)",
+        "--patch_issue",
+        "<(ISSUE)",
+        "--patch_set",
+        "<(PATCHSET)",
+        "--patch_server",
+        "<(CODEREVIEW_SERVER)"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-x86_64-Release",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highmem-2",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "execution_timeout_ns": 10800000000000,
+      "io_timeout_ns": 10800000000000,
+      "max_attempts": 1,
+      "service_account": "skia-codesize@skia-public.iam.gserviceaccount.com"
     },
     "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {
       "casSpec": "test",
