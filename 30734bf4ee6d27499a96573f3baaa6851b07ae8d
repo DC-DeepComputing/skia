@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbaaa564_6188b470",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-02T14:56:27Z",
+      "side": 1,
+      "message": "That\u0027s right, we can use C++17 now! I definitely need to brush up on what it offers, I hadn\u0027t been familiar with [[maybe_unused]].",
+      "parentUuid": "9d68de2b_fecf1a59",
+      "range": {
+        "startLine": 265,
+        "startChar": 4,
+        "endLine": 265,
+        "endChar": 50
+      },
+      "revId": "30734bf4ee6d27499a96573f3baaa6851b07ae8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "079cbdd1_1eecacf4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-01T21:01:13Z",
       "side": 1,
       "message": "This will go stale if Program::Inputs changes. The persistent cache had a similar issue so I added a guard for it:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/GrPersistentCacheUtils.cpp;l\u003d19-24\n\nWe should do something similar here to prevent a super-subtle bug if any Inputs are ever added. (Might need some thought as to the proper factoring.)",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 46
+      },
+      "revId": "30734bf4ee6d27499a96573f3baaa6851b07ae8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cd857f9_7ac24bc0",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-02T14:56:27Z",
+      "side": 1,
+      "message": "Done. Rather than simply perform the same check in both classes, I decided to handle this by checking that the struct size hasn\u0027t changed in Dehydrator, and then adding a \"did we read the expected total number of bytes?\" check to Rehydrator.\n\nThat should give us the same end result of catching a failure to update either location, but additionally gives us a nice overall correctness check on rehydration.",
+      "parentUuid": "079cbdd1_1eecacf4",
       "range": {
         "startLine": 283,
         "startChar": 0,
