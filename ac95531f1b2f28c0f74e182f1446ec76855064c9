@@ -70,6 +70,30 @@
       },
       "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500fd72e_eeeccc59",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-02T20:19:15Z",
+      "side": 1,
+      "message": "Cloning the variable certainly isn\u0027t impossible - but then you need to track which variable clones correspond to which variables so that you can rewrite the VariableReferences as needed, which means you also need some kind of overall context for the clone operation so that you know where to find this mapping. Inliner presumably does all of that internally and isn\u0027t just calling clone() without performing this sort of fixup.\n\nSo yes, you could make it work... but since this operation only really exists to serve this test, and the test doesn\u0027t need the variables to be cloned, it seems like an awful lot of work and complexity for no real benefit. Just having it fail in release (with, naturally, a comment thoroughly explaining the issue) seems to me like an adequate solution for now - if in the future we actually run into a need for this, we can do the required work then.",
+      "parentUuid": "35bc0ee0_e4e8f2b7",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
