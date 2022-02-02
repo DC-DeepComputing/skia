@@ -87,6 +87,8 @@ public:
                                   OpszVariation opszVariation,
                                   std::unique_ptr<SkStreamAsset> providedData);
 
+    std::unique_ptr<SkStreamAsset> openExistingStream(int* ttcIndex) const override;
+
     SkUniqueCFRef<CTFontRef> fFontRef;
     const OpszVariation fOpszVariation;
     const bool fHasColorGlyphs;
@@ -94,6 +96,7 @@ public:
 protected:
     int onGetUPEM() const override;
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
+    std::unique_ptr<SkStreamAsset> onOpenExistingStream(int* ttcIndex) const override;
     bool onGlyphMaskNeedsCurrentColor() const override { return false; }
     int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
                                      int coordinateCount) const override;
