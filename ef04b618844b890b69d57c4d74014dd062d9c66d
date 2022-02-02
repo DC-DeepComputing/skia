@@ -22,6 +22,30 @@
       },
       "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfd1d52d_90a369ab",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T01:00:23Z",
+      "side": 1,
+      "message": "I played aroudn with this, and I think moving to that API is a good goal, but given some of the pending consolidation into PatchWriter, particularly around deferring patches, having the patch objects makes these progressive changes a little cleaner.\n\nI have to still write it up, but I think I would update it after https://skia-review.googlesource.com/c/skia/+/501839 and before https://skia-review.googlesource.com/c/skia/+/502056. Does that sound okay to you?",
+      "parentUuid": "f1642a1e_46bd0ac7",
+      "range": {
+        "startLine": 145,
+        "startChar": 20,
+        "endLine": 145,
+        "endChar": 56
+      },
+      "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
