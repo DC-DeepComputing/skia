@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5718e6f_740e1df5",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-02T20:41:32Z",
+      "side": 0,
+      "message": "Can\u0027t it be that a glyph has a path, but is still empty?",
+      "range": {
+        "startLine": 400,
+        "startChar": 4,
+        "endLine": 404,
+        "endChar": 0
+      },
+      "revId": "aebd6c0064a065fc54c31ce9a81dfd53f8c185fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
