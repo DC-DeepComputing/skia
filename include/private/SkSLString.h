@@ -33,6 +33,9 @@ public:
     static void appendf(String* str, const char* fmt, ...) SK_PRINTF_LIKE(2, 3);
     static void vappendf(String* str, const char* fmt, va_list va);
 
+    static bool stod(std::string_view s, SKSL_FLOAT* value);
+    static bool stoi(std::string_view s, SKSL_INT* value);
+
     String operator+(const char* s) const;
     String operator+(const String& s) const;
     String operator+(std::string_view s) const;
@@ -47,9 +50,6 @@ private:
 };
 
 String operator+(std::string_view left, std::string_view right);
-
-bool stod(std::string_view s, SKSL_FLOAT* value);
-bool stoi(std::string_view s, SKSL_INT* value);
 
 } // namespace SkSL
 

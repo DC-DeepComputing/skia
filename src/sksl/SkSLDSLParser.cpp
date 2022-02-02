@@ -716,7 +716,7 @@ int DSLParser::layoutInt() {
     }
     std::string_view resultFrag = this->text(resultToken);
     SKSL_INT resultValue;
-    if (!SkSL::stoi(resultFrag, &resultValue)) {
+    if (!SkSL::String::stoi(resultFrag, &resultValue)) {
         this->error(resultToken, "value in layout is too large: " + resultFrag);
         return -1;
     }
@@ -1816,7 +1816,7 @@ bool DSLParser::intLiteral(SKSL_INT* dest) {
         return false;
     }
     std::string_view s = this->text(t);
-    if (!SkSL::stoi(s, dest)) {
+    if (!SkSL::String::stoi(s, dest)) {
         this->error(t, "integer is too large: " + s);
         return false;
     }
@@ -1830,7 +1830,7 @@ bool DSLParser::floatLiteral(SKSL_FLOAT* dest) {
         return false;
     }
     std::string_view s = this->text(t);
-    if (!SkSL::stod(s, dest)) {
+    if (!SkSL::String::stod(s, dest)) {
         this->error(t, "floating-point value is too large: " + s);
         return false;
     }

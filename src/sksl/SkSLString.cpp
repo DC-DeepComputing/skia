@@ -123,7 +123,7 @@ String operator+(std::string_view left, std::string_view right) {
     return String(left) + right;
 }
 
-bool stod(std::string_view s, SKSL_FLOAT* value) {
+bool String::stod(std::string_view s, SKSL_FLOAT* value) {
     std::string str(s.data(), s.size());
     std::stringstream buffer(str);
     buffer.imbue(std::locale::classic());
@@ -131,7 +131,7 @@ bool stod(std::string_view s, SKSL_FLOAT* value) {
     return !buffer.fail();
 }
 
-bool stoi(std::string_view s, SKSL_INT* value) {
+bool String::stoi(std::string_view s, SKSL_INT* value) {
     if (s.empty()) {
         return false;
     }
