@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9829544e_286285fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-02T15:44:09Z",
+      "side": 1,
+      "message": "PTAL. Test was hanging because one of the points generated had NaN.",
+      "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
