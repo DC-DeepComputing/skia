@@ -22,6 +22,30 @@
       },
       "revId": "aebd6c0064a065fc54c31ce9a81dfd53f8c185fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a57de4d_e4458b3d",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-02T21:42:07Z",
+      "side": 0,
+      "message": "Yes, that\u0027s the difference between having no path and having an empty path. We do make several decisions in relation to this. This code was conflating no path and empty path. The change to remove this means that the remote side will correctly know if the glyph has an empty path or no path.",
+      "parentUuid": "f5718e6f_740e1df5",
+      "range": {
+        "startLine": 400,
+        "startChar": 4,
+        "endLine": 404,
+        "endChar": 0
+      },
+      "revId": "aebd6c0064a065fc54c31ce9a81dfd53f8c185fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
