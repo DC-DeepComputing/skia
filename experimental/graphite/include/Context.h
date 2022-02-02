@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkNoncopyable.h"
 
 #include "experimental/graphite/include/GraphiteTypes.h"
 
@@ -52,12 +53,12 @@ struct PaintCombo {
     std::vector<SkBlendMode> fBlendModes;
 };
 
-class Context final : public SkRefCnt {
+class Context final : public SkNoncopyable {
 public:
-    ~Context() override;
+    ~Context();
 
 #ifdef SK_METAL
-    static sk_sp<Context> MakeMetal(const skgpu::mtl::BackendContext&);
+    static std::unique_ptr<Context> MakeMetal(const skgpu::mtl::BackendContext&);
 #endif
 
     BackendApi backend() const { return fBackend; }
