@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa2653f_0e857fca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18639
+      },
+      "writtenOn": "2022-02-02T21:54:47Z",
+      "side": 1,
+      "message": "I have made a discovery!",
+      "revId": "16a0878d925c6901ada45b5180efbd6587e1286e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1da498a2_f78b5172",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 18639
+      },
+      "writtenOn": "2022-02-02T21:54:47Z",
+      "side": 1,
+      "message": "This breaks all currently working matching.",
+      "revId": "16a0878d925c6901ada45b5180efbd6587e1286e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
