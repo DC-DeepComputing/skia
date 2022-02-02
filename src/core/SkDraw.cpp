@@ -400,6 +400,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
                 if (newPaint.getStrokeCap() == SkPaint::kRound_Cap) {
                     if (device) {
                         for (size_t i = 0; i < count; ++i) {
+                            if (!pts[i].isFinite()) {
+                                return;
+                            }
                             SkRect r = SkRect::MakeLTRB(pts[i].fX - radius, pts[i].fY - radius,
                                                         pts[i].fX + radius, pts[i].fY + radius);
                             device->drawOval(r, newPaint);
@@ -410,6 +413,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
 
                         path.addCircle(0, 0, radius);
                         for (size_t i = 0; i < count; i++) {
+                            if (!pts[i].isFinite()) {
+                                return;
+                            }
                             preMatrix.setTranslate(pts[i].fX, pts[i].fY);
                             // pass true for the last point, since we can modify
                             // then path then
@@ -421,6 +427,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
                     SkRect  r;
 
                     for (size_t i = 0; i < count; i++) {
+                        if (!pts[i].isFinite()) {
+                            return;
+                        }
                         r.fLeft = pts[i].fX - radius;
                         r.fTop = pts[i].fY - radius;
                         r.fRight = r.fLeft + width;
@@ -438,6 +447,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
                 if (2 == count && paint.getPathEffect()) {
                     // most likely a dashed line - see if it is one of the ones
                     // we can accelerate
+                    if (!pts[0].isFinite() || !pts[1].isFinite()) {
+                        return;
+                    }
                     SkStrokeRec stroke(paint);
                     SkPathEffectBase::PointData pointData;
 
@@ -524,6 +536,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
                 size_t inc = (SkCanvas::kLines_PointMode == mode) ? 2 : 1;
                 path.setIsVolatile(true);
                 for (size_t i = 0; i < count; i += inc) {
+                    if (!pts[i].isFinite() || (inc == 2 && !pts[i+1].isFinite())) {
+                        return;
+                    }
                     path.moveTo(pts[i]);
                     path.lineTo(pts[i+1]);
                     if (device) {
