@@ -22,6 +22,30 @@
       },
       "revId": "b97eaa26e6f9d76789788f39437df7d3fdb09959",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5ad0666_1441cf32",
+        "filename": "BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-02T15:01:01Z",
+      "side": 1,
+      "message": "I would guess it was added when trying to build viewer or our gms/unit tests for WASM. We can revisit this, or just keep pressing on with moving those builds over to Bazel.",
+      "parentUuid": "23544ccc_ef26b08c",
+      "range": {
+        "startLine": 1797,
+        "startChar": 23,
+        "endLine": 1797,
+        "endChar": 43
+      },
+      "revId": "b97eaa26e6f9d76789788f39437df7d3fdb09959",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
