@@ -33,6 +33,24 @@
       "message": "This breaks all currently working matching.",
       "revId": "16a0878d925c6901ada45b5180efbd6587e1286e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4cec00c_9b9759c2",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 18639
+      },
+      "writtenOn": "2022-02-02T22:12:53Z",
+      "side": 1,
+      "message": "Turns out that FcDontCare provides the behavior we probably want.",
+      "parentUuid": "1da498a2_f78b5172",
+      "revId": "16a0878d925c6901ada45b5180efbd6587e1286e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
