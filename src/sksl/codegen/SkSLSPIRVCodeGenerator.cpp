@@ -684,7 +684,7 @@ SpvId SPIRVCodeGenerator::getImageType(const Type& type) {
 
 SpvId SPIRVCodeGenerator::getFunctionType(const FunctionDeclaration& function) {
     String key = to_string(this->getType(function.returnType())) + "(";
-    String separator;
+    const char* separator = "";
     const std::vector<const Variable*>& parameters = function.parameters();
     for (size_t i = 0; i < parameters.size(); i++) {
         key += separator;

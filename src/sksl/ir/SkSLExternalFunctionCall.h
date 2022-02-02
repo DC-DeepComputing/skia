@@ -58,7 +58,7 @@ public:
 
     String description() const override {
         String result = String(this->function().name()) + "(";
-        String separator;
+        const char* separator = "";
         for (const std::unique_ptr<Expression>& arg : this->arguments()) {
             result += separator;
             result += arg->description();

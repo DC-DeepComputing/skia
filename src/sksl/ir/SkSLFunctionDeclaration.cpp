@@ -433,7 +433,7 @@ String FunctionDeclaration::mangledName() const {
 
 String FunctionDeclaration::description() const {
     String result = this->returnType().displayName() + " " + this->name() + "(";
-    String separator;
+    const char* separator = "";
     for (const Variable* p : this->parameters()) {
         result += separator;
         separator = ", ";

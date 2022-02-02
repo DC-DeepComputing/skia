@@ -792,7 +792,7 @@ std::unique_ptr<Expression> FunctionCall::clone() const {
 
 String FunctionCall::description() const {
     String result = String(this->function().name()) + "(";
-    String separator;
+    const char* separator = "";
     for (const std::unique_ptr<Expression>& arg : this->arguments()) {
         result += separator;
         result += arg->description();
@@ -887,7 +887,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
                 return FunctionCall::Convert(context, line, *best, std::move(arguments));
             }
             String msg = "no match for " + functions[0]->name() + "(";
-            String separator;
+            const char* separator = "";
             for (size_t i = 0; i < arguments.size(); i++) {
                 msg += separator;
                 separator = ", ";
@@ -909,7 +909,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             }
             String msg = "no match for " + arguments.back()->type().displayName() +
                          "::" + functions[0]->name().substr(1) + "(";
-            String separator;
+            const char* separator = "";
             for (size_t i = 0; i < arguments.size() - 1; i++) {
                 msg += separator;
                 separator = ", ";
@@ -954,7 +954,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
     const Type* returnType;
     if (!function.determineFinalTypes(arguments, &types, &returnType)) {
         String msg = "no match for " + function.name() + "(";
-        String separator;
+        const char* separator = "";
         for (const std::unique_ptr<Expression>& arg : arguments) {
             msg += separator;
             msg += arg->type().displayName();
