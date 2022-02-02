@@ -265,49 +265,6 @@ GradientData::GradientData(SkShader::GradientType type,
 }
 
 GradientData::GradientData(SkShader::GradientType type,
-                           SkPoint points[2],
-                           float radii[2],
-                           SkTileMode tm,
-                           int numStops,
-                           SkColor colors[kMaxStops],
-                           float offsets[kMaxStops])
-        : fType(type)
-        , fTM(tm)
-        , fNumStops(numStops) {
-    memcpy(fPoints, points, sizeof(fPoints));
-    memcpy(fRadii, radii, sizeof(fRadii));
-    this->toColor4fs(fNumStops, colors);
-    this->toOffsets(fNumStops, offsets);
-}
-
-void GradientData::toColor4fs(int numColors, SkColor colors[kMaxStops]) {
-    if (numColors < 2 || numColors > kMaxStops) {
-        sk_bzero(fColor4fs, sizeof(fColor4fs));
-        return;
-    }
-
-    int i;
-    for (i = 0; i < numColors; ++i) {
-        fColor4fs[i] = SkColor4f::FromColor(colors[i]);
-    }
-    for ( ; i < kMaxStops; ++i) {
-        fColor4fs[i] = fColor4fs[numColors-1];
-    }
-}
-
-void GradientData::toOffsets(int numStops, float inputOffsets[kMaxStops]) {
-    if (numStops < 2 || numStops > kMaxStops) {
-        sk_bzero(fOffsets, sizeof(fOffsets));
-        return;
-    }
-
-    memcpy(fOffsets, inputOffsets, numStops * sizeof(float));
-    for (int i = numStops ; i < kMaxStops; ++i) {
-        fOffsets[i] = fOffsets[numStops-1];
-    }
-}
-
-GradientData::GradientData(SkShader::GradientType type,
                            SkPoint point0, SkPoint point1,
                            float radius0, float radius1,
                            SkTileMode tm,
@@ -324,7 +281,13 @@ GradientData::GradientData(SkShader::GradientType type,
     fRadii[0] = radius0;
     fRadii[1] = radius1;
     memcpy(fColor4fs, color4fs, fNumStops * sizeof(SkColor4f));
-    memcpy(fOffsets, offsets, fNumStops * sizeof(float));
+    if (offsets) {
+        memcpy(fOffsets, offsets, fNumStops * sizeof(float));
+    } else {
+        for (int i = 0; i < fNumStops; ++i) {
+            fOffsets[i] = SkIntToFloat(i) / (fNumStops-1);
+        }
+    }
 
     // Extend the colors and offset, if necessary, to fill out the arrays
     // TODO: this should be done later when the actual code snippet has been selected!!
@@ -541,8 +504,7 @@ void AddToKey(SkBackend backend,
 
         key->endBlock(headerOffset, CodeSnippetID::kBlendShader);
 
-        int expectedBlockSize = SkPaintParamsKey::kBlockHeaderSizeInBytes +
-                                1 + firstShaderSize + secondShaderSize;
+        int expectedBlockSize = 1 + firstShaderSize + secondShaderSize;
         validate_block_header(*key, headerOffset, CodeSnippetID::kBlendShader, expectedBlockSize);
         return;
     }
