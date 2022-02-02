@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86b1c6f5_6bd8cc3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-02T16:22:25Z",
+      "side": 1,
+      "message": "Agreed, it\u0027s much cleaner that way.",
+      "parentUuid": "84c8ee03_2cedf4e7",
+      "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "422ccc0f_dd551c11",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-02-02T15:56:46Z",
       "side": 1,
       "message": "I think we need to always check pts[i+1], since even if inc \u003d\u003d 1, we do use i+1\u0027s point in the path. The loop draws the i,i+1 path before we would then loop to check if i+1 was indeed finite.\n\nIf we wanted to avoid doubel checking points finite-ness, we could check pts[0] before the loop and then always do pts[i+1]. Then if inc \u003d\u003d 2, we would do the extra check for pts[i].",
+      "range": {
+        "startLine": 539,
+        "startChar": 45,
+        "endLine": 539,
+        "endChar": 80
+      },
+      "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9e9da0a_bc438b69",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-02T16:22:25Z",
+      "side": 1,
+      "message": "Ah, good point, though with the pre-check it\u0027s no longer necessary.",
+      "parentUuid": "422ccc0f_dd551c11",
       "range": {
         "startLine": 539,
         "startChar": 45,
