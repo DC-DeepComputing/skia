@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23544ccc_ef26b08c",
+        "filename": "BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-02T14:51:16Z",
+      "side": 1,
+      "message": "Not needed for this CL, but as a follow-up:\nWhy do we need this here? If we can remove it, we could collapse this GL block with the previous one, to group all the GL configuration together. We could do that regardless, I guess - none of the code in the previous block should be enabled for wasm, either? (Assuming this check is still legitimate).",
+      "range": {
+        "startLine": 1797,
+        "startChar": 23,
+        "endLine": 1797,
+        "endChar": 43
+      },
+      "revId": "b97eaa26e6f9d76789788f39437df7d3fdb09959",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
