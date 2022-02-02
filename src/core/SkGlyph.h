@@ -251,7 +251,6 @@ public:
     SkGlyphDigest(size_t index, const SkGlyph& glyph);
     int index()          const {return fIndex;        }
     bool isEmpty()       const {return fIsEmpty;      }
-    bool isColor()       const {return fIsColor;      }
     bool canDrawAsMask() const {return fCanDrawAsMask;}
     bool canDrawAsSDFT() const {return fCanDrawAsSDFT;}
     uint32_t packedGlyphID() const {return fPackedGlyphID;}
@@ -270,7 +269,6 @@ private:
     uint64_t fPackedGlyphID : SkPackedGlyphID::kEndData;
     uint64_t fIndex         : SkPackedGlyphID::kEndData;
     uint64_t fIsEmpty       : 1;
-    uint64_t fIsColor       : 1;
     uint64_t fCanDrawAsMask : 1;
     uint64_t fCanDrawAsSDFT : 1;
     uint64_t fMaxDimension  : 16;
@@ -350,7 +348,6 @@ public:
     bool pathIsHairline() const;
 
     // Format
-    bool isColor() const { return fMaskFormat == SkMask::kARGB32_Format; }
     SkMask::Format maskFormat() const { return fMaskFormat; }
     size_t formatAlignment() const;
 
