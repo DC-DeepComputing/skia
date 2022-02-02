@@ -15,8 +15,8 @@ static void test(skiatest::Reporter* r,
                  SkSL::ProgramKind kind = SkSL::ProgramKind::kFragment) {
     SkSL::Compiler compiler(&caps);
     SkSL::Program::Settings settings;
-    SkSL::String output;
-    std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, SkSL::String(src),
+    std::string output;
+    std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, std::string(src),
                                                                      settings);
     if (!program) {
         SkDebugf("Unexpected error compiling %s\n%s", src, compiler.errorText().c_str());

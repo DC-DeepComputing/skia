@@ -46,7 +46,7 @@ public:
     };
 
     DSLParser(Compiler* compiler, const ProgramSettings& settings, ProgramKind kind,
-              String text);
+              std::string text);
 
     std::unique_ptr<Program> program();
 
@@ -106,7 +106,7 @@ private:
      * Returns true if the read token was as expected, false otherwise.
      */
     bool expect(Token::Kind kind, const char* expected, Token* result = nullptr);
-    bool expect(Token::Kind kind, String expected, Token* result = nullptr);
+    bool expect(Token::Kind kind, std::string expected, Token* result = nullptr);
 
     /**
      * Behaves like expect(TK_IDENTIFIER), but also verifies that identifier is not a type.
@@ -116,8 +116,8 @@ private:
      */
     bool expectIdentifier(Token* result);
 
-    void error(Token token, String msg);
-    void error(int line, String msg);
+    void error(Token token, std::string msg);
+    void error(int line, std::string msg);
 
     // these functions parse individual grammar rules from the current parse position; you probably
     // don't need to call any of these outside of the parser. The function declarations in the .cpp
@@ -285,7 +285,7 @@ private:
         class ForwardingErrorReporter : public ErrorReporter {
         public:
             void handleError(std::string_view msg, PositionInfo pos) override {
-                fErrors.push_back({String(msg), pos});
+                fErrors.push_back({std::string(msg), pos});
             }
 
             void forwardErrors() {
@@ -296,7 +296,7 @@ private:
 
         private:
             struct Error {
-                String fMsg;
+                std::string fMsg;
                 PositionInfo fPos;
             };
 
@@ -325,7 +325,7 @@ private:
     ErrorReporter* fErrorReporter;
     bool fEncounteredFatalError;
     ProgramKind fKind;
-    std::unique_ptr<String> fText;
+    std::unique_ptr<std::string> fText;
     Lexer fLexer;
     // current parse depth, used to enforce a recursion limit to try to keep us from overflowing the
     // stack on pathological inputs

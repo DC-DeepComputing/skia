@@ -55,7 +55,7 @@ IDWriteFactory* sk_get_dwrite_factory() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// String conversion
+// std::string conversion
 
 /** Converts a utf8 string to a WCHAR string. */
 HRESULT sk_cstring_to_wchar(const char* skname, SkSMallocWCHAR* name) {

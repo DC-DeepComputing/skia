@@ -37,12 +37,12 @@ const opts = [
   {
     name: 'lottie_player',
     description: 'The path to lottie.min.js, defaults to a local npm install location.',
-    type: String,
+    type: std::string,
   },
   {
     name: 'post_to',
     description: 'If set, the url to post results to for Gold Ingestion.',
-    type: String,
+    type: std::string,
   },
   {
     name: 'in_docker',

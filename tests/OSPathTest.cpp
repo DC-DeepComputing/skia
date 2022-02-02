@@ -14,9 +14,9 @@
  *  Will use SkOSPath::Join to append filename to dir, test that it works correctly,
  *  and tests using SkOSPath::Basename on the result.
  *  @param reporter Reporter for test conditions.
- *  @param dir String representing the path to a folder. May or may not
+ *  @param dir std::string representing the path to a folder. May or may not
  *      end with SkOSPath::SEPARATOR.
- *  @param filename String representing the basename of a file. Must NOT
+ *  @param filename std::string representing the basename of a file. Must NOT
  *      contain SkOSPath::SEPARATOR.
  */
 static void test_dir_with_file(skiatest::Reporter* reporter, SkString dir,
