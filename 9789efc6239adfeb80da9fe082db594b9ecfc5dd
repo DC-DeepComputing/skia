@@ -93,6 +93,75 @@
       },
       "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e336139_17422103",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T21:45:11Z",
+      "side": 1,
+      "message": "This is private and unreferenced... can we just delete it?",
+      "range": {
+        "startLine": 1199,
+        "startChar": 0,
+        "endLine": 1199,
+        "endChar": 67
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d5ab3fc_9c4bfe59",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T21:45:11Z",
+      "side": 1,
+      "message": "Replace `e-\u003e` with `ConstantFolder::GetConstantValueForVariable(*e)-\u003e` to pass the `kWhite` test.",
+      "range": {
+        "startLine": 171,
+        "startChar": 31,
+        "endLine": 171,
+        "endChar": 32
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9e4df1_92bf99e5",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T21:45:11Z",
+      "side": 1,
+      "message": "Please add tests with multiple return statements where only one path is non-opaque. As written, this test could pass even if we only evaluate the first return.",
+      "range": {
+        "startLine": 1100,
+        "startChar": 0,
+        "endLine": 1100,
+        "endChar": 96
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
