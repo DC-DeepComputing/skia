@@ -85,11 +85,11 @@ static void test_gradient(skiatest::Reporter* reporter) {
 }
 
 static void test_color(skiatest::Reporter* reporter) {
-    SkColorShader colorShader1(SkColorSetARGB(0,0,0,0));
+    SkColorShader colorShader1(SkColorSetARGB(0,0,0,0), true);
     REPORTER_ASSERT(reporter, !colorShader1.isOpaque());
-    SkColorShader colorShader2(SkColorSetARGB(0xFF,0,0,0));
+    SkColorShader colorShader2(SkColorSetARGB(0xFF,0,0,0), true);
     REPORTER_ASSERT(reporter, colorShader2.isOpaque());
-    SkColorShader colorShader3(SkColorSetARGB(0x7F,0,0,0));
+    SkColorShader colorShader3(SkColorSetARGB(0x7F,0,0,0), true);
     REPORTER_ASSERT(reporter, !colorShader3.isOpaque());
 }
 

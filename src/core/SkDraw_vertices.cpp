@@ -374,7 +374,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
         if (!shader) {
             // When there is no shader then the blender applies to the vertex colors and opaque
             // paint color.
-            shader = outerAlloc->make<SkColor4Shader>(paint.getColor4f().makeOpaque(), nullptr);
+            shader = outerAlloc->make<SkColor4Shader>(paint.getColor4f().makeOpaque(), nullptr, true);
         }
         return outerAlloc->make<SkShader_Blend>(
                 blender, sk_ref_sp(triColorShader), sk_ref_sp(shader));

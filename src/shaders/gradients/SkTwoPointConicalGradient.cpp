@@ -5,11 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "src/shaders/gradients/SkTwoPointConicalGradient.h"
+
 #include "include/private/SkFloatingPoint.h"
+#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/shaders/gradients/SkTwoPointConicalGradient.h"
 
 #include <utility>
 
@@ -50,7 +52,7 @@ bool SkTwoPointConicalGradient::FocalData::set(SkScalar r0, SkScalar r1, SkMatri
 
 sk_sp<SkShader> SkTwoPointConicalGradient::Create(const SkPoint& c0, SkScalar r0,
                                                   const SkPoint& c1, SkScalar r1,
-                                                  const Descriptor& desc) {
+                                                  const Descriptor& desc, bool) {
     SkMatrix gradientMatrix;
     Type     gradientType;
 
@@ -86,13 +88,13 @@ sk_sp<SkShader> SkTwoPointConicalGradient::Create(const SkPoint& c0, SkScalar r0
         }
     }
     return sk_sp<SkShader>(new SkTwoPointConicalGradient(c0, r0, c1, r1, desc,
-                                                         gradientType, gradientMatrix, focalData));
+                                                         gradientType, gradientMatrix, focalData, true));
 }
 
 SkTwoPointConicalGradient::SkTwoPointConicalGradient(
         const SkPoint& start, SkScalar startRadius,
         const SkPoint& end, SkScalar endRadius,
-        const Descriptor& desc, Type type, const SkMatrix& gradientMatrix, const FocalData& data)
+        const Descriptor& desc, Type type, const SkMatrix& gradientMatrix, const FocalData& data, bool)
     : SkGradientShaderBase(desc, gradientMatrix)
     , fCenter1(start)
     , fCenter2(end)
@@ -274,3 +276,18 @@ std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProces
 }
 
 #endif
+
+void SkTwoPointConicalGradient::addToKey(SkShaderCodeDictionary* dict,
+                                         SkBackend backend,
+                                         SkPaintParamsKey* key,
+                                         SkUniformBlock* uniformBlock) const {
+    GradientShaderBlocks::GradientData data(kConical_GradientType,
+                                            fCenter1, fCenter2,
+                                            fRadius1, fRadius2,
+                                            fTileMode,
+                                            fColorCount,
+                                            fOrigColors4f,
+                                            fOrigPos);
+
+    GradientShaderBlocks::AddToKey(backend, key, uniformBlock, data);
+}

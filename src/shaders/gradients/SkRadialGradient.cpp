@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "src/shaders/gradients/SkRadialGradient.h"
+
+#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/shaders/gradients/SkRadialGradient.h"
 
 namespace {
 
@@ -25,7 +27,7 @@ SkMatrix rad_to_unit_matrix(const SkPoint& center, SkScalar radius) {
 
 /////////////////////////////////////////////////////////////////////
 
-SkRadialGradient::SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor& desc)
+SkRadialGradient::SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor& desc, bool)
     : SkGradientShaderBase(desc, rad_to_unit_matrix(center, radius))
     , fCenter(center)
     , fRadius(radius) {
@@ -80,3 +82,18 @@ std::unique_ptr<GrFragmentProcessor> SkRadialGradient::asFragmentProcessor(
 }
 
 #endif
+
+void SkRadialGradient::addToKey(SkShaderCodeDictionary* dict,
+                                SkBackend backend,
+                                SkPaintParamsKey* key,
+                                SkUniformBlock* uniformBlock) const {
+    GradientShaderBlocks::GradientData data(kRadial_GradientType,
+                                            fCenter, { 0.0f, 0.0f },
+                                            fRadius, 0.0f,
+                                            fTileMode,
+                                            fColorCount,
+                                            fOrigColors4f,
+                                            fOrigPos);
+
+    GradientShaderBlocks::AddToKey(backend, key, uniformBlock, data);
+}
