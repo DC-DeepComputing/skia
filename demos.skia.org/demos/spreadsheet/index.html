@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<title>Spreadsheet Demo</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" src="https://unpkg.com/canvaskit-wasm@0.32.0/bin/full/canvaskit.js"></script>
+
+<style>
+  body {
+      background-color: black;
+  }
+  h1 {
+      color: white;
+  }
+</style>
+
+<body>
+  <h1>Large canvas with many numbers, like a spreadsheet</h1>
+
+  <canvas id=draw width=2000 height=1400></canvas>
+</body>
+
+<script type="text/javascript" charset="utf-8">
+  const ckLoaded = CanvasKitInit({ locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.32.0/bin/full/' + file });
+
+  const WIDTH = 2000, HEIGHT = 1000;
+  const ROWS = 100;
+  const ROW_HEIGHT = 15;
+  const COLS = 200;
+  const COL_WIDTH = 50;
+
+  ckLoaded.then((CanvasKit) => {
+    const surface = CanvasKit.MakeCanvasSurface('draw');
+    if (!surface) {
+      throw 'Could not make surface';
+    }
+
+    const colorPaints = {
+      "grey": CanvasKit.Color4f(0.3, 0.3, 0.3, 1.0),
+      "black": CanvasKit.BLACK,
+      "white": CanvasKit.WHITE,
+      "springGreen": CanvasKit.Color(0, 255, 127),
+      "tomato": CanvasKit.Color(255, 99, 71),
+    };
+    for (const name in colorPaints) {
+      const color = colorPaints[name];
+      const paint = new CanvasKit.Paint();
+      paint.setColor(color);
+      colorPaints[name] = paint;
+    }
+
+    const data = [];
+    for (let row = 0; row < ROWS; row++) {
+      data[row] = [];
+      for (let col = 0; col < COLS; col++) {
+        data[row][col] = Math.random() * Math.PI;
+      }
+    }
+
+    // Maybe use https://storage.googleapis.com/skia-cdn/google-web-fonts/NotoSans-Regular.ttf
+    const textFont = new CanvasKit.Font(null, 12);
+
+    let frames = [];
+    function drawFrame(canvas) {
+      if (frames && frames.length === 100) {
+        const deltas = [];
+        for (let i = 0; i< frames.length-1;i++) {
+          deltas.push(frames[i+1] - frames[i]);
+        }
+        console.log("First 100 frames", deltas);
+        console.log((frames[99] - frames[0]) / 100.0);
+        frames = null;
+      } else if (frames) {
+        frames.push(performance.now());
+      }
+      canvas.clear(CanvasKit.BLACK);
+
+      drawTextImpl(CanvasKit, canvas, data, colorPaints, textFont);
+
+      surface.requestAnimationFrame(drawFrame)
+    }
+    surface.requestAnimationFrame(drawFrame);
+  });
+
+  function drawTextImpl(CanvasKit, canvas, data, colorPaints, textFont) {
+    const timer = performance.now() / 10000;
+    for (let row = 0; row < ROWS; row++) {
+        if (row % 2) {
+          canvas.drawRect(CanvasKit.XYWHRect(0, row * ROW_HEIGHT + 2, WIDTH, ROW_HEIGHT), colorPaints["grey"]);
+        }
+        for (let col = 0; col < COLS; col++) {
+          let n = Math.abs(Math.sin(timer + data[row][col]));
+          let useWhiteFont = true;
+          if (n < 0.05) {
+            canvas.drawRect(CanvasKit.XYWHRect(col * COL_WIDTH - 2, (row-1) * ROW_HEIGHT + 2, COL_WIDTH, ROW_HEIGHT), colorPaints["tomato"]);
+            useWhiteFont = false;
+          } else if (n > 0.95) {
+            canvas.drawRect(CanvasKit.XYWHRect(col * COL_WIDTH - 2, (row-1) * ROW_HEIGHT + 2, COL_WIDTH, ROW_HEIGHT), colorPaints["springGreen"]);
+            useWhiteFont = false;
+          }
+          const str = n.toFixed(4);
+          canvas.drawText(str, col * COL_WIDTH, row * ROW_HEIGHT,
+            useWhiteFont ? colorPaints["white"] : colorPaints["black"], textFont);
+        }
+      }
+  }
+
+</script>
