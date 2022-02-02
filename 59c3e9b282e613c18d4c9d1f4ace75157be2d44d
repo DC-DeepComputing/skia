@@ -16,6 +16,24 @@
       "message": "Assuming this works out, I like it better. It should (?) make it harder to accidentally create a build that doesn\u0027t link.\n\nOne flip-side of this approach is that GL is \"really\" enabled (eg, SK_GL is now defined). The TSAN_Vulkan bots only specify vk configs (I\u0027m assuming). But any GPU unit tests will now also run GL configs, because those aren\u0027t filtered by --config. I\u0027m not sure if this is a problem, or how much it\u0027s going to slow down those bots.",
       "revId": "59c3e9b282e613c18d4c9d1f4ace75157be2d44d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fea6d90f_0206df71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-02T15:05:44Z",
+      "side": 1,
+      "message": "If we find the TSAN bots running significantly longer, we could at least add Quadro to the if check to enable skia_use_gl. That will at least allow the intel TSAN bots to run GL.",
+      "parentUuid": "5e65458f_3d07954d",
+      "revId": "59c3e9b282e613c18d4c9d1f4ace75157be2d44d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
