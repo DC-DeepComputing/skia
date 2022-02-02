@@ -8,10 +8,6 @@
 #ifndef SkKeyHelpers_DEFINED
 #define SkKeyHelpers_DEFINED
 
-#ifdef SK_GRAPHITE_ENABLED
-#include "experimental/graphite/include/Context.h"
-#endif
-
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
@@ -155,7 +151,7 @@ namespace BlendModeBlock {
 
 } // namespace BlendModeBlock
 
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 // def SK_GRAPHITE_ENABLED
 // Bridge between the combinations system and the SkPaintParamsKey
 SkPaintParamsKey CreateKey(SkBackend, skgpu::ShaderCombo::ShaderType, SkTileMode, SkBlendMode);
 #endif

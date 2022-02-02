@@ -45,6 +45,13 @@
 */
 class SkGaussianColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(SkShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    SkUniformBlock*) const override {
+
+    }
+
     SkGaussianColorFilter() : INHERITED() {}
 
 #if SK_SUPPORT_GPU

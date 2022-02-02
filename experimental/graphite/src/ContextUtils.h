@@ -12,6 +12,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkSLString.h"
 
 enum class CodeSnippetID : uint8_t;
 class SkShaderCodeDictionary;
@@ -23,6 +24,15 @@ namespace skgpu {
 
 class PaintParams;
 
+SkUniquePaintParamsID GetUniqueIDAndUniformData(Context*,
+                                                const PaintParams&,
+                                                SkBackend,
+                                                std::vector<sk_sp<UniformData>>*);
+std::tuple<SkSL::String, std::vector<SkSpan<const Uniform>>> GetSkSLAndUniformDescription(
+        Context*,
+        SkUniquePaintParamsID);
+
+#if 0
 std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintData(
         SkShaderCodeDictionary*, const PaintParams&);
 
@@ -33,6 +43,7 @@ SkSpan<const SkUniform> GetUniforms(CodeSnippetID);
 // variable, and must have a statement that writes to a float4 "out.color". Its uniforms (as defined
 // by GetUniforms(type)) are available as a variable named "uniforms".
 const char* GetShaderSkSL(CodeSnippetID);
+#endif
 
 } // namespace skgpu
 
