@@ -16,6 +16,23 @@
       "message": "PS2-\u003ePS4 shows some additional fixes to StrokeHardwareTessellator that should address those gold diffs.",
       "revId": "30f4f363deb2f4c70c6fdb466328944f977ea0ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa3af5f_bda59711",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T02:52:30Z",
+      "side": 1,
+      "message": "Bots have finished and confirmed that the gold diffs from the original CL have been fixed for both fixed count and HW stoke tessellators.",
+      "revId": "30f4f363deb2f4c70c6fdb466328944f977ea0ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
