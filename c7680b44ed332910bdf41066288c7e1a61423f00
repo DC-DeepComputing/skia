@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca7e7cb4_d2484ad5",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T21:02:46Z",
+      "side": 1,
+      "message": "We don\u0027t need to check fHasJoinControlPoint here, since it could be the first update. I added this assert mostly for safety, since we shouldn\u0027t be writing control points that aren\u0027t finite anyways, but finiteness isn\u0027t being used for state anymore.",
+      "parentUuid": "9b04f5c3_91b3aed8",
+      "range": {
+        "startLine": 49,
+        "startChar": 63,
+        "endLine": 49,
+        "endChar": 90
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3e0bc73_ebe51840",
@@ -77,6 +101,30 @@
       "writtenOn": "2022-02-02T20:00:05Z",
       "side": 1,
       "message": "Is there a reason this can\u0027t be in \"emitPatchAttribs\" (renamed to not have the word \"Simple\" anymore)?",
+      "range": {
+        "startLine": 303,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 13
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7813547_bafcec12",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T21:02:46Z",
+      "side": 1,
+      "message": "\u003c\u003c Circle() writes its center coordinate instead of fJoinControlPointAttrib, so I changed emitPatchAttribs to only be the attribs that don\u0027t change behavior. Since we have to do this check for attribs\u0026joinControlPoint here to do the updating (in a later CL), I figured I\u0027d just move the join writing inside instead of doubling-up the check.\n\nThat being said, I\u0027d bet the compiler doesn\u0027t really care if we changed emitPatchAttribs() to take an SkPoint to use as the join, and writePatch() passes in fJoinControlPointAttrib and writeCircle() passes in its center. Do you prefer that?",
+      "parentUuid": "d3e0bc73_ebe51840",
       "range": {
         "startLine": 303,
         "startChar": 12,
