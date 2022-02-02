@@ -1801,7 +1801,7 @@ if (skia_enable_tools) {
       if (is_android || skia_use_egl) {
         sources += [ "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp" ]
         libs += [ "EGL" ]
-      } else if (is_linux) {
+      } else if (is_linux && !skia_build_fuzzers) {
         sources += [ "tools/gpu/gl/glx/CreatePlatformGLTestContext_glx.cpp" ]
         libs += [
           "GLU",
