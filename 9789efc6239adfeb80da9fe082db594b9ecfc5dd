@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc8d52ec_370521e4",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-02T21:45:05Z",
+      "side": 1,
+      "message": "Hmm. I wonder what that does to our clients? My plan was to land this, go fix Chrome \u0026 Android, then delete the parameter entirely.",
+      "parentUuid": "3300f26f_0c3fb455",
+      "range": {
+        "startLine": 202,
+        "startChar": 48,
+        "endLine": 202,
+        "endChar": 59
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3356165_4ef11beb",
         "filename": "include/effects/SkRuntimeEffect.h",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-02T21:33:21Z",
       "side": 1,
       "message": "DEPRECATED",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 59
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b82f4c_e31e45c8",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-02T21:45:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3356165_4ef11beb",
       "range": {
         "startLine": 206,
         "startChar": 48,
