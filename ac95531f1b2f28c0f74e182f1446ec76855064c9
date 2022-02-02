@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb442575_82fda9ba",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T14:34:07Z",
+      "side": 1,
+      "message": "This logic seems unsafe?\n\n unique_ptr\u003cVarDecl\u003e a \u003d something;\n auto b \u003d a-\u003eclone();\n a \u003d nullptr;\n // b points to dead Variable?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
