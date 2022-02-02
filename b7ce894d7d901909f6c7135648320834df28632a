@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56d5e640_8a93387c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-02T20:04:24Z",
+      "side": 1,
+      "message": "Maybe something like this? Need to actually test this with Chromium... is there a bot for that?",
+      "revId": "b7ce894d7d901909f6c7135648320834df28632a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
