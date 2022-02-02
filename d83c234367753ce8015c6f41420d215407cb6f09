@@ -16,6 +16,24 @@
       "message": "Not 100% against this, but I\u0027m going to propose something else:\n\nInstead of polluting all kinds of code with knowledge of whether or not we\u0027re in a fuzzer build, do this:\n\n1) Make the sentinel code conditional on SK_USE_GL being defined.\n2) Remove the extra code that forces linking against GL from the BUILD.GN.\n3) Update the TSAN bots to set skia_use_gl in their GN args.",
       "revId": "d83c234367753ce8015c6f41420d215407cb6f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecd9b220_f7b8dcb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-02T14:03:13Z",
+      "side": 1,
+      "message": "That seems reasonable to me.",
+      "parentUuid": "7e91768c_16878789",
+      "revId": "d83c234367753ce8015c6f41420d215407cb6f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
