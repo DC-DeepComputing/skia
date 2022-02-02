@@ -22,6 +22,30 @@
       },
       "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d0b42f_debfd934",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-02T15:26:04Z",
+      "side": 1,
+      "message": "That would make b point to a variable that\u0027s dead in the \"will be removed if you run the optimizer\" sense, but not dead in the \"the memory it occupied has been freed\" sense (though obviously this will change if you run the optimizer).\n\nCloning a VarDeclaration without cloning the Variable it points to is inherently a weird, unsafe thing to be doing in the first place. The only reason we ever even do it is for this clone test, where we don\u0027t need to worry about tricky things like the original going away first and then the optimizer running.\n\nSince I don\u0027t see any reasonable way to simply clone() a VarDeclaration (you could also clone the Variable, but then you\u0027d also have to have some way to know which copy any subsequently-cloned variable references should point to...), logically we should just disallow cloning VarDeclarations altogether, but then we can\u0027t make the clone test work.\n\nWhat do you think about locking this stuff behind debug, and then just abort() if VarDeclaration.clone() is ever called in release? Or do you have a better suggestion?",
+      "parentUuid": "fb442575_82fda9ba",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
