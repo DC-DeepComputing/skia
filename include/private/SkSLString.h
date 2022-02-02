@@ -49,8 +49,6 @@ private:
     using INHERITED = std::string;
 };
 
-String operator+(std::string_view left, std::string_view right);
-
 } // namespace SkSL
 
 namespace std {
