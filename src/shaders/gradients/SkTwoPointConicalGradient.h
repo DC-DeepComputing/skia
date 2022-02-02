@@ -45,12 +45,17 @@ public:
 
     static sk_sp<SkShader> Create(const SkPoint& start, SkScalar startRadius,
                                   const SkPoint& end, SkScalar endRadius,
-                                  const Descriptor&);
+                                  const Descriptor&, bool);
 
     SkShader::GradientType asAGradient(GradientInfo* info) const  override;
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
+    void addToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkUniformBlock*) const override;
+
     bool isOpaque() const override;
 
     SkScalar getCenterX1() const { return SkPoint::Distance(fCenter1, fCenter2); }
@@ -77,7 +82,7 @@ private:
 
     SkTwoPointConicalGradient(const SkPoint& c0, SkScalar r0,
                               const SkPoint& c1, SkScalar r1,
-                              const Descriptor&, Type, const SkMatrix&, const FocalData&);
+                              const Descriptor&, Type, const SkMatrix&, const FocalData&, bool);
 
     SkPoint  fCenter1;
     SkPoint  fCenter2;

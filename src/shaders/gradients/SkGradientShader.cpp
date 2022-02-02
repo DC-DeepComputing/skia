@@ -884,7 +884,7 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
     SkGradientShaderBase::Descriptor desc;
     desc_init(&desc, opt.fColors, std::move(colorSpace), opt.fPos, opt.fCount, mode, flags,
               localMatrix);
-    return sk_make_sp<SkLinearGradient>(pts, desc);
+    return sk_make_sp<SkLinearGradient>(pts, desc, true);
 }
 
 sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
@@ -928,7 +928,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     SkGradientShaderBase::Descriptor desc;
     desc_init(&desc, opt.fColors, std::move(colorSpace), opt.fPos, opt.fCount, mode, flags,
               localMatrix);
-    return sk_make_sp<SkRadialGradient>(center, radius, desc);
+    return sk_make_sp<SkRadialGradient>(center, radius, desc, true);
 }
 
 sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
@@ -1004,7 +1004,7 @@ sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
     SkGradientShaderBase::Descriptor desc;
     desc_init(&desc, opt.fColors, std::move(colorSpace), opt.fPos, opt.fCount, mode, flags,
               localMatrix);
-    return SkTwoPointConicalGradient::Create(start, startRadius, end, endRadius, desc);
+    return SkTwoPointConicalGradient::Create(start, startRadius, end, endRadius, desc, true);
 }
 
 sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
@@ -1074,7 +1074,7 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
     const SkScalar t0 = startAngle / 360,
                    t1 =   endAngle / 360;
 
-    return sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc);
+    return sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc, true);
 }
 
 void SkGradientShader::RegisterFlattenables() {

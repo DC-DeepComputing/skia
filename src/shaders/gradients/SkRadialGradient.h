@@ -12,12 +12,16 @@
 
 class SkRadialGradient final : public SkGradientShaderBase {
 public:
-    SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&);
+    SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&, bool);
 
     GradientType asAGradient(GradientInfo* info) const override;
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
+    void addToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkUniformBlock*) const override;
 
 protected:
     SkRadialGradient(SkReadBuffer& buffer);

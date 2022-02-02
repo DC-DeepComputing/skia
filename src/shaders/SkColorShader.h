@@ -21,7 +21,7 @@ public:
         specified color. Note: like all shaders, at draw time the paint's alpha
         will be respected, and is applied to the specified color.
     */
-    explicit SkColorShader(SkColor c);
+    explicit SkColorShader(SkColor c, bool);
 
     bool isOpaque() const override;
     bool isConstant() const override { return true; }
@@ -31,6 +31,10 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
+    void addToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkUniformBlock*) const override;
 
 private:
     SK_FLATTENABLE_HOOKS(SkColorShader)
@@ -53,7 +57,7 @@ private:
 
 class SkColor4Shader : public SkShaderBase {
 public:
-    SkColor4Shader(const SkColor4f&, sk_sp<SkColorSpace>);
+    SkColor4Shader(const SkColor4f&, sk_sp<SkColorSpace>, bool);
 
     bool isOpaque()   const override { return fColor.isOpaque(); }
     bool isConstant() const override { return true; }
@@ -61,6 +65,10 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
+    void addToKey(SkShaderCodeDictionary*,
+                  SkBackend,
+                  SkPaintParamsKey*,
+                  SkUniformBlock*) const override;
 
 private:
     SK_FLATTENABLE_HOOKS(SkColor4Shader)
