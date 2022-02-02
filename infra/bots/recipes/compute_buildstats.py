@@ -108,6 +108,7 @@ def RunSteps(api):
     analyzed += len(files)
     if files:
       make_treemap(api, checkout_root, out_dir, files)
+      make_codesize_files(api, checkout_root, out_dir, files)
 
   if not analyzed: # pragma: nocover
     raise Exception('No files were analyzed!')
@@ -275,6 +276,20 @@ def make_treemap(api, checkout_root, out_dir, files):
                              script=script,
                              args=[f, out_dir],
                              stdout=api.raw_io.output())
+
+
+# Get metrics from Bloaty to be consumed by codesize.skia.org.
+def make_codesize_files(api, checkout_root, out_dir, files):
+  bloaty_exe = api.path['start_dir'].join('bloaty', 'bloaty')
+
+  skia_dir = checkout_root.join('skia')
+
+  for f in files:
+    with api.context(cwd=skia_dir):
+      script = skia_dir.join('infra', 'bots', 'buildstats', 'codesize.py')
+      api.run(api.python, 'Make files for codesize.skia.org %s' % f,
+                          script=script,
+                          args=[f, out_dir, bloaty_exe])
 
 
 def GenTests(api):
