@@ -44,15 +44,14 @@ void PaintParams::toKey(SkShaderCodeDictionary* dict,
                         SkBackend backend,
                         SkPaintParamsKey* key,
                         SkUniformBlock* uniforms) const {
-
     if (fShader) {
-        as_SB(fShader)->addToKey(dict, backend, key, uniforms);
+        as_SB(fShader)->addToKeyS(dict, backend, key, uniforms);
     } else {
         SolidColorShaderBlock::AddToKey(backend, key, uniforms, fColor);
     }
 
     if (fBlender) {
-        as_BB(fBlender)->addToKey(dict, backend, key, uniforms);
+        as_BB(fBlender)->addToKeyB(dict, backend, key, uniforms);
     } else {
         BlendModeBlock::AddToKey(backend, key, uniforms, SkBlendMode::kSrcOver);
     }

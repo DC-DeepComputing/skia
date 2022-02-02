@@ -974,6 +974,13 @@ public:
 
 class SkRuntimeColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(SkShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    std::vector<sk_sp<skgpu::UniformData>>*) const override {
+
+    }
+
     SkRuntimeColorFilter(sk_sp<SkRuntimeEffect> effect,
                          sk_sp<SkData> uniforms,
                          SkSpan<SkRuntimeEffect::ChildPtr> children)
@@ -1095,6 +1102,12 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
 
 class SkRTShader : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   std::vector<sk_sp<skgpu::UniformData>>*) const override {
+    }
+
     SkRTShader(sk_sp<SkRuntimeEffect> effect,
                sk_sp<SkSL::SkVMDebugTrace> debugTrace,
                sk_sp<SkData> uniforms,
@@ -1244,6 +1257,13 @@ sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
 
 class SkRuntimeBlender : public SkBlenderBase {
 public:
+    void addToKeyB(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   std::vector<sk_sp<skgpu::UniformData>>*) const override {
+        SkASSERT(0);
+    }
+
     SkRuntimeBlender(sk_sp<SkRuntimeEffect> effect,
                      sk_sp<SkData> uniforms,
                      SkSpan<SkRuntimeEffect::ChildPtr> children)

@@ -27,6 +27,9 @@
 #include "src/shaders/SkEmptyShader.h"
 #include "src/shaders/SkTransformShader.h"
 
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Encoding.h"
+
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
 #if 0
     constexpr SkM44 kMitchell = SkM44( 1.f/18.f, -9.f/18.f,  15.f/18.f,  -7.f/18.f,
@@ -277,6 +280,19 @@ SkImage* SkImageShader::onIsAImage(SkMatrix* texM, SkTileMode xy[]) const {
     }
     return const_cast<SkImage*>(fImage.get());
 }
+
+/**************************************************************************************************/
+void SkImageShader::addToKeyS(SkShaderCodeDictionary* dict,
+                              SkBackend backend,
+                              SkPaintParamsKey* key,
+                              std::vector<sk_sp<skgpu::UniformData>>*) const {
+
+    ImageShaderBlock::ImageData imgData{ fTileModeX, fTileModeY };
+
+    ImageShaderBlock::AddToKey(backend, key, imgData);
+}
+
+/**************************************************************************************************/
 
 sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
                                     SkTileMode tmx, SkTileMode tmy,
