@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d83973_0b8f9436",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T20:00:05Z",
+      "side": 1,
+      "message": "control",
+      "range": {
+        "startLine": 9,
+        "startChar": 33,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f3ebe9a_b94d0e9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T20:00:05Z",
+      "side": 1,
+      "message": "+1 with a couple questions",
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b04f5c3_91b3aed8",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T20:00:05Z",
+      "side": 1,
+      "message": "Did you want to check isFinite here or fHasJoinControlPoint?",
+      "range": {
+        "startLine": 49,
+        "startChar": 63,
+        "endLine": 49,
+        "endChar": 90
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3e0bc73_ebe51840",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T20:00:05Z",
+      "side": 1,
+      "message": "Is there a reason this can\u0027t be in \"emitPatchAttribs\" (renamed to not have the word \"Simple\" anymore)?",
+      "range": {
+        "startLine": 303,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 13
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

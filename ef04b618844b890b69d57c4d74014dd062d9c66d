@@ -70,6 +70,30 @@
       },
       "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64e0c2e7_6f861aa7",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T20:00:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9f894116_3d67752c",
+      "range": {
+        "startLine": 145,
+        "startChar": 20,
+        "endLine": 145,
+        "endChar": 56
+      },
+      "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
