@@ -34,12 +34,12 @@ const opts = [
   {
     name: 'lottie_player',
     description: 'The path to lottie.min.js, defaults to a local npm install location.',
-    type: String,
+    type: std::string,
   },
   {
     name: 'backend',
     description: 'Which lottie-web backend to use. Options: canvas or svg.',
-    type: String,
+    type: std::string,
   },
   {
     name: 'help',

@@ -174,21 +174,21 @@ static void TestPDFArray(skiatest::Reporter* reporter) {
     array->appendName(SkString("AnotherName"));
     assert_emit_eq(reporter, *array, "[42 .5 0 true /ThisName /AnotherName]");
 
-    array->appendString("This String");
+    array->appendString("This std::string");
     assert_emit_eq(reporter, *array,
-                   "[42 .5 0 true /ThisName /AnotherName (This String)]");
+                   "[42 .5 0 true /ThisName /AnotherName (This std::string)]");
 
-    array->appendString(SkString("Another String"));
+    array->appendString(SkString("Another std::string"));
     assert_emit_eq(reporter, *array,
-                   "[42 .5 0 true /ThisName /AnotherName (This String) "
-                   "(Another String)]");
+                   "[42 .5 0 true /ThisName /AnotherName (This std::string) "
+                   "(Another std::string)]");
 
     std::unique_ptr<SkPDFArray> innerArray(new SkPDFArray);
     innerArray->appendInt(-1);
     array->appendObject(std::move(innerArray));
     assert_emit_eq(reporter, *array,
-                   "[42 .5 0 true /ThisName /AnotherName (This String) "
-                   "(Another String) [-1]]");
+                   "[42 .5 0 true /ThisName /AnotherName (This std::string) "
+                   "(Another std::string) [-1]]");
 }
 
 static void TestPDFDict(skiatest::Reporter* reporter) {
@@ -231,13 +231,13 @@ static void TestPDFDict(skiatest::Reporter* reporter) {
     assert_emit_eq(reporter, *dict, "<</n1 24\n/n2 99\n/n3 .5\n/n4 /AName\n"
                    "/n5 /AnotherName>>");
 
-    dict->insertString("n6", "A String");
+    dict->insertString("n6", "A std::string");
     assert_emit_eq(reporter, *dict, "<</n1 24\n/n2 99\n/n3 .5\n/n4 /AName\n"
-                   "/n5 /AnotherName\n/n6 (A String)>>");
+                   "/n5 /AnotherName\n/n6 (A std::string)>>");
 
-    dict->insertString("n7", SkString("Another String"));
+    dict->insertString("n7", SkString("Another std::string"));
     assert_emit_eq(reporter, *dict, "<</n1 24\n/n2 99\n/n3 .5\n/n4 /AName\n"
-                   "/n5 /AnotherName\n/n6 (A String)\n/n7 (Another String)>>");
+                   "/n5 /AnotherName\n/n6 (A std::string)\n/n7 (Another std::string)>>");
 
     dict = std::make_unique<SkPDFDict>("DType");
     assert_emit_eq(reporter, *dict, "<</Type /DType>>");

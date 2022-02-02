@@ -23,9 +23,9 @@ std::unique_ptr<Statement> VarDeclaration::clone() const {
                                             this->value() ? this->value()->clone() : nullptr);
 }
 
-String VarDeclaration::description() const {
-    String result = this->var().modifiers().description() + this->baseType().description() + " " +
-                    SkSL::String(this->var().name());
+std::string VarDeclaration::description() const {
+    std::string result = this->var().modifiers().description() + this->baseType().description() +
+                         " " + std::string(this->var().name());
     if (this->arraySize() > 0) {
         String::appendf(&result, "[%d]", this->arraySize());
     }
@@ -129,9 +129,8 @@ bool VarDeclaration::ErrorCheckAndCoerce(const Context& context, const Variable&
     ErrorCheck(context, var.fLine, var.modifiers(), baseType, var.storage());
     if (value) {
         if (var.type().isOpaque()) {
-            context.fErrors->error(value->fLine,
-                                   "opaque type '" + SkSL::String(var.type().name()) +
-                                   "' cannot use initializer expressions");
+            context.fErrors->error(value->fLine, "opaque type '" + var.type().displayName() +
+                                                 "' cannot use initializer expressions");
             return false;
         }
         if (var.modifiers().fFlags & Modifiers::kIn_Flag) {
@@ -167,7 +166,7 @@ bool VarDeclaration::ErrorCheckAndCoerce(const Context& context, const Variable&
     }
     if (var.storage() == Variable::Storage::kInterfaceBlock) {
         if (var.type().isOpaque()) {
-            context.fErrors->error(var.fLine, "opaque type '" + SkSL::String(var.type().name()) +
+            context.fErrors->error(var.fLine, "opaque type '" + var.type().displayName() +
                                               "' is not permitted in an interface block");
             return false;
         }

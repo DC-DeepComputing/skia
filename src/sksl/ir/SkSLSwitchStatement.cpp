@@ -34,12 +34,10 @@ std::unique_ptr<Statement> SwitchStatement::clone() const {
                                              SymbolTable::WrapIfBuiltin(this->symbols()));
 }
 
-String SwitchStatement::description() const {
-    String result;
-    if (this->isStatic()) {
-        result += "@";
-    }
-    result += String::printf("switch (%s) {\n", this->value()->description().c_str());
+std::string SwitchStatement::description() const {
+    std::string result = String::printf("%sswitch (%s) {\n",
+                                        this->isStatic() ? "@" : "",
+                                        this->value()->description().c_str());
     for (const auto& c : this->cases()) {
         result += c->description();
     }

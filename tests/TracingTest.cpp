@@ -101,7 +101,7 @@ static void test_trace_simple() {
         // If you must copy a string as an argument value, use the TRACE_STR_COPY macro.
         // This will instruct the tracing system (if one is active) to make a copy.
         SkString message = SkStringPrintf("%s %s", "Hello", "World");
-        TRACE_EVENT1("skia", "Dynamic String", "message", TRACE_STR_COPY(message.c_str()));
+        TRACE_EVENT1("skia", "Dynamic std::string", "message", TRACE_STR_COPY(message.c_str()));
         do_work(500);
     }
 }

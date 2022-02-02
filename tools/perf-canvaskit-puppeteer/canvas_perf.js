@@ -701,7 +701,7 @@ for (const variant of ['ttf', 'woff', 'woff2']) {
             // perhaps re-access the font. See skbug.com/12112 for example.
             const output = new Uint16Array(1);
             for (let i = ctx.testGlyphID; i < ctx.testGlyphID+100; i++) {
-                ctx.robotoFont.getGlyphIDs(String.fromCodePoint(i), 1, output);
+                ctx.robotoFont.getGlyphIDs(std::string.fromCodePoint(i), 1, output);
             }
             ctx.testGlyphID += 100;
         },

@@ -54,7 +54,7 @@ const opts = [
   },
   {
     name: 'merge_output_as',
-    typeLabel: String,
+    typeLabel: std::string,
     description: 'Overwrites a json property in an existing output file.',
   },
   {
@@ -66,7 +66,7 @@ const opts = [
     name: 'use_tracing',
     description: 'If non-empty, will be interpreted as the tracing categories that should be ' +
       'measured and returned in the output JSON. Example: "blink,cc,gpu"',
-    type: String,
+    type: std::string,
   },
   {
     name: 'enable_simd',
@@ -82,7 +82,7 @@ const opts = [
     name: 'query_params',
     description: 'The query params to be added to the testing page URL. Useful for passing' +
       'options to the perf html page.',
-    type: String,
+    type: std::string,
     multiple: true
   },
   {
