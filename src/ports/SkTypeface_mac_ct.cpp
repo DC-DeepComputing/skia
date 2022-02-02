@@ -772,7 +772,19 @@ std::unique_ptr<SkStreamAsset> SkTypeface_Mac::onOpenStream(int* ttcIndex) const
         ++entry;
     }
     });
+
+    SkString name;
+    this->getFamilyName(&name);
+    SkDebugf("openStream %s\n", name.c_str());
     return fStream->duplicate();
+}
+
+std::unique_ptr<SkStreamAsset> SkTypeface_Mac::openExistingStream(int* ttcIndex) const {
+    *ttcIndex = 0;
+    SkString name;
+    this->getFamilyName(&name);
+    SkDebugf("openExistingStream %s\n", name.c_str());
+    return fStream ? fStream->duplicate() : nullptr;
 }
 
 int SkTypeface_Mac::onGetVariationDesignPosition(

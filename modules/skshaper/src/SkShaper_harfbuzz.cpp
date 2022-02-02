@@ -265,7 +265,7 @@ SkDEBUGCODE(static hb_user_data_key_t gDataIdKey;)
 
 HBFace create_hb_face(const SkTypeface& typeface) {
     int index = 0;
-    std::unique_ptr<SkStreamAsset> typefaceAsset = typeface.openStream(&index);
+    std::unique_ptr<SkStreamAsset> typefaceAsset = typeface.openExistingStream(&index);
     HBFace face;
     if (typefaceAsset && typefaceAsset->getMemoryBase()) {
         HBBlob blob(stream_to_blob(std::move(typefaceAsset)));
@@ -286,7 +286,14 @@ HBFace create_hb_face(const SkTypeface& typeface) {
             skhb_get_table,
             const_cast<SkTypeface*>(SkRef(&typeface)),
             [](void* user_data){ SkSafeUnref(reinterpret_cast<SkTypeface*>(user_data)); }));
+        SkString name;
+        typeface.getFamilyName(&name);
+        SkDebugf("hb_face_create_for_tables %s\n", name.c_str());
         hb_face_set_index(face.get(), (unsigned)index);
+    } else {
+        SkString name;
+        typeface.getFamilyName(&name);
+        SkDebugf("stream already open %s\n", name.c_str());
     }
     SkASSERT(face);
     if (!face) {
