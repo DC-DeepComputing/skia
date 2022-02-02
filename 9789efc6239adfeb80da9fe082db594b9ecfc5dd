@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3300f26f_0c3fb455",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T21:33:21Z",
+      "side": 1,
+      "message": "I wonder if we should start using `[[deprecated]]` now?",
+      "range": {
+        "startLine": 202,
+        "startChar": 48,
+        "endLine": 202,
+        "endChar": 59
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3356165_4ef11beb",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T21:33:21Z",
+      "side": 1,
+      "message": "DEPRECATED",
+      "range": {
+        "startLine": 206,
+        "startChar": 48,
+        "endLine": 206,
+        "endChar": 59
+      },
+      "revId": "9789efc6239adfeb80da9fe082db594b9ecfc5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
