@@ -31,9 +31,7 @@ public:
                 size_t patchStride,
                 int initialAllocCount)
             : fAttribs(attribs)
-            , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
-        SkASSERT(fChunker.stride() <= kMaxStride);
-    }
+            , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {}
 
 #if SK_GPU_V1
     // Create PatchWriters that write directly to the GrVertexChunkArrays stored on the provided
@@ -44,7 +42,7 @@ public:
 
     ~PatchWriter() {
         // finishStrokeContour() should have been called before this was deleted (or never used).
-        SkASSERT(!fHasDeferredPatch && !fHasJoinControlPoint);
+        SkASSERT(fDeferredCurveType < 0.f && !fHasJoinControlPoint);
     }
 
     PatchAttribs attribs() const { return fAttribs; }
@@ -65,18 +63,15 @@ public:
     // PatchAttribs::kJoinControlPoint must be enabled.
     void writeDeferredStrokePatch() {
         SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
-        if (fHasDeferredPatch) {
+        if (fDeferredCurveType >= 0.f) {
             SkASSERT(fHasJoinControlPoint);
-            // Overwrite join control point with updated value, which is the first attribute
-            // after the 4 control points.
-            memcpy(SkTAddOffset<void>(fDeferredPatchStorage, 4 * sizeof(SkPoint)),
-                   &fJoinControlPointAttrib, sizeof(SkPoint));
-            if (VertexWriter vw = this->appendPatch(/*defer=*/false)) {
-                vw << VertexWriter::Array<char>(fDeferredPatchStorage, fChunker.stride());
+            if (VertexWriter vw = fChunker.appendVertex()) {
+                vw << VertexWriter::Array<SkPoint>(fDeferredControlPoints, 4);
+                this->emitPatchAttribs(std::move(vw), fJoinControlPointAttrib, fDeferredCurveType);
             }
         }
 
-        fHasDeferredPatch = false;
+        fDeferredCurveType = -1.f;
         fHasJoinControlPoint = false;
     }
     // TODO: These are only used by StrokeHardwareTessellator and ideally its patch writing logic
@@ -84,7 +79,7 @@ public:
     void resetJoinControlPointAttrib() {
         SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
         // Should have already been written or caller should manually defer
-        SkASSERT(!fHasDeferredPatch);
+        SkASSERT(fDeferredCurveType < 0.f);
         fHasJoinControlPoint = false;
     }
     SkPoint joinControlPoint() const { return fJoinControlPointAttrib; }
@@ -196,9 +191,9 @@ public:
         // This does not use writePatch() because it uses its own location as the join attribute
         // value instead of fJoinControlPointAttrib.
         SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
-        if (VertexWriter vw = this->appendPatch(/*defer=*/false)) {
-            vw << VertexWriter::Repeat<5>(p); // p0,p1,p2,p3,join = p -> 5 copies
-            this->emitSimplePatchAttribs(std::move(vw), kCubicCurveType);
+        if (VertexWriter vw = fChunker.appendVertex()) {
+            vw << VertexWriter::Repeat<4>(p); // p0,p1,p2,p3 = p -> 4 copies
+            this->emitPatchAttribs(std::move(vw), skvx::bit_pun<SkPoint>(p), kCubicCurveType);
         }
     }
     AI void writeCircle(SkPoint p) { this->writeCircle(skvx::bit_pun<float2>(p)); }
@@ -228,59 +223,46 @@ public:
     void chopAndWriteCubics(float2 p0, float2 p1, float2 p2, float2 p3, int numPatches);
 
 private:
-    VertexWriter appendPatch(bool defer) {
-        if (defer) {
-            // The patch needs to be written to the deferred storage, which holds the entire patch
-            // except the stroke control point attrib, which gets filled in when
-            // finishStrokeContour() is called.
-            SkASSERT(!fHasDeferredPatch);
-            fHasDeferredPatch = true;
-            return {fDeferredPatchStorage, fChunker.stride()};
-        } else {
-            // Append directly to GPU storage
-            return fChunker.appendVertex();
-        }
-    }
-
     template <typename T>
     static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
 
-    // NOTE: Does *not* write the kJoinControlPoint attrib since that requires special handling.
-    void emitSimplePatchAttribs(VertexWriter vertexWriter, float explicitCurveType) {
-        vertexWriter << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
+    AI void emitPatchAttribs(VertexWriter vertexWriter, SkPoint join, float explicitCurveType) {
+        SkASSERT(!(fAttribs & PatchAttribs::kJoinControlPoint) || fHasJoinControlPoint);
+        vertexWriter << If((fAttribs & PatchAttribs::kJoinControlPoint), join)
+                     << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
                      << If((fAttribs & PatchAttribs::kStrokeParams), fStrokeParamsAttrib)
                      << If((fAttribs & PatchAttribs::kColor), fColorAttrib)
                      << If((fAttribs & PatchAttribs::kExplicitCurveType), explicitCurveType);
     }
 
-    SK_ALWAYS_INLINE
-    void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
+    AI void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
         const bool defer = (fAttribs & PatchAttribs::kJoinControlPoint) &&
                            !fHasJoinControlPoint;
-        if (VertexWriter vw = this->appendPatch(defer)) {
+        if (defer) {
+            SkASSERT(fDeferredCurveType < 0.f && explicitCurveType >= 0.f);
+            fDeferredCurveType = explicitCurveType;
+            p0.store(fDeferredControlPoints);
+            p1.store(fDeferredControlPoints + 1);
+            p2.store(fDeferredControlPoints + 2);
+            p3.store(fDeferredControlPoints + 3);
+        } else if (VertexWriter vw = fChunker.appendVertex()) {
             vw << p0 << p1 << p2 << p3;
-            if (fAttribs & PatchAttribs::kJoinControlPoint) {
-                // NOTE: fStrokeControlPointAttrib will contain NaN if we're writing to a deferred
-                // patch. If that's the case, correct data will overwrite it when the contour is
-                // closed (this is fine since a deferred patch writes to CPU memory instead of
-                // directly to the GPU buffer).
-                SkPoint nextControlPoint;
-                if (explicitCurveType == kCubicCurveType && any(p3 != p2)) {
-                    // p2 is control point defining the tangent vector into the next patch.
-                    p2.store(&nextControlPoint);
-                } else if (any(p2 != p1)) {
-                    // p1 is the control point defining the tangent vector.
-                    p1.store(&nextControlPoint);
-                } else {
-                    // p0 is the control point defining the tangent vector.
-                    p0.store(&nextControlPoint);
-                }
+            this->emitPatchAttribs(std::move(vw), fJoinControlPointAttrib, explicitCurveType);
+        }
 
-                vw << fJoinControlPointAttrib;
-                fJoinControlPointAttrib = nextControlPoint;
-                fHasJoinControlPoint = true;
+        if (fAttribs & PatchAttribs::kJoinControlPoint) {
+            SkPoint nextControlPoint;
+            if (explicitCurveType == kCubicCurveType && any(p3 != p2)) {
+                // p2 is control point defining the tangent vector into the next patch.
+                p2.store(&nextControlPoint);
+            } else if (any(p2 != p1)) {
+                // p1 is the control point defining the tangent vector.
+                p1.store(&nextControlPoint);
+            } else {
+                // p0 is the control point defining the tangent vector.
+                p0.store(&nextControlPoint);
             }
-            this->emitSimplePatchAttribs(std::move(vw), explicitCurveType);
+            this->updateJoinControlPointAttrib(nextControlPoint);
         }
     }
 
@@ -292,19 +274,13 @@ private:
     StrokeParams fStrokeParamsAttrib;
     VertexColor fColorAttrib;
 
+    SkPoint fDeferredControlPoints[4];
+
+    // If >= 0.f, then fDeferredControlPoints are valid;
+    float fDeferredCurveType = -1.f;
     bool fHasJoinControlPoint = false;
 
-    static constexpr size_t kMaxStride =
-            4 * sizeof(SkPoint) + // control points
-                sizeof(SkPoint) + // join control point or fan attrib point (not used at same time)
-                sizeof(StrokeParams) + // stroke params
-            4 * sizeof(uint32_t); // wide vertex color
 
-    // Only used if kJoinControlPointAttrib is set in fAttribs, in which case it holds data for
-    // a single patch waiting for the incoming join control point to be computed.
-    // Contents are valid (sans join control point) if fHasDeferredPatch is true.
-    char fDeferredPatchStorage[kMaxStride];
-    bool fHasDeferredPatch = false;
 };
 
 }  // namespace skgpu
