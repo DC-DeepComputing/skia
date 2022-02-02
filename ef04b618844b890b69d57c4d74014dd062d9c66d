@@ -46,6 +46,30 @@
       },
       "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f894116_3d67752c",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T19:46:59Z",
+      "side": 1,
+      "message": "Here is what the new API will look like as writeFoo(), once we get through this and the next Cl that handles auto deferring patches: https://skia-review.googlesource.com/c/skia/+/502787",
+      "parentUuid": "cfd1d52d_90a369ab",
+      "range": {
+        "startLine": 145,
+        "startChar": 20,
+        "endLine": 145,
+        "endChar": 56
+      },
+      "revId": "ef04b618844b890b69d57c4d74014dd062d9c66d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
