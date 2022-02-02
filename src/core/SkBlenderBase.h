@@ -23,6 +23,10 @@ class SkRuntimeEffect;
 class SkShaderCodeDictionary;
 class SkUniformBlock;
 
+namespace skgpu {
+class UniformData;
+};
+
 /**
  * Encapsulates a blend function, including non-public APIs.
  * Blends combine a source color (the result of our paint) and destination color (from the canvas)
@@ -58,7 +62,7 @@ public:
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
     // TODO: make pure virtual
-    virtual void addToKey(SkShaderCodeDictionary*,
+    virtual void addToKeyB(SkShaderCodeDictionary*,
                           SkBackend,
                           SkPaintParamsKey*,
                           SkUniformBlock*) const;

@@ -314,7 +314,7 @@ namespace BlendShaderBlock {
 
 void AddToKey(SkBackend backend,
               SkPaintParamsKey *key,
-              SkUniformBlock* uniforms,
+              SkUniformBlock* uniformBlock,
               const BlendData& blendData) {
 
     if (backend == SkBackend::kGraphite) {
@@ -322,11 +322,11 @@ void AddToKey(SkBackend backend,
 
         add_blendmode_to_key(key, blendData.fBM);
         int start = key->sizeInBytes();
-        as_SB(blendData.fDst)->addToKey(nullptr, backend, key, uniforms);
+        as_SB(blendData.fDst)->addToKeyS(nullptr, backend, key, uniformBlock);
         int firstShaderSize = key->sizeInBytes() - start;
 
         start = key->sizeInBytes();
-        as_SB(blendData.fSrc)->addToKey(nullptr, backend, key, uniforms);
+        as_SB(blendData.fSrc)->addToKeyS(nullptr, backend, key, uniformBlock);
         int secondShaderSize = key->sizeInBytes() - start;
 
         key->endBlock(headerOffset, CodeSnippetID::kBlendShader);
@@ -336,7 +336,7 @@ void AddToKey(SkBackend backend,
         validate_block_header(*key, headerOffset, CodeSnippetID::kBlendShader, expectedBlockSize);
     } else {
         // TODO: add implementation for other backends
-        SolidColorShaderBlock::AddToKey(backend, key, uniforms, SkColors::kRed);
+        SolidColorShaderBlock::AddToKey(backend, key, uniformBlock, SkColors::kRed);
     }
 }
 
@@ -375,9 +375,8 @@ static const int kBlockDataSize = 1;
 
 void AddToKey(SkBackend /* backend */,
               SkPaintParamsKey *key,
-              SkUniformBlock* uniforms,
+              SkUniformBlock* uniformBlock,
               SkBlendMode bm) {
-
     int headerOffset = key->beginBlock(CodeSnippetID::kSimpleBlendMode);
     add_blendmode_to_key(key, bm);
     key->endBlock(headerOffset, CodeSnippetID::kSimpleBlendMode);
@@ -405,7 +404,7 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace BlendModeBlock
 
 //--------------------------------------------------------------------------------------------------
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 //def SK_GRAPHITE_ENABLED
 SkPaintParamsKey CreateKey(SkBackend backend,
                            skgpu::ShaderCombo::ShaderType s,
                            SkTileMode tm,

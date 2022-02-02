@@ -15,6 +15,15 @@
 #include "src/gpu/effects/GrBlendFragmentProcessor.h"
 #endif
 
+#include "experimental/graphite/include/Encoding.h"
+
+void SkBlendModeBlender::addToKeyB(SkShaderCodeDictionary* dict,
+                                   SkBackend backend,
+                                   SkPaintParamsKey* key,
+                                   SkUniformBlock* uniformBlock) const {
+    BlendMode::addToKeyB(dict, backend, key, uniformBlock, fMode);
+}
+
 sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                        \
     case m: {                                              \
@@ -60,15 +69,15 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #undef RETURN_SINGLETON_BLENDER
 }
 
-void SkBlenderBase::addToKey(SkShaderCodeDictionary* dict,
-                             SkBackend backend,
-                             SkPaintParamsKey* key,
-                             SkUniformBlock* uniforms) const {
+void SkBlenderBase::addToKeyB(SkShaderCodeDictionary* dict,
+                              SkBackend backend,
+                              SkPaintParamsKey* key,
+                              SkUniformBlock* uniformBlock) const {
 
     if (std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
-        BlendModeBlock::AddToKey(backend, key, uniforms, bm.value());
+        BlendModeBlock::AddToKey(backend, key, uniformBlock, bm.value());
     } else {
-        BlendModeBlock::AddToKey(backend, key, uniforms, SkBlendMode::kSrcOver);
+        BlendModeBlock::AddToKey(backend, key, uniformBlock, SkBlendMode::kSrcOver);
     }
 }
 

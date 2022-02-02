@@ -12,6 +12,9 @@
 
 class SkRadialGradient final : public SkGradientShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, SkUniformBlock*) const override {
+    }
+
     SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&);
 
     GradientType asAGradient(GradientInfo* info) const override;

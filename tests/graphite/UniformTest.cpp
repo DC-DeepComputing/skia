@@ -18,6 +18,7 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkUniformData.h"
 
+#if 0
 namespace {
 
 std::tuple<SkPaint, int> create_paint(skgpu::ShaderCombo::ShaderType shaderType,
@@ -107,3 +108,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
         }
     }
 }
+#endif

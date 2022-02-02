@@ -293,10 +293,15 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         SkUniquePaintParamsID shaderID;
         std::unique_ptr<SkUniformBlock> shadingUniforms;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
+
         if (draw.fPaintParams.has_value()) {
             SkShaderCodeDictionary* dict =
                     recorder->context()->priv().globalCache()->shaderCodeDictionary();
-            std::tie(shaderID, shadingUniforms) = ExtractPaintData(dict, draw.fPaintParams.value());
+//            std::tie(shaderID, shadingUniforms) = ExtractPaintData(dict, draw.fPaintParams.value());
+            shaderID = GetUniqueIDAndUniformData(recorder->context(),
+                                                 draw.fPaintParams.value(),
+                                                 SkBackend::kGraphite,
+                                                 shadingUniforms.get());
             shadingIndex = shadingUniformBindings.addUniforms(std::move(shadingUniforms));
         } // else depth-only
 
