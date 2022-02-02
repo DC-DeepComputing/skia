@@ -46,6 +46,30 @@
       },
       "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35bc0ee0_e4e8f2b7",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T16:43:39Z",
+      "side": 1,
+      "message": "I agree, due to the bidirectional relationship between variables and vardecls, this is an inherently weird/semi-unsafe thing to do.\n\n(In my example code, after thinking it over, I think `b` would point to a Variable that is still allocated but is no longer associated to any VarDecl. The Variable would lose its initialValue() since that is tied to the VarDeclaration. Anything which relied on initialValue--the ConstantFolder is the biggest one--would stop working normally.)\n\nI\u0027m not sure I understand why cloning the Variable is off the table. The inliner uses `Variable::MakeScratchVariable` to make Variable clones and it seems to get away with it. But I\u0027m willing to believe it can\u0027t be done, since this stuff is inherently touchy.",
+      "parentUuid": "58d0b42f_debfd934",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
