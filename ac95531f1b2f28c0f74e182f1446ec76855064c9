@@ -94,6 +94,30 @@
       },
       "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d055d9_58c5786f",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T20:21:21Z",
+      "side": 1,
+      "message": "I don\u0027t think debug/release will work (the tests need to run and pass in both debug and release), but a Program Settings flag would make sense. \"AllowVarDeclCloneForTesting\" with a suitable comment, and assert/nullptr otherwise.",
+      "parentUuid": "500fd72e_eeeccc59",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "ac95531f1b2f28c0f74e182f1446ec76855064c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
