@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "129a83a8_4fadc917",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-02-02T13:21:59Z",
+      "side": 1,
+      "message": "Note: we generally like task accounts to be in the skia-swarming-bots project.  They need to be added to either https://chrome-infra-auth.appspot.com/auth/groups/project-skia-external-task-accounts or https://chrome-infra-auth.appspot.com/auth/groups/project-skia-internal-task-accounts as appropriate.",
+      "range": {
+        "startLine": 1462,
+        "startChar": 23,
+        "endLine": 1462,
+        "endChar": 73
+      },
+      "revId": "a5ac2bbbd5621f623be21fd1363011d5494e6b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
