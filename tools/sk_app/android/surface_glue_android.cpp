@@ -72,8 +72,8 @@ SkiaAndroidApp::SkiaAndroidApp(JNIEnv* env, jobject androidApp) {
     env->GetJavaVM(&fJavaVM);
     fAndroidApp = env->NewGlobalRef(androidApp);
     jclass cls = env->GetObjectClass(fAndroidApp);
-    fSetTitleMethodID = env->GetMethodID(cls, "setTitle", "(Ljava/lang/String;)V");
-    fSetStateMethodID = env->GetMethodID(cls, "setState", "(Ljava/lang/String;)V");
+    fSetTitleMethodID = env->GetMethodID(cls, "setTitle", "(Ljava/lang/std::string;)V");
+    fSetStateMethodID = env->GetMethodID(cls, "setState", "(Ljava/lang/std::string;)V");
     fNativeWindow = nullptr;
     pthread_create(&fThread, nullptr, pthread_main, this);
 }

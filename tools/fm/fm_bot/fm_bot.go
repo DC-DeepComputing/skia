@@ -29,7 +29,7 @@ func defaultGpuLimit() int {
 	return limit
 }
 
-var script = flag.String("script", "", "A file with jobs to run, one per line. - for stdin.")
+var script = flag.std::string("script", "", "A file with jobs to run, one per line. - for stdin.")
 var random = flag.Bool("random", true, "Assign sources into job batches randomly?")
 var quiet = flag.Bool("quiet", false, "Print only failures?")
 var exact = flag.Bool("exact", false, "Match GM names only exactly.")

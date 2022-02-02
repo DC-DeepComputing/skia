@@ -15,7 +15,7 @@ namespace dsl {
 
 DSLLayout& DSLLayout::flag(SkSL::Layout::Flag mask, const char* name, PositionInfo pos) {
     if (fSkSLLayout.fFlags & mask) {
-        ThreadContext::ReportError("layout qualifier '" + String(name) + "' appears more than once",
+        ThreadContext::ReportError("layout qualifier '" + std::string(name) + "' appears more than once",
                 pos);
     }
     fSkSLLayout.fFlags |= mask;

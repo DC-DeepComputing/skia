@@ -102,8 +102,9 @@ public:
         const_cast<Variable*>(this)->fDeclaration = nullptr;
     }
 
-    String description() const override {
-        return this->modifiers().description() + this->type().name() + " " + this->name();
+    std::string description() const override {
+        return this->modifiers().description() + std::string(this->type().name()) + " " +
+               std::string(this->name());
     }
 
 private:

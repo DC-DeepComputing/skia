@@ -82,7 +82,7 @@ template <typename T, typename F>
 jobjectArray to_java_string_array(JNIEnv* env,
                                   const std::vector<T>& array,
                                   F toString) {
-    jclass stringClass = env->FindClass("java/lang/String");
+    jclass stringClass = env->FindClass("java/lang/std::string");
     jassert(env, stringClass, nullptr);
     jobjectArray jarray = env->NewObjectArray((jint)array.size(), stringClass, nullptr);
     jassert(env, jarray != nullptr, nullptr);
@@ -124,7 +124,7 @@ void Java_org_skia_skqp_SkQP_nInit(JNIEnv* env, jobject object, jobject assetMan
     auto unitTests = gSkQP.getUnitTests();
     jassert(env, unitTests.size() > 0,);
 
-    constexpr char kStringArrayType[] = "[Ljava/lang/String;";
+    constexpr char kStringArrayType[] = "[Ljava/lang/std::string;";
     env->SetObjectField(object, env->GetFieldID(SkQP_class, "mBackends", kStringArrayType),
                         to_java_string_array(env, backends, SkQP::GetBackendName));
     env->SetObjectField(object, env->GetFieldID(SkQP_class, "mUnitTests", kStringArrayType),
@@ -166,7 +166,7 @@ jobjectArray Java_org_skia_skqp_SkQP_nExecuteUnitTest(JNIEnv* env,
     if (errors.size() == 0) {
         return nullptr;
     }
-    jclass stringClass = env->FindClass("java/lang/String");
+    jclass stringClass = env->FindClass("java/lang/std::string");
     jassert(env, stringClass, nullptr);
     jobjectArray array = env->NewObjectArray(errors.size(), stringClass, nullptr);
     for (unsigned i = 0; i < errors.size(); ++i) {

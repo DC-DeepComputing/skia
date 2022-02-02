@@ -471,7 +471,7 @@ private:
     inline static constexpr size_t kValueStackReserve = 256;
     std::vector<Value>    fValueStack;
 
-    // String unescape buffer.
+    // std::string unescape buffer.
     inline static constexpr size_t kUnescapeBufferReserve = 512;
     std::vector<char>     fUnescapeBuffer;
 

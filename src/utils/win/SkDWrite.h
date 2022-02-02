@@ -22,7 +22,7 @@ class SkString;
 IDWriteFactory* sk_get_dwrite_factory();
 
 ////////////////////////////////////////////////////////////////////////////////
-// String conversion
+// std::string conversion
 
 /** Prefer to use this type to prevent template proliferation. */
 typedef SkAutoSTMalloc<16, WCHAR> SkSMallocWCHAR;
