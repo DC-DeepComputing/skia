@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97d07ae5_98b5e8ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T01:50:16Z",
+      "side": 1,
+      "message": "Found the bug, it\u0027s just making writeCircle() messy for now, but it will all clean up completely when circle writing is handled in Patchwriter. The issue right now is there\u0027s no way to write a patch that defines its own join control point (circles being the only one that do that) vs. using the last set join point.\n\nAfter https://skia-review.googlesource.com/c/skia/+/501837 is rebased on to this, there is no need to restore the join attrib value after writing a circle because it\u0027s never modified to begin with.\n\nI renamed writeDeferredStrokePatch() to resetJoinControlPointAttrib() because that\u0027s all it does for the time being. When https://skia-review.googlesource.com/c/skia/+/501839 is rebased, I can rename it back to writeDeferredStrokePatch() or add that as its own function. I\u0027m leaning that way because StrokeHardwareTessellator does not defer anything, so it can keep using resetJoinControlPointAttrib() and assert there\u0027s no deferred patch. StrokeFixedCountTessellator will just use writeDeferredStrokePatch() which does the deferred flush and reset automatically.",
+      "revId": "614f1dff548f681635c776507af15f791b78cf76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd846a71_3df05f00",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T01:50:16Z",
+      "side": 1,
+      "message": "This was the cause of the unexpected gold diffs in the first CL, *after* I had updated it to use a bool to track presence of the join control point.\n\nIn the original original, which did not cause diffs, when there was no prior join point, writeCircle would just automatically reset the attrib to something with nans in it, and the correct state of no join point would be restored. After switching to using a boolean, updateJoinControlPointAttrib() always marked the bool as true, so even if we set the point back to it\u0027s prior state after writing the circle patch, the writer would think we\u0027d have join info when we shouldn\u0027t have. This leads to bad stroke joins.",
+      "range": {
+        "startLine": 110,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 9
+      },
+      "revId": "614f1dff548f681635c776507af15f791b78cf76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
