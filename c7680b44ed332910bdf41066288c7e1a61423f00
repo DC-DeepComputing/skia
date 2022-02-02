@@ -133,6 +133,30 @@
       },
       "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2caf75b6_46d9de7e",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-02T21:11:33Z",
+      "side": 1,
+      "message": "\u003e That being said, I\u0027d bet the compiler doesn\u0027t really care if we changed emitPatchAttribs() to take an SkPoint to use as the join\n\nI do prefer that. What do you think?",
+      "parentUuid": "f7813547_bafcec12",
+      "range": {
+        "startLine": 303,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 13
+      },
+      "revId": "c7680b44ed332910bdf41066288c7e1a61423f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
