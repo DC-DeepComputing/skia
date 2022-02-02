@@ -884,7 +884,7 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
     SkGradientShaderBase::Descriptor desc;
     desc_init(&desc, opt.fColors, std::move(colorSpace), opt.fPos, opt.fCount, mode, flags,
               localMatrix);
-    return sk_make_sp<SkLinearGradient>(pts, desc);
+    return sk_make_sp<SkLinearGradient>(pts, desc, true);
 }
 
 sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,

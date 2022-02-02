@@ -181,14 +181,13 @@ sk_sp<SkUniformData> make_linear_gradient_uniform_data(const GradientData& gradD
     SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kLinearGradientShader);
     SkASSERT(uniforms.size() == kExpectedNumGradientUniforms);
 
-    float unusedRadius = 0.0f;
     const void* srcs[kExpectedNumGradientUniforms] = {
         gradData.fColor4fs,
         gradData.fOffsets,
         &gradData.fPoints[0],
         &gradData.fPoints[1],
-        &unusedRadius,
-        &unusedRadius,
+        &gradData.fRadii[0], // unused
+        &gradData.fRadii[1], // unused
     };
 
     return make_gradient_uniform_data_common(uniforms, srcs);
@@ -199,16 +198,13 @@ sk_sp<SkUniformData> make_radial_gradient_uniform_data(const GradientData& gradD
     SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kRadialGradientShader);
     SkASSERT(uniforms.size() == kExpectedNumGradientUniforms);
 
-    SkPoint unusedPoint = {0.0f, 0.0f};
-    float unusedRadius = 0.0f;
-
     const void* srcs[kExpectedNumGradientUniforms] = {
         gradData.fColor4fs,
         gradData.fOffsets,
         &gradData.fPoints[0],
-        &unusedPoint,
+        &gradData.fPoints[1], // unused
         &gradData.fRadii[0],
-        &unusedRadius,
+        &gradData.fRadii[1],  // unused
     };
 
     return make_gradient_uniform_data_common(uniforms, srcs);
@@ -219,16 +215,13 @@ sk_sp<SkUniformData> make_sweep_gradient_uniform_data(const GradientData& gradDa
     SkSpan<const SkUniform> uniforms = skgpu::GetUniforms(CodeSnippetID::kSweepGradientShader);
     SkASSERT(uniforms.size() == kExpectedNumGradientUniforms);
 
-    SkPoint unusedPoint = {0.0f, 0.0f};
-    float unusedRadius = 0.0f;
-
     const void* srcs[kExpectedNumGradientUniforms] = {
         gradData.fColor4fs,
         gradData.fOffsets,
         &gradData.fPoints[0],
-        &unusedPoint,
-        &unusedRadius,
-        &unusedRadius,
+        &gradData.fPoints[1], // unused
+        &gradData.fRadii[0],  // unused
+        &gradData.fRadii[1],  // unused
     };
 
     return make_gradient_uniform_data_common(uniforms, srcs);
@@ -254,7 +247,6 @@ sk_sp<SkUniformData> make_conical_gradient_uniform_data(const GradientData& grad
 #endif // SK_GRAPHITE_ENABLED
 
 } // anonymous namespace
-
 
 GradientData::GradientData(SkShader::GradientType type,
                            SkTileMode tm,
@@ -308,6 +300,33 @@ void GradientData::toOffsets(int numStops, float inputOffsets[kMaxStops]) {
     memcpy(fOffsets, inputOffsets, numStops * sizeof(float));
     for (int i = numStops ; i < kMaxStops; ++i) {
         fOffsets[i] = fOffsets[numStops-1];
+    }
+}
+
+GradientData::GradientData(SkShader::GradientType type,
+                           SkPoint point0, SkPoint point1,
+                           float radius0, float radius1,
+                           SkTileMode tm,
+                           int numStops,
+                           SkColor4f color4fs[kMaxStops],
+                           float offsets[kMaxStops])
+        : fType(type)
+        , fTM(tm)
+        , fNumStops(std::min(numStops, kMaxStops)) {
+    SkASSERT(fNumStops >= 1);
+
+    fPoints[0] = point0;
+    fPoints[1] = point1;
+    fRadii[0] = radius0;
+    fRadii[1] = radius1;
+    memcpy(fColor4fs, color4fs, fNumStops * sizeof(SkColor4f));
+    memcpy(fOffsets, offsets, fNumStops * sizeof(float));
+
+    // Extend the colors and offset, if necessary, to fill out the arrays
+    // TODO: this should be done later when the actual code snippet has been selected!!
+    for (int i = fNumStops ; i < kMaxStops; ++i) {
+        fColor4fs[i] = fColor4fs[fNumStops-1];
+        fOffsets[i] = fOffsets[fNumStops-1];
     }
 }
 
