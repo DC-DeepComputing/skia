@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589f07f3_ee5f3740",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T22:08:06Z",
+      "side": 1,
+      "message": "Should these go with the other multiple-return test at L1100?",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1122,
+        "endChar": 0
+      },
+      "revId": "895772ef482475b35e8928ace2d45b8d160c81ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
