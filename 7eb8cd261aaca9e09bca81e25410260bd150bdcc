@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45058044_57563111",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 3355,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T19:46:30Z",
+      "side": 1,
+      "message": "and its rotation affects the lines\u0027 orientation?",
+      "range": {
+        "startLine": 3355,
+        "startChar": 22,
+        "endLine": 3355,
+        "endChar": 23
+      },
+      "revId": "7eb8cd261aaca9e09bca81e25410260bd150bdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
