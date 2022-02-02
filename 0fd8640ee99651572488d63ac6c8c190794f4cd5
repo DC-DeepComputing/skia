@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f3cac59_325bd532",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T20:58:12Z",
+      "side": 1,
+      "message": "its",
+      "range": {
+        "startLine": 31,
+        "startChar": 14,
+        "endLine": 31,
+        "endChar": 17
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c17f631_9b02301d",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T20:58:12Z",
+      "side": 1,
+      "message": "tiny nit: Assertion message would be nice\n\n  SkDEBUGFAIL(\"VarDeclaration::clone is unsupported\")",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b68391a_bf3bebea",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T20:58:12Z",
+      "side": 1,
+      "message": "Whoa! I didn\u0027t think we could set settings this way. Scary 😮\nCan we set it in our `settings` variable instead?",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 79
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
