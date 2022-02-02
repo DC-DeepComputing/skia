@@ -16,6 +16,46 @@
       "message": "PTAL. Test was hanging because one of the points generated had NaN.",
       "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84c8ee03_2cedf4e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T15:56:46Z",
+      "side": 1,
+      "message": "I\u0027ve got nothing against doing it this way, since we have to loop over the points in these modes, but wdyt about just having one SkScalarsAreFinite(pts, 2*n) check at the beginning and then not worrying about the within-loop/case-by-case checks?",
+      "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "422ccc0f_dd551c11",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-02T15:56:46Z",
+      "side": 1,
+      "message": "I think we need to always check pts[i+1], since even if inc \u003d\u003d 1, we do use i+1\u0027s point in the path. The loop draws the i,i+1 path before we would then loop to check if i+1 was indeed finite.\n\nIf we wanted to avoid doubel checking points finite-ness, we could check pts[0] before the loop and then always do pts[i+1]. Then if inc \u003d\u003d 2, we would do the extra check for pts[i].",
+      "range": {
+        "startLine": 539,
+        "startChar": 45,
+        "endLine": 539,
+        "endChar": 80
+      },
+      "revId": "15a70d5c0619319c15f2f951bcd041e6df9d74bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
