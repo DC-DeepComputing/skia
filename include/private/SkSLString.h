@@ -48,12 +48,6 @@ private:
 
 String operator+(std::string_view left, std::string_view right);
 
-String to_string(double value);
-String to_string(int32_t value);
-String to_string(uint32_t value);
-String to_string(int64_t value);
-String to_string(uint64_t value);
-
 bool stod(std::string_view s, SKSL_FLOAT* value);
 bool stoi(std::string_view s, SKSL_INT* value);
 
@@ -66,5 +60,17 @@ namespace std {
         }
     };
 } // namespace std
+
+namespace skstd {
+
+// We customize the output from to_string(double) slightly.
+SkSL::String to_string(double value);
+static inline SkSL::String to_string(int32_t value)  { return SkSL::String(std::to_string(value)); }
+static inline SkSL::String to_string(uint32_t value) { return SkSL::String(std::to_string(value)); }
+static inline SkSL::String to_string(int64_t value)  { return SkSL::String(std::to_string(value)); }
+static inline SkSL::String to_string(uint64_t value) { return SkSL::String(std::to_string(value)); }
+static inline SkSL::String to_string(size_t value)   { return SkSL::String(std::to_string(value)); }
+
+}  // namespace skstd
 
 #endif
