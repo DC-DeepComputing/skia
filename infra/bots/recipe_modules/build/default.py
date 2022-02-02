@@ -237,6 +237,10 @@ def compile_fn(api, checkout_root, out_dir):
     swiftshader_out = out_dir.join('swiftshader_out')
     compile_swiftshader(api, extra_tokens, swiftshader_root, cc, cxx, swiftshader_out)
     args['skia_use_vulkan'] = 'true'
+    # We compile our libfuzzer fuzzer executables, but they won't get run on our
+    # infrastructure. This just helps find any compile errors before they break
+    # the oss-fuzz build.
+    args['skia_build_fuzzers'] = 'true'
     extra_cflags.extend(['-DSK_GPU_TOOLS_VK_LIBRARY_NAME=%s' %
         api.vars.swarming_out_dir.join('swiftshader_out', 'libvk_swiftshader.so'),
     ])
