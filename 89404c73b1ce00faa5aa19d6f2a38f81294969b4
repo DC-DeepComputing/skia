@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34001410_61e35a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-02T22:25:39Z",
+      "side": 1,
+      "message": "\u003e Patch Set 7: Code-Review+1\n\u003e \n\u003e By voting Code-Review+1 the following files are now code-owner approved by \u003cGERRIT_ACCOUNT_5640\u003e:\n\u003e * bench/SkSLBench.cpp\n\u003e * bench/nanobench.cpp\n\u003e * experimental/graphite/src/mtl/MtlGraphicsPipeline.mm\n\u003e * experimental/graphite/src/mtl/MtlUtils.h\n\u003e * experimental/graphite/src/mtl/MtlUtils.mm\n\u003e * fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp\n\u003e * fuzz/oss_fuzz/FuzzSKSL2Metal.cpp\n\u003e * fuzz/oss_fuzz/FuzzSKSL2Pipeline.cpp\n\u003e * fuzz/oss_fuzz/FuzzSKSL2SPIRV.cpp\n\u003e * include/private/SkSLIRNode.h\n\u003e * include/private/SkSLLayout.h\n\u003e * include/private/SkSLModifiers.h\n\u003e * include/private/SkSLString.h\n\u003e * modules/particles/src/SkParticleEffect.cpp\n\u003e * src/core/SkCustomMesh.cpp\n\u003e * src/core/SkRuntimeEffect.cpp\n\u003e * src/gpu/GrPersistentCacheUtils.cpp\n\u003e * src/gpu/GrPersistentCacheUtils.h\n\u003e * src/gpu/ShaderErrorHandler.cpp\n\u003e * src/gpu/d3d/GrD3DPipelineStateBuilder.cpp\n\u003e * src/gpu/d3d/GrD3DPipelineStateBuilder.h\n\u003e * src/gpu/dawn/GrDawnGpu.cpp\n\u003e * src/gpu/dawn/GrDawnGpu.h\n\u003e * src/gpu/dawn/GrDawnProgramBuilder.cpp\n\u003e * src/gpu/effects/GrBicubicEffect.cpp\n\u003e * src/gpu/effects/GrSkSLFP.cpp\n\u003e * src/gpu/gl/GrGLGpu.cpp\n\u003e * src/gpu/gl/builders/GrGLProgramBuilder.cpp\n\u003e * src/gpu/gl/builders/GrGLProgramBuilder.h\n\u003e * src/gpu/gl/builders/GrGLShaderStringBuilder.cpp\n\u003e * src/gpu/gl/builders/GrGLShaderStringBuilder.h\n\u003e * src/gpu/glsl/GrGLSLShaderBuilder.h\n\u003e * src/gpu/mtl/GrMtlPipelineStateBuilder.h\n\u003e * src/gpu/mtl/GrMtlPipelineStateBuilder.mm\n\u003e * src/gpu/mtl/GrMtlResourceProvider.mm\n\u003e * src/gpu/mtl/GrMtlUtil.h\n\u003e * src/gpu/mtl/GrMtlUtil.mm\n\u003e * src/gpu/ops/DrawCustomMeshOp.cpp\n\u003e * src/gpu/vk/GrVkMSAALoadManager.cpp\n\u003e * src/gpu/vk/GrVkPipelineStateBuilder.cpp\n\u003e * src/gpu/vk/GrVkPipelineStateBuilder.h\n\u003e * src/gpu/vk/GrVkUtil.cpp\n\u003e * src/gpu/vk/GrVkUtil.h\n\u003e * src/sksl/SkSLAnalysis.cpp\n\u003e * src/sksl/SkSLBuiltinMap.cpp\n\u003e * src/sksl/SkSLBuiltinMap.h\n\u003e * src/sksl/SkSLCompiler.cpp\n\u003e * src/sksl/SkSLCompiler.h\n\u003e * src/sksl/SkSLDSLParser.cpp\n\u003e * src/sksl/SkSLDSLParser.h\n\u003e (more files)\n\u003e \n\nThank you for your service!",
+      "revId": "89404c73b1ce00faa5aa19d6f2a38f81294969b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
