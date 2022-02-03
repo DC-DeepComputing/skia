@@ -22,6 +22,30 @@
       },
       "revId": "1351a5954f99df4d3bd280fc4d313e5a8841c17d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf78686_a666491d",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-03T19:55:39Z",
+      "side": 0,
+      "message": "Because the device that\u0027s implementing uses shared buffers to support the conversion. This forces this call to mutate the device.",
+      "parentUuid": "3b8601b1_8b9da03b",
+      "range": {
+        "startLine": 305,
+        "startChar": 34,
+        "endLine": 305,
+        "endChar": 39
+      },
+      "revId": "1351a5954f99df4d3bd280fc4d313e5a8841c17d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
