@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "265dd2d2_f8e9c5fb",
+        "filename": "experimental/graphite/include/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T15:11:52Z",
+      "side": 1,
+      "message": "It might be worth asking in chat, but I thought we were moving away from relying SkNoncopyable and just having it declare the copy ctor and operator deleted? But if that is the direction we\u0027re going, I can\u0027t remember the rational for it.",
+      "range": {
+        "startLine": 56,
+        "startChar": 29,
+        "endLine": 56,
+        "endChar": 42
+      },
+      "revId": "eaf6cbac232a76439400d22a9c115272f68119ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
