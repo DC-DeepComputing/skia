@@ -376,7 +376,8 @@ void GrDrawingManager::sortTasks() {
     if (!fDAG.empty()) {
         auto prevOpsTask = fDAG[0]->asOpsTask();
         for (int i = 1; i < fDAG.count(); ++i) {
-            auto curOpsTask = fDAG[i]->asOpsTask();
+            auto curr = fDAG[i];
+            auto curOpsTask = curr->asOpsTask();
 
             if (prevOpsTask && curOpsTask) {
                 SkASSERT(!prevOpsTask->canMerge(curOpsTask));
@@ -773,12 +774,15 @@ void GrDrawingManager::newTextureResolveRenderTask(sk_sp<GrSurfaceProxy> proxy,
                                                    const GrCaps& caps) {
     SkDEBUGCODE(this->validate());
     SkASSERT(fContext);
-    this->closeActiveOpsTask();
 
-    if (!proxy->asRenderTargetProxy()->isMSAADirty()) {
+    GrRenderTask* lastTask = this->getLastRenderTask(proxy.get());
+    if ((!proxy->asRenderTargetProxy()->isMSAADirty() && (!lastTask || lastTask->isClosed())) ||
+        caps.msaaResolvesAutomatically()) {
         SkDEBUGCODE(this->validate());
         return;
     }
+
+    this->closeActiveOpsTask();
 
     auto resolveTask = sk_make_sp<GrTextureResolveRenderTask>();
     // Add proxy also adds all the needed dependencies we need

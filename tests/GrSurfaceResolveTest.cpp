@@ -139,5 +139,18 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest, reporter, ctxInfo) {
     } else {
         REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorGREEN));
     }
+
+    // Test that a resolve between draws to a different surface doesn't cause the OpsTasks for that
+    // surface to be split. Fails if we hit validation asserts in GrDrawingManager.
+    // First clear out dirty msaa from previous test
+    surface->flush();
+
+    auto otherSurface = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kYes, info);
+    REPORTER_ASSERT(reporter, otherSurface);
+    otherSurface->getCanvas()->clear(SK_ColorRED);
+    surface->resolveMSAA();
+    otherSurface->getCanvas()->clear(SK_ColorBLUE);
+    dContext->flush();
+    dContext->submit();
 }
 
