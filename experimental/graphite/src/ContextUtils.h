@@ -28,11 +28,27 @@ std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintD
 
 SkSpan<const SkUniform> GetUniforms(CodeSnippetID);
 
-// TODO: Temporary way to get at SkSL snippet for handling the given shader type, which will be
-// embedded in the fragment function's body. It has access to the vertex output via a "interpolated"
-// variable, and must have a statement that writes to a float4 "out.color". Its uniforms (as defined
-// by GetUniforms(type)) are available as a variable named "uniforms".
-const char* GetShaderSkSL(CodeSnippetID);
+class ShaderInfo {
+public:
+    void add(SkSpan<const SkUniform> uniforms, const char* name, const char* snippet) {
+        fUniforms.push_back(uniforms);
+        fNames.push_back(name);
+        fPreamble.push_back(snippet);
+    }
+
+    void setWritesColor() { fWritesColor = true; }
+    bool writesColor() const { return fWritesColor; }
+
+    std::string flatten() const;
+
+private:
+    std::vector<SkSpan<const SkUniform>> fUniforms;
+    std::vector<const char*> fNames;
+    std::vector<const char*> fPreamble;
+    bool fWritesColor = false;
+};
+
+void GetShaderInfo(SkShaderCodeDictionary*, SkUniquePaintParamsID, ShaderInfo*);
 
 } // namespace skgpu
 
