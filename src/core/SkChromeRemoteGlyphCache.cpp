@@ -237,13 +237,13 @@ public:
     }
 
     void prepareForMaskDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) override;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) override;
 
     void prepareForSDFTDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) override;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) override;
 
     void prepareForPathDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) override;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) override;
 
     void onAboutToExitScope() override {}
 
@@ -256,9 +256,9 @@ public:
     void resetScalerContext();
 
 private:
-    template <typename Rejector>
+    template <typename Rejecter>
     void commonMaskLoop(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects, Rejector&& reject);
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter, Rejecter&& reject);
 
     // Same thing as MaskSummary, but for paths.
     struct PathSummary {
@@ -412,10 +412,10 @@ void RemoteStrike::writeGlyphPath(
     serializer->write<bool>(glyph.pathIsHairline());
 }
 
-template <typename Rejector>
+template <typename Rejecter>
 void RemoteStrike::commonMaskLoop(
-        SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects, Rejector&& reject) {
-    drawables->forEachGlyphID(
+        SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter, Rejecter&& reject) {
+    accepter->forEachInput(
             [&](size_t i, SkPackedGlyphID packedID, SkPoint position) {
                 SkGlyphDigest* digest = fSentGlyphs.find(packedID.value());
                 if (digest == nullptr) {
@@ -430,14 +430,14 @@ void RemoteStrike::commonMaskLoop(
 
                 // Reject things that are too big.
                 if (reject(*digest)) {
-                    rejects->reject(i);
+                    rejecter->reject(i);
                 }
             });
 }
 
 void RemoteStrike::prepareForMaskDrawing(
-        SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) {
-    for (auto [i, variant, _] : SkMakeEnumerate(drawables->input())) {
+        SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) {
+    for (auto [i, variant, _] : SkMakeEnumerate(accepter->input())) {
         SkPackedGlyphID packedID = variant.packedID();
         if (fSentLowGlyphIDs.test(packedID)) {
             #ifdef SK_DEBUG
@@ -468,20 +468,20 @@ void RemoteStrike::prepareForMaskDrawing(
         // Reject things that are too big.
         // N.B. this must have the same behavior as SkScalerCache::prepareForMaskDrawing.
         if (!digest->canDrawAsMask()) {
-            rejects->reject(i, digest->maxDimension());
+            rejecter->reject(i, digest->maxDimension());
         }
     }
 }
 
 void RemoteStrike::prepareForSDFTDrawing(
-        SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) {
-    this->commonMaskLoop(drawables, rejects,
+        SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) {
+    this->commonMaskLoop(accepter, rejecter,
                          [](SkGlyphDigest digest){return !digest.canDrawAsSDFT();});
 }
 
 void RemoteStrike::prepareForPathDrawing(
-        SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) {
-    drawables->forEachGlyphID(
+        SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) {
+    accepter->forEachInput(
             [&](size_t i, SkPackedGlyphID packedID, SkPoint position) {
                 PathSummary* summary = fSentPaths.find(packedID);
                 if (summary == nullptr) {
@@ -502,7 +502,7 @@ void RemoteStrike::prepareForPathDrawing(
                 }
 
                 if (summary->maxDimensionOrPath != PathSummary::kIsPath) {
-                    rejects->reject(i, (int)summary->maxDimensionOrPath);
+                    rejecter->reject(i, (int)summary->maxDimensionOrPath);
                 }
             });
 }

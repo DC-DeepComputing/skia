@@ -33,13 +33,13 @@ public:
     virtual const SkDescriptor& getDescriptor() const = 0;
 
     virtual void prepareForMaskDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) = 0;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) = 0;
 
     virtual void prepareForSDFTDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) = 0;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) = 0;
 
     virtual void prepareForPathDrawing(
-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects) = 0;
+            SkDrawableGlyphBuffer* accepter, SkSourceGlyphBuffer* rejecter) = 0;
 
     virtual const SkGlyphPositionRoundingSpec& roundingSpec() const = 0;
 
