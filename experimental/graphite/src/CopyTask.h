@@ -44,6 +44,32 @@ private:
     size_t fBufferRowBytes;
 };
 
+//// Batches a set of uploads from a single buffer
+//class UploadTask final : public Task {
+//public:
+//    static sk_sp<UploadTask> Make(const Uploads*,
+//                                  size_t* bufferOffsets,
+//                                  int count,
+//                                  sk_sp<Buffer>,
+//                                  size_t bufferRowBytes);
+//
+//    ~UploadTask() override;
+//
+//    void addCommands(ResourceProvider*, CommandBuffer*) override;
+//
+//private:
+//    UploadTask(const Uploads*,
+//               size_t* bufferOffsets,
+//               int count,
+//               sk_sp<Buffer>,
+//               size_t bufferRowBytes);
+//
+//    std::vector<Upload> fUploads; // TODO: combine these two
+//    std::vector<size_t> fOffsets;
+//    sk_sp<Buffer> fBuffer;
+//    size_t fBufferRowBytes;
+//};
+
 } // namespace skgpu
 
 #endif // skgpu_CopyTask_DEFINED

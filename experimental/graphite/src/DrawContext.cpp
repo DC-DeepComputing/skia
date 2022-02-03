@@ -7,6 +7,7 @@
 
 #include "experimental/graphite/src/DrawContext.h"
 
+#include "include/core/SkPixmap.h"
 #include "include/private/SkColorData.h"
 
 #include "experimental/graphite/include/Context.h"
@@ -94,6 +95,10 @@ void DrawContext::clear(const SkColor4f& clearColor) {
     fDrawPasses.clear();
 }
 
+void DrawContext::writePixels(const SkPixmap&, int x, int y) {
+    fPendingUploads->appendUpload(/* TODO */);
+}
+
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {
     if (fPendingDraws->drawCount() == 0) {
         return;
@@ -141,6 +146,13 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
 
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+}
+
+sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
+     //*** make the task and append
+     fPendingUploads = std::make_unique<UploadList>();
+
+     return nullptr;
 }
 
 } // namespace skgpu

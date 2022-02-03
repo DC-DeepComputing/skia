@@ -47,4 +47,34 @@ void CopyTextureToBufferTask::addCommands(ResourceProvider*, CommandBuffer* comm
                                        fBufferRowBytes);
 }
 
+//sk_sp<UploadTask> UploadTask::Make(const Uploads* uploads,
+//                                   size_t* bufferOffsets,
+//                                   int count,
+//                                   sk_sp<Buffer> buffer,
+//                                   size_t bufferRowBytes) {
+//    return sk_sp<UploadTask>(new UploadTask(uploads,
+//                                            bufferOffsets,
+//                                            count,
+//                                            std::move(buffer),
+//                                            bufferRowBytes));
+//}
+//
+//UploadTask::UploadTask(const Uploads* uploads,
+//                       size_t* bufferOffsets,
+//                       int count,
+//                       sk_sp<Buffer> buffer,
+//                       size_t bufferRowBytes) {
+//    for (int i = 0; i < count; ++i) {
+//        fUploads[i] = uploads[i];
+//        fOffsets[i] = offsets[i];
+//    }
+//}
+//
+//void UploadTask::addCommands(ResourceProvider*, CommandBuffer*) {
+//    // do something here
+//
+//    // need to add a CopyFromBufferToTexture command to command buffer
+//    // can we batch them with some APIs?
+//}
+
 } // namespace skgpu

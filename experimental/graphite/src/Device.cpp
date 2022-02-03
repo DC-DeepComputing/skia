@@ -245,6 +245,12 @@ bool Device::readPixels(Context* context,
     return true;
 }
 
+bool Device::onWritePixels(const SkPixmap& pm, int x, int y) {
+    fDC->writePixels(pm, x, y);
+
+    return true;
+}
+
 SkIRect Device::onDevClipBounds() const {
     auto target = fDC->target();
     return SkIRect::MakeSize(target->dimensions());

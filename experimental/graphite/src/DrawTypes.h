@@ -10,6 +10,8 @@
 
 #include "experimental/graphite/include/GraphiteTypes.h"
 
+class SkData;
+
 namespace skgpu {
 
 class Buffer;
