@@ -163,6 +163,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0da4abfd_057415e0",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T01:36:39Z",
+      "side": 1,
+      "message": "Removed the isColor and related in https://skia-review.googlesource.com/c/skia/+/503347.",
+      "parentUuid": "2652ca53_3f0ebae8",
+      "range": {
+        "startLine": 277,
+        "startChar": 17,
+        "endLine": 277,
+        "endChar": 33
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d1147b8_6f576f3b",
