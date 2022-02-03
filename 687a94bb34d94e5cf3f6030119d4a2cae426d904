@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1f2204_91f150c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18639
+      },
+      "writtenOn": "2022-02-03T07:36:14Z",
+      "side": 1,
+      "message": "It passes tests for weight now for variable fonts. Still needs some work.",
+      "revId": "687a94bb34d94e5cf3f6030119d4a2cae426d904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
