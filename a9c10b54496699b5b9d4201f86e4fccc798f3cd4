@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f51ef2f4_72f25d8d",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T18:01:54Z",
+      "side": 1,
+      "message": "This include is breaking rollers due to the implied dependency from src/core to experimental/.",
+      "revId": "a9c10b54496699b5b9d4201f86e4fccc798f3cd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
