@@ -54,7 +54,7 @@ Instead, we can use methods on `SkCanvas` to **change the local coordinate
 space**. This causes all local coordinates (geometry and shaders) to be
 evaluated in the new space defined by the canvas' transformation matrix:
 
-<fiddle-embed-sk name='ce89b326b2bbe41587eec738706bf155'></fiddle-embed-sk>
+<fiddle-embed-sk name='5c322723c8011549dfcfae2e4359b27f'></fiddle-embed-sk>
 
 ---
 
