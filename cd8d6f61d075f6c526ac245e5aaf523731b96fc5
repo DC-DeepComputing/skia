@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1951bc7f_9fe4e4ba",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-03T15:36:47Z",
+      "side": 1,
+      "message": "nit: spacing",
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3120a94b_b8f904ab",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-03T15:36:47Z",
+      "side": 1,
+      "message": "this comment is confusing to me.  With my untrained eye this looks like it should be closer to...\n\n// draw text blob using paths first, then again without paths at a larger size",
+      "range": {
+        "startLine": 872,
+        "startChar": 5,
+        "endLine": 872,
+        "endChar": 66
+      },
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33547e6e_34a66d7c",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-03T15:36:47Z",
+      "side": 1,
+      "message": "I find the names of the tests confusing.  `WithPathsPathBig` and `WithPathsBigPath`.  Can you clarify the naming?",
+      "range": {
+        "startLine": 908,
+        "startChar": 35,
+        "endLine": 908,
+        "endChar": 78
+      },
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
