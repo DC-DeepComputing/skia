@@ -2129,17 +2129,35 @@ namespace {
 //    solid colors with src or srcOver
 //    repeated or clamped linear gradients with src or srcOver
 void precompile(skgpu::Context* context) {
-    using ShaderType = skgpu::ShaderCombo::ShaderType;
+    using namespace skgpu;
 
-    skgpu::PaintCombo c1 { { skgpu::ShaderCombo({ ShaderType::kSolidColor },
-                                                { SkTileMode::kRepeat }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
-    context->preCompile(c1);
+    {
+        PaintCombinations c;
+        c.addShaderCombinations(std::unique_ptr<ShaderCombo2>(new NoShaderCombo));
+        c.addBlendModeCombinations((CombinableBlendMode) (CombinableBlendMode::kSrcOver |
+                                                          CombinableBlendMode::kSrc));
+        context->preCompile(c);
+    }
 
-    skgpu::PaintCombo c2 { { skgpu::ShaderCombo({ ShaderType::kLinearGradient },
-                                                { SkTileMode::kRepeat, SkTileMode::kClamp }) },
-                           { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
-    context->preCompile(c2);
+    {
+        PaintCombinations c;
+        c.addShaderCombinations(std::unique_ptr<ShaderCombo2>(
+                new GradientCombinations(CombinableGradientType::kLinear,
+                                         (CombinableTileMode) (CombinableTileMode::kRepeat |
+                                                               CombinableTileMode::kClamp),
+                                         2, 6)));
+        c.addBlendModeCombinations((CombinableBlendMode) (CombinableBlendMode::kSrcOver |
+                                                          CombinableBlendMode::kSrc));
+        context->preCompile(c);
+    }
+
+    {
+        PaintCombinations c;
+        c.addShaderCombinations(std::unique_ptr<ShaderCombo2>(new ImageShaderCombinations()));
+        c.addBlendModeCombinations((CombinableBlendMode) (CombinableBlendMode::kSrcOver));
+
+        context->preCompile(c);
+    }
 }
 
 } // anonymous namespace

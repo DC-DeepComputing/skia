@@ -46,6 +46,13 @@ namespace {
     }
 
     struct NoopColorFilter : public SkColorFilterBase {
+        void addToKeyCF(SkShaderCodeDictionary*,
+                        SkBackend,
+                        SkPaintParamsKey*,
+                        SkUniformBlock*) const override {
+
+        }
+
         skvm::Color onProgram(skvm::Builder*, skvm::Color c,
                               const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override {
             return c;
@@ -59,6 +66,12 @@ namespace {
     };
 
     struct SpriteShader : public SkShaderBase {
+        void addToKeyS(SkShaderCodeDictionary*,
+                       SkBackend,
+                       SkPaintParamsKey*,
+                       SkUniformBlock*) const override {
+        }
+
         explicit SpriteShader(SkPixmap sprite) : fSprite(sprite) {}
 
         SkPixmap fSprite;
@@ -85,6 +98,12 @@ namespace {
     };
 
     struct DitherShader : public SkShaderBase {
+        void addToKeyS(SkShaderCodeDictionary*,
+                       SkBackend,
+                       SkPaintParamsKey*,
+                       SkUniformBlock*) const override {
+        }
+
         explicit DitherShader(sk_sp<SkShader> shader) : fShader(std::move(shader)) {}
 
         sk_sp<SkShader> fShader;
@@ -173,6 +192,12 @@ namespace {
     // This is similar to using SkShaders::Color(paint.getColor4f(), nullptr),
     // but uses the blitter-provided paint color uniforms instead of pushing its own.
     struct PaintColorShader : public SkShaderBase {
+        void addToKeyS(SkShaderCodeDictionary*,
+                       SkBackend,
+                       SkPaintParamsKey*,
+                       SkUniformBlock*) const override {
+        }
+
         explicit PaintColorShader(bool isOpaque) : fIsOpaque(isOpaque) {}
 
         const bool fIsOpaque;

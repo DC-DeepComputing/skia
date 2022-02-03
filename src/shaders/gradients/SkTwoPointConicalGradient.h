@@ -12,6 +12,12 @@
 
 class SkTwoPointConicalGradient final : public SkGradientShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     // See https://skia.org/dev/design/conical for what focal data means and how our shader works.
     // We make it public so the GPU shader can also use it.
     struct FocalData {

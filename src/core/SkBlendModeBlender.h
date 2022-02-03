@@ -12,6 +12,11 @@
 
 class SkBlendModeBlender : public SkBlenderBase {
 public:
+    void addToKeyB(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override;
+
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
 
     skstd::optional<SkBlendMode> asBlendMode() const final { return fMode; }

@@ -73,6 +73,12 @@ texture_to_matrix(const VertState& state, const SkPoint verts[], const SkPoint t
 
 class SkTriColorShader : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     SkTriColorShader(bool isOpaque, bool usePersp) : fIsOpaque(isOpaque), fUsePersp(usePersp) {}
 
     // This gets called for each triangle, without re-calling onAppendStages.

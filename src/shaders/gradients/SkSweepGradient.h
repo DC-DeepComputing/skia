@@ -20,6 +20,12 @@ public:
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
 
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     SkScalar getTBias() const { return fTBias; }
 
     SkScalar getTScale() const { return fTScale; }
