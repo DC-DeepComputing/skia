@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98793184_b50b42a3",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T15:59:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1951bc7f_9fe4e4ba",
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3120a94b_b8f904ab",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16b17225_f85048c7",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T15:59:33Z",
+      "side": 1,
+      "message": "Clarified what is happening.",
+      "parentUuid": "3120a94b_b8f904ab",
+      "range": {
+        "startLine": 872,
+        "startChar": 5,
+        "endLine": 872,
+        "endChar": 66
+      },
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33547e6e_34a66d7c",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-02-03T15:36:47Z",
       "side": 1,
       "message": "I find the names of the tests confusing.  `WithPathsPathBig` and `WithPathsBigPath`.  Can you clarify the naming?",
+      "range": {
+        "startLine": 908,
+        "startChar": 35,
+        "endLine": 908,
+        "endChar": 78
+      },
+      "revId": "cd8d6f61d075f6c526ac245e5aaf523731b96fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "124e0a66_6c4386b4",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T15:59:33Z",
+      "side": 1,
+      "message": "Clarified a bit with `_MaskThenPath` and `_PathThenMask` to be a bit clearer. I think with the updated comments inside these tests that it\u0027s a bit easier to see the intention now. I\u0027m not sure if there is a great name for this, since this is really a whitebox test to force a particular unlikely but possible situation.",
+      "parentUuid": "33547e6e_34a66d7c",
       "range": {
         "startLine": 908,
         "startChar": 35,
