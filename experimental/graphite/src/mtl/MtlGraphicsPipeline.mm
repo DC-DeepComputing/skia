@@ -189,6 +189,10 @@ SkSL::String get_sksl_fs(const SkShaderCodeDictionary* dictionary,
         sksl += "    sk_FragColor = outColor;\n"
                 "}\n";
 
+        SkDebugf("-----------------\n");
+        SkDebugf("%s\n", sksl.c_str());
+        SkDebugf("-----------------\n");
+
         *writesColor = codeSnippetID != CodeSnippetID::kDepthStencilOnlyDraw;
 
         curHeaderOffset += blockSize;
